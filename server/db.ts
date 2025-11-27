@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, regulations, gs1Standards, regulationStandardMappings, userAnalyses, regulatoryChangeAlerts, userPreferences } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,209 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ============================================================================
+// ISA-specific database helpers
+// ============================================================================
+
+/**
+ * Get all regulations with optional filtering
+ */
+export async function getRegulations(type?: string) {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    if (type) {
+      return await db.select().from(regulations).where(eq(regulations.regulationType, type as any));
+    }
+    return await db.select().from(regulations).orderBy(desc(regulations.createdAt));
+  } catch (error) {
+    console.error("[Database] Failed to get regulations:", error);
+    return [];
+  }
+}
+
+/**
+ * Get a single regulation by ID with its mapped standards
+ */
+export async function getRegulationWithStandards(regulationId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const regulation = await db.select().from(regulations).where(eq(regulations.id, regulationId)).limit(1);
+    if (!regulation.length) return null;
+
+    const mappings = await db
+      .select()
+      .from(regulationStandardMappings)
+      .where(eq(regulationStandardMappings.regulationId, regulationId));
+
+    const standardIds = mappings.map(m => m.standardId);
+    const standards: typeof gs1Standards.$inferSelect[] = [];
+    if (standardIds.length > 0) {
+      const result = await db.select().from(gs1Standards).where(eq(gs1Standards.id, standardIds[0]));
+      standards.push(...result);
+    }
+
+    return {
+      regulation: regulation[0],
+      mappings,
+      standards
+    };
+  } catch (error) {
+    console.error("[Database] Failed to get regulation with standards:", error);
+    return null;
+  }
+}
+
+/**
+ * Get all GS1 standards
+ */
+export async function getGS1Standards() {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    return await db.select().from(gs1Standards).orderBy(gs1Standards.standardCode);
+  } catch (error) {
+    console.error("[Database] Failed to get GS1 standards:", error);
+    return [];
+  }
+}
+
+/**
+ * Get recent regulatory changes
+ */
+export async function getRecentRegulatoryChanges(limit: number = 10) {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    return await db
+      .select()
+      .from(regulatoryChangeAlerts)
+      .orderBy(desc(regulatoryChangeAlerts.detectedAt))
+      .limit(limit);
+  } catch (error) {
+    console.error("[Database] Failed to get regulatory changes:", error);
+    return [];
+  }
+}
+
+/**
+ * Get user's analysis history
+ */
+export async function getUserAnalysisHistory(userId: number, limit: number = 20) {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    return await db
+      .select()
+      .from(userAnalyses)
+      .where(eq(userAnalyses.userId, userId))
+      .orderBy(desc(userAnalyses.createdAt))
+      .limit(limit);
+  } catch (error) {
+    console.error("[Database] Failed to get user analysis history:", error);
+    return [];
+  }
+}
+
+/**
+ * Create a new user analysis record
+ */
+export async function createUserAnalysis(data: {
+  userId: number;
+  regulationId?: number;
+  documentTitle?: string;
+  documentUrl?: string;
+  analysisType: "CELEX" | "DOCUMENT_UPLOAD" | "URL" | "TEXT";
+  detectedStandardsCount?: number;
+  analysisResult?: any;
+}) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const result = await db.insert(userAnalyses).values({
+      userId: data.userId,
+      regulationId: data.regulationId,
+      documentTitle: data.documentTitle,
+      documentUrl: data.documentUrl,
+      analysisType: data.analysisType,
+      detectedStandardsCount: data.detectedStandardsCount || 0,
+      analysisResult: data.analysisResult,
+    });
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to create user analysis:", error);
+    return null;
+  }
+}
+
+/**
+ * Get or create user preferences
+ */
+export async function getUserPreferences(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const existing = await db
+      .select()
+      .from(userPreferences)
+      .where(eq(userPreferences.userId, userId))
+      .limit(1);
+
+    if (existing.length) {
+      return existing[0];
+    }
+
+    // Create default preferences
+    await db.insert(userPreferences).values({
+      userId,
+      notificationsEnabled: true,
+    });
+
+    const result = await db
+      .select()
+      .from(userPreferences)
+      .where(eq(userPreferences.userId, userId))
+      .limit(1);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to get user preferences:", error);
+    return null;
+  }
+}
+
+/**
+ * Get statistics for dashboard
+ */
+export async function getDashboardStats() {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const regulationCount = await db.select().from(regulations);
+    const standardCount = await db.select().from(gs1Standards);
+    const mappingCount = await db.select().from(regulationStandardMappings);
+    const recentChanges = await db
+      .select()
+      .from(regulatoryChangeAlerts)
+      .orderBy(desc(regulatoryChangeAlerts.detectedAt))
+      .limit(5);
+
+    return {
+      totalRegulations: regulationCount.length,
+      totalStandards: standardCount.length,
+      totalMappings: mappingCount.length,
+      recentChanges: recentChanges,
+    };
+  } catch (error) {
+    console.error("[Database] Failed to get dashboard stats:", error);
+    return null;
+  }
+}
