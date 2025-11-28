@@ -32,8 +32,9 @@ export function NavigationMenu() {
       label: "EPCIS Tools",
       children: [
         { label: "Upload Events", href: "/epcis/upload", description: "Upload EPCIS documents" },
-        { label: "Supply Chain", href: "/epcis/supply-chain", description: "Visualize traceability" },
+        { label: "Supply Chain Map", href: "/epcis/supply-chain", description: "Visualize supply chain" },
         { label: "EUDR Map", href: "/epcis/eudr-map", description: "Geolocation compliance" },
+        { label: "Barcode Scanner", href: "/tools/scanner", description: "Scan products for traceability" },
       ],
     },
     {
@@ -56,6 +57,7 @@ export function NavigationMenu() {
         { label: "News Management", href: "/admin/news", description: "Manage news articles" },
         { label: "Analytics", href: "/admin/analytics", description: "Hub engagement metrics" },
         { label: "CELLAR Ingestion", href: "/admin/cellar-ingestion", description: "EU regulation sync" },
+        { label: "EUDR Data Seeder", href: "/admin/eudr-seeder", description: "Populate sample data" },
       ],
     });
   }

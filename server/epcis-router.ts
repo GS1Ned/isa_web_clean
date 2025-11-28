@@ -3,6 +3,7 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc.js";
 import { getDb } from "./db.js";
 import { epcisEvents, supplyChainNodes, supplyChainEdges, eudrGeolocation } from "../drizzle/schema.js";
 import { eq, and, desc } from "drizzle-orm";
+import { seedEUDRData } from "./seed-eudr-data.js";
 
 /**
  * EPCIS 2.0 Integration Router
@@ -409,5 +410,15 @@ export const epcisRouter = router({
         })),
         totalCount: geolocations.length,
       };
+    }),
+
+  /**
+   * Seed EUDR sample data for demonstration
+   */
+  seedEUDRSampleData: protectedProcedure
+    .mutation(async ({ ctx }) => {
+      const userId = ctx.user.id;
+      const result = await seedEUDRData(userId);
+      return result;
     }),
 });
