@@ -48,7 +48,7 @@ import ComplianceRoadmap from "./pages/ComplianceRoadmap";
 import TemplateLibrary from "./pages/TemplateLibrary";
 import AdminTemplateManager from "./pages/AdminTemplateManager";
 import TemplateAnalyticsDashboard from "./pages/TemplateAnalyticsDashboard";
-
+import { NotificationPreferences } from "./pages/NotificationPreferences";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (    <Switch>
@@ -94,7 +94,8 @@ function Router() {
       <Route path="/compliance/roadmap" component={ComplianceRoadmap} />
       <Route path="/templates" component={TemplateLibrary} />
       <Route path="/admin/templates" component={AdminTemplateManager} />
-      <Route path="/admin/template-analytics" component={TemplateAnalyticsDashboard} />
+      <Route path="/template-analytics" component={TemplateAnalyticsDashboard} />
+      <Route path="/notification-preferences" component={NotificationPreferences} />
       <Route path={"404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

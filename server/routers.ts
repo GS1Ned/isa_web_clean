@@ -37,6 +37,7 @@ import { templatesRouter } from "./routers/templates.js";
 import { adminTemplatesRouter } from "./routers/admin-templates.js";
 import { templateAnalyticsRouter } from "./routers/template-analytics.js";
 import { realtimeRouter } from "./routers/realtime.js";
+import { notificationPreferencesRouter } from "./routers/notification-preferences.js";
 
 export const appRouter = router({
   system: systemRouter,
@@ -689,6 +690,7 @@ export const appRouter = router({
   adminTemplates: adminTemplatesRouter,
   templateAnalytics: templateAnalyticsRouter,
   realtime: realtimeRouter,
+  notificationPreferences: notificationPreferencesRouter,
 
   /**
    * ESRS Datapoints Router

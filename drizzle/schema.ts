@@ -959,3 +959,40 @@ export const templateUsage = mysqlTable("template_usage", {
 
 export type TemplateUsage = typeof templateUsage.$inferSelect;
 export type InsertTemplateUsage = typeof templateUsage.$inferInsert;
+
+/**
+ * Notification Preferences - User customization for alerts
+ */
+export const notificationPreferences = mysqlTable("notification_preferences", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(),
+  // Notification type toggles
+  riskDetected: boolean("riskDetected").default(true),
+  remediationUpdated: boolean("remediationUpdated").default(true),
+  commentAdded: boolean("commentAdded").default(true),
+  approvalRequested: boolean("approvalRequested").default(true),
+  approvalDecision: boolean("approvalDecision").default(true),
+  templateUpdated: boolean("templateUpdated").default(true),
+  scoreChanged: boolean("scoreChanged").default(true),
+  milestoneAchieved: boolean("milestoneAchieved").default(true),
+  // Severity filtering
+  minSeverity: varchar("minSeverity", { length: 32 }).default("low"), // low, medium, high, critical
+  // Delivery channels
+  inAppNotifications: boolean("inAppNotifications").default(true),
+  emailNotifications: boolean("emailNotifications").default(false),
+  // Quiet hours
+  quietHoursEnabled: boolean("quietHoursEnabled").default(false),
+  quietHoursStart: varchar("quietHoursStart", { length: 5 }), // HH:MM format
+  quietHoursEnd: varchar("quietHoursEnd", { length: 5 }), // HH:MM format
+  // Notification frequency
+  batchNotifications: boolean("batchNotifications").default(false),
+  batchInterval: int("batchInterval").default(60), // minutes
+  // Timestamps
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+}));
+
+export type NotificationPreference = typeof notificationPreferences.$inferSelect;
+export type InsertNotificationPreference = typeof notificationPreferences.$inferInsert;

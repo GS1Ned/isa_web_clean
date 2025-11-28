@@ -120,6 +120,13 @@
       "when": 1764362936544,
       "tag": "0016_left_kid_colt",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "5",
+      "when": 1764364564014,
+      "tag": "0017_smart_king_cobra",
+      "breakpoints": true
     }
   ]
 }
