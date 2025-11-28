@@ -112,6 +112,72 @@ export async function getRegulations(type?: string) {
 }
 
 /**
+ * Upsert a regulation (insert if new, update if exists based on celexId)
+ */
+export async function upsertRegulation(regulation: {
+  title: string;
+  celexId?: string | null;
+  summary?: string | null;
+  fullText?: string | null;
+  effectiveDate?: Date | null;
+  sourceUrl?: string | null;
+  regulationType?: string | null;
+  status?: string | null;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database connection failed");
+
+  try {
+    // Check if regulation exists by celexId
+    let existing = null;
+    if (regulation.celexId) {
+      const results = await db
+        .select()
+        .from(regulations)
+        .where(eq(regulations.celexId, regulation.celexId))
+        .limit(1);
+      existing = results.length > 0 ? results[0] : null;
+    }
+
+    if (existing) {
+      // Update existing regulation
+      await db
+        .update(regulations)
+        .set({
+          title: regulation.title,
+          summary: regulation.summary,
+          fullText: regulation.fullText,
+          effectiveDate: regulation.effectiveDate,
+          sourceUrl: regulation.sourceUrl,
+          regulationType: regulation.regulationType,
+          status: regulation.status,
+          updatedAt: new Date(),
+        })
+        .where(eq(regulations.id, existing.id));
+
+      return { id: existing.id, inserted: false, updated: true };
+    } else {
+      // Insert new regulation
+      const result = await db.insert(regulations).values({
+        title: regulation.title,
+        celexId: regulation.celexId,
+        summary: regulation.summary,
+        fullText: regulation.fullText,
+        effectiveDate: regulation.effectiveDate,
+        sourceUrl: regulation.sourceUrl,
+        regulationType: regulation.regulationType,
+        status: regulation.status,
+      });
+
+      return { id: Number(result.insertId), inserted: true, updated: false };
+    }
+  } catch (error) {
+    console.error("[Database] Failed to upsert regulation:", error);
+    throw error;
+  }
+}
+
+/**
  * Get a single regulation by ID with its mapped standards
  */
 export async function getRegulationWithStandards(regulationId: number) {
