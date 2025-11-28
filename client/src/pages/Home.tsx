@@ -19,8 +19,8 @@ export default function Home() {
             <span className="font-bold text-lg text-foreground">ISA</span>
           </div>
           <div className="flex items-center gap-6">
-            <Link href="#features" className="text-sm text-muted-foreground hover:text-foreground transition">
-              Features
+            <Link href="/how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition">
+              How It Works
             </Link>
             <Link href="#roadmap" className="text-sm text-muted-foreground hover:text-foreground transition">
               Roadmap
