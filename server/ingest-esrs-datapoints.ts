@@ -18,15 +18,10 @@ import { dirname, join } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Database connection
-const connection = await mysql.createConnection(process.env.DATABASE_URL!);
-
-const db = drizzle(connection, { schema, mode: 'default' });
-
 /**
  * Parse ESRS datapoint from Excel row
  */
-function parseDatapoint(row, esrsStandard) {
+function parseDatapoint(row: any, esrsStandard: string) {
   // ExcelJS row.values is a sparse array starting at index 1
   // Structure: [empty, ID, ESRS, DR, Paragraph, Related AR, Name, Data Type, Conditional, May [V], Appendix B, ...]
   const datapointId = row.getCell(1).value;
@@ -67,6 +62,10 @@ function parseDatapoint(row, esrsStandard) {
 async function ingestESRSDatapoints() {
   console.log('[ESRS Ingestion] Starting EFRAG IG 3 datapoints ingestion...\n');
 
+  // Database connection
+  const connection = await mysql.createConnection(process.env.DATABASE_URL!);
+  const db = drizzle(connection, { schema, mode: 'default' });
+
   const excelPath = join(dirname(__dirname), 'efrag_ig3_datapoints.xlsx');
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.readFile(excelPath);
@@ -102,7 +101,7 @@ async function ingestESRSDatapoints() {
     let sheetSkipped = 0;
 
     // Iterate through rows (skip first 2 rows - instructions and headers)
-    const rows = [];
+    const rows: any[] = [];
     worksheet.eachRow((row, rowNumber) => {
       if (rowNumber <= 2) return; // Skip instructions and header
       rows.push(row);
@@ -124,12 +123,13 @@ async function ingestESRSDatapoints() {
         // Insert into database
         await db.insert(schema.esrsDatapoints).values(datapoint).execute();
         sheetInserted++;
-      } catch (error) {
-        if (error.code === 'ER_DUP_ENTRY') {
+      } catch (error: unknown) {
+        if ((error as any).code === 'ER_DUP_ENTRY') {
           // Duplicate entry, skip silently
           sheetSkipped++;
         } else {
-          console.error(`[ESRS Ingestion] ❌ Error inserting ${datapoint.datapointId}:`, error.message);
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          console.error(`[ESRS Ingestion] ❌ Error inserting ${datapoint.datapointId}:`, errorMsg);
           sheetSkipped++;
         }
       }

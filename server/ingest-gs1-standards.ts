@@ -12,10 +12,6 @@ import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import * as schema from '../drizzle/schema.ts';
 
-// Database connection
-const connection = await mysql.createConnection(process.env.DATABASE_URL!);
-const db = drizzle(connection, { schema, mode: 'default' });
-
 /**
  * GS1 Standards data extracted from https://www.gs1.org/standards/log
  */
@@ -62,6 +58,10 @@ const gs1Standards = [
  */
 async function ingestGS1Standards() {
   console.log('[GS1 Ingestion] Starting GS1 Standards Log ingestion...\n');
+
+  // Database connection
+  const connection = await mysql.createConnection(process.env.DATABASE_URL!);
+  const db = drizzle(connection, { schema, mode: 'default' });
 
   let inserted = 0;
   let skipped = 0;

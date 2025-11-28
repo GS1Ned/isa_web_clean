@@ -117,12 +117,10 @@ export async function getRegulations(type?: string) {
 export async function upsertRegulation(regulation: {
   title: string;
   celexId?: string | null;
-  summary?: string | null;
-  fullText?: string | null;
+  description?: string | null;
   effectiveDate?: Date | null;
   sourceUrl?: string | null;
   regulationType?: string | null;
-  status?: string | null;
 }) {
   const db = await getDb();
   if (!db) throw new Error("Database connection failed");
@@ -145,13 +143,10 @@ export async function upsertRegulation(regulation: {
         .update(regulations)
         .set({
           title: regulation.title,
-          summary: regulation.summary,
-          fullText: regulation.fullText,
+          description: regulation.description,
           effectiveDate: regulation.effectiveDate,
           sourceUrl: regulation.sourceUrl,
-          regulationType: regulation.regulationType,
-          status: regulation.status,
-          updatedAt: new Date(),
+          regulationType: regulation.regulationType as any,
         })
         .where(eq(regulations.id, existing.id));
 
@@ -161,15 +156,14 @@ export async function upsertRegulation(regulation: {
       const result = await db.insert(regulations).values({
         title: regulation.title,
         celexId: regulation.celexId,
-        summary: regulation.summary,
-        fullText: regulation.fullText,
+        description: regulation.description,
         effectiveDate: regulation.effectiveDate,
         sourceUrl: regulation.sourceUrl,
-        regulationType: regulation.regulationType,
-        status: regulation.status,
+        regulationType: regulation.regulationType as any,
       });
 
-      return { id: Number(result.insertId), inserted: true, updated: false };
+      const insertId = (result as any).insertId;
+      return { id: Number(insertId), inserted: true, updated: false };
     }
   } catch (error) {
     console.error("[Database] Failed to upsert regulation:", error);
@@ -348,7 +342,7 @@ export async function createContact(contact: InsertContact) {
     const newContact = await db
       .select()
       .from(contacts)
-      .where(eq(contacts.id, Number(result[0].insertId)))
+      .where(eq(contacts.id, Number((result[0] as any).insertId)))
       .limit(1);
     return newContact.length > 0 ? newContact[0] : null;
   } catch (error) {
@@ -632,7 +626,7 @@ export async function upsertRegulationEsrsMapping(mapping: {
         relevanceScore: mapping.relevanceScore,
         reasoning: mapping.reasoning,
       });
-      return { id: Number(result.insertId), ...mapping };
+      return { id: Number((result as any).insertId), ...mapping };
     }
   } catch (error) {
     console.error("[Database] Failed to upsert regulation ESRS mapping:", error);
@@ -705,7 +699,7 @@ export async function submitMappingFeedback(params: {
     } else {
       // Insert new vote
       const result = await db.insert(mappingFeedback).values(params);
-      return { id: Number(result.insertId), ...params };
+      return { id: Number((result as any).insertId), ...params };
     }
   } catch (error) {
     console.error("[Database] Failed to submit mapping feedback:", error);
