@@ -26,6 +26,7 @@ import HubImpactMatrix from "./pages/HubImpactMatrix";
 import HubUserDashboard from "./pages/HubUserDashboard";
 import AdminNewsPanel from "./pages/AdminNewsPanel";
 import HubRegulationDetail from "./pages/HubRegulationDetail";
+import HubCompare from "./pages/HubCompare";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -48,6 +49,7 @@ function Router() {
       <Route path="/hub/resources" component={HubResources} />
       <Route path="/hub/impact-matrix" component={HubImpactMatrix} />
       <Route path="/hub/dashboard" component={HubUserDashboard} />
+      <Route path="/hub/compare" component={HubCompare} />
       <Route path="/admin/news" component={AdminNewsPanel} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
