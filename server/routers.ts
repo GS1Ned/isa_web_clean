@@ -36,6 +36,7 @@ import { collaborationRouter } from "./routers/collaboration.js";
 import { templatesRouter } from "./routers/templates.js";
 import { adminTemplatesRouter } from "./routers/admin-templates.js";
 import { templateAnalyticsRouter } from "./routers/template-analytics.js";
+import { realtimeRouter } from "./routers/realtime.js";
 
 export const appRouter = router({
   system: systemRouter,
@@ -687,6 +688,7 @@ export const appRouter = router({
   templates: templatesRouter,
   adminTemplates: adminTemplatesRouter,
   templateAnalytics: templateAnalyticsRouter,
+  realtime: realtimeRouter,
 
   /**
    * ESRS Datapoints Router
