@@ -46,6 +46,7 @@ import AdminEvidenceVerification from "./pages/AdminEvidenceVerification";
 import ComplianceScoreboard from "./pages/ComplianceScoreboard";
 import ComplianceRoadmap from "./pages/ComplianceRoadmap";
 import TemplateLibrary from "./pages/TemplateLibrary";
+import AdminTemplateManager from "./pages/AdminTemplateManager";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -91,6 +92,7 @@ function Router() {
       <Route path="/scoreboard" component={ComplianceScoreboard} />
       <Route path="/compliance/roadmap" component={ComplianceRoadmap} />
       <Route path="/templates" component={TemplateLibrary} />
+      <Route path="/admin/templates" component={AdminTemplateManager} />
       <Route path={"404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

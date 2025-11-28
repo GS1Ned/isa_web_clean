@@ -34,6 +34,7 @@ import { roadmapRouter } from "./routers/roadmap.js";
 import { roadmapExportRouter } from "./routers/roadmap-export.js";
 import { collaborationRouter } from "./routers/collaboration.js";
 import { templatesRouter } from "./routers/templates.js";
+import { adminTemplatesRouter } from "./routers/admin-templates.js";
 
 export const appRouter = router({
   system: systemRouter,
@@ -683,6 +684,7 @@ export const appRouter = router({
    */
   collaboration: collaborationRouter,
   templates: templatesRouter,
+  adminTemplates: adminTemplatesRouter,
 
   /**
    * ESRS Datapoints Router
