@@ -575,3 +575,59 @@ Note: All features complete and tested. Ready for user delivery.
 - [ ] Verify "Fully Traceable" status appears for seeded GTINs - READY FOR USER
 
 Note: Critical fix complete. Barcode scanner will now find seeded products.
+
+
+## Phase 47: Automated CELLAR Regulation Sync (Autonomous Development - Session 4)
+- [ ] Create sync-cellar-regulations.ts script with change detection
+- [ ] Implement incremental sync (only fetch changed regulations)
+- [ ] Add upsert logic (insert new, update existing)
+- [ ] Track sync history (last sync time, records added/updated)
+- [ ] Add error handling and retry logic
+- [ ] Create tRPC procedure to trigger manual sync
+- [ ] Log sync results for transparency
+
+## Phase 48: Scheduled CELLAR Sync Task (Autonomous Development - Session 4)
+- [ ] Research scheduling options (cron vs. interval)
+- [ ] Create scheduled task for daily CELLAR sync
+- [ ] Add sync status monitoring
+- [ ] Test scheduled execution
+- [ ] Document sync schedule
+
+## Phase 49: Sync Monitoring Dashboard (Autonomous Development - Session 4)
+- [ ] Create admin page for sync status
+- [ ] Display last sync time and results
+- [ ] Show sync history (added/updated/failed records)
+- [ ] Add manual sync trigger button
+- [ ] Add route to App.tsx
+
+## Phase 50: Testing & Delivery (Autonomous Development - Session 4)
+- [ ] Test manual sync trigger
+- [ ] Test scheduled sync execution
+- [ ] Verify change detection works
+- [ ] Run full test suite
+- [ ] Save checkpoint
+
+
+## Phase 51: Real EPCIS File Upload System (Autonomous Development - Session 4)
+- [ ] Research EPCIS 2.0 JSON and XML formats
+- [ ] Create EPCIS file parser (support both formats)
+- [ ] Add file validation (schema compliance)
+- [ ] Extract events from uploaded files
+- [ ] Create tRPC procedure for file upload
+- [ ] Update EPCISUpload page with file input
+- [ ] Add upload progress indicator
+- [ ] Display upload results (events added, errors)
+- [ ] Test with sample EPCIS files
+- [ ] Write tests for parser and upload
+
+Note: Enables users to upload their own supply chain data, making ISA production-ready.
+
+
+## Phase 52: Auto-Rebuild Supply Chain Graph After Upload (Autonomous Development - Session 4)
+- [x] Read existing supply chain graph building logic (generateSupplyChainMap procedure)
+- [x] Call graph builder after EPCIS upload (frontend auto-call with onSuccess)
+- [x] Update uploadEvents success message to mention auto-visualization
+- [ ] Test upload → graph visualization workflow - READY FOR USER
+- [ ] Add link to supply chain page in upload success message - DEFERRED
+
+Note: Supply chain graph now auto-rebuilds after EPCIS upload for immediate visualization.

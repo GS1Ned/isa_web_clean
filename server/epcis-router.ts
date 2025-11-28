@@ -89,7 +89,7 @@ export const epcisRouter = router({
       return {
         success: true,
         eventsUploaded: insertedEvents.length,
-        message: `Successfully uploaded ${insertedEvents.length} EPCIS events`,
+        message: `Successfully uploaded ${insertedEvents.length} EPCIS events. Supply chain visualization will be updated automatically.`,
       };
     }),
 

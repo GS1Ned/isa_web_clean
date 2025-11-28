@@ -15,10 +15,15 @@ export default function EPCISUpload() {
   const [validationError, setValidationError] = useState<string | null>(null);
   const [uploadResult, setUploadResult] = useState<any>(null);
 
+  // Generate supply chain map mutation
+  const generateMapMutation = trpc.epcis.generateSupplyChainMap.useMutation();
+
   const uploadMutation = trpc.epcis.uploadEvents.useMutation({
     onSuccess: (data) => {
       setUploadResult(data);
       setValidationError(null);
+      // Automatically generate supply chain map after upload
+      generateMapMutation.mutate();
     },
     onError: (error) => {
       setValidationError(error.message);
