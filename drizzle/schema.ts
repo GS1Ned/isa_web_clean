@@ -603,3 +603,95 @@ export const remediationProgress = mysqlTable("remediation_progress", {
 
 export type RemediationProgress = typeof remediationProgress.$inferSelect;
 export type InsertRemediationProgress = typeof remediationProgress.$inferInsert;
+
+/**
+ * Compliance Scores - Real-time compliance metrics for users
+ */
+export const complianceScores = mysqlTable("compliance_scores", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  overallScore: decimal("overallScore", { precision: 5, scale: 2 }).notNull(), // 0-100
+  riskManagementScore: decimal("riskManagementScore", { precision: 5, scale: 2 }).notNull(),
+  remediationScore: decimal("remediationScore", { precision: 5, scale: 2 }).notNull(),
+  evidenceScore: decimal("evidenceScore", { precision: 5, scale: 2 }).notNull(),
+  regulationScore: decimal("regulationScore", { precision: 5, scale: 2 }).notNull(),
+  totalRisks: int("totalRisks").default(0),
+  resolvedRisks: int("resolvedRisks").default(0),
+  totalRemediationPlans: int("totalRemediationPlans").default(0),
+  completedPlans: int("completedPlans").default(0),
+  totalEvidence: int("totalEvidence").default(0),
+  verifiedEvidence: int("verifiedEvidence").default(0),
+  regulationsCovered: int("regulationsCovered").default(0),
+  lastUpdated: timestamp("lastUpdated").defaultNow().onUpdateNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  overallScoreIdx: index("overallScore_idx").on(table.overallScore),
+}));
+
+export type ComplianceScore = typeof complianceScores.$inferSelect;
+export type InsertComplianceScore = typeof complianceScores.$inferInsert;
+
+/**
+ * Score History - Track compliance score changes over time
+ */
+export const scoreHistory = mysqlTable("score_history", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  overallScore: decimal("overallScore", { precision: 5, scale: 2 }).notNull(),
+  riskManagementScore: decimal("riskManagementScore", { precision: 5, scale: 2 }).notNull(),
+  remediationScore: decimal("remediationScore", { precision: 5, scale: 2 }).notNull(),
+  evidenceScore: decimal("evidenceScore", { precision: 5, scale: 2 }).notNull(),
+  regulationScore: decimal("regulationScore", { precision: 5, scale: 2 }).notNull(),
+  changeReason: varchar("changeReason", { length: 255 }), // e.g., "risk_resolved", "evidence_verified"
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  createdAtIdx: index("createdAt_idx").on(table.createdAt),
+}));
+
+export type ScoreHistory = typeof scoreHistory.$inferSelect;
+export type InsertScoreHistory = typeof scoreHistory.$inferInsert;
+
+/**
+ * Scoring Benchmarks - Compare user scores against industry standards
+ */
+export const scoringBenchmarks = mysqlTable("scoring_benchmarks", {
+  id: int("id").autoincrement().primaryKey(),
+  industry: varchar("industry", { length: 128 }).notNull(),
+  region: varchar("region", { length: 128 }).notNull(),
+  avgOverallScore: decimal("avgOverallScore", { precision: 5, scale: 2 }).notNull(),
+  avgRiskManagementScore: decimal("avgRiskManagementScore", { precision: 5, scale: 2 }).notNull(),
+  avgRemediationScore: decimal("avgRemediationScore", { precision: 5, scale: 2 }).notNull(),
+  avgEvidenceScore: decimal("avgEvidenceScore", { precision: 5, scale: 2 }).notNull(),
+  avgRegulationScore: decimal("avgRegulationScore", { precision: 5, scale: 2 }).notNull(),
+  percentile75: decimal("percentile75", { precision: 5, scale: 2 }).notNull(),
+  percentile90: decimal("percentile90", { precision: 5, scale: 2 }).notNull(),
+  dataPoints: int("dataPoints").default(0),
+  lastUpdated: timestamp("lastUpdated").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  industryRegionIdx: index("industry_region_idx").on(table.industry, table.region),
+}));
+
+export type ScoringBenchmark = typeof scoringBenchmarks.$inferSelect;
+export type InsertScoringBenchmark = typeof scoringBenchmarks.$inferInsert;
+
+/**
+ * Score Milestones - Track achievement of compliance milestones
+ */
+export const scoreMilestones = mysqlTable("score_milestones", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  milestoneType: varchar("milestoneType", { length: 128 }).notNull(), // e.g., "score_50", "all_risks_resolved", "100_evidence_verified"
+  milestoneTitle: varchar("milestoneTitle", { length: 255 }).notNull(),
+  description: text("description"),
+  achievedAt: timestamp("achievedAt").notNull(),
+  badge: varchar("badge", { length: 128 }), // emoji or icon identifier
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  achievedAtIdx: index("achievedAt_idx").on(table.achievedAt),
+}));
+
+export type ScoreMilestone = typeof scoreMilestones.$inferSelect;
+export type InsertScoreMilestone = typeof scoreMilestones.$inferInsert;

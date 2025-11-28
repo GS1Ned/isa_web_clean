@@ -43,6 +43,7 @@ import ESRSDatapoints from "./pages/ESRSDatapoints";
 import SupplyChainDashboard from "./pages/SupplyChainDashboard";
 import RiskRemediation from "./pages/RiskRemediation";
 import AdminEvidenceVerification from "./pages/AdminEvidenceVerification";
+import ComplianceScoreboard from "./pages/ComplianceScoreboard";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -85,6 +86,7 @@ function Router() {
       <Route path="/admin/analytics" component={AdminAnalyticsDashboard} />
       <Route path="/admin/prompt-optimization" component={AdminPromptOptimization} />
       <Route path="/admin/evidence-verification" component={AdminEvidenceVerification} />
+      <Route path="/scoreboard" component={ComplianceScoreboard} />
       <Route path={"404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

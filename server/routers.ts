@@ -28,6 +28,8 @@ import { epcisRouter } from "./epcis-router.js";
 import { batchEpcisRouter } from "./routers/batch-epcis.js";
 import { complianceRisksRouter } from "./routers/compliance-risks.js";
 import { remediationRouter } from "./routers/remediation.js";
+import { scoringRouter } from "./routers/scoring.js";
+import { benchmarkingRouter } from "./routers/benchmarking.js";
 
 export const appRouter = router({
   system: systemRouter,
@@ -651,6 +653,16 @@ export const appRouter = router({
    * Risk Remediation Router
    */
   remediation: remediationRouter,
+
+  /**
+   * Compliance Scoring Router
+   */
+  scoring: scoringRouter,
+
+  /**
+   * Benchmarking Router
+   */
+  benchmarking: benchmarkingRouter,
 
   /**
    * ESRS Datapoints Router
