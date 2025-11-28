@@ -30,6 +30,9 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Features Comparison Table page with v0.3/v1.0/v2.0 roadmap (NEW)
 - [x] Export functionality (JSON, CSV, PDF) on dashboard (NEW)
 - [x] Use Cases page with role-specific scenarios (NEW)
+- [x] Contact/Demo Request Form with owner notifications (NEW)
+- [x] Regulation Comparison Tool (side-by-side view) (NEW)
+- [x] Blog/Insights Section with regulatory trend articles (NEW)
 
 ## Phase 4: Database & Backend Features
 - [x] Design database schema for regulatory data, standards mappings, and user interactions

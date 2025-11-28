@@ -28,6 +28,12 @@ export default function Home() {
             <Link href="/use-cases" className="text-sm text-muted-foreground hover:text-foreground transition">
               Use Cases
             </Link>
+            <Link href="/compare" className="text-sm text-muted-foreground hover:text-foreground transition">
+              Compare
+            </Link>
+            <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition">
+              Blog
+            </Link>
             <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition">
               About
             </Link>
