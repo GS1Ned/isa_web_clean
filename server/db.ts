@@ -1,6 +1,6 @@
 import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, regulations, gs1Standards, regulationStandardMappings, userAnalyses, regulatoryChangeAlerts, userPreferences, InsertContact, contacts } from "../drizzle/schema";
+import { InsertUser, users, regulations, gs1Standards, regulationStandardMappings, userAnalyses, regulatoryChangeAlerts, userPreferences, InsertContact, contacts, hubNews, userAlerts } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -340,5 +340,134 @@ export async function getDashboardStats() {
   } catch (error) {
     console.error("[Database] Failed to get dashboard stats:", error);
     return null;
+  }
+}
+
+
+/**
+ * Create a new hub news item
+ */
+export async function createHubNews(news: {
+  title: string;
+  content: string;
+  newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
+  sourceUrl?: string;
+  sourceTitle?: string;
+  relatedRegulationIds?: number[];
+  summary?: string;
+}) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create hub news: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.insert(hubNews).values({
+      title: news.title,
+      content: news.content,
+      newsType: news.newsType,
+      sourceUrl: news.sourceUrl,
+      sourceTitle: news.sourceTitle,
+      relatedRegulationIds: news.relatedRegulationIds ? JSON.stringify(news.relatedRegulationIds) : null,
+      summary: news.summary,
+      publishedDate: new Date(),
+    });
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to create hub news:", error);
+    return null;
+  }
+}
+
+/**
+ * Get recent hub news items
+ */
+export async function getRecentHubNews(limit: number = 20) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get hub news: database not available");
+    return [];
+  }
+
+  try {
+    return await db
+      .select()
+      .from(hubNews)
+      .orderBy(desc(hubNews.publishedDate))
+      .limit(limit);
+  } catch (error) {
+    console.error("[Database] Failed to get hub news:", error);
+    return [];
+  }
+}
+
+/**
+ * Create a user alert preference
+ */
+export async function createUserAlert(alert: {
+  userId: number;
+  regulationId?: number;
+  alertType: "REGULATION_UPDATE" | "DEADLINE_APPROACHING" | "NEW_REGULATION" | "ENFORCEMENT_ACTION";
+  isActive?: boolean;
+  daysBeforeDeadline?: number;
+}) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create user alert: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.insert(userAlerts).values({
+      userId: alert.userId,
+      regulationId: alert.regulationId,
+      alertType: alert.alertType,
+      isActive: alert.isActive ?? true,
+      daysBeforeDeadline: alert.daysBeforeDeadline,
+    });
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to create user alert:", error);
+    return null;
+  }
+}
+
+/**
+ * Get user alerts
+ */
+export async function getUserAlerts(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get user alerts: database not available");
+    return [];
+  }
+
+  try {
+    return await db.select().from(userAlerts).where(eq(userAlerts.userId, userId));
+  } catch (error) {
+    console.error("[Database] Failed to get user alerts:", error);
+    return [];
+  }
+}
+
+/**
+ * Get users with active alerts for daily digest
+ */
+export async function getUsersWithActiveAlerts() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get users with alerts: database not available");
+    return [];
+  }
+
+  try {
+    return await db
+      .selectDistinct({ userId: userAlerts.userId })
+      .from(userAlerts)
+      .where(eq(userAlerts.isActive, true));
+  } catch (error) {
+    console.error("[Database] Failed to get users with active alerts:", error);
+    return [];
   }
 }

@@ -132,3 +132,14 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Analytics dashboard for hub engagement
 - [x] User engagement tracking
 - [x] Tests for Phase 4 features (23 tests passing)
+
+
+## Phase 15: ESG Hub - Phase 5 (Database Integration & Email System)
+- [x] Connect RSS aggregator to database (rss-aggregator-db.mjs created)
+- [ ] Implement daily cron scheduler for RSS aggregation
+- [x] Build email notification templates (email-notifications.ts created)
+- [x] Implement deadline alert email system
+- [x] Implement daily digest email generation
+- [x] Wire email system to user preferences
+- [ ] Add email delivery tracking
+- [x] Database helper functions for hub news and user alerts
