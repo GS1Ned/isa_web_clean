@@ -1,0 +1,50 @@
+{
+  "query": "SELECT standardCode, standardName, category FROM gs1_standards ORDER BY standardCode",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT standardCode, standardName, category FROM gs1_standards ORDER BY standardCode",
+  "rows": [
+    {
+      "standardCode": "EANCOM",
+      "standardName": "EANCOM EDI Messages",
+      "category": "Data Exchange"
+    },
+    {
+      "standardCode": "EPCIS",
+      "standardName": "Electronic Product Code Information Services",
+      "category": "Data Sharing"
+    },
+    {
+      "standardCode": "GS1-128",
+      "standardName": "GS1-128 Barcode",
+      "category": "Identification"
+    },
+    {
+      "standardCode": "GS1-BARCODES",
+      "standardName": "GS1 2D Barcodes (QR, DataMatrix)",
+      "category": "Identification"
+    },
+    {
+      "standardCode": "GS1-DPP",
+      "standardName": "GS1 Digital Product Passport",
+      "category": "Digital Products"
+    },
+    {
+      "standardCode": "GS1-TRACEABILITY",
+      "standardName": "GS1 Traceability Standard",
+      "category": "Traceability"
+    },
+    {
+      "standardCode": "GS1-XML",
+      "standardName": "GS1 XML Standard",
+      "category": "Data Exchange"
+    },
+    {
+      "standardCode": "GTIN",
+      "standardName": "Global Trade Item Number",
+      "category": "Identification"
+    }
+  ],
+  "messages": [],
+  "stdout": "standardCode\tstandardName\tcategory\nEANCOM\tEANCOM EDI Messages\tData Exchange\nEPCIS\tElectronic Product Code Information Services\tData Sharing\nGS1-128\tGS1-128 Barcode\tIdentification\nGS1-BARCODES\tGS1 2D Barcodes (QR, DataMatrix)\tIdentification\nGS1-DPP\tGS1 Digital Product Passport\tDigital Products\nGS1-TRACEABILITY\tGS1 Traceability Standard\tTraceability\nGS1-XML\tGS1 XML Standard\tData Exchange\nGTIN\tGlobal Trade Item Number\tIdentification\n",
+  "stderr": "",
+  "execution_time_ms": 567
+}

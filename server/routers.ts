@@ -20,6 +20,7 @@ import { eq, and } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 import { TRPCError } from "@trpc/server";
 import { cellarIngestionRouter } from "./cellar-ingestion-router";
+import { gs1StandardsRouter } from "./gs1-standards-router";
 
 export const appRouter = router({
   system: systemRouter,
@@ -526,6 +527,7 @@ export const appRouter = router({
    * CELLAR Ingestion Router (Admin only)
    */
   cellarIngestion: cellarIngestionRouter,
+  gs1Standards: gs1StandardsRouter,
 
 });;
 

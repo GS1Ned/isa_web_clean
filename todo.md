@@ -297,3 +297,21 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [ ] Create GS1 ingestion scheduler
 - [ ] Deploy both CELLAR and GS1 cron jobs
 - [ ] Validate autonomous operation end-to-end
+
+
+## Phase 27: GS1 Standards Catalog & Mapping System (In Progress)
+- [x] Research GS1 Netherlands API endpoints and authentication (No public API available)
+- [x] Document GS1 data model and standards structure (gs1_research_findings.md)
+- [x] Pivot strategy: Curated catalog instead of API integration
+- [x] Create gs1_standards database table schema (already exists)
+- [x] Create regulation_standard_mappings table schema (already exists)
+- [x] Seed 29 GS1 standards from public documentation (seed-gs1-standards.ts)
+- [x] Implement automated keyword-based mapping algorithm (gs1-mapping-engine.ts)
+- [x] Create tRPC procedures for standards catalog (gs1-standards-router.ts)
+- [x] Run mapping algorithm on all regulations (98 mappings generated)
+- [x] Write tests for mapping logic (20 tests, all passing)
+- [ ] Build UI for standards catalog exploration
+- [ ] Create mapping visualization component
+- [ ] Integrate standards into regulation detail pages
+- [ ] Test end-to-end standards catalog
+- [ ] All tests passing
