@@ -215,3 +215,13 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Email templates for deadline alerts, digests, and updates
 - [x] Final testing and quality assurance
 - [x] All 24 tests passing
+
+## Phase 22: ESG Hub - Phase 12 (Export Functionality - PDF & CSV)
+- [x] Create export utility functions for PDF and CSV generation (export-utils.ts)
+- [x] Add tRPC export procedures for regulations and checklists (routers.ts)
+- [x] Implement UI export buttons on regulation detail pages (ExportButtons.tsx)
+- [x] Add download handlers for PDF and CSV formats
+- [x] Create tests for export functionality (export.test.ts)
+- [x] Test PDF export with timeline and checklist data
+- [x] Test CSV export with regulation metadata
+- [x] All 48 tests passing (24 export tests + 24 existing tests)
