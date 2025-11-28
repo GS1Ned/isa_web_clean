@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { TrendingUp, Users, Eye, Clock, BarChart3, PieChart as PieChartIcon } from "lucide-react";
+import { TrendingUp, Users, Eye, Clock, BarChart3, PieChart as PieChartIcon, AlertCircle, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 export default function AdminAnalyticsDashboard() {
   const { user, loading } = useAuth();
@@ -14,6 +17,17 @@ export default function AdminAnalyticsDashboard() {
   });
 
   const engagementStats = trpc.analytics.getUserEngagement.useQuery(undefined, {
+    enabled: !!user && user.role === "admin",
+  });
+
+  // Fetch ESRS mapping quality analytics
+  const lowScoredQuery = trpc.regulations.getLowScoredMappings.useQuery({ minVotes: 3 }, {
+    enabled: !!user && user.role === "admin",
+  });
+  const voteDistributionQuery = trpc.regulations.getVoteDistributionByStandard.useQuery(undefined, {
+    enabled: !!user && user.role === "admin",
+  });
+  const mostVotedQuery = trpc.regulations.getMostVotedMappings.useQuery({ limit: 10 }, {
     enabled: !!user && user.role === "admin",
   });
 
@@ -254,8 +268,130 @@ export default function AdminAnalyticsDashboard() {
             </div>
           </div>
 
+          {/* ESRS Mapping Quality Analytics */}
+          <div className="mt-12 pt-8 border-t border-border">
+            <h2 className="text-2xl font-bold text-foreground mb-6">ESRS Mapping Quality Analytics</h2>
+            
+            <Tabs defaultValue="overview" className="space-y-6">
+              <TabsList>
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="low-scored">Low-Scored</TabsTrigger>
+                <TabsTrigger value="most-voted">Most-Voted</TabsTrigger>
+              </TabsList>
+
+              {/* Overview Tab */}
+              <TabsContent value="overview" className="space-y-6">
+                {/* Summary Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="card-elevated p-6">
+                    <p className="text-sm text-muted-foreground mb-1">Total Standards</p>
+                    <p className="text-3xl font-bold text-foreground">{voteDistributionQuery.data?.length || 0}</p>
+                  </div>
+                  <div className="card-elevated p-6">
+                    <p className="text-sm text-muted-foreground mb-1">Total Mappings</p>
+                    <p className="text-3xl font-bold text-foreground">
+                      {voteDistributionQuery.data?.reduce((sum, d) => sum + d.totalMappings, 0) || 0}
+                    </p>
+                  </div>
+                  <div className="card-elevated p-6">
+                    <p className="text-sm text-muted-foreground mb-1">Total Votes</p>
+                    <p className="text-3xl font-bold text-accent">
+                      {voteDistributionQuery.data?.reduce((sum, d) => sum + d.totalVotes, 0) || 0}
+                    </p>
+                  </div>
+                  <div className="card-elevated p-6">
+                    <p className="text-sm text-muted-foreground mb-1">Avg Approval</p>
+                    <p className="text-3xl font-bold text-foreground">
+                      {voteDistributionQuery.data && voteDistributionQuery.data.length > 0
+                        ? Math.round(voteDistributionQuery.data.reduce((sum, d) => sum + d.approvalPercentage, 0) / voteDistributionQuery.data.length)
+                        : 0}%
+                    </p>
+                  </div>
+                </div>
+
+                {/* Vote Distribution Chart */}
+                {voteDistributionQuery.data && voteDistributionQuery.data.length > 0 && (
+                  <div className="card-elevated p-6">
+                    <h3 className="text-lg font-semibold text-foreground mb-4">Approval Rate by ESRS Standard</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={voteDistributionQuery.data.map((d) => ({
+                        standard: d.esrsStandard,
+                        approval: d.approvalPercentage,
+                        votes: d.totalVotes,
+                      }))}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="standard" angle={-45} textAnchor="end" height={80} />
+                        <YAxis label={{ value: "Approval %", angle: -90, position: "insideLeft" }} />
+                        <Tooltip />
+                        <Bar dataKey="approval" fill="#3b82f6" name="Approval %" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+              </TabsContent>
+
+              {/* Low-Scored Tab */}
+              <TabsContent value="low-scored">
+                <div className="card-elevated p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                    <AlertCircle className="w-5 h-5 text-red-500" />
+                    Low-Scored Mappings (&lt; 50% Approval)
+                  </h3>
+                  {lowScoredQuery.data && lowScoredQuery.data.length === 0 ? (
+                    <p className="text-muted-foreground text-center py-8">No low-scored mappings found. Great job!</p>
+                  ) : (
+                    <div className="space-y-3">
+                      {lowScoredQuery.data?.slice(0, 5).map((mapping) => (
+                        <div key={mapping.mappingId} className="border border-border rounded-lg p-3 space-y-2">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <p className="font-medium text-foreground text-sm">{mapping.datapointName}</p>
+                              <p className="text-xs text-muted-foreground">{mapping.esrsStandard}</p>
+                            </div>
+                            <Badge variant={mapping.approvalPercentage < 30 ? "destructive" : "secondary"}>
+                              {mapping.approvalPercentage}%
+                            </Badge>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+
+              {/* Most-Voted Tab */}
+              <TabsContent value="most-voted">
+                <div className="card-elevated p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                    <ThumbsUp className="w-5 h-5 text-green-500" />
+                    Most-Voted Mappings
+                  </h3>
+                  {mostVotedQuery.data && mostVotedQuery.data.length === 0 ? (
+                    <p className="text-muted-foreground text-center py-8">No voted mappings yet.</p>
+                  ) : (
+                    <div className="space-y-3">
+                      {mostVotedQuery.data?.slice(0, 5).map((mapping, idx) => (
+                        <div key={mapping.mappingId} className="border border-border rounded-lg p-3 space-y-2">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <p className="font-medium text-foreground text-sm">#{idx + 1} - {mapping.datapointName}</p>
+                              <p className="text-xs text-muted-foreground">{mapping.esrsStandard}</p>
+                            </div>
+                            <Badge variant={mapping.approvalPercentage > 70 ? "default" : "secondary"}>
+                              {mapping.approvalPercentage}% ({mapping.totalVotes})
+                            </Badge>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+
           {/* Export Button */}
-          <div className="flex gap-3">
+          <div className="flex gap-3 mt-8">
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
               Export Report (PDF)
             </Button>

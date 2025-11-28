@@ -815,3 +815,137 @@ export async function getBatchMappingFeedbackStats(mappingIds: number[]) {
     return {};
   }
 }
+
+
+/**
+ * Get low-scored ESRS mappings (< 50% approval)
+ */
+export async function getLowScoredMappings(minVotes: number = 3) {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } = await import("../drizzle/schema");
+    const { count, sql, desc, gte } = await import("drizzle-orm");
+
+    const lowScored = await db
+      .select({
+        mappingId: regulationEsrsMappings.id,
+        regulationId: regulationEsrsMappings.regulationId,
+        datapointId: regulationEsrsMappings.datapointId,
+        datapointName: esrsDatapoints.name,
+        esrsStandard: esrsDatapoints.esrsStandard,
+        relevanceScore: regulationEsrsMappings.relevanceScore,
+        reasoning: regulationEsrsMappings.reasoning,
+        totalVotes: count(mappingFeedback.id),
+        positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
+      })
+      .from(regulationEsrsMappings)
+      .innerJoin(esrsDatapoints, sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`)
+      .leftJoin(mappingFeedback, sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`)
+      .groupBy(regulationEsrsMappings.id)
+      .having(
+        sql`COUNT(${mappingFeedback.id}) >= ${minVotes} AND (SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END) / COUNT(${mappingFeedback.id})) < 0.5`
+      )
+      .orderBy(desc(sql`COUNT(${mappingFeedback.id})`));
+
+    return lowScored.map((m) => ({
+      mappingId: m.mappingId,
+      regulationId: m.regulationId,
+      datapointId: m.datapointId,
+      datapointName: m.datapointName,
+      esrsStandard: m.esrsStandard,
+      relevanceScore: m.relevanceScore,
+      reasoning: m.reasoning,
+      totalVotes: Number(m.totalVotes),
+      positiveVotes: Number(m.positiveVotes || 0),
+      approvalPercentage: Number(m.totalVotes) > 0 ? Math.round((Number(m.positiveVotes || 0) / Number(m.totalVotes)) * 100) : 0,
+    }));
+  } catch (error) {
+    console.error("[Database] Failed to get low-scored mappings:", error);
+    return [];
+  }
+}
+
+/**
+ * Get vote distribution by ESRS standard
+ */
+export async function getVoteDistributionByStandard() {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } = await import("../drizzle/schema");
+    const { count, sql } = await import("drizzle-orm");
+
+    const distribution = await db
+      .select({
+        esrsStandard: esrsDatapoints.esrsStandard,
+        totalMappings: count(regulationEsrsMappings.id),
+        totalVotes: count(mappingFeedback.id),
+        positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
+      })
+      .from(regulationEsrsMappings)
+      .innerJoin(esrsDatapoints, sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`)
+      .leftJoin(mappingFeedback, sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`)
+      .groupBy(esrsDatapoints.esrsStandard);
+
+    return distribution.map((d) => ({
+      esrsStandard: d.esrsStandard,
+      totalMappings: Number(d.totalMappings),
+      totalVotes: Number(d.totalVotes),
+      positiveVotes: Number(d.positiveVotes || 0),
+      approvalPercentage: Number(d.totalVotes) > 0 ? Math.round((Number(d.positiveVotes || 0) / Number(d.totalVotes)) * 100) : 0,
+    }));
+  } catch (error) {
+    console.error("[Database] Failed to get vote distribution by standard:", error);
+    return [];
+  }
+}
+
+/**
+ * Get most-voted ESRS mappings
+ */
+export async function getMostVotedMappings(limit: number = 10) {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } = await import("../drizzle/schema");
+    const { count, sql, desc } = await import("drizzle-orm");
+
+    const mostVoted = await db
+      .select({
+        mappingId: regulationEsrsMappings.id,
+        regulationId: regulationEsrsMappings.regulationId,
+        datapointId: regulationEsrsMappings.datapointId,
+        datapointName: esrsDatapoints.name,
+        esrsStandard: esrsDatapoints.esrsStandard,
+        relevanceScore: regulationEsrsMappings.relevanceScore,
+        totalVotes: count(mappingFeedback.id),
+        positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
+      })
+      .from(regulationEsrsMappings)
+      .innerJoin(esrsDatapoints, sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`)
+      .leftJoin(mappingFeedback, sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`)
+      .groupBy(regulationEsrsMappings.id)
+      .having(sql`COUNT(${mappingFeedback.id}) > 0`)
+      .orderBy(desc(count(mappingFeedback.id)))
+      .limit(limit);
+
+    return mostVoted.map((m) => ({
+      mappingId: m.mappingId,
+      regulationId: m.regulationId,
+      datapointId: m.datapointId,
+      datapointName: m.datapointName,
+      esrsStandard: m.esrsStandard,
+      relevanceScore: m.relevanceScore,
+      totalVotes: Number(m.totalVotes),
+      positiveVotes: Number(m.positiveVotes || 0),
+      approvalPercentage: Number(m.totalVotes) > 0 ? Math.round((Number(m.positiveVotes || 0) / Number(m.totalVotes)) * 100) : 0,
+    }));
+  } catch (error) {
+    console.error("[Database] Failed to get most-voted mappings:", error);
+    return [];
+  }
+}

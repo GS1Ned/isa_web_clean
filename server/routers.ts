@@ -13,6 +13,9 @@ import {
   getUserPreferences,
   getDashboardStats,
   createContact,
+  getLowScoredMappings,
+  getVoteDistributionByStandard,
+  getMostVotedMappings,
 } from "./db";
 import { getDb } from "./db";
 import { userSavedItems, userAlerts } from "../drizzle/schema";
@@ -138,6 +141,28 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const { getBatchMappingFeedbackStats } = await import("./db");
         return await getBatchMappingFeedbackStats(input.mappingIds);
+      }),
+
+    getLowScoredMappings: protectedProcedure
+      .input(z.object({ minVotes: z.number().optional() }))
+      .query(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") throw new TRPCError({ code: "FORBIDDEN" });
+        const { getLowScoredMappings } = await import("./db");
+        return await getLowScoredMappings(input.minVotes || 3);
+      }),
+
+    getVoteDistributionByStandard: protectedProcedure.query(async ({ ctx }) => {
+      if (ctx.user?.role !== "admin") throw new TRPCError({ code: "FORBIDDEN" });
+      const { getVoteDistributionByStandard } = await import("./db");
+      return await getVoteDistributionByStandard();
+    }),
+
+    getMostVotedMappings: protectedProcedure
+      .input(z.object({ limit: z.number().optional() }))
+      .query(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") throw new TRPCError({ code: "FORBIDDEN" });
+        const { getMostVotedMappings } = await import("./db");
+        return await getMostVotedMappings(input.limit || 10);
       }),
   }),
 
