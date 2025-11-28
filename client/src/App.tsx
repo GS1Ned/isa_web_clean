@@ -14,6 +14,7 @@ import UseCases from "./pages/UseCases";
 import Contact from "./pages/Contact";
 import ComparisonTool from "./pages/ComparisonTool";
 import Blog from "./pages/Blog";
+import FAQ from "./pages/FAQ";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -27,6 +28,7 @@ function Router() {
       <Route path={"/contact"} component={Contact} />
       <Route path={"/compare"} component={ComparisonTool} />
       <Route path="/blog" component={Blog} />
+      <Route path="/faq" component={FAQ} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path={"/404"} component={NotFound} />

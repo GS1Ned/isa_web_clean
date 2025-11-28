@@ -33,6 +33,8 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Contact/Demo Request Form with owner notifications (NEW)
 - [x] Regulation Comparison Tool (side-by-side view) (NEW)
 - [x] Blog/Insights Section with regulatory trend articles (NEW)
+- [x] Backend Contact Handler with tRPC and database storage (NEW)
+- [x] FAQ/Help Center page with searchable Q&A (NEW)
 
 ## Phase 4: Database & Backend Features
 - [x] Design database schema for regulatory data, standards mappings, and user interactions

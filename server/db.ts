@@ -1,6 +1,6 @@
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, regulations, gs1Standards, regulationStandardMappings, userAnalyses, regulatoryChangeAlerts, userPreferences } from "../drizzle/schema";
+import { InsertUser, users, regulations, gs1Standards, regulationStandardMappings, userAnalyses, regulatoryChangeAlerts, userPreferences, InsertContact, contacts } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -264,6 +264,53 @@ export async function getUserPreferences(userId: number) {
   } catch (error) {
     console.error("[Database] Failed to get user preferences:", error);
     return null;
+  }
+}
+
+/**
+ * Create a new contact submission
+ */
+export async function createContact(contact: InsertContact) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create contact: database not available");
+    return null;
+  }
+
+  try {
+    const result = await db.insert(contacts).values(contact);
+    const newContact = await db
+      .select()
+      .from(contacts)
+      .where(eq(contacts.id, Number(result[0].insertId)))
+      .limit(1);
+    return newContact.length > 0 ? newContact[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to create contact:", error);
+    throw error;
+  }
+}
+
+/**
+ * Get contacts with optional filtering
+ */
+export async function getContacts(limit: number = 50, offset: number = 0) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get contacts: database not available");
+    return [];
+  }
+
+  try {
+    return await db
+      .select()
+      .from(contacts)
+      .orderBy(desc(contacts.createdAt))
+      .limit(limit)
+      .offset(offset);
+  } catch (error) {
+    console.error("[Database] Failed to get contacts:", error);
+    return [];
   }
 }
 

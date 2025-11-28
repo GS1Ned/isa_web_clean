@@ -12,7 +12,9 @@ import {
   createUserAnalysis,
   getUserPreferences,
   getDashboardStats,
+  createContact,
 } from "./db";
+import { notifyOwner } from "./_core/notification";
 
 export const appRouter = router({
   system: systemRouter,
@@ -154,6 +156,49 @@ export const appRouter = router({
         // TODO: Implement update preferences mutation
         // This would update the user_preferences table
         return { success: true };
+      }),
+  }),
+
+  /**
+   * Contact form submission
+   */
+  contact: router({
+    submit: publicProcedure
+      .input(
+        z.object({
+          name: z.string().min(1),
+          email: z.string().email(),
+          company: z.string().min(1),
+          phone: z.string().optional(),
+          inquiryType: z.enum(["demo", "pricing", "partnership", "support", "other"]),
+          message: z.string().optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        try {
+          const contact = await createContact({
+            name: input.name,
+            email: input.email,
+            company: input.company,
+            phone: input.phone || null,
+            inquiryType: input.inquiryType,
+            message: input.message || null,
+            status: "new",
+          });
+
+          if (contact) {
+            // Send owner notification
+            await notifyOwner({
+              title: `New ${input.inquiryType} inquiry from ${input.company}`,
+              content: `${input.name} (${input.email}) has submitted a ${input.inquiryType} inquiry.\n\nMessage: ${input.message || "N/A"}`,
+            });
+          }
+
+          return { success: !!contact, contactId: contact?.id };
+        } catch (error) {
+          console.error("[tRPC] Contact submission failed:", error);
+          return { success: false };
+        }
       }),
   }),
 });

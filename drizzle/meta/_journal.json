@@ -15,6 +15,13 @@
       "when": 1764287812654,
       "tag": "0001_awesome_blade",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1764289331068,
+      "tag": "0002_huge_wild_pack",
+      "breakpoints": true
     }
   ]
 }

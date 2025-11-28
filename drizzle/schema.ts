@@ -21,12 +21,30 @@ export const users = mysqlTable("users", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
 });
-
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 /**
- * EU Regulations table - stores information about CSRD, ESRS, DPP, and other EU regulations
+ * Contact submissions from the contact form
+ */
+export const contacts = mysqlTable("contacts", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  company: varchar("company", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 20 }),
+  inquiryType: varchar("inquiryType", { length: 50 }).notNull(),
+  message: text("message"),
+  status: mysqlEnum("status", ["new", "contacted", "converted", "archived"]).default("new").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Contact = typeof contacts.$inferSelect;
+export type InsertContact = typeof contacts.$inferInsert;
+
+/**
+ * Regulations table - stores information about CSRD, ESRS, DPP, and other EU regulations
  */
 export const regulations = mysqlTable("regulations", {
   id: int("id").autoincrement().primaryKey(),

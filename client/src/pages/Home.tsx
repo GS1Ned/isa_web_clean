@@ -34,6 +34,9 @@ export default function Home() {
             <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition">
               Blog
             </Link>
+            <Link href="/faq" className="text-sm text-muted-foreground hover:text-foreground transition">
+              FAQ
+            </Link>
             <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition">
               About
             </Link>
