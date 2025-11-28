@@ -44,6 +44,7 @@ import SupplyChainDashboard from "./pages/SupplyChainDashboard";
 import RiskRemediation from "./pages/RiskRemediation";
 import AdminEvidenceVerification from "./pages/AdminEvidenceVerification";
 import ComplianceScoreboard from "./pages/ComplianceScoreboard";
+import ComplianceRoadmap from "./pages/ComplianceRoadmap";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -87,6 +88,7 @@ function Router() {
       <Route path="/admin/prompt-optimization" component={AdminPromptOptimization} />
       <Route path="/admin/evidence-verification" component={AdminEvidenceVerification} />
       <Route path="/scoreboard" component={ComplianceScoreboard} />
+      <Route path="/roadmap" component={ComplianceRoadmap} />
       <Route path={"404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

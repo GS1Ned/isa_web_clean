@@ -695,3 +695,99 @@ export const scoreMilestones = mysqlTable("score_milestones", {
 
 export type ScoreMilestone = typeof scoreMilestones.$inferSelect;
 export type InsertScoreMilestone = typeof scoreMilestones.$inferInsert;
+
+/**
+ * Compliance Roadmaps - Strategic implementation plans
+ */
+export const complianceRoadmaps = mysqlTable("compliance_roadmaps", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  strategy: varchar("strategy", { length: 128 }).notNull(), // "risk_first", "quick_wins", "balanced", "comprehensive"
+  targetScore: int("targetScore").default(80), // Target compliance score
+  currentScore: decimal("currentScore", { precision: 5, scale: 2 }).notNull(),
+  projectedScore: decimal("projectedScore", { precision: 5, scale: 2 }).notNull(),
+  status: varchar("status", { length: 32 }).default("draft"), // draft, active, completed
+  startDate: timestamp("startDate").notNull(),
+  targetCompletionDate: timestamp("targetCompletionDate").notNull(),
+  estimatedEffort: int("estimatedEffort"), // hours
+  estimatedImpact: decimal("estimatedImpact", { precision: 5, scale: 2 }), // score improvement
+  progressPercentage: int("progressPercentage").default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  statusIdx: index("status_idx").on(table.status),
+}));
+
+export type ComplianceRoadmap = typeof complianceRoadmaps.$inferSelect;
+export type InsertComplianceRoadmap = typeof complianceRoadmaps.$inferInsert;
+
+/**
+ * Roadmap Actions - Individual remediation actions in roadmap
+ */
+export const roadmapActions = mysqlTable("roadmap_actions", {
+  id: int("id").autoincrement().primaryKey(),
+  roadmapId: int("roadmapId").notNull(),
+  actionType: varchar("actionType", { length: 128 }).notNull(), // "resolve_risk", "complete_plan", "verify_evidence", "improve_coverage"
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  priority: varchar("priority", { length: 32 }).notNull(), // "critical", "high", "medium", "low"
+  sequenceNumber: int("sequenceNumber").notNull(), // Order in roadmap
+  estimatedEffort: int("estimatedEffort"), // hours
+  estimatedImpact: decimal("estimatedImpact", { precision: 5, scale: 2 }), // score improvement
+  startDate: timestamp("startDate").notNull(),
+  targetDate: timestamp("targetDate").notNull(),
+  status: varchar("status", { length: 32 }).default("pending"), // pending, in_progress, completed, blocked
+  relatedRiskId: int("relatedRiskId"), // Foreign key to supply_chain_risks
+  relatedPlanId: int("relatedPlanId"), // Foreign key to risk_remediation_plans
+  successCriteria: text("successCriteria"),
+  blockers: text("blockers"),
+  completedAt: timestamp("completedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
+  priorityIdx: index("priority_idx").on(table.priority),
+  statusIdx: index("status_idx").on(table.status),
+}));
+
+export type RoadmapAction = typeof roadmapActions.$inferSelect;
+export type InsertRoadmapAction = typeof roadmapActions.$inferInsert;
+
+/**
+ * Roadmap Dependencies - Track action dependencies
+ */
+export const roadmapDependencies = mysqlTable("roadmap_dependencies", {
+  id: int("id").autoincrement().primaryKey(),
+  fromActionId: int("fromActionId").notNull(), // Action that must complete first
+  toActionId: int("toActionId").notNull(), // Action that depends on fromAction
+  dependencyType: varchar("dependencyType", { length: 64 }).notNull(), // "blocking", "soft_dependency"
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  fromActionIdIdx: index("fromActionId_idx").on(table.fromActionId),
+  toActionIdIdx: index("toActionId_idx").on(table.toActionId),
+}));
+
+export type RoadmapDependency = typeof roadmapDependencies.$inferSelect;
+export type InsertRoadmapDependency = typeof roadmapDependencies.$inferInsert;
+
+/**
+ * Roadmap Milestones - Track progress checkpoints
+ */
+export const roadmapMilestones = mysqlTable("roadmap_milestones", {
+  id: int("id").autoincrement().primaryKey(),
+  roadmapId: int("roadmapId").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  targetDate: timestamp("targetDate").notNull(),
+  targetScore: decimal("targetScore", { precision: 5, scale: 2 }).notNull(),
+  completedDate: timestamp("completedDate"),
+  status: varchar("status", { length: 32 }).default("pending"), // pending, completed
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
+}));
+
+export type RoadmapMilestone = typeof roadmapMilestones.$inferSelect;
+export type InsertRoadmapMilestone = typeof roadmapMilestones.$inferInsert;

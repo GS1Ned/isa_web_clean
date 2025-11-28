@@ -30,6 +30,8 @@ import { complianceRisksRouter } from "./routers/compliance-risks.js";
 import { remediationRouter } from "./routers/remediation.js";
 import { scoringRouter } from "./routers/scoring.js";
 import { benchmarkingRouter } from "./routers/benchmarking.js";
+import { roadmapRouter } from "./routers/roadmap.js";
+import { roadmapExportRouter } from "./routers/roadmap-export.js";
 
 export const appRouter = router({
   system: systemRouter,
@@ -663,6 +665,16 @@ export const appRouter = router({
    * Benchmarking Router
    */
   benchmarking: benchmarkingRouter,
+
+  /**
+   * Compliance Roadmap Router
+   */
+  roadmap: roadmapRouter,
+
+  /**
+   * Roadmap Export and Sharing Router
+   */
+  roadmapExport: roadmapExportRouter,
 
   /**
    * ESRS Datapoints Router
