@@ -226,6 +226,19 @@ export const cellarIngestionRouter = router({
           }
         }
 
+        const durationSeconds = Math.round((Date.now() - startTime) / 1000);
+        
+        // Log the ingestion operation
+        await logIngestion(
+          'success',
+          inserted,
+          updated,
+          valid.length,
+          errors,
+          errors > 0 ? `${errors} regulations failed to process` : undefined,
+          durationSeconds
+        );
+        
         return {
           dryRun: false,
           stats,
@@ -236,6 +249,18 @@ export const cellarIngestionRouter = router({
           duration: Date.now() - startTime,
         };
       } catch (error) {
+        // Log the failed ingestion
+        const durationSeconds = Math.round((Date.now() - startTime) / 1000);
+        await logIngestion(
+          'failed',
+          0,
+          0,
+          0,
+          1,
+          error instanceof Error ? error.message : 'Unknown error',
+          durationSeconds
+        );
+        
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: `Ingestion failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
