@@ -343,3 +343,28 @@ export const ingestionLogs = mysqlTable("ingestion_logs", {
 }));
 export type IngestionLog = typeof ingestionLogs.$inferSelect;
 export type InsertIngestionLog = typeof ingestionLogs.$inferInsert;
+
+/**
+ * ESRS Datapoints - Official EFRAG IG 3 disclosure requirements
+ * Source: https://www.efrag.org/en/projects/esrs-implementation-guidance-documents
+ */
+export const esrsDatapoints = mysqlTable("esrs_datapoints", {
+  id: int("id").autoincrement().primaryKey(),
+  datapointId: varchar("datapointId", { length: 50 }).notNull().unique(), // e.g., "BP-1_01"
+  esrsStandard: varchar("esrsStandard", { length: 20 }).notNull(), // e.g., "ESRS 2", "ESRS E1"
+  disclosureRequirement: varchar("disclosureRequirement", { length: 50 }), // e.g., "BP-1", "E1-1"
+  paragraph: varchar("paragraph", { length: 50 }), // e.g., "5 a", "9 b"
+  relatedAr: varchar("relatedAr", { length: 50 }), // Related Application Requirement
+  name: text("name").notNull(), // Description of the datapoint
+  dataType: varchar("dataType", { length: 50 }), // e.g., "narrative", "quantitative", "semi-narrative"
+  conditionalOrAlternative: varchar("conditionalOrAlternative", { length: 50 }), // "Conditional", "Alternative", or null
+  voluntary: boolean("voluntary").default(false), // May [V] column
+  sfdrPillar3: boolean("sfdrPillar3").default(false), // Appendix B indicator
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  esrsStandardIdx: index("esrsStandard_idx").on(table.esrsStandard),
+  disclosureRequirementIdx: index("disclosureRequirement_idx").on(table.disclosureRequirement),
+}));
+
+export type ESRSDatapoint = typeof esrsDatapoints.$inferSelect;
+export type InsertESRSDatapoint = typeof esrsDatapoints.$inferInsert;

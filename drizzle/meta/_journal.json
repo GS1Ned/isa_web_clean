@@ -50,6 +50,13 @@
       "when": 1764315961346,
       "tag": "0006_bent_doomsday",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1764319025419,
+      "tag": "0007_dry_onslaught",
+      "breakpoints": true
     }
   ]
 }

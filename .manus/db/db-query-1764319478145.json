@@ -1,0 +1,40 @@
+{
+  "query": "SELECT datapointId, esrsStandard, name, dataType FROM esrs_datapoints WHERE esrsStandard = 'ESRS E1' LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT datapointId, esrsStandard, name, dataType FROM esrs_datapoints WHERE esrsStandard = 'ESRS E1' LIMIT 5",
+  "rows": [
+    {
+      "datapointId": "E1.GOV-3_01",
+      "esrsStandard": "ESRS E1",
+      "name": "Disclosure of whether and how climate-related considerations are factored into remuneration of members of administrative, management and supervisory bodies",
+      "dataType": "narrative"
+    },
+    {
+      "datapointId": "E1.GOV-3_02",
+      "esrsStandard": "ESRS E1",
+      "name": "Percentage of remuneration recognised that is linked to climate related considerations",
+      "dataType": "percent"
+    },
+    {
+      "datapointId": "E1.GOV-3_03",
+      "esrsStandard": "ESRS E1",
+      "name": "Explanation of climate-related considerations that are factored into remuneration of members of administrative, management and supervisory bodies",
+      "dataType": "narrative"
+    },
+    {
+      "datapointId": "E1-1_01",
+      "esrsStandard": "ESRS E1",
+      "name": "Disclosure of transition plan  for climate change mitigation",
+      "dataType": "narrative"
+    },
+    {
+      "datapointId": "E1-1_02",
+      "esrsStandard": "ESRS E1",
+      "name": "Explanation of how targets are compatible with limiting of global warming to one and half degrees Celsius in line with Paris Agreement",
+      "dataType": "narrative"
+    }
+  ],
+  "messages": [],
+  "stdout": "datapointId\tesrsStandard\tname\tdataType\nE1.GOV-3_01\tESRS E1\tDisclosure of whether and how climate-related considerations are factored into remuneration of members of administrative, management and supervisory bodies\tnarrative\nE1.GOV-3_02\tESRS E1\tPercentage of remuneration recognised that is linked to climate related considerations\tpercent\nE1.GOV-3_03\tESRS E1\tExplanation of climate-related considerations that are factored into remuneration of members of administrative, management and supervisory bodies\tnarrative\nE1-1_01\tESRS E1\tDisclosure of transition plan  for climate change mitigation\tnarrative\nE1-1_02\tESRS E1\tExplanation of how targets are compatible with limiting of global warming to one and half degrees Celsius in line with Paris Agreement\tnarrative\n",
+  "stderr": "",
+  "execution_time_ms": 58
+}

@@ -1,0 +1,35 @@
+{
+  "query": "SELECT standardName, category, scope FROM gs1_standards LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT standardName, category, scope FROM gs1_standards LIMIT 5",
+  "rows": [
+    {
+      "standardName": "Global Trade Item Number",
+      "category": "Identification",
+      "scope": "Product identification, inventory management, point-of-sale scanning, e-commerce, supply chain visibility"
+    },
+    {
+      "standardName": "Global Location Number",
+      "category": "Identification",
+      "scope": "Location identification, facility management, logistics, supplier identification, organizational structure"
+    },
+    {
+      "standardName": "Serial Shipping Container Code",
+      "category": "Identification",
+      "scope": "Logistics, shipping, warehouse management, transport tracking, delivery verification"
+    },
+    {
+      "standardName": "Global Returnable Asset Identifier",
+      "category": "Identification",
+      "scope": "Returnable packaging, asset tracking, circular economy, reusable transport items, sustainability"
+    },
+    {
+      "standardName": "Global Individual Asset Identifier",
+      "category": "Identification",
+      "scope": "Asset management, equipment tracking, maintenance records, depreciation, facility management"
+    }
+  ],
+  "messages": [],
+  "stdout": "standardName\tcategory\tscope\nGlobal Trade Item Number\tIdentification\tProduct identification, inventory management, point-of-sale scanning, e-commerce, supply chain visibility\nGlobal Location Number\tIdentification\tLocation identification, facility management, logistics, supplier identification, organizational structure\nSerial Shipping Container Code\tIdentification\tLogistics, shipping, warehouse management, transport tracking, delivery verification\nGlobal Returnable Asset Identifier\tIdentification\tReturnable packaging, asset tracking, circular economy, reusable transport items, sustainability\nGlobal Individual Asset Identifier\tIdentification\tAsset management, equipment tracking, maintenance records, depreciation, facility management\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}
