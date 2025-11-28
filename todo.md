@@ -894,3 +894,18 @@ Note: Root cause was incorrect CELEX ID regex pattern. Pattern didn't account fo
 - [x] Save checkpoint
 
 Note: Pivoted from Eurostat integration to building ESRS Datapoint Browser. Rationale: We have 1,184 official EFRAG datapoints but no way for users to search/browse them. Activation > Accumulation at this stage. Delivered: Full-featured browser with search, 4 filters (standard, data type, voluntary, keyword), pagination, and statistics. 183/183 tests passing. Eurostat deferred to Phase 68.
+
+
+## Phase 68: LLM-Powered Regulation-to-Datapoint Mapper (Autonomous Development - Session 6)
+- [x] Create database schema: regulation_esrs_mappings table (regulationId, datapointId, relevanceScore, reasoning)
+- [x] Push database schema changes (migration 0008_clean_thunderbird.sql)
+- [x] Design LLM prompt: Analyze regulation text → identify relevant ESRS datapoints (structured JSON output)
+- [x] Build tRPC procedures: regulations.getEsrsMappings() and regulations.generateEsrsMappings() (admin only)
+- [x] Add database helper functions in server/db.ts (getRegulationEsrsMappings, upsertRegulationEsrsMapping, deleteRegulationEsrsMappings)
+- [x] Create UI component for regulation detail page: ESRSDatapointsSection with summary cards, grouped by standard, relevance visualization
+- [x] Test with sample regulation (PPWR: 13 mappings across ESRS E2, E4, E5, 2 MDR)
+- [x] Write vitest tests for mapping procedure (7 tests, all passing)
+- [x] Run full test suite to ensure no regressions (190/190 passing)
+- [x] Save checkpoint
+
+Note: Autonomous decision based on ROI analysis (10/10 score). Successfully implemented LLM-powered regulation-to-datapoint mapper. LLM analyzes regulation text and identifies 5-15 relevant ESRS datapoints per regulation. Results cached in database. Admin-triggered generation takes ~7 seconds. UI shows mappings grouped by ESRS standard with relevance scores (1-10) and AI reasoning. Transforms ISA from passive browser to active compliance advisor.

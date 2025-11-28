@@ -471,3 +471,129 @@ export async function getUsersWithActiveAlerts() {
     return [];
   }
 }
+
+
+/**
+ * Get ESRS datapoint mappings for a regulation
+ */
+export async function getRegulationEsrsMappings(regulationId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get regulation ESRS mappings: database not available");
+    return [];
+  }
+
+  try {
+    const { regulationEsrsMappings, esrsDatapoints } = await import("../drizzle/schema");
+    const { eq } = await import("drizzle-orm");
+
+    return await db
+      .select({
+        id: regulationEsrsMappings.id,
+        regulationId: regulationEsrsMappings.regulationId,
+        datapointId: regulationEsrsMappings.datapointId,
+        relevanceScore: regulationEsrsMappings.relevanceScore,
+        reasoning: regulationEsrsMappings.reasoning,
+        createdAt: regulationEsrsMappings.createdAt,
+        // Join with datapoint details
+        datapoint: {
+          id: esrsDatapoints.id,
+          datapointId: esrsDatapoints.datapointId,
+          esrsStandard: esrsDatapoints.esrsStandard,
+          disclosureRequirement: esrsDatapoints.disclosureRequirement,
+          name: esrsDatapoints.name,
+          dataType: esrsDatapoints.dataType,
+          voluntary: esrsDatapoints.voluntary,
+        },
+      })
+      .from(regulationEsrsMappings)
+      .leftJoin(esrsDatapoints, eq(regulationEsrsMappings.datapointId, esrsDatapoints.id))
+      .where(eq(regulationEsrsMappings.regulationId, regulationId))
+      .orderBy(regulationEsrsMappings.relevanceScore);
+  } catch (error) {
+    console.error("[Database] Failed to get regulation ESRS mappings:", error);
+    return [];
+  }
+}
+
+/**
+ * Create or update regulation-ESRS datapoint mapping
+ */
+export async function upsertRegulationEsrsMapping(mapping: {
+  regulationId: number;
+  datapointId: number;
+  relevanceScore: number;
+  reasoning?: string;
+}) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot upsert regulation ESRS mapping: database not available");
+    return null;
+  }
+
+  try {
+    const { regulationEsrsMappings } = await import("../drizzle/schema");
+    const { eq, and } = await import("drizzle-orm");
+
+    // Check if mapping already exists
+    const existing = await db
+      .select()
+      .from(regulationEsrsMappings)
+      .where(
+        and(
+          eq(regulationEsrsMappings.regulationId, mapping.regulationId),
+          eq(regulationEsrsMappings.datapointId, mapping.datapointId)
+        )
+      )
+      .limit(1);
+
+    if (existing.length > 0) {
+      // Update existing mapping
+      await db
+        .update(regulationEsrsMappings)
+        .set({
+          relevanceScore: mapping.relevanceScore,
+          reasoning: mapping.reasoning,
+          updatedAt: new Date(),
+        })
+        .where(eq(regulationEsrsMappings.id, existing[0].id));
+      return existing[0];
+    } else {
+      // Insert new mapping
+      const result = await db.insert(regulationEsrsMappings).values({
+        regulationId: mapping.regulationId,
+        datapointId: mapping.datapointId,
+        relevanceScore: mapping.relevanceScore,
+        reasoning: mapping.reasoning,
+      });
+      return { id: Number(result.insertId), ...mapping };
+    }
+  } catch (error) {
+    console.error("[Database] Failed to upsert regulation ESRS mapping:", error);
+    return null;
+  }
+}
+
+/**
+ * Delete all ESRS mappings for a regulation (for re-generation)
+ */
+export async function deleteRegulationEsrsMappings(regulationId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete regulation ESRS mappings: database not available");
+    return false;
+  }
+
+  try {
+    const { regulationEsrsMappings } = await import("../drizzle/schema");
+    const { eq } = await import("drizzle-orm");
+
+    await db
+      .delete(regulationEsrsMappings)
+      .where(eq(regulationEsrsMappings.regulationId, regulationId));
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to delete regulation ESRS mappings:", error);
+    return false;
+  }
+}

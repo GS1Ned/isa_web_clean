@@ -9,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ExportButtons } from "@/components/ExportButtons";
+import { ESRSDatapointsSection } from "@/components/ESRSDatapointsSection";
 
 // Mock regulation data - in production, fetch from tRPC
 const MOCK_REGULATIONS: Record<number, any> = {
@@ -231,6 +232,7 @@ export default function HubRegulationDetail() {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
             <TabsTrigger value="gs1-impact">GS1 Impact</TabsTrigger>
+            <TabsTrigger value="esrs-datapoints">ESRS Datapoints</TabsTrigger>
             <TabsTrigger value="news">Related News</TabsTrigger>
             <TabsTrigger value="resources">Resources</TabsTrigger>
           </TabsList>
@@ -289,6 +291,11 @@ export default function HubRegulationDetail() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* ESRS Datapoints Tab */}
+          <TabsContent value="esrs-datapoints" className="space-y-6">
+            <ESRSDatapointsSection regulationId={regulation.id} />
           </TabsContent>
 
           {/* GS1 Impact Tab */}

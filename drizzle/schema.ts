@@ -368,3 +368,25 @@ export const esrsDatapoints = mysqlTable("esrs_datapoints", {
 
 export type ESRSDatapoint = typeof esrsDatapoints.$inferSelect;
 export type InsertESRSDatapoint = typeof esrsDatapoints.$inferInsert;
+
+
+/**
+ * Regulation to ESRS Datapoint Mappings
+ * Stores LLM-generated mappings between regulations and relevant ESRS disclosure requirements
+ */
+export const regulationEsrsMappings = mysqlTable("regulation_esrs_mappings", {
+  id: int("id").autoincrement().primaryKey(),
+  regulationId: int("regulationId").notNull(), // Foreign key to regulations table
+  datapointId: int("datapointId").notNull(), // Foreign key to esrs_datapoints table
+  relevanceScore: int("relevanceScore").default(5).notNull(), // 1-10 scale, how relevant is this datapoint
+  reasoning: text("reasoning"), // LLM explanation of why this datapoint is relevant
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  regulationIdIdx: index("regulationId_idx").on(table.regulationId),
+  datapointIdIdx: index("datapointId_idx").on(table.datapointId),
+  uniqueMapping: index("unique_mapping_idx").on(table.regulationId, table.datapointId),
+}));
+
+export type RegulationEsrsMapping = typeof regulationEsrsMappings.$inferSelect;
+export type InsertRegulationEsrsMapping = typeof regulationEsrsMappings.$inferInsert;

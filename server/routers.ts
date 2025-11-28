@@ -65,6 +65,31 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return await getRegulationWithStandards(input.regulationId);
       }),
+
+    /**
+     * Get ESRS datapoint mappings for a regulation
+     */
+    getEsrsMappings: publicProcedure
+      .input(z.object({ regulationId: z.number() }))
+      .query(async ({ input }) => {
+        const { getRegulationEsrsMappings } = await import("./db");
+        return await getRegulationEsrsMappings(input.regulationId);
+      }),
+
+    /**
+     * Generate ESRS datapoint mappings for a regulation using LLM (admin only)
+     */
+    generateEsrsMappings: protectedProcedure
+      .input(z.object({ regulationId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        // Only admins can trigger LLM mapping generation
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        const { generateRegulationEsrsMappings } = await import("./regulation-esrs-mapper");
+        return await generateRegulationEsrsMappings(input.regulationId);
+      }),
   }),
 
   standards: router({

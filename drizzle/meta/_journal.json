@@ -57,6 +57,13 @@
       "when": 1764319025419,
       "tag": "0007_dry_onslaught",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1764326547179,
+      "tag": "0008_clean_thunderbird",
+      "breakpoints": true
     }
   ]
 }
