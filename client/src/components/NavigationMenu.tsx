@@ -76,13 +76,11 @@ export function NavigationMenu() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/">
-            <a className="flex items-center gap-2 font-bold text-xl text-primary hover:opacity-80 transition-opacity">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
-                ⚡
-              </div>
-              ISA
-            </a>
+          <Link href="/" className="flex items-center gap-2 font-bold text-xl text-primary hover:opacity-80 transition-opacity">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
+              ⚡
+            </div>
+            ISA
           </Link>
 
           {/* Desktop Navigation */}
@@ -95,10 +93,8 @@ export function NavigationMenu() {
                 onMouseLeave={() => setOpenDropdown(null)}
               >
                 {item.href ? (
-                  <Link href={item.href}>
-                    <a className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
-                      {item.label}
-                    </a>
+                  <Link href={item.href} className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
+                    {item.label}
                   </Link>
                 ) : (
                   <button
@@ -115,15 +111,13 @@ export function NavigationMenu() {
                   <div className="absolute top-full left-0 mt-2 w-64 bg-popover border rounded-lg shadow-lg z-50">
                     <div className="p-2">
                       {item.children.map((child) => (
-                        <Link key={child.href} href={child.href}>
-                          <a className="block px-3 py-2 rounded-md hover:bg-accent transition-colors">
-                            <div className="font-medium text-sm text-foreground">{child.label}</div>
-                            {child.description && (
-                              <div className="text-xs text-muted-foreground mt-0.5">
-                                {child.description}
-                              </div>
-                            )}
-                          </a>
+                        <Link key={child.href} href={child.href} className="block px-3 py-2 rounded-md hover:bg-accent transition-colors">
+                          <div className="font-medium text-sm text-foreground">{child.label}</div>
+                          {child.description && (
+                            <div className="text-xs text-muted-foreground mt-0.5">
+                              {child.description}
+                            </div>
+                          )}
                         </Link>
                       ))}
                     </div>
@@ -135,15 +129,11 @@ export function NavigationMenu() {
             {/* Dashboard/Login */}
             {user ? (
               <Link href="/hub/dashboard">
-                <a>
-                  <Button size="sm">Dashboard</Button>
-                </a>
+                <Button size="sm">Dashboard</Button>
               </Link>
             ) : (
               <Link href="/dashboard">
-                <a>
-                  <Button size="sm">Sign In</Button>
-                </a>
+                <Button size="sm">Sign In</Button>
               </Link>
             )}
           </div>
@@ -163,13 +153,12 @@ export function NavigationMenu() {
             {navItems.map((item) => (
               <div key={item.label} className="mb-4">
                 {item.href ? (
-                  <Link href={item.href}>
-                    <a
-                      className="block px-4 py-2 text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-accent rounded-md transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.label}
-                    </a>
+                  <Link 
+                    href={item.href}
+                    className="block px-4 py-2 text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-accent rounded-md transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.label}
                   </Link>
                 ) : (
                   <>
@@ -187,13 +176,13 @@ export function NavigationMenu() {
                     {item.children && openDropdown === item.label && (
                       <div className="mt-2 ml-4 space-y-1">
                         {item.children.map((child) => (
-                          <Link key={child.href} href={child.href}>
-                            <a
-                              className="block px-4 py-2 text-sm text-foreground/70 hover:text-foreground hover:bg-accent rounded-md transition-colors"
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              {child.label}
-                            </a>
+                          <Link 
+                            key={child.href} 
+                            href={child.href}
+                            className="block px-4 py-2 text-sm text-foreground/70 hover:text-foreground hover:bg-accent rounded-md transition-colors"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {child.label}
                           </Link>
                         ))}
                       </div>
@@ -206,20 +195,16 @@ export function NavigationMenu() {
             {/* Mobile Dashboard/Login */}
             <div className="px-4 pt-4 border-t">
               {user ? (
-                <Link href="/hub/dashboard">
-                  <a onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full" size="sm">
-                      Dashboard
-                    </Button>
-                  </a>
+                <Link href="/hub/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                  <Button className="w-full" size="sm">
+                    Dashboard
+                  </Button>
                 </Link>
               ) : (
-                <Link href="/dashboard">
-                  <a onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full" size="sm">
-                      Sign In
-                    </Button>
-                  </a>
+                <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                  <Button className="w-full" size="sm">
+                    Sign In
+                  </Button>
                 </Link>
               )}
             </div>
