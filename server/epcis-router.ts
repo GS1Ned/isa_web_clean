@@ -4,6 +4,7 @@ import { getDb } from "./db.js";
 import { epcisEvents, supplyChainNodes, supplyChainEdges, eudrGeolocation } from "../drizzle/schema.js";
 import { eq, and, desc } from "drizzle-orm";
 import { seedEUDRData } from "./seed-eudr-data.js";
+import { seedEPCISEvents } from "./seed-epcis-events.js";
 
 /**
  * EPCIS 2.0 Integration Router
@@ -419,6 +420,16 @@ export const epcisRouter = router({
     .mutation(async ({ ctx }) => {
       const userId = ctx.user.id;
       const result = await seedEUDRData(userId);
+      return result;
+    }),
+
+  /**
+   * Seed EPCIS sample events for demonstration
+   */
+  seedEPCISSampleEvents: protectedProcedure
+    .mutation(async ({ ctx }) => {
+      const userId = ctx.user.id;
+      const result = await seedEPCISEvents(userId);
       return result;
     }),
 });

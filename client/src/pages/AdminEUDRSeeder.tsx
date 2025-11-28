@@ -3,24 +3,48 @@ import { trpc } from "@/lib/trpc";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, Database, CheckCircle, AlertTriangle, MapPin } from "lucide-react";
+import { Loader2, Database, CheckCircle, AlertTriangle, MapPin, Package, Scan, TrendingUp } from "lucide-react";
 import { Link } from "wouter";
 
 export default function AdminEUDRSeeder() {
-  const [result, setResult] = useState<any>(null);
+  const [eudrResult, setEudrResult] = useState<any>(null);
+  const [epcisResult, setEpcisResult] = useState<any>(null);
   
-  const seedMutation = trpc.epcis.seedEUDRSampleData.useMutation({
+  const eudrSeedMutation = trpc.epcis.seedEUDRSampleData.useMutation({
     onSuccess: (data) => {
-      setResult(data);
+      setEudrResult(data);
     },
     onError: (error) => {
-      setResult({ success: false, error: error.message });
+      setEudrResult({ success: false, error: error.message });
     },
   });
 
-  const handleSeed = () => {
-    setResult(null);
-    seedMutation.mutate();
+  const epcisSeedMutation = trpc.epcis.seedEPCISSampleEvents.useMutation({
+    onSuccess: (data) => {
+      setEpcisResult(data);
+    },
+    onError: (error) => {
+      setEpcisResult({ success: false, error: error.message });
+    },
+  });
+
+  const handleSeedEUDR = () => {
+    setEudrResult(null);
+    eudrSeedMutation.mutate();
+  };
+
+  const handleSeedEPCIS = () => {
+    setEpcisResult(null);
+    epcisSeedMutation.mutate();
+  };
+
+  const handleSeedAll = () => {
+    setEudrResult(null);
+    setEpcisResult(null);
+    eudrSeedMutation.mutate();
+    setTimeout(() => {
+      epcisSeedMutation.mutate();
+    }, 1000);
   };
 
   return (
@@ -30,9 +54,9 @@ export default function AdminEUDRSeeder() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">EUDR Sample Data Seeder</h1>
+              <h1 className="text-3xl font-bold text-foreground">Sample Data Seeder</h1>
               <p className="text-muted-foreground mt-1">
-                Populate EUDR geolocation data for demonstration purposes
+                Populate EUDR geolocation and EPCIS events for demonstration
               </p>
             </div>
             <Link href="/admin">
@@ -122,20 +146,80 @@ export default function AdminEUDRSeeder() {
           </Card>
 
           {/* Seed Action */}
+          {/* EUDR Seed Action */}
           <Card className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold">Ready to seed data?</h3>
+                <h3 className="text-lg font-semibold">Seed EUDR Geolocation Data</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  This will add 12 sample EUDR geolocation records to your database
+                  Add 12 sample EUDR geolocation records with risk assessments
                 </p>
               </div>
               <Button
-                onClick={handleSeed}
-                disabled={seedMutation.isPending}
+                onClick={handleSeedEUDR}
+                disabled={eudrSeedMutation.isPending}
                 size="lg"
               >
-                {seedMutation.isPending ? (
+                {eudrSeedMutation.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Seeding...
+                  </>
+                ) : (
+                  <>
+                    <MapPin className="w-4 h-4 mr-2" />
+                    Seed EUDR Data
+                  </>
+                )}
+              </Button>
+            </div>
+          </Card>
+
+          {/* EPCIS Seed Action */}
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold">Seed EPCIS Supply Chain Events</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Add 15 sample EPCIS events for complete traceability demonstration
+                </p>
+              </div>
+              <Button
+                onClick={handleSeedEPCIS}
+                disabled={epcisSeedMutation.isPending}
+                size="lg"
+              >
+                {epcisSeedMutation.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Seeding...
+                  </>
+                ) : (
+                  <>
+                    <Package className="w-4 h-4 mr-2" />
+                    Seed EPCIS Events
+                  </>
+                )}
+              </Button>
+            </div>
+          </Card>
+
+          {/* Seed All Action */}
+          <Card className="p-6 bg-primary/5">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold">Seed All Sample Data</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Populate both EUDR geolocation and EPCIS events in one click
+                </p>
+              </div>
+              <Button
+                onClick={handleSeedAll}
+                disabled={eudrSeedMutation.isPending || epcisSeedMutation.isPending}
+                size="lg"
+                variant="default"
+              >
+                {(eudrSeedMutation.isPending || epcisSeedMutation.isPending) ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     Seeding...
@@ -143,45 +227,92 @@ export default function AdminEUDRSeeder() {
                 ) : (
                   <>
                     <Database className="w-4 h-4 mr-2" />
-                    Seed Sample Data
+                    Seed All Data
                   </>
                 )}
               </Button>
             </div>
           </Card>
 
-          {/* Result */}
-          {result && (
-            <Alert variant={result.success ? "default" : "destructive"}>
+          {/* EUDR Result */}
+          {eudrResult && (
+            <Alert variant={eudrResult.success ? "default" : "destructive"}>
               <AlertDescription>
-                {result.success ? (
+                {eudrResult.success ? (
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-5 h-5 text-green-500" />
-                      <span className="font-medium">{result.message}</span>
+                      <span className="font-medium">EUDR: {eudrResult.message}</span>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      Inserted: {result.inserted} | Errors: {result.errors} | Total: {result.total}
-                    </div>
-                    <div className="mt-4">
-                      <Link href="/epcis/eudr-map">
-                        <a>
-                          <Button variant="outline" size="sm">
-                            <MapPin className="w-4 h-4 mr-2" />
-                            View EUDR Map
-                          </Button>
-                        </a>
-                      </Link>
+                      Inserted: {eudrResult.inserted} | Errors: {eudrResult.errors} | Total: {eudrResult.total}
                     </div>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="w-5 h-5" />
-                    <span>Error: {result.error || "Failed to seed data"}</span>
+                    <span>EUDR Error: {eudrResult.error || "Failed to seed data"}</span>
                   </div>
                 )}
               </AlertDescription>
             </Alert>
+          )}
+
+          {/* EPCIS Result */}
+          {epcisResult && (
+            <Alert variant={epcisResult.success ? "default" : "destructive"}>
+              <AlertDescription>
+                {epcisResult.success ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <span className="font-medium">EPCIS: {epcisResult.message}</span>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Inserted: {epcisResult.inserted} | Errors: {epcisResult.errors} | Total: {epcisResult.total}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5" />
+                    <span>EPCIS Error: {epcisResult.error || "Failed to seed data"}</span>
+                  </div>
+                )}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Success Actions */}
+          {(eudrResult?.success || epcisResult?.success) && (
+            <Card className="p-6 bg-green-50 dark:bg-green-950/20">
+              <h3 className="text-lg font-semibold mb-3">Next Steps</h3>
+              <div className="flex gap-3">
+                <Link href="/epcis/eudr-map">
+                  <a>
+                    <Button variant="outline" size="sm">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      View EUDR Map
+                    </Button>
+                  </a>
+                </Link>
+                <Link href="/tools/scanner">
+                  <a>
+                    <Button variant="outline" size="sm">
+                      <Scan className="w-4 h-4 mr-2" />
+                      Test Barcode Scanner
+                    </Button>
+                  </a>
+                </Link>
+                <Link href="/epcis/supply-chain">
+                  <a>
+                    <Button variant="outline" size="sm">
+                      <TrendingUp className="w-4 h-4 mr-2" />
+                      View Supply Chain
+                    </Button>
+                  </a>
+                </Link>
+              </div>
+            </Card>
           )}
 
           {/* Next Steps */}
