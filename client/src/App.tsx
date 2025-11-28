@@ -21,6 +21,9 @@ import HubNews from "./pages/HubNews";
 import HubCalendar from "./pages/HubCalendar";
 import HubStandardsMapping from "./pages/HubStandardsMapping";
 import HubResources from "./pages/HubResources";
+import HubImpactMatrix from "./pages/HubImpactMatrix";
+import HubUserDashboard from "./pages/HubUserDashboard";
+import AdminNewsPanel from "./pages/AdminNewsPanel";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -41,6 +44,9 @@ function Router() {
       <Route path="/hub/calendar" component={HubCalendar} />
       <Route path="/hub/standards-mapping" component={HubStandardsMapping} />
       <Route path="/hub/resources" component={HubResources} />
+      <Route path="/hub/impact-matrix" component={HubImpactMatrix} />
+      <Route path="/hub/dashboard" component={HubUserDashboard} />
+      <Route path="/admin/news" component={AdminNewsPanel} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path={"/404"} component={NotFound} />

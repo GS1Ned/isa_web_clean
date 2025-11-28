@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Zap, TrendingUp, Calendar, BookOpen, AlertCircle, Search, ArrowRight, BookOpen as BookOpenIcon } from "lucide-react";
+import { Zap, TrendingUp, Calendar, BookOpen, AlertCircle, Search, ArrowRight, BookOpen as BookOpenIcon, Grid3x3, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function HubHome() {
@@ -245,6 +245,26 @@ export default function HubHome() {
               <h3 className="font-semibold text-foreground mb-2">Resource Library</h3>
               <p className="text-sm text-muted-foreground">
                 Download guides, checklists, templates, and case studies for implementing regulations with GS1 standards.
+              </p>
+            </div>
+
+            <div>
+              <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                <Grid3x3 className="w-6 h-6 text-accent" />
+              </div>
+              <h3 className="font-semibold text-foreground mb-2">Impact Matrix</h3>
+              <p className="text-sm text-muted-foreground">
+                Visualize regulation overlaps, dependencies, and which GS1 standards satisfy multiple requirements.
+              </p>
+            </div>
+
+            <div>
+              <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                <BarChart3 className="w-6 h-6 text-accent" />
+              </div>
+              <h3 className="font-semibold text-foreground mb-2">Personal Dashboard</h3>
+              <p className="text-sm text-muted-foreground">
+                Save regulations, set custom alerts, and track your compliance progress with personalized insights.
               </p>
             </div>
           </div>

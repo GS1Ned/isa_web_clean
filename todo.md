@@ -114,3 +114,10 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [ ] Create analytics dashboard for hub usage and engagement
 - [ ] Implement version control and change tracking for regulations
 - [ ] Add email notification system for alerts and updates
+
+## Phase 13: ESG Hub - Phase 3 Extended (Current)
+- [x] User Alerts & Saved Items dashboard (protected)
+- [x] Admin News Management Panel (CMS for news curation)
+- [x] Regulation Impact Matrix (interactive visualization)
+- [ ] tRPC procedures for alerts, saved items, and admin operations
+- [ ] Tests for Phase 3 features
