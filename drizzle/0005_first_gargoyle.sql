@@ -1,0 +1,1 @@
+ALTER TABLE `supply_chain_nodes` MODIFY COLUMN `gln` varchar(255);

@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, json, boolean, decimal } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, json, boolean, decimal, index } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -221,3 +221,103 @@ export const userAlerts = mysqlTable("user_alerts", {
 
 export type UserAlert = typeof userAlerts.$inferSelect;
 export type InsertUserAlert = typeof userAlerts.$inferInsert;
+
+/**
+ * EPCIS Events - Supply chain traceability events for EUDR/CSDDD compliance
+ */
+export const epcisEvents = mysqlTable("epcis_events", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  eventType: mysqlEnum("eventType", ["ObjectEvent", "AggregationEvent", "TransactionEvent", "TransformationEvent", "AssociationEvent"]).notNull(),
+  eventTime: timestamp("eventTime").notNull(),
+  eventTimeZoneOffset: varchar("eventTimeZoneOffset", { length: 10 }),
+  action: mysqlEnum("action", ["OBSERVE", "ADD", "DELETE"]),
+  bizStep: varchar("bizStep", { length: 255 }),
+  disposition: varchar("disposition", { length: 255 }),
+  readPoint: varchar("readPoint", { length: 255 }),
+  bizLocation: varchar("bizLocation", { length: 255 }),
+  epcList: json("epcList"),
+  quantityList: json("quantityList"),
+  sensorElementList: json("sensorElementList"),
+  sourceList: json("sourceList"),
+  destinationList: json("destinationList"),
+  ilmd: json("ilmd"),
+  rawEvent: json("rawEvent").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  eventTimeIdx: index("eventTime_idx").on(table.eventTime),
+  eventTypeIdx: index("eventType_idx").on(table.eventType),
+}));
+
+export type EPCISEvent = typeof epcisEvents.$inferSelect;
+export type InsertEPCISEvent = typeof epcisEvents.$inferInsert;
+
+/**
+ * Supply Chain Nodes - Organizations in the supply chain (suppliers, manufacturers, etc.)
+ */
+export const supplyChainNodes = mysqlTable("supply_chain_nodes", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  nodeType: mysqlEnum("nodeType", ["supplier", "manufacturer", "distributor", "retailer", "recycler"]).notNull(),
+  gln: varchar("gln", { length: 255 }),
+  name: varchar("name", { length: 255 }).notNull(),
+  tierLevel: int("tierLevel"),
+  locationLat: decimal("locationLat", { precision: 10, scale: 8 }),
+  locationLng: decimal("locationLng", { precision: 11, scale: 8 }),
+  riskLevel: mysqlEnum("riskLevel", ["low", "medium", "high"]),
+  riskFactors: json("riskFactors"),
+  certifications: json("certifications"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  glnIdx: index("gln_idx").on(table.gln),
+}));
+
+export type SupplyChainNode = typeof supplyChainNodes.$inferSelect;
+export type InsertSupplyChainNode = typeof supplyChainNodes.$inferInsert;
+
+/**
+ * Supply Chain Edges - Relationships between supply chain nodes
+ */
+export const supplyChainEdges = mysqlTable("supply_chain_edges", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  fromNodeId: int("fromNodeId").notNull(),
+  toNodeId: int("toNodeId").notNull(),
+  productGtin: varchar("productGtin", { length: 14 }),
+  relationshipType: mysqlEnum("relationshipType", ["supplies", "manufactures", "distributes", "retails"]).notNull(),
+  lastTransactionDate: timestamp("lastTransactionDate"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  fromNodeIdx: index("fromNode_idx").on(table.fromNodeId),
+  toNodeIdx: index("toNode_idx").on(table.toNodeId),
+}));
+
+export type SupplyChainEdge = typeof supplyChainEdges.$inferSelect;
+export type InsertSupplyChainEdge = typeof supplyChainEdges.$inferInsert;
+
+/**
+ * EUDR Geolocation Data - Geographic origin data for EUDR compliance
+ */
+export const eudrGeolocation = mysqlTable("eudr_geolocation", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  productGtin: varchar("productGtin", { length: 14 }).notNull(),
+  originLat: decimal("originLat", { precision: 10, scale: 8 }).notNull(),
+  originLng: decimal("originLng", { precision: 11, scale: 8 }).notNull(),
+  geofenceGeoJSON: json("geofenceGeoJSON"),
+  deforestationRisk: mysqlEnum("deforestationRisk", ["low", "medium", "high"]),
+  riskAssessmentDate: timestamp("riskAssessmentDate"),
+  dueDiligenceStatement: json("dueDiligenceStatement"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  productGtinIdx: index("productGtin_idx").on(table.productGtin),
+}));
+
+export type EUDRGeolocation = typeof eudrGeolocation.$inferSelect;
+export type InsertEUDRGeolocation = typeof eudrGeolocation.$inferInsert;

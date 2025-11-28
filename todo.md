@@ -315,3 +315,38 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [ ] Integrate standards into regulation detail pages
 - [ ] Test end-to-end standards catalog
 - [ ] All tests passing
+
+
+## Phase 28: GS1 Dataset Integration - Phase 1 (Product Compliance Validation)
+- [ ] Analyze GS1 Web Vocabulary v1.16 structure (JSON-LD)
+- [ ] Create database schema for GS1 classes, properties, code lists
+- [ ] Parse GS1 Web Vocabulary and populate database
+- [ ] Map DPP regulation to required GS1 properties
+- [ ] Map EUDR regulation to required GS1 properties
+- [ ] Map CSRD regulation to sustainability properties
+- [ ] Create regulation_property_mappings table and populate
+- [ ] Build product compliance validator API (tRPC procedures)
+- [ ] Implement compliance gap analysis logic
+- [ ] Create UI for product compliance checker
+- [ ] Write tests for GS1 integration
+- [ ] All tests passing
+
+
+## Phase 29: EPCIS 2.0 Integration - Supply Chain Traceability (Autonomous Development)
+- [x] Parse EPCIS 2.0 JSON Schema from GS1 repository (2,331 lines)
+- [x] Extract event types (Object, Aggregation, Transaction, Transformation, Association)
+- [x] Extract Core Business Vocabulary (bizStep, disposition, sourceDestType)
+- [x] Create database schema for epcis_events table (18 columns, 3 indexes)
+- [x] Create database schema for supply_chain_nodes table (13 columns, 2 indexes)
+- [x] Create database schema for supply_chain_edges table (8 columns, 3 indexes)
+- [x] Create database schema for eudr_geolocation table (11 columns, 2 indexes)
+- [x] Push database schema changes (migration 0004 applied)
+- [x] Build EPCIS event uploader tRPC procedure (epcis.uploadEvents)
+- [x] Implement JSON schema validation for EPCIS documents (Zod schemas)
+- [x] Create EPCIS event parser and storage logic (6 procedures total)
+- [x] Implement EUDR traceability validator (epcis.validateEUDRTraceability)
+- [x] Build supply chain mapping algorithm from EPCIS events (generateSupplyChainMap)
+- [x] Create supply chain risk assessment logic (EUDR validator)
+- [x] Write tests for EPCIS integration (20 tests, all passing)
+- [x] Fix GLN field length for full EPCIS URN support (migration 0005)
+- [x] All 153/154 tests passing (99.4%, only CELLAR ingestion blocked)

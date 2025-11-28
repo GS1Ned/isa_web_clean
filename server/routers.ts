@@ -19,8 +19,9 @@ import { userSavedItems, userAlerts } from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 import { TRPCError } from "@trpc/server";
-import { cellarIngestionRouter } from "./cellar-ingestion-router";
-import { gs1StandardsRouter } from "./gs1-standards-router";
+import { cellarIngestionRouter } from "./cellar-ingestion-router.js";
+import { gs1StandardsRouter } from "./gs1-standards-router.js";
+import { epcisRouter } from "./epcis-router.js";
 
 export const appRouter = router({
   system: systemRouter,
@@ -528,6 +529,11 @@ export const appRouter = router({
    */
   cellarIngestion: cellarIngestionRouter,
   gs1Standards: gs1StandardsRouter,
+
+  /**
+   * EPCIS 2.0 Integration Router
+   */
+  epcis: epcisRouter,
 
 });;
 
