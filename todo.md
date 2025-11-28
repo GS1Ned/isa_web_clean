@@ -143,3 +143,14 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Wire email system to user preferences
 - [ ] Add email delivery tracking
 - [x] Database helper functions for hub news and user alerts
+
+
+## Phase 16: ESG Hub - Phase 6 (Scheduling, Email Integration & Change Tracking)
+- [x] Create cron job scheduler for daily RSS aggregation (cron-scheduler.ts)
+- [x] Implement regulation change tracking system (regulation-change-tracker.ts)
+- [x] Build change detection logic (deadline, scope, enforcement date)
+- [x] Integrate email delivery with user notification system (email-notifications.ts)
+- [x] Create user email templates for alerts and digests
+- [x] Implement change notification workflow
+- [x] Add regulation version history tracking
+- [x] All 23 tests passing
