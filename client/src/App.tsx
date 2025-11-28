@@ -27,6 +27,7 @@ import HubUserDashboard from "./pages/HubUserDashboard";
 import AdminNewsPanel from "./pages/AdminNewsPanel";
 import HubRegulationDetail from "./pages/HubRegulationDetail";
 import HubCompare from "./pages/HubCompare";
+import AdminCellarIngestion from "./pages/AdminCellarIngestion";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -51,6 +52,7 @@ function Router() {
       <Route path="/hub/dashboard" component={HubUserDashboard} />
       <Route path="/hub/compare" component={HubCompare} />
       <Route path="/admin/news" component={AdminNewsPanel} />
+      <Route path="/admin/cellar-ingestion" component={AdminCellarIngestion} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path={"/admin/analytics"} component={AdminAnalyticsDashboard} />

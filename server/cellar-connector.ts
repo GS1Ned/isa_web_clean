@@ -173,6 +173,36 @@ export class CellarConnector {
   }
 
   /**
+   * Retrieve ALL recent regulations (last N years) without filtering
+   * This is more reliable than keyword-based ESG filtering
+   */
+  async getAllRecentRegulations(yearsBack = 5, limit = 500): Promise<EULegalAct[]> {
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - yearsBack;
+
+    const query = `
+      PREFIX cdm: <${CDM_NS}>
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      
+      SELECT DISTINCT ?act ?actID ?title ?dateEntryIntoForce ?inForce
+      WHERE {
+        ?act cdm:work_id_document ?actID .
+        ?act cdm:resource_legal_in-force ?inForce .
+        ?act cdm:resource_legal_date_entry-into-force ?dateEntryIntoForce .
+        OPTIONAL { ?act rdfs:label ?title } .
+        FILTER(?dateEntryIntoForce >= "${startYear}-01-01"^^xsd:date)
+        FILTER(REGEX(?actID, "^3[0-9]{4}[LR]", "i"))
+      }
+      ORDER BY DESC(?dateEntryIntoForce)
+      LIMIT ${limit}
+    `;
+
+    const response = await this.executeSPARQL(query);
+    return this.parseActsFromSPARQL(response);
+  }
+
+  /**
    * Retrieve recent ESG-related regulations (last N years)
    */
   async getESGRegulations(yearsBack = 5): Promise<EULegalAct[]> {
@@ -230,9 +260,15 @@ export class CellarConnector {
    */
   private parseActsFromSPARQL(response: SPARQLResponse): EULegalAct[] {
     return response.results.bindings.map(binding => {
+      // Strip "celex:" prefix if present
+      let celexId = binding.actID?.value;
+      if (celexId && celexId.startsWith('celex:')) {
+        celexId = celexId.substring(6); // Remove "celex:" prefix
+      }
+
       const act: EULegalAct = {
         uri: binding.act?.value || '',
-        celexId: binding.actID?.value,
+        celexId,
         title: binding.title?.value,
         inForce: binding.inForce?.value === 'true',
         resourceType: binding.resourceType?.value,
