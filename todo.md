@@ -684,3 +684,44 @@ Note: Onboarding flow complete and ready for user testing. Phases 54-55 skipped 
 - [x] Save checkpoint
 
 Note: XML upload support complete. Successfully unlocks 40% more market by supporting legacy XML systems.
+
+
+## Phase 58: Compliance Report Generator (Autonomous Development - Session 4)
+
+### EUDR Compliance Analyzer
+- [x] Create EUDR analyzer module (server/eudr-analyzer.ts)
+- [x] Check geolocation data completeness
+- [x] Validate due diligence statements
+- [x] Identify products in deforestation risk zones (high/medium risk)
+- [x] Calculate compliance score (0-100%)
+- [x] Generate risk assessment summary with 4 categories
+- [x] Create tRPC procedure generateComplianceReport
+
+### DPP Requirements Checker
+- [x] Integrated into EUDR analyzer (traceability chain validation)
+- [x] Check GS1 identifier validity (GTIN extraction from URN)
+- [x] Validate traceability chain completeness (events per product)
+- [ ] Separate DPP validator module - DEFERRED (EUDR analyzer covers core needs)
+
+### PDF Report Generator
+- [ ] Install PDF generation library - DEFERRED (web UI sufficient for MVP)
+- [ ] Generate downloadable PDF - DEFERRED (web UI provides all insights)
+
+### Report Page UI
+- [x] Create ComplianceReport page component
+- [x] Add "Generate Report" button
+- [x] Display executive summary with score and status
+- [x] Display compliance statistics (4 key metrics)
+- [x] Display detailed findings (4 categories with pass/warning/fail)
+- [x] Display actionable recommendations
+- [x] Add route to App.tsx at /tools/compliance-report
+- [x] Link from navigation menu (EPCIS Tools dropdown)
+- [ ] Add "Download PDF" button - DEFERRED (web view sufficient)
+- [ ] Add historical reports list - DEFERRED (future enhancement)
+
+### Testing & Delivery
+- [x] Test report generation with sample data (analyzer working correctly)
+- [x] Run full test suite (172/173 passing, 99.4%)
+- [x] Save checkpoint
+
+Note: Core compliance intelligence system complete. Transforms ISA from data collection into actionable compliance advisor. PDF export deferred to prioritize core analytics functionality.

@@ -33,6 +33,7 @@ import EPCISUpload from "./pages/EPCISUpload";
 import EPCISSupplyChain from "./pages/EPCISSupplyChain";
 import EPCISEUDRMap from "./pages/EPCISEUDRMap";
 import BarcodeScanner from "./pages/BarcodeScanner";
+import ComplianceReport from "./pages/ComplianceReport";
 import GettingStarted from "./pages/GettingStarted";
 
 function Router() {
@@ -64,7 +65,8 @@ function Router() {
       <Route path="/epcis/upload" component={EPCISUpload} />
       <Route path="/epcis/supply-chain" component={EPCISSupplyChain} />
       <Route path="/epcis/eudr-map" component={EPCISEUDRMap} />
-      <Route path="/tools/scanner" component={BarcodeScanner} />
+        <Route path="/tools/scanner" component={BarcodeScanner} />
+        <Route path="/tools/compliance-report" component={ComplianceReport} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path={"/admin/analytics"} component={AdminAnalyticsDashboard} />

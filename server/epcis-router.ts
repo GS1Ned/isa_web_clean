@@ -6,6 +6,7 @@ import { eq, and, desc } from "drizzle-orm";
 import { seedEUDRData } from "./seed-eudr-data.js";
 import { seedEPCISEvents } from "./seed-epcis-events.js";
 import { parseEPCISXML, detectFormat } from "./epcis-xml-parser.js";
+import { analyzeEUDRCompliance } from "./eudr-analyzer.js";
 
 /**
  * EPCIS 2.0 Integration Router
@@ -428,7 +429,17 @@ export const epcisRouter = router({
     }),
 
   /**
-   * Seed EUDR sample data for demonstration
+   * Generate EUDR compliance report
+   */
+  generateComplianceReport: protectedProcedure
+    .mutation(async ({ ctx }) => {
+      const userId = ctx.user.id;
+      const report = await analyzeEUDRCompliance(userId);
+      return report;
+    }),
+
+  /**
+   * Seed EUDR sample geolocation data
    */
   seedEUDRSampleData: protectedProcedure
     .mutation(async ({ ctx }) => {

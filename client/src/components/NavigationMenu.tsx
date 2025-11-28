@@ -39,6 +39,7 @@ export function NavigationMenu() {
         { label: "Supply Chain Map", href: "/epcis/supply-chain", description: "Visualize supply chain" },
         { label: "EUDR Map", href: "/epcis/eudr-map", description: "Geolocation compliance" },
         { label: "Barcode Scanner", href: "/tools/scanner", description: "Scan products for traceability" },
+        { label: "Compliance Report", href: "/tools/compliance-report", description: "Generate EUDR compliance reports" },
       ],
     },
     {
