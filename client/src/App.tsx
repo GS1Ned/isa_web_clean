@@ -15,6 +15,12 @@ import Contact from "./pages/Contact";
 import ComparisonTool from "./pages/ComparisonTool";
 import Blog from "./pages/Blog";
 import FAQ from "./pages/FAQ";
+import HubHome from "./pages/HubHome";
+import HubRegulations from "./pages/HubRegulations";
+import HubNews from "./pages/HubNews";
+import HubCalendar from "./pages/HubCalendar";
+import HubStandardsMapping from "./pages/HubStandardsMapping";
+import HubResources from "./pages/HubResources";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -29,6 +35,12 @@ function Router() {
       <Route path={"/compare"} component={ComparisonTool} />
       <Route path="/blog" component={Blog} />
       <Route path="/faq" component={FAQ} />
+      <Route path="/hub" component={HubHome} />
+      <Route path="/hub/regulations" component={HubRegulations} />
+      <Route path="/hub/news" component={HubNews} />
+      <Route path="/hub/calendar" component={HubCalendar} />
+      <Route path="/hub/standards-mapping" component={HubStandardsMapping} />
+      <Route path="/hub/resources" component={HubResources} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path={"/404"} component={NotFound} />

@@ -148,3 +148,76 @@ export const userPreferences = mysqlTable("user_preferences", {
 
 export type UserPreference = typeof userPreferences.$inferSelect;
 export type InsertUserPreference = typeof userPreferences.$inferInsert;
+
+/**
+ * ESG Hub News - curated news and updates about regulations
+ */
+export const hubNews = mysqlTable("hub_news", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 512 }).notNull(),
+  summary: text("summary"),
+  content: text("content"),
+  newsType: mysqlEnum("newsType", ["NEW_LAW", "AMENDMENT", "ENFORCEMENT", "COURT_DECISION", "GUIDANCE", "PROPOSAL"]).notNull(),
+  relatedRegulationIds: json("relatedRegulationIds"),
+  sourceUrl: varchar("sourceUrl", { length: 512 }),
+  sourceTitle: varchar("sourceTitle", { length: 255 }),
+  credibilityScore: decimal("credibilityScore", { precision: 3, scale: 2 }).default("0.00"),
+  publishedDate: timestamp("publishedDate"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type HubNews = typeof hubNews.$inferSelect;
+export type InsertHubNews = typeof hubNews.$inferInsert;
+
+/**
+ * ESG Hub Resources - downloadable guides, checklists, templates
+ */
+export const hubResources = mysqlTable("hub_resources", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 512 }).notNull(),
+  description: text("description"),
+  resourceType: mysqlEnum("resourceType", ["GUIDE", "CHECKLIST", "TEMPLATE", "CASE_STUDY", "WHITEPAPER", "TOOL"]).notNull(),
+  relatedRegulationIds: json("relatedRegulationIds"),
+  relatedStandardIds: json("relatedStandardIds"),
+  fileUrl: varchar("fileUrl", { length: 512 }),
+  downloadCount: int("downloadCount").default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type HubResource = typeof hubResources.$inferSelect;
+export type InsertHubResource = typeof hubResources.$inferInsert;
+
+/**
+ * User Saved Items - regulations, news, resources saved by users
+ */
+export const userSavedItems = mysqlTable("user_saved_items", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  itemType: mysqlEnum("itemType", ["REGULATION", "NEWS", "RESOURCE"]).notNull(),
+  itemId: int("itemId").notNull(),
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type UserSavedItem = typeof userSavedItems.$inferSelect;
+export type InsertUserSavedItem = typeof userSavedItems.$inferInsert;
+
+/**
+ * User Alerts - notification preferences for regulations and deadlines
+ */
+export const userAlerts = mysqlTable("user_alerts", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  alertType: mysqlEnum("alertType", ["REGULATION_UPDATE", "DEADLINE_APPROACHING", "NEW_REGULATION", "ENFORCEMENT_ACTION"]).notNull(),
+  regulationId: int("regulationId"),
+  standardId: int("standardId"),
+  daysBeforeDeadline: int("daysBeforeDeadline"),
+  isActive: boolean("isActive").default(true),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type UserAlert = typeof userAlerts.$inferSelect;
+export type InsertUserAlert = typeof userAlerts.$inferInsert;

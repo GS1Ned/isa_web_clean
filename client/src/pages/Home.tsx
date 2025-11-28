@@ -37,6 +37,9 @@ export default function Home() {
             <Link href="/faq" className="text-sm text-muted-foreground hover:text-foreground transition">
               FAQ
             </Link>
+            <Link href="/hub" className="text-sm text-muted-foreground hover:text-foreground transition">
+              ESG Hub
+            </Link>
             <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition">
               About
             </Link>
