@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import AdminAnalyticsDashboard from "./pages/AdminAnalyticsDashboard";
+import AdminPromptOptimization from "./pages/AdminPromptOptimization";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -27,10 +28,12 @@ import HubUserDashboard from "./pages/HubUserDashboard";
 import AdminNewsPanel from "./pages/AdminNewsPanel";
 import HubRegulationDetail from "./pages/HubRegulationDetail";
 import HubCompare from "./pages/HubCompare";
+import HubCompareEnhanced from "./pages/HubCompareEnhanced";
 import AdminCellarIngestion from './pages/AdminCellarIngestion';
 import AdminEUDRSeeder from './pages/AdminEUDRSeeder';
 import AdminCellarSyncMonitor from './pages/AdminCellarSyncMonitor';
 import EPCISUpload from "./pages/EPCISUpload";
+import EPCISUploadEnhanced from "./pages/EPCISUploadEnhanced";
 import EPCISSupplyChain from "./pages/EPCISSupplyChain";
 import EPCISEUDRMap from "./pages/EPCISEUDRMap";
 import BarcodeScanner from "./pages/BarcodeScanner";
@@ -60,19 +63,22 @@ function Router() {
       <Route path="/hub/resources" component={HubResources} />
       <Route path="/hub/impact-matrix" component={HubImpactMatrix} />
       <Route path="/hub/dashboard" component={HubUserDashboard} />
-      <Route path="/hub/compare" component={HubCompare} />
+      <Route path="/hub/compare" component={HubCompareEnhanced} />
+      <Route path="/hub/compare-legacy" component={HubCompare} />
       <Route path="/hub/esrs-datapoints" component={ESRSDatapoints} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
       <Route path="/admin/cellar" component={AdminCellarIngestion} />
       <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />
-      <Route path="/epcis/upload" component={EPCISUpload} />
+      <Route path="/epcis/upload" component={EPCISUploadEnhanced} />
+      <Route path="/epcis/upload-legacy" component={EPCISUpload} />
       <Route path="/epcis/supply-chain" component={EPCISSupplyChain} />
       <Route path="/epcis/eudr-map" component={EPCISEUDRMap} />
       <Route path="/tools/scanner" component={BarcodeScanner} />
       <Route path="/tools/compliance-report" component={ComplianceReport} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
-      <Route path={"/admin/analytics"} component={AdminAnalyticsDashboard} />
+      <Route path="/admin/analytics" component={AdminAnalyticsDashboard} />
+      <Route path="/admin/prompt-optimization" component={AdminPromptOptimization} />
       <Route path={"404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
