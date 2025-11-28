@@ -30,6 +30,7 @@ import HubCompare from "./pages/HubCompare";
 import AdminCellarIngestion from "./pages/AdminCellarIngestion";
 import EPCISUpload from "./pages/EPCISUpload";
 import EPCISSupplyChain from "./pages/EPCISSupplyChain";
+import EPCISEUDRMap from "./pages/EPCISEUDRMap";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -57,6 +58,7 @@ function Router() {
       <Route path="/admin/cellar-ingestion" component={AdminCellarIngestion} />
       <Route path="/epcis/upload" component={EPCISUpload} />
       <Route path="/epcis/supply-chain" component={EPCISSupplyChain} />
+      <Route path="/epcis/eudr-map" component={EPCISEUDRMap} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path={"/admin/analytics"} component={AdminAnalyticsDashboard} />

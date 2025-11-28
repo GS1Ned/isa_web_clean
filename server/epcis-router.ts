@@ -365,4 +365,49 @@ export const epcisRouter = router({
         })),
       };
     }),
+
+  /**
+   * Get EUDR geolocation data for mapping
+   */
+  getEUDRGeolocations: protectedProcedure
+    .input(z.object({
+      productGtin: z.string().optional(),
+      riskLevel: z.enum(["low", "medium", "high"]).optional(),
+    }))
+    .query(async ({ input, ctx }) => {
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+      const userId = ctx.user.id;
+
+      // Build where conditions
+      const conditions = [eq(eudrGeolocation.userId, userId)];
+      
+      if (input.productGtin) {
+        conditions.push(eq(eudrGeolocation.productGtin, input.productGtin));
+      }
+      
+      if (input.riskLevel) {
+        conditions.push(eq(eudrGeolocation.deforestationRisk, input.riskLevel));
+      }
+
+      const geolocations = await db
+        .select()
+        .from(eudrGeolocation)
+        .where(and(...conditions))
+        .orderBy(desc(eudrGeolocation.createdAt));
+
+      return {
+        geolocations: geolocations.map(g => ({
+          id: g.id,
+          productGtin: g.productGtin,
+          lat: parseFloat(g.originLat),
+          lng: parseFloat(g.originLng),
+          riskLevel: g.deforestationRisk || "low",
+          riskAssessmentDate: g.riskAssessmentDate,
+          geofence: g.geofenceGeoJSON,
+          dueDiligence: g.dueDiligenceStatement,
+        })),
+        totalCount: geolocations.length,
+      };
+    }),
 });

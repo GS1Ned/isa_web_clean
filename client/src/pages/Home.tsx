@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Globe, TrendingUp, Shield, Lightbulb } from "lucide-react";
 import { getLoginUrl } from "@/const";
 import { Link } from "wouter";
+import { NavigationMenu } from "@/components/NavigationMenu";
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -10,51 +11,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
-        <div className="container flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-secondary flex items-center justify-center">
-              <Zap className="w-5 h-5 text-accent-foreground" />
-            </div>
-            <span className="font-bold text-lg text-foreground">ISA</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <Link href="/how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition">
-              How It Works
-            </Link>
-            <Link href="/features" className="text-sm text-muted-foreground hover:text-foreground transition">
-              Features
-            </Link>
-            <Link href="/use-cases" className="text-sm text-muted-foreground hover:text-foreground transition">
-              Use Cases
-            </Link>
-            <Link href="/compare" className="text-sm text-muted-foreground hover:text-foreground transition">
-              Compare
-            </Link>
-            <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition">
-              Blog
-            </Link>
-            <Link href="/faq" className="text-sm text-muted-foreground hover:text-foreground transition">
-              FAQ
-            </Link>
-            <Link href="/hub" className="text-sm text-muted-foreground hover:text-foreground transition">
-              ESG Hub
-            </Link>
-            <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition">
-              About
-            </Link>
-            {isAuthenticated ? (
-              <Link href="/dashboard" className="text-sm font-medium text-accent hover:text-accent/80 transition">
-                Dashboard
-              </Link>
-            ) : (
-              <a href={getLoginUrl()} className="text-sm font-medium text-accent hover:text-accent/80 transition">
-                Sign In
-              </a>
-            )}
-          </div>
-        </div>
-      </nav>
+      <NavigationMenu />
 
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">
