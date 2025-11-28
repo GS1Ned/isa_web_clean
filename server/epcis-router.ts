@@ -5,6 +5,7 @@ import { epcisEvents, supplyChainNodes, supplyChainEdges, eudrGeolocation } from
 import { eq, and, desc } from "drizzle-orm";
 import { seedEUDRData } from "./seed-eudr-data.js";
 import { seedEPCISEvents } from "./seed-epcis-events.js";
+import { parseEPCISXML, detectFormat } from "./epcis-xml-parser.js";
 
 /**
  * EPCIS 2.0 Integration Router
@@ -51,16 +52,28 @@ const EPCISDocumentSchema = z.object({
 
 export const epcisRouter = router({
   /**
-   * Upload EPCIS events from an EPCIS document
+   * Upload EPCIS events from an EPCIS document (JSON or XML)
    */
   uploadEvents: protectedProcedure
-    .input(EPCISDocumentSchema)
+    .input(z.string()) // Accept raw string (XML or JSON)
     .mutation(async ({ input, ctx }) => {
+      // Detect format and parse
+      const format = detectFormat(input);
+      let parsedDocument: any;
+
+      if (format === 'xml') {
+        parsedDocument = parseEPCISXML(input);
+      } else {
+        parsedDocument = JSON.parse(input);
+      }
+
+      // Validate against schema
+      const validatedInput = EPCISDocumentSchema.parse(parsedDocument);
       const db = await getDb();
       if (!db) throw new Error("Database not available");
       const userId = ctx.user.id;
 
-      const events = input.epcisBody.eventList;
+      const events = validatedInput.epcisBody.eventList;
       const insertedEvents = [];
 
       for (const event of events) {
@@ -89,7 +102,8 @@ export const epcisRouter = router({
       return {
         success: true,
         eventsUploaded: insertedEvents.length,
-        message: `Successfully uploaded ${insertedEvents.length} EPCIS events. Supply chain visualization will be updated automatically.`,
+        format: format.toUpperCase(),
+        message: `Successfully uploaded ${insertedEvents.length} EPCIS events from ${format.toUpperCase()} format. Supply chain visualization will be updated automatically.`,
       };
     }),
 

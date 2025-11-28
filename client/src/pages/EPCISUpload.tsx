@@ -81,8 +81,8 @@ export default function EPCISUpload() {
     if (!handleValidate()) return;
 
     try {
-      const parsed = JSON.parse(jsonInput);
-      uploadMutation.mutate(parsed);
+      // Send raw string to backend (supports both JSON and XML)
+      uploadMutation.mutate(jsonInput);
     } catch (error) {
       setValidationError(`Upload Error: ${(error as Error).message}`);
     }
@@ -137,7 +137,7 @@ export default function EPCISUpload() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">EPCIS Event Upload</h1>
         <p className="text-muted-foreground">
-          Upload EPCIS 2.0 documents to track supply chain events and validate EUDR compliance
+          Upload EPCIS 2.0 documents (JSON or XML) to track supply chain events and validate EUDR compliance
         </p>
       </div>
 
@@ -147,7 +147,7 @@ export default function EPCISUpload() {
           <CardHeader>
             <CardTitle>EPCIS Document</CardTitle>
             <CardDescription>
-              Paste your EPCIS 2.0 JSON document below or load an example
+              Paste your EPCIS 2.0 document (JSON or XML) below or load an example
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
