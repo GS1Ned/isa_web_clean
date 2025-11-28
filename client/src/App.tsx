@@ -25,12 +25,13 @@ import HubResources from "./pages/HubResources";
 import HubImpactMatrix from "./pages/HubImpactMatrix";
 import HubUserDashboard from "./pages/HubUserDashboard";
 import AdminNewsPanel from "./pages/AdminNewsPanel";
+import HubRegulationDetail from "./pages/HubRegulationDetail";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
-  return (
-    <Switch>
-      <Route path={"/"} component={Home} />
+  return (    <Switch>
+      <Route path={"//"} component={Home} />
+      <Route path={"/hub/regulations/:id"} component={HubRegulationDetail} />
       <Route path={"/about"} component={About} />
       <Route path={"/how-it-works"} component={HowItWorks} />
       <Route path={"/features"} component={FeaturesComparison} />

@@ -165,3 +165,15 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Create search utilities for performance
 - [x] Add filter persistence to user preferences
 - [x] All 23 tests passing
+
+
+## Phase 18: ESG Hub - Phase 8 (Production RSS, Detail Pages & Persistence)
+- [x] Install rss-parser npm package
+- [x] Implement real RSS feed parsing with keyword detection (rss-aggregator-real.mjs)
+- [x] Wire cron job for daily 2 AM RSS aggregation (ready to schedule)
+- [x] Create regulation detail page component (/hub/regulations/:id)
+- [x] Build regulation timeline visualization
+- [x] Display related news articles on detail pages
+- [ ] Implement user preferences persistence to database
+- [ ] Wire save/alert buttons to tRPC procedures
+- [x] All 23 tests passing
