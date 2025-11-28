@@ -350,3 +350,25 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Write tests for EPCIS integration (20 tests, all passing)
 - [x] Fix GLN field length for full EPCIS URN support (migration 0005)
 - [x] All 153/154 tests passing (99.4%, only CELLAR ingestion blocked)
+
+
+## Phase 30: EPCIS User Interface - Upload, Visualization, Mapping (Autonomous Development)
+- [x] Create EPCIS upload page (/epcis/upload)
+- [x] Build JSON editor component with syntax highlighting
+- [x] Implement real-time EPCIS document validation
+- [x] Add upload button with progress indicator
+- [x] Create compliance report display component
+- [x] Add route to App.tsx
+- [x] Build supply chain visualization page (/epcis/supply-chain)
+- [x] Integrate React Flow for network graph visualization
+- [x] Implement node/edge rendering with risk color coding
+- [x] Add drill-down to node details with statistics panel
+- [x] Add route to App.tsx
+- [ ] Create EUDR- [x] Write comprehensive tests for EPCIS UI (18 tests, all passing)
+- [x] Fix test conflicts and verify 172/173 tests passing (99.4%)
+- [ ] Create EUDR geolocation mapper page (/epcis/eudr-map) - DEFERRED
+- [ ] Integrate Leaflet.js for map display - DEFERRED
+- [ ] Add product origin markers with compliance status - DEFERRED
+- [ ] Overlay deforestation risk zones from GS1 geoshapes - DEFERRED
+
+Note: EUDR mapper deferred to next session due to token budget. Core EPCIS functionality complete.
