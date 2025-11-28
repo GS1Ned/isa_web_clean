@@ -36,6 +36,7 @@ import EPCISEUDRMap from "./pages/EPCISEUDRMap";
 import BarcodeScanner from "./pages/BarcodeScanner";
 import ComplianceReport from "./pages/ComplianceReport";
 import GettingStarted from "./pages/GettingStarted";
+import ESRSDatapoints from "./pages/ESRSDatapoints";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -60,6 +61,7 @@ function Router() {
       <Route path="/hub/impact-matrix" component={HubImpactMatrix} />
       <Route path="/hub/dashboard" component={HubUserDashboard} />
       <Route path="/hub/compare" component={HubCompare} />
+      <Route path="/hub/esrs-datapoints" component={ESRSDatapoints} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
       <Route path="/admin/cellar" component={AdminCellarIngestion} />
       <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />

@@ -28,6 +28,7 @@ export function NavigationMenu() {
         { label: "News Feed", href: "/hub/news", description: "Latest regulatory updates" },
         { label: "Calendar", href: "/hub/calendar", description: "Compliance deadlines" },
         { label: "Standards Mapping", href: "/hub/standards-mapping", description: "GS1 standards by regulation" },
+        { label: "ESRS Datapoints", href: "/hub/esrs-datapoints", description: "Browse 1,184 EFRAG disclosure requirements" },
         { label: "Resources", href: "/hub/resources", description: "Guides and templates" },
         { label: "Impact Matrix", href: "/hub/impact-matrix", description: "Regulation overlap analysis" },
       ],

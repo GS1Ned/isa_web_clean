@@ -879,3 +879,18 @@ Note: Transforms ISA from 64 sample records to 1,100+ official records (18x incr
 - [x] Save checkpoint
 
 Note: Root cause was incorrect CELEX ID regex pattern. Pattern didn't account for 'celex:' prefix and had type letter (L/R) in wrong position. Actual format: celex:32017R0373 (prefix + year + type + sequential number).
+
+
+## Phase 67: ESRS Datapoint Browser - Data Activation (Autonomous Development - Session 6)
+- [x] Analyze 14 potential data sources for ISA mission alignment (scored all sources)
+- [x] Test data.europa.eu SPARQL endpoint (found it's metadata catalog, not legal acts source)
+- [x] Test Eurostat Environment API accessibility (confirmed accessible, JSON-stat format)
+- [x] Strategic pivot: Choose data activation over data accumulation
+- [x] Create tRPC procedures for ESRS datapoints (list, getStandards, getStats)
+- [x] Build ESRS Datapoint Browser frontend page (search, filters, pagination, stats cards)
+- [x] Add navigation links to ESG Hub dropdown ("ESRS Datapoints" menu item)
+- [x] Write vitest tests for all ESRS procedures (10 tests, 100% passing)
+- [x] Test search and filter functionality (all filters working)
+- [x] Save checkpoint
+
+Note: Pivoted from Eurostat integration to building ESRS Datapoint Browser. Rationale: We have 1,184 official EFRAG datapoints but no way for users to search/browse them. Activation > Accumulation at this stage. Delivered: Full-featured browser with search, 4 filters (standard, data type, voluntary, keyword), pagination, and statistics. 183/183 tests passing. Eurostat deferred to Phase 68.
