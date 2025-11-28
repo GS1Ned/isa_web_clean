@@ -18,6 +18,7 @@ import {
 import { getDb } from "./db";
 import { regulations, ingestionLogs } from "../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
+import { notifyOwner } from "./_core/notification";
 
 /**
  * Admin-only procedure (requires admin role)
@@ -239,6 +240,14 @@ export const cellarIngestionRouter = router({
           durationSeconds
         );
         
+        // Notify owner if significant new regulations detected
+        if (inserted > 5) {
+          await notifyOwner({
+            title: `🔔 CELLAR Sync: ${inserted} New Regulations Detected`,
+            content: `The automated CELLAR sync has successfully imported ${inserted} new EU regulations into ISA.\n\nSync Summary:\n- New regulations: ${inserted}\n- Updated regulations: ${updated}\n- Total processed: ${valid.length}\n- Duration: ${durationSeconds}s\n\nView details in Admin → CELLAR Sync Monitor.`,
+          });
+        }
+        
         return {
           dryRun: false,
           stats,
@@ -260,6 +269,12 @@ export const cellarIngestionRouter = router({
           error instanceof Error ? error.message : 'Unknown error',
           durationSeconds
         );
+        
+        // Notify owner of sync failure
+        await notifyOwner({
+          title: `⚠️ CELLAR Sync Failed`,
+          content: `The automated CELLAR sync has failed.\n\nError Details:\n${error instanceof Error ? error.message : 'Unknown error'}\n\nDuration: ${durationSeconds}s\n\nPlease check Admin → CELLAR Sync Monitor for details and retry manually if needed.`,
+        });
         
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
