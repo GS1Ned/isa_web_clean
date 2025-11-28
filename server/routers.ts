@@ -14,6 +14,9 @@ import {
   getDashboardStats,
   createContact,
 } from "./db";
+import { getDb } from "./db";
+import { userSavedItems, userAlerts } from "../drizzle/schema";
+import { eq, and } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 import { TRPCError } from "@trpc/server";
 
@@ -168,35 +171,126 @@ export const appRouter = router({
     saveRegulation: protectedProcedure
       .input(z.object({ regulationId: z.number() }))
       .mutation(async ({ ctx, input }) => {
-        // In production, save to database via createUserSavedItem
-        return { success: true, message: `Regulation ${input.regulationId} saved` };
+        try {
+          const db = await getDb();
+          if (!db) return { success: false };
+
+          await db.insert(userSavedItems).values({
+            userId: ctx.user.id,
+            itemId: input.regulationId,
+            itemType: "REGULATION",
+            createdAt: new Date(),
+          });
+
+          return { success: true };
+        } catch (error) {
+          console.error("[tRPC] Save regulation failed:", error);
+          return { success: false };
+        }
       }),
 
     // Remove a saved regulation
-    removeSavedRegulation: protectedProcedure
+    unsaveRegulation: protectedProcedure
       .input(z.object({ regulationId: z.number() }))
       .mutation(async ({ ctx, input }) => {
-        return { success: true, message: `Regulation ${input.regulationId} removed` };
+        try {
+          const db = await getDb();
+          if (!db) return { success: false };
+
+          await db.delete(userSavedItems).where(
+            and(
+              eq(userSavedItems.userId, ctx.user.id),
+              eq(userSavedItems.itemId, input.regulationId)
+            )
+          );
+
+          return { success: true };
+        } catch (error) {
+          console.error("[tRPC] Unsave regulation failed:", error);
+          return { success: false };
+        }
       }),
 
     // Set alert preferences for a regulation
-    setAlertPreference: protectedProcedure
-      .input(z.object({ regulationId: z.number(), enabled: z.boolean() }))
+    setAlert: protectedProcedure
+      .input(z.object({ regulationId: z.number(), alertType: z.string() }))
       .mutation(async ({ ctx, input }) => {
-        return {
-          success: true,
-          message: `Alerts ${input.enabled ? 'enabled' : 'disabled'} for regulation ${input.regulationId}`,
-        };
+        try {
+          const db = await getDb();
+          if (!db) return { success: false };
+
+          await db.insert(userAlerts).values({
+            userId: ctx.user.id,
+            regulationId: input.regulationId,
+            alertType: input.alertType as any,
+            isActive: true,
+            createdAt: new Date(),
+          });
+
+          return { success: true };
+        } catch (error) {
+          console.error("[tRPC] Set alert failed:", error);
+          return { success: false };
+        }
       }),
 
-    // Get user's saved regulations and alerts
-    getUserPreferences: protectedProcedure.query(async ({ ctx }) => {
-      return {
-        userId: ctx.user.id,
-        savedRegulations: [],
-        alertsEnabled: true,
-        digestFrequency: 'daily',
-      };
+    // Remove alert
+    removeAlert: protectedProcedure
+      .input(z.object({ regulationId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          const db = await getDb();
+          if (!db) return { success: false };
+
+          await db.delete(userAlerts).where(
+            and(
+              eq(userAlerts.userId, ctx.user.id),
+              eq(userAlerts.regulationId, input.regulationId)
+            )
+          );
+
+          return { success: true };
+        } catch (error) {
+          console.error("[tRPC] Remove alert failed:", error);
+          return { success: false };
+        }
+      }),
+
+    // Get user's saved regulations
+    getSavedRegulations: protectedProcedure.query(async ({ ctx }) => {
+      try {
+        const db = await getDb();
+        if (!db) return [];
+
+        const saved = await db.select().from(userSavedItems).where(
+          and(
+            eq(userSavedItems.userId, ctx.user.id),
+            eq(userSavedItems.itemType, "REGULATION" as any)
+          )
+        );
+
+        return saved;
+      } catch (error) {
+        console.error("[tRPC] Get saved regulations failed:", error);
+        return [];
+      }
+    }),
+
+    // Get user's alerts
+    getUserAlerts: protectedProcedure.query(async ({ ctx }) => {
+      try {
+        const db = await getDb();
+        if (!db) return [];
+
+        const alerts = await db.select().from(userAlerts).where(
+          eq(userAlerts.userId, ctx.user.id)
+        );
+
+        return alerts;
+      } catch (error) {
+        console.error("[tRPC] Get user alerts failed:", error);
+        return [];
+      }
     }),
   }),
 
@@ -293,6 +387,7 @@ export const appRouter = router({
         }
       }),
   }),
+
 });
 
 export type AppRouter = typeof appRouter;

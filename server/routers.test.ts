@@ -182,42 +182,45 @@ describe("ISA tRPC Routers", () => {
       const result = await authCaller.hub.saveRegulation({ regulationId: 1 });
 
       expect(result.success).toBe(true);
-      expect(result.message).toContain("saved");
     });
 
     it("should remove a saved regulation", async () => {
       const authContext = createMockContext(true);
       const authCaller = appRouter.createCaller(authContext);
 
-      const result = await authCaller.hub.removeSavedRegulation({ regulationId: 1 });
+      const result = await authCaller.hub.unsaveRegulation({ regulationId: 1 });
 
       expect(result.success).toBe(true);
-      expect(result.message).toContain("removed");
     });
 
     it("should set alert preferences", async () => {
       const authContext = createMockContext(true);
       const authCaller = appRouter.createCaller(authContext);
 
-      const result = await authCaller.hub.setAlertPreference({
+      const result = await authCaller.hub.setAlert({
         regulationId: 1,
-        enabled: true,
+        alertType: "REGULATION_UPDATE",
       });
 
       expect(result.success).toBe(true);
-      expect(result.message).toContain("enabled");
     });
 
-    it("should get user preferences", async () => {
+    it("should get saved regulations", async () => {
       const authContext = createMockContext(true);
       const authCaller = appRouter.createCaller(authContext);
 
-      const result = await authCaller.hub.getUserPreferences();
+      const result = await authCaller.hub.getSavedRegulations();
 
-      expect(result).toHaveProperty("userId");
-      expect(result).toHaveProperty("savedRegulations");
-      expect(result).toHaveProperty("alertsEnabled");
-      expect(result).toHaveProperty("digestFrequency");
+      expect(Array.isArray(result)).toBe(true);
+    });
+
+    it("should get user alerts", async () => {
+      const authContext = createMockContext(true);
+      const authCaller = appRouter.createCaller(authContext);
+
+      const result = await authCaller.hub.getUserAlerts();
+
+      expect(Array.isArray(result)).toBe(true);
     });
   });
 

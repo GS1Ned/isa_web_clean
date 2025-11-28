@@ -177,3 +177,15 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [ ] Implement user preferences persistence to database
 - [ ] Wire save/alert buttons to tRPC procedures
 - [x] All 23 tests passing
+
+
+## Phase 19: ESG Hub - Phase 9 (Final - User Persistence, Cron, & Comparison)
+- [x] Add tRPC procedures for saving/unsaving regulations
+- [x] Add tRPC procedures for setting user alerts
+- [x] Wire save button to database persistence
+- [x] Wire alert button to database persistence
+- [ ] Create cron job scheduler configuration
+- [ ] Deploy RSS aggregator to run daily at 2 AM
+- [ ] Create regulation comparison page (/hub/compare)
+- [ ] Implement comparison logic for overlapping standards
+- [x] All 24 tests passing
