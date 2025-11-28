@@ -873,3 +873,89 @@ export const teamRoadmapAccess = mysqlTable("team_roadmap_access", {
 
 export type TeamRoadmapAccess = typeof teamRoadmapAccess.$inferSelect;
 export type InsertTeamRoadmapAccess = typeof teamRoadmapAccess.$inferInsert;
+
+/**
+ * Roadmap Templates - Pre-built compliance roadmaps
+ */
+export const roadmapTemplates = mysqlTable("roadmap_templates", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  category: varchar("category", { length: 64 }).notNull(), // csrd, eudr, esrs, custom
+  strategy: varchar("strategy", { length: 32 }).notNull(), // risk_first, quick_wins, balanced, comprehensive
+  estimatedEffort: int("estimatedEffort").notNull(), // hours
+  estimatedImpact: decimal("estimatedImpact", { precision: 5, scale: 2 }), // percentage
+  targetScore: decimal("targetScore", { precision: 5, scale: 2 }), // projected score
+  isPublic: boolean("isPublic").default(true), // available to all users
+  createdBy: int("createdBy").notNull(),
+  usageCount: int("usageCount").default(0), // track popularity
+  rating: decimal("rating", { precision: 3, scale: 2 }).default("0.00"), // average rating
+  tags: json("tags"), // array of tags for filtering
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  categoryIdx: index("category_idx").on(table.category),
+  createdByIdx: index("createdBy_idx").on(table.createdBy),
+}));
+
+export type RoadmapTemplate = typeof roadmapTemplates.$inferSelect;
+export type InsertRoadmapTemplate = typeof roadmapTemplates.$inferInsert;
+
+/**
+ * Template Actions - Pre-configured actions in templates
+ */
+export const templateActions = mysqlTable("template_actions", {
+  id: int("id").autoincrement().primaryKey(),
+  templateId: int("templateId").notNull(),
+  sequenceNumber: int("sequenceNumber").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  actionType: varchar("actionType", { length: 64 }).notNull(), // resolve_risk, complete_plan, verify_evidence, improve_coverage
+  priority: varchar("priority", { length: 32 }).notNull(), // critical, high, medium, low
+  estimatedEffort: int("estimatedEffort").notNull(), // hours
+  estimatedImpact: decimal("estimatedImpact", { precision: 5, scale: 2 }), // percentage
+  successCriteria: text("successCriteria"),
+  relatedStandards: json("relatedStandards"), // array of ESRS standards
+}, (table) => ({
+  templateIdIdx: index("templateId_idx").on(table.templateId),
+}));
+
+export type TemplateAction = typeof templateActions.$inferSelect;
+export type InsertTemplateAction = typeof templateActions.$inferInsert;
+
+/**
+ * Template Milestones - Pre-configured milestones in templates
+ */
+export const templateMilestones = mysqlTable("template_milestones", {
+  id: int("id").autoincrement().primaryKey(),
+  templateId: int("templateId").notNull(),
+  sequenceNumber: int("sequenceNumber").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  targetScore: decimal("targetScore", { precision: 5, scale: 2 }).notNull(),
+  daysFromStart: int("daysFromStart").notNull(), // relative timeline
+}, (table) => ({
+  templateIdIdx: index("templateId_idx").on(table.templateId),
+}));
+
+export type TemplateMilestone = typeof templateMilestones.$inferSelect;
+export type InsertTemplateMilestone = typeof templateMilestones.$inferInsert;
+
+/**
+ * Template Usage - Track template usage and ratings
+ */
+export const templateUsage = mysqlTable("template_usage", {
+  id: int("id").autoincrement().primaryKey(),
+  templateId: int("templateId").notNull(),
+  userId: int("userId").notNull(),
+  roadmapId: int("roadmapId").notNull(),
+  rating: int("rating"), // 1-5 stars
+  feedback: text("feedback"),
+  usedAt: timestamp("usedAt").defaultNow().notNull(),
+}, (table) => ({
+  templateIdIdx: index("templateId_idx").on(table.templateId),
+  userIdIdx: index("userId_idx").on(table.userId),
+}));
+
+export type TemplateUsage = typeof templateUsage.$inferSelect;
+export type InsertTemplateUsage = typeof templateUsage.$inferInsert;
