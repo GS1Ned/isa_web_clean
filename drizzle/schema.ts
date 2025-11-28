@@ -791,3 +791,85 @@ export const roadmapMilestones = mysqlTable("roadmap_milestones", {
 
 export type RoadmapMilestone = typeof roadmapMilestones.$inferSelect;
 export type InsertRoadmapMilestone = typeof roadmapMilestones.$inferInsert;
+
+/**
+ * Roadmap Comments - Team discussion on roadmaps
+ */
+export const roadmapComments = mysqlTable("roadmap_comments", {
+  id: int("id").autoincrement().primaryKey(),
+  roadmapId: int("roadmapId").notNull(),
+  actionId: int("actionId"), // Optional: comment on specific action
+  userId: int("userId").notNull(),
+  content: text("content").notNull(),
+  isApproval: boolean("isApproval").default(false), // Mark as approval/rejection
+  approvalStatus: varchar("approvalStatus", { length: 32 }), // approved, rejected, pending
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
+  actionIdIdx: index("actionId_idx").on(table.actionId),
+  userIdIdx: index("userId_idx").on(table.userId),
+}));
+
+export type RoadmapComment = typeof roadmapComments.$inferSelect;
+export type InsertRoadmapComment = typeof roadmapComments.$inferInsert;
+
+/**
+ * Roadmap Approvals - Track approval workflows
+ */
+export const roadmapApprovals = mysqlTable("roadmap_approvals", {
+  id: int("id").autoincrement().primaryKey(),
+  roadmapId: int("roadmapId").notNull(),
+  actionId: int("actionId"), // Optional: approval for specific action
+  requiredApproverId: int("requiredApproverId").notNull(), // User who needs to approve
+  approverRole: varchar("approverRole", { length: 64 }), // stakeholder, manager, admin
+  status: varchar("status", { length: 32 }).default("pending"), // pending, approved, rejected
+  approvedAt: timestamp("approvedAt"),
+  approverComments: text("approverComments"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
+  requiredApproverIdIdx: index("requiredApproverId_idx").on(table.requiredApproverId),
+  statusIdx: index("status_idx").on(table.status),
+}));
+
+export type RoadmapApproval = typeof roadmapApprovals.$inferSelect;
+export type InsertRoadmapApproval = typeof roadmapApprovals.$inferInsert;
+
+/**
+ * Roadmap Activity Log - Track all changes and discussions
+ */
+export const roadmapActivityLog = mysqlTable("roadmap_activity_log", {
+  id: int("id").autoincrement().primaryKey(),
+  roadmapId: int("roadmapId").notNull(),
+  userId: int("userId").notNull(),
+  activityType: varchar("activityType", { length: 64 }).notNull(), // created, updated, commented, approved, rejected, action_completed
+  description: text("description"),
+  metadata: json("metadata"), // Additional context
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
+  userIdIdx: index("userId_idx").on(table.userId),
+  activityTypeIdx: index("activityType_idx").on(table.activityType),
+}));
+
+export type RoadmapActivityLog = typeof roadmapActivityLog.$inferSelect;
+export type InsertRoadmapActivityLog = typeof roadmapActivityLog.$inferInsert;
+
+/**
+ * Team Roadmap Access - Control who can view/edit roadmaps
+ */
+export const teamRoadmapAccess = mysqlTable("team_roadmap_access", {
+  id: int("id").autoincrement().primaryKey(),
+  roadmapId: int("roadmapId").notNull(),
+  userId: int("userId").notNull(),
+  accessLevel: varchar("accessLevel", { length: 32 }).notNull(), // viewer, editor, approver
+  grantedBy: int("grantedBy").notNull(), // User who granted access
+  grantedAt: timestamp("grantedAt").defaultNow().notNull(),
+}, (table) => ({
+  roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
+  userIdIdx: index("userId_idx").on(table.userId),
+}));
+
+export type TeamRoadmapAccess = typeof teamRoadmapAccess.$inferSelect;
+export type InsertTeamRoadmapAccess = typeof teamRoadmapAccess.$inferInsert;

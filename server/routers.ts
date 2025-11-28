@@ -32,6 +32,7 @@ import { scoringRouter } from "./routers/scoring.js";
 import { benchmarkingRouter } from "./routers/benchmarking.js";
 import { roadmapRouter } from "./routers/roadmap.js";
 import { roadmapExportRouter } from "./routers/roadmap-export.js";
+import { collaborationRouter } from "./routers/collaboration.js";
 
 export const appRouter = router({
   system: systemRouter,
@@ -675,6 +676,11 @@ export const appRouter = router({
    * Roadmap Export and Sharing Router
    */
   roadmapExport: roadmapExportRouter,
+
+  /**
+   * Roadmap Collaboration Router
+   */
+  collaboration: collaborationRouter,
 
   /**
    * ESRS Datapoints Router
