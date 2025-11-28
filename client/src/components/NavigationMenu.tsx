@@ -61,7 +61,8 @@ export function NavigationMenu() {
       children: [
         { label: "News Management", href: "/admin/news", description: "Manage news articles" },
         { label: "Analytics", href: "/admin/analytics", description: "Hub engagement metrics" },
-        { label: "CELLAR Ingestion", href: "/admin/cellar-ingestion", description: "EU regulation sync" },
+        { label: "CELLAR Ingestion", href: "/admin/cellar", description: "EU regulation sync" },
+        { label: "Sync Monitor", href: "/admin/cellar-sync", description: "Monitor sync history" },
         { label: "EUDR Data Seeder", href: "/admin/eudr-seeder", description: "Populate sample data" },
       ],
     });

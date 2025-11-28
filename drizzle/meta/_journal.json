@@ -43,6 +43,13 @@
       "when": 1764307526133,
       "tag": "0005_first_gargoyle",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1764315961346,
+      "tag": "0006_bent_doomsday",
+      "breakpoints": true
     }
   ]
 }

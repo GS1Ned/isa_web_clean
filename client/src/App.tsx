@@ -27,8 +27,9 @@ import HubUserDashboard from "./pages/HubUserDashboard";
 import AdminNewsPanel from "./pages/AdminNewsPanel";
 import HubRegulationDetail from "./pages/HubRegulationDetail";
 import HubCompare from "./pages/HubCompare";
-import AdminCellarIngestion from "./pages/AdminCellarIngestion";
-import AdminEUDRSeeder from "./pages/AdminEUDRSeeder";
+import AdminCellarIngestion from './pages/AdminCellarIngestion';
+import AdminEUDRSeeder from './pages/AdminEUDRSeeder';
+import AdminCellarSyncMonitor from './pages/AdminCellarSyncMonitor';
 import EPCISUpload from "./pages/EPCISUpload";
 import EPCISSupplyChain from "./pages/EPCISSupplyChain";
 import EPCISEUDRMap from "./pages/EPCISEUDRMap";
@@ -59,14 +60,14 @@ function Router() {
       <Route path="/hub/impact-matrix" component={HubImpactMatrix} />
       <Route path="/hub/dashboard" component={HubUserDashboard} />
       <Route path="/hub/compare" component={HubCompare} />
-      <Route path="/admin/news" component={AdminNewsPanel} />
-      <Route path="/admin/cellar-ingestion" component={AdminCellarIngestion} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
+      <Route path="/admin/cellar" component={AdminCellarIngestion} />
+      <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />
       <Route path="/epcis/upload" component={EPCISUpload} />
       <Route path="/epcis/supply-chain" component={EPCISSupplyChain} />
       <Route path="/epcis/eudr-map" component={EPCISEUDRMap} />
-        <Route path="/tools/scanner" component={BarcodeScanner} />
-        <Route path="/tools/compliance-report" component={ComplianceReport} />
+      <Route path="/tools/scanner" component={BarcodeScanner} />
+      <Route path="/tools/compliance-report" component={ComplianceReport} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path={"/admin/analytics"} component={AdminAnalyticsDashboard} />

@@ -321,3 +321,25 @@ export const eudrGeolocation = mysqlTable("eudr_geolocation", {
 
 export type EUDRGeolocation = typeof eudrGeolocation.$inferSelect;
 export type InsertEUDRGeolocation = typeof eudrGeolocation.$inferInsert;
+
+/**
+ * Ingestion Logs - Track CELLAR regulation sync history
+ */
+export const ingestionLogs = mysqlTable("ingestion_logs", {
+  id: int("id").autoincrement().primaryKey(),
+  syncStartTime: timestamp("syncStartTime").notNull(),
+  syncEndTime: timestamp("syncEndTime"),
+  status: mysqlEnum("status", ["pending", "success", "failed"]).default("pending").notNull(),
+  regulationsInserted: int("regulationsInserted").default(0).notNull(),
+  regulationsUpdated: int("regulationsUpdated").default(0).notNull(),
+  regulationsTotal: int("regulationsTotal").default(0).notNull(),
+  errors: int("errors").default(0).notNull(),
+  errorDetails: text("errorDetails"),
+  durationSeconds: int("durationSeconds"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  statusIdx: index("status_idx").on(table.status),
+  syncStartTimeIdx: index("syncStartTime_idx").on(table.syncStartTime),
+}));
+export type IngestionLog = typeof ingestionLogs.$inferSelect;
+export type InsertIngestionLog = typeof ingestionLogs.$inferInsert;

@@ -16,8 +16,8 @@ import {
   mergeRegulationData,
 } from "./cellar-normalizer";
 import { getDb } from "./db";
-import { regulations } from "../drizzle/schema";
-import { eq } from "drizzle-orm";
+import { regulations, ingestionLogs } from "../drizzle/schema";
+import { eq, desc } from "drizzle-orm";
 
 /**
  * Admin-only procedure (requires admin role)
@@ -32,6 +32,36 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
   return next({ ctx });
 });
 
+/**
+ * Log ingestion operation to database
+ */
+async function logIngestion(
+  status: 'success' | 'failed',
+  inserted: number,
+  updated: number,
+  total: number,
+  errors: number,
+  errorDetails?: string,
+  durationSeconds?: number
+) {
+  const db = await getDb();
+  if (!db) return;
+  
+  const startTime = new Date(Date.now() - (durationSeconds ? durationSeconds * 1000 : 0));
+  
+  await db.insert(ingestionLogs).values({
+    syncStartTime: startTime,
+    syncEndTime: new Date(),
+    status,
+    regulationsInserted: inserted,
+    regulationsUpdated: updated,
+    regulationsTotal: total,
+    errors,
+    errorDetails,
+    durationSeconds,
+  });
+}
+
 export const cellarIngestionRouter = router({
   /**
    * Test CELLAR connection
@@ -42,6 +72,44 @@ export const cellarIngestionRouter = router({
       success: isConnected,
       endpoint: 'https://publications.europa.eu/webapi/rdf/sparql',
     };
+  }),
+
+  /**
+   * Get sync history (ingestion logs)
+   */
+  getSyncHistory: adminProcedure.query(async () => {
+    const db = await getDb();
+    if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+    
+    const logs = await db
+      .select()
+      .from(ingestionLogs)
+      .orderBy(desc(ingestionLogs.syncStartTime))
+      .limit(50);
+    
+    return {
+      logs,
+      totalSyncs: logs.length,
+      lastSync: logs[0] || null,
+      successCount: logs.filter(l => l.status === 'success').length,
+      failureCount: logs.filter(l => l.status === 'failed').length,
+    };
+  }),
+
+  /**
+   * Get latest sync status
+   */
+  getLatestSyncStatus: adminProcedure.query(async () => {
+    const db = await getDb();
+    if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+    
+    const [latest] = await db
+      .select()
+      .from(ingestionLogs)
+      .orderBy(desc(ingestionLogs.syncStartTime))
+      .limit(1);
+    
+    return latest || null;
   }),
 
   /**
