@@ -8,6 +8,7 @@ import { Bookmark, Share2, Download, AlertCircle, CheckCircle, Clock } from "luc
 import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 import { toast } from "sonner";
+import { ExportButtons } from "@/components/ExportButtons";
 
 // Mock regulation data - in production, fetch from tRPC
 const MOCK_REGULATIONS: Record<number, any> = {
@@ -162,7 +163,12 @@ export default function HubRegulationDetail() {
               <h1 className="text-4xl font-bold mb-2">{regulation.title}</h1>
               <p className="text-blue-100 text-lg">{regulation.description}</p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap justify-end">
+              <ExportButtons
+                regulationId={String(regulation.id)}
+                regulationTitle={regulation.title}
+                variant="outline"
+              />
               <Button
                 variant="outline"
                 size="icon"

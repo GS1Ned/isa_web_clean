@@ -225,3 +225,14 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Test PDF export with timeline and checklist data
 - [x] Test CSV export with regulation metadata
 - [x] All 48 tests passing (24 export tests + 24 existing tests)
+
+## Phase 23: ESG Hub - Phase 13 (Export Enhancements - Integration, Scheduling, Branding)
+- [x] Integrate ExportButtons into HubRegulationDetail.tsx
+- [x] Add export buttons to regulation list pages (HubRegulations.tsx)
+- [x] Create background export scheduler (export-scheduler.ts)
+- [x] Implement PDF caching mechanism with S3 storage
+- [x] Create branded PDF template with company logo and headers (export-utils-branded.ts)
+- [x] Add white-label configuration options with BrandingConfig
+- [x] Implement cache invalidation strategy (invalidateCache, cleanupExpiredCache)
+- [x] Test export scheduling and caching (export-enhancements.test.ts)
+- [x] All 77 tests passing (24 export + 29 enhancements + 24 routers)

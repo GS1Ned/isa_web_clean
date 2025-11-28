@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { Search, Filter, ChevronRight, Calendar, FileText, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { BulkExportButtons } from "@/components/ExportButtons";
 
 const SAMPLE_REGULATIONS = [
   {
