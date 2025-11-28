@@ -300,12 +300,14 @@ export default function BarcodeScanner() {
                 <strong>Supported formats:</strong> GTIN-14, GTIN-13, GTIN-12, GTIN-8 (padded to 14 digits)
               </p>
               <p>
-                <strong>Example GTINs to try:</strong>
+                <strong>Example GTINs to try (after seeding sample data):</strong>
               </p>
               <ul className="list-disc list-inside ml-4 space-y-1">
-                <li>00123456789012 - Sample coffee product</li>
-                <li>00234567890123 - Sample cocoa product</li>
-                <li>00345678901234 - Sample palm oil product</li>
+                <li>00123456789012 - Coffee from Brazil (Rainforest Alliance)</li>
+                <li>00234567890123 - Cocoa from Ghana (Fairtrade)</li>
+                <li>00345678901234 - Palm Oil from Indonesia (RSPO)</li>
+                <li>00456789012345 - Timber from Sweden (FSC Certified)</li>
+                <li>00567890123456 - Soy from Brazil (Organic)</li>
               </ul>
             </div>
           </Card>

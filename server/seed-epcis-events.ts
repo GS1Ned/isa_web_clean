@@ -45,6 +45,7 @@ const sampleEvents: EPCISEventData[] = [
     epcList: [
       "urn:epc:id:sgtin:0123456.789012.1001",
       "urn:epc:id:sgtin:0123456.789012.1002",
+      "00123456789012", // Simple GTIN for barcode scanner
     ],
     ilmd: {
       harvestDate: daysAgo(180).toISOString(),
@@ -61,7 +62,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:in_progress",
     readPoint: "urn:epc:id:sgln:0123456.00002.0",
     bizLocation: "urn:epc:id:sgln:0123456.00002.0",
-    epcList: ["urn:epc:id:sgtin:0123456.789012.2001"],
+    epcList: ["urn:epc:id:sgtin:0123456.789012.2001", "00123456789012"],
     ilmd: {
       processType: "Wet processing",
       dryingMethod: "Sun-dried",
@@ -77,7 +78,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:in_transit",
     readPoint: "urn:epc:id:sgln:0123456.00003.0",
     bizLocation: "urn:epc:id:sgln:0123456.00003.0",
-    epcList: ["urn:epc:id:sgtin:0123456.789012.2001"],
+    epcList: ["urn:epc:id:sgtin:0123456.789012.2001", "00123456789012"],
     sourceList: [
       { type: "urn:epcglobal:cbv:sdt:owning_party", source: "urn:epc:id:sgln:0123456.00002.0" },
     ],
@@ -94,7 +95,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:in_progress",
     readPoint: "urn:epc:id:sgln:0234567.00001.0",
     bizLocation: "urn:epc:id:sgln:0234567.00001.0",
-    epcList: ["urn:epc:id:sgtin:0123456.789012.2001"],
+    epcList: ["urn:epc:id:sgtin:0123456.789012.2001", "00123456789012"],
   },
 
   // Cocoa from Ghana - Transformation chain
@@ -107,7 +108,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:active",
     readPoint: "urn:epc:id:sgln:0234567.00010.0",
     bizLocation: "urn:epc:id:sgln:0234567.00010.0",
-    epcList: ["urn:epc:id:sgtin:0234567.890123.1001"],
+    epcList: ["urn:epc:id:sgtin:0234567.890123.1001", "00234567890123"],
     ilmd: {
       harvestDate: daysAgo(150).toISOString(),
       farmLocation: { lat: 6.6885, lng: -1.6244 },
@@ -123,7 +124,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:in_progress",
     readPoint: "urn:epc:id:sgln:0234567.00011.0",
     bizLocation: "urn:epc:id:sgln:0234567.00011.0",
-    epcList: ["urn:epc:id:sgtin:0234567.890123.2001"],
+    epcList: ["urn:epc:id:sgtin:0234567.890123.2001", "00234567890123"],
     ilmd: {
       processType: "Fermentation and drying",
       fermentationDays: 7,
@@ -141,7 +142,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:active",
     readPoint: "urn:epc:id:sgln:0345678.00010.0",
     bizLocation: "urn:epc:id:sgln:0345678.00010.0",
-    epcList: ["urn:epc:id:sgtin:0345678.901241.1001"],
+    epcList: ["urn:epc:id:sgtin:0345678.901241.1001", "00345678901234"],
     quantityList: [
       {
         epcClass: "urn:epc:class:lgtin:0345678.901241.lot001",
@@ -165,7 +166,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:container_closed",
     readPoint: "urn:epc:id:sgln:0345678.00011.0",
     bizLocation: "urn:epc:id:sgln:0345678.00011.0",
-    epcList: ["urn:epc:id:sgtin:0345678.901241.1001"],
+    epcList: ["urn:epc:id:sgtin:0345678.901241.1001", "00345678901234"],
   },
   {
     eventType: "ObjectEvent",
@@ -176,7 +177,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:in_transit",
     readPoint: "urn:epc:id:sgln:0345678.00012.0",
     bizLocation: "urn:epc:id:sgln:0345678.00012.0",
-    epcList: ["urn:epc:id:sgtin:0345678.901241.1001"],
+    epcList: ["urn:epc:id:sgtin:0345678.901241.1001", "00345678901234"],
     sensorElementList: [
       {
         sensorMetadata: {
@@ -209,7 +210,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:active",
     readPoint: "urn:epc:id:sgln:0456789.00010.0",
     bizLocation: "urn:epc:id:sgln:0456789.00010.0",
-    epcList: ["urn:epc:id:sgtin:0456789.012352.1001"],
+    epcList: ["urn:epc:id:sgtin:0456789.012352.1001", "00456789012345"],
     ilmd: {
       harvestDate: daysAgo(200).toISOString(),
       forestLocation: { lat: 62.3908, lng: 16.3250 },
@@ -226,7 +227,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:in_progress",
     readPoint: "urn:epc:id:sgln:0456789.00011.0",
     bizLocation: "urn:epc:id:sgln:0456789.00011.0",
-    epcList: ["urn:epc:id:sgtin:0456789.012352.2001"],
+    epcList: ["urn:epc:id:sgtin:0456789.012352.2001", "00456789012345"],
     ilmd: {
       processType: "Sawmill processing",
       dimensions: "50mm x 150mm x 3000mm",
@@ -242,7 +243,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:in_transit",
     readPoint: "urn:epc:id:sgln:0456789.00012.0",
     bizLocation: "urn:epc:id:sgln:0456789.00012.0",
-    epcList: ["urn:epc:id:sgtin:0456789.012352.2001"],
+    epcList: ["urn:epc:id:sgtin:0456789.012352.2001", "00456789012345"],
     sourceList: [
       { type: "urn:epcglobal:cbv:sdt:owning_party", source: "urn:epc:id:sgln:0456789.00011.0" },
     ],
@@ -261,7 +262,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:active",
     readPoint: "urn:epc:id:sgln:0567890.00010.0",
     bizLocation: "urn:epc:id:sgln:0567890.00010.0",
-    epcList: ["urn:epc:id:sgtin:0567890.123463.1001"],
+    epcList: ["urn:epc:id:sgtin:0567890.123463.1001", "00567890123456"],
     quantityList: [
       {
         epcClass: "urn:epc:class:lgtin:0567890.123463.lot001",
@@ -286,7 +287,7 @@ const sampleEvents: EPCISEventData[] = [
     disposition: "urn:epcglobal:cbv:disp:in_progress",
     readPoint: "urn:epc:id:sgln:0567890.00011.0",
     bizLocation: "urn:epc:id:sgln:0567890.00011.0",
-    epcList: ["urn:epc:id:sgtin:0567890.123463.1001"],
+    epcList: ["urn:epc:id:sgtin:0567890.123463.1001", "00567890123456"],
     sensorElementList: [
       {
         sensorMetadata: {
