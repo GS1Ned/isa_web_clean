@@ -27,6 +27,7 @@ import { gs1StandardsRouter } from "./gs1-standards-router.js";
 import { epcisRouter } from "./epcis-router.js";
 import { batchEpcisRouter } from "./routers/batch-epcis.js";
 import { complianceRisksRouter } from "./routers/compliance-risks.js";
+import { remediationRouter } from "./routers/remediation.js";
 
 export const appRouter = router({
   system: systemRouter,
@@ -645,6 +646,11 @@ export const appRouter = router({
    * Compliance Risk Detection Router
    */
   complianceRisks: complianceRisksRouter,
+
+  /**
+   * Risk Remediation Router
+   */
+  remediation: remediationRouter,
 
   /**
    * ESRS Datapoints Router

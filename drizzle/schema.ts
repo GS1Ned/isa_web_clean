@@ -485,3 +485,121 @@ export const supplyChainAnalytics = mysqlTable("supply_chain_analytics", {
 
 export type SupplyChainAnalytics = typeof supplyChainAnalytics.$inferSelect;
 export type InsertSupplyChainAnalytics = typeof supplyChainAnalytics.$inferInsert;
+
+/**
+ * Risk Remediation Plans - Structured workflows for addressing compliance risks
+ */
+export const riskRemediationPlans = mysqlTable("risk_remediation_plans", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  riskId: int("riskId").notNull(),
+  status: mysqlEnum("status", ["draft", "in_progress", "completed", "cancelled"]).default("draft").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  targetCompletionDate: timestamp("targetCompletionDate"),
+  completedAt: timestamp("completedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  riskIdIdx: index("riskId_idx").on(table.riskId),
+  statusIdx: index("status_idx").on(table.status),
+}));
+
+export type RiskRemediationPlan = typeof riskRemediationPlans.$inferSelect;
+export type InsertRiskRemediationPlan = typeof riskRemediationPlans.$inferInsert;
+
+/**
+ * Remediation Steps - Individual action items within a remediation plan
+ */
+export const remediationSteps = mysqlTable("remediation_steps", {
+  id: int("id").autoincrement().primaryKey(),
+  planId: int("planId").notNull(),
+  stepNumber: int("stepNumber").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  requiredEvidence: text("requiredEvidence"), // JSON array of evidence types
+  status: mysqlEnum("status", ["pending", "in_progress", "completed", "skipped"]).default("pending").notNull(),
+  assignedTo: varchar("assignedTo", { length: 255 }),
+  dueDate: timestamp("dueDate"),
+  completedAt: timestamp("completedAt"),
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  planIdIdx: index("planId_idx").on(table.planId),
+  statusIdx: index("status_idx").on(table.status),
+}));
+
+export type RemediationStep = typeof remediationSteps.$inferSelect;
+export type InsertRemediationStep = typeof remediationSteps.$inferInsert;
+
+/**
+ * Compliance Evidence - Documents and records proving remediation
+ */
+export const complianceEvidence = mysqlTable("compliance_evidence", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  stepId: int("stepId").notNull(),
+  evidenceType: varchar("evidenceType", { length: 128 }).notNull(), // e.g., "certification", "audit_report", "supplier_declaration"
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  fileUrl: varchar("fileUrl", { length: 512 }), // S3 URL
+  fileKey: varchar("fileKey", { length: 512 }), // S3 key for retrieval
+  mimeType: varchar("mimeType", { length: 128 }),
+  fileSize: int("fileSize"), // in bytes
+  uploadedBy: varchar("uploadedBy", { length: 255 }),
+  verificationStatus: mysqlEnum("verificationStatus", ["pending", "verified", "rejected"]).default("pending").notNull(),
+  verifiedAt: timestamp("verifiedAt"),
+  verifiedBy: varchar("verifiedBy", { length: 255 }),
+  verificationNotes: text("verificationNotes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  stepIdIdx: index("stepId_idx").on(table.stepId),
+  verificationStatusIdx: index("verificationStatus_idx").on(table.verificationStatus),
+}));
+
+export type ComplianceEvidence = typeof complianceEvidence.$inferSelect;
+export type InsertComplianceEvidence = typeof complianceEvidence.$inferInsert;
+
+/**
+ * Remediation Templates - Pre-built workflows for common risk types
+ */
+export const remediationTemplates = mysqlTable("remediation_templates", {
+  id: int("id").autoincrement().primaryKey(),
+  riskType: varchar("riskType", { length: 128 }).notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  steps: json("steps").notNull(), // JSON array of step templates
+  estimatedDays: int("estimatedDays"),
+  isActive: boolean("isActive").default(true),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  riskTypeIdx: index("riskType_idx").on(table.riskType),
+}));
+
+export type RemediationTemplate = typeof remediationTemplates.$inferSelect;
+export type InsertRemediationTemplate = typeof remediationTemplates.$inferInsert;
+
+/**
+ * Remediation Progress - Track completion metrics
+ */
+export const remediationProgress = mysqlTable("remediation_progress", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  planId: int("planId").notNull(),
+  totalSteps: int("totalSteps").notNull(),
+  completedSteps: int("completedSteps").default(0),
+  evidenceSubmitted: int("evidenceSubmitted").default(0),
+  evidenceVerified: int("evidenceVerified").default(0),
+  progressPercentage: int("progressPercentage").default(0),
+  lastUpdated: timestamp("lastUpdated").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  planIdIdx: index("planId_idx").on(table.planId),
+}));
+
+export type RemediationProgress = typeof remediationProgress.$inferSelect;
+export type InsertRemediationProgress = typeof remediationProgress.$inferInsert;
