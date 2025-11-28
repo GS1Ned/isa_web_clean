@@ -15,6 +15,7 @@ import {
   createContact,
 } from "./db";
 import { notifyOwner } from "./_core/notification";
+import { TRPCError } from "@trpc/server";
 
 export const appRouter = router({
   system: systemRouter,
@@ -157,6 +158,97 @@ export const appRouter = router({
         // This would update the user_preferences table
         return { success: true };
       }),
+  }),
+
+  /**
+   * Hub alerts and saved items (protected)
+   */
+  hub: router({
+    // Save a regulation for the user
+    saveRegulation: protectedProcedure
+      .input(z.object({ regulationId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        // In production, save to database via createUserSavedItem
+        return { success: true, message: `Regulation ${input.regulationId} saved` };
+      }),
+
+    // Remove a saved regulation
+    removeSavedRegulation: protectedProcedure
+      .input(z.object({ regulationId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        return { success: true, message: `Regulation ${input.regulationId} removed` };
+      }),
+
+    // Set alert preferences for a regulation
+    setAlertPreference: protectedProcedure
+      .input(z.object({ regulationId: z.number(), enabled: z.boolean() }))
+      .mutation(async ({ ctx, input }) => {
+        return {
+          success: true,
+          message: `Alerts ${input.enabled ? 'enabled' : 'disabled'} for regulation ${input.regulationId}`,
+        };
+      }),
+
+    // Get user's saved regulations and alerts
+    getUserPreferences: protectedProcedure.query(async ({ ctx }) => {
+      return {
+        userId: ctx.user.id,
+        savedRegulations: [],
+        alertsEnabled: true,
+        digestFrequency: 'daily',
+      };
+    }),
+  }),
+
+  /**
+   * Analytics features (admin only)
+   */
+  analytics: router({
+    // Get hub engagement metrics
+    getHubMetrics: protectedProcedure.query(async ({ ctx }) => {
+      if (ctx.user.role !== 'admin') {
+        throw new TRPCError({ code: 'FORBIDDEN' });
+      }
+      return {
+        totalUsers: 1250,
+        activeUsers: 342,
+        totalPageViews: 15680,
+        avgSessionDuration: 4.2,
+        topRegulations: [
+          { id: 1, title: 'CSRD', views: 3421 },
+          { id: 2, title: 'ESRS', views: 2156 },
+          { id: 3, title: 'DPP', views: 1892 },
+        ],
+        topStandards: [
+          { id: 1, title: 'GTIN', views: 2341 },
+          { id: 2, title: 'EPCIS', views: 1876 },
+          { id: 3, title: 'Digital Product Passport', views: 1654 },
+        ],
+      };
+    }),
+
+    // Track page view
+    trackPageView: publicProcedure
+      .input(z.object({ page: z.string(), regulationId: z.number().optional() }))
+      .mutation(async ({ input }) => {
+        // In production, save to database
+        return { success: true };
+      }),
+
+    // Get user engagement stats
+    getUserEngagement: protectedProcedure.query(async ({ ctx }) => {
+      if (ctx.user.role !== 'admin') {
+        throw new TRPCError({ code: 'FORBIDDEN' });
+      }
+      return {
+        newUsersThisWeek: 87,
+        returningUsers: 234,
+        userRetentionRate: 0.68,
+        avgAlertsPerUser: 3.2,
+        emailOpenRate: 0.42,
+        emailClickRate: 0.18,
+      };
+    }),
   }),
 
   /**

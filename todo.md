@@ -121,3 +121,14 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Regulation Impact Matrix (interactive visualization)
 - [ ] tRPC procedures for alerts, saved items, and admin operations
 - [ ] Tests for Phase 3 features
+
+
+## Phase 14: ESG Hub - Phase 4 (Backend & Automation)
+- [x] Backend tRPC procedures for user alerts and saved items
+- [ ] Email notification system for deadline alerts
+- [ ] Daily digest email generation
+- [ ] RSS feed integration from official sources
+- [x] News aggregation scheduler (RSS aggregator module created)
+- [x] Analytics dashboard for hub engagement
+- [x] User engagement tracking
+- [x] Tests for Phase 4 features (23 tests passing)

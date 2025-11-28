@@ -173,4 +173,124 @@ describe("ISA tRPC Routers", () => {
       expect(result.success).toBe(true);
     });
   });
+
+  describe("hub router (Phase 4)", () => {
+    it("should save a regulation for authenticated users", async () => {
+      const authContext = createMockContext(true);
+      const authCaller = appRouter.createCaller(authContext);
+
+      const result = await authCaller.hub.saveRegulation({ regulationId: 1 });
+
+      expect(result.success).toBe(true);
+      expect(result.message).toContain("saved");
+    });
+
+    it("should remove a saved regulation", async () => {
+      const authContext = createMockContext(true);
+      const authCaller = appRouter.createCaller(authContext);
+
+      const result = await authCaller.hub.removeSavedRegulation({ regulationId: 1 });
+
+      expect(result.success).toBe(true);
+      expect(result.message).toContain("removed");
+    });
+
+    it("should set alert preferences", async () => {
+      const authContext = createMockContext(true);
+      const authCaller = appRouter.createCaller(authContext);
+
+      const result = await authCaller.hub.setAlertPreference({
+        regulationId: 1,
+        enabled: true,
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.message).toContain("enabled");
+    });
+
+    it("should get user preferences", async () => {
+      const authContext = createMockContext(true);
+      const authCaller = appRouter.createCaller(authContext);
+
+      const result = await authCaller.hub.getUserPreferences();
+
+      expect(result).toHaveProperty("userId");
+      expect(result).toHaveProperty("savedRegulations");
+      expect(result).toHaveProperty("alertsEnabled");
+      expect(result).toHaveProperty("digestFrequency");
+    });
+  });
+
+  describe("analytics router (Phase 4)", () => {
+    it("should get hub metrics for admin users", async () => {
+      // Create an admin user context
+      const adminContext = {
+        user: {
+          id: 1,
+          openId: "admin-user",
+          email: "admin@example.com",
+          name: "Admin User",
+          loginMethod: "manus",
+          role: "admin" as const,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          lastSignedIn: new Date(),
+        },
+        req: { protocol: "https", headers: {} } as TrpcContext["req"],
+        res: { clearCookie: vi.fn() } as unknown as TrpcContext["res"],
+      };
+      const adminCaller = appRouter.createCaller(adminContext);
+
+      const result = await adminCaller.analytics.getHubMetrics();
+
+      expect(result).toHaveProperty("totalUsers");
+      expect(result).toHaveProperty("activeUsers");
+      expect(result).toHaveProperty("totalPageViews");
+      expect(result).toHaveProperty("topRegulations");
+      expect(result).toHaveProperty("topStandards");
+      expect(Array.isArray(result.topRegulations)).toBe(true);
+      expect(Array.isArray(result.topStandards)).toBe(true);
+    });
+
+    it("should track page views", async () => {
+      const publicContext = createMockContext(false);
+      const publicCaller = appRouter.createCaller(publicContext);
+
+      const result = await publicCaller.analytics.trackPageView({
+        page: "/hub/regulations",
+        regulationId: 1,
+      });
+
+      expect(result.success).toBe(true);
+    });
+
+    it("should get user engagement stats for admin users", async () => {
+      // Create an admin user context
+      const adminContext = {
+        user: {
+          id: 1,
+          openId: "admin-user",
+          email: "admin@example.com",
+          name: "Admin User",
+          loginMethod: "manus",
+          role: "admin" as const,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          lastSignedIn: new Date(),
+        },
+        req: { protocol: "https", headers: {} } as TrpcContext["req"],
+        res: { clearCookie: vi.fn() } as unknown as TrpcContext["res"],
+      };
+      const adminCaller = appRouter.createCaller(adminContext);
+
+      const result = await adminCaller.analytics.getUserEngagement();
+
+      expect(result).toHaveProperty("newUsersThisWeek");
+      expect(result).toHaveProperty("returningUsers");
+      expect(result).toHaveProperty("userRetentionRate");
+      expect(result).toHaveProperty("avgAlertsPerUser");
+      expect(result).toHaveProperty("emailOpenRate");
+      expect(result).toHaveProperty("emailClickRate");
+    });
+  });
 });
