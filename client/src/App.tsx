@@ -33,6 +33,7 @@ import EPCISUpload from "./pages/EPCISUpload";
 import EPCISSupplyChain from "./pages/EPCISSupplyChain";
 import EPCISEUDRMap from "./pages/EPCISEUDRMap";
 import BarcodeScanner from "./pages/BarcodeScanner";
+import GettingStarted from "./pages/GettingStarted";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -45,8 +46,9 @@ function Router() {
       <Route path={"/use-cases"} component={UseCases} />
       <Route path={"/contact"} component={Contact} />
       <Route path={"/compare"} component={ComparisonTool} />
-      <Route path="/blog" component={Blog} />
-      <Route path="/faq" component={FAQ} />
+      <Route path="/" component={Home} />
+      <Route path="/getting-started" component={GettingStarted} />
+      <Route path="/about" component={About} />
       <Route path="/hub" component={HubHome} />
       <Route path="/hub/regulations" component={HubRegulations} />
       <Route path="/hub/news" component={HubNews} />

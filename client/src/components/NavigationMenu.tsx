@@ -17,6 +17,10 @@ export function NavigationMenu() {
 
   const navItems: NavItem[] = [
     {
+      label: "Getting Started",
+      href: "/getting-started",
+    },
+    {
       label: "ESG Hub",
       children: [
         { label: "Hub Home", href: "/hub", description: "Overview and key statistics" },

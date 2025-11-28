@@ -35,8 +35,8 @@ export default function Home() {
               <a href={getLoginUrl()} className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-gradient-primary text-accent-foreground font-medium hover:shadow-lg transition">
                 Get Started <ArrowRight className="w-4 h-4 ml-2" />
               </a>
-              <Link href="#features" className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium hover:bg-card transition">
-                Learn More
+              <Link href="/getting-started" className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium hover:bg-card transition">
+                Getting Started Guide
               </Link>
             </div>
           </div>
