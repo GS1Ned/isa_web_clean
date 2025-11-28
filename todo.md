@@ -867,3 +867,15 @@ Note: Enables proactive regulatory change management. Admins notified automatica
 - [x] Save checkpoint with production-ready data
 
 Note: Transforms ISA from 64 sample records to 1,100+ official records (18x increase). Uses EFRAG IG 3 (1000+ ESRS datapoints) and GS1 Standards Log (100-150 standards). Research findings in /home/ubuntu/research_findings.md and roadmap in /home/ubuntu/integration_roadmap.md.
+
+
+## Phase 66: Fix CELLAR Test Failure (Bug Fix - Session 6)
+- [x] Read failing test file (run-first-ingestion.test.ts)
+- [x] Analyze test expectations vs actual behavior (0 regulations retrieved)
+- [x] Check CELLAR connector implementation (getAllRecentRegulations method)
+- [x] Identify root cause (Incorrect CELEX ID regex pattern)
+- [x] Implement fix (Changed regex from ^3[0-9]{4}[LR] to celex:3[0-9]{4}[LR][0-9])
+- [x] Run test suite to verify fix (173/173 passing - 100%)
+- [x] Save checkpoint
+
+Note: Root cause was incorrect CELEX ID regex pattern. Pattern didn't account for 'celex:' prefix and had type letter (L/R) in wrong position. Actual format: celex:32017R0373 (prefix + year + type + sequential number).

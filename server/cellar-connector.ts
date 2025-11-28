@@ -192,7 +192,7 @@ export class CellarConnector {
         ?act cdm:resource_legal_date_entry-into-force ?dateEntryIntoForce .
         OPTIONAL { ?act rdfs:label ?title } .
         FILTER(?dateEntryIntoForce >= "${startYear}-01-01"^^xsd:date)
-        FILTER(REGEX(?actID, "^3[0-9]{4}[LR]", "i"))
+        FILTER(REGEX(?actID, "celex:3[0-9]{4}[LR][0-9]", "i"))
       }
       ORDER BY DESC(?dateEntryIntoForce)
       LIMIT ${limit}
