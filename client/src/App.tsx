@@ -9,6 +9,8 @@ import About from "./pages/About";
 import HowItWorks from "./pages/HowItWorks";
 import Dashboard from "./pages/Dashboard";
 import AdminPanel from "./pages/AdminPanel";
+import FeaturesComparison from "./pages/FeaturesComparison";
+import UseCases from "./pages/UseCases";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -17,6 +19,8 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={About} />
       <Route path={"/how-it-works"} component={HowItWorks} />
+      <Route path={"/features"} component={FeaturesComparison} />
+      <Route path={"/use-cases"} component={UseCases} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path={"/404"} component={NotFound} />

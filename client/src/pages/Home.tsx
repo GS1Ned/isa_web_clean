@@ -22,8 +22,11 @@ export default function Home() {
             <Link href="/how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition">
               How It Works
             </Link>
-            <Link href="#roadmap" className="text-sm text-muted-foreground hover:text-foreground transition">
-              Roadmap
+            <Link href="/features" className="text-sm text-muted-foreground hover:text-foreground transition">
+              Features
+            </Link>
+            <Link href="/use-cases" className="text-sm text-muted-foreground hover:text-foreground transition">
+              Use Cases
             </Link>
             <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition">
               About

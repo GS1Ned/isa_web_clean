@@ -2,9 +2,10 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
-import { Zap, Search, Filter, TrendingUp, AlertCircle, Loader2 } from "lucide-react";
+import { Zap, Search, Filter, TrendingUp, AlertCircle, Loader2, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { exportToJSON, exportToCSV, exportToPDF, exportToHTML, generateFilename } from "@/lib/export";
 
 export default function Dashboard() {
   const { isAuthenticated, loading: authLoading } = useAuth();
@@ -144,6 +145,48 @@ export default function Dashboard() {
                     ))}
                   </div>
                 </div>
+
+                {/* Export Buttons */}
+                {filteredRegulations.length > 0 && (
+                  <div className="flex gap-2 flex-wrap mb-6">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => exportToJSON(filteredRegulations, generateFilename("json"))}
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      JSON
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => exportToCSV(filteredRegulations, generateFilename("csv"))}
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      CSV
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => exportToPDF(filteredRegulations, generateFilename("pdf"))}
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      PDF
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => exportToHTML(filteredRegulations, generateFilename("html"))}
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      HTML
+                    </Button>
+                  </div>
+                )}
 
                 {/* Regulations List */}
                 <div className="space-y-4">

@@ -27,6 +27,9 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Build interactive demo dashboard with live filtering (NEW)
 - [x] Implement admin content panel for demo data seeding (NEW)
 - [x] Create "How It Works" page with animated workflow (NEW)
+- [x] Features Comparison Table page with v0.3/v1.0/v2.0 roadmap (NEW)
+- [x] Export functionality (JSON, CSV, PDF) on dashboard (NEW)
+- [x] Use Cases page with role-specific scenarios (NEW)
 
 ## Phase 4: Database & Backend Features
 - [x] Design database schema for regulatory data, standards mappings, and user interactions
