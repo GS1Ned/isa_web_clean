@@ -255,3 +255,20 @@ The ISA (Intelligent Standards Architect) website is a full-stack marketing and 
 - [x] Specify milestones, deliverables, and KPIs
 - [x] Create architecture diagrams and specifications (4 diagrams created)
 - [x] Deliver comprehensive ISA strategic roadmap document (50+ pages, docs/ISA_Strategic_Roadmap.md)
+
+
+## Phase 25: Automation Infrastructure - CELLAR SPARQL & Airflow (Phase 1 MVP)
+- [x] Research CELLAR SPARQL endpoint authentication and query syntax (public endpoint, no auth)
+- [x] Design CELLAR connector architecture with error handling
+- [x] Implement CELLAR SPARQL client with TypeScript (cellar-connector.ts)
+- [x] Create SPARQL query templates for EU regulations (5 query methods)
+- [x] Build data normalization pipeline (CELEX → ISA schema) (cellar-normalizer.ts)
+- [x] Write tests for CELLAR connector and normalization
+- [x] Create cron-based scheduler (cellar-ingestion-scheduler.mjs)
+- [x] Implement error recovery and retry logic (3 retries with exponential backoff)
+- [x] Add monitoring and alerting for pipeline failures (JSON logging)
+- [x] Integrate with existing database schema (regulations table)
+- [x] Test end-to-end ingestion workflow (cellar-ingestion-integration.test.ts)
+- [x] Create tRPC admin procedures for manual ingestion (cellar-ingestion-router.ts)
+- [x] Write deployment documentation (CELLAR_INGESTION_DEPLOYMENT.md)
+- [x] All 118 tests passing (11 connector + 17 normalizer + 13 integration + 77 existing)

@@ -19,6 +19,7 @@ import { userSavedItems, userAlerts } from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 import { TRPCError } from "@trpc/server";
+import { cellarIngestionRouter } from "./cellar-ingestion-router";
 
 export const appRouter = router({
   system: systemRouter,
@@ -520,6 +521,11 @@ export const appRouter = router({
         }
       }),
   }),
+
+  /**
+   * CELLAR Ingestion Router (Admin only)
+   */
+  cellarIngestion: cellarIngestionRouter,
 
 });;
 
