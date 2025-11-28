@@ -597,3 +597,161 @@ export async function deleteRegulationEsrsMappings(regulationId: number) {
     return false;
   }
 }
+
+
+/**
+ * Submit or update user feedback on an ESRS mapping
+ */
+export async function submitMappingFeedback(params: {
+  userId: number;
+  mappingId: number;
+  vote: boolean;
+}) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot submit mapping feedback: database not available");
+    return null;
+  }
+
+  try {
+    const { mappingFeedback } = await import("../drizzle/schema");
+    const { eq, and } = await import("drizzle-orm");
+
+    // Check if user already voted on this mapping
+    const existing = await db
+      .select()
+      .from(mappingFeedback)
+      .where(
+        and(
+          eq(mappingFeedback.userId, params.userId),
+          eq(mappingFeedback.mappingId, params.mappingId)
+        )
+      )
+      .limit(1);
+
+    if (existing.length > 0) {
+      // Update existing vote
+      await db
+        .update(mappingFeedback)
+        .set({ vote: params.vote })
+        .where(eq(mappingFeedback.id, existing[0].id));
+      return { ...existing[0], vote: params.vote };
+    } else {
+      // Insert new vote
+      const result = await db.insert(mappingFeedback).values(params);
+      return { id: Number(result.insertId), ...params };
+    }
+  } catch (error) {
+    console.error("[Database] Failed to submit mapping feedback:", error);
+    return null;
+  }
+}
+
+/**
+ * Get user's feedback for a specific mapping
+ */
+export async function getUserMappingFeedback(userId: number, mappingId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const { mappingFeedback } = await import("../drizzle/schema");
+    const { eq, and } = await import("drizzle-orm");
+
+    const result = await db
+      .select()
+      .from(mappingFeedback)
+      .where(
+        and(
+          eq(mappingFeedback.userId, userId),
+          eq(mappingFeedback.mappingId, mappingId)
+        )
+      )
+      .limit(1);
+
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to get user mapping feedback:", error);
+    return null;
+  }
+}
+
+/**
+ * Get aggregated feedback stats for a mapping (total votes, % positive)
+ */
+export async function getMappingFeedbackStats(mappingId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const { mappingFeedback } = await import("../drizzle/schema");
+    const { eq, count, sql } = await import("drizzle-orm");
+
+    const stats = await db
+      .select({
+        totalVotes: count(),
+        positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
+      })
+      .from(mappingFeedback)
+      .where(eq(mappingFeedback.mappingId, mappingId));
+
+    if (stats.length === 0 || stats[0].totalVotes === 0) {
+      return { totalVotes: 0, positiveVotes: 0, positivePercentage: 0 };
+    }
+
+    const totalVotes = Number(stats[0].totalVotes);
+    const positiveVotes = Number(stats[0].positiveVotes);
+    const positivePercentage = Math.round((positiveVotes / totalVotes) * 100);
+
+    return { totalVotes, positiveVotes, positivePercentage };
+  } catch (error) {
+    console.error("[Database] Failed to get mapping feedback stats:", error);
+    return null;
+  }
+}
+
+/**
+ * Get feedback stats for multiple mappings (batch operation)
+ */
+export async function getBatchMappingFeedbackStats(mappingIds: number[]) {
+  const db = await getDb();
+  if (!db || mappingIds.length === 0) return {};
+
+  try {
+    const { mappingFeedback } = await import("../drizzle/schema");
+    const { inArray, count, sql } = await import("drizzle-orm");
+
+    const stats = await db
+      .select({
+        mappingId: mappingFeedback.mappingId,
+        totalVotes: count(),
+        positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
+      })
+      .from(mappingFeedback)
+      .where(inArray(mappingFeedback.mappingId, mappingIds))
+      .groupBy(mappingFeedback.mappingId);
+
+    // Convert to map for easy lookup
+    const statsMap: Record<
+      number,
+      { totalVotes: number; positiveVotes: number; positivePercentage: number }
+    > = {};
+
+    stats.forEach((stat) => {
+      const totalVotes = Number(stat.totalVotes);
+      const positiveVotes = Number(stat.positiveVotes);
+      const positivePercentage =
+        totalVotes > 0 ? Math.round((positiveVotes / totalVotes) * 100) : 0;
+      statsMap[stat.mappingId] = {
+        totalVotes,
+        positiveVotes,
+        positivePercentage,
+      };
+    });
+
+    return statsMap;
+  } catch (error) {
+    console.error("[Database] Failed to get batch mapping feedback stats:", error);
+    return {};
+  }
+}

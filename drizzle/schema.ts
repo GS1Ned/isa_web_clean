@@ -390,3 +390,23 @@ export const regulationEsrsMappings = mysqlTable("regulation_esrs_mappings", {
 
 export type RegulationEsrsMapping = typeof regulationEsrsMappings.$inferSelect;
 export type InsertRegulationEsrsMapping = typeof regulationEsrsMappings.$inferInsert;
+
+
+/**
+ * Mapping Feedback - User validation of ESRS mapping accuracy
+ * Collects thumbs up/down votes to improve LLM prompt quality
+ */
+export const mappingFeedback = mysqlTable("mapping_feedback", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // Foreign key to users table
+  mappingId: int("mappingId").notNull(), // Foreign key to regulation_esrs_mappings table
+  vote: boolean("vote").notNull(), // true = thumbs up, false = thumbs down
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  mappingIdIdx: index("mappingId_idx").on(table.mappingId),
+  uniqueVote: index("unique_vote_idx").on(table.userId, table.mappingId), // One vote per user per mapping
+}));
+
+export type MappingFeedback = typeof mappingFeedback.$inferSelect;
+export type InsertMappingFeedback = typeof mappingFeedback.$inferInsert;

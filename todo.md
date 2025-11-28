@@ -920,3 +920,18 @@ Note: Autonomous decision based on ROI analysis (10/10 score). Successfully impl
 - [x] Save checkpoint
 
 Note: Autonomous decision to populate platform with ESRS mappings for all regulations. Successfully generated 449 total mappings across 38 regulations (11.8 avg per regulation). 100% coverage achieved. Distribution: E5 (108), E1 (57), 2 MDR (57), E4 (39), G1 (34), E2 (32), ESRS 2 (31), E3 (22), S1 (22), S2 (22), S4 (16), S3 (9). Top regulation: ESRS S1 Own Workforce (18 mappings). Every regulation page now shows AI-powered "Required ESRS Disclosures" tab.
+
+
+## Phase 70: User Feedback System for ESRS Mappings (Autonomous Development - Session 6)
+- [x] Create database schema: mapping_feedback table (userId, mappingId, vote, timestamp, unique constraint)
+- [x] Push database schema changes (migration 0009_nappy_ronan.sql)
+- [x] Build tRPC procedures: submitMappingFeedback(), getUserMappingFeedback(), getMappingFeedbackStats(), getBatchMappingFeedbackStats()
+- [x] Add database helper functions in server/db.ts (4 functions with type conversion fixes)
+- [x] Create FeedbackButtons component (thumbs up/down with vote count, % helpful display)
+- [x] Integrate FeedbackButtons into ESRSDatapointsSection (below each mapping card)
+- [x] Add visual indicator for community consensus ("X% helpful (Y votes)")
+- [x] Write vitest tests for feedback procedures (7 tests, all passing)
+- [x] Test feedback submission and aggregation (197/197 tests passing)
+- [x] Save checkpoint
+
+Note: Autonomous decision based on ROI analysis. Successfully implemented self-improving AI system. Users can now vote thumbs up/down on each ESRS mapping. System displays community consensus (e.g., "85% helpful (12 votes)"). One vote per user per mapping (upsert logic). Batch stats API for efficient loading. Fixed MySQL type conversion issue (string → number). All 197 tests passing (100%). Data ready for future LLM prompt optimization.

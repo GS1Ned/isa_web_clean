@@ -7,6 +7,7 @@ import { AlertCircle, CheckCircle, Sparkles, ExternalLink } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
 import { Link } from "wouter";
+import { FeedbackButtons } from "@/components/FeedbackButtons";
 
 interface ESRSDatapointsSectionProps {
   regulationId: number;
@@ -236,6 +237,10 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
                             Relevance: {mapping.relevanceScore}/10
                           </span>
                         </div>
+                      </div>
+                      {/* User Feedback */}
+                      <div className="mt-3 pt-3 border-t">
+                        <FeedbackButtons mappingId={mapping.id} />
                       </div>
                     </div>
                   ))}
