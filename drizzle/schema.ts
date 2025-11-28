@@ -410,3 +410,78 @@ export const mappingFeedback = mysqlTable("mapping_feedback", {
 
 export type MappingFeedback = typeof mappingFeedback.$inferSelect;
 export type InsertMappingFeedback = typeof mappingFeedback.$inferInsert;
+
+/**
+ * EPCIS Batch Jobs - Tracks batch processing of EPCIS files
+ */
+export const epciBatchJobs = mysqlTable("epcis_batch_jobs", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  fileName: varchar("fileName", { length: 255 }).notNull(),
+  fileSize: int("fileSize").notNull(), // in bytes
+  status: mysqlEnum("status", ["queued", "processing", "completed", "failed"]).default("queued").notNull(),
+  totalEvents: int("totalEvents").default(0),
+  processedEvents: int("processedEvents").default(0),
+  failedEvents: int("failedEvents").default(0),
+  errorMessage: text("errorMessage"),
+  startedAt: timestamp("startedAt"),
+  completedAt: timestamp("completedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  statusIdx: index("status_idx").on(table.status),
+  createdAtIdx: index("createdAt_idx").on(table.createdAt),
+}));
+
+export type EPCISBatchJob = typeof epciBatchJobs.$inferSelect;
+export type InsertEPCISBatchJob = typeof epciBatchJobs.$inferInsert;
+
+/**
+ * Supply Chain Compliance Risks - Detected compliance issues in supply chain
+ */
+export const supplyChainRisks = mysqlTable("supply_chain_risks", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  eventId: int("eventId").notNull(),
+  nodeId: int("nodeId"),
+  riskType: mysqlEnum("riskType", ["deforestation", "labor", "environmental", "traceability", "certification", "geolocation"]).notNull(),
+  severity: mysqlEnum("severity", ["low", "medium", "high", "critical"]).notNull(),
+  description: text("description").notNull(),
+  regulationId: int("regulationId"),
+  recommendedAction: text("recommendedAction"),
+  isResolved: boolean("isResolved").default(false),
+  resolvedAt: timestamp("resolvedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  eventIdIdx: index("eventId_idx").on(table.eventId),
+  nodeIdIdx: index("nodeId_idx").on(table.nodeId),
+  severityIdx: index("severity_idx").on(table.severity),
+  riskTypeIdx: index("riskType_idx").on(table.riskType),
+}));
+
+export type SupplyChainRisk = typeof supplyChainRisks.$inferSelect;
+export type InsertSupplyChainRisk = typeof supplyChainRisks.$inferInsert;
+
+/**
+ * Supply Chain Analytics - Aggregated metrics for dashboard
+ */
+export const supplyChainAnalytics = mysqlTable("supply_chain_analytics", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  metricDate: timestamp("metricDate").notNull(),
+  totalEvents: int("totalEvents").default(0),
+  totalNodes: int("totalNodes").default(0),
+  totalEdges: int("totalEdges").default(0),
+  highRiskNodes: int("highRiskNodes").default(0),
+  averageTraceabilityScore: decimal("averageTraceabilityScore", { precision: 5, scale: 2 }),
+  complianceScore: decimal("complianceScore", { precision: 5, scale: 2 }),
+  lastUpdated: timestamp("lastUpdated").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+  metricDateIdx: index("metricDate_idx").on(table.metricDate),
+}));
+
+export type SupplyChainAnalytics = typeof supplyChainAnalytics.$inferSelect;
+export type InsertSupplyChainAnalytics = typeof supplyChainAnalytics.$inferInsert;

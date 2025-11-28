@@ -40,6 +40,7 @@ import BarcodeScanner from "./pages/BarcodeScanner";
 import ComplianceReport from "./pages/ComplianceReport";
 import GettingStarted from "./pages/GettingStarted";
 import ESRSDatapoints from "./pages/ESRSDatapoints";
+import SupplyChainDashboard from "./pages/SupplyChainDashboard";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -75,6 +76,7 @@ function Router() {
       <Route path="/epcis/eudr-map" component={EPCISEUDRMap} />
       <Route path="/tools/scanner" component={BarcodeScanner} />
       <Route path="/tools/compliance-report" component={ComplianceReport} />
+      <Route path="/supply-chain" component={SupplyChainDashboard} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path="/admin/analytics" component={AdminAnalyticsDashboard} />

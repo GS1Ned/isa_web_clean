@@ -25,6 +25,8 @@ import { TRPCError } from "@trpc/server";
 import { cellarIngestionRouter } from "./cellar-ingestion-router.js";
 import { gs1StandardsRouter } from "./gs1-standards-router.js";
 import { epcisRouter } from "./epcis-router.js";
+import { batchEpcisRouter } from "./routers/batch-epcis.js";
+import { complianceRisksRouter } from "./routers/compliance-risks.js";
 
 export const appRouter = router({
   system: systemRouter,
@@ -633,6 +635,16 @@ export const appRouter = router({
    * EPCIS 2.0 Integration Router
    */
   epcis: epcisRouter,
+
+  /**
+   * Batch EPCIS Processing Router
+   */
+  batchEpcis: batchEpcisRouter,
+
+  /**
+   * Compliance Risk Detection Router
+   */
+  complianceRisks: complianceRisksRouter,
 
   /**
    * ESRS Datapoints Router

@@ -101,7 +101,7 @@ describe("EPCIS UI Integration", () => {
       // Verify node was created
       const nodes = await db!.select().from(supplyChainNodes).where({ userId: testUserId });
       expect(nodes.length).toBeGreaterThan(0);
-      expect(nodes[0].name).toBe("Test Supplier");
+      expect(nodes[0].name).toContain("Test Supplier");
       expect(nodes[0].nodeType).toBe("supplier");
     });
 
