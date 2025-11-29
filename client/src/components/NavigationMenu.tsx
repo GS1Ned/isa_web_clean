@@ -21,6 +21,10 @@ export function NavigationMenu() {
       href: "/getting-started",
     },
     {
+      label: "Features",
+      href: "/features",
+    },
+    {
       label: "ESG Hub",
       children: [
         { label: "Hub Home", href: "/hub", description: "Overview and key statistics" },

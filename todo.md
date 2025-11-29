@@ -1030,3 +1030,39 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Link to feature pages and documentation
 - [x] Add route to App.tsx navigation
 - [x] Test feature discovery flow
+
+
+## Phase 76: ESG Hub MVP Polish - Day 1 (Core UX & Navigation)
+### Morning Session (4 hours)
+- [x] Task 1.1: Redesign ESG Hub Landing Page (/hub)
+  - [x] Value-driven hero section with AI-powered mapping highlight
+  - [x] Statistics showcase (38 regulations, 1,184 datapoints, 450 mappings)
+  - [x] Visual feature grid with icons and value propositions
+  - [x] Quick Start section with 3 use cases
+  - [x] Prominent CTAs (Explore Regulations, Search ESRS, Try AI Mapping)
+- [x] Task 1.2: Optimize Regulation Explorer Navigation
+  - [x] Featured Regulations section (CSRD, EUDR, ESRS, DPP, PPWR)
+  - [x] Recently Updated badges (last 30 days)
+  - [x] Quick filter chips (Active, Enforcement 2025, Supply Chain Impact)
+  - [x] Regulation category pills (Environmental, Social, Governance, Product, Reporting)
+  - [x] Empty state with helpful suggestions
+
+### Afternoon Session (4 hours)
+- [ ] Task 1.3: Enhance Regulation Detail Pages [DEFERRED to post-launch - current mock data acceptable for MVP]
+  - [ ] Key Insights summary box (impact score, industries, timeline)
+  - [ ] Related Standards section with confidence scores
+  - [ ] Affected ESRS Datapoints expandable section
+  - [ ] Compliance Checklist component
+  - [ ] Social sharing buttons (LinkedIn, Twitter)
+  - [ ] PDF export with branded header
+- [ ] Task 1.4: Improve ESRS Datapoints Library UX [PRIORITIZED - 1 hour]
+  - [ ] ESRS topic filter chips (E1-E5, S1-S4, G1)
+  - [ ] Datapoint complexity indicator (Basic, Intermediate, Advanced)
+  - [ ] Most Mapped badge for high-linkage datapoints
+  - [ ] Datapoint detail modal with full context
+  - [ ] Save to Dashboard button
+- [x] Task 1.5: Add "Features" link to main navigation (15 min)
+- [x] Task 1.6: Polish home page hero and CTAs (45 min)
+  - [x] Update Home.tsx with clearer value proposition
+  - [x] Add ESG Hub CTA prominently (primary CTA + statistics bar)
+  - [x] Improve feature showcase section (ESG Hub focus + EPCIS preview)
