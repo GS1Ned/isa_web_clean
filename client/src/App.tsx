@@ -18,6 +18,7 @@ import ComparisonTool from "./pages/ComparisonTool";
 import Blog from "./pages/Blog";
 import FAQ from "./pages/FAQ";
 import HubHome from "./pages/HubHome";
+import HubAbout from "./pages/HubAbout";
 import HubRegulations from "./pages/HubRegulations";
 import HubNews from "./pages/HubNews";
 import HubCalendar from "./pages/HubCalendar";
@@ -67,6 +68,7 @@ function Router() {
       <Route path="/getting-started" component={GettingStarted} />
       <Route path="/about" component={About} />
       <Route path="/hub" component={HubHome} />
+      <Route path="/hub/about" component={HubAbout} />
       <Route path="/hub/regulations" component={HubRegulations} />
       <Route path="/hub/news" component={HubNews} />
       <Route path="/hub/calendar" component={HubCalendar} />

@@ -1074,3 +1074,23 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Ensure seeding only happens via admin page trigger
 - [x] Test server stays running after startup (dev and production builds tested)
 - [x] Verify deployment succeeds with ServiceHealth check (ready for publishing)
+
+
+## Day 2: Content Refinement & Value Communication
+- [x] Task 2.1: Create ESG Hub marketing page (/hub/about)
+  - [x] Value proposition section (AI-powered mapping differentiation)
+  - [x] How It Works section (3-step process with visuals)
+  - [x] Data Sources section (CELLAR, EFRAG, GS1 with trust indicators)
+  - [x] AI Methodology explainer (transparency and accuracy)
+  - [x] Use Cases section (3 real-world scenarios)
+  - [x] FAQ section (common questions)
+- [x] Task 2.2: Enhance News Feed (/hub/news) [Already well-implemented]
+  - [x] Add regulation context to each article
+  - [x] Category badges (CSRD, EUDR, ESRS, DPP, PPWR)
+  - [x] Related regulations sidebar (inline badges)
+  - [x] Filter by regulation type
+- [x] Task 2.3: Improve Compliance Calendar (/hub/calendar) [90% complete]
+  - [x] Priority indicators (Critical, High, Medium, Low)
+  - [ ] iCal export functionality [Deferred to post-launch]
+  - [x] Filter by regulation and deadline type
+  - [x] Countdown timers for upcoming deadlines
