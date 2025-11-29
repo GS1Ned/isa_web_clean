@@ -1187,3 +1187,15 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [ ] Link Dutch initiatives to relevant EU regulations (PPWR, ESPR, CSRD)
 - [ ] Add filtering by sector (textiles, healthcare, packaging, circular economy)
 - [ ] Test integration and verify data accuracy
+
+
+## Phase 67: Fix GS1 Standards Rendering Bug
+- [ ] Reproduce bug on EUDR regulation detail page (should show 3 standards, only shows 1)
+- [ ] Verify backend getRegulationWithStandards returns all 3 standards correctly
+- [ ] Add debug logging to HubRegulationDetail component to inspect tRPC response
+- [ ] Trace data flow: tRPC response → regulation.standards array → map() rendering
+- [ ] Identify root cause (state management, data transformation, or rendering logic)
+- [ ] Implement fix
+- [ ] Test with EUDR (3 standards), PPWR (5 standards), CSRD (multiple standards)
+- [ ] Remove debug logging
+- [ ] Create checkpoint

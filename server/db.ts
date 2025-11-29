@@ -205,12 +205,7 @@ export async function getRegulationWithStandards(regulationId: number) {
       standards
     };
     
-    console.log(`[getRegulationWithStandards] Regulation ${regulationId}:`, {
-      mappingsCount: mappings.length,
-      standardsCount: standards.length,
-      standardIds: standards.map(s => s.id),
-      standardNames: standards.map(s => s.standardName)
-    });
+
     
     return result;
   } catch (error) {

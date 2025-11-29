@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bookmark, Share2, ArrowLeft, Calendar, FileText, ExternalLink, Sparkles, AlertCircle } from "lucide-react";
 import { trpc } from "@/lib/trpc";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { ExportButtons } from "@/components/ExportButtons";
 import { ESRSDatapointsSection } from "@/components/ESRSDatapointsSection";
@@ -24,17 +24,7 @@ export default function HubRegulationDetail() {
     { enabled: regulationId > 0 }
   );
 
-  // Debug logging
-  useEffect(() => {
-    if (data) {
-      console.log('[HubRegulationDetail] tRPC Response:', {
-        mappingsCount: data.mappings?.length,
-        standardsCount: data.standards?.length,
-        standardIds: data.standards?.map(s => s.id),
-        standardNames: data.standards?.map(s => s.standardName)
-      });
-    }
-  }, [data]);
+
 
   // Fetch ESRS mappings
   const { data: esrsMappings } = trpc.regulations.getEsrsMappings.useQuery(
