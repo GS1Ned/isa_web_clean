@@ -50,6 +50,7 @@ import AdminTemplateManager from "./pages/AdminTemplateManager";
 import TemplateAnalyticsDashboard from "./pages/TemplateAnalyticsDashboard";
 import { NotificationPreferences } from "./pages/NotificationPreferences";
 import { ExecutiveScorecard } from "./pages/ExecutiveScorecard";
+import Features from "./pages/Features";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (    <Switch>
@@ -57,7 +58,8 @@ function Router() {
       <Route path={"/hub/regulations/:id"} component={HubRegulationDetail} />
       <Route path={"/about"} component={About} />
       <Route path={"/how-it-works"} component={HowItWorks} />
-      <Route path={"/features"} component={FeaturesComparison} />
+      <Route path={"/features"} component={Features} />
+      <Route path={"/features-comparison"} component={FeaturesComparison} />
       <Route path={"/use-cases"} component={UseCases} />
       <Route path={"/contact"} component={Contact} />
       <Route path={"/compare"} component={ComparisonTool} />
