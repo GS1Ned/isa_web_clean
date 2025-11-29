@@ -1174,3 +1174,16 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 **Impact:** Regulation detail pages now functional with real data. Data quality improvements from Phase 64 are visible. Minor rendering issue with secondary standards does not block core functionality.
 
 **Next Steps:** Document this issue for future sprint and proceed with checkpoint creation.
+
+
+## Phase 66: Dutch Compliance Initiatives Integration
+- [x] Research Dutch initiatives from colleague reports (UPV Textiel, Green Deal Zorg, DSGO, Denim Deal, Verpact)
+- [x] Extract key details: scope, deadlines, GS1 relevance, data requirements
+- [x] Design database schema for Dutch initiatives (dutchInitiatives table + 2 junction tables)
+- [x] Create seed script with 5 Dutch initiatives
+- [ ] Add tRPC procedures for querying Dutch initiatives (IN PROGRESS)
+- [ ] Create Dutch initiatives section in ESG Hub (/hub/dutch-initiatives)
+- [ ] Build initiative detail pages
+- [ ] Link Dutch initiatives to relevant EU regulations (PPWR, ESPR, CSRD)
+- [ ] Add filtering by sector (textiles, healthcare, packaging, circular economy)
+- [ ] Test integration and verify data accuracy

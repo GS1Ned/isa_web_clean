@@ -141,6 +141,27 @@
       "when": 1764400774628,
       "tag": "0019_abandoned_silverclaw",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1764452993361,
+      "tag": "0020_panoramic_kingpin",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1764453058704,
+      "tag": "0021_solid_scarecrow",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "5",
+      "when": 1764453093900,
+      "tag": "0022_nostalgic_ghost_rider",
+      "breakpoints": true
     }
   ]
 }

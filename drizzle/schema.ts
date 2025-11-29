@@ -1,4 +1,5 @@
 import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, json, boolean, decimal, index } from "drizzle-orm/mysql-core";
+import { sql } from "drizzle-orm";
 
 /**
  * Core user table backing auth flow.
@@ -1016,3 +1017,89 @@ export const userOnboardingProgress = mysqlTable("user_onboarding_progress", {
 
 export type UserOnboardingProgress = typeof userOnboardingProgress.$inferSelect;
 export type InsertUserOnboardingProgress = typeof userOnboardingProgress.$inferInsert;
+
+/**
+ * Dutch Compliance Initiatives - National programs that complement EU regulations
+ * Examples: UPV Textiel, Green Deal Zorg, DSGO, Denim Deal, Verpact
+ */
+export const dutchInitiatives = mysqlTable("dutch_initiatives", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Basic Information
+  initiativeName: varchar("initiativeName", { length: 255 }).notNull(),
+  shortName: varchar("shortName", { length: 100 }).notNull(), // e.g., "UPV Textiel", "DSGO"
+  initiativeType: varchar("initiativeType", { length: 100 }).notNull(), // "EPR Scheme", "Voluntary Covenant", "Data Framework"
+  status: varchar("status", { length: 100 }).notNull(), // "Active", "Proposed", "Pilot"
+  
+  // Scope & Sector
+  sector: varchar("sector", { length: 255 }).notNull(), // "Textiles", "Healthcare", "Construction", "Packaging"
+  scope: text("scope").notNull(), // Detailed description of what's covered
+  
+  // Timeline
+  startDate: timestamp("startDate"), // When initiative started
+  endDate: timestamp("endDate"), // For covenants with expiry (e.g., Green Deal 2022-2026)
+  reportingDeadline: varchar("reportingDeadline", { length: 255 }), // e.g., "Mid-year annually"
+  
+  // Targets & Requirements
+  keyTargets: json("keyTargets").$type<string[]>().notNull(), // Array of targets
+  complianceRequirements: text("complianceRequirements").notNull(), // What companies must do
+  
+  // GS1 Integration
+  gs1Relevance: text("gs1Relevance").notNull(), // How GS1 standards apply
+  requiredGS1Standards: json("requiredGS1Standards").$type<number[]>(), // Array of standard IDs
+  requiredGDSNAttributes: json("requiredGDSNAttributes").$type<string[]>(), // Array of attribute names
+  
+  // Relationships
+  relatedEURegulations: json("relatedEURegulations").$type<number[]>(), // Array of regulation IDs
+  managingOrganization: varchar("managingOrganization", { length: 255 }), // e.g., "RIVM", "Verpact"
+  
+  // Resources
+  officialUrl: varchar("officialUrl", { length: 500 }),
+  documentationUrl: varchar("documentationUrl", { length: 500 }),
+  
+  // Metadata
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  sectorIdx: index("sector_idx").on(table.sector),
+  statusIdx: index("status_idx").on(table.status),
+}));
+
+export type DutchInitiative = typeof dutchInitiatives.$inferSelect;
+export type InsertDutchInitiative = typeof dutchInitiatives.$inferInsert;
+
+/**
+ * Initiative-Regulation Mappings - Links Dutch initiatives to EU regulations
+ */
+export const initiativeRegulationMappings = mysqlTable("initiative_regulation_mappings", {
+  id: int("id").autoincrement().primaryKey(),
+  initiativeId: int("initiativeId").notNull().references(() => dutchInitiatives.id),
+  regulationId: int("regulationId").notNull().references(() => regulations.id),
+  relationshipType: varchar("relationshipType", { length: 100 }).notNull(), // "Implements", "Complements", "Aligns With"
+  description: text("description"), // How they relate
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  initiativeIdIdx: index("initiativeId_idx").on(table.initiativeId),
+  regulationIdIdx: index("regulationId_idx").on(table.regulationId),
+}));
+
+export type InitiativeRegulationMapping = typeof initiativeRegulationMappings.$inferSelect;
+export type InsertInitiativeRegulationMapping = typeof initiativeRegulationMappings.$inferInsert;
+
+/**
+ * Initiative-Standard Mappings - Links Dutch initiatives to GS1 standards
+ */
+export const initiativeStandardMappings = mysqlTable("initiative_standard_mappings", {
+  id: int("id").autoincrement().primaryKey(),
+  initiativeId: int("initiativeId").notNull().references(() => dutchInitiatives.id),
+  standardId: int("standardId").notNull().references(() => gs1Standards.id),
+  criticality: varchar("criticality", { length: 50 }).notNull(), // "CRITICAL", "RECOMMENDED", "OPTIONAL"
+  implementationNotes: text("implementationNotes"), // Specific guidance
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  initiativeIdIdx: index("initiativeId_idx").on(table.initiativeId),
+  standardIdIdx: index("standardId_idx").on(table.standardId),
+}));
+
+export type InitiativeStandardMapping = typeof initiativeStandardMappings.$inferSelect;
+export type InsertInitiativeStandardMapping = typeof initiativeStandardMappings.$inferInsert;
