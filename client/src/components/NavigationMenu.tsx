@@ -34,6 +34,7 @@ export function NavigationMenu() {
         { label: "Calendar", href: "/hub/calendar", description: "Compliance deadlines" },
         { label: "Standards Mapping", href: "/hub/standards-mapping", description: "GS1 standards by regulation" },
         { label: "ESRS Datapoints", href: "/hub/esrs-datapoints", description: "Browse 1,184 EFRAG disclosure requirements" },
+        { label: "Dutch Initiatives", href: "/hub/dutch-initiatives", description: "🇳🇱 National compliance programs" },
         { label: "Resources", href: "/hub/resources", description: "Guides and templates" },
         { label: "Impact Matrix", href: "/hub/impact-matrix", description: "Regulation overlap analysis" },
       ],

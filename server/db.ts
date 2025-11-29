@@ -1076,3 +1076,124 @@ export async function resetUserOnboardingProgress(userId: number) {
     return false;
   }
 }
+
+// ============================================================================
+// DUTCH INITIATIVES
+// ============================================================================
+
+/**
+ * Get all Dutch initiatives with optional filtering
+ */
+export async function getDutchInitiatives(filters?: {
+  sector?: string;
+  status?: string;
+}) {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    const { dutchInitiatives } = await import("../drizzle/schema");
+    const { eq, and } = await import("drizzle-orm");
+
+    let query = db.select().from(dutchInitiatives);
+
+    const conditions = [];
+    if (filters?.sector) {
+      conditions.push(eq(dutchInitiatives.sector, filters.sector));
+    }
+    if (filters?.status) {
+      conditions.push(eq(dutchInitiatives.status, filters.status));
+    }
+
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions)) as any;
+    }
+
+    return await query;
+  } catch (error) {
+    console.error("[Database] Failed to get Dutch initiatives:", error);
+    return [];
+  }
+}
+
+/**
+ * Get a single Dutch initiative with all its mappings
+ */
+export async function getDutchInitiativeWithMappings(initiativeId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const { 
+      dutchInitiatives, 
+      initiativeRegulationMappings, 
+      initiativeStandardMappings,
+      regulations,
+      gs1Standards
+    } = await import("../drizzle/schema");
+    const { eq } = await import("drizzle-orm");
+
+    // Get initiative
+    const [initiative] = await db
+      .select()
+      .from(dutchInitiatives)
+      .where(eq(dutchInitiatives.id, initiativeId));
+
+    if (!initiative) return null;
+
+    // Get regulation mappings
+    const regMappings = await db
+      .select({
+        id: initiativeRegulationMappings.id,
+        relationshipType: initiativeRegulationMappings.relationshipType,
+        description: initiativeRegulationMappings.description,
+        regulation: regulations,
+      })
+      .from(initiativeRegulationMappings)
+      .leftJoin(regulations, eq(initiativeRegulationMappings.regulationId, regulations.id))
+      .where(eq(initiativeRegulationMappings.initiativeId, initiativeId));
+
+    // Get standard mappings
+    const stdMappings = await db
+      .select({
+        id: initiativeStandardMappings.id,
+        criticality: initiativeStandardMappings.criticality,
+        implementationNotes: initiativeStandardMappings.implementationNotes,
+        standard: gs1Standards,
+      })
+      .from(initiativeStandardMappings)
+      .leftJoin(gs1Standards, eq(initiativeStandardMappings.standardId, gs1Standards.id))
+      .where(eq(initiativeStandardMappings.initiativeId, initiativeId));
+
+    return {
+      initiative,
+      regulationMappings: regMappings,
+      standardMappings: stdMappings,
+    };
+  } catch (error) {
+    console.error("[Database] Failed to get Dutch initiative with mappings:", error);
+    return null;
+  }
+}
+
+/**
+ * Get unique sectors from Dutch initiatives
+ */
+export async function getDutchInitiativeSectors() {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    const { dutchInitiatives } = await import("../drizzle/schema");
+    const { sql } = await import("drizzle-orm");
+
+    const result = await db
+      .selectDistinct({ sector: dutchInitiatives.sector })
+      .from(dutchInitiatives);
+
+    return result.map(r => r.sector);
+  } catch (error) {
+    console.error("[Database] Failed to get Dutch initiative sectors:", error);
+    return [];
+  }
+}

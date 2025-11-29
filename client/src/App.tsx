@@ -57,6 +57,8 @@ const AdminTemplateManager = lazy(() => import("./pages/AdminTemplateManager"));
 const TemplateAnalyticsDashboard = lazy(() => import("./pages/TemplateAnalyticsDashboard"));
 const NotificationPreferences = lazy(() => import("./pages/NotificationPreferences").then(m => ({ default: m.NotificationPreferences })));
 const ExecutiveScorecard = lazy(() => import("./pages/ExecutiveScorecard").then(m => ({ default: m.ExecutiveScorecard })));
+const HubDutchInitiatives = lazy(() => import("./pages/HubDutchInitiatives"));
+const HubDutchInitiativeDetail = lazy(() => import("./pages/HubDutchInitiativeDetail"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -91,6 +93,8 @@ function Router() {
       <Route path="/hub/compare" component={HubCompareEnhanced} />
       <Route path="/hub/compare-legacy" component={HubCompare} />
       <Route path="/hub/esrs-datapoints" component={ESRSDatapoints} />
+      <Route path="/hub/dutch-initiatives/:id" component={HubDutchInitiativeDetail} />
+      <Route path="/hub/dutch-initiatives" component={HubDutchInitiatives} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
       <Route path="/admin/cellar" component={AdminCellarIngestion} />
       <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />
