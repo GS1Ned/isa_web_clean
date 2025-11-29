@@ -1,6 +1,6 @@
 import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, regulations, gs1Standards, regulationStandardMappings, userAnalyses, regulatoryChangeAlerts, userPreferences, InsertContact, contacts, hubNews, userAlerts } from "../drizzle/schema";
+import { InsertUser, users, regulations, gs1Standards, regulationStandardMappings, userAnalyses, regulatoryChangeAlerts, userPreferences, InsertContact, contacts, hubNews, userAlerts, userOnboardingProgress, InsertUserOnboardingProgress } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -947,5 +947,123 @@ export async function getMostVotedMappings(limit: number = 10) {
   } catch (error) {
     console.error("[Database] Failed to get most-voted mappings:", error);
     return [];
+  }
+}
+
+
+// ============================================================================
+// User Onboarding Progress Helpers
+// ============================================================================
+
+/**
+ * Get user's onboarding progress
+ */
+export async function getUserOnboardingProgress(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const result = await db
+      .select()
+      .from(userOnboardingProgress)
+      .where(eq(userOnboardingProgress.userId, userId))
+      .limit(1);
+
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("[Database] Failed to get onboarding progress:", error);
+    return null;
+  }
+}
+
+/**
+ * Save user's onboarding progress
+ */
+export async function saveUserOnboardingProgress(
+  userId: number,
+  completedSteps: number[],
+  currentStep: number
+) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const totalSteps = 4; // Total number of onboarding steps
+    const completionPercentage = Math.round((completedSteps.length / totalSteps) * 100);
+    const isCompleted = completedSteps.length >= totalSteps;
+
+    // Check if progress exists
+    const existing = await getUserOnboardingProgress(userId);
+
+    if (existing) {
+      // Update existing progress
+      await db
+        .update(userOnboardingProgress)
+        .set({
+          completedSteps: completedSteps as any,
+          currentStep,
+          completionPercentage,
+          isCompleted,
+          completedAt: isCompleted ? new Date() : null,
+          updatedAt: new Date(),
+        })
+        .where(eq(userOnboardingProgress.userId, userId));
+
+      return {
+        ...existing,
+        completedSteps,
+        currentStep,
+        completionPercentage,
+        isCompleted,
+      };
+    } else {
+      // Insert new progress
+      const [inserted] = await db
+        .insert(userOnboardingProgress)
+        .values({
+          userId,
+          completedSteps: completedSteps as any,
+          currentStep,
+          completionPercentage,
+          isCompleted,
+          startedAt: new Date(),
+          completedAt: isCompleted ? new Date() : null,
+          updatedAt: new Date(),
+        });
+
+      return {
+        id: inserted.insertId,
+        userId,
+        completedSteps,
+        currentStep,
+        completionPercentage,
+        isCompleted,
+        startedAt: new Date(),
+        completedAt: isCompleted ? new Date() : null,
+        updatedAt: new Date(),
+      };
+    }
+  } catch (error) {
+    console.error("[Database] Failed to save onboarding progress:", error);
+    return null;
+  }
+}
+
+/**
+ * Reset user's onboarding progress
+ */
+export async function resetUserOnboardingProgress(userId: number) {
+  const db = await getDb();
+  if (!db) return false;
+
+  try {
+    await db
+      .delete(userOnboardingProgress)
+      .where(eq(userOnboardingProgress.userId, userId));
+
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to reset onboarding progress:", error);
+    return false;
   }
 }

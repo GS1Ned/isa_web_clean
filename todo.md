@@ -997,3 +997,26 @@ Note: Autonomous decision based on suggested next steps. Excel export enables us
 - [ ] Status: Rolled back to maintain platform stability (205/205 tests passing)
 
 Note: Autonomous decision to defer Excel export feature. Platform is production-ready without it. Excel export can be added in future phase with better architectural approach (separate API endpoint or client-side generation).
+
+
+## Phase 74: Data Activation - Seed Demonstration Data
+- [ ] Create roadmap template seeder (CSRD, EUDR, ESRS, DPP, PPWR compliance templates)
+- [ ] Generate sample compliance scores for demonstration users
+- [ ] Build sample remediation plans showing complete workflow
+- [ ] Create supply chain risk scenarios with analytics data
+- [ ] Add comprehensive admin seeder page for one-click data population
+- [ ] Test all seeded data flows through UI components
+- [ ] Validate database relationships and foreign key constraints
+- [ ] Document seeded data structure for user onboarding
+
+
+## Phase 74: Data Activation - Onboarding Progress Persistence
+- [x] User onboarding progress persistence (database + tRPC)
+- [x] Progress loading and saving in GettingStarted.tsx
+- [x] Completion percentage tracking
+- [x] Tests for progress persistence (10 tests, all passing)
+- [x] Database table: user_onboarding_progress (9 columns)
+- [x] tRPC procedures: getProgress, saveProgress, resetProgress
+- [x] Frontend integration with useEffect and state management
+- [x] Progress bar with percentage display
+- [x] Welcome back message for returning users

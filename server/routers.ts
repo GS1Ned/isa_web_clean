@@ -39,6 +39,7 @@ import { templateAnalyticsRouter } from "./routers/template-analytics.js";
 import { realtimeRouter } from "./routers/realtime.js";
 import { notificationPreferencesRouter } from "./routers/notification-preferences.js";
 import { executiveAnalyticsRouter } from "./routers/executive-analytics.js";
+import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
   system: systemRouter,
@@ -693,6 +694,43 @@ export const appRouter = router({
   realtime: realtimeRouter,
   notificationPreferences: notificationPreferencesRouter,
   executiveAnalytics: executiveAnalyticsRouter,
+
+  /**
+   * User Onboarding Progress Router
+   */
+  onboarding: router({
+    /**
+     * Get user's onboarding progress
+     */
+    getProgress: protectedProcedure.query(async ({ ctx }) => {
+      return await getUserOnboardingProgress(ctx.user.id);
+    }),
+
+    /**
+     * Save user's onboarding progress
+     */
+    saveProgress: protectedProcedure
+      .input(
+        z.object({
+          completedSteps: z.array(z.number()),
+          currentStep: z.number(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        return await saveUserOnboardingProgress(
+          ctx.user.id,
+          input.completedSteps,
+          input.currentStep
+        );
+      }),
+
+    /**
+     * Reset user's onboarding progress
+     */
+    resetProgress: protectedProcedure.mutation(async ({ ctx }) => {
+      return await resetUserOnboardingProgress(ctx.user.id);
+    }),
+  }),
 
   /**
    * ESRS Datapoints Router

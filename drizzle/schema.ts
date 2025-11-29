@@ -996,3 +996,23 @@ export const notificationPreferences = mysqlTable("notification_preferences", {
 
 export type NotificationPreference = typeof notificationPreferences.$inferSelect;
 export type InsertNotificationPreference = typeof notificationPreferences.$inferInsert;
+
+/**
+ * User Onboarding Progress - Track completion of getting started steps
+ */
+export const userOnboardingProgress = mysqlTable("user_onboarding_progress", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(),
+  completedSteps: json("completedSteps").$type<number[]>(), // array of completed step IDs
+  currentStep: int("currentStep").default(1), // current active step
+  completionPercentage: int("completionPercentage").default(0), // 0-100
+  isCompleted: boolean("isCompleted").default(false), // all steps done
+  startedAt: timestamp("startedAt").defaultNow().notNull(),
+  completedAt: timestamp("completedAt"),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("userId_idx").on(table.userId),
+}));
+
+export type UserOnboardingProgress = typeof userOnboardingProgress.$inferSelect;
+export type InsertUserOnboardingProgress = typeof userOnboardingProgress.$inferInsert;

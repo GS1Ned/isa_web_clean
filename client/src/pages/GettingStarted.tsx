@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { trpc } from '@/lib/trpc';
 import { Button } from '@/components/ui/button';
@@ -26,6 +26,25 @@ import {
 export default function GettingStarted() {
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [currentStep, setCurrentStep] = useState(1);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load saved progress
+  const { data: savedProgress } = trpc.onboarding.getProgress.useQuery(undefined, {
+    retry: false,
+  });
+
+  // Save progress mutation
+  const saveProgressMutation = trpc.onboarding.saveProgress.useMutation();
+
+  // Initialize from saved progress
+  useEffect(() => {
+    if (savedProgress && !isInitialized) {
+      const stepsArray = savedProgress.completedSteps || [];
+      setCompletedSteps(new Set(stepsArray));
+      setCurrentStep(savedProgress.currentStep || 1);
+      setIsInitialized(true);
+    }
+  }, [savedProgress, isInitialized]);
 
   // Seed sample data mutations
   const seedEUDRMutation = trpc.epcis.seedEUDRSampleData.useMutation({
@@ -41,7 +60,19 @@ export default function GettingStarted() {
   });
 
   const markStepComplete = (step: number) => {
-    setCompletedSteps(prev => new Set(prev).add(step));
+    setCompletedSteps(prev => {
+      const newSet = new Set(prev).add(step);
+      const newStepsArray = Array.from(newSet);
+      const newCurrentStep = step === currentStep ? step + 1 : currentStep;
+      
+      // Save to database
+      saveProgressMutation.mutate({
+        completedSteps: newStepsArray,
+        currentStep: newCurrentStep,
+      });
+      
+      return newSet;
+    });
     if (step === currentStep) {
       setCurrentStep(step + 1);
     }

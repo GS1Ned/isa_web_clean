@@ -127,6 +127,20 @@
       "when": 1764364564014,
       "tag": "0017_smart_king_cobra",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1764400756409,
+      "tag": "0018_parallel_steel_serpent",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1764400774628,
+      "tag": "0019_abandoned_silverclaw",
+      "breakpoints": true
     }
   ]
 }
