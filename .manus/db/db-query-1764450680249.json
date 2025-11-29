@@ -1,0 +1,21 @@
+{
+  "query": "SELECT * FROM regulations WHERE title LIKE '%Deforestation%' OR title LIKE '%EUDR%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT * FROM regulations WHERE title LIKE '%Deforestation%' OR title LIKE '%EUDR%';",
+  "rows": [
+    {
+      "id": "30006",
+      "celexId": "32023-1115",
+      "title": "EU Deforestation Regulation (EUDR)",
+      "description": "Ensures products sold in EU are not linked to deforestation or forest degradation.",
+      "regulationType": "EUDR",
+      "effectiveDate": "2023-06-29 00:00:00",
+      "sourceUrl": "https://ec.europa.eu/environment/deforestation/",
+      "lastUpdated": "2025-11-28 02:02:51",
+      "createdAt": "2025-11-28 02:02:51"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tcelexId\ttitle\tdescription\tregulationType\teffectiveDate\tsourceUrl\tlastUpdated\tcreatedAt\n30006\t32023-1115\tEU Deforestation Regulation (EUDR)\tEnsures products sold in EU are not linked to deforestation or forest degradation.\tEUDR\t2023-06-29 00:00:00\thttps://ec.europa.eu/environment/deforestation/\t2025-11-28 02:02:51\t2025-11-28 02:02:51\n",
+  "stderr": "",
+  "execution_time_ms": 50
+}

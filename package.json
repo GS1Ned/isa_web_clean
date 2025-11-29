@@ -66,7 +66,7 @@
     "jspdf-autotable": "^5.0.2",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.453.0",
-    "mysql2": "^3.15.0",
+    "mysql2": "^3.15.1",
     "nanoid": "^5.1.5",
     "next-themes": "^0.4.6",
     "node-cron": "^4.2.1",
@@ -101,6 +101,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "add": "^2.0.6",
     "autoprefixer": "^10.4.20",
+    "better-sqlite3": "^12.5.0",
     "drizzle-kit": "^0.31.4",
     "esbuild": "^0.25.0",
     "pnpm": "^10.15.1",
@@ -121,6 +122,9 @@
     },
     "overrides": {
       "tailwindcss>nanoid": "3.3.7"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
   }
 }

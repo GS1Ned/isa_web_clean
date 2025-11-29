@@ -1,379 +1,363 @@
-import { useParams } from "wouter";
+import { useRoute, Link } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bookmark, Share2, Download, AlertCircle, CheckCircle, Clock } from "lucide-react";
+import { Bookmark, Share2, ArrowLeft, Calendar, FileText, ExternalLink, Sparkles, AlertCircle } from "lucide-react";
 import { trpc } from "@/lib/trpc";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { ExportButtons } from "@/components/ExportButtons";
 import { ESRSDatapointsSection } from "@/components/ESRSDatapointsSection";
 
-// Mock regulation data - in production, fetch from tRPC
-const MOCK_REGULATIONS: Record<number, any> = {
-  1: {
-    id: 1,
-    title: "Corporate Sustainability Reporting Directive (CSRD)",
-    shortName: "CSRD",
-    description: "The CSRD requires large EU companies to report on their sustainability performance and impacts.",
-    status: "ACTIVE",
-    regulationType: "DIRECTIVE",
-    effectiveDate: new Date("2024-01-01"),
-    enforcementDate: new Date("2025-01-01"),
-    scope: "Large EU companies (250+ employees, €50M+ revenue, €25M+ assets)",
-    affectedSectors: "All sectors",
-    relatedStandards: ["ESRS", "GRI", "SASB"],
-    keyRequirements: [
-      "Double materiality assessment",
-      "Sustainability reporting aligned with ESRS",
-      "Third-party assurance",
-      "Digital reporting (XBRL)",
-    ],
-    implementationTimeline: [
-      { phase: "Adoption", date: "2022-12-14", description: "Directive adopted by EU" },
-      { phase: "Transposition", date: "2024-07-06", description: "Member states implement into national law" },
-      { phase: "First reporting", date: "2025-04-15", description: "First reports due for large companies" },
-      { phase: "Full enforcement", date: "2026-01-01", description: "Mandatory for all in-scope companies" },
-    ],
-    relatedNews: [
-      { id: 1, title: "CSRD Implementation Guidance Released", date: "2024-11-15" },
-      { id: 2, title: "First CSRD Reports Filed", date: "2024-10-20" },
-    ],
-    gs1Impact: {
-      applicableStandards: ["GTIN", "EPCIS", "GS1 Digital Link"],
-      dataRequirements: "Product-level sustainability data, supply chain traceability, ESG metrics",
-      benefits: "GS1 standards enable efficient data capture and reporting",
-    },
-    references: [
-      { title: "CSRD Directive Text", url: "https://eur-lex.europa.eu/eli/dir/2022/2464/oj" },
-      { title: "EFRAG ESRS Standards", url: "https://www.efrag.org/esrs" },
-    ],
-  },
-  2: {
-    id: 2,
-    title: "European Sustainability Reporting Standards (ESRS)",
-    shortName: "ESRS",
-    description: "ESRS are the sustainability reporting standards that companies must follow under CSRD.",
-    status: "ACTIVE",
-    regulationType: "STANDARD",
-    effectiveDate: new Date("2023-07-31"),
-    enforcementDate: new Date("2025-01-01"),
-    scope: "Companies subject to CSRD",
-    affectedSectors: "All sectors",
-    relatedStandards: ["CSRD", "GRI", "ISSB"],
-    keyRequirements: [
-      "E1: Climate change",
-      "E2: Pollution",
-      "E3: Water and marine resources",
-      "E4: Biodiversity and ecosystems",
-      "S1: Own workforce",
-      "S2: Workers in value chain",
-      "S3: Affected communities",
-      "S4: Consumers and end-users",
-      "G1: Business conduct",
-    ],
-    implementationTimeline: [
-      { phase: "Standards finalized", date: "2023-07-31", description: "EFRAG finalizes ESRS" },
-      { phase: "Adoption", date: "2023-11-15", description: "EU adopts ESRS" },
-      { phase: "First reporting", date: "2025-04-15", description: "First ESRS reports" },
-    ],
-    relatedNews: [
-      { id: 3, title: "ESRS Training Programs Launched", date: "2024-09-10" },
-    ],
-    gs1Impact: {
-      applicableStandards: ["EPCIS", "GS1 Digital Link", "GS1 Traceability"],
-      dataRequirements: "ESG metrics, supply chain data, product information",
-      benefits: "GS1 standards support efficient ESRS data collection",
-    },
-    references: [
-      { title: "ESRS Standards", url: "https://www.efrag.org/esrs" },
-    ],
-  },
-};
-
 export default function HubRegulationDetail() {
-  const { id } = useParams();
+  const [, params] = useRoute("/hub/regulations/:id");
   const { user } = useAuth();
   const [isSaved, setIsSaved] = useState(false);
 
-  const regulationId = parseInt(id || "1");
-  const regulation = MOCK_REGULATIONS[regulationId];
+  const regulationId = parseInt(params?.id || "0");
+  
+  // Fetch regulation data with standards
+  const { data, isLoading, error } = trpc.regulations.getWithStandards.useQuery(
+    { regulationId },
+    { enabled: regulationId > 0 }
+  );
 
-  if (!regulation) {
+  // Debug logging
+  useEffect(() => {
+    if (data) {
+      console.log('[HubRegulationDetail] tRPC Response:', {
+        mappingsCount: data.mappings?.length,
+        standardsCount: data.standards?.length,
+        standardIds: data.standards?.map(s => s.id),
+        standardNames: data.standards?.map(s => s.standardName)
+      });
+    }
+  }, [data]);
+
+  // Fetch ESRS mappings
+  const { data: esrsMappings } = trpc.regulations.getEsrsMappings.useQuery(
+    { regulationId },
+    { enabled: regulationId > 0 }
+  );
+
+  // TODO: Implement saved items functionality when userContent router is available
+  // const { data: savedItems } = trpc.userContent.getSavedItems.useQuery(
+  //   undefined,
+  //   { enabled: !!user }
+  // );
+
+  const handleSave = () => {
+    if (!user) {
+      toast.error("Please sign in to save regulations");
+      return;
+    }
+    // TODO: Implement save functionality when userContent router is available
+    setIsSaved(!isSaved);
+    toast.success(isSaved ? "Removed from saved" : "Saved successfully");
+  };
+
+  const handleShare = () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+    toast.success("Link copied to clipboard");
+  };
+
+  // Loading state
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white p-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center py-12">
-            <h1 className="text-2xl font-bold text-slate-900">Regulation not found</h1>
-            <p className="text-slate-600 mt-2">The regulation you're looking for doesn't exist.</p>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading regulation details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error or not found state
+  if (error || !data || !data.regulation) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
+          <div className="container flex items-center justify-between h-16">
+            <Link href="/hub/regulations" className="text-blue-600 hover:text-blue-700 transition font-medium flex items-center gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Regulations
+            </Link>
+          </div>
+        </nav>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center py-12 px-4">
+            <AlertCircle className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-foreground mb-2">Regulation not found</h1>
+            <p className="text-muted-foreground mb-6">
+              The regulation you're looking for doesn't exist or has been removed.
+            </p>
+            <Link href="/hub/regulations">
+              <Button>Browse All Regulations</Button>
+            </Link>
           </div>
         </div>
       </div>
     );
   }
 
-  const handleSave = () => {
-    setIsSaved(!isSaved);
-    toast.success(isSaved ? "Removed from saved" : "Added to saved regulations");
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "ACTIVE":
-        return "bg-green-100 text-green-800";
-      case "PROPOSED":
-        return "bg-blue-100 text-blue-800";
-      case "TRANSITIONAL":
-        return "bg-yellow-100 text-yellow-800";
-      default:
-        return "bg-slate-100 text-slate-800";
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "ACTIVE":
-        return <CheckCircle className="w-4 h-4" />;
-      case "PROPOSED":
-        return <AlertCircle className="w-4 h-4" />;
-      case "TRANSITIONAL":
-        return <Clock className="w-4 h-4" />;
-      default:
-        return null;
-    }
-  };
+  const { regulation, mappings, standards } = data;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen flex flex-col bg-background">
+      {/* Navigation */}
+      <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
+        <div className="container flex items-center justify-between h-16">
+          <Link href="/hub/regulations" className="text-blue-600 hover:text-blue-700 transition font-medium flex items-center gap-2">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Regulations
+          </Link>
+          <div className="flex items-center gap-2">
+            <ExportButtons
+              regulationId={String(regulation.id)}
+              regulationTitle={regulation.title}
+              variant="outline"
+            />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleSave}
+              disabled={!user}
+            >
+              <Bookmark className={`w-5 h-5 ${isSaved ? "fill-current" : ""}`} />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleShare}
+            >
+              <Share2 className="w-5 h-5" />
+            </Button>
+          </div>
+        </div>
+      </nav>
+
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-teal-600 text-white py-12">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <Badge className={getStatusColor(regulation.status)}>
-                  {getStatusIcon(regulation.status)}
-                  <span className="ml-1">{regulation.status}</span>
-                </Badge>
-                <Badge variant="outline" className="bg-white/20 border-white/30 text-white">
+        <div className="container">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-3 mb-4 flex-wrap">
+              {regulation.regulationType && (
+                <Badge className="bg-white/20 border-white/30 text-white">
                   {regulation.regulationType}
                 </Badge>
-              </div>
-              <h1 className="text-4xl font-bold mb-2">{regulation.title}</h1>
-              <p className="text-blue-100 text-lg">{regulation.description}</p>
+              )}
+              {regulation.celexId && (
+                <Badge variant="outline" className="bg-white/10 border-white/30 text-white">
+                  CELEX: {regulation.celexId}
+                </Badge>
+              )}
+              {mappings && mappings.length > 0 && (
+                <Badge className="bg-green-500/20 border-green-300/30 text-white">
+                  <Sparkles className="w-3 h-3 mr-1" />
+                  {mappings.length} GS1 Standards Mapped
+                </Badge>
+              )}
             </div>
-            <div className="flex gap-2 flex-wrap justify-end">
-              <ExportButtons
-                regulationId={String(regulation.id)}
-                regulationTitle={regulation.title}
-                variant="outline"
-              />
-              <Button
-                variant="outline"
-                size="icon"
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
-                onClick={handleSave}
-              >
-                <Bookmark className={`w-5 h-5 ${isSaved ? "fill-current" : ""}`} />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
-              >
-                <Share2 className="w-5 h-5" />
-              </Button>
+            <h1 className="text-4xl font-bold mb-4">{regulation.title}</h1>
+            {regulation.description && (
+              <p className="text-blue-100 text-lg leading-relaxed">
+                {regulation.description}
+              </p>
+            )}
+            <div className="flex items-center gap-6 mt-6 text-sm">
+              {regulation.effectiveDate && (
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>Effective: {new Date(regulation.effectiveDate).toLocaleDateString()}</span>
+                </div>
+              )}
+              {regulation.sourceUrl && (
+                <a
+                  href={regulation.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:underline"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Official Source</span>
+                </a>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        {/* Key Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-600">Effective Date</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-slate-900">
-                {regulation.effectiveDate.toLocaleDateString()}
-              </p>
-            </CardContent>
-          </Card>
+      {/* Main Content */}
+      <div className="flex-1 py-8">
+        <div className="container">
+          <div className="max-w-4xl">
+            <Tabs defaultValue="overview" className="space-y-6">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="standards">
+                  GS1 Standards ({mappings?.length || 0})
+                </TabsTrigger>
+                <TabsTrigger value="datapoints">
+                  ESRS Datapoints ({esrsMappings?.length || 0})
+                </TabsTrigger>
+              </TabsList>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-600">Enforcement Date</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-slate-900">
-                {regulation.enforcementDate.toLocaleDateString()}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-slate-600">Scope</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-slate-900 font-medium">{regulation.scope}</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="timeline">Timeline</TabsTrigger>
-            <TabsTrigger value="gs1-impact">GS1 Impact</TabsTrigger>
-            <TabsTrigger value="esrs-datapoints">ESRS Datapoints</TabsTrigger>
-            <TabsTrigger value="news">Related News</TabsTrigger>
-            <TabsTrigger value="resources">Resources</TabsTrigger>
-          </TabsList>
-
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Key Requirements</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {regulation.keyRequirements.map((req: string, idx: number) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-slate-700">{req}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Affected Sectors</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-700">{regulation.affectedSectors}</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Timeline Tab */}
-          <TabsContent value="timeline" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Implementation Timeline</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  {regulation.implementationTimeline.map((phase: any, idx: number) => (
-                    <div key={idx} className="flex gap-4">
-                      <div className="flex flex-col items-center">
-                        <div className="w-4 h-4 bg-blue-600 rounded-full"></div>
-                        {idx < regulation.implementationTimeline.length - 1 && (
-                          <div className="w-1 h-12 bg-blue-200 my-2"></div>
-                        )}
+              {/* Overview Tab */}
+              <TabsContent value="overview" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Regulation Details</CardTitle>
+                    <CardDescription>
+                      Key information about this EU sustainability regulation
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {regulation.celexId && (
+                      <div>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">CELEX ID</h3>
+                        <p className="text-foreground">{regulation.celexId}</p>
                       </div>
-                      <div className="pb-6">
-                        <p className="font-semibold text-slate-900">{phase.phase}</p>
-                        <p className="text-sm text-slate-600">{phase.date}</p>
-                        <p className="text-slate-700 mt-1">{phase.description}</p>
+                    )}
+                    {regulation.effectiveDate && (
+                      <div>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">Effective Date</h3>
+                        <p className="text-foreground">
+                          {new Date(regulation.effectiveDate).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </p>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                    )}
+                    {regulation.regulationType && (
+                      <div>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">Type</h3>
+                        <p className="text-foreground">{regulation.regulationType}</p>
+                      </div>
+                    )}
+                    {regulation.description && (
+                      <div>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">Description</h3>
+                        <p className="text-foreground leading-relaxed whitespace-pre-wrap">
+                          {regulation.description}
+                        </p>
+                      </div>
+                    )}
+                    {regulation.sourceUrl && (
+                      <div>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">Official Source</h3>
+                        <a
+                          href={regulation.sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline flex items-center gap-2"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          View on EUR-Lex
+                        </a>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
 
-          {/* ESRS Datapoints Tab */}
-          <TabsContent value="esrs-datapoints" className="space-y-6">
-            <ESRSDatapointsSection regulationId={regulation.id} />
-          </TabsContent>
+                {regulation.lastUpdated && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-sm">Last Updated</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground">
+                        {new Date(regulation.lastUpdated).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
 
-          {/* GS1 Impact Tab */}
-          <TabsContent value="gs1-impact" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>GS1 Standards Impact</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <h4 className="font-semibold text-slate-900 mb-3">Applicable GS1 Standards</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {regulation.gs1Impact.applicableStandards.map((std: string) => (
-                      <Badge key={std} variant="secondary">
-                        {std}
-                      </Badge>
-                    ))}
+              {/* GS1 Standards Tab */}
+              <TabsContent value="standards" className="space-y-6">
+                {mappings && mappings.length > 0 ? (
+                  <div className="space-y-4">
+                    {mappings.map((mapping) => {
+                      const standard = standards?.find(s => s.id === mapping.standardId);
+                      return (
+                        <Card key={mapping.id}>
+                          <CardHeader>
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <CardTitle className="text-lg">
+                                  {standard?.standardName || `Standard ID: ${mapping.standardId}`}
+                                </CardTitle>
+                                {standard?.standardCode && (
+                                  <CardDescription className="mt-1">
+                                    Code: {standard.standardCode}
+                                  </CardDescription>
+                                )}
+                              </div>
+                              {mapping.relevanceScore !== null && (
+                                <Badge variant="outline" className="ml-4">
+                                  Score: {(parseFloat(mapping.relevanceScore) * 100).toFixed(0)}%
+                                </Badge>
+                              )}
+                            </div>
+                          </CardHeader>
+                          <CardContent className="space-y-3">
+                            {mapping.mappingReason && (
+                              <div>
+                                <h4 className="font-semibold text-sm text-muted-foreground mb-2">Mapping Rationale</h4>
+                                <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                                  {mapping.mappingReason}
+                                </p>
+                              </div>
+                            )}
+                            {standard?.description && (
+                              <div>
+                                <h4 className="font-semibold text-sm text-muted-foreground mb-2">Standard Description</h4>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                  {standard.description}
+                                </p>
+                              </div>
+                            )}
+                            {mapping.verifiedByAdmin && (
+                              <Badge variant="outline" className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300">
+                                ✓ Verified by Admin
+                              </Badge>
+                            )}
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
                   </div>
-                </div>
+                ) : (
+                  <Card>
+                    <CardContent className="py-12 text-center">
+                      <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground">
+                        No GS1 standards mapped to this regulation yet.
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
 
-                <div>
-                  <h4 className="font-semibold text-slate-900 mb-2">Data Requirements</h4>
-                  <p className="text-slate-700">{regulation.gs1Impact.dataRequirements}</p>
-                </div>
-
-                <div>
-                  <h4 className="font-semibold text-slate-900 mb-2">GS1 Benefits</h4>
-                  <p className="text-slate-700">{regulation.gs1Impact.benefits}</p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* News Tab */}
-          <TabsContent value="news" className="space-y-6">
-            <div className="space-y-4">
-              {regulation.relatedNews.map((news: any) => (
-                <Card key={news.id} className="hover:shadow-md transition-shadow cursor-pointer">
-                  <CardContent className="pt-6">
-                    <p className="text-sm text-slate-600 mb-2">{news.date}</p>
-                    <h4 className="font-semibold text-slate-900">{news.title}</h4>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* Resources Tab */}
-          <TabsContent value="resources" className="space-y-6">
-            <div className="space-y-4">
-              {regulation.references.map((ref: any, idx: number) => (
-                <Card key={idx}>
-                  <CardContent className="pt-6 flex items-center justify-between">
-                    <div>
-                      <h4 className="font-semibold text-slate-900">{ref.title}</h4>
-                      <p className="text-sm text-slate-600 mt-1">{ref.url}</p>
-                    </div>
-                    <Button variant="outline" size="sm">
-                      <Download className="w-4 h-4 mr-2" />
-                      Open
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        {/* Alert for authenticated users */}
-        {user && (
-          <Card className="mt-8 bg-blue-50 border-blue-200">
-            <CardContent className="pt-6">
-              <p className="text-sm text-blue-900">
-                💡 <strong>Tip:</strong> Save this regulation to your dashboard to receive alerts when new news is published or deadlines approach.
-              </p>
-            </CardContent>
-          </Card>
-        )}
+              {/* ESRS Datapoints Tab */}
+              <TabsContent value="datapoints">
+                <ESRSDatapointsSection regulationId={regulationId} />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
       </div>
     </div>
   );

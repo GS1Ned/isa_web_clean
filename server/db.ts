@@ -190,15 +190,29 @@ export async function getRegulationWithStandards(regulationId: number) {
     const standardIds = mappings.map(m => m.standardId);
     const standards: typeof gs1Standards.$inferSelect[] = [];
     if (standardIds.length > 0) {
-      const result = await db.select().from(gs1Standards).where(eq(gs1Standards.id, standardIds[0]));
-      standards.push(...result);
+      // Fetch all standards by their IDs
+      for (const standardId of standardIds) {
+        const result = await db.select().from(gs1Standards).where(eq(gs1Standards.id, standardId));
+        if (result.length > 0) {
+          standards.push(result[0]);
+        }
+      }
     }
 
-    return {
+    const result = {
       regulation: regulation[0],
       mappings,
       standards
     };
+    
+    console.log(`[getRegulationWithStandards] Regulation ${regulationId}:`, {
+      mappingsCount: mappings.length,
+      standardsCount: standards.length,
+      standardIds: standards.map(s => s.id),
+      standardNames: standards.map(s => s.standardName)
+    });
+    
+    return result;
   } catch (error) {
     console.error("[Database] Failed to get regulation with standards:", error);
     return null;
