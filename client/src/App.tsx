@@ -1,57 +1,69 @@
 import { Toaster } from "@/components/ui/sonner";
+import { lazy, Suspense } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
-import AdminAnalyticsDashboard from "./pages/AdminAnalyticsDashboard";
-import AdminPromptOptimization from "./pages/AdminPromptOptimization";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+
+// Critical pages - loaded immediately
 import Home from "./pages/Home";
-import About from "./pages/About";
-import HowItWorks from "./pages/HowItWorks";
-import Dashboard from "./pages/Dashboard";
-import AdminPanel from "./pages/AdminPanel";
-import FeaturesComparison from "./pages/FeaturesComparison";
-import UseCases from "./pages/UseCases";
-import Contact from "./pages/Contact";
-import ComparisonTool from "./pages/ComparisonTool";
-import Blog from "./pages/Blog";
-import FAQ from "./pages/FAQ";
-import HubHome from "./pages/HubHome";
-import HubAbout from "./pages/HubAbout";
-import HubRegulations from "./pages/HubRegulations";
-import HubNews from "./pages/HubNews";
-import HubCalendar from "./pages/HubCalendar";
-import HubStandardsMapping from "./pages/HubStandardsMapping";
-import HubResources from "./pages/HubResources";
-import HubImpactMatrix from "./pages/HubImpactMatrix";
-import HubUserDashboard from "./pages/HubUserDashboard";
-import AdminNewsPanel from "./pages/AdminNewsPanel";
-import HubRegulationDetail from "./pages/HubRegulationDetail";
-import HubCompare from "./pages/HubCompare";
-import HubCompareEnhanced from "./pages/HubCompareEnhanced";
-import AdminCellarIngestion from './pages/AdminCellarIngestion';
-import AdminEUDRSeeder from './pages/AdminEUDRSeeder';
-import AdminCellarSyncMonitor from './pages/AdminCellarSyncMonitor';
-import EPCISUpload from "./pages/EPCISUpload";
-import EPCISUploadEnhanced from "./pages/EPCISUploadEnhanced";
-import EPCISSupplyChain from "./pages/EPCISSupplyChain";
-import EPCISEUDRMap from "./pages/EPCISEUDRMap";
-import BarcodeScanner from "./pages/BarcodeScanner";
-import ComplianceReport from "./pages/ComplianceReport";
 import GettingStarted from "./pages/GettingStarted";
-import ESRSDatapoints from "./pages/ESRSDatapoints";
-import SupplyChainDashboard from "./pages/SupplyChainDashboard";
-import RiskRemediation from "./pages/RiskRemediation";
-import AdminEvidenceVerification from "./pages/AdminEvidenceVerification";
-import ComplianceScoreboard from "./pages/ComplianceScoreboard";
-import ComplianceRoadmap from "./pages/ComplianceRoadmap";
-import TemplateLibrary from "./pages/TemplateLibrary";
-import AdminTemplateManager from "./pages/AdminTemplateManager";
-import TemplateAnalyticsDashboard from "./pages/TemplateAnalyticsDashboard";
-import { NotificationPreferences } from "./pages/NotificationPreferences";
-import { ExecutiveScorecard } from "./pages/ExecutiveScorecard";
+import HubHome from "./pages/HubHome";
+import HubRegulations from "./pages/HubRegulations";
+import HubRegulationDetail from "./pages/HubRegulationDetail";
 import Features from "./pages/Features";
+
+// Lazy-loaded pages - loaded on demand
+const About = lazy(() => import("./pages/About"));
+const HowItWorks = lazy(() => import("./pages/HowItWorks"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const AdminPanel = lazy(() => import("./pages/AdminPanel"));
+const FeaturesComparison = lazy(() => import("./pages/FeaturesComparison"));
+const UseCases = lazy(() => import("./pages/UseCases"));
+const Contact = lazy(() => import("./pages/Contact"));
+const ComparisonTool = lazy(() => import("./pages/ComparisonTool"));
+const Blog = lazy(() => import("./pages/Blog"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const HubAbout = lazy(() => import("./pages/HubAbout"));
+const HubNews = lazy(() => import("./pages/HubNews"));
+const HubCalendar = lazy(() => import("./pages/HubCalendar"));
+const HubStandardsMapping = lazy(() => import("./pages/HubStandardsMapping"));
+const HubResources = lazy(() => import("./pages/HubResources"));
+const HubImpactMatrix = lazy(() => import("./pages/HubImpactMatrix"));
+const HubUserDashboard = lazy(() => import("./pages/HubUserDashboard"));
+const AdminNewsPanel = lazy(() => import("./pages/AdminNewsPanel"));
+const HubCompare = lazy(() => import("./pages/HubCompare"));
+const HubCompareEnhanced = lazy(() => import("./pages/HubCompareEnhanced"));
+const AdminCellarIngestion = lazy(() => import("./pages/AdminCellarIngestion"));
+const AdminEUDRSeeder = lazy(() => import("./pages/AdminEUDRSeeder"));
+const AdminCellarSyncMonitor = lazy(() => import("./pages/AdminCellarSyncMonitor"));
+const AdminAnalyticsDashboard = lazy(() => import("./pages/AdminAnalyticsDashboard"));
+const AdminPromptOptimization = lazy(() => import("./pages/AdminPromptOptimization"));
+const EPCISUpload = lazy(() => import("./pages/EPCISUpload"));
+const EPCISUploadEnhanced = lazy(() => import("./pages/EPCISUploadEnhanced"));
+const EPCISSupplyChain = lazy(() => import("./pages/EPCISSupplyChain"));
+const EPCISEUDRMap = lazy(() => import("./pages/EPCISEUDRMap"));
+const BarcodeScanner = lazy(() => import("./pages/BarcodeScanner"));
+const ComplianceReport = lazy(() => import("./pages/ComplianceReport"));
+const ESRSDatapoints = lazy(() => import("./pages/ESRSDatapoints"));
+const SupplyChainDashboard = lazy(() => import("./pages/SupplyChainDashboard"));
+const RiskRemediation = lazy(() => import("./pages/RiskRemediation"));
+const AdminEvidenceVerification = lazy(() => import("./pages/AdminEvidenceVerification"));
+const ComplianceScoreboard = lazy(() => import("./pages/ComplianceScoreboard"));
+const ComplianceRoadmap = lazy(() => import("./pages/ComplianceRoadmap"));
+const TemplateLibrary = lazy(() => import("./pages/TemplateLibrary"));
+const AdminTemplateManager = lazy(() => import("./pages/AdminTemplateManager"));
+const TemplateAnalyticsDashboard = lazy(() => import("./pages/TemplateAnalyticsDashboard"));
+const NotificationPreferences = lazy(() => import("./pages/NotificationPreferences").then(m => ({ default: m.NotificationPreferences })));
+const ExecutiveScorecard = lazy(() => import("./pages/ExecutiveScorecard").then(m => ({ default: m.ExecutiveScorecard })));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  </div>
+);
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (    <Switch>
@@ -123,7 +135,9 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
-          <Router />
+          <Suspense fallback={<PageLoader />}>
+            <Router />
+          </Suspense>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

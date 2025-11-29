@@ -28,6 +28,7 @@ export function NavigationMenu() {
       label: "ESG Hub",
       children: [
         { label: "Hub Home", href: "/hub", description: "Overview and key statistics" },
+        { label: "About ESG Hub", href: "/hub/about", description: "AI methodology and value proposition" },
         { label: "Regulations", href: "/hub/regulations", description: "Explore EU ESG regulations" },
         { label: "News Feed", href: "/hub/news", description: "Latest regulatory updates" },
         { label: "Calendar", href: "/hub/calendar", description: "Compliance deadlines" },
