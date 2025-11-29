@@ -1066,3 +1066,11 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
   - [x] Update Home.tsx with clearer value proposition
   - [x] Add ESG Hub CTA prominently (primary CTA + statistics bar)
   - [x] Improve feature showcase section (ESG Hub focus + EPCIS preview)
+
+
+## CRITICAL: Deployment Blocker Fix
+- [x] Investigate server startup code (server/_core/index.ts)
+- [x] Remove automatic EUDR/EPCIS seeding from server startup (commented out CLI execution blocks)
+- [x] Ensure seeding only happens via admin page trigger
+- [x] Test server stays running after startup (dev and production builds tested)
+- [x] Verify deployment succeeds with ServiceHealth check (ready for publishing)

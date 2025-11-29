@@ -357,7 +357,9 @@ export async function seedEPCISEvents(userId: number) {
   };
 }
 
-// CLI execution
+// CLI execution - DISABLED to prevent automatic seeding on deployment
+// Seeding should only happen via admin UI at /admin/eudr-seeder
+/*
 if (import.meta.url === `file://${process.argv[1]}`) {
   console.log("Seeding EPCIS sample events...");
   
@@ -375,3 +377,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(1);
     });
 }
+*/
