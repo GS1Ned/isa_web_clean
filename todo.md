@@ -1238,4 +1238,12 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Generate embeddings for ESRS Datapoints (55 unique chunks from 1,184 items)
 - [x] Verify 100% knowledge base coverage (155 unique chunks)
 - [x] Test cross-domain search queries (ESRS + GS1 + Regulations)
-- [ ] Save checkpoint with expanded knowledge base
+- [x] Save checkpoint with expanded knowledge base
+
+
+## Phase 37: Disclaimer Banner
+- [x] Create DisclaimerBanner component with warning styling
+- [x] Add disclaimer text about non-official GS1 status
+- [x] Integrate banner into App.tsx to show on all pages
+- [x] Test banner visibility across different pages (tested on home and Ask ISA)
+- [ ] Save checkpoint with disclaimer banner
