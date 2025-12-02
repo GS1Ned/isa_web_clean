@@ -39,7 +39,8 @@ import { templateAnalyticsRouter } from "./routers/template-analytics.js";
 import { realtimeRouter } from "./routers/realtime.js";
 import { notificationPreferencesRouter } from "./routers/notification-preferences.js";
 import { executiveAnalyticsRouter } from "./routers/executive-analytics.js";
-import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
+import { askISARouter } from "./routers/ask-isa.js";
+// import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
   system: systemRouter,
@@ -698,39 +699,32 @@ export const appRouter = router({
   /**
    * User Onboarding Progress Router
    */
-  onboarding: router({
-    /**
-     * Get user's onboarding progress
-     */
-    getProgress: protectedProcedure.query(async ({ ctx }) => {
-      return await getUserOnboardingProgress(ctx.user.id);
-    }),
-
-    /**
-     * Save user's onboarding progress
-     */
-    saveProgress: protectedProcedure
-      .input(
-        z.object({
-          completedSteps: z.array(z.number()),
-          currentStep: z.number(),
-        })
-      )
-      .mutation(async ({ ctx, input }) => {
-        return await saveUserOnboardingProgress(
-          ctx.user.id,
-          input.completedSteps,
-          input.currentStep
-        );
-      }),
-
-    /**
-     * Reset user's onboarding progress
-     */
-    resetProgress: protectedProcedure.mutation(async ({ ctx }) => {
-      return await resetUserOnboardingProgress(ctx.user.id);
-    }),
-  }),
+  // onboarding: router({
+  //   /**
+  //    * Get user's onboarding progress
+  //    * TEMPORARILY DISABLED
+  //    */
+  //   getProgress: protectedProcedure.query(async ({ ctx }) => {
+  //     return await getUserOnboardingProgress(ctx.user.id);
+  //   }),
+  //   saveProgress: protectedProcedure
+  //     .input(
+  //       z.object({
+  //         completedSteps: z.array(z.number()),
+  //         currentStep: z.number(),
+  //       })
+  //     )
+  //     .mutation(async ({ ctx, input }) => {
+  //       return await saveUserOnboardingProgress(
+  //         ctx.user.id,
+  //         input.completedSteps,
+  //         input.currentStep
+  //       );
+  //     }),
+  //   resetProgress: protectedProcedure.mutation(async ({ ctx }) => {
+  //     return await resetUserOnboardingProgress(ctx.user.id);
+  //   }),
+  // }),
 
   /**
    * ESRS Datapoints Router
@@ -870,6 +864,11 @@ export const appRouter = router({
       return { total, byStandard, byDataType };
     }),
   }),
+
+  /**
+   * Ask ISA - RAG-powered Q&A Router
+   */
+  askISA: askISARouter,
 
   /**
    * Dutch Initiatives Router

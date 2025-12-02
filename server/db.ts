@@ -1,6 +1,6 @@
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, regulations, gs1Standards, regulationStandardMappings, userAnalyses, regulatoryChangeAlerts, userPreferences, InsertContact, contacts, hubNews, userAlerts, userOnboardingProgress, InsertUserOnboardingProgress } from "../drizzle/schema";
+import { InsertUser, users, regulations, gs1Standards, regulationStandardMappings, userAnalyses, regulatoryChangeAlerts, userPreferences, InsertContact, contacts, hubNews, userAlerts } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -966,8 +966,9 @@ export async function getMostVotedMappings(limit: number = 10) {
 
 /**
  * Get user's onboarding progress
+ * TEMPORARILY DISABLED: userOnboardingProgress table commented out
  */
-export async function getUserOnboardingProgress(userId: number) {
+/* export async function getUserOnboardingProgress(userId: number) {
   const db = await getDb();
   if (!db) return null;
 
@@ -983,12 +984,12 @@ export async function getUserOnboardingProgress(userId: number) {
     console.error("[Database] Failed to get onboarding progress:", error);
     return null;
   }
-}
+} */
 
 /**
  * Save user's onboarding progress
  */
-export async function saveUserOnboardingProgress(
+/* export async function saveUserOnboardingProgress(
   userId: number,
   completedSteps: number[],
   currentStep: number
@@ -1056,12 +1057,12 @@ export async function saveUserOnboardingProgress(
     console.error("[Database] Failed to save onboarding progress:", error);
     return null;
   }
-}
+} */
 
 /**
  * Reset user's onboarding progress
  */
-export async function resetUserOnboardingProgress(userId: number) {
+/* export async function resetUserOnboardingProgress(userId: number) {
   const db = await getDb();
   if (!db) return false;
 
@@ -1075,7 +1076,7 @@ export async function resetUserOnboardingProgress(userId: number) {
     console.error("[Database] Failed to reset onboarding progress:", error);
     return false;
   }
-}
+} */
 
 // ============================================================================
 // DUTCH INITIATIVES
@@ -1195,5 +1196,286 @@ export async function getDutchInitiativeSectors() {
   } catch (error) {
     console.error("[Database] Failed to get Dutch initiative sectors:", error);
     return [];
+  }
+}
+
+// ============================================================================
+// KNOWLEDGE EMBEDDINGS & Q&A (DEPRECATED - Use db-knowledge.ts instead)
+// ============================================================================
+
+/**
+ * Store embedding for a knowledge source
+ * @deprecated Use storeKnowledgeChunk from db-knowledge.ts instead
+ */
+/* export async function storeEmbedding(data: {
+  sourceType: 'regulation' | 'standard' | 'esrs_datapoint' | 'dutch_initiative';
+  sourceId: number;
+  content: string;
+  contentHash: string;
+  embedding: number[];
+  embeddingModel: string;
+  title: string;
+  url?: string;
+}) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const { knowledgeEmbeddings } = await import('../drizzle/schema');
+    
+    // Check if embedding already exists for this content hash
+    const existing = await db
+      .select()
+      .from(knowledgeEmbeddings)
+      .where(eq(knowledgeEmbeddings.contentHash, data.contentHash))
+      .limit(1);
+
+    if (existing.length > 0) {
+      return existing[0];
+    }
+
+    // Insert new embedding
+    const [result] = await db
+      .insert(knowledgeEmbeddings)
+      .values({
+        sourceType: data.sourceType,
+        sourceId: data.sourceId,
+        content: data.content,
+        contentHash: data.contentHash,
+        embedding: data.embedding as any,
+        embeddingModel: data.embeddingModel,
+        title: data.title,
+        url: data.url,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+    return result;
+  } catch (error) {
+    console.error('[Database] Failed to store embedding:', error);
+    return null;
+  }
+}
+
+/**
+ * Search embeddings by semantic similarity
+ * @deprecated Use searchKnowledgeChunks from db-knowledge.ts instead
+ */
+/* export async function searchEmbeddings(
+  queryEmbedding: number[],
+  limit: number = 10,
+  sourceTypes?: Array<'regulation' | 'standard' | 'esrs_datapoint' | 'dutch_initiative'>
+) {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    const { knowledgeEmbeddings } = await import('../drizzle/schema');
+    
+    // Fetch all embeddings (or filtered by source type)
+    let query = db.select().from(knowledgeEmbeddings);
+    
+    if (sourceTypes && sourceTypes.length > 0) {
+      // Note: This is simplified - in production, use proper SQL IN clause
+      query = query.where(eq(knowledgeEmbeddings.sourceType, sourceTypes[0])) as any;
+    }
+
+    const embeddings = await query;
+
+    // Calculate relevance using LLM-based scoring
+    const { scoreRelevance } = await import('./embedding');
+    
+    const results = embeddings.map(emb => ({
+      ...emb,
+      similarity: cosineSimilarity(queryEmbedding, emb.embedding as number[]),
+    }));
+
+    // Sort by similarity and return top results
+    return results
+      .sort((a, b) => b.similarity - a.similarity)
+      .slice(0, limit);
+  } catch (error) {
+    console.error('[Database] Failed to search embeddings:', error);
+    return [];
+  }
+} */
+
+/**
+ * Create a new Q&A conversation
+ */
+export async function createQAConversation(userId?: number, title?: string) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const { qaConversations } = await import('../drizzle/schema');
+    
+    const [result] = await db
+      .insert(qaConversations)
+      .values({
+        userId,
+        title,
+        messageCount: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+    return {
+      id: result.insertId,
+      userId,
+      title,
+      messageCount: 0,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+  } catch (error) {
+    console.error('[Database] Failed to create conversation:', error);
+    return null;
+  }
+}
+
+/**
+ * Add message to Q&A conversation
+ */
+export async function addQAMessage(data: {
+  conversationId: number;
+  role: 'user' | 'assistant';
+  content: string;
+  sources?: any[];
+  retrievedChunks?: number;
+}) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const { qaMessages, qaConversations } = await import('../drizzle/schema');
+    
+    // Insert message
+    const [result] = await db
+      .insert(qaMessages)
+      .values({
+        conversationId: data.conversationId,
+        role: data.role,
+        content: data.content,
+        sources: data.sources as any,
+        retrievedChunks: data.retrievedChunks,
+        createdAt: new Date(),
+      });
+
+    // Update conversation message count
+    await db
+      .update(qaConversations)
+      .set({
+        messageCount: sql`${qaConversations.messageCount} + 1`,
+        updatedAt: new Date(),
+      })
+      .where(eq(qaConversations.id, data.conversationId));
+
+    return {
+      id: result.insertId,
+      ...data,
+      createdAt: new Date(),
+    };
+  } catch (error) {
+    console.error('[Database] Failed to add message:', error);
+    return null;
+  }
+}
+
+/**
+ * Get Q&A conversation with messages
+ */
+export async function getQAConversation(conversationId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const { qaConversations, qaMessages } = await import('../drizzle/schema');
+    
+    // Get conversation
+    const conversation = await db
+      .select()
+      .from(qaConversations)
+      .where(eq(qaConversations.id, conversationId))
+      .limit(1);
+
+    if (conversation.length === 0) {
+      return null;
+    }
+
+    // Get messages
+    const messages = await db
+      .select()
+      .from(qaMessages)
+      .where(eq(qaMessages.conversationId, conversationId))
+      .orderBy(qaMessages.createdAt);
+
+    return {
+      ...conversation[0],
+      messages,
+    };
+  } catch (error) {
+    console.error('[Database] Failed to get conversation:', error);
+    return null;
+  }
+}
+
+/**
+ * Get user's Q&A conversations
+ */
+export async function getUserQAConversations(userId: number, limit: number = 20) {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    const { qaConversations } = await import('../drizzle/schema');
+    
+    return await db
+      .select()
+      .from(qaConversations)
+      .where(eq(qaConversations.userId, userId))
+      .orderBy(desc(qaConversations.updatedAt))
+      .limit(limit);
+  } catch (error) {
+    console.error('[Database] Failed to get conversations:', error);
+    return [];
+  }
+}
+
+/**
+ * Delete Q&A conversation
+ */
+export async function deleteQAConversation(conversationId: number, userId: number) {
+  const db = await getDb();
+  if (!db) return false;
+
+  try {
+    const { qaConversations, qaMessages } = await import('../drizzle/schema');
+    
+    // Verify ownership
+    const conversation = await db
+      .select()
+      .from(qaConversations)
+      .where(eq(qaConversations.id, conversationId))
+      .limit(1);
+
+    if (conversation.length === 0 || conversation[0].userId !== userId) {
+      return false;
+    }
+
+    // Delete messages first
+    await db
+      .delete(qaMessages)
+      .where(eq(qaMessages.conversationId, conversationId));
+
+    // Delete conversation
+    await db
+      .delete(qaConversations)
+      .where(eq(qaConversations.id, conversationId));
+
+    return true;
+  } catch (error) {
+    console.error('[Database] Failed to delete conversation:', error);
+    return false;
   }
 }

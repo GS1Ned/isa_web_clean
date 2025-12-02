@@ -1000,23 +1000,24 @@ export type InsertNotificationPreference = typeof notificationPreferences.$infer
 
 /**
  * User Onboarding Progress - Track completion of getting started steps
+ * TEMPORARILY DISABLED: TiDB doesn't support JSON default values
  */
-export const userOnboardingProgress = mysqlTable("user_onboarding_progress", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull().unique(),
-  completedSteps: json("completedSteps").$type<number[]>(), // array of completed step IDs
-  currentStep: int("currentStep").default(1), // current active step
-  completionPercentage: int("completionPercentage").default(0), // 0-100
-  isCompleted: boolean("isCompleted").default(false), // all steps done
-  startedAt: timestamp("startedAt").defaultNow().notNull(),
-  completedAt: timestamp("completedAt"),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-}, (table) => ({
-  userIdIdx: index("userId_idx").on(table.userId),
-}));
+// export const userOnboardingProgress = mysqlTable("user_onboarding_progress", {
+//   id: int("id").autoincrement().primaryKey(),
+//   userId: int("userId").notNull().unique(),
+//   completedSteps: json("completedSteps").$type<number[]>(), // array of completed step IDs
+//   currentStep: int("currentStep").default(1), // current active step
+//   completionPercentage: int("completionPercentage").default(0), // 0-100
+//   isCompleted: boolean("isCompleted").default(false), // all steps done
+//   startedAt: timestamp("startedAt").defaultNow().notNull(),
+//   completedAt: timestamp("completedAt"),
+//   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+// }, (table) => ({
+//   userIdIdx: index("userId_idx").on(table.userId),
+// }));
 
-export type UserOnboardingProgress = typeof userOnboardingProgress.$inferSelect;
-export type InsertUserOnboardingProgress = typeof userOnboardingProgress.$inferInsert;
+// export type UserOnboardingProgress = typeof userOnboardingProgress.$inferSelect;
+// export type InsertUserOnboardingProgress = typeof userOnboardingProgress.$inferInsert;
 
 /**
  * Dutch Compliance Initiatives - National programs that complement EU regulations
@@ -1103,3 +1104,104 @@ export const initiativeStandardMappings = mysqlTable("initiative_standard_mappin
 
 export type InitiativeStandardMapping = typeof initiativeStandardMappings.$inferSelect;
 export type InsertInitiativeStandardMapping = typeof initiativeStandardMappings.$inferInsert;
+
+
+// ============================================================================
+// ASK ISA - RAG-POWERED Q&A SYSTEM
+// ============================================================================
+
+/**
+ * Knowledge Embeddings - Vector embeddings for semantic search
+ * Stores embeddings for regulations, standards, ESRS datapoints, and Dutch initiatives
+ */
+export const knowledgeEmbeddings = mysqlTable("knowledge_embeddings", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Source reference
+  sourceType: mysqlEnum("sourceType", ["regulation", "standard", "esrs_datapoint", "dutch_initiative"]).notNull(),
+  sourceId: int("sourceId").notNull(), // ID in the source table
+  
+  // Content
+  content: text("content").notNull(), // The text that was embedded
+  contentHash: varchar("contentHash", { length: 64 }).notNull(), // SHA-256 hash for deduplication
+  
+  // Embedding vector (stored as JSON array of floats)
+  embedding: json("embedding").$type<number[]>().notNull(),
+  embeddingModel: varchar("embeddingModel", { length: 64 }).default("text-embedding-3-small").notNull(),
+  
+  // Metadata for search result display
+  title: varchar("title", { length: 512 }).notNull(),
+  url: varchar("url", { length: 512 }), // Link to detail page
+  
+  // Timestamps
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  sourceTypeIdx: index("source_type_idx").on(table.sourceType),
+  sourceIdIdx: index("source_id_idx").on(table.sourceId),
+  contentHashIdx: index("content_hash_idx").on(table.contentHash),
+  // Composite index for efficient source lookups
+  sourceCompositeIdx: index("source_composite_idx").on(table.sourceType, table.sourceId),
+}));
+
+export type KnowledgeEmbedding = typeof knowledgeEmbeddings.$inferSelect;
+export type InsertKnowledgeEmbedding = typeof knowledgeEmbeddings.$inferInsert;
+
+/**
+ * Q&A Conversations - User question/answer sessions
+ */
+export const qaConversations = mysqlTable("qa_conversations", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // User reference (nullable for anonymous users)
+  userId: int("userId").references(() => users.id),
+  
+  // Conversation metadata
+  title: varchar("title", { length: 255 }), // Auto-generated from first question
+  messageCount: int("messageCount").default(0).notNull(),
+  
+  // Timestamps
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("user_id_idx").on(table.userId),
+  createdAtIdx: index("created_at_idx").on(table.createdAt),
+}));
+
+export type QAConversation = typeof qaConversations.$inferSelect;
+export type InsertQAConversation = typeof qaConversations.$inferInsert;
+
+/**
+ * Q&A Messages - Individual messages in conversations
+ */
+export const qaMessages = mysqlTable("qa_messages", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Conversation reference
+  conversationId: int("conversationId").notNull().references(() => qaConversations.id),
+  
+  // Message content
+  role: mysqlEnum("role", ["user", "assistant"]).notNull(),
+  content: text("content").notNull(),
+  
+  // Source citations (for assistant messages)
+  sources: json("sources").$type<Array<{
+    type: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative";
+    id: number;
+    title: string;
+    url: string;
+    relevanceScore: number;
+  }>>(),
+  
+  // Search metadata
+  retrievedChunks: int("retrievedChunks"), // Number of chunks retrieved from vector search
+  
+  // Timestamps
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  conversationIdIdx: index("conversation_id_idx").on(table.conversationId),
+  createdAtIdx: index("created_at_idx").on(table.createdAt),
+}));
+
+export type QAMessage = typeof qaMessages.$inferSelect;
+export type InsertQAMessage = typeof qaMessages.$inferInsert;

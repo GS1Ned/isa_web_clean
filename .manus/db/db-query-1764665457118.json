@@ -1,0 +1,9 @@
+{
+  "query": "CREATE INDEX IF NOT EXISTS `source_type_idx` ON `knowledge_embeddings` (`sourceType`);\nCREATE INDEX IF NOT EXISTS `source_id_idx` ON `knowledge_embeddings` (`sourceId`);\nCREATE INDEX IF NOT EXISTS `content_hash_idx` ON `knowledge_embeddings` (`contentHash`);\nCREATE INDEX IF NOT EXISTS `source_composite_idx` ON `knowledge_embeddings` (`sourceType`, `sourceId`)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE INDEX IF NOT EXISTS `source_type_idx` ON `knowledge_embeddings` (`sourceType`);\nCREATE INDEX IF NOT EXISTS `source_id_idx` ON `knowledge_embeddings` (`sourceId`);\nCREATE INDEX IF NOT EXISTS `content_hash_idx` ON `knowledge_embeddings` (`contentHash`);\nCREATE INDEX IF NOT EXISTS `source_composite_idx` ON `knowledge_embeddings` (`sourceType`, `sourceId`)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1812
+}

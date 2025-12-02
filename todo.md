@@ -1199,3 +1199,34 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [ ] Test with EUDR (3 standards), PPWR (5 standards), CSRD (multiple standards)
 - [ ] Remove debug logging
 - [ ] Create checkpoint
+
+
+## Phase 35: Ask ISA - RAG-Powered Q&A Interface
+- [x] Design database schema for knowledge embeddings
+- [x] Design database schema for Q&A conversation history
+- [x] Run database migration for new tables
+- [x] Create embedding generation utility using Manus LLM API
+- [x] Build semantic search function with cosine similarity
+- [x] Create tRPC procedure for asking questions (with streaming)
+- [x] Create tRPC procedure for retrieving Q&A history
+- [x] Add admin procedure to generate embeddings for existing content
+- [x] Create AskISA page with chat interface
+- [x] Implement streaming response display with markdown rendering
+- [x] Add suggested starter questions
+- [x] Show source citations with links to regulations/standards
+- [ ] Add conversation history sidebar
+- [x] Integrate Ask ISA into navigation menu
+- [ ] Write vitest tests for embedding generation
+- [ ] Write vitest tests for semantic search
+- [ ] Test Q&A with sample questions about regulations and standards
+- [ ] Verify source citations are accurate and clickable
+- [ ] Create admin knowledge base manager page
+- [ ] Show embedding statistics by source type
+- [ ] Add generate embeddings buttons for each source type
+- [ ] Display progress indicators during generation
+- [ ] Test embedding generation for all source types
+- [x] Refactor embedding system to use LLM-based relevance scoring
+- [x] Update database schema to remove embedding vectors
+- [x] Implement LLM relevance scoring function
+- [x] Update search to use LLM scoring instead of cosine similarity
+- [x] Test Ask ISA with LLM-based matching

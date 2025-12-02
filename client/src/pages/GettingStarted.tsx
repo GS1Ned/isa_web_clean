@@ -29,22 +29,26 @@ export default function GettingStarted() {
   const [isInitialized, setIsInitialized] = useState(false);
 
   // Load saved progress
-  const { data: savedProgress } = trpc.onboarding.getProgress.useQuery(undefined, {
-    retry: false,
-  });
+  // TEMPORARILY DISABLED: onboarding router commented out
+  // const { data: savedProgress } = trpc.onboarding.getProgress.useQuery(undefined, {
+  //   retry: false,
+  // });
+  const savedProgress = null;
 
   // Save progress mutation
-  const saveProgressMutation = trpc.onboarding.saveProgress.useMutation();
+  // const saveProgressMutation = trpc.onboarding.saveProgress.useMutation();
+  const saveProgressMutation = { mutate: (_args: any) => {}, isPending: false };
 
   // Initialize from saved progress
-  useEffect(() => {
-    if (savedProgress && !isInitialized) {
-      const stepsArray = savedProgress.completedSteps || [];
-      setCompletedSteps(new Set(stepsArray));
-      setCurrentStep(savedProgress.currentStep || 1);
-      setIsInitialized(true);
-    }
-  }, [savedProgress, isInitialized]);
+  // TEMPORARILY DISABLED
+  // useEffect(() => {
+  //   if (savedProgress && !isInitialized) {
+  //     const stepsArray = savedProgress.completedSteps || [];
+  //     setCompletedSteps(new Set(stepsArray));
+  //     setCurrentStep(savedProgress.currentStep || 1);
+  //     setIsInitialized(true);
+  //   }
+  // }, [savedProgress, isInitialized]);
 
   // Seed sample data mutations
   const seedEUDRMutation = trpc.epcis.seedEUDRSampleData.useMutation({

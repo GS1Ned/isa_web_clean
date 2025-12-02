@@ -1,1 +1,0 @@
-ALTER TABLE `user_onboarding_progress` MODIFY COLUMN `completedSteps` json DEFAULT (JSON_ARRAY());

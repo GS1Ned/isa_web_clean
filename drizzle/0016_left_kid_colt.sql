@@ -1,1 +1,0 @@
-ALTER TABLE `roadmap_templates` MODIFY COLUMN `rating` decimal(3,2) DEFAULT '0.00';

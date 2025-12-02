@@ -21,6 +21,10 @@ export function NavigationMenu() {
       href: "/getting-started",
     },
     {
+      label: "Ask ISA",
+      href: "/ask",
+    },
+    {
       label: "Features",
       href: "/features",
     },
@@ -66,6 +70,7 @@ export function NavigationMenu() {
     navItems.push({
       label: "Admin",
       children: [
+        { label: "Knowledge Base", href: "/admin/knowledge-base", description: "Generate embeddings for Ask ISA" },
         { label: "News Management", href: "/admin/news", description: "Manage news articles" },
         { label: "Analytics", href: "/admin/analytics", description: "Hub engagement metrics" },
         { label: "CELLAR Ingestion", href: "/admin/cellar", description: "EU regulation sync" },

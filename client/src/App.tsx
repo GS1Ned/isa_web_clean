@@ -59,6 +59,8 @@ const NotificationPreferences = lazy(() => import("./pages/NotificationPreferenc
 const ExecutiveScorecard = lazy(() => import("./pages/ExecutiveScorecard").then(m => ({ default: m.ExecutiveScorecard })));
 const HubDutchInitiatives = lazy(() => import("./pages/HubDutchInitiatives"));
 const HubDutchInitiativeDetail = lazy(() => import("./pages/HubDutchInitiativeDetail"));
+const AskISA = lazy(() => import("./pages/AskISA"));
+const AdminKnowledgeBase = lazy(() => import("./pages/AdminKnowledgeBase"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -95,6 +97,8 @@ function Router() {
       <Route path="/hub/esrs-datapoints" component={ESRSDatapoints} />
       <Route path="/hub/dutch-initiatives/:id" component={HubDutchInitiativeDetail} />
       <Route path="/hub/dutch-initiatives" component={HubDutchInitiatives} />
+      <Route path="/ask" component={AskISA} />
+      <Route path="/admin/knowledge-base" component={AdminKnowledgeBase} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
       <Route path="/admin/cellar" component={AdminCellarIngestion} />
       <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />

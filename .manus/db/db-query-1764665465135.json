@@ -1,0 +1,9 @@
+{
+  "query": "CREATE INDEX IF NOT EXISTS `user_id_idx` ON `qa_conversations` (`userId`);\nCREATE INDEX IF NOT EXISTS `created_at_idx` ON `qa_conversations` (`createdAt`);\nCREATE INDEX IF NOT EXISTS `conversation_id_idx` ON `qa_messages` (`conversationId`);\nCREATE INDEX IF NOT EXISTS `created_at_idx` ON `qa_messages` (`createdAt`)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE INDEX IF NOT EXISTS `user_id_idx` ON `qa_conversations` (`userId`);\nCREATE INDEX IF NOT EXISTS `created_at_idx` ON `qa_conversations` (`createdAt`);\nCREATE INDEX IF NOT EXISTS `conversation_id_idx` ON `qa_messages` (`conversationId`);\nCREATE INDEX IF NOT EXISTS `created_at_idx` ON `qa_messages` (`createdAt`)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1816
+}
