@@ -1230,3 +1230,12 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Implement LLM relevance scoring function
 - [x] Update search to use LLM scoring instead of cosine similarity
 - [x] Test Ask ISA with LLM-based matching
+
+
+## Phase 36: Knowledge Base Expansion
+- [x] Generate embeddings for GS1 Standards (60 items)
+- [x] Generate embeddings for Dutch Initiatives (5 items - all available)
+- [x] Generate embeddings for ESRS Datapoints (55 unique chunks from 1,184 items)
+- [x] Verify 100% knowledge base coverage (155 unique chunks)
+- [x] Test cross-domain search queries (ESRS + GS1 + Regulations)
+- [ ] Save checkpoint with expanded knowledge base
