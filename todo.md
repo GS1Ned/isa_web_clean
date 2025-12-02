@@ -1246,4 +1246,15 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Add disclaimer text about non-official GS1 status
 - [x] Integrate banner into App.tsx to show on all pages
 - [x] Test banner visibility across different pages (tested on home and Ask ISA)
-- [ ] Save checkpoint with disclaimer banner
+- [x] Save checkpoint with disclaimer banner
+
+
+## Phase 38: Platform Stabilization & Documentation
+- [x] Fix embedding module console errors (removed obsolete test file)
+- [x] Remove dead code and unused imports
+- [x] Create ARCHITECTURE.md with system overview
+- [x] Create DATA_MODEL.md with database schema documentation
+- [x] Create INGESTION.md documenting all data pipelines
+- [x] Create DATASET_INVENTORY.md listing all data sources
+- [x] Update ROADMAP.md with current status and priorities
+- [ ] Save checkpoint with stabilization improvements
