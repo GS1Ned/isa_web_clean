@@ -1385,4 +1385,42 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Test multi-sector attribute filtering (9/11 tests passed)
 - [x] Validate sector-specific regulation mappings (625 total mappings)
 - [x] Run full test suite with new sectors (vitest passed)
-- [ ] Save checkpoint with expanded sector coverage
+- [x] Save checkpoint with expanded sector coverage (version 46f0e76a)
+
+
+## Phase 42: Documentation & Feature Gap Closure (Priority ⭐⭐⭐⭐⭐)
+
+### Documentation Master Index
+- [x] Create STATUS.md as single source of truth for project status
+- [x] Update GS1_DATA_MODELS.md with current coverage (3 sectors, 3,668 attributes)
+- [x] Create CHANGELOG.md to track progress for partners
+- [x] Create project master index (docs/README.md) linking all docs with status badges
+- [ ] Update architecture diagram with current implementation state (deferred - low priority)
+
+### GS1 Attribute Mapper Operationalization (v0.1)
+- [x] Enhance GS1AttributesPanel UI with better filtering and search (sector + flags + search)
+- [x] Add "Export to Excel" functionality for attribute checklists (xlsx package installed)
+- [x] Add attribute coverage metrics dashboard (total, packaging, sustainability, web vocab)
+- [x] Create GS1AttributesPanelEnhanced component with all features
+- [x] Replace old component in HubRegulationDetail page
+- [ ] Create "Compliance Checklist" view showing required vs optional attributes (deferred)
+- [ ] Implement saved views for user personalization (requires auth - Phase 44)
+
+### ESRS IG3 Datapoint Ingestion
+- [ ] Research EFRAG IG3 (Implementation Guidance 3) datapoint structure
+- [ ] Download latest ESRS IG3 XLS files
+- [ ] Build parser for IG3 datapoint extraction
+- [ ] Map IG3 datapoints to ESRS standards (E1-E5, S1-S4, G1)
+- [ ] Link IG3 datapoints to GS1 attributes for gap analysis
+
+### Cron Reliability & Monitoring
+- [ ] Add error handling and retry logic to weekly-cellar-ingestion.ts
+- [ ] Create ingestion_logs table to track cron job execution
+- [ ] Build monitoring dashboard showing last run, success/failure, records ingested
+- [ ] Add email alerts for ingestion failures
+- [ ] Implement data drift detection (unexpected schema changes)
+
+### Testing & Delivery
+- [ ] Test all new features with vitest
+- [ ] Validate documentation completeness
+- [ ] Save checkpoint with gap closure deliverables

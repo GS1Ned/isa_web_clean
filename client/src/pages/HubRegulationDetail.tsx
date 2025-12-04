@@ -10,7 +10,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ExportButtons } from "@/components/ExportButtons";
 import { ESRSDatapointsSection } from "@/components/ESRSDatapointsSection";
-import { GS1AttributesPanel } from "@/components/GS1AttributesPanel";
+import { GS1AttributesPanelEnhanced } from "@/components/GS1AttributesPanelEnhanced";
 
 export default function HubRegulationDetail() {
   const [, params] = useRoute("/hub/regulations/:id");
@@ -347,7 +347,7 @@ export default function HubRegulationDetail() {
 
               {/* GS1 Attributes Tab */}
               <TabsContent value="attributes">
-                <GS1AttributesPanel 
+                <GS1AttributesPanelEnhanced 
                   regulationId={regulationId} 
                   regulationName={regulation.title}
                 />
