@@ -1361,4 +1361,28 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Write vitest tests for GS1 attributes router (14/14 passed)
 - [x] Run full test suite (all tests passed)
 - [ ] Test EPCIS event template generation (deferred to Phase 41)
-- [ ] Save checkpoint with GS1 integration complete
+- [x] Save checkpoint with GS1 integration complete (version 88d3ed38)
+
+
+## Phase 41: DIY/Garden/Pet & Healthcare Sector Attribute Ingestion
+
+### DIY/Garden/Pet Sector
+- [x] Obtain GS1 Benelux DIY/Garden/Pet data model files (DHZTD 3.1.33)
+- [x] Parse DIY/Garden/Pet Excel data model (Fielddefinitions sheet)
+- [x] Ingest DIY/Garden/Pet attributes to gs1_attributes table (3,009 attributes)
+- [x] Identify packaging/sustainability attributes (93 packaging, 128 sustainability)
+- [ ] Ingest DIY/Garden/Pet picklists (format investigation needed)
+- [x] Create attribute-to-regulation mappings for DIY/Garden/Pet (408 mappings)
+
+### Healthcare (ECHO) Sector
+- [x] Obtain GS1 Benelux Healthcare (ECHO) data model files (ECHO 3133)
+- [x] Parse Healthcare Excel data model (Attributes sheet)
+- [x] Ingest Healthcare attributes to gs1_attributes table (186 attributes)
+- [x] Ingest Healthcare code lists (no code lists in ECHO model)
+- [ ] Create attribute-to-regulation mappings for Healthcare (pending MDR/IVDR regulations)
+
+### Testing & Validation
+- [x] Test multi-sector attribute filtering (9/11 tests passed)
+- [x] Validate sector-specific regulation mappings (625 total mappings)
+- [x] Run full test suite with new sectors (vitest passed)
+- [ ] Save checkpoint with expanded sector coverage
