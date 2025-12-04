@@ -10,6 +10,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ExportButtons } from "@/components/ExportButtons";
 import { ESRSDatapointsSection } from "@/components/ESRSDatapointsSection";
+import { GS1AttributesPanel } from "@/components/GS1AttributesPanel";
 
 export default function HubRegulationDetail() {
   const [, params] = useRoute("/hub/regulations/:id");
@@ -186,10 +187,13 @@ export default function HubRegulationDetail() {
         <div className="container">
           <div className="max-w-4xl">
             <Tabs defaultValue="overview" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="standards">
                   GS1 Standards ({mappings?.length || 0})
+                </TabsTrigger>
+                <TabsTrigger value="attributes">
+                  GS1 Attributes
                 </TabsTrigger>
                 <TabsTrigger value="datapoints">
                   ESRS Datapoints ({esrsMappings?.length || 0})
@@ -339,6 +343,14 @@ export default function HubRegulationDetail() {
                     </CardContent>
                   </Card>
                 )}
+              </TabsContent>
+
+              {/* GS1 Attributes Tab */}
+              <TabsContent value="attributes">
+                <GS1AttributesPanel 
+                  regulationId={regulationId} 
+                  regulationName={regulation.title}
+                />
               </TabsContent>
 
               {/* ESRS Datapoints Tab */}

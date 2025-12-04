@@ -1310,3 +1310,55 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Migrate Ask ISA from LLM scoring to vector similarity search (complete)
 - [x] Test query performance (achieved 0.6s avg, 100x faster than 60s baseline!)
 - [x] Add embedding generation to regulation ingestion pipeline (integrated into weekly-cellar-ingestion.ts)
+
+
+## Phase 40: GS1 Data Model Integration
+
+### Documentation & Planning
+- [x] Create GS1_DATA_MODELS.md with comprehensive standards inventory
+- [x] Document current vs planned GS1 integrations
+- [x] Define database schema for gs1_attributes and gs1_attribute_code_lists tables
+
+### GS1 Data Source Benelux Attribute Ingestion
+- [x] Research GS1 Data Source Benelux data model file formats (Excel/PDF)
+- [x] Build parser for Food, Health & Beauty sector attributes (473 attributes ingested)
+- [x] Create gs1_attributes table with sector, datatype, code lists (5 tables created)
+- [x] Link attributes to regulations via attribute mapper (217 mappings created)
+- [x] Ingest packaging & CO2-related attributes (44 packaging, 52 sustainability)
+- [x] Ingest code list values (282 enumerated values)
+- [ ] Build parser for DIY, Garden & Pet sector attributes (deferred to Phase 42)
+- [ ] Build parser for Healthcare (ECHO) sector attributes (deferred to Phase 42)
+
+### GS1 Digital Link & Web Vocabulary Integration
+- [x] Research GS1 Web Vocabulary JSON-LD schema (v1.17, 2.3MB)
+- [x] Download GS1 Web Vocabulary JSON-LD ontology
+- [x] Create gs1_web_vocabulary table for JSON-LD classes/properties
+- [x] Parse and ingest 608 GS1 Web Vocabulary terms (75 DPP, 16 ESRS, 45 EUDR relevant)
+- [ ] Link web vocabulary properties to ESRS datapoints (deferred to Phase 41)
+- [ ] Map Digital Link properties to DPP requirements (deferred to Phase 41)
+- [ ] Parse GS1 Digital Link URI patterns (deferred - focus on vocabulary first)
+
+### EPCIS 2.0 & CBV Event Templates
+- [ ] DEFERRED TO PHASE 41: Research EPCIS 2.0 event schema structure
+- [ ] DEFERRED TO PHASE 41: Create canonical event templates for EUDR (timber chain)
+- [ ] DEFERRED TO PHASE 41: Create canonical event templates for PPWR (packaging lifecycle)
+- [x] Build epcis_event_templates table (schema created, ingestion deferred)
+- [ ] DEFERRED TO PHASE 41: Link event types to ESRS datapoints
+- [ ] DEFERRED TO PHASE 41: Link CBV vocabulary elements to regulations
+
+### Attribute Mapper UI Enhancement
+- [x] Add "GS1 attributes you need" section to regulation detail pages (GS1AttributesPanel component)
+- [x] Create tRPC procedures for fetching attributes by regulation
+- [x] Build tabbed interface (Data Source Attributes + Web Vocabulary)
+- [x] Add relevance scoring and verification badges
+- [ ] Show attributes and events on GS1 standard detail pages (deferred to Phase 41)
+- [ ] Build attribute search and filtering interface (deferred to Phase 41)
+- [ ] Add sector-based attribute recommendations (basic filtering implemented)
+
+### Testing & Validation
+- [x] Test attribute ingestion pipelines (473 attributes, 282 code lists, 608 web vocab terms)
+- [x] Validate attribute-to-regulation mappings (217 mappings created)
+- [x] Write vitest tests for GS1 attributes router (14/14 passed)
+- [x] Run full test suite (all tests passed)
+- [ ] Test EPCIS event template generation (deferred to Phase 41)
+- [ ] Save checkpoint with GS1 integration complete

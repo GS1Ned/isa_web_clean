@@ -15,6 +15,13 @@
       "when": 1764832895374,
       "tag": "0001_overrated_zarda",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1764834891797,
+      "tag": "0002_cloudy_starhawk",
+      "breakpoints": true
     }
   ]
 }

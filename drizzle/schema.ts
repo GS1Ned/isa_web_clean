@@ -1207,3 +1207,122 @@ export const qaMessages = mysqlTable("qa_messages", {
 
 export type QAMessage = typeof qaMessages.$inferSelect;
 export type InsertQAMessage = typeof qaMessages.$inferInsert;
+
+/**
+ * GS1 Attributes - Benelux sector-specific attribute catalog
+ * Stores attributes from GS1 Data Source Benelux data models (Food/H&B, DIY, Healthcare)
+ */
+export const gs1Attributes = mysqlTable("gs1_attributes", {
+  id: int("id").autoincrement().primaryKey(),
+  attributeCode: varchar("attributeCode", { length: 100 }).notNull().unique(),
+  attributeName: varchar("attributeName", { length: 255 }).notNull(),
+  sector: mysqlEnum("sector", ["food_hb", "diy_garden_pet", "healthcare", "agriculture"]).notNull(),
+  description: text("description"),
+  datatype: mysqlEnum("datatype", ["text", "number", "boolean", "date", "code_list"]).notNull(),
+  codeListId: int("codeListId"),
+  isMandatory: boolean("isMandatory").default(false),
+  esrsRelevance: text("esrsRelevance"),
+  dppRelevance: text("dppRelevance"),
+  packagingRelated: boolean("packagingRelated").default(false),
+  sustainabilityRelated: boolean("sustainabilityRelated").default(false),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  sectorIdx: index("sector_idx").on(table.sector),
+  packagingIdx: index("packaging_idx").on(table.packagingRelated),
+  sustainabilityIdx: index("sustainability_idx").on(table.sustainabilityRelated),
+}));
+
+export type GS1Attribute = typeof gs1Attributes.$inferSelect;
+export type InsertGS1Attribute = typeof gs1Attributes.$inferInsert;
+
+/**
+ * GS1 Attribute Code Lists - Enumerated values for code_list type attributes
+ */
+export const gs1AttributeCodeLists = mysqlTable("gs1_attribute_code_lists", {
+  id: int("id").autoincrement().primaryKey(),
+  attributeId: int("attributeId").notNull(),
+  code: varchar("code", { length: 50 }).notNull(),
+  description: text("description"),
+  sortOrder: int("sortOrder").default(0),
+  isActive: boolean("isActive").default(true),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  attributeIdIdx: index("attribute_id_idx").on(table.attributeId),
+}));
+
+export type GS1AttributeCodeList = typeof gs1AttributeCodeLists.$inferSelect;
+export type InsertGS1AttributeCodeList = typeof gs1AttributeCodeLists.$inferInsert;
+
+/**
+ * GS1 Web Vocabulary - JSON-LD classes and properties for Digital Product Passport
+ */
+export const gs1WebVocabulary = mysqlTable("gs1_web_vocabulary", {
+  id: int("id").autoincrement().primaryKey(),
+  termUri: varchar("termUri", { length: 500 }).notNull().unique(),
+  termType: mysqlEnum("termType", ["class", "property"]).notNull(),
+  termName: varchar("termName", { length: 255 }).notNull(),
+  label: varchar("label", { length: 500 }).notNull(),
+  description: text("description"),
+  domain: varchar("domain", { length: 500 }),
+  range: varchar("range", { length: 500 }),
+  dppRelevant: boolean("dppRelevant").default(false),
+  esrsRelevant: boolean("esrsRelevant").default(false),
+  eudrRelevant: boolean("eudrRelevant").default(false),
+  packagingRelated: boolean("packagingRelated").default(false),
+  sustainabilityRelated: boolean("sustainabilityRelated").default(false),
+  isDeprecated: boolean("isDeprecated").default(false),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  termTypeIdx: index("term_type_idx").on(table.termType),
+  dppRelevantIdx: index("dpp_relevant_idx").on(table.dppRelevant),
+  esrsRelevantIdx: index("esrs_relevant_idx").on(table.esrsRelevant),
+  eudrRelevantIdx: index("eudr_relevant_idx").on(table.eudrRelevant),
+}));
+
+export type GS1WebVocabularyTerm = typeof gs1WebVocabulary.$inferSelect;
+export type InsertGS1WebVocabularyTerm = typeof gs1WebVocabulary.$inferInsert;
+
+/**
+ * EPCIS Event Templates - Canonical traceability event flows
+ */
+export const epcisEventTemplates = mysqlTable("epcis_event_templates", {
+  id: int("id").autoincrement().primaryKey(),
+  templateName: varchar("templateName", { length: 255 }).notNull(),
+  eventType: mysqlEnum("eventType", ["object", "aggregation", "transformation", "transaction", "association"]).notNull(),
+  useCase: varchar("useCase", { length: 255 }),
+  regulationId: int("regulationId"),
+  esrsDatapointId: int("esrsDatapointId"),
+  eventSchema: json("eventSchema").$type<Record<string, any>>().notNull(),
+  cbvVocabulary: json("cbvVocabulary").$type<Record<string, any>>(),
+  description: text("description"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  useCaseIdx: index("use_case_idx").on(table.useCase),
+  regulationIdIdx: index("regulation_id_idx").on(table.regulationId),
+}));
+
+export type EPCISEventTemplate = typeof epcisEventTemplates.$inferSelect;
+export type InsertEPCISEventTemplate = typeof epcisEventTemplates.$inferInsert;
+
+/**
+ * Attribute-to-Regulation Mappings - Links GS1 attributes to regulatory requirements
+ */
+export const attributeRegulationMappings = mysqlTable("attribute_regulation_mappings", {
+  id: int("id").autoincrement().primaryKey(),
+  attributeId: int("attributeId").notNull(),
+  regulationId: int("regulationId").notNull(),
+  esrsDatapointId: int("esrsDatapointId"),
+  mappingReason: text("mappingReason"),
+  relevanceScore: decimal("relevanceScore", { precision: 3, scale: 2 }).default("0.00"),
+  verifiedByAdmin: boolean("verifiedByAdmin").default(false),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  attributeIdIdx: index("attribute_id_idx").on(table.attributeId),
+  regulationIdIdx: index("regulation_id_idx").on(table.regulationId),
+}));
+
+export type AttributeRegulationMapping = typeof attributeRegulationMappings.$inferSelect;
+export type InsertAttributeRegulationMapping = typeof attributeRegulationMappings.$inferInsert;
