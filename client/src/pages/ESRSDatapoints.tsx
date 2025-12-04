@@ -238,15 +238,15 @@ export default function ESRSDatapoints() {
                         </TableCell>
                         <TableCell className="text-sm">{dp.disclosureRequirement}</TableCell>
                         <TableCell className="max-w-md">
-                          <div className="truncate" title={dp.name || ""}>
-                            {dp.name}
+                          <div className="truncate" title={dp.datapointName || ""}>
+                            {dp.datapointName}
                           </div>
                         </TableCell>
                         <TableCell>
                           <Badge variant="secondary">{dp.dataType}</Badge>
                         </TableCell>
                         <TableCell>
-                          {dp.voluntary ? (
+                          {dp.mayVoluntary ? (
                             <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                               Voluntary
                             </Badge>

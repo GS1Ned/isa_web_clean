@@ -1424,3 +1424,31 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [ ] Test all new features with vitest
 - [ ] Validate documentation completeness
 - [ ] Save checkpoint with gap closure deliverables
+
+
+## Phase 43: ESRS IG3 Datapoint Ingestion
+
+### File Investigation
+- [x] Inspect EFRAG IG3 Excel file structure (13 sheets, 1,185 datapoints)
+- [x] Read IG3 Explanatory Note PDF to understand datapoint taxonomy
+- [x] Review Addendum for technical adjustments and corrections
+- [x] Identify key fields: datapoint ID, description, ESRS standard, disclosure requirement
+
+### Parser Development
+- [x] Build IG3 Excel parser to extract datapoints (efrag-ig3-parser.ts)
+- [x] Map IG3 datapoints to existing esrs_datapoints table schema (updated schema)
+- [x] Fix datapointId column length (VARCHAR(50) → VARCHAR(255))
+- [x] Handle technical adjustments from Addendum
+- [x] Ingest IG3 datapoints to database (1,185/1,185 datapoints, 100% success)
+
+### GS1 Attribute Mapping
+- [ ] Link IG3 datapoints to GS1 attributes for gap analysis
+- [ ] Identify which GS1 fields can fulfill which ESRS datapoints
+- [ ] Create datapoint-to-attribute mappings table
+- [ ] Build UI to show "GS1 coverage" for each ESRS datapoint
+
+### Testing & Validation
+- [ ] Write vitest tests for IG3 parser
+- [ ] Validate datapoint counts against EFRAG documentation
+- [ ] Test gap analysis queries
+- [ ] Save checkpoint

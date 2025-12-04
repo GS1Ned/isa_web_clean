@@ -163,7 +163,7 @@ export async function generateRegulationEsrsMappings(regulationId: number): Prom
  */
 function buildMappingPrompt(
   regulation: { title: string; description: string | null; regulationType: string },
-  datapoints: Array<{ datapointId: string; esrsStandard: string; name: string | null; dataType: string | null }>
+  datapoints: Array<{ datapointId: string; esrsStandard: string; datapointName: string; dataType: string | null }>
 ): string {
   // Group datapoints by standard for better context
   const datapointsByStandard: Record<string, typeof datapoints> = {};
@@ -178,7 +178,7 @@ function buildMappingPrompt(
     .map(([standard, dps]) => {
       const dpList = dps
         .slice(0, 20) // Limit to first 20 per standard to avoid token overflow
-        .map(dp => `  - ${dp.datapointId}: ${dp.name || "N/A"}`)
+        .map(dp => `  - ${dp.datapointId}: ${dp.datapointName || "N/A"}`)
         .join("\n");
       return `${standard} (${dps.length} datapoints):\n${dpList}`;
     })

@@ -1,0 +1,8 @@
+{
+  "query": "ALTER TABLE esrs_datapoints MODIFY COLUMN datapointId VARCHAR(255) NOT NULL UNIQUE;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute ALTER TABLE esrs_datapoints MODIFY COLUMN datapointId VARCHAR(255) NOT NULL UNIQUE;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 8200 (HY000) at line 1: can't change column constraint (UNIQUE KEY)"
+  ]
+}

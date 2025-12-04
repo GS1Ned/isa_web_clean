@@ -115,7 +115,7 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
   }, {} as Record<string, typeof mappings>);
 
   const totalMappings = mappings.length;
-  const mandatoryCount = mappings.filter(m => !m.datapoint?.voluntary).length;
+  const mandatoryCount = mappings.filter(m => !m.datapoint?.mayVoluntary).length;
   const voluntaryCount = totalMappings - mandatoryCount;
 
   return (
@@ -203,7 +203,7 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
                             <Badge variant="secondary">
                               {mapping.datapoint?.dataType || "N/A"}
                             </Badge>
-                            {mapping.datapoint?.voluntary ? (
+                            {mapping.datapoint?.mayVoluntary ? (
                               <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                                 Voluntary
                               </Badge>
@@ -212,7 +212,7 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
                             )}
                           </div>
                           <p className="text-sm text-foreground font-medium mb-2">
-                            {mapping.datapoint?.name || "N/A"}
+                            {mapping.datapoint?.datapointName || "N/A"}
                           </p>
                           {mapping.reasoning && (
                             <p className="text-sm text-muted-foreground italic">
