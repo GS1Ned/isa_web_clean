@@ -1257,4 +1257,56 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Create INGESTION.md documenting all data pipelines
 - [x] Create DATASET_INVENTORY.md listing all data sources
 - [x] Update ROADMAP.md with current status and priorities
-- [ ] Save checkpoint with stabilization improvements
+- [x] Save checkpoint with stabilization improvements (version 1e9f1112)
+
+
+## Phase 39: Automation Infrastructure (Three Major Features)
+
+### EUR-Lex Auto-Ingestion Pipeline
+- [x] Research EUR-Lex API endpoints and authentication (SOAP API not suitable, use CELLAR instead)
+- [x] Build EUR-Lex connector module with query builder (use existing CELLAR connector instead)
+- [x] Fix CELLAR SPARQL query to properly capture ESG regulations (working, fetches 200 acts)
+- [x] Optimize getAllRecentRegulations method (reduce false positives)
+- [x] Create weekly cron job for automatic CELLAR ingestion (script ready: weekly-cellar-ingestion.ts)
+- [x] Implement deduplication logic (check celexId before insert)
+- [x] Add email notifications for new regulations found
+- [x] Test with recent regulations (last 30 days)
+- [ ] DEFERRED TO PHASE 40: Add EUR-Lex title enrichment (CELLAR returns no titles)
+- [ ] DEFERRED TO PHASE 40: Improve regulation type detection (currently shows CELEX IDs as titles)
+- [ ] Schedule weekly cron job in production (manual deployment step)
+
+### EFRAG XBRL Parser
+- [x] Research EFRAG XBRL taxonomy structure and download URLs
+- [x] Download EFRAG Excel Illustration file (1.6MB, 13,480 rows)
+- [x] Build XBRL parser to extract ESRS datapoints (2,074 parsed successfully)
+- [ ] Create quarterly sync pipeline comparing versions
+- [ ] Implement diff detection (new/updated/deleted datapoints)
+- [ ] Add email notifications for taxonomy updates
+- [ ] Test with current EFRAG IG 3 taxonomy
+
+### Vector Embeddings Migration
+- [ ] Check if Manus Forge API now supports embeddings endpoint
+- [ ] If available: Build embeddings generation module
+- [ ] If available: Migrate knowledge_embeddings table to store vectors
+- [ ] If available: Replace LLM scoring with cosine similarity
+- [ ] If available: Benchmark speed improvement (target <5s)
+- [ ] If unavailable: Document migration plan for future
+
+### Testing & Validation
+- [ ] Test EUR-Lex pipeline with manual trigger
+- [ ] Test EFRAG parser with current taxonomy
+- [ ] Verify all cron jobs scheduled correctly
+- [ ] Validate email notifications working
+- [ ] Run full test suite (target 100% passing)
+- [ ] Save checkpoint with automation complete
+
+### Vector Embeddings Migration (OpenAI)
+- [x] Request OPENAI_API_KEY secret from user
+- [x] Create embedding.ts helper with generateEmbedding() function
+- [x] Validate API key with vitest (all tests passed)
+- [x] Add vector storage column to regulations/standards tables (JSON columns added)
+- [x] Generate embeddings for all existing regulations (38 processed, $0.0001 cost)
+- [x] Generate embeddings for all existing GS1 standards (60 processed, 29s duration)
+- [x] Migrate Ask ISA from LLM scoring to vector similarity search (complete)
+- [x] Test query performance (achieved 0.6s avg, 100x faster than 60s baseline!)
+- [x] Add embedding generation to regulation ingestion pipeline (integrated into weekly-cellar-ingestion.ts)

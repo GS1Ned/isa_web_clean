@@ -55,6 +55,7 @@ export const regulations = mysqlTable("regulations", {
   regulationType: mysqlEnum("regulationType", ["CSRD", "ESRS", "DPP", "EUDR", "ESPR", "PPWR", "EU_TAXONOMY", "OTHER"]).notNull(),
   effectiveDate: timestamp("effectiveDate"),
   sourceUrl: varchar("sourceUrl", { length: 512 }),
+  embedding: json("embedding").$type<number[]>(),
   lastUpdated: timestamp("lastUpdated").defaultNow().onUpdateNow().notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
@@ -73,6 +74,7 @@ export const gs1Standards = mysqlTable("gs1_standards", {
   category: varchar("category", { length: 128 }),
   scope: text("scope"),
   referenceUrl: varchar("referenceUrl", { length: 512 }),
+  embedding: json("embedding").$type<number[]>(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

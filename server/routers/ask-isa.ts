@@ -25,6 +25,7 @@ import {
   generateEmbeddingUrl,
 } from '../embedding';
 import { invokeLLM } from '../_core/llm';
+import { vectorSearchKnowledge, buildContextFromVectorResults } from '../db-knowledge-vector';
 
 export const askISARouter = router({
   /**
@@ -42,10 +43,10 @@ export const askISARouter = router({
       const { question, conversationId, userId } = input;
 
       try {
-        // Step 1: Search for relevant knowledge chunks using LLM scoring
-        const relevantChunks = await searchKnowledgeChunks(question, 5);
+        // Step 1: Search for relevant content using vector similarity (FAST!)
+        const relevantResults = await vectorSearchKnowledge(question, 5);
 
-        if (relevantChunks.length === 0) {
+        if (relevantResults.length === 0) {
           return {
             answer: "I couldn't find any relevant information in the knowledge base to answer your question. Please try rephrasing or ask about EU regulations (CSRD, EUDR, DPP) or GS1 standards.",
             sources: [],
@@ -53,13 +54,8 @@ export const askISARouter = router({
           };
         }
 
-        // Step 2: Build context from retrieved chunks
-        const context = relevantChunks
-          .map(
-            (chunk, idx) =>
-              `[Source ${idx + 1}: ${chunk.title}]\n${chunk.content}\n`
-          )
-          .join('\n---\n\n');
+        // Step 2: Build context from vector search results
+        const context = await buildContextFromVectorResults(relevantResults);
 
         // Step 3: Generate AI answer using LLM
         const systemPrompt = `You are ISA (Intelligent Standards Architect), an AI assistant specialized in EU sustainability regulations and GS1 standards.
@@ -117,25 +113,25 @@ ${context}`;
             conversationId: finalConversationId,
             role: 'assistant',
             content: answer,
-            sources: relevantChunks.map(chunk => ({
-              id: chunk.id,
-              type: chunk.sourceType,
-              title: chunk.title,
-              url: chunk.url,
-              similarity: chunk.similarity,
+            sources: relevantResults.map(result => ({
+              id: result.id,
+              type: result.type,
+              title: result.title,
+              url: result.url,
+              similarity: result.similarity,
             })),
-            retrievedChunks: relevantChunks.length,
+            retrievedChunks: relevantResults.length,
           });
         }
 
         return {
           answer,
-          sources: relevantChunks.map(chunk => ({
-            id: chunk.id,
-            type: chunk.sourceType,
-            title: chunk.title,
-            url: chunk.url,
-            similarity: Math.round(chunk.similarity * 100),
+          sources: relevantResults.map(result => ({
+            id: result.id,
+            type: result.type,
+            title: result.title,
+            url: result.url,
+            similarity: Math.round(result.similarity * 100),
           })),
           conversationId: finalConversationId,
         };
