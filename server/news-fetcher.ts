@@ -6,7 +6,7 @@
 
 import Parser from "rss-parser";
 import { NEWS_SOURCES, type NewsSource } from "./news-sources";
-import { scrapeGS1NetherlandsNews, scrapeGS1ArticleDetail } from "./news-scraper-gs1nl";
+import { scrapeGS1NetherlandsNewsPlaywright, scrapeArticleDetailPlaywright } from "./news-scraper-playwright";
 
 export interface RawNewsItem {
   title: string;
@@ -54,7 +54,7 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
   // Use web scraper for GS1 Netherlands
   if (source.id === "gs1-nl-news") {
     try {
-      const articles = await scrapeGS1NetherlandsNews();
+      const articles = await scrapeGS1NetherlandsNewsPlaywright();
       // Skip keyword filtering - articles are pre-filtered by GS1's sustainability category
       const relevantItems = articles
         .filter(article => {

@@ -1583,7 +1583,23 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Build web scraper for GS1 Global news
 - [x] Build web scraper for GS1 Europe news
 - [x] Update news-fetcher to use scrapers instead of RSS
-- [ ] Test scraping and verify data quality
-- [ ] Run pipeline and populate database
-- [ ] Verify news displays in homepage sidebar
+- [x] Test scraping and verify data quality
+- [x] Run pipeline and populate database
+- [x] Verify news displays in homepage sidebar
+- [x] Save checkpoint
+
+
+## Phase 49: Production Web Scraper with Playwright
+
+- [x] Install Playwright and browser dependencies
+- [x] Create Playwright-based scraper for GS1.nl sustainability feed
+- [x] Handle JavaScript-rendered content and dynamic loading
+- [x] Extract article titles, dates, URLs, and summaries
+- [x] Implement pagination to fetch multiple pages
+- [ ] Add error handling and retry logic
+- [ ] Integrate with news-fetcher.ts
+- [ ] Test live scraping from GS1.nl
+- [ ] Clear sample data from database
+- [ ] Run full news ingestion with live scraper
+- [ ] Verify articles display on homepage
 - [ ] Save checkpoint
