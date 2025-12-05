@@ -6,6 +6,7 @@
 
 import Parser from "rss-parser";
 import { NEWS_SOURCES, type NewsSource } from "./news-sources";
+import { scrapeGS1NetherlandsNews, scrapeGS1ArticleDetail } from "./news-scraper-gs1nl";
 
 export interface RawNewsItem {
   title: string;
@@ -39,14 +40,70 @@ const parser = new Parser({
  * Fetch news from a single RSS source
  */
 export async function fetchFromSource(source: NewsSource): Promise<FetchResult> {
-  if (!source.enabled || !source.rssUrl) {
+  if (!source.enabled) {
     return {
       success: false,
       sourceId: source.id,
       sourceName: source.name,
       itemsFetched: 0,
       items: [],
-      error: "Source disabled or no RSS URL configured",
+      error: "Source disabled",
+    };
+  }
+
+  // Use web scraper for GS1 Netherlands
+  if (source.id === "gs1-nl-news") {
+    try {
+      const articles = await scrapeGS1NetherlandsNews();
+      // Skip keyword filtering - articles are pre-filtered by GS1's sustainability category
+      const relevantItems = articles
+        .filter(article => {
+          // Only filter by date - keep articles from past 3 months
+          const threeMonthsAgo = new Date();
+          threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+          return article.publishedAt >= threeMonthsAgo;
+        })
+        .map(article => ({
+          title: article.title,
+          link: article.url,
+          pubDate: article.publishedAt.toISOString(),
+          content: article.summary || "",
+          contentSnippet: article.summary || "",
+          creator: source.name,
+          categories: [],
+          guid: article.url,
+          source,
+        }));
+
+      return {
+        success: true,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: relevantItems.length,
+        items: relevantItems,
+      };
+    } catch (error) {
+      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      return {
+        success: false,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: 0,
+        items: [],
+        error: error instanceof Error ? error.message : "Scraping failed",
+      };
+    }
+  }
+
+  // Fall back to RSS for other sources
+  if (!source.rssUrl) {
+    return {
+      success: false,
+      sourceId: source.id,
+      sourceName: source.name,
+      itemsFetched: 0,
+      items: [],
+      error: "No RSS URL or scraper configured",
     };
   }
 

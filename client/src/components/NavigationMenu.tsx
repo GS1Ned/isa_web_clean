@@ -29,6 +29,10 @@ export function NavigationMenu() {
       href: "/features",
     },
     {
+      label: "News",
+      href: "/news",
+    },
+    {
       label: "ESG Hub",
       children: [
         { label: "Hub Home", href: "/hub", description: "Overview and key statistics" },
@@ -71,6 +75,7 @@ export function NavigationMenu() {
       label: "Admin",
       children: [
         { label: "Knowledge Base", href: "/admin/knowledge-base", description: "Generate embeddings for Ask ISA" },
+        { label: "News Pipeline", href: "/admin/news-pipeline", description: "Trigger news ingestion" },
         { label: "News Management", href: "/admin/news", description: "Manage news articles" },
         { label: "Analytics", href: "/admin/analytics", description: "Hub engagement metrics" },
         { label: "CELLAR Ingestion", href: "/admin/cellar", description: "EU regulation sync" },

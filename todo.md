@@ -1560,3 +1560,30 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Ensure responsive design works on mobile (stacked layout)
 - [x] Test visual hierarchy and spacing
 - [ ] Save checkpoint
+
+
+## Phase 47: Add News Navigation and Admin Pipeline Interface
+
+- [x] Add "News" link to NavigationMenu component
+- [x] Create AdminNewsPipeline page with trigger buttons
+- [x] Add route for /admin/news-pipeline
+- [x] Test manual news ingestion trigger
+- [x] Verify news displays in homepage sidebar
+- [x] Save checkpoint
+
+
+## Phase 48: Web Scraping for News Sources
+
+- [x] Research scrapable news pages from EU sources (EUR-Lex, EFRAG, EU Commission)
+- [x] Research scrapable news pages from GS1 sources (GS1 NL, Global, EU)
+- [x] Build web scraper for EUR-Lex news
+- [x] Build web scraper for EFRAG news
+- [x] Build web scraper for EU Commission environment news
+- [x] Build web scraper for GS1 Netherlands news
+- [x] Build web scraper for GS1 Global news
+- [x] Build web scraper for GS1 Europe news
+- [x] Update news-fetcher to use scrapers instead of RSS
+- [ ] Test scraping and verify data quality
+- [ ] Run pipeline and populate database
+- [ ] Verify news displays in homepage sidebar
+- [ ] Save checkpoint
