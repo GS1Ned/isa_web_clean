@@ -21,28 +21,41 @@ export default function Home() {
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary rounded-full mix-blend-multiply filter blur-3xl"></div>
         </div>
         <div className="container relative z-10">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-              <span className="text-sm font-medium text-accent">Intelligent Standards Architect</span>
+          <div className="grid lg:grid-cols-[1fr,420px] gap-12 items-start">
+            {/* Hero Content - Left Side */}
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6">
+                <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                <span className="text-sm font-medium text-accent">Intelligent Standards Architect</span>
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
+                Map EU Regulations to GS1 Standards in Minutes
+              </h1>
+              <p className="text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
+                ISA bridges the gap between rapidly evolving EU sustainability regulations (CSRD, ESRS, DPP) and GS1 supply chain standards. Explore regulatory texts, discover applicable standards, and generate actionable compliance insights instantly.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/hub" className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold text-lg hover:shadow-lg hover:from-blue-700 hover:to-blue-800 transition">
+                  Explore ESG Hub <ArrowRight className="w-5 h-5 ml-2" />
+                </Link>
+                <Link href="/getting-started" className="inline-flex items-center justify-center px-8 py-4 rounded-lg border-2 border-border text-foreground font-semibold text-lg hover:bg-card hover:border-blue-600 transition">
+                  Getting Started Guide
+                </Link>
+              </div>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-              Map EU Regulations to GS1 Standards in Minutes
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-              ISA bridges the gap between rapidly evolving EU sustainability regulations (CSRD, ESRS, DPP) and GS1 supply chain standards. Explore regulatory texts, discover applicable standards, and generate actionable compliance insights instantly.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/hub" className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold text-lg hover:shadow-lg hover:from-blue-700 hover:to-blue-800 transition">
-                Explore ESG Hub <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-              <Link href="/getting-started" className="inline-flex items-center justify-center px-8 py-4 rounded-lg border-2 border-border text-foreground font-semibold text-lg hover:bg-card hover:border-blue-600 transition">
-                Getting Started Guide
-              </Link>
+            
+            {/* Latest News - Right Side (Desktop) */}
+            <div className="hidden lg:block">
+              <LatestNewsPanel />
             </div>
           </div>
         </div>
       </section>
+      
+      {/* Latest News - Mobile */}
+      <div className="lg:hidden">
+        <LatestNewsPanel />
+      </div>
 
       {/* Statistics Bar */}
       <section className="py-12 bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-800 dark:to-blue-900 text-white">
@@ -176,9 +189,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Latest News */}
-      <LatestNewsPanel />
 
       {/* Footer */}
       <footer className="border-t border-border bg-card py-12">

@@ -1551,3 +1551,12 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Measure and improve recommendation diversity
 - [x] Add analytics tracking for recommendation clicks
 - [x] Save checkpoint
+
+
+## Phase 46: Reposition News Panel to Homepage Right Side
+
+- [x] Redesign Home.tsx layout to place hero content on left, news on right
+- [x] Update LatestNewsPanel component for sidebar-style display
+- [x] Ensure responsive design works on mobile (stacked layout)
+- [x] Test visual hierarchy and spacing
+- [ ] Save checkpoint
