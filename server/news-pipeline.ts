@@ -7,6 +7,7 @@ import { fetchAllNews, deduplicateByUrl, validateNewsItem, filterByAge } from ".
 import { processNewsBatch } from "./news-ai-processor";
 import { createHubNews } from "./db";
 import { getNewsBySourceUrl } from "./db-news-helpers";
+import { generateRecommendations } from "./news-recommendation-engine";
 import type { InsertHubNews } from "../drizzle/schema";
 
 export interface PipelineResult {
@@ -93,8 +94,24 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
           isAutomated: true,
         };
         
-        await createHubNews(newsItem);
+        const createdNews = await createHubNews(newsItem);
         inserted++;
+        
+        // Generate AI recommendations for this news article
+        if (createdNews && createdNews.id) {
+          try {
+            await generateRecommendations(
+              createdNews.id,
+              newsItem.title,
+              newsItem.summary,
+              newsItem.content
+            );
+            console.log(`[news-pipeline] Generated recommendations for news ${createdNews.id}`);
+          } catch (recError) {
+            console.error(`[news-pipeline] Failed to generate recommendations for news ${createdNews.id}:`, recError);
+            // Don't fail the whole pipeline if recommendations fail
+          }
+        }
       } catch (error) {
         const errorMsg = `Failed to insert: ${raw.link} - ${error instanceof Error ? error.message : "Unknown error"}`;
         console.error(`[news-pipeline] ${errorMsg}`);

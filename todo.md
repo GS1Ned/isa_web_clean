@@ -1506,3 +1506,48 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Test frontend filtering and sorting
 - [x] Verify cross-linking between news and regulations
 - [x] Save checkpoint
+
+
+## Phase 45: AI-Powered News Recommendations
+
+### Architecture & Schema
+- [x] Design recommendation system architecture (content types, scoring, caching)
+- [x] Create news_recommendations table (newsId, resourceType, resourceId, relevanceScore, reasoning)
+- [x] Add recommendation metadata fields to hub_news table
+- [x] Design caching strategy for recommendation results
+
+### AI Content Analysis
+- [x] Build LLM-based content analyzer to extract key topics and entities
+- [x] Implement semantic similarity matching between news and internal resources
+- [x] Create keyword extraction service for regulation/standard matching
+- [x] Build entity recognition for regulation names, standards, deadlines
+
+### Recommendation Engine
+- [x] Create recommendation scoring algorithm (relevance, recency, importance)
+- [x] Build recommendation generator for regulations (by topic, deadline, impact)
+- [x] Build recommendation generator for ESRS datapoints (by disclosure requirement)
+- [x] Build recommendation generator for GS1 standards (by application area)
+- [x] Implement recommendation diversity (mix of resource types)
+- [x] Add reasoning/explanation for each recommendation
+
+### Frontend Components
+- [x] Create RecommendedResources component with cards for each resource type
+- [x] Build ResourceCard component (title, type badge, relevance indicator, description)
+- [x] Add "Why this is relevant" tooltip/explanation
+- [x] Implement "See all recommendations" expandable section
+- [x] Add loading states and error handling
+
+### Integration
+- [x] Integrate recommendations into NewsCard component
+- [x] Add recommendations to News Hub detail view
+- [x] Generate recommendations during news ingestion pipeline
+- [x] Add tRPC procedures for fetching recommendations
+- [x] Create admin UI for reviewing recommendation quality
+
+### Testing & Optimization
+- [x] Write vitest tests for recommendation engine
+- [x] Test recommendation quality with sample news articles
+- [x] Optimize LLM prompts for better relevance
+- [x] Measure and improve recommendation diversity
+- [x] Add analytics tracking for recommendation clicks
+- [x] Save checkpoint

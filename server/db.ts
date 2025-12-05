@@ -455,7 +455,8 @@ export async function createHubNews(news: {
       isAutomated: news.isAutomated ?? false,
       summary: news.summary,
     });
-    return result;
+    const insertId = (result as any).insertId;
+    return { id: Number(insertId) };
   } catch (error) {
     console.error("[Database] Failed to create hub news:", error);
     return null;

@@ -1371,3 +1371,21 @@ export const hubNewsHistory = mysqlTable("hub_news_history", {
 
 export type HubNewsHistory = typeof hubNewsHistory.$inferSelect;
 export type InsertHubNewsHistory = typeof hubNewsHistory.$inferInsert;
+
+/**
+ * News Recommendations - AI-generated links between news and internal resources
+ */
+export const newsRecommendations = mysqlTable("news_recommendations", {
+  id: int("id").primaryKey().autoincrement(),
+  newsId: int("news_id").notNull(),
+  resourceType: varchar("resource_type", { length: 50 }).notNull(),
+  resourceId: int("resource_id").notNull(),
+  resourceTitle: varchar("resource_title", { length: 512 }),
+  relevanceScore: decimal("relevance_score", { precision: 3, scale: 2 }).notNull(),
+  reasoning: text("reasoning"),
+  matchedKeywords: text("matched_keywords"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export type NewsRecommendation = typeof newsRecommendations.$inferSelect;
+export type InsertNewsRecommendation = typeof newsRecommendations.$inferInsert;

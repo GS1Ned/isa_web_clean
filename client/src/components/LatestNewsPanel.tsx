@@ -58,15 +58,18 @@ export function LatestNewsPanel() {
           {newsItems.slice(0, 6).map((item: any) => (
             <NewsCard
               key={item.id}
-              title={item.title}
-              summary={item.summary || ""}
-              publishedDate={new Date(item.publishedDate || item.createdAt)}
-              regulationTags={(item.regulationTags as string[]) || []}
-              impactLevel={item.impactLevel || "MEDIUM"}
-              sourceUrl={item.sourceUrl || "#"}
-              sourceTitle={item.sourceTitle || "Unknown Source"}
-              sourceType={item.sourceType || "EU_OFFICIAL"}
-              newsType={item.newsType}
+              news={{
+                id: item.id,
+                title: item.title,
+                summary: item.summary || "",
+                publishedDate: new Date(item.publishedDate || item.createdAt),
+                regulationTags: (item.regulationTags as string[]) || [],
+                impactLevel: item.impactLevel || "MEDIUM",
+                sourceUrl: item.sourceUrl || "#",
+                sourceTitle: item.sourceTitle || "Unknown Source",
+                sourceType: item.sourceType || "EU_OFFICIAL",
+                newsType: item.newsType,
+              }}
             />
           ))}
         </div>

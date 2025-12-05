@@ -432,6 +432,20 @@ export const appRouter = router({
           return [];
         }
       }),
+
+    // Get AI recommendations for a news article
+    getNewsRecommendations: publicProcedure
+      .input(z.object({ newsId: z.number() }))
+      .query(async ({ input }) => {
+        try {
+          const { getRecommendationsByNewsId } = await import("./db-recommendations");
+          const recommendations = await getRecommendationsByNewsId(input.newsId);
+          return recommendations;
+        } catch (error) {
+          console.error("[tRPC] Get news recommendations failed:", error);
+          return [];
+        }
+      }),
   }),
 
   /**

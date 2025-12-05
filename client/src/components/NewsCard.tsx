@@ -9,28 +9,35 @@ import { ExternalLink, AlertCircle, Info, TrendingUp } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 interface NewsCardProps {
-  title: string;
-  summary: string;
-  publishedDate: Date;
-  regulationTags: string[];
-  impactLevel: "LOW" | "MEDIUM" | "HIGH";
-  sourceUrl: string;
-  sourceTitle: string;
-  sourceType: "EU_OFFICIAL" | "GS1_OFFICIAL" | "INDUSTRY" | "MEDIA";
-  newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
+  news: {
+    id: number;
+    title: string;
+    summary: string;
+    publishedDate: Date;
+    regulationTags: string[];
+    impactLevel: "LOW" | "MEDIUM" | "HIGH";
+    sourceUrl: string;
+    sourceTitle: string;
+    sourceType: "EU_OFFICIAL" | "GS1_OFFICIAL" | "INDUSTRY" | "MEDIA";
+    newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
+  };
 }
 
-export function NewsCard({
-  title,
-  summary,
-  publishedDate,
-  regulationTags,
-  impactLevel,
-  sourceUrl,
-  sourceTitle,
-  sourceType,
-  newsType,
-}: NewsCardProps) {
+import { Link } from "wouter";
+
+export function NewsCard({ news }: NewsCardProps) {
+  const {
+    id,
+    title,
+    summary,
+    publishedDate,
+    regulationTags,
+    impactLevel,
+    sourceUrl,
+    sourceTitle,
+    sourceType,
+    newsType,
+  } = news;
   const impactConfig = {
     HIGH: {
       icon: AlertCircle,
@@ -75,7 +82,8 @@ export function NewsCard({
   };
 
   return (
-    <Card className={`hover:shadow-lg transition-shadow border-l-4 ${config.borderColor}`}>
+    <Link href={`/news/${id}`}>
+      <Card className={`hover:shadow-lg transition-shadow border-l-4 ${config.borderColor} cursor-pointer`}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
@@ -128,5 +136,6 @@ export function NewsCard({
         </a>
       </CardContent>
     </Card>
+    </Link>
   );
 }
