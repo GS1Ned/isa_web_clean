@@ -4,6 +4,7 @@ import { ArrowRight, Zap, Globe, TrendingUp, Shield, Lightbulb, FileText, Databa
 import { getLoginUrl } from "@/const";
 import { Link } from "wouter";
 import { NavigationMenu } from "@/components/NavigationMenu";
+import { LatestNewsPanel } from "@/components/LatestNewsPanel";
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -175,6 +176,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Latest News */}
+      <LatestNewsPanel />
 
       {/* Footer */}
       <footer className="border-t border-border bg-card py-12">

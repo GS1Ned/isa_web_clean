@@ -154,6 +154,7 @@ export type InsertUserPreference = typeof userPreferences.$inferInsert;
 
 /**
  * ESG Hub News - curated news and updates about regulations
+ * Extended for automated ingestion pipeline with AI summarization
  */
 export const hubNews = mysqlTable("hub_news", {
   id: int("id").autoincrement().primaryKey(),
@@ -162,13 +163,22 @@ export const hubNews = mysqlTable("hub_news", {
   content: text("content"),
   newsType: mysqlEnum("newsType", ["NEW_LAW", "AMENDMENT", "ENFORCEMENT", "COURT_DECISION", "GUIDANCE", "PROPOSAL"]).notNull(),
   relatedRegulationIds: json("relatedRegulationIds"),
+  regulationTags: json("regulationTags").$type<string[]>(), // CSRD, PPWR, EUDR, DPP, etc.
+  impactLevel: mysqlEnum("impactLevel", ["LOW", "MEDIUM", "HIGH"]).default("MEDIUM"),
   sourceUrl: varchar("sourceUrl", { length: 512 }),
   sourceTitle: varchar("sourceTitle", { length: 255 }),
+  sourceType: mysqlEnum("sourceType", ["EU_OFFICIAL", "GS1_OFFICIAL", "INDUSTRY", "MEDIA"]).default("EU_OFFICIAL"),
   credibilityScore: decimal("credibilityScore", { precision: 3, scale: 2 }).default("0.00"),
   publishedDate: timestamp("publishedDate"),
+  retrievedAt: timestamp("retrievedAt").defaultNow().notNull(), // when fetched by automation
+  isAutomated: boolean("isAutomated").default(false), // true if AI-generated
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
+}, (table) => ({
+  sourceUrlIdx: index("sourceUrl_idx").on(table.sourceUrl),
+  publishedDateIdx: index("publishedDate_idx").on(table.publishedDate),
+  impactLevelIdx: index("impactLevel_idx").on(table.impactLevel),
+}));
 
 export type HubNews = typeof hubNews.$inferSelect;
 export type InsertHubNews = typeof hubNews.$inferInsert;
@@ -1328,3 +1338,36 @@ export const attributeRegulationMappings = mysqlTable("attribute_regulation_mapp
 
 export type AttributeRegulationMapping = typeof attributeRegulationMappings.$inferSelect;
 export type InsertAttributeRegulationMapping = typeof attributeRegulationMappings.$inferInsert;
+
+/**
+ * ESG Hub News History - Archive for news items older than 200 days
+ * Keeps main hubNews table lean while preserving historical data
+ */
+export const hubNewsHistory = mysqlTable("hub_news_history", {
+  id: int("id").autoincrement().primaryKey(),
+  originalId: int("originalId").notNull(), // Reference to original hubNews id
+  title: varchar("title", { length: 512 }).notNull(),
+  summary: text("summary"),
+  content: text("content"),
+  newsType: mysqlEnum("newsType", ["NEW_LAW", "AMENDMENT", "ENFORCEMENT", "COURT_DECISION", "GUIDANCE", "PROPOSAL"]).notNull(),
+  relatedRegulationIds: json("relatedRegulationIds"),
+  regulationTags: json("regulationTags").$type<string[]>(),
+  impactLevel: mysqlEnum("impactLevel", ["LOW", "MEDIUM", "HIGH"]).default("MEDIUM"),
+  sourceUrl: varchar("sourceUrl", { length: 512 }),
+  sourceTitle: varchar("sourceTitle", { length: 255 }),
+  sourceType: mysqlEnum("sourceType", ["EU_OFFICIAL", "GS1_OFFICIAL", "INDUSTRY", "MEDIA"]).default("EU_OFFICIAL"),
+  credibilityScore: decimal("credibilityScore", { precision: 3, scale: 2 }).default("0.00"),
+  publishedDate: timestamp("publishedDate"),
+  retrievedAt: timestamp("retrievedAt").notNull(),
+  isAutomated: boolean("isAutomated").default(false),
+  archivedAt: timestamp("archivedAt").defaultNow().notNull(), // when moved to history
+  originalCreatedAt: timestamp("originalCreatedAt").notNull(),
+  originalUpdatedAt: timestamp("originalUpdatedAt").notNull(),
+}, (table) => ({
+  originalIdIdx: index("originalId_idx").on(table.originalId),
+  publishedDateIdx: index("publishedDate_idx").on(table.publishedDate),
+  archivedAtIdx: index("archivedAt_idx").on(table.archivedAt),
+}));
+
+export type HubNewsHistory = typeof hubNewsHistory.$inferSelect;
+export type InsertHubNewsHistory = typeof hubNewsHistory.$inferInsert;

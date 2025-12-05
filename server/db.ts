@@ -422,7 +422,14 @@ export async function createHubNews(news: {
   newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
   sourceUrl?: string;
   sourceTitle?: string;
+  sourceType?: "EU_OFFICIAL" | "GS1_OFFICIAL" | "INDUSTRY" | "MEDIA";
   relatedRegulationIds?: number[];
+  regulationTags?: string[];
+  impactLevel?: "LOW" | "MEDIUM" | "HIGH";
+  credibilityScore?: string;
+  publishedDate?: Date;
+  retrievedAt?: Date;
+  isAutomated?: boolean;
   summary?: string;
 }) {
   const db = await getDb();
@@ -438,9 +445,15 @@ export async function createHubNews(news: {
       newsType: news.newsType,
       sourceUrl: news.sourceUrl,
       sourceTitle: news.sourceTitle,
+      sourceType: news.sourceType,
       relatedRegulationIds: news.relatedRegulationIds ? JSON.stringify(news.relatedRegulationIds) : null,
+      regulationTags: news.regulationTags || null,
+      impactLevel: news.impactLevel,
+      credibilityScore: news.credibilityScore,
+      publishedDate: news.publishedDate || new Date(),
+      retrievedAt: news.retrievedAt || new Date(),
+      isAutomated: news.isAutomated ?? false,
       summary: news.summary,
-      publishedDate: new Date(),
     });
     return result;
   } catch (error) {

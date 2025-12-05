@@ -18,8 +18,8 @@ import {
   getMostVotedMappings,
 } from "./db";
 import { getDb } from "./db";
-import { userSavedItems, userAlerts } from "../drizzle/schema";
-import { eq, and } from "drizzle-orm";
+import { userSavedItems, userAlerts, hubNews } from "../drizzle/schema";
+import { eq, and, desc } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 import { TRPCError } from "@trpc/server";
 import { cellarIngestionRouter } from "./cellar-ingestion-router.js";
@@ -41,6 +41,7 @@ import { notificationPreferencesRouter } from "./routers/notification-preference
 import { executiveAnalyticsRouter } from "./routers/executive-analytics.js";
 import { askISARouter } from "./routers/ask-isa.js";
 import { gs1AttributesRouter } from "./routers/gs1-attributes.js";
+import { newsAdminRouter } from "./news-admin-router.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -411,6 +412,26 @@ export const appRouter = router({
         return [];
       }
     }),
+
+    // Get recent news items (public)
+    getRecentNews: publicProcedure
+      .input(z.object({ limit: z.number().optional() }).optional())
+      .query(async ({ input }) => {
+        try {
+          const db = await getDb();
+          if (!db) return [];
+
+          const limit = input?.limit || 20;
+          const news = await db.select().from(hubNews)
+            .orderBy(desc(hubNews.publishedDate))
+            .limit(limit);
+
+          return news;
+        } catch (error) {
+          console.error("[tRPC] Get recent news failed:", error);
+          return [];
+        }
+      }),
   }),
 
   /**
@@ -875,6 +896,11 @@ export const appRouter = router({
    * GS1 Attributes Router - Benelux attributes and Web Vocabulary
    */
   gs1Attributes: gs1AttributesRouter,
+
+  /**
+   * News Admin Router - Manual pipeline triggers and stats
+   */
+  newsAdmin: newsAdminRouter,
 
   /**
    * Dutch Initiatives Router

@@ -1,0 +1,132 @@
+/**
+ * NewsCard Component
+ * Displays a single news item with title, date, tags, summary, and impact indicator
+ */
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { ExternalLink, AlertCircle, Info, TrendingUp } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+
+interface NewsCardProps {
+  title: string;
+  summary: string;
+  publishedDate: Date;
+  regulationTags: string[];
+  impactLevel: "LOW" | "MEDIUM" | "HIGH";
+  sourceUrl: string;
+  sourceTitle: string;
+  sourceType: "EU_OFFICIAL" | "GS1_OFFICIAL" | "INDUSTRY" | "MEDIA";
+  newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
+}
+
+export function NewsCard({
+  title,
+  summary,
+  publishedDate,
+  regulationTags,
+  impactLevel,
+  sourceUrl,
+  sourceTitle,
+  sourceType,
+  newsType,
+}: NewsCardProps) {
+  const impactConfig = {
+    HIGH: {
+      icon: AlertCircle,
+      color: "text-red-600 dark:text-red-400",
+      bgColor: "bg-red-50 dark:bg-red-950/30",
+      borderColor: "border-red-200 dark:border-red-800",
+      label: "High Impact",
+    },
+    MEDIUM: {
+      icon: TrendingUp,
+      color: "text-orange-600 dark:text-orange-400",
+      bgColor: "bg-orange-50 dark:bg-orange-950/30",
+      borderColor: "border-orange-200 dark:border-orange-800",
+      label: "Medium Impact",
+    },
+    LOW: {
+      icon: Info,
+      color: "text-blue-600 dark:text-blue-400",
+      bgColor: "bg-blue-50 dark:bg-blue-950/30",
+      borderColor: "border-blue-200 dark:border-blue-800",
+      label: "Low Impact",
+    },
+  };
+
+  const config = impactConfig[impactLevel];
+  const ImpactIcon = config.icon;
+
+  const newsTypeLabels: Record<typeof newsType, string> = {
+    NEW_LAW: "New Law",
+    AMENDMENT: "Amendment",
+    ENFORCEMENT: "Enforcement",
+    COURT_DECISION: "Court Decision",
+    GUIDANCE: "Guidance",
+    PROPOSAL: "Proposal",
+  };
+
+  const sourceTypeLabels: Record<typeof sourceType, string> = {
+    EU_OFFICIAL: "EU Official",
+    GS1_OFFICIAL: "GS1 Official",
+    INDUSTRY: "Industry",
+    MEDIA: "Media",
+  };
+
+  return (
+    <Card className={`hover:shadow-lg transition-shadow border-l-4 ${config.borderColor}`}>
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-lg leading-tight mb-2 line-clamp-2">
+              {title}
+            </h3>
+            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+              <span>{formatDistanceToNow(new Date(publishedDate), { addSuffix: true })}</span>
+              <span>•</span>
+              <span>{sourceTypeLabels[sourceType]}</span>
+            </div>
+          </div>
+          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md ${config.bgColor} shrink-0`}>
+            <ImpactIcon className={`h-4 w-4 ${config.color}`} />
+            <span className={`text-xs font-medium ${config.color}`}>
+              {config.label}
+            </span>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <p className="text-sm text-muted-foreground line-clamp-3">
+          {summary}
+        </p>
+        
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="secondary" className="text-xs">
+            {newsTypeLabels[newsType]}
+          </Badge>
+          {regulationTags.slice(0, 4).map((tag) => (
+            <Badge key={tag} variant="outline" className="text-xs">
+              {tag}
+            </Badge>
+          ))}
+          {regulationTags.length > 4 && (
+            <Badge variant="outline" className="text-xs">
+              +{regulationTags.length - 4} more
+            </Badge>
+          )}
+        </div>
+
+        <a
+          href={sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+        >
+          <span>Read full article</span>
+          <ExternalLink className="h-3.5 w-3.5" />
+        </a>
+      </CardContent>
+    </Card>
+  );
+}
