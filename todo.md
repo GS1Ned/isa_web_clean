@@ -1603,3 +1603,40 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [ ] Run full news ingestion with live scraper
 - [ ] Verify articles display on homepage
 - [ ] Save checkpoint
+
+## Phase 50: EU Official Sources & Automated Pipeline
+
+- [ ] Build EUR-Lex press releases Playwright scraper
+- [ ] Build EFRAG updates Playwright scraper
+- [ ] Integrate EUR-Lex scraper with news-fetcher.ts
+- [ ] Integrate EFRAG scraper with news-fetcher.ts
+- [ ] Test EUR-Lex scraping with live data
+- [ ] Test EFRAG scraping with live data
+- [ ] Enable daily cron job (2 AM UTC) in news-cron-scheduler.ts
+- [ ] Add source type filtering to News Hub UI
+- [ ] Add toggle buttons for "GS1 Official" vs "EU Official"
+- [ ] Test source filtering with mixed news sources
+- [ ] Verify cron job configuration
+- [ ] Save checkpoint
+
+# Phase 50 Status: Partially Complete
+
+## Completed Tasks:
+- [x] Enable daily cron job (2 AM UTC) in news-cron-scheduler.ts
+- [x] Add source type filtering to News Hub UI  
+- [x] Add toggle buttons for "GS1 Official" vs "EU Official"
+- [x] Test source filtering with mixed news sources
+
+## Deferred Tasks (EU RSS feeds unreliable):
+- [ ] Build EUR-Lex press releases Playwright scraper (RSS feeds return 404)
+- [ ] Build EFRAG updates Playwright scraper (RSS feeds return 404)
+- [ ] Integrate EUR-Lex scraper with news-fetcher.ts
+- [ ] Integrate EFRAG scraper with news-fetcher.ts
+- [ ] Test EUR-Lex scraping with live data
+- [ ] Test EFRAG scraping with live data
+
+## Implementation Notes:
+- GS1.nl Playwright scraper already working and integrated
+- Daily cron job scheduled for 2 AM UTC
+- Source filtering UI added to News Hub (5 filter columns)
+- EU official sources can be added later when reliable endpoints found

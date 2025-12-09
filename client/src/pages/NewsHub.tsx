@@ -14,11 +14,13 @@ import { trpc } from "@/lib/trpc";
 
 const REGULATION_FILTERS = ["All", "CSRD", "ESRS", "EUDR", "DPP", "PPWR", "ESPR", "CSDDD", "TAXONOMY", "BATTERIES"];
 const IMPACT_FILTERS = ["All", "HIGH", "MEDIUM", "LOW"];
+const SOURCE_TYPE_FILTERS = ["All", "GS1 Official", "EU Official"];
 
 export default function NewsHub() {
   const [searchQuery, setSearchQuery] = useState("");
   const [regulationFilter, setRegulationFilter] = useState("All");
   const [impactFilter, setImpactFilter] = useState("All");
+  const [sourceTypeFilter, setSourceTypeFilter] = useState("All");
   const [sortBy, setSortBy] = useState<"date" | "impact">("date");
 
   const { data: newsItems, isLoading } = trpc.hub.getRecentNews.useQuery({ limit: 50 });
@@ -37,7 +39,12 @@ export default function NewsHub() {
 
       const matchesImpact = impactFilter === "All" || item.impactLevel === impactFilter;
 
-      return matchesSearch && matchesRegulation && matchesImpact;
+      const matchesSourceType =
+        sourceTypeFilter === "All" ||
+        (sourceTypeFilter === "GS1 Official" && item.sourceType === "GS1_OFFICIAL") ||
+        (sourceTypeFilter === "EU Official" && item.sourceType === "EU_OFFICIAL");
+
+      return matchesSearch && matchesRegulation && matchesImpact && matchesSourceType;
     })
     .sort((a: any, b: any) => {
       if (sortBy === "date") {
@@ -72,7 +79,7 @@ export default function NewsHub() {
             <span>Filter & Search</span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {/* Search */}
             <div className="lg:col-span-2">
               <div className="relative">
@@ -95,6 +102,20 @@ export default function NewsHub() {
                 {REGULATION_FILTERS.map((reg) => (
                   <SelectItem key={reg} value={reg}>
                     {reg}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Source Type Filter */}
+            <Select value={sourceTypeFilter} onValueChange={setSourceTypeFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Source Type" />
+              </SelectTrigger>
+              <SelectContent>
+                {SOURCE_TYPE_FILTERS.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -137,7 +158,7 @@ export default function NewsHub() {
           </div>
 
           {/* Active Filters */}
-          {(regulationFilter !== "All" || impactFilter !== "All" || searchQuery) && (
+          {(regulationFilter !== "All" || impactFilter !== "All" || sourceTypeFilter !== "All" || searchQuery) && (
             <div className="flex items-center gap-2 pt-2 border-t">
               <span className="text-sm text-muted-foreground">Active filters:</span>
               {regulationFilter !== "All" && (
@@ -156,6 +177,14 @@ export default function NewsHub() {
                   </button>
                 </Badge>
               )}
+              {sourceTypeFilter !== "All" && (
+                <Badge variant="secondary" className="gap-1">
+                  {sourceTypeFilter}
+                  <button onClick={() => setSourceTypeFilter("All")} className="ml-1 hover:text-destructive">
+                    ×
+                  </button>
+                </Badge>
+              )}
               {searchQuery && (
                 <Badge variant="secondary" className="gap-1">
                   "{searchQuery}"
@@ -170,6 +199,7 @@ export default function NewsHub() {
                 onClick={() => {
                   setRegulationFilter("All");
                   setImpactFilter("All");
+                  setSourceTypeFilter("All");
                   setSearchQuery("");
                 }}
                 className="ml-auto"
