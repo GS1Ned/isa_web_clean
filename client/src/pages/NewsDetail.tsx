@@ -69,7 +69,7 @@ export default function NewsDetail() {
                       {newsItem.impactLevel} Impact
                     </Badge>
                   )}
-                  {(newsItem.regulationTags as string[])?.map((tag) => (
+                  {Array.isArray(newsItem.regulationTags) && newsItem.regulationTags.map((tag) => (
                     <Badge key={tag} variant="secondary">
                       {tag}
                     </Badge>

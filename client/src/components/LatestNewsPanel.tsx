@@ -76,7 +76,7 @@ export function LatestNewsPanel() {
                 title: item.title,
                 summary: item.summary || "",
                 publishedDate: new Date(item.publishedDate || item.createdAt),
-                regulationTags: (item.regulationTags as string[]) || [],
+                regulationTags: Array.isArray(item.regulationTags) ? item.regulationTags : [],
                 impactLevel: item.impactLevel || "MEDIUM",
                 newsType: item.newsType,
               }}

@@ -35,7 +35,7 @@ export default function NewsHub() {
 
       const matchesRegulation =
         regulationFilter === "All" ||
-        (item.regulationTags as string[])?.includes(regulationFilter);
+        (Array.isArray(item.regulationTags) && item.regulationTags.includes(regulationFilter));
 
       const matchesImpact = impactFilter === "All" || item.impactLevel === impactFilter;
 
