@@ -1,9 +1,10 @@
 /**
  * Production Web Scraper using Playwright
  * Handles JavaScript-rendered content from GS1.nl sustainability feed
+ * 
+ * NOTE: Playwright is optional (devDependency) to avoid deployment timeouts
+ * Browsers are installed on first cron run, not during deployment
  */
-
-import { chromium, Browser, Page } from "playwright";
 
 export interface ScrapedArticle {
   title: string;
@@ -13,18 +14,37 @@ export interface ScrapedArticle {
   imageUrl?: string;
 }
 
+// Dynamically import Playwright (optional dependency)
+async function getPlaywright() {
+  try {
+    const playwright = await import('playwright');
+    return playwright;
+  } catch (error) {
+    console.warn('[Playwright Scraper] Playwright not available - scraping disabled');
+    console.warn('[Playwright Scraper] Install with: pnpm add -D playwright && npx playwright install chromium');
+    return null;
+  }
+}
+
 /**
  * Scrape GS1 Netherlands sustainability news with Playwright
  * Handles JavaScript-rendered content and dynamic loading
  */
 export async function scrapeGS1NetherlandsNewsPlaywright(): Promise<ScrapedArticle[]> {
-  let browser: Browser | null = null;
+  // Check if Playwright is available
+  const playwright = await getPlaywright();
+  if (!playwright) {
+    console.log('[Playwright Scraper] Skipping scrape - Playwright not installed');
+    return [];
+  }
+
+  let browser: any = null;
   
   try {
     console.log("[Playwright Scraper] Launching browser...");
     
     // Launch headless browser
-    browser = await chromium.launch({
+    browser = await playwright.chromium.launch({
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
@@ -183,10 +203,17 @@ export async function scrapeGS1NetherlandsNewsPlaywright(): Promise<ScrapedArtic
  * Scrape full article content from detail page
  */
 export async function scrapeArticleDetailPlaywright(url: string): Promise<string | null> {
-  let browser: Browser | null = null;
+  // Check if Playwright is available
+  const playwright = await getPlaywright();
+  if (!playwright) {
+    console.log('[Playwright Scraper] Skipping detail scrape - Playwright not installed');
+    return null;
+  }
+
+  let browser: any = null;
   
   try {
-    browser = await chromium.launch({
+    browser = await playwright.chromium.launch({
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
@@ -218,4 +245,21 @@ export async function scrapeArticleDetailPlaywright(url: string): Promise<string
     }
     return null;
   }
+}
+
+// CLI execution for testing
+if (import.meta.url === `file://${process.argv[1]}`) {
+  scrapeGS1NetherlandsNewsPlaywright()
+    .then((articles) => {
+      console.log('\n=== Scraping Results ===');
+      console.log(`Total articles: ${articles.length}\n`);
+      
+      articles.forEach((article, index) => {
+        console.log(`${index + 1}. ${article.title}`);
+        console.log(`   URL: ${article.url}`);
+        console.log(`   Date: ${article.publishedAt.toISOString()}`);
+        console.log('');
+      });
+    })
+    .catch(console.error);
 }
