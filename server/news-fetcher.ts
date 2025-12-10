@@ -56,8 +56,21 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
   if (source.id === "gs1-nl-news") {
     try {
       const articles = await scrapeGS1NetherlandsNewsPlaywright();
+      
+      // Fetch full content for each article (parallel)
+      console.log(`[news-fetcher] Fetching full content for ${articles.length} GS1.nl articles...`);
+      const articlesWithContent = await Promise.all(
+        articles.map(async (article) => {
+          const fullContent = await scrapeArticleDetailPlaywright(article.url);
+          return {
+            ...article,
+            summary: fullContent || article.summary || "",
+          };
+        })
+      );
+      
       // Skip keyword filtering - articles are pre-filtered by GS1's sustainability category
-      const relevantItems = articles
+      const relevantItems = articlesWithContent
         .filter(article => {
           // Only filter by date - keep articles from past 3 months
           const threeMonthsAgo = new Date();

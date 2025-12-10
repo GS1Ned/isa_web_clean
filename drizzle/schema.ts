@@ -168,6 +168,7 @@ export const hubNews = mysqlTable("hub_news", {
   sourceUrl: varchar("sourceUrl", { length: 512 }),
   sourceTitle: varchar("sourceTitle", { length: 255 }),
   sourceType: mysqlEnum("sourceType", ["EU_OFFICIAL", "GS1_OFFICIAL", "INDUSTRY", "MEDIA"]).default("EU_OFFICIAL"),
+  sources: json("sources").$type<Array<{ name: string; type: string; url: string }>>(), // Multi-source attribution for deduplicated news
   credibilityScore: decimal("credibilityScore", { precision: 3, scale: 2 }).default("0.00"),
   publishedDate: timestamp("publishedDate"),
   retrievedAt: timestamp("retrievedAt").defaultNow().notNull(), // when fetched by automation
@@ -1356,6 +1357,7 @@ export const hubNewsHistory = mysqlTable("hub_news_history", {
   sourceUrl: varchar("sourceUrl", { length: 512 }),
   sourceTitle: varchar("sourceTitle", { length: 255 }),
   sourceType: mysqlEnum("sourceType", ["EU_OFFICIAL", "GS1_OFFICIAL", "INDUSTRY", "MEDIA"]).default("EU_OFFICIAL"),
+  sources: json("sources").$type<Array<{ name: string; type: string; url: string }>>(), // Multi-source attribution for deduplicated news
   credibilityScore: decimal("credibilityScore", { precision: 3, scale: 2 }).default("0.00"),
   publishedDate: timestamp("publishedDate"),
   retrievedAt: timestamp("retrievedAt").notNull(),

@@ -1865,3 +1865,28 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Verify improved summary quality and regulation tagging (✅ working)
 
 **Result:** EFRAG scraper now fetches full article content from detail pages, providing rich context for AI summarization. Tested end-to-end with 6 articles, AI correctly identified CSRD/ESRS tags and generated accurate summaries.
+
+
+## Phase 57: GS1.nl Detail Scraping & Cross-Source Deduplication
+
+- [ ] Enhance GS1.nl scraper to fetch full article content from detail pages
+- [ ] Test GS1.nl detail scraping on sample articles
+- [ ] Integrate detail scraping into news-fetcher for GS1.nl
+- [ ] Design cross-source deduplication algorithm (title similarity, content overlap)
+- [ ] Implement deduplication in news-pipeline.ts
+- [ ] Add multi-source attribution to database schema (sources array)
+- [ ] Update News Hub UI to display multiple source badges
+- [ ] Test end-to-end with duplicate detection
+
+## Phase 57: GS1.nl Detail Scraping & Cross-Source Deduplication Complete ✅
+
+- [x] Enhance GS1.nl scraper to fetch full article content from detail pages
+- [x] Test GS1.nl detail scraping on sample articles
+- [x] Integrate detail scraping into news-fetcher for GS1.nl (parallel Promise.all)
+- [x] Design cross-source deduplication algorithm (title similarity, content overlap, Jaccard)
+- [x] Implement deduplication in news-pipeline.ts (after AI processing)
+- [x] Add multi-source attribution to database schema (sources JSON column)
+- [x] Update News Hub UI to display "X sources" badge for multi-source articles
+- [x] Test end-to-end with duplicate detection
+
+**Result:** GS1.nl scraper now fetches full article content. Cross-source deduplication detects when GS1.nl and EFRAG cover the same topic (title similarity 0.7+, content overlap 0.6+) and merges them with multi-source attribution. News Hub displays "2 sources" badge for deduplicated articles.

@@ -6,6 +6,7 @@
 import { fetchAllNews, deduplicateByUrl, validateNewsItem, filterByAge } from "./news-fetcher";
 import { processNewsBatch } from "./news-ai-processor";
 import { createHubNews } from "./db";
+import { deduplicateNews, logDeduplicationStats, type NewsItem as DeduplicatorNewsItem } from "./news-deduplicator";
 import { getNewsBySourceUrl } from "./db-news-helpers";
 import { generateRecommendations } from "./news-recommendation-engine";
 import type { InsertHubNews } from "../drizzle/schema";
@@ -71,12 +72,30 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
     // Step 6: Process with AI
     const processedItems = await processNewsBatch(newItems);
     
+    // Step 6.5: Cross-source deduplication
+    const itemsForDedup: DeduplicatorNewsItem[] = newItems.map((raw, i) => ({
+      title: processedItems[i].headline,
+      url: raw.link,
+      content: raw.content || raw.contentSnippet || "",
+      source: raw.source.name,
+      sourceType: raw.source.type,
+      publishedAt: new Date(raw.pubDate),
+      regulationTags: processedItems[i].regulationTags,
+    }));
+    
+    const deduplicated = deduplicateNews(itemsForDedup);
+    logDeduplicationStats(newItems.length, deduplicated.length, deduplicated);
+    
     // Step 7: Insert into database (with ESG relevance filtering)
     let inserted = 0;
     let skippedNonESG = 0;
-    for (let i = 0; i < newItems.length; i++) {
-      const raw = newItems[i];
-      const processed = processedItems[i];
+    for (const deduplicatedItem of deduplicated) {
+      // Find original items
+      const rawIndex = newItems.findIndex(item => item.link === deduplicatedItem.url);
+      if (rawIndex === -1) continue;
+      
+      const raw = newItems[rawIndex];
+      const processed = processedItems[rawIndex];
       
       // Filter out non-ESG articles
       const isESGRelevant = 
@@ -102,6 +121,7 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
           sourceUrl: raw.link,
           sourceTitle: raw.source.name,
           sourceType: raw.source.type,
+          sources: deduplicatedItem.sources.length > 1 ? deduplicatedItem.sources : null, // Multi-source attribution
           credibilityScore: raw.source.credibilityScore.toString(),
           publishedDate: new Date(raw.pubDate),
           retrievedAt: new Date(),

@@ -20,6 +20,7 @@ interface NewsCardProps {
     sourceTitle: string;
     sourceType: "EU_OFFICIAL" | "GS1_OFFICIAL" | "INDUSTRY" | "MEDIA";
     newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
+    sources?: Array<{ name: string; type: string; url: string }> | null;
   };
 }
 
@@ -37,7 +38,10 @@ export function NewsCard({ news }: NewsCardProps) {
     sourceTitle,
     sourceType,
     newsType,
+    sources,
   } = news;
+  
+  const isMultiSource = sources && sources.length > 1;
   const impactConfig = {
     HIGH: {
       icon: AlertCircle,
@@ -93,7 +97,13 @@ export function NewsCard({ news }: NewsCardProps) {
             <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
               <span>{formatDistanceToNow(new Date(publishedDate), { addSuffix: true })}</span>
               <span>•</span>
-              <span>{sourceTypeLabels[sourceType]}</span>
+              {isMultiSource ? (
+                <span className="font-medium text-primary">
+                  {sources.length} sources
+                </span>
+              ) : (
+                <span>{sourceTypeLabels[sourceType]}</span>
+              )}
             </div>
           </div>
           <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md ${config.bgColor} shrink-0`}>

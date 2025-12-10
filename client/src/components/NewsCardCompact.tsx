@@ -17,6 +17,7 @@ interface NewsCardCompactProps {
     regulationTags: string[];
     impactLevel: "LOW" | "MEDIUM" | "HIGH";
     newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
+    sources?: Array<{ name: string; type: string; url: string }> | null;
   };
 }
 
