@@ -8,6 +8,8 @@ import Parser from "rss-parser";
 import { NEWS_SOURCES, type NewsSource } from "./news-sources";
 import { scrapeGS1NetherlandsNewsPlaywright, scrapeArticleDetailPlaywright } from "./news-scraper-playwright";
 import { scrapeEFRAGNewsPlaywright, scrapeEFRAGArticleDetail } from "./news-scraper-efrag";
+import { scrapeGreenDealZorg } from "./news/news-scraper-greendeal";
+import { scrapeZESNews } from "./news/news-scraper-zes";
 
 export interface RawNewsItem {
   title: string;
@@ -95,6 +97,54 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
         sourceName: source.name,
         itemsFetched: relevantItems.length,
         items: relevantItems,
+      };
+    } catch (error) {
+      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      return {
+        success: false,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: 0,
+        items: [],
+        error: error instanceof Error ? error.message : "Scraping failed",
+      };
+    }
+  }
+
+  // Use web scraper for Green Deal Zorg
+  if (source.id === "greendeal-healthcare") {
+    try {
+      const articles = await scrapeGreenDealZorg();
+      return {
+        success: true,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: articles.length,
+        items: articles,
+      };
+    } catch (error) {
+      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      return {
+        success: false,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: 0,
+        items: [],
+        error: error instanceof Error ? error.message : "Scraping failed",
+      };
+    }
+  }
+
+  // Use web scraper for ZES (Zero-Emission Zones)
+  if (source.id === "zes-logistics") {
+    try {
+      const articles = await scrapeZESNews();
+      return {
+        success: true,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: articles.length,
+        items: articles,
       };
     } catch (error) {
       console.error(`[news-fetcher] Error scraping ${source.name}:`, error);

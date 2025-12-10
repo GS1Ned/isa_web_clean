@@ -167,7 +167,7 @@ export const hubNews = mysqlTable("hub_news", {
   impactLevel: mysqlEnum("impactLevel", ["LOW", "MEDIUM", "HIGH"]).default("MEDIUM"),
   sourceUrl: varchar("sourceUrl", { length: 512 }),
   sourceTitle: varchar("sourceTitle", { length: 255 }),
-  sourceType: mysqlEnum("sourceType", ["EU_OFFICIAL", "GS1_OFFICIAL", "INDUSTRY", "MEDIA"]).default("EU_OFFICIAL"),
+  sourceType: mysqlEnum("sourceType", ["EU_OFFICIAL", "GS1_OFFICIAL", "DUTCH_NATIONAL", "INDUSTRY", "MEDIA"]).default("EU_OFFICIAL"),
   sources: json("sources").$type<Array<{ name: string; type: string; url: string }>>(), // Multi-source attribution for deduplicated news
   credibilityScore: decimal("credibilityScore", { precision: 3, scale: 2 }).default("0.00"),
   
@@ -1364,7 +1364,7 @@ export const hubNewsHistory = mysqlTable("hub_news_history", {
   impactLevel: mysqlEnum("impactLevel", ["LOW", "MEDIUM", "HIGH"]).default("MEDIUM"),
   sourceUrl: varchar("sourceUrl", { length: 512 }),
   sourceTitle: varchar("sourceTitle", { length: 255 }),
-  sourceType: mysqlEnum("sourceType", ["EU_OFFICIAL", "GS1_OFFICIAL", "INDUSTRY", "MEDIA"]).default("EU_OFFICIAL"),
+  sourceType: mysqlEnum("sourceType", ["EU_OFFICIAL", "GS1_OFFICIAL", "DUTCH_NATIONAL", "INDUSTRY", "MEDIA"]).default("EU_OFFICIAL"),
   sources: json("sources").$type<Array<{ name: string; type: string; url: string }>>(), // Multi-source attribution for deduplicated news
   credibilityScore: decimal("credibilityScore", { precision: 3, scale: 2 }).default("0.00"),
   

@@ -155,7 +155,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ---
 
-## Phase 4: Source Expansion
+## Phase 4: Source Expansion ⏳
 
 ### 4.1 EU Sources
 - [ ] Add CS3D/CSDDD source
@@ -165,9 +165,9 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add Battery passport technical details source
 
 ### 4.2 Dutch/Benelux Sources
-- [ ] Add Green Deal Sustainable Healthcare source
-- [ ] Add Plastic Pact NL source
-- [ ] Add Zero-emission city logistics (ZES) source
+- [x] Add Green Deal Sustainable Healthcare source
+- [ ] Add Plastic Pact NL source (deferred - using secondary sources)
+- [x] Add Zero-emission city logistics (ZES) source
 - [ ] Add Dutch circular economy initiatives source
 - [ ] Add sector Green Deals (food, construction, textiles) sources
 
@@ -217,7 +217,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ---
 
-## Phase 6: Bidirectional News-Regulation Integration
+## Phase 6: Bidirectional News-Regulation Integration ⏳
 
 ### 6.1 Regulation Pages Enhancement
 - [ ] Add "Recent developments" panel to regulation detail pages

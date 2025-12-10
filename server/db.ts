@@ -422,7 +422,7 @@ export async function createHubNews(news: {
   newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
   sourceUrl?: string;
   sourceTitle?: string;
-  sourceType?: "EU_OFFICIAL" | "GS1_OFFICIAL" | "INDUSTRY" | "MEDIA";
+  sourceType?: "EU_OFFICIAL" | "GS1_OFFICIAL" | "DUTCH_NATIONAL" | "INDUSTRY" | "MEDIA";
   relatedRegulationIds?: number[];
   regulationTags?: string[];
   impactLevel?: "LOW" | "MEDIUM" | "HIGH";

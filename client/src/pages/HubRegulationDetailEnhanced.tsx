@@ -2,8 +2,11 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle, AlertCircle, Calendar, BookOpen, HelpCircle, Save, Bell } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle, AlertCircle, Calendar, BookOpen, HelpCircle, Save, Bell, Newspaper, ExternalLink, TrendingUp } from "lucide-react";
 import { Link } from "wouter";
+import { trpc } from "@/lib/trpc";
+import { format } from "date-fns";
 
 // Sample regulation data
 const REGULATION_DATA = {
@@ -134,6 +137,123 @@ const REGULATION_DATA = {
   ],
 };
 
+/**
+ * Recent Developments Panel Component
+ * Shows news articles related to a specific regulation
+ */
+function RecentDevelopmentsPanel({ regulationCode }: { regulationCode: string }) {
+  const { data: newsItems, isLoading } = trpc.hub.getRecentNews.useQuery({ limit: 100 });
+
+  // Filter news by regulation tag
+  const relatedNews = newsItems?.filter((item) => 
+    Array.isArray(item.regulationTags) && item.regulationTags.includes(regulationCode)
+  ) || [];
+
+  const impactColors = {
+    HIGH: "bg-red-500/10 text-red-600 border-red-500/20",
+    MEDIUM: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20",
+    LOW: "bg-green-500/10 text-green-600 border-green-500/20",
+  };
+
+  if (isLoading) {
+    return (
+      <Card className="p-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-muted rounded w-3/4" />
+          <div className="h-20 bg-muted rounded" />
+          <div className="h-20 bg-muted rounded" />
+        </div>
+      </Card>
+    );
+  }
+
+  if (relatedNews.length === 0) {
+    return (
+      <Card className="p-8">
+        <div className="text-center py-8">
+          <Newspaper className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+          <h3 className="text-lg font-semibold mb-2">No Recent Developments</h3>
+          <p className="text-muted-foreground">
+            No news articles found for {regulationCode}. Check back later for updates.
+          </p>
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="p-8">
+      <div className="flex items-center gap-2 mb-6">
+        <Newspaper className="h-6 w-6 text-blue-600" />
+        <h3 className="text-2xl font-bold text-slate-900">Recent Developments</h3>
+        <Badge variant="secondary" className="ml-2">
+          {relatedNews.length} {relatedNews.length === 1 ? 'article' : 'articles'}
+        </Badge>
+      </div>
+
+      <div className="space-y-6">
+        {relatedNews.map((news) => (
+          <div key={news.id} className="border-b border-slate-200 pb-6 last:border-0">
+            <div className="flex flex-wrap gap-2 mb-3">
+              {news.impactLevel && (
+                <Badge className={impactColors[news.impactLevel as keyof typeof impactColors]}>
+                  <TrendingUp className="mr-1 h-3 w-3" />
+                  {news.impactLevel} Impact
+                </Badge>
+              )}
+              {Array.isArray(news.regulationTags) && news.regulationTags
+                .filter(tag => tag !== regulationCode)
+                .map((tag) => (
+                  <Badge key={tag} variant="secondary">
+                    {tag}
+                  </Badge>
+                ))}
+            </div>
+
+            <Link href={`/news/${news.id}`}>
+              <h4 className="text-lg font-bold text-slate-900 hover:text-blue-600 mb-2 cursor-pointer">
+                {news.title}
+              </h4>
+            </Link>
+
+            {news.summary && (
+              <p className="text-slate-600 mb-3 line-clamp-2">{news.summary}</p>
+            )}
+
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-1">
+                <Calendar className="h-4 w-4" />
+                {format(new Date(news.publishedDate || news.createdAt), "MMM d, yyyy")}
+              </div>
+              {news.sourceTitle && (
+                <div className="flex items-center gap-1">
+                  <span>•</span>
+                  <span>{news.sourceTitle}</span>
+                </div>
+              )}
+              <Link href={`/news/${news.id}`} className="flex items-center gap-1 text-blue-600 hover:text-blue-700 ml-auto">
+                Read more
+                <ExternalLink className="h-3 w-3" />
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {relatedNews.length > 0 && (
+        <div className="mt-6 pt-6 border-t text-center">
+          <Link href="/news">
+            <Button variant="outline" className="gap-2">
+              <Newspaper className="h-4 w-4" />
+              View All News
+            </Button>
+          </Link>
+        </div>
+      )}
+    </Card>
+  );
+}
+
 export default function HubRegulationDetailEnhanced() {
   const [isSaved, setIsSaved] = useState(false);
   const [hasAlert, setHasAlert] = useState(false);
@@ -195,9 +315,10 @@ export default function HubRegulationDetailEnhanced() {
 
         {/* Tabs */}
         <Tabs defaultValue="timeline" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
             <TabsTrigger value="standards">Standards</TabsTrigger>
+            <TabsTrigger value="news">Recent Developments</TabsTrigger>
             <TabsTrigger value="checklist">Checklist</TabsTrigger>
             <TabsTrigger value="faq">FAQ</TabsTrigger>
           </TabsList>
@@ -256,6 +377,11 @@ export default function HubRegulationDetailEnhanced() {
                 ))}
               </div>
             </Card>
+          </TabsContent>
+
+          {/* Recent Developments Tab */}
+          <TabsContent value="news" className="space-y-6">
+            <RecentDevelopmentsPanel regulationCode={reg.code} />
           </TabsContent>
 
           {/* Checklist Tab */}

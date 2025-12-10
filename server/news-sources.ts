@@ -9,7 +9,7 @@
 export interface NewsSource {
   id: string;
   name: string;
-  type: "EU_OFFICIAL" | "GS1_OFFICIAL" | "INDUSTRY" | "MEDIA";
+  type: "EU_OFFICIAL" | "GS1_OFFICIAL" | "DUTCH_NATIONAL" | "INDUSTRY" | "MEDIA";
   rssUrl?: string;
   apiUrl?: string;
   credibilityScore: number; // 0.0 - 1.0
@@ -73,6 +73,24 @@ export const NEWS_SOURCES: NewsSource[] = [
     rssUrl: "https://www.gs1.eu/news-events/rss",
     credibilityScore: 0.9,
     keywords: ["CSRD", "ESRS", "EUDR", "DPP", "PPWR", "ESPR", "EU regulation", "sustainability", "traceability"],
+    enabled: true,
+  },
+  
+  // Dutch National Sources (Netherlands-specific ESG initiatives)
+  {
+    id: "greendeal-healthcare",
+    name: "Green Deal Duurzame Zorg",
+    type: "DUTCH_NATIONAL",
+    credibilityScore: 0.95,
+    keywords: ["healthcare", "sustainability", "circular economy", "medical devices", "green teams", "duurzame zorg", "CSRD", "ESRS"],
+    enabled: true,
+  },
+  {
+    id: "zes-logistics",
+    name: "Op weg naar ZES (Zero-Emission Zones)",
+    type: "DUTCH_NATIONAL",
+    credibilityScore: 0.95,
+    keywords: ["zero-emission", "logistics", "freight", "electric vehicles", "urban mobility", "CO2", "sustainability", "CSRD", "Scope 3"],
     enabled: true,
   },
 ];
