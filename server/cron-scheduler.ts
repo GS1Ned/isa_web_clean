@@ -8,6 +8,7 @@
 import cron from "node-cron";
 import { scanForRegulationChanges } from "./regulation-change-tracker";
 import { sendDailyDigests, processPendingAlerts } from "./email-notifications";
+import { dailyNewsIngestion } from "./news-cron-scheduler";
 
 /**
  * Setup all cron jobs
@@ -15,23 +16,14 @@ import { sendDailyDigests, processPendingAlerts } from "./email-notifications";
 export function setupCronJobs() {
   console.log("🕐 Setting up cron jobs for ESG Hub...");
 
-  // Daily RSS aggregation at 2 AM
+  // Daily news ingestion at 2 AM (Playwright + RSS)
   // Format: minute hour day month dayOfWeek
   cron.schedule("0 2 * * *", async () => {
-    console.log("📰 Running daily RSS aggregation...");
+    console.log("📰 Running daily news ingestion (Playwright + RSS)...");
     try {
-      // Import dynamically to avoid circular dependencies
-      try {
-        // @ts-ignore - .mjs file doesn't have type definitions
-        const aggregatorModule = await import("./rss-aggregator-db.mjs") as any;
-        if (aggregatorModule.aggregateNews) {
-          await aggregatorModule.aggregateNews();
-        }
-      } catch (importError) {
-        console.error("Could not import RSS aggregator:", importError);
-      }
+      await dailyNewsIngestion();
     } catch (error) {
-      console.error("Error running RSS aggregation:", error);
+      console.error("Error running news ingestion:", error);
     }
   });
 
@@ -80,7 +72,7 @@ export function setupCronJobs() {
   });
 
   console.log("✅ Cron jobs configured:");
-  console.log("  - 2:00 AM: Daily RSS aggregation");
+  console.log("  - 2:00 AM: Daily news ingestion (Playwright + RSS)");
   console.log("  - 3:00 AM: Regulation change scanning");
   console.log("  - 8:00 AM: Daily digest emails");
   console.log("  - 9:00 AM: Process pending alerts");

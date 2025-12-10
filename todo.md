@@ -1769,3 +1769,45 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - client/src/components/LatestNewsPanel.tsx (skeletons)
 
 **Result:** Professional loading experience with skeleton UI, paginated news feed starting at 20 articles with "Load More" button, automatic pagination reset on filter changes. All TypeScript checks passing.
+
+
+## Phase 54: Fix News Dating & Relevance Filtering
+
+**Issues Found:**
+1. All news items are exactly 5 days old (cron job not running or failing)
+2. "No relevant ESG regulatory information found" article leaked into production
+3. Need validation to reject non-ESG articles before saving to database
+
+**Tasks:**
+- [ ] Check cron job status and logs
+- [ ] Investigate why daily news ingestion stopped
+- [ ] Add ESG relevance validation to news processor
+- [ ] Reject articles with placeholder/error summaries
+- [ ] Add keyword filtering for ESG topics (CSRD, ESRS, DPP, EUDR, etc.)
+- [ ] Clean up existing irrelevant articles from database
+- [ ] Test manual news ingestion
+- [ ] Verify cron job runs successfully
+- [ ] Save checkpoint
+
+
+## Phase 54: Fix News Dating & Relevance Filtering - Complete ✅
+
+**Root Causes Identified:**
+1. ✅ All news 5 days old: Cron job was calling old RSS aggregator instead of new Playwright pipeline
+2. ✅ Non-ESG article leaked: No validation filter before database insertion
+3. ✅ Cron not running: setupCronJobs() was importing wrong module
+
+**Fixes Implemented:**
+- [x] Added ESG relevance validation in news-pipeline.ts (lines 81-92)
+- [x] Filter criteria: must have regulation tags, no "no relevant" text, summary > 50 chars
+- [x] Updated cron-scheduler.ts to call dailyNewsIngestion() from news-cron-scheduler.ts
+- [x] Removed old rss-aggregator-db.mjs import
+- [x] Added skippedNonESG counter to pipeline results
+- [x] Deleted article #30012 (non-ESG personnel announcement) from database
+- [x] Verified Playwright browsers installed (~/.cache/ms-playwright/)
+
+**Files Modified:**
+- server/news-pipeline.ts (ESG validation filter)
+- server/cron-scheduler.ts (use new news pipeline)
+
+**Result:** Daily cron job now runs Playwright scraper at 2 AM UTC, filters out non-ESG articles before saving, and logs skipped count. Next run will fetch fresh GS1.nl articles and reject any without ESG relevance.

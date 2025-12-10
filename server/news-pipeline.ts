@@ -71,11 +71,25 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
     // Step 6: Process with AI
     const processedItems = await processNewsBatch(newItems);
     
-    // Step 7: Insert into database
+    // Step 7: Insert into database (with ESG relevance filtering)
     let inserted = 0;
+    let skippedNonESG = 0;
     for (let i = 0; i < newItems.length; i++) {
       const raw = newItems[i];
       const processed = processedItems[i];
+      
+      // Filter out non-ESG articles
+      const isESGRelevant = 
+        processed.regulationTags.length > 0 && // Must have at least one regulation tag
+        !processed.summary.toLowerCase().includes("no relevant") && // Reject placeholder summaries
+        !processed.headline.toLowerCase().includes("no relevant") && // Reject placeholder headlines
+        processed.summary.length > 50; // Must have substantial summary
+      
+      if (!isESGRelevant) {
+        console.log(`[news-pipeline] Skipping non-ESG article: ${processed.headline}`);
+        skippedNonESG++;
+        continue;
+      }
       
       try {
         const newsItem = {
@@ -120,14 +134,14 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
     }
     
     const duration = Date.now() - startTime;
-    console.log(`[news-pipeline] Pipeline complete: ${inserted} inserted, ${errors.length} errors, ${duration}ms`);
+    console.log(`[news-pipeline] Pipeline complete: ${inserted} inserted, ${skippedNonESG} non-ESG filtered, ${errors.length} errors, ${duration}ms`);
     
     return {
       success: errors.length === 0,
       fetched: allItems.length,
       processed: processedItems.length,
       inserted,
-      skipped: validItems.length - newItems.length,
+      skipped: validItems.length - newItems.length + skippedNonESG,
       errors,
       duration,
     };
