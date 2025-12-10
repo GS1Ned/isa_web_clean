@@ -59,7 +59,7 @@ export function NewsCardCompact({ news }: NewsCardCompactProps) {
               <span className="text-xs text-muted-foreground">
                 {formatDistanceToNow(new Date(publishedDate), { addSuffix: true })}
               </span>
-              {regulationTags.length > 0 && (
+              {Array.isArray(regulationTags) && regulationTags.length > 0 && (
                 <>
                   <span className="text-xs text-muted-foreground">•</span>
                   <Badge variant="secondary" className="text-xs px-1.5 py-0">

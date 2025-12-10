@@ -5,6 +5,7 @@
 
 import { useState } from "react";
 import { NewsCard } from "@/components/NewsCard";
+import { NewsCardSkeleton } from "@/components/NewsCardSkeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -22,8 +23,12 @@ export default function NewsHub() {
   const [impactFilter, setImpactFilter] = useState("All");
   const [sourceTypeFilter, setSourceTypeFilter] = useState("All");
   const [sortBy, setSortBy] = useState<"date" | "impact">("date");
+  const [displayLimit, setDisplayLimit] = useState(20);
 
-  const { data: newsItems, isLoading } = trpc.hub.getRecentNews.useQuery({ limit: 50 });
+  // Reset pagination when filters change
+  const resetPagination = () => setDisplayLimit(20);
+
+  const { data: newsItems, isLoading } = trpc.hub.getRecentNews.useQuery({ limit: 100 });
 
   // Filter and sort news items
   const filteredNews = newsItems
@@ -94,7 +99,10 @@ export default function NewsHub() {
             </div>
 
             {/* Regulation Filter */}
-            <Select value={regulationFilter} onValueChange={setRegulationFilter}>
+            <Select value={regulationFilter} onValueChange={(value) => {
+              setRegulationFilter(value);
+              resetPagination();
+            }}>
               <SelectTrigger>
                 <SelectValue placeholder="Regulation" />
               </SelectTrigger>
@@ -108,7 +116,10 @@ export default function NewsHub() {
             </Select>
 
             {/* Source Type Filter */}
-            <Select value={sourceTypeFilter} onValueChange={setSourceTypeFilter}>
+            <Select value={sourceTypeFilter} onValueChange={(value) => {
+              setSourceTypeFilter(value);
+              resetPagination();
+            }}>
               <SelectTrigger>
                 <SelectValue placeholder="Source Type" />
               </SelectTrigger>
@@ -122,7 +133,10 @@ export default function NewsHub() {
             </Select>
 
             {/* Impact Filter */}
-            <Select value={impactFilter} onValueChange={setImpactFilter}>
+            <Select value={impactFilter} onValueChange={(value) => {
+              setImpactFilter(value);
+              resetPagination();
+            }}>
               <SelectTrigger>
                 <SelectValue placeholder="Impact Level" />
               </SelectTrigger>
@@ -212,17 +226,18 @@ export default function NewsHub() {
 
         {/* News Feed */}
         {isLoading ? (
-          <div className="text-center py-12">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent"></div>
-            <p className="mt-4 text-muted-foreground">Loading news...</p>
+          <div className="grid gap-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <NewsCardSkeleton key={i} />
+            ))}
           </div>
         ) : filteredNews && filteredNews.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-6">
             <p className="text-sm text-muted-foreground">
-              Showing {filteredNews.length} {filteredNews.length === 1 ? "article" : "articles"}
+              Showing {Math.min(displayLimit, filteredNews.length)} of {filteredNews.length} {filteredNews.length === 1 ? "article" : "articles"}
             </p>
             <div className="grid gap-4">
-              {filteredNews.map((item: any) => (
+              {filteredNews.slice(0, displayLimit).map((item: any) => (
                 <NewsCard
                   key={item.id}
                   news={{
@@ -230,7 +245,7 @@ export default function NewsHub() {
                     title: item.title,
                     summary: item.summary || "",
                     publishedDate: new Date(item.publishedDate || item.createdAt),
-                    regulationTags: (item.regulationTags as string[]) || [],
+                    regulationTags: Array.isArray(item.regulationTags) ? item.regulationTags : [],
                     impactLevel: item.impactLevel || "MEDIUM",
                     sourceUrl: item.sourceUrl || "#",
                     sourceTitle: item.sourceTitle || "Unknown Source",
@@ -240,6 +255,21 @@ export default function NewsHub() {
                 />
               ))}
             </div>
+            
+            {/* Load More Button */}
+            {displayLimit < filteredNews.length && (
+              <div className="flex justify-center pt-4">
+                <Button
+                  onClick={() => setDisplayLimit(prev => Math.min(prev + 20, filteredNews.length))}
+                  variant="outline"
+                  size="lg"
+                  className="gap-2"
+                >
+                  Load More Articles
+                  <span className="text-xs text-muted-foreground">({filteredNews.length - displayLimit} remaining)</span>
+                </Button>
+              </div>
+            )}
           </div>
         ) : (
           <div className="text-center py-12 bg-muted/30 rounded-lg">

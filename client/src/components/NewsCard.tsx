@@ -113,12 +113,12 @@ export function NewsCard({ news }: NewsCardProps) {
           <Badge variant="secondary" className="text-xs">
             {newsTypeLabels[newsType]}
           </Badge>
-          {regulationTags.slice(0, 4).map((tag) => (
+          {Array.isArray(regulationTags) && regulationTags.slice(0, 4).map((tag) => (
             <Badge key={tag} variant="outline" className="text-xs">
               {tag}
             </Badge>
           ))}
-          {regulationTags.length > 4 && (
+          {Array.isArray(regulationTags) && regulationTags.length > 4 && (
             <Badge variant="outline" className="text-xs">
               +{regulationTags.length - 4} more
             </Badge>

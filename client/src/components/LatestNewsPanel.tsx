@@ -4,6 +4,7 @@
  */
 
 import { NewsCardCompact } from "./NewsCardCompact";
+import { NewsCardCompactSkeleton } from "./NewsCardSkeleton";
 import { Button } from "./ui/button";
 import { Newspaper, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
@@ -14,14 +15,21 @@ export function LatestNewsPanel() {
 
   if (isLoading) {
     return (
-      <section className="py-16 bg-muted/30">
-        <div className="container max-w-6xl">
-          <div className="text-center">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent"></div>
-            <p className="mt-4 text-muted-foreground">Loading latest news...</p>
+      <div className="lg:sticky lg:top-24">
+        <div className="bg-card border border-border rounded-lg p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Newspaper className="h-5 w-5 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold">Latest News</h3>
+          </div>
+          <div className="space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <NewsCardCompactSkeleton key={i} />
+            ))}
           </div>
         </div>
-      </section>
+      </div>
     );
   }
 
