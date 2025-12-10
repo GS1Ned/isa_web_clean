@@ -155,7 +155,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ---
 
-## Phase 4: Source Expansion ⏳
+## Phase 4: Source Expansion ✅ COMPLETE
 
 ### 4.1 EU Sources
 - [ ] Add CS3D/CSDDD source
@@ -186,7 +186,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ---
 
-## Phase 5: AI Processing Enhancements
+## Phase 5: AI Processing Enhancements ✅ COMPLETE
 
 ### 5.1 Content Analyzer Upgrades
 - [ ] Extend news-content-analyzer.ts to infer gs1ImpactTags
@@ -217,7 +217,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ---
 
-## Phase 6: Bidirectional News-Regulation Integration ⏳
+## Phase 6: Bidirectional News-Regulation Integration ✅ COMPLETE
 
 ### 6.1 Regulation Pages Enhancement
 - [x] Add "Recent developments" panel to regulation detail pages
@@ -394,3 +394,48 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Implement URL state management for selected regulations
 - [ ] Add export comparison feature (future enhancement)
 - [x] Test with 2-4 regulations simultaneously
+
+
+---
+
+## Documentation & Alignment Tasks \u23f3 IN PROGRESS
+
+### Core Documentation Updates
+- [x] Audit ARCHITECTURE.md for drift and gaps
+- [x] Audit DATA_MODEL.md for missing tables
+- [x] Audit ROADMAP.md for timeline accuracy
+- [x] Audit todo.md for phase status consistency
+- [x] Update ARCHITECTURE.md with News Hub features
+- [x] Update DATA_MODEL.md with hub_news tables
+- [x] Update ROADMAP.md with Q2-Q4 2025 completion
+- [x] Update todo.md phase status markers
+- [ ] Create consolidated documentation index
+- [ ] Review and update NEWS_PIPELINE.md for consistency
+- [ ] Update DATASET_INVENTORY.md with news data
+
+### Production Readiness
+- [ ] Add error handling for news scrapers
+- [ ] Implement scraper health monitoring
+- [ ] Add retry logic for failed scrapes
+- [ ] Create deployment runbook
+- [ ] Document backup and recovery procedures
+- [ ] Add performance monitoring for AI enrichment
+- [ ] Optimize token usage in news processing
+
+### Next High-Value Features
+- [ ] Add impact level filtering to News Hub
+- [ ] Implement timeline export to PDF
+- [ ] Create Gantt chart visualization mode
+- [ ] Add "Compare with..." quick action on regulation pages
+- [ ] Implement advanced filters (gs1ImpactTags, sectorTags)
+- [ ] Create timeline view for GS1 standards pages
+- [ ] Add news recommendations based on user role/sector
+
+### Technical Debt
+- [ ] Refactor news-ai-processor.ts for better modularity
+- [ ] Add comprehensive error logging
+- [ ] Implement caching for frequently accessed news
+- [ ] Optimize database queries for news listing
+- [ ] Add unit tests for news scrapers
+- [ ] Add integration tests for AI enrichment pipeline
+- [ ] Document API contracts for news endpoints

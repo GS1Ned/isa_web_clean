@@ -1,6 +1,6 @@
 # ISA Data Model Documentation
 
-**Last Updated:** December 2, 2025  
+**Last Updated:** December 10, 2025  
 **Database:** TiDB (MySQL-compatible)  
 **ORM:** Drizzle
 
@@ -8,12 +8,13 @@
 
 ## Database Schema Overview
 
-ISA uses 12 core tables organized into 4 functional domains:
+ISA uses 14+ core tables organized into 5 functional domains:
 
 1. **Compliance Data** (regulations, standards, ESRS, Dutch initiatives)
 2. **Mappings** (regulation↔standard, regulation↔ESRS, initiative↔regulation)
-3. **Knowledge Base** (embeddings, Q&A conversations)
-4. **User Management** (users, sessions)
+3. **News & Intelligence** (hub_news, hub_news_history)
+4. **Knowledge Base** (embeddings, Q&A conversations)
+5. **User Management** (users, sessions)
 
 ---
 
@@ -194,6 +195,86 @@ Links regulations to ESRS datapoints they trigger.
 **Sample Mapping:**
 - EUDR → E1-5_03 (0.92 relevance, "Deforestation-related emissions disclosure")
 - CSRD → E1-1_01 (0.98 relevance, "Mandatory Scope 1 GHG emissions reporting")
+
+---
+
+## 3. News & Intelligence Tables
+
+### `hub_news` (Growing dataset)
+
+ESG news articles with AI-powered enrichment and regulation tagging.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | INT (PK) | Auto-increment primary key |
+| `title` | VARCHAR(500) | News article title |
+| `summary` | TEXT | Article summary/excerpt |
+| `content` | TEXT | Full article content (markdown) |
+| `url` | VARCHAR(1000) | Source URL (unique constraint) |
+| `publishedDate` | TIMESTAMP | Publication date |
+| `sourceType` | ENUM | EU_OFFICIAL, GS1_STANDARDS, DUTCH_NATIONAL |
+| `sourceTitle` | VARCHAR(255) | Source name (e.g., "EUR-Lex Official Journal") |
+| `regulationTags` | JSON | Array of regulation codes ["CSRD", "PPWR"] |
+| `gs1ImpactTags` | JSON | Array of GS1 impact areas ["traceability", "data_quality"] |
+| `sectorTags` | JSON | Array of sector tags ["retail", "healthcare"] |
+| `impactLevel` | ENUM | HIGH, MEDIUM, LOW |
+| `gs1ImpactAnalysis` | TEXT | AI-generated GS1 impact analysis |
+| `suggestedActions` | TEXT | AI-generated action recommendations |
+| `createdAt` | TIMESTAMP | Record creation time |
+| `updatedAt` | TIMESTAMP | Last modification time |
+
+**Indexes:**
+- Primary key on `id`
+- Unique index on `url` for deduplication
+- Index on `publishedDate` for chronological queries
+- Index on `sourceType` for filtering
+- Index on `impactLevel` for priority sorting
+
+**Source Types:**
+- `EU_OFFICIAL` - EUR-Lex Official Journal, European Commission announcements
+- `GS1_STANDARDS` - GS1 Standards News, white papers, guidance documents
+- `DUTCH_NATIONAL` - Green Deal Zorg, Zero-Emission Zones, Plastic Pact NL
+
+**Sample Data:**
+- "CSRD First Reporting Deadline Approaches" (EU_OFFICIAL, HIGH impact)
+- "GS1 Digital Link 1.2 Released" (GS1_STANDARDS, MEDIUM impact)
+- "Green Deal Healthcare 2025 Progress Report" (DUTCH_NATIONAL, LOW impact)
+
+---
+
+### `hub_news_history` (Versioning table)
+
+Tracks changes to news articles over time for audit and rollback.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | INT (PK) | Auto-increment primary key |
+| `originalNewsId` | INT (FK) | References `hub_news.id` |
+| `title` | VARCHAR(500) | Historical title |
+| `summary` | TEXT | Historical summary |
+| `content` | TEXT | Historical content |
+| `url` | VARCHAR(1000) | Historical URL |
+| `publishedDate` | TIMESTAMP | Historical publication date |
+| `sourceType` | ENUM | Historical source type |
+| `sourceTitle` | VARCHAR(255) | Historical source name |
+| `regulationTags` | JSON | Historical regulation tags |
+| `gs1ImpactTags` | JSON | Historical GS1 impact tags |
+| `sectorTags` | JSON | Historical sector tags |
+| `impactLevel` | ENUM | Historical impact level |
+| `gs1ImpactAnalysis` | TEXT | Historical GS1 analysis |
+| `suggestedActions` | TEXT | Historical suggested actions |
+| `archivedAt` | TIMESTAMP | When this version was archived |
+
+**Indexes:**
+- Primary key on `id`
+- Foreign key on `originalNewsId`
+- Index on `archivedAt` for historical queries
+
+**Purpose:**
+- Track content changes when news articles are updated
+- Enable rollback to previous versions
+- Audit trail for AI enrichment changes
+- Analyze how news coverage evolves over time
 
 ---
 

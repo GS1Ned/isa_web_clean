@@ -1,7 +1,7 @@
 # ISA Development Roadmap
 
-**Last Updated:** December 2, 2025  
-**Current Version:** 6a030890  
+**Last Updated:** December 10, 2025  
+**Current Version:** c8b3a6a2  
 **Status:** Active Development
 
 ---
@@ -53,6 +53,15 @@ Transform ISA into the **leading platform for EU sustainability compliance intel
 - Conversation history and follow-up questions
 - Admin knowledge base manager with one-click generation
 
+**News Hub - ESG Intelligence Layer:**
+- Automated news aggregation from EU, GS1, and Dutch/Benelux sources
+- AI-powered enrichment (regulation tagging, GS1 impact analysis, sector classification)
+- News detail pages with actionable insights and suggested actions
+- Bidirectional navigation (news ↔ regulations)
+- Timeline visualization showing regulation milestones + related news
+- Multi-regulation comparison tool (2-4 regulations side-by-side)
+- Source types: EU Official Journal, GS1 Standards News, Dutch national initiatives
+
 **Admin Panel:**
 - Knowledge base statistics dashboard
 - Embedding generation per source type
@@ -71,24 +80,41 @@ Q4 2024 (Completed)
 ├─ Dutch initiatives
 └─ Ask ISA RAG system
 
-Q1 2025 (In Progress)
+Q1 2025 (Completed)
 ├─ Platform stabilization
 ├─ Documentation (ARCHITECTURE, DATA_MODEL, INGESTION, DATASET_INVENTORY)
 ├─ EUR-Lex auto-ingestion pipeline
 └─ EFRAG XBRL parser
 
-Q2 2025 (Planned)
-├─ Automated data pipelines
-├─ Change monitoring and alerts
+Q2 2025 (Completed)
+├─ News Hub initial development
+├─ EU Official Journal scraper
+├─ GS1 Standards News scraper
+└─ AI enrichment pipeline
+
+Q3 2025 (Completed)
+├─ Dutch/Benelux news sources
+├─ GS1 insights UI
+└─ Bidirectional news-regulation links
+
+Q4 2025 (In Progress - December)
+├─ Timeline visualization ✅
+├─ Multi-regulation comparison ✅
+├─ Documentation alignment ⏳
+└─ Production readiness improvements
+
+Q1 2026 (Planned)
+├─ Automated data pipeline monitoring
+├─ Change detection and alerts
 ├─ Conversation history sidebar
 └─ Export to PDF
 
-Q3 2025 (Planned)
+Q2 2026 (Planned)
 ├─ Digital Product Passport integration
 ├─ Multi-language support
 └─ Public API
 
-Q4 2025 (Planned)
+Q3 2026 (Planned)
 ├─ Blockchain verification
 ├─ Advanced analytics
 └─ Enterprise features

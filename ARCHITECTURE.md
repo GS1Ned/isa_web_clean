@@ -1,7 +1,7 @@
 # ISA Architecture Documentation
 
-**Last Updated:** December 2, 2025  
-**Version:** 6a030890
+**Last Updated:** December 10, 2025  
+**Version:** c8b3a6a2
 
 ## System Overview
 
@@ -68,6 +68,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 │  - GS1 Standards (60 standards)                             │
 │  - ESRS Datapoints (1,184 disclosure requirements)          │
 │  - Dutch Initiatives (10 national programs)                 │
+│  - News Hub (hub_news, hub_news_history tables)             │
 │  - Knowledge Embeddings (155 semantic chunks)               │
 │  - Q&A Conversations (chat history)                         │
 └─────────────────────────────────────────────────────────────┘
@@ -113,6 +114,17 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - Sector-specific filtering (Textiles, Healthcare, Construction, Packaging)
 - Integration with EU regulations and GS1 standards
 
+### 4.5. News Hub - ESG Intelligence Layer
+**Path:** `/hub/news`
+
+- Automated news aggregation from EU, GS1, and Dutch/Benelux sources
+- AI-powered enrichment (regulation tagging, GS1 impact analysis, sector classification)
+- News detail pages with actionable insights and suggested actions
+- Bidirectional navigation (news ↔ regulations)
+- Timeline visualization showing regulation milestones + related news
+- Multi-regulation comparison tool (2-4 regulations side-by-side)
+- Source types: EU Official Journal, GS1 Standards News, Dutch national initiatives
+
 ### 5. Ask ISA - RAG-Powered Q&A
 **Path:** `/ask`
 
@@ -128,6 +140,22 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - Monitor coverage statistics (regulations, standards, ESRS, initiatives)
 - One-click embedding generation per source type
 - Progress tracking and error reporting
+
+### 7. Timeline Visualization
+**Path:** `/hub/regulations/:id` (Timeline tab)
+
+- Chronological display of regulation milestones and related news
+- Interactive filtering by event type (milestones/news) and time period
+- Color-coded event markers (completed/upcoming/future)
+- Direct navigation to news detail pages
+
+### 8. Multi-Regulation Comparison
+**Path:** `/hub/regulations/compare`
+
+- Side-by-side comparison of 2-4 regulations
+- Overlapping event detection and highlighting
+- URL state management for shareable comparisons
+- Responsive grid layout adapting to number of selected regulations
 
 ---
 
@@ -182,6 +210,42 @@ Admin triggers generation for source type
 4. Return statistics
    - Total processed, succeeded, failed
    - Coverage percentage
+```
+
+### News Hub Ingestion & Enrichment Pipeline
+
+```
+Scheduled Cron Job (daily)
+    ↓
+1. Web Scraping (Playwright)
+   - EUR-Lex Official Journal
+   - GS1 Standards News
+   - Green Deal Zorg (Dutch healthcare)
+   - Zero-Emission Zones (Dutch logistics)
+    ↓
+2. Content Extraction
+   - Title, summary, date, URL
+   - HTML to markdown conversion
+   - Source metadata
+    ↓
+3. Deduplication
+   - Check existing by URL
+   - Compare content hashes
+   - Update if changed, skip if identical
+    ↓
+4. AI Enrichment (LLM)
+   - Regulation tagging (CSRD, PPWR, ESPR, etc.)
+   - GS1 impact analysis (traceability, data quality, etc.)
+   - Sector classification (retail, healthcare, logistics, etc.)
+   - Impact level assessment (HIGH/MEDIUM/LOW)
+   - Suggested actions generation
+    ↓
+5. Storage & Versioning
+   - Insert into hub_news table
+   - Archive previous version to hub_news_history
+   - Update timestamps
+    ↓
+News Hub UI displays enriched articles
 ```
 
 ---
@@ -288,4 +352,4 @@ All secrets managed via Manus platform:
 
 **Project Owner:** GS1 Netherlands  
 **Development:** Manus AI Platform  
-**Last Major Update:** December 2, 2025 (Ask ISA RAG system, Disclaimer banner)
+**Last Major Update:** December 10, 2025 (News Hub with Dutch sources, Timeline visualization, Multi-regulation comparison)
