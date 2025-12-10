@@ -220,10 +220,10 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Phase 6: Bidirectional News-Regulation Integration ⏳
 
 ### 6.1 Regulation Pages Enhancement
-- [ ] Add "Recent developments" panel to regulation detail pages
-- [ ] Query hubNews by relatedRegulationIds
-- [ ] Display timeline of regulation-related news
-- [ ] Add filters for news type and impact
+- [x] Add "Recent developments" panel to regulation detail pages
+- [x] Query hubNews by regulationTags
+- [x] Display timeline of regulation-related news
+- [x] Show impact level, summary, and publication date
 
 ### 6.2 GS1 Standard Pages Enhancement
 - [ ] Add "Related news" panel to GS1 standard pages
@@ -362,3 +362,18 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ✅ **Operations**: Pipeline is observable, testable, and maintainable with coverage analytics and health monitoring
 
 ✅ **Documentation**: All changes documented with clear rationale and usage instructions
+
+
+## Timeline Visualization Feature ✅ COMPLETE
+
+- [x] Design timeline component structure and data model
+- [x] Create TimelineView component with milestone rendering
+- [x] Add news events to timeline chronologically
+- [x] Implement date range filtering (all/past/future)
+- [x] Add event type filtering (milestones vs news)
+- [x] Create timeline legend and controls
+- [x] Integrate timeline into regulation detail pages
+- [x] Add responsive design for mobile/tablet
+- [x] Implement interactive hover states and links
+- [x] Test timeline with CSRD regulation
+- [x] Add empty state for regulations with no timeline data

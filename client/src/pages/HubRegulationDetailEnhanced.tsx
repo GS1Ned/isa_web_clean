@@ -7,6 +7,7 @@ import { CheckCircle, AlertCircle, Calendar, BookOpen, HelpCircle, Save, Bell, N
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
+import { RegulationTimeline } from "@/components/RegulationTimeline";
 
 // Sample regulation data
 const REGULATION_DATA = {
@@ -25,25 +26,25 @@ const REGULATION_DATA = {
       date: "2024-01-01",
       event: "CSRD Effective",
       description: "Directive enters into force",
-      status: "completed",
+      status: "completed" as const,
     },
     {
       date: "2025-01-01",
       event: "First Reporting Period",
       description: "Large companies begin reporting under CSRD",
-      status: "upcoming",
+      status: "upcoming" as const,
     },
     {
       date: "2026-01-01",
       event: "Enforcement Begins",
       description: "Regulatory enforcement of CSRD requirements",
-      status: "future",
+      status: "future" as const,
     },
     {
       date: "2028-01-01",
       event: "SME Scope Expansion",
       description: "Extended to small and medium-sized enterprises",
-      status: "future",
+      status: "future" as const,
     },
   ],
 
@@ -325,33 +326,7 @@ export default function HubRegulationDetailEnhanced() {
 
           {/* Timeline Tab */}
           <TabsContent value="timeline" className="space-y-6">
-            <Card className="p-8">
-              <h3 className="text-2xl font-bold text-slate-900 mb-8">Implementation Timeline</h3>
-              <div className="space-y-6">
-                {reg.timeline.map((item, idx) => (
-                  <div key={idx} className="flex gap-6">
-                    <div className="flex flex-col items-center">
-                      <div className={`w-4 h-4 rounded-full ${
-                        item.status === 'completed' ? 'bg-green-500' :
-                        item.status === 'upcoming' ? 'bg-blue-500' :
-                        'bg-slate-300'
-                      }`} />
-                      {idx < reg.timeline.length - 1 && (
-                        <div className="w-1 h-20 bg-slate-200 mt-2" />
-                      )}
-                    </div>
-                    <div className="pb-6">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Calendar className="w-5 h-5 text-slate-600" />
-                        <div className="font-semibold text-slate-900">{item.date}</div>
-                      </div>
-                      <div className="text-lg font-bold text-slate-900 mb-1">{item.event}</div>
-                      <div className="text-slate-600">{item.description}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
+            <RegulationTimeline regulationCode={reg.code} milestones={reg.timeline} />
           </TabsContent>
 
           {/* Standards Tab */}
