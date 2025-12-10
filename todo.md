@@ -1890,3 +1890,22 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - [x] Test end-to-end with duplicate detection
 
 **Result:** GS1.nl scraper now fetches full article content. Cross-source deduplication detects when GS1.nl and EFRAG cover the same topic (title similarity 0.7+, content overlap 0.6+) and merges them with multi-source attribution. News Hub displays "2 sources" badge for deduplicated articles.
+
+
+## Phase 58: Multi-Source Display in NewsDetail
+
+- [ ] Read NewsDetail component to understand current structure
+- [ ] Add sources prop to NewsDetail interface
+- [ ] Design multi-source section with source badges and URLs
+- [ ] Add visual distinction for primary vs secondary sources
+- [ ] Test with multi-source articles
+
+## Phase 58: Multi-Source Display in NewsDetail Complete ✅
+
+- [x] Read NewsDetail component to understand current structure
+- [x] Add sources prop to NewsDetail interface (already in trpc query)
+- [x] Design multi-source section with source badges and URLs
+- [x] Add visual distinction for EU Official (blue) vs GS1 Official (purple)
+- [x] Test with multi-source articles
+
+**Result:** NewsDetail now displays "Multiple Sources" section when articles are deduplicated from GS1.nl and EFRAG. Each source shows colored badge (EU Official/GS1 Official), source name, and clickable URL. Falls back to single "Read full article" link for non-deduplicated articles.

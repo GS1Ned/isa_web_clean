@@ -104,8 +104,49 @@ export default function NewsDetail() {
                 <p className="whitespace-pre-wrap">{newsItem.content}</p>
               </div>
 
-              {/* Source Link */}
-              {newsItem.sourceUrl && (
+              {/* Multi-Source Display */}
+              {newsItem.sources && newsItem.sources.length > 1 ? (
+                <div className="mt-6 pt-6 border-t space-y-4">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-sm">Multiple Sources</h3>
+                    <Badge variant="secondary" className="text-xs">
+                      {newsItem.sources.length} sources
+                    </Badge>
+                  </div>
+                  <div className="space-y-3">
+                    {newsItem.sources.map((source, index) => {
+                      const sourceTypeLabels: Record<string, string> = {
+                        EU_OFFICIAL: "EU Official",
+                        GS1_OFFICIAL: "GS1 Official",
+                        INDUSTRY: "Industry",
+                        MEDIA: "Media",
+                      };
+                      const sourceTypeColors: Record<string, string> = {
+                        EU_OFFICIAL: "bg-blue-500/10 text-blue-600 border-blue-500/20",
+                        GS1_OFFICIAL: "bg-purple-500/10 text-purple-600 border-purple-500/20",
+                        INDUSTRY: "bg-green-500/10 text-green-600 border-green-500/20",
+                        MEDIA: "bg-gray-500/10 text-gray-600 border-gray-500/20",
+                      };
+                      return (
+                        <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-accent/30">
+                          <Badge className={sourceTypeColors[source.type] || sourceTypeColors.MEDIA}>
+                            {sourceTypeLabels[source.type] || source.type}
+                          </Badge>
+                          <a
+                            href={source.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 text-sm hover:underline text-primary"
+                          >
+                            {source.name}
+                          </a>
+                          <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : newsItem.sourceUrl ? (
                 <div className="mt-6 pt-6 border-t">
                   <a
                     href={newsItem.sourceUrl}
@@ -117,7 +158,7 @@ export default function NewsDetail() {
                     <ExternalLink className="h-4 w-4" />
                   </a>
                 </div>
-              )}
+              ) : null}
             </CardContent>
           </Card>
         </div>
