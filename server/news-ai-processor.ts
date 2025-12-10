@@ -1,11 +1,19 @@
 /**
  * News AI Processor
  * Uses LLM to generate structured summaries and extract metadata from news articles
- * Implements regulation tagging and impact scoring
+ * Implements regulation tagging, impact scoring, and GS1-specific analysis
  */
 
 import { invokeLLM } from "./_core/llm";
 import { REGULATION_KEYWORDS, IMPACT_KEYWORDS } from "./news-sources";
+import { 
+  GS1_IMPACT_TAGS, 
+  SECTOR_TAGS,
+  inferGS1ImpactTags,
+  inferSectorTags,
+  type GS1ImpactTag,
+  type SectorTag 
+} from "./news-tags";
 import type { RawNewsItem } from "./news-fetcher";
 
 export interface ProcessedNews {
@@ -16,6 +24,12 @@ export interface ProcessedNews {
   regulationTags: string[]; // CSRD, PPWR, EUDR, etc.
   impactLevel: "LOW" | "MEDIUM" | "HIGH";
   newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
+  
+  // GS1-specific fields
+  gs1ImpactTags: string[]; // IDENTIFICATION, PACKAGING_ATTRIBUTES, ESG_REPORTING, DUE_DILIGENCE, TRACEABILITY, DPP, etc.
+  sectorTags: string[]; // RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION, TEXTILES, etc.
+  gs1ImpactAnalysis: string; // 2-3 sentences explaining GS1 relevance and impact
+  suggestedActions: string[]; // 2-4 actionable next steps for GS1 NL members
 }
 
 /**
@@ -30,18 +44,37 @@ export async function processNewsItem(item: RawNewsItem): Promise<ProcessedNews>
       messages: [
         {
           role: "system",
-          content: `You are an ESG regulatory intelligence analyst. Extract structured information from news articles about EU sustainability regulations.
+          content: `You are an ESG regulatory intelligence analyst specializing in GS1 supply chain standards.
 
-Focus on regulations: CSRD, ESRS, EUDR, DPP, PPWR, ESPR, CSDDD, EU Taxonomy, Battery Regulation, REACH.
+Your audience: GS1 Netherlands members (retailers, manufacturers, logistics providers, healthcare organizations).
 
-Return JSON with this exact structure:
+Your task: Analyze news about EU and Dutch sustainability regulations and explain:
+1. What happened (regulatory change)
+2. Why it matters (business impact)
+3. How GS1 standards help (specific identifiers, data models, processes)
+4. What users should do next (actionable steps)
+
+Focus on regulations: CSRD, ESRS, EUDR, DPP, PPWR, ESPR, CSDDD, CS3D, EU Taxonomy, Battery Regulation, REACH, Green Claims.
+
+Focus on GS1 standards: GTIN, GLN, SSCC, EPCIS, GDSN, Digital Link, GS1 Web Vocabulary, packaging attributes.
+
+Return JSON with this structure:
 {
   "headline": "Clear, concise headline (max 100 chars)",
   "whatHappened": "2 sentences describing the regulatory change or event",
   "whyItMatters": "1 sentence explaining impact on companies/supply chains",
-  "regulationTags": ["CSRD", "ESRS"] // array of relevant regulation acronyms,
+  "regulationTags": ["CSRD", "ESRS"],
   "impactLevel": "HIGH" | "MEDIUM" | "LOW",
-  "newsType": "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL"
+  "newsType": "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL",
+  
+  "gs1ImpactTags": ["DPP", "TRACEABILITY"],
+  "sectorTags": ["RETAIL", "HEALTHCARE"],
+  "gs1ImpactAnalysis": "2-3 sentences explaining which GS1 standards/identifiers/data models are relevant and how they help companies comply. Be specific about GTIN, GLN, EPCIS, GDSN, Digital Link, packaging attributes, etc.",
+  "suggestedActions": [
+    "Review GDSN packaging attributes for recyclability data",
+    "Implement EPCIS events for traceability",
+    "Update product master data with sustainability fields"
+  ]
 }
 
 Impact level criteria:
@@ -49,13 +82,9 @@ Impact level criteria:
 - MEDIUM: Proposals, draft amendments, updated guidance, implementation details
 - LOW: Preliminary discussions, workshops, stakeholder consultations
 
-News type criteria:
-- NEW_LAW: New regulation adopted/published
-- AMENDMENT: Changes to existing regulation
-- ENFORCEMENT: Enforcement actions, penalties, compliance deadlines
-- COURT_DECISION: Legal rulings affecting regulations
-- GUIDANCE: Official guidance, FAQs, implementation support
-- PROPOSAL: Draft regulations, consultation documents`,
+GS1 Impact Tags (select 1-3): ${Object.keys(GS1_IMPACT_TAGS).join(", ")}
+
+Sector Tags (select 1-3): ${Object.keys(SECTOR_TAGS).join(", ")}`,
         },
         {
           role: "user",
@@ -88,8 +117,27 @@ News type criteria:
                 enum: ["NEW_LAW", "AMENDMENT", "ENFORCEMENT", "COURT_DECISION", "GUIDANCE", "PROPOSAL"],
                 description: "Type of regulatory news"
               },
+              gs1ImpactTags: {
+                type: "array",
+                items: { type: "string" },
+                description: "1-3 GS1 impact tags from the provided list"
+              },
+              sectorTags: {
+                type: "array",
+                items: { type: "string" },
+                description: "1-3 sector tags from the provided list"
+              },
+              gs1ImpactAnalysis: {
+                type: "string",
+                description: "2-3 sentences explaining GS1 relevance and how standards help compliance"
+              },
+              suggestedActions: {
+                type: "array",
+                items: { type: "string" },
+                description: "2-4 actionable next steps for GS1 NL members"
+              },
             },
-            required: ["headline", "whatHappened", "whyItMatters", "regulationTags", "impactLevel", "newsType"],
+            required: ["headline", "whatHappened", "whyItMatters", "regulationTags", "impactLevel", "newsType", "gs1ImpactTags", "sectorTags", "gs1ImpactAnalysis", "suggestedActions"],
             additionalProperties: false,
           },
         },
@@ -110,6 +158,10 @@ News type criteria:
       regulationTags: result.regulationTags || [],
       impactLevel: result.impactLevel || "MEDIUM",
       newsType: result.newsType || "GUIDANCE",
+      gs1ImpactTags: result.gs1ImpactTags || [],
+      sectorTags: result.sectorTags || [],
+      gs1ImpactAnalysis: result.gs1ImpactAnalysis || "",
+      suggestedActions: result.suggestedActions || [],
     };
   } catch (error) {
     console.error("[news-ai-processor] Error processing news item:", error);
@@ -143,52 +195,68 @@ function fallbackProcessing(item: RawNewsItem): ProcessedNews {
   
   // Determine news type
   let newsType: ProcessedNews["newsType"] = "GUIDANCE";
-  if (text.includes("adopted") || text.includes("enters into force")) {
+  if (text.includes("adopted") || text.includes("published") || text.includes("enters into force")) {
     newsType = "NEW_LAW";
   } else if (text.includes("amendment") || text.includes("revised")) {
     newsType = "AMENDMENT";
-  } else if (text.includes("enforcement") || text.includes("penalty")) {
+  } else if (text.includes("enforcement") || text.includes("penalty") || text.includes("deadline")) {
     newsType = "ENFORCEMENT";
-  } else if (text.includes("court") || text.includes("ruling")) {
+  } else if (text.includes("court") || text.includes("ruling") || text.includes("judgment")) {
     newsType = "COURT_DECISION";
-  } else if (text.includes("proposal") || text.includes("draft")) {
+  } else if (text.includes("proposal") || text.includes("draft") || text.includes("consultation")) {
     newsType = "PROPOSAL";
   }
   
+  // Infer GS1 impact tags using keyword matching
+  const gs1ImpactTags = inferGS1ImpactTags(text, 3);
+  
+  // Infer sector tags using keyword matching
+  const sectorTags = inferSectorTags(text, 3);
+  
+  // Generate basic GS1 impact analysis
+  const gs1ImpactAnalysis = gs1ImpactTags.length > 0
+    ? `This regulation may affect GS1 standards related to ${gs1ImpactTags.join(", ")}. Companies should review their data models and processes for compliance.`
+    : "The GS1 impact of this regulation requires further analysis. Please consult with GS1 Netherlands for guidance.";
+  
+  // Generate basic suggested actions
+  const suggestedActions = [
+    "Review the full regulation text for specific requirements",
+    "Assess current GS1 data model compliance",
+    "Contact GS1 Netherlands for implementation guidance",
+  ];
+  
   return {
     headline: item.title.slice(0, 100),
-    summary: (item.contentSnippet || item.content || "").slice(0, 500),
-    whatHappened: (item.contentSnippet || item.content || "").slice(0, 250),
-    whyItMatters: "This regulatory update may affect compliance requirements.",
+    summary: (item.content || item.contentSnippet || "").slice(0, 300),
+    whatHappened: (item.content || item.contentSnippet || "").slice(0, 200),
+    whyItMatters: "This regulatory development may impact supply chain operations and data requirements.",
     regulationTags,
     impactLevel,
     newsType,
+    gs1ImpactTags,
+    sectorTags,
+    gs1ImpactAnalysis,
+    suggestedActions,
   };
 }
 
 /**
- * Batch process multiple news items
+ * Process multiple news items in batch
  */
 export async function processNewsBatch(items: RawNewsItem[]): Promise<ProcessedNews[]> {
-  console.log(`[news-ai-processor] Processing ${items.length} news items...`);
-  
   const results: ProcessedNews[] = [];
   
-  // Process in batches of 5 to avoid rate limits
-  const batchSize = 5;
-  for (let i = 0; i < items.length; i += batchSize) {
-    const batch = items.slice(i, i + batchSize);
-    const batchResults = await Promise.all(
-      batch.map(item => processNewsItem(item))
-    );
-    results.push(...batchResults);
-    
-    // Small delay between batches
-    if (i + batchSize < items.length) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+  for (const item of items) {
+    try {
+      const processed = await processNewsItem(item);
+      results.push(processed);
+    } catch (error) {
+      console.error(`[news-ai-processor] Failed to process item "${item.title}":`, error);
+      // Use fallback processing for failed items
+      const fallback = fallbackProcessing(item);
+      results.push(fallback);
     }
   }
   
-  console.log(`[news-ai-processor] Completed processing ${results.length} items`);
   return results;
 }

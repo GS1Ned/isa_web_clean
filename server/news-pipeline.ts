@@ -121,11 +121,17 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
           sourceUrl: raw.link,
           sourceTitle: raw.source.name,
           sourceType: raw.source.type,
-          sources: deduplicatedItem.sources.length > 1 ? deduplicatedItem.sources : null, // Multi-source attribution
+          sources: deduplicatedItem.sources.length > 1 ? deduplicatedItem.sources : undefined, // Multi-source attribution
           credibilityScore: raw.source.credibilityScore.toString(),
           publishedDate: new Date(raw.pubDate),
           retrievedAt: new Date(),
           isAutomated: true,
+          
+          // GS1-specific fields
+          gs1ImpactTags: processed.gs1ImpactTags,
+          sectorTags: processed.sectorTags,
+          gs1ImpactAnalysis: processed.gs1ImpactAnalysis,
+          suggestedActions: processed.suggestedActions,
         };
         
         const createdNews = await createHubNews(newsItem);

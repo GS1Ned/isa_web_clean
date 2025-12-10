@@ -431,6 +431,14 @@ export async function createHubNews(news: {
   retrievedAt?: Date;
   isAutomated?: boolean;
   summary?: string;
+  
+  // GS1-specific fields
+  gs1ImpactTags?: string[];
+  sectorTags?: string[];
+  relatedStandardIds?: string[];
+  gs1ImpactAnalysis?: string;
+  suggestedActions?: string[];
+  sources?: Array<{ name: string; type: string; url: string }>;
 }) {
   const db = await getDb();
   if (!db) {
@@ -454,6 +462,14 @@ export async function createHubNews(news: {
       retrievedAt: news.retrievedAt || new Date(),
       isAutomated: news.isAutomated ?? false,
       summary: news.summary,
+      
+      // GS1-specific fields
+      gs1ImpactTags: news.gs1ImpactTags || null,
+      sectorTags: news.sectorTags || null,
+      relatedStandardIds: news.relatedStandardIds || null,
+      gs1ImpactAnalysis: news.gs1ImpactAnalysis || null,
+      suggestedActions: news.suggestedActions || null,
+      sources: news.sources || null,
     });
     const insertId = (result as any).insertId;
     return { id: Number(insertId) };

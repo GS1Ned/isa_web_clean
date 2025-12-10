@@ -170,6 +170,14 @@ export const hubNews = mysqlTable("hub_news", {
   sourceType: mysqlEnum("sourceType", ["EU_OFFICIAL", "GS1_OFFICIAL", "INDUSTRY", "MEDIA"]).default("EU_OFFICIAL"),
   sources: json("sources").$type<Array<{ name: string; type: string; url: string }>>(), // Multi-source attribution for deduplicated news
   credibilityScore: decimal("credibilityScore", { precision: 3, scale: 2 }).default("0.00"),
+  
+  // GS1-specific fields for enhanced intelligence
+  gs1ImpactTags: json("gs1ImpactTags").$type<string[]>(), // IDENTIFICATION, PACKAGING_ATTRIBUTES, ESG_REPORTING, DUE_DILIGENCE, TRACEABILITY, DPP, etc.
+  sectorTags: json("sectorTags").$type<string[]>(), // RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION, TEXTILES, etc.
+  relatedStandardIds: json("relatedStandardIds").$type<string[]>(), // Direct linkage to GS1 standards (gtin, gln, epcis, gdsn, digital-link, etc.)
+  gs1ImpactAnalysis: text("gs1ImpactAnalysis"), // AI-generated analysis of GS1 relevance and impact
+  suggestedActions: json("suggestedActions").$type<string[]>(), // Actionable next steps for GS1 NL members
+  
   publishedDate: timestamp("publishedDate"),
   retrievedAt: timestamp("retrievedAt").defaultNow().notNull(), // when fetched by automation
   isAutomated: boolean("isAutomated").default(false), // true if AI-generated
@@ -1359,6 +1367,14 @@ export const hubNewsHistory = mysqlTable("hub_news_history", {
   sourceType: mysqlEnum("sourceType", ["EU_OFFICIAL", "GS1_OFFICIAL", "INDUSTRY", "MEDIA"]).default("EU_OFFICIAL"),
   sources: json("sources").$type<Array<{ name: string; type: string; url: string }>>(), // Multi-source attribution for deduplicated news
   credibilityScore: decimal("credibilityScore", { precision: 3, scale: 2 }).default("0.00"),
+  
+  // GS1-specific fields for enhanced intelligence
+  gs1ImpactTags: json("gs1ImpactTags").$type<string[]>(), // IDENTIFICATION, PACKAGING_ATTRIBUTES, ESG_REPORTING, DUE_DILIGENCE, TRACEABILITY, DPP, etc.
+  sectorTags: json("sectorTags").$type<string[]>(), // RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION, TEXTILES, etc.
+  relatedStandardIds: json("relatedStandardIds").$type<string[]>(), // Direct linkage to GS1 standards (gtin, gln, epcis, gdsn, digital-link, etc.)
+  gs1ImpactAnalysis: text("gs1ImpactAnalysis"), // AI-generated analysis of GS1 relevance and impact
+  suggestedActions: json("suggestedActions").$type<string[]>(), // Actionable next steps for GS1 NL members
+  
   publishedDate: timestamp("publishedDate"),
   retrievedAt: timestamp("retrievedAt").notNull(),
   isAutomated: boolean("isAutomated").default(false),
