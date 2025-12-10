@@ -1811,3 +1811,36 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - server/cron-scheduler.ts (use new news pipeline)
 
 **Result:** Daily cron job now runs Playwright scraper at 2 AM UTC, filters out non-ESG articles before saving, and logs skipped count. Next run will fetch fresh GS1.nl articles and reject any without ESG relevance.
+
+
+## Phase 55: EU Official Source Scrapers (EUR-Lex & EFRAG)
+
+**Goal:** Add authoritative EU regulatory news sources using Playwright web scraping
+
+**Tasks:**
+- [ ] Research EUR-Lex press releases page structure
+- [ ] Build EUR-Lex Playwright scraper
+- [ ] Test EUR-Lex scraper (expect 5-10 articles)
+- [ ] Research EFRAG sustainability reporting page structure
+- [ ] Build EFRAG Playwright scraper
+- [ ] Test EFRAG scraper (expect 5-10 articles)
+- [ ] Integrate both scrapers into news-fetcher.ts
+- [ ] Update NEWS_SOURCES configuration
+- [ ] Test full pipeline with all 3 scrapers (GS1.nl + EUR-Lex + EFRAG)
+- [ ] Verify ESG filtering works for EU sources
+- [ ] Save checkpoint
+
+## Phase 55: EU Official Sources Complete ✅
+
+- [x] Build EFRAG Playwright scraper for sustainability reporting news
+- [x] Integrate EFRAG scraper into news-fetcher.ts
+- [x] Update news-sources.ts with correct EFRAG source ID
+- [x] Test EFRAG scraper (6 articles from Dec 8, Dec 4, Dec 3, Nov 27, Nov 25)
+- [x] Verify TypeScript compilation (0 errors)
+- [ ] EUR-Lex scraper deferred (unreliable endpoints, anti-scraping measures)
+
+**Result:** News pipeline now includes:
+- GS1 Netherlands (Playwright scraper)
+- EFRAG Sustainability Reporting (Playwright scraper)
+- Daily cron job at 2 AM UTC
+- ESG relevance filtering before database insertion

@@ -38,7 +38,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     enabled: true,
   },
   {
-    id: "efrag-updates",
+    id: "efrag-sustainability",
     name: "EFRAG - Sustainability Reporting",
     type: "EU_OFFICIAL",
     rssUrl: "https://www.efrag.org/rss",

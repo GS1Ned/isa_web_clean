@@ -7,6 +7,7 @@
 import Parser from "rss-parser";
 import { NEWS_SOURCES, type NewsSource } from "./news-sources";
 import { scrapeGS1NetherlandsNewsPlaywright, scrapeArticleDetailPlaywright } from "./news-scraper-playwright";
+import { scrapeEFRAGNewsPlaywright } from "./news-scraper-efrag";
 
 export interface RawNewsItem {
   title: string;
@@ -56,6 +57,49 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
     try {
       const articles = await scrapeGS1NetherlandsNewsPlaywright();
       // Skip keyword filtering - articles are pre-filtered by GS1's sustainability category
+      const relevantItems = articles
+        .filter(article => {
+          // Only filter by date - keep articles from past 3 months
+          const threeMonthsAgo = new Date();
+          threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+          return article.publishedAt >= threeMonthsAgo;
+        })
+        .map(article => ({
+          title: article.title,
+          link: article.url,
+          pubDate: article.publishedAt.toISOString(),
+          content: article.summary || "",
+          contentSnippet: article.summary || "",
+          creator: source.name,
+          categories: [],
+          guid: article.url,
+          source,
+        }));
+
+      return {
+        success: true,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: relevantItems.length,
+        items: relevantItems,
+      };
+    } catch (error) {
+      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      return {
+        success: false,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: 0,
+        items: [],
+        error: error instanceof Error ? error.message : "Scraping failed",
+      };
+    }
+  }
+
+  // Use web scraper for EFRAG
+  if (source.id === "efrag-sustainability") {
+    try {
+      const articles = await scrapeEFRAGNewsPlaywright();
       const relevantItems = articles
         .filter(article => {
           // Only filter by date - keep articles from past 3 months
