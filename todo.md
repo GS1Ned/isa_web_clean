@@ -1844,3 +1844,24 @@ Note: Autonomous decision to defer Excel export feature. Platform is production-
 - EFRAG Sustainability Reporting (Playwright scraper)
 - Daily cron job at 2 AM UTC
 - ESG relevance filtering before database insertion
+
+
+## Phase 56: EFRAG Detail Scraping Enhancement
+
+- [ ] Enhance scrapeEFRAGArticleDetail() to extract full content
+- [ ] Test detail scraping on sample EFRAG articles
+- [ ] Integrate detail scraping into news-fetcher pipeline
+- [ ] Update news-ai-processor to use full content for better summaries
+- [ ] Test end-to-end with AI processing
+- [ ] Verify improved summary quality and regulation tagging
+
+## Phase 56: EFRAG Detail Scraping Complete ✅
+
+- [x] Enhance scrapeEFRAGArticleDetail() to extract full content (already existed)
+- [x] Test detail scraping on sample EFRAG articles (3,094 chars for Knowledge Hub article)
+- [x] Integrate detail scraping into news-fetcher pipeline (parallel Promise.all)
+- [x] Update news-ai-processor to use full content for better summaries (no changes needed)
+- [x] Test end-to-end with AI processing (6 articles, CSRD/ESRS tags, MEDIUM impact)
+- [x] Verify improved summary quality and regulation tagging (✅ working)
+
+**Result:** EFRAG scraper now fetches full article content from detail pages, providing rich context for AI summarization. Tested end-to-end with 6 articles, AI correctly identified CSRD/ESRS tags and generated accurate summaries.

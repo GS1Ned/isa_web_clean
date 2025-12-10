@@ -7,7 +7,7 @@
 import Parser from "rss-parser";
 import { NEWS_SOURCES, type NewsSource } from "./news-sources";
 import { scrapeGS1NetherlandsNewsPlaywright, scrapeArticleDetailPlaywright } from "./news-scraper-playwright";
-import { scrapeEFRAGNewsPlaywright } from "./news-scraper-efrag";
+import { scrapeEFRAGNewsPlaywright, scrapeEFRAGArticleDetail } from "./news-scraper-efrag";
 
 export interface RawNewsItem {
   title: string;
@@ -100,7 +100,20 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
   if (source.id === "efrag-sustainability") {
     try {
       const articles = await scrapeEFRAGNewsPlaywright();
-      const relevantItems = articles
+      
+      // Fetch full content for each article (parallel)
+      console.log(`[news-fetcher] Fetching full content for ${articles.length} EFRAG articles...`);
+      const articlesWithContent = await Promise.all(
+        articles.map(async (article) => {
+          const fullContent = await scrapeEFRAGArticleDetail(article.url);
+          return {
+            ...article,
+            summary: fullContent || article.summary || "",
+          };
+        })
+      );
+      
+      const relevantItems = articlesWithContent
         .filter(article => {
           // Only filter by date - keep articles from past 3 months
           const threeMonthsAgo = new Date();
