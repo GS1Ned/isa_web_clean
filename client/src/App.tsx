@@ -65,6 +65,7 @@ const HubDutchInitiatives = lazy(() => import("./pages/HubDutchInitiatives"));
 const HubDutchInitiativeDetail = lazy(() => import("./pages/HubDutchInitiativeDetail"));
 const AskISA = lazy(() => import("./pages/AskISA"));
 const AdminKnowledgeBase = lazy(() => import("./pages/AdminKnowledgeBase"));
+const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -98,6 +99,7 @@ function Router() {
       <Route path="/hub/resources" component={HubResources} />
       <Route path="/hub/impact-matrix" component={HubImpactMatrix} />
       <Route path="/hub/dashboard" component={HubUserDashboard} />
+      <Route path="/hub/regulations/compare" component={CompareRegulations} />
       <Route path="/hub/compare" component={HubCompareEnhanced} />
       <Route path="/hub/compare-legacy" component={HubCompare} />
       <Route path="/hub/esrs-datapoints" component={ESRSDatapoints} />

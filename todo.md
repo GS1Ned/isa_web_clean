@@ -377,3 +377,20 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Implement interactive hover states and links
 - [x] Test timeline with CSRD regulation
 - [x] Add empty state for regulations with no timeline data
+
+
+## Multi-Regulation Timeline Comparison Feature ✅ COMPLETE
+
+- [x] Design comparison view layout (responsive grid adapting to 2-4 regulations)
+- [x] Create regulation selector component with multi-select checkboxes
+- [x] Build CompareTimelines component with side-by-side columns
+- [x] Implement parallel timeline rendering grouped by regulation
+- [x] Add overlapping event detection algorithm (same-month detection)
+- [x] Highlight overlapping deadlines visually (orange borders and badges)
+- [x] Show cross-regulation dependencies via overlapping period alerts
+- [x] Create comparison page route (/hub/regulations/compare)
+- [x] Add "Compare Timelines" button to regulation list page
+- [ ] Add "Add to comparison" button to regulation detail pages (deferred)
+- [x] Implement URL state management for selected regulations
+- [ ] Add export comparison feature (future enhancement)
+- [x] Test with 2-4 regulations simultaneously

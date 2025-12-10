@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
-import { Search, ChevronRight, Calendar, FileText, Star, TrendingUp, Sparkles, Shield, Leaf, Users, Building2 } from "lucide-react";
+import { Search, ChevronRight, Calendar, FileText, Star, TrendingUp, Sparkles, Shield, Leaf, Users, Building2, GitCompare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -99,11 +99,19 @@ export default function HubRegulations() {
       <div className="flex-1">
         <div className="container py-8">
           {/* Header */}
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">ESG Regulations</h2>
-            <p className="text-muted-foreground">
-              Explore {regulations?.length || 0} EU sustainability regulations with AI-powered insights and GS1 standards mapping
-            </p>
+          <div className="mb-8 flex items-start justify-between gap-4">
+            <div>
+              <h2 className="text-3xl font-bold text-foreground mb-2">ESG Regulations</h2>
+              <p className="text-muted-foreground">
+                Explore {regulations?.length || 0} EU sustainability regulations with AI-powered insights and GS1 standards mapping
+              </p>
+            </div>
+            <Link href="/hub/regulations/compare">
+              <Button className="gap-2">
+                <GitCompare className="h-4 w-4" />
+                Compare Timelines
+              </Button>
+            </Link>
           </div>
 
           {/* Featured Regulations */}
