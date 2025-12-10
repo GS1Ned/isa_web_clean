@@ -439,3 +439,21 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add unit tests for news scrapers
 - [ ] Add integration tests for AI enrichment pipeline
 - [ ] Document API contracts for news endpoints
+
+
+---
+
+## Project Cleanup & GS1 Alignment ✅ COMPLETE
+
+- [x] Build project inventory and classify content by type/size
+- [x] Skip Slice A (external repo archives) - already clean
+- [x] Defer Slice B (large datasets) - not in project tree
+- [x] Complete Slice C (heavy PDFs) - summarized in EXTERNAL_REFERENCES.md
+- [x] Complete Slice D (unused media/logs) - removed 5 files (~250KB)
+- [x] Acquire publicly accessible GS1 artefacts (Gen Specs, EPCIS, CBV)
+- [x] Create ISA_GS1_ARTIFACT_INVENTORY.md
+- [x] Create NEEDS_USER_UPLOAD.md (5 high-priority artefacts)
+- [x] Verify system integrity (all tests pass, dev server running)
+- [x] Create PROJECT_SIZE_CLEANUP.md (final report)
+
+**Outcome:** ISA was already clean. Removed ~250KB unused files. Created comprehensive GS1 artefact tracking. Identified 5 high-priority artefacts for user upload.
