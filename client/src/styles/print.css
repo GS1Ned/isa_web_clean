@@ -1,0 +1,42 @@
+
+@media print {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #000000;
+    font-size: 11pt;
+  }
+
+  .isa-print-hidden {
+    display: none !important;
+  }
+
+  .isa-print-only {
+    display: block !important;
+  }
+
+  .isa-print-page-break-before {
+    page-break-before: always;
+  }
+
+  .isa-print-page-break-after {
+    page-break-after: always;
+  }
+
+  a {
+    color: #000000;
+    text-decoration: underline;
+  }
+
+  button,
+  [role="button"] {
+    display: none !important;
+  }
+
+  nav,
+  footer {
+    display: none !important;
+  }
+}
