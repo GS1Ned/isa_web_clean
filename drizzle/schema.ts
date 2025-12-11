@@ -505,36 +505,63 @@ export type IngestionLog = typeof ingestionLogs.$inferSelect;
 export type InsertIngestionLog = typeof ingestionLogs.$inferInsert;
 
 /**
- * ESRS Datapoints - Official EFRAG IG 3 disclosure requirements
- * Source: https://www.efrag.org/en/projects/esrs-implementation-guidance-documents
+ * Raw ESRS datapoints table for staging rows from the EFRAG IG3 Excel file
+ * Source: EFRAGIG3ListofESRSDataPoints.xlsx
+ */
+export const rawEsrsDatapoints = mysqlTable(
+  "raw_esrs_datapoints",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    code: varchar("code", { length: 100 }).notNull(),
+    esrsStandard: varchar("esrs_standard", { length: 50 }),
+    disclosureRequirement: varchar("disclosure_requirement", { length: 100 }),
+    paragraph: varchar("paragraph", { length: 100 }),
+    relatedAr: varchar("related_ar", { length: 100 }),
+    name: text("name").notNull(),
+    dataTypeRaw: varchar("data_type_raw", { length: 100 }),
+    conditionalRaw: boolean("conditional_raw").default(false),
+    voluntaryRaw: boolean("voluntary_raw").default(false),
+    sfdrMapping: varchar("sfdr_mapping", { length: 255 }),
+    sheetName: varchar("sheet_name", { length: 50 }),
+    rowIndex: int("row_index"),
+    rawJson: json("raw_json").$type<unknown>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    codeIndex: index("idx_raw_esrs_code").on(table.code),
+    sheetIndex: index("idx_raw_esrs_sheet").on(table.sheetName),
+  })
+);
+
+export type RawESRSDatapoint = typeof rawEsrsDatapoints.$inferSelect;
+export type InsertRawESRSDatapoint = typeof rawEsrsDatapoints.$inferInsert;
+
+/**
+ * Canonical ESRS datapoints table
+ * Source: EFRAG Implementation Guidance 3 (IG3)
+ * https://www.efrag.org/en/projects/esrs-implementation-guidance-documents
  */
 export const esrsDatapoints = mysqlTable(
   "esrs_datapoints",
   {
     id: int("id").autoincrement().primaryKey(),
-    datapointId: varchar("datapointId", { length: 255 }).notNull().unique(), // e.g., "E1.GOV-3_01" or long descriptive names
-    esrsStandard: varchar("esrsStandard", { length: 20 }).notNull(), // e.g., "ESRS 2", "E1"
-    disclosureRequirement: varchar("disclosureRequirement", { length: 50 }), // e.g., "E1.GOV-3"
-    paragraph: int("paragraph"), // Paragraph number in ESRS standard
-    relatedAR: varchar("relatedAR", { length: 50 }), // Related Application Requirement
-    datapointName: text("datapointName").notNull(), // Description of the datapoint
-    dataType: varchar("dataType", { length: 50 }), // e.g., "narrative", "percent", "monetary"
-    conditionalOrAlternative: boolean("conditionalOrAlternative").default(
-      false
-    ),
-    mayVoluntary: boolean("mayVoluntary").default(false), // May [V] column
-    appendixB_SFDR: boolean("appendixB_SFDR").default(false), // Appendix B (SFDR + Pillar 3)
-    appendixC_LessThan750: boolean("appendixC_LessThan750").default(false), // Phasing-in for <750 employees
-    appendixC_AllUndertakings: boolean("appendixC_AllUndertakings").default(
-      false
-    ), // Phasing-in for all
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    code: varchar("code", { length: 100 }).notNull().unique(),
+    esrsStandard: varchar("esrs_standard", { length: 50 }),
+    disclosureRequirement: varchar("disclosure_requirement", { length: 100 }),
+    paragraph: varchar("paragraph", { length: 100 }),
+    relatedAR: varchar("related_ar", { length: 100 }),
+    name: text("name").notNull(),
+    dataType: varchar("data_type", { length: 50 }),
+    conditional: boolean("conditional").default(false),
+    voluntary: boolean("voluntary").default(false),
+    sfdrMapping: varchar("sfdr_mapping", { length: 255 }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
-  table => ({
-    esrsStandardIdx: index("esrsStandard_idx").on(table.esrsStandard),
-    disclosureRequirementIdx: index("disclosureRequirement_idx").on(
-      table.disclosureRequirement
-    ),
+  (table) => ({
+    codeIndex: index("idx_esrs_code").on(table.code),
+    standardIndex: index("idx_esrs_standard").on(table.esrsStandard),
   })
 );
 

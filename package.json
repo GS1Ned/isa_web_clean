@@ -12,7 +12,8 @@
     "test": "vitest run",
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
     "verify:data": "tsx scripts/verify-data-files.ts",
-    "integrate": "tsx scripts/integrate-chatgpt-deliverables.ts"
+    "integrate": "tsx scripts/integrate-chatgpt-deliverables.ts",
+    "ingest:esrs": "tsx server/ingest/INGEST-03_esrs_datapoints.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",
