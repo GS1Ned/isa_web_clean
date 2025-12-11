@@ -4,6 +4,9 @@ import { sql } from "drizzle-orm";
 // Export ESG extension tables
 export * from "./schema_esg_extensions";
 
+// Export cron monitoring tables
+export * from "./schema_cron_monitoring";
+
 /**
  * Core user table backing auth flow.
  * Extend this file with additional tables as your product grows.

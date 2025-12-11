@@ -5,6 +5,7 @@
 
 import type { Request, Response } from "express";
 import { dailyNewsIngestion, weeklyNewsArchival } from "./news-cron-scheduler";
+import { monitoredCronJob } from "./cron-monitoring-simple";
 
 const CRON_SECRET = process.env.CRON_SECRET || "change-me-in-production";
 
@@ -38,7 +39,11 @@ export async function handleDailyNewsIngestion(req: Request, res: Response) {
   console.log("[cron-endpoint] Daily news ingestion triggered");
 
   try {
-    const result = await dailyNewsIngestion();
+    const result = await monitoredCronJob(
+      "daily-news-ingestion",
+      dailyNewsIngestion,
+      3 // Alert after 3 consecutive failures
+    );
     
     res.status(200).json({
       success: true,
@@ -80,7 +85,11 @@ export async function handleWeeklyNewsArchival(req: Request, res: Response) {
   console.log("[cron-endpoint] Weekly news archival triggered");
 
   try {
-    const result = await weeklyNewsArchival();
+    const result = await monitoredCronJob(
+      "weekly-news-archival",
+      weeklyNewsArchival,
+      3 // Alert after 3 consecutive failures
+    );
     
     res.status(200).json({
       success: true,
