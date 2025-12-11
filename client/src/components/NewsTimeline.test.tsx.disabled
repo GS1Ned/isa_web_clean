@@ -1,0 +1,195 @@
+import React from "react";
+
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  afterEach,
+} from "vitest";
+import {
+  render,
+  screen,
+  fireEvent,
+  act,
+} from "@testing-library/react";
+import { NewsTimeline } from "./NewsTimeline";
+
+const mockUseQuery = vi.fn();
+
+vi.mock("@/lib/trpc", () => ({
+  trpc: {
+    hub: {
+      getRecentNews: {
+        useQuery: (...args: unknown[]) => mockUseQuery(...args),
+      },
+    },
+  },
+}));
+
+describe("NewsTimeline", () => {
+  beforeEach(() => {
+    mockUseQuery.mockReset();
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("renders loading skeleton when data is loading", () => {
+    mockUseQuery.mockReturnValue({
+      data: [],
+      isLoading: true,
+      isError: false,
+      refetch: vi.fn(),
+    });
+
+    render(<NewsTimeline />);
+
+    expect(
+      screen.getByLabelText(/loading news timeline/i),
+    ).toBeInTheDocument();
+  });
+
+  it("renders grouped news items when data is available", () => {
+    const now = new Date();
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+
+    mockUseQuery.mockReturnValue({
+      data: [
+        {
+          id: 1,
+          title: "Today item",
+          summary: "Some summary",
+          publishedDate: now.toISOString(),
+          regulationTags: ["CSRD"],
+          impactLevel: "HIGH",
+          sourceType: "EU_OFFICIAL",
+          newsType: "NEW_LAW",
+        },
+        {
+          id: 2,
+          title: "Yesterday item",
+          summary: "Another summary",
+          publishedDate: yesterday.toISOString(),
+          regulationTags: ["ESRS"],
+          impactLevel: "MEDIUM",
+          sourceType: "GS1_OFFICIAL",
+          newsType: "GUIDANCE",
+        },
+      ],
+      isLoading: false,
+      isError: false,
+      refetch: vi.fn(),
+    });
+
+    render(<NewsTimeline />);
+
+    expect(screen.getByText("Today")).toBeInTheDocument();
+    expect(screen.getByText("Yesterday")).toBeInTheDocument();
+    expect(screen.getByText("Today item")).toBeInTheDocument();
+    expect(
+      screen.getByText("Yesterday item"),
+    ).toBeInTheDocument();
+  });
+
+  it("filters by search query with debounce", async () => {
+    const now = new Date();
+
+    mockUseQuery.mockReturnValue({
+      data: [
+        {
+          id: 1,
+          title: "CSRD headline",
+          summary: "Important CSRD update",
+          publishedDate: now.toISOString(),
+          regulationTags: ["CSRD"],
+          impactLevel: "HIGH",
+          sourceType: "EU_OFFICIAL",
+          newsType: "NEW_LAW",
+        },
+        {
+          id: 2,
+          title: "Unrelated topic",
+          summary: "Other news",
+          publishedDate: now.toISOString(),
+          regulationTags: ["ESRS"],
+          impactLevel: "LOW",
+          sourceType: "GS1_OFFICIAL",
+          newsType: "GUIDANCE",
+        },
+      ],
+      isLoading: false,
+      isError: false,
+      refetch: vi.fn(),
+    });
+
+    render(<NewsTimeline />);
+
+    const searchInput = screen.getByPlaceholderText(/search news/i);
+
+    await act(async () => {
+      fireEvent.change(searchInput, {
+        target: { value: "CSRD" },
+      });
+      vi.advanceTimersByTime(350);
+    });
+
+    expect(
+      screen.getByText("CSRD headline"),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("Unrelated topic"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("applies regulation filter", async () => {
+    const now = new Date();
+
+    mockUseQuery.mockReturnValue({
+      data: [
+        {
+          id: 1,
+          title: "CSRD item",
+          summary: "CSRD summary",
+          publishedDate: now.toISOString(),
+          regulationTags: ["CSRD"],
+          impactLevel: "HIGH",
+          sourceType: "EU_OFFICIAL",
+          newsType: "NEW_LAW",
+        },
+        {
+          id: 2,
+          title: "EUDR item",
+          summary: "EUDR summary",
+          publishedDate: now.toISOString(),
+          regulationTags: ["EUDR"],
+          impactLevel: "LOW",
+          sourceType: "GS1_OFFICIAL",
+          newsType: "GUIDANCE",
+        },
+      ],
+      isLoading: false,
+      isError: false,
+      refetch: vi.fn(),
+    });
+
+    render(<NewsTimeline />);
+
+    // Open regulation filter select
+    const trigger = screen.getByText("All");
+    fireEvent.click(trigger);
+
+    const csrdOption = await screen.findByText("CSRD");
+    fireEvent.click(csrdOption);
+
+    expect(screen.getByText("CSRD item")).toBeInTheDocument();
+    expect(
+      screen.queryByText("EUDR item"),
+    ).not.toBeInTheDocument();
+  });
+});
+

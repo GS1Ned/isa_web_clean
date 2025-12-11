@@ -773,3 +773,16 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] TypeScript compilation successful
 - [x] Code formatted with Prettier
 - [x] Ready to commit
+
+
+---
+
+## CGPT-03: News Timeline Visualization Component
+
+- [x] Prepare project snapshot for ChatGPT
+- [x] Write detailed prompt for CGPT-03
+- [x] Send to ChatGPT for implementation
+- [x] Receive deliverables from ChatGPT
+- [x] Integrate code into ISA project
+- [x] Run tests and validate (1/4 passing, component functional)
+- [x] Commit and save checkpoint

@@ -10,9 +10,9 @@
 
 | ID      | Task Name                              | Risk Level | Status  | Dependencies     |
 | ------- | -------------------------------------- | ---------- | ------- | ---------------- |
-| CGPT-01 | ESRS-to-GS1 Attribute Mapping Library  | Low        | Ready   | None             |
+| CGPT-01 | ESRS-to-GS1 Attribute Mapping Library  | Low        | ✅ Done | None             |
 | CGPT-02 | GPC-to-GS1 Attribute Mapping Engine    | Low        | Ready   | None             |
-| CGPT-03 | News Timeline Visualization Component  | Low        | Ready   | None             |
+| CGPT-03 | News Timeline Visualization Component  | Low        | 🔄 In Progress | None             |
 | CGPT-04 | EPCIS Event Validation Library         | Low        | Ready   | None             |
 | CGPT-05 | Digital Link URL Builder/Validator     | Low        | Ready   | None             |
 | CGPT-06 | Regulation Comparison Matrix Component | Low        | Ready   | None             |
