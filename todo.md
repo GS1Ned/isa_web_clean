@@ -652,3 +652,44 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Test manual trigger functionality
 - [x] Save checkpoint
 
+
+---
+
+## Agent Collaboration Architecture (Manus ↔ ChatGPT)
+
+### Phase 1: Project Analysis
+- [x] Review codebase structure (backend, frontend, ETL, scripts)
+- [x] Review documentation (architecture, NEWS_PIPELINE, GS1/ESG mappings)
+- [x] Summarize tech stack and conventions
+- [x] Identify high-risk areas (not delegable)
+- [x] Identify low-risk/delegable areas
+
+### Phase 2: Collaboration Rules
+- [x] Create `docs/ISA_AGENT_COLLABORATION.md`
+- [x] Define ownership and boundaries
+- [x] Define interface and contract management
+- [x] Define change and communication channels
+- [x] Create `docs/CHANGELOG_FOR_CHATGPT.md`
+
+### Phase 3: Work Plan
+- [x] Scan roadmap and TODO for delegable tasks
+- [x] Create `tasks/CHATGPT_WORK_PLAN.md`
+- [x] List concrete tasks with IDs (CGPT-01, CGPT-02, etc.)
+- [x] Prioritize tasks by risk level and dependencies
+
+### Phase 4: Task Specifications
+- [x] Create `tasks/for_chatgpt/` directory
+- [x] Write detailed specs for 3-5 high-priority tasks
+- [x] Include context, exact task, technical spec, constraints
+- [x] Include dependency assumptions and acceptance criteria
+
+### Phase 5: Integration Workflow
+- [x] Document integration rules in collaboration doc
+- [x] Define testing and validation procedures
+- [x] Create integration checklist
+
+### Phase 6: Delivery
+- [x] Summary document for user
+- [x] List of collaboration artifacts
+- [x] Initial task specs ready for ChatGPT
+
