@@ -16,7 +16,13 @@ interface NewsCardCompactProps {
     publishedDate: Date;
     regulationTags: string[];
     impactLevel: "LOW" | "MEDIUM" | "HIGH";
-    newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
+    newsType:
+      | "NEW_LAW"
+      | "AMENDMENT"
+      | "ENFORCEMENT"
+      | "COURT_DECISION"
+      | "GUIDANCE"
+      | "PROPOSAL";
     sources?: Array<{ name: string; type: string; url: string }> | null;
   };
 }
@@ -58,7 +64,9 @@ export function NewsCardCompact({ news }: NewsCardCompactProps) {
             </h4>
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs text-muted-foreground">
-                {formatDistanceToNow(new Date(publishedDate), { addSuffix: true })}
+                {formatDistanceToNow(new Date(publishedDate), {
+                  addSuffix: true,
+                })}
               </span>
               {Array.isArray(regulationTags) && regulationTags.length > 0 && (
                 <>

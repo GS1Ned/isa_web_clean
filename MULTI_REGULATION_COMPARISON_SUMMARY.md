@@ -11,6 +11,7 @@
 Successfully implemented a comprehensive multi-regulation timeline comparison tool that enables users to compare 2-4 regulations side-by-side, identify overlapping deadlines, and understand cross-regulation dependencies. This feature transforms compliance planning by providing a unified view of multiple regulatory timelines.
 
 **Key Features:**
+
 - Multi-select regulation picker (2-4 regulations)
 - Side-by-side timeline columns with color-coded regulation lanes
 - Automatic overlapping period detection and highlighting
@@ -29,22 +30,24 @@ Successfully implemented a comprehensive multi-regulation timeline comparison to
 **Purpose:** Core comparison visualization component that renders side-by-side timelines.
 
 **Props:**
+
 ```typescript
 interface CompareTimelinesProps {
-  regulations: RegulationData[];      // Array of regulations to compare
-  onRemoveRegulation?: (code: string) => void;  // Callback to remove regulation
-  onAddRegulation?: () => void;       // Callback to add more regulations
+  regulations: RegulationData[]; // Array of regulations to compare
+  onRemoveRegulation?: (code: string) => void; // Callback to remove regulation
+  onAddRegulation?: () => void; // Callback to add more regulations
 }
 
 interface RegulationData {
-  code: string;                       // Regulation code (e.g., "CSRD")
-  title: string;                      // Full regulation title
-  color: string;                      // Hex color for visual distinction
-  timeline: TimelineMilestone[];      // Regulation-specific milestones
+  code: string; // Regulation code (e.g., "CSRD")
+  title: string; // Full regulation title
+  color: string; // Hex color for visual distinction
+  timeline: TimelineMilestone[]; // Regulation-specific milestones
 }
 ```
 
 **Key Features:**
+
 - Combines milestones and news from all selected regulations
 - Detects overlapping periods (events in same month across different regulations)
 - Groups events by regulation for column display
@@ -57,6 +60,7 @@ interface RegulationData {
 **Purpose:** Full-page comparison interface with regulation selector and state management.
 
 **Features:**
+
 - Multi-select regulation picker with checkboxes
 - URL state management (e.g., `/hub/regulations/compare?regulations=CSRD,PPWR`)
 - Maximum 4 regulations limit
@@ -102,18 +106,21 @@ The comparison uses a **responsive grid layout** that adapts to the number of se
 ### Color Coding
 
 **Regulation Colors:**
+
 - 🔵 **Blue (#3b82f6)** - CSRD
 - 🟢 **Green (#10b981)** - PPWR
 - 🟣 **Purple (#8b5cf6)** - ESPR
 - 🟠 **Orange (#f59e0b)** - EUDR
 
 **Event Type Indicators:**
+
 - 🟢 **Green circle** - Completed milestone
 - 🔵 **Blue circle** - Upcoming milestone
 - ⚪ **Gray circle** - Future milestone
 - 🟣 **Purple circle** - News event
 
 **Overlapping Event Highlighting:**
+
 - 🟠 **Orange border** - Event occurs in overlapping period
 - 🟠 **Orange badge** - "Overlap" label
 - 🟠 **Orange alert panel** - Summary of overlapping periods
@@ -128,7 +135,7 @@ The comparison uses a **responsive grid layout** that adapts to the number of se
 // Group events by month
 const periods = new Map<string, TimelineEvent[]>();
 
-allEvents.forEach((event) => {
+allEvents.forEach(event => {
   const monthKey = `${event.date.getFullYear()}-${event.date.getMonth()}`;
   if (!periods.has(monthKey)) {
     periods.set(monthKey, []);
@@ -139,7 +146,7 @@ allEvents.forEach((event) => {
 // Filter to only periods with events from multiple regulations
 const overlapping: Array<{ monthKey: string; events: TimelineEvent[] }> = [];
 periods.forEach((events, monthKey) => {
-  const uniqueRegulations = new Set(events.map((e) => e.regulationCode));
+  const uniqueRegulations = new Set(events.map(e => e.regulationCode));
   if (uniqueRegulations.size > 1) {
     overlapping.push({ monthKey, events });
   }
@@ -160,12 +167,14 @@ periods.forEach((events, monthKey) => {
 ### 1. Regulation Selection
 
 **Multi-Select Picker:**
+
 - Checkbox-based selection
 - Visual feedback for selected regulations
 - Disabled state when 4 regulations already selected
 - Color-coded regulation badges
 
 **Add/Remove Controls:**
+
 - Remove button (X) on each regulation badge
 - "Add Regulation" button (when < 4 selected)
 - Opens selector modal to add more regulations
@@ -173,10 +182,12 @@ periods.forEach((events, monthKey) => {
 ### 2. Event Filtering
 
 **Event Type Filter:**
+
 - **News Toggle** - Show/hide news events
 - Default: ON
 
 **Time Period Filter:**
+
 - **All Time** - Show all events (default)
 - **Past** - Show only historical events
 - **Future** - Show only upcoming events
@@ -184,12 +195,14 @@ periods.forEach((events, monthKey) => {
 ### 3. URL State Management
 
 **Shareable URLs:**
+
 ```
 /hub/regulations/compare?regulations=CSRD,PPWR
 /hub/regulations/compare?regulations=CSRD,PPWR,ESPR,EUDR
 ```
 
 **Benefits:**
+
 - Bookmark specific comparisons
 - Share comparison views with colleagues
 - Direct links from other pages
@@ -197,6 +210,7 @@ periods.forEach((events, monthKey) => {
 ### 4. Navigation
 
 **Entry Points:**
+
 - "Compare Timelines" button on regulations list page
 - Direct URL navigation
 - Back button to return to regulations list
@@ -206,17 +220,20 @@ periods.forEach((events, monthKey) => {
 ## Responsive Design
 
 ### Desktop (1024px+)
+
 - **2 regulations:** 2-column grid
 - **3 regulations:** 3-column grid
 - **4 regulations:** 2x2 grid on medium screens, 4-column on large screens
 - Full-width event cards with complete descriptions
 
 ### Tablet (768px - 1023px)
+
 - **2 regulations:** 2-column grid
 - **3+ regulations:** 2-column grid (stacked)
 - Adjusted card padding and spacing
 
 ### Mobile (< 768px)
+
 - **All configurations:** Single column (stacked)
 - Compact event cards
 - Truncated descriptions (line-clamp-2)
@@ -231,21 +248,25 @@ periods.forEach((events, monthKey) => {
 The comparison tool includes 4 pre-configured regulations:
 
 #### 1. CSRD (Corporate Sustainability Reporting Directive)
+
 - **Color:** Blue (#3b82f6)
 - **Milestones:** 4 events (2024-2028)
 - **Key Dates:** Effective Jan 2024, First Reporting Jan 2025
 
 #### 2. PPWR (Packaging and Packaging Waste Regulation)
+
 - **Color:** Green (#10b981)
 - **Milestones:** 4 events (2024-2030)
 - **Key Dates:** Adopted Apr 2024, DPP Pilot Jan 2025
 
 #### 3. ESPR (Ecodesign for Sustainable Products Regulation)
+
 - **Color:** Purple (#8b5cf6)
 - **Milestones:** 4 events (2024-2027)
 - **Key Dates:** Enters Force Jul 2024, DPP Mandatory Jul 2026
 
 #### 4. EUDR (EU Deforestation Regulation)
+
 - **Color:** Orange (#f59e0b)
 - **Milestones:** 4 events (2023-2025)
 - **Key Dates:** Adopted Jun 2023, Large Operators Dec 2024
@@ -256,7 +277,9 @@ In production, regulation data would be fetched from the database via tRPC:
 
 ```typescript
 const { data: regulations } = trpc.regulations.list.useQuery();
-const selectedRegulations = regulations.filter(reg => selectedCodes.includes(reg.code));
+const selectedRegulations = regulations.filter(reg =>
+  selectedCodes.includes(reg.code)
+);
 ```
 
 ---
@@ -268,6 +291,7 @@ const selectedRegulations = regulations.filter(reg => selectedCodes.includes(reg
 **Scenario:** Compliance officer needs to coordinate activities across multiple regulations
 
 **Workflow:**
+
 1. Navigate to regulations list page
 2. Click "Compare Timelines" button
 3. Select CSRD, PPWR, and ESPR
@@ -282,6 +306,7 @@ const selectedRegulations = regulations.filter(reg => selectedCodes.includes(reg
 **Scenario:** Executive needs overview of upcoming regulatory landscape
 
 **Workflow:**
+
 1. Open comparison view with all 4 regulations
 2. Filter to "Future" events
 3. Review upcoming milestones across all regulations
@@ -295,6 +320,7 @@ const selectedRegulations = regulations.filter(reg => selectedCodes.includes(reg
 **Scenario:** Packaging company focuses on packaging-related regulations
 
 **Workflow:**
+
 1. Select PPWR and ESPR (both affect packaging)
 2. Compare timelines to understand interaction
 3. Note that DPP requirements appear in both regulations
@@ -308,6 +334,7 @@ const selectedRegulations = regulations.filter(reg => selectedCodes.includes(reg
 **Scenario:** Consultant creates comparison for client
 
 **Workflow:**
+
 1. Select relevant regulations for client's industry
 2. Apply filters to focus on upcoming 12 months
 3. Copy URL from browser address bar
@@ -325,14 +352,18 @@ const selectedRegulations = regulations.filter(reg => selectedCodes.includes(reg
 ```typescript
 // Parse selected regulations from URL
 const urlParams = new URLSearchParams(searchParams);
-const urlSelected = urlParams.get("regulations")?.split(",").filter(Boolean) || [];
+const urlSelected =
+  urlParams.get("regulations")?.split(",").filter(Boolean) || [];
 
 const [selectedCodes, setSelectedCodes] = useState<string[]>(urlSelected);
 
 // Update URL when selection changes
 useEffect(() => {
   if (selectedCodes.length > 0) {
-    setLocation(`/hub/regulations/compare?regulations=${selectedCodes.join(",")}`, { replace: true });
+    setLocation(
+      `/hub/regulations/compare?regulations=${selectedCodes.join(",")}`,
+      { replace: true }
+    );
   }
 }, [selectedCodes]);
 ```
@@ -343,9 +374,9 @@ useEffect(() => {
 const allEvents = useMemo(() => {
   const events: TimelineEvent[] = [];
 
-  regulations.forEach((reg) => {
+  regulations.forEach(reg => {
     // Add milestones
-    reg.timeline.forEach((milestone) => {
+    reg.timeline.forEach(milestone => {
       events.push({
         id: `${reg.code}-milestone-${index}`,
         date: parseISO(milestone.date),
@@ -360,8 +391,8 @@ const allEvents = useMemo(() => {
 
     // Add related news
     if (showNews && newsItems) {
-      const relatedNews = newsItems.filter(
-        (item) => item.regulationTags?.includes(reg.code)
+      const relatedNews = newsItems.filter(item =>
+        item.regulationTags?.includes(reg.code)
       );
       // Add to events array
     }
@@ -380,11 +411,11 @@ const allEvents = useMemo(() => {
 const eventsByRegulation = useMemo(() => {
   const grouped = new Map<string, TimelineEvent[]>();
 
-  regulations.forEach((reg) => {
+  regulations.forEach(reg => {
     grouped.set(reg.code, []);
   });
 
-  allEvents.forEach((event) => {
+  allEvents.forEach(event => {
     grouped.get(event.regulationCode)?.push(event);
   });
 
@@ -399,6 +430,7 @@ const eventsByRegulation = useMemo(() => {
 ### Navigation Integration
 
 **HubRegulations Page:**
+
 ```typescript
 <Link href="/hub/regulations/compare">
   <Button className="gap-2">
@@ -409,6 +441,7 @@ const eventsByRegulation = useMemo(() => {
 ```
 
 **App.tsx Route:**
+
 ```typescript
 const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 
@@ -418,11 +451,13 @@ const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 ### Data Integration
 
 **News Events:**
+
 - Fetched via `trpc.hub.getRecentNews.useQuery({ limit: 100 })`
 - Filtered by `regulationTags` to match selected regulations
 - Merged with milestones in unified timeline
 
 **Milestones:**
+
 - Currently hardcoded in page component
 - Future: Fetch from database via tRPC
 
@@ -433,6 +468,7 @@ const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 ### Before Multi-Regulation Comparison
 
 **Limitations:**
+
 - Users had to view regulations one at a time
 - No way to identify overlapping deadlines
 - Manual tracking of multiple regulations
@@ -442,6 +478,7 @@ const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 ### After Multi-Regulation Comparison
 
 **Improvements:**
+
 1. **Unified View** - See multiple regulations side-by-side
 2. **Overlap Detection** - Automatically identify conflicting deadlines
 3. **Visual Clarity** - Color-coded lanes distinguish regulations
@@ -478,42 +515,49 @@ const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 ### Manual Testing
 
 ✅ **Regulation Selection:**
+
 - Multi-select works correctly with checkboxes
 - Maximum 4 regulations enforced
 - Disabled state prevents over-selection
 - Remove buttons work correctly
 
 ✅ **Timeline Rendering:**
+
 - Side-by-side columns display correctly
 - Events grouped by regulation
 - Color coding matches regulation colors
 - Event counts accurate
 
 ✅ **Overlapping Detection:**
+
 - Overlapping periods detected correctly
 - Orange highlighting applied to overlapping events
 - Alert panel shows correct count
 - Events in same month flagged as overlapping
 
 ✅ **Filtering:**
+
 - News toggle shows/hides news events
 - Time period filters work correctly
 - Event counts update dynamically
 - Empty states display when no events match filters
 
 ✅ **URL State:**
+
 - Selected regulations persist in URL
 - URL updates when selection changes
 - Direct URL navigation works
 - Shareable URLs load correct comparison
 
 ✅ **Responsive Design:**
+
 - Grid adapts to number of regulations
 - Mobile layout stacks columns vertically
 - Tablet layout uses 2-column grid
 - Desktop layout maximizes space usage
 
 ✅ **Navigation:**
+
 - "Compare Timelines" button navigates correctly
 - Back button returns to regulations list
 - Lazy loading works without errors
@@ -521,6 +565,7 @@ const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 ### TypeScript Compilation
 
 ✅ **No errors:**
+
 - `client/src/components/CompareTimelines.tsx` compiles cleanly
 - `client/src/pages/CompareRegulations.tsx` compiles cleanly
 - `client/src/App.tsx` compiles cleanly
@@ -530,6 +575,7 @@ const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 ### Dev Server Status
 
 ✅ **Server running:**
+
 - No compilation errors
 - Hot module replacement working
 - Components render in browser
@@ -541,20 +587,25 @@ const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 ### New Files
 
 **Components:**
+
 - `client/src/components/CompareTimelines.tsx` - Core comparison component
 
 **Pages:**
+
 - `client/src/pages/CompareRegulations.tsx` - Comparison page with selector
 
 ### Modified Files
 
 **Routing:**
+
 - `client/src/App.tsx` - Added comparison route
 
 **Navigation:**
+
 - `client/src/pages/HubRegulations.tsx` - Added "Compare Timelines" button
 
 **Documentation:**
+
 - `todo.md` - Added comparison feature tasks
 - `MULTI_REGULATION_COMPARISON_SUMMARY.md` - This document
 
@@ -600,7 +651,7 @@ const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 ✅ **Visual Design:** Color coding and layout are clear and intuitive  
 ✅ **Responsiveness:** Layout adapts to all screen sizes  
 ✅ **URL State:** Shareable URLs preserve comparison state  
-✅ **Performance:** Comparison renders quickly with 100+ events  
+✅ **Performance:** Comparison renders quickly with 100+ events
 
 ---
 
@@ -617,6 +668,7 @@ The multi-regulation timeline comparison feature successfully transforms how use
 The comparison tool is now a **core strategic planning feature** for multi-regulation compliance in the ISA platform.
 
 **Next Steps:**
+
 1. Gather user feedback on comparison usability
 2. Monitor which regulation combinations are compared most frequently
 3. Plan Phase 1 enhancements based on usage patterns

@@ -24,6 +24,7 @@ The integration provides ISA with a **canonical ESG/traceability data model** th
 **Location:** `/home/ubuntu/isa_web/data/`
 
 **Files:**
+
 - `gs1_position_paper_summary.md` (2,324 lines)
   - Core concepts: Common Data Categories, CTEs/KDEs, cross-regulation harmonization
   - 7-step implementation approach
@@ -45,6 +46,7 @@ The integration provides ISA with a **canonical ESG/traceability data model** th
 **Files:**
 
 **`common_data_categories.json`** (12 categories)
+
 - Contact Information
 - Country of Production
 - Product Description & Information
@@ -59,6 +61,7 @@ The integration provides ISA with a **canonical ESG/traceability data model** th
 - Governance & Business Conduct
 
 Each entry includes:
+
 - Unique ID, name, description
 - Regulation level (company/product/both)
 - Example regulations
@@ -66,6 +69,7 @@ Each entry includes:
 - Likely ESG use cases
 
 **`ctes_and_kdes.json`** (6 Critical Tracking Events)
+
 - Raw Material Sourcing
 - Production/Manufacturing
 - Distribution/Shipping
@@ -74,16 +78,19 @@ Each entry includes:
 - End of Life / Recycling
 
 Each entry includes:
+
 - Unique ID, name, description
 - Typical KDEs (5W+1H framework: who, what, when, why)
 - Example GS1 standards (GLN, GTIN, EPCIS, CBV)
 - Example regulations
 
 **`dpp_identification_rules.json`** (18 product categories)
+
 - In-scope: Batteries, construction products, apparel, furniture, tyres, electronics, etc.
 - Excluded: Food, feed, medicinal products, motor vehicles
 
 Each entry includes:
+
 - Product category name
 - In-scope determination
 - Identifier model (GTIN level, required qualifiers, GLN requirements)
@@ -93,6 +100,7 @@ Each entry includes:
 - Implementation notes
 
 **`dpp_identifier_components.json`** (comprehensive reference)
+
 - Product identifiers (GTIN formats, AIs)
 - Qualifiers (batch/lot, serial, version, made-to-order variation)
 - Operator identifiers (Party GLN)
@@ -142,6 +150,7 @@ Each entry includes:
 **Purpose:** Populate new tables with structured knowledge from JSON files
 
 **Usage:**
+
 ```bash
 cd /home/ubuntu/isa_web
 node scripts/seed-esg-data.mjs
@@ -158,6 +167,7 @@ node scripts/seed-esg-data.mjs
 **Location:** `/home/ubuntu/isa_web/docs/ISA_ESG_GS1_CANONICAL_MODEL.md`
 
 **Contents:**
+
 - Core philosophy: cross-regulation harmonization
 - Regulation classification (company-level vs product-level)
 - Common Data Categories (canonical list + ISA integration)
@@ -169,6 +179,7 @@ node scripts/seed-esg-data.mjs
 - Open questions & future research
 
 **Key Insights:**
+
 - ISA should emphasize **value beyond compliance** (efficiency, decision-making, future-proofing)
 - ISA should show how **GS1 standards enable compliance across regulations** (not just one-to-one mappings)
 - ISA should provide **concrete tools** (DPP Readiness Checker, Traceability Planner, Identifier Builder)
@@ -178,6 +189,7 @@ node scripts/seed-esg-data.mjs
 **Location:** `/home/ubuntu/isa_web/docs/GS1_ARTEFACTS_ALIGNMENT_VALIDATION.md`
 
 **Contents:**
+
 - Validation scope (new knowledge vs existing GS1 artefacts)
 - Validation findings for each artefact:
   - GS1 General Specifications: ✅ Consistent, ⚠️ Pending changes (terminology updates, AI expansions)
@@ -199,6 +211,7 @@ node scripts/seed-esg-data.mjs
 **Enhancement:** Show Common Data Categories, CTEs, and GS1 Standards for each regulation
 
 **Implementation:**
+
 - Query `regulation_data_category_mappings` to show which Common Data Categories each regulation requires
 - Query `critical_tracking_events` to show which CTEs are relevant for compliance
 - Query `regulation_standard_mappings` to show how GS1 standards enable compliance
@@ -209,6 +222,7 @@ node scripts/seed-esg-data.mjs
 **Purpose:** Help companies determine DPP compliance requirements for their products
 
 **Implementation:**
+
 - Input: product category
 - Query: `dpp_product_categories` table
 - Output:
@@ -228,6 +242,7 @@ node scripts/seed-esg-data.mjs
 **Purpose:** Help companies map product flows and identify required traceability events
 
 **Implementation:**
+
 - Interactive tool to map product flows from raw material to end of life
 - For each stage, suggest relevant CTEs from `critical_tracking_events` table
 - For each CTE, show required KDEs (5W+1H framework)
@@ -240,6 +255,7 @@ node scripts/seed-esg-data.mjs
 **Purpose:** Help companies construct proper GS1 Digital Link URIs for DPP
 
 **Implementation:**
+
 - Interactive form to input GTIN, qualifiers (batch/lot, serial, version), GLN
 - Validate identifier syntax against GS1 rules
 - Generate GS1 Digital Link URI (uncompressed form)
@@ -252,6 +268,7 @@ node scripts/seed-esg-data.mjs
 **Enhancement:** Emphasize cross-regulation harmonization narrative
 
 **Implementation:**
+
 - Update hero section to highlight "One Data Layer, Multiple Regulations"
 - Add section on "Common Data Categories Across Regulations"
 - Show visual diagram of how GS1 standards enable compliance across CSRD, EUDR, ESPR/DPP, PPWR
@@ -325,21 +342,25 @@ node scripts/seed-esg-data.mjs
 ### Approach
 
 **Structured Data Over Raw Text:**
+
 - Created compact JSON files (12 KB total) instead of storing full PDFs (multiple MB)
 - Extracted only actionable knowledge (categories, rules, specifications) not narrative text
 - Used canonical IDs and references to avoid duplication
 
 **Markdown Summaries:**
+
 - Created concise summaries (2-4 KB) capturing key insights
 - Included canonical URLs for full documents
 - Focused on ISA integration points, not comprehensive document reproduction
 
 **Database Schema:**
+
 - Used JSON fields for flexible, nested data (exampleRegulations, typicalKDEs)
 - Avoided separate tables for every relationship (would create 50+ tables)
 - Balanced normalization with query performance
 
 **Result:**
+
 - Total structured data: ~20 KB (JSON + Markdown)
 - Total documentation: ~50 KB (canonical model + validation + report)
 - **vs. storing full PDFs:** ~5 MB (250x reduction)
@@ -352,6 +373,7 @@ node scripts/seed-esg-data.mjs
 ### Data Model (Schema)
 
 **New Tables:** 5 tables created in `schema_esg_extensions.ts`
+
 - `esg_data_categories` (12 categories)
 - `critical_tracking_events` (6 CTEs)
 - `dpp_product_categories` (18 categories)
@@ -365,6 +387,7 @@ node scripts/seed-esg-data.mjs
 ### Seed Data
 
 **Script Created:** `scripts/seed-esg-data.mjs`
+
 - Reads JSON files from `data/esg/`
 - Inserts/updates records in new tables
 - Uses `ON DUPLICATE KEY UPDATE` for idempotency
@@ -373,6 +396,7 @@ node scripts/seed-esg-data.mjs
 ### Documentation
 
 **Files Created:**
+
 - `data/gs1_position_paper_summary.md` - Position paper summary
 - `data/dpp_standard_summary.md` - DPP standard summary
 - `data/esg/common_data_categories.json` - 12 Common Data Categories
@@ -388,6 +412,7 @@ node scripts/seed-esg-data.mjs
 **Regulation Detail Pages:** Show Common Data Categories, CTEs, GS1 Standards (requires frontend component updates)
 
 **New Tools:**
+
 - DPP Readiness Checker (requires new page component)
 - Traceability Planner (requires new page component)
 - Identifier Builder (requires new page component)
@@ -401,21 +426,25 @@ node scripts/seed-esg-data.mjs
 ## Success Criteria Met
 
 ✅ **Structured knowledge artefacts created:**
+
 - 2 Markdown summaries (position paper, DPP standard)
 - 4 JSON data structures (Common Data Categories, CTEs/KDEs, DPP identification rules, DPP identifier components)
 - Total: 6 structured files, ~20 KB
 
 ✅ **Changes made to ISA:**
+
 - 5 new database tables (esg_data_categories, critical_tracking_events, dpp_product_categories, + 2 mapping tables)
 - 1 seed data script (seed-esg-data.mjs)
 - Schema export updated (schema.ts)
 
 ✅ **Alignment findings documented:**
+
 - Validated consistency with GS1 General Specifications, System Architecture, GDM, EPCIS/CBV, sector models
 - No material conflicts detected
 - Integration opportunities identified (GDM mappings, EPCIS templates, sector guidance)
 
 ✅ **Further inputs identified:**
+
 - High priority: GDM attribute codes, EPCIS event templates, sector model documentation
 - Medium priority: Delegated acts updates, GenSpecs change notifications, Digital Link resolver
 - Low priority: Additional ESG regulations, industry case studies
@@ -458,6 +487,7 @@ node scripts/seed-esg-data.mjs
 This integration successfully brings GS1's official ESG/Green Deal strategy into ISA's data models, mappings, and documentation. The structured knowledge artefacts are **token-efficient** (20 KB vs 5 MB PDFs), **reusable** (JSON for database seeding, Markdown for documentation), and **aligned** with existing GS1 artefacts (no conflicts detected).
 
 ISA now has a **canonical ESG/traceability data model** that enables:
+
 - **Cross-regulation harmonization** (Common Data Categories spanning multiple regulations)
 - **Concrete implementation guidance** (DPP identification rules, CTE/KDE mappings)
 - **Value beyond compliance** (efficiency, decision-making, future-proofing)
@@ -472,28 +502,28 @@ The implementation roadmap provides clear next steps for translating this knowle
 
 ### Structured Data Files
 
-| File | Location | Size | Purpose |
-|------|----------|------|---------|
-| gs1_position_paper_summary.md | /home/ubuntu/isa_web/data/ | 2.3 KB | Position paper summary |
-| dpp_standard_summary.md | /home/ubuntu/isa_web/data/ | 3.9 KB | DPP standard summary |
-| common_data_categories.json | /home/ubuntu/isa_web/data/esg/ | 4.2 KB | 12 Common Data Categories |
-| ctes_and_kdes.json | /home/ubuntu/isa_web/data/esg/ | 3.8 KB | 6 Critical Tracking Events |
-| dpp_identification_rules.json | /home/ubuntu/isa_web/data/esg/ | 5.1 KB | 18 DPP product categories |
-| dpp_identifier_components.json | /home/ubuntu/isa_web/data/esg/ | 4.6 KB | Identifier reference |
+| File                           | Location                       | Size   | Purpose                    |
+| ------------------------------ | ------------------------------ | ------ | -------------------------- |
+| gs1_position_paper_summary.md  | /home/ubuntu/isa_web/data/     | 2.3 KB | Position paper summary     |
+| dpp_standard_summary.md        | /home/ubuntu/isa_web/data/     | 3.9 KB | DPP standard summary       |
+| common_data_categories.json    | /home/ubuntu/isa_web/data/esg/ | 4.2 KB | 12 Common Data Categories  |
+| ctes_and_kdes.json             | /home/ubuntu/isa_web/data/esg/ | 3.8 KB | 6 Critical Tracking Events |
+| dpp_identification_rules.json  | /home/ubuntu/isa_web/data/esg/ | 5.1 KB | 18 DPP product categories  |
+| dpp_identifier_components.json | /home/ubuntu/isa_web/data/esg/ | 4.6 KB | Identifier reference       |
 
 ### Code Files
 
-| File | Location | Size | Purpose |
-|------|----------|------|---------|
+| File                     | Location                      | Size   | Purpose             |
+| ------------------------ | ----------------------------- | ------ | ------------------- |
 | schema_esg_extensions.ts | /home/ubuntu/isa_web/drizzle/ | 3.2 KB | New database tables |
-| seed-esg-data.mjs | /home/ubuntu/isa_web/scripts/ | 2.8 KB | Seed data script |
+| seed-esg-data.mjs        | /home/ubuntu/isa_web/scripts/ | 2.8 KB | Seed data script    |
 
 ### Documentation Files
 
-| File | Location | Size | Purpose |
-|------|----------|------|---------|
-| ISA_ESG_GS1_CANONICAL_MODEL.md | /home/ubuntu/isa_web/docs/ | 18.4 KB | Canonical model |
+| File                                  | Location                   | Size    | Purpose              |
+| ------------------------------------- | -------------------------- | ------- | -------------------- |
+| ISA_ESG_GS1_CANONICAL_MODEL.md        | /home/ubuntu/isa_web/docs/ | 18.4 KB | Canonical model      |
 | GS1_ARTEFACTS_ALIGNMENT_VALIDATION.md | /home/ubuntu/isa_web/docs/ | 14.7 KB | Alignment validation |
-| ESG_INTEGRATION_FINAL_REPORT.md | /home/ubuntu/isa_web/docs/ | 12.1 KB | This report |
+| ESG_INTEGRATION_FINAL_REPORT.md       | /home/ubuntu/isa_web/docs/ | 12.1 KB | This report          |
 
 **Total:** 12 files, ~75 KB

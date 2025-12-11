@@ -1,5 +1,12 @@
 import { getDb } from "./db";
-import { epcisEvents, epciBatchJobs, supplyChainNodes, supplyChainEdges, supplyChainRisks, supplyChainAnalytics } from "../drizzle/schema";
+import {
+  epcisEvents,
+  epciBatchJobs,
+  supplyChainNodes,
+  supplyChainEdges,
+  supplyChainRisks,
+  supplyChainAnalytics,
+} from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
 
 /**
@@ -36,7 +43,7 @@ interface EPCISDocument {
 export function parseEPCISDocument(content: string): EPCISDocument | null {
   try {
     const trimmed = content.trim();
-    
+
     if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
       // JSON format
       return JSON.parse(content);
@@ -44,7 +51,7 @@ export function parseEPCISDocument(content: string): EPCISDocument | null {
       // XML format - convert to JSON
       return parseXMLToJSON(content);
     }
-    
+
     return null;
   } catch (error) {
     console.error("Failed to parse EPCIS document:", error);
@@ -58,21 +65,22 @@ export function parseEPCISDocument(content: string): EPCISDocument | null {
 function parseXMLToJSON(xml: string): EPCISDocument {
   // This is a simplified parser. For production, use a proper XML library
   const eventList: EPCISEventData[] = [];
-  
+
   // Extract events from XML
   const eventMatches = xml.match(/<ObjectEvent>[\s\S]*?<\/ObjectEvent>/g) || [];
-  eventMatches.forEach((eventXml) => {
+  eventMatches.forEach(eventXml => {
     const event: EPCISEventData = {
       type: "ObjectEvent",
-      eventTime: extractXMLValue(eventXml, "eventTime") || new Date().toISOString(),
+      eventTime:
+        extractXMLValue(eventXml, "eventTime") || new Date().toISOString(),
     };
-    
+
     const action = extractXMLValue(eventXml, "action");
     if (action) event.action = action;
-    
+
     const bizStep = extractXMLValue(eventXml, "bizStep");
     if (bizStep) event.bizStep = bizStep;
-    
+
     eventList.push(event);
   });
 
@@ -98,7 +106,7 @@ export async function processEPCISEvents(
 ): Promise<{ processedCount: number; failedCount: number }> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   let processedCount = 0;
   let failedCount = 0;
 
@@ -116,9 +124,13 @@ export async function processEPCISEvents(
         readPoint: event.readPoint,
         bizLocation: event.bizLocation,
         epcList: event.epcList ? JSON.stringify(event.epcList) : null,
-        quantityList: event.quantityList ? JSON.stringify(event.quantityList) : null,
+        quantityList: event.quantityList
+          ? JSON.stringify(event.quantityList)
+          : null,
         sourceList: event.sourceList ? JSON.stringify(event.sourceList) : null,
-        destinationList: event.destinationList ? JSON.stringify(event.destinationList) : null,
+        destinationList: event.destinationList
+          ? JSON.stringify(event.destinationList)
+          : null,
         ilmd: event.ilmd ? JSON.stringify(event.ilmd) : null,
         rawEvent: JSON.stringify(event),
       });
@@ -155,7 +167,7 @@ export async function processEPCISEvents(
 async function extractSupplyChainNodes(userId: number, event: EPCISEventData) {
   const db = await getDb();
   if (!db) return;
-  
+
   const nodes: Map<string, any> = new Map();
 
   // Extract from readPoint (location)
@@ -228,7 +240,7 @@ export async function detectComplianceRisks(
 ): Promise<void> {
   const db = await getDb();
   if (!db) return;
-  
+
   const risks: any[] = [];
 
   // Risk 1: Missing traceability data
@@ -237,7 +249,8 @@ export async function detectComplianceRisks(
       riskType: "traceability",
       severity: "high",
       description: "Event has no EPC list - incomplete product traceability",
-      recommendedAction: "Ensure all events include EPC identifiers for full supply chain visibility",
+      recommendedAction:
+        "Ensure all events include EPC identifiers for full supply chain visibility",
     });
   }
 
@@ -247,20 +260,24 @@ export async function detectComplianceRisks(
       riskType: "geolocation",
       severity: "medium",
       description: "Event lacks location information",
-      recommendedAction: "Add readPoint or bizLocation to enable geographic compliance checks",
+      recommendedAction:
+        "Add readPoint or bizLocation to enable geographic compliance checks",
     });
   }
 
   // Risk 3: Suspicious event timing
   const eventTime = new Date(event.eventTime);
   const now = new Date();
-  const daysDiff = (now.getTime() - eventTime.getTime()) / (1000 * 60 * 60 * 24);
+  const daysDiff =
+    (now.getTime() - eventTime.getTime()) / (1000 * 60 * 60 * 24);
   if (daysDiff > 30) {
     risks.push({
       riskType: "traceability",
       severity: "low",
-      description: "Event is more than 30 days old - potential delayed reporting",
-      recommendedAction: "Ensure timely event reporting for real-time compliance",
+      description:
+        "Event is more than 30 days old - potential delayed reporting",
+      recommendedAction:
+        "Ensure timely event reporting for real-time compliance",
     });
   }
 
@@ -281,21 +298,44 @@ export async function detectComplianceRisks(
 /**
  * Update supply chain analytics for user
  */
-export async function updateSupplyChainAnalytics(userId: number): Promise<void> {
+export async function updateSupplyChainAnalytics(
+  userId: number
+): Promise<void> {
   try {
     const db = await getDb();
     if (!db) return;
-    
+
     // Get counts
-    const eventCount = await db.select().from(epcisEvents).where(eq(epcisEvents.userId, userId));
-    const nodeCount = await db.select().from(supplyChainNodes).where(eq(supplyChainNodes.userId, userId));
-    const edgeCount = await db.select().from(supplyChainEdges).where(eq(supplyChainEdges.userId, userId));
-    const riskCount = await db.select().from(supplyChainRisks).where(
-      and(eq(supplyChainRisks.userId, userId), eq(supplyChainRisks.isResolved, false))
-    );
-    const highRiskNodes = await db.select().from(supplyChainNodes).where(
-      and(eq(supplyChainNodes.userId, userId), eq(supplyChainNodes.riskLevel, "high"))
-    );
+    const eventCount = await db
+      .select()
+      .from(epcisEvents)
+      .where(eq(epcisEvents.userId, userId));
+    const nodeCount = await db
+      .select()
+      .from(supplyChainNodes)
+      .where(eq(supplyChainNodes.userId, userId));
+    const edgeCount = await db
+      .select()
+      .from(supplyChainEdges)
+      .where(eq(supplyChainEdges.userId, userId));
+    const riskCount = await db
+      .select()
+      .from(supplyChainRisks)
+      .where(
+        and(
+          eq(supplyChainRisks.userId, userId),
+          eq(supplyChainRisks.isResolved, false)
+        )
+      );
+    const highRiskNodes = await db
+      .select()
+      .from(supplyChainNodes)
+      .where(
+        and(
+          eq(supplyChainNodes.userId, userId),
+          eq(supplyChainNodes.riskLevel, "high")
+        )
+      );
 
     // Calculate compliance score (0-100)
     const baseScore = 100;
@@ -303,13 +343,16 @@ export async function updateSupplyChainAnalytics(userId: number): Promise<void> 
     const complianceScore = Math.max(baseScore - riskPenalty, 0);
 
     // Calculate traceability score
-    const tracedEvents = eventCount.filter((evt: any) => evt.epcList && evt.epcList !== null).length;
-    const traceabilityScore = eventCount.length > 0 ? (tracedEvents / eventCount.length) * 100 : 0;
+    const tracedEvents = eventCount.filter(
+      (evt: any) => evt.epcList && evt.epcList !== null
+    ).length;
+    const traceabilityScore =
+      eventCount.length > 0 ? (tracedEvents / eventCount.length) * 100 : 0;
 
     // Upsert analytics record
     const traceScore = Math.round(traceabilityScore * 100) / 100;
     const compScore = Math.round(complianceScore * 100) / 100;
-    
+
     await db
       .insert(supplyChainAnalytics)
       .values({

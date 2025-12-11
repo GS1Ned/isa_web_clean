@@ -1,4 +1,3 @@
-
 # cURL Test Commands
 
 Save the generated script as test-cron-endpoints.sh and run:

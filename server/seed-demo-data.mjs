@@ -2,10 +2,12 @@ import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 
 // Import schema tables
-const regulations = { __tableName: 'regulations' };
-const gs1Standards = { __tableName: 'gs1_standards' };
-const regulationStandardMappings = { __tableName: 'regulation_standard_mappings' };
-const regulatoryChangeAlerts = { __tableName: 'regulatory_change_alerts' };
+const regulations = { __tableName: "regulations" };
+const gs1Standards = { __tableName: "gs1_standards" };
+const regulationStandardMappings = {
+  __tableName: "regulation_standard_mappings",
+};
+const regulatoryChangeAlerts = { __tableName: "regulatory_change_alerts" };
 
 const db = drizzle(process.env.DATABASE_URL);
 
@@ -88,8 +90,7 @@ const sampleGS1Standards = [
   {
     standardCode: "EPCIS",
     standardName: "Electronic Product Code Information Services",
-    description:
-      "Standard for capturing and sharing supply chain event data.",
+    description: "Standard for capturing and sharing supply chain event data.",
     category: "Data Sharing",
     scope: "Supply chain visibility and traceability",
     referenceUrl: "https://www.gs1.org/standards/epcis",
@@ -106,8 +107,7 @@ const sampleGS1Standards = [
   {
     standardCode: "EANCOM",
     standardName: "EANCOM EDI Messages",
-    description:
-      "EDI message standard for supply chain communication.",
+    description: "EDI message standard for supply chain communication.",
     category: "Data Exchange",
     scope: "Electronic data interchange",
     referenceUrl: "https://www.gs1.org/standards/eancom",
@@ -133,8 +133,7 @@ const sampleGS1Standards = [
   {
     standardCode: "GS1-TRACEABILITY",
     standardName: "GS1 Traceability Standard",
-    description:
-      "Framework for tracing products through supply chains.",
+    description: "Framework for tracing products through supply chains.",
     category: "Traceability",
     scope: "Supply chain traceability",
     referenceUrl: "https://www.gs1.org/standards/traceability",
@@ -142,15 +141,66 @@ const sampleGS1Standards = [
 ];
 
 const sampleMappings = [
-  { regulationId: 1, standardId: 3, relevanceScore: 0.95, mappingReason: "CSRD requires supply chain transparency, EPCIS enables real-time tracking" },
-  { regulationId: 1, standardId: 6, relevanceScore: 0.92, mappingReason: "Digital Product Passport requirements align with GS1 DPP framework" },
-  { regulationId: 2, standardId: 1, relevanceScore: 0.88, mappingReason: "EU Taxonomy requires product identification for environmental assessment" },
-  { regulationId: 3, standardId: 3, relevanceScore: 0.96, mappingReason: "ESRS E1 climate reporting needs supply chain data from EPCIS" },
-  { regulationId: 3, standardId: 4, relevanceScore: 0.85, mappingReason: "ESRS requires standardized data exchange via GS1-XML" },
-  { regulationId: 4, standardId: 6, relevanceScore: 0.98, mappingReason: "DPP directly references GS1 Digital Product Passport standard" },
-  { regulationId: 4, standardId: 7, relevanceScore: 0.90, mappingReason: "DPP uses 2D barcodes for product information access" },
-  { regulationId: 5, standardId: 8, relevanceScore: 0.93, mappingReason: "Climate data collection requires supply chain traceability" },
-  { regulationId: 6, standardId: 2, relevanceScore: 0.87, mappingReason: "Workforce reporting needs product identification for supply chain assessment" },
+  {
+    regulationId: 1,
+    standardId: 3,
+    relevanceScore: 0.95,
+    mappingReason:
+      "CSRD requires supply chain transparency, EPCIS enables real-time tracking",
+  },
+  {
+    regulationId: 1,
+    standardId: 6,
+    relevanceScore: 0.92,
+    mappingReason:
+      "Digital Product Passport requirements align with GS1 DPP framework",
+  },
+  {
+    regulationId: 2,
+    standardId: 1,
+    relevanceScore: 0.88,
+    mappingReason:
+      "EU Taxonomy requires product identification for environmental assessment",
+  },
+  {
+    regulationId: 3,
+    standardId: 3,
+    relevanceScore: 0.96,
+    mappingReason:
+      "ESRS E1 climate reporting needs supply chain data from EPCIS",
+  },
+  {
+    regulationId: 3,
+    standardId: 4,
+    relevanceScore: 0.85,
+    mappingReason: "ESRS requires standardized data exchange via GS1-XML",
+  },
+  {
+    regulationId: 4,
+    standardId: 6,
+    relevanceScore: 0.98,
+    mappingReason:
+      "DPP directly references GS1 Digital Product Passport standard",
+  },
+  {
+    regulationId: 4,
+    standardId: 7,
+    relevanceScore: 0.9,
+    mappingReason: "DPP uses 2D barcodes for product information access",
+  },
+  {
+    regulationId: 5,
+    standardId: 8,
+    relevanceScore: 0.93,
+    mappingReason: "Climate data collection requires supply chain traceability",
+  },
+  {
+    regulationId: 6,
+    standardId: 2,
+    relevanceScore: 0.87,
+    mappingReason:
+      "Workforce reporting needs product identification for supply chain assessment",
+  },
 ];
 
 const sampleAlerts = [

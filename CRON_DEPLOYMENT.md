@@ -22,6 +22,7 @@ The ESG Hub includes three automated tasks that should run on a daily schedule:
 ### Option 1: Linux/Unix Crontab
 
 Edit your crontab with:
+
 ```bash
 crontab -e
 ```

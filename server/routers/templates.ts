@@ -68,7 +68,7 @@ export const templatesRouter = router({
         .limit(input.limit)
         .offset(input.offset);
 
-      return templates.map((t) => ({
+      return templates.map(t => ({
         id: t.id,
         name: t.name,
         description: t.description,
@@ -115,7 +115,7 @@ export const templatesRouter = router({
 
       return {
         ...template[0],
-        actions: actions.map((a) => ({
+        actions: actions.map(a => ({
           id: a.id,
           sequenceNumber: a.sequenceNumber,
           title: a.title,
@@ -125,9 +125,11 @@ export const templatesRouter = router({
           estimatedEffort: a.estimatedEffort,
           estimatedImpact: a.estimatedImpact,
           successCriteria: a.successCriteria,
-          relatedStandards: a.relatedStandards ? JSON.parse(a.relatedStandards as any) : [],
+          relatedStandards: a.relatedStandards
+            ? JSON.parse(a.relatedStandards as any)
+            : [],
         })),
-        milestones: milestones.map((m) => ({
+        milestones: milestones.map(m => ({
           id: m.id,
           sequenceNumber: m.sequenceNumber,
           title: m.title,
@@ -178,9 +180,13 @@ export const templatesRouter = router({
         description: `Created from template: ${t.name}`,
         strategy: t.strategy,
         currentScore: 0 as any,
-        projectedScore: (t.targetScore ? parseFloat(t.targetScore.toString()) : 0) as any,
+        projectedScore: (t.targetScore
+          ? parseFloat(t.targetScore.toString())
+          : 0) as any,
         estimatedEffort: t.estimatedEffort,
-        estimatedImpact: (t.estimatedImpact ? parseFloat(t.estimatedImpact.toString()) : 0) as any,
+        estimatedImpact: (t.estimatedImpact
+          ? parseFloat(t.estimatedImpact.toString())
+          : 0) as any,
         status: "draft",
         startDate,
         targetCompletionDate,
@@ -204,11 +210,16 @@ export const templatesRouter = router({
           actionType: ta.actionType,
           priority: ta.priority,
           estimatedEffort: ta.estimatedEffort,
-          estimatedImpact: (ta.estimatedImpact ? parseFloat(ta.estimatedImpact.toString()) : 0) as any,
+          estimatedImpact: (ta.estimatedImpact
+            ? parseFloat(ta.estimatedImpact.toString())
+            : 0) as any,
           status: "pending",
-          startDate: new Date(startDate.getTime() + ta.sequenceNumber * 7 * 24 * 60 * 60 * 1000),
+          startDate: new Date(
+            startDate.getTime() + ta.sequenceNumber * 7 * 24 * 60 * 60 * 1000
+          ),
           targetDate: new Date(
-            startDate.getTime() + (ta.sequenceNumber + 1) * 7 * 24 * 60 * 60 * 1000
+            startDate.getTime() +
+              (ta.sequenceNumber + 1) * 7 * 24 * 60 * 60 * 1000
           ),
           successCriteria: ta.successCriteria,
         });
@@ -226,8 +237,12 @@ export const templatesRouter = router({
           roadmapId: roadmapId as any,
           title: tm.title,
           description: tm.description,
-          targetScore: (tm.targetScore ? parseFloat(tm.targetScore.toString()) : 0) as any,
-          targetDate: new Date(startDate.getTime() + tm.daysFromStart * 24 * 60 * 60 * 1000),
+          targetScore: (tm.targetScore
+            ? parseFloat(tm.targetScore.toString())
+            : 0) as any,
+          targetDate: new Date(
+            startDate.getTime() + tm.daysFromStart * 24 * 60 * 60 * 1000
+          ),
           status: "pending",
         });
       }
@@ -281,7 +296,8 @@ export const templatesRouter = router({
         .where(eq(templateUsage.templateId, input.templateId));
 
       const avgRating =
-        ratings.reduce((sum, r) => sum + ((r.rating as any) || 0), 0) / ratings.length;
+        ratings.reduce((sum, r) => sum + ((r.rating as any) || 0), 0) /
+        ratings.length;
 
       await db
         .update(roadmapTemplates)
@@ -301,7 +317,8 @@ export const templatesRouter = router({
       {
         id: "csrd",
         name: "CSRD Onboarding",
-        description: "Corporate Sustainability Reporting Directive implementation",
+        description:
+          "Corporate Sustainability Reporting Directive implementation",
       },
       {
         id: "eudr",
@@ -328,7 +345,7 @@ export const templatesRouter = router({
     const db = await getDb();
     if (!db) throw new Error("Database not available");
 
-      const templates = await db.select().from(roadmapTemplates);
+    const templates = await db.select().from(roadmapTemplates);
     const totalUsage = await db.select().from(templateUsage);
 
     const categories: any[] = [
@@ -337,21 +354,25 @@ export const templatesRouter = router({
       { category: "esrs", count: 0 },
     ];
 
-    templates.forEach((t) => {
-      const cat = categories.find((c) => c.category === t.category);
+    templates.forEach(t => {
+      const cat = categories.find(c => c.category === t.category);
       if (cat) cat.count++;
     });
 
-      return {
-        totalTemplates: templates.length,
-        totalUsage: totalUsage.length,
-        byCategory: categories,
-        topRated: templates
-          .sort((a, b) => (parseFloat((b.rating || 0).toString()) - parseFloat((a.rating || 0).toString())))
-          .slice(0, 5),
-        mostUsed: templates
-          .sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0))
-          .slice(0, 5),
-      };
+    return {
+      totalTemplates: templates.length,
+      totalUsage: totalUsage.length,
+      byCategory: categories,
+      topRated: templates
+        .sort(
+          (a, b) =>
+            parseFloat((b.rating || 0).toString()) -
+            parseFloat((a.rating || 0).toString())
+        )
+        .slice(0, 5),
+      mostUsed: templates
+        .sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0))
+        .slice(0, 5),
+    };
   }),
 });

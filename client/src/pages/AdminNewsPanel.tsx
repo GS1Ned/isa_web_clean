@@ -50,9 +50,12 @@ export default function AdminNewsPanel() {
           <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl">⛔</span>
           </div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">Access Denied</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-2">
+            Access Denied
+          </h2>
           <p className="text-muted-foreground mb-6">
-            You do not have permission to access the admin panel. Only administrators can manage news content.
+            You do not have permission to access the admin panel. Only
+            administrators can manage news content.
           </p>
           <Link href="/hub">
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
@@ -64,24 +67,30 @@ export default function AdminNewsPanel() {
     );
   }
 
-  const filteredNews = newsItems.filter((item) => {
-    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredNews = newsItems.filter(item => {
+    const matchesSearch = item.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
     const matchesStatus = !selectedStatus || item.status === selectedStatus;
     return matchesSearch && matchesStatus;
   });
 
   const publishNews = (id: number) => {
     setNewsItems(
-      newsItems.map((item) =>
+      newsItems.map(item =>
         item.id === id
-          ? { ...item, status: "PUBLISHED", publishedDate: new Date().toLocaleDateString() }
+          ? {
+              ...item,
+              status: "PUBLISHED",
+              publishedDate: new Date().toLocaleDateString(),
+            }
           : item
       )
     );
   };
 
   const deleteNews = (id: number) => {
-    setNewsItems(newsItems.filter((item) => item.id !== id));
+    setNewsItems(newsItems.filter(item => item.id !== id));
   };
 
   return (
@@ -89,10 +98,15 @@ export default function AdminNewsPanel() {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/hub" className="text-accent hover:text-accent/80 transition font-medium">
+          <Link
+            href="/hub"
+            className="text-accent hover:text-accent/80 transition font-medium"
+          >
             ← Back to Hub
           </Link>
-          <h1 className="text-lg font-bold text-foreground">Admin: News Management</h1>
+          <h1 className="text-lg font-bold text-foreground">
+            Admin: News Management
+          </h1>
           <div className="w-24" />
         </div>
       </nav>
@@ -103,9 +117,12 @@ export default function AdminNewsPanel() {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-2">News Management</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-2">
+                News Management
+              </h2>
               <p className="text-muted-foreground">
-                Create, edit, and publish regulatory news and updates for the ESG Hub.
+                Create, edit, and publish regulatory news and updates for the
+                ESG Hub.
               </p>
             </div>
             <Button
@@ -120,15 +137,25 @@ export default function AdminNewsPanel() {
           {/* New Article Form */}
           {showForm && (
             <div className="card-elevated p-6 mb-8">
-              <h3 className="text-lg font-semibold text-foreground mb-4">Create New Article</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-4">
+                Create New Article
+              </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Title</label>
-                  <Input type="text" placeholder="Article title..." className="w-full" />
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Title
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="Article title..."
+                    className="w-full"
+                  />
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Type</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Type
+                    </label>
                     <select className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground">
                       <option>NEW_LAW</option>
                       <option>AMENDMENT</option>
@@ -138,7 +165,9 @@ export default function AdminNewsPanel() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Credibility</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Credibility
+                    </label>
                     <select className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground">
                       <option>OFFICIAL</option>
                       <option>INDUSTRY</option>
@@ -147,7 +176,9 @@ export default function AdminNewsPanel() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Summary</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Summary
+                  </label>
                   <textarea
                     placeholder="Brief summary of the news..."
                     className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground"
@@ -155,7 +186,9 @@ export default function AdminNewsPanel() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Full Content</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Full Content
+                  </label>
                   <textarea
                     placeholder="Full article content..."
                     className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground"
@@ -166,9 +199,7 @@ export default function AdminNewsPanel() {
                   <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
                     Save as Draft
                   </Button>
-                  <Button variant="outline">
-                    Publish Immediately
-                  </Button>
+                  <Button variant="outline">Publish Immediately</Button>
                   <Button variant="outline" onClick={() => setShowForm(false)}>
                     Cancel
                   </Button>
@@ -185,17 +216,21 @@ export default function AdminNewsPanel() {
                 type="text"
                 placeholder="Search news articles..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 className="pl-12"
               />
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <span className="text-sm font-medium text-muted-foreground py-2">Filter by status:</span>
-              {["PUBLISHED", "DRAFT"].map((status) => (
+              <span className="text-sm font-medium text-muted-foreground py-2">
+                Filter by status:
+              </span>
+              {["PUBLISHED", "DRAFT"].map(status => (
                 <button
                   key={status}
-                  onClick={() => setSelectedStatus(selectedStatus === status ? null : status)}
+                  onClick={() =>
+                    setSelectedStatus(selectedStatus === status ? null : status)
+                  }
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
                     selectedStatus === status
                       ? "bg-accent text-accent-foreground"
@@ -213,20 +248,39 @@ export default function AdminNewsPanel() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="text-left px-6 py-3 font-semibold text-foreground">Title</th>
-                  <th className="text-left px-6 py-3 font-semibold text-foreground">Type</th>
-                  <th className="text-left px-6 py-3 font-semibold text-foreground">Status</th>
-                  <th className="text-left px-6 py-3 font-semibold text-foreground">Published</th>
-                  <th className="text-left px-6 py-3 font-semibold text-foreground">Views</th>
-                  <th className="text-left px-6 py-3 font-semibold text-foreground">Actions</th>
+                  <th className="text-left px-6 py-3 font-semibold text-foreground">
+                    Title
+                  </th>
+                  <th className="text-left px-6 py-3 font-semibold text-foreground">
+                    Type
+                  </th>
+                  <th className="text-left px-6 py-3 font-semibold text-foreground">
+                    Status
+                  </th>
+                  <th className="text-left px-6 py-3 font-semibold text-foreground">
+                    Published
+                  </th>
+                  <th className="text-left px-6 py-3 font-semibold text-foreground">
+                    Views
+                  </th>
+                  <th className="text-left px-6 py-3 font-semibold text-foreground">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {filteredNews.map((item) => (
-                  <tr key={item.id} className="border-b border-border hover:bg-card/50 transition">
+                {filteredNews.map(item => (
+                  <tr
+                    key={item.id}
+                    className="border-b border-border hover:bg-card/50 transition"
+                  >
                     <td className="px-6 py-4">
-                      <div className="font-medium text-foreground">{item.title}</div>
-                      <div className="text-xs text-muted-foreground">{item.credibility}</div>
+                      <div className="font-medium text-foreground">
+                        {item.title}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {item.credibility}
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <span className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
@@ -261,7 +315,10 @@ export default function AdminNewsPanel() {
                             <Eye className="w-4 h-4 text-muted-foreground" />
                           </button>
                         )}
-                        <button className="p-2 hover:bg-card rounded-lg transition" title="Edit">
+                        <button
+                          className="p-2 hover:bg-card rounded-lg transition"
+                          title="Edit"
+                        >
                           <Edit2 className="w-4 h-4 text-muted-foreground" />
                         </button>
                         <button
@@ -283,19 +340,23 @@ export default function AdminNewsPanel() {
           <div className="grid md:grid-cols-3 gap-4 mt-8">
             <div className="card-elevated p-4 text-center">
               <div className="text-2xl font-bold text-foreground mb-1">
-                {newsItems.filter((n) => n.status === "PUBLISHED").length}
+                {newsItems.filter(n => n.status === "PUBLISHED").length}
               </div>
-              <p className="text-xs text-muted-foreground">Published Articles</p>
+              <p className="text-xs text-muted-foreground">
+                Published Articles
+              </p>
             </div>
             <div className="card-elevated p-4 text-center">
               <div className="text-2xl font-bold text-foreground mb-1">
-                {newsItems.filter((n) => n.status === "DRAFT").length}
+                {newsItems.filter(n => n.status === "DRAFT").length}
               </div>
               <p className="text-xs text-muted-foreground">Draft Articles</p>
             </div>
             <div className="card-elevated p-4 text-center">
               <div className="text-2xl font-bold text-foreground mb-1">
-                {newsItems.reduce((sum, n) => sum + n.views, 0).toLocaleString()}
+                {newsItems
+                  .reduce((sum, n) => sum + n.views, 0)
+                  .toLocaleString()}
               </div>
               <p className="text-xs text-muted-foreground">Total Views</p>
             </div>
@@ -306,7 +367,9 @@ export default function AdminNewsPanel() {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-8 mt-8">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Intelligent Standards Architect - ESG Regulations Hub</p>
+          <p>
+            &copy; 2025 Intelligent Standards Architect - ESG Regulations Hub
+          </p>
         </div>
       </footer>
     </div>

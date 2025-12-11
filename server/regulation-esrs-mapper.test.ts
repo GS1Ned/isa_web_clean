@@ -42,18 +42,22 @@ describe("Regulation-ESRS Mapping", () => {
     // Find a regulation to test with (should have at least one from CELLAR sync)
     const caller = appRouter.createCaller(mockAdminContext);
     const regulations = await caller.regulations.list();
-    
+
     if (regulations.length === 0) {
-      throw new Error("No regulations found in database. Run CELLAR sync first.");
+      throw new Error(
+        "No regulations found in database. Run CELLAR sync first."
+      );
     }
 
     testRegulationId = regulations[0].id;
-    console.log(`[Test] Using regulation ID ${testRegulationId}: ${regulations[0].title}`);
+    console.log(
+      `[Test] Using regulation ID ${testRegulationId}: ${regulations[0].title}`
+    );
   });
 
   it("should fetch ESRS mappings for a regulation (empty initially)", async () => {
     const caller = appRouter.createCaller(mockAdminContext);
-    
+
     const mappings = await caller.regulations.getEsrsMappings({
       regulationId: testRegulationId,
     });
@@ -64,7 +68,7 @@ describe("Regulation-ESRS Mapping", () => {
 
   it("should prevent non-admin users from generating mappings", async () => {
     const caller = appRouter.createCaller(mockUserContext);
-    
+
     await expect(
       caller.regulations.generateEsrsMappings({
         regulationId: testRegulationId,
@@ -74,7 +78,7 @@ describe("Regulation-ESRS Mapping", () => {
 
   it("should generate ESRS mappings using LLM (admin only)", async () => {
     const caller = appRouter.createCaller(mockAdminContext);
-    
+
     const result = await caller.regulations.generateEsrsMappings({
       regulationId: testRegulationId,
     });
@@ -82,13 +86,13 @@ describe("Regulation-ESRS Mapping", () => {
     expect(result).toBeDefined();
     expect(result.success).toBe(true);
     expect(result.mappingsCount).toBeGreaterThan(0);
-    
+
     console.log(`[Test] Generated ${result.mappingsCount} ESRS mappings`);
   }, 60000); // 60s timeout for LLM call
 
   it("should fetch generated ESRS mappings with datapoint details", async () => {
     const caller = appRouter.createCaller(mockAdminContext);
-    
+
     const mappings = await caller.regulations.getEsrsMappings({
       regulationId: testRegulationId,
     });
@@ -113,24 +117,29 @@ describe("Regulation-ESRS Mapping", () => {
     expect(firstMapping.relevanceScore).toBeGreaterThanOrEqual(1);
     expect(firstMapping.relevanceScore).toBeLessThanOrEqual(10);
 
-    console.log(`[Test] Sample mapping: ${firstMapping.datapoint?.datapointId} (${firstMapping.datapoint?.esrsStandard}) - Relevance: ${firstMapping.relevanceScore}/10`);
+    console.log(
+      `[Test] Sample mapping: ${firstMapping.datapoint?.datapointId} (${firstMapping.datapoint?.esrsStandard}) - Relevance: ${firstMapping.relevanceScore}/10`
+    );
   });
 
   it("should group mappings by ESRS standard", async () => {
     const caller = appRouter.createCaller(mockAdminContext);
-    
+
     const mappings = await caller.regulations.getEsrsMappings({
       regulationId: testRegulationId,
     });
 
-    const mappingsByStandard = mappings.reduce((acc, mapping) => {
-      const standard = mapping.datapoint?.esrsStandard || "Unknown";
-      if (!acc[standard]) {
-        acc[standard] = 0;
-      }
-      acc[standard]++;
-      return acc;
-    }, {} as Record<string, number>);
+    const mappingsByStandard = mappings.reduce(
+      (acc, mapping) => {
+        const standard = mapping.datapoint?.esrsStandard || "Unknown";
+        if (!acc[standard]) {
+          acc[standard] = 0;
+        }
+        acc[standard]++;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     console.log(`[Test] Mappings by standard:`, mappingsByStandard);
 
@@ -140,7 +149,7 @@ describe("Regulation-ESRS Mapping", () => {
 
   it("should regenerate mappings (replace existing)", async () => {
     const caller = appRouter.createCaller(mockAdminContext);
-    
+
     // Get current count
     const beforeMappings = await caller.regulations.getEsrsMappings({
       regulationId: testRegulationId,
@@ -160,7 +169,9 @@ describe("Regulation-ESRS Mapping", () => {
     });
     const afterCount = afterMappings.length;
 
-    console.log(`[Test] Before: ${beforeCount} mappings, After: ${afterCount} mappings`);
+    console.log(
+      `[Test] Before: ${beforeCount} mappings, After: ${afterCount} mappings`
+    );
 
     // Should have mappings (count may vary due to LLM)
     expect(afterCount).toBeGreaterThan(0);

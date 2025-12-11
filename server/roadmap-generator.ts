@@ -144,12 +144,14 @@ export async function generateComplianceRoadmap(
     actionRecords.push(result);
   }
 
-    // Create milestone records
+  // Create milestone records
   for (const milestone of milestones) {
     await db.insert(roadmapMilestones).values({
       roadmapId: roadmapId as any,
       title: milestone.title,
-      description: milestone.description || `Achieve ${Math.round(milestone.targetScore)}% compliance score`,
+      description:
+        milestone.description ||
+        `Achieve ${Math.round(milestone.targetScore)}% compliance score`,
       targetDate: milestone.targetDate,
       targetScore: milestone.targetScore.toString() as any,
       status: "pending",
@@ -169,7 +171,9 @@ export async function generateComplianceRoadmap(
     actions: actions.map((a, i) => ({
       ...a,
       sequenceNumber: i + 1,
-      startDate: new Date(startDate.getTime() + (i * timelineMs) / actions.length),
+      startDate: new Date(
+        startDate.getTime() + (i * timelineMs) / actions.length
+      ),
       targetDate: new Date(
         startDate.getTime() + ((i + 1) * timelineMs) / actions.length
       ),
@@ -193,7 +197,7 @@ async function collectRemediationOpportunities(userId: number) {
     .from(supplyChainRisks)
     .where(eq(supplyChainRisks.userId, userId));
 
-  const unresolvedRisks = risks.filter((r) => !r.isResolved);
+  const unresolvedRisks = risks.filter(r => !r.isResolved);
   for (const risk of unresolvedRisks) {
     opportunities.push({
       actionType: "resolve_risk",
@@ -214,7 +218,7 @@ async function collectRemediationOpportunities(userId: number) {
     .from(riskRemediationPlans)
     .where(eq(riskRemediationPlans.userId, userId));
 
-  const incompletePlans = plans.filter((p) => p.status !== "completed");
+  const incompletePlans = plans.filter(p => p.status !== "completed");
   for (const plan of incompletePlans) {
     opportunities.push({
       actionType: "complete_plan",
@@ -236,7 +240,7 @@ async function collectRemediationOpportunities(userId: number) {
     .where(eq(complianceEvidence.userId, userId));
 
   const unverifiedEvidence = evidence.filter(
-    (e) => e.verificationStatus !== "verified"
+    e => e.verificationStatus !== "verified"
   );
   if (unverifiedEvidence.length > 0) {
     opportunities.push({
@@ -274,7 +278,11 @@ async function collectRemediationOpportunities(userId: number) {
 /**
  * Prioritize and sequence actions based on strategy
  */
-function prioritizeActions(opportunities: any[], strategy: string, scoreGap: number) {
+function prioritizeActions(
+  opportunities: any[],
+  strategy: string,
+  scoreGap: number
+) {
   let actions = [...opportunities];
 
   switch (strategy) {
@@ -282,8 +290,10 @@ function prioritizeActions(opportunities: any[], strategy: string, scoreGap: num
       // Sort by severity and impact
       actions.sort((a, b) => {
         const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
-        const aPriority = priorityOrder[a.priority as keyof typeof priorityOrder] || 3;
-        const bPriority = priorityOrder[b.priority as keyof typeof priorityOrder] || 3;
+        const aPriority =
+          priorityOrder[a.priority as keyof typeof priorityOrder] || 3;
+        const bPriority =
+          priorityOrder[b.priority as keyof typeof priorityOrder] || 3;
         return aPriority - bPriority || b.estimatedImpact - a.estimatedImpact;
       });
       break;
@@ -299,10 +309,14 @@ function prioritizeActions(opportunities: any[], strategy: string, scoreGap: num
 
     case "balanced":
       // Mix of quick wins and critical items
-      const critical = actions.filter((a) => a.priority === "critical");
+      const critical = actions.filter(a => a.priority === "critical");
       const quickWins = actions
-        .filter((a) => a.priority !== "critical")
-        .sort((a, b) => (b.estimatedImpact / (b.estimatedEffort || 1)) - (a.estimatedImpact / (a.estimatedEffort || 1)));
+        .filter(a => a.priority !== "critical")
+        .sort(
+          (a, b) =>
+            b.estimatedImpact / (b.estimatedEffort || 1) -
+            a.estimatedImpact / (a.estimatedEffort || 1)
+        );
       actions = [...critical, ...quickWins];
       break;
 
@@ -356,7 +370,10 @@ function generateRoadmapTitle(strategy: string, scoreGap: number): string {
     comprehensive: "Comprehensive Compliance Roadmap",
   };
 
-  return strategyNames[strategy as keyof typeof strategyNames] || "Compliance Roadmap";
+  return (
+    strategyNames[strategy as keyof typeof strategyNames] ||
+    "Compliance Roadmap"
+  );
 }
 
 /**
@@ -414,7 +431,7 @@ export async function getUserRoadmaps(userId: number) {
     .from(complianceRoadmaps)
     .where(eq(complianceRoadmaps.userId, userId));
 
-  return roadmaps.map((r) => ({
+  return roadmaps.map(r => ({
     ...r,
     currentScore: parseFloat(r.currentScore as any),
     projectedScore: parseFloat(r.projectedScore as any),
@@ -437,5 +454,8 @@ export async function updateRoadmapStatus(
     updates.progressPercentage = progressPercentage;
   }
 
-  await db.update(complianceRoadmaps).set(updates).where(eq(complianceRoadmaps.id, roadmapId));
+  await db
+    .update(complianceRoadmaps)
+    .set(updates)
+    .where(eq(complianceRoadmaps.id, roadmapId));
 }

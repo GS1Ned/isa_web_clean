@@ -6,11 +6,32 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Loader2, PlayCircle, Archive, CheckCircle, XCircle, Clock, TrendingUp } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Loader2,
+  PlayCircle,
+  Archive,
+  CheckCircle,
+  XCircle,
+  Clock,
+  TrendingUp,
+} from "lucide-react";
 import { toast as showToast } from "sonner";
 
 export function NewsAdmin() {
@@ -19,13 +40,16 @@ export function NewsAdmin() {
   const [isArchiving, setIsArchiving] = useState(false);
 
   // Queries
-  const { data: stats, refetch: refetchStats } = trpc.newsAdmin.getStats.useQuery();
-  const { data: history, refetch: refetchHistory } = trpc.newsAdmin.getExecutionHistory.useQuery();
-  const { data: dashboard, refetch: refetchDashboard } = trpc.newsAdmin.getMonitoringDashboard.useQuery();
+  const { data: stats, refetch: refetchStats } =
+    trpc.newsAdmin.getStats.useQuery();
+  const { data: history, refetch: refetchHistory } =
+    trpc.newsAdmin.getExecutionHistory.useQuery();
+  const { data: dashboard, refetch: refetchDashboard } =
+    trpc.newsAdmin.getMonitoringDashboard.useQuery();
 
   // Mutations
   const triggerIngestion = trpc.newsAdmin.triggerIngestion.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       showToast.success("News Ingestion Complete", {
         description: `Fetched: ${data.fetched} | Inserted: ${data.inserted} | Skipped: ${data.skipped} | Duration: ${data.duration}ms`,
       });
@@ -34,7 +58,7 @@ export function NewsAdmin() {
       refetchHistory();
       refetchDashboard();
     },
-    onError: (error) => {
+    onError: error => {
       showToast.error("Ingestion Failed", {
         description: error.message,
       });
@@ -43,7 +67,7 @@ export function NewsAdmin() {
   });
 
   const triggerArchival = trpc.newsAdmin.triggerArchival.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       showToast.success("News Archival Complete", {
         description: `Archived: ${data.archived} items | Duration: ${data.duration}ms`,
       });
@@ -52,7 +76,7 @@ export function NewsAdmin() {
       refetchHistory();
       refetchDashboard();
     },
-    onError: (error) => {
+    onError: error => {
       showToast.error("Archival Failed", {
         description: error.message,
       });
@@ -84,7 +108,8 @@ export function NewsAdmin() {
       <div>
         <h1 className="text-3xl font-bold mb-2">News Administration</h1>
         <p className="text-muted-foreground">
-          Manually trigger news collection, view execution history, and monitor pipeline health
+          Manually trigger news collection, view execution history, and monitor
+          pipeline health
         </p>
       </div>
 
@@ -119,7 +144,7 @@ export function NewsAdmin() {
                 </>
               )}
             </Button>
-            
+
             {isIngesting && (
               <Alert>
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -190,22 +215,42 @@ export function NewsAdmin() {
               {dashboard.manualIngestion.stats && (
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-sm font-medium">Manual Ingestion</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Manual Ingestion
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Total runs:</span>
-                      <span className="font-semibold">{dashboard.manualIngestion.stats.total}</span>
+                      <span className="text-sm text-muted-foreground">
+                        Total runs:
+                      </span>
+                      <span className="font-semibold">
+                        {dashboard.manualIngestion.stats.total}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Success rate:</span>
-                      <Badge variant={dashboard.manualIngestion.stats.successRate >= 80 ? "default" : "destructive"}>
+                      <span className="text-sm text-muted-foreground">
+                        Success rate:
+                      </span>
+                      <Badge
+                        variant={
+                          dashboard.manualIngestion.stats.successRate >= 80
+                            ? "default"
+                            : "destructive"
+                        }
+                      >
                         {dashboard.manualIngestion.stats.successRate}%
                       </Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Avg duration:</span>
-                      <span className="font-semibold">{formatDuration(dashboard.manualIngestion.stats.avgDuration)}</span>
+                      <span className="text-sm text-muted-foreground">
+                        Avg duration:
+                      </span>
+                      <span className="font-semibold">
+                        {formatDuration(
+                          dashboard.manualIngestion.stats.avgDuration
+                        )}
+                      </span>
                     </div>
                   </CardContent>
                 </Card>
@@ -215,22 +260,40 @@ export function NewsAdmin() {
               {dashboard.jobs[0]?.stats && (
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-sm font-medium">Daily Ingestion (Cron)</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Daily Ingestion (Cron)
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Total runs:</span>
-                      <span className="font-semibold">{dashboard.jobs[0].stats.total}</span>
+                      <span className="text-sm text-muted-foreground">
+                        Total runs:
+                      </span>
+                      <span className="font-semibold">
+                        {dashboard.jobs[0].stats.total}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Success rate:</span>
-                      <Badge variant={dashboard.jobs[0].stats.successRate >= 80 ? "default" : "destructive"}>
+                      <span className="text-sm text-muted-foreground">
+                        Success rate:
+                      </span>
+                      <Badge
+                        variant={
+                          dashboard.jobs[0].stats.successRate >= 80
+                            ? "default"
+                            : "destructive"
+                        }
+                      >
                         {dashboard.jobs[0].stats.successRate}%
                       </Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Avg duration:</span>
-                      <span className="font-semibold">{formatDuration(dashboard.jobs[0].stats.avgDuration)}</span>
+                      <span className="text-sm text-muted-foreground">
+                        Avg duration:
+                      </span>
+                      <span className="font-semibold">
+                        {formatDuration(dashboard.jobs[0].stats.avgDuration)}
+                      </span>
                     </div>
                   </CardContent>
                 </Card>
@@ -240,22 +303,40 @@ export function NewsAdmin() {
               {dashboard.jobs[1]?.stats && (
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-sm font-medium">Weekly Archival (Cron)</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Weekly Archival (Cron)
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Total runs:</span>
-                      <span className="font-semibold">{dashboard.jobs[1].stats.total}</span>
+                      <span className="text-sm text-muted-foreground">
+                        Total runs:
+                      </span>
+                      <span className="font-semibold">
+                        {dashboard.jobs[1].stats.total}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Success rate:</span>
-                      <Badge variant={dashboard.jobs[1].stats.successRate >= 80 ? "default" : "destructive"}>
+                      <span className="text-sm text-muted-foreground">
+                        Success rate:
+                      </span>
+                      <Badge
+                        variant={
+                          dashboard.jobs[1].stats.successRate >= 80
+                            ? "default"
+                            : "destructive"
+                        }
+                      >
                         {dashboard.jobs[1].stats.successRate}%
                       </Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Avg duration:</span>
-                      <span className="font-semibold">{formatDuration(dashboard.jobs[1].stats.avgDuration)}</span>
+                      <span className="text-sm text-muted-foreground">
+                        Avg duration:
+                      </span>
+                      <span className="font-semibold">
+                        {formatDuration(dashboard.jobs[1].stats.avgDuration)}
+                      </span>
                     </div>
                   </CardContent>
                 </Card>
@@ -289,24 +370,41 @@ export function NewsAdmin() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {[...history.manualIngestion, ...history.dailyIngestion, ...history.weeklyArchival]
-                  .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+                {[
+                  ...history.manualIngestion,
+                  ...history.dailyIngestion,
+                  ...history.weeklyArchival,
+                ]
+                  .sort(
+                    (a, b) =>
+                      new Date(b.timestamp).getTime() -
+                      new Date(a.timestamp).getTime()
+                  )
                   .slice(0, 10)
                   .map((execution, index) => (
                     <TableRow key={index}>
                       <TableCell className="font-medium">
-                        {execution.jobName === "manual-news-ingestion" && "Manual Ingestion"}
-                        {execution.jobName === "daily-news-ingestion" && "Daily Ingestion"}
-                        {execution.jobName === "weekly-news-archival" && "Weekly Archival"}
+                        {execution.jobName === "manual-news-ingestion" &&
+                          "Manual Ingestion"}
+                        {execution.jobName === "daily-news-ingestion" &&
+                          "Daily Ingestion"}
+                        {execution.jobName === "weekly-news-archival" &&
+                          "Weekly Archival"}
                       </TableCell>
                       <TableCell>
                         {execution.status === "success" ? (
-                          <Badge variant="default" className="flex items-center gap-1 w-fit">
+                          <Badge
+                            variant="default"
+                            className="flex items-center gap-1 w-fit"
+                          >
                             <CheckCircle className="h-3 w-3" />
                             Success
                           </Badge>
                         ) : (
-                          <Badge variant="destructive" className="flex items-center gap-1 w-fit">
+                          <Badge
+                            variant="destructive"
+                            className="flex items-center gap-1 w-fit"
+                          >
                             <XCircle className="h-3 w-3" />
                             Failed
                           </Badge>
@@ -319,16 +417,22 @@ export function NewsAdmin() {
                         {formatDuration(execution.duration)}
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {execution.stats && typeof execution.stats === 'string' && (() => {
-                          try {
-                            const parsed = JSON.parse(execution.stats);
-                            return parsed.inserted !== undefined ? <span>Inserted: {parsed.inserted}</span> : null;
-                          } catch {
-                            return null;
-                          }
-                        })()}
+                        {execution.stats &&
+                          typeof execution.stats === "string" &&
+                          (() => {
+                            try {
+                              const parsed = JSON.parse(execution.stats);
+                              return parsed.inserted !== undefined ? (
+                                <span>Inserted: {parsed.inserted}</span>
+                              ) : null;
+                            } catch {
+                              return null;
+                            }
+                          })()}
                         {execution.error && (
-                          <span className="text-destructive">Error: {execution.error.substring(0, 50)}...</span>
+                          <span className="text-destructive">
+                            Error: {execution.error.substring(0, 50)}...
+                          </span>
                         )}
                       </TableCell>
                     </TableRow>
@@ -344,22 +448,30 @@ export function NewsAdmin() {
         <Card>
           <CardHeader>
             <CardTitle>Recent News Items</CardTitle>
-            <CardDescription>
-              Last 5 news items retrieved
-            </CardDescription>
+            <CardDescription>Last 5 news items retrieved</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {stats.recentNews.map((news) => (
-                <div key={news.id} className="border-l-2 border-primary pl-4 py-2">
+              {stats.recentNews.map(news => (
+                <div
+                  key={news.id}
+                  className="border-l-2 border-primary pl-4 py-2"
+                >
                   <h4 className="font-semibold mb-1">{news.title}</h4>
                   <p className="text-sm text-muted-foreground mb-2">
                     {news.summary?.substring(0, 150)}...
                   </p>
                   <div className="flex gap-2 text-xs text-muted-foreground">
-                    <span>Sources: {Array.isArray(news.sources) ? news.sources.join(', ') : news.sources}</span>
+                    <span>
+                      Sources:{" "}
+                      {Array.isArray(news.sources)
+                        ? news.sources.join(", ")
+                        : news.sources}
+                    </span>
                     <span>•</span>
-                    <span>{new Date(news.retrievedAt).toLocaleDateString()}</span>
+                    <span>
+                      {new Date(news.retrievedAt).toLocaleDateString()}
+                    </span>
                   </div>
                 </div>
               ))}

@@ -1,18 +1,22 @@
 /**
  * Automated CELLAR Sync Script
- * 
+ *
  * Runs monthly to:
  * 1. Fetch latest EU regulations from CELLAR
  * 2. Normalize and deduplicate
  * 3. Insert/update database
  * 4. Generate ESRS mappings for new regulations
  * 5. Email admin with summary
- * 
+ *
  * Designed to run via cron: 0 2 1 * * (1st of month at 2 AM)
  */
 
 import { cellarConnector } from "./cellar-connector.js";
-import { normalizeEULegalActsBatch, deduplicateRegulations, validateRegulation } from "./cellar-normalizer.js";
+import {
+  normalizeEULegalActsBatch,
+  deduplicateRegulations,
+  validateRegulation,
+} from "./cellar-normalizer.js";
 import { generateRegulationEsrsMappings } from "./regulation-esrs-mapper.js";
 import { notifyOwner } from "./_core/notification.js";
 import { upsertRegulation } from "./db.js";
@@ -58,7 +62,9 @@ export async function runAutomatedCellarSync(): Promise<SyncResult> {
     console.log("[AutoSync] Step 2/5: Normalizing to ISA schema...");
     let normalized = normalizeEULegalActsBatch(legalActs);
     result.normalized = normalized.length;
-    console.log(`[AutoSync] Normalized ${result.normalized} regulations (filtered ${legalActs.length - normalized.length} non-ESG)`);
+    console.log(
+      `[AutoSync] Normalized ${result.normalized} regulations (filtered ${legalActs.length - normalized.length} non-ESG)`
+    );
 
     // Step 3: Deduplicate and validate
     console.log("[AutoSync] Step 3/5: Deduplicating and validating...");
@@ -121,16 +127,21 @@ export async function runAutomatedCellarSync(): Promise<SyncResult> {
             );
           }
         } catch (error) {
-          const errorMsg = error instanceof Error ? error.message : String(error);
+          const errorMsg =
+            error instanceof Error ? error.message : String(error);
           result.errorMessages.push(
             `Error generating mappings for regulation ${regId}: ${errorMsg}`
           );
         }
       }
 
-      console.log(`[AutoSync] Total ESRS mappings generated: ${result.esrsMappingsGenerated}`);
+      console.log(
+        `[AutoSync] Total ESRS mappings generated: ${result.esrsMappingsGenerated}`
+      );
     } else {
-      console.log("[AutoSync] No new regulations, skipping ESRS mapping generation");
+      console.log(
+        "[AutoSync] No new regulations, skipping ESRS mapping generation"
+      );
     }
 
     // Step 6: Send email notification
@@ -216,12 +227,12 @@ async function sendSyncNotification(result: SyncResult): Promise<boolean> {
 // Allow direct execution for testing
 if (import.meta.url === `file://${process.argv[1]}`) {
   runAutomatedCellarSync()
-    .then((result) => {
+    .then(result => {
       console.log("\n=== Sync Result ===");
       console.log(JSON.stringify(result, null, 2));
       process.exit(result.success ? 0 : 1);
     })
-    .catch((error) => {
+    .catch(error => {
       console.error("Fatal error:", error);
       process.exit(1);
     });

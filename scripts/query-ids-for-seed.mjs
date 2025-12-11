@@ -13,7 +13,11 @@ async function queryIdsForSeed() {
 
   // Query regulations
   const regs = await db
-    .select({ id: regulations.id, title: regulations.title, celexId: regulations.celexId })
+    .select({
+      id: regulations.id,
+      title: regulations.title,
+      celexId: regulations.celexId,
+    })
     .from(regulations)
     .where(
       or(

@@ -6,13 +6,13 @@
 
 import { invokeLLM } from "./_core/llm";
 import { REGULATION_KEYWORDS, IMPACT_KEYWORDS } from "./news-sources";
-import { 
-  GS1_IMPACT_TAGS, 
+import {
+  GS1_IMPACT_TAGS,
   SECTOR_TAGS,
   inferGS1ImpactTags,
   inferSectorTags,
   type GS1ImpactTag,
-  type SectorTag 
+  type SectorTag,
 } from "./news-tags";
 import type { RawNewsItem } from "./news-fetcher";
 
@@ -23,8 +23,14 @@ export interface ProcessedNews {
   whyItMatters: string; // 1 sentence: impact/relevance
   regulationTags: string[]; // CSRD, PPWR, EUDR, etc.
   impactLevel: "LOW" | "MEDIUM" | "HIGH";
-  newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
-  
+  newsType:
+    | "NEW_LAW"
+    | "AMENDMENT"
+    | "ENFORCEMENT"
+    | "COURT_DECISION"
+    | "GUIDANCE"
+    | "PROPOSAL";
+
   // GS1-specific fields
   gs1ImpactTags: string[]; // IDENTIFICATION, PACKAGING_ATTRIBUTES, ESG_REPORTING, DUE_DILIGENCE, TRACEABILITY, DPP, etc.
   sectorTags: string[]; // RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION, TEXTILES, etc.
@@ -35,10 +41,12 @@ export interface ProcessedNews {
 /**
  * Process a single news item with AI summarization
  */
-export async function processNewsItem(item: RawNewsItem): Promise<ProcessedNews> {
+export async function processNewsItem(
+  item: RawNewsItem
+): Promise<ProcessedNews> {
   const content = item.content || item.contentSnippet || "";
   const fullText = `${item.title}\n\n${content}`;
-  
+
   try {
     const response = await invokeLLM({
       messages: [
@@ -99,45 +107,74 @@ Sector Tags (select 1-3): ${Object.keys(SECTOR_TAGS).join(", ")}`,
           schema: {
             type: "object",
             properties: {
-              headline: { type: "string", description: "Concise headline max 100 chars" },
-              whatHappened: { type: "string", description: "2 sentences describing the change" },
-              whyItMatters: { type: "string", description: "1 sentence explaining impact" },
-              regulationTags: { 
-                type: "array", 
-                items: { type: "string" },
-                description: "Array of regulation acronyms (CSRD, ESRS, EUDR, etc.)"
+              headline: {
+                type: "string",
+                description: "Concise headline max 100 chars",
               },
-              impactLevel: { 
-                type: "string", 
+              whatHappened: {
+                type: "string",
+                description: "2 sentences describing the change",
+              },
+              whyItMatters: {
+                type: "string",
+                description: "1 sentence explaining impact",
+              },
+              regulationTags: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "Array of regulation acronyms (CSRD, ESRS, EUDR, etc.)",
+              },
+              impactLevel: {
+                type: "string",
                 enum: ["HIGH", "MEDIUM", "LOW"],
-                description: "Impact level based on criteria"
+                description: "Impact level based on criteria",
               },
               newsType: {
                 type: "string",
-                enum: ["NEW_LAW", "AMENDMENT", "ENFORCEMENT", "COURT_DECISION", "GUIDANCE", "PROPOSAL"],
-                description: "Type of regulatory news"
+                enum: [
+                  "NEW_LAW",
+                  "AMENDMENT",
+                  "ENFORCEMENT",
+                  "COURT_DECISION",
+                  "GUIDANCE",
+                  "PROPOSAL",
+                ],
+                description: "Type of regulatory news",
               },
               gs1ImpactTags: {
                 type: "array",
                 items: { type: "string" },
-                description: "1-3 GS1 impact tags from the provided list"
+                description: "1-3 GS1 impact tags from the provided list",
               },
               sectorTags: {
                 type: "array",
                 items: { type: "string" },
-                description: "1-3 sector tags from the provided list"
+                description: "1-3 sector tags from the provided list",
               },
               gs1ImpactAnalysis: {
                 type: "string",
-                description: "2-3 sentences explaining GS1 relevance and how standards help compliance"
+                description:
+                  "2-3 sentences explaining GS1 relevance and how standards help compliance",
               },
               suggestedActions: {
                 type: "array",
                 items: { type: "string" },
-                description: "2-4 actionable next steps for GS1 NL members"
+                description: "2-4 actionable next steps for GS1 NL members",
               },
             },
-            required: ["headline", "whatHappened", "whyItMatters", "regulationTags", "impactLevel", "newsType", "gs1ImpactTags", "sectorTags", "gs1ImpactAnalysis", "suggestedActions"],
+            required: [
+              "headline",
+              "whatHappened",
+              "whyItMatters",
+              "regulationTags",
+              "impactLevel",
+              "newsType",
+              "gs1ImpactTags",
+              "sectorTags",
+              "gs1ImpactAnalysis",
+              "suggestedActions",
+            ],
             additionalProperties: false,
           },
         },
@@ -145,11 +182,11 @@ Sector Tags (select 1-3): ${Object.keys(SECTOR_TAGS).join(", ")}`,
     });
 
     const content = response.choices[0].message.content;
-    const result = JSON.parse(typeof content === 'string' ? content : "{}");
-    
+    const result = JSON.parse(typeof content === "string" ? content : "{}");
+
     // Combine into summary
     const summary = `${result.whatHappened} ${result.whyItMatters}`;
-    
+
     return {
       headline: result.headline || item.title.slice(0, 100),
       summary,
@@ -165,7 +202,7 @@ Sector Tags (select 1-3): ${Object.keys(SECTOR_TAGS).join(", ")}`,
     };
   } catch (error) {
     console.error("[news-ai-processor] Error processing news item:", error);
-    
+
     // Fallback to keyword-based extraction
     return fallbackProcessing(item);
   }
@@ -175,8 +212,9 @@ Sector Tags (select 1-3): ${Object.keys(SECTOR_TAGS).join(", ")}`,
  * Fallback processing using keyword matching (no LLM)
  */
 function fallbackProcessing(item: RawNewsItem): ProcessedNews {
-  const text = `${item.title} ${item.content || item.contentSnippet || ""}`.toLowerCase();
-  
+  const text =
+    `${item.title} ${item.content || item.contentSnippet || ""}`.toLowerCase();
+
   // Extract regulation tags
   const regulationTags: string[] = [];
   for (const [regulation, keywords] of Object.entries(REGULATION_KEYWORDS)) {
@@ -184,7 +222,7 @@ function fallbackProcessing(item: RawNewsItem): ProcessedNews {
       regulationTags.push(regulation);
     }
   }
-  
+
   // Determine impact level
   let impactLevel: "LOW" | "MEDIUM" | "HIGH" = "MEDIUM";
   if (IMPACT_KEYWORDS.HIGH.some(kw => text.includes(kw.toLowerCase()))) {
@@ -192,44 +230,62 @@ function fallbackProcessing(item: RawNewsItem): ProcessedNews {
   } else if (IMPACT_KEYWORDS.LOW.some(kw => text.includes(kw.toLowerCase()))) {
     impactLevel = "LOW";
   }
-  
+
   // Determine news type
   let newsType: ProcessedNews["newsType"] = "GUIDANCE";
-  if (text.includes("adopted") || text.includes("published") || text.includes("enters into force")) {
+  if (
+    text.includes("adopted") ||
+    text.includes("published") ||
+    text.includes("enters into force")
+  ) {
     newsType = "NEW_LAW";
   } else if (text.includes("amendment") || text.includes("revised")) {
     newsType = "AMENDMENT";
-  } else if (text.includes("enforcement") || text.includes("penalty") || text.includes("deadline")) {
+  } else if (
+    text.includes("enforcement") ||
+    text.includes("penalty") ||
+    text.includes("deadline")
+  ) {
     newsType = "ENFORCEMENT";
-  } else if (text.includes("court") || text.includes("ruling") || text.includes("judgment")) {
+  } else if (
+    text.includes("court") ||
+    text.includes("ruling") ||
+    text.includes("judgment")
+  ) {
     newsType = "COURT_DECISION";
-  } else if (text.includes("proposal") || text.includes("draft") || text.includes("consultation")) {
+  } else if (
+    text.includes("proposal") ||
+    text.includes("draft") ||
+    text.includes("consultation")
+  ) {
     newsType = "PROPOSAL";
   }
-  
+
   // Infer GS1 impact tags using keyword matching
   const gs1ImpactTags = inferGS1ImpactTags(text, 3);
-  
+
   // Infer sector tags using keyword matching
   const sectorTags = inferSectorTags(text, 3);
-  
+
   // Generate basic GS1 impact analysis
-  const gs1ImpactAnalysis = gs1ImpactTags.length > 0
-    ? `This regulation may affect GS1 standards related to ${gs1ImpactTags.join(", ")}. Companies should review their data models and processes for compliance.`
-    : "The GS1 impact of this regulation requires further analysis. Please consult with GS1 Netherlands for guidance.";
-  
+  const gs1ImpactAnalysis =
+    gs1ImpactTags.length > 0
+      ? `This regulation may affect GS1 standards related to ${gs1ImpactTags.join(", ")}. Companies should review their data models and processes for compliance.`
+      : "The GS1 impact of this regulation requires further analysis. Please consult with GS1 Netherlands for guidance.";
+
   // Generate basic suggested actions
   const suggestedActions = [
     "Review the full regulation text for specific requirements",
     "Assess current GS1 data model compliance",
     "Contact GS1 Netherlands for implementation guidance",
   ];
-  
+
   return {
     headline: item.title.slice(0, 100),
     summary: (item.content || item.contentSnippet || "").slice(0, 300),
     whatHappened: (item.content || item.contentSnippet || "").slice(0, 200),
-    whyItMatters: "This regulatory development may impact supply chain operations and data requirements.",
+    whyItMatters:
+      "This regulatory development may impact supply chain operations and data requirements.",
     regulationTags,
     impactLevel,
     newsType,
@@ -243,20 +299,25 @@ function fallbackProcessing(item: RawNewsItem): ProcessedNews {
 /**
  * Process multiple news items in batch
  */
-export async function processNewsBatch(items: RawNewsItem[]): Promise<ProcessedNews[]> {
+export async function processNewsBatch(
+  items: RawNewsItem[]
+): Promise<ProcessedNews[]> {
   const results: ProcessedNews[] = [];
-  
+
   for (const item of items) {
     try {
       const processed = await processNewsItem(item);
       results.push(processed);
     } catch (error) {
-      console.error(`[news-ai-processor] Failed to process item "${item.title}":`, error);
+      console.error(
+        `[news-ai-processor] Failed to process item "${item.title}":`,
+        error
+      );
       // Use fallback processing for failed items
       const fallback = fallbackProcessing(item);
       results.push(fallback);
     }
   }
-  
+
   return results;
 }

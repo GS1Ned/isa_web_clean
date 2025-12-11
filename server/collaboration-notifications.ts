@@ -92,7 +92,8 @@ export async function notifyApprovalDecision(
     if (recipient.length === 0) return false;
 
     // Send notification
-    const decisionText = decision === "approved" ? "✅ Approved" : "❌ Rejected";
+    const decisionText =
+      decision === "approved" ? "✅ Approved" : "❌ Rejected";
     const commentText = comments ? ` - "${comments.substring(0, 100)}..."` : "";
 
     return await notifyOwner({

@@ -26,10 +26,30 @@ export default function FeaturesComparison() {
     {
       category: "Knowledge Graph & Analytics",
       items: [
-        { name: "Regulation-Standard Mapping", v03: true, v10: true, v20: true },
-        { name: "Knowledge Graph (Semantic Network)", v03: false, v10: false, v20: true },
-        { name: "Impact Analysis & Traceability", v03: false, v10: false, v20: true },
-        { name: "Change Propagation Tracking", v03: false, v10: false, v20: true },
+        {
+          name: "Regulation-Standard Mapping",
+          v03: true,
+          v10: true,
+          v20: true,
+        },
+        {
+          name: "Knowledge Graph (Semantic Network)",
+          v03: false,
+          v10: false,
+          v20: true,
+        },
+        {
+          name: "Impact Analysis & Traceability",
+          v03: false,
+          v10: false,
+          v20: true,
+        },
+        {
+          name: "Change Propagation Tracking",
+          v03: false,
+          v10: false,
+          v20: true,
+        },
         { name: "Advanced Query Engine", v03: false, v10: false, v20: true },
       ],
     },
@@ -47,9 +67,19 @@ export default function FeaturesComparison() {
       category: "AI & Automation",
       items: [
         { name: "Text Normalization", v03: true, v10: true, v20: true },
-        { name: "Regulatory Change Detection", v03: false, v10: true, v20: true },
+        {
+          name: "Regulatory Change Detection",
+          v03: false,
+          v10: true,
+          v20: true,
+        },
         { name: "AI-Powered Gap Analysis", v03: false, v10: false, v20: true },
-        { name: "Compliance Recommendations", v03: false, v10: false, v20: true },
+        {
+          name: "Compliance Recommendations",
+          v03: false,
+          v10: false,
+          v20: true,
+        },
         { name: "Multi-Language Support", v03: false, v10: false, v20: true },
       ],
     },
@@ -77,13 +107,19 @@ export default function FeaturesComparison() {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+          <Link
+            href="/"
+            className="flex items-center gap-2 hover:opacity-80 transition"
+          >
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-secondary flex items-center justify-center">
               <Zap className="w-5 h-5 text-accent-foreground" />
             </div>
             <span className="font-bold text-lg text-foreground">ISA</span>
           </Link>
-          <Link href="/" className="text-sm font-medium text-accent hover:text-accent/80 transition">
+          <Link
+            href="/"
+            className="text-sm font-medium text-accent hover:text-accent/80 transition"
+          >
             Back
           </Link>
         </div>
@@ -93,9 +129,12 @@ export default function FeaturesComparison() {
       <section className="py-20 md:py-32 bg-gradient-to-b from-accent/5 to-transparent">
         <div className="container">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">Features Roadmap</h1>
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
+              Features Roadmap
+            </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              See how ISA evolves from v0.3 to v2.0, with progressive feature rollout and capability expansion.
+              See how ISA evolves from v0.3 to v2.0, with progressive feature
+              rollout and capability expansion.
             </p>
           </div>
         </div>
@@ -109,22 +148,34 @@ export default function FeaturesComparison() {
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-accent/20 text-accent mb-4">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="text-lg font-bold text-foreground mb-2">v0.3 (Current)</h3>
-              <p className="text-sm text-muted-foreground">Core ingestion and mapping</p>
+              <h3 className="text-lg font-bold text-foreground mb-2">
+                v0.3 (Current)
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Core ingestion and mapping
+              </p>
             </div>
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-secondary/20 text-secondary mb-4">
                 <Clock className="w-8 h-8" />
               </div>
-              <h3 className="text-lg font-bold text-foreground mb-2">v1.0 (Q2 2025)</h3>
-              <p className="text-sm text-muted-foreground">REST API & exports</p>
+              <h3 className="text-lg font-bold text-foreground mb-2">
+                v1.0 (Q2 2025)
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                REST API & exports
+              </p>
             </div>
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-accent/20 text-accent mb-4">
                 <ZapIcon className="w-8 h-8" />
               </div>
-              <h3 className="text-lg font-bold text-foreground mb-2">v2.0 (Q4 2025)</h3>
-              <p className="text-sm text-muted-foreground">Knowledge Graph & AI</p>
+              <h3 className="text-lg font-bold text-foreground mb-2">
+                v2.0 (Q4 2025)
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Knowledge Graph & AI
+              </p>
             </div>
           </div>
         </div>
@@ -137,42 +188,63 @@ export default function FeaturesComparison() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="text-left py-4 px-4 font-semibold text-foreground">Feature</th>
-                  <th className="text-center py-4 px-4 font-semibold text-foreground">v0.3</th>
-                  <th className="text-center py-4 px-4 font-semibold text-foreground">v1.0</th>
-                  <th className="text-center py-4 px-4 font-semibold text-foreground">v2.0</th>
+                  <th className="text-left py-4 px-4 font-semibold text-foreground">
+                    Feature
+                  </th>
+                  <th className="text-center py-4 px-4 font-semibold text-foreground">
+                    v0.3
+                  </th>
+                  <th className="text-center py-4 px-4 font-semibold text-foreground">
+                    v1.0
+                  </th>
+                  <th className="text-center py-4 px-4 font-semibold text-foreground">
+                    v2.0
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {features.map((category) => (
+                {features.map(category => (
                   <tbody key={category.category}>
                     <tr className="border-b border-border bg-accent/5">
                       <td colSpan={4} className="py-3 px-4">
-                        <h3 className="font-bold text-foreground text-sm">{category.category}</h3>
+                        <h3 className="font-bold text-foreground text-sm">
+                          {category.category}
+                        </h3>
                       </td>
                     </tr>
-                    {category.items.map((item) => (
-                      <tr key={item.name} className="border-b border-border hover:bg-accent/5 transition">
-                        <td className="py-4 px-4 text-foreground">{item.name}</td>
+                    {category.items.map(item => (
+                      <tr
+                        key={item.name}
+                        className="border-b border-border hover:bg-accent/5 transition"
+                      >
+                        <td className="py-4 px-4 text-foreground">
+                          {item.name}
+                        </td>
                         <td className="py-4 px-4 text-center">
                           {item.v03 ? (
                             <CheckCircle2 className="w-5 h-5 text-accent mx-auto" />
                           ) : (
-                            <span className="text-xs text-muted-foreground">—</span>
+                            <span className="text-xs text-muted-foreground">
+                              —
+                            </span>
                           )}
                         </td>
                         <td className="py-4 px-4 text-center">
                           {item.v10 ? (
                             <CheckCircle2 className="w-5 h-5 text-secondary mx-auto" />
                           ) : (
-                            <span className="text-xs text-muted-foreground">—</span>
+                            <span className="text-xs text-muted-foreground">
+                              —
+                            </span>
                           )}
                         </td>
                         <td className="py-4 px-4 text-center">
                           {item.v20 ? (
                             <CheckCircle2 className="w-5 h-5 text-accent mx-auto" />
                           ) : (
-                            <span className="text-xs text-muted-foreground">—</span>
+                            <span className="text-xs text-muted-foreground">
+                              —
+                            </span>
                           )}
                         </td>
                       </tr>
@@ -189,21 +261,27 @@ export default function FeaturesComparison() {
               <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
               <div>
                 <p className="font-medium text-foreground">Available</p>
-                <p className="text-sm text-muted-foreground">Feature is live and production-ready</p>
+                <p className="text-sm text-muted-foreground">
+                  Feature is live and production-ready
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Clock className="w-5 h-5 text-secondary flex-shrink-0 mt-1" />
               <div>
                 <p className="font-medium text-foreground">Planned</p>
-                <p className="text-sm text-muted-foreground">Feature in active development</p>
+                <p className="text-sm text-muted-foreground">
+                  Feature in active development
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <div className="w-5 h-5 rounded border border-border flex-shrink-0 mt-1"></div>
               <div>
                 <p className="font-medium text-foreground">Not Included</p>
-                <p className="text-sm text-muted-foreground">Feature planned for future release</p>
+                <p className="text-sm text-muted-foreground">
+                  Feature planned for future release
+                </p>
               </div>
             </div>
           </div>
@@ -213,10 +291,14 @@ export default function FeaturesComparison() {
       {/* Key Milestones */}
       <section className="py-12 bg-card border-t border-border">
         <div className="container">
-          <h2 className="text-3xl font-bold text-foreground mb-8">Key Milestones</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-8">
+            Key Milestones
+          </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="card-elevated p-6">
-              <h3 className="text-lg font-bold text-foreground mb-4">v0.3 (Current)</h3>
+              <h3 className="text-lg font-bold text-foreground mb-4">
+                v0.3 (Current)
+              </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex gap-2">
                   <span className="text-accent">✓</span>
@@ -237,7 +319,9 @@ export default function FeaturesComparison() {
               </ul>
             </div>
             <div className="card-elevated p-6">
-              <h3 className="text-lg font-bold text-foreground mb-4">v1.0 (Q2 2025)</h3>
+              <h3 className="text-lg font-bold text-foreground mb-4">
+                v1.0 (Q2 2025)
+              </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex gap-2">
                   <span className="text-secondary">→</span>
@@ -258,7 +342,9 @@ export default function FeaturesComparison() {
               </ul>
             </div>
             <div className="card-elevated p-6">
-              <h3 className="text-lg font-bold text-foreground mb-4">v2.0 (Q4 2025)</h3>
+              <h3 className="text-lg font-bold text-foreground mb-4">
+                v2.0 (Q4 2025)
+              </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex gap-2">
                   <span className="text-accent">★</span>
@@ -285,11 +371,17 @@ export default function FeaturesComparison() {
       {/* CTA */}
       <section className="py-12 bg-background">
         <div className="container text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-6">Ready to Get Started?</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-6">
+            Ready to Get Started?
+          </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Explore the current capabilities with our demo dashboard and see the future of regulatory standards mapping.
+            Explore the current capabilities with our demo dashboard and see the
+            future of regulatory standards mapping.
           </p>
-          <Link href="/dashboard" className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-gradient-primary text-accent-foreground font-medium text-lg hover:shadow-lg transition">
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-gradient-primary text-accent-foreground font-medium text-lg hover:shadow-lg transition"
+          >
             View Demo Dashboard
           </Link>
         </div>
@@ -298,7 +390,9 @@ export default function FeaturesComparison() {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-12">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Intelligent Standards Architect. All rights reserved.</p>
+          <p>
+            &copy; 2025 Intelligent Standards Architect. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

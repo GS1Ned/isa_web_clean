@@ -1,9 +1,9 @@
 /**
  * EPCIS/CBV Traceability Types for ISA
- * 
+ *
  * Lightweight TypeScript types for GS1 EPCIS 2.0 and CBV 2.0 standards,
  * focused on ESG traceability use cases (EUDR, CSRD, PPWR).
- * 
+ *
  * Source: https://ref.gs1.org/epcis/ and https://ref.gs1.org/cbv/
  * Standards: EPCIS 2.0, CBV 2.0
  * Curated: 2025-12-10
@@ -14,14 +14,14 @@
 // ============================================================================
 
 export type CBVBizStep =
-  | "BizStep-commissioning"      // Origin: catching, harvesting, slaughtering → EUDR
-  | "BizStep-shipping"            // Transport → CSRD Scope 3, CBAM
-  | "BizStep-receiving"           // Custody transfer → EUDR, CSRD
-  | "BizStep-transforming"        // Manufacturing/processing → EUDR, CSRD, PPWR
-  | "BizStep-destroying"          // Disposal → PPWR, Waste Directive
-  | "BizStep-recycling"           // Recycling process → PPWR, Circular Economy
-  | "BizStep-repairing"           // Repair → PPWR, Right to Repair
-  | "BizStep-collecting";         // Collection for recycling → PPWR, EPR
+  | "BizStep-commissioning" // Origin: catching, harvesting, slaughtering → EUDR
+  | "BizStep-shipping" // Transport → CSRD Scope 3, CBAM
+  | "BizStep-receiving" // Custody transfer → EUDR, CSRD
+  | "BizStep-transforming" // Manufacturing/processing → EUDR, CSRD, PPWR
+  | "BizStep-destroying" // Disposal → PPWR, Waste Directive
+  | "BizStep-recycling" // Recycling process → PPWR, Circular Economy
+  | "BizStep-repairing" // Repair → PPWR, Right to Repair
+  | "BizStep-collecting"; // Collection for recycling → PPWR, EPR
 
 export interface CBVBizStepInfo {
   code: CBVBizStep;
@@ -37,13 +37,13 @@ export interface CBVBizStepInfo {
 // ============================================================================
 
 export type CBVDisposition =
-  | "Disp-in_transit"             // Goods moving → CSRD Scope 3, CBAM
-  | "Disp-active"                 // In use → Product lifetime tracking
-  | "Disp-recalled"               // Recalled → Product safety
-  | "Disp-expired"                // Expired → Food waste, PPWR
-  | "Disp-destroyed"              // Destroyed → PPWR end-of-life
-  | "Disp-recyclable"             // Recyclable → PPWR compliance
-  | "Disp-returned";              // Returned → PPWR take-back, EPR
+  | "Disp-in_transit" // Goods moving → CSRD Scope 3, CBAM
+  | "Disp-active" // In use → Product lifetime tracking
+  | "Disp-recalled" // Recalled → Product safety
+  | "Disp-expired" // Expired → Food waste, PPWR
+  | "Disp-destroyed" // Destroyed → PPWR end-of-life
+  | "Disp-recyclable" // Recyclable → PPWR compliance
+  | "Disp-returned"; // Returned → PPWR take-back, EPR
 
 export interface CBVDispositionInfo {
   code: CBVDisposition;
@@ -59,10 +59,10 @@ export interface CBVDispositionInfo {
 // ============================================================================
 
 export type CBVBizTransactionType =
-  | "BTT-cert"                    // Certification → EUDR (FSC, PEFC), CSRD
-  | "BTT-pedigree"                // Pedigree/provenance → EUDR, CSRD
-  | "BTT-po"                      // Purchase Order → Supply chain mapping
-  | "BTT-desadv";                 // Despatch Advice/ASN → CSRD Scope 3
+  | "BTT-cert" // Certification → EUDR (FSC, PEFC), CSRD
+  | "BTT-pedigree" // Pedigree/provenance → EUDR, CSRD
+  | "BTT-po" // Purchase Order → Supply chain mapping
+  | "BTT-desadv"; // Despatch Advice/ASN → CSRD Scope 3
 
 export interface CBVBizTransactionTypeInfo {
   code: CBVBizTransactionType;
@@ -78,9 +78,9 @@ export interface CBVBizTransactionTypeInfo {
 // ============================================================================
 
 export type CBVSourceDestType =
-  | "SDT-owning_party"            // Owner → EUDR ownership chain
-  | "SDT-possessing_party"        // Possessor → EUDR custody chain
-  | "SDT-location";               // Location → EUDR geographic origin, CSRD
+  | "SDT-owning_party" // Owner → EUDR ownership chain
+  | "SDT-possessing_party" // Possessor → EUDR custody chain
+  | "SDT-location"; // Location → EUDR geographic origin, CSRD
 
 export interface CBVSourceDestTypeInfo {
   code: CBVSourceDestType;
@@ -95,8 +95,7 @@ export interface CBVSourceDestTypeInfo {
 // CBV Error Reason (errorDeclaration.reason)
 // ============================================================================
 
-export type CBVErrorReason =
-  | "ER-incorrect_data";          // Data correction → CSRD data quality
+export type CBVErrorReason = "ER-incorrect_data"; // Data correction → CSRD data quality
 
 export interface CBVErrorReasonInfo {
   code: CBVErrorReason;
@@ -112,10 +111,10 @@ export interface CBVErrorReasonInfo {
 // ============================================================================
 
 export type GS1MeasurementType =
-  | "Temperature"                 // Cold chain → CSRD Scope 3 refrigerant
-  | "Humidity"                    // Storage conditions → Food safety
-  | "Speed"                       // Vehicle speed → CSRD Scope 3, CBAM
-  | "Mileage";                    // Distance → CSRD Scope 3, CBAM
+  | "Temperature" // Cold chain → CSRD Scope 3 refrigerant
+  | "Humidity" // Storage conditions → Food safety
+  | "Speed" // Vehicle speed → CSRD Scope 3, CBAM
+  | "Mileage"; // Distance → CSRD Scope 3, CBAM
 
 export interface GS1MeasurementTypeInfo {
   code: GS1MeasurementType;
@@ -131,11 +130,11 @@ export interface GS1MeasurementTypeInfo {
 // ============================================================================
 
 export type EPCISEventType =
-  | "ObjectEvent"                 // Instance/class-level object observation
-  | "AggregationEvent"            // Parent-child relationships (packaging)
-  | "TransactionEvent"            // Business transaction association
-  | "TransformationEvent"         // Input → output transformation
-  | "AssociationEvent";           // Object associations (pallets, containers)
+  | "ObjectEvent" // Instance/class-level object observation
+  | "AggregationEvent" // Parent-child relationships (packaging)
+  | "TransactionEvent" // Business transaction association
+  | "TransformationEvent" // Input → output transformation
+  | "AssociationEvent"; // Object associations (pallets, containers)
 
 export interface EPCISEventTypeInfo {
   type: EPCISEventType;
@@ -157,22 +156,22 @@ export type EPCISAction = "ADD" | "OBSERVE" | "DELETE";
 export interface EUDRTraceabilityChain {
   origin: {
     bizStep: "BizStep-commissioning";
-    location: string;  // Geographic coordinates
-    certification?: "BTT-cert";  // FSC, PEFC, etc.
+    location: string; // Geographic coordinates
+    certification?: "BTT-cert"; // FSC, PEFC, etc.
   };
   transformation: {
     bizStep: "BizStep-transforming";
-    inputs: string[];  // Input EPCs
-    outputs: string[];  // Output EPCs
+    inputs: string[]; // Input EPCs
+    outputs: string[]; // Output EPCs
   };
   custody: {
     sourceDestType: "SDT-owning_party" | "SDT-possessing_party";
-    parties: string[];  // GLNs of parties in chain
+    parties: string[]; // GLNs of parties in chain
   };
   transport: {
     bizStep: "BizStep-shipping" | "BizStep-receiving";
     disposition: "Disp-in_transit";
-    locations: string[];  // GLNs of facilities
+    locations: string[]; // GLNs of facilities
   };
 }
 
@@ -181,13 +180,13 @@ export interface CSRDScope3Emissions {
     bizStep: "BizStep-shipping";
     disposition: "Disp-in_transit";
     sensorData: {
-      speed?: number;  // MeasurementType-Speed
-      mileage?: number;  // MeasurementType-Mileage
+      speed?: number; // MeasurementType-Speed
+      mileage?: number; // MeasurementType-Mileage
     };
   };
   manufacturing: {
     bizStep: "BizStep-transforming";
-    location: string;  // GLN of facility
+    location: string; // GLN of facility
   };
 }
 
@@ -217,7 +216,7 @@ export interface PPWRCircularEconomy {
 // ============================================================================
 
 export interface RegulationEPCISMapping {
-  regulationId: string;  // e.g., "EUDR", "CSRD", "PPWR"
+  regulationId: string; // e.g., "EUDR", "CSRD", "PPWR"
   requiredBizSteps: CBVBizStep[];
   requiredDispositions: CBVDisposition[];
   requiredTransactionTypes: CBVBizTransactionType[];
@@ -225,74 +224,75 @@ export interface RegulationEPCISMapping {
   traceabilityRequirements: string[];
 }
 
-export const REGULATION_EPCIS_MAPPINGS: Record<string, RegulationEPCISMapping> = {
-  EUDR: {
-    regulationId: "EUDR",
-    requiredBizSteps: [
-      "BizStep-commissioning",  // Origin tracking
-      "BizStep-transforming",   // Processing steps
-      "BizStep-shipping",       // Transport
-      "BizStep-receiving"       // Custody transfer
-    ],
-    requiredDispositions: [],
-    requiredTransactionTypes: [
-      "BTT-cert",               // Certifications (FSC, PEFC)
-      "BTT-pedigree"            // Provenance documentation
-    ],
-    requiredSensorTypes: [],
-    traceabilityRequirements: [
-      "Geographic origin (commissioning location)",
-      "Custody chain (owning_party, possessing_party)",
-      "Transformation steps (inputs → outputs)",
-      "Certifications (FSC, PEFC, organic)"
-    ]
-  },
-  CSRD: {
-    regulationId: "CSRD",
-    requiredBizSteps: [
-      "BizStep-shipping",       // Scope 3 transport
-      "BizStep-transforming"    // Manufacturing emissions
-    ],
-    requiredDispositions: [
-      "Disp-in_transit"         // Goods in transit
-    ],
-    requiredTransactionTypes: [],
-    requiredSensorTypes: [
-      "Speed",                  // Vehicle speed for emissions
-      "Mileage",                // Distance for emissions
-      "Temperature"             // Cold chain refrigerant emissions
-    ],
-    traceabilityRequirements: [
-      "Scope 3 transport emissions (shipping + sensor data)",
-      "Manufacturing facility locations",
-      "Supply chain mapping (custody chain)"
-    ]
-  },
-  PPWR: {
-    regulationId: "PPWR",
-    requiredBizSteps: [
-      "BizStep-commissioning",  // Production
-      "BizStep-collecting",     // Collection schemes
-      "BizStep-recycling",      // Recycling process
-      "BizStep-destroying",     // Disposal
-      "BizStep-repairing"       // Lifetime extension
-    ],
-    requiredDispositions: [
-      "Disp-active",            // In use
-      "Disp-recyclable",        // Recyclable status
-      "Disp-returned",          // Take-back
-      "Disp-destroyed"          // End-of-life
-    ],
-    requiredTransactionTypes: [],
-    requiredSensorTypes: [],
-    traceabilityRequirements: [
-      "Product lifecycle tracking (commissioning → active → collecting → recycling/destroying)",
-      "Recycled content verification (transformation inputs)",
-      "Take-back scheme compliance (returned disposition)",
-      "Repair and reuse tracking (repairing bizStep)"
-    ]
-  }
-};
+export const REGULATION_EPCIS_MAPPINGS: Record<string, RegulationEPCISMapping> =
+  {
+    EUDR: {
+      regulationId: "EUDR",
+      requiredBizSteps: [
+        "BizStep-commissioning", // Origin tracking
+        "BizStep-transforming", // Processing steps
+        "BizStep-shipping", // Transport
+        "BizStep-receiving", // Custody transfer
+      ],
+      requiredDispositions: [],
+      requiredTransactionTypes: [
+        "BTT-cert", // Certifications (FSC, PEFC)
+        "BTT-pedigree", // Provenance documentation
+      ],
+      requiredSensorTypes: [],
+      traceabilityRequirements: [
+        "Geographic origin (commissioning location)",
+        "Custody chain (owning_party, possessing_party)",
+        "Transformation steps (inputs → outputs)",
+        "Certifications (FSC, PEFC, organic)",
+      ],
+    },
+    CSRD: {
+      regulationId: "CSRD",
+      requiredBizSteps: [
+        "BizStep-shipping", // Scope 3 transport
+        "BizStep-transforming", // Manufacturing emissions
+      ],
+      requiredDispositions: [
+        "Disp-in_transit", // Goods in transit
+      ],
+      requiredTransactionTypes: [],
+      requiredSensorTypes: [
+        "Speed", // Vehicle speed for emissions
+        "Mileage", // Distance for emissions
+        "Temperature", // Cold chain refrigerant emissions
+      ],
+      traceabilityRequirements: [
+        "Scope 3 transport emissions (shipping + sensor data)",
+        "Manufacturing facility locations",
+        "Supply chain mapping (custody chain)",
+      ],
+    },
+    PPWR: {
+      regulationId: "PPWR",
+      requiredBizSteps: [
+        "BizStep-commissioning", // Production
+        "BizStep-collecting", // Collection schemes
+        "BizStep-recycling", // Recycling process
+        "BizStep-destroying", // Disposal
+        "BizStep-repairing", // Lifetime extension
+      ],
+      requiredDispositions: [
+        "Disp-active", // In use
+        "Disp-recyclable", // Recyclable status
+        "Disp-returned", // Take-back
+        "Disp-destroyed", // End-of-life
+      ],
+      requiredTransactionTypes: [],
+      requiredSensorTypes: [],
+      traceabilityRequirements: [
+        "Product lifecycle tracking (commissioning → active → collecting → recycling/destroying)",
+        "Recycled content verification (transformation inputs)",
+        "Take-back scheme compliance (returned disposition)",
+        "Repair and reuse tracking (repairing bizStep)",
+      ],
+    },
+  };
 
 // ============================================================================
 // Helper Functions
@@ -301,7 +301,9 @@ export const REGULATION_EPCIS_MAPPINGS: Record<string, RegulationEPCISMapping> =
 /**
  * Get ESG-relevant EPCIS/CBV codes for a regulation
  */
-export function getEPCISCodesForRegulation(regulationId: string): RegulationEPCISMapping | undefined {
+export function getEPCISCodesForRegulation(
+  regulationId: string
+): RegulationEPCISMapping | undefined {
   return REGULATION_EPCIS_MAPPINGS[regulationId];
 }
 
@@ -317,7 +319,7 @@ export function isESGRelevantBizStep(bizStep: string): bizStep is CBVBizStep {
     "BizStep-destroying",
     "BizStep-recycling",
     "BizStep-repairing",
-    "BizStep-collecting"
+    "BizStep-collecting",
   ];
   return esgBizSteps.includes(bizStep as CBVBizStep);
 }
@@ -325,7 +327,9 @@ export function isESGRelevantBizStep(bizStep: string): bizStep is CBVBizStep {
 /**
  * Check if a disposition is relevant for ESG traceability
  */
-export function isESGRelevantDisposition(disposition: string): disposition is CBVDisposition {
+export function isESGRelevantDisposition(
+  disposition: string
+): disposition is CBVDisposition {
   const esgDispositions: CBVDisposition[] = [
     "Disp-in_transit",
     "Disp-active",
@@ -333,7 +337,7 @@ export function isESGRelevantDisposition(disposition: string): disposition is CB
     "Disp-expired",
     "Disp-destroyed",
     "Disp-recyclable",
-    "Disp-returned"
+    "Disp-returned",
   ];
   return esgDispositions.includes(disposition as CBVDisposition);
 }
@@ -355,17 +359,21 @@ export function getCodeLabel(code: string): string {
  */
 export function getRegulationTagsForCode(code: string): string[] {
   const tags: string[] = [];
-  
-  for (const [regulationId, mapping] of Object.entries(REGULATION_EPCIS_MAPPINGS)) {
+
+  for (const [regulationId, mapping] of Object.entries(
+    REGULATION_EPCIS_MAPPINGS
+  )) {
     if (
       mapping.requiredBizSteps.includes(code as CBVBizStep) ||
       mapping.requiredDispositions.includes(code as CBVDisposition) ||
-      mapping.requiredTransactionTypes.includes(code as CBVBizTransactionType) ||
+      mapping.requiredTransactionTypes.includes(
+        code as CBVBizTransactionType
+      ) ||
       mapping.requiredSensorTypes.includes(code as GS1MeasurementType)
     ) {
       tags.push(regulationId);
     }
   }
-  
+
   return tags;
 }

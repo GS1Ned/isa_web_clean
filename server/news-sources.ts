@@ -1,7 +1,7 @@
 /**
  * News Sources Configuration
  * Defines authoritative sources for ESG regulatory news
- * 
+ *
  * Primary Sources: EU official regulatory bodies
  * Secondary Sources: GS1 organizations (high relevance to target audience)
  */
@@ -9,7 +9,12 @@
 export interface NewsSource {
   id: string;
   name: string;
-  type: "EU_OFFICIAL" | "GS1_OFFICIAL" | "DUTCH_NATIONAL" | "INDUSTRY" | "MEDIA";
+  type:
+    | "EU_OFFICIAL"
+    | "GS1_OFFICIAL"
+    | "DUTCH_NATIONAL"
+    | "INDUSTRY"
+    | "MEDIA";
   rssUrl?: string;
   apiUrl?: string;
   credibilityScore: number; // 0.0 - 1.0
@@ -25,16 +30,40 @@ export const NEWS_SOURCES: NewsSource[] = [
     type: "EU_OFFICIAL",
     rssUrl: "https://eur-lex.europa.eu/EN/display-rss.html",
     credibilityScore: 1.0,
-    keywords: ["CSRD", "ESRS", "EUDR", "DPP", "PPWR", "ESPR", "sustainability", "ESG", "due diligence", "deforestation", "circular economy", "packaging"],
+    keywords: [
+      "CSRD",
+      "ESRS",
+      "EUDR",
+      "DPP",
+      "PPWR",
+      "ESPR",
+      "sustainability",
+      "ESG",
+      "due diligence",
+      "deforestation",
+      "circular economy",
+      "packaging",
+    ],
     enabled: true,
   },
   {
     id: "eu-commission-environment",
     name: "European Commission - Environment",
     type: "EU_OFFICIAL",
-    rssUrl: "https://ec.europa.eu/newsroom/env/rss-feeds/specific-newsroom-rss-feed_en?newsroom=29",
+    rssUrl:
+      "https://ec.europa.eu/newsroom/env/rss-feeds/specific-newsroom-rss-feed_en?newsroom=29",
     credibilityScore: 1.0,
-    keywords: ["CSRD", "ESRS", "EUDR", "DPP", "PPWR", "ESPR", "Green Deal", "sustainability", "circular economy"],
+    keywords: [
+      "CSRD",
+      "ESRS",
+      "EUDR",
+      "DPP",
+      "PPWR",
+      "ESPR",
+      "Green Deal",
+      "sustainability",
+      "circular economy",
+    ],
     enabled: true,
   },
   {
@@ -43,10 +72,16 @@ export const NEWS_SOURCES: NewsSource[] = [
     type: "EU_OFFICIAL",
     rssUrl: "https://www.efrag.org/rss",
     credibilityScore: 1.0,
-    keywords: ["ESRS", "CSRD", "sustainability reporting", "disclosure", "datapoint"],
+    keywords: [
+      "ESRS",
+      "CSRD",
+      "sustainability reporting",
+      "disclosure",
+      "datapoint",
+    ],
     enabled: true,
   },
-  
+
   // GS1 Official Sources (High Relevance to Target Audience)
   {
     id: "gs1-nl-news",
@@ -54,7 +89,18 @@ export const NEWS_SOURCES: NewsSource[] = [
     type: "GS1_OFFICIAL",
     rssUrl: "https://www.gs1.nl/rss.xml",
     credibilityScore: 0.9,
-    keywords: ["CSRD", "ESRS", "EUDR", "DPP", "PPWR", "sustainability", "traceability", "EPCIS", "Digital Product Passport", "supply chain"],
+    keywords: [
+      "CSRD",
+      "ESRS",
+      "EUDR",
+      "DPP",
+      "PPWR",
+      "sustainability",
+      "traceability",
+      "EPCIS",
+      "Digital Product Passport",
+      "supply chain",
+    ],
     enabled: true,
   },
   {
@@ -63,7 +109,15 @@ export const NEWS_SOURCES: NewsSource[] = [
     type: "GS1_OFFICIAL",
     rssUrl: "https://www.gs1.org/news-events/news/rss",
     credibilityScore: 0.9,
-    keywords: ["sustainability", "ESG", "traceability", "EPCIS", "Digital Product Passport", "circular economy", "supply chain transparency"],
+    keywords: [
+      "sustainability",
+      "ESG",
+      "traceability",
+      "EPCIS",
+      "Digital Product Passport",
+      "circular economy",
+      "supply chain transparency",
+    ],
     enabled: true,
   },
   {
@@ -72,17 +126,36 @@ export const NEWS_SOURCES: NewsSource[] = [
     type: "GS1_OFFICIAL",
     rssUrl: "https://www.gs1.eu/news-events/rss",
     credibilityScore: 0.9,
-    keywords: ["CSRD", "ESRS", "EUDR", "DPP", "PPWR", "ESPR", "EU regulation", "sustainability", "traceability"],
+    keywords: [
+      "CSRD",
+      "ESRS",
+      "EUDR",
+      "DPP",
+      "PPWR",
+      "ESPR",
+      "EU regulation",
+      "sustainability",
+      "traceability",
+    ],
     enabled: true,
   },
-  
+
   // Dutch National Sources (Netherlands-specific ESG initiatives)
   {
     id: "greendeal-healthcare",
     name: "Green Deal Duurzame Zorg",
     type: "DUTCH_NATIONAL",
     credibilityScore: 0.95,
-    keywords: ["healthcare", "sustainability", "circular economy", "medical devices", "green teams", "duurzame zorg", "CSRD", "ESRS"],
+    keywords: [
+      "healthcare",
+      "sustainability",
+      "circular economy",
+      "medical devices",
+      "green teams",
+      "duurzame zorg",
+      "CSRD",
+      "ESRS",
+    ],
     enabled: true,
   },
   {
@@ -90,7 +163,17 @@ export const NEWS_SOURCES: NewsSource[] = [
     name: "Op weg naar ZES (Zero-Emission Zones)",
     type: "DUTCH_NATIONAL",
     credibilityScore: 0.95,
-    keywords: ["zero-emission", "logistics", "freight", "electric vehicles", "urban mobility", "CO2", "sustainability", "CSRD", "Scope 3"],
+    keywords: [
+      "zero-emission",
+      "logistics",
+      "freight",
+      "electric vehicles",
+      "urban mobility",
+      "CO2",
+      "sustainability",
+      "CSRD",
+      "Scope 3",
+    ],
     enabled: true,
   },
 ];
@@ -99,23 +182,61 @@ export const NEWS_SOURCES: NewsSource[] = [
  * Regulation keywords for tagging news articles
  */
 export const REGULATION_KEYWORDS = {
-  CSRD: ["CSRD", "Corporate Sustainability Reporting Directive", "sustainability reporting directive"],
+  CSRD: [
+    "CSRD",
+    "Corporate Sustainability Reporting Directive",
+    "sustainability reporting directive",
+  ],
   ESRS: ["ESRS", "European Sustainability Reporting Standards", "EFRAG"],
-  EUDR: ["EUDR", "EU Deforestation Regulation", "deforestation-free", "forest risk commodities"],
+  EUDR: [
+    "EUDR",
+    "EU Deforestation Regulation",
+    "deforestation-free",
+    "forest risk commodities",
+  ],
   DPP: ["DPP", "Digital Product Passport", "product passport", "Ecodesign"],
   PPWR: ["PPWR", "Packaging and Packaging Waste Regulation", "packaging waste"],
   ESPR: ["ESPR", "Ecodesign for Sustainable Products Regulation", "ecodesign"],
-  CSDDD: ["CSDDD", "Corporate Sustainability Due Diligence Directive", "due diligence directive"],
+  CSDDD: [
+    "CSDDD",
+    "Corporate Sustainability Due Diligence Directive",
+    "due diligence directive",
+  ],
   TAXONOMY: ["EU Taxonomy", "Taxonomy Regulation", "sustainable activities"],
   BATTERIES: ["Battery Regulation", "batteries directive", "battery passport"],
-  REACH: ["REACH", "Registration, Evaluation, Authorisation and Restriction of Chemicals"],
+  REACH: [
+    "REACH",
+    "Registration, Evaluation, Authorisation and Restriction of Chemicals",
+  ],
 };
 
 /**
  * Impact level keywords for scoring news importance
  */
 export const IMPACT_KEYWORDS = {
-  HIGH: ["adopted", "enters into force", "mandatory", "deadline", "enforcement", "penalty", "final text", "published in Official Journal"],
-  MEDIUM: ["proposal", "draft", "consultation", "amendment", "updated guidance", "implementation"],
-  LOW: ["discussion", "preliminary", "workshop", "stakeholder meeting", "call for evidence"],
+  HIGH: [
+    "adopted",
+    "enters into force",
+    "mandatory",
+    "deadline",
+    "enforcement",
+    "penalty",
+    "final text",
+    "published in Official Journal",
+  ],
+  MEDIUM: [
+    "proposal",
+    "draft",
+    "consultation",
+    "amendment",
+    "updated guidance",
+    "implementation",
+  ],
+  LOW: [
+    "discussion",
+    "preliminary",
+    "workshop",
+    "stakeholder meeting",
+    "call for evidence",
+  ],
 };

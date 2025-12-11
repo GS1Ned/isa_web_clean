@@ -1,11 +1,11 @@
 /**
  * Multi-Regulation Timeline Comparison Component
- * 
+ *
  * Displays side-by-side timelines for multiple regulations to help users:
  * - Identify overlapping deadlines
  * - Understand cross-regulation dependencies
  * - Plan compliance activities across multiple regulations
- * 
+ *
  * Features:
  * - Side-by-side timeline columns
  * - Synchronized date axis
@@ -17,7 +17,14 @@ import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Milestone, Newspaper, TrendingUp, X, Plus } from "lucide-react";
+import {
+  Calendar,
+  Milestone,
+  Newspaper,
+  TrendingUp,
+  X,
+  Plus,
+} from "lucide-react";
 import { Link } from "wouter";
 import { format, parseISO, isSameMonth, isSameYear } from "date-fns";
 import { trpc } from "@/lib/trpc";
@@ -54,7 +61,11 @@ type TimelineEvent = {
   newsId?: number;
 };
 
-export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulation }: CompareTimelinesProps) {
+export function CompareTimelines({
+  regulations,
+  onRemoveRegulation,
+  onAddRegulation,
+}: CompareTimelinesProps) {
   const [showNews, setShowNews] = useState(true);
   const [dateRange, setDateRange] = useState<"all" | "past" | "future">("all");
 
@@ -64,7 +75,7 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
   const allEvents = useMemo(() => {
     const events: TimelineEvent[] = [];
 
-    regulations.forEach((reg) => {
+    regulations.forEach(reg => {
       // Add milestones
       reg.timeline.forEach((milestone, index) => {
         events.push({
@@ -83,10 +94,12 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
       // Add related news
       if (showNews && newsItems) {
         const relatedNews = newsItems.filter(
-          (item) => Array.isArray(item.regulationTags) && item.regulationTags.includes(reg.code)
+          item =>
+            Array.isArray(item.regulationTags) &&
+            item.regulationTags.includes(reg.code)
         );
 
-        relatedNews.forEach((news) => {
+        relatedNews.forEach(news => {
           events.push({
             id: `${reg.code}-news-${news.id}`,
             date: new Date(news.publishedDate || news.createdAt),
@@ -109,9 +122,9 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
     // Apply date range filter
     const now = new Date();
     if (dateRange === "past") {
-      return events.filter((event) => event.date < now);
+      return events.filter(event => event.date < now);
     } else if (dateRange === "future") {
-      return events.filter((event) => event.date > now);
+      return events.filter(event => event.date > now);
     }
 
     return events;
@@ -121,7 +134,7 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
   const overlappingPeriods = useMemo(() => {
     const periods = new Map<string, TimelineEvent[]>();
 
-    allEvents.forEach((event) => {
+    allEvents.forEach(event => {
       const monthKey = `${event.date.getFullYear()}-${event.date.getMonth()}`;
       if (!periods.has(monthKey)) {
         periods.set(monthKey, []);
@@ -130,9 +143,10 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
     });
 
     // Filter to only periods with events from multiple regulations
-    const overlapping: Array<{ monthKey: string; events: TimelineEvent[] }> = [];
+    const overlapping: Array<{ monthKey: string; events: TimelineEvent[] }> =
+      [];
     periods.forEach((events, monthKey) => {
-      const uniqueRegulations = new Set(events.map((e) => e.regulationCode));
+      const uniqueRegulations = new Set(events.map(e => e.regulationCode));
       if (uniqueRegulations.size > 1) {
         overlapping.push({ monthKey, events });
       }
@@ -145,11 +159,11 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
   const eventsByRegulation = useMemo(() => {
     const grouped = new Map<string, TimelineEvent[]>();
 
-    regulations.forEach((reg) => {
+    regulations.forEach(reg => {
       grouped.set(reg.code, []);
     });
 
-    allEvents.forEach((event) => {
+    allEvents.forEach(event => {
       grouped.get(event.regulationCode)?.push(event);
     });
 
@@ -168,9 +182,12 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
         <CardContent className="pt-6">
           <div className="text-center py-12">
             <Calendar className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No Regulations Selected</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              No Regulations Selected
+            </h3>
             <p className="text-muted-foreground mb-4">
-              Select 2-4 regulations to compare their timelines and identify overlapping deadlines.
+              Select 2-4 regulations to compare their timelines and identify
+              overlapping deadlines.
             </p>
             {onAddRegulation && (
               <Button onClick={onAddRegulation} className="gap-2">
@@ -196,8 +213,10 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
                 Timeline Comparison
               </CardTitle>
               <p className="text-sm text-muted-foreground mt-1">
-                Comparing {regulations.length} {regulations.length === 1 ? "regulation" : "regulations"} •{" "}
-                {overlappingPeriods.length} overlapping {overlappingPeriods.length === 1 ? "period" : "periods"}
+                Comparing {regulations.length}{" "}
+                {regulations.length === 1 ? "regulation" : "regulations"} •{" "}
+                {overlappingPeriods.length} overlapping{" "}
+                {overlappingPeriods.length === 1 ? "period" : "periods"}
               </p>
             </div>
 
@@ -239,7 +258,7 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
 
       {/* Selected Regulations */}
       <div className="flex flex-wrap gap-2">
-        {regulations.map((reg) => (
+        {regulations.map(reg => (
           <Badge
             key={reg.code}
             className="px-3 py-2 text-sm"
@@ -262,7 +281,12 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
           </Badge>
         ))}
         {onAddRegulation && regulations.length < 4 && (
-          <Button variant="outline" size="sm" onClick={onAddRegulation} className="gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onAddRegulation}
+            className="gap-2"
+          >
             <Plus className="h-4 w-4" />
             Add Regulation
           </Button>
@@ -277,10 +301,13 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
               <TrendingUp className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">
-                  {overlappingPeriods.length} Overlapping {overlappingPeriods.length === 1 ? "Period" : "Periods"} Detected
+                  {overlappingPeriods.length} Overlapping{" "}
+                  {overlappingPeriods.length === 1 ? "Period" : "Periods"}{" "}
+                  Detected
                 </h4>
                 <p className="text-sm text-orange-800 dark:text-orange-200">
-                  Multiple regulations have events in the same time period. Review these carefully to coordinate compliance activities.
+                  Multiple regulations have events in the same time period.
+                  Review these carefully to coordinate compliance activities.
                 </p>
               </div>
             </div>
@@ -289,15 +316,27 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
       )}
 
       {/* Side-by-Side Timeline Columns */}
-      <div className={`grid gap-6 ${regulations.length === 2 ? "md:grid-cols-2" : regulations.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2 lg:grid-cols-4"}`}>
-        {regulations.map((reg) => {
+      <div
+        className={`grid gap-6 ${regulations.length === 2 ? "md:grid-cols-2" : regulations.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2 lg:grid-cols-4"}`}
+      >
+        {regulations.map(reg => {
           const events = eventsByRegulation.get(reg.code) || [];
 
           return (
-            <Card key={reg.code} className="border-2" style={{ borderColor: `${reg.color}40` }}>
-              <CardHeader className="pb-4" style={{ backgroundColor: `${reg.color}10` }}>
+            <Card
+              key={reg.code}
+              className="border-2"
+              style={{ borderColor: `${reg.color}40` }}
+            >
+              <CardHeader
+                className="pb-4"
+                style={{ backgroundColor: `${reg.color}10` }}
+              >
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: reg.color }} />
+                  <div
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: reg.color }}
+                  />
                   {reg.code}
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">{reg.title}</p>
@@ -307,13 +346,15 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
               </CardHeader>
               <CardContent className="pt-4">
                 {events.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground text-sm">No events in selected range</div>
+                  <div className="text-center py-8 text-muted-foreground text-sm">
+                    No events in selected range
+                  </div>
                 ) : (
                   <div className="space-y-4">
-                    {events.map((event) => {
+                    {events.map(event => {
                       // Check if this event overlaps with other regulations
-                      const isOverlapping = overlappingPeriods.some((period) =>
-                        period.events.some((e) => e.id === event.id)
+                      const isOverlapping = overlappingPeriods.some(period =>
+                        period.events.some(e => e.id === event.id)
                       );
 
                       return (
@@ -335,8 +376,8 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
                                     event.status === "completed"
                                       ? "#22c55e"
                                       : event.status === "upcoming"
-                                      ? "#3b82f6"
-                                      : "#cbd5e1",
+                                        ? "#3b82f6"
+                                        : "#cbd5e1",
                                 }}
                               >
                                 <Milestone className="h-3 w-3 text-white" />
@@ -350,7 +391,10 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
                               {format(event.date, "MMM d, yyyy")}
                             </span>
                             {isOverlapping && (
-                              <Badge variant="outline" className="ml-auto text-xs border-orange-500/50 text-orange-700">
+                              <Badge
+                                variant="outline"
+                                className="ml-auto text-xs border-orange-500/50 text-orange-700"
+                              >
                                 Overlap
                               </Badge>
                             )}
@@ -364,12 +408,16 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
                               </h5>
                             </Link>
                           ) : (
-                            <h5 className="font-semibold text-sm mb-1 line-clamp-2">{event.title}</h5>
+                            <h5 className="font-semibold text-sm mb-1 line-clamp-2">
+                              {event.title}
+                            </h5>
                           )}
 
                           {/* Event Description */}
                           {event.description && (
-                            <p className="text-xs text-muted-foreground line-clamp-2 mb-2">{event.description}</p>
+                            <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
+                              {event.description}
+                            </p>
                           )}
 
                           {/* Event Metadata */}
@@ -380,15 +428,17 @@ export function CompareTimelines({ regulations, onRemoveRegulation, onAddRegulat
                                 event.status === "completed"
                                   ? "bg-green-500/10 text-green-700"
                                   : event.status === "upcoming"
-                                  ? "bg-blue-500/10 text-blue-700"
-                                  : "bg-slate-500/10 text-slate-700"
+                                    ? "bg-blue-500/10 text-blue-700"
+                                    : "bg-slate-500/10 text-slate-700"
                               }`}
                             >
                               {event.status}
                             </Badge>
                           )}
                           {event.type === "news" && event.impactLevel && (
-                            <Badge className={`text-xs ${impactColors[event.impactLevel as keyof typeof impactColors]}`}>
+                            <Badge
+                              className={`text-xs ${impactColors[event.impactLevel as keyof typeof impactColors]}`}
+                            >
                               {event.impactLevel}
                             </Badge>
                           )}

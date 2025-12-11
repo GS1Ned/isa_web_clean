@@ -8,7 +8,10 @@ import { toast } from "sonner";
 export default function AdminPanel() {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
   const [isSeeding, setIsSeeding] = useState(false);
-  const [seedResult, setSeedResult] = useState<{ success: boolean; message: string } | null>(null);
+  const [seedResult, setSeedResult] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   if (authLoading) {
     return (
@@ -23,11 +26,16 @@ export default function AdminPanel() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-4">Access Denied</h1>
+          <h1 className="text-4xl font-bold text-foreground mb-4">
+            Access Denied
+          </h1>
           <p className="text-muted-foreground mb-8">
             Admin access required. Please contact the administrator.
           </p>
-          <Link href="/" className="text-accent hover:text-accent/80 transition">
+          <Link
+            href="/"
+            className="text-accent hover:text-accent/80 transition"
+          >
             Return to home
           </Link>
         </div>
@@ -78,7 +86,10 @@ export default function AdminPanel() {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+          <Link
+            href="/"
+            className="flex items-center gap-2 hover:opacity-80 transition"
+          >
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-secondary flex items-center justify-center">
               <Zap className="w-5 h-5 text-accent-foreground" />
             </div>
@@ -86,7 +97,10 @@ export default function AdminPanel() {
           </Link>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">Admin Panel</span>
-            <Link href="/" className="text-sm font-medium text-accent hover:text-accent/80 transition">
+            <Link
+              href="/"
+              className="text-sm font-medium text-accent hover:text-accent/80 transition"
+            >
               Exit
             </Link>
           </div>
@@ -96,7 +110,9 @@ export default function AdminPanel() {
       {/* Header */}
       <section className="py-12 bg-gradient-to-b from-accent/5 to-transparent border-b border-border">
         <div className="container">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">Admin Panel</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">
+            Admin Panel
+          </h1>
           <p className="text-lg text-muted-foreground">
             Manage ISA demo data and content
           </p>
@@ -108,10 +124,15 @@ export default function AdminPanel() {
         <div className="container max-w-2xl">
           {/* User Info */}
           <div className="card-elevated p-6 mb-8">
-            <h2 className="text-xl font-bold text-foreground mb-4">Logged In As</h2>
+            <h2 className="text-xl font-bold text-foreground mb-4">
+              Logged In As
+            </h2>
             <div className="bg-background rounded p-4 border border-border">
               <p className="text-sm text-muted-foreground mb-2">
-                <span className="font-medium text-foreground">{user?.name}</span> ({user?.email})
+                <span className="font-medium text-foreground">
+                  {user?.name}
+                </span>{" "}
+                ({user?.email})
               </p>
               <p className="text-sm">
                 <span className="text-muted-foreground">Role: </span>
@@ -124,35 +145,53 @@ export default function AdminPanel() {
           <div className="card-elevated p-6">
             <div className="flex items-center gap-3 mb-6">
               <Database className="w-6 h-6 text-accent" />
-              <h2 className="text-2xl font-bold text-foreground">Demo Data Management</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Demo Data Management
+              </h2>
             </div>
 
             <div className="bg-background rounded-lg p-6 border border-border mb-6">
-              <h3 className="font-semibold text-foreground mb-3">Seed Sample Data</h3>
+              <h3 className="font-semibold text-foreground mb-3">
+                Seed Sample Data
+              </h3>
               <p className="text-sm text-muted-foreground mb-6">
-                Populate the database with sample CSRD, ESRS, and DPP regulations, GS1 standards, and their mappings. This enables the demo dashboard to showcase ISA's capabilities.
+                Populate the database with sample CSRD, ESRS, and DPP
+                regulations, GS1 standards, and their mappings. This enables the
+                demo dashboard to showcase ISA's capabilities.
               </p>
 
               <div className="space-y-3 mb-6">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-foreground">6 Sample Regulations</p>
-                    <p className="text-xs text-muted-foreground">CSRD, ESRS, DPP, EU Taxonomy</p>
+                    <p className="text-sm font-medium text-foreground">
+                      6 Sample Regulations
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      CSRD, ESRS, DPP, EU Taxonomy
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-foreground">8 GS1 Standards</p>
-                    <p className="text-xs text-muted-foreground">GTIN, EPCIS, Digital Product Passport, etc.</p>
+                    <p className="text-sm font-medium text-foreground">
+                      8 GS1 Standards
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      GTIN, EPCIS, Digital Product Passport, etc.
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-foreground">9 Regulation-to-Standard Mappings</p>
-                    <p className="text-xs text-muted-foreground">With relevance scores and mapping reasons</p>
+                    <p className="text-sm font-medium text-foreground">
+                      9 Regulation-to-Standard Mappings
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      With relevance scores and mapping reasons
+                    </p>
                   </div>
                 </div>
               </div>
@@ -192,12 +231,16 @@ export default function AdminPanel() {
                     <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                   )}
                   <div>
-                    <p className={`text-sm font-medium ${
-                      seedResult.success ? "text-green-400" : "text-red-400"
-                    }`}>
+                    <p
+                      className={`text-sm font-medium ${
+                        seedResult.success ? "text-green-400" : "text-red-400"
+                      }`}
+                    >
                       {seedResult.success ? "Success" : "Error"}
                     </p>
-                    <p className="text-sm text-muted-foreground mt-1">{seedResult.message}</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {seedResult.message}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -209,9 +252,14 @@ export default function AdminPanel() {
             <div className="flex gap-3">
               <AlertCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-foreground mb-2">About This Panel</h4>
+                <h4 className="font-semibold text-foreground mb-2">
+                  About This Panel
+                </h4>
                 <p className="text-sm text-muted-foreground">
-                  This admin panel is for demonstration purposes. In production, data management would be handled through a more comprehensive CMS with role-based access control, audit logging, and data validation.
+                  This admin panel is for demonstration purposes. In production,
+                  data management would be handled through a more comprehensive
+                  CMS with role-based access control, audit logging, and data
+                  validation.
                 </p>
               </div>
             </div>
@@ -220,17 +268,34 @@ export default function AdminPanel() {
           {/* Quick Links */}
           <div className="mt-8 space-y-3">
             <h3 className="font-semibold text-foreground mb-4">Admin Tools</h3>
-            <Link href="/admin/news" className="block p-4 rounded-lg bg-card border border-border hover:border-accent transition">
-              <p className="font-medium text-foreground">📰 News Administration</p>
-              <p className="text-sm text-muted-foreground">Manually trigger news ingestion and monitor pipeline health</p>
+            <Link
+              href="/admin/news"
+              className="block p-4 rounded-lg bg-card border border-border hover:border-accent transition"
+            >
+              <p className="font-medium text-foreground">
+                📰 News Administration
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Manually trigger news ingestion and monitor pipeline health
+              </p>
             </Link>
-            <Link href="/dashboard" className="block p-4 rounded-lg bg-card border border-border hover:border-accent transition">
+            <Link
+              href="/dashboard"
+              className="block p-4 rounded-lg bg-card border border-border hover:border-accent transition"
+            >
               <p className="font-medium text-foreground">View Demo Dashboard</p>
-              <p className="text-sm text-muted-foreground">See the regulatory mapping explorer</p>
+              <p className="text-sm text-muted-foreground">
+                See the regulatory mapping explorer
+              </p>
             </Link>
-            <Link href="/" className="block p-4 rounded-lg bg-card border border-border hover:border-accent transition">
+            <Link
+              href="/"
+              className="block p-4 rounded-lg bg-card border border-border hover:border-accent transition"
+            >
               <p className="font-medium text-foreground">Return to Home</p>
-              <p className="text-sm text-muted-foreground">Back to the main landing page</p>
+              <p className="text-sm text-muted-foreground">
+                Back to the main landing page
+              </p>
             </Link>
           </div>
         </div>
@@ -239,7 +304,9 @@ export default function AdminPanel() {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-8 mt-12">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Intelligent Standards Architect. All rights reserved.</p>
+          <p>
+            &copy; 2025 Intelligent Standards Architect. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

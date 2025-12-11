@@ -44,7 +44,12 @@
     "name": "Quantity",
     "description": "Quantity of the relevant product",
     "exampleRegulations": ["ESPR/DPP", "EUDR", "PPWR", "CSRD"],
-    "likelyGS1Standards": ["EPCIS", "CBV", "GS1 Web Vocabulary", "AI (30) - Count of items"],
+    "likelyGS1Standards": [
+      "EPCIS",
+      "CBV",
+      "GS1 Web Vocabulary",
+      "AI (30) - Count of items"
+    ],
     "likelyESGUseCases": [
       "Volume tracking for regulatory reporting",
       "Batch/lot quantity for traceability",
@@ -57,7 +62,11 @@
     "name": "GHG Emissions",
     "description": "Greenhouse gas emissions data across scopes 1, 2, and 3",
     "exampleRegulations": ["CSRD", "CSDDD", "TCFD"],
-    "likelyGS1Standards": ["EPCIS", "GS1 Web Vocabulary", "Product Carbon Footprint attributes"],
+    "likelyGS1Standards": [
+      "EPCIS",
+      "GS1 Web Vocabulary",
+      "Product Carbon Footprint attributes"
+    ],
     "likelyESGUseCases": [
       "Corporate carbon footprint reporting",
       "Product-level carbon footprint for DPP",

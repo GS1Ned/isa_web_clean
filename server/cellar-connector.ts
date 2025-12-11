@@ -1,9 +1,9 @@
 /**
  * CELLAR SPARQL Connector
- * 
+ *
  * Connects to the EU Publications Office CELLAR SPARQL endpoint
  * to retrieve metadata about EU legal acts and regulations.
- * 
+ *
  * CELLAR uses the CDM (Common Data Model) ontology with WEMI structure:
  * - WORK: Abstract idea of a legal resource
  * - EXPRESSION: Language version of a work
@@ -11,21 +11,22 @@
  * - ITEM: Single exemplar with unique identifier
  */
 
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from "axios";
 
 // CELLAR SPARQL endpoint (public, no authentication required)
-const CELLAR_SPARQL_ENDPOINT = 'https://publications.europa.eu/webapi/rdf/sparql';
+const CELLAR_SPARQL_ENDPOINT =
+  "https://publications.europa.eu/webapi/rdf/sparql";
 
 // CDM ontology namespace
-const CDM_NS = 'http://publications.europa.eu/ontology/cdm#';
+const CDM_NS = "http://publications.europa.eu/ontology/cdm#";
 
 /**
  * SPARQL query result binding
  */
 export interface SPARQLBinding {
-  type: 'uri' | 'literal' | 'bnode';
+  type: "uri" | "literal" | "bnode";
   value: string;
-  'xml:lang'?: string;
+  "xml:lang"?: string;
   datatype?: string;
 }
 
@@ -73,8 +74,8 @@ export class CellarConnector {
       baseURL: CELLAR_SPARQL_ENDPOINT,
       timeout: 30000, // 30 second timeout
       headers: {
-        'Accept': 'application/sparql-results+json',
-        'Content-Type': 'application/sparql-query',
+        Accept: "application/sparql-results+json",
+        "Content-Type": "application/sparql-query",
       },
     });
   }
@@ -84,9 +85,9 @@ export class CellarConnector {
    */
   async executeSPARQL(query: string): Promise<SPARQLResponse> {
     try {
-      const response = await this.client.post('', query, {
+      const response = await this.client.post("", query, {
         params: {
-          format: 'application/sparql-results+json',
+          format: "application/sparql-results+json",
         },
       });
       return response.data;
@@ -124,7 +125,10 @@ export class CellarConnector {
   /**
    * Retrieve EU legal acts by keyword search in title
    */
-  async searchActsByKeyword(keyword: string, limit = 100): Promise<EULegalAct[]> {
+  async searchActsByKeyword(
+    keyword: string,
+    limit = 100
+  ): Promise<EULegalAct[]> {
     const query = `
       PREFIX cdm: <${CDM_NS}>
       PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -176,7 +180,10 @@ export class CellarConnector {
    * Retrieve ALL recent regulations (last N years) without filtering
    * This is more reliable than keyword-based ESG filtering
    */
-  async getAllRecentRegulations(yearsBack = 5, limit = 500): Promise<EULegalAct[]> {
+  async getAllRecentRegulations(
+    yearsBack = 5,
+    limit = 500
+  ): Promise<EULegalAct[]> {
     const currentYear = new Date().getFullYear();
     const startYear = currentYear - yearsBack;
 
@@ -211,27 +218,27 @@ export class CellarConnector {
 
     // ESG-related keywords
     const keywords = [
-      'sustainability',
-      'environmental',
-      'social',
-      'governance',
-      'ESG',
-      'climate',
-      'carbon',
-      'green',
-      'circular economy',
-      'due diligence',
-      'reporting',
-      'disclosure',
-      'taxonomy',
-      'CSRD',
-      'ESRS',
-      'SFDR',
+      "sustainability",
+      "environmental",
+      "social",
+      "governance",
+      "ESG",
+      "climate",
+      "carbon",
+      "green",
+      "circular economy",
+      "due diligence",
+      "reporting",
+      "disclosure",
+      "taxonomy",
+      "CSRD",
+      "ESRS",
+      "SFDR",
     ];
 
     const keywordFilter = keywords
       .map(k => `CONTAINS(LCASE(STR(?title)), "${k.toLowerCase()}")`)
-      .join(' || ');
+      .join(" || ");
 
     const query = `
       PREFIX cdm: <${CDM_NS}>
@@ -262,17 +269,17 @@ export class CellarConnector {
     return response.results.bindings.map(binding => {
       // Strip "celex:" prefix if present
       let celexId = binding.actID?.value;
-      if (celexId && celexId.startsWith('celex:')) {
+      if (celexId && celexId.startsWith("celex:")) {
         celexId = celexId.substring(6); // Remove "celex:" prefix
       }
 
       const act: EULegalAct = {
-        uri: binding.act?.value || '',
+        uri: binding.act?.value || "",
         celexId,
         title: binding.title?.value,
-        inForce: binding.inForce?.value === 'true',
+        inForce: binding.inForce?.value === "true",
         resourceType: binding.resourceType?.value,
-        language: binding.title?.['xml:lang'],
+        language: binding.title?.["xml:lang"],
       };
 
       if (binding.dateEntryIntoForce) {
@@ -303,7 +310,7 @@ export class CellarConnector {
       const response = await this.executeSPARQL(query);
       return response.results.bindings.length > 0;
     } catch (error) {
-      console.error('CELLAR connection test failed:', error);
+      console.error("CELLAR connection test failed:", error);
       return false;
     }
   }

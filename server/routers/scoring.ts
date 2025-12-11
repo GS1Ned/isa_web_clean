@@ -67,7 +67,10 @@ export const scoringRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      await updateComplianceScore(ctx.user.id, input.reason || "manual_recalculation");
+      await updateComplianceScore(
+        ctx.user.id,
+        input.reason || "manual_recalculation"
+      );
       const score = await getUserComplianceScore(ctx.user.id);
 
       return {
@@ -96,7 +99,7 @@ export const scoringRouter = router({
     .query(async ({ input, ctx }) => {
       const history = await getUserScoreHistory(ctx.user.id, input.days);
 
-      return history.map((h) => ({
+      return history.map(h => ({
         overallScore: parseFloat(h.overallScore as any),
         riskManagementScore: parseFloat(h.riskManagementScore as any),
         remediationScore: parseFloat(h.remediationScore as any),
@@ -113,7 +116,7 @@ export const scoringRouter = router({
   getMilestones: protectedProcedure.query(async ({ ctx }) => {
     const milestones = await getUserMilestones(ctx.user.id);
 
-    return milestones.map((m) => ({
+    return milestones.map(m => ({
       id: m.id,
       milestoneType: m.milestoneType,
       milestoneTitle: m.milestoneTitle,
@@ -137,7 +140,10 @@ export const scoringRouter = router({
       regulationScore: metrics.regulationScore,
       totalRisks: metrics.totalRisks,
       resolvedRisks: metrics.resolvedRisks,
-      resolutionRate: metrics.totalRisks > 0 ? (metrics.resolvedRisks / metrics.totalRisks) * 100 : 0,
+      resolutionRate:
+        metrics.totalRisks > 0
+          ? (metrics.resolvedRisks / metrics.totalRisks) * 100
+          : 0,
       totalRemediationPlans: metrics.totalRemediationPlans,
       completedPlans: metrics.completedPlans,
       completionRate:
@@ -147,7 +153,9 @@ export const scoringRouter = router({
       totalEvidence: metrics.totalEvidence,
       verifiedEvidence: metrics.verifiedEvidence,
       verificationRate:
-        metrics.totalEvidence > 0 ? (metrics.verifiedEvidence / metrics.totalEvidence) * 100 : 0,
+        metrics.totalEvidence > 0
+          ? (metrics.verifiedEvidence / metrics.totalEvidence) * 100
+          : 0,
       regulationsCovered: metrics.regulationsCovered,
     };
   }),

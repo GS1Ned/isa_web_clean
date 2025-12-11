@@ -25,7 +25,10 @@ export const benchmarkingRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
-      let query = db.select().from(scoreHistory).where(eq(scoreHistory.userId, ctx.user.id));
+      let query = db
+        .select()
+        .from(scoreHistory)
+        .where(eq(scoreHistory.userId, ctx.user.id));
 
       if (input.startDate || input.endDate) {
         const conditions = [];
@@ -45,7 +48,7 @@ export const benchmarkingRouter = router({
 
       const history = await query.limit(input.limit);
 
-      return history.map((h) => ({
+      return history.map(h => ({
         id: h.id,
         overallScore: parseFloat(h.overallScore as any),
         riskManagementScore: parseFloat(h.riskManagementScore as any),
@@ -76,7 +79,12 @@ export const benchmarkingRouter = router({
       const history = await db
         .select()
         .from(scoreHistory)
-        .where(and(eq(scoreHistory.userId, ctx.user.id), gte(scoreHistory.createdAt, cutoffDate)));
+        .where(
+          and(
+            eq(scoreHistory.userId, ctx.user.id),
+            gte(scoreHistory.createdAt, cutoffDate)
+          )
+        );
 
       if (history.length === 0) {
         return {
@@ -92,17 +100,29 @@ export const benchmarkingRouter = router({
         };
       }
 
-      const scores = history.map((h) => parseFloat(h.overallScore as any));
-      const riskScores = history.map((h) => parseFloat(h.riskManagementScore as any));
-      const remediationScores = history.map((h) => parseFloat(h.remediationScore as any));
-      const evidenceScores = history.map((h) => parseFloat(h.evidenceScore as any));
-      const regulationScores = history.map((h) => parseFloat(h.regulationScore as any));
+      const scores = history.map(h => parseFloat(h.overallScore as any));
+      const riskScores = history.map(h =>
+        parseFloat(h.riskManagementScore as any)
+      );
+      const remediationScores = history.map(h =>
+        parseFloat(h.remediationScore as any)
+      );
+      const evidenceScores = history.map(h =>
+        parseFloat(h.evidenceScore as any)
+      );
+      const regulationScores = history.map(h =>
+        parseFloat(h.regulationScore as any)
+      );
 
       const avgOverallScore = scores.reduce((a, b) => a + b, 0) / scores.length;
-      const avgRiskManagementScore = riskScores.reduce((a, b) => a + b, 0) / riskScores.length;
-      const avgRemediationScore = remediationScores.reduce((a, b) => a + b, 0) / remediationScores.length;
-      const avgEvidenceScore = evidenceScores.reduce((a, b) => a + b, 0) / evidenceScores.length;
-      const avgRegulationScore = regulationScores.reduce((a, b) => a + b, 0) / regulationScores.length;
+      const avgRiskManagementScore =
+        riskScores.reduce((a, b) => a + b, 0) / riskScores.length;
+      const avgRemediationScore =
+        remediationScores.reduce((a, b) => a + b, 0) / remediationScores.length;
+      const avgEvidenceScore =
+        evidenceScores.reduce((a, b) => a + b, 0) / evidenceScores.length;
+      const avgRegulationScore =
+        regulationScores.reduce((a, b) => a + b, 0) / regulationScores.length;
 
       const minOverallScore = Math.min(...scores);
       const maxOverallScore = Math.max(...scores);
@@ -111,8 +131,14 @@ export const benchmarkingRouter = router({
       const firstHalf = scores.slice(0, Math.floor(scores.length / 2));
       const secondHalf = scores.slice(Math.floor(scores.length / 2));
       const firstAvg = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length;
-      const secondAvg = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length;
-      const trend = secondAvg > firstAvg ? "improving" : secondAvg < firstAvg ? "declining" : "stable";
+      const secondAvg =
+        secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length;
+      const trend =
+        secondAvg > firstAvg
+          ? "improving"
+          : secondAvg < firstAvg
+            ? "declining"
+            : "stable";
 
       return {
         count: history.length,
@@ -169,7 +195,7 @@ export const benchmarkingRouter = router({
         benchmarks = await db.select().from(scoringBenchmarks).limit(10);
       }
 
-      return benchmarks.map((b) => ({
+      return benchmarks.map(b => ({
         id: b.id,
         industry: b.industry,
         region: b.region,
@@ -246,7 +272,9 @@ export const benchmarkingRouter = router({
           industry: benchmark.industry,
           region: benchmark.region,
           avgOverallScore: benchmarkAvg,
-          avgRiskManagementScore: parseFloat(benchmark.avgRiskManagementScore as any),
+          avgRiskManagementScore: parseFloat(
+            benchmark.avgRiskManagementScore as any
+          ),
           avgRemediationScore: parseFloat(benchmark.avgRemediationScore as any),
           avgEvidenceScore: parseFloat(benchmark.avgEvidenceScore as any),
           avgRegulationScore: parseFloat(benchmark.avgRegulationScore as any),
@@ -258,7 +286,11 @@ export const benchmarkingRouter = router({
           vsPercentile75: userOverallScore - percentile75,
           vsPercentile90: userOverallScore - percentile90,
           percentileRank:
-            userOverallScore >= percentile90 ? "top 10%" : userOverallScore >= percentile75 ? "top 25%" : "below 75th",
+            userOverallScore >= percentile90
+              ? "top 10%"
+              : userOverallScore >= percentile75
+                ? "top 25%"
+                : "below 75th",
         },
       };
     }),
@@ -272,8 +304,8 @@ export const benchmarkingRouter = router({
 
     const benchmarks = await db.select().from(scoringBenchmarks);
 
-    const industries = Array.from(new Set(benchmarks.map((b) => b.industry)));
-    const regions = Array.from(new Set(benchmarks.map((b) => b.region)));
+    const industries = Array.from(new Set(benchmarks.map(b => b.industry)));
+    const regions = Array.from(new Set(benchmarks.map(b => b.region)));
 
     return {
       industries,

@@ -27,7 +27,7 @@ export async function logCronExecution(log: CronExecutionLog) {
 
   try {
     const { cronExecutionLogs } = await import("../drizzle/schema");
-    
+
     await db.insert(cronExecutionLogs).values({
       jobName: log.jobName,
       status: log.status,
@@ -37,7 +37,9 @@ export async function logCronExecution(log: CronExecutionLog) {
       executedAt: log.timestamp,
     });
 
-    console.log(`[cron-monitoring] Logged execution: ${log.jobName} - ${log.status}`);
+    console.log(
+      `[cron-monitoring] Logged execution: ${log.jobName} - ${log.status}`
+    );
   } catch (error) {
     console.error("[cron-monitoring] Failed to log execution:", error);
   }
@@ -107,19 +109,24 @@ export async function getExecutionStats(jobName: string, days: number = 7) {
 /**
  * Check for consecutive failures and send alert
  */
-export async function checkAndAlertOnFailures(jobName: string, threshold: number = 3) {
+export async function checkAndAlertOnFailures(
+  jobName: string,
+  threshold: number = 3
+) {
   const history = await getExecutionHistory(jobName, threshold);
-  
+
   if (history.length < threshold) {
     return; // Not enough history yet
   }
 
   // Check if all recent executions failed
   const allFailed = history.every(log => log.status === "failure");
-  
+
   if (allFailed) {
-    console.error(`[cron-monitoring] ⚠️  ${jobName} has failed ${threshold} times consecutively!`);
-    
+    console.error(
+      `[cron-monitoring] ⚠️  ${jobName} has failed ${threshold} times consecutively!`
+    );
+
     // Send notification to owner
     const lastError = history[0].error || "Unknown error";
     const message = `
@@ -131,7 +138,7 @@ The cron job has failed ${threshold} times consecutively.
 ${lastError}
 
 **Recent Execution History:**
-${history.map((log, i) => `${i + 1}. ${log.executedAt.toISOString()} - ${log.status} (${log.duration}ms)`).join('\n')}
+${history.map((log, i) => `${i + 1}. ${log.executedAt.toISOString()} - ${log.status} (${log.duration}ms)`).join("\n")}
 
 **Action Required:**
 1. Check server logs for detailed error messages
@@ -195,7 +202,7 @@ export async function monitoredCronJob<T>(
   alertThreshold: number = 3
 ): Promise<T> {
   const startTime = Date.now();
-  
+
   try {
     const result = await job();
     const duration = Date.now() - startTime;
@@ -205,7 +212,10 @@ export async function monitoredCronJob<T>(
       jobName,
       status: "success",
       duration,
-      stats: typeof result === "object" && result !== null ? (result as any) : undefined,
+      stats:
+        typeof result === "object" && result !== null
+          ? (result as any)
+          : undefined,
       timestamp: new Date(),
     });
 

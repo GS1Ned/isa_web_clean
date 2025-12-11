@@ -1,4 +1,5 @@
 # ISA News Hub - Target Design Document
+
 **Date**: December 10, 2025  
 **Version**: Target State for Evolution  
 **Purpose**: Define the comprehensive design for transforming ISA News Hub into an ESG-GS1 intelligence layer
@@ -16,6 +17,7 @@ This document defines the target architecture, data model, UX, and operations fo
 5. **Maintains observable operations** - Coverage analytics, health monitoring, and quality metrics
 
 **Design Principles**:
+
 - **Additive, not disruptive**: Preserve existing functionality while adding new capabilities
 - **Cost-conscious**: Minimize LLM API calls through smart caching and batching
 - **Maintainable**: Clear enums, documented schemas, modular architecture
@@ -32,37 +34,38 @@ This document defines the target architecture, data model, UX, and operations fo
 ```typescript
 export const hubNews = mysqlTable("hub_news", {
   // ... existing fields ...
-  
+
   // NEW: GS1 Impact Tags
   gs1ImpactTags: json("gs1ImpactTags").$type<string[]>(),
-  // Enum values: IDENTIFICATION, PACKAGING_ATTRIBUTES, ESG_REPORTING, 
+  // Enum values: IDENTIFICATION, PACKAGING_ATTRIBUTES, ESG_REPORTING,
   // DUE_DILIGENCE, TRACEABILITY, DPP, BATTERY_PASSPORT, HEALTHCARE_SUSTAINABILITY,
   // FOOD_SAFETY, LOGISTICS_OPTIMIZATION, CIRCULAR_ECONOMY
-  
+
   // NEW: Sector Tags
   sectorTags: json("sectorTags").$type<string[]>(),
-  // Enum values: RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION, 
+  // Enum values: RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION,
   // TEXTILES, ELECTRONICS, AUTOMOTIVE, CHEMICALS, PACKAGING
-  
+
   // NEW: Related Standard IDs (direct linkage)
   relatedStandardIds: json("relatedStandardIds").$type<string[]>(),
   // e.g. ["gtin", "gln", "epcis", "gdsn", "digital-link"]
-  
+
   // NEW: AI-generated GS1 impact analysis
   gs1ImpactAnalysis: text("gs1ImpactAnalysis"),
-  // Structured text: "This regulation affects [X] by requiring [Y]. 
+  // Structured text: "This regulation affects [X] by requiring [Y].
   // GS1 standards [Z] can help companies comply by [W]."
-  
+
   // NEW: Suggested actions
   suggestedActions: json("suggestedActions").$type<string[]>(),
-  // e.g. ["Review packaging data model", "Update GDSN attributes", 
+  // e.g. ["Review packaging data model", "Update GDSN attributes",
   // "Implement EPCIS events"]
-  
+
   // ... existing fields ...
 });
 ```
 
 **Rationale**:
+
 - `gs1ImpactTags`: Enables filtering by GS1 use case (e.g., "show me all DPP-related news")
 - `sectorTags`: Enables sector-specific views (e.g., "healthcare sustainability news")
 - `relatedStandardIds`: Direct linkage for bidirectional navigation
@@ -70,6 +73,7 @@ export const hubNews = mysqlTable("hub_news", {
 - `suggestedActions`: Actionable next steps for users
 
 **Migration Strategy**:
+
 1. Add new columns with `ALTER TABLE` (nullable initially)
 2. Backfill existing news with AI re-processing (optional, can be done gradually)
 3. Update all insert/update queries to include new fields
@@ -98,6 +102,7 @@ export type GS1ImpactTag = keyof typeof GS1_IMPACT_TAGS;
 ```
 
 **Usage in AI Prompts**:
+
 - LLM will be asked to select 1-3 tags per news item
 - Fallback heuristics if LLM fails (keyword matching)
 
@@ -125,6 +130,7 @@ export type SectorTag = keyof typeof SECTOR_TAGS;
 ```
 
 **Usage**:
+
 - AI infers sectors based on content
 - Users filter News Hub by sector
 - Sector-specific landing pages (e.g., "Healthcare ESG News")
@@ -137,7 +143,8 @@ export type SectorTag = keyof typeof SECTOR_TAGS;
 
 ```typescript
 // After generating recommendations, update hubNews:
-await db.update(hubNews)
+await db
+  .update(hubNews)
   .set({
     relatedStandardIds: extractedStandardIds,
     // Optionally update relatedRegulationIds if new ones found
@@ -154,6 +161,7 @@ await db.update(hubNews)
 ### 2.1 Priority 1: Dutch/Benelux National Sources
 
 **Green Deal Sustainable Healthcare**:
+
 - **URL**: `https://www.greendealzorg.nl/nieuws`
 - **Type**: INDUSTRY (sector initiative)
 - **Scraping**: Playwright (no RSS available)
@@ -161,6 +169,7 @@ await db.update(hubNews)
 - **Credibility**: 0.8 (voluntary pact, but government-backed)
 
 **Plastic Pact NL**:
+
 - **URL**: `https://www.plasticpact.nl/nieuws`
 - **Type**: INDUSTRY (sector initiative)
 - **Scraping**: Playwright or RSS if available
@@ -168,6 +177,7 @@ await db.update(hubNews)
 - **Credibility**: 0.8
 
 **Zero-Emission City Logistics (ZES)**:
+
 - **URL**: `https://www.zes-amsterdam.nl/nieuws` (or similar for Rotterdam, Utrecht)
 - **Type**: INDUSTRY (municipal initiative)
 - **Scraping**: Playwright
@@ -175,6 +185,7 @@ await db.update(hubNews)
 - **Credibility**: 0.8
 
 **Dutch Government Climate Portal**:
+
 - **URL**: `https://www.klimaatakkoord.nl/actueel`
 - **Type**: EU_OFFICIAL (national government)
 - **Scraping**: Playwright
@@ -184,15 +195,18 @@ await db.update(hubNews)
 ### 2.2 Priority 2: Missing EU Regulations
 
 **CS3D/CSDDD Specific Sources**:
+
 - Add "CS3D" to REGULATION_KEYWORDS
 - Monitor EU Commission CSDDD-specific pages
 
 **Green Claims Directive**:
+
 - **URL**: `https://ec.europa.eu/commission/presscorner/` (filter for Green Claims)
 - **Keywords**: green claims, greenwashing, environmental claims, substantiation
 - Add to REGULATION_KEYWORDS
 
 **ESPR Delegated Acts**:
+
 - **URL**: `https://ec.europa.eu/info/law/better-regulation/have-your-say`
 - **Scraping**: Monitor "Have Your Say" portal for ESPR delegated acts
 - **Keywords**: ESPR, delegated act, ecodesign, product-specific rules
@@ -200,16 +214,19 @@ await db.update(hubNews)
 ### 2.3 Priority 3: GS1-Specific Content
 
 **GS1 NL Data Model Updates**:
+
 - **Strategy**: Manual curation + automated detection
 - **Source**: GS1 NL internal announcements (may require API or manual input)
 - **Fallback**: Create news items manually when GS1 NL publishes data model changes
 
 **GS1 Europe White Papers**:
+
 - **URL**: `https://www.gs1.eu/resources`
 - **Scraping**: Playwright (monitor publications page)
 - **Keywords**: white paper, guidance, DPP, EUDR, CSRD, sustainability
 
 **GS1 Global Standards Updates**:
+
 - **URL**: `https://www.gs1.org/standards/development-work-groups`
 - **Scraping**: Monitor work group pages for ESG-related updates
 - **Keywords**: work group, standard update, EPCIS, Digital Link, GDSN
@@ -232,6 +249,7 @@ await db.update(hubNews)
 ```
 
 **Rationale for Hints**:
+
 - Reduces LLM API calls by providing context
 - Improves tagging accuracy
 - Enables fallback heuristics if LLM fails
@@ -252,8 +270,14 @@ export interface EnhancedProcessedNews {
   whyItMatters: string;
   regulationTags: string[];
   impactLevel: "LOW" | "MEDIUM" | "HIGH";
-  newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
-  
+  newsType:
+    | "NEW_LAW"
+    | "AMENDMENT"
+    | "ENFORCEMENT"
+    | "COURT_DECISION"
+    | "GUIDANCE"
+    | "PROPOSAL";
+
   // NEW: GS1-specific fields
   gs1ImpactTags: string[]; // 1-3 tags from GS1_IMPACT_TAGS enum
   sectorTags: string[]; // 1-3 tags from SECTOR_TAGS enum
@@ -287,13 +311,13 @@ Return JSON with this structure:
   "regulationTags": ["CSRD", "ESRS"], // relevant regulation acronyms
   "impactLevel": "HIGH" | "MEDIUM" | "LOW",
   "newsType": "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL",
-  
+
   "gs1ImpactTags": ["DPP", "TRACEABILITY"], // 1-3 tags from: IDENTIFICATION, PACKAGING_ATTRIBUTES, ESG_REPORTING, DUE_DILIGENCE, TRACEABILITY, DPP, BATTERY_PASSPORT, HEALTHCARE_SUSTAINABILITY, FOOD_SAFETY, LOGISTICS_OPTIMIZATION, CIRCULAR_ECONOMY, PRODUCT_MASTER_DATA
-  
+
   "sectorTags": ["RETAIL", "HEALTHCARE"], // 1-3 tags from: RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION, TEXTILES, ELECTRONICS, AUTOMOTIVE, CHEMICALS, PACKAGING, GENERAL
-  
+
   "gs1ImpactAnalysis": "2-3 sentences explaining which GS1 standards/identifiers/data models are relevant and how they help companies comply. Be specific about GTIN, GLN, EPCIS, GDSN, Digital Link, packaging attributes, etc.",
-  
+
   "suggestedActions": [
     "Review GDSN packaging attributes for recyclability data",
     "Implement EPCIS events for traceability",
@@ -303,6 +327,7 @@ Return JSON with this structure:
 ```
 
 **Cost Optimization**:
+
 - Cache AI responses by content hash (avoid re-processing identical articles)
 - Batch processing where possible
 - Use source hints to reduce prompt complexity
@@ -322,7 +347,7 @@ export interface EnhancedContentAnalysis {
   impactAreas: string[];
   deadlines: Date[];
   actionableInsights: string[];
-  
+
   // NEW
   inferredSectors: string[]; // Based on keywords (healthcare, retail, logistics, etc.)
   inferredGS1Impacts: string[]; // Based on keywords (packaging, traceability, DPP, etc.)
@@ -334,7 +359,14 @@ export interface EnhancedContentAnalysis {
 
 ```typescript
 const SECTOR_KEYWORDS = {
-  HEALTHCARE: ["hospital", "medical", "pharma", "healthcare", "patient", "clinical"],
+  HEALTHCARE: [
+    "hospital",
+    "medical",
+    "pharma",
+    "healthcare",
+    "patient",
+    "clinical",
+  ],
   RETAIL: ["retail", "store", "consumer", "e-commerce", "shopping"],
   FOOD: ["food", "beverage", "agriculture", "farm", "grocery"],
   LOGISTICS: ["logistics", "transport", "delivery", "warehouse", "3PL"],
@@ -343,8 +375,18 @@ const SECTOR_KEYWORDS = {
 
 const GS1_IMPACT_KEYWORDS = {
   DPP: ["digital product passport", "DPP", "product data", "QR code"],
-  TRACEABILITY: ["traceability", "track and trace", "EPCIS", "supply chain visibility"],
-  PACKAGING_ATTRIBUTES: ["packaging", "recyclability", "material", "recycled content"],
+  TRACEABILITY: [
+    "traceability",
+    "track and trace",
+    "EPCIS",
+    "supply chain visibility",
+  ],
+  PACKAGING_ATTRIBUTES: [
+    "packaging",
+    "recyclability",
+    "material",
+    "recycled content",
+  ],
   // ... etc
 };
 ```
@@ -358,6 +400,7 @@ const GS1_IMPACT_KEYWORDS = {
 **New Filters to Add**:
 
 1. **GS1 Impact Filter**:
+
    ```typescript
    <Select value={gs1ImpactFilter} onValueChange={setGS1ImpactFilter}>
      <SelectTrigger>GS1 Impact</SelectTrigger>
@@ -373,6 +416,7 @@ const GS1_IMPACT_KEYWORDS = {
    ```
 
 2. **Sector Filter**:
+
    ```typescript
    <Select value={sectorFilter} onValueChange={setSectorFilter}>
      <SelectTrigger>Sector</SelectTrigger>
@@ -389,8 +433,8 @@ const GS1_IMPACT_KEYWORDS = {
 
 3. **Milestones Only Toggle**:
    ```typescript
-   <Switch 
-     checked={milestonesOnly} 
+   <Switch
+     checked={milestonesOnly}
      onCheckedChange={setMilestonesOnly}
    >
      <Label>High Impact Milestones Only</Label>
@@ -398,6 +442,7 @@ const GS1_IMPACT_KEYWORDS = {
    ```
 
 **Filter Logic**:
+
 - Filters are cumulative (AND logic)
 - URL params for shareable filtered views
 - Reset button to clear all filters
@@ -407,7 +452,7 @@ const GS1_IMPACT_KEYWORDS = {
 **Design**:
 
 ```typescript
-<TimelineView 
+<TimelineView
   mode="regulation" // or "sector"
   regulationId="CSRD" // if mode="regulation"
   sectorId="HEALTHCARE" // if mode="sector"
@@ -415,6 +460,7 @@ const GS1_IMPACT_KEYWORDS = {
 ```
 
 **Features**:
+
 - Vertical timeline with date markers
 - News items grouped by month
 - Milestone indicators (HIGH impact items)
@@ -422,6 +468,7 @@ const GS1_IMPACT_KEYWORDS = {
 - Export timeline as PDF
 
 **Implementation**:
+
 - Query hubNews filtered by regulation or sector
 - Sort by publishedDate DESC
 - Group by month
@@ -437,34 +484,34 @@ const GS1_IMPACT_KEYWORDS = {
   <Header title={news.title} metadata={...} />
   <Section title="What Happened">{news.whatHappened}</Section>
   <Section title="Why It Matters">{news.whyItMatters}</Section>
-  
+
   {/* NEW */}
   <Section title="Impact on GS1 Standards & Data">
     <p>{news.gs1ImpactAnalysis}</p>
     <GS1ImpactBadges tags={news.gs1ImpactTags} />
     <RelatedStandards ids={news.relatedStandardIds} />
   </Section>
-  
+
   {/* NEW */}
   <Section title="What You Should Do">
     <ActionChecklist items={news.suggestedActions} />
   </Section>
-  
+
   {/* Existing */}
   <Section title="Regulation Tags">
     <RegulationBadges tags={news.regulationTags} />
   </Section>
-  
+
   {/* NEW */}
   <Section title="Relevant Sectors">
     <SectorBadges tags={news.sectorTags} />
   </Section>
-  
+
   {/* Existing */}
   <Section title="Recommended Resources">
     <RecommendedResources newsId={news.id} />
   </Section>
-  
+
   {/* Existing */}
   <Section title="Sources">
     <MultiSourceDisplay sources={news.sources} />
@@ -473,6 +520,7 @@ const GS1_IMPACT_KEYWORDS = {
 ```
 
 **Visual Design**:
+
 - GS1 Impact badges: Purple gradient
 - Sector badges: Blue gradient
 - Action checklist: Interactive checkboxes (save state to user profile)
@@ -484,16 +532,12 @@ const GS1_IMPACT_KEYWORDS = {
 ```tsx
 <RegulationDetailPage regulationId="CSRD">
   {/* Existing regulation content */}
-  
+
   {/* NEW */}
   <Section title="Recent Developments">
-    <NewsTimeline 
-      regulationId="CSRD" 
-      limit={10}
-      showMilestonesOnly={false}
-    />
+    <NewsTimeline regulationId="CSRD" limit={10} showMilestonesOnly={false} />
   </Section>
-  
+
   {/* NEW */}
   <Section title="GS1 Standards Impacted">
     <RelatedStandardsList regulationId="CSRD" />
@@ -506,15 +550,15 @@ const GS1_IMPACT_KEYWORDS = {
 ```tsx
 <StandardDetailPage standardId="epcis">
   {/* Existing standard content */}
-  
+
   {/* NEW */}
   <Section title="Related Regulatory News">
-    <NewsCardList 
+    <NewsCardList
       standardId="epcis"
       limit={5}
     />
   </Section>
-  
+
   {/* NEW */}
   <Section title="Regulations Requiring This Standard">
     <RegulationBadges regulationIds={...} />
@@ -526,7 +570,8 @@ const GS1_IMPACT_KEYWORDS = {
 
 ```typescript
 // Regulation → News
-const recentNews = await db.select()
+const recentNews = await db
+  .select()
   .from(hubNews)
   .where(
     sql`JSON_CONTAINS(${hubNews.regulationTags}, ${JSON.stringify([regulationId])})`
@@ -535,7 +580,8 @@ const recentNews = await db.select()
   .limit(10);
 
 // Standard → News
-const relatedNews = await db.select()
+const relatedNews = await db
+  .select()
   .from(hubNews)
   .where(
     sql`JSON_CONTAINS(${hubNews.relatedStandardIds}, ${JSON.stringify([standardId])})`
@@ -557,13 +603,13 @@ const relatedNews = await db.select()
       <li>Value chain data collection mandatory</li>
     </ul>
   </SummarySection>
-  
+
   <SummarySection title="GS1 Standards Involved">
     <StandardBadge id="gtin" label="GTIN - Product Identification" />
     <StandardBadge id="gln" label="GLN - Location Identification" />
     <StandardBadge id="gdsn" label="GDSN - Product Data Sharing" />
   </SummarySection>
-  
+
   <SummarySection title="Key Timelines">
     <Timeline>
       <Event date="2024-01-01">CSRD enters into force</Event>
@@ -571,15 +617,18 @@ const relatedNews = await db.select()
       <Event date="2026-01-01">Extended to listed SMEs</Event>
     </Timeline>
   </SummarySection>
-  
+
   <SummarySection title="GS1 Resources">
-    <ResourceLink href="/resources/csrd-guide">CSRD Compliance Guide</ResourceLink>
+    <ResourceLink href="/resources/csrd-guide">
+      CSRD Compliance Guide
+    </ResourceLink>
     <ResourceLink href="/resources/gdsn-esg">GDSN ESG Attributes</ResourceLink>
   </SummarySection>
 </RegulationImpactSummary>
 ```
 
 **Data Source**:
+
 - Initially: Manual curation for top 10 regulations
 - Future: AI-generated from aggregated news + regulation text
 - Stored in: New table `regulationImpactSummaries` or as static content
@@ -627,36 +676,49 @@ const relatedNews = await db.select()
   <MetricCard title="Total News (Last 30 Days)" value={245} trend="+12%" />
   <MetricCard title="Source Uptime" value="94%" trend="-2%" />
   <MetricCard title="AI Tagging Quality" value="87%" trend="+5%" />
-  
+
   <Chart title="News Volume by Regulation">
     <BarChart data={newsPerRegulation} />
   </Chart>
-  
+
   <Chart title="Coverage Heatmap">
     <Heatmap rows={regulations} cols={months} data={newsCount} />
   </Chart>
-  
+
   <Table title="Source Health">
     <SourceHealthRow source="EFRAG" uptime="98%" lastFetch="2 hours ago" />
     <SourceHealthRow source="GS1 NL" uptime="95%" lastFetch="1 hour ago" />
     // ... etc
   </Table>
-  
+
   <Table title="Critical Events Tracking">
-    <EventRow regulation="CSRD" event="First reports due" expected="2025-01-01" captured={true} />
-    <EventRow regulation="EUDR" event="Enforcement date" expected="2024-12-30" captured={false} alert={true} />
+    <EventRow
+      regulation="CSRD"
+      event="First reports due"
+      expected="2025-01-01"
+      captured={true}
+    />
+    <EventRow
+      regulation="EUDR"
+      event="Enforcement date"
+      expected="2024-12-30"
+      captured={false}
+      alert={true}
+    />
     // ... etc
   </Table>
 </CoverageAnalyticsDashboard>
 ```
 
 **Access Control**:
+
 - Admin-only (not public)
 - Role: `admin` in user table
 
 ### 5.2 Structured Logging & Metrics
 
 **Log Levels**:
+
 - `INFO`: Normal operations (fetch started, fetch completed)
 - `WARN`: Recoverable errors (source timeout, AI fallback)
 - `ERROR`: Critical failures (database error, LLM API failure)
@@ -700,6 +762,7 @@ news_recommendation_generation_duration_seconds
 ```
 
 **Storage**:
+
 - Logs: Console (captured by platform)
 - Metrics: In-memory (for now), future: Prometheus/Grafana
 
@@ -724,6 +787,7 @@ news_recommendation_generation_duration_seconds
    - Action: Email admin, log ERROR
 
 **Implementation**:
+
 - Check conditions during cron runs
 - Store alert state in database (avoid duplicate alerts)
 - Use `notifyOwner()` helper for email notifications
@@ -773,7 +837,9 @@ export const criticalEvents = mysqlTable("critical_events", {
   capturedDate: date("captured_date"),
   newsId: int("news_id"), // Link to hubNews if captured
   sla: int("sla").default(7), // Days allowed for capture
-  status: mysqlEnum("status", ["EXPECTED", "CAPTURED", "MISSED"]).default("EXPECTED"),
+  status: mysqlEnum("status", ["EXPECTED", "CAPTURED", "MISSED"]).default(
+    "EXPECTED"
+  ),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
 });
@@ -801,6 +867,7 @@ const CRITICAL_EVENTS_CSRD = [
 ```
 
 **Tracking Logic**:
+
 - During news ingestion, check if news matches any expected event
 - If match found, update `capturedDate` and `newsId`, set status to "CAPTURED"
 - Daily cron checks for events past `expectedDate + sla` with status "EXPECTED" → mark as "MISSED" and alert
@@ -812,12 +879,14 @@ const CRITICAL_EVENTS_CSRD = [
 ### 6.1 LLM API Cost Estimation
 
 **Current Usage**:
+
 - ~10 articles/day from GS1.nl + EFRAG
 - ~1,500 tokens per article (input + output)
 - Cost: ~$0.01 per article (assuming GPT-4o pricing)
 - **Monthly cost**: ~$3
 
 **With Enhancements**:
+
 - +10 articles/day from Dutch/Benelux sources
 - +Extended schema (gs1ImpactAnalysis, suggestedActions)
 - ~2,500 tokens per article
@@ -825,6 +894,7 @@ const CRITICAL_EVENTS_CSRD = [
 - **Monthly cost**: ~$9
 
 **Optimization Strategies**:
+
 1. **Cache by content hash**: Avoid re-processing identical articles
 2. **Batch processing**: Process multiple articles in single LLM call (not supported by structured output, skip)
 3. **Source hints**: Reduce prompt complexity with sectorHint and gs1ImpactHint
@@ -846,6 +916,7 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 **Note**: MySQL JSON indexing is limited; consider full-text search or materialized views for complex queries
 
 **Query Patterns**:
+
 - Filter by gs1ImpactTags: Use `JSON_CONTAINS()`
 - Filter by sectorTags: Use `JSON_CONTAINS()`
 - Bidirectional lookups: Use `relatedStandardIds` for fast joins
@@ -853,11 +924,13 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 ### 6.3 Scraping Cost & Rate Limiting
 
 **Playwright Browser Usage**:
+
 - ~3 sources with Playwright (EFRAG, GS1.nl, + new Dutch sources)
 - ~10 articles/day × 3 sources = 30 page loads/day
 - Minimal cost (browser CPU/memory)
 
 **Rate Limiting**:
+
 - Respect robots.txt
 - Add delays between requests (1-2 seconds)
 - Rotate user agents (avoid detection)
@@ -869,6 +942,7 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 ## 7. Implementation Roadmap
 
 ### Phase 3: Schema & Data Model (Est: 2-3 hours)
+
 - Add new columns to hubNews and hubNewsHistory
 - Define GS1_IMPACT_TAGS and SECTOR_TAGS enums
 - Update TypeScript types
@@ -876,12 +950,14 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 - Update db-news-helpers.ts
 
 ### Phase 4: Source Expansion (Est: 4-6 hours)
+
 - Add 4-5 Dutch/Benelux sources
 - Implement Playwright scrapers for new sources
 - Add CS3D, Green Claims to keywords
 - Test each source individually
 
 ### Phase 5: AI Processing Enhancements (Est: 3-4 hours)
+
 - Update news-ai-processor.ts schema
 - Add gs1ImpactTags, sectorTags, gs1ImpactAnalysis, suggestedActions to prompt
 - Implement fallback heuristics in news-content-analyzer.ts
@@ -889,18 +965,21 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 - Test AI output quality
 
 ### Phase 6: Bidirectional Integration (Est: 3-4 hours)
+
 - Add "Recent developments" panel to regulation pages
 - Add "Related news" panel to GS1 standard pages
 - Implement regulation impact summary component
 - Update recommendation engine to write relatedStandardIds
 
 ### Phase 7: Timeline & Filters (Est: 2-3 hours)
+
 - Add gs1ImpactTags and sectorTags filters to News Hub
 - Add "Milestones Only" toggle
 - Implement timeline view component
 - Update News Detail template with new sections
 
 ### Phase 8: Coverage Analytics (Est: 4-5 hours)
+
 - Build coverage analytics dashboard
 - Implement structured logging
 - Add metrics collection
@@ -909,6 +988,7 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 - Implement critical events tracking
 
 ### Phase 9: Documentation (Est: 2-3 hours)
+
 - Update NEWS_PIPELINE.md
 - Update ARCHITECTURE.md
 - Document enums and schemas
@@ -926,6 +1006,7 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 **Risk**: LLM may incorrectly infer gs1ImpactTags or sectorTags
 
 **Mitigation**:
+
 - Implement fallback heuristics (keyword matching)
 - Add source hints to guide AI
 - Manual review of HIGH impact items
@@ -936,6 +1017,7 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 **Risk**: New Dutch/Benelux sources may have unstable URLs or anti-scraping
 
 **Mitigation**:
+
 - Test each source thoroughly before enabling
 - Implement retry logic with exponential backoff
 - Add source health monitoring and alerts
@@ -946,6 +1028,7 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 **Risk**: New filters and queries may slow down News Hub
 
 **Mitigation**:
+
 - Add database indexes for new JSON fields
 - Implement query result caching
 - Use pagination (already implemented)
@@ -956,6 +1039,7 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 **Risk**: Extended AI schema may increase LLM API costs
 
 **Mitigation**:
+
 - Implement content hash caching
 - Use selective AI processing (HIGH/MEDIUM only)
 - Monitor monthly costs and set budget alerts
@@ -966,6 +1050,7 @@ CREATE INDEX relatedStandardIds_idx ON hub_news ((CAST(relatedStandardIds AS CHA
 **Risk**: Too many filters and options may overwhelm users
 
 **Mitigation**:
+
 - Progressive disclosure (advanced filters collapsed by default)
 - Preset filter combinations (e.g., "Healthcare News", "DPP Updates")
 - User onboarding tooltips

@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -45,31 +51,35 @@ export default function HubCompareEnhanced() {
   const mappings2 = mappings2Query.data || [];
 
   // Get selected regulation objects
-  const reg1 = regulations.find((r) => r.id === selectedReg1Id);
-  const reg2 = regulations.find((r) => r.id === selectedReg2Id);
+  const reg1 = regulations.find(r => r.id === selectedReg1Id);
+  const reg2 = regulations.find(r => r.id === selectedReg2Id);
 
   // Calculate overlap analysis
   const getOverlapAnalysis = () => {
     if (!mappings1.length || !mappings2.length) return null;
 
-    const standards1 = new Set(mappings1.map((m) => m.datapoint?.esrsStandard || "").filter(Boolean));
-    const standards2 = new Set(mappings2.map((m) => m.datapoint?.esrsStandard || "").filter(Boolean));
+    const standards1 = new Set(
+      mappings1.map(m => m.datapoint?.esrsStandard || "").filter(Boolean)
+    );
+    const standards2 = new Set(
+      mappings2.map(m => m.datapoint?.esrsStandard || "").filter(Boolean)
+    );
 
-    const overlappingStandards = Array.from(standards1).filter((s) =>
+    const overlappingStandards = Array.from(standards1).filter(s =>
       standards2.has(s)
     );
-    const uniqueToReg1 = Array.from(standards1).filter(
-      (s) => !standards2.has(s)
-    );
-    const uniqueToReg2 = Array.from(standards2).filter(
-      (s) => !standards1.has(s)
-    );
+    const uniqueToReg1 = Array.from(standards1).filter(s => !standards2.has(s));
+    const uniqueToReg2 = Array.from(standards2).filter(s => !standards1.has(s));
 
     // Get mappings for overlapping standards
-        const overlappingMappings = {
-          reg1: mappings1.filter((m) => overlappingStandards.includes(m.datapoint?.esrsStandard || "")),
-          reg2: mappings2.filter((m) => overlappingStandards.includes(m.datapoint?.esrsStandard || "")),
-        };
+    const overlappingMappings = {
+      reg1: mappings1.filter(m =>
+        overlappingStandards.includes(m.datapoint?.esrsStandard || "")
+      ),
+      reg2: mappings2.filter(m =>
+        overlappingStandards.includes(m.datapoint?.esrsStandard || "")
+      ),
+    };
 
     return {
       overlappingStandards,
@@ -92,14 +102,18 @@ export default function HubCompareEnhanced() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/hub" className="text-sm text-accent hover:underline mb-4 inline-block">
+          <Link
+            href="/hub"
+            className="text-sm text-accent hover:underline mb-4 inline-block"
+          >
             ← Back to Hub
           </Link>
           <h1 className="text-4xl font-bold text-foreground mb-2">
             Regulation Comparison Tool
           </h1>
           <p className="text-muted-foreground">
-            Compare two regulations to understand overlapping ESRS requirements and compliance dependencies
+            Compare two regulations to understand overlapping ESRS requirements
+            and compliance dependencies
           </p>
         </div>
 
@@ -117,7 +131,7 @@ export default function HubCompareEnhanced() {
                   <Loader2 className="w-4 h-4 animate-spin" />
                 </div>
               ) : (
-                regulations.map((reg) => (
+                regulations.map(reg => (
                   <button
                     key={reg.id}
                     onClick={() => setSelectedReg1Id(reg.id)}
@@ -151,7 +165,7 @@ export default function HubCompareEnhanced() {
                   <Loader2 className="w-4 h-4 animate-spin" />
                 </div>
               ) : (
-                regulations.map((reg) => (
+                regulations.map(reg => (
                   <button
                     key={reg.id}
                     onClick={() => setSelectedReg2Id(reg.id)}
@@ -251,18 +265,21 @@ export default function HubCompareEnhanced() {
                   <Alert>
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                      No overlapping ESRS standards found between these regulations.
+                      No overlapping ESRS standards found between these
+                      regulations.
                     </AlertDescription>
                   </Alert>
                 ) : (
                   <div className="space-y-4">
-                    {analysis.overlappingStandards.map((standard) => {
-                      const mappingsReg1 = analysis.overlappingMappings.reg1.filter(
-                        (m) => m.datapoint?.esrsStandard === standard
-                      );
-                      const mappingsReg2 = analysis.overlappingMappings.reg2.filter(
-                        (m) => m.datapoint?.esrsStandard === standard
-                      );
+                    {analysis.overlappingStandards.map(standard => {
+                      const mappingsReg1 =
+                        analysis.overlappingMappings.reg1.filter(
+                          m => m.datapoint?.esrsStandard === standard
+                        );
+                      const mappingsReg2 =
+                        analysis.overlappingMappings.reg2.filter(
+                          m => m.datapoint?.esrsStandard === standard
+                        );
 
                       return (
                         <Card key={standard}>
@@ -271,9 +288,7 @@ export default function HubCompareEnhanced() {
                               <CardTitle className="text-base">
                                 {standard}
                               </CardTitle>
-                              <Badge variant="secondary">
-                                Overlapping
-                              </Badge>
+                              <Badge variant="secondary">Overlapping</Badge>
                             </div>
                           </CardHeader>
                           <CardContent className="space-y-4">
@@ -283,7 +298,7 @@ export default function HubCompareEnhanced() {
                                   {reg1.regulationType} Datapoints
                                 </p>
                                 <ul className="space-y-1">
-                                  {mappingsReg1.map((m) => (
+                                  {mappingsReg1.map(m => (
                                     <li
                                       key={m.id}
                                       className="text-sm text-muted-foreground flex items-start gap-2"
@@ -299,7 +314,7 @@ export default function HubCompareEnhanced() {
                                   {reg2.regulationType} Datapoints
                                 </p>
                                 <ul className="space-y-1">
-                                  {mappingsReg2.map((m) => (
+                                  {mappingsReg2.map(m => (
                                     <li
                                       key={m.id}
                                       className="text-sm text-muted-foreground flex items-start gap-2"
@@ -339,7 +354,7 @@ export default function HubCompareEnhanced() {
                         </p>
                       ) : (
                         <ul className="space-y-2">
-                          {analysis.uniqueToReg1.map((standard) => (
+                          {analysis.uniqueToReg1.map(standard => (
                             <li
                               key={standard}
                               className="flex items-center gap-2 p-2 rounded-lg bg-muted"
@@ -369,7 +384,7 @@ export default function HubCompareEnhanced() {
                         </p>
                       ) : (
                         <ul className="space-y-2">
-                          {analysis.uniqueToReg2.map((standard) => (
+                          {analysis.uniqueToReg2.map(standard => (
                             <li
                               key={standard}
                               className="flex items-center gap-2 p-2 rounded-lg bg-muted"
@@ -394,7 +409,10 @@ export default function HubCompareEnhanced() {
                     <Alert>
                       <CheckCircle2 className="h-4 w-4 text-green-600" />
                       <AlertDescription>
-                        <strong>Unified Compliance Strategy:</strong> {analysis?.totalOverlap || 0} overlapping ESRS standards can be addressed with a single compliance program covering both regulations.
+                        <strong>Unified Compliance Strategy:</strong>{" "}
+                        {analysis?.totalOverlap || 0} overlapping ESRS standards
+                        can be addressed with a single compliance program
+                        covering both regulations.
                       </AlertDescription>
                     </Alert>
 
@@ -402,7 +420,11 @@ export default function HubCompareEnhanced() {
                       <Alert>
                         <AlertCircle className="h-4 w-4 text-amber-600" />
                         <AlertDescription>
-                          <strong>{reg1.regulationType} Specific:</strong> {analysis.uniqueToReg1.length} standards are unique to {reg1.regulationType}. These require additional compliance efforts beyond {reg2.regulationType} requirements.
+                          <strong>{reg1.regulationType} Specific:</strong>{" "}
+                          {analysis.uniqueToReg1.length} standards are unique to{" "}
+                          {reg1.regulationType}. These require additional
+                          compliance efforts beyond {reg2.regulationType}{" "}
+                          requirements.
                         </AlertDescription>
                       </Alert>
                     ) : null}
@@ -411,30 +433,39 @@ export default function HubCompareEnhanced() {
                       <Alert>
                         <AlertCircle className="h-4 w-4 text-amber-600" />
                         <AlertDescription>
-                          <strong>{reg2.regulationType} Specific:</strong> {analysis.uniqueToReg2.length} standards are unique to {reg2.regulationType}. These require additional compliance efforts beyond {reg1.regulationType} requirements.
+                          <strong>{reg2.regulationType} Specific:</strong>{" "}
+                          {analysis.uniqueToReg2.length} standards are unique to{" "}
+                          {reg2.regulationType}. These require additional
+                          compliance efforts beyond {reg1.regulationType}{" "}
+                          requirements.
                         </AlertDescription>
                       </Alert>
                     ) : null}
 
                     <div className="mt-6 p-4 bg-muted rounded-lg">
-                      <h4 className="font-semibold mb-2">Implementation Priority</h4>
+                      <h4 className="font-semibold mb-2">
+                        Implementation Priority
+                      </h4>
                       <ol className="space-y-2 text-sm">
                         <li className="flex gap-2">
                           <span className="font-bold text-accent">1.</span>
                           <span>
-                            Address all {analysis?.totalOverlap || 0} overlapping standards first
+                            Address all {analysis?.totalOverlap || 0}{" "}
+                            overlapping standards first
                           </span>
                         </li>
                         <li className="flex gap-2">
                           <span className="font-bold text-accent">2.</span>
                           <span>
-                            Implement {analysis?.uniqueToReg1.length || 0} unique {reg1.regulationType} requirements
+                            Implement {analysis?.uniqueToReg1.length || 0}{" "}
+                            unique {reg1.regulationType} requirements
                           </span>
                         </li>
                         <li className="flex gap-2">
                           <span className="font-bold text-accent">3.</span>
                           <span>
-                            Implement {analysis?.uniqueToReg2.length || 0} unique {reg2.regulationType} requirements
+                            Implement {analysis?.uniqueToReg2.length || 0}{" "}
+                            unique {reg2.regulationType} requirements
                           </span>
                         </li>
                       </ol>

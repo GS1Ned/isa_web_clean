@@ -37,11 +37,13 @@ describe("CRON_SECRET Validation", () => {
 
   it("should accept valid CRON_SECRET", async () => {
     const validSecret = process.env.CRON_SECRET || "";
-    
+
     // Note: We're not actually running the full ingestion in tests
     // Just validating that the secret is accepted
-    const result = await caller.cron.dailyNewsIngestion({ secret: validSecret });
-    
+    const result = await caller.cron.dailyNewsIngestion({
+      secret: validSecret,
+    });
+
     expect(result.success).toBeDefined();
     // Either success or failure is fine - we're just testing authentication
   });

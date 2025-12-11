@@ -5,7 +5,7 @@ import type { IncomingMessage, ServerResponse } from "http";
 
 /**
  * Onboarding Progress Persistence Tests
- * 
+ *
  * Tests user onboarding progress tracking:
  * - Progress loading for new users
  * - Progress saving and persistence
@@ -44,7 +44,7 @@ describe("Onboarding Progress", () => {
 
   it("should save initial onboarding progress", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.onboarding.saveProgress({
       completedSteps: [1],
       currentStep: 2,
@@ -59,7 +59,7 @@ describe("Onboarding Progress", () => {
 
   it("should load saved progress", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const progress = await caller.onboarding.getProgress();
 
     expect(progress).toBeDefined();
@@ -71,7 +71,7 @@ describe("Onboarding Progress", () => {
 
   it("should update progress with additional steps", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.onboarding.saveProgress({
       completedSteps: [1, 2],
       currentStep: 3,
@@ -85,7 +85,7 @@ describe("Onboarding Progress", () => {
 
   it("should mark as completed when all steps done", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.onboarding.saveProgress({
       completedSteps: [1, 2, 3, 4],
       currentStep: 5,
@@ -99,7 +99,7 @@ describe("Onboarding Progress", () => {
 
   it("should reset progress", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const resetResult = await caller.onboarding.resetProgress();
     expect(resetResult).toBe(true);
 
@@ -109,7 +109,7 @@ describe("Onboarding Progress", () => {
 
   it("should calculate correct completion percentage for partial progress", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.onboarding.saveProgress({
       completedSteps: [1, 2, 3],
       currentStep: 4,
@@ -120,7 +120,7 @@ describe("Onboarding Progress", () => {
 
   it("should handle empty completed steps", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.onboarding.saveProgress({
       completedSteps: [],
       currentStep: 1,
@@ -133,7 +133,7 @@ describe("Onboarding Progress", () => {
 
   it("should persist progress across multiple saves", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     // First save
     await caller.onboarding.saveProgress({
       completedSteps: [1],
@@ -154,7 +154,7 @@ describe("Onboarding Progress", () => {
 
   it("should update timestamps on progress save", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const firstSave = await caller.onboarding.saveProgress({
       completedSteps: [1],
       currentStep: 2,

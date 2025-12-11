@@ -1,17 +1,23 @@
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  Building2, 
-  Calendar, 
-  ExternalLink, 
+import {
+  Building2,
+  Calendar,
+  ExternalLink,
   Filter,
   FileText,
   CheckCircle,
   Clock,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 import { useState } from "react";
 import {
@@ -23,8 +29,12 @@ import {
 } from "@/components/ui/select";
 
 export default function HubDutchInitiatives() {
-  const [selectedSector, setSelectedSector] = useState<string | undefined>(undefined);
-  const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
+  const [selectedSector, setSelectedSector] = useState<string | undefined>(
+    undefined
+  );
+  const [selectedStatus, setSelectedStatus] = useState<string | undefined>(
+    undefined
+  );
 
   // Fetch initiatives with filters
   const { data: initiatives, isLoading } = trpc.dutchInitiatives.list.useQuery({
@@ -73,14 +83,20 @@ export default function HubDutchInitiatives() {
         <div className="container py-12">
           <div className="max-w-4xl">
             <div className="flex items-center gap-2 mb-4">
-              <Badge variant="outline" className="bg-white/10 border-white/30 text-white">
+              <Badge
+                variant="outline"
+                className="bg-white/10 border-white/30 text-white"
+              >
                 🇳🇱 Dutch Initiatives
               </Badge>
             </div>
-            <h1 className="text-4xl font-bold mb-4">Dutch Compliance Initiatives</h1>
+            <h1 className="text-4xl font-bold mb-4">
+              Dutch Compliance Initiatives
+            </h1>
             <p className="text-orange-100 text-lg leading-relaxed">
-              National programs that complement EU regulations. Discover how Dutch initiatives like UPV Textiel, 
-              Green Deal Zorg, and DSGO align with GS1 standards and EU sustainability requirements.
+              National programs that complement EU regulations. Discover how
+              Dutch initiatives like UPV Textiel, Green Deal Zorg, and DSGO
+              align with GS1 standards and EU sustainability requirements.
             </p>
             <div className="flex items-center gap-6 mt-6 text-sm">
               <div className="flex items-center gap-2">
@@ -104,14 +120,14 @@ export default function HubDutchInitiatives() {
               <Filter className="w-4 h-4 text-muted-foreground" />
               <span className="text-sm font-medium">Filter by:</span>
             </div>
-            
+
             <Select value={selectedSector} onValueChange={setSelectedSector}>
               <SelectTrigger className="w-[200px]">
                 <SelectValue placeholder="All Sectors" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="__all__">All Sectors</SelectItem>
-                {sectors?.map((sector) => (
+                {sectors?.map(sector => (
                   <SelectItem key={sector} value={sector}>
                     {sector}
                   </SelectItem>
@@ -156,13 +172,21 @@ export default function HubDutchInitiatives() {
               </div>
             ) : initiatives && initiatives.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2">
-                {initiatives.map((initiative) => (
-                  <Link key={initiative.id} href={`/hub/dutch-initiatives/${initiative.id}`}>
+                {initiatives.map(initiative => (
+                  <Link
+                    key={initiative.id}
+                    href={`/hub/dutch-initiatives/${initiative.id}`}
+                  >
                     <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
                       <CardHeader>
                         <div className="flex items-start justify-between gap-4 mb-2">
-                          <CardTitle className="text-xl">{initiative.shortName}</CardTitle>
-                          <Badge variant="outline" className={getStatusColor(initiative.status)}>
+                          <CardTitle className="text-xl">
+                            {initiative.shortName}
+                          </CardTitle>
+                          <Badge
+                            variant="outline"
+                            className={getStatusColor(initiative.status)}
+                          >
                             {getStatusIcon(initiative.status)}
                             <span className="ml-1">{initiative.status}</span>
                           </Badge>
@@ -173,9 +197,7 @@ export default function HubDutchInitiatives() {
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="flex items-center gap-4 text-sm">
-                          <Badge variant="secondary">
-                            {initiative.sector}
-                          </Badge>
+                          <Badge variant="secondary">{initiative.sector}</Badge>
                           <Badge variant="outline">
                             {initiative.initiativeType}
                           </Badge>
@@ -190,7 +212,8 @@ export default function HubDutchInitiatives() {
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                               <Calendar className="w-4 h-4" />
                               <span>
-                                Since {new Date(initiative.startDate).getFullYear()}
+                                Since{" "}
+                                {new Date(initiative.startDate).getFullYear()}
                               </span>
                             </div>
                           )}
@@ -200,7 +223,7 @@ export default function HubDutchInitiatives() {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={e => e.stopPropagation()}
                             >
                               <ExternalLink className="w-4 h-4" />
                               <span>Website</span>

@@ -19,7 +19,12 @@ export const adminTemplatesRouter = router({
         name: z.string().min(1).max(255),
         description: z.string().optional(),
         category: z.enum(["csrd", "eudr", "esrs", "custom"]),
-        strategy: z.enum(["risk_first", "quick_wins", "balanced", "comprehensive"]),
+        strategy: z.enum([
+          "risk_first",
+          "quick_wins",
+          "balanced",
+          "comprehensive",
+        ]),
         estimatedEffort: z.number().int().positive(),
         estimatedImpact: z.number().optional(),
         targetScore: z.number().optional(),
@@ -29,7 +34,11 @@ export const adminTemplatesRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       const result = await db.insert(roadmapTemplates).values({
         name: input.name,
@@ -37,8 +46,12 @@ export const adminTemplatesRouter = router({
         category: input.category,
         strategy: input.strategy,
         estimatedEffort: input.estimatedEffort,
-        estimatedImpact: (input.estimatedImpact ? parseFloat(input.estimatedImpact.toString()) : 0) as any,
-        targetScore: (input.targetScore ? parseFloat(input.targetScore.toString()) : 0) as any,
+        estimatedImpact: (input.estimatedImpact
+          ? parseFloat(input.estimatedImpact.toString())
+          : 0) as any,
+        targetScore: (input.targetScore
+          ? parseFloat(input.targetScore.toString())
+          : 0) as any,
         isPublic: input.isPublic,
         createdBy: ctx.user.id,
         tags: input.tags ? JSON.stringify(input.tags) : null,
@@ -59,7 +72,9 @@ export const adminTemplatesRouter = router({
         templateId: z.number().int(),
         name: z.string().min(1).max(255).optional(),
         description: z.string().optional(),
-        strategy: z.enum(["risk_first", "quick_wins", "balanced", "comprehensive"]).optional(),
+        strategy: z
+          .enum(["risk_first", "quick_wins", "balanced", "comprehensive"])
+          .optional(),
         estimatedEffort: z.number().int().positive().optional(),
         estimatedImpact: z.number().optional(),
         targetScore: z.number().optional(),
@@ -69,7 +84,11 @@ export const adminTemplatesRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       // Verify ownership or admin
       const template = await db
@@ -78,18 +97,28 @@ export const adminTemplatesRouter = router({
         .where(eq(roadmapTemplates.id, input.templateId));
 
       if (template.length === 0) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "Template not found" });
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Template not found",
+        });
       }
 
       const updateData: any = {};
       if (input.name !== undefined) updateData.name = input.name;
-      if (input.description !== undefined) updateData.description = input.description;
+      if (input.description !== undefined)
+        updateData.description = input.description;
       if (input.strategy !== undefined) updateData.strategy = input.strategy;
-      if (input.estimatedEffort !== undefined) updateData.estimatedEffort = input.estimatedEffort;
-      if (input.estimatedImpact !== undefined) updateData.estimatedImpact = parseFloat(input.estimatedImpact.toString());
-      if (input.targetScore !== undefined) updateData.targetScore = parseFloat(input.targetScore.toString());
+      if (input.estimatedEffort !== undefined)
+        updateData.estimatedEffort = input.estimatedEffort;
+      if (input.estimatedImpact !== undefined)
+        updateData.estimatedImpact = parseFloat(
+          input.estimatedImpact.toString()
+        );
+      if (input.targetScore !== undefined)
+        updateData.targetScore = parseFloat(input.targetScore.toString());
       if (input.isPublic !== undefined) updateData.isPublic = input.isPublic;
-      if (input.tags !== undefined) updateData.tags = JSON.stringify(input.tags);
+      if (input.tags !== undefined)
+        updateData.tags = JSON.stringify(input.tags);
 
       await db
         .update(roadmapTemplates)
@@ -106,7 +135,11 @@ export const adminTemplatesRouter = router({
     .input(z.object({ templateId: z.number().int() }))
     .mutation(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       // Delete associated actions and milestones
       await db
@@ -145,7 +178,11 @@ export const adminTemplatesRouter = router({
     )
     .mutation(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       const result = await db.insert(templateActions).values({
         templateId: input.templateId,
@@ -155,9 +192,13 @@ export const adminTemplatesRouter = router({
         actionType: input.actionType,
         priority: input.priority,
         estimatedEffort: input.estimatedEffort,
-        estimatedImpact: (input.estimatedImpact ? parseFloat(input.estimatedImpact.toString()) : 0) as any,
+        estimatedImpact: (input.estimatedImpact
+          ? parseFloat(input.estimatedImpact.toString())
+          : 0) as any,
         successCriteria: input.successCriteria,
-        relatedStandards: input.relatedStandards ? JSON.stringify(input.relatedStandards) : null,
+        relatedStandards: input.relatedStandards
+          ? JSON.stringify(input.relatedStandards)
+          : null,
       });
 
       return {
@@ -183,15 +224,25 @@ export const adminTemplatesRouter = router({
     )
     .mutation(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       const updateData: any = {};
       if (input.title !== undefined) updateData.title = input.title;
-      if (input.description !== undefined) updateData.description = input.description;
+      if (input.description !== undefined)
+        updateData.description = input.description;
       if (input.priority !== undefined) updateData.priority = input.priority;
-      if (input.estimatedEffort !== undefined) updateData.estimatedEffort = input.estimatedEffort;
-      if (input.estimatedImpact !== undefined) updateData.estimatedImpact = parseFloat(input.estimatedImpact.toString());
-      if (input.successCriteria !== undefined) updateData.successCriteria = input.successCriteria;
+      if (input.estimatedEffort !== undefined)
+        updateData.estimatedEffort = input.estimatedEffort;
+      if (input.estimatedImpact !== undefined)
+        updateData.estimatedImpact = parseFloat(
+          input.estimatedImpact.toString()
+        );
+      if (input.successCriteria !== undefined)
+        updateData.successCriteria = input.successCriteria;
 
       await db
         .update(templateActions)
@@ -208,7 +259,11 @@ export const adminTemplatesRouter = router({
     .input(z.object({ actionId: z.number().int() }))
     .mutation(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       await db
         .delete(templateActions)
@@ -231,17 +286,24 @@ export const adminTemplatesRouter = router({
     )
     .query(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       let conditions: any[] = [];
       if (input.category) {
         conditions.push(eq(roadmapTemplates.category, input.category));
       }
       if (input.search) {
-        conditions.push(sql`${roadmapTemplates.name} LIKE ${`%${input.search}%`}`);
+        conditions.push(
+          sql`${roadmapTemplates.name} LIKE ${`%${input.search}%`}`
+        );
       }
 
-      const whereCondition = conditions.length > 0 ? and(...conditions) : undefined;
+      const whereCondition =
+        conditions.length > 0 ? and(...conditions) : undefined;
 
       const templates = await db
         .select()
@@ -261,7 +323,11 @@ export const adminTemplatesRouter = router({
     .input(z.object({ templateId: z.number().int() }))
     .query(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       const template = await db
         .select()
@@ -269,7 +335,10 @@ export const adminTemplatesRouter = router({
         .where(eq(roadmapTemplates.id, input.templateId));
 
       if (template.length === 0) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "Template not found" });
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Template not found",
+        });
       }
 
       const actions = await db
@@ -296,7 +365,11 @@ export const adminTemplatesRouter = router({
     .input(z.object({ templateId: z.number().int() }))
     .mutation(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       await db
         .update(roadmapTemplates)
@@ -313,7 +386,11 @@ export const adminTemplatesRouter = router({
     .input(z.object({ templateId: z.number().int() }))
     .mutation(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       await db
         .update(roadmapTemplates)
@@ -330,7 +407,11 @@ export const adminTemplatesRouter = router({
     .input(z.object({ templateId: z.number().int() }))
     .query(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       const template = await db
         .select()
@@ -338,7 +419,10 @@ export const adminTemplatesRouter = router({
         .where(eq(roadmapTemplates.id, input.templateId));
 
       if (template.length === 0) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "Template not found" });
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Template not found",
+        });
       }
 
       return {

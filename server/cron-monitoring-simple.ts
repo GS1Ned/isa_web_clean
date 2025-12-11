@@ -41,10 +41,10 @@ function getLogFilePath(date: Date = new Date()): string {
  */
 export function logCronExecution(log: CronExecutionLog) {
   ensureLogDir();
-  
+
   const logEntry = JSON.stringify(log) + "\n";
   const logFile = getLogFilePath();
-  
+
   try {
     fs.appendFileSync(logFile, logEntry);
     console.log(`[cron-monitoring] Logged: ${log.jobName} - ${log.status}`);
@@ -56,21 +56,24 @@ export function logCronExecution(log: CronExecutionLog) {
 /**
  * Get recent execution logs for a job
  */
-export function getExecutionHistory(jobName: string, days: number = 7): CronExecutionLog[] {
+export function getExecutionHistory(
+  jobName: string,
+  days: number = 7
+): CronExecutionLog[] {
   const logs: CronExecutionLog[] = [];
   const now = new Date();
-  
+
   for (let i = 0; i < days; i++) {
     const date = new Date(now);
     date.setDate(date.getDate() - i);
-    
+
     const logFile = getLogFilePath(date);
     if (!fs.existsSync(logFile)) continue;
-    
+
     try {
       const content = fs.readFileSync(logFile, "utf-8");
       const lines = content.trim().split("\n").filter(Boolean);
-      
+
       for (const line of lines) {
         try {
           const entry = JSON.parse(line) as CronExecutionLog;
@@ -82,12 +85,17 @@ export function getExecutionHistory(jobName: string, days: number = 7): CronExec
         }
       }
     } catch (error) {
-      console.error(`[cron-monitoring] Failed to read log file ${logFile}:`, error);
+      console.error(
+        `[cron-monitoring] Failed to read log file ${logFile}:`,
+        error
+      );
     }
   }
-  
+
   // Sort by timestamp descending (most recent first)
-  return logs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  return logs.sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  );
 }
 
 /**
@@ -95,15 +103,16 @@ export function getExecutionHistory(jobName: string, days: number = 7): CronExec
  */
 export function getExecutionStats(jobName: string, days: number = 7) {
   const logs = getExecutionHistory(jobName, days);
-  
+
   if (logs.length === 0) {
     return null;
   }
-  
+
   const successful = logs.filter(l => l.status === "success").length;
   const failed = logs.filter(l => l.status === "failure").length;
-  const avgDuration = logs.reduce((sum, l) => sum + l.duration, 0) / logs.length;
-  
+  const avgDuration =
+    logs.reduce((sum, l) => sum + l.duration, 0) / logs.length;
+
   return {
     total: logs.length,
     successful,
@@ -116,22 +125,27 @@ export function getExecutionStats(jobName: string, days: number = 7) {
 /**
  * Check for consecutive failures and send alert
  */
-export async function checkAndAlertOnFailures(jobName: string, threshold: number = 3) {
+export async function checkAndAlertOnFailures(
+  jobName: string,
+  threshold: number = 3
+) {
   const history = getExecutionHistory(jobName, 1); // Check today's logs
-  
+
   if (history.length < threshold) {
     return; // Not enough history yet
   }
-  
+
   // Get the most recent executions
   const recentExecutions = history.slice(0, threshold);
-  
+
   // Check if all recent executions failed
   const allFailed = recentExecutions.every(log => log.status === "failure");
-  
+
   if (allFailed) {
-    console.error(`[cron-monitoring] ⚠️  ${jobName} has failed ${threshold} times consecutively!`);
-    
+    console.error(
+      `[cron-monitoring] ⚠️  ${jobName} has failed ${threshold} times consecutively!`
+    );
+
     // Send notification to owner
     const lastError = recentExecutions[0].error || "Unknown error";
     const message = `
@@ -145,7 +159,7 @@ ${lastError}
 \`\`\`
 
 **Recent Execution History:**
-${recentExecutions.map((log, i) => `${i + 1}. ${log.timestamp} - ${log.status} (${log.duration}ms)`).join('\n')}
+${recentExecutions.map((log, i) => `${i + 1}. ${log.timestamp} - ${log.status} (${log.duration}ms)`).join("\n")}
 
 **Action Required:**
 1. Check server logs for detailed error messages
@@ -180,25 +194,27 @@ ${recentExecutions.map((log, i) => `${i + 1}. ${log.timestamp} - ${log.status} (
  */
 export function cleanupOldLogs() {
   ensureLogDir();
-  
+
   try {
     const files = fs.readdirSync(LOG_DIR);
     const logFiles = files
       .filter(f => f.startsWith("cron-") && f.endsWith(".log"))
       .sort()
       .reverse(); // Most recent first
-    
+
     // Delete files beyond MAX_LOG_FILES
     const filesToDelete = logFiles.slice(MAX_LOG_FILES);
-    
+
     for (const file of filesToDelete) {
       const filepath = path.join(LOG_DIR, file);
       fs.unlinkSync(filepath);
       console.log(`[cron-monitoring] Deleted old log file: ${file}`);
     }
-    
+
     if (filesToDelete.length > 0) {
-      console.log(`[cron-monitoring] Cleaned up ${filesToDelete.length} old log files`);
+      console.log(
+        `[cron-monitoring] Cleaned up ${filesToDelete.length} old log files`
+      );
     }
   } catch (error) {
     console.error("[cron-monitoring] Failed to cleanup logs:", error);
@@ -215,7 +231,7 @@ export async function monitoredCronJob<T>(
 ): Promise<T> {
   const startTime = Date.now();
   const timestamp = new Date().toISOString();
-  
+
   try {
     const result = await job();
     const duration = Date.now() - startTime;
@@ -225,7 +241,10 @@ export async function monitoredCronJob<T>(
       jobName,
       status: "success",
       duration,
-      stats: typeof result === "object" && result !== null ? (result as any) : undefined,
+      stats:
+        typeof result === "object" && result !== null
+          ? (result as any)
+          : undefined,
       timestamp,
     });
 
@@ -260,11 +279,11 @@ export async function monitoredCronJob<T>(
  */
 export function getMonitoringDashboard() {
   const jobs = ["daily-news-ingestion", "weekly-news-archival"];
-  
+
   return jobs.map(jobName => {
     const stats = getExecutionStats(jobName, 7);
     const recentHistory = getExecutionHistory(jobName, 1).slice(0, 5);
-    
+
     return {
       jobName,
       stats,

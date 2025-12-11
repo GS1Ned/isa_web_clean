@@ -1,29 +1,36 @@
 import { useRoute, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  ArrowLeft, 
-  Building2, 
-  Calendar, 
-  ExternalLink, 
+import {
+  ArrowLeft,
+  Building2,
+  Calendar,
+  ExternalLink,
   FileText,
   CheckCircle,
   AlertCircle,
   Target,
   Link as LinkIcon,
-  Sparkles
+  Sparkles,
 } from "lucide-react";
 
 export default function HubDutchInitiativeDetail() {
   const [, params] = useRoute("/hub/dutch-initiatives/:id");
   const initiativeId = parseInt(params?.id || "0");
 
-  const { data, isLoading, error } = trpc.dutchInitiatives.getWithMappings.useQuery(
-    { initiativeId },
-    { enabled: initiativeId > 0 }
-  );
+  const { data, isLoading, error } =
+    trpc.dutchInitiatives.getWithMappings.useQuery(
+      { initiativeId },
+      { enabled: initiativeId > 0 }
+    );
 
   if (isLoading) {
     return (
@@ -41,7 +48,10 @@ export default function HubDutchInitiativeDetail() {
       <div className="min-h-screen flex flex-col bg-background">
         <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
           <div className="container flex items-center justify-between h-16">
-            <Link href="/hub/dutch-initiatives" className="text-orange-600 hover:text-orange-700 transition font-medium flex items-center gap-2">
+            <Link
+              href="/hub/dutch-initiatives"
+              className="text-orange-600 hover:text-orange-700 transition font-medium flex items-center gap-2"
+            >
               <ArrowLeft className="w-4 h-4" />
               Back to Dutch Initiatives
             </Link>
@@ -52,7 +62,8 @@ export default function HubDutchInitiativeDetail() {
             <AlertCircle className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
             <h2 className="text-2xl font-bold mb-2">Initiative Not Found</h2>
             <p className="text-muted-foreground mb-6">
-              The initiative you're looking for doesn't exist or has been removed.
+              The initiative you're looking for doesn't exist or has been
+              removed.
             </p>
             <Link href="/hub/dutch-initiatives">
               <Button>
@@ -99,7 +110,10 @@ export default function HubDutchInitiativeDetail() {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/hub/dutch-initiatives" className="text-orange-600 hover:text-orange-700 transition font-medium flex items-center gap-2">
+          <Link
+            href="/hub/dutch-initiatives"
+            className="text-orange-600 hover:text-orange-700 transition font-medium flex items-center gap-2"
+          >
             <ArrowLeft className="w-4 h-4" />
             Back to Dutch Initiatives
           </Link>
@@ -111,13 +125,22 @@ export default function HubDutchInitiativeDetail() {
         <div className="container py-12">
           <div className="max-w-4xl">
             <div className="flex items-center gap-2 mb-4 flex-wrap">
-              <Badge variant="outline" className="bg-white/10 border-white/30 text-white">
+              <Badge
+                variant="outline"
+                className="bg-white/10 border-white/30 text-white"
+              >
                 🇳🇱 {initiative.sector}
               </Badge>
-              <Badge variant="outline" className={getStatusColor(initiative.status)}>
+              <Badge
+                variant="outline"
+                className={getStatusColor(initiative.status)}
+              >
                 {initiative.status}
               </Badge>
-              <Badge variant="outline" className="bg-white/10 border-white/30 text-white">
+              <Badge
+                variant="outline"
+                className="bg-white/10 border-white/30 text-white"
+              >
                 {initiative.initiativeType}
               </Badge>
             </div>
@@ -129,7 +152,9 @@ export default function HubDutchInitiativeDetail() {
               {initiative.startDate && (
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  <span>Since {new Date(initiative.startDate).getFullYear()}</span>
+                  <span>
+                    Since {new Date(initiative.startDate).getFullYear()}
+                  </span>
                 </div>
               )}
               {initiative.managingOrganization && (
@@ -163,26 +188,36 @@ export default function HubDutchInitiativeDetail() {
             <Card>
               <CardHeader>
                 <CardTitle>Overview</CardTitle>
-                <CardDescription>Scope and objectives of this initiative</CardDescription>
+                <CardDescription>
+                  Scope and objectives of this initiative
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h3 className="font-semibold text-sm text-muted-foreground mb-2">Scope</h3>
-                  <p className="text-foreground leading-relaxed whitespace-pre-wrap">{initiative.scope}</p>
+                  <h3 className="font-semibold text-sm text-muted-foreground mb-2">
+                    Scope
+                  </h3>
+                  <p className="text-foreground leading-relaxed whitespace-pre-wrap">
+                    {initiative.scope}
+                  </p>
                 </div>
-                {initiative.keyTargets && Array.isArray(initiative.keyTargets) && initiative.keyTargets.length > 0 && (
-                  <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground mb-2">Key Targets</h3>
-                    <ul className="space-y-2">
-                      {initiative.keyTargets.map((target, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <Target className="w-4 h-4 text-orange-600 mt-1 flex-shrink-0" />
-                          <span className="text-foreground">{target}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {initiative.keyTargets &&
+                  Array.isArray(initiative.keyTargets) &&
+                  initiative.keyTargets.length > 0 && (
+                    <div>
+                      <h3 className="font-semibold text-sm text-muted-foreground mb-2">
+                        Key Targets
+                      </h3>
+                      <ul className="space-y-2">
+                        {initiative.keyTargets.map((target, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <Target className="w-4 h-4 text-orange-600 mt-1 flex-shrink-0" />
+                            <span className="text-foreground">{target}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
               </CardContent>
             </Card>
 
@@ -190,7 +225,9 @@ export default function HubDutchInitiativeDetail() {
             <Card>
               <CardHeader>
                 <CardTitle>Compliance Requirements</CardTitle>
-                <CardDescription>What companies must do to participate</CardDescription>
+                <CardDescription>
+                  What companies must do to participate
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-foreground leading-relaxed whitespace-pre-wrap">
@@ -215,7 +252,9 @@ export default function HubDutchInitiativeDetail() {
                   <Sparkles className="w-5 h-5 text-blue-600" />
                   GS1 Standards Integration
                 </CardTitle>
-                <CardDescription>How GS1 standards support this initiative</CardDescription>
+                <CardDescription>
+                  How GS1 standards support this initiative
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-foreground leading-relaxed whitespace-pre-wrap">
@@ -224,14 +263,27 @@ export default function HubDutchInitiativeDetail() {
 
                 {standardMappings.length > 0 && (
                   <div className="space-y-3 pt-4 border-t">
-                    <h4 className="font-semibold text-sm">Required GS1 Standards ({standardMappings.length})</h4>
-                    {standardMappings.map((mapping) => (
-                      <div key={mapping.id} className="border rounded-lg p-4 hover:bg-accent/5 transition-colors">
+                    <h4 className="font-semibold text-sm">
+                      Required GS1 Standards ({standardMappings.length})
+                    </h4>
+                    {standardMappings.map(mapping => (
+                      <div
+                        key={mapping.id}
+                        className="border rounded-lg p-4 hover:bg-accent/5 transition-colors"
+                      >
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
-                              <h5 className="font-semibold">{mapping.standard?.standardName || "Unknown Standard"}</h5>
-                              <Badge variant="outline" className={getCriticalityColor(mapping.criticality)}>
+                              <h5 className="font-semibold">
+                                {mapping.standard?.standardName ||
+                                  "Unknown Standard"}
+                              </h5>
+                              <Badge
+                                variant="outline"
+                                className={getCriticalityColor(
+                                  mapping.criticality
+                                )}
+                              >
                                 {mapping.criticality}
                               </Badge>
                             </div>
@@ -268,22 +320,33 @@ export default function HubDutchInitiativeDetail() {
                     Related EU Regulations
                   </CardTitle>
                   <CardDescription>
-                    EU regulations that this initiative implements or complements
+                    EU regulations that this initiative implements or
+                    complements
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {regulationMappings.map((mapping) => (
-                      <Link key={mapping.id} href={`/hub/regulations/${mapping.regulation?.id}`}>
+                    {regulationMappings.map(mapping => (
+                      <Link
+                        key={mapping.id}
+                        href={`/hub/regulations/${mapping.regulation?.id}`}
+                      >
                         <div className="border rounded-lg p-4 hover:bg-accent/5 transition-colors cursor-pointer">
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-2">
-                                <h5 className="font-semibold">{mapping.regulation?.title || "Unknown Regulation"}</h5>
-                                <Badge variant="outline">{mapping.relationshipType}</Badge>
+                                <h5 className="font-semibold">
+                                  {mapping.regulation?.title ||
+                                    "Unknown Regulation"}
+                                </h5>
+                                <Badge variant="outline">
+                                  {mapping.relationshipType}
+                                </Badge>
                               </div>
                               {mapping.description && (
-                                <p className="text-sm text-muted-foreground">{mapping.description}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {mapping.description}
+                                </p>
                               )}
                             </div>
                             <ExternalLink className="w-4 h-4 text-muted-foreground flex-shrink-0" />
@@ -301,7 +364,9 @@ export default function HubDutchInitiativeDetail() {
               <Card>
                 <CardHeader>
                   <CardTitle>Resources</CardTitle>
-                  <CardDescription>Official documentation and links</CardDescription>
+                  <CardDescription>
+                    Official documentation and links
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">

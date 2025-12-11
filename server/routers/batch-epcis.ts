@@ -3,11 +3,11 @@ import { z } from "zod";
 import { getDb } from "../db";
 import { epciBatchJobs, supplyChainAnalytics } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
-import { 
-  parseEPCISDocument, 
-  processEPCISEvents, 
+import {
+  parseEPCISDocument,
+  processEPCISEvents,
   detectComplianceRisks,
-  updateSupplyChainAnalytics 
+  updateSupplyChainAnalytics,
 } from "../batch-epcis-processor";
 
 /**
@@ -45,15 +45,13 @@ export const batchEpcisRouter = router({
         const eventCount = document.epcisBody.eventList.length;
 
         // Create batch job record
-        const [batchJob] = await db
-          .insert(epciBatchJobs)
-          .values({
-            userId: ctx.user.id,
-            fileName: input.fileName,
-            fileSize: input.fileSize,
-            status: "queued",
-            totalEvents: eventCount,
-          });
+        const [batchJob] = await db.insert(epciBatchJobs).values({
+          userId: ctx.user.id,
+          fileName: input.fileName,
+          fileSize: input.fileSize,
+          status: "queued",
+          totalEvents: eventCount,
+        });
 
         // Process events asynchronously (in production, use a job queue)
         setImmediate(async () => {
@@ -120,7 +118,11 @@ export const batchEpcisRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
-      const jobs = await db.select().from(epciBatchJobs).where(eq(epciBatchJobs.id, input.jobId)).limit(1);
+      const jobs = await db
+        .select()
+        .from(epciBatchJobs)
+        .where(eq(epciBatchJobs.id, input.jobId))
+        .limit(1);
       const job = jobs[0];
 
       if (!job) {
@@ -138,7 +140,9 @@ export const batchEpcisRouter = router({
         totalEvents: job.totalEvents,
         processedEvents: job.processedEvents,
         failedEvents: job.failedEvents,
-        progress: job.totalEvents ? Math.round((job.processedEvents! / job.totalEvents) * 100) : 0,
+        progress: job.totalEvents
+          ? Math.round((job.processedEvents! / job.totalEvents) * 100)
+          : 0,
         createdAt: job.createdAt,
         completedAt: job.completedAt,
         errorMessage: job.errorMessage,
@@ -159,9 +163,13 @@ export const batchEpcisRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
-      const jobs = await db.select().from(epciBatchJobs).where(
-        eq(epciBatchJobs.userId, ctx.user.id)
-      ).orderBy(epciBatchJobs.createdAt).limit(input.limit).offset(input.offset);
+      const jobs = await db
+        .select()
+        .from(epciBatchJobs)
+        .where(eq(epciBatchJobs.userId, ctx.user.id))
+        .orderBy(epciBatchJobs.createdAt)
+        .limit(input.limit)
+        .offset(input.offset);
 
       return jobs.map((job: any) => ({
         id: job.id,
@@ -169,7 +177,9 @@ export const batchEpcisRouter = router({
         status: job.status,
         totalEvents: job.totalEvents,
         processedEvents: job.processedEvents,
-        progress: job.totalEvents ? Math.round((job.processedEvents! / job.totalEvents) * 100) : 0,
+        progress: job.totalEvents
+          ? Math.round((job.processedEvents! / job.totalEvents) * 100)
+          : 0,
         createdAt: job.createdAt,
         completedAt: job.completedAt,
       }));
@@ -182,9 +192,12 @@ export const batchEpcisRouter = router({
     const db = await getDb();
     if (!db) throw new Error("Database not available");
 
-    const analytics = await db.select().from(supplyChainAnalytics).where(
-      eq(supplyChainAnalytics.userId, ctx.user.id)
-    ).orderBy(supplyChainAnalytics.metricDate).limit(1);
+    const analytics = await db
+      .select()
+      .from(supplyChainAnalytics)
+      .where(eq(supplyChainAnalytics.userId, ctx.user.id))
+      .orderBy(supplyChainAnalytics.metricDate)
+      .limit(1);
 
     const analyticsRecord = analytics[0];
 
@@ -204,7 +217,8 @@ export const batchEpcisRouter = router({
       totalNodes: analyticsRecord.totalNodes,
       totalEdges: analyticsRecord.totalEdges,
       highRiskNodes: analyticsRecord.highRiskNodes,
-      averageTraceabilityScore: parseFloat(analyticsRecord.averageTraceabilityScore as any) || 0,
+      averageTraceabilityScore:
+        parseFloat(analyticsRecord.averageTraceabilityScore as any) || 0,
       complianceScore: parseFloat(analyticsRecord.complianceScore as any) || 0,
       lastUpdated: analyticsRecord.lastUpdated,
     };

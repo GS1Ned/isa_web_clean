@@ -17,7 +17,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, Filter, FileText, TrendingUp } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -25,9 +31,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function ESRSDatapoints() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [selectedStandard, setSelectedStandard] = useState<string | undefined>();
-  const [selectedDataType, setSelectedDataType] = useState<string | undefined>();
-  const [showVoluntaryOnly, setShowVoluntaryOnly] = useState<boolean | undefined>();
+  const [selectedStandard, setSelectedStandard] = useState<
+    string | undefined
+  >();
+  const [selectedDataType, setSelectedDataType] = useState<
+    string | undefined
+  >();
+  const [showVoluntaryOnly, setShowVoluntaryOnly] = useState<
+    boolean | undefined
+  >();
 
   const pageSize = 50;
 
@@ -81,7 +93,8 @@ export default function ESRSDatapoints() {
       <div>
         <h1 className="text-4xl font-bold mb-2">ESRS Datapoint Browser</h1>
         <p className="text-muted-foreground text-lg">
-          Explore {stats?.total || "1,184"} official EFRAG disclosure requirements across all ESRS standards
+          Explore {stats?.total || "1,184"} official EFRAG disclosure
+          requirements across all ESRS standards
         </p>
       </div>
 
@@ -90,20 +103,30 @@ export default function ESRSDatapoints() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">Total Datapoints</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Datapoints
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">{stats.total}</div>
-              <p className="text-xs text-muted-foreground mt-1">Official EFRAG IG 3</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Official EFRAG IG 3
+              </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">ESRS Standards</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                ESRS Standards
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{Object.keys(stats.byStandard).length}</div>
-              <p className="text-xs text-muted-foreground mt-1">E1-E5, S1-S4, G1, ESRS 2</p>
+              <div className="text-3xl font-bold">
+                {Object.keys(stats.byStandard).length}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                E1-E5, S1-S4, G1, ESRS 2
+              </p>
             </CardContent>
           </Card>
           <Card>
@@ -111,8 +134,12 @@ export default function ESRSDatapoints() {
               <CardTitle className="text-sm font-medium">Data Types</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{Object.keys(stats.byDataType).length}</div>
-              <p className="text-xs text-muted-foreground mt-1">Narrative, quantitative, qualitative</p>
+              <div className="text-3xl font-bold">
+                {Object.keys(stats.byDataType).length}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Narrative, quantitative, qualitative
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -126,7 +153,8 @@ export default function ESRSDatapoints() {
             Search & Filter
           </CardTitle>
           <CardDescription>
-            Find specific disclosure requirements by keyword, standard, or data type
+            Find specific disclosure requirements by keyword, standard, or data
+            type
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -136,7 +164,7 @@ export default function ESRSDatapoints() {
             <Input
               placeholder="Search by ID, name, or disclosure requirement..."
               value={search}
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={e => handleSearch(e.target.value)}
               className="pl-10"
             />
           </div>
@@ -144,13 +172,16 @@ export default function ESRSDatapoints() {
           {/* Filters Row */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Standard Filter */}
-            <Select value={selectedStandard || "all"} onValueChange={handleStandardFilter}>
+            <Select
+              value={selectedStandard || "all"}
+              onValueChange={handleStandardFilter}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="All Standards" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Standards</SelectItem>
-                {standards?.map((std) => (
+                {standards?.map(std => (
                   <SelectItem key={std} value={std}>
                     {std}
                   </SelectItem>
@@ -159,7 +190,10 @@ export default function ESRSDatapoints() {
             </Select>
 
             {/* Data Type Filter */}
-            <Select value={selectedDataType || "all"} onValueChange={handleDataTypeFilter}>
+            <Select
+              value={selectedDataType || "all"}
+              onValueChange={handleDataTypeFilter}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="All Data Types" />
               </SelectTrigger>
@@ -173,7 +207,10 @@ export default function ESRSDatapoints() {
             </Select>
 
             {/* Voluntary Filter */}
-            <Select value={showVoluntaryOnly?.toString() || "all"} onValueChange={handleVoluntaryFilter}>
+            <Select
+              value={showVoluntaryOnly?.toString() || "all"}
+              onValueChange={handleVoluntaryFilter}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="All Requirements" />
               </SelectTrigger>
@@ -230,15 +267,22 @@ export default function ESRSDatapoints() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {data.datapoints.map((dp) => (
+                    {data.datapoints.map(dp => (
                       <TableRow key={dp.id}>
-                        <TableCell className="font-mono text-xs">{dp.datapointId}</TableCell>
+                        <TableCell className="font-mono text-xs">
+                          {dp.datapointId}
+                        </TableCell>
                         <TableCell>
                           <Badge variant="outline">{dp.esrsStandard}</Badge>
                         </TableCell>
-                        <TableCell className="text-sm">{dp.disclosureRequirement}</TableCell>
+                        <TableCell className="text-sm">
+                          {dp.disclosureRequirement}
+                        </TableCell>
                         <TableCell className="max-w-md">
-                          <div className="truncate" title={dp.datapointName || ""}>
+                          <div
+                            className="truncate"
+                            title={dp.datapointName || ""}
+                          >
                             {dp.datapointName}
                           </div>
                         </TableCell>
@@ -247,7 +291,10 @@ export default function ESRSDatapoints() {
                         </TableCell>
                         <TableCell>
                           {dp.mayVoluntary ? (
-                            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                            <Badge
+                              variant="outline"
+                              className="bg-blue-50 text-blue-700 border-blue-200"
+                            >
                               Voluntary
                             </Badge>
                           ) : (
@@ -264,7 +311,8 @@ export default function ESRSDatapoints() {
               <div className="flex items-center justify-between mt-4">
                 <div className="text-sm text-muted-foreground">
                   Showing {(data.page - 1) * data.pageSize + 1} to{" "}
-                  {Math.min(data.page * data.pageSize, data.total)} of {data.total} datapoints
+                  {Math.min(data.page * data.pageSize, data.total)} of{" "}
+                  {data.total} datapoints
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -289,7 +337,9 @@ export default function ESRSDatapoints() {
           ) : (
             <div className="text-center py-12">
               <TrendingUp className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No datapoints found</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                No datapoints found
+              </h3>
               <p className="text-muted-foreground mb-4">
                 Try adjusting your search or filters
               </p>

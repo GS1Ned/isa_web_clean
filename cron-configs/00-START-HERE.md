@@ -21,6 +21,7 @@
 **File:** `cron-job.org-instructions.md`
 
 **Why choose this:**
+
 - ✅ Free tier (50 jobs, 1-minute intervals)
 - ✅ Simple web interface
 - ✅ No credit card required
@@ -35,9 +36,10 @@
 **File:** `easycron-instructions.md`
 
 **Why choose this:**
+
 - ✅ Advanced features (retries, notifications)
 - ✅ Good for production use
-- ⚠️  Free tier limited to 1 job
+- ⚠️ Free tier limited to 1 job
 
 **Best for:** Production deployments, advanced users
 
@@ -46,14 +48,16 @@
 ### 3. GitHub Actions
 
 **Files:**
+
 - `.github/workflows/isa-news-cron.yml` (workflow file)
 - `github-actions-instructions.md` (setup guide)
 
 **Why choose this:**
+
 - ✅ Free for public repositories
 - ✅ Integrated with your codebase
 - ✅ Full control over workflow
-- ⚠️  Requires GitHub repository
+- ⚠️ Requires GitHub repository
 
 **Best for:** Open-source projects, developers familiar with GitHub Actions
 
@@ -64,11 +68,13 @@
 **File:** `curl-test-config.txt`
 
 **Why use this:**
+
 - Test your endpoints manually
 - Verify authentication is working
 - Debug issues
 
 **Usage:**
+
 ```bash
 # Make the script executable
 chmod +x curl-test-config.txt
@@ -87,7 +93,7 @@ All configurations use the same CRON_SECRET:
 c11f32585dcc3641dd108e4b6d9c3d4c9a718a41eeab7869775bb8ee97ca3f9b
 ```
 
-**⚠️  Keep this secret secure!** Don't share it publicly or commit it to version control.
+**⚠️ Keep this secret secure!** Don't share it publicly or commit it to version control.
 
 ---
 
@@ -95,11 +101,11 @@ c11f32585dcc3641dd108e4b6d9c3d4c9a718a41eeab7869775bb8ee97ca3f9b
 
 Your ISA app exposes these cron endpoints:
 
-| Endpoint | Purpose | Auth Required |
-|----------|---------|---------------|
-| `/cron/health` | Health check | No |
-| `/cron/daily-news-ingestion` | Daily news collection | Yes |
-| `/cron/weekly-news-archival` | Weekly cleanup | Yes |
+| Endpoint                     | Purpose               | Auth Required |
+| ---------------------------- | --------------------- | ------------- |
+| `/cron/health`               | Health check          | No            |
+| `/cron/daily-news-ingestion` | Daily news collection | Yes           |
+| `/cron/weekly-news-archival` | Weekly cleanup        | Yes           |
 
 **Base URL:** `https://your-isa-domain.manus.space`
 

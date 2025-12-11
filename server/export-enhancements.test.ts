@@ -80,14 +80,20 @@ describe("Export Enhancements", () => {
     });
 
     it("should generate branded PDF with custom branding", () => {
-      const pdfBuffer = exportRegulationToPDFBranded(mockRegulation, customBranding);
+      const pdfBuffer = exportRegulationToPDFBranded(
+        mockRegulation,
+        customBranding
+      );
 
       expect(pdfBuffer).toBeInstanceOf(Buffer);
       expect(pdfBuffer.length).toBeGreaterThan(0);
     });
 
     it("should include company name in branded PDF", () => {
-      const pdfBuffer = exportRegulationToPDFBranded(mockRegulation, customBranding);
+      const pdfBuffer = exportRegulationToPDFBranded(
+        mockRegulation,
+        customBranding
+      );
       const pdfText = pdfBuffer.toString("latin1");
 
       // PDF should be valid
@@ -101,7 +107,10 @@ describe("Export Enhancements", () => {
         watermarkText: "CONFIDENTIAL",
       };
 
-      const pdfBuffer = exportRegulationToPDFBranded(mockRegulation, brandingWithWatermark);
+      const pdfBuffer = exportRegulationToPDFBranded(
+        mockRegulation,
+        brandingWithWatermark
+      );
 
       expect(pdfBuffer).toBeInstanceOf(Buffer);
       expect(pdfBuffer.length).toBeGreaterThan(0);
@@ -116,7 +125,10 @@ describe("Export Enhancements", () => {
         })),
       };
 
-      const pdfBuffer = exportRegulationToPDFBranded(regulationWithManyFAQs, customBranding);
+      const pdfBuffer = exportRegulationToPDFBranded(
+        regulationWithManyFAQs,
+        customBranding
+      );
 
       expect(pdfBuffer).toBeInstanceOf(Buffer);
       expect(pdfBuffer.length).toBeGreaterThan(0);
@@ -132,7 +144,10 @@ describe("Export Enhancements", () => {
     });
 
     it("should generate branded CSV with custom branding", () => {
-      const csvContent = exportRegulationToCSVBranded(mockRegulation, customBranding);
+      const csvContent = exportRegulationToCSVBranded(
+        mockRegulation,
+        customBranding
+      );
 
       expect(typeof csvContent).toBe("string");
       expect(csvContent).toContain("GS1 Global");
@@ -140,13 +155,19 @@ describe("Export Enhancements", () => {
     });
 
     it("should include company name in header", () => {
-      const csvContent = exportRegulationToCSVBranded(mockRegulation, customBranding);
+      const csvContent = exportRegulationToCSVBranded(
+        mockRegulation,
+        customBranding
+      );
 
       expect(csvContent).toContain("GS1 Global");
     });
 
     it("should include footer text in CSV", () => {
-      const csvContent = exportRegulationToCSVBranded(mockRegulation, customBranding);
+      const csvContent = exportRegulationToCSVBranded(
+        mockRegulation,
+        customBranding
+      );
 
       expect(csvContent).toContain("© 2025 GS1 Global - Confidential");
     });
@@ -157,13 +178,19 @@ describe("Export Enhancements", () => {
         description: 'Description with "quotes" and, commas',
       };
 
-      const csvContent = exportRegulationToCSVBranded(regulationWithQuotes, customBranding);
+      const csvContent = exportRegulationToCSVBranded(
+        regulationWithQuotes,
+        customBranding
+      );
 
       expect(csvContent).toContain('""quotes""');
     });
 
     it("should include all sections in CSV", () => {
-      const csvContent = exportRegulationToCSVBranded(mockRegulation, customBranding);
+      const csvContent = exportRegulationToCSVBranded(
+        mockRegulation,
+        customBranding
+      );
 
       expect(csvContent).toContain("REGULATION DETAILS");
       expect(csvContent).toContain("DESCRIPTION");
@@ -245,7 +272,10 @@ describe("Export Enhancements", () => {
 
   describe("Export Filename Generation", () => {
     it("should generate valid PDF filename", () => {
-      const filename = generateExportFilename("Corporate Sustainability Reporting Directive", "pdf");
+      const filename = generateExportFilename(
+        "Corporate Sustainability Reporting Directive",
+        "pdf"
+      );
 
       expect(filename).toMatch(/\.pdf$/);
       expect(filename).toContain("regulation-");
@@ -253,7 +283,10 @@ describe("Export Enhancements", () => {
     });
 
     it("should generate valid CSV filename", () => {
-      const filename = generateExportFilename("Corporate Sustainability Reporting Directive", "csv");
+      const filename = generateExportFilename(
+        "Corporate Sustainability Reporting Directive",
+        "csv"
+      );
 
       expect(filename).toMatch(/\.csv$/);
       expect(filename).toContain("regulation-");
@@ -290,7 +323,10 @@ describe("Export Enhancements", () => {
         primaryColor: "#FF0000",
       };
 
-      const pdfBuffer = exportRegulationToPDFBranded(mockRegulation, customColor);
+      const pdfBuffer = exportRegulationToPDFBranded(
+        mockRegulation,
+        customColor
+      );
 
       expect(pdfBuffer).toBeInstanceOf(Buffer);
     });
@@ -301,7 +337,10 @@ describe("Export Enhancements", () => {
         secondaryColor: "#00FF00",
       };
 
-      const pdfBuffer = exportRegulationToPDFBranded(mockRegulation, customColor);
+      const pdfBuffer = exportRegulationToPDFBranded(
+        mockRegulation,
+        customColor
+      );
 
       expect(pdfBuffer).toBeInstanceOf(Buffer);
     });
@@ -312,7 +351,10 @@ describe("Export Enhancements", () => {
         footerText: "Custom Footer Text",
       };
 
-      const csvContent = exportRegulationToCSVBranded(mockRegulation, customFooter);
+      const csvContent = exportRegulationToCSVBranded(
+        mockRegulation,
+        customFooter
+      );
 
       expect(csvContent).toContain("Custom Footer Text");
     });
@@ -323,7 +365,10 @@ describe("Export Enhancements", () => {
         headerText: "Custom Header",
       };
 
-      const csvContent = exportRegulationToCSVBranded(mockRegulation, customHeader);
+      const csvContent = exportRegulationToCSVBranded(
+        mockRegulation,
+        customHeader
+      );
 
       expect(csvContent).toContain("Custom Header");
     });
@@ -339,7 +384,10 @@ describe("Export Enhancements", () => {
         headerText: "Partner Compliance Report",
       };
 
-      const pdfBuffer = exportRegulationToPDFBranded(mockRegulation, whitelabelBranding);
+      const pdfBuffer = exportRegulationToPDFBranded(
+        mockRegulation,
+        whitelabelBranding
+      );
 
       expect(pdfBuffer).toBeInstanceOf(Buffer);
       expect(pdfBuffer.length).toBeGreaterThan(0);
@@ -352,7 +400,10 @@ describe("Export Enhancements", () => {
         headerText: "Partner Compliance Report",
       };
 
-      const csvContent = exportRegulationToCSVBranded(mockRegulation, whitelabelBranding);
+      const csvContent = exportRegulationToCSVBranded(
+        mockRegulation,
+        whitelabelBranding
+      );
 
       expect(csvContent).toContain("Partner Company Inc.");
       expect(csvContent).toContain("Partner Compliance Report");
@@ -380,8 +431,14 @@ describe("Export Enhancements", () => {
           ...config,
         };
 
-        const pdfBuffer = exportRegulationToPDFBranded(mockRegulation, branding);
-        const csvContent = exportRegulationToCSVBranded(mockRegulation, branding);
+        const pdfBuffer = exportRegulationToPDFBranded(
+          mockRegulation,
+          branding
+        );
+        const csvContent = exportRegulationToCSVBranded(
+          mockRegulation,
+          branding
+        );
 
         expect(pdfBuffer).toBeInstanceOf(Buffer);
         expect(csvContent).toContain(config.companyName);

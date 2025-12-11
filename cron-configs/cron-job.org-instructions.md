@@ -1,4 +1,3 @@
-
 # cron-job.org Setup Instructions
 
 1. Go to https://cron-job.org and sign up for a free account

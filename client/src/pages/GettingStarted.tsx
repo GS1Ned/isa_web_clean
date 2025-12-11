@@ -1,10 +1,16 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'wouter';
-import { trpc } from '@/lib/trpc';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useState, useEffect } from "react";
+import { Link } from "wouter";
+import { trpc } from "@/lib/trpc";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   CheckCircle2,
   Circle,
@@ -16,7 +22,7 @@ import {
   ArrowRight,
   Loader2,
   Sparkles,
-} from 'lucide-react';
+} from "lucide-react";
 
 /**
  * Getting Started Page
@@ -68,13 +74,13 @@ export default function GettingStarted() {
       const newSet = new Set(prev).add(step);
       const newStepsArray = Array.from(newSet);
       const newCurrentStep = step === currentStep ? step + 1 : currentStep;
-      
+
       // Save to database
       saveProgressMutation.mutate({
         completedSteps: newStepsArray,
         currentStep: newCurrentStep,
       });
-      
+
       return newSet;
     });
     if (step === currentStep) {
@@ -89,50 +95,51 @@ export default function GettingStarted() {
       await seedEUDRMutation.mutateAsync();
       await seedEPCISMutation.mutateAsync();
     } catch (error) {
-      console.error('Failed to seed data:', error);
+      console.error("Failed to seed data:", error);
     }
   };
 
   const steps = [
     {
       id: 1,
-      title: 'Load Sample Data',
-      description: 'Populate ISA with sample supply chain data to explore features',
+      title: "Load Sample Data",
+      description:
+        "Populate ISA with sample supply chain data to explore features",
       icon: Database,
       action: handleSeedAllData,
-      actionLabel: 'Seed Sample Data',
+      actionLabel: "Seed Sample Data",
       isLoading: seedEUDRMutation.isPending || seedEPCISMutation.isPending,
       nextLink: null,
     },
     {
       id: 2,
-      title: 'Try Barcode Scanner',
-      description: 'Scan a product GTIN to verify traceability status',
+      title: "Try Barcode Scanner",
+      description: "Scan a product GTIN to verify traceability status",
       icon: Scan,
       action: () => markStepComplete(2),
-      actionLabel: 'Open Scanner',
+      actionLabel: "Open Scanner",
       isLoading: false,
-      nextLink: '/tools/scanner',
+      nextLink: "/tools/scanner",
     },
     {
       id: 3,
-      title: 'View Supply Chain Map',
-      description: 'Visualize product journey from origin to destination',
+      title: "View Supply Chain Map",
+      description: "Visualize product journey from origin to destination",
       icon: Map,
       action: () => markStepComplete(3),
-      actionLabel: 'View Map',
+      actionLabel: "View Map",
       isLoading: false,
-      nextLink: '/epcis/supply-chain',
+      nextLink: "/epcis/supply-chain",
     },
     {
       id: 4,
-      title: 'Explore EUDR Compliance',
-      description: 'Check deforestation risk zones and compliance status',
+      title: "Explore EUDR Compliance",
+      description: "Check deforestation risk zones and compliance status",
       icon: BarChart3,
       action: () => markStepComplete(4),
-      actionLabel: 'View EUDR Map',
+      actionLabel: "View EUDR Map",
       isLoading: false,
-      nextLink: '/epcis/eudr-map',
+      nextLink: "/epcis/eudr-map",
     },
   ];
 
@@ -149,7 +156,8 @@ export default function GettingStarted() {
           <div>
             <h1 className="text-4xl font-bold">Getting Started with ISA</h1>
             <p className="text-muted-foreground mt-1">
-              Follow these steps to explore ISA's supply chain compliance features
+              Follow these steps to explore ISA's supply chain compliance
+              features
             </p>
           </div>
         </div>
@@ -179,15 +187,16 @@ export default function GettingStarted() {
             Congratulations! You've completed the getting started guide
           </AlertTitle>
           <AlertDescription className="text-green-800 dark:text-green-200">
-            You're now ready to use ISA for real supply chain compliance workflows. Explore the ESG Hub for
-            regulations or upload your own EPCIS data.
+            You're now ready to use ISA for real supply chain compliance
+            workflows. Explore the ESG Hub for regulations or upload your own
+            EPCIS data.
           </AlertDescription>
         </Alert>
       )}
 
       {/* Steps */}
       <div className="grid gap-6">
-        {steps.map((step) => {
+        {steps.map(step => {
           const Icon = step.icon;
           const isComplete = isStepComplete(step.id);
           const isCurrent = currentStep === step.id;
@@ -196,8 +205,8 @@ export default function GettingStarted() {
             <Card
               key={step.id}
               className={`transition-all ${
-                isCurrent ? 'ring-2 ring-primary shadow-lg' : ''
-              } ${isComplete ? 'bg-green-50 dark:bg-green-950 border-green-500' : ''}`}
+                isCurrent ? "ring-2 ring-primary shadow-lg" : ""
+              } ${isComplete ? "bg-green-50 dark:bg-green-950 border-green-500" : ""}`}
             >
               <CardHeader>
                 <div className="flex items-start justify-between">
@@ -205,10 +214,10 @@ export default function GettingStarted() {
                     <div
                       className={`p-3 rounded-lg ${
                         isComplete
-                          ? 'bg-green-500 text-white'
+                          ? "bg-green-500 text-white"
                           : isCurrent
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-secondary'
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-secondary"
                       }`}
                     >
                       <Icon className="h-6 w-6" />
@@ -231,7 +240,9 @@ export default function GettingStarted() {
                           </Badge>
                         )}
                       </div>
-                      <CardDescription className="mt-1">{step.description}</CardDescription>
+                      <CardDescription className="mt-1">
+                        {step.description}
+                      </CardDescription>
                     </div>
                   </div>
                 </div>
@@ -243,9 +254,9 @@ export default function GettingStarted() {
                       <Button
                         onClick={step.action}
                         disabled={isComplete}
-                        variant={isComplete ? 'outline' : 'default'}
+                        variant={isComplete ? "outline" : "default"}
                       >
-                        {isComplete ? 'Completed' : step.actionLabel}
+                        {isComplete ? "Completed" : step.actionLabel}
                         {!isComplete && <ArrowRight className="ml-2 h-4 w-4" />}
                       </Button>
                     </Link>
@@ -253,11 +264,15 @@ export default function GettingStarted() {
                     <Button
                       onClick={step.action}
                       disabled={step.isLoading || isComplete}
-                      variant={isComplete ? 'outline' : 'default'}
+                      variant={isComplete ? "outline" : "default"}
                     >
-                      {step.isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                      {isComplete ? 'Completed' : step.actionLabel}
-                      {!isComplete && !step.isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
+                      {step.isLoading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {isComplete ? "Completed" : step.actionLabel}
+                      {!isComplete && !step.isLoading && (
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      )}
                     </Button>
                   )}
                   {isComplete && (
@@ -296,7 +311,9 @@ export default function GettingStarted() {
           <Card>
             <CardHeader>
               <CardTitle>EPCIS Upload</CardTitle>
-              <CardDescription>Upload your own supply chain traceability data</CardDescription>
+              <CardDescription>
+                Upload your own supply chain traceability data
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/epcis/upload">
@@ -310,7 +327,9 @@ export default function GettingStarted() {
           <Card>
             <CardHeader>
               <CardTitle>Admin Panel</CardTitle>
-              <CardDescription>Manage sample data and system settings</CardDescription>
+              <CardDescription>
+                Manage sample data and system settings
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/admin/eudr-seeder">

@@ -1,5 +1,11 @@
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,26 +19,34 @@ interface ESRSDatapointsSectionProps {
   regulationId: number;
 }
 
-export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionProps) {
+export function ESRSDatapointsSection({
+  regulationId,
+}: ESRSDatapointsSectionProps) {
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
 
   // Fetch ESRS mappings
-  const { data: mappings, isLoading, refetch } = trpc.regulations.getEsrsMappings.useQuery({
+  const {
+    data: mappings,
+    isLoading,
+    refetch,
+  } = trpc.regulations.getEsrsMappings.useQuery({
     regulationId,
   });
 
   // Generate mappings mutation (admin only)
   const generateMappings = trpc.regulations.generateEsrsMappings.useMutation({
-    onSuccess: (result) => {
+    onSuccess: result => {
       if (result.success) {
-        toast.success(`Generated ${result.mappingsCount} ESRS datapoint mappings`);
+        toast.success(
+          `Generated ${result.mappingsCount} ESRS datapoint mappings`
+        );
         refetch();
       } else {
         toast.error(`Failed to generate mappings: ${result.error}`);
       }
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(`Error: ${error.message}`);
     },
   });
@@ -43,7 +57,9 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
       return;
     }
 
-    toast.info("Generating ESRS datapoint mappings... This may take 10-20 seconds.");
+    toast.info(
+      "Generating ESRS datapoint mappings... This may take 10-20 seconds."
+    );
     generateMappings.mutate({ regulationId });
   };
 
@@ -82,7 +98,8 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
             <AlertCircle className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold mb-2">No ESRS mappings yet</h3>
             <p className="text-muted-foreground mb-6">
-              Generate AI-powered mappings to see which ESRS datapoints are relevant for this regulation.
+              Generate AI-powered mappings to see which ESRS datapoints are
+              relevant for this regulation.
             </p>
             {isAdmin ? (
               <Button
@@ -91,7 +108,9 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
                 className="gap-2"
               >
                 <Sparkles className="h-4 w-4" />
-                {generateMappings.isPending ? "Generating..." : "Generate ESRS Mappings"}
+                {generateMappings.isPending
+                  ? "Generating..."
+                  : "Generate ESRS Mappings"}
               </Button>
             ) : (
               <p className="text-sm text-muted-foreground">
@@ -105,17 +124,22 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
   }
 
   // Group by ESRS standard
-  const mappingsByStandard = mappings.reduce((acc, mapping) => {
-    const standard = mapping.datapoint?.esrsStandard || "Unknown";
-    if (!acc[standard]) {
-      acc[standard] = [];
-    }
-    acc[standard].push(mapping);
-    return acc;
-  }, {} as Record<string, typeof mappings>);
+  const mappingsByStandard = mappings.reduce(
+    (acc, mapping) => {
+      const standard = mapping.datapoint?.esrsStandard || "Unknown";
+      if (!acc[standard]) {
+        acc[standard] = [];
+      }
+      acc[standard].push(mapping);
+      return acc;
+    },
+    {} as Record<string, typeof mappings>
+  );
 
   const totalMappings = mappings.length;
-  const mandatoryCount = mappings.filter(m => !m.datapoint?.mayVoluntary).length;
+  const mandatoryCount = mappings.filter(
+    m => !m.datapoint?.mayVoluntary
+  ).length;
   const voluntaryCount = totalMappings - mandatoryCount;
 
   return (
@@ -128,21 +152,28 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
             Required ESRS Disclosures
           </CardTitle>
           <CardDescription>
-            AI-powered mapping of {totalMappings} ESRS datapoints relevant to this regulation
+            AI-powered mapping of {totalMappings} ESRS datapoints relevant to
+            this regulation
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-blue-50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-blue-900">{totalMappings}</div>
+              <div className="text-2xl font-bold text-blue-900">
+                {totalMappings}
+              </div>
               <div className="text-sm text-blue-700">Total Datapoints</div>
             </div>
             <div className="bg-green-50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-green-900">{mandatoryCount}</div>
+              <div className="text-2xl font-bold text-green-900">
+                {mandatoryCount}
+              </div>
               <div className="text-sm text-green-700">Mandatory</div>
             </div>
             <div className="bg-amber-50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-amber-900">{voluntaryCount}</div>
+              <div className="text-2xl font-bold text-amber-900">
+                {voluntaryCount}
+              </div>
               <div className="text-sm text-amber-700">Voluntary</div>
             </div>
           </div>
@@ -163,7 +194,9 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
                 className="gap-2"
               >
                 <Sparkles className="h-4 w-4" />
-                {generateMappings.isPending ? "Regenerating..." : "Regenerate Mappings"}
+                {generateMappings.isPending
+                  ? "Regenerating..."
+                  : "Regenerate Mappings"}
               </Button>
             )}
           </div>
@@ -188,8 +221,10 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
             <CardContent>
               <div className="space-y-4">
                 {standardMappings
-                  .sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0))
-                  .map((mapping) => (
+                  .sort(
+                    (a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0)
+                  )
+                  .map(mapping => (
                     <div
                       key={mapping.id}
                       className="border rounded-lg p-4 hover:bg-accent/5 transition-colors"
@@ -204,7 +239,10 @@ export function ESRSDatapointsSection({ regulationId }: ESRSDatapointsSectionPro
                               {mapping.datapoint?.dataType || "N/A"}
                             </Badge>
                             {mapping.datapoint?.mayVoluntary ? (
-                              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                              <Badge
+                                variant="outline"
+                                className="bg-blue-50 text-blue-700 border-blue-200"
+                              >
                                 Voluntary
                               </Badge>
                             ) : (

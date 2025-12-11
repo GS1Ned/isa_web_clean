@@ -4,7 +4,12 @@
  */
 
 import { describe, it, expect, beforeAll } from "vitest";
-import { fetchAllNews, deduplicateByUrl, validateNewsItem, filterByAge } from "./news-fetcher";
+import {
+  fetchAllNews,
+  deduplicateByUrl,
+  validateNewsItem,
+  filterByAge,
+} from "./news-fetcher";
 import { processNewsBatch } from "./news-ai-processor";
 import { archiveOldNews, getArchivalStats } from "./news-archival";
 import { getDb } from "./db";
@@ -14,18 +19,18 @@ import { desc } from "drizzle-orm";
 describe("News Fetcher", () => {
   it("should fetch news from all sources", async () => {
     const results = await fetchAllNews();
-    
+
     expect(results).toBeInstanceOf(Array);
     expect(results.length).toBeGreaterThanOrEqual(0); // May be 0 if all sources fail
-    
+
     // Check each source result
-    results.forEach((result) => {
+    results.forEach(result => {
       expect(result).toHaveProperty("sourceId");
       expect(result).toHaveProperty("sourceName");
       expect(result).toHaveProperty("items");
       expect(result).toHaveProperty("success");
       expect(result).toHaveProperty("itemsFetched");
-      
+
       if (result.success) {
         expect(result.items).toBeInstanceOf(Array);
       }
@@ -40,9 +45,9 @@ describe("News Fetcher", () => {
     ];
 
     const deduplicated = deduplicateByUrl(items as any);
-    
+
     expect(deduplicated).toHaveLength(2);
-    expect(deduplicated.map((item) => item.link)).toEqual([
+    expect(deduplicated.map(item => item.link)).toEqual([
       "https://example.com/news/1",
       "https://example.com/news/2",
     ]);
@@ -54,7 +59,11 @@ describe("News Fetcher", () => {
       link: "https://example.com/news/1",
       pubDate: "2024-01-01",
       content: "Some content",
-      source: { name: "Test Source", type: "EU_OFFICIAL", credibilityScore: 1.0 },
+      source: {
+        name: "Test Source",
+        type: "EU_OFFICIAL",
+        credibilityScore: 1.0,
+      },
     };
 
     const invalidItem = {
@@ -81,7 +90,7 @@ describe("News Fetcher", () => {
     ];
 
     const filtered = filterByAge(items as any, 30);
-    
+
     expect(filtered).toHaveLength(1);
     expect(filtered[0].title).toBe("Recent News");
   });
@@ -92,7 +101,8 @@ describe("AI Processor", () => {
     const items = [
       {
         title: "New CSRD Reporting Requirements Announced",
-        content: "The European Commission has announced new Corporate Sustainability Reporting Directive requirements that will affect thousands of companies.",
+        content:
+          "The European Commission has announced new Corporate Sustainability Reporting Directive requirements that will affect thousands of companies.",
         link: "https://example.com/csrd-news",
         pubDate: new Date().toISOString(),
         source: {
@@ -104,20 +114,20 @@ describe("AI Processor", () => {
     ];
 
     const processed = await processNewsBatch(items);
-    
+
     expect(processed).toHaveLength(1);
     expect(processed[0]).toHaveProperty("headline");
     expect(processed[0]).toHaveProperty("summary");
     expect(processed[0]).toHaveProperty("regulationTags");
     expect(processed[0]).toHaveProperty("impactLevel");
     expect(processed[0]).toHaveProperty("newsType");
-    
+
     // Check regulation tags include CSRD
     expect(processed[0].regulationTags).toContain("CSRD");
-    
+
     // Check impact level is valid
     expect(["HIGH", "MEDIUM", "LOW"]).toContain(processed[0].impactLevel);
-    
+
     // Check news type is valid
     expect([
       "NEW_LAW",
@@ -133,13 +143,13 @@ describe("AI Processor", () => {
 describe("News Archival", () => {
   it("should get archival statistics", async () => {
     const stats = await getArchivalStats();
-    
+
     expect(stats).toBeDefined();
     if (stats) {
       expect(stats).toHaveProperty("activeCount");
       expect(stats).toHaveProperty("archivedCount");
       expect(stats).toHaveProperty("oldestActiveDate");
-      
+
       expect(typeof stats.activeCount).toBe("number");
       expect(typeof stats.archivedCount).toBe("number");
     }
@@ -149,12 +159,12 @@ describe("News Archival", () => {
     // Test with very high threshold (1000 days)
     // Should not archive any recent news
     const result = await archiveOldNews(1000);
-    
+
     expect(result).toHaveProperty("success");
     expect(result).toHaveProperty("archived");
     expect(result).toHaveProperty("errors");
     expect(result).toHaveProperty("duration");
-    
+
     expect(result.archived).toBe(0); // No items should be archived
   }, 10000);
 });
@@ -179,7 +189,7 @@ describe("Database Integration", () => {
       .limit(10);
 
     expect(news).toBeInstanceOf(Array);
-    
+
     // If there are news items, validate structure
     if (news.length > 0) {
       const item = news[0];
@@ -196,25 +206,25 @@ describe("End-to-End Pipeline", () => {
     // Test pipeline behavior when no new items are found
     const emptyItems: any[] = [];
     const processed = await processNewsBatch(emptyItems);
-    
+
     expect(processed).toHaveLength(0);
   });
 
   it("should handle malformed RSS items gracefully", () => {
     const malformedItems = [
       { title: null, link: null },
-      { 
-        title: "Valid", 
+      {
+        title: "Valid",
         link: "https://example.com",
         pubDate: "2024-01-01",
         content: "Content",
-        source: { name: "Test", type: "EU_OFFICIAL", credibilityScore: 1.0 }
+        source: { name: "Test", type: "EU_OFFICIAL", credibilityScore: 1.0 },
       },
       { title: undefined, link: undefined },
     ];
 
     const valid = malformedItems.filter(validateNewsItem as any);
-    
+
     expect(valid).toHaveLength(1);
     expect(valid[0].title).toBe("Valid");
   });

@@ -2,9 +2,7 @@
   "$id": "https://gs1.github.io/EPCIS/EPCIS-JSON-Schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": [
-    "type"
-  ],
+  "required": ["type"],
   "properties": {
     "type": {
       "type": "string"
@@ -16,9 +14,7 @@
         "type": "object",
         "properties": {
           "type": {
-            "enum": [
-              "EPCISDocument"
-            ]
+            "enum": ["EPCISDocument"]
           }
         }
       },
@@ -31,9 +27,7 @@
         "type": "object",
         "properties": {
           "type": {
-            "enum": [
-              "EPCISQueryDocument"
-            ]
+            "enum": ["EPCISQueryDocument"]
           }
         }
       },
@@ -46,9 +40,7 @@
         "type": "object",
         "properties": {
           "type": {
-            "enum": [
-              "ObjectEvent"
-            ]
+            "enum": ["ObjectEvent"]
           }
         }
       },
@@ -68,9 +60,7 @@
         "type": "object",
         "properties": {
           "type": {
-            "enum": [
-              "AggregationEvent"
-            ]
+            "enum": ["AggregationEvent"]
           }
         }
       },
@@ -90,9 +80,7 @@
         "type": "object",
         "properties": {
           "type": {
-            "enum": [
-              "AssociationEvent"
-            ]
+            "enum": ["AssociationEvent"]
           }
         }
       },
@@ -112,9 +100,7 @@
         "type": "object",
         "properties": {
           "type": {
-            "enum": [
-              "TransformationEvent"
-            ]
+            "enum": ["TransformationEvent"]
           }
         }
       },
@@ -134,9 +120,7 @@
         "type": "object",
         "properties": {
           "type": {
-            "enum": [
-              "TransactionEvent"
-            ]
+            "enum": ["TransactionEvent"]
           }
         }
       },
@@ -245,9 +229,7 @@
           ]
         }
       },
-      "required": [
-        "id"
-      ]
+      "required": ["id"]
     },
     "vocabularyElement": {
       "type": "object",
@@ -268,9 +250,7 @@
           }
         }
       },
-      "required": [
-        "id"
-      ]
+      "required": ["id"]
     },
     "vocabulary": {
       "type": "object",
@@ -285,9 +265,7 @@
           }
         }
       },
-      "required": [
-        "type"
-      ]
+      "required": ["type"]
     },
     "vocab-uri": {
       "type": "string",
@@ -312,9 +290,7 @@
         "anyOf": [
           {
             "type": "string",
-            "enum": [
-              "epcisMasterData"
-            ]
+            "enum": ["epcisMasterData"]
           },
           {
             "$ref": "#/definitions/vocab-uri"
@@ -350,10 +326,7 @@
         },
         {
           "type": "string",
-          "enum": [
-            "did_not_occur",
-            "incorrect_data"
-          ]
+          "enum": ["did_not_occur", "incorrect_data"]
         }
       ]
     },
@@ -373,9 +346,7 @@
           }
         }
       },
-      "required": [
-        "declarationTime"
-      ],
+      "required": ["declarationTime"],
       "propertyNames": {
         "anyOf": [
           {
@@ -383,11 +354,7 @@
           },
           {
             "type": "string",
-            "enum": [
-              "declarationTime",
-              "reason",
-              "correctiveEventIDs"
-            ]
+            "enum": ["declarationTime", "reason", "correctiveEventIDs"]
           }
         ]
       }
@@ -418,10 +385,7 @@
           "$ref": "#/definitions/errorDeclaration"
         }
       },
-      "required": [
-        "eventTime",
-        "eventTimeZoneOffset"
-      ]
+      "required": ["eventTime", "eventTimeZoneOffset"]
     },
     "epcList": {
       "type": "array",
@@ -450,9 +414,7 @@
           "$ref": "#/definitions/uom"
         }
       },
-      "required": [
-        "epcClass"
-      ],
+      "required": ["epcClass"],
       "additionalProperties": false
     },
     "quantityList": {
@@ -463,11 +425,7 @@
     },
     "action": {
       "type": "string",
-      "enum": [
-        "OBSERVE",
-        "ADD",
-        "DELETE"
-      ]
+      "enum": ["OBSERVE", "ADD", "DELETE"]
     },
     "bizStep": {
       "anyOf": [
@@ -595,15 +553,11 @@
           "anyOf": [
             {
               "type": "object",
-              "required": [
-                "set"
-              ]
+              "required": ["set"]
             },
             {
               "type": "object",
-              "required": [
-                "unset"
-              ]
+              "required": ["unset"]
             }
           ]
         }
@@ -616,9 +570,7 @@
           "$ref": "#/definitions/uri"
         }
       },
-      "required": [
-        "id"
-      ]
+      "required": ["id"]
     },
     "bizLocation": {
       "type": "object",
@@ -627,9 +579,7 @@
           "$ref": "#/definitions/uri"
         }
       },
-      "required": [
-        "id"
-      ]
+      "required": ["id"]
     },
     "bizTransaction-type": {
       "anyOf": [
@@ -666,9 +616,7 @@
           "$ref": "#/definitions/uri"
         }
       },
-      "required": [
-        "bizTransaction"
-      ],
+      "required": ["bizTransaction"],
       "additionalProperties": false
     },
     "source-dest-type": {
@@ -678,11 +626,7 @@
         },
         {
           "type": "string",
-          "enum": [
-            "owning_party",
-            "possessing_party",
-            "location"
-          ]
+          "enum": ["owning_party", "possessing_party", "location"]
         }
       ]
     },
@@ -696,10 +640,7 @@
           "$ref": "#/definitions/uri"
         }
       },
-      "required": [
-        "type",
-        "source"
-      ],
+      "required": ["type", "source"],
       "additionalProperties": false
     },
     "destination": {
@@ -712,10 +653,7 @@
           "$ref": "#/definitions/uri"
         }
       },
-      "required": [
-        "type",
-        "destination"
-      ],
+      "required": ["type", "destination"],
       "additionalProperties": false
     },
     "sensorMetadata": {
@@ -863,10 +801,7 @@
         },
         {
           "type": "string",
-          "enum": [
-            "ALARM_CONDITION",
-            "ERROR_CONDITION"
-          ]
+          "enum": ["ALARM_CONDITION", "ERROR_CONDITION"]
         }
       ]
     },
@@ -982,9 +917,7 @@
           "$ref": "#/definitions/string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "propertyNames": {
         "anyOf": [
           {
@@ -1039,9 +972,7 @@
           "$ref": "#/definitions/sensorReportList"
         }
       },
-      "required": [
-        "sensorReport"
-      ],
+      "required": ["sensorReport"],
       "propertyNames": {
         "anyOf": [
           {
@@ -1049,10 +980,7 @@
           },
           {
             "type": "string",
-            "enum": [
-              "sensorMetadata",
-              "sensorReport"
-            ]
+            "enum": ["sensorMetadata", "sensorReport"]
           }
         ]
       }
@@ -1094,9 +1022,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "ObjectEvent"
-              ]
+              "enum": ["ObjectEvent"]
             },
             "epcList": {
               "$ref": "#/definitions/epcList"
@@ -1150,10 +1076,7 @@
               "$ref": "#/definitions/ilmd"
             }
           },
-          "required": [
-            "type",
-            "action"
-          ],
+          "required": ["type", "action"],
           "propertyNames": {
             "anyOf": [
               {
@@ -1193,9 +1116,7 @@
                   }
                 }
               },
-              "required": [
-                "epcList"
-              ]
+              "required": ["epcList"]
             },
             {
               "type": "object",
@@ -1208,9 +1129,7 @@
                   }
                 }
               },
-              "required": [
-                "quantityList"
-              ]
+              "required": ["quantityList"]
             },
             {
               "allOf": [
@@ -1225,9 +1144,7 @@
                       "minItems": 1
                     }
                   },
-                  "required": [
-                    "sensorElementList"
-                  ]
+                  "required": ["sensorElementList"]
                 },
                 {
                   "type": "object",
@@ -1236,9 +1153,7 @@
                       "$ref": "#/definitions/readPoint"
                     }
                   },
-                  "required": [
-                    "readPoint"
-                  ]
+                  "required": ["readPoint"]
                 }
               ]
             }
@@ -1293,9 +1208,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "AggregationEvent"
-              ]
+              "enum": ["AggregationEvent"]
             },
             "parentID": {
               "$ref": "#/definitions/uri"
@@ -1352,10 +1265,7 @@
               }
             }
           },
-          "required": [
-            "type",
-            "action"
-          ],
+          "required": ["type", "action"],
           "propertyNames": {
             "anyOf": [
               {
@@ -1394,9 +1304,7 @@
                   }
                 }
               },
-              "required": [
-                "childEPCs"
-              ]
+              "required": ["childEPCs"]
             },
             {
               "type": "object",
@@ -1409,9 +1317,7 @@
                   }
                 }
               },
-              "required": [
-                "childQuantityList"
-              ]
+              "required": ["childQuantityList"]
             },
             {
               "type": "object",
@@ -1436,9 +1342,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "TransactionEvent"
-              ]
+              "enum": ["TransactionEvent"]
             },
             "bizTransactionList": {
               "type": "array",
@@ -1496,11 +1400,7 @@
               }
             }
           },
-          "required": [
-            "type",
-            "bizTransactionList",
-            "action"
-          ],
+          "required": ["type", "bizTransactionList", "action"],
           "propertyNames": {
             "anyOf": [
               {
@@ -1539,9 +1439,7 @@
                   }
                 }
               },
-              "required": [
-                "epcList"
-              ]
+              "required": ["epcList"]
             },
             {
               "type": "object",
@@ -1554,9 +1452,7 @@
                   }
                 }
               },
-              "required": [
-                "quantityList"
-              ]
+              "required": ["quantityList"]
             },
             {
               "type": "object",
@@ -1581,9 +1477,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "TransformationEvent"
-              ]
+              "enum": ["TransformationEvent"]
             },
             "inputEPCList": {
               "$ref": "#/definitions/epcList"
@@ -1643,9 +1537,7 @@
               "$ref": "#/definitions/ilmd"
             }
           },
-          "required": [
-            "type"
-          ],
+          "required": ["type"],
           "propertyNames": {
             "anyOf": [
               {
@@ -1691,9 +1583,7 @@
                           }
                         }
                       },
-                      "required": [
-                        "inputEPCList"
-                      ]
+                      "required": ["inputEPCList"]
                     },
                     {
                       "type": "object",
@@ -1706,9 +1596,7 @@
                           }
                         }
                       },
-                      "required": [
-                        "inputQuantityList"
-                      ]
+                      "required": ["inputQuantityList"]
                     }
                   ]
                 },
@@ -1725,9 +1613,7 @@
                           }
                         }
                       },
-                      "required": [
-                        "outputEPCList"
-                      ]
+                      "required": ["outputEPCList"]
                     },
                     {
                       "type": "object",
@@ -1740,9 +1626,7 @@
                           }
                         }
                       },
-                      "required": [
-                        "outputQuantityList"
-                      ]
+                      "required": ["outputQuantityList"]
                     }
                   ]
                 }
@@ -1761,9 +1645,7 @@
                       }
                     }
                   },
-                  "required": [
-                    "inputEPCList"
-                  ]
+                  "required": ["inputEPCList"]
                 },
                 {
                   "type": "object",
@@ -1776,9 +1658,7 @@
                       }
                     }
                   },
-                  "required": [
-                    "inputQuantityList"
-                  ]
+                  "required": ["inputQuantityList"]
                 },
                 {
                   "type": "object",
@@ -1791,9 +1671,7 @@
                       }
                     }
                   },
-                  "required": [
-                    "outputEPCList"
-                  ]
+                  "required": ["outputEPCList"]
                 },
                 {
                   "type": "object",
@@ -1806,15 +1684,11 @@
                       }
                     }
                   },
-                  "required": [
-                    "outputQuantityList"
-                  ]
+                  "required": ["outputQuantityList"]
                 }
               ],
               "type": "object",
-              "required": [
-                "transformationID"
-              ]
+              "required": ["transformationID"]
             }
           ]
         }
@@ -1830,9 +1704,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "AssociationEvent"
-              ]
+              "enum": ["AssociationEvent"]
             },
             "parentID": {
               "$ref": "#/definitions/uri"
@@ -1889,11 +1761,7 @@
               }
             }
           },
-          "required": [
-            "type",
-            "action",
-            "parentID"
-          ],
+          "required": ["type", "action", "parentID"],
           "propertyNames": {
             "anyOf": [
               {
@@ -1932,9 +1800,7 @@
                   }
                 }
               },
-              "required": [
-                "childEPCs"
-              ]
+              "required": ["childEPCs"]
             },
             {
               "type": "object",
@@ -1947,9 +1813,7 @@
                   }
                 }
               },
-              "required": [
-                "childQuantityList"
-              ]
+              "required": ["childQuantityList"]
             },
             {
               "type": "object",
@@ -1976,26 +1840,20 @@
               "$ref": "#/definitions/vocab-uri"
             }
           },
-          "required": [
-            "type"
-          ]
+          "required": ["type"]
         }
       ]
     },
     "EPCIS-Document-Event": {
       "type": "object",
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "allOf": [
         {
           "if": {
             "type": "object",
             "properties": {
               "type": {
-                "enum": [
-                  "ObjectEvent"
-                ]
+                "enum": ["ObjectEvent"]
               }
             }
           },
@@ -2008,9 +1866,7 @@
             "type": "object",
             "properties": {
               "type": {
-                "enum": [
-                  "AggregationEvent"
-                ]
+                "enum": ["AggregationEvent"]
               }
             }
           },
@@ -2023,9 +1879,7 @@
             "type": "object",
             "properties": {
               "type": {
-                "enum": [
-                  "TransactionEvent"
-                ]
+                "enum": ["TransactionEvent"]
               }
             }
           },
@@ -2037,9 +1891,7 @@
           "if": {
             "properties": {
               "type": {
-                "enum": [
-                  "TransformationEvent"
-                ]
+                "enum": ["TransformationEvent"]
               }
             }
           },
@@ -2052,9 +1904,7 @@
             "type": "object",
             "properties": {
               "type": {
-                "enum": [
-                  "AssociationEvent"
-                ]
+                "enum": ["AssociationEvent"]
               }
             }
           },
@@ -2104,9 +1954,7 @@
         },
         "type": {
           "type": "string",
-          "enum": [
-            "EPCISDocument"
-          ]
+          "enum": ["EPCISDocument"]
         },
         "@context": {
           "$ref": "#/definitions/%40context"
@@ -2136,9 +1984,7 @@
               "$ref": "#/definitions/eventList"
             }
           },
-          "required": [
-            "eventList"
-          ]
+          "required": ["eventList"]
         }
       },
       "required": [
@@ -2187,17 +2033,12 @@
           "$ref": "#/definitions/vocabularyList"
         }
       },
-      "required": [
-        "eventList"
-      ],
+      "required": ["eventList"],
       "propertyNames": {
         "anyOf": [
           {
             "type": "string",
-            "enum": [
-              "eventList",
-              "vocabularyList"
-            ]
+            "enum": ["eventList", "vocabularyList"]
           },
           {
             "$ref": "#/definitions/vocab-uri"
@@ -2218,19 +2059,12 @@
           "$ref": "#/definitions/resultsBody"
         }
       },
-      "required": [
-        "queryName",
-        "resultsBody"
-      ],
+      "required": ["queryName", "resultsBody"],
       "propertyNames": {
         "anyOf": [
           {
             "type": "string",
-            "enum": [
-              "queryName",
-              "subscriptionID",
-              "resultsBody"
-            ]
+            "enum": ["queryName", "subscriptionID", "resultsBody"]
           },
           {
             "$ref": "#/definitions/vocab-uri"
@@ -2245,16 +2079,12 @@
           "$ref": "#/definitions/queryResults"
         }
       },
-      "required": [
-        "queryResults"
-      ],
+      "required": ["queryResults"],
       "propertyNames": {
         "anyOf": [
           {
             "type": "string",
-            "enum": [
-              "queryResults"
-            ]
+            "enum": ["queryResults"]
           },
           {
             "$ref": "#/definitions/vocab-uri"
@@ -2273,9 +2103,7 @@
         },
         "type": {
           "type": "string",
-          "enum": [
-            "EPCISQueryDocument"
-          ]
+          "enum": ["EPCISQueryDocument"]
         },
         "schemaVersion": {
           "$ref": "#/definitions/version"
@@ -2287,11 +2115,7 @@
           "$ref": "#/definitions/epcisQueryDocumentBody"
         }
       },
-      "required": [
-        "@context",
-        "type",
-        "epcisBody"
-      ],
+      "required": ["@context", "type", "epcisBody"],
       "propertyNames": {
         "anyOf": [
           {
@@ -2323,9 +2147,7 @@
     },
     "required-ld-context": {
       "type": "object",
-      "required": [
-        "@context"
-      ]
+      "required": ["@context"]
     }
   }
 }

@@ -50,7 +50,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Likely to require batch/lot for traceability. Serial number may be optional or required for high-value items. Awaiting delegated act."
@@ -70,7 +73,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Awaiting delegated act to specify exact granularity requirements."
@@ -89,7 +95,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Likely to require serial number for safety and recall traceability. Awaiting delegated act."
@@ -109,7 +118,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Awaiting delegated act to specify exact granularity requirements."
@@ -128,7 +140,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Batch/lot likely required for safety and recall purposes. Awaiting delegated act."
@@ -147,7 +162,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Batch/lot likely required for hazardous substance tracking. Awaiting delegated act."
@@ -166,7 +184,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Batch/lot likely required for safety and environmental tracking. Awaiting delegated act."
@@ -185,7 +206,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Batch/lot likely required for safety and recall purposes. Awaiting delegated act."
@@ -204,7 +228,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Serial number likely required for energy efficiency tracking and warranty. Awaiting delegated act."
@@ -223,7 +250,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Serial number likely required for warranty, repair, and recycling tracking. Awaiting delegated act."
@@ -242,7 +272,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Serial number likely required for warranty, repair, and recycling tracking. Awaiting delegated act."
@@ -261,7 +294,10 @@
       "madeToStockAI": "AI (01)",
       "madeToOrderAI": "AI (03)"
     },
-    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "recommendedCarriers": [
+      "QR Code with GS1 Digital Link URI",
+      "Data Matrix with GS1 Digital Link URI"
+    ],
     "regulation": "ESPR (general)",
     "delegatedActStatus": "pending",
     "notes": "Batch/lot required for B2B traceability and material composition tracking. Awaiting delegated act."

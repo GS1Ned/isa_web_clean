@@ -1,31 +1,34 @@
 /**
  * Ask ISA Router
- * 
+ *
  * RAG-powered Q&A system using LLM-based semantic matching.
  * No vector embeddings required - uses LLM for relevance scoring.
  */
 
-import { z } from 'zod';
-import { router, publicProcedure, protectedProcedure } from '../_core/trpc';
+import { z } from "zod";
+import { router, publicProcedure, protectedProcedure } from "../_core/trpc";
 import {
   createQAConversation,
   addQAMessage,
   getQAConversation,
   getUserQAConversations,
   deleteQAConversation,
-} from '../db-knowledge';
+} from "../db-knowledge";
 import {
   storeKnowledgeChunk,
   searchKnowledgeChunks,
   getKnowledgeStats,
-} from '../db-knowledge';
+} from "../db-knowledge";
 import {
   prepareContentForEmbedding,
   generateEmbeddingTitle,
   generateEmbeddingUrl,
-} from '../embedding';
-import { invokeLLM } from '../_core/llm';
-import { vectorSearchKnowledge, buildContextFromVectorResults } from '../db-knowledge-vector';
+} from "../embedding";
+import { invokeLLM } from "../_core/llm";
+import {
+  vectorSearchKnowledge,
+  buildContextFromVectorResults,
+} from "../db-knowledge-vector";
 
 export const askISARouter = router({
   /**
@@ -48,7 +51,8 @@ export const askISARouter = router({
 
         if (relevantResults.length === 0) {
           return {
-            answer: "I couldn't find any relevant information in the knowledge base to answer your question. Please try rephrasing or ask about EU regulations (CSRD, EUDR, DPP) or GS1 standards.",
+            answer:
+              "I couldn't find any relevant information in the knowledge base to answer your question. Please try rephrasing or ask about EU regulations (CSRD, EUDR, DPP) or GS1 standards.",
             sources: [],
             conversationId: conversationId || null,
           };
@@ -79,15 +83,16 @@ ${context}`;
 
         const response = await invokeLLM({
           messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: question },
+            { role: "system", content: systemPrompt },
+            { role: "user", content: question },
           ],
         });
 
         const answerContent = response.choices[0]?.message?.content;
-        const answer = typeof answerContent === 'string' 
-          ? answerContent 
-          : 'Sorry, I could not generate an answer.';
+        const answer =
+          typeof answerContent === "string"
+            ? answerContent
+            : "Sorry, I could not generate an answer.";
 
         // Step 4: Store conversation if needed
         let finalConversationId: number | undefined = conversationId;
@@ -105,13 +110,13 @@ ${context}`;
         if (finalConversationId) {
           await addQAMessage({
             conversationId: finalConversationId,
-            role: 'user',
+            role: "user",
             content: question,
           });
 
           await addQAMessage({
             conversationId: finalConversationId,
-            role: 'assistant',
+            role: "assistant",
             content: answer,
             sources: relevantResults.map(result => ({
               id: result.id,
@@ -136,8 +141,8 @@ ${context}`;
           conversationId: finalConversationId,
         };
       } catch (error) {
-        console.error('[AskISA] Failed to answer question:', error);
-        throw new Error('Failed to generate answer. Please try again.');
+        console.error("[AskISA] Failed to answer question:", error);
+        throw new Error("Failed to generate answer. Please try again.");
       }
     }),
 
@@ -148,9 +153,9 @@ ${context}`;
     .input(z.object({ conversationId: z.number() }))
     .query(async ({ input }) => {
       const conversation = await getQAConversation(input.conversationId);
-      
+
       if (!conversation) {
-        throw new Error('Conversation not found');
+        throw new Error("Conversation not found");
       }
 
       return conversation;
@@ -171,10 +176,13 @@ ${context}`;
   deleteConversation: protectedProcedure
     .input(z.object({ conversationId: z.number() }))
     .mutation(async ({ ctx, input }) => {
-      const success = await deleteQAConversation(input.conversationId, ctx.user.id);
-      
+      const success = await deleteQAConversation(
+        input.conversationId,
+        ctx.user.id
+      );
+
       if (!success) {
-        throw new Error('Failed to delete conversation or not authorized');
+        throw new Error("Failed to delete conversation or not authorized");
       }
 
       return { success: true };
@@ -186,7 +194,12 @@ ${context}`;
   generateEmbeddings: protectedProcedure
     .input(
       z.object({
-        sourceType: z.enum(['regulation', 'standard', 'esrs_datapoint', 'dutch_initiative']),
+        sourceType: z.enum([
+          "regulation",
+          "standard",
+          "esrs_datapoint",
+          "dutch_initiative",
+        ]),
         sourceIds: z.array(z.number()).optional(), // If empty, process all
       })
     )
@@ -197,22 +210,22 @@ ${context}`;
         let sources: any[] = [];
 
         // Fetch sources based on type
-        if (sourceType === 'regulation') {
-          const { getRegulations } = await import('../db');
+        if (sourceType === "regulation") {
+          const { getRegulations } = await import("../db");
           sources = await getRegulations();
-        } else if (sourceType === 'standard') {
-          const { getGS1Standards } = await import('../db');
+        } else if (sourceType === "standard") {
+          const { getGS1Standards } = await import("../db");
           sources = await getGS1Standards();
-        } else if (sourceType === 'esrs_datapoint') {
+        } else if (sourceType === "esrs_datapoint") {
           // ESRS datapoints - fetch from database directly
-          const { getDb } = await import('../db');
+          const { getDb } = await import("../db");
           const db = await getDb();
           if (db) {
-            const { esrsDatapoints } = await import('../../drizzle/schema');
+            const { esrsDatapoints } = await import("../../drizzle/schema");
             sources = await db.select().from(esrsDatapoints).limit(10000);
           }
-        } else if (sourceType === 'dutch_initiative') {
-          const { getDutchInitiatives } = await import('../db');
+        } else if (sourceType === "dutch_initiative") {
+          const { getDutchInitiatives } = await import("../db");
           sources = await getDutchInitiatives();
         }
 
@@ -241,7 +254,10 @@ ${context}`;
 
             successCount++;
           } catch (error) {
-            console.error(`[AskISA] Failed to store knowledge chunk for ${sourceType} ${source.id}:`, error);
+            console.error(
+              `[AskISA] Failed to store knowledge chunk for ${sourceType} ${source.id}:`,
+              error
+            );
             errorCount++;
           }
         }
@@ -253,8 +269,8 @@ ${context}`;
           errorCount,
         };
       } catch (error) {
-        console.error('[AskISA] Failed to generate knowledge chunks:', error);
-        throw new Error('Failed to generate knowledge chunks');
+        console.error("[AskISA] Failed to generate knowledge chunks:", error);
+        throw new Error("Failed to generate knowledge chunks");
       }
     }),
 
@@ -265,7 +281,7 @@ ${context}`;
     try {
       return await getKnowledgeStats();
     } catch (error) {
-      console.error('[AskISA] Failed to get knowledge stats:', error);
+      console.error("[AskISA] Failed to get knowledge stats:", error);
       return [];
     }
   }),

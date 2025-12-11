@@ -1,12 +1,16 @@
 /**
  * Multi-Sector Attribute-to-Regulation Mapper
- * 
+ *
  * Creates intelligent mappings between GS1 attributes (DIY/Healthcare sectors)
  * and EU regulations based on attribute semantics and regulation requirements.
  */
 
 import { getDb } from "./db";
-import { gs1Attributes, regulations, attributeRegulationMappings } from "../drizzle/schema";
+import {
+  gs1Attributes,
+  regulations,
+  attributeRegulationMappings,
+} from "../drizzle/schema";
 import { eq, and, or } from "drizzle-orm";
 
 interface MappingRule {
@@ -20,33 +24,81 @@ interface MappingRule {
 const diyMappingRules: MappingRule[] = [
   {
     regulationType: "PPWR",
-    keywords: ["packaging", "package", "material", "recyclable", "container", "waste", "disposal"],
+    keywords: [
+      "packaging",
+      "package",
+      "material",
+      "recyclable",
+      "container",
+      "waste",
+      "disposal",
+    ],
     relevanceScore: 0.95,
-    mappingReason: "Packaging and Packaging Waste Regulation (PPWR) requires detailed packaging material and recyclability information",
+    mappingReason:
+      "Packaging and Packaging Waste Regulation (PPWR) requires detailed packaging material and recyclability information",
   },
   {
     regulationType: "DPP",
-    keywords: ["packaging", "material", "recyclable", "durability", "repair", "spare part", "warranty", "energy", "efficiency"],
-    relevanceScore: 0.90,
-    mappingReason: "Digital Product Passport (DPP) requires product lifecycle, material composition, and circularity information",
+    keywords: [
+      "packaging",
+      "material",
+      "recyclable",
+      "durability",
+      "repair",
+      "spare part",
+      "warranty",
+      "energy",
+      "efficiency",
+    ],
+    relevanceScore: 0.9,
+    mappingReason:
+      "Digital Product Passport (DPP) requires product lifecycle, material composition, and circularity information",
   },
   {
     regulationType: "CSRD",
-    keywords: ["sustainability", "sustainable", "carbon", "co2", "emission", "environmental", "energy", "certification", "organic"],
+    keywords: [
+      "sustainability",
+      "sustainable",
+      "carbon",
+      "co2",
+      "emission",
+      "environmental",
+      "energy",
+      "certification",
+      "organic",
+    ],
     relevanceScore: 0.85,
-    mappingReason: "Corporate Sustainability Reporting Directive (CSRD) requires environmental impact disclosure",
+    mappingReason:
+      "Corporate Sustainability Reporting Directive (CSRD) requires environmental impact disclosure",
   },
   {
     regulationType: "ESRS",
-    keywords: ["sustainability", "carbon", "emission", "environmental", "energy", "water", "waste"],
+    keywords: [
+      "sustainability",
+      "carbon",
+      "emission",
+      "environmental",
+      "energy",
+      "water",
+      "waste",
+    ],
     relevanceScore: 0.85,
-    mappingReason: "European Sustainability Reporting Standards (ESRS) require detailed environmental metrics",
+    mappingReason:
+      "European Sustainability Reporting Standards (ESRS) require detailed environmental metrics",
   },
   {
     regulationType: "REACH",
-    keywords: ["chemical", "substance", "hazard", "safety", "toxic", "material composition"],
-    relevanceScore: 0.90,
-    mappingReason: "REACH regulation requires chemical substance registration and safety information",
+    keywords: [
+      "chemical",
+      "substance",
+      "hazard",
+      "safety",
+      "toxic",
+      "material composition",
+    ],
+    relevanceScore: 0.9,
+    mappingReason:
+      "REACH regulation requires chemical substance registration and safety information",
   },
 ];
 
@@ -54,36 +106,65 @@ const diyMappingRules: MappingRule[] = [
 const healthcareMappingRules: MappingRule[] = [
   {
     regulationType: "MDR",
-    keywords: ["medical", "device", "sterile", "safety", "risk", "clinical", "performance", "intended use", "manufacturer"],
+    keywords: [
+      "medical",
+      "device",
+      "sterile",
+      "safety",
+      "risk",
+      "clinical",
+      "performance",
+      "intended use",
+      "manufacturer",
+    ],
     relevanceScore: 0.95,
-    mappingReason: "Medical Device Regulation (MDR) requires comprehensive device identification and safety information",
+    mappingReason:
+      "Medical Device Regulation (MDR) requires comprehensive device identification and safety information",
   },
   {
     regulationType: "IVDR",
-    keywords: ["diagnostic", "in vitro", "test", "specimen", "laboratory", "clinical performance"],
+    keywords: [
+      "diagnostic",
+      "in vitro",
+      "test",
+      "specimen",
+      "laboratory",
+      "clinical performance",
+    ],
     relevanceScore: 0.95,
-    mappingReason: "In Vitro Diagnostic Regulation (IVDR) requires diagnostic device specifications",
+    mappingReason:
+      "In Vitro Diagnostic Regulation (IVDR) requires diagnostic device specifications",
   },
   {
     regulationType: "CSRD",
     keywords: ["sustainability", "environmental", "carbon", "emission"],
-    relevanceScore: 0.70,
-    mappingReason: "Corporate Sustainability Reporting Directive (CSRD) applies to healthcare manufacturers",
+    relevanceScore: 0.7,
+    mappingReason:
+      "Corporate Sustainability Reporting Directive (CSRD) applies to healthcare manufacturers",
   },
 ];
 
 /**
  * Check if attribute matches mapping rule
  */
-function matchesRule(attributeName: string, attributeDescription: string, rule: MappingRule): boolean {
+function matchesRule(
+  attributeName: string,
+  attributeDescription: string,
+  rule: MappingRule
+): boolean {
   const searchText = `${attributeName} ${attributeDescription}`.toLowerCase();
-  return rule.keywords.some(keyword => searchText.includes(keyword.toLowerCase()));
+  return rule.keywords.some(keyword =>
+    searchText.includes(keyword.toLowerCase())
+  );
 }
 
 /**
  * Create mappings for DIY/Garden/Pet sector
  */
-async function createDIYMappings(): Promise<{ created: number; skipped: number }> {
+async function createDIYMappings(): Promise<{
+  created: number;
+  skipped: number;
+}> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -95,7 +176,9 @@ async function createDIYMappings(): Promise<{ created: number; skipped: number }
     .from(gs1Attributes)
     .where(eq(gs1Attributes.sector, "diy_garden_pet"));
 
-  console.log(`[Mapper] Found ${diyAttributes.length} DIY/Garden/Pet attributes`);
+  console.log(
+    `[Mapper] Found ${diyAttributes.length} DIY/Garden/Pet attributes`
+  );
 
   // Fetch regulations
   const allRegulations = await db.select().from(regulations);
@@ -109,7 +192,9 @@ async function createDIYMappings(): Promise<{ created: number; skipped: number }
 
     for (const rule of diyMappingRules) {
       if (matchesRule(attributeName, attributeDescription, rule)) {
-        const regulation = allRegulations.find(r => r.regulationType === rule.regulationType);
+        const regulation = allRegulations.find(
+          r => r.regulationType === rule.regulationType
+        );
         if (!regulation) {
           skipped++;
           continue;
@@ -136,14 +221,19 @@ async function createDIYMappings(): Promise<{ created: number; skipped: number }
     }
   }
 
-  console.log(`[Mapper] DIY mapping complete: ${created} created, ${skipped} skipped`);
+  console.log(
+    `[Mapper] DIY mapping complete: ${created} created, ${skipped} skipped`
+  );
   return { created, skipped };
 }
 
 /**
  * Create mappings for Healthcare sector
  */
-async function createHealthcareMappings(): Promise<{ created: number; skipped: number }> {
+async function createHealthcareMappings(): Promise<{
+  created: number;
+  skipped: number;
+}> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -155,7 +245,9 @@ async function createHealthcareMappings(): Promise<{ created: number; skipped: n
     .from(gs1Attributes)
     .where(eq(gs1Attributes.sector, "healthcare"));
 
-  console.log(`[Mapper] Found ${healthcareAttributes.length} Healthcare attributes`);
+  console.log(
+    `[Mapper] Found ${healthcareAttributes.length} Healthcare attributes`
+  );
 
   // Fetch regulations
   const allRegulations = await db.select().from(regulations);
@@ -169,7 +261,9 @@ async function createHealthcareMappings(): Promise<{ created: number; skipped: n
 
     for (const rule of healthcareMappingRules) {
       if (matchesRule(attributeName, attributeDescription, rule)) {
-        const regulation = allRegulations.find(r => r.regulationType === rule.regulationType);
+        const regulation = allRegulations.find(
+          r => r.regulationType === rule.regulationType
+        );
         if (!regulation) {
           skipped++;
           continue;
@@ -196,7 +290,9 @@ async function createHealthcareMappings(): Promise<{ created: number; skipped: n
     }
   }
 
-  console.log(`[Mapper] Healthcare mapping complete: ${created} created, ${skipped} skipped`);
+  console.log(
+    `[Mapper] Healthcare mapping complete: ${created} created, ${skipped} skipped`
+  );
   return { created, skipped };
 }
 
@@ -222,8 +318,9 @@ async function main() {
     console.log(`  - DIY mappings skipped: ${diyResult.skipped}`);
     console.log(`  - Healthcare mappings created: ${healthcareResult.created}`);
     console.log(`  - Healthcare mappings skipped: ${healthcareResult.skipped}`);
-    console.log(`  - Total mappings created: ${diyResult.created + healthcareResult.created}`);
-
+    console.log(
+      `  - Total mappings created: ${diyResult.created + healthcareResult.created}`
+    );
   } catch (error) {
     console.error("[Mapper] Mapping failed:", error);
     throw error;
@@ -237,7 +334,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       console.log("[Mapper] Mapping successful");
       process.exit(0);
     })
-    .catch((error) => {
+    .catch(error => {
       console.error("[Mapper] Mapping failed:", error);
       process.exit(1);
     });

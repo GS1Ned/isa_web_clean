@@ -4,10 +4,22 @@
  */
 
 import { Link } from "wouter";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileText, Database, Package, ChevronRight, Sparkles } from "lucide-react";
+import {
+  FileText,
+  Database,
+  Package,
+  ChevronRight,
+  Sparkles,
+} from "lucide-react";
 
 export interface Recommendation {
   resourceType: "REGULATION" | "ESRS_DATAPOINT" | "GS1_STANDARD";
@@ -23,7 +35,10 @@ interface RecommendedResourcesProps {
   maxDisplay?: number;
 }
 
-export function RecommendedResources({ recommendations, maxDisplay = 6 }: RecommendedResourcesProps) {
+export function RecommendedResources({
+  recommendations,
+  maxDisplay = 6,
+}: RecommendedResourcesProps) {
   if (!recommendations || recommendations.length === 0) {
     return null;
   }
@@ -43,7 +58,10 @@ export function RecommendedResources({ recommendations, maxDisplay = 6 }: Recomm
       </CardHeader>
       <CardContent className="space-y-3">
         {displayedRecs.map((rec, index) => (
-          <ResourceCard key={`${rec.resourceType}-${rec.resourceId}-${index}`} recommendation={rec} />
+          <ResourceCard
+            key={`${rec.resourceType}-${rec.resourceId}-${index}`}
+            recommendation={rec}
+          />
         ))}
       </CardContent>
     </Card>
@@ -51,9 +69,15 @@ export function RecommendedResources({ recommendations, maxDisplay = 6 }: Recomm
 }
 
 function ResourceCard({ recommendation }: { recommendation: Recommendation }) {
-  const { resourceType, resourceId, resourceTitle, relevanceScore, reasoning } = recommendation;
+  const { resourceType, resourceId, resourceTitle, relevanceScore, reasoning } =
+    recommendation;
 
-  const { icon: Icon, color, label, href } = getResourceMeta(resourceType, resourceId);
+  const {
+    icon: Icon,
+    color,
+    label,
+    href,
+  } = getResourceMeta(resourceType, resourceId);
 
   return (
     <Link href={href}>
@@ -61,7 +85,7 @@ function ResourceCard({ recommendation }: { recommendation: Recommendation }) {
         <div className={`rounded-md p-2 ${color}`}>
           <Icon className="h-4 w-4" />
         </div>
-        
+
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <Badge variant="outline" className="text-xs">
@@ -72,11 +96,11 @@ function ResourceCard({ recommendation }: { recommendation: Recommendation }) {
               <span>{Math.round(relevanceScore * 100)}% match</span>
             </div>
           </div>
-          
+
           <h4 className="font-medium text-sm line-clamp-1 group-hover:text-primary transition-colors">
             {resourceTitle}
           </h4>
-          
+
           {reasoning && (
             <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
               {reasoning}

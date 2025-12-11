@@ -48,26 +48,27 @@ The ISA News Pipeline is a fully automated system that fetches, processes, and d
 
 ### `hub_news` Table (Active News)
 
-| Column | Type | Description |
-|--------|------|-------------|
-| id | INT | Primary key |
-| title | VARCHAR(512) | News headline |
-| summary | TEXT | AI-generated summary |
-| content | TEXT | Full article content |
-| newsType | ENUM | NEW_LAW, AMENDMENT, ENFORCEMENT, etc. |
-| regulationTags | JSON | Array of regulation acronyms |
-| impactLevel | ENUM | HIGH, MEDIUM, LOW |
-| sourceUrl | VARCHAR(512) | Original article URL |
-| sourceTitle | VARCHAR(255) | Source name |
-| sourceType | ENUM | EU_OFFICIAL, GS1_OFFICIAL, INDUSTRY, MEDIA |
-| credibilityScore | DECIMAL(3,2) | Source credibility (0.00-1.00) |
-| publishedDate | TIMESTAMP | Original publication date |
-| retrievedAt | TIMESTAMP | When fetched by automation |
-| isAutomated | BOOLEAN | True if AI-generated |
-| createdAt | TIMESTAMP | Database insertion time |
-| updatedAt | TIMESTAMP | Last update time |
+| Column           | Type         | Description                                |
+| ---------------- | ------------ | ------------------------------------------ |
+| id               | INT          | Primary key                                |
+| title            | VARCHAR(512) | News headline                              |
+| summary          | TEXT         | AI-generated summary                       |
+| content          | TEXT         | Full article content                       |
+| newsType         | ENUM         | NEW_LAW, AMENDMENT, ENFORCEMENT, etc.      |
+| regulationTags   | JSON         | Array of regulation acronyms               |
+| impactLevel      | ENUM         | HIGH, MEDIUM, LOW                          |
+| sourceUrl        | VARCHAR(512) | Original article URL                       |
+| sourceTitle      | VARCHAR(255) | Source name                                |
+| sourceType       | ENUM         | EU_OFFICIAL, GS1_OFFICIAL, INDUSTRY, MEDIA |
+| credibilityScore | DECIMAL(3,2) | Source credibility (0.00-1.00)             |
+| publishedDate    | TIMESTAMP    | Original publication date                  |
+| retrievedAt      | TIMESTAMP    | When fetched by automation                 |
+| isAutomated      | BOOLEAN      | True if AI-generated                       |
+| createdAt        | TIMESTAMP    | Database insertion time                    |
+| updatedAt        | TIMESTAMP    | Last update time                           |
 
 **Indexes:**
+
 - `sourceUrl` (deduplication)
 - `publishedDate` (chronological queries)
 - `impactLevel` (filtering)
@@ -75,6 +76,7 @@ The ISA News Pipeline is a fully automated system that fetches, processes, and d
 ### `hub_news_history` Table (Archived News)
 
 Same schema as `hub_news` plus:
+
 - `originalId` - Reference to original hub_news ID
 - `archivedAt` - Archival timestamp
 - `originalCreatedAt` - Original creation timestamp
@@ -151,6 +153,7 @@ Same schema as `hub_news` plus:
 ### 1. NewsCard (`client/src/components/NewsCard.tsx`)
 
 Displays individual news items with:
+
 - Title and publication date
 - Impact level indicator (color-coded)
 - Regulation tags as badges
@@ -161,6 +164,7 @@ Displays individual news items with:
 ### 2. LatestNewsPanel (`client/src/components/LatestNewsPanel.tsx`)
 
 Homepage section showing:
+
 - Top 6 most recent news items
 - "View All News" button
 - Responsive grid layout
@@ -168,6 +172,7 @@ Homepage section showing:
 ### 3. NewsHub Page (`client/src/pages/NewsHub.tsx`)
 
 Full news feed with:
+
 - Search by title/summary
 - Filter by regulation (CSRD, EUDR, etc.)
 - Filter by impact level
@@ -181,20 +186,20 @@ Full news feed with:
 
 ```typescript
 // Get recent news items
-trpc.hub.getRecentNews.useQuery({ limit: 20 })
+trpc.hub.getRecentNews.useQuery({ limit: 20 });
 ```
 
 ### Admin Procedures
 
 ```typescript
 // Manually trigger news ingestion
-trpc.newsAdmin.triggerIngestion.useMutation()
+trpc.newsAdmin.triggerIngestion.useMutation();
 
 // Manually trigger archival
-trpc.newsAdmin.triggerArchival.useMutation()
+trpc.newsAdmin.triggerArchival.useMutation();
 
 // Get pipeline statistics
-trpc.newsAdmin.getStats.useQuery()
+trpc.newsAdmin.getStats.useQuery();
 ```
 
 ## Automation Schedule
@@ -309,6 +314,7 @@ const stats = await trpc.newsAdmin.getStats.query()
 ### Logging
 
 All operations log to console with prefix:
+
 - `[news-fetcher]` - RSS fetch operations
 - `[news-ai-processor]` - AI processing
 - `[news-pipeline]` - Pipeline orchestration

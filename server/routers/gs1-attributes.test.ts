@@ -1,6 +1,6 @@
 /**
  * GS1 Attributes Router Tests
- * 
+ *
  * Tests for GS1 Data Source Benelux attributes and Web Vocabulary procedures.
  */
 
@@ -76,7 +76,9 @@ describe("GS1 Attributes Router", () => {
       });
 
       expect(attributes).toBeDefined();
-      expect(attributes.every(attr => attr.packagingRelated === true)).toBe(true);
+      expect(attributes.every(attr => attr.packagingRelated === true)).toBe(
+        true
+      );
     });
 
     it("should filter by sustainability-related flag", async () => {
@@ -85,7 +87,9 @@ describe("GS1 Attributes Router", () => {
       });
 
       expect(attributes).toBeDefined();
-      expect(attributes.every(attr => attr.sustainabilityRelated === true)).toBe(true);
+      expect(
+        attributes.every(attr => attr.sustainabilityRelated === true)
+      ).toBe(true);
     });
 
     it("should respect limit parameter", async () => {
@@ -102,16 +106,27 @@ describe("GS1 Attributes Router", () => {
     it("should return attributes for PPWR regulation", async () => {
       // PPWR should have packaging-related attributes
       const db = await getDb();
-      const [ppwr] = await db!.select().from((await import("../../drizzle/schema")).regulations).where((await import("drizzle-orm")).eq((await import("../../drizzle/schema")).regulations.regulationType, "PPWR")).limit(1);
+      const [ppwr] = await db!
+        .select()
+        .from((await import("../../drizzle/schema")).regulations)
+        .where(
+          (await import("drizzle-orm")).eq(
+            (await import("../../drizzle/schema")).regulations.regulationType,
+            "PPWR"
+          )
+        )
+        .limit(1);
 
       if (ppwr) {
-        const attributes = await caller.gs1Attributes.getAttributesByRegulation({
-          regulationId: ppwr.id,
-        });
+        const attributes = await caller.gs1Attributes.getAttributesByRegulation(
+          {
+            regulationId: ppwr.id,
+          }
+        );
 
         expect(attributes).toBeDefined();
         expect(Array.isArray(attributes)).toBe(true);
-        
+
         if (attributes.length > 0) {
           // Verify attribute structure
           const attr = attributes[0];
@@ -126,12 +141,23 @@ describe("GS1 Attributes Router", () => {
 
     it("should return attributes for DPP regulation", async () => {
       const db = await getDb();
-      const [dpp] = await db!.select().from((await import("../../drizzle/schema")).regulations).where((await import("drizzle-orm")).eq((await import("../../drizzle/schema")).regulations.regulationType, "DPP")).limit(1);
+      const [dpp] = await db!
+        .select()
+        .from((await import("../../drizzle/schema")).regulations)
+        .where(
+          (await import("drizzle-orm")).eq(
+            (await import("../../drizzle/schema")).regulations.regulationType,
+            "DPP"
+          )
+        )
+        .limit(1);
 
       if (dpp) {
-        const attributes = await caller.gs1Attributes.getAttributesByRegulation({
-          regulationId: dpp.id,
-        });
+        const attributes = await caller.gs1Attributes.getAttributesByRegulation(
+          {
+            regulationId: dpp.id,
+          }
+        );
 
         expect(attributes).toBeDefined();
         expect(Array.isArray(attributes)).toBe(true);
@@ -140,13 +166,18 @@ describe("GS1 Attributes Router", () => {
 
     it("should filter by sector when specified", async () => {
       const db = await getDb();
-      const [regulation] = await db!.select().from((await import("../../drizzle/schema")).regulations).limit(1);
+      const [regulation] = await db!
+        .select()
+        .from((await import("../../drizzle/schema")).regulations)
+        .limit(1);
 
       if (regulation) {
-        const attributes = await caller.gs1Attributes.getAttributesByRegulation({
-          regulationId: regulation.id,
-          sector: "food_hb",
-        });
+        const attributes = await caller.gs1Attributes.getAttributesByRegulation(
+          {
+            regulationId: regulation.id,
+            sector: "food_hb",
+          }
+        );
 
         expect(attributes).toBeDefined();
         expect(attributes.every(attr => attr.sector === "food_hb")).toBe(true);
@@ -157,7 +188,16 @@ describe("GS1 Attributes Router", () => {
   describe("getWebVocabularyByRegulation", () => {
     it("should return DPP-relevant terms for DPP regulation", async () => {
       const db = await getDb();
-      const [dpp] = await db!.select().from((await import("../../drizzle/schema")).regulations).where((await import("drizzle-orm")).eq((await import("../../drizzle/schema")).regulations.regulationType, "DPP")).limit(1);
+      const [dpp] = await db!
+        .select()
+        .from((await import("../../drizzle/schema")).regulations)
+        .where(
+          (await import("drizzle-orm")).eq(
+            (await import("../../drizzle/schema")).regulations.regulationType,
+            "DPP"
+          )
+        )
+        .limit(1);
 
       if (dpp) {
         const terms = await caller.gs1Attributes.getWebVocabularyByRegulation({
@@ -166,7 +206,7 @@ describe("GS1 Attributes Router", () => {
 
         expect(terms).toBeDefined();
         expect(Array.isArray(terms)).toBe(true);
-        
+
         if (terms.length > 0) {
           // All terms should be DPP-relevant
           expect(terms.every(t => t.dppRelevant === true)).toBe(true);
@@ -178,7 +218,16 @@ describe("GS1 Attributes Router", () => {
 
     it("should return ESRS-relevant terms for ESRS regulation", async () => {
       const db = await getDb();
-      const [esrs] = await db!.select().from((await import("../../drizzle/schema")).regulations).where((await import("drizzle-orm")).eq((await import("../../drizzle/schema")).regulations.regulationType, "ESRS")).limit(1);
+      const [esrs] = await db!
+        .select()
+        .from((await import("../../drizzle/schema")).regulations)
+        .where(
+          (await import("drizzle-orm")).eq(
+            (await import("../../drizzle/schema")).regulations.regulationType,
+            "ESRS"
+          )
+        )
+        .limit(1);
 
       if (esrs) {
         const terms = await caller.gs1Attributes.getWebVocabularyByRegulation({
@@ -187,7 +236,7 @@ describe("GS1 Attributes Router", () => {
 
         expect(terms).toBeDefined();
         expect(Array.isArray(terms)).toBe(true);
-        
+
         if (terms.length > 0) {
           expect(terms.every(t => t.esrsRelevant === true)).toBe(true);
         }
@@ -196,7 +245,16 @@ describe("GS1 Attributes Router", () => {
 
     it("should return EUDR-relevant terms for EUDR regulation", async () => {
       const db = await getDb();
-      const [eudr] = await db!.select().from((await import("../../drizzle/schema")).regulations).where((await import("drizzle-orm")).eq((await import("../../drizzle/schema")).regulations.regulationType, "EUDR")).limit(1);
+      const [eudr] = await db!
+        .select()
+        .from((await import("../../drizzle/schema")).regulations)
+        .where(
+          (await import("drizzle-orm")).eq(
+            (await import("../../drizzle/schema")).regulations.regulationType,
+            "EUDR"
+          )
+        )
+        .limit(1);
 
       if (eudr) {
         const terms = await caller.gs1Attributes.getWebVocabularyByRegulation({
@@ -205,7 +263,7 @@ describe("GS1 Attributes Router", () => {
 
         expect(terms).toBeDefined();
         expect(Array.isArray(terms)).toBe(true);
-        
+
         if (terms.length > 0) {
           expect(terms.every(t => t.eudrRelevant === true)).toBe(true);
         }
@@ -214,21 +272,27 @@ describe("GS1 Attributes Router", () => {
 
     it("should filter by term type when specified", async () => {
       const db = await getDb();
-      const [regulation] = await db!.select().from((await import("../../drizzle/schema")).regulations).limit(1);
+      const [regulation] = await db!
+        .select()
+        .from((await import("../../drizzle/schema")).regulations)
+        .limit(1);
 
       if (regulation) {
-        const properties = await caller.gs1Attributes.getWebVocabularyByRegulation({
-          regulationId: regulation.id,
-          termType: "property",
-        });
+        const properties =
+          await caller.gs1Attributes.getWebVocabularyByRegulation({
+            regulationId: regulation.id,
+            termType: "property",
+          });
 
         expect(properties).toBeDefined();
         expect(properties.every(t => t.termType === "property")).toBe(true);
 
-        const classes = await caller.gs1Attributes.getWebVocabularyByRegulation({
-          regulationId: regulation.id,
-          termType: "class",
-        });
+        const classes = await caller.gs1Attributes.getWebVocabularyByRegulation(
+          {
+            regulationId: regulation.id,
+            termType: "class",
+          }
+        );
 
         expect(classes).toBeDefined();
         expect(classes.every(t => t.termType === "class")).toBe(true);

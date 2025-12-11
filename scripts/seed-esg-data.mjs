@@ -27,13 +27,23 @@ const db = drizzle(connection);
 console.log("🌱 Seeding ESG data from JSON files...\n");
 
 // Load JSON data files
-const commonDataCategoriesPath = path.join(__dirname, "../data/esg/common_data_categories.json");
+const commonDataCategoriesPath = path.join(
+  __dirname,
+  "../data/esg/common_data_categories.json"
+);
 const ctesAndKdesPath = path.join(__dirname, "../data/esg/ctes_and_kdes.json");
-const dppIdentificationRulesPath = path.join(__dirname, "../data/esg/dpp_identification_rules.json");
+const dppIdentificationRulesPath = path.join(
+  __dirname,
+  "../data/esg/dpp_identification_rules.json"
+);
 
-const commonDataCategories = JSON.parse(fs.readFileSync(commonDataCategoriesPath, "utf-8"));
+const commonDataCategories = JSON.parse(
+  fs.readFileSync(commonDataCategoriesPath, "utf-8")
+);
 const ctesAndKdes = JSON.parse(fs.readFileSync(ctesAndKdesPath, "utf-8"));
-const dppIdentificationRules = JSON.parse(fs.readFileSync(dppIdentificationRulesPath, "utf-8"));
+const dppIdentificationRules = JSON.parse(
+  fs.readFileSync(dppIdentificationRulesPath, "utf-8")
+);
 
 // Seed ESG Data Categories
 console.log("📊 Seeding ESG Data Categories...");
@@ -139,7 +149,10 @@ for (const category of dppIdentificationRules) {
     );
     console.log(`  ✓ ${category.productCategory}`);
   } catch (error) {
-    console.error(`  ✗ Failed to seed ${category.productCategory}:`, error.message);
+    console.error(
+      `  ✗ Failed to seed ${category.productCategory}:`,
+      error.message
+    );
   }
 }
 

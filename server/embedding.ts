@@ -1,30 +1,33 @@
 /**
  * LLM-Based Semantic Matching
- * 
+ *
  * Uses LLM to score document relevance instead of vector embeddings.
  * This approach works with Manus Forge API's chat completions endpoint.
  */
 
-import crypto from 'crypto';
-import { invokeLLM } from './_core/llm';
+import crypto from "crypto";
+import { invokeLLM } from "./_core/llm";
 
 /**
  * Generate content hash for deduplication
  */
 export function generateContentHash(content: string): string {
-  return crypto.createHash('sha256').update(content).digest('hex');
+  return crypto.createHash("sha256").update(content).digest("hex");
 }
 
 /**
  * Score relevance of a document to a query using LLM
  * Returns a score from 0-10 where 10 is most relevant
  */
-export async function scoreRelevance(query: string, document: string): Promise<number> {
+export async function scoreRelevance(
+  query: string,
+  document: string
+): Promise<number> {
   try {
     const response = await invokeLLM({
       messages: [
         {
-          role: 'system',
+          role: "system",
           content: `You are a relevance scoring system. Given a user query and a document, score how relevant the document is to answering the query on a scale of 0-10.
 
 0 = Completely irrelevant
@@ -34,19 +37,20 @@ export async function scoreRelevance(query: string, document: string): Promise<n
 Respond with ONLY a single number between 0 and 10.`,
         },
         {
-          role: 'user',
+          role: "user",
           content: `Query: ${query}\n\nDocument: ${document.slice(0, 1000)}`,
         },
       ],
     });
 
     const content = response.choices[0]?.message?.content;
-    const scoreText = (typeof content === 'string' ? content.trim() : '0') || '0';
+    const scoreText =
+      (typeof content === "string" ? content.trim() : "0") || "0";
     const score = parseFloat(scoreText);
 
     return isNaN(score) ? 0 : Math.max(0, Math.min(10, score));
   } catch (error) {
-    console.error('[Relevance] Failed to score relevance:', error);
+    console.error("[Relevance] Failed to score relevance:", error);
     return 0;
   }
 }
@@ -58,9 +62,11 @@ Respond with ONLY a single number between 0 and 10.`,
 export async function batchScoreRelevance(
   query: string,
   documents: Array<{ id: number; content: string; [key: string]: any }>
-): Promise<Array<{ id: number; content: string; relevance: number; [key: string]: any }>> {
+): Promise<
+  Array<{ id: number; content: string; relevance: number; [key: string]: any }>
+> {
   const scoredDocuments = await Promise.all(
-    documents.map(async (doc) => {
+    documents.map(async doc => {
       const relevance = await scoreRelevance(query, doc.content);
       return { ...doc, relevance };
     })
@@ -74,22 +80,22 @@ export async function batchScoreRelevance(
  * Prepare content for storage based on source type
  */
 export function prepareContentForEmbedding(
-  sourceType: 'regulation' | 'standard' | 'esrs_datapoint' | 'dutch_initiative',
+  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative",
   source: any
 ): string {
   switch (sourceType) {
-    case 'regulation':
-      return `${source.name || source.title}\n\n${source.description || ''}\n\nScope: ${source.scope || ''}\n\nKey Requirements: ${source.keyRequirements || ''}`.trim();
-    
-    case 'standard':
-      return `${source.standardName}\n\nCategory: ${source.category || ''}\n\nDescription: ${source.description || ''}\n\nUse Cases: ${source.useCases || ''}`.trim();
-    
-    case 'esrs_datapoint':
-      return `${source.datapointCode}: ${source.datapointName}\n\nDescription: ${source.description || ''}\n\nData Type: ${source.dataType || ''}\n\nMandatory: ${source.isMandatory ? 'Yes' : 'No'}`.trim();
-    
-    case 'dutch_initiative':
-      return `${source.name}\n\nSector: ${source.sector || ''}\n\nDescription: ${source.description || ''}\n\nScope: ${source.scope || ''}\n\nKey Targets: ${source.keyTargets || ''}`.trim();
-    
+    case "regulation":
+      return `${source.name || source.title}\n\n${source.description || ""}\n\nScope: ${source.scope || ""}\n\nKey Requirements: ${source.keyRequirements || ""}`.trim();
+
+    case "standard":
+      return `${source.standardName}\n\nCategory: ${source.category || ""}\n\nDescription: ${source.description || ""}\n\nUse Cases: ${source.useCases || ""}`.trim();
+
+    case "esrs_datapoint":
+      return `${source.datapointCode}: ${source.datapointName}\n\nDescription: ${source.description || ""}\n\nData Type: ${source.dataType || ""}\n\nMandatory: ${source.isMandatory ? "Yes" : "No"}`.trim();
+
+    case "dutch_initiative":
+      return `${source.name}\n\nSector: ${source.sector || ""}\n\nDescription: ${source.description || ""}\n\nScope: ${source.scope || ""}\n\nKey Targets: ${source.keyTargets || ""}`.trim();
+
     default:
       return JSON.stringify(source);
   }
@@ -99,22 +105,25 @@ export function prepareContentForEmbedding(
  * Generate human-readable title for search results
  */
 export function generateEmbeddingTitle(
-  sourceType: 'regulation' | 'standard' | 'esrs_datapoint' | 'dutch_initiative',
+  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative",
   source: any
 ): string {
   switch (sourceType) {
-    case 'regulation':
+    case "regulation":
       return source.name || source.title || `Regulation ${source.id}`;
-    
-    case 'standard':
+
+    case "standard":
       return source.standardName || `Standard ${source.id}`;
-    
-    case 'esrs_datapoint':
-      return `${source.datapointCode}: ${source.datapointName}` || `Datapoint ${source.id}`;
-    
-    case 'dutch_initiative':
+
+    case "esrs_datapoint":
+      return (
+        `${source.datapointCode}: ${source.datapointName}` ||
+        `Datapoint ${source.id}`
+      );
+
+    case "dutch_initiative":
       return source.name || `Initiative ${source.id}`;
-    
+
     default:
       return `Source ${source.id}`;
   }
@@ -124,22 +133,22 @@ export function generateEmbeddingTitle(
  * Generate URL for source detail page
  */
 export function generateEmbeddingUrl(
-  sourceType: 'regulation' | 'standard' | 'esrs_datapoint' | 'dutch_initiative',
+  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative",
   sourceId: number
 ): string {
   switch (sourceType) {
-    case 'regulation':
+    case "regulation":
       return `/hub/regulations/${sourceId}`;
-    
-    case 'standard':
+
+    case "standard":
       return `/hub/standards-mapping`; // Standards don't have individual pages yet
-    
-    case 'esrs_datapoint':
+
+    case "esrs_datapoint":
       return `/hub/esrs-datapoints`;
-    
-    case 'dutch_initiative':
+
+    case "dutch_initiative":
       return `/hub/dutch-initiatives/${sourceId}`;
-    
+
     default:
       return `/hub`;
   }
@@ -150,16 +159,18 @@ export function generateEmbeddingUrl(
  * Generates content hashes and prepares for database insertion
  */
 export async function prepareDocumentsForStorage(
-  sourceType: 'regulation' | 'standard' | 'esrs_datapoint' | 'dutch_initiative',
+  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative",
   sources: any[]
-): Promise<Array<{
-  sourceType: string;
-  sourceId: number;
-  content: string;
-  contentHash: string;
-  title: string;
-  url: string;
-}>> {
+): Promise<
+  Array<{
+    sourceType: string;
+    sourceId: number;
+    content: string;
+    contentHash: string;
+    title: string;
+    url: string;
+  }>
+> {
   return sources.map(source => {
     const content = prepareContentForEmbedding(sourceType, source);
     const contentHash = generateContentHash(content);

@@ -11,10 +11,12 @@
 This report validates alignment between:
 
 **New Knowledge Sources:**
+
 1. GS1 Position Paper: "Accelerating value chain digitalisation" (2024)
 2. GS1 DPP Provisional Application Standard (WR# 23-103, 09-Apr-2025)
 
 **Existing GS1 Artefacts:**
+
 1. GS1 General Specifications (GenSpecs)
 2. GS1 System Architecture
 3. GS1 Global Data Model (GDM)
@@ -30,19 +32,23 @@ This report validates alignment between:
 #### ✅ Consistent Areas
 
 **GTIN Allocation Rules:**
+
 - Position paper and DPP standard both reference GenSpecs section 4 (GTIN Management Standard)
 - ISA's DPP identification model follows GTIN allocation rules for Made-to-Stock (AI 01) and Made-to-Order (AI 03)
 - Uniqueness requirement ("once assigned, SHALL not be reused") aligns with GenSpecs GTIN Management Standard
 
 **GLN Usage:**
+
 - DPP standard specifies Party GLN for economic operators and GLN for facilities, consistent with GenSpecs section 4.5
 - ISA's supply chain node model already uses GLN field, aligned with GenSpecs
 
 **Application Identifiers:**
+
 - DPP standard references GenSpecs section 3 for AI definitions
 - ISA's identifier model uses canonical AI codes: (01), (03), (10), (21), (22), (242), (417)
 
 **Data Carrier Specifications:**
+
 - DPP standard references GenSpecs section 5.12 (Symbol Specification Tables)
 - Symbol X-dimensions, quality specifications, and quiet zones align with GenSpecs
 
@@ -71,14 +77,17 @@ The DPP provisional standard includes multiple ACTION items indicating ongoing w
 #### ✅ Consistent Areas
 
 **Layered Data Model:**
+
 - Position paper's value chain data layers (data generation → collection → sharing → processing → reporting) align with System Architecture's conceptual model
 - ISA's approach of separating identification (GTIN/GLN) from data sharing (EPCIS) from master data (GDSN) aligns with System Architecture
 
 **Digital Link as Bridge:**
+
 - DPP standard's emphasis on GS1 Digital Link URI syntax as the carrier for DPP data aligns with System Architecture's vision of Digital Link as the bridge between physical and digital
 - ISA should emphasize Digital Link in UX as the "universal key" to product information
 
 **Standards Interoperability:**
+
 - Position paper's recommendation to use GTIN, GLN, EPCIS, GDSN, GDM together aligns with System Architecture's integrated standards approach
 - ISA's mapping tables (regulation↔standard, data category↔standard) support this interoperability view
 
@@ -93,10 +102,12 @@ The position paper and DPP standard do not introduce concepts that conflict with
 #### ✅ Consistent Areas
 
 **Attribute Definitions:**
+
 - Position paper's Common Data Categories (product description, material composition, recyclability, hazardous substances) map to GDM attribute groups
 - DPP standard's product information requirements align with GDM attributes
 
 **Data Semantics:**
+
 - GDM provides the canonical vocabulary for product attributes
 - ISA's Common Data Categories should reference GDM attribute codes for precise semantic alignment
 
@@ -105,15 +116,16 @@ The position paper and DPP standard do not introduce concepts that conflict with
 **Explicit Mapping:**
 ISA should create explicit mappings between Common Data Categories and GDM attribute groups:
 
-| Common Data Category | GDM Attribute Group |
-|---------------------|---------------------|
-| Product Description & Information | Product Identification, Product Description |
-| Recyclability & Circular Economy | Packaging Marked Label Accreditation, Recyclability Information |
-| Hazardous Substances | Hazardous Materials, Chemical Composition |
-| Origin and Sourcing | Country of Origin, Sourcing Information |
-| Energy Consumption | Energy Efficiency, Power Consumption |
+| Common Data Category              | GDM Attribute Group                                             |
+| --------------------------------- | --------------------------------------------------------------- |
+| Product Description & Information | Product Identification, Product Description                     |
+| Recyclability & Circular Economy  | Packaging Marked Label Accreditation, Recyclability Information |
+| Hazardous Substances              | Hazardous Materials, Chemical Composition                       |
+| Origin and Sourcing               | Country of Origin, Sourcing Information                         |
+| Energy Consumption                | Energy Efficiency, Power Consumption                            |
 
 **Attribute Code Integration:**
+
 - ISA should store GDM attribute codes in the `esg_data_categories` table
 - ISA should provide GDM attribute lookup in regulation detail pages
 
@@ -128,6 +140,7 @@ The position paper and DPP standard do not contradict GDM. They provide regulato
 #### ✅ Consistent Areas
 
 **Event Model:**
+
 - Position paper's Critical Tracking Events (CTEs) map directly to EPCIS event types:
   - Raw Material Sourcing → ObjectEvent (OBSERVE) or TransactionEvent
   - Production/Manufacturing → TransformationEvent or ObjectEvent (ADD)
@@ -137,6 +150,7 @@ The position paper and DPP standard do not contradict GDM. They provide regulato
   - End of Life → ObjectEvent (OBSERVE) with bizStep=recycling/repairing/destroying
 
 **Key Data Elements:**
+
 - Position paper's KDEs (5W+1H framework) map to EPCIS event fields:
   - Who/Where → readPoint, bizLocation (GLN)
   - What (product) → epcList (GTIN)
@@ -147,6 +161,7 @@ The position paper and DPP standard do not contradict GDM. They provide regulato
   - Why → bizStep, disposition
 
 **CBV Vocabulary:**
+
 - Position paper's activity types (sourcing, manufacturing, shipping, receiving, retail_selling, recycling) align with CBV bizStep vocabulary
 - ISA's CTE model should reference canonical CBV bizStep URIs
 
@@ -175,6 +190,7 @@ ISA should provide EPCIS event templates for each CTE:
 ```
 
 **EPCIS Validation:**
+
 - ISA should validate user-submitted EPCIS events against CTE/KDE requirements
 - ISA should check that required KDEs are present in EPCIS event fields
 
@@ -189,10 +205,12 @@ The position paper's CTE/KDE framework is a simplified, regulation-focused view 
 #### ✅ Consistent Areas
 
 **Sector-Specific Guidance:**
+
 - GS1 NL sector models (Benelux FMCG, DIY/TD, DAS) provide additional granularity for specific industries
 - Position paper's cross-regulation approach is sector-agnostic but compatible with sector models
 
 **Identifier Usage:**
+
 - Sector models specify GTIN/GLN usage patterns for specific product categories (e.g., variable measure items in FMCG, components in DIY)
 - DPP standard's product category identification rules can be layered on top of sector models
 
@@ -202,19 +220,23 @@ The position paper's CTE/KDE framework is a simplified, regulation-focused view 
 ISA should provide sector-specific guidance for DPP implementation:
 
 **FMCG Sector:**
+
 - Variable measure items (fresh produce, meat, cheese) may require AI (310n) net weight in addition to GTIN
 - Batch/lot tracking (AI 10) is standard practice for food safety, can be reused for DPP
 
 **DIY/TD Sector:**
+
 - Construction products are in DPP scope (EU 2024/3110)
 - Components and parts may require hierarchical GTIN structure (parent product + component GTINs)
 - Direct part marking may be required for durable products
 
 **DAS (Drogisterij & Apotheek Sector):**
+
 - Cosmetics and personal care products may fall under ESPR/DPP in future delegated acts
 - Batch/lot tracking (AI 10) is standard for safety and recall, can be reused for DPP
 
 **ISA Action:**
+
 - Add sector filter to DPP readiness checker
 - Provide sector-specific examples and best practices
 - Map sector models to ISA's Common Data Categories
@@ -240,12 +262,14 @@ These perspectives complement rather than contradict existing GS1 artefacts.
 ### Minor Inconsistencies
 
 **Terminology Variations:**
+
 - "Trade item" (GenSpecs) vs "Product" (DPP standard, position paper)
   - **Resolution:** ISA should use "product" in user-facing content, "trade item" in technical documentation
 - "Economic operator" (DPP standard) vs "Party" (GenSpecs)
   - **Resolution:** ISA should use "economic operator" in regulatory context, "party" in GS1 standards context
 
 **Provisional Status:**
+
 - DPP standard is provisional (not ratified), subject to change
   - **Resolution:** ISA should clearly label DPP guidance as "provisional" and track updates
 

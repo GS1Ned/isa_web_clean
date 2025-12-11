@@ -104,7 +104,9 @@ export const remediationRouter = router({
         stepNumber: input.stepNumber,
         title: input.title,
         description: input.description,
-        requiredEvidence: input.requiredEvidence ? JSON.stringify(input.requiredEvidence) : null,
+        requiredEvidence: input.requiredEvidence
+          ? JSON.stringify(input.requiredEvidence)
+          : null,
         assignedTo: input.assignedTo,
         dueDate: input.dueDate,
         status: "pending",
@@ -177,8 +179,12 @@ export const remediationRouter = router({
         .from(remediationSteps)
         .where(eq(remediationSteps.planId, steps[0].planId));
 
-      const completedCount = allSteps.filter((s) => s.status === "completed").length;
-      const progressPercentage = Math.round((completedCount / allSteps.length) * 100);
+      const completedCount = allSteps.filter(
+        s => s.status === "completed"
+      ).length;
+      const progressPercentage = Math.round(
+        (completedCount / allSteps.length) * 100
+      );
 
       await db
         .update(remediationProgress)
@@ -304,7 +310,7 @@ export const remediationRouter = router({
         status: plans[0].status,
         targetCompletionDate: plans[0].targetCompletionDate,
         createdAt: plans[0].createdAt,
-        steps: steps.map((s) => ({
+        steps: steps.map(s => ({
           id: s.id,
           stepNumber: s.stepNumber,
           title: s.title,
@@ -332,7 +338,9 @@ export const remediationRouter = router({
   listPlans: protectedProcedure
     .input(
       z.object({
-        status: z.enum(["draft", "in_progress", "completed", "cancelled"]).optional(),
+        status: z
+          .enum(["draft", "in_progress", "completed", "cancelled"])
+          .optional(),
         limit: z.number().default(10),
         offset: z.number().default(0),
       })
@@ -354,7 +362,7 @@ export const remediationRouter = router({
         .limit(input.limit)
         .offset(input.offset);
 
-      return plans.map((p) => ({
+      return plans.map(p => ({
         id: p.id,
         title: p.title,
         status: p.status,
@@ -377,7 +385,7 @@ export const remediationRouter = router({
         .from(complianceEvidence)
         .where(eq(complianceEvidence.stepId, input.stepId));
 
-      return evidence.map((e) => ({
+      return evidence.map(e => ({
         id: e.id,
         evidenceType: e.evidenceType,
         title: e.title,

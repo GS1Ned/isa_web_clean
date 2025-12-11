@@ -30,25 +30,47 @@ export const executiveAnalyticsRouter = router({
       })
       .from(complianceScores);
 
-    const avgScore = scores.length > 0
-      ? Math.round(scores.reduce((sum, s) => sum + Number(s.score || 0), 0) / scores.length)
-      : 0;
+    const avgScore =
+      scores.length > 0
+        ? Math.round(
+            scores.reduce((sum, s) => sum + Number(s.score || 0), 0) /
+              scores.length
+          )
+        : 0;
 
-    const avgRiskScore = scores.length > 0
-      ? Math.round(scores.reduce((sum, s) => sum + Number(s.riskScore || 0), 0) / scores.length)
-      : 0;
+    const avgRiskScore =
+      scores.length > 0
+        ? Math.round(
+            scores.reduce((sum, s) => sum + Number(s.riskScore || 0), 0) /
+              scores.length
+          )
+        : 0;
 
-    const avgRemediationScore = scores.length > 0
-      ? Math.round(scores.reduce((sum, s) => sum + Number(s.remediationScore || 0), 0) / scores.length)
-      : 0;
+    const avgRemediationScore =
+      scores.length > 0
+        ? Math.round(
+            scores.reduce(
+              (sum, s) => sum + Number(s.remediationScore || 0),
+              0
+            ) / scores.length
+          )
+        : 0;
 
-    const avgEvidenceScore = scores.length > 0
-      ? Math.round(scores.reduce((sum, s) => sum + Number(s.evidenceScore || 0), 0) / scores.length)
-      : 0;
+    const avgEvidenceScore =
+      scores.length > 0
+        ? Math.round(
+            scores.reduce((sum, s) => sum + Number(s.evidenceScore || 0), 0) /
+              scores.length
+          )
+        : 0;
 
-    const avgRegulationScore = scores.length > 0
-      ? Math.round(scores.reduce((sum, s) => sum + Number(s.regulationScore || 0), 0) / scores.length)
-      : 0;
+    const avgRegulationScore =
+      scores.length > 0
+        ? Math.round(
+            scores.reduce((sum, s) => sum + Number(s.regulationScore || 0), 0) /
+              scores.length
+          )
+        : 0;
 
     return {
       organizationScore: avgScore,
@@ -58,10 +80,14 @@ export const executiveAnalyticsRouter = router({
       regulationScore: avgRegulationScore,
       totalUsers: scores.length,
       scoreDistribution: {
-        excellent: scores.filter((s) => Number(s.score || 0) >= 80).length,
-        good: scores.filter((s) => Number(s.score || 0) >= 60 && Number(s.score || 0) < 80).length,
-        fair: scores.filter((s) => Number(s.score || 0) >= 40 && Number(s.score || 0) < 60).length,
-        poor: scores.filter((s) => Number(s.score || 0) < 40).length,
+        excellent: scores.filter(s => Number(s.score || 0) >= 80).length,
+        good: scores.filter(
+          s => Number(s.score || 0) >= 60 && Number(s.score || 0) < 80
+        ).length,
+        fair: scores.filter(
+          s => Number(s.score || 0) >= 40 && Number(s.score || 0) < 60
+        ).length,
+        poor: scores.filter(s => Number(s.score || 0) < 40).length,
       },
     };
   }),
@@ -80,11 +106,17 @@ export const executiveAnalyticsRouter = router({
       })
       .from(supplyChainRisks);
 
-    const critical = risks.filter((r) => r.severity === "critical" && !r.isResolved).length;
-    const high = risks.filter((r) => r.severity === "high" && !r.isResolved).length;
-    const medium = risks.filter((r) => r.severity === "medium" && !r.isResolved).length;
-    const low = risks.filter((r) => r.severity === "low" && !r.isResolved).length;
-    const resolved = risks.filter((r) => r.isResolved).length;
+    const critical = risks.filter(
+      r => r.severity === "critical" && !r.isResolved
+    ).length;
+    const high = risks.filter(
+      r => r.severity === "high" && !r.isResolved
+    ).length;
+    const medium = risks.filter(
+      r => r.severity === "medium" && !r.isResolved
+    ).length;
+    const low = risks.filter(r => r.severity === "low" && !r.isResolved).length;
+    const resolved = risks.filter(r => r.isResolved).length;
 
     return {
       critical,
@@ -93,7 +125,8 @@ export const executiveAnalyticsRouter = router({
       low,
       resolved,
       total: risks.length,
-      resolutionRate: risks.length > 0 ? Math.round((resolved / risks.length) * 100) : 0,
+      resolutionRate:
+        risks.length > 0 ? Math.round((resolved / risks.length) * 100) : 0,
     };
   }),
 
@@ -110,17 +143,18 @@ export const executiveAnalyticsRouter = router({
       })
       .from(complianceRoadmaps);
 
-    const completed = plans.filter((p) => p.status === "completed").length;
-    const inProgress = plans.filter((p) => p.status === "in_progress").length;
-    const draft = plans.filter((p) => p.status === "draft").length;
+    const completed = plans.filter(p => p.status === "completed").length;
+    const inProgress = plans.filter(p => p.status === "in_progress").length;
+    const draft = plans.filter(p => p.status === "draft").length;
 
     return {
       completed,
       inProgress,
       draft,
       total: plans.length,
-      completionRate: plans.length > 0 ? Math.round((completed / plans.length) * 100) : 0,
-      avgProgressPercentage: inProgress > 0 ? 50 : (completed > 0 ? 100 : 0),
+      completionRate:
+        plans.length > 0 ? Math.round((completed / plans.length) * 100) : 0,
+      avgProgressPercentage: inProgress > 0 ? 50 : completed > 0 ? 100 : 0,
     };
   }),
 
@@ -137,17 +171,29 @@ export const executiveAnalyticsRouter = router({
       })
       .from(complianceEvidence);
 
-    const verified = evidence.filter((e) => e.verificationStatus === "verified").length;
-    const rejected = evidence.filter((e) => e.verificationStatus === "rejected").length;
-    const pending = evidence.filter((e) => e.verificationStatus === "pending").length;
+    const verified = evidence.filter(
+      e => e.verificationStatus === "verified"
+    ).length;
+    const rejected = evidence.filter(
+      e => e.verificationStatus === "rejected"
+    ).length;
+    const pending = evidence.filter(
+      e => e.verificationStatus === "pending"
+    ).length;
 
     return {
       verified,
       rejected,
       pending,
       total: evidence.length,
-      verificationRate: evidence.length > 0 ? Math.round((verified / evidence.length) * 100) : 0,
-      rejectionRate: evidence.length > 0 ? Math.round((rejected / evidence.length) * 100) : 0,
+      verificationRate:
+        evidence.length > 0
+          ? Math.round((verified / evidence.length) * 100)
+          : 0,
+      rejectionRate:
+        evidence.length > 0
+          ? Math.round((rejected / evidence.length) * 100)
+          : 0,
     };
   }),
 
@@ -168,8 +214,10 @@ export const executiveAnalyticsRouter = router({
       totalRegulations,
       coveredRegulations: regulationsWithMappings,
       coveragePercentage:
-        totalRegulations > 0 ? Math.round((regulationsWithMappings / totalRegulations) * 100) : 0,
-      regulations: regs.map((r) => ({
+        totalRegulations > 0
+          ? Math.round((regulationsWithMappings / totalRegulations) * 100)
+          : 0,
+      regulations: regs.map(r => ({
         id: r.id,
         name: r.title,
         type: r.regulationType,
@@ -193,8 +241,8 @@ export const executiveAnalyticsRouter = router({
 
     const users_data = await db.select().from(users);
 
-    const teamPerformance = users_data.map((user) => {
-      const userScore = userScores.find((s) => s.userId === user.id);
+    const teamPerformance = users_data.map(user => {
+      const userScore = userScores.find(s => s.userId === user.id);
       return {
         userId: user.id,
         name: user.name || "Unknown",
@@ -205,11 +253,18 @@ export const executiveAnalyticsRouter = router({
     });
 
     return {
-      topPerformers: teamPerformance.sort((a, b) => Number(b.score) - Number(a.score)).slice(0, 5),
-      lowPerformers: teamPerformance.sort((a, b) => Number(a.score) - Number(b.score)).slice(0, 5),
+      topPerformers: teamPerformance
+        .sort((a, b) => Number(b.score) - Number(a.score))
+        .slice(0, 5),
+      lowPerformers: teamPerformance
+        .sort((a, b) => Number(a.score) - Number(b.score))
+        .slice(0, 5),
       averageScore:
         teamPerformance.length > 0
-          ? Math.round(teamPerformance.reduce((sum, p) => sum + Number(p.score), 0) / teamPerformance.length)
+          ? Math.round(
+              teamPerformance.reduce((sum, p) => sum + Number(p.score), 0) /
+                teamPerformance.length
+            )
           : 0,
       totalTeamMembers: teamPerformance.length,
     };
@@ -238,7 +293,9 @@ export const executiveAnalyticsRouter = router({
     const insights = [];
 
     // Critical risk insight
-    const criticalRisks = riskStatus.filter((r) => r.severity === "critical" && !r.isResolved).length;
+    const criticalRisks = riskStatus.filter(
+      r => r.severity === "critical" && !r.isResolved
+    ).length;
     if (criticalRisks > 0) {
       insights.push({
         type: "critical",
@@ -249,13 +306,16 @@ export const executiveAnalyticsRouter = router({
     }
 
     // Remediation progress insight
-    const completedPlans = remediationStatus.filter((p) => p.status === "completed").length;
+    const completedPlans = remediationStatus.filter(
+      p => p.status === "completed"
+    ).length;
     const totalPlans = remediationStatus.length;
     if (totalPlans > 0 && completedPlans < totalPlans * 0.5) {
       insights.push({
         type: "warning",
         title: "Remediation Progress Below 50%",
-        description: "Accelerate remediation plan execution to meet compliance deadlines",
+        description:
+          "Accelerate remediation plan execution to meet compliance deadlines",
         priority: 2,
       });
     }
@@ -292,28 +352,44 @@ export const executiveAnalyticsRouter = router({
     const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
     const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
 
-    const last30Days = scoreHistory.filter((s) => new Date(s.createdAt as any) >= thirtyDaysAgo);
-    const last60Days = scoreHistory.filter((s) => new Date(s.createdAt as any) >= sixtyDaysAgo);
-    const last90Days = scoreHistory.filter((s) => new Date(s.createdAt as any) >= ninetyDaysAgo);
+    const last30Days = scoreHistory.filter(
+      s => new Date(s.createdAt as any) >= thirtyDaysAgo
+    );
+    const last60Days = scoreHistory.filter(
+      s => new Date(s.createdAt as any) >= sixtyDaysAgo
+    );
+    const last90Days = scoreHistory.filter(
+      s => new Date(s.createdAt as any) >= ninetyDaysAgo
+    );
 
     const avg30 =
       last30Days.length > 0
-        ? Math.round(last30Days.reduce((sum, s) => sum + Number(s.score || 0), 0) / last30Days.length)
+        ? Math.round(
+            last30Days.reduce((sum, s) => sum + Number(s.score || 0), 0) /
+              last30Days.length
+          )
         : 0;
     const avg60 =
       last60Days.length > 0
-        ? Math.round(last60Days.reduce((sum, s) => sum + Number(s.score || 0), 0) / last60Days.length)
+        ? Math.round(
+            last60Days.reduce((sum, s) => sum + Number(s.score || 0), 0) /
+              last60Days.length
+          )
         : 0;
     const avg90 =
       last90Days.length > 0
-        ? Math.round(last90Days.reduce((sum, s) => sum + Number(s.score || 0), 0) / last90Days.length)
+        ? Math.round(
+            last90Days.reduce((sum, s) => sum + Number(s.score || 0), 0) /
+              last90Days.length
+          )
         : 0;
 
     return {
       trend30Days: avg30,
       trend60Days: avg60,
       trend90Days: avg90,
-      direction: avg30 > avg60 ? "improving" : avg30 < avg60 ? "declining" : "stable",
+      direction:
+        avg30 > avg60 ? "improving" : avg30 < avg60 ? "declining" : "stable",
     };
   }),
 });

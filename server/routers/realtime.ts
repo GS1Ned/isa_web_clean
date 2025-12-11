@@ -1,13 +1,18 @@
 import { router, protectedProcedure, adminProcedure } from "../_core/trpc";
 import { z } from "zod";
-import { realtimeNotifications, NotificationEventType } from "../realtime-notifications";
+import {
+  realtimeNotifications,
+  NotificationEventType,
+} from "../realtime-notifications";
 
 export const realtimeRouter = router({
   /**
    * Get pending notifications for current user
    */
   getPendingNotifications: protectedProcedure.query(({ ctx }) => {
-    const notifications = realtimeNotifications.getPendingNotifications(ctx.user.id);
+    const notifications = realtimeNotifications.getPendingNotifications(
+      ctx.user.id
+    );
     realtimeNotifications.clearPendingNotifications(ctx.user.id);
     return notifications;
   }),
@@ -35,7 +40,10 @@ export const realtimeRouter = router({
   unregisterConnection: protectedProcedure
     .input(z.object({ connectionId: z.string() }))
     .mutation(({ ctx, input }) => {
-      realtimeNotifications.unregisterConnection(ctx.user.id, input.connectionId);
+      realtimeNotifications.unregisterConnection(
+        ctx.user.id,
+        input.connectionId
+      );
       return { success: true };
     }),
 
@@ -43,7 +51,9 @@ export const realtimeRouter = router({
    * Poll for new notifications (alternative to WebSocket)
    */
   pollNotifications: protectedProcedure.query(({ ctx }) => {
-    const notifications = realtimeNotifications.getPendingNotifications(ctx.user.id);
+    const notifications = realtimeNotifications.getPendingNotifications(
+      ctx.user.id
+    );
     return notifications;
   }),
 
@@ -51,7 +61,9 @@ export const realtimeRouter = router({
    * Get notification statistics (for admin/analytics)
    */
   getNotificationStats: adminProcedure.query(({ ctx }) => {
-    const notifications = realtimeNotifications.getPendingNotifications(ctx.user.id);
+    const notifications = realtimeNotifications.getPendingNotifications(
+      ctx.user.id
+    );
 
     const stats = {
       total: notifications.length,
@@ -59,9 +71,10 @@ export const realtimeRouter = router({
       bySeverity: {} as Record<string, number>,
     };
 
-    notifications.forEach((n) => {
+    notifications.forEach(n => {
       stats.byType[n.type] = (stats.byType[n.type] || 0) + 1;
-      stats.bySeverity[n.severity || "medium"] = (stats.bySeverity[n.severity || "medium"] || 0) + 1;
+      stats.bySeverity[n.severity || "medium"] =
+        (stats.bySeverity[n.severity || "medium"] || 0) + 1;
     });
 
     return stats;

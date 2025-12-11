@@ -18,6 +18,7 @@ This document defines the collaboration model between Manus (the primary develop
 ### 1.1 Manus Owns (HIGH-RISK - Do Not Delegate)
 
 **Infrastructure and Deployment:**
+
 - `/server/_core/` - Authentication, OAuth, context, environment config
 - `drizzle.config.ts` - Database connection configuration
 - `.env` files and environment secrets management
@@ -25,17 +26,20 @@ This document defines the collaboration model between Manus (the primary develop
 - Manus platform integration (`vite-plugin-manus-runtime`)
 
 **Database Migrations:**
+
 - `/drizzle/` - Schema definitions and migration files
 - `server/db.ts` - Core database connection and query helpers
 - Any schema changes that affect production data integrity
 
 **Critical Runtime Integration:**
+
 - `server/routers.ts` - Main tRPC router (procedure registration)
 - `server/_core/index.ts` - Express server entry point
 - `client/src/App.tsx` - Main route configuration
 - `client/src/main.tsx` - React application entry point
 
 **Sensitive Operations:**
+
 - Cron job schedulers with production credentials
 - Email notification systems with API keys
 - S3 storage operations with credentials
@@ -44,33 +48,39 @@ This document defines the collaboration model between Manus (the primary develop
 ### 1.2 ChatGPT Can Own (LOW-RISK - Delegable Zones)
 
 **Self-Contained Modules:**
+
 - `/server/routers/` - New tRPC sub-routers (not the main `routers.ts`)
 - `/server/mappings/` - Mapping logic and transformation functions
 - `/server/validation/` - Validation rules and helper libraries
 - `/server/utils/` - Pure utility functions without side effects
 
 **UI Components and Pages:**
+
 - `/client/src/components/` - Reusable UI components
 - `/client/src/pages/` - New page components (routes registered by Manus)
 - `/client/src/hooks/` - Custom React hooks
 - `/client/src/lib/` - Frontend utility libraries
 
 **Data Models and Schemas:**
+
 - `/shared/types/` - TypeScript interfaces and types
 - `/shared/schemas/` - Zod validation schemas
 - `/shared/constants/` - Configuration constants and enums
 
 **Documentation:**
+
 - `/docs/` - Architecture docs, guides, API documentation
 - `/tasks/` - Task specifications and work plans
 - Inline code documentation and JSDoc comments
 
 **Test Suites:**
+
 - `*.test.ts` files - Unit tests and integration tests
 - `/server/__fixtures__/` - Test data and fixtures
 - Test utilities and mock generators
 
 **Data and Configuration:**
+
 - `/data/` - Static data files (JSON, CSV, mapping tables)
 - Configuration files for linting, formatting, testing (when specified)
 
@@ -90,11 +100,13 @@ This document defines the collaboration model between Manus (the primary develop
 ### 2.1 Canonical Types and APIs
 
 **Manus defines and owns:**
+
 - `/drizzle/schema.ts` - Database table definitions
 - `/shared/interfaces.ts` - Core domain interfaces
 - `/server/routers.ts` - tRPC procedure contracts
 
 **Version Control:**
+
 - Any changes to shared interfaces must be documented in `docs/CHANGELOG_FOR_CHATGPT.md`
 - Manus will freeze interface versions before delegating dependent tasks
 - ChatGPT must implement against the specified interface version
@@ -125,17 +137,21 @@ ChatGPT must:
 **Purpose:** Track interface and structural changes that affect delegated work
 
 **Format:**
+
 ```markdown
 ## [YYYY-MM-DD] Version X.Y
 
 ### Changed Interfaces
+
 - `RegulationMappingInput` - Added optional `includeESRS` field
 - `GS1Standard` type - Renamed `technicalSpecs` to `specifications`
 
 ### New Shared Types
+
 - `ESRSDatapointMapping` - Links ESRS datapoints to GS1 attributes
 
 ### Deprecated
+
 - `OldMappingFunction` - Use `newMappingEngine` instead
 ```
 
@@ -150,6 +166,7 @@ Manus will update this file before creating task specs that depend on changed in
 **Purpose:** Self-contained specifications for delegated work
 
 Each spec includes:
+
 - Context (project mission, relevant subsystem)
 - Exact task description
 - Technical specification (files, signatures, types)
@@ -182,6 +199,7 @@ If a task meets ALL criteria, **delegate to ChatGPT**:
 ### 4.3 Examples
 
 **Delegate to ChatGPT:**
+
 - Build a new UI component for displaying ESRS datapoints
 - Create a mapping function from CSRD requirements to GS1 attributes
 - Write validation rules for EPCIS event structures
@@ -189,6 +207,7 @@ If a task meets ALL criteria, **delegate to ChatGPT**:
 - Create test fixtures for regulation comparison features
 
 **Keep in Manus:**
+
 - Add a new tRPC procedure to the main router
 - Modify database schema to add a new table
 - Integrate a third-party API requiring credentials
@@ -212,12 +231,14 @@ If a task meets ALL criteria, **delegate to ChatGPT**:
 When Manus receives code from ChatGPT:
 
 **Mechanical Fixes (Allowed):**
+
 - Fix import paths if they're slightly off
 - Run formatters (`prettier`) and linters (`eslint`)
 - Resolve minor naming inconsistencies with project conventions
 - Add missing type exports if obvious
 
 **Behavioral Changes (Avoid):**
+
 - Do NOT alter logic or algorithms without documenting why
 - Do NOT change function signatures or interfaces
 - If changes are required:
@@ -226,6 +247,7 @@ When Manus receives code from ChatGPT:
   3. Note the changes in integration commit message
 
 **Validation Steps:**
+
 1. Place files in specified paths
 2. Run `pnpm check` (TypeScript compilation)
 3. Run `pnpm test` (all tests must pass)
@@ -236,11 +258,13 @@ When Manus receives code from ChatGPT:
 ### 5.3 Handling Interdependencies
 
 **When ChatGPT depends on Manus's future work:**
+
 - Manus provides "stub" interfaces with JSDoc `@todo` markers
 - Manus guarantees to implement behind the interface
 - ChatGPT implements against the stable interface
 
 **When Manus depends on ChatGPT's work:**
+
 - Manus waits for ChatGPT to deliver the contract
 - OR Manus defines the interface first and asks ChatGPT to implement it
 - Manus does NOT implement consuming code until contract is stable
@@ -376,9 +400,9 @@ Manus will:
 
 ## 10. Version History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-12-11 | Initial collaboration architecture document |
+| Version | Date       | Changes                                     |
+| ------- | ---------- | ------------------------------------------- |
+| 1.0     | 2025-12-11 | Initial collaboration architecture document |
 
 ---
 

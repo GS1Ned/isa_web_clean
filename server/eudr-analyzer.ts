@@ -29,7 +29,9 @@ export interface EUDRComplianceReport {
 /**
  * Analyze EUDR compliance for a user's EPCIS events
  */
-export async function analyzeEUDRCompliance(userId: number): Promise<EUDRComplianceReport> {
+export async function analyzeEUDRCompliance(
+  userId: number
+): Promise<EUDRComplianceReport> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -51,7 +53,7 @@ export async function analyzeEUDRCompliance(userId: number): Promise<EUDRComplia
     if (event.epcList) {
       (event.epcList as string[]).forEach(epc => {
         // Extract GTIN from URN or use as-is
-        const gtin = epc.includes(':') ? epc.split(':').pop() || epc : epc;
+        const gtin = epc.includes(":") ? epc.split(":").pop() || epc : epc;
         products.add(gtin);
       });
     }
@@ -61,24 +63,30 @@ export async function analyzeEUDRCompliance(userId: number): Promise<EUDRComplia
 
   // Check geolocation coverage
   const productsWithGeolocation = geolocations.length;
-  const geolocationCoverage = totalProducts > 0 ? (productsWithGeolocation / totalProducts) * 100 : 0;
+  const geolocationCoverage =
+    totalProducts > 0 ? (productsWithGeolocation / totalProducts) * 100 : 0;
 
   // Check risk zones
-  const productsInRiskZones = geolocations.filter(geo => 
-    geo.deforestationRisk === 'high' || geo.deforestationRisk === 'medium'
+  const productsInRiskZones = geolocations.filter(
+    geo =>
+      geo.deforestationRisk === "high" || geo.deforestationRisk === "medium"
   ).length;
 
   // Check due diligence statements
-  const productsWithDueDiligence = geolocations.filter(geo => 
-    geo.dueDiligenceStatement && typeof geo.dueDiligenceStatement === 'object' && Object.keys(geo.dueDiligenceStatement).length > 0
+  const productsWithDueDiligence = geolocations.filter(
+    geo =>
+      geo.dueDiligenceStatement &&
+      typeof geo.dueDiligenceStatement === "object" &&
+      Object.keys(geo.dueDiligenceStatement).length > 0
   ).length;
 
-  const dueDiligenceCoverage = productsWithGeolocation > 0 
-    ? (productsWithDueDiligence / productsWithGeolocation) * 100 
-    : 0;
+  const dueDiligenceCoverage =
+    productsWithGeolocation > 0
+      ? (productsWithDueDiligence / productsWithGeolocation) * 100
+      : 0;
 
   // Generate findings
-  const findings: EUDRComplianceReport['findings'] = [];
+  const findings: EUDRComplianceReport["findings"] = [];
 
   // Finding 1: Geolocation Data Completeness
   if (geolocationCoverage >= 90) {
@@ -117,14 +125,16 @@ export async function analyzeEUDRCompliance(userId: number): Promise<EUDRComplia
       category: "Deforestation Risk",
       status: "warning",
       message: `${productsInRiskZones} products from at-risk zones`,
-      details: "Some products originate from regions with deforestation concerns. Enhanced due diligence required.",
+      details:
+        "Some products originate from regions with deforestation concerns. Enhanced due diligence required.",
     });
   } else {
     findings.push({
       category: "Deforestation Risk",
       status: "fail",
       message: `${productsInRiskZones} products from high-risk deforestation zones`,
-      details: "Significant portion of products from high-risk areas. Immediate action required to ensure EUDR compliance.",
+      details:
+        "Significant portion of products from high-risk areas. Immediate action required to ensure EUDR compliance.",
     });
   }
 
@@ -153,7 +163,8 @@ export async function analyzeEUDRCompliance(userId: number): Promise<EUDRComplia
   }
 
   // Finding 4: Traceability Chain
-  const eventsPerProduct = totalProducts > 0 ? events.length / totalProducts : 0;
+  const eventsPerProduct =
+    totalProducts > 0 ? events.length / totalProducts : 0;
   if (eventsPerProduct >= 3) {
     findings.push({
       category: "Traceability Chain",
@@ -166,21 +177,23 @@ export async function analyzeEUDRCompliance(userId: number): Promise<EUDRComplia
       category: "Traceability Chain",
       status: "warning",
       message: `Basic traceability (avg ${eventsPerProduct.toFixed(1)} events per product)`,
-      details: "Limited supply chain visibility. Additional tracking recommended for complete EUDR compliance.",
+      details:
+        "Limited supply chain visibility. Additional tracking recommended for complete EUDR compliance.",
     });
   } else {
     findings.push({
       category: "Traceability Chain",
       status: "fail",
       message: "Insufficient traceability data",
-      details: "Minimal supply chain tracking. EUDR requires comprehensive traceability from origin to market.",
+      details:
+        "Minimal supply chain tracking. EUDR requires comprehensive traceability from origin to market.",
     });
   }
 
   // Calculate overall compliance score
-  const passCount = findings.filter(f => f.status === 'pass').length;
-  const warningCount = findings.filter(f => f.status === 'warning').length;
-  const failCount = findings.filter(f => f.status === 'fail').length;
+  const passCount = findings.filter(f => f.status === "pass").length;
+  const warningCount = findings.filter(f => f.status === "warning").length;
+  const failCount = findings.filter(f => f.status === "fail").length;
 
   const overallScore = Math.round(
     (passCount * 100 + warningCount * 50 + failCount * 0) / findings.length
@@ -230,7 +243,8 @@ export async function analyzeEUDRCompliance(userId: number): Promise<EUDRComplia
   }
 
   // Generate summary
-  const summary = `EUDR Compliance Score: ${overallScore}/100 (${status.toUpperCase()}). ` +
+  const summary =
+    `EUDR Compliance Score: ${overallScore}/100 (${status.toUpperCase()}). ` +
     `${passCount} requirements met, ${warningCount} warnings, ${failCount} critical issues. ` +
     `${productsWithGeolocation}/${totalProducts} products have geolocation data, ` +
     `${productsInRiskZones} in risk zones.`;

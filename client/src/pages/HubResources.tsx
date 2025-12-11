@@ -1,6 +1,14 @@
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
-import { Search, Download, FileText, CheckSquare, BookOpen, Lightbulb, Download as DownloadIcon } from "lucide-react";
+import {
+  Search,
+  Download,
+  FileText,
+  CheckSquare,
+  BookOpen,
+  Lightbulb,
+  Download as DownloadIcon,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -8,7 +16,8 @@ const SAMPLE_RESOURCES = [
   {
     id: 1,
     title: "CSRD Compliance Checklist",
-    description: "Step-by-step checklist for implementing CSRD requirements and GS1 standards integration.",
+    description:
+      "Step-by-step checklist for implementing CSRD requirements and GS1 standards integration.",
     type: "CHECKLIST",
     relatedRegulations: ["CSRD"],
     relatedStandards: ["GTIN", "EPCIS", "Product Data"],
@@ -18,7 +27,8 @@ const SAMPLE_RESOURCES = [
   {
     id: 2,
     title: "EUDR Due Diligence Implementation Guide",
-    description: "Comprehensive guide for implementing EUDR due diligence using GS1 traceability standards.",
+    description:
+      "Comprehensive guide for implementing EUDR due diligence using GS1 traceability standards.",
     type: "GUIDE",
     relatedRegulations: ["EUDR"],
     relatedStandards: ["EPCIS", "Traceability", "GLN"],
@@ -28,7 +38,8 @@ const SAMPLE_RESOURCES = [
   {
     id: 3,
     title: "Digital Product Passport Template",
-    description: "Ready-to-use template for creating Digital Product Passports with GS1 standards.",
+    description:
+      "Ready-to-use template for creating Digital Product Passports with GS1 standards.",
     type: "TEMPLATE",
     relatedRegulations: ["DPP", "ESPR"],
     relatedStandards: ["Digital Product Passport", "QR Code", "GTIN"],
@@ -38,7 +49,8 @@ const SAMPLE_RESOURCES = [
   {
     id: 4,
     title: "GS1 Standards Integration Whitepaper",
-    description: "In-depth analysis of how GS1 standards support ESG regulatory compliance across all major regulations.",
+    description:
+      "In-depth analysis of how GS1 standards support ESG regulatory compliance across all major regulations.",
     type: "WHITEPAPER",
     relatedRegulations: ["CSRD", "ESRS", "EUDR", "DPP"],
     relatedStandards: ["GTIN", "EPCIS", "GLN", "Digital Product Passport"],
@@ -48,7 +60,8 @@ const SAMPLE_RESOURCES = [
   {
     id: 5,
     title: "Supply Chain Sustainability Data Template",
-    description: "Excel template for collecting and organizing supply chain sustainability data for CSRD/ESRS reporting.",
+    description:
+      "Excel template for collecting and organizing supply chain sustainability data for CSRD/ESRS reporting.",
     type: "TEMPLATE",
     relatedRegulations: ["CSRD", "ESRS"],
     relatedStandards: ["GTIN", "GLN", "Product Data"],
@@ -58,7 +71,8 @@ const SAMPLE_RESOURCES = [
   {
     id: 6,
     title: "Case Study: EUDR Implementation Success",
-    description: "Real-world case study of a company successfully implementing EUDR using GS1 standards.",
+    description:
+      "Real-world case study of a company successfully implementing EUDR using GS1 standards.",
     type: "CASE_STUDY",
     relatedRegulations: ["EUDR"],
     relatedStandards: ["EPCIS", "Traceability"],
@@ -68,7 +82,8 @@ const SAMPLE_RESOURCES = [
   {
     id: 7,
     title: "ESRS Reporting Data Mapping Guide",
-    description: "Guide for mapping GS1 standards data to ESRS reporting requirements.",
+    description:
+      "Guide for mapping GS1 standards data to ESRS reporting requirements.",
     type: "GUIDE",
     relatedRegulations: ["ESRS"],
     relatedStandards: ["GTIN", "Product Data", "Sustainability Claims"],
@@ -78,7 +93,8 @@ const SAMPLE_RESOURCES = [
   {
     id: 8,
     title: "Sustainability Claims Verification Tool",
-    description: "Interactive tool for verifying sustainability claims against GS1 standards and regulations.",
+    description:
+      "Interactive tool for verifying sustainability claims against GS1 standards and regulations.",
     type: "TOOL",
     relatedRegulations: ["ESPR", "ESRS"],
     relatedStandards: ["Sustainability Claims", "Product Data"],
@@ -110,12 +126,16 @@ export default function HubResources() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
 
   const filteredResources = useMemo(() => {
-    return SAMPLE_RESOURCES.filter((resource) => {
+    return SAMPLE_RESOURCES.filter(resource => {
       const matchesSearch =
         resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        resource.relatedRegulations.some((r) => r.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        resource.relatedStandards.some((s) => s.toLowerCase().includes(searchTerm.toLowerCase()));
+        resource.relatedRegulations.some(r =>
+          r.toLowerCase().includes(searchTerm.toLowerCase())
+        ) ||
+        resource.relatedStandards.some(s =>
+          s.toLowerCase().includes(searchTerm.toLowerCase())
+        );
 
       const matchesType = !selectedType || resource.type === selectedType;
 
@@ -123,17 +143,22 @@ export default function HubResources() {
     });
   }, [searchTerm, selectedType]);
 
-  const resourceTypes = Array.from(new Set(SAMPLE_RESOURCES.map((r) => r.type)));
+  const resourceTypes = Array.from(new Set(SAMPLE_RESOURCES.map(r => r.type)));
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/hub" className="text-accent hover:text-accent/80 transition font-medium">
+          <Link
+            href="/hub"
+            className="text-accent hover:text-accent/80 transition font-medium"
+          >
             ← Back to Hub
           </Link>
-          <h1 className="text-lg font-bold text-foreground">Resources Library</h1>
+          <h1 className="text-lg font-bold text-foreground">
+            Resources Library
+          </h1>
           <div className="w-24" />
         </div>
       </nav>
@@ -143,9 +168,12 @@ export default function HubResources() {
         <div className="container py-8">
           {/* Header */}
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Resources & Downloads</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-2">
+              Resources & Downloads
+            </h2>
             <p className="text-muted-foreground">
-              Access guides, checklists, templates, and case studies for implementing ESG regulations with GS1 standards.
+              Access guides, checklists, templates, and case studies for
+              implementing ESG regulations with GS1 standards.
             </p>
           </div>
 
@@ -157,18 +185,22 @@ export default function HubResources() {
                 type="text"
                 placeholder="Search resources, guides, templates..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 className="pl-12"
               />
             </div>
 
             {/* Type Filter */}
             <div className="flex flex-wrap gap-2">
-              <span className="text-sm font-medium text-muted-foreground py-2">Filter by type:</span>
-              {resourceTypes.map((type) => (
+              <span className="text-sm font-medium text-muted-foreground py-2">
+                Filter by type:
+              </span>
+              {resourceTypes.map(type => (
                 <button
                   key={type}
-                  onClick={() => setSelectedType(selectedType === type ? null : type)}
+                  onClick={() =>
+                    setSelectedType(selectedType === type ? null : type)
+                  }
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
                     selectedType === type
                       ? "bg-accent text-accent-foreground"
@@ -185,41 +217,64 @@ export default function HubResources() {
           <div className="grid md:grid-cols-2 gap-6">
             {filteredResources.length === 0 ? (
               <div className="col-span-full text-center py-12">
-                <p className="text-muted-foreground">No resources match your search criteria.</p>
+                <p className="text-muted-foreground">
+                  No resources match your search criteria.
+                </p>
               </div>
             ) : (
-              filteredResources.map((resource) => (
-                <div key={resource.id} className="card-elevated p-6 hover:border-accent transition flex flex-col">
+              filteredResources.map(resource => (
+                <div
+                  key={resource.id}
+                  className="card-elevated p-6 hover:border-accent transition flex flex-col"
+                >
                   <div className="flex items-start gap-4 mb-4">
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${TYPE_COLORS[resource.type as keyof typeof TYPE_COLORS]}`}>
+                    <div
+                      className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${TYPE_COLORS[resource.type as keyof typeof TYPE_COLORS]}`}
+                    >
                       {TYPE_ICONS[resource.type as keyof typeof TYPE_ICONS]}
                     </div>
                     <div className="flex-1">
-                      <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium ${TYPE_COLORS[resource.type as keyof typeof TYPE_COLORS]}`}>
+                      <span
+                        className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium ${TYPE_COLORS[resource.type as keyof typeof TYPE_COLORS]}`}
+                      >
                         {resource.type}
                       </span>
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-semibold text-foreground mb-2">{resource.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-4 flex-1">{resource.description}</p>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    {resource.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4 flex-1">
+                    {resource.description}
+                  </p>
 
                   <div className="mb-4 space-y-2">
                     <div>
-                      <div className="text-xs font-medium text-muted-foreground mb-1">Regulations:</div>
+                      <div className="text-xs font-medium text-muted-foreground mb-1">
+                        Regulations:
+                      </div>
                       <div className="flex flex-wrap gap-1">
                         {resource.relatedRegulations.map((reg, idx) => (
-                          <span key={idx} className="inline-block px-2 py-1 rounded bg-accent/10 text-accent text-xs font-medium">
+                          <span
+                            key={idx}
+                            className="inline-block px-2 py-1 rounded bg-accent/10 text-accent text-xs font-medium"
+                          >
                             {reg}
                           </span>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs font-medium text-muted-foreground mb-1">GS1 Standards:</div>
+                      <div className="text-xs font-medium text-muted-foreground mb-1">
+                        GS1 Standards:
+                      </div>
                       <div className="flex flex-wrap gap-1">
                         {resource.relatedStandards.map((std, idx) => (
-                          <span key={idx} className="inline-block px-2 py-1 rounded bg-secondary/20 text-secondary-foreground text-xs font-medium">
+                          <span
+                            key={idx}
+                            className="inline-block px-2 py-1 rounded bg-secondary/20 text-secondary-foreground text-xs font-medium"
+                          >
                             {std}
                           </span>
                         ))}
@@ -230,7 +285,9 @@ export default function HubResources() {
                   <div className="flex items-center justify-between pt-4 border-t border-border">
                     <div className="text-xs text-muted-foreground">
                       <div>{resource.fileSize}</div>
-                      <div>{resource.downloadCount.toLocaleString()} downloads</div>
+                      <div>
+                        {resource.downloadCount.toLocaleString()} downloads
+                      </div>
                     </div>
                     <Button className="bg-accent text-accent-foreground hover:bg-accent/90 transition">
                       <DownloadIcon className="w-4 h-4 mr-2" />
@@ -244,7 +301,8 @@ export default function HubResources() {
 
           {/* Results Summary */}
           <div className="mt-8 p-4 rounded-lg bg-card border border-border text-center text-sm text-muted-foreground">
-            Showing {filteredResources.length} of {SAMPLE_RESOURCES.length} resources
+            Showing {filteredResources.length} of {SAMPLE_RESOURCES.length}{" "}
+            resources
           </div>
         </div>
       </div>
@@ -252,7 +310,9 @@ export default function HubResources() {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-8">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Intelligent Standards Architect - ESG Regulations Hub</p>
+          <p>
+            &copy; 2025 Intelligent Standards Architect - ESG Regulations Hub
+          </p>
         </div>
       </footer>
     </div>

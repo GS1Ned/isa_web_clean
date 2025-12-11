@@ -42,6 +42,7 @@ Implement a **pure TypeScript mapping function** that receives a list of ESRS da
 ### How It Will Be Used
 
 **Backend Integration:**
+
 ```typescript
 // In server/routers/compliance.ts
 import { mapESRSToGS1Attributes } from "../mappings/esrs-to-gs1-mapper";
@@ -56,9 +57,12 @@ const complianceCheck = publicProcedure
 ```
 
 **Frontend Integration:**
+
 ```typescript
 // In client/src/pages/ComplianceChecker.tsx
-const { data } = trpc.compliance.check.useQuery({ esrsDatapointIds: ["E1-1_01", "E2-3_05"] });
+const { data } = trpc.compliance.check.useQuery({
+  esrsDatapointIds: ["E1-1_01", "E2-3_05"],
+});
 // Display required GS1 attributes to user
 ```
 
@@ -85,11 +89,11 @@ const { data } = trpc.compliance.check.useQuery({ esrsDatapointIds: ["E1-1_01", 
 ```typescript
 /**
  * Maps ESRS datapoint IDs to relevant GS1 attributes
- * 
+ *
  * @param esrsDatapointIds - Array of ESRS datapoint IDs (e.g., ["E1-1_01", "E2-3_05"])
  * @param options - Optional configuration
  * @returns Array of GS1 attribute mappings with metadata
- * 
+ *
  * @example
  * const mappings = await mapESRSToGS1Attributes(["E1-1_01", "E2-3_05"]);
  * // Returns:
@@ -134,7 +138,13 @@ export interface ESRSToGS1Mapping {
 export interface GS1AttributeMapping {
   attributeName: string;
   gs1Standard: string; // E.g., "GDSN", "EPCIS", "GDM", "Digital Link"
-  dataType: "narrative" | "monetary" | "percentage" | "date" | "boolean" | "quantitative";
+  dataType:
+    | "narrative"
+    | "monetary"
+    | "percentage"
+    | "date"
+    | "boolean"
+    | "quantitative";
   unit?: string; // E.g., "tonnes CO2e", "liters", "kWh"
   mappingConfidence: number; // 0.0 to 1.0
   mappingReason: string; // Human-readable explanation
@@ -170,7 +180,7 @@ export const ESRS_GS1_MAPPING_RULES: ESRSMappingRule[] = [
         gs1Standard: "GDM",
         dataType: "quantitative",
         unit: "kg CO2e",
-        mappingConfidence: 0.90,
+        mappingConfidence: 0.9,
         mappingReason: "Total carbon footprint includes Scope 1 emissions",
       },
     ],
@@ -230,7 +240,7 @@ For each standard, cover the top 5-10 most common datapoints. You can use patter
 function matchesPattern(datapointId: string, pattern: string): boolean {
   // Exact match
   if (pattern === datapointId) return true;
-  
+
   // Glob pattern (e.g., "E1-1_*" matches "E1-1_01", "E1-1_02", etc.)
   const regex = new RegExp("^" + pattern.replace("*", ".*") + "$");
   return regex.test(datapointId);
@@ -282,16 +292,16 @@ const mappings = await mapESRSToGS1Attributes(["E1-1_01", "E2-3_05"]);
       },
     ],
   },
-]
+];
 ```
 
 **Example 2: With Options**
 
 ```typescript
-const mappings = await mapESRSToGS1Attributes(
-  ["E1-1_01"],
-  { filterByStandard: "GDSN", maxAttributesPerDatapoint: 3 }
-);
+const mappings = await mapESRSToGS1Attributes(["E1-1_01"], {
+  filterByStandard: "GDSN",
+  maxAttributesPerDatapoint: 3,
+});
 
 // Expected output: Only GDSN attributes, max 3 per datapoint
 ```
@@ -309,7 +319,7 @@ const mappings = await mapESRSToGS1Attributes(["INVALID_ID"]);
     esrsStandard: "Unknown",
     gs1Attributes: [],
   },
-]
+];
 ```
 
 ---
@@ -343,10 +353,12 @@ const mappings = await mapESRSToGS1Attributes(["INVALID_ID"]);
 ### What Manus Guarantees
 
 **Existing Types:**
+
 - You can import types from `/drizzle/schema.ts` if needed (e.g., `ESRSDatapoint` type)
 - Database schema is stable and won't change during your implementation
 
 **No Database Access Required:**
+
 - This is a pure mapping function using static rules
 - You do NOT need to query the database for ESRS datapoint details
 - All mapping logic should be self-contained in your files

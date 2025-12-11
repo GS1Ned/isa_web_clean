@@ -4,7 +4,11 @@
  */
 
 import { getDb } from "./db";
-import { regulations, regulatoryChangeAlerts, userAlerts } from "../drizzle/schema";
+import {
+  regulations,
+  regulatoryChangeAlerts,
+  userAlerts,
+} from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 
@@ -13,7 +17,12 @@ import { notifyOwner } from "./_core/notification";
  */
 interface RegulationChange {
   regulationId: number;
-  changeType: "NEW" | "UPDATED" | "EFFECTIVE_DATE_CHANGED" | "SCOPE_EXPANDED" | "DEPRECATED";
+  changeType:
+    | "NEW"
+    | "UPDATED"
+    | "EFFECTIVE_DATE_CHANGED"
+    | "SCOPE_EXPANDED"
+    | "DEPRECATED";
   oldValue: string;
   newValue: string;
   description: string;
@@ -65,7 +74,9 @@ export async function detectRegulationChanges(
       const newDate = new Date(newData.effectiveDate).getTime();
 
       if (oldDate !== newDate) {
-        const daysDifference = Math.floor((newDate - oldDate) / (1000 * 60 * 60 * 24));
+        const daysDifference = Math.floor(
+          (newDate - oldDate) / (1000 * 60 * 60 * 24)
+        );
         const severity = Math.abs(daysDifference) > 90 ? "CRITICAL" : "HIGH";
 
         changes.push({
@@ -124,7 +135,7 @@ export async function notifyUsersOfChanges(
 
     // Create a change alert record
     const changeDescription = changes
-      .map((c) => `${c.changeType}: ${c.description}`)
+      .map(c => `${c.changeType}: ${c.description}`)
       .join("\n");
 
     // Notify owner (in production, this would send emails to users)
@@ -179,7 +190,8 @@ export async function scanForRegulationChanges(): Promise<{
       // Check if regulation is approaching deadline (within 30 days)
       if (reg.effectiveDate) {
         const daysUntilDeadline = Math.floor(
-          (new Date(reg.effectiveDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+          (new Date(reg.effectiveDate).getTime() - Date.now()) /
+            (1000 * 60 * 60 * 24)
         );
 
         if (daysUntilDeadline > 0 && daysUntilDeadline <= 30) {

@@ -16,9 +16,11 @@ interface ScrapedArticle {
  */
 async function getPlaywright() {
   try {
-    return await import('playwright');
+    return await import("playwright");
   } catch (error) {
-    console.log('[EFRAG Scraper] Playwright not available - install with: pnpm add -D playwright && npx playwright install chromium');
+    console.log(
+      "[EFRAG Scraper] Playwright not available - install with: pnpm add -D playwright && npx playwright install chromium"
+    );
     return null;
   }
 }
@@ -30,26 +32,26 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
   // Check if Playwright is available
   const playwright = await getPlaywright();
   if (!playwright) {
-    console.log('[EFRAG Scraper] Skipping - Playwright not installed');
+    console.log("[EFRAG Scraper] Skipping - Playwright not installed");
     return [];
   }
 
   let browser: any = null;
-  
+
   try {
-    console.log('[EFRAG Scraper] Launching browser...');
+    console.log("[EFRAG Scraper] Launching browser...");
     browser = await playwright.chromium.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     const context = await browser.newContext();
     const page = await context.newPage();
 
     // Navigate to EFRAG sustainability reporting news
-    console.log('[EFRAG Scraper] Navigating to EFRAG news page...');
-    await page.goto('https://www.efrag.org/en/sustainability-reporting/news', {
-      waitUntil: 'networkidle',
+    console.log("[EFRAG Scraper] Navigating to EFRAG news page...");
+    await page.goto("https://www.efrag.org/en/sustainability-reporting/news", {
+      waitUntil: "networkidle",
       timeout: 30000,
     });
 
@@ -66,19 +68,23 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
 
       // Find all news items (cards with article class)
       const newsItems = document.querySelectorAll('[class*="article"]');
-      
-      newsItems.forEach((item) => {
+
+      newsItems.forEach(item => {
         // Get title and URL
-        const titleLink = item.querySelector('h2 a, h3 a, h4 a, .card__title a');
+        const titleLink = item.querySelector(
+          "h2 a, h3 a, h4 a, .card__title a"
+        );
         if (!titleLink) return;
 
-        const title = titleLink.textContent?.trim() || '';
-        const href = titleLink.getAttribute('href') || '';
+        const title = titleLink.textContent?.trim() || "";
+        const href = titleLink.getAttribute("href") || "";
         if (!title || !href) return;
 
         // Get date
-        const dateEl = item.querySelector('.field--name-field-date, time, [class*="date"]');
-        const dateText = dateEl?.textContent?.trim() || '';
+        const dateEl = item.querySelector(
+          '.field--name-field-date, time, [class*="date"]'
+        );
+        const dateText = dateEl?.textContent?.trim() || "";
 
         results.push({
           title,
@@ -98,8 +104,8 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
 
     for (const article of articles) {
       // Build full URL
-      const fullUrl = article.url.startsWith('http') 
-        ? article.url 
+      const fullUrl = article.url.startsWith("http")
+        ? article.url
         : `https://www.efrag.org${article.url}`;
 
       // Skip duplicates
@@ -132,9 +138,10 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
 
     await browser.close();
 
-    console.log(`[EFRAG Scraper] Returning ${processed.length} unique articles`);
+    console.log(
+      `[EFRAG Scraper] Returning ${processed.length} unique articles`
+    );
     return processed.slice(0, 20); // Return top 20 most recent
-
   } catch (error) {
     console.error("[EFRAG Scraper] Error:", error);
     if (browser) {
@@ -147,34 +154,40 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
 /**
  * Scrape full article content from detail page
  */
-export async function scrapeEFRAGArticleDetail(url: string): Promise<string | null> {
+export async function scrapeEFRAGArticleDetail(
+  url: string
+): Promise<string | null> {
   // Check if Playwright is available
   const playwright = await getPlaywright();
   if (!playwright) {
-    console.log('[EFRAG Scraper] Skipping detail scrape - Playwright not installed');
+    console.log(
+      "[EFRAG Scraper] Skipping detail scrape - Playwright not installed"
+    );
     return null;
   }
 
   let browser: any = null;
-  
+
   try {
     browser = await playwright.chromium.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+    await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
 
     // Extract main content
     const content = await page.evaluate(() => {
-      const main = document.querySelector('article, .field--name-body, .content, main');
+      const main = document.querySelector(
+        "article, .field--name-body, .content, main"
+      );
       if (!main) return null;
 
       // Remove scripts, styles, nav
-      const unwanted = main.querySelectorAll('script, style, nav, .navigation');
+      const unwanted = main.querySelectorAll("script, style, nav, .navigation");
       unwanted.forEach(el => el.remove());
 
       return main.textContent?.trim() || null;
@@ -182,7 +195,6 @@ export async function scrapeEFRAGArticleDetail(url: string): Promise<string | nu
 
     await browser.close();
     return content;
-
   } catch (error) {
     console.error("[EFRAG Scraper] Error scraping detail:", error);
     if (browser) {
@@ -194,16 +206,20 @@ export async function scrapeEFRAGArticleDetail(url: string): Promise<string | nu
 
 // CLI test execution
 if (import.meta.url === `file://${process.argv[1]}`) {
-  console.log('Testing EFRAG scraper...');
-  scrapeEFRAGNewsPlaywright().then(articles => {
-    console.log(`\n✅ Scraped ${articles.length} articles:`);
-    articles.forEach((article, i) => {
-      console.log(`\n${i + 1}. ${article.title}`);
-      console.log(`   URL: ${article.url}`);
-      console.log(`   Date: ${article.publishedAt.toISOString().split('T')[0]}`);
+  console.log("Testing EFRAG scraper...");
+  scrapeEFRAGNewsPlaywright()
+    .then(articles => {
+      console.log(`\n✅ Scraped ${articles.length} articles:`);
+      articles.forEach((article, i) => {
+        console.log(`\n${i + 1}. ${article.title}`);
+        console.log(`   URL: ${article.url}`);
+        console.log(
+          `   Date: ${article.publishedAt.toISOString().split("T")[0]}`
+        );
+      });
+    })
+    .catch(error => {
+      console.error("❌ Scraper failed:", error);
+      process.exit(1);
     });
-  }).catch(error => {
-    console.error('❌ Scraper failed:', error);
-    process.exit(1);
-  });
 }

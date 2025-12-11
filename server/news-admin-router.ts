@@ -10,7 +10,12 @@ import { getArchivalStats } from "./news-archival";
 import { getDb } from "./db";
 import { hubNews } from "../drizzle/schema";
 import { desc } from "drizzle-orm";
-import { monitoredCronJob, getExecutionHistory, getExecutionStats, getMonitoringDashboard } from "./cron-monitoring-simple";
+import {
+  monitoredCronJob,
+  getExecutionHistory,
+  getExecutionStats,
+  getMonitoringDashboard,
+} from "./cron-monitoring-simple";
 
 export const newsAdminRouter = router({
   /**
@@ -18,7 +23,10 @@ export const newsAdminRouter = router({
    */
   triggerIngestion: protectedProcedure.mutation(async ({ ctx }) => {
     if (ctx.user.role !== "admin") {
-      throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Admin access required",
+      });
     }
 
     try {
@@ -49,7 +57,10 @@ export const newsAdminRouter = router({
    */
   triggerArchival: protectedProcedure.mutation(async ({ ctx }) => {
     if (ctx.user.role !== "admin") {
-      throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Admin access required",
+      });
     }
 
     try {
@@ -77,13 +88,16 @@ export const newsAdminRouter = router({
    */
   getStats: protectedProcedure.query(async ({ ctx }) => {
     if (ctx.user.role !== "admin") {
-      throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Admin access required",
+      });
     }
 
     try {
       const archivalStats = await getArchivalStats();
       const db = await getDb();
-      
+
       if (!db) {
         throw new Error("Database not available");
       }
@@ -112,7 +126,10 @@ export const newsAdminRouter = router({
    */
   getExecutionHistory: protectedProcedure.query(async ({ ctx }) => {
     if (ctx.user.role !== "admin") {
-      throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Admin access required",
+      });
     }
 
     try {
@@ -128,7 +145,10 @@ export const newsAdminRouter = router({
     } catch (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: error instanceof Error ? error.message : "Failed to get execution history",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Failed to get execution history",
       });
     }
   }),
@@ -138,27 +158,36 @@ export const newsAdminRouter = router({
    */
   getMonitoringDashboard: protectedProcedure.query(async ({ ctx }) => {
     if (ctx.user.role !== "admin") {
-      throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Admin access required",
+      });
     }
 
     try {
       const dashboard = getMonitoringDashboard();
-      
+
       // Add manual ingestion stats
       const manualStats = getExecutionStats("manual-news-ingestion", 7);
-      
+
       return {
         jobs: dashboard,
         manualIngestion: {
           jobName: "manual-news-ingestion",
           stats: manualStats,
-          recentHistory: getExecutionHistory("manual-news-ingestion", 1).slice(0, 5),
+          recentHistory: getExecutionHistory("manual-news-ingestion", 1).slice(
+            0,
+            5
+          ),
         },
       };
     } catch (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: error instanceof Error ? error.message : "Failed to get monitoring dashboard",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Failed to get monitoring dashboard",
       });
     }
   }),

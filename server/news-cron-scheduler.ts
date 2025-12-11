@@ -12,10 +12,10 @@ import { archiveOldNews } from "./news-archival";
  */
 export async function dailyNewsIngestion() {
   console.log("[news-cron] Starting daily news ingestion...");
-  
+
   try {
     const result = await runNewsPipeline();
-    
+
     console.log("[news-cron] Daily ingestion complete:", {
       success: result.success,
       fetched: result.fetched,
@@ -24,12 +24,12 @@ export async function dailyNewsIngestion() {
       errors: result.errors.length,
       duration: `${result.duration}ms`,
     });
-    
+
     // Log errors if any
     if (result.errors.length > 0) {
       console.error("[news-cron] Errors during ingestion:", result.errors);
     }
-    
+
     return result;
   } catch (error) {
     console.error("[news-cron] Daily ingestion failed:", error);
@@ -43,22 +43,22 @@ export async function dailyNewsIngestion() {
  */
 export async function weeklyNewsArchival() {
   console.log("[news-cron] Starting weekly news archival...");
-  
+
   try {
     const result = await archiveOldNews(200);
-    
+
     console.log("[news-cron] Weekly archival complete:", {
       success: result.success,
       archived: result.archived,
       errors: result.errors.length,
       duration: `${result.duration}ms`,
     });
-    
+
     // Log errors if any
     if (result.errors.length > 0) {
       console.error("[news-cron] Errors during archival:", result.errors);
     }
-    
+
     return result;
   } catch (error) {
     console.error("[news-cron] Weekly archival failed:", error);

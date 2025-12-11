@@ -8,7 +8,12 @@ import { epcisEvents } from "../drizzle/schema.js";
  */
 
 interface EPCISEventData {
-  eventType: "ObjectEvent" | "AggregationEvent" | "TransactionEvent" | "TransformationEvent" | "AssociationEvent";
+  eventType:
+    | "ObjectEvent"
+    | "AggregationEvent"
+    | "TransactionEvent"
+    | "TransformationEvent"
+    | "AssociationEvent";
   eventTime: Date;
   eventTimeZoneOffset: string;
   action?: "OBSERVE" | "ADD" | "DELETE";
@@ -80,10 +85,16 @@ const sampleEvents: EPCISEventData[] = [
     bizLocation: "urn:epc:id:sgln:0123456.00003.0",
     epcList: ["urn:epc:id:sgtin:0123456.789012.2001", "00123456789012"],
     sourceList: [
-      { type: "urn:epcglobal:cbv:sdt:owning_party", source: "urn:epc:id:sgln:0123456.00002.0" },
+      {
+        type: "urn:epcglobal:cbv:sdt:owning_party",
+        source: "urn:epc:id:sgln:0123456.00002.0",
+      },
     ],
     destinationList: [
-      { type: "urn:epcglobal:cbv:sdt:owning_party", destination: "urn:epc:id:sgln:0234567.00001.0" },
+      {
+        type: "urn:epcglobal:cbv:sdt:owning_party",
+        destination: "urn:epc:id:sgln:0234567.00001.0",
+      },
     ],
   },
   {
@@ -213,7 +224,7 @@ const sampleEvents: EPCISEventData[] = [
     epcList: ["urn:epc:id:sgtin:0456789.012352.1001", "00456789012345"],
     ilmd: {
       harvestDate: daysAgo(200).toISOString(),
-      forestLocation: { lat: 62.3908, lng: 16.3250 },
+      forestLocation: { lat: 62.3908, lng: 16.325 },
       certification: "FSC-C123456",
       treeSpecies: "Pinus sylvestris (Scots Pine)",
       sustainableManagement: true,
@@ -245,10 +256,16 @@ const sampleEvents: EPCISEventData[] = [
     bizLocation: "urn:epc:id:sgln:0456789.00012.0",
     epcList: ["urn:epc:id:sgtin:0456789.012352.2001", "00456789012345"],
     sourceList: [
-      { type: "urn:epcglobal:cbv:sdt:owning_party", source: "urn:epc:id:sgln:0456789.00011.0" },
+      {
+        type: "urn:epcglobal:cbv:sdt:owning_party",
+        source: "urn:epc:id:sgln:0456789.00011.0",
+      },
     ],
     destinationList: [
-      { type: "urn:epcglobal:cbv:sdt:owning_party", destination: "urn:epc:id:sgln:0567890.00001.0" },
+      {
+        type: "urn:epcglobal:cbv:sdt:owning_party",
+        destination: "urn:epc:id:sgln:0567890.00001.0",
+      },
     ],
   },
 

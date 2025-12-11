@@ -60,7 +60,8 @@ export default function FAQ() {
     {
       id: "eudr-traceability",
       category: "Compliance",
-      question: "How does ISA support EU Deforestation Regulation (EUDR) compliance?",
+      question:
+        "How does ISA support EU Deforestation Regulation (EUDR) compliance?",
       answer:
         "The EUDR mandates supply chain traceability for forest-risk commodities. ISA maps EUDR requirements to GS1 standards for product identification and supply chain tracking, enabling you to demonstrate compliance with traceability obligations.",
     },
@@ -116,13 +117,16 @@ export default function FAQ() {
   ];
 
   const filteredItems = faqItems.filter(
-    (item) =>
+    item =>
       item.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.answer.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const categories = ["All", ...Array.from(new Set(faqItems.map((item) => item.category)))];
+  const categories = [
+    "All",
+    ...Array.from(new Set(faqItems.map(item => item.category))),
+  ];
 
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
@@ -133,13 +137,19 @@ export default function FAQ() {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+          <Link
+            href="/"
+            className="flex items-center gap-2 hover:opacity-80 transition"
+          >
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-secondary flex items-center justify-center">
               <Zap className="w-5 h-5 text-accent-foreground" />
             </div>
             <span className="font-bold text-lg text-foreground">ISA</span>
           </Link>
-          <Link href="/" className="text-sm font-medium text-accent hover:text-accent/80 transition">
+          <Link
+            href="/"
+            className="text-sm font-medium text-accent hover:text-accent/80 transition"
+          >
             Back
           </Link>
         </div>
@@ -149,9 +159,12 @@ export default function FAQ() {
       <section className="py-16 md:py-24 bg-gradient-to-b from-accent/5 to-transparent">
         <div className="container">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">Help & FAQ</h1>
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
+              Help & FAQ
+            </h1>
             <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-              Find answers to common questions about ISA, regulatory compliance, GS1 standards, and implementation.
+              Find answers to common questions about ISA, regulatory compliance,
+              GS1 standards, and implementation.
             </p>
 
             {/* Search Bar */}
@@ -161,7 +174,7 @@ export default function FAQ() {
                 type="text"
                 placeholder="Search FAQ..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 className="pl-12 py-3 text-base"
               />
             </div>
@@ -175,7 +188,7 @@ export default function FAQ() {
           <div className="max-w-3xl">
             {filteredItems.length > 0 ? (
               <div className="space-y-4">
-                {filteredItems.map((item) => (
+                {filteredItems.map(item => (
                   <div
                     key={item.id}
                     className="card-elevated overflow-hidden transition-all"
@@ -232,9 +245,12 @@ export default function FAQ() {
       <section className="py-12 bg-card border-t border-border">
         <div className="container">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Didn't find what you're looking for?</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Didn't find what you're looking for?
+            </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Contact our team for personalized assistance with your regulatory compliance questions.
+              Contact our team for personalized assistance with your regulatory
+              compliance questions.
             </p>
             <Link href="/contact">
               <button className="px-8 py-3 rounded-lg bg-gradient-primary text-accent-foreground font-medium hover:shadow-lg transition">
@@ -248,7 +264,9 @@ export default function FAQ() {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-12">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Intelligent Standards Architect. All rights reserved.</p>
+          <p>
+            &copy; 2025 Intelligent Standards Architect. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

@@ -56,7 +56,7 @@ describe("Recommendation Engine", () => {
       );
 
       expect(recommendations).toBeInstanceOf(Array);
-      
+
       if (recommendations.length > 0) {
         expect(recommendations[0]).toHaveProperty("resourceType");
         expect(recommendations[0]).toHaveProperty("resourceId");
@@ -64,7 +64,10 @@ describe("Recommendation Engine", () => {
         expect(recommendations[0]).toHaveProperty("reasoning");
       }
     } catch (error) {
-      console.warn("Recommendation generation test skipped (database not available):", error);
+      console.warn(
+        "Recommendation generation test skipped (database not available):",
+        error
+      );
     }
   }, 60000);
 
@@ -94,7 +97,7 @@ describe("Recommendation Scoring", () => {
         "Companies must implement GTIN and traceability systems by 2025."
       );
 
-      recommendations.forEach((rec) => {
+      recommendations.forEach(rec => {
         expect(rec.relevanceScore).toBeGreaterThanOrEqual(0);
         expect(rec.relevanceScore).toBeLessThanOrEqual(1);
       });

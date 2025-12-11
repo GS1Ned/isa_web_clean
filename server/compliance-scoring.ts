@@ -45,7 +45,7 @@ async function calculateRiskManagementScore(userId: number): Promise<number> {
 
   if (risks.length === 0) return 100; // No risks = perfect score
 
-  const resolvedRisks = risks.filter((r) => r.isResolved).length;
+  const resolvedRisks = risks.filter(r => r.isResolved).length;
   const score = (resolvedRisks / risks.length) * 100;
 
   return Math.round(score * 100) / 100;
@@ -65,7 +65,7 @@ async function calculateRemediationScore(userId: number): Promise<number> {
 
   if (plans.length === 0) return 100; // No plans = perfect score
 
-  const completedPlans = plans.filter((p) => p.status === "completed").length;
+  const completedPlans = plans.filter(p => p.status === "completed").length;
   const score = (completedPlans / plans.length) * 100;
 
   return Math.round(score * 100) / 100;
@@ -85,7 +85,9 @@ async function calculateEvidenceScore(userId: number): Promise<number> {
 
   if (evidence.length === 0) return 100; // No evidence = perfect score
 
-  const verifiedEvidence = evidence.filter((e) => e.verificationStatus === "verified").length;
+  const verifiedEvidence = evidence.filter(
+    e => e.verificationStatus === "verified"
+  ).length;
   const score = (verifiedEvidence / evidence.length) * 100;
 
   return Math.round(score * 100) / 100;
@@ -104,11 +106,9 @@ async function calculateRegulationScore(userId: number): Promise<number> {
   if (allRegulations.length === 0) return 100;
 
   // Get regulations with mappings
-  const userMappings = await db
-    .select()
-    .from(regulationEsrsMappings);
+  const userMappings = await db.select().from(regulationEsrsMappings);
 
-  const uniqueRegulationIds = new Set(userMappings.map((m) => m.regulationId));
+  const uniqueRegulationIds = new Set(userMappings.map(m => m.regulationId));
   const regulationsCovered = uniqueRegulationIds.size;
 
   const score = (regulationsCovered / allRegulations.length) * 100;
@@ -127,7 +127,10 @@ function calculateOverallScore(
 ): number {
   // Weights: Risk 30%, Remediation 25%, Evidence 25%, Regulation 20%
   const overall =
-    riskScore * 0.3 + remediationScore * 0.25 + evidenceScore * 0.25 + regulationScore * 0.2;
+    riskScore * 0.3 +
+    remediationScore * 0.25 +
+    evidenceScore * 0.25 +
+    regulationScore * 0.2;
 
   return Math.round(overall * 100) / 100;
 }
@@ -135,7 +138,9 @@ function calculateOverallScore(
 /**
  * Calculate all compliance metrics for a user
  */
-export async function calculateComplianceMetrics(userId: number): Promise<ComplianceScoringMetrics> {
+export async function calculateComplianceMetrics(
+  userId: number
+): Promise<ComplianceScoringMetrics> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -159,28 +164,28 @@ export async function calculateComplianceMetrics(userId: number): Promise<Compli
     .from(supplyChainRisks)
     .where(eq(supplyChainRisks.userId, userId));
 
-  const resolvedRisks = risks.filter((r) => r.isResolved).length;
+  const resolvedRisks = risks.filter(r => r.isResolved).length;
 
   const plans = await db
     .select()
     .from(riskRemediationPlans)
     .where(eq(riskRemediationPlans.userId, userId));
 
-  const completedPlans = plans.filter((p) => p.status === "completed").length;
+  const completedPlans = plans.filter(p => p.status === "completed").length;
 
   const evidence = await db
     .select()
     .from(complianceEvidence)
     .where(eq(complianceEvidence.userId, userId));
 
-  const verifiedEvidence = evidence.filter((e) => e.verificationStatus === "verified").length;
+  const verifiedEvidence = evidence.filter(
+    e => e.verificationStatus === "verified"
+  ).length;
 
   const allRegulations = await db.select().from(regulations);
-  const userMappings = await db
-    .select()
-    .from(regulationEsrsMappings);
+  const userMappings = await db.select().from(regulationEsrsMappings);
 
-  const uniqueRegulationIds = new Set(userMappings.map((m) => m.regulationId));
+  const uniqueRegulationIds = new Set(userMappings.map(m => m.regulationId));
 
   return {
     overallScore,
@@ -201,7 +206,10 @@ export async function calculateComplianceMetrics(userId: number): Promise<Compli
 /**
  * Update compliance score and record history
  */
-export async function updateComplianceScore(userId: number, changeReason?: string): Promise<void> {
+export async function updateComplianceScore(
+  userId: number,
+  changeReason?: string
+): Promise<void> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -283,7 +291,9 @@ async function checkAndAwardMilestones(
     .from(scoreMilestones)
     .where(eq(scoreMilestones.userId, userId));
 
-  const awardedMilestones = new Set(existingMilestones.map((m) => m.milestoneType));
+  const awardedMilestones = new Set(
+    existingMilestones.map(m => m.milestoneType)
+  );
 
   // Define milestone thresholds
   const milestonesToCheck = [
@@ -317,7 +327,8 @@ async function checkAndAwardMilestones(
     },
     {
       type: "all_risks_resolved",
-      condition: () => metrics.totalRisks > 0 && metrics.totalRisks === metrics.resolvedRisks,
+      condition: () =>
+        metrics.totalRisks > 0 && metrics.totalRisks === metrics.resolvedRisks,
       title: "Risk Master",
       description: "Resolved all identified risks",
       badge: "🛡️",
@@ -325,7 +336,8 @@ async function checkAndAwardMilestones(
     {
       type: "all_evidence_verified",
       condition: () =>
-        metrics.totalEvidence > 0 && metrics.totalEvidence === metrics.verifiedEvidence,
+        metrics.totalEvidence > 0 &&
+        metrics.totalEvidence === metrics.verifiedEvidence,
       title: "Evidence Expert",
       description: "All evidence verified",
       badge: "✅",
@@ -394,7 +406,7 @@ export async function getUserScoreHistory(userId: number, days: number = 30) {
     .from(scoreHistory)
     .where(eq(scoreHistory.userId, userId));
 
-  return history.filter((h) => new Date(h.createdAt) >= cutoffDate);
+  return history.filter(h => new Date(h.createdAt) >= cutoffDate);
 }
 
 /**

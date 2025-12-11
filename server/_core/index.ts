@@ -7,7 +7,11 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
-import { handleDailyNewsIngestion, handleWeeklyNewsArchival, handleCronHealth } from "../cron-endpoint";
+import {
+  handleDailyNewsIngestion,
+  handleWeeklyNewsArchival,
+  handleCronHealth,
+} from "../cron-endpoint";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -40,7 +44,7 @@ async function startServer() {
   app.get("/cron/health", handleCronHealth);
   app.get("/cron/daily-news-ingestion", handleDailyNewsIngestion);
   app.get("/cron/weekly-news-archival", handleWeeklyNewsArchival);
-  
+
   // tRPC API
   app.use(
     "/api/trpc",

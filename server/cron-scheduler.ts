@@ -1,7 +1,7 @@
 /**
  * Cron Job Scheduler for ESG Hub
  * Handles daily RSS aggregation, change detection, and email notifications
- * 
+ *
  * Usage: Import and call setupCronJobs() in your server initialization
  */
 
@@ -32,7 +32,9 @@ export function setupCronJobs() {
     console.log("🔍 Scanning for regulation changes...");
     try {
       const result = await scanForRegulationChanges();
-      console.log(`✓ Scan complete: ${result.scanned} regulations scanned, ${result.changesFound} changes found, ${result.usersNotified} users notified`);
+      console.log(
+        `✓ Scan complete: ${result.scanned} regulations scanned, ${result.changesFound} changes found, ${result.usersNotified} users notified`
+      );
     } catch (error) {
       console.error("Error scanning for changes:", error);
     }
@@ -54,7 +56,9 @@ export function setupCronJobs() {
     console.log("⏰ Processing pending alerts...");
     try {
       const result = await processPendingAlerts(7);
-      console.log(`✓ Processed alerts: ${result.sent} sent, ${result.failed} failed`);
+      console.log(
+        `✓ Processed alerts: ${result.sent} sent, ${result.failed} failed`
+      );
     } catch (error) {
       console.error("Error processing alerts:", error);
     }
@@ -65,7 +69,9 @@ export function setupCronJobs() {
     console.log("📊 Generating weekly summary report...");
     try {
       const result = await scanForRegulationChanges();
-      console.log(`✓ Weekly report: ${result.changesFound} changes detected this week`);
+      console.log(
+        `✓ Weekly report: ${result.changesFound} changes detected this week`
+      );
     } catch (error) {
       console.error("Error generating weekly report:", error);
     }
@@ -98,7 +104,9 @@ export function getCronJobStatus() {
   const tasks = cron.getTasks();
   return {
     totalJobs: tasks.size,
-    activeJobs: Array.from(tasks).filter((task: any) => task && !task.stopped).length,
-    stoppedJobs: Array.from(tasks).filter((task: any) => task && task.stopped).length,
+    activeJobs: Array.from(tasks).filter((task: any) => task && !task.stopped)
+      .length,
+    stoppedJobs: Array.from(tasks).filter((task: any) => task && task.stopped)
+      .length,
   };
 }

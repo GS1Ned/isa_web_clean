@@ -25,11 +25,13 @@ Integrated GS1 EPCIS (Electronic Product Code Information Services) and CBV (Cor
 - **4 Sensor MeasurementTypes** (Temperature, Humidity, Mileage, Speed)
 
 Each code includes:
+
 - **ESG use cases** - Specific compliance scenarios
 - **Regulation mapping** - Which regulations require this code
 - **Traceability chain guides** - Step-by-step implementation patterns
 
 **Example:**
+
 ```json
 {
   "code": "BizStep-commissioning",
@@ -53,7 +55,7 @@ Each code includes:
 **Strongly-typed interfaces** for EPCIS/CBV integration:
 
 ```typescript
-export type CBVBizStep = 
+export type CBVBizStep =
   | "BizStep-commissioning"
   | "BizStep-transforming"
   | "BizStep-shipping"
@@ -89,6 +91,7 @@ export interface RegulationEPCISMapping {
 ```
 
 **Helper functions:**
+
 - `getEPCISCodesForRegulation(regulationCode)` - Get all required codes for a regulation
 - `filterBizStepsByRegulation(regulationCode)` - Get BizSteps for a regulation
 - `filterDispositionsByRegulation(regulationCode)` - Get Dispositions for a regulation
@@ -100,6 +103,7 @@ export interface RegulationEPCISMapping {
 **New tab** added to regulation detail pages (`HubRegulationDetailEnhanced.tsx`) showing:
 
 #### For EUDR:
+
 - **Required BizSteps:** commissioning, transforming, shipping, receiving
 - **Required Transaction Types:** cert (certifications), pedigree (provenance)
 - **Traceability Requirements:**
@@ -109,6 +113,7 @@ export interface RegulationEPCISMapping {
   - Certifications (FSC, PEFC, organic)
 
 #### For CSRD:
+
 - **Required BizSteps:** shipping, transforming
 - **Required Dispositions:** in_transit
 - **Required Sensor Types:** Temperature, Speed, Mileage
@@ -118,6 +123,7 @@ export interface RegulationEPCISMapping {
   - Supply chain mapping (custody chain)
 
 #### For PPWR:
+
 - **Required BizSteps:** commissioning, collecting, recycling, destroying, repairing
 - **Required Dispositions:** active, recyclable, returned, destroyed
 - **Traceability Requirements:**
@@ -131,17 +137,20 @@ export interface RegulationEPCISMapping {
 ## Technical Implementation
 
 ### Data Sources
+
 - **Canonical source:** ref.gs1.org/epcis/ and ref.gs1.org/cbv/
 - **Approach:** Curated ESG-focused subset (not full vocabulary dump)
 - **Size:** ~30 codes (vs. 100+ in full CBV)
 - **Token efficiency:** Focused on ESG use cases only
 
 ### Integration Points
+
 1. **Regulation detail pages** - New "EPCIS/CBV Traceability" tab
 2. **TypeScript types** - Shared types for future integrations
 3. **JSON datasets** - Machine-readable for API consumption
 
 ### UI Components
+
 - **EPCISTraceabilityPanel** - Main component rendering EPCIS/CBV requirements
 - **Color-coded sections:**
   - Blue: BizSteps
@@ -155,16 +164,19 @@ export interface RegulationEPCISMapping {
 ## User Value
 
 ### For Compliance Officers
+
 - **Clear requirements:** Know exactly which EPCIS events to capture for each regulation
 - **Implementation guidance:** Step-by-step traceability chain patterns
 - **Official source:** Links to canonical GS1 documentation
 
 ### For Technical Implementers
+
 - **Code-level specificity:** Exact bizStep, disposition, and transaction type codes
 - **Sensor requirements:** Which environmental data to capture
 - **Data model alignment:** Maps to GS1 EPCIS 2.0 standard
 
 ### For Business Analysts
+
 - **Use case clarity:** Understand why each code is required
 - **Regulation mapping:** See which regulations overlap in requirements
 - **Action planning:** Use traceability requirements for project scoping
@@ -174,6 +186,7 @@ export interface RegulationEPCISMapping {
 ## Files Created
 
 ### Data Files
+
 - `data/cbv_esg_curated.json` - Curated ESG-focused CBV vocabularies (30+ codes)
 - `data/epcis_classes_raw.txt` - EPCIS event class documentation
 - `data/epcis_fields_raw.txt` - EPCIS property documentation
@@ -181,10 +194,12 @@ export interface RegulationEPCISMapping {
 - `data/gs1_standards_recent_updates.txt` - Recent GS1 standards updates
 
 ### Type Definitions
+
 - `shared/epcis-cbv-types.ts` - TypeScript types for EPCIS/CBV (200+ lines)
 - `shared/gs1-link-types.ts` - TypeScript types for GS1 Digital Link
 
 ### UI Components
+
 - `client/src/pages/HubRegulationDetailEnhanced.tsx` - Updated with EPCISTraceabilityPanel component
 
 ---
@@ -192,21 +207,25 @@ export interface RegulationEPCISMapping {
 ## Next Steps (Deferred)
 
 ### 1. News Hub AI Tagging
+
 - Update `news-ai-processor.ts` to tag articles with EPCIS/CBV concepts
 - Add `epcisRelevance` field to news schema
 - Enable filtering news by traceability topic
 
 ### 2. GS1 Standards Pages Integration
+
 - Add EPCIS/CBV tab to GS1 standard detail pages
 - Show which regulations require each standard
 - Link to related news mentioning the standard
 
 ### 3. API Endpoints
+
 - Create tRPC procedures for EPCIS/CBV lookup
 - `trpc.epcis.getCodesForRegulation.useQuery()`
 - `trpc.epcis.searchCodes.useQuery()`
 
 ### 4. Expand Coverage
+
 - Add CBAM (Carbon Border Adjustment Mechanism) mapping
 - Add CS3D (Corporate Sustainability Due Diligence) mapping
 - Add Battery Regulation mapping
@@ -219,7 +238,7 @@ export interface RegulationEPCISMapping {
 ✅ **Accuracy:** All codes verified against ref.gs1.org  
 ✅ **Usability:** Clear UI with color-coded sections and links  
 ✅ **Token Efficiency:** Curated subset (30 codes vs. 100+)  
-✅ **Maintainability:** TypeScript types ensure type safety  
+✅ **Maintainability:** TypeScript types ensure type safety
 
 ---
 

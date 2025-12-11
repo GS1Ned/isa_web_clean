@@ -5,17 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { 
-  Loader2, 
-  Scan, 
-  CheckCircle, 
-  XCircle, 
+import {
+  Loader2,
+  Scan,
+  CheckCircle,
+  XCircle,
   AlertTriangle,
   Package,
   Calendar,
   Hash,
   MapPin,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 import { Link } from "wouter";
 
@@ -23,10 +23,11 @@ export default function BarcodeScanner() {
   const [gtin, setGtin] = useState("");
   const [scannedGtin, setScannedGtin] = useState<string | null>(null);
 
-  const { data: events, isLoading, error } = trpc.epcis.getEvents.useQuery(
-    { limit: 100 },
-    { enabled: !!scannedGtin }
-  );
+  const {
+    data: events,
+    isLoading,
+    error,
+  } = trpc.epcis.getEvents.useQuery({ limit: 100 }, { enabled: !!scannedGtin });
 
   const handleScan = () => {
     if (gtin.trim()) {
@@ -40,13 +41,15 @@ export default function BarcodeScanner() {
   };
 
   // Filter events by GTIN
-  const matchingEvents = events?.events.filter((event) => {
-    const epcList = event.epcList;
-    if (!Array.isArray(epcList)) return false;
-    return epcList.some((epc: string) => epc.includes(scannedGtin || ""));
-  }) || [];
+  const matchingEvents =
+    events?.events.filter(event => {
+      const epcList = event.epcList;
+      if (!Array.isArray(epcList)) return false;
+      return epcList.some((epc: string) => epc.includes(scannedGtin || ""));
+    }) || [];
 
-  const traceabilityStatus = matchingEvents.length > 0 ? "compliant" : scannedGtin ? "missing" : null;
+  const traceabilityStatus =
+    matchingEvents.length > 0 ? "compliant" : scannedGtin ? "missing" : null;
 
   const getStatusColor = (status: string | null) => {
     switch (status) {
@@ -94,7 +97,9 @@ export default function BarcodeScanner() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">GS1 Barcode Scanner</h1>
+              <h1 className="text-3xl font-bold text-foreground">
+                GS1 Barcode Scanner
+              </h1>
               <p className="text-muted-foreground mt-1">
                 Scan product barcodes to verify EPCIS traceability compliance
               </p>
@@ -114,22 +119,27 @@ export default function BarcodeScanner() {
                   <Scan className="w-6 h-6 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-xl font-semibold mb-2">Enter Product GTIN</h2>
+                  <h2 className="text-xl font-semibold mb-2">
+                    Enter Product GTIN
+                  </h2>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Enter a 14-digit Global Trade Item Number (GTIN) to check traceability status.
-                    Example: 00123456789012
+                    Enter a 14-digit Global Trade Item Number (GTIN) to check
+                    traceability status. Example: 00123456789012
                   </p>
                   <div className="flex gap-2">
                     <Input
                       type="text"
                       placeholder="Enter GTIN (14 digits)"
                       value={gtin}
-                      onChange={(e) => setGtin(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && handleScan()}
+                      onChange={e => setGtin(e.target.value)}
+                      onKeyPress={e => e.key === "Enter" && handleScan()}
                       maxLength={14}
                       className="flex-1"
                     />
-                    <Button onClick={handleScan} disabled={!gtin.trim() || isLoading}>
+                    <Button
+                      onClick={handleScan}
+                      disabled={!gtin.trim() || isLoading}
+                    >
                       {isLoading ? (
                         <>
                           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -157,12 +167,16 @@ export default function BarcodeScanner() {
           {scannedGtin && !isLoading && (
             <Card className="p-6">
               <div className="flex items-start gap-4">
-                <div className={`w-16 h-16 rounded-lg ${getStatusColor(traceabilityStatus)} flex items-center justify-center flex-shrink-0 text-white`}>
+                <div
+                  className={`w-16 h-16 rounded-lg ${getStatusColor(traceabilityStatus)} flex items-center justify-center flex-shrink-0 text-white`}
+                >
                   {getStatusIcon(traceabilityStatus)}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-2xl font-bold">{getStatusLabel(traceabilityStatus)}</h3>
+                    <h3 className="text-2xl font-bold">
+                      {getStatusLabel(traceabilityStatus)}
+                    </h3>
                     <Badge className={getStatusColor(traceabilityStatus)}>
                       {traceabilityStatus?.toUpperCase()}
                     </Badge>
@@ -171,12 +185,18 @@ export default function BarcodeScanner() {
                     <div className="flex items-center gap-2 text-sm">
                       <Hash className="w-4 h-4 text-muted-foreground" />
                       <span className="text-muted-foreground">GTIN:</span>
-                      <span className="font-mono font-medium">{scannedGtin}</span>
+                      <span className="font-mono font-medium">
+                        {scannedGtin}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Package className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">EPCIS Events Found:</span>
-                      <span className="font-medium">{matchingEvents.length}</span>
+                      <span className="text-muted-foreground">
+                        EPCIS Events Found:
+                      </span>
+                      <span className="font-medium">
+                        {matchingEvents.length}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -187,9 +207,11 @@ export default function BarcodeScanner() {
           {/* Traceability Details */}
           {scannedGtin && matchingEvents.length > 0 && (
             <Card className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Traceability Events</h3>
+              <h3 className="text-lg font-semibold mb-4">
+                Traceability Events
+              </h3>
               <div className="space-y-3">
-                {matchingEvents.slice(0, 5).map((event) => (
+                {matchingEvents.slice(0, 5).map(event => (
                   <div
                     key={event.id}
                     className="p-4 border rounded-lg hover:bg-muted/50 transition-colors"
@@ -199,7 +221,9 @@ export default function BarcodeScanner() {
                         <Badge variant="outline" className="mb-2">
                           {event.eventType}
                         </Badge>
-                        <div className="text-sm font-medium">{event.bizStep || "No business step"}</div>
+                        <div className="text-sm font-medium">
+                          {event.bizStep || "No business step"}
+                        </div>
                       </div>
                       <div className="text-xs text-muted-foreground">
                         {new Date(event.eventTime).toLocaleString()}
@@ -253,11 +277,13 @@ export default function BarcodeScanner() {
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <XCircle className="w-5 h-5" />
-                    <span className="font-medium">No traceability data found for this GTIN</span>
+                    <span className="font-medium">
+                      No traceability data found for this GTIN
+                    </span>
                   </div>
                   <div className="text-sm">
-                    This product does not have any EPCIS events recorded in the system. To enable
-                    traceability:
+                    This product does not have any EPCIS events recorded in the
+                    system. To enable traceability:
                   </div>
                   <ul className="list-disc list-inside text-sm space-y-1 ml-4">
                     <li>Upload EPCIS documents containing this GTIN</li>
@@ -293,17 +319,23 @@ export default function BarcodeScanner() {
             <h3 className="text-lg font-semibold mb-3">About GS1 GTINs</h3>
             <div className="space-y-2 text-sm text-muted-foreground">
               <p>
-                A Global Trade Item Number (GTIN) is a unique identifier for products used worldwide.
-                GTINs are encoded in barcodes and enable supply chain traceability.
+                A Global Trade Item Number (GTIN) is a unique identifier for
+                products used worldwide. GTINs are encoded in barcodes and
+                enable supply chain traceability.
               </p>
               <p>
-                <strong>Supported formats:</strong> GTIN-14, GTIN-13, GTIN-12, GTIN-8 (padded to 14 digits)
+                <strong>Supported formats:</strong> GTIN-14, GTIN-13, GTIN-12,
+                GTIN-8 (padded to 14 digits)
               </p>
               <p>
-                <strong>Example GTINs to try (after seeding sample data):</strong>
+                <strong>
+                  Example GTINs to try (after seeding sample data):
+                </strong>
               </p>
               <ul className="list-disc list-inside ml-4 space-y-1">
-                <li>00123456789012 - Coffee from Brazil (Rainforest Alliance)</li>
+                <li>
+                  00123456789012 - Coffee from Brazil (Rainforest Alliance)
+                </li>
                 <li>00234567890123 - Cocoa from Ghana (Fairtrade)</li>
                 <li>00345678901234 - Palm Oil from Indonesia (RSPO)</li>
                 <li>00456789012345 - Timber from Sweden (FSC Certified)</li>

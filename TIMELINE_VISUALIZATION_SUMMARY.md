@@ -11,6 +11,7 @@
 Successfully implemented a comprehensive timeline visualization component that displays regulation milestones and related news events chronologically. The timeline provides users with a unified view of regulatory evolution, combining official implementation dates with real-world news developments.
 
 **Key Features:**
+
 - Unified timeline combining milestones and news events
 - Interactive filtering by event type and time period
 - Color-coded visual markers for different event types
@@ -27,32 +28,34 @@ Successfully implemented a comprehensive timeline visualization component that d
 **Location:** `client/src/components/RegulationTimeline.tsx`
 
 **Props:**
+
 ```typescript
 interface RegulationTimelineProps {
-  regulationCode: string;        // e.g., "CSRD", "PPWR"
+  regulationCode: string; // e.g., "CSRD", "PPWR"
   milestones: TimelineMilestone[]; // Regulation-specific milestones
 }
 
 interface TimelineMilestone {
-  date: string;                    // ISO date format
-  event: string;                   // Milestone title
-  description: string;             // Milestone description
+  date: string; // ISO date format
+  event: string; // Milestone title
+  description: string; // Milestone description
   status: "completed" | "upcoming" | "future";
 }
 ```
 
 **Unified Timeline Data Model:**
+
 ```typescript
 type TimelineEvent = {
-  id: string;                      // Unique identifier
-  date: Date;                      // Event date
-  type: "milestone" | "news";      // Event type
-  title: string;                   // Event title
-  description?: string;            // Event description
+  id: string; // Unique identifier
+  date: Date; // Event date
+  type: "milestone" | "news"; // Event type
+  title: string; // Event title
+  description?: string; // Event description
   status?: "completed" | "upcoming" | "future"; // Milestone status
-  impactLevel?: string;            // News impact level
-  newsId?: number;                 // Link to news detail
-  sourceTitle?: string;            // News source
+  impactLevel?: string; // News impact level
+  newsId?: number; // Link to news detail
+  sourceTitle?: string; // News source
 };
 ```
 
@@ -90,14 +93,17 @@ The timeline uses a **vertical layout** with a continuous line connecting all ev
 ### Color Coding
 
 **Milestones:**
+
 - 🟢 **Green** - Completed milestones (past events)
 - 🔵 **Blue** - Upcoming milestones (near-term events)
 - ⚪ **Gray** - Future milestones (long-term events)
 
 **News Events:**
+
 - 🟣 **Purple** - All news events (regardless of date)
 
 **Impact Levels (News):**
+
 - 🔴 **Red** - HIGH impact
 - 🟡 **Yellow** - MEDIUM impact
 - 🟢 **Green** - LOW impact
@@ -111,11 +117,13 @@ The timeline uses a **vertical layout** with a continuous line connecting all ev
 Users can toggle visibility of event types:
 
 **Milestones Button:**
+
 - Shows/hides regulation milestones
 - Default: ON
 - Icon: Milestone icon
 
 **News Button:**
+
 - Shows/hides news events
 - Default: ON
 - Icon: Newspaper icon
@@ -125,25 +133,30 @@ Users can toggle visibility of event types:
 Users can filter events by time range:
 
 **All Time:**
+
 - Shows all events (past, present, future)
 - Default selection
 
 **Past:**
+
 - Shows only events before today
 - Useful for historical analysis
 
 **Future:**
+
 - Shows only events after today
 - Useful for planning and preparation
 
 ### 3. Interactive Elements
 
 **News Event Cards:**
+
 - Clickable titles link to full news detail pages
 - "Read more" links for quick navigation
 - Hover states for better UX
 
 **Milestone Cards:**
+
 - Display status badges (completed/upcoming/future)
 - Show full descriptions
 - Non-interactive (informational)
@@ -151,6 +164,7 @@ Users can filter events by time range:
 ### 4. Empty States
 
 **No Events Found:**
+
 - Displays when filters exclude all events
 - Shows helpful message to adjust filters
 - Icon: Calendar
@@ -187,8 +201,9 @@ const { data: newsItems } = trpc.hub.getRecentNews.useQuery({ limit: 100 });
 
 // Filter by regulation tag
 const relatedNews = newsItems?.filter(
-  (item) => Array.isArray(item.regulationTags) && 
-            item.regulationTags.includes(regulationCode)
+  item =>
+    Array.isArray(item.regulationTags) &&
+    item.regulationTags.includes(regulationCode)
 );
 ```
 
@@ -204,16 +219,19 @@ const relatedNews = newsItems?.filter(
 ## Responsive Design
 
 ### Desktop (1024px+)
+
 - Full-width timeline with spacious cards
 - Multi-column filter controls
 - Large event markers (40px)
 
 ### Tablet (768px - 1023px)
+
 - Adjusted card padding
 - Stacked filter controls
 - Medium event markers (36px)
 
 ### Mobile (< 768px)
+
 - Compact card layout
 - Vertical filter buttons
 - Small event markers (32px)
@@ -228,24 +246,27 @@ const relatedNews = newsItems?.filter(
 **Location:** `client/src/pages/HubRegulationDetailEnhanced.tsx`
 
 **Integration:**
+
 ```typescript
 import { RegulationTimeline } from "@/components/RegulationTimeline";
 
 // In Timeline tab
 <TabsContent value="timeline">
-  <RegulationTimeline 
-    regulationCode={reg.code} 
-    milestones={reg.timeline} 
+  <RegulationTimeline
+    regulationCode={reg.code}
+    milestones={reg.timeline}
   />
 </TabsContent>
 ```
 
 **Replaced:**
+
 - Old static timeline with manual rendering
 - Hardcoded milestone display
 - No news integration
 
 **Benefits:**
+
 - Unified view of milestones + news
 - Interactive filtering
 - Better visual hierarchy
@@ -258,6 +279,7 @@ import { RegulationTimeline } from "@/components/RegulationTimeline";
 ### Before Timeline Visualization
 
 **Limitations:**
+
 - Milestones shown in isolation
 - No connection to news events
 - Static display (no filtering)
@@ -267,6 +289,7 @@ import { RegulationTimeline } from "@/components/RegulationTimeline";
 ### After Timeline Visualization
 
 **Improvements:**
+
 1. **Unified View** - See milestones and news together
 2. **Contextual Understanding** - Understand how news relates to milestones
 3. **Interactive Exploration** - Filter by time and event type
@@ -283,6 +306,7 @@ import { RegulationTimeline } from "@/components/RegulationTimeline";
 **Scenario:** User needs to prepare for upcoming CSRD reporting
 
 **Workflow:**
+
 1. View CSRD regulation page
 2. Click "Timeline" tab
 3. Filter to "Future" events
@@ -295,6 +319,7 @@ import { RegulationTimeline } from "@/components/RegulationTimeline";
 **Scenario:** User wants to understand how PPWR evolved
 
 **Workflow:**
+
 1. View PPWR regulation page
 2. Click "Timeline" tab
 3. Filter to "Past" events
@@ -307,6 +332,7 @@ import { RegulationTimeline } from "@/components/RegulationTimeline";
 **Scenario:** User reads news about CSRD and wants context
 
 **Workflow:**
+
 1. Read news article about CSRD guidance
 2. Click "CSRD" regulation tag
 3. Navigate to CSRD regulation page
@@ -319,6 +345,7 @@ import { RegulationTimeline } from "@/components/RegulationTimeline";
 **Scenario:** User only cares about official milestones
 
 **Workflow:**
+
 1. View regulation timeline
 2. Toggle "News" button OFF
 3. See only official milestones
@@ -360,11 +387,12 @@ const timelineEvents = useMemo(() => {
   // Add news
   if (showNews && newsItems) {
     const relatedNews = newsItems.filter(
-      (item) => Array.isArray(item.regulationTags) && 
-                item.regulationTags.includes(regulationCode)
+      item =>
+        Array.isArray(item.regulationTags) &&
+        item.regulationTags.includes(regulationCode)
     );
 
-    relatedNews.forEach((news) => {
+    relatedNews.forEach(news => {
       events.push({
         id: `news-${news.id}`,
         date: new Date(news.publishedDate || news.createdAt),
@@ -384,13 +412,20 @@ const timelineEvents = useMemo(() => {
   // Apply date range filter
   const now = new Date();
   if (dateRange === "past") {
-    return events.filter((event) => isBefore(event.date, now));
+    return events.filter(event => isBefore(event.date, now));
   } else if (dateRange === "future") {
-    return events.filter((event) => isAfter(event.date, now));
+    return events.filter(event => isAfter(event.date, now));
   }
 
   return events;
-}, [milestones, newsItems, showMilestones, showNews, dateRange, regulationCode]);
+}, [
+  milestones,
+  newsItems,
+  showMilestones,
+  showNews,
+  dateRange,
+  regulationCode,
+]);
 ```
 
 ### Performance Optimizations
@@ -417,12 +452,14 @@ const timelineEvents = useMemo(() => {
 ### Manual Testing
 
 ✅ **Timeline Rendering:**
+
 - Milestones display correctly with dates and descriptions
 - News events display with impact levels and sources
 - Timeline line connects all events properly
 - Color coding matches event types and statuses
 
 ✅ **Filtering:**
+
 - Milestone toggle shows/hides milestone events
 - News toggle shows/hides news events
 - "All Time" shows all events
@@ -431,18 +468,21 @@ const timelineEvents = useMemo(() => {
 - Event count badge updates correctly
 
 ✅ **Interactivity:**
+
 - News titles link to detail pages
 - "Read more" links work correctly
 - Hover states provide visual feedback
 - Filter buttons toggle properly
 
 ✅ **Responsive Design:**
+
 - Desktop layout displays full-width cards
 - Tablet layout adjusts spacing appropriately
 - Mobile layout stacks elements vertically
 - All text remains readable at all sizes
 
 ✅ **Empty States:**
+
 - "No Events Found" displays when all events filtered out
 - Helpful message guides users to adjust filters
 - Icon displays correctly
@@ -450,6 +490,7 @@ const timelineEvents = useMemo(() => {
 ### TypeScript Compilation
 
 ✅ **No errors:**
+
 - `client/src/components/RegulationTimeline.tsx` compiles cleanly
 - `client/src/pages/HubRegulationDetailEnhanced.tsx` compiles cleanly
 - Type safety enforced for milestone status values
@@ -458,6 +499,7 @@ const timelineEvents = useMemo(() => {
 ### Dev Server Status
 
 ✅ **Server running:**
+
 - No compilation errors
 - Hot module replacement working
 - Component renders in browser
@@ -469,14 +511,17 @@ const timelineEvents = useMemo(() => {
 ### New Files
 
 **Component:**
+
 - `client/src/components/RegulationTimeline.tsx` - Timeline visualization component
 
 ### Modified Files
 
 **Pages:**
+
 - `client/src/pages/HubRegulationDetailEnhanced.tsx` - Integrated timeline component
 
 **Documentation:**
+
 - `todo.md` - Added timeline visualization tasks
 - `TIMELINE_VISUALIZATION_SUMMARY.md` - This document
 
@@ -519,7 +564,7 @@ const timelineEvents = useMemo(() => {
 ✅ **Navigation:** Links to news detail pages function properly  
 ✅ **Visual Design:** Color coding and markers are clear and intuitive  
 ✅ **Responsiveness:** Layout adapts to all screen sizes  
-✅ **Performance:** Timeline renders quickly with 100+ events  
+✅ **Performance:** Timeline renders quickly with 100+ events
 
 ---
 
@@ -536,6 +581,7 @@ The timeline visualization successfully transforms how users explore regulatory 
 The timeline is now a **core navigation tool** for understanding regulatory compliance journeys in the ISA platform.
 
 **Next Steps:**
+
 1. Gather user feedback on timeline usability
 2. Monitor which filters are used most frequently
 3. Plan Phase 1 enhancements based on usage patterns

@@ -21,6 +21,7 @@ This document summarizes the **complete agent collaboration framework** designed
 **Purpose:** Defines ownership boundaries, coding standards, and delegation criteria
 
 **Key Sections:**
+
 - **Ownership and Boundaries** - What Manus owns (infra, auth, DB) vs. what ChatGPT can own (UI components, utils, docs)
 - **Interface Management** - How to freeze and version interfaces for stable contracts
 - **Communication Channels** - Changelog for interface updates, task spec format
@@ -39,16 +40,20 @@ This document summarizes the **complete agent collaboration framework** designed
 **Purpose:** Track interface and structural changes that affect delegated work
 
 **Format:**
+
 ```markdown
 ## [YYYY-MM-DD] Version X.Y
 
 ### Changed Interfaces
+
 - `InterfaceName` - Description of change
 
 ### New Shared Types
+
 - `NewType` - Purpose and usage
 
 ### Deprecated
+
 - `OldFunction` - Replacement
 ```
 
@@ -65,18 +70,17 @@ This document summarizes the **complete agent collaboration framework** designed
 **Task Categories:**
 
 **Immediate (Ready to Delegate):**
+
 1. **CGPT-01:** ESRS-to-GS1 Attribute Mapping Library ⭐ HIGH PRIORITY
 2. **CGPT-02:** GPC-to-GS1 Attribute Mapping Engine ⭐ HIGH PRIORITY
 3. **CGPT-03:** News Timeline Visualization Component ⭐ MEDIUM PRIORITY
 4. **CGPT-04:** EPCIS Event Validation Library ⭐ MEDIUM PRIORITY
 5. **CGPT-05:** Digital Link URL Builder/Validator ⭐ LOW PRIORITY
 
-**Next Wave (Blocked by Dependencies):**
-6. **CGPT-08:** GDSN Attribute Validator for ESG (depends on CGPT-01)
-7. **CGPT-09:** DPP Template Generator (depends on CGPT-01, CGPT-05)
-8. **CGPT-10:** Sector-Specific Compliance Checker (depends on CGPT-01, CGPT-02)
+**Next Wave (Blocked by Dependencies):** 6. **CGPT-08:** GDSN Attribute Validator for ESG (depends on CGPT-01) 7. **CGPT-09:** DPP Template Generator (depends on CGPT-01, CGPT-05) 8. **CGPT-10:** Sector-Specific Compliance Checker (depends on CGPT-01, CGPT-02)
 
 **Success Metrics:**
+
 - Target: >50% of new features delegated by Q2 2026
 - Target: <10% rework rate
 - Target: <1 hour integration time per task
@@ -88,11 +92,13 @@ This document summarizes the **complete agent collaboration framework** designed
 **Directory:** `tasks/for_chatgpt/`
 
 **Created Specs:**
+
 1. `CGPT-01_esrs_to_gs1_mapping.md` - ESRS-to-GS1 mapping library (8-12 hours)
 2. `CGPT-03_news_timeline_component.md` - Timeline visualization component (6-8 hours)
 3. `CGPT-05_digital_link_utils.md` - Digital Link utility library (4-6 hours)
 
 **Spec Structure:**
+
 - **Context** - ISA mission, relevant subsystem, key files
 - **Exact Task** - Goal, how it will be used, integration examples
 - **Technical Specification** - File structure, function signatures, implementation logic, examples
@@ -114,22 +120,26 @@ This document summarizes the **complete agent collaboration framework** designed
 **Workflow Phases:**
 
 **Phase 1: Task Selection (Manus)**
+
 - Select task from work plan
 - Verify prerequisites
 - Prepare project snapshot (zip)
 - Update task status to "In Progress"
 
 **Phase 2: Assignment (User)**
+
 - Provide snapshot + task spec to ChatGPT
 - ChatGPT confirms understanding
 - User gives green light
 
 **Phase 3: Implementation (ChatGPT)**
+
 - ChatGPT implements per spec
 - ChatGPT writes tests
 - ChatGPT documents assumptions
 
 **Phase 4: Integration (Manus)**
+
 - Security review
 - Place files in project
 - Run validation (`pnpm check`, `pnpm test`)
@@ -139,6 +149,7 @@ This document summarizes the **complete agent collaboration framework** designed
 - Update task status to "Completed"
 
 **Phase 5: Feedback (Manus)**
+
 - Evaluate integration metrics
 - Update documentation if issues found
 - Plan next task
@@ -157,15 +168,17 @@ This document summarizes the **complete agent collaboration framework** designed
 2. Manus will prepare a project snapshot (zip file)
 3. Download the zip and task spec from Manus
 4. Open ChatGPT and paste:
+
    ```
-   I'm working on ISA (Intelligent Standards Architect). I need you to 
+   I'm working on ISA (Intelligent Standards Architect). I need you to
    implement a module according to this spec.
-   
+
    [Attach zip file]
    [Paste task spec]
-   
+
    Please confirm you understand before starting.
    ```
+
 5. ChatGPT implements and provides code
 6. Copy ChatGPT's code and paste back to Manus
 7. Manus integrates and validates
@@ -223,30 +236,37 @@ This document summarizes the **complete agent collaboration framework** designed
 
 **Deliverable format:**
 
-```markdown
+````markdown
 # CGPT-{ID} Deliverables
 
 ## Files Created
 
 ### /path/to/file1.ts
+
 ```typescript
 // [Full file content]
 ```
+````
 
 ### /path/to/file2.ts
+
 ```typescript
 // [Full file content]
 ```
 
 ## Implementation Notes
+
 - [Assumptions made]
 - [Design decisions]
 
 ## Suggestions for Future Improvements
+
 - [Ideas for enhancements]
 
 ## Known Limitations
+
 - [Edge cases or constraints]
+
 ```
 
 ---
@@ -372,6 +392,7 @@ After each integration:
 
 ---
 
-**Created by:** Manus  
-**Last Updated:** December 11, 2025  
+**Created by:** Manus
+**Last Updated:** December 11, 2025
 **Status:** Ready for pilot testing
+```

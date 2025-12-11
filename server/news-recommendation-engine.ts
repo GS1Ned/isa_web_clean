@@ -3,9 +3,17 @@
  * Generates AI-powered recommendations linking news to internal resources
  */
 
-import { analyzeNewsContent, type ContentAnalysis } from "./news-content-analyzer";
+import {
+  analyzeNewsContent,
+  type ContentAnalysis,
+} from "./news-content-analyzer";
 import { getDb } from "./db";
-import { regulations, gs1Standards, esrsDatapoints, newsRecommendations } from "../drizzle/schema";
+import {
+  regulations,
+  gs1Standards,
+  esrsDatapoints,
+  newsRecommendations,
+} from "../drizzle/schema";
 import { sql, or, like } from "drizzle-orm";
 
 export interface Recommendation {
@@ -26,7 +34,9 @@ export async function generateRecommendations(
   summary: string,
   content: string
 ): Promise<Recommendation[]> {
-  console.log(`[recommendation-engine] Generating recommendations for news ${newsId}`);
+  console.log(
+    `[recommendation-engine] Generating recommendations for news ${newsId}`
+  );
 
   // Step 1: Analyze content
   const analysis = await analyzeNewsContent(title, summary, content);
@@ -55,7 +65,9 @@ export async function generateRecommendations(
   const scored = scoreRecommendations(recommendations, analysis);
   const topRecommendations = scored.slice(0, 10); // Top 10
 
-  console.log(`[recommendation-engine] Generated ${topRecommendations.length} recommendations`);
+  console.log(
+    `[recommendation-engine] Generated ${topRecommendations.length} recommendations`
+  );
 
   // Step 4: Save to database
   await saveRecommendations(newsId, topRecommendations);
@@ -66,13 +78,15 @@ export async function generateRecommendations(
 /**
  * Find matching regulations based on content analysis
  */
-async function findMatchingRegulations(analysis: ContentAnalysis): Promise<Recommendation[]> {
+async function findMatchingRegulations(
+  analysis: ContentAnalysis
+): Promise<Recommendation[]> {
   const db = await getDb();
   if (!db) return [];
 
   try {
     const conditions = [];
-    
+
     // Match by regulation mentions
     for (const reg of analysis.regulationMentions) {
       conditions.push(like(regulations.title, `%${reg}%`));
@@ -92,7 +106,7 @@ async function findMatchingRegulations(analysis: ContentAnalysis): Promise<Recom
       .where(or(...conditions))
       .limit(20);
 
-    return matches.map((reg) => ({
+    return matches.map(reg => ({
       resourceType: "REGULATION" as const,
       resourceId: reg.id,
       resourceTitle: reg.title,
@@ -109,7 +123,9 @@ async function findMatchingRegulations(analysis: ContentAnalysis): Promise<Recom
 /**
  * Find matching GS1 standards
  */
-async function findMatchingStandards(analysis: ContentAnalysis): Promise<Recommendation[]> {
+async function findMatchingStandards(
+  analysis: ContentAnalysis
+): Promise<Recommendation[]> {
   const db = await getDb();
   if (!db) return [];
 
@@ -135,7 +151,7 @@ async function findMatchingStandards(analysis: ContentAnalysis): Promise<Recomme
       .where(or(...conditions))
       .limit(20);
 
-    return matches.map((std) => ({
+    return matches.map(std => ({
       resourceType: "GS1_STANDARD" as const,
       resourceId: std.id,
       resourceTitle: std.standardName,
@@ -152,7 +168,9 @@ async function findMatchingStandards(analysis: ContentAnalysis): Promise<Recomme
 /**
  * Find matching ESRS datapoints
  */
-async function findMatchingDatapoints(analysis: ContentAnalysis): Promise<Recommendation[]> {
+async function findMatchingDatapoints(
+  analysis: ContentAnalysis
+): Promise<Recommendation[]> {
   const db = await getDb();
   if (!db) return [];
 
@@ -160,7 +178,10 @@ async function findMatchingDatapoints(analysis: ContentAnalysis): Promise<Recomm
     const conditions = [];
 
     // Match by regulation mentions (ESRS is part of CSRD)
-    if (analysis.regulationMentions.includes("CSRD") || analysis.regulationMentions.includes("ESRS")) {
+    if (
+      analysis.regulationMentions.includes("CSRD") ||
+      analysis.regulationMentions.includes("ESRS")
+    ) {
       conditions.push(like(esrsDatapoints.datapointName, `%`));
     }
 
@@ -177,7 +198,7 @@ async function findMatchingDatapoints(analysis: ContentAnalysis): Promise<Recomm
       .where(or(...conditions))
       .limit(20);
 
-    return matches.map((dp) => ({
+    return matches.map(dp => ({
       resourceType: "ESRS_DATAPOINT" as const,
       resourceId: dp.id,
       resourceTitle: dp.datapointName || "ESRS Datapoint",
@@ -199,7 +220,7 @@ function scoreRecommendations(
   analysis: ContentAnalysis
 ): Recommendation[] {
   return recommendations
-    .map((rec) => {
+    .map(rec => {
       let score = 0.5; // Base score
 
       // Boost if explicitly mentioned
@@ -208,12 +229,18 @@ function scoreRecommendations(
       }
 
       // Boost regulations mentioned in title/summary
-      if (rec.resourceType === "REGULATION" && analysis.regulationMentions.length > 0) {
+      if (
+        rec.resourceType === "REGULATION" &&
+        analysis.regulationMentions.length > 0
+      ) {
         score += 0.2;
       }
 
       // Boost standards if impact areas match
-      if (rec.resourceType === "GS1_STANDARD" && analysis.impactAreas.length > 0) {
+      if (
+        rec.resourceType === "GS1_STANDARD" &&
+        analysis.impactAreas.length > 0
+      ) {
         score += 0.15;
       }
 
@@ -231,7 +258,10 @@ function scoreRecommendations(
 /**
  * Save recommendations to database
  */
-async function saveRecommendations(newsId: number, recommendations: Recommendation[]): Promise<void> {
+async function saveRecommendations(
+  newsId: number,
+  recommendations: Recommendation[]
+): Promise<void> {
   const db = await getDb();
   if (!db) return;
 
@@ -242,7 +272,7 @@ async function saveRecommendations(newsId: number, recommendations: Recommendati
     // Insert new recommendations
     if (recommendations.length > 0) {
       await db.insert(newsRecommendations).values(
-        recommendations.map((rec) => ({
+        recommendations.map(rec => ({
           newsId,
           resourceType: rec.resourceType,
           resourceId: rec.resourceId,
@@ -254,8 +284,13 @@ async function saveRecommendations(newsId: number, recommendations: Recommendati
       );
     }
 
-    console.log(`[recommendation-engine] Saved ${recommendations.length} recommendations for news ${newsId}`);
+    console.log(
+      `[recommendation-engine] Saved ${recommendations.length} recommendations for news ${newsId}`
+    );
   } catch (error) {
-    console.error("[recommendation-engine] Failed to save recommendations:", error);
+    console.error(
+      "[recommendation-engine] Failed to save recommendations:",
+      error
+    );
   }
 }

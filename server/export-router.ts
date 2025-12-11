@@ -1,7 +1,12 @@
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { getRegulations } from "./db";
-import { exportRegulationToPDF, exportRegulationToCSV, exportRegulationsListToCSV, generateExportFilename } from "./export-utils";
+import {
+  exportRegulationToPDF,
+  exportRegulationToCSV,
+  exportRegulationsListToCSV,
+  generateExportFilename,
+} from "./export-utils";
 
 /**
  * Export router for PDF and CSV exports of regulations
@@ -14,7 +19,9 @@ export const exportRouter = router({
       try {
         // Get regulation from database
         const regulations = await getRegulations();
-        const regulation = regulations.find(r => String(r.id) === input.regulationId);
+        const regulation = regulations.find(
+          r => String(r.id) === input.regulationId
+        );
 
         if (!regulation) {
           throw new Error("Regulation not found");
@@ -61,7 +68,9 @@ export const exportRouter = router({
       try {
         // Get regulation from database
         const regulations = await getRegulations();
-        const regulation = regulations.find(r => String(r.id) === input.regulationId);
+        const regulation = regulations.find(
+          r => String(r.id) === input.regulationId
+        );
 
         if (!regulation) {
           throw new Error("Regulation not found");
@@ -108,7 +117,9 @@ export const exportRouter = router({
       try {
         // Get regulations from database
         const allRegulations = await getRegulations();
-        const regulations = allRegulations.filter(r => input.regulationIds.includes(String(r.id)));
+        const regulations = allRegulations.filter(r =>
+          input.regulationIds.includes(String(r.id))
+        );
 
         if (regulations.length === 0) {
           throw new Error("No valid regulations found");

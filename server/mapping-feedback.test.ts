@@ -18,11 +18,15 @@ describe("Mapping Feedback Procedures", () => {
 
   beforeAll(async () => {
     // Get a mapping ID from existing data (from Phase 69 batch generation)
-    const mappings = await caller.regulations.getEsrsMappings({ regulationId: 1 });
+    const mappings = await caller.regulations.getEsrsMappings({
+      regulationId: 1,
+    });
     if (mappings && mappings.length > 0) {
       testMappingId = mappings[0].id;
     } else {
-      throw new Error("No ESRS mappings found for testing. Run batch generation first.");
+      throw new Error(
+        "No ESRS mappings found for testing. Run batch generation first."
+      );
     }
   });
 
@@ -92,8 +96,10 @@ describe("Mapping Feedback Procedures", () => {
   });
 
   it("should get batch feedback stats", async () => {
-    const mappings = await caller.regulations.getEsrsMappings({ regulationId: 1 });
-    const mappingIds = mappings?.slice(0, 5).map((m) => m.id) || [];
+    const mappings = await caller.regulations.getEsrsMappings({
+      regulationId: 1,
+    });
+    const mappingIds = mappings?.slice(0, 5).map(m => m.id) || [];
 
     const batchStats = await caller.regulations.getBatchMappingFeedbackStats({
       mappingIds,
@@ -106,7 +112,9 @@ describe("Mapping Feedback Procedures", () => {
   });
 
   it("should return empty stats for mapping with no votes", async () => {
-    const mappings = await caller.regulations.getEsrsMappings({ regulationId: 2 });
+    const mappings = await caller.regulations.getEsrsMappings({
+      regulationId: 2,
+    });
     if (mappings && mappings.length > 0) {
       const unmappedId = mappings[0].id;
       const stats = await caller.regulations.getMappingFeedbackStats({

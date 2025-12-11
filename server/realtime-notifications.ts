@@ -64,7 +64,10 @@ class RealtimeNotificationService extends EventEmitter {
    * Check if user is currently connected
    */
   isUserConnected(userId: number): boolean {
-    return this.userConnections.has(userId) && this.userConnections.get(userId)!.size > 0;
+    return (
+      this.userConnections.has(userId) &&
+      this.userConnections.get(userId)!.size > 0
+    );
   }
 
   /**
@@ -84,8 +87,11 @@ class RealtimeNotificationService extends EventEmitter {
   /**
    * Emit notification to multiple users
    */
-  notifyUsers(userIds: number[], payload: Omit<NotificationPayload, "userId">): void {
-    userIds.forEach((userId) => {
+  notifyUsers(
+    userIds: number[],
+    payload: Omit<NotificationPayload, "userId">
+  ): void {
+    userIds.forEach(userId => {
       this.notifyUser({
         ...payload,
         userId,
@@ -104,14 +110,14 @@ class RealtimeNotificationService extends EventEmitter {
    * Get pending notifications for user
    */
   getPendingNotifications(userId: number): NotificationPayload[] {
-    return this.notificationQueue.filter((n) => n.userId === userId);
+    return this.notificationQueue.filter(n => n.userId === userId);
   }
 
   /**
    * Clear pending notifications for user
    */
   clearPendingNotifications(userId: number): void {
-    const index = this.notificationQueue.findIndex((n) => n.userId === userId);
+    const index = this.notificationQueue.findIndex(n => n.userId === userId);
     if (index !== -1) {
       this.notificationQueue.splice(index, 1);
     }
@@ -246,7 +252,7 @@ export async function notifyScoreChanged(
     userId,
     title: `${scoreType} Score ${direction}`,
     message: `Your ${scoreType} score ${direction} from ${oldScore} to ${newScore}`,
-    severity: (severity as "low" | "high"),
+    severity: severity as "low" | "high",
     actionUrl: "/scoreboard",
     timestamp: Date.now(),
     data: { scoreType, oldScore, newScore, change },

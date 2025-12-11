@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, Award, Target, CheckCircle2, AlertCircle } from "lucide-react";
+import {
+  TrendingUp,
+  Award,
+  Target,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 
 export default function ComplianceScoreboard() {
-  const { data: score, isLoading: scoreLoading } = trpc.scoring.getScore.useQuery();
+  const { data: score, isLoading: scoreLoading } =
+    trpc.scoring.getScore.useQuery();
   const { data: metrics } = trpc.scoring.getMetrics.useQuery();
   const { data: milestones } = trpc.scoring.getMilestones.useQuery();
   const { data: history } = trpc.scoring.getScoreHistory.useQuery({ days: 30 });
@@ -41,7 +54,9 @@ export default function ComplianceScoreboard() {
     <div className="container mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Compliance Scoreboard</h1>
-        <p className="text-gray-600">Track your real-time compliance metrics and achievements</p>
+        <p className="text-gray-600">
+          Track your real-time compliance metrics and achievements
+        </p>
       </div>
 
       {scoreLoading ? (
@@ -59,15 +74,21 @@ export default function ComplianceScoreboard() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-lg">Overall Compliance Score</CardTitle>
-                  <CardDescription>Your comprehensive compliance rating</CardDescription>
+                  <CardTitle className="text-lg">
+                    Overall Compliance Score
+                  </CardTitle>
+                  <CardDescription>
+                    Your comprehensive compliance rating
+                  </CardDescription>
                 </div>
                 <TrendingUp className="w-8 h-8 text-gray-400" />
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4">
-                <div className={`text-5xl font-bold ${getScoreColor(score.overallScore)}`}>
+                <div
+                  className={`text-5xl font-bold ${getScoreColor(score.overallScore)}`}
+                >
                   {score.overallScore.toFixed(1)}
                 </div>
                 <div className="flex-1">
@@ -75,7 +96,11 @@ export default function ComplianceScoreboard() {
                   <p className="text-sm text-gray-600 mt-2">Target: 100%</p>
                 </div>
               </div>
-              <Button onClick={handleRecalculate} variant="outline" className="w-full">
+              <Button
+                onClick={handleRecalculate}
+                variant="outline"
+                className="w-full"
+              >
                 Recalculate Score
               </Button>
             </CardContent>
@@ -92,7 +117,10 @@ export default function ComplianceScoreboard() {
                 <div className="text-3xl font-bold text-blue-600 mb-2">
                   {score.riskManagementScore.toFixed(1)}
                 </div>
-                <Progress value={score.riskManagementScore} className="h-2 mb-2" />
+                <Progress
+                  value={score.riskManagementScore}
+                  className="h-2 mb-2"
+                />
                 <p className="text-xs text-gray-600">
                   {score.resolvedRisks}/{score.totalRisks} risks resolved
                 </p>
@@ -110,7 +138,8 @@ export default function ComplianceScoreboard() {
                 </div>
                 <Progress value={score.remediationScore} className="h-2 mb-2" />
                 <p className="text-xs text-gray-600">
-                  {score.completedPlans}/{score.totalRemediationPlans} plans completed
+                  {score.completedPlans}/{score.totalRemediationPlans} plans
+                  completed
                 </p>
               </CardContent>
             </Card>
@@ -141,7 +170,9 @@ export default function ComplianceScoreboard() {
                   {score.regulationScore.toFixed(1)}
                 </div>
                 <Progress value={score.regulationScore} className="h-2 mb-2" />
-                <p className="text-xs text-gray-600">{score.regulationsCovered} covered</p>
+                <p className="text-xs text-gray-600">
+                  {score.regulationsCovered} covered
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -169,12 +200,18 @@ export default function ComplianceScoreboard() {
                       <div>
                         <div className="flex justify-between text-sm mb-1">
                           <span>Risk Resolution Rate</span>
-                          <span className="font-semibold">{metrics.resolutionRate.toFixed(1)}%</span>
+                          <span className="font-semibold">
+                            {metrics.resolutionRate.toFixed(1)}%
+                          </span>
                         </div>
-                        <Progress value={metrics.resolutionRate} className="h-2" />
+                        <Progress
+                          value={metrics.resolutionRate}
+                          className="h-2"
+                        />
                       </div>
                       <div className="text-sm text-gray-600">
-                        {metrics.resolvedRisks} of {metrics.totalRisks} risks resolved
+                        {metrics.resolvedRisks} of {metrics.totalRisks} risks
+                        resolved
                       </div>
                     </CardContent>
                   </Card>
@@ -191,12 +228,18 @@ export default function ComplianceScoreboard() {
                       <div>
                         <div className="flex justify-between text-sm mb-1">
                           <span>Plan Completion Rate</span>
-                          <span className="font-semibold">{metrics.completionRate.toFixed(1)}%</span>
+                          <span className="font-semibold">
+                            {metrics.completionRate.toFixed(1)}%
+                          </span>
                         </div>
-                        <Progress value={metrics.completionRate} className="h-2" />
+                        <Progress
+                          value={metrics.completionRate}
+                          className="h-2"
+                        />
                       </div>
                       <div className="text-sm text-gray-600">
-                        {metrics.completedPlans} of {metrics.totalRemediationPlans} plans completed
+                        {metrics.completedPlans} of{" "}
+                        {metrics.totalRemediationPlans} plans completed
                       </div>
                     </CardContent>
                   </Card>
@@ -213,18 +256,26 @@ export default function ComplianceScoreboard() {
                       <div>
                         <div className="flex justify-between text-sm mb-1">
                           <span>Verification Rate</span>
-                          <span className="font-semibold">{metrics.verificationRate.toFixed(1)}%</span>
+                          <span className="font-semibold">
+                            {metrics.verificationRate.toFixed(1)}%
+                          </span>
                         </div>
-                        <Progress value={metrics.verificationRate} className="h-2" />
+                        <Progress
+                          value={metrics.verificationRate}
+                          className="h-2"
+                        />
                       </div>
                       <div className="text-sm text-gray-600">
-                        {metrics.verifiedEvidence} of {metrics.totalEvidence} evidence verified
+                        {metrics.verifiedEvidence} of {metrics.totalEvidence}{" "}
+                        evidence verified
                       </div>
                     </CardContent>
                   </Card>
                 </div>
               ) : (
-                <div className="text-center py-8 text-gray-600">Loading metrics...</div>
+                <div className="text-center py-8 text-gray-600">
+                  Loading metrics...
+                </div>
               )}
             </TabsContent>
 
@@ -232,19 +283,28 @@ export default function ComplianceScoreboard() {
             <TabsContent value="milestones" className="space-y-4">
               {milestones && milestones.length > 0 ? (
                 <div className="grid gap-3">
-                  {milestones.map((milestone) => (
+                  {milestones.map(milestone => (
                     <Card key={milestone.id}>
                       <CardContent className="pt-6">
                         <div className="flex items-center gap-4">
                           <div className="text-4xl">{milestone.badge}</div>
                           <div className="flex-1">
-                            <h4 className="font-semibold">{milestone.milestoneTitle}</h4>
-                            <p className="text-sm text-gray-600">{milestone.description}</p>
+                            <h4 className="font-semibold">
+                              {milestone.milestoneTitle}
+                            </h4>
+                            <p className="text-sm text-gray-600">
+                              {milestone.description}
+                            </p>
                             <p className="text-xs text-gray-500 mt-1">
-                              Achieved {new Date(milestone.achievedAt).toLocaleDateString()}
+                              Achieved{" "}
+                              {new Date(
+                                milestone.achievedAt
+                              ).toLocaleDateString()}
                             </p>
                           </div>
-                          <Badge className="bg-green-100 text-green-800">Unlocked</Badge>
+                          <Badge className="bg-green-100 text-green-800">
+                            Unlocked
+                          </Badge>
                         </div>
                       </CardContent>
                     </Card>
@@ -253,7 +313,9 @@ export default function ComplianceScoreboard() {
               ) : (
                 <Card>
                   <CardContent className="pt-6 text-center">
-                    <p className="text-gray-600">No achievements yet. Keep improving your compliance!</p>
+                    <p className="text-gray-600">
+                      No achievements yet. Keep improving your compliance!
+                    </p>
                   </CardContent>
                 </Card>
               )}
@@ -271,10 +333,17 @@ export default function ComplianceScoreboard() {
                       {history.slice(-7).map((entry, idx) => (
                         <div key={idx}>
                           <div className="flex justify-between text-sm mb-1">
-                            <span>{new Date(entry.createdAt).toLocaleDateString()}</span>
-                            <span className="font-semibold">{entry.overallScore.toFixed(1)}</span>
+                            <span>
+                              {new Date(entry.createdAt).toLocaleDateString()}
+                            </span>
+                            <span className="font-semibold">
+                              {entry.overallScore.toFixed(1)}
+                            </span>
                           </div>
-                          <Progress value={entry.overallScore} className="h-2" />
+                          <Progress
+                            value={entry.overallScore}
+                            className="h-2"
+                          />
                         </div>
                       ))}
                     </div>

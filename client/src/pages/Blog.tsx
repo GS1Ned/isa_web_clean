@@ -71,20 +71,32 @@ export default function Blog() {
     },
   ];
 
-  const categories = ["All", "Compliance", "Standards", "Regulations", "Insights"];
+  const categories = [
+    "All",
+    "Compliance",
+    "Standards",
+    "Regulations",
+    "Insights",
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+          <Link
+            href="/"
+            className="flex items-center gap-2 hover:opacity-80 transition"
+          >
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-secondary flex items-center justify-center">
               <Zap className="w-5 h-5 text-accent-foreground" />
             </div>
             <span className="font-bold text-lg text-foreground">ISA</span>
           </Link>
-          <Link href="/" className="text-sm font-medium text-accent hover:text-accent/80 transition">
+          <Link
+            href="/"
+            className="text-sm font-medium text-accent hover:text-accent/80 transition"
+          >
             Back
           </Link>
         </div>
@@ -94,9 +106,12 @@ export default function Blog() {
       <section className="py-20 md:py-32 bg-gradient-to-b from-accent/5 to-transparent">
         <div className="container">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">ISA Insights</h1>
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
+              ISA Insights
+            </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Stay informed on the latest regulatory trends, GS1 standards updates, and compliance best practices.
+              Stay informed on the latest regulatory trends, GS1 standards
+              updates, and compliance best practices.
             </p>
           </div>
         </div>
@@ -106,7 +121,7 @@ export default function Blog() {
       <section className="py-8 border-b border-border bg-card">
         <div className="container">
           <div className="flex gap-2 overflow-x-auto pb-2">
-            {categories.map((category) => (
+            {categories.map(category => (
               <button
                 key={category}
                 className={`px-4 py-2 rounded-lg font-medium text-sm transition whitespace-nowrap ${
@@ -126,7 +141,7 @@ export default function Blog() {
       <section className="py-12 flex-1">
         <div className="container">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article) => (
+            {articles.map(article => (
               <article
                 key={article.id}
                 className="card-elevated p-6 hover:border-accent transition flex flex-col"
@@ -176,9 +191,12 @@ export default function Blog() {
       <section className="py-16 bg-card border-t border-border">
         <div className="container">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Stay Updated</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Stay Updated
+            </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Subscribe to our newsletter to receive the latest regulatory updates and compliance insights.
+              Subscribe to our newsletter to receive the latest regulatory
+              updates and compliance insights.
             </p>
             <div className="flex gap-2">
               <input
@@ -200,7 +218,9 @@ export default function Blog() {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-12">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Intelligent Standards Architect. All rights reserved.</p>
+          <p>
+            &copy; 2025 Intelligent Standards Architect. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

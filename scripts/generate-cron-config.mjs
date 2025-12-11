@@ -4,27 +4,27 @@
  * Generates ready-to-use configuration for various cron services
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Get environment variables
-const CRON_SECRET = process.env.CRON_SECRET || 'NOT_SET';
-const APP_URL = process.env.VITE_APP_URL || 'https://your-domain.manus.space';
+const CRON_SECRET = process.env.CRON_SECRET || "NOT_SET";
+const APP_URL = process.env.VITE_APP_URL || "https://your-domain.manus.space";
 
-if (CRON_SECRET === 'NOT_SET') {
-  console.error('❌ ERROR: CRON_SECRET environment variable is not set!');
-  console.error('Please set CRON_SECRET in your Manus project secrets.');
+if (CRON_SECRET === "NOT_SET") {
+  console.error("❌ ERROR: CRON_SECRET environment variable is not set!");
+  console.error("Please set CRON_SECRET in your Manus project secrets.");
   process.exit(1);
 }
 
 // Configuration templates
 const configs = {
-  'cron-job.org': {
-    name: 'cron-job.org Configuration',
+  "cron-job.org": {
+    name: "cron-job.org Configuration",
     instructions: `
 # cron-job.org Setup Instructions
 
@@ -59,8 +59,8 @@ const configs = {
 `,
   },
 
-  'easycron': {
-    name: 'EasyCron Configuration',
+  easycron: {
+    name: "EasyCron Configuration",
     instructions: `
 # EasyCron Setup Instructions
 
@@ -91,9 +91,9 @@ const configs = {
 `,
   },
 
-  'github-actions': {
-    name: 'GitHub Actions Workflow',
-    filename: '.github/workflows/isa-news-cron.yml',
+  "github-actions": {
+    name: "GitHub Actions Workflow",
+    filename: ".github/workflows/isa-news-cron.yml",
     content: `name: ISA News Collection
 
 on:
@@ -172,8 +172,8 @@ jobs:
 `,
   },
 
-  'curl-test': {
-    name: 'cURL Test Commands',
+  "curl-test": {
+    name: "cURL Test Commands",
     content: `#!/bin/bash
 # Test commands for ISA News Cron Endpoints
 
@@ -229,17 +229,17 @@ curl -X GET ${APP_URL}/cron/weekly-news-archival \\
 };
 
 // Generate all configurations
-console.log('🔧 ISA News Cron Configuration Generator');
-console.log('=========================================\n');
+console.log("🔧 ISA News Cron Configuration Generator");
+console.log("=========================================\n");
 
-const outputDir = path.join(__dirname, '..', 'cron-configs');
+const outputDir = path.join(__dirname, "..", "cron-configs");
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
 Object.entries(configs).forEach(([key, config]) => {
   console.log(`📝 Generating ${config.name}...`);
-  
+
   if (config.content) {
     const filename = config.filename || `${key}-config.txt`;
     const filepath = path.join(outputDir, filename);
@@ -251,14 +251,14 @@ Object.entries(configs).forEach(([key, config]) => {
     fs.writeFileSync(filepath, config.content);
     console.log(`   ✓ Saved to: ${filepath}`);
   }
-  
+
   if (config.instructions) {
     const instructionsFile = path.join(outputDir, `${key}-instructions.md`);
     fs.writeFileSync(instructionsFile, config.instructions);
     console.log(`   ✓ Instructions: ${instructionsFile}`);
   }
-  
-  console.log('');
+
+  console.log("");
 });
 
 // Generate summary file
@@ -270,12 +270,16 @@ const summary = `# ISA News Cron Configuration Summary
 
 ## Available Configurations
 
-${Object.entries(configs).map(([key, config]) => `
+${Object.entries(configs)
+  .map(
+    ([key, config]) => `
 ### ${config.name}
 
 See: \`${key}-instructions.md\`
-${config.filename ? `Config file: \`${config.filename}\`` : ''}
-`).join('\n')}
+${config.filename ? `Config file: \`${config.filename}\`` : ""}
+`
+  )
+  .join("\n")}
 
 ## Quick Start
 
@@ -302,12 +306,12 @@ Authorization: Bearer ${CRON_SECRET}
 For issues or questions, see: docs/CRON_SETUP_GUIDE.md
 `;
 
-fs.writeFileSync(path.join(outputDir, 'README.md'), summary);
+fs.writeFileSync(path.join(outputDir, "README.md"), summary);
 
-console.log('✅ Configuration generation complete!');
+console.log("✅ Configuration generation complete!");
 console.log(`\n📁 All files saved to: ${outputDir}`);
-console.log('\n🚀 Next steps:');
-console.log('   1. Review the generated configurations');
-console.log('   2. Choose your preferred cron service');
-console.log('   3. Follow the instructions in the corresponding file');
-console.log('   4. Test using the curl commands\n');
+console.log("\n🚀 Next steps:");
+console.log("   1. Review the generated configurations");
+console.log("   2. Choose your preferred cron service");
+console.log("   3. Follow the instructions in the corresponding file");
+console.log("   4. Test using the curl commands\n");

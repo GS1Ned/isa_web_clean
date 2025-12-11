@@ -15,23 +15,30 @@ export function FeedbackButtons({ mappingId }: FeedbackButtonsProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Get user's existing feedback
-  const { data: userFeedback } = trpc.regulations.getUserMappingFeedback.useQuery(
-    { mappingId },
-    { enabled: !!user }
-  );
+  const { data: userFeedback } =
+    trpc.regulations.getUserMappingFeedback.useQuery(
+      { mappingId },
+      { enabled: !!user }
+    );
 
   // Get aggregated stats
-  const { data: stats } = trpc.regulations.getMappingFeedbackStats.useQuery({ mappingId });
+  const { data: stats } = trpc.regulations.getMappingFeedbackStats.useQuery({
+    mappingId,
+  });
 
   // Submit feedback mutation
   const submitFeedback = trpc.regulations.submitMappingFeedback.useMutation({
     onSuccess: () => {
       toast.success("Feedback submitted! Thank you for helping improve ISA!");
       // Refetch both queries
-      trpc.useUtils().regulations.getUserMappingFeedback.invalidate({ mappingId });
-      trpc.useUtils().regulations.getMappingFeedbackStats.invalidate({ mappingId });
+      trpc
+        .useUtils()
+        .regulations.getUserMappingFeedback.invalidate({ mappingId });
+      trpc
+        .useUtils()
+        .regulations.getMappingFeedbackStats.invalidate({ mappingId });
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(`Failed to submit feedback: ${error.message}`);
     },
   });
@@ -84,7 +91,9 @@ export function FeedbackButtons({ mappingId }: FeedbackButtonsProps) {
       {totalVotes > 0 && (
         <div className="text-sm text-muted-foreground ml-2">
           <span className="font-medium">{positivePercentage}%</span> helpful
-          <span className="text-xs ml-1">({totalVotes} vote{totalVotes !== 1 ? "s" : ""})</span>
+          <span className="text-xs ml-1">
+            ({totalVotes} vote{totalVotes !== 1 ? "s" : ""})
+          </span>
         </div>
       )}
     </div>

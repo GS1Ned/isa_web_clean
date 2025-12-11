@@ -1,6 +1,6 @@
 /**
  * Export Scheduler
- * 
+ *
  * Manages background generation of PDF exports for popular regulations
  * and caches them for faster downloads. Implements cache invalidation
  * and scheduled regeneration.
@@ -96,7 +96,10 @@ export async function cacheExport(
 
     // Calculate checksum for cache validation
     const crypto = await import("crypto");
-    const checksum = crypto.default.createHash("sha256").update(buffer).digest("hex");
+    const checksum = crypto.default
+      .createHash("sha256")
+      .update(buffer)
+      .digest("hex");
 
     const entry: ExportCacheEntry = {
       regulationId,
@@ -109,7 +112,9 @@ export async function cacheExport(
     };
 
     exportCache.set(cacheKey, entry);
-    console.log(`[Export Cache] Cached ${format.toUpperCase()} for regulation ${regulationId}`);
+    console.log(
+      `[Export Cache] Cached ${format.toUpperCase()} for regulation ${regulationId}`
+    );
 
     return entry;
   } catch (error) {
@@ -128,7 +133,9 @@ export function invalidateCache(regulationId: string): void {
   exportCache.delete(pdfKey);
   exportCache.delete(csvKey);
 
-  console.log(`[Export Cache] Invalidated cache for regulation ${regulationId}`);
+  console.log(
+    `[Export Cache] Invalidated cache for regulation ${regulationId}`
+  );
 }
 
 /**
@@ -175,7 +182,9 @@ export async function generatePopularExports(): Promise<{
       // Check if cache is still valid
       const cached = exportCache.get(getCacheKey(regulationId, "pdf"));
       if (cached && isCacheValid(cached)) {
-        console.log(`[Export Scheduler] PDF for regulation ${regulationId} already cached`);
+        console.log(
+          `[Export Scheduler] PDF for regulation ${regulationId} already cached`
+        );
         results.successful++;
         continue;
       }
@@ -202,13 +211,20 @@ export async function generatePopularExports(): Promise<{
       const filename = generateExportFilename(regulation.title, "pdf");
 
       // Cache the PDF
-      const cacheResult = await cacheExport(regulationId, "pdf", pdfBuffer, filename);
+      const cacheResult = await cacheExport(
+        regulationId,
+        "pdf",
+        pdfBuffer,
+        filename
+      );
       if (!cacheResult) {
         throw new Error("Failed to cache PDF");
       }
 
       results.successful++;
-      console.log(`[Export Scheduler] Successfully generated PDF for regulation ${regulationId}`);
+      console.log(
+        `[Export Scheduler] Successfully generated PDF for regulation ${regulationId}`
+      );
     } catch (error) {
       results.failed++;
       results.errors.push({
@@ -249,7 +265,7 @@ export function getCacheStats(): {
     expiresAt: string;
     fileSize: number;
   }> = [];
-  
+
   exportCache.forEach(entry => {
     entries.push({
       regulationId: entry.regulationId,
@@ -301,9 +317,12 @@ export function cleanupExpiredCache(): number {
  */
 export function initializeScheduler(): void {
   // Cleanup expired cache every hour
-  setInterval(() => {
-    cleanupExpiredCache();
-  }, 60 * 60 * 1000);
+  setInterval(
+    () => {
+      cleanupExpiredCache();
+    },
+    60 * 60 * 1000
+  );
 
   console.log("[Export Scheduler] Initialized with hourly cleanup");
 }

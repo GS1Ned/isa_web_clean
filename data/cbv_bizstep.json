@@ -107,10 +107,7 @@
   "@graph": [
     {
       "@id": "cbv:BizStep",
-      "@type": [
-        "owl:Class",
-        "rdfs:Class"
-      ],
+      "@type": ["owl:Class", "rdfs:Class"],
       "comment": "These identifiers populate the bizStep field in an EPCIS event.",
       "isDefinedBy": "https://ns.gs1.org/cbv/",
       "label": {

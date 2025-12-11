@@ -23,6 +23,7 @@ The News Hub now covers **EU + Dutch ESG regulations**, provides **actionable GS
 ### Implemented Sources
 
 #### 1. Green Deal Duurzame Zorg (Sustainable Healthcare)
+
 - **URL:** https://www.greendealduurzamezorg.nl/service/nieuws/
 - **Type:** DUTCH_NATIONAL
 - **Credibility:** 0.95
@@ -31,16 +32,19 @@ The News Hub now covers **EU + Dutch ESG regulations**, provides **actionable GS
 - **Implementation:** Playwright scraper (`server/news/news-scraper-greendeal.ts`)
 
 **ESG Relevance:**
+
 - HIGH - CSRD healthcare sector sustainability reporting
 - MEDIUM - ESRS S1 (workforce health and safety)
 - MEDIUM - Circular economy (medical devices, packaging)
 
 **GS1 Relevance:**
+
 - Medical device identification (GTIN, GDSN)
 - Healthcare supply chain traceability (EPCIS)
 - Sustainable procurement data standards
 
 #### 2. Op weg naar ZES (Zero-Emission Zones)
+
 - **URL:** https://opwegnaarzes.nl/actueel/nieuws
 - **Type:** DUTCH_NATIONAL
 - **Credibility:** 0.95
@@ -49,17 +53,20 @@ The News Hub now covers **EU + Dutch ESG regulations**, provides **actionable GS
 - **Implementation:** Playwright scraper (`server/news/news-scraper-zes.ts`)
 
 **ESG Relevance:**
+
 - HIGH - CSRD Scope 3 emissions (logistics)
 - MEDIUM - ESRS E1 (Climate Change)
 - MEDIUM - Urban sustainability initiatives
 
 **GS1 Relevance:**
+
 - Logistics tracking (EPCIS for zero-emission delivery)
 - Vehicle identification for access control
 - Supply chain visibility (last-mile delivery)
 - Carbon footprint tracking (transport emissions)
 
 #### 3. Verpact (Packaging Circularity)
+
 - **Status:** Deferred
 - **Reason:** Website has technical issues (timeout errors)
 - **Alternative:** Use secondary sources (KIDV, Verpakkingsmanagement.nl, DutchNews.nl)
@@ -68,12 +75,14 @@ The News Hub now covers **EU + Dutch ESG regulations**, provides **actionable GS
 ### Technical Implementation
 
 **Database Schema Updates:**
+
 - Added `DUTCH_NATIONAL` to `sourceType` enum in `hub_news` table
 - Added `DUTCH_NATIONAL` to `sourceType` enum in `hub_news_history` table
 - Updated TypeScript types in `drizzle/schema.ts`
 - Updated `news-sources.ts` with new source type
 
 **Scraper Architecture:**
+
 - Both scrapers use Playwright for JavaScript-rendered content
 - Graceful degradation: return empty array if Playwright unavailable (deployment mode)
 - Dutch date parsing: "1 december 2025" → "2025-12-01"
@@ -81,6 +90,7 @@ The News Hub now covers **EU + Dutch ESG regulations**, provides **actionable GS
 - Integrated into `news-fetcher.ts` pipeline
 
 **Integration Points:**
+
 - `server/news/news-scraper-greendeal.ts` - Green Deal Zorg scraper
 - `server/news/news-scraper-zes.ts` - ZES scraper
 - `server/news-fetcher.ts` - Added source-specific handlers
@@ -96,52 +106,62 @@ The News Hub now covers **EU + Dutch ESG regulations**, provides **actionable GS
 Added comprehensive **GS1 Impact Intelligence** section to news detail pages:
 
 #### 1. GS1 Impact Tags (Purple Badges)
+
 - Display: `gs1ImpactTags` from database
 - Format: Replace underscores with spaces (e.g., "ESG_REPORTING" → "ESG REPORTING")
 - Color: Purple (`bg-purple-500/10 text-purple-700 border-purple-500/20`)
 - Purpose: Show which GS1 capabilities are affected
 
 **Possible Tags:**
+
 - IDENTIFICATION, PACKAGING_ATTRIBUTES, ESG_REPORTING, DUE_DILIGENCE
 - TRACEABILITY, DPP, SUPPLY_CHAIN_VISIBILITY, CIRCULAR_ECONOMY
 - PRODUCT_MASTER_DATA, LOCATION_IDENTIFICATION, LOGISTICS_TRACKING, DATA_SHARING
 
 #### 2. Sector Tags (Blue Badges)
+
 - Display: `sectorTags` from database
 - Color: Blue (`bg-blue-500/10 text-blue-700 border-blue-500/20`)
 - Purpose: Show which industries are impacted
 
 **Possible Sectors:**
+
 - RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION
 - TEXTILES, ELECTRONICS, AUTOMOTIVE, PHARMA, CHEMICALS, GENERAL
 
 #### 3. GS1 Impact Analysis (Purple Panel)
+
 - Display: `gs1ImpactAnalysis` from database
 - Format: 2-3 sentence AI-generated analysis
 - Color: Purple background (`bg-purple-50 dark:bg-purple-950/20`)
 - Purpose: Explain GS1 relevance and impact in plain language
 
 **Example:**
+
 > "This regulation directly affects GS1 members' product identification and traceability capabilities. Companies using GTIN and EPCIS will need to enhance their data sharing to meet new transparency requirements. GS1 Digital Link may become essential for connecting physical products to digital sustainability data."
 
 #### 4. Suggested Actions (Blue Panel)
+
 - Display: `suggestedActions` from database
 - Format: Bulleted list of 2-4 actionable steps
 - Color: Blue background (`bg-blue-50 dark:bg-blue-950/20`)
 - Purpose: Provide concrete next steps for GS1 NL members
 
 **Example:**
+
 - Review your current GTIN implementation for product identification
 - Assess GDSN readiness for sharing enhanced product attributes
 - Evaluate EPCIS adoption for supply chain traceability
 - Consider GS1 Digital Link for linking physical products to digital data
 
 #### 5. Source Type Labels
+
 - Added `DUTCH_NATIONAL` label and color (Orange)
 - Updated `sourceTypeLabels` and `sourceTypeColors` mappings
 - Consistent color coding across all source types
 
 ### Implementation Files
+
 - `client/src/pages/NewsDetail.tsx` - Added GS1 Insights section
 - Conditional rendering: Only show if any GS1 field is populated
 - Responsive design: Works on mobile and desktop
@@ -156,12 +176,15 @@ Added comprehensive **GS1 Impact Intelligence** section to news detail pages:
 Added **Recent Developments** tab to regulation detail pages:
 
 #### 1. Tab Integration
+
 - Added 5th tab: "Recent Developments" (between Standards and Checklist)
 - Updated tab grid: `grid-cols-4` → `grid-cols-5`
 - Maintains existing tabs: Timeline, Standards, Checklist, FAQ
 
 #### 2. RecentDevelopmentsPanel Component
+
 **Features:**
+
 - Queries news by `regulationTags` (e.g., "CSRD", "PPWR", "EUDR")
 - Displays filtered news articles with full metadata
 - Shows impact level badges (HIGH/MEDIUM/LOW)
@@ -169,6 +192,7 @@ Added **Recent Developments** tab to regulation detail pages:
 - Links to full news detail pages
 
 **UI Elements:**
+
 - Header with news count badge
 - Article cards with title, summary, date, source
 - Impact level indicators with color coding
@@ -177,24 +201,28 @@ Added **Recent Developments** tab to regulation detail pages:
 - Empty state for regulations with no news
 
 **Loading States:**
+
 - Skeleton loader while fetching news
 - Graceful empty state if no news found
 
 #### 3. Bidirectional Navigation Flow
 
 **Regulation → News:**
+
 1. User views regulation detail page (e.g., CSRD)
 2. Clicks "Recent Developments" tab
 3. Sees all news tagged with "CSRD"
 4. Clicks article to view full details
 
 **News → Regulation:**
+
 1. User views news detail page
 2. Sees regulation tags as badges
 3. Clicks tag to navigate to regulation page
 4. Can explore regulation details and related news
 
 ### Implementation Files
+
 - `client/src/pages/HubRegulationDetailEnhanced.tsx` - Added Recent Developments tab
 - Added `RecentDevelopmentsPanel` component
 - Integrated with existing tRPC queries (`hub.getRecentNews`)
@@ -228,6 +256,7 @@ Added **Recent Developments** tab to regulation detail pages:
 ### Database Schema Changes
 
 **hub_news table:**
+
 ```sql
 -- Added fields (already existed from Phase 3)
 gs1ImpactTags JSON          -- Array of GS1 capability tags
@@ -240,6 +269,7 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 ```
 
 **hub_news_history table:**
+
 ```sql
 -- Same fields as hub_news (mirrored structure)
 sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'MEDIA')
@@ -255,6 +285,7 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 4. **sectorTags** - Inferred from content (12 possible sectors)
 
 **Fallback Logic:**
+
 - If LLM fails, use keyword-based heuristics
 - Ensures robustness in deployment environment
 
@@ -263,12 +294,14 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 ## Coverage Summary
 
 ### Before Phase 4-6
+
 - **Sources:** 2 (GS1.nl, EFRAG)
 - **Geographic Coverage:** EU-wide only
 - **GS1 Insights:** Basic regulation tags
 - **Navigation:** One-way (news → regulation via tags)
 
 ### After Phase 4-6
+
 - **Sources:** 4 (GS1.nl, EFRAG, Green Deal Zorg, ZES)
 - **Geographic Coverage:** EU-wide + Netherlands-specific
 - **GS1 Insights:** Impact analysis, suggested actions, sector/impact tags
@@ -277,6 +310,7 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 ### Topic Coverage Expansion
 
 **New Topics Covered:**
+
 - Healthcare sustainability (Green Deal Zorg)
 - Medical device circularity
 - Zero-emission urban logistics (ZES)
@@ -285,6 +319,7 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 - Scope 3 emissions tracking
 
 **GS1 Standards Mapped:**
+
 - Medical device identification (GTIN, GDSN)
 - Healthcare supply chain (EPCIS)
 - Logistics tracking (EPCIS, GLN)
@@ -340,11 +375,13 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 ### Manual Testing Performed
 
 ✅ **Dutch Scrapers:**
+
 - Green Deal Zorg scraper fetches articles correctly
 - ZES scraper handles Dutch date formats
 - Both scrapers gracefully handle missing Playwright
 
 ✅ **GS1 Insights UI:**
+
 - Impact tags display with correct colors
 - Sector tags render properly
 - Impact analysis panel shows formatted text
@@ -352,6 +389,7 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 - DUTCH_NATIONAL source type shows orange badge
 
 ✅ **Bidirectional Links:**
+
 - Recent Developments tab appears on regulation pages
 - News filtered by regulation tags correctly
 - Empty state shows when no news found
@@ -361,6 +399,7 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 ### TypeScript Compilation
 
 ✅ **All files compile without errors:**
+
 - `server/news/news-scraper-greendeal.ts`
 - `server/news/news-scraper-zes.ts`
 - `server/news-fetcher.ts`
@@ -372,12 +411,14 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 ### Dev Server Status
 
 ✅ **Server running successfully:**
+
 - Port: 3000
 - No TypeScript errors
 - Database connected
 - OAuth initialized
 
 ⚠️ **Known Console Errors:**
+
 - Old import error in news-ai-processor (pre-existing, not related to Phase 4-6)
 - Does not affect Phase 4-6 functionality
 
@@ -388,32 +429,38 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 ### Server-Side (Backend)
 
 **New Files:**
+
 - `server/news/news-scraper-greendeal.ts` - Green Deal Zorg scraper
 - `server/news/news-scraper-zes.ts` - ZES scraper
 
 **Modified Files:**
+
 - `server/news-sources.ts` - Added DUTCH_NATIONAL sources
 - `server/news-fetcher.ts` - Integrated Dutch scrapers
 - `server/db.ts` - Updated createHubNews() signature
 - `drizzle/schema.ts` - Added DUTCH_NATIONAL to sourceType enum
 
 **Database:**
+
 - `hub_news` table - ALTER TABLE to add DUTCH_NATIONAL
 - `hub_news_history` table - ALTER TABLE to add DUTCH_NATIONAL
 
 ### Client-Side (Frontend)
 
 **Modified Files:**
+
 - `client/src/pages/NewsDetail.tsx` - Added GS1 Insights section
 - `client/src/pages/HubRegulationDetailEnhanced.tsx` - Added Recent Developments tab
 
 ### Documentation
 
 **New Files:**
+
 - `research-dutch-sources.md` - Dutch source research findings
 - `NEWS_HUB_PHASE4-6_SUMMARY.md` - This document
 
 **Modified Files:**
+
 - `todo.md` - Marked Phase 4-6 items as complete
 
 ---
@@ -473,7 +520,7 @@ sourceType ENUM('EU_OFFICIAL', 'GS1_OFFICIAL', 'DUTCH_NATIONAL', 'INDUSTRY', 'ME
 ✅ **Tagging:** GS1 impact and sector tags displayed in UI  
 ✅ **Linkage:** Bidirectional navigation between news ↔ regulations works  
 ✅ **UX:** Users can see GS1 impacts and actionable next steps  
-✅ **Operations:** Dutch scrapers integrated into automated pipeline  
+✅ **Operations:** Dutch scrapers integrated into automated pipeline
 
 ---
 
@@ -489,6 +536,7 @@ Phases 4-6 successfully transformed ISA News Hub into a comprehensive ESG-GS1 in
 The News Hub is now positioned as a **strategic intelligence tool** for GS1 Netherlands members navigating the complex ESG regulatory landscape.
 
 **Next Steps:**
+
 1. Monitor Dutch source ingestion in production
 2. Gather user feedback on GS1 insights quality
 3. Plan Phase 7 (Timeline Views & Enhanced Filters)

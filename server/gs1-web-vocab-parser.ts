@@ -1,9 +1,9 @@
 /**
  * GS1 Web Vocabulary JSON-LD Parser
- * 
+ *
  * Parses GS1 Web Vocabulary ontology (https://ref.gs1.org/voc/data/gs1Voc.jsonld)
  * and ingests classes and properties into gs1_web_vocabulary table.
- * 
+ *
  * Focus areas:
  * - DPP-relevant properties (packaging, sustainability, materials)
  * - ESRS-relevant properties (environmental, social, governance)
@@ -11,26 +11,26 @@
  * - Regulatory compliance properties
  */
 
-import * as fs from 'fs';
-import { getDb } from './db';
-import { gs1WebVocabulary } from '../drizzle/schema';
+import * as fs from "fs";
+import { getDb } from "./db";
+import { gs1WebVocabulary } from "../drizzle/schema";
 
 interface JsonLdNode {
-  '@id': string;
-  '@type'?: string | string[];
-  'rdfs:label'?: string | { '@value': string; '@language': string };
-  'rdfs:comment'?: string | { '@value': string; '@language': string };
-  'rdfs:domain'?: { '@id': string } | { '@id': string }[];
-  'rdfs:range'?: { '@id': string } | { '@id': string }[];
-  'schema:domainIncludes'?: { '@id': string } | { '@id': string }[];
-  'schema:rangeIncludes'?: { '@id': string } | { '@id': string }[];
-  'sw:term_status'?: string;
+  "@id": string;
+  "@type"?: string | string[];
+  "rdfs:label"?: string | { "@value": string; "@language": string };
+  "rdfs:comment"?: string | { "@value": string; "@language": string };
+  "rdfs:domain"?: { "@id": string } | { "@id": string }[];
+  "rdfs:range"?: { "@id": string } | { "@id": string }[];
+  "schema:domainIncludes"?: { "@id": string } | { "@id": string }[];
+  "schema:rangeIncludes"?: { "@id": string } | { "@id": string }[];
+  "sw:term_status"?: string;
   [key: string]: any;
 }
 
 interface ParsedVocabTerm {
   termUri: string;
-  termType: 'class' | 'property';
+  termType: "class" | "property";
   termName: string;
   label: string;
   description: string;
@@ -48,55 +48,72 @@ interface ParsedVocabTerm {
  * Extract string value from JSON-LD multilingual object
  */
 function extractString(value: any): string {
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     return value;
   }
-  if (value && typeof value === 'object') {
-    if (value['@value']) {
-      return value['@value'];
+  if (value && typeof value === "object") {
+    if (value["@value"]) {
+      return value["@value"];
     }
     if (Array.isArray(value)) {
       // Find English value
-      const enValue = value.find((v: any) => v['@language'] === 'en');
+      const enValue = value.find((v: any) => v["@language"] === "en");
       if (enValue) {
-        return enValue['@value'] || '';
+        return enValue["@value"] || "";
       }
       // Fallback to first value
-      return value[0]?.['@value'] || '';
+      return value[0]?.["@value"] || "";
     }
   }
-  return '';
+  return "";
 }
 
 /**
  * Extract @id from JSON-LD reference
  */
 function extractId(value: any): string {
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     return value;
   }
-  if (value && typeof value === 'object') {
-    if (value['@id']) {
-      return value['@id'];
+  if (value && typeof value === "object") {
+    if (value["@id"]) {
+      return value["@id"];
     }
     if (Array.isArray(value) && value.length > 0) {
-      return value[0]['@id'] || '';
+      return value[0]["@id"] || "";
     }
   }
-  return '';
+  return "";
 }
 
 /**
  * Determine if term is DPP-relevant based on name/description patterns
  */
-function isDppRelevant(termName: string, label: string, description: string): boolean {
+function isDppRelevant(
+  termName: string,
+  label: string,
+  description: string
+): boolean {
   const dppPatterns = [
-    'packaging', 'material', 'recyclable', 'recycling', 'circular',
-    'product passport', 'dpp', 'composition', 'component',
-    'sustainability', 'environmental', 'carbon', 'emissions',
-    'origin', 'traceability', 'certification', 'compliance'
+    "packaging",
+    "material",
+    "recyclable",
+    "recycling",
+    "circular",
+    "product passport",
+    "dpp",
+    "composition",
+    "component",
+    "sustainability",
+    "environmental",
+    "carbon",
+    "emissions",
+    "origin",
+    "traceability",
+    "certification",
+    "compliance",
   ];
-  
+
   const searchText = `${termName} ${label} ${description}`.toLowerCase();
   return dppPatterns.some(pattern => searchText.includes(pattern));
 }
@@ -104,15 +121,37 @@ function isDppRelevant(termName: string, label: string, description: string): bo
 /**
  * Determine if term is ESRS-relevant based on name/description patterns
  */
-function isEsrsRelevant(termName: string, label: string, description: string): boolean {
+function isEsrsRelevant(
+  termName: string,
+  label: string,
+  description: string
+): boolean {
   const esrsPatterns = [
-    'sustainability', 'environmental', 'social', 'governance',
-    'climate', 'carbon', 'emissions', 'energy', 'water', 'waste',
-    'biodiversity', 'pollution', 'resource', 'circular economy',
-    'human rights', 'labor', 'employee', 'diversity', 'ethics',
-    'supply chain', 'due diligence', 'risk', 'impact'
+    "sustainability",
+    "environmental",
+    "social",
+    "governance",
+    "climate",
+    "carbon",
+    "emissions",
+    "energy",
+    "water",
+    "waste",
+    "biodiversity",
+    "pollution",
+    "resource",
+    "circular economy",
+    "human rights",
+    "labor",
+    "employee",
+    "diversity",
+    "ethics",
+    "supply chain",
+    "due diligence",
+    "risk",
+    "impact",
   ];
-  
+
   const searchText = `${termName} ${label} ${description}`.toLowerCase();
   return esrsPatterns.some(pattern => searchText.includes(pattern));
 }
@@ -120,13 +159,31 @@ function isEsrsRelevant(termName: string, label: string, description: string): b
 /**
  * Determine if term is EUDR-relevant based on name/description patterns
  */
-function isEudrRelevant(termName: string, label: string, description: string): boolean {
+function isEudrRelevant(
+  termName: string,
+  label: string,
+  description: string
+): boolean {
   const eudrPatterns = [
-    'origin', 'traceability', 'certification', 'deforestation',
-    'forest', 'timber', 'wood', 'palm oil', 'soy', 'cattle', 'cocoa', 'coffee', 'rubber',
-    'geolocation', 'supply chain', 'due diligence', 'regulatory'
+    "origin",
+    "traceability",
+    "certification",
+    "deforestation",
+    "forest",
+    "timber",
+    "wood",
+    "palm oil",
+    "soy",
+    "cattle",
+    "cocoa",
+    "coffee",
+    "rubber",
+    "geolocation",
+    "supply chain",
+    "due diligence",
+    "regulatory",
   ];
-  
+
   const searchText = `${termName} ${label} ${description}`.toLowerCase();
   return eudrPatterns.some(pattern => searchText.includes(pattern));
 }
@@ -134,12 +191,23 @@ function isEudrRelevant(termName: string, label: string, description: string): b
 /**
  * Determine if term is packaging-related
  */
-function isPackagingRelated(termName: string, label: string, description: string): boolean {
+function isPackagingRelated(
+  termName: string,
+  label: string,
+  description: string
+): boolean {
   const packagingPatterns = [
-    'packaging', 'package', 'container', 'wrapper', 'material',
-    'recyclable', 'recycling', 'reusable', 'disposal'
+    "packaging",
+    "package",
+    "container",
+    "wrapper",
+    "material",
+    "recyclable",
+    "recycling",
+    "reusable",
+    "disposal",
   ];
-  
+
   const searchText = `${termName} ${label} ${description}`.toLowerCase();
   return packagingPatterns.some(pattern => searchText.includes(pattern));
 }
@@ -147,13 +215,26 @@ function isPackagingRelated(termName: string, label: string, description: string
 /**
  * Determine if term is sustainability-related
  */
-function isSustainabilityRelated(termName: string, label: string, description: string): boolean {
+function isSustainabilityRelated(
+  termName: string,
+  label: string,
+  description: string
+): boolean {
   const sustainabilityPatterns = [
-    'sustainability', 'sustainable', 'environmental', 'eco',
-    'carbon', 'emissions', 'renewable', 'organic', 'certification',
-    'climate', 'green', 'circular'
+    "sustainability",
+    "sustainable",
+    "environmental",
+    "eco",
+    "carbon",
+    "emissions",
+    "renewable",
+    "organic",
+    "certification",
+    "climate",
+    "green",
+    "circular",
   ];
-  
+
   const searchText = `${termName} ${label} ${description}`.toLowerCase();
   return sustainabilityPatterns.some(pattern => searchText.includes(pattern));
 }
@@ -161,69 +242,83 @@ function isSustainabilityRelated(termName: string, label: string, description: s
 /**
  * Parse GS1 Web Vocabulary JSON-LD file
  */
-export async function parseGS1WebVocabulary(filePath: string): Promise<ParsedVocabTerm[]> {
+export async function parseGS1WebVocabulary(
+  filePath: string
+): Promise<ParsedVocabTerm[]> {
   console.log(`[GS1 Web Vocab Parser] Reading file: ${filePath}`);
-  
-  const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+  const fileContent = fs.readFileSync(filePath, "utf-8");
   // Remove BOM if present
-  const cleanContent = fileContent.replace(/^\uFEFF/, '');
+  const cleanContent = fileContent.replace(/^\uFEFF/, "");
   const jsonld = JSON.parse(cleanContent);
-  
-  if (!jsonld['@graph'] || !Array.isArray(jsonld['@graph'])) {
-    throw new Error('Invalid JSON-LD structure: @graph not found');
+
+  if (!jsonld["@graph"] || !Array.isArray(jsonld["@graph"])) {
+    throw new Error("Invalid JSON-LD structure: @graph not found");
   }
-  
+
   const terms: ParsedVocabTerm[] = [];
-  
-  for (const node of jsonld['@graph'] as JsonLdNode[]) {
-    const id = node['@id'];
-    
+
+  for (const node of jsonld["@graph"] as JsonLdNode[]) {
+    const id = node["@id"];
+
     // Skip blank nodes and non-GS1 terms
-    if (!id || id.startsWith('_:') || !id.startsWith('gs1:')) {
+    if (!id || id.startsWith("_:") || !id.startsWith("gs1:")) {
       continue;
     }
-    
-    const types = Array.isArray(node['@type']) ? node['@type'] : [node['@type']];
-    
+
+    const types = Array.isArray(node["@type"])
+      ? node["@type"]
+      : [node["@type"]];
+
     // Determine term type
-    let termType: 'class' | 'property' | null = null;
-    if (types.includes('owl:Class') || types.includes('rdfs:Class')) {
-      termType = 'class';
-    } else if (types.includes('owl:ObjectProperty') || types.includes('owl:DatatypeProperty') || types.includes('rdf:Property')) {
-      termType = 'property';
+    let termType: "class" | "property" | null = null;
+    if (types.includes("owl:Class") || types.includes("rdfs:Class")) {
+      termType = "class";
+    } else if (
+      types.includes("owl:ObjectProperty") ||
+      types.includes("owl:DatatypeProperty") ||
+      types.includes("rdf:Property")
+    ) {
+      termType = "property";
     }
-    
+
     if (!termType) {
       continue;
     }
-    
+
     // Extract term name (remove gs1: prefix)
-    const termName = id.replace('gs1:', '');
-    
+    const termName = id.replace("gs1:", "");
+
     // Extract label and description
-    const label = extractString(node['rdfs:label']);
-    const description = extractString(node['rdfs:comment']);
-    
+    const label = extractString(node["rdfs:label"]);
+    const description = extractString(node["rdfs:comment"]);
+
     // Extract domain and range
-    const domain = extractId(node['rdfs:domain'] || node['schema:domainIncludes']);
-    const range = extractId(node['rdfs:range'] || node['schema:rangeIncludes']);
-    
+    const domain = extractId(
+      node["rdfs:domain"] || node["schema:domainIncludes"]
+    );
+    const range = extractId(node["rdfs:range"] || node["schema:rangeIncludes"]);
+
     // Check if deprecated
-    const isDeprecated = node['sw:term_status'] === 'deprecated';
-    
+    const isDeprecated = node["sw:term_status"] === "deprecated";
+
     // Determine relevance flags
     const dppRelevant = isDppRelevant(termName, label, description);
     const esrsRelevant = isEsrsRelevant(termName, label, description);
     const eudrRelevant = isEudrRelevant(termName, label, description);
     const packagingRelated = isPackagingRelated(termName, label, description);
-    const sustainabilityRelated = isSustainabilityRelated(termName, label, description);
-    
+    const sustainabilityRelated = isSustainabilityRelated(
+      termName,
+      label,
+      description
+    );
+
     terms.push({
       termUri: id,
       termType,
       termName,
       label: label || termName,
-      description: description || '',
+      description: description || "",
       domain: domain || undefined,
       range: range || undefined,
       dppRelevant,
@@ -234,24 +329,36 @@ export async function parseGS1WebVocabulary(filePath: string): Promise<ParsedVoc
       isDeprecated,
     });
   }
-  
+
   console.log(`[GS1 Web Vocab Parser] Parsed ${terms.length} terms`);
-  console.log(`[GS1 Web Vocab Parser] DPP-relevant: ${terms.filter(t => t.dppRelevant).length}`);
-  console.log(`[GS1 Web Vocab Parser] ESRS-relevant: ${terms.filter(t => t.esrsRelevant).length}`);
-  console.log(`[GS1 Web Vocab Parser] EUDR-relevant: ${terms.filter(t => t.eudrRelevant).length}`);
-  console.log(`[GS1 Web Vocab Parser] Packaging-related: ${terms.filter(t => t.packagingRelated).length}`);
-  console.log(`[GS1 Web Vocab Parser] Sustainability-related: ${terms.filter(t => t.sustainabilityRelated).length}`);
-  
+  console.log(
+    `[GS1 Web Vocab Parser] DPP-relevant: ${terms.filter(t => t.dppRelevant).length}`
+  );
+  console.log(
+    `[GS1 Web Vocab Parser] ESRS-relevant: ${terms.filter(t => t.esrsRelevant).length}`
+  );
+  console.log(
+    `[GS1 Web Vocab Parser] EUDR-relevant: ${terms.filter(t => t.eudrRelevant).length}`
+  );
+  console.log(
+    `[GS1 Web Vocab Parser] Packaging-related: ${terms.filter(t => t.packagingRelated).length}`
+  );
+  console.log(
+    `[GS1 Web Vocab Parser] Sustainability-related: ${terms.filter(t => t.sustainabilityRelated).length}`
+  );
+
   return terms;
 }
 
 /**
  * Ingest parsed terms into database
  */
-export async function ingestWebVocabulary(terms: ParsedVocabTerm[]): Promise<{ success: number; errors: number }> {
+export async function ingestWebVocabulary(
+  terms: ParsedVocabTerm[]
+): Promise<{ success: number; errors: number }> {
   const db = await getDb();
   if (!db) {
-    throw new Error('Database not available');
+    throw new Error("Database not available");
   }
 
   let success = 0;
@@ -274,9 +381,9 @@ export async function ingestWebVocabulary(terms: ParsedVocabTerm[]): Promise<{ s
         sustainabilityRelated: term.sustainabilityRelated,
         isDeprecated: term.isDeprecated,
       });
-      
+
       success++;
-      
+
       if (success % 100 === 0) {
         console.log(`[GS1 Web Vocab Parser] Ingested ${success} terms...`);
       }
@@ -285,8 +392,10 @@ export async function ingestWebVocabulary(terms: ParsedVocabTerm[]): Promise<{ s
     }
   }
 
-  console.log(`[GS1 Web Vocab Parser] Ingestion complete: ${success} success, ${errors} errors`);
-  
+  console.log(
+    `[GS1 Web Vocab Parser] Ingestion complete: ${success} success, ${errors} errors`
+  );
+
   return { success, errors };
 }
 
@@ -295,25 +404,26 @@ export async function ingestWebVocabulary(terms: ParsedVocabTerm[]): Promise<{ s
  */
 export async function ingestGS1WebVocabulary(filePath: string): Promise<void> {
   const startTime = Date.now();
-  
+
   try {
-    console.log('[GS1 Web Vocab Parser] Starting GS1 Web Vocabulary ingestion...');
+    console.log(
+      "[GS1 Web Vocab Parser] Starting GS1 Web Vocabulary ingestion..."
+    );
     console.log(`[GS1 Web Vocab Parser] File: ${filePath}`);
-    
+
     // Step 1: Parse JSON-LD
     const terms = await parseGS1WebVocabulary(filePath);
-    
+
     // Step 2: Ingest terms
     const result = await ingestWebVocabulary(terms);
-    
+
     const duration = Math.round((Date.now() - startTime) / 1000);
-    
+
     console.log(`[GS1 Web Vocab Parser] Completed in ${duration}s`);
     console.log(`[GS1 Web Vocab Parser] Summary:`);
     console.log(`  - Terms parsed: ${terms.length}`);
     console.log(`  - Terms ingested: ${result.success}`);
     console.log(`  - Errors: ${result.errors}`);
-    
   } catch (error) {
     console.error(`[GS1 Web Vocab Parser] Ingestion failed:`, error);
     throw error;
@@ -322,15 +432,16 @@ export async function ingestGS1WebVocabulary(filePath: string): Promise<void> {
 
 // Execute if run directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const filePath = process.argv[2] || '/home/ubuntu/isa_web/data/gs1_web_vocab/gs1Voc.jsonld';
-  
+  const filePath =
+    process.argv[2] || "/home/ubuntu/isa_web/data/gs1_web_vocab/gs1Voc.jsonld";
+
   ingestGS1WebVocabulary(filePath)
     .then(() => {
-      console.log('[GS1 Web Vocab Parser] Ingestion successful');
+      console.log("[GS1 Web Vocab Parser] Ingestion successful");
       process.exit(0);
     })
-    .catch((error) => {
-      console.error('[GS1 Web Vocab Parser] Ingestion failed:', error);
+    .catch(error => {
+      console.error("[GS1 Web Vocab Parser] Ingestion failed:", error);
       process.exit(1);
     });
 }

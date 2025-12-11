@@ -23,12 +23,14 @@ This model provides the foundation for ISA's cross-regulation harmonization appr
 ### Cross-Regulation Harmonization
 
 **Problem Statement:** Companies face multiple overlapping ESG regulations (CSRD, CSDDD, EUDR, ESPR/DPP, PPWR, etc.) and often treat each in isolation, leading to:
+
 - Duplicated data collection efforts
 - Inconsistent data formats
 - Manual, inefficient processes (email, Excel)
 - Lack of scalability
 
 **ISA's Approach:** Implement a **harmonized cross-regulation data layer** that:
+
 - Identifies **Common Data Categories** that span multiple regulations
 - Maps regulations to **Critical Tracking Events (CTEs)** and **Key Data Elements (KDEs)**
 - Shows how **GS1 standards** (GTIN, GLN, EPCIS, GDSN, Digital Link) enable compliance across regulations
@@ -37,11 +39,13 @@ This model provides the foundation for ISA's cross-regulation harmonization appr
 ### Regulation Classification
 
 **Company-Level Regulations:**
+
 - CSRD (Corporate Sustainability Reporting Directive)
 - CSDDD (Corporate Sustainability Due Diligence Directive)
 - TCFD (Task Force on Climate-Related Financial Disclosures)
 
 **Product-Level Regulations:**
+
 - EUDR (EU Deforestation Regulation)
 - PPWR (Packaging and Packaging Waste Regulation)
 - ESPR (Ecodesign for Sustainable Products Regulation)
@@ -64,6 +68,7 @@ This model provides the foundation for ISA's cross-regulation harmonization appr
 **Table:** `esg_data_categories`
 
 **Fields:**
+
 - `categoryId` (unique identifier, e.g., "contact_information")
 - `categoryName` (human-readable name)
 - `description` (detailed explanation)
@@ -90,11 +95,13 @@ This model provides the foundation for ISA's cross-regulation harmonization appr
 ### ISA UX Integration
 
 **Regulation Detail Pages:**
+
 - Show which Common Data Categories each regulation requires
 - Provide visual indicators (icons, color coding) for category overlap
 - Link to GS1 standards that enable each category
 
 **Mapping Explorer:**
+
 - Filter regulations by Common Data Category
 - Show cross-regulation data reuse opportunities
 - Highlight efficiency gains from harmonized approach
@@ -108,6 +115,7 @@ This model provides the foundation for ISA's cross-regulation harmonization appr
 **Critical Tracking Events (CTEs)** are the critical moments in a product's value chain where data must be recorded for effective traceability.
 
 **Key Data Elements (KDEs)** are the specific data points captured at each CTE, following the **5W+1H framework:**
+
 - **Who** - Physical location handling a product (Where)
 - **What** - Product identification, batch/lot/serial, quantity, raw materials
 - **When** - Time of event
@@ -118,6 +126,7 @@ This model provides the foundation for ISA's cross-regulation harmonization appr
 **Table:** `critical_tracking_events`
 
 **Fields:**
+
 - `cteId` (unique identifier, e.g., "cte_raw_material_sourcing")
 - `cteName` (human-readable name)
 - `description` (detailed explanation)
@@ -143,11 +152,13 @@ This model provides the foundation for ISA's cross-regulation harmonization appr
 ### ISA UX Integration
 
 **Traceability Planner:**
+
 - Interactive tool to map product flows and identify CTEs
 - For each CTE, show required KDEs and applicable GS1 standards
 - Generate EPCIS event templates for each CTE
 
 **Regulation Compliance Checker:**
+
 - Input: product category, target regulations
 - Output: required CTEs and KDEs for compliance
 - Show GS1 standards implementation roadmap
@@ -165,6 +176,7 @@ This model provides the foundation for ISA's cross-regulation harmonization appr
 ### Product Identification Rules
 
 **GTIN (Global Trade Item Number):**
+
 - Formats: GTIN-8, GTIN-12, GTIN-13, GTIN-14
 - Application Identifiers:
   - Made-to-Stock: AI (01)
@@ -172,6 +184,7 @@ This model provides the foundation for ISA's cross-regulation harmonization appr
 - Uniqueness: Once assigned under ESPR, SHALL not be reused
 
 **Key Qualifiers (depending on delegated act):**
+
 - **Batch/Lot:** AI (10) - for production batch tracking
 - **Serial Number:** AI (21) - for individual product instances
 - **Version Number:** AI (22) - for product version tracking
@@ -183,6 +196,7 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 ### Economic Operator Identification
 
 **Party GLN (Global Location Number):**
+
 - Required for: manufacturer/brand owner, authorised representative, importer, distributor, dealer, fulfilment service provider
 - Application Identifier: AI (417) - if required by delegated act in AIDC carrier
 - Responsibility: Economic operator responsible for making DPP data available is the one placing product on market
@@ -190,21 +204,25 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 ### Facility Identification
 
 **GLN of Physical Location:**
+
 - Required for: facility where product was produced
 - Use case: Country of production verification, value chain transparency
 
 ### Data Carrier Specifications
 
 **Approved Carriers:**
+
 1. **QR Code with GS1 Digital Link URI** (uncompressed)
 2. **Data Matrix with GS1 Digital Link URI** (uncompressed)
 3. **EPC/RFID** (in addition to QR/Data Matrix, not as replacement)
 
 **GS1 Digital Link Functions:**
+
 - **Public DPP Access:** Full URI with brand owner domain → direct web content access
 - **Private DPP Data Access:** Structured URI → identifier parsing for database lookup
 
 **Symbol Placement:**
+
 - Primary: on product itself
 - Fallback: on packaging or documentation
 - Consideration: must accommodate product lifespan
@@ -214,6 +232,7 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 **Table:** `dpp_product_categories`
 
 **Fields:**
+
 - `productCategory` (unique name)
 - `inScope` (boolean)
 - `gtinLevel` (allowed GTIN formats)
@@ -229,6 +248,7 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 ### ISA UX Integration
 
 **DPP Readiness Checker:**
+
 - Input: product category
 - Output:
   - In-scope determination
@@ -240,6 +260,7 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 - Actionable next steps
 
 **Identifier Builder:**
+
 - Interactive tool to construct proper GS1 Digital Link URIs
 - Validate identifier syntax
 - Generate QR Code / Data Matrix previews
@@ -252,12 +273,14 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 ### GS1 General Specifications
 
 **Consistency:**
+
 - GTIN allocation rules: ISA's DPP model follows GenSpecs section 4 (GTIN Management Standard)
 - GLN usage: ISA follows GenSpecs section 4.5 (GLN rules)
 - AI usage: ISA references GenSpecs section 3 (Application Identifiers)
 - Data carrier specifications: ISA follows GenSpecs section 5.12 (Symbol Specification Tables)
 
 **Pending GenSpecs Changes (from DPP provisional standard):**
+
 - Rename "Made-to-Order GTIN" to "Compound GTIN"
 - Allow AI (22) for party change notifications
 - Deprecate Indicator digit 9 for Custom Trade Items
@@ -266,6 +289,7 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 ### GS1 System Architecture
 
 **Consistency:**
+
 - ISA's layered approach aligns with System Architecture's data generation → collection → processing → reporting layers
 - ISA emphasizes Digital Link as the bridge between physical products and digital data
 - ISA supports EPCIS as the canonical event-sharing standard
@@ -273,22 +297,26 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 ### GS1 Global Data Model (GDM)
 
 **Consistency:**
+
 - ISA's Common Data Categories map to GDM attribute definitions
 - ISA references GDM for product composition, recyclability, hazardous substances attributes
 - ISA should integrate GDM attribute codes in future releases for precise mapping
 
 **Integration Opportunity:**
+
 - Create explicit mappings between ISA's Common Data Categories and GDM attribute groups
 - Use GDM as the canonical source for product attribute definitions
 
 ### EPCIS / CBV
 
 **Consistency:**
+
 - ISA's CTEs map directly to EPCIS event types (ObjectEvent, TransactionEvent, TransformationEvent)
 - ISA's KDEs map to EPCIS event fields (bizStep, disposition, readPoint, bizLocation, epcList, quantityList)
 - ISA's 5W+1H framework aligns with EPCIS's "What, When, Where, Why" model
 
 **Integration:**
+
 - ISA's `epcisEvents` table already stores EPCIS events
 - ISA should provide CTE-to-EPCIS event template mappings
 - ISA should validate EPCIS events against CTE/KDE requirements
@@ -296,10 +324,12 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 ### GS1 NL Sector Data Models
 
 **Consistency:**
+
 - ISA's approach is sector-agnostic but should reference sector-specific models (Benelux FMCG, DIY/TD, DAS) where applicable
 - Sector models provide additional granularity for specific industries
 
 **Integration Opportunity:**
+
 - Add sector-specific guidance layers in ISA
 - Map sector models to ISA's Common Data Categories and CTEs
 
@@ -308,6 +338,7 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 ## Canonical URLs & References
 
 **GS1 Standards:**
+
 - GS1 General Specifications: https://ref.gs1.org
 - GS1 System Architecture: https://www.gs1.org/standards/system-architecture
 - GS1 Global Data Model: https://www.gs1.org/standards/gs1-global-data-model
@@ -315,11 +346,13 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 - GS1 Digital Link: https://www.gs1.org/standards/gs1-digital-link
 
 **EU Regulations:**
+
 - ESPR: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1781
 - Batteries Regulation: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1542
 - Construction Products Regulation: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R3110
 
 **GS1 Position Papers:**
+
 - Accelerating value chain digitalisation (2024) - internal document
 - Digital Product Passport Provisional Application Standard (WR# 23-103) - internal document
 
@@ -328,6 +361,7 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 ## ISA Implementation Roadmap
 
 ### Phase 1: Data Model (Completed)
+
 - ✅ Created `esg_data_categories` table
 - ✅ Created `critical_tracking_events` table
 - ✅ Created `dpp_product_categories` table
@@ -335,6 +369,7 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 - ✅ Created JSON seed data files
 
 ### Phase 2: UX Integration (In Progress)
+
 - 🔄 Update regulation detail pages to show Common Data Categories
 - 🔄 Create Traceability Planner (CTE/KDE mapping tool)
 - 🔄 Create DPP Readiness Checker
@@ -342,6 +377,7 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 - 🔄 Update landing page with cross-regulation harmonization narrative
 
 ### Phase 3: Advanced Features (Future)
+
 - ⏳ EPCIS event template generator
 - ⏳ GDM attribute integration
 - ⏳ Sector-specific guidance layers
@@ -363,6 +399,7 @@ Delegated acts specify minimum granularity level (GTIN, GTIN+version, GTIN+batch
 ## Change Log
 
 **Version 1.0 (December 11, 2024):**
+
 - Initial canonical model based on GS1 position paper and DPP provisional standard
 - Defined Common Data Categories, CTEs/KDEs, and DPP identification model
 - Documented alignment with existing GS1 artefacts

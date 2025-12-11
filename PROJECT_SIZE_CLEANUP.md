@@ -11,6 +11,7 @@
 Successfully completed systematic cleanup of ISA project directory, removing unused files and creating lightweight references to heavy materials. The ISA project was already well-organized with minimal bloat.
 
 **Key Achievements:**
+
 - ✅ Removed 5 unused files (~250KB)
 - ✅ Created EXTERNAL_REFERENCES.md (summarizing 13 PDFs, ~20MB)
 - ✅ Created ISA_GS1_ARTIFACT_INVENTORY.md (tracking canonical GS1 sources)
@@ -18,6 +19,7 @@ Successfully completed systematic cleanup of ISA project directory, removing unu
 - ✅ Identified publicly accessible GS1 artefacts
 
 **Project Size:**
+
 - Before: 791MB (752MB node_modules + 39MB active code/data/docs)
 - After: 791MB (no change in total, ~250KB reduction in active tree)
 - **Reason for minimal change:** ISA was already clean - no external repo zips, no large datasets in project tree
@@ -27,11 +29,13 @@ Successfully completed systematic cleanup of ISA project directory, removing unu
 ## Cleanup Actions by Slice
 
 ### Slice A: External Repository Archives
+
 **Status:** ✅ SKIP - Already clean
 
 **Finding:** No external repository zip files found in ISA project directory
 
 **Expected files (from directive):**
+
 - vc-data-model-verifier-main.zip
 - gs1-data-source-datamodel-3133.zip
 - EPCIS-master.zip
@@ -46,11 +50,13 @@ Successfully completed systematic cleanup of ISA project directory, removing unu
 ---
 
 ### Slice B: Large Datasets (GPC, Benelux)
+
 **Status:** ⏸️ DEFERRED - Not in active project tree
 
 **Finding:** Large datasets exist in `/home/ubuntu/upload/` (outside ISA project tree)
 
 **Files in /upload (not in ISA project):**
+
 - GPCasofNovember2025v20251127GB.json - 32MB
 - GPCasofNovember2025v20251127GB.xlsx - 6.2MB
 - 202511-GS1BeneluxDHZTD3.1.33-EN_0.xlsx - 12MB
@@ -64,12 +70,14 @@ Successfully completed systematic cleanup of ISA project directory, removing unu
 **Total:** ~70MB (outside ISA project tree)
 
 **Rationale for Deferral:**
+
 - Files are already outside ISA project tree
 - Not causing size/token issues for ISA
 - `server/gs1-benelux-parser.ts` exists but unclear if it uses these files
 - No GPC integration found in codebase
 
 **Future Action (if needed):**
+
 - Determine which attributes ISA actually needs
 - Extract to curated CSV/JSON (~2MB estimated)
 - Document canonical sources
@@ -79,6 +87,7 @@ Successfully completed systematic cleanup of ISA project directory, removing unu
 ---
 
 ### Slice C: Heavy Reference PDFs
+
 **Status:** ✅ COMPLETE - Summarized in EXTERNAL_REFERENCES.md
 
 **Finding:** Heavy PDFs exist in `/home/ubuntu/upload/` (outside ISA project tree)
@@ -86,6 +95,7 @@ Successfully completed systematic cleanup of ISA project directory, removing unu
 **Files Summarized:**
 
 #### EFRAG Implementation Guidance (ESG/ESRS)
+
 1. IG1MaterialityAssessment_final.pdf - 1.6MB
 2. EFRAGIG2ValueChain_final.pdf - 1.4MB
 3. efrag-ig-3-list-of-esrs-data-points---explanatory-note.pdf - 682KB
@@ -95,12 +105,14 @@ Successfully completed systematic cleanup of ISA project directory, removing unu
 **Total EFRAG:** ~5MB
 
 #### GS1 NL DAS Attribute Explanation
+
 6. 202311-ld-gs1das-explanation-on-attributes-123_aug25.pdf - 2.2MB (English)
 7. 202311-ld-gs1das-toelichting-op-velden-123_aug25.pdf - 1.7MB (Dutch)
 
 **Total GS1 NL:** ~4MB
 
 #### Other GS1 References
+
 8. DHZTD_GDSN_IndustryAgreements_3.1.19.pdf - 1.6MB
 9. gpc-in-a-nutshell_jun24-def.pdf - 292KB
 10. ReleasenotesNovember2025Publication.pdf - 347KB
@@ -110,6 +122,7 @@ Successfully completed systematic cleanup of ISA project directory, removing unu
 **Grand Total:** ~11MB (13 PDFs)
 
 **Action Taken:**
+
 - Created EXTERNAL_REFERENCES.md with comprehensive summaries
 - Documented canonical URLs (EFRAG, GS1)
 - Preserved PDFs in /upload as backup (outside ISA project tree)
@@ -121,11 +134,13 @@ Successfully completed systematic cleanup of ISA project directory, removing unu
 ---
 
 ### Slice D: Unused Media, Logs, and Scratch Files
+
 **Status:** ✅ COMPLETE
 
 **Actions Taken:**
 
 #### Removed Debug/Scratch Scripts
+
 1. `server/debug-cellar-titles.ts` - Debug script for CELLAR connector
 2. `server/test-efrag-parser.ts` - Scratch test for EFRAG parser
 3. `server/test-vector-search.ts` - Scratch test for vector search
@@ -133,14 +148,16 @@ Successfully completed systematic cleanup of ISA project directory, removing unu
 **Rationale:** One-off debug scripts, not part of test suite
 
 #### Removed Unused Reference Files
+
 4. `efrag_ig3_datapoints.xlsx` - 248KB (unused, data already in database)
 5. `sample-epcis.xml` - 4KB (unused sample file)
 
 **Rationale:** Not imported by code, not referenced in docs, not used by tests
 
 #### Preserved Files
+
 - **Diagrams in docs/:** All 4 PNG diagrams (1.3MB total) are actively used by ISA_Strategic_Roadmap.md
-- **Test files (*.test.ts):** All 23 test files preserved (part of test suite)
+- **Test files (\*.test.ts):** All 23 test files preserved (part of test suite)
 - **Logs:** None found in ISA project tree
 
 **Savings:** ~250KB
@@ -194,6 +211,7 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
 ### ISA Project Tree (Active Code/Data/Docs)
 
 **Before Cleanup:**
+
 - Total: 791MB
   - node_modules: 752MB (exclude from cleanup)
   - Active code/data/docs: 39MB
@@ -207,6 +225,7 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
     - Other: ~400KB
 
 **After Cleanup:**
+
 - Total: 791MB (no change)
 - Active code/data/docs: ~38.75MB
   - Removed: ~250KB (debug scripts + unused files)
@@ -214,6 +233,7 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
 **Savings:** ~250KB (0.6% reduction in active tree)
 
 **Why Minimal Savings:**
+
 - ISA was already well-organized and clean
 - No external repo zips to remove
 - No large datasets in active project tree
@@ -225,18 +245,22 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
 ## Documentation Created
 
 ### 1. PROJECT_INVENTORY.md
+
 **Purpose:** Comprehensive inventory of all ISA files by type and size  
 **Size:** 15KB  
 **Content:**
+
 - Directory-level breakdown
 - File classification (CORE_CODE, CORE_DATA_MODEL, etc.)
 - Size reduction opportunities analysis
 - GS1 artefact status
 
 ### 2. EXTERNAL_REFERENCES.md
+
 **Purpose:** Lightweight summaries of heavy reference PDFs  
 **Size:** 12KB  
 **Content:**
+
 - 13 PDF summaries (EFRAG IG1/IG2/IG3, GS1 NL DAS, DHZTD, GPC, etc.)
 - Canonical URLs for each
 - Relevance for ISA
@@ -244,9 +268,11 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
 - ISA integration notes
 
 ### 3. ISA_GS1_ARTIFACT_INVENTORY.md
+
 **Purpose:** Track canonical GS1 artefacts for ISA alignment  
 **Size:** 20KB  
 **Content:**
+
 - Already present artefacts (4)
 - High-priority missing artefacts (6)
 - Medium-priority missing artefacts (4)
@@ -255,9 +281,11 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
 - Acquisition status and rationale
 
 ### 4. PROJECT_SIZE_CLEANUP.md (this document)
+
 **Purpose:** Final cleanup report  
 **Size:** 10KB  
 **Content:**
+
 - Executive summary
 - Cleanup actions by slice
 - GS1 artefact acquisition results
@@ -272,6 +300,7 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
 ## System Integrity Verification
 
 ### Build and Dev Server
+
 **Status:** ✅ PASS
 
 - Dev server: Running on port 3000
@@ -281,6 +310,7 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
 - HMR: Working (hot module reload)
 
 ### Code Quality
+
 **Status:** ✅ PASS
 
 - All TypeScript files compile without errors
@@ -288,6 +318,7 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
 - Test suite structure intact (23 test files preserved)
 
 ### Data Integrity
+
 **Status:** ✅ PASS
 
 - `data/gs1_web_vocab/gs1Voc.jsonld` - Intact (2.3MB)
@@ -296,6 +327,7 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
 - No data loss
 
 ### Documentation
+
 **Status:** ✅ PASS
 
 - All core documentation intact
@@ -341,6 +373,7 @@ See ISA_GS1_ARTIFACT_INVENTORY.md for full list. Top priorities:
 ISA project cleanup completed successfully with minimal changes required. The project was already well-organized and clean, with no external repository archives, no large datasets in the active tree, and heavy reference materials already outside the project directory.
 
 **Key Outcomes:**
+
 - ✅ System integrity verified (all tests pass, dev server running)
 - ✅ Documentation enhanced (3 new reference docs created)
 - ✅ GS1 artefact inventory established (tracking 16 artefacts)
@@ -348,6 +381,7 @@ ISA project cleanup completed successfully with minimal changes required. The pr
 - ✅ Token efficiency improved (summaries replace repeated PDF loading)
 
 **Next Steps:**
+
 - User to upload 5 high-priority GS1 artefacts
 - Consider future integration of GPC and Benelux datasets if needed
 - Continue maintaining clean project structure
@@ -357,6 +391,7 @@ ISA project cleanup completed successfully with minimal changes required. The pr
 ## Appendix: File Removal Log
 
 **Removed Files:**
+
 1. `server/debug-cellar-titles.ts` - Debug script (one-off)
 2. `server/test-efrag-parser.ts` - Scratch test (one-off)
 3. `server/test-vector-search.ts` - Scratch test (one-off)
@@ -366,8 +401,9 @@ ISA project cleanup completed successfully with minimal changes required. The pr
 **Total Removed:** ~250KB
 
 **Preserved Files:**
+
 - All TypeScript source code
-- All test files (*.test.ts)
+- All test files (\*.test.ts)
 - All configuration files
 - All database schema and migrations
 - All documentation
@@ -381,11 +417,13 @@ ISA project cleanup completed successfully with minimal changes required. The pr
 **Location:** `/home/ubuntu/upload/`
 
 **Large Datasets (not in ISA project):**
+
 - GPC (38MB JSON/XLSX)
 - GS1 Benelux (52MB XLSX)
 - Total: ~90MB
 
 **Heavy PDFs (not in ISA project):**
+
 - EFRAG IG1/IG2/IG3 (5MB)
 - GS1 NL DAS (4MB)
 - Other GS1 (2MB)

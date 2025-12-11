@@ -83,39 +83,186 @@ export const SECTOR_TAG_LABELS: Record<SectorTag, string> = {
  * Keyword mappings for fallback heuristic tagging
  */
 export const GS1_IMPACT_KEYWORDS: Record<GS1ImpactTag, string[]> = {
-  IDENTIFICATION: ["GTIN", "GLN", "SSCC", "GRAI", "GIAI", "barcode", "identification", "unique identifier"],
-  PACKAGING_ATTRIBUTES: ["packaging", "recyclability", "material", "recycled content", "packaging waste", "PPWR"],
-  ESG_REPORTING: ["CSRD", "ESRS", "sustainability reporting", "ESG disclosure", "double materiality"],
-  DUE_DILIGENCE: ["EUDR", "due diligence", "supply chain transparency", "CSDDD", "CS3D", "human rights"],
-  TRACEABILITY: ["traceability", "track and trace", "EPCIS", "supply chain visibility", "origin", "batch"],
-  DPP: ["digital product passport", "DPP", "ESPR", "product data", "QR code", "Digital Link", "2D barcode"],
-  BATTERY_PASSPORT: ["battery passport", "battery regulation", "EV battery", "battery lifecycle"],
-  HEALTHCARE_SUSTAINABILITY: ["Green Deal", "healthcare", "medical", "hospital", "pharmaceutical waste"],
-  FOOD_SAFETY: ["food safety", "allergen", "food traceability", "farm to fork", "food waste"],
-  LOGISTICS_OPTIMIZATION: ["zero-emission", "ZES", "city logistics", "urban delivery", "last mile", "emissions"],
-  CIRCULAR_ECONOMY: ["circular economy", "reuse", "repair", "recycling", "take-back", "refurbishment"],
-  PRODUCT_MASTER_DATA: ["GDSN", "product data", "master data", "data quality", "attribute", "product information"],
+  IDENTIFICATION: [
+    "GTIN",
+    "GLN",
+    "SSCC",
+    "GRAI",
+    "GIAI",
+    "barcode",
+    "identification",
+    "unique identifier",
+  ],
+  PACKAGING_ATTRIBUTES: [
+    "packaging",
+    "recyclability",
+    "material",
+    "recycled content",
+    "packaging waste",
+    "PPWR",
+  ],
+  ESG_REPORTING: [
+    "CSRD",
+    "ESRS",
+    "sustainability reporting",
+    "ESG disclosure",
+    "double materiality",
+  ],
+  DUE_DILIGENCE: [
+    "EUDR",
+    "due diligence",
+    "supply chain transparency",
+    "CSDDD",
+    "CS3D",
+    "human rights",
+  ],
+  TRACEABILITY: [
+    "traceability",
+    "track and trace",
+    "EPCIS",
+    "supply chain visibility",
+    "origin",
+    "batch",
+  ],
+  DPP: [
+    "digital product passport",
+    "DPP",
+    "ESPR",
+    "product data",
+    "QR code",
+    "Digital Link",
+    "2D barcode",
+  ],
+  BATTERY_PASSPORT: [
+    "battery passport",
+    "battery regulation",
+    "EV battery",
+    "battery lifecycle",
+  ],
+  HEALTHCARE_SUSTAINABILITY: [
+    "Green Deal",
+    "healthcare",
+    "medical",
+    "hospital",
+    "pharmaceutical waste",
+  ],
+  FOOD_SAFETY: [
+    "food safety",
+    "allergen",
+    "food traceability",
+    "farm to fork",
+    "food waste",
+  ],
+  LOGISTICS_OPTIMIZATION: [
+    "zero-emission",
+    "ZES",
+    "city logistics",
+    "urban delivery",
+    "last mile",
+    "emissions",
+  ],
+  CIRCULAR_ECONOMY: [
+    "circular economy",
+    "reuse",
+    "repair",
+    "recycling",
+    "take-back",
+    "refurbishment",
+  ],
+  PRODUCT_MASTER_DATA: [
+    "GDSN",
+    "product data",
+    "master data",
+    "data quality",
+    "attribute",
+    "product information",
+  ],
 };
 
 export const SECTOR_KEYWORDS: Record<SectorTag, string[]> = {
-  RETAIL: ["retail", "store", "consumer", "e-commerce", "shopping", "supermarket"],
-  HEALTHCARE: ["hospital", "medical", "pharma", "pharmaceutical", "healthcare", "patient", "clinical", "doctor"],
-  FOOD: ["food", "beverage", "agriculture", "farm", "grocery", "restaurant", "catering"],
-  LOGISTICS: ["logistics", "transport", "delivery", "warehouse", "3PL", "freight", "shipping", "distribution"],
+  RETAIL: [
+    "retail",
+    "store",
+    "consumer",
+    "e-commerce",
+    "shopping",
+    "supermarket",
+  ],
+  HEALTHCARE: [
+    "hospital",
+    "medical",
+    "pharma",
+    "pharmaceutical",
+    "healthcare",
+    "patient",
+    "clinical",
+    "doctor",
+  ],
+  FOOD: [
+    "food",
+    "beverage",
+    "agriculture",
+    "farm",
+    "grocery",
+    "restaurant",
+    "catering",
+  ],
+  LOGISTICS: [
+    "logistics",
+    "transport",
+    "delivery",
+    "warehouse",
+    "3PL",
+    "freight",
+    "shipping",
+    "distribution",
+  ],
   DIY: ["DIY", "home improvement", "hardware store", "building supplies"],
-  CONSTRUCTION: ["construction", "building", "contractor", "infrastructure", "building materials"],
+  CONSTRUCTION: [
+    "construction",
+    "building",
+    "contractor",
+    "infrastructure",
+    "building materials",
+  ],
   TEXTILES: ["textile", "apparel", "fashion", "clothing", "fabric", "garment"],
-  ELECTRONICS: ["electronics", "consumer electronics", "IT hardware", "electrical equipment", "appliances"],
-  AUTOMOTIVE: ["automotive", "vehicle", "car", "EV", "electric vehicle", "auto parts"],
-  CHEMICALS: ["chemical", "REACH", "hazardous substances", "chemical manufacturing"],
-  PACKAGING: ["packaging manufacturer", "packaging converter", "packaging materials", "packaging industry"],
+  ELECTRONICS: [
+    "electronics",
+    "consumer electronics",
+    "IT hardware",
+    "electrical equipment",
+    "appliances",
+  ],
+  AUTOMOTIVE: [
+    "automotive",
+    "vehicle",
+    "car",
+    "EV",
+    "electric vehicle",
+    "auto parts",
+  ],
+  CHEMICALS: [
+    "chemical",
+    "REACH",
+    "hazardous substances",
+    "chemical manufacturing",
+  ],
+  PACKAGING: [
+    "packaging manufacturer",
+    "packaging converter",
+    "packaging materials",
+    "packaging industry",
+  ],
   GENERAL: [], // No specific keywords, default fallback
 };
 
 /**
  * Helper function to infer GS1 impact tags from text using keywords
  */
-export function inferGS1ImpactTags(text: string, maxTags: number = 3): GS1ImpactTag[] {
+export function inferGS1ImpactTags(
+  text: string,
+  maxTags: number = 3
+): GS1ImpactTag[] {
   const lowerText = text.toLowerCase();
   const scores: Map<GS1ImpactTag, number> = new Map();
 
@@ -141,13 +288,16 @@ export function inferGS1ImpactTags(text: string, maxTags: number = 3): GS1Impact
 /**
  * Helper function to infer sector tags from text using keywords
  */
-export function inferSectorTags(text: string, maxTags: number = 3): SectorTag[] {
+export function inferSectorTags(
+  text: string,
+  maxTags: number = 3
+): SectorTag[] {
   const lowerText = text.toLowerCase();
   const scores: Map<SectorTag, number> = new Map();
 
   for (const [tag, keywords] of Object.entries(SECTOR_KEYWORDS)) {
     if (keywords.length === 0) continue; // Skip GENERAL
-    
+
     let score = 0;
     for (const keyword of keywords) {
       if (lowerText.includes(keyword.toLowerCase())) {

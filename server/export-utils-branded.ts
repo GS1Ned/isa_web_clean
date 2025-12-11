@@ -1,6 +1,6 @@
 /**
  * Enhanced Export Utilities with Branding Support
- * 
+ *
  * Provides PDF and CSV export functionality with customizable branding,
  * logos, headers, and footers for white-label distribution.
  */
@@ -106,7 +106,9 @@ export function exportRegulationToPDFBranded(
   doc.setFont("Helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(branding.primaryColor || "#000000");
-  doc.text(branding.companyName, pageWidth - 15, yPosition + 5, { align: "right" });
+  doc.text(branding.companyName, pageWidth - 15, yPosition + 5, {
+    align: "right",
+  });
 
   // Header text
   doc.setFont("Helvetica", "normal");
@@ -346,12 +348,9 @@ export function exportRegulationToPDFBranded(
     }
 
     // Page number
-    doc.text(
-      `Page ${i} of ${totalPages}`,
-      pageWidth - 30,
-      pageHeight - 10,
-      { align: "right" }
-    );
+    doc.text(`Page ${i} of ${totalPages}`, pageWidth - 30, pageHeight - 10, {
+      align: "right",
+    });
 
     // Divider line
     doc.setDrawColor(200, 200, 200);
@@ -364,7 +363,10 @@ export function exportRegulationToPDFBranded(
 /**
  * Generate filename for export with timestamp
  */
-export function generateExportFilename(title: string, format: "pdf" | "csv"): string {
+export function generateExportFilename(
+  title: string,
+  format: "pdf" | "csv"
+): string {
   const sanitized = title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
@@ -399,7 +401,9 @@ export function exportRegulationToCSVBranded(
   lines.push(`"Status","${data.status}"`);
   lines.push(`"Effective Date","${data.effectiveDate.toLocaleDateString()}"`);
   if (data.enforcementDate) {
-    lines.push(`"Enforcement Date","${data.enforcementDate.toLocaleDateString()}"`);
+    lines.push(
+      `"Enforcement Date","${data.enforcementDate.toLocaleDateString()}"`
+    );
   }
   lines.push("");
 

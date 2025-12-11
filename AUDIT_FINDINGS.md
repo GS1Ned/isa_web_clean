@@ -34,6 +34,7 @@
 #### 1. **Key Features - Missing News Hub**
 
 **Current Doc Says:**
+
 ```
 ### 1. ESG Hub - Regulation Explorer
 ### 2. GS1 Standards Catalog (planned)
@@ -46,6 +47,7 @@
 **Reality:** Missing **News Hub** feature (implemented in Phases 4-6)
 
 **Gap:** News Hub is a major feature with:
+
 - EU Official Journal scraper
 - GS1 Standards News scraper
 - Dutch/Benelux sources (Green Deal Zorg, ZES)
@@ -62,6 +64,7 @@
 #### 2. **Architecture Layers - Missing News Pipeline**
 
 **Current Doc Shows:**
+
 ```
 Frontend (React + Tailwind)
   ↕ tRPC
@@ -75,6 +78,7 @@ External Services
 **Reality:** Missing **News Ingestion Pipeline** layer
 
 **Gap:** No mention of:
+
 - Playwright-based web scrapers
 - News AI processor (LLM enrichment)
 - News pipeline orchestration
@@ -88,6 +92,7 @@ External Services
 #### 3. **Database Layer - Outdated Counts**
 
 **Current Doc Says:**
+
 ```
 - Regulations (35 EU regulations)
 - GS1 Standards (60 standards)
@@ -100,6 +105,7 @@ External Services
 **Reality:** Missing **News Hub tables**
 
 **Gap:** No mention of:
+
 - `hub_news` table (news articles with AI enrichment)
 - `hub_news_history` table (versioning for updates)
 - News-related fields (sourceType, regulationTags, gs1ImpactTags, sectorTags, etc.)
@@ -111,12 +117,14 @@ External Services
 #### 4. **Data Flow - Missing News Pipeline Flow**
 
 **Current Doc Shows:**
+
 - Ask ISA RAG Pipeline
 - Knowledge Base Generation
 
 **Reality:** Missing **News Ingestion & Enrichment Pipeline**
 
 **Gap:** No documentation of:
+
 ```
 Scheduled Cron Job
     ↓
@@ -155,6 +163,7 @@ News Hub UI displays enriched articles
 **Reality:** Implemented timeline visualization feature
 
 **Gap:** Missing documentation of:
+
 - RegulationTimeline component
 - Chronological milestone + news display
 - Interactive filtering (event type, time period)
@@ -172,6 +181,7 @@ News Hub UI displays enriched articles
 **Reality:** Implemented multi-regulation comparison feature
 
 **Gap:** Missing documentation of:
+
 - CompareTimelines component
 - Side-by-side regulation comparison (2-4 regulations)
 - Overlapping event detection
@@ -187,6 +197,7 @@ News Hub UI displays enriched articles
 #### 1. **News Hub Architecture**
 
 Should include:
+
 - **News Sources:** List of scrapers and their targets
 - **Scraping Strategy:** Playwright-based, scheduled execution
 - **AI Enrichment:** LLM-based tagging and analysis
@@ -196,6 +207,7 @@ Should include:
 #### 2. **Timeline Visualization**
 
 Should include:
+
 - **Component:** RegulationTimeline
 - **Data Sources:** Milestones + related news
 - **Features:** Filtering, color coding, responsive design
@@ -204,6 +216,7 @@ Should include:
 #### 3. **Multi-Regulation Comparison**
 
 Should include:
+
 - **Component:** CompareTimelines
 - **Features:** Multi-select, overlapping detection, URL state
 - **Use Cases:** Compliance planning, executive briefings
@@ -238,6 +251,7 @@ Should include:
 ### Priority 1: Add News Hub to ARCHITECTURE.md
 
 **Sections to Add:**
+
 1. **Key Features** - Add "News Hub" section
 2. **Architecture Layers** - Add "News Pipeline" layer
 3. **Database Layer** - Add hub_news tables
@@ -250,6 +264,7 @@ Should include:
 ### Priority 2: Add Timeline Visualization to ARCHITECTURE.md
 
 **Sections to Add:**
+
 1. **Key Features** - Add "Timeline Visualization" section
 2. **UI Components** - Mention RegulationTimeline component
 
@@ -260,6 +275,7 @@ Should include:
 ### Priority 3: Add Multi-Regulation Comparison to ARCHITECTURE.md
 
 **Sections to Add:**
+
 1. **Key Features** - Add "Multi-Regulation Comparison" section
 2. **UI Components** - Mention CompareTimelines component
 
@@ -280,12 +296,14 @@ Should include:
 **Total Estimated Cost:** ~1,000 tokens for all updates
 
 **Approach:**
+
 1. Create targeted edits (not full rewrites)
 2. Reuse content from summary docs
 3. Batch related updates together
 4. Use file edit tool for precision
 
 **Alternative (Higher Cost):**
+
 - Full ARCHITECTURE.md rewrite: ~3,000 tokens
 - **Savings:** 2,000 tokens (67% reduction)
 
@@ -306,13 +324,13 @@ Should include:
 ## Audit Summary
 
 **ARCHITECTURE.md Status:**
+
 - **Accuracy:** 60% (core tech stack correct, major features missing)
 - **Completeness:** 50% (News Hub, timeline, comparison undocumented)
 - **Consistency:** 40% (conflicts with NEWS_PIPELINE.md and summary docs)
 - **Maintenance:** Good (updated 8 days ago, but missing recent work)
 
 **Overall Assessment:** Needs significant updates to reflect current reality
-
 
 ---
 
@@ -340,6 +358,7 @@ Should include:
 #### 1. **Missing News Hub Tables**
 
 **Current Doc Says:**
+
 ```
 ISA uses 12 core tables organized into 4 functional domains
 ```
@@ -349,6 +368,7 @@ ISA uses 12 core tables organized into 4 functional domains
 **Gap:** No documentation of:
 
 **`hub_news` table** (primary news storage):
+
 - `id` (INT PK) - Auto-increment primary key
 - `title` (VARCHAR 500) - News article title
 - `summary` (TEXT) - Article summary/excerpt
@@ -367,6 +387,7 @@ ISA uses 12 core tables organized into 4 functional domains
 - `updatedAt` (TIMESTAMP) - Last modification
 
 **`hub_news_history` table** (versioning):
+
 - Same fields as hub_news
 - `originalNewsId` (INT) - Foreign key to hub_news
 - Tracks changes to news articles over time
@@ -378,6 +399,7 @@ ISA uses 12 core tables organized into 4 functional domains
 #### 2. **Outdated Table Count**
 
 **Current Doc Says:**
+
 ```
 ISA uses 12 core tables
 ```
@@ -391,6 +413,7 @@ ISA uses 12 core tables
 #### 3. **Missing Functional Domain**
 
 **Current Doc Says:**
+
 ```
 4 functional domains:
 1. Compliance Data
@@ -402,6 +425,7 @@ ISA uses 12 core tables
 **Reality:** Missing **5th domain - News & Intelligence**
 
 **Gap:** Should include:
+
 - **News & Intelligence** domain
   - `hub_news` - News articles with AI enrichment
   - `hub_news_history` - News versioning and change tracking
@@ -415,6 +439,7 @@ ISA uses 12 core tables
 #### 1. **News Hub Data Model**
 
 Should document:
+
 - **Table Purpose:** Store ESG news from EU, GS1, and Dutch sources
 - **AI Enrichment:** LLM-generated tags, analysis, and actions
 - **Versioning Strategy:** hub_news_history tracks changes
@@ -424,6 +449,7 @@ Should document:
 #### 2. **News Source Types**
 
 Should document enum values:
+
 - `EU_OFFICIAL` - EUR-Lex Official Journal
 - `GS1_STANDARDS` - GS1 Standards News
 - `DUTCH_NATIONAL` - Green Deal Zorg, ZES, etc.
@@ -431,6 +457,7 @@ Should document enum values:
 #### 3. **Impact Level Classification**
 
 Should document enum values:
+
 - `HIGH` - Major regulatory changes, urgent compliance requirements
 - `MEDIUM` - Important updates, moderate impact
 - `LOW` - Minor updates, informational
@@ -442,6 +469,7 @@ Should document enum values:
 ### Priority 1: Add News Hub Tables to DATA_MODEL.md
 
 **Sections to Add:**
+
 1. **Functional Domains** - Add "News & Intelligence" domain
 2. **Table Documentation** - Add hub_news and hub_news_history
 3. **Relationships** - Document news ↔ regulations links
@@ -471,12 +499,14 @@ Should document enum values:
 **Total Estimated Cost:** ~650 tokens for all updates
 
 **Approach:**
+
 1. Add news tables as new section (don't rewrite existing)
 2. Update table count inline
 3. Add relationships section
 4. Reference NEWS_PIPELINE.md for pipeline details
 
 **Alternative (Higher Cost):**
+
 - Full DATA_MODEL.md rewrite: ~2,000 tokens
 - **Savings:** 1,350 tokens (68% reduction)
 
@@ -485,13 +515,13 @@ Should document enum values:
 ## Audit Summary
 
 **DATA_MODEL.md Status:**
+
 - **Accuracy:** 70% (documented tables correct, but incomplete)
 - **Completeness:** 50% (2 major tables missing)
 - **Consistency:** 60% (conflicts with schema.ts and NEWS_PIPELINE.md)
 - **Maintenance:** Good (updated 8 days ago, but missing recent schema changes)
 
 **Overall Assessment:** Needs critical updates to document News Hub data model
-
 
 ---
 
@@ -515,6 +545,7 @@ Should document enum values:
 **Current Doc:** No mention of News Hub anywhere
 
 **Reality:** News Hub is a **major completed feature** with:
+
 - EU Official Journal scraper
 - GS1 Standards News scraper
 - Dutch/Benelux sources (Green Deal Zorg, ZES)
@@ -531,6 +562,7 @@ Should document enum values:
 #### 2. **Outdated Q1 2025 Status**
 
 **Current Doc Says:**
+
 ```
 Q1 2025 (In Progress)
 ├─ Platform stabilization
@@ -552,6 +584,7 @@ Q1 2025 (In Progress)
 **Current Doc:** Doesn't list recent completions
 
 **Reality:** Completed in Q4 2025:
+
 - News Hub Phases 4-6 (Dutch sources, GS1 insights UI, bidirectional links)
 - Timeline visualization feature
 - Multi-regulation comparison tool
@@ -567,6 +600,7 @@ Q1 2025 (In Progress)
 #### 1. **News Hub Roadmap**
 
 Should include:
+
 - **Q4 2024:** Initial News Hub development
 - **Q1 2025:** EU and GS1 source integration
 - **Q2 2025:** AI enrichment pipeline
@@ -576,6 +610,7 @@ Should include:
 #### 2. **Completed Features Section**
 
 Should add to "Completed Features":
+
 - **News Hub:** ESG news aggregation and intelligence
   - EU Official Journal monitoring
   - GS1 Standards News tracking
@@ -605,6 +640,7 @@ Should add to "Completed Features":
 #### 1. **Phase Status Inconsistency**
 
 **Current Doc Shows:**
+
 - Phase 1: Deep Understanding & Validation ⏳ (in progress)
 - Phase 2: Target Design (no status)
 - Phase 3: Implementation (no status)
@@ -626,6 +662,7 @@ Should add to "Completed Features":
 **Current Doc:** Completed items scattered across phases
 
 **Reality:** Should have "✅ COMPLETE" markers on:
+
 - Phase 4: Dutch sources (Green Deal Zorg, ZES) ✅
 - Phase 5: GS1 insights UI (gs1ImpactAnalysis, suggestedActions) ✅
 - Phase 6: Bidirectional links (Recent Developments panels) ✅
@@ -641,6 +678,7 @@ Should add to "Completed Features":
 **Current Doc:** Focuses on News Hub phases
 
 **Reality:** Missing other high-value work:
+
 - Documentation updates (ARCHITECTURE.md, DATA_MODEL.md drift)
 - Production readiness (error handling, monitoring)
 - Performance optimization (token usage, caching)
@@ -655,6 +693,7 @@ Should add to "Completed Features":
 ### Priority 1: Update ROADMAP.md with News Hub
 
 **Sections to Update:**
+
 1. **Completed Features** - Add News Hub section
 2. **Timeline** - Update to Q4 2025, add completed quarters
 3. **Current Status** - Reflect December 2025 reality
@@ -666,6 +705,7 @@ Should add to "Completed Features":
 ### Priority 2: Update todo.md Phase Status
 
 **Actions:**
+
 1. Mark Phase 4 as "✅ COMPLETE" (with notes on deferred items)
 2. Mark Phase 5 as "✅ COMPLETE" (GS1 insights UI done)
 3. Mark Phase 6 as "✅ COMPLETE" (bidirectional links done)
@@ -678,6 +718,7 @@ Should add to "Completed Features":
 ### Priority 3: Add Documentation Tasks to todo.md
 
 **New Section:**
+
 ```markdown
 ## Documentation & Alignment Tasks
 
@@ -697,12 +738,14 @@ Should add to "Completed Features":
 **Total Estimated Cost:** ~550 tokens for all planning doc updates
 
 **Approach:**
+
 1. Batch ROADMAP.md updates (completed features + timeline)
 2. Quick status marker updates in todo.md
 3. Add documentation tasks section
 4. Avoid full rewrites, use targeted edits
 
 **Alternative (Higher Cost):**
+
 - Full ROADMAP.md rewrite: ~1,500 tokens
 - Full todo.md restructure: ~1,000 tokens
 - **Savings:** 1,950 tokens (78% reduction)
@@ -713,22 +756,24 @@ Should add to "Completed Features":
 
 ### Documentation Health Scores
 
-| Document | Accuracy | Completeness | Consistency | Maintenance |
-|----------|----------|--------------|-------------|-------------|
-| **ARCHITECTURE.md** | 60% | 50% | 40% | Good |
-| **DATA_MODEL.md** | 70% | 50% | 60% | Good |
-| **ROADMAP.md** | 70% | 40% | 50% | Outdated |
-| **todo.md** | 80% | 70% | 70% | Excellent |
+| Document            | Accuracy | Completeness | Consistency | Maintenance |
+| ------------------- | -------- | ------------ | ----------- | ----------- |
+| **ARCHITECTURE.md** | 60%      | 50%          | 40%         | Good        |
+| **DATA_MODEL.md**   | 70%      | 50%          | 60%         | Good        |
+| **ROADMAP.md**      | 70%      | 40%          | 50%         | Outdated    |
+| **todo.md**         | 80%      | 70%          | 70%         | Excellent   |
 
 ### Overall Assessment
 
 **Critical Issues:**
+
 1. News Hub completely undocumented in ARCHITECTURE.md and ROADMAP.md
 2. hub_news tables missing from DATA_MODEL.md
 3. ROADMAP.md timeline 9 months outdated
 4. Phase status inconsistencies in todo.md
 
 **Impact on Development:**
+
 - New developers would miss major feature (News Hub)
 - Database schema understanding incomplete
 - Project timeline misleading
@@ -743,6 +788,7 @@ Should add to "Completed Features":
 **Phase 3: Update and Consolidate Documentation**
 
 **Estimated Total Cost:** ~1,600 tokens
+
 - ARCHITECTURE.md updates: ~500 tokens
 - DATA_MODEL.md updates: ~400 tokens
 - ROADMAP.md updates: ~300 tokens

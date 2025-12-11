@@ -21,7 +21,11 @@
         "uri": "https://ref.gs1.org/cbv/BizStep-commissioning",
         "label": "Commissioning",
         "description": "Process of associating an instance-level identifier with a specific object. Encompasses catching (fish), harvesting (crops), picking (produce), slaughtering (livestock).",
-        "esg_use_cases": ["EUDR origin tracking", "CSRD raw material sourcing", "Farm-to-fork traceability"],
+        "esg_use_cases": [
+          "EUDR origin tracking",
+          "CSRD raw material sourcing",
+          "Farm-to-fork traceability"
+        ],
         "regulation_mapping": ["EUDR", "CSRD", "Organic Regulation"]
       },
       {
@@ -29,7 +33,10 @@
         "uri": "https://ref.gs1.org/cbv/BizStep-shipping",
         "label": "Shipping",
         "description": "Process of staging outbound, loading, and departing. Used when granular process step information is unknown.",
-        "esg_use_cases": ["CSRD Scope 3 transport emissions", "Supply chain mapping"],
+        "esg_use_cases": [
+          "CSRD Scope 3 transport emissions",
+          "Supply chain mapping"
+        ],
         "regulation_mapping": ["CSRD", "CBAM"]
       },
       {
@@ -37,7 +44,10 @@
         "uri": "https://ref.gs1.org/cbv/BizStep-receiving",
         "label": "Receiving",
         "description": "Process of accepting goods at a destination location.",
-        "esg_use_cases": ["Custody chain verification", "EUDR due diligence checkpoints"],
+        "esg_use_cases": [
+          "Custody chain verification",
+          "EUDR due diligence checkpoints"
+        ],
         "regulation_mapping": ["EUDR", "CSRD"]
       },
       {
@@ -45,7 +55,11 @@
         "uri": "https://ref.gs1.org/cbv/BizStep-transforming",
         "label": "Transforming",
         "description": "Process where input objects are consumed to produce output objects (manufacturing, processing).",
-        "esg_use_cases": ["EUDR product transformation tracking", "CSRD manufacturing emissions", "PPWR material composition"],
+        "esg_use_cases": [
+          "EUDR product transformation tracking",
+          "CSRD manufacturing emissions",
+          "PPWR material composition"
+        ],
         "regulation_mapping": ["EUDR", "CSRD", "PPWR"]
       },
       {
@@ -53,7 +67,10 @@
         "uri": "https://ref.gs1.org/cbv/BizStep-destroying",
         "label": "Destroying",
         "description": "Process of terminating an object (disposal, incineration).",
-        "esg_use_cases": ["PPWR end-of-life tracking", "Circular economy waste flows"],
+        "esg_use_cases": [
+          "PPWR end-of-life tracking",
+          "Circular economy waste flows"
+        ],
         "regulation_mapping": ["PPWR", "Waste Framework Directive"]
       },
       {
@@ -61,7 +78,10 @@
         "uri": "https://ref.gs1.org/cbv/BizStep-recycling",
         "label": "Recycling",
         "description": "Process of converting waste materials into new materials and objects.",
-        "esg_use_cases": ["PPWR recycled content verification", "Circular economy material loops"],
+        "esg_use_cases": [
+          "PPWR recycled content verification",
+          "Circular economy material loops"
+        ],
         "regulation_mapping": ["PPWR", "Circular Economy Action Plan"]
       },
       {
@@ -69,7 +89,10 @@
         "uri": "https://ref.gs1.org/cbv/BizStep-repairing",
         "label": "Repairing",
         "description": "Process of restoring an object to a functional state.",
-        "esg_use_cases": ["PPWR product lifetime extension", "Right to repair compliance"],
+        "esg_use_cases": [
+          "PPWR product lifetime extension",
+          "Right to repair compliance"
+        ],
         "regulation_mapping": ["PPWR", "Ecodesign Directive"]
       },
       {
@@ -90,7 +113,10 @@
         "uri": "https://ref.gs1.org/cbv/Disp-in_transit",
         "label": "In Transit",
         "description": "Object is moving between locations.",
-        "esg_use_cases": ["CSRD Scope 3 transport tracking", "CBAM emissions calculation"],
+        "esg_use_cases": [
+          "CSRD Scope 3 transport tracking",
+          "CBAM emissions calculation"
+        ],
         "regulation_mapping": ["CSRD", "CBAM"]
       },
       {
@@ -98,7 +124,10 @@
         "uri": "https://ref.gs1.org/cbv/Disp-active",
         "label": "Active",
         "description": "Object is in active use or circulation.",
-        "esg_use_cases": ["Product lifetime tracking", "Circular economy status"],
+        "esg_use_cases": [
+          "Product lifetime tracking",
+          "Circular economy status"
+        ],
         "regulation_mapping": ["PPWR", "Ecodesign"]
       },
       {
@@ -106,7 +135,10 @@
         "uri": "https://ref.gs1.org/cbv/Disp-recalled",
         "label": "Recalled",
         "description": "Object has been recalled due to safety or quality issues.",
-        "esg_use_cases": ["Product safety compliance", "Supply chain risk management"],
+        "esg_use_cases": [
+          "Product safety compliance",
+          "Supply chain risk management"
+        ],
         "regulation_mapping": ["General Product Safety Regulation"]
       },
       {
@@ -130,7 +162,10 @@
         "uri": "https://ref.gs1.org/cbv/Disp-recyclable",
         "label": "Recyclable",
         "description": "Object is designated for recycling.",
-        "esg_use_cases": ["PPWR recycling compliance", "Circular economy flows"],
+        "esg_use_cases": [
+          "PPWR recycling compliance",
+          "Circular economy flows"
+        ],
         "regulation_mapping": ["PPWR"]
       },
       {
@@ -151,7 +186,11 @@
         "uri": "https://ref.gs1.org/cbv/BTT-cert",
         "label": "Certification",
         "description": "Document confirming certain characteristics of an object, person, or organization, typically issued by a third party.",
-        "esg_use_cases": ["EUDR certification tracking (FSC, PEFC)", "CSRD sustainability certifications", "Organic certifications"],
+        "esg_use_cases": [
+          "EUDR certification tracking (FSC, PEFC)",
+          "CSRD sustainability certifications",
+          "Organic certifications"
+        ],
         "regulation_mapping": ["EUDR", "CSRD", "Organic Regulation"]
       },
       {
@@ -159,7 +198,10 @@
         "uri": "https://ref.gs1.org/cbv/BTT-pedigree",
         "label": "Pedigree",
         "description": "Record that traces the ownership or custody and transactions of a product as it moves among trading partners.",
-        "esg_use_cases": ["EUDR due diligence documentation", "CSRD supply chain transparency"],
+        "esg_use_cases": [
+          "EUDR due diligence documentation",
+          "CSRD supply chain transparency"
+        ],
         "regulation_mapping": ["EUDR", "CSRD"]
       },
       {
@@ -175,7 +217,10 @@
         "uri": "https://ref.gs1.org/cbv/BTT-desadv",
         "label": "Despatch Advice",
         "description": "Document informing the consignee about the despatch of goods (Advanced Shipment Notice).",
-        "esg_use_cases": ["CSRD Scope 3 shipment tracking", "Transport emissions"],
+        "esg_use_cases": [
+          "CSRD Scope 3 shipment tracking",
+          "Transport emissions"
+        ],
         "regulation_mapping": ["CSRD", "CBAM"]
       }
     ]
@@ -230,7 +275,11 @@
         "uri": "https://gs1.org/voc/MeasurementType-Temperature",
         "label": "Temperature",
         "description": "Temperature measurement (typically in Celsius or Fahrenheit).",
-        "esg_use_cases": ["Cold chain monitoring", "CSRD Scope 3 refrigerant emissions", "Food safety"],
+        "esg_use_cases": [
+          "Cold chain monitoring",
+          "CSRD Scope 3 refrigerant emissions",
+          "Food safety"
+        ],
         "regulation_mapping": ["CSRD", "Food Safety Regulation"]
       },
       {
@@ -238,7 +287,10 @@
         "uri": "https://gs1.org/voc/MeasurementType-Humidity",
         "label": "Humidity",
         "description": "Relative humidity measurement.",
-        "esg_use_cases": ["Storage condition monitoring", "Product quality assurance"],
+        "esg_use_cases": [
+          "Storage condition monitoring",
+          "Product quality assurance"
+        ],
         "regulation_mapping": ["Food Safety Regulation"]
       },
       {
@@ -246,7 +298,10 @@
         "uri": "https://gs1.org/voc/MeasurementType-Speed",
         "label": "Speed",
         "description": "Speed measurement (e.g., vehicle speed).",
-        "esg_use_cases": ["CSRD Scope 3 transport emissions calculation", "Fleet efficiency"],
+        "esg_use_cases": [
+          "CSRD Scope 3 transport emissions calculation",
+          "Fleet efficiency"
+        ],
         "regulation_mapping": ["CSRD", "CBAM"]
       },
       {
@@ -254,7 +309,10 @@
         "uri": "https://gs1.org/voc/MeasurementType-Mileage",
         "label": "Mileage",
         "description": "Distance traveled measurement.",
-        "esg_use_cases": ["CSRD Scope 3 transport distance", "CBAM emissions calculation"],
+        "esg_use_cases": [
+          "CSRD Scope 3 transport distance",
+          "CBAM emissions calculation"
+        ],
         "regulation_mapping": ["CSRD", "CBAM"]
       }
     ]

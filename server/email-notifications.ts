@@ -89,7 +89,7 @@ function getDailyDigestTemplate(
 ): string {
   const newsHtml = newsItems
     .map(
-      (item) => `
+      item => `
     <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #ddd;">
       <h4 style="margin: 0 0 5px 0;">${item.title}</h4>
       <p style="margin: 0 0 10px 0; color: #666;">${item.summary}</p>
@@ -101,7 +101,7 @@ function getDailyDigestTemplate(
 
   const regulationHtml = regulationUpdates
     .map(
-      (item) => `
+      item => `
     <li><strong>${item.name}:</strong> ${item.change}</li>
   `
     )
@@ -150,7 +150,11 @@ export async function sendDeadlineAlert(
     if (!db) return false;
 
     // Get user and regulation details
-    const user = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+    const user = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1);
     const regulation = await db
       .select()
       .from(regulations)
@@ -189,7 +193,11 @@ export async function sendNewRegulationNotification(
     if (!db) return false;
 
     // Get user and regulation details
-    const user = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+    const user = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1);
     const regulation = await db
       .select()
       .from(regulations)
@@ -249,14 +257,18 @@ export async function sendDailyDigests(): Promise<number> {
       const recentNews = await db
         .select()
         .from(hubNews)
-      // Fetch recent items for filtering
-      .orderBy(hubNews.publishedDate)
+        // Fetch recent items for filtering
+        .orderBy(hubNews.publishedDate)
         .limit(5);
 
       // Filter news from last 24 hours
       const newsItems = recentNews
-        .filter((item) => item.publishedDate && new Date(item.publishedDate) > twentyFourHoursAgo)
-        .map((item) => ({
+        .filter(
+          item =>
+            item.publishedDate &&
+            new Date(item.publishedDate) > twentyFourHoursAgo
+        )
+        .map(item => ({
           title: item.title,
           summary: item.summary || item.content?.substring(0, 150) || "",
           url: item.sourceUrl || "https://isa.example.com/hub/news",
@@ -284,7 +296,9 @@ export async function sendDailyDigests(): Promise<number> {
 /**
  * Process all pending alerts
  */
-export async function processPendingAlerts(daysBeforeDeadline: number = 7): Promise<{ sent: number; failed: number }> {
+export async function processPendingAlerts(
+  daysBeforeDeadline: number = 7
+): Promise<{ sent: number; failed: number }> {
   try {
     const db = await getDb();
     if (!db) return { sent: 0, failed: 0 };
@@ -299,7 +313,11 @@ export async function processPendingAlerts(daysBeforeDeadline: number = 7): Prom
       .where(eq(userAlerts.isActive, true));
 
     for (const alert of activeAlerts) {
-      if (alert.alertType === "DEADLINE_APPROACHING" && alert.regulationId && alert.daysBeforeDeadline) {
+      if (
+        alert.alertType === "DEADLINE_APPROACHING" &&
+        alert.regulationId &&
+        alert.daysBeforeDeadline
+      ) {
         const success = await sendDeadlineAlert(
           alert.userId,
           alert.regulationId,
@@ -307,7 +325,10 @@ export async function processPendingAlerts(daysBeforeDeadline: number = 7): Prom
         );
         success ? sent++ : failed++;
       } else if (alert.alertType === "NEW_REGULATION" && alert.regulationId) {
-        const success = await sendNewRegulationNotification(alert.userId, alert.regulationId);
+        const success = await sendNewRegulationNotification(
+          alert.userId,
+          alert.regulationId
+        );
         success ? sent++ : failed++;
       }
     }

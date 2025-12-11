@@ -3,21 +3,27 @@ import { Link } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  AlertCircle, 
-  ArrowRight, 
-  CheckCircle2, 
-  Edit2, 
-  Loader2, 
-  RefreshCw, 
-  Save, 
+import {
+  AlertCircle,
+  ArrowRight,
+  CheckCircle2,
+  Edit2,
+  Loader2,
+  RefreshCw,
+  Save,
   ThumbsDown,
   TrendingUp,
-  Zap
+  Zap,
 } from "lucide-react";
 
 /**
@@ -38,10 +44,10 @@ export default function AdminPromptOptimization() {
   );
 
   // Fetch vote distribution by standard
-  const voteDistributionQuery = trpc.regulations.getVoteDistributionByStandard.useQuery(
-    undefined,
-    { enabled: !!user && user.role === "admin" }
-  );
+  const voteDistributionQuery =
+    trpc.regulations.getVoteDistributionByStandard.useQuery(undefined, {
+      enabled: !!user && user.role === "admin",
+    });
 
   // Mutation to regenerate mappings for a regulation
   const regenerateMutation = trpc.regulations.generateEsrsMappings.useMutation({
@@ -69,7 +75,9 @@ export default function AdminPromptOptimization() {
           <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl">⛔</span>
           </div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">Access Denied</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-2">
+            Access Denied
+          </h2>
           <p className="text-muted-foreground mb-6">
             Only administrators can access this page.
           </p>
@@ -88,12 +96,16 @@ export default function AdminPromptOptimization() {
 
   // Calculate statistics
   const totalMappings = lowScored.length;
-  const avgApprovalRate = lowScored.length > 0
-    ? Math.round(
-        lowScored.reduce((sum, m) => sum + (m.approvalPercentage || 0), 0) / lowScored.length
-      )
-    : 0;
-  const criticalMappings = lowScored.filter((m) => (m.approvalPercentage || 0) < 30).length;
+  const avgApprovalRate =
+    lowScored.length > 0
+      ? Math.round(
+          lowScored.reduce((sum, m) => sum + (m.approvalPercentage || 0), 0) /
+            lowScored.length
+        )
+      : 0;
+  const criticalMappings = lowScored.filter(
+    m => (m.approvalPercentage || 0) < 30
+  ).length;
 
   const handleSelectMapping = (mapping: any) => {
     setSelectedMapping(mapping);
@@ -121,10 +133,15 @@ export default function AdminPromptOptimization() {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/admin" className="text-accent hover:text-accent/80 transition font-medium">
+          <Link
+            href="/admin"
+            className="text-accent hover:text-accent/80 transition font-medium"
+          >
             ← Back to Admin
           </Link>
-          <h1 className="text-lg font-bold text-foreground">LLM Prompt Optimization</h1>
+          <h1 className="text-lg font-bold text-foreground">
+            LLM Prompt Optimization
+          </h1>
           <div className="w-24" />
         </div>
       </nav>
@@ -134,9 +151,12 @@ export default function AdminPromptOptimization() {
         <div className="container py-8 max-w-7xl">
           {/* Header */}
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Optimize ESRS Mapping Quality</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-2">
+              Optimize ESRS Mapping Quality
+            </h2>
             <p className="text-muted-foreground">
-              Review low-scored mappings, improve LLM reasoning, and regenerate for better accuracy
+              Review low-scored mappings, improve LLM reasoning, and regenerate
+              for better accuracy
             </p>
           </div>
 
@@ -177,7 +197,9 @@ export default function AdminPromptOptimization() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-red-600">{criticalMappings}</div>
+                <div className="text-3xl font-bold text-red-600">
+                  {criticalMappings}
+                </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   Below 30% approval
                 </p>
@@ -221,7 +243,7 @@ export default function AdminPromptOptimization() {
                           <p>All mappings have good scores!</p>
                         </div>
                       ) : (
-                        lowScored.map((mapping) => (
+                        lowScored.map(mapping => (
                           <button
                             key={mapping.mappingId}
                             onClick={() => handleSelectMapping(mapping)}
@@ -271,19 +293,33 @@ export default function AdminPromptOptimization() {
                         {/* Metadata */}
                         <div className="space-y-3">
                           <div>
-                            <label className="text-sm font-medium">Datapoint ID</label>
-                            <p className="text-foreground">{selectedMapping.datapointId}</p>
+                            <label className="text-sm font-medium">
+                              Datapoint ID
+                            </label>
+                            <p className="text-foreground">
+                              {selectedMapping.datapointId}
+                            </p>
                           </div>
                           <div>
-                            <label className="text-sm font-medium">ESRS Standard</label>
-                            <p className="text-foreground">{selectedMapping.esrsStandard}</p>
+                            <label className="text-sm font-medium">
+                              ESRS Standard
+                            </label>
+                            <p className="text-foreground">
+                              {selectedMapping.esrsStandard}
+                            </p>
                           </div>
                           <div>
-                            <label className="text-sm font-medium">Relevance Score</label>
-                            <p className="text-foreground">{selectedMapping.relevanceScore}/10</p>
+                            <label className="text-sm font-medium">
+                              Relevance Score
+                            </label>
+                            <p className="text-foreground">
+                              {selectedMapping.relevanceScore}/10
+                            </p>
                           </div>
                           <div>
-                            <label className="text-sm font-medium">Approval Rate</label>
+                            <label className="text-sm font-medium">
+                              Approval Rate
+                            </label>
                             <div className="flex items-center gap-2 mt-1">
                               <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                                 <div
@@ -291,8 +327,8 @@ export default function AdminPromptOptimization() {
                                     (selectedMapping.approvalRate || 0) < 30
                                       ? "bg-red-500"
                                       : (selectedMapping.approvalRate || 0) < 50
-                                      ? "bg-yellow-500"
-                                      : "bg-green-500"
+                                        ? "bg-yellow-500"
+                                        : "bg-green-500"
                                   }`}
                                   style={{
                                     width: `${selectedMapping.approvalRate || 0}%`,
@@ -309,7 +345,9 @@ export default function AdminPromptOptimization() {
                         {/* Reasoning Editor */}
                         <div>
                           <div className="flex items-center justify-between mb-2">
-                            <label className="text-sm font-medium">LLM Reasoning</label>
+                            <label className="text-sm font-medium">
+                              LLM Reasoning
+                            </label>
                             {!isEditing && (
                               <button
                                 onClick={() => setIsEditing(true)}
@@ -324,7 +362,9 @@ export default function AdminPromptOptimization() {
                             <div className="space-y-2">
                               <textarea
                                 value={editedReasoning}
-                                onChange={(e) => setEditedReasoning(e.target.value)}
+                                onChange={e =>
+                                  setEditedReasoning(e.target.value)
+                                }
                                 className="w-full h-24 p-3 border border-border rounded-lg font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent"
                               />
                               <div className="flex gap-2">
@@ -348,7 +388,8 @@ export default function AdminPromptOptimization() {
                             </div>
                           ) : (
                             <p className="text-sm text-muted-foreground bg-muted p-3 rounded-lg">
-                              {selectedMapping.reasoning || "No reasoning provided"}
+                              {selectedMapping.reasoning ||
+                                "No reasoning provided"}
                             </p>
                           )}
                         </div>
@@ -357,13 +398,16 @@ export default function AdminPromptOptimization() {
                         <Alert>
                           <AlertCircle className="h-4 w-4" />
                           <AlertDescription>
-                            After editing the reasoning, regenerate all mappings for this regulation to apply improvements.
+                            After editing the reasoning, regenerate all mappings
+                            for this regulation to apply improvements.
                           </AlertDescription>
                         </Alert>
 
                         <Button
                           onClick={() =>
-                            handleRegenerateMappings(selectedMapping.regulationId)
+                            handleRegenerateMappings(
+                              selectedMapping.regulationId
+                            )
                           }
                           disabled={regenerateMutation.isPending}
                           className="w-full"
@@ -411,10 +455,12 @@ export default function AdminPromptOptimization() {
                         No data available
                       </p>
                     ) : (
-                      voteDistribution.map((item) => (
+                      voteDistribution.map(item => (
                         <div key={item.esrsStandard} className="space-y-1">
                           <div className="flex items-center justify-between">
-                            <span className="font-medium">{item.esrsStandard}</span>
+                            <span className="font-medium">
+                              {item.esrsStandard}
+                            </span>
                             <span className="text-sm text-muted-foreground">
                               {Math.round(item.approvalPercentage)}%
                             </span>
@@ -425,10 +471,12 @@ export default function AdminPromptOptimization() {
                                 item.approvalPercentage < 30
                                   ? "bg-red-500"
                                   : item.approvalPercentage < 50
-                                  ? "bg-yellow-500"
-                                  : "bg-green-500"
+                                    ? "bg-yellow-500"
+                                    : "bg-green-500"
                               }`}
-                              style={{ width: `${Math.min(item.approvalPercentage, 100)}%` }}
+                              style={{
+                                width: `${Math.min(item.approvalPercentage, 100)}%`,
+                              }}
                             />
                           </div>
                         </div>
@@ -455,7 +503,9 @@ export default function AdminPromptOptimization() {
                         Identify Low-Scored Mappings
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        Focus on mappings with &lt;30% approval rate. These indicate the LLM is making incorrect relevance judgments.
+                        Focus on mappings with &lt;30% approval rate. These
+                        indicate the LLM is making incorrect relevance
+                        judgments.
                       </p>
                     </div>
 
@@ -467,7 +517,9 @@ export default function AdminPromptOptimization() {
                         Analyze User Feedback
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        Users voting thumbs-down are telling us the mapping is wrong. Look for patterns in which standards/regulations get low scores.
+                        Users voting thumbs-down are telling us the mapping is
+                        wrong. Look for patterns in which standards/regulations
+                        get low scores.
                       </p>
                     </div>
 
@@ -479,7 +531,9 @@ export default function AdminPromptOptimization() {
                         Improve the Reasoning
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        Edit the reasoning to be more specific about why this datapoint is or isn't relevant. Include keywords, context, and exclusion criteria.
+                        Edit the reasoning to be more specific about why this
+                        datapoint is or isn't relevant. Include keywords,
+                        context, and exclusion criteria.
                       </p>
                     </div>
 
@@ -491,7 +545,9 @@ export default function AdminPromptOptimization() {
                         Regenerate Mappings
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        Click "Regenerate Mappings" to re-run the LLM with the improved reasoning. The LLM will use this as a reference for better accuracy.
+                        Click "Regenerate Mappings" to re-run the LLM with the
+                        improved reasoning. The LLM will use this as a reference
+                        for better accuracy.
                       </p>
                     </div>
 
@@ -503,7 +559,8 @@ export default function AdminPromptOptimization() {
                         Monitor Results
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        Track approval rates over time. As you improve the reasoning, user feedback should become more positive.
+                        Track approval rates over time. As you improve the
+                        reasoning, user feedback should become more positive.
                       </p>
                     </div>
                   </div>
@@ -511,7 +568,10 @@ export default function AdminPromptOptimization() {
                   <Alert>
                     <Zap className="h-4 w-4" />
                     <AlertDescription>
-                      <strong>Pro Tip:</strong> Focus on standards with the lowest approval rates first. Small improvements in reasoning can significantly improve mapping quality across many regulations.
+                      <strong>Pro Tip:</strong> Focus on standards with the
+                      lowest approval rates first. Small improvements in
+                      reasoning can significantly improve mapping quality across
+                      many regulations.
                     </AlertDescription>
                   </Alert>
                 </CardContent>

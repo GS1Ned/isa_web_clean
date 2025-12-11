@@ -1,17 +1,17 @@
 /**
  * CELLAR Diagnostic Test
- * 
+ *
  * Debug why CELLAR queries are returning 0 results
  */
 
-import { describe, it, expect } from 'vitest';
-import axios from 'axios';
+import { describe, it, expect } from "vitest";
+import axios from "axios";
 
-const CELLAR_ENDPOINT = 'https://publications.europa.eu/webapi/rdf/sparql';
-const CDM_NS = 'http://publications.europa.eu/ontology/cdm#';
+const CELLAR_ENDPOINT = "https://publications.europa.eu/webapi/rdf/sparql";
+const CDM_NS = "http://publications.europa.eu/ontology/cdm#";
 
-describe('CELLAR Diagnostic', () => {
-  it('should test basic SPARQL query', async () => {
+describe("CELLAR Diagnostic", () => {
+  it("should test basic SPARQL query", async () => {
     // Simplest possible query - just count acts
     const query = `
       PREFIX cdm: <${CDM_NS}>
@@ -23,8 +23,8 @@ describe('CELLAR Diagnostic', () => {
       LIMIT 1
     `;
 
-    console.log('\n=== Testing Basic CELLAR Query ===');
-    console.log('Query:', query);
+    console.log("\n=== Testing Basic CELLAR Query ===");
+    console.log("Query:", query);
 
     try {
       const response = await axios.post(
@@ -32,24 +32,24 @@ describe('CELLAR Diagnostic', () => {
         `query=${encodeURIComponent(query)}`,
         {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/sparql-results+json',
+            "Content-Type": "application/x-www-form-urlencoded",
+            Accept: "application/sparql-results+json",
           },
           timeout: 30000,
         }
       );
 
-      console.log('Status:', response.status);
-      console.log('Response:', JSON.stringify(response.data, null, 2));
+      console.log("Status:", response.status);
+      console.log("Response:", JSON.stringify(response.data, null, 2));
 
       expect(response.status).toBe(200);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       throw error;
     }
   }, 60000);
 
-  it('should test query for recent regulations', async () => {
+  it("should test query for recent regulations", async () => {
     const query = `
       PREFIX cdm: <${CDM_NS}>
       PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -63,7 +63,7 @@ describe('CELLAR Diagnostic', () => {
       LIMIT 10
     `;
 
-    console.log('\n=== Testing Recent Regulations Query ===');
+    console.log("\n=== Testing Recent Regulations Query ===");
 
     try {
       const response = await axios.post(
@@ -71,31 +71,37 @@ describe('CELLAR Diagnostic', () => {
         `query=${encodeURIComponent(query)}`,
         {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/sparql-results+json',
+            "Content-Type": "application/x-www-form-urlencoded",
+            Accept: "application/sparql-results+json",
           },
           timeout: 30000,
         }
       );
 
-      console.log('Status:', response.status);
-      console.log('Results count:', response.data.results?.bindings?.length || 0);
-      
+      console.log("Status:", response.status);
+      console.log(
+        "Results count:",
+        response.data.results?.bindings?.length || 0
+      );
+
       if (response.data.results?.bindings?.length > 0) {
-        console.log('Sample result:', JSON.stringify(response.data.results.bindings[0], null, 2));
+        console.log(
+          "Sample result:",
+          JSON.stringify(response.data.results.bindings[0], null, 2)
+        );
       }
 
       expect(response.status).toBe(200);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       throw error;
     }
   }, 60000);
 
-  it('should test query with known CELEX ID', async () => {
+  it("should test query with known CELEX ID", async () => {
     // CSRD - we know this exists
-    const celexId = '32022L2464';
-    
+    const celexId = "32022L2464";
+
     const query = `
       PREFIX cdm: <${CDM_NS}>
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -108,7 +114,7 @@ describe('CELLAR Diagnostic', () => {
       }
     `;
 
-    console.log('\n=== Testing Known CELEX ID Query (CSRD) ===');
+    console.log("\n=== Testing Known CELEX ID Query (CSRD) ===");
 
     try {
       const response = await axios.post(
@@ -116,19 +122,19 @@ describe('CELLAR Diagnostic', () => {
         `query=${encodeURIComponent(query)}`,
         {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/sparql-results+json',
+            "Content-Type": "application/x-www-form-urlencoded",
+            Accept: "application/sparql-results+json",
           },
           timeout: 30000,
         }
       );
 
-      console.log('Status:', response.status);
-      console.log('Results:', JSON.stringify(response.data, null, 2));
+      console.log("Status:", response.status);
+      console.log("Results:", JSON.stringify(response.data, null, 2));
 
       expect(response.status).toBe(200);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       throw error;
     }
   }, 60000);

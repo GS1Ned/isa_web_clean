@@ -81,7 +81,10 @@ export function exportRegulationToPDF(data: RegulationExportData): Buffer {
   yPosition += 8;
   doc.setFontSize(10);
   doc.setTextColor(0, 0, 0);
-  const descriptionLines = doc.splitTextToSize(data.description, pageWidth - 40);
+  const descriptionLines = doc.splitTextToSize(
+    data.description,
+    pageWidth - 40
+  );
   doc.text(descriptionLines, 20, yPosition);
   yPosition += descriptionLines.length * 5 + 5;
 
@@ -94,7 +97,7 @@ export function exportRegulationToPDF(data: RegulationExportData): Buffer {
     yPosition += 8;
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    data.applicableSectors.forEach((sector) => {
+    data.applicableSectors.forEach(sector => {
       doc.text(`• ${sector}`, 25, yPosition);
       yPosition += 5;
     });
@@ -110,7 +113,7 @@ export function exportRegulationToPDF(data: RegulationExportData): Buffer {
     yPosition += 8;
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    data.applicableGS1Standards.forEach((standard) => {
+    data.applicableGS1Standards.forEach(standard => {
       doc.text(`• ${standard}`, 25, yPosition);
       yPosition += 5;
     });
@@ -125,7 +128,7 @@ export function exportRegulationToPDF(data: RegulationExportData): Buffer {
     doc.text("Implementation Timeline", 20, yPosition);
     yPosition += 10;
 
-    const phaseTableData = data.implementationPhases.map((phase) => [
+    const phaseTableData = data.implementationPhases.map(phase => [
       phase.phase,
       phase.deadline,
       phase.description,
@@ -164,7 +167,7 @@ export function exportRegulationToPDF(data: RegulationExportData): Buffer {
     doc.text("Implementation Checklist", 20, yPosition);
     yPosition += 10;
 
-    const checklistTableData = data.checklist.map((item) => [
+    const checklistTableData = data.checklist.map(item => [
       item.completed ? "✓" : "○",
       item.item,
       item.description,
@@ -228,12 +231,9 @@ export function exportRegulationToPDF(data: RegulationExportData): Buffer {
     doc.setPage(i);
     doc.setFontSize(8);
     doc.setTextColor(128, 128, 128);
-    doc.text(
-      `Page ${i} of ${pageCount}`,
-      pageWidth / 2,
-      pageHeight - 10,
-      { align: "center" }
-    );
+    doc.text(`Page ${i} of ${pageCount}`, pageWidth / 2, pageHeight - 10, {
+      align: "center",
+    });
     doc.text(
       `Generated on ${new Date().toLocaleDateString()}`,
       20,
@@ -261,9 +261,7 @@ export function exportRegulationToCSV(data: RegulationExportData): string {
   rows.push(`Type,${data.type}`);
   rows.push(`CELEX ID,${data.celexId}`);
   rows.push(`Status,${data.status}`);
-  rows.push(
-    `Effective Date,${data.effectiveDate.toLocaleDateString("en-US")}`
-  );
+  rows.push(`Effective Date,${data.effectiveDate.toLocaleDateString("en-US")}`);
   if (data.enforcementDate) {
     rows.push(
       `Enforcement Date,${data.enforcementDate.toLocaleDateString("en-US")}`
@@ -275,7 +273,7 @@ export function exportRegulationToCSV(data: RegulationExportData): string {
   // Applicable Sectors
   if (data.applicableSectors.length > 0) {
     rows.push("APPLICABLE SECTORS");
-    data.applicableSectors.forEach((sector) => {
+    data.applicableSectors.forEach(sector => {
       rows.push(escapeCSV(sector));
     });
     rows.push("");
@@ -284,7 +282,7 @@ export function exportRegulationToCSV(data: RegulationExportData): string {
   // Applicable GS1 Standards
   if (data.applicableGS1Standards.length > 0) {
     rows.push("APPLICABLE GS1 STANDARDS");
-    data.applicableGS1Standards.forEach((standard) => {
+    data.applicableGS1Standards.forEach(standard => {
       rows.push(escapeCSV(standard));
     });
     rows.push("");
@@ -294,7 +292,7 @@ export function exportRegulationToCSV(data: RegulationExportData): string {
   if (data.implementationPhases.length > 0) {
     rows.push("IMPLEMENTATION TIMELINE");
     rows.push("Phase,Deadline,Description");
-    data.implementationPhases.forEach((phase) => {
+    data.implementationPhases.forEach(phase => {
       rows.push(
         `${escapeCSV(phase.phase)},${phase.deadline},${escapeCSV(phase.description)}`
       );
@@ -306,7 +304,7 @@ export function exportRegulationToCSV(data: RegulationExportData): string {
   if (data.checklist.length > 0) {
     rows.push("IMPLEMENTATION CHECKLIST");
     rows.push("Completed,Item,Description,Priority");
-    data.checklist.forEach((item) => {
+    data.checklist.forEach(item => {
       rows.push(
         `${item.completed ? "Yes" : "No"},${escapeCSV(item.item)},${escapeCSV(item.description)},${item.priority}`
       );
@@ -318,7 +316,7 @@ export function exportRegulationToCSV(data: RegulationExportData): string {
   if (data.faqItems.length > 0) {
     rows.push("FREQUENTLY ASKED QUESTIONS");
     rows.push("Question,Answer");
-    data.faqItems.forEach((item) => {
+    data.faqItems.forEach(item => {
       rows.push(`${escapeCSV(item.question)},${escapeCSV(item.answer)}`);
     });
     rows.push("");
@@ -360,10 +358,12 @@ export function exportRegulationsListToCSV(
   // Header
   rows.push("Regulations List Export");
   rows.push("");
-  rows.push("Title,Type,CELEX ID,Status,Effective Date,Applicable Sectors,Applicable GS1 Standards");
+  rows.push(
+    "Title,Type,CELEX ID,Status,Effective Date,Applicable Sectors,Applicable GS1 Standards"
+  );
 
   // Data rows
-  regulations.forEach((reg) => {
+  regulations.forEach(reg => {
     rows.push(
       `${escapeCSV(reg.title)},${reg.type},${reg.celexId},${reg.status},${reg.effectiveDate.toLocaleDateString("en-US")},${escapeCSV(reg.applicableSectors.join("; "))},${escapeCSV(reg.applicableGS1Standards.join("; "))}`
     );

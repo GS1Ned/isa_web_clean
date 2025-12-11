@@ -5,11 +5,24 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { Newspaper, Download, Archive, BarChart3, RefreshCw, AlertCircle } from "lucide-react";
+import {
+  Newspaper,
+  Download,
+  Archive,
+  BarChart3,
+  RefreshCw,
+  AlertCircle,
+} from "lucide-react";
 import { Link } from "wouter";
 
 export default function AdminNewsPipelineManager() {
@@ -66,7 +79,8 @@ export default function AdminNewsPipelineManager() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">News Pipeline Manager</h1>
         <p className="text-muted-foreground">
-          Manually trigger news ingestion from configured sources and manage archival
+          Manually trigger news ingestion from configured sources and manage
+          archival
         </p>
       </div>
 
@@ -84,28 +98,46 @@ export default function AdminNewsPipelineManager() {
             {stats ? (
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Active News Items</span>
-                  <Badge variant="secondary">{stats.archivalStats?.activeCount || 0}</Badge>
+                  <span className="text-sm text-muted-foreground">
+                    Active News Items
+                  </span>
+                  <Badge variant="secondary">
+                    {stats.archivalStats?.activeCount || 0}
+                  </Badge>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Archived Items</span>
-                  <Badge variant="secondary">{stats.archivalStats?.archivedCount || 0}</Badge>
+                  <span className="text-sm text-muted-foreground">
+                    Archived Items
+                  </span>
+                  <Badge variant="secondary">
+                    {stats.archivalStats?.archivedCount || 0}
+                  </Badge>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Recent Articles</span>
-                  <Badge variant="secondary">{stats.recentNews?.length || 0}</Badge>
+                  <span className="text-sm text-muted-foreground">
+                    Recent Articles
+                  </span>
+                  <Badge variant="secondary">
+                    {stats.recentNews?.length || 0}
+                  </Badge>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Oldest Active</span>
+                  <span className="text-sm text-muted-foreground">
+                    Oldest Active
+                  </span>
                   <span className="text-sm">
-                    {stats.archivalStats?.oldestActiveDate 
-                      ? new Date(stats.archivalStats.oldestActiveDate).toLocaleDateString()
+                    {stats.archivalStats?.oldestActiveDate
+                      ? new Date(
+                          stats.archivalStats.oldestActiveDate
+                        ).toLocaleDateString()
                       : "N/A"}
                   </span>
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">Loading statistics...</p>
+              <p className="text-sm text-muted-foreground">
+                Loading statistics...
+              </p>
             )}
           </CardContent>
         </Card>
@@ -141,7 +173,8 @@ export default function AdminNewsPipelineManager() {
         <CardHeader>
           <CardTitle>Pipeline Controls</CardTitle>
           <CardDescription>
-            Manually trigger news ingestion from 6 configured sources (EUR-Lex, EFRAG, EU Commission, GS1 NL/Global/EU)
+            Manually trigger news ingestion from 6 configured sources (EUR-Lex,
+            EFRAG, EU Commission, GS1 NL/Global/EU)
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -176,40 +209,62 @@ export default function AdminNewsPipelineManager() {
 
           {/* Pipeline Result */}
           {lastResult && (
-            <Card className={lastResult.success ? "border-green-500" : "border-red-500"}>
+            <Card
+              className={
+                lastResult.success ? "border-green-500" : "border-red-500"
+              }
+            >
               <CardContent className="pt-6">
                 <h4 className="font-semibold mb-3">
-                  {lastResult.success ? "✅ Pipeline Completed" : "❌ Pipeline Failed"}
+                  {lastResult.success
+                    ? "✅ Pipeline Completed"
+                    : "❌ Pipeline Failed"}
                 </h4>
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
                     <span className="text-muted-foreground">Fetched:</span>{" "}
-                    <span className="font-medium">{lastResult.fetched || 0}</span>
+                    <span className="font-medium">
+                      {lastResult.fetched || 0}
+                    </span>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Processed:</span>{" "}
-                    <span className="font-medium">{lastResult.processed || 0}</span>
+                    <span className="font-medium">
+                      {lastResult.processed || 0}
+                    </span>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Inserted:</span>{" "}
-                    <span className="font-medium text-green-600">{lastResult.inserted || 0}</span>
+                    <span className="font-medium text-green-600">
+                      {lastResult.inserted || 0}
+                    </span>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Skipped:</span>{" "}
-                    <span className="font-medium">{lastResult.skipped || 0}</span>
+                    <span className="font-medium">
+                      {lastResult.skipped || 0}
+                    </span>
                   </div>
                   <div className="col-span-2">
                     <span className="text-muted-foreground">Duration:</span>{" "}
-                    <span className="font-medium">{lastResult.duration || 0}ms</span>
+                    <span className="font-medium">
+                      {lastResult.duration || 0}ms
+                    </span>
                   </div>
                 </div>
                 {lastResult.errors && lastResult.errors.length > 0 && (
                   <div className="mt-3 p-3 bg-destructive/10 rounded text-sm">
-                    <p className="font-semibold text-destructive mb-1">Errors:</p>
+                    <p className="font-semibold text-destructive mb-1">
+                      Errors:
+                    </p>
                     <ul className="list-disc list-inside space-y-1">
-                      {lastResult.errors.slice(0, 5).map((err: string, i: number) => (
-                        <li key={i} className="text-destructive/80">{err}</li>
-                      ))}
+                      {lastResult.errors
+                        .slice(0, 5)
+                        .map((err: string, i: number) => (
+                          <li key={i} className="text-destructive/80">
+                            {err}
+                          </li>
+                        ))}
                     </ul>
                   </div>
                 )}
@@ -223,49 +278,63 @@ export default function AdminNewsPipelineManager() {
       <Card>
         <CardHeader>
           <CardTitle>Configured News Sources</CardTitle>
-          <CardDescription>6 sources monitored for ESG regulatory updates</CardDescription>
+          <CardDescription>
+            6 sources monitored for ESG regulatory updates
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-3">
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <div>
                 <p className="font-medium">EUR-Lex Press Releases</p>
-                <p className="text-sm text-muted-foreground">EU Official • Credibility: 1.0</p>
+                <p className="text-sm text-muted-foreground">
+                  EU Official • Credibility: 1.0
+                </p>
               </div>
               <Badge>EU Official</Badge>
             </div>
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <div>
                 <p className="font-medium">EFRAG Sustainability Reporting</p>
-                <p className="text-sm text-muted-foreground">EU Official • Credibility: 1.0</p>
+                <p className="text-sm text-muted-foreground">
+                  EU Official • Credibility: 1.0
+                </p>
               </div>
               <Badge>EU Official</Badge>
             </div>
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <div>
                 <p className="font-medium">EU Commission - Environment</p>
-                <p className="text-sm text-muted-foreground">EU Official • Credibility: 1.0</p>
+                <p className="text-sm text-muted-foreground">
+                  EU Official • Credibility: 1.0
+                </p>
               </div>
               <Badge>EU Official</Badge>
             </div>
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <div>
                 <p className="font-medium">GS1 Netherlands News</p>
-                <p className="text-sm text-muted-foreground">GS1 Official • Credibility: 0.9</p>
+                <p className="text-sm text-muted-foreground">
+                  GS1 Official • Credibility: 0.9
+                </p>
               </div>
               <Badge variant="secondary">GS1 Official</Badge>
             </div>
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <div>
                 <p className="font-medium">GS1 Global News</p>
-                <p className="text-sm text-muted-foreground">GS1 Official • Credibility: 0.9</p>
+                <p className="text-sm text-muted-foreground">
+                  GS1 Official • Credibility: 0.9
+                </p>
               </div>
               <Badge variant="secondary">GS1 Official</Badge>
             </div>
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <div>
                 <p className="font-medium">GS1 in Europe Updates</p>
-                <p className="text-sm text-muted-foreground">GS1 Official • Credibility: 0.9</p>
+                <p className="text-sm text-muted-foreground">
+                  GS1 Official • Credibility: 0.9
+                </p>
               </div>
               <Badge variant="secondary">GS1 Official</Badge>
             </div>

@@ -2,19 +2,19 @@
  * End-to-end Integration Tests for CELLAR Ingestion Pipeline
  */
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { cellarConnector } from './cellar-connector';
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { cellarConnector } from "./cellar-connector";
 import {
   normalizeEULegalActsBatch,
   deduplicateRegulations,
   validateRegulation,
   calculateRegulationStats,
-} from './cellar-normalizer';
-import { getDb } from './db';
-import { regulations } from '../drizzle/schema';
-import { eq } from 'drizzle-orm';
+} from "./cellar-normalizer";
+import { getDb } from "./db";
+import { regulations } from "../drizzle/schema";
+import { eq } from "drizzle-orm";
 
-describe('CELLAR Ingestion Integration Tests', () => {
+describe("CELLAR Ingestion Integration Tests", () => {
   let testCelexId: string | undefined;
 
   afterAll(async () => {
@@ -22,20 +22,22 @@ describe('CELLAR Ingestion Integration Tests', () => {
     if (testCelexId) {
       const db = await getDb();
       if (db) {
-        await db.delete(regulations).where(eq(regulations.celexId, testCelexId));
+        await db
+          .delete(regulations)
+          .where(eq(regulations.celexId, testCelexId));
       }
     }
   });
 
-  describe('Full Pipeline Test', () => {
-    it('should fetch, normalize, and prepare regulations for database', async () => {
+  describe("Full Pipeline Test", () => {
+    it("should fetch, normalize, and prepare regulations for database", async () => {
       // Step 1: Fetch from CELLAR
       const acts = await cellarConnector.getESGRegulations(3);
       // Note: CELLAR may return 0 results if no ESG regulations match filters
       expect(Array.isArray(acts)).toBe(true);
 
       if (acts.length === 0) {
-        console.warn('No ESG regulations found in CELLAR for test period');
+        console.warn("No ESG regulations found in CELLAR for test period");
         return; // Skip remaining steps if no data
       }
 
@@ -65,41 +67,38 @@ describe('CELLAR Ingestion Integration Tests', () => {
     }, 60000); // 60 second timeout for full pipeline
   });
 
-  describe('Database Integration', () => {
-    it('should connect to database', async () => {
+  describe("Database Integration", () => {
+    it("should connect to database", async () => {
       const db = await getDb();
       expect(db).toBeDefined();
     });
 
-    it('should query existing regulations', async () => {
+    it("should query existing regulations", async () => {
       const db = await getDb();
       if (!db) {
-        console.warn('Database not available, skipping test');
+        console.warn("Database not available, skipping test");
         return;
       }
 
-      const existingRegulations = await db
-        .select()
-        .from(regulations)
-        .limit(10);
+      const existingRegulations = await db.select().from(regulations).limit(10);
 
       expect(Array.isArray(existingRegulations)).toBe(true);
     });
 
-    it('should insert and retrieve a test regulation', async () => {
+    it("should insert and retrieve a test regulation", async () => {
       const db = await getDb();
       if (!db) {
-        console.warn('Database not available, skipping test');
+        console.warn("Database not available, skipping test");
         return;
       }
 
       const testRegulation = {
-        celexId: '32099R9999', // Fake CELEX for testing
-        title: 'Test Regulation for Integration Test',
-        description: 'This is a test regulation',
-        regulationType: 'OTHER' as const,
-        effectiveDate: new Date('2024-01-01'), // Use valid date range
-        sourceUrl: 'https://example.com/test',
+        celexId: "32099R9999", // Fake CELEX for testing
+        title: "Test Regulation for Integration Test",
+        description: "This is a test regulation",
+        regulationType: "OTHER" as const,
+        effectiveDate: new Date("2024-01-01"), // Use valid date range
+        sourceUrl: "https://example.com/test",
       };
 
       // Insert
@@ -117,23 +116,25 @@ describe('CELLAR Ingestion Integration Tests', () => {
       expect(retrieved[0].title).toBe(testRegulation.title);
 
       // Cleanup
-      await db.delete(regulations).where(eq(regulations.celexId, testRegulation.celexId));
+      await db
+        .delete(regulations)
+        .where(eq(regulations.celexId, testRegulation.celexId));
     });
 
-    it('should update existing regulation', async () => {
+    it("should update existing regulation", async () => {
       const db = await getDb();
       if (!db) {
-        console.warn('Database not available, skipping test');
+        console.warn("Database not available, skipping test");
         return;
       }
 
       const testRegulation = {
-        celexId: '32099R8888',
-        title: 'Original Title',
-        description: 'Original description',
-        regulationType: 'OTHER' as const,
-        effectiveDate: new Date('2024-01-01'), // Use valid date range
-        sourceUrl: 'https://example.com/original',
+        celexId: "32099R8888",
+        title: "Original Title",
+        description: "Original description",
+        regulationType: "OTHER" as const,
+        effectiveDate: new Date("2024-01-01"), // Use valid date range
+        sourceUrl: "https://example.com/original",
       };
 
       // Insert
@@ -142,8 +143,8 @@ describe('CELLAR Ingestion Integration Tests', () => {
       // Update
       const updatedData = {
         ...testRegulation,
-        description: 'Updated description',
-        sourceUrl: 'https://example.com/updated',
+        description: "Updated description",
+        sourceUrl: "https://example.com/updated",
       };
 
       await db
@@ -158,28 +159,30 @@ describe('CELLAR Ingestion Integration Tests', () => {
         .where(eq(regulations.celexId, testRegulation.celexId))
         .limit(1);
 
-      expect(retrieved[0].description).toBe('Updated description');
-      expect(retrieved[0].sourceUrl).toBe('https://example.com/updated');
+      expect(retrieved[0].description).toBe("Updated description");
+      expect(retrieved[0].sourceUrl).toBe("https://example.com/updated");
 
       // Cleanup
-      await db.delete(regulations).where(eq(regulations.celexId, testRegulation.celexId));
+      await db
+        .delete(regulations)
+        .where(eq(regulations.celexId, testRegulation.celexId));
     });
   });
 
-  describe('Error Handling', () => {
-    it('should handle CELLAR connection failures gracefully', async () => {
+  describe("Error Handling", () => {
+    it("should handle CELLAR connection failures gracefully", async () => {
       // This test verifies that connection failures are caught
       // In a real scenario, we'd mock the connector to simulate failure
       const isConnected = await cellarConnector.testConnection();
-      expect(typeof isConnected).toBe('boolean');
+      expect(typeof isConnected).toBe("boolean");
     });
 
-    it('should handle invalid regulation data', () => {
+    it("should handle invalid regulation data", () => {
       const invalidRegulation = {
-        celexId: 'INVALID',
-        title: '',
+        celexId: "INVALID",
+        title: "",
         description: null,
-        regulationType: 'CSRD' as const,
+        regulationType: "CSRD" as const,
         effectiveDate: null,
         sourceUrl: null,
       };
@@ -188,32 +191,32 @@ describe('CELLAR Ingestion Integration Tests', () => {
       expect(isValid).toBe(false);
     });
 
-    it('should filter out non-ESG regulations', () => {
+    it("should filter out non-ESG regulations", () => {
       const acts = [
         {
-          uri: 'http://example.com/1',
-          celexId: '32020R1234',
-          title: 'Agricultural Subsidies Regulation',
+          uri: "http://example.com/1",
+          celexId: "32020R1234",
+          title: "Agricultural Subsidies Regulation",
           inForce: true,
         },
         {
-          uri: 'http://example.com/2',
-          celexId: '32022L2464',
-          title: 'CSRD',
+          uri: "http://example.com/2",
+          celexId: "32022L2464",
+          title: "CSRD",
           inForce: true,
         },
       ];
 
       const normalized = normalizeEULegalActsBatch(acts);
-      
+
       // Only CSRD should pass through (has explicit mapping)
       expect(normalized.length).toBe(1);
-      expect(normalized[0].regulationType).toBe('CSRD');
+      expect(normalized[0].regulationType).toBe("CSRD");
     });
   });
 
-  describe('Performance Tests', () => {
-    it('should complete full pipeline within reasonable time', async () => {
+  describe("Performance Tests", () => {
+    it("should complete full pipeline within reasonable time", async () => {
       const startTime = Date.now();
 
       const acts = await cellarConnector.getESGRegulations(2);
@@ -229,9 +232,9 @@ describe('CELLAR Ingestion Integration Tests', () => {
       expect(stats.total).toBeGreaterThanOrEqual(0);
     }, 30000);
 
-    it('should handle large result sets efficiently', async () => {
+    it("should handle large result sets efficiently", async () => {
       const acts = await cellarConnector.getESGRegulations(5);
-      
+
       const startNormalize = Date.now();
       const normalized = normalizeEULegalActsBatch(acts);
       const normalizeTime = Date.now() - startNormalize;
@@ -242,8 +245,8 @@ describe('CELLAR Ingestion Integration Tests', () => {
     }, 30000);
   });
 
-  describe('Data Quality Tests', () => {
-    it('should ensure all normalized regulations have required fields', async () => {
+  describe("Data Quality Tests", () => {
+    it("should ensure all normalized regulations have required fields", async () => {
       const acts = await cellarConnector.getESGRegulations(2);
       const normalized = normalizeEULegalActsBatch(acts);
 
@@ -255,19 +258,19 @@ describe('CELLAR Ingestion Integration Tests', () => {
       });
     }, 30000);
 
-    it('should generate valid EUR-Lex URLs', async () => {
+    it("should generate valid EUR-Lex URLs", async () => {
       const acts = await cellarConnector.getESGRegulations(2);
       const normalized = normalizeEULegalActsBatch(acts);
 
       normalized.forEach(reg => {
         if (reg.sourceUrl) {
-          expect(reg.sourceUrl).toContain('eur-lex.europa.eu');
-          expect(reg.sourceUrl).toContain('CELEX');
+          expect(reg.sourceUrl).toContain("eur-lex.europa.eu");
+          expect(reg.sourceUrl).toContain("CELEX");
         }
       });
     }, 30000);
 
-    it('should maintain CELEX ID format', async () => {
+    it("should maintain CELEX ID format", async () => {
       const acts = await cellarConnector.getESGRegulations(2);
       const normalized = normalizeEULegalActsBatch(acts);
 

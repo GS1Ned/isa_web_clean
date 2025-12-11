@@ -1,11 +1,17 @@
-import { useState, useRef, useEffect } from 'react';
-import { trpc } from '@/lib/trpc';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { useState, useRef, useEffect } from "react";
+import { trpc } from "@/lib/trpc";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sparkles,
   Send,
@@ -15,18 +21,18 @@ import {
   BookOpen,
   FileText,
   Lightbulb,
-} from 'lucide-react';
-import { Streamdown } from 'streamdown';
+} from "lucide-react";
+import { Streamdown } from "streamdown";
 
 /**
  * Ask ISA - RAG-Powered Q&A Interface
- * 
+ *
  * Natural language interface for querying EU regulations and GS1 standards.
  * Uses semantic search and AI to provide accurate answers with source citations.
  */
 
 interface Message {
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   sources?: Array<{
     id: number;
@@ -38,40 +44,40 @@ interface Message {
 }
 
 const SUGGESTED_QUESTIONS = [
-  'What GS1 codes are required for EUDR compliance?',
-  'How does CSRD relate to GS1 Digital Link?',
-  'Which ESRS datapoints cover supply chain traceability?',
-  'What are the key requirements of the Digital Product Passport?',
-  'How can EPCIS help with EUDR deforestation tracking?',
-  'What Dutch initiatives support textile circularity?',
+  "What GS1 codes are required for EUDR compliance?",
+  "How does CSRD relate to GS1 Digital Link?",
+  "Which ESRS datapoints cover supply chain traceability?",
+  "What are the key requirements of the Digital Product Passport?",
+  "How can EPCIS help with EUDR deforestation tracking?",
+  "What Dutch initiatives support textile circularity?",
 ];
 
 export default function AskISA() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [conversationId, setConversationId] = useState<number | undefined>();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const askMutation = trpc.askISA.ask.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       setMessages(prev => [
         ...prev,
         {
-          role: 'assistant',
+          role: "assistant",
           content: data.answer,
           sources: data.sources,
         },
       ]);
-      
+
       if (data.conversationId) {
         setConversationId(data.conversationId);
       }
     },
-    onError: (error) => {
+    onError: error => {
       setMessages(prev => [
         ...prev,
         {
-          role: 'assistant',
+          role: "assistant",
           content: `Sorry, I encountered an error: ${error.message}. Please try again.`,
         },
       ]);
@@ -80,16 +86,16 @@ export default function AskISA() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!input.trim() || askMutation.isPending) {
       return;
     }
 
     const question = input.trim();
-    setInput('');
+    setInput("");
 
     // Add user message immediately
-    setMessages(prev => [...prev, { role: 'user', content: question }]);
+    setMessages(prev => [...prev, { role: "user", content: question }]);
 
     // Send to API
     askMutation.mutate({
@@ -104,7 +110,7 @@ export default function AskISA() {
     }
 
     // Add user message immediately
-    setMessages(prev => [...prev, { role: 'user', content: question }]);
+    setMessages(prev => [...prev, { role: "user", content: question }]);
 
     // Send to API
     askMutation.mutate({
@@ -115,18 +121,18 @@ export default function AskISA() {
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const getSourceIcon = (type: string) => {
     switch (type) {
-      case 'regulation':
+      case "regulation":
         return <FileText className="h-4 w-4" />;
-      case 'standard':
+      case "standard":
         return <BookOpen className="h-4 w-4" />;
-      case 'esrs_datapoint':
+      case "esrs_datapoint":
         return <FileText className="h-4 w-4" />;
-      case 'dutch_initiative':
+      case "dutch_initiative":
         return <Lightbulb className="h-4 w-4" />;
       default:
         return <FileText className="h-4 w-4" />;
@@ -135,14 +141,14 @@ export default function AskISA() {
 
   const getSourceTypeLabel = (type: string) => {
     switch (type) {
-      case 'regulation':
-        return 'EU Regulation';
-      case 'standard':
-        return 'GS1 Standard';
-      case 'esrs_datapoint':
-        return 'ESRS Datapoint';
-      case 'dutch_initiative':
-        return 'Dutch Initiative';
+      case "regulation":
+        return "EU Regulation";
+      case "standard":
+        return "GS1 Standard";
+      case "esrs_datapoint":
+        return "ESRS Datapoint";
+      case "dutch_initiative":
+        return "Dutch Initiative";
       default:
         return type;
     }
@@ -189,7 +195,8 @@ export default function AskISA() {
             </CardHeader>
             <CardContent>
               <CardDescription className="text-xs">
-                Every answer includes links to official regulations and standards
+                Every answer includes links to official regulations and
+                standards
               </CardDescription>
             </CardContent>
           </Card>
@@ -203,7 +210,8 @@ export default function AskISA() {
             </CardHeader>
             <CardContent>
               <CardDescription className="text-xs">
-                AI understands context and finds relevant information across 35+ regulations
+                AI understands context and finds relevant information across 35+
+                regulations
               </CardDescription>
             </CardContent>
           </Card>
@@ -217,10 +225,12 @@ export default function AskISA() {
           {messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center">
               <Sparkles className="h-16 w-16 text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Ask me anything about ESG compliance</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Ask me anything about ESG compliance
+              </h3>
               <p className="text-muted-foreground mb-6 max-w-md">
-                I can help you understand EU regulations (CSRD, EUDR, DPP), GS1 standards, ESRS
-                datapoints, and Dutch compliance initiatives.
+                I can help you understand EU regulations (CSRD, EUDR, DPP), GS1
+                standards, ESRS datapoints, and Dutch compliance initiatives.
               </p>
 
               {/* Suggested Questions */}
@@ -248,17 +258,17 @@ export default function AskISA() {
                   {/* Message */}
                   <div
                     className={`flex ${
-                      message.role === 'user' ? 'justify-end' : 'justify-start'
+                      message.role === "user" ? "justify-end" : "justify-start"
                     }`}
                   >
                     <div
                       className={`max-w-[80%] rounded-lg px-4 py-3 ${
-                        message.role === 'user'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-muted'
+                        message.role === "user"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted"
                       }`}
                     >
-                      {message.role === 'assistant' ? (
+                      {message.role === "assistant" ? (
                         <div className="prose prose-sm dark:prose-invert max-w-none">
                           <Streamdown>{message.content}</Streamdown>
                         </div>
@@ -271,23 +281,36 @@ export default function AskISA() {
                   {/* Sources */}
                   {message.sources && message.sources.length > 0 && (
                     <div className="ml-4 space-y-2">
-                      <p className="text-xs font-medium text-muted-foreground">Sources:</p>
+                      <p className="text-xs font-medium text-muted-foreground">
+                        Sources:
+                      </p>
                       <div className="grid gap-2">
                         {message.sources.map((source, sourceIdx) => (
-                          <Card key={sourceIdx} className="hover:bg-accent transition-colors">
+                          <Card
+                            key={sourceIdx}
+                            className="hover:bg-accent transition-colors"
+                          >
                             <CardHeader className="p-3">
                               <div className="flex items-start justify-between gap-2">
                                 <div className="flex items-start gap-2 flex-1">
-                                  <div className="mt-0.5">{getSourceIcon(source.type)}</div>
+                                  <div className="mt-0.5">
+                                    {getSourceIcon(source.type)}
+                                  </div>
                                   <div className="flex-1 min-w-0">
                                     <CardTitle className="text-sm line-clamp-1">
                                       {source.title}
                                     </CardTitle>
                                     <div className="flex items-center gap-2 mt-1">
-                                      <Badge variant="secondary" className="text-xs">
+                                      <Badge
+                                        variant="secondary"
+                                        className="text-xs"
+                                      >
                                         {getSourceTypeLabel(source.type)}
                                       </Badge>
-                                      <Badge variant="outline" className="text-xs">
+                                      <Badge
+                                        variant="outline"
+                                        className="text-xs"
+                                      >
                                         {source.similarity}% match
                                       </Badge>
                                     </div>
@@ -324,7 +347,9 @@ export default function AskISA() {
                 <div className="flex justify-start">
                   <div className="bg-muted rounded-lg px-4 py-3 flex items-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    <span className="text-sm text-muted-foreground">Thinking...</span>
+                    <span className="text-sm text-muted-foreground">
+                      Thinking...
+                    </span>
                   </div>
                 </div>
               )}
@@ -341,12 +366,15 @@ export default function AskISA() {
           <form onSubmit={handleSubmit} className="flex gap-2">
             <Input
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={e => setInput(e.target.value)}
               placeholder="Ask about regulations, standards, or compliance requirements..."
               disabled={askMutation.isPending}
               className="flex-1"
             />
-            <Button type="submit" disabled={!input.trim() || askMutation.isPending}>
+            <Button
+              type="submit"
+              disabled={!input.trim() || askMutation.isPending}
+            >
               {askMutation.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
@@ -355,8 +383,8 @@ export default function AskISA() {
             </Button>
           </form>
           <p className="text-xs text-muted-foreground mt-2">
-            Powered by semantic search across 35 regulations, 60 GS1 standards, 1,184 ESRS
-            datapoints, and 10 Dutch initiatives
+            Powered by semantic search across 35 regulations, 60 GS1 standards,
+            1,184 ESRS datapoints, and 10 Dutch initiatives
           </p>
         </div>
       </Card>

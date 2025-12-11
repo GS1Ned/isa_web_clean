@@ -1,16 +1,16 @@
 /**
  * CELLAR Data Normalization Pipeline
- * 
+ *
  * Transforms EU legal acts from CELLAR SPARQL format into ISA database schema.
  * Maps CELEX identifiers, regulation types, dates, and metadata.
  */
 
-import type { EULegalAct } from './cellar-connector';
-import type { InsertRegulation } from '../drizzle/schema';
+import type { EULegalAct } from "./cellar-connector";
+import type { InsertRegulation } from "../drizzle/schema";
 
 /**
  * Regulation type mapping from CELEX patterns to ISA enum
- * 
+ *
  * CELEX format: XYYYY[A-Z]NNNN
  * - X: Sector (3=EU law, 6=case law, etc.)
  * - YYYY: Year
@@ -19,27 +19,51 @@ import type { InsertRegulation } from '../drizzle/schema';
  */
 const CELEX_TO_REGULATION_TYPE: Record<string, string> = {
   // Known ESG regulations by CELEX pattern
-  '32013L0034': 'CSRD', // Accounting Directive (amended by CSRD)
-  '32022L2464': 'CSRD', // Corporate Sustainability Reporting Directive
-  '32023R2772': 'ESRS', // European Sustainability Reporting Standards
-  '32024R1252': 'DPP', // Digital Product Passport
-  '32023R1115': 'EUDR', // EU Deforestation Regulation
-  '32024R1781': 'ESPR', // Ecodesign for Sustainable Products Regulation
-  '32024R1157': 'PPWR', // Packaging and Packaging Waste Regulation
-  '32020R0852': 'EU_TAXONOMY', // EU Taxonomy Regulation
+  "32013L0034": "CSRD", // Accounting Directive (amended by CSRD)
+  "32022L2464": "CSRD", // Corporate Sustainability Reporting Directive
+  "32023R2772": "ESRS", // European Sustainability Reporting Standards
+  "32024R1252": "DPP", // Digital Product Passport
+  "32023R1115": "EUDR", // EU Deforestation Regulation
+  "32024R1781": "ESPR", // Ecodesign for Sustainable Products Regulation
+  "32024R1157": "PPWR", // Packaging and Packaging Waste Regulation
+  "32020R0852": "EU_TAXONOMY", // EU Taxonomy Regulation
 };
 
 /**
  * ESG-related keywords for classification
  */
 const ESG_KEYWORDS = {
-  CSRD: ['corporate sustainability reporting', 'csrd', 'non-financial reporting', 'sustainability reporting directive'],
-  ESRS: ['european sustainability reporting standards', 'esrs', 'sustainability standards'],
-  DPP: ['digital product passport', 'dpp', 'product passport', 'digital passport'],
-  EUDR: ['deforestation', 'eudr', 'deforestation-free', 'forest risk commodities'],
-  ESPR: ['ecodesign', 'espr', 'sustainable products', 'circular economy'],
-  PPWR: ['packaging', 'ppwr', 'packaging waste', 'packaging regulation'],
-  EU_TAXONOMY: ['taxonomy', 'sustainable finance', 'green investment', 'taxonomy regulation'],
+  CSRD: [
+    "corporate sustainability reporting",
+    "csrd",
+    "non-financial reporting",
+    "sustainability reporting directive",
+  ],
+  ESRS: [
+    "european sustainability reporting standards",
+    "esrs",
+    "sustainability standards",
+  ],
+  DPP: [
+    "digital product passport",
+    "dpp",
+    "product passport",
+    "digital passport",
+  ],
+  EUDR: [
+    "deforestation",
+    "eudr",
+    "deforestation-free",
+    "forest risk commodities",
+  ],
+  ESPR: ["ecodesign", "espr", "sustainable products", "circular economy"],
+  PPWR: ["packaging", "ppwr", "packaging waste", "packaging regulation"],
+  EU_TAXONOMY: [
+    "taxonomy",
+    "sustainable finance",
+    "green investment",
+    "taxonomy regulation",
+  ],
 };
 
 /**
@@ -53,9 +77,9 @@ export function normalizeEULegalAct(act: EULegalAct): InsertRegulation | null {
 
   // Determine regulation type
   const regulationType = determineRegulationType(act);
-  
+
   // Skip if not an ESG-related regulation
-  if (regulationType === 'OTHER' && !isESGRelated(act)) {
+  if (regulationType === "OTHER" && !isESGRelated(act)) {
     return null;
   }
 
@@ -93,7 +117,7 @@ function determineRegulationType(act: EULegalAct): string {
   // Check title keywords
   if (act.title) {
     const titleLower = act.title.toLowerCase();
-    
+
     for (const [type, keywords] of Object.entries(ESG_KEYWORDS)) {
       if (keywords.some(keyword => titleLower.includes(keyword))) {
         return type;
@@ -101,7 +125,7 @@ function determineRegulationType(act: EULegalAct): string {
     }
   }
 
-  return 'OTHER';
+  return "OTHER";
 }
 
 /**
@@ -111,25 +135,25 @@ function isESGRelated(act: EULegalAct): boolean {
   if (!act.title) return false;
 
   const titleLower = act.title.toLowerCase();
-  
+
   const esgTerms = [
-    'sustainability',
-    'environmental',
-    'social',
-    'governance',
-    'esg',
-    'climate',
-    'carbon',
-    'green',
-    'circular economy',
-    'due diligence',
-    'reporting',
-    'disclosure',
-    'taxonomy',
-    'deforestation',
-    'packaging',
-    'ecodesign',
-    'product passport',
+    "sustainability",
+    "environmental",
+    "social",
+    "governance",
+    "esg",
+    "climate",
+    "carbon",
+    "green",
+    "circular economy",
+    "due diligence",
+    "reporting",
+    "disclosure",
+    "taxonomy",
+    "deforestation",
+    "packaging",
+    "ecodesign",
+    "product passport",
   ];
 
   return esgTerms.some(term => titleLower.includes(term));
@@ -141,13 +165,16 @@ function isESGRelated(act: EULegalAct): boolean {
 function normalizeTitle(title: string): string {
   // Remove common prefixes
   let normalized = title
-    .replace(/^(Regulation|Directive|Decision|Recommendation|Opinion)\s+\(EU\)\s+/i, '')
-    .replace(/^(Commission|Council|Parliament)\s+/i, '')
+    .replace(
+      /^(Regulation|Directive|Decision|Recommendation|Opinion)\s+\(EU\)\s+/i,
+      ""
+    )
+    .replace(/^(Commission|Council|Parliament)\s+/i, "")
     .trim();
 
   // Truncate if too long (max 255 chars for database)
   if (normalized.length > 255) {
-    normalized = normalized.substring(0, 252) + '...';
+    normalized = normalized.substring(0, 252) + "...";
   }
 
   return normalized;
@@ -164,32 +191,34 @@ function generateDescription(act: EULegalAct): string | null {
   }
 
   if (act.dateEntryIntoForce) {
-    const dateStr = act.dateEntryIntoForce.toISOString().split('T')[0];
+    const dateStr = act.dateEntryIntoForce.toISOString().split("T")[0];
     parts.push(`Entry into force: ${dateStr}`);
   }
 
   if (act.dateEndOfValidity) {
-    const dateStr = act.dateEndOfValidity.toISOString().split('T')[0];
+    const dateStr = act.dateEndOfValidity.toISOString().split("T")[0];
     parts.push(`End of validity: ${dateStr}`);
   }
 
   if (act.inForce) {
-    parts.push('Currently in force');
+    parts.push("Currently in force");
   } else {
-    parts.push('No longer in force');
+    parts.push("No longer in force");
   }
 
   if (act.resourceType) {
     parts.push(`Type: ${act.resourceType}`);
   }
 
-  return parts.length > 0 ? parts.join(' | ') : null;
+  return parts.length > 0 ? parts.join(" | ") : null;
 }
 
 /**
  * Batch normalize multiple legal acts
  */
-export function normalizeEULegalActsBatch(acts: EULegalAct[]): InsertRegulation[] {
+export function normalizeEULegalActsBatch(
+  acts: EULegalAct[]
+): InsertRegulation[] {
   return acts
     .map(normalizeEULegalAct)
     .filter((reg): reg is InsertRegulation => reg !== null);
@@ -198,7 +227,9 @@ export function normalizeEULegalActsBatch(acts: EULegalAct[]): InsertRegulation[
 /**
  * Deduplicate regulations by CELEX ID
  */
-export function deduplicateRegulations(regulations: InsertRegulation[]): InsertRegulation[] {
+export function deduplicateRegulations(
+  regulations: InsertRegulation[]
+): InsertRegulation[] {
   const seen = new Set<string>();
   const unique: InsertRegulation[] = [];
 
@@ -277,7 +308,9 @@ export interface RegulationStats {
   withDates: number;
 }
 
-export function calculateRegulationStats(regulations: InsertRegulation[]): RegulationStats {
+export function calculateRegulationStats(
+  regulations: InsertRegulation[]
+): RegulationStats {
   const stats: RegulationStats = {
     total: regulations.length,
     byType: {},
@@ -288,7 +321,7 @@ export function calculateRegulationStats(regulations: InsertRegulation[]): Regul
 
   for (const reg of regulations) {
     // Count by type
-    const type = reg.regulationType || 'UNKNOWN';
+    const type = reg.regulationType || "UNKNOWN";
     stats.byType[type] = (stats.byType[type] || 0) + 1;
 
     // Count with CELEX

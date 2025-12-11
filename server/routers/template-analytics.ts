@@ -15,15 +15,27 @@ export const templateAnalyticsRouter = router({
    */
   getOverallAnalytics: adminProcedure.query(async () => {
     const db = await getDb();
-    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+    if (!db)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Database unavailable",
+      });
 
     const templates = await db.select().from(roadmapTemplates);
     const totalTemplates = templates.length;
-    const publicTemplates = templates.filter((t) => t.isPublic).length;
-    const totalUsage = templates.reduce((sum, t) => sum + (t.usageCount || 0), 0);
+    const publicTemplates = templates.filter(t => t.isPublic).length;
+    const totalUsage = templates.reduce(
+      (sum, t) => sum + (t.usageCount || 0),
+      0
+    );
     const avgRating =
       templates.length > 0
-        ? (templates.reduce((sum, t) => sum + parseFloat(t.rating?.toString() || "0"), 0) / templates.length).toFixed(2)
+        ? (
+            templates.reduce(
+              (sum, t) => sum + parseFloat(t.rating?.toString() || "0"),
+              0
+            ) / templates.length
+          ).toFixed(2)
         : "0.00";
 
     return {
@@ -41,7 +53,11 @@ export const templateAnalyticsRouter = router({
     .input(z.object({ templateId: z.number().int() }))
     .query(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       const template = await db
         .select()
@@ -49,21 +65,31 @@ export const templateAnalyticsRouter = router({
         .where(eq(roadmapTemplates.id, input.templateId));
 
       if (template.length === 0) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "Template not found" });
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Template not found",
+        });
       }
 
       // Note: complianceRoadmaps doesn't have templateId field
       // We'll calculate based on usage count and ratings
       const roadmaps: any[] = [];
 
-      const completedRoadmaps = roadmaps.filter((r) => r.status === "completed").length;
-      const completionRate = roadmaps.length > 0 ? ((completedRoadmaps / roadmaps.length) * 100).toFixed(2) : "0.00";
+      const completedRoadmaps = roadmaps.filter(
+        r => r.status === "completed"
+      ).length;
+      const completionRate =
+        roadmaps.length > 0
+          ? ((completedRoadmaps / roadmaps.length) * 100).toFixed(2)
+          : "0.00";
 
       // Calculate average score improvement
       let avgScoreImprovement = 0;
       // Calculate based on template usage and rating
       if (template[0].usageCount && template[0].usageCount > 0) {
-        avgScoreImprovement = parseFloat(template[0].estimatedImpact?.toString() || "0");
+        avgScoreImprovement = parseFloat(
+          template[0].estimatedImpact?.toString() || "0"
+        );
       }
 
       return {
@@ -84,18 +110,27 @@ export const templateAnalyticsRouter = router({
    */
   getAnalyticsByCategory: adminProcedure.query(async () => {
     const db = await getDb();
-    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+    if (!db)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Database unavailable",
+      });
 
     const templates = await db.select().from(roadmapTemplates);
 
     const categories = ["csrd", "eudr", "esrs", "custom"];
-    const analytics = categories.map((category) => {
-      const categoryTemplates = templates.filter((t) => t.category === category);
-      const totalUsage = categoryTemplates.reduce((sum, t) => sum + (t.usageCount || 0), 0);
+    const analytics = categories.map(category => {
+      const categoryTemplates = templates.filter(t => t.category === category);
+      const totalUsage = categoryTemplates.reduce(
+        (sum, t) => sum + (t.usageCount || 0),
+        0
+      );
       const avgRating =
         categoryTemplates.length > 0
-          ? categoryTemplates.reduce((sum, t) => sum + parseFloat(t.rating?.toString() || "0"), 0) /
-            categoryTemplates.length
+          ? categoryTemplates.reduce(
+              (sum, t) => sum + parseFloat(t.rating?.toString() || "0"),
+              0
+            ) / categoryTemplates.length
           : 0;
 
       return {
@@ -103,7 +138,7 @@ export const templateAnalyticsRouter = router({
         templateCount: categoryTemplates.length,
         totalUsage,
         avgRating: parseFloat(avgRating.toFixed(2)),
-        publicCount: categoryTemplates.filter((t) => t.isPublic).length,
+        publicCount: categoryTemplates.filter(t => t.isPublic).length,
       };
     });
 
@@ -115,18 +150,32 @@ export const templateAnalyticsRouter = router({
    */
   getAnalyticsByStrategy: adminProcedure.query(async () => {
     const db = await getDb();
-    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+    if (!db)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Database unavailable",
+      });
 
     const templates = await db.select().from(roadmapTemplates);
 
-    const strategies = ["risk_first", "quick_wins", "balanced", "comprehensive"];
-    const analytics = strategies.map((strategy) => {
-      const strategyTemplates = templates.filter((t) => t.strategy === strategy);
-      const totalUsage = strategyTemplates.reduce((sum, t) => sum + (t.usageCount || 0), 0);
+    const strategies = [
+      "risk_first",
+      "quick_wins",
+      "balanced",
+      "comprehensive",
+    ];
+    const analytics = strategies.map(strategy => {
+      const strategyTemplates = templates.filter(t => t.strategy === strategy);
+      const totalUsage = strategyTemplates.reduce(
+        (sum, t) => sum + (t.usageCount || 0),
+        0
+      );
       const avgRating =
         strategyTemplates.length > 0
-          ? strategyTemplates.reduce((sum, t) => sum + parseFloat(t.rating?.toString() || "0"), 0) /
-            strategyTemplates.length
+          ? strategyTemplates.reduce(
+              (sum, t) => sum + parseFloat(t.rating?.toString() || "0"),
+              0
+            ) / strategyTemplates.length
           : 0;
 
       return {
@@ -136,7 +185,12 @@ export const templateAnalyticsRouter = router({
         avgRating: parseFloat(avgRating.toFixed(2)),
         avgEffort:
           strategyTemplates.length > 0
-            ? (strategyTemplates.reduce((sum, t) => sum + t.estimatedEffort, 0) / strategyTemplates.length).toFixed(0)
+            ? (
+                strategyTemplates.reduce(
+                  (sum, t) => sum + t.estimatedEffort,
+                  0
+                ) / strategyTemplates.length
+              ).toFixed(0)
             : 0,
       };
     });
@@ -151,7 +205,11 @@ export const templateAnalyticsRouter = router({
     .input(z.object({ limit: z.number().int().default(10) }))
     .query(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       const templates = await db
         .select()
@@ -159,7 +217,7 @@ export const templateAnalyticsRouter = router({
         .orderBy(desc(roadmapTemplates.usageCount))
         .limit(input.limit);
 
-      return templates.map((t) => ({
+      return templates.map(t => ({
         id: t.id,
         name: t.name,
         category: t.category,
@@ -177,7 +235,11 @@ export const templateAnalyticsRouter = router({
     .input(z.object({ limit: z.number().int().default(10) }))
     .query(async ({ input }) => {
       const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      if (!db)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database unavailable",
+        });
 
       const templates = await db
         .select()
@@ -186,14 +248,15 @@ export const templateAnalyticsRouter = router({
         .orderBy(roadmapTemplates.rating)
         .limit(input.limit);
 
-      return templates.map((t) => ({
+      return templates.map(t => ({
         id: t.id,
         name: t.name,
         category: t.category,
         strategy: t.strategy,
         usageCount: t.usageCount || 0,
         rating: parseFloat(t.rating?.toString() || "0"),
-        improvementPriority: parseFloat(t.rating?.toString() || "0") < 3 ? "high" : "medium",
+        improvementPriority:
+          parseFloat(t.rating?.toString() || "0") < 3 ? "high" : "medium",
       }));
     }),
 
@@ -202,17 +265,31 @@ export const templateAnalyticsRouter = router({
    */
   getUsageTrends: adminProcedure.query(async () => {
     const db = await getDb();
-    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+    if (!db)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Database unavailable",
+      });
 
     const templates = await db.select().from(roadmapTemplates);
 
-    const totalUsage = templates.reduce((sum, t) => sum + (t.usageCount || 0), 0);
-    const avgUsagePerTemplate = templates.length > 0 ? (totalUsage / templates.length).toFixed(2) : "0.00";
-    const maxUsage = Math.max(...templates.map((t) => t.usageCount || 0));
-    const minUsage = Math.min(...templates.map((t) => t.usageCount || 0));
+    const totalUsage = templates.reduce(
+      (sum, t) => sum + (t.usageCount || 0),
+      0
+    );
+    const avgUsagePerTemplate =
+      templates.length > 0
+        ? (totalUsage / templates.length).toFixed(2)
+        : "0.00";
+    const maxUsage = Math.max(...templates.map(t => t.usageCount || 0));
+    const minUsage = Math.min(...templates.map(t => t.usageCount || 0));
 
-    const unusedTemplates = templates.filter((t) => (t.usageCount || 0) === 0).length;
-    const highlyUsedTemplates = templates.filter((t) => (t.usageCount || 0) > parseFloat(avgUsagePerTemplate as string)).length;
+    const unusedTemplates = templates.filter(
+      t => (t.usageCount || 0) === 0
+    ).length;
+    const highlyUsedTemplates = templates.filter(
+      t => (t.usageCount || 0) > parseFloat(avgUsagePerTemplate as string)
+    ).length;
 
     return {
       totalUsage,
@@ -230,48 +307,62 @@ export const templateAnalyticsRouter = router({
    */
   getImprovementRecommendations: adminProcedure.query(async () => {
     const db = await getDb();
-    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+    if (!db)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Database unavailable",
+      });
 
     const templates = await db.select().from(roadmapTemplates);
 
     const recommendations: any[] = [];
 
     // Find unused templates
-    const unusedTemplates = templates.filter((t) => (t.usageCount || 0) === 0);
+    const unusedTemplates = templates.filter(t => (t.usageCount || 0) === 0);
     if (unusedTemplates.length > 0) {
       recommendations.push({
         type: "unused_templates",
         severity: "medium",
         message: `${unusedTemplates.length} templates have never been used. Consider reviewing or removing them.`,
-        templates: unusedTemplates.map((t) => ({ id: t.id, name: t.name })),
+        templates: unusedTemplates.map(t => ({ id: t.id, name: t.name })),
       });
     }
 
     // Find low-rated templates
-    const lowRatedTemplates = templates.filter((t) => (t.usageCount || 0) > 0 && (parseFloat(t.rating?.toString() || "0") < 3));
+    const lowRatedTemplates = templates.filter(
+      t =>
+        (t.usageCount || 0) > 0 && parseFloat(t.rating?.toString() || "0") < 3
+    );
     if (lowRatedTemplates.length > 0) {
       recommendations.push({
         type: "low_rated_templates",
         severity: "high",
         message: `${lowRatedTemplates.length} templates have ratings below 3. These need improvement.`,
-        templates: lowRatedTemplates.map((t) => ({ id: t.id, name: t.name, rating: parseFloat(t.rating?.toString() || "0") })),
+        templates: lowRatedTemplates.map(t => ({
+          id: t.id,
+          name: t.name,
+          rating: parseFloat(t.rating?.toString() || "0"),
+        })),
       });
     }
 
     // Find category gaps
     const categories = ["csrd", "eudr", "esrs"];
-    const categoryTemplates = categories.map((cat) => ({
+    const categoryTemplates = categories.map(cat => ({
       category: cat,
-      count: templates.filter((t) => t.category === cat).length,
+      count: templates.filter(t => t.category === cat).length,
     }));
-    const counts = categoryTemplates.map((c) => c.count);
+    const counts = categoryTemplates.map(c => c.count);
     const minCategoryCount = counts.length > 0 ? Math.min(...counts) : 0;
     if (minCategoryCount === 0) {
       recommendations.push({
         type: "category_gap",
         severity: "medium",
-        message: "Some compliance categories lack templates. Consider creating templates for all major regulations.",
-        missingCategories: categoryTemplates.filter((c) => c.count === 0).map((c) => c.category),
+        message:
+          "Some compliance categories lack templates. Consider creating templates for all major regulations.",
+        missingCategories: categoryTemplates
+          .filter(c => c.count === 0)
+          .map(c => c.category),
       });
     }
 

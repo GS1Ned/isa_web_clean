@@ -11,7 +11,13 @@ import ReactFlow, {
   MarkerType,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, AlertTriangle, CheckCircle2, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +32,11 @@ export default function EPCISSupplyChain() {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedNode, setSelectedNode] = useState<any>(null);
 
-  const { data: visualization, isLoading, error } = trpc.epcis.getSupplyChainVisualization.useQuery();
+  const {
+    data: visualization,
+    isLoading,
+    error,
+  } = trpc.epcis.getSupplyChainVisualization.useQuery();
 
   useEffect(() => {
     if (!visualization) return;
@@ -37,8 +47,8 @@ export default function EPCISSupplyChain() {
         node.riskLevel === "high"
           ? "#ef4444"
           : node.riskLevel === "medium"
-          ? "#f59e0b"
-          : "#10b981";
+            ? "#f59e0b"
+            : "#10b981";
 
       return {
         id: node.id.toString(),
@@ -47,7 +57,9 @@ export default function EPCISSupplyChain() {
           label: (
             <div className="text-center">
               <div className="font-semibold text-sm">{node.name}</div>
-              <div className="text-xs text-muted-foreground">{node.nodeType}</div>
+              <div className="text-xs text-muted-foreground">
+                {node.nodeType}
+              </div>
               {node.tierLevel && (
                 <Badge variant="outline" className="mt-1 text-xs">
                   Tier {node.tierLevel}
@@ -56,7 +68,10 @@ export default function EPCISSupplyChain() {
             </div>
           ),
         },
-        position: node.position || { x: Math.random() * 500, y: Math.random() * 500 },
+        position: node.position || {
+          x: Math.random() * 500,
+          y: Math.random() * 500,
+        },
         style: {
           background: "#ffffff",
           border: `2px solid ${riskColor}`,
@@ -89,7 +104,9 @@ export default function EPCISSupplyChain() {
 
   const onNodeClick = useCallback(
     (_event: React.MouseEvent, node: Node) => {
-      const nodeData = visualization?.nodes.find((n: any) => n.id.toString() === node.id);
+      const nodeData = visualization?.nodes.find(
+        (n: any) => n.id.toString() === node.id
+      );
       setSelectedNode(nodeData);
     },
     [visualization]
@@ -100,7 +117,9 @@ export default function EPCISSupplyChain() {
       <div className="container mx-auto py-8 max-w-7xl">
         <div className="flex flex-col items-center justify-center h-96">
           <Loader2 className="h-16 w-16 animate-spin text-primary mb-4" />
-          <p className="text-muted-foreground">Loading supply chain visualization...</p>
+          <p className="text-muted-foreground">
+            Loading supply chain visualization...
+          </p>
         </div>
       </div>
     );
@@ -111,7 +130,9 @@ export default function EPCISSupplyChain() {
       <div className="container mx-auto py-8 max-w-7xl">
         <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>Error loading supply chain: {error.message}</AlertDescription>
+          <AlertDescription>
+            Error loading supply chain: {error.message}
+          </AlertDescription>
         </Alert>
       </div>
     );
@@ -121,17 +142,24 @@ export default function EPCISSupplyChain() {
     return (
       <div className="container mx-auto py-8 max-w-7xl">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Supply Chain Visualization</h1>
+          <h1 className="text-4xl font-bold mb-2">
+            Supply Chain Visualization
+          </h1>
           <p className="text-muted-foreground">
-            Interactive network graph of your supply chain nodes and relationships
+            Interactive network graph of your supply chain nodes and
+            relationships
           </p>
         </div>
 
         <Alert>
           <Info className="h-4 w-4" />
           <AlertDescription>
-            No supply chain data available. Upload EPCIS events to generate your supply chain map.
-            <a href="/epcis/upload" className="ml-2 text-primary hover:underline">
+            No supply chain data available. Upload EPCIS events to generate your
+            supply chain map.
+            <a
+              href="/epcis/upload"
+              className="ml-2 text-primary hover:underline"
+            >
               Upload EPCIS Document →
             </a>
           </AlertDescription>
@@ -145,8 +173,8 @@ export default function EPCISSupplyChain() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">Supply Chain Visualization</h1>
         <p className="text-muted-foreground">
-          Interactive network graph showing {visualization.nodes.length} nodes and{" "}
-          {visualization.edges.length} relationships
+          Interactive network graph showing {visualization.nodes.length} nodes
+          and {visualization.edges.length} relationships
         </p>
       </div>
 
@@ -201,9 +229,7 @@ export default function EPCISSupplyChain() {
           <Card>
             <CardHeader>
               <CardTitle>Node Details</CardTitle>
-              <CardDescription>
-                Click on a node to view details
-              </CardDescription>
+              <CardDescription>Click on a node to view details</CardDescription>
             </CardHeader>
             <CardContent>
               {!selectedNode && (
@@ -216,19 +242,27 @@ export default function EPCISSupplyChain() {
               {selectedNode && (
                 <div className="space-y-4">
                   <div>
-                    <div className="text-sm font-medium text-muted-foreground mb-1">Name</div>
+                    <div className="text-sm font-medium text-muted-foreground mb-1">
+                      Name
+                    </div>
                     <div className="font-semibold">{selectedNode.name}</div>
                   </div>
 
                   <div>
-                    <div className="text-sm font-medium text-muted-foreground mb-1">Type</div>
+                    <div className="text-sm font-medium text-muted-foreground mb-1">
+                      Type
+                    </div>
                     <Badge>{selectedNode.nodeType}</Badge>
                   </div>
 
                   {selectedNode.gln && (
                     <div>
-                      <div className="text-sm font-medium text-muted-foreground mb-1">GLN</div>
-                      <div className="text-sm font-mono">{selectedNode.gln}</div>
+                      <div className="text-sm font-medium text-muted-foreground mb-1">
+                        GLN
+                      </div>
+                      <div className="text-sm font-mono">
+                        {selectedNode.gln}
+                      </div>
                     </div>
                   )}
 
@@ -237,7 +271,9 @@ export default function EPCISSupplyChain() {
                       <div className="text-sm font-medium text-muted-foreground mb-1">
                         Tier Level
                       </div>
-                      <div className="text-sm">Tier {selectedNode.tierLevel}</div>
+                      <div className="text-sm">
+                        Tier {selectedNode.tierLevel}
+                      </div>
                     </div>
                   )}
 
@@ -251,8 +287,8 @@ export default function EPCISSupplyChain() {
                           selectedNode.riskLevel === "high"
                             ? "destructive"
                             : selectedNode.riskLevel === "medium"
-                            ? "default"
-                            : "outline"
+                              ? "default"
+                              : "outline"
                         }
                       >
                         {selectedNode.riskLevel.toUpperCase()}
@@ -262,7 +298,9 @@ export default function EPCISSupplyChain() {
 
                   {selectedNode.locationLat && selectedNode.locationLng && (
                     <div>
-                      <div className="text-sm font-medium text-muted-foreground mb-1">Location</div>
+                      <div className="text-sm font-medium text-muted-foreground mb-1">
+                        Location
+                      </div>
                       <div className="text-sm">
                         {parseFloat(selectedNode.locationLat).toFixed(4)},{" "}
                         {parseFloat(selectedNode.locationLng).toFixed(4)}
@@ -270,37 +308,47 @@ export default function EPCISSupplyChain() {
                     </div>
                   )}
 
-                  {selectedNode.certifications && selectedNode.certifications.length > 0 && (
-                    <div>
-                      <div className="text-sm font-medium text-muted-foreground mb-1">
-                        Certifications
+                  {selectedNode.certifications &&
+                    selectedNode.certifications.length > 0 && (
+                      <div>
+                        <div className="text-sm font-medium text-muted-foreground mb-1">
+                          Certifications
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {selectedNode.certifications.map(
+                            (cert: string, i: number) => (
+                              <Badge
+                                key={i}
+                                variant="outline"
+                                className="text-xs"
+                              >
+                                <CheckCircle2 className="h-3 w-3 mr-1" />
+                                {cert}
+                              </Badge>
+                            )
+                          )}
+                        </div>
                       </div>
-                      <div className="flex flex-wrap gap-1">
-                        {selectedNode.certifications.map((cert: string, i: number) => (
-                          <Badge key={i} variant="outline" className="text-xs">
-                            <CheckCircle2 className="h-3 w-3 mr-1" />
-                            {cert}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                    )}
 
-                  {selectedNode.riskFactors && selectedNode.riskFactors.length > 0 && (
-                    <div>
-                      <div className="text-sm font-medium text-muted-foreground mb-1">
-                        Risk Factors
+                  {selectedNode.riskFactors &&
+                    selectedNode.riskFactors.length > 0 && (
+                      <div>
+                        <div className="text-sm font-medium text-muted-foreground mb-1">
+                          Risk Factors
+                        </div>
+                        <ul className="text-sm space-y-1">
+                          {selectedNode.riskFactors.map(
+                            (factor: string, i: number) => (
+                              <li key={i} className="flex items-start gap-2">
+                                <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                                <span>{factor}</span>
+                              </li>
+                            )
+                          )}
+                        </ul>
                       </div>
-                      <ul className="text-sm space-y-1">
-                        {selectedNode.riskFactors.map((factor: string, i: number) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                            <span>{factor}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                    )}
                 </div>
               )}
             </CardContent>
@@ -313,29 +361,55 @@ export default function EPCISSupplyChain() {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Total Nodes</span>
-                <span className="font-semibold">{visualization.nodes.length}</span>
+                <span className="text-sm text-muted-foreground">
+                  Total Nodes
+                </span>
+                <span className="font-semibold">
+                  {visualization.nodes.length}
+                </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Total Relationships</span>
-                <span className="font-semibold">{visualization.edges.length}</span>
+                <span className="text-sm text-muted-foreground">
+                  Total Relationships
+                </span>
+                <span className="font-semibold">
+                  {visualization.edges.length}
+                </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">High Risk Nodes</span>
+                <span className="text-sm text-muted-foreground">
+                  High Risk Nodes
+                </span>
                 <span className="font-semibold text-red-600">
-                  {visualization.nodes.filter((n: any) => n.riskLevel === "high").length}
+                  {
+                    visualization.nodes.filter(
+                      (n: any) => n.riskLevel === "high"
+                    ).length
+                  }
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Medium Risk Nodes</span>
+                <span className="text-sm text-muted-foreground">
+                  Medium Risk Nodes
+                </span>
                 <span className="font-semibold text-amber-600">
-                  {visualization.nodes.filter((n: any) => n.riskLevel === "medium").length}
+                  {
+                    visualization.nodes.filter(
+                      (n: any) => n.riskLevel === "medium"
+                    ).length
+                  }
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Low Risk Nodes</span>
+                <span className="text-sm text-muted-foreground">
+                  Low Risk Nodes
+                </span>
                 <span className="font-semibold text-green-600">
-                  {visualization.nodes.filter((n: any) => n.riskLevel === "low").length}
+                  {
+                    visualization.nodes.filter(
+                      (n: any) => n.riskLevel === "low"
+                    ).length
+                  }
                 </span>
               </div>
             </CardContent>

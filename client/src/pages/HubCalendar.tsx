@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { Calendar, Clock, AlertTriangle, CheckCircle, Bell } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  AlertTriangle,
+  CheckCircle,
+  Bell,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const SAMPLE_DEADLINES = [
@@ -9,7 +15,8 @@ const SAMPLE_DEADLINES = [
     date: "2024-12-30",
     title: "EUDR Implementation Deadline",
     regulation: "EUDR",
-    description: "Companies must implement due diligence systems for deforestation-free commodities.",
+    description:
+      "Companies must implement due diligence systems for deforestation-free commodities.",
     daysUntil: 2,
     priority: "CRITICAL",
     affectedStandards: ["EPCIS", "Traceability"],
@@ -39,7 +46,8 @@ const SAMPLE_DEADLINES = [
     date: "2025-02-28",
     title: "EUDR Reporting Period Ends",
     regulation: "EUDR",
-    description: "First reporting period for deforestation due diligence closes.",
+    description:
+      "First reporting period for deforestation due diligence closes.",
     daysUntil: 92,
     priority: "HIGH",
     affectedStandards: ["EPCIS"],
@@ -94,20 +102,27 @@ export default function HubCalendar() {
   const [selectedPriority, setSelectedPriority] = useState<string | null>(null);
 
   const filteredDeadlines = selectedPriority
-    ? SAMPLE_DEADLINES.filter((d) => d.priority === selectedPriority)
+    ? SAMPLE_DEADLINES.filter(d => d.priority === selectedPriority)
     : SAMPLE_DEADLINES;
 
-  const sortedDeadlines = [...filteredDeadlines].sort((a, b) => a.daysUntil - b.daysUntil);
+  const sortedDeadlines = [...filteredDeadlines].sort(
+    (a, b) => a.daysUntil - b.daysUntil
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/hub" className="text-accent hover:text-accent/80 transition font-medium">
+          <Link
+            href="/hub"
+            className="text-accent hover:text-accent/80 transition font-medium"
+          >
             ← Back to Hub
           </Link>
-          <h1 className="text-lg font-bold text-foreground">Compliance Calendar</h1>
+          <h1 className="text-lg font-bold text-foreground">
+            Compliance Calendar
+          </h1>
           <div className="w-24" />
         </div>
       </nav>
@@ -117,20 +132,29 @@ export default function HubCalendar() {
         <div className="container py-8">
           {/* Header */}
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Compliance Calendar</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-2">
+              Compliance Calendar
+            </h2>
             <p className="text-muted-foreground">
-              Track all ESG regulatory deadlines, reporting windows, and enforcement dates. Set alerts for key dates.
+              Track all ESG regulatory deadlines, reporting windows, and
+              enforcement dates. Set alerts for key dates.
             </p>
           </div>
 
           {/* Priority Filter */}
           <div className="mb-8">
             <div className="flex flex-wrap gap-2">
-              <span className="text-sm font-medium text-muted-foreground py-2">Filter by priority:</span>
-              {["CRITICAL", "HIGH", "MEDIUM", "LOW"].map((priority) => (
+              <span className="text-sm font-medium text-muted-foreground py-2">
+                Filter by priority:
+              </span>
+              {["CRITICAL", "HIGH", "MEDIUM", "LOW"].map(priority => (
                 <button
                   key={priority}
-                  onClick={() => setSelectedPriority(selectedPriority === priority ? null : priority)}
+                  onClick={() =>
+                    setSelectedPriority(
+                      selectedPriority === priority ? null : priority
+                    )
+                  }
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
                     selectedPriority === priority
                       ? "bg-accent text-accent-foreground"
@@ -152,7 +176,11 @@ export default function HubCalendar() {
               >
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 mt-1">
-                    {PRIORITY_ICONS[deadline.priority as keyof typeof PRIORITY_ICONS]}
+                    {
+                      PRIORITY_ICONS[
+                        deadline.priority as keyof typeof PRIORITY_ICONS
+                      ]
+                    }
                   </div>
 
                   <div className="flex-1">
@@ -160,16 +188,24 @@ export default function HubCalendar() {
                       <span className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-background">
                         {deadline.regulation}
                       </span>
-                      <span className="text-xs font-medium text-muted-foreground">{deadline.priority}</span>
+                      <span className="text-xs font-medium text-muted-foreground">
+                        {deadline.priority}
+                      </span>
                     </div>
 
-                    <h3 className="text-lg font-semibold text-foreground mb-1">{deadline.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-3">{deadline.description}</p>
+                    <h3 className="text-lg font-semibold text-foreground mb-1">
+                      {deadline.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {deadline.description}
+                    </p>
 
                     <div className="flex items-center gap-6 mb-3">
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">{deadline.date}</span>
+                        <span className="text-sm font-medium">
+                          {deadline.date}
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-muted-foreground" />
@@ -177,15 +213,18 @@ export default function HubCalendar() {
                           {deadline.daysUntil === 0
                             ? "Today"
                             : deadline.daysUntil === 1
-                            ? "Tomorrow"
-                            : `${deadline.daysUntil} days`}
+                              ? "Tomorrow"
+                              : `${deadline.daysUntil} days`}
                         </span>
                       </div>
                     </div>
 
                     <div className="flex flex-wrap gap-2 mb-4">
                       {deadline.affectedStandards.map((standard, sidx) => (
-                        <span key={sidx} className="inline-block px-2 py-1 rounded bg-background text-xs font-medium">
+                        <span
+                          key={sidx}
+                          className="inline-block px-2 py-1 rounded bg-background text-xs font-medium"
+                        >
                           {standard}
                         </span>
                       ))}
@@ -205,25 +244,27 @@ export default function HubCalendar() {
           <div className="mt-8 grid md:grid-cols-4 gap-4">
             <div className="card-elevated p-4 text-center">
               <div className="text-2xl font-bold text-red-600 mb-1">
-                {SAMPLE_DEADLINES.filter((d) => d.priority === "CRITICAL").length}
+                {SAMPLE_DEADLINES.filter(d => d.priority === "CRITICAL").length}
               </div>
-              <p className="text-xs text-muted-foreground">Critical Deadlines</p>
+              <p className="text-xs text-muted-foreground">
+                Critical Deadlines
+              </p>
             </div>
             <div className="card-elevated p-4 text-center">
               <div className="text-2xl font-bold text-orange-600 mb-1">
-                {SAMPLE_DEADLINES.filter((d) => d.priority === "HIGH").length}
+                {SAMPLE_DEADLINES.filter(d => d.priority === "HIGH").length}
               </div>
               <p className="text-xs text-muted-foreground">High Priority</p>
             </div>
             <div className="card-elevated p-4 text-center">
               <div className="text-2xl font-bold text-yellow-600 mb-1">
-                {SAMPLE_DEADLINES.filter((d) => d.priority === "MEDIUM").length}
+                {SAMPLE_DEADLINES.filter(d => d.priority === "MEDIUM").length}
               </div>
               <p className="text-xs text-muted-foreground">Medium Priority</p>
             </div>
             <div className="card-elevated p-4 text-center">
               <div className="text-2xl font-bold text-green-600 mb-1">
-                {SAMPLE_DEADLINES.filter((d) => d.priority === "LOW").length}
+                {SAMPLE_DEADLINES.filter(d => d.priority === "LOW").length}
               </div>
               <p className="text-xs text-muted-foreground">Low Priority</p>
             </div>
@@ -234,7 +275,9 @@ export default function HubCalendar() {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-8">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Intelligent Standards Architect - ESG Regulations Hub</p>
+          <p>
+            &copy; 2025 Intelligent Standards Architect - ESG Regulations Hub
+          </p>
         </div>
       </footer>
     </div>

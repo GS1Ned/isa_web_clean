@@ -1,23 +1,23 @@
 /**
  * OpenAI Embeddings Integration
- * 
+ *
  * Provides vector embedding generation for semantic search and similarity matching.
  * Uses OpenAI's text-embedding-3-small model (1536 dimensions, $0.02/1M tokens).
- * 
+ *
  * Use cases:
  * - Ask ISA: Find relevant regulations/standards by semantic similarity
  * - Auto-tagging: Match regulations to GS1 standards
  * - Duplicate detection: Find similar content across documents
  */
 
-import { ENV } from './env';
+import { ENV } from "./env";
 
 /**
  * OpenAI embedding model configuration
  */
-const EMBEDDING_MODEL = 'text-embedding-3-small';
+const EMBEDDING_MODEL = "text-embedding-3-small";
 const EMBEDDING_DIMENSIONS = 1536;
-const OPENAI_API_URL = 'https://api.openai.com/v1/embeddings';
+const OPENAI_API_URL = "https://api.openai.com/v1/embeddings";
 
 /**
  * Embedding generation result
@@ -51,15 +51,19 @@ interface OpenAIEmbeddingResponse {
 
 /**
  * Generate vector embedding for text using OpenAI API
- * 
+ *
  * @param text - Input text to embed (max ~8000 tokens)
  * @returns Vector embedding (1536 dimensions)
  * @throws Error if API key not configured or API call fails
  */
-export async function generateEmbedding(text: string): Promise<EmbeddingResult> {
+export async function generateEmbedding(
+  text: string
+): Promise<EmbeddingResult> {
   // Validate API key
   if (!ENV.openaiApiKey) {
-    throw new Error('OPENAI_API_KEY is not configured. Please add it via Settings → Secrets.');
+    throw new Error(
+      "OPENAI_API_KEY is not configured. Please add it via Settings → Secrets."
+    );
   }
 
   // Truncate text if too long (OpenAI limit: 8191 tokens ≈ 32,000 chars)
@@ -67,15 +71,15 @@ export async function generateEmbedding(text: string): Promise<EmbeddingResult> 
 
   try {
     const response = await fetch(OPENAI_API_URL, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${ENV.openaiApiKey}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${ENV.openaiApiKey}`,
       },
       body: JSON.stringify({
         model: EMBEDDING_MODEL,
         input: truncatedText,
-        encoding_format: 'float',
+        encoding_format: "float",
       }),
     });
 
@@ -89,7 +93,7 @@ export async function generateEmbedding(text: string): Promise<EmbeddingResult> 
     const data = (await response.json()) as OpenAIEmbeddingResponse;
 
     if (!data.data || data.data.length === 0) {
-      throw new Error('OpenAI API returned no embeddings');
+      throw new Error("OpenAI API returned no embeddings");
     }
 
     return {
@@ -108,33 +112,35 @@ export async function generateEmbedding(text: string): Promise<EmbeddingResult> 
 
 /**
  * Generate embeddings for multiple texts in batch
- * 
+ *
  * @param texts - Array of texts to embed
  * @returns Array of embeddings in same order as input
  */
-export async function generateEmbeddingsBatch(texts: string[]): Promise<EmbeddingResult[]> {
+export async function generateEmbeddingsBatch(
+  texts: string[]
+): Promise<EmbeddingResult[]> {
   // OpenAI supports batch embedding but we'll do sequential for simplicity
   // Can optimize later with Promise.all if needed
   const results: EmbeddingResult[] = [];
-  
+
   for (const text of texts) {
     const result = await generateEmbedding(text);
     results.push(result);
   }
-  
+
   return results;
 }
 
 /**
  * Calculate cosine similarity between two embeddings
- * 
+ *
  * @param a - First embedding vector
  * @param b - Second embedding vector
  * @returns Similarity score between 0 and 1 (1 = identical)
  */
 export function cosineSimilarity(a: number[], b: number[]): number {
   if (a.length !== b.length) {
-    throw new Error('Embeddings must have same dimensions');
+    throw new Error("Embeddings must have same dimensions");
   }
 
   let dotProduct = 0;
@@ -148,7 +154,7 @@ export function cosineSimilarity(a: number[], b: number[]): number {
   }
 
   const magnitude = Math.sqrt(normA) * Math.sqrt(normB);
-  
+
   if (magnitude === 0) {
     return 0;
   }
@@ -158,7 +164,7 @@ export function cosineSimilarity(a: number[], b: number[]): number {
 
 /**
  * Find top K most similar items by cosine similarity
- * 
+ *
  * @param queryEmbedding - Query vector
  * @param candidateEmbeddings - Array of candidate vectors with metadata
  * @param topK - Number of top results to return
@@ -183,14 +189,14 @@ export function findTopSimilar<T>(
 
 /**
  * Prepare text for embedding by cleaning and normalizing
- * 
+ *
  * @param text - Raw text input
  * @returns Cleaned text ready for embedding
  */
 export function prepareTextForEmbedding(text: string): string {
   return text
     .trim()
-    .replace(/\s+/g, ' ')  // Normalize whitespace
-    .replace(/\n+/g, ' ')  // Remove newlines
-    .substring(0, 32000);  // Truncate to safe length
+    .replace(/\s+/g, " ") // Normalize whitespace
+    .replace(/\n+/g, " ") // Remove newlines
+    .substring(0, 32000); // Truncate to safe length
 }

@@ -4,10 +4,7 @@ import { eq, and, lt } from "drizzle-orm";
 import { userAlerts, regulations, hubNews } from "../drizzle/schema";
 
 // Hardcoded recipient list
-const NOTIFICATION_RECIPIENTS = [
-  "frisowempe@gmail.com",
-  "friso.wempe@gs1.nl",
-];
+const NOTIFICATION_RECIPIENTS = ["frisowempe@gmail.com", "friso.wempe@gs1.nl"];
 
 /**
  * Check for approaching deadlines and send email alerts
@@ -54,7 +51,7 @@ export async function sendDeadlineAlerts() {
     // Send alerts for each upcoming regulation
     for (const reg of upcomingRegulations) {
       const relevantAlerts = activeAlerts.filter(
-        (alert) => alert.regulationId === reg.id
+        alert => alert.regulationId === reg.id
       );
 
       if (relevantAlerts.length > 0) {

@@ -12,7 +12,7 @@ const mockContext: Context = {
 describe("ESRS Datapoints Router", () => {
   it("should list ESRS datapoints with pagination", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.esrs.list({
       page: 1,
       pageSize: 10,
@@ -28,7 +28,7 @@ describe("ESRS Datapoints Router", () => {
 
   it("should filter datapoints by search keyword", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.esrs.list({
       page: 1,
       pageSize: 50,
@@ -39,10 +39,11 @@ describe("ESRS Datapoints Router", () => {
     expect(result.datapoints).toBeInstanceOf(Array);
     // Should find some datapoints with "emissions" in name or ID
     if (result.datapoints.length > 0) {
-      const hasEmissions = result.datapoints.some(dp => 
-        dp.name?.toLowerCase().includes("emissions") ||
-        dp.datapointId?.toLowerCase().includes("emissions") ||
-        dp.disclosureRequirement?.toLowerCase().includes("emissions")
+      const hasEmissions = result.datapoints.some(
+        dp =>
+          dp.name?.toLowerCase().includes("emissions") ||
+          dp.datapointId?.toLowerCase().includes("emissions") ||
+          dp.disclosureRequirement?.toLowerCase().includes("emissions")
       );
       expect(hasEmissions).toBe(true);
     }
@@ -50,7 +51,7 @@ describe("ESRS Datapoints Router", () => {
 
   it("should filter datapoints by ESRS standard", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.esrs.list({
       page: 1,
       pageSize: 50,
@@ -61,14 +62,16 @@ describe("ESRS Datapoints Router", () => {
     expect(result.datapoints).toBeInstanceOf(Array);
     // All results should be from ESRS E1
     if (result.datapoints.length > 0) {
-      const allE1 = result.datapoints.every(dp => dp.esrsStandard === "ESRS E1");
+      const allE1 = result.datapoints.every(
+        dp => dp.esrsStandard === "ESRS E1"
+      );
       expect(allE1).toBe(true);
     }
   });
 
   it("should filter datapoints by data type", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.esrs.list({
       page: 1,
       pageSize: 50,
@@ -79,7 +82,7 @@ describe("ESRS Datapoints Router", () => {
     expect(result.datapoints).toBeInstanceOf(Array);
     // All results should contain "narrative" in data type
     if (result.datapoints.length > 0) {
-      const allNarrative = result.datapoints.every(dp => 
+      const allNarrative = result.datapoints.every(dp =>
         dp.dataType?.toLowerCase().includes("narrative")
       );
       expect(allNarrative).toBe(true);
@@ -88,7 +91,7 @@ describe("ESRS Datapoints Router", () => {
 
   it("should filter datapoints by voluntary status", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.esrs.list({
       page: 1,
       pageSize: 50,
@@ -99,14 +102,16 @@ describe("ESRS Datapoints Router", () => {
     expect(result.datapoints).toBeInstanceOf(Array);
     // All results should be mandatory (voluntary = false)
     if (result.datapoints.length > 0) {
-      const allMandatory = result.datapoints.every(dp => dp.voluntary === false);
+      const allMandatory = result.datapoints.every(
+        dp => dp.voluntary === false
+      );
       expect(allMandatory).toBe(true);
     }
   });
 
   it("should return unique ESRS standards", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const standards = await caller.esrs.getStandards();
 
     expect(standards).toBeInstanceOf(Array);
@@ -119,7 +124,7 @@ describe("ESRS Datapoints Router", () => {
 
   it("should return statistics about ESRS datapoints", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const stats = await caller.esrs.getStats();
 
     expect(stats).toBeDefined();
@@ -132,7 +137,7 @@ describe("ESRS Datapoints Router", () => {
 
   it("should handle pagination correctly", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     // Get first page
     const page1 = await caller.esrs.list({
       page: 1,
@@ -147,7 +152,7 @@ describe("ESRS Datapoints Router", () => {
 
     expect(page1.datapoints).toBeInstanceOf(Array);
     expect(page2.datapoints).toBeInstanceOf(Array);
-    
+
     // Pages should have different datapoints
     if (page1.datapoints.length > 0 && page2.datapoints.length > 0) {
       const page1Ids = page1.datapoints.map(dp => dp.id);
@@ -159,7 +164,7 @@ describe("ESRS Datapoints Router", () => {
 
   it("should return empty results for non-existent search", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.esrs.list({
       page: 1,
       pageSize: 50,
@@ -174,7 +179,7 @@ describe("ESRS Datapoints Router", () => {
 
   it("should handle combined filters", async () => {
     const caller = appRouter.createCaller(mockContext);
-    
+
     const result = await caller.esrs.list({
       page: 1,
       pageSize: 50,
@@ -185,13 +190,14 @@ describe("ESRS Datapoints Router", () => {
 
     expect(result).toBeDefined();
     expect(result.datapoints).toBeInstanceOf(Array);
-    
+
     // All results should match all filters
     if (result.datapoints.length > 0) {
-      const allMatch = result.datapoints.every(dp => 
-        dp.esrsStandard === "ESRS E1" &&
-        dp.dataType?.toLowerCase().includes("narrative") &&
-        dp.voluntary === false
+      const allMatch = result.datapoints.every(
+        dp =>
+          dp.esrsStandard === "ESRS E1" &&
+          dp.dataType?.toLowerCase().includes("narrative") &&
+          dp.voluntary === false
       );
       expect(allMatch).toBe(true);
     }

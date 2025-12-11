@@ -1,24 +1,39 @@
 import React, { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle, Clock, Download, Eye } from "lucide-react";
 
 export default function AdminEvidenceVerification() {
-  const [selectedEvidenceId, setSelectedEvidenceId] = useState<number | null>(null);
+  const [selectedEvidenceId, setSelectedEvidenceId] = useState<number | null>(
+    null
+  );
   const [verificationNotes, setVerificationNotes] = useState("");
 
   // Fetch all pending evidence for verification
-  const { data: pendingEvidence, isLoading: pendingLoading, refetch: refetchPending } = trpc.remediation.getStepEvidence.useQuery(
+  const {
+    data: pendingEvidence,
+    isLoading: pendingLoading,
+    refetch: refetchPending,
+  } = trpc.remediation.getStepEvidence.useQuery(
     { stepId: 0 }, // This would need to be updated to fetch all pending evidence
     { enabled: false }
   );
 
   const verifyEvidenceMutation = trpc.remediation.verifyEvidence.useMutation();
 
-  const handleVerifyEvidence = async (evidenceId: number, approved: boolean) => {
+  const handleVerifyEvidence = async (
+    evidenceId: number,
+    approved: boolean
+  ) => {
     try {
       await verifyEvidenceMutation.mutateAsync({
         evidenceId,
@@ -38,7 +53,9 @@ export default function AdminEvidenceVerification() {
     <div className="container mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Evidence Verification</h1>
-        <p className="text-gray-600">Review and verify compliance evidence submitted by users</p>
+        <p className="text-gray-600">
+          Review and verify compliance evidence submitted by users
+        </p>
       </div>
 
       <Tabs defaultValue="pending" className="w-full">
@@ -60,7 +77,7 @@ export default function AdminEvidenceVerification() {
             </Card>
           ) : (
             <div className="grid gap-4">
-              {pendingEvidence.map((item) => (
+              {pendingEvidence.map(item => (
                 <Card
                   key={item.id}
                   className="cursor-pointer hover:shadow-lg transition-shadow"
@@ -80,7 +97,9 @@ export default function AdminEvidenceVerification() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-gray-600">{item.description}</p>
-                    <p className="text-xs text-gray-500 mt-2">Uploaded by: {item.uploadedBy}</p>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Uploaded by: {item.uploadedBy}
+                    </p>
                   </CardContent>
                 </Card>
               ))}
@@ -95,10 +114,12 @@ export default function AdminEvidenceVerification() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Verification Notes</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Verification Notes
+                  </label>
                   <textarea
                     value={verificationNotes}
-                    onChange={(e) => setVerificationNotes(e.target.value)}
+                    onChange={e => setVerificationNotes(e.target.value)}
                     placeholder="Add notes about your verification decision..."
                     className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     rows={4}
@@ -106,14 +127,18 @@ export default function AdminEvidenceVerification() {
                 </div>
                 <div className="flex gap-3">
                   <Button
-                    onClick={() => handleVerifyEvidence(selectedEvidenceId, true)}
+                    onClick={() =>
+                      handleVerifyEvidence(selectedEvidenceId, true)
+                    }
                     className="flex-1 bg-green-600 hover:bg-green-700"
                   >
                     <CheckCircle2 className="w-4 h-4 mr-2" />
                     Approve
                   </Button>
                   <Button
-                    onClick={() => handleVerifyEvidence(selectedEvidenceId, false)}
+                    onClick={() =>
+                      handleVerifyEvidence(selectedEvidenceId, false)
+                    }
                     className="flex-1 bg-red-600 hover:bg-red-700"
                   >
                     <XCircle className="w-4 h-4 mr-2" />
@@ -146,7 +171,9 @@ export default function AdminEvidenceVerification() {
           <Card>
             <CardHeader>
               <CardTitle>Rejected Evidence</CardTitle>
-              <CardDescription>Evidence that requires resubmission</CardDescription>
+              <CardDescription>
+                Evidence that requires resubmission
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-center py-8 text-gray-600">

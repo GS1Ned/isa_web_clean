@@ -147,7 +147,9 @@ describe("News Admin Router", () => {
       const ctx = createMockContext("user");
       const caller = newsAdminRouter.createCaller(ctx);
 
-      await expect(caller.triggerIngestion()).rejects.toThrow("Admin access required");
+      await expect(caller.triggerIngestion()).rejects.toThrow(
+        "Admin access required"
+      );
     });
 
     it("should wrap ingestion with monitoring", async () => {
@@ -181,7 +183,9 @@ describe("News Admin Router", () => {
       const ctx = createMockContext("user");
       const caller = newsAdminRouter.createCaller(ctx);
 
-      await expect(caller.triggerArchival()).rejects.toThrow("Admin access required");
+      await expect(caller.triggerArchival()).rejects.toThrow(
+        "Admin access required"
+      );
     });
 
     it("should wrap archival with monitoring", async () => {
@@ -238,7 +242,9 @@ describe("News Admin Router", () => {
       const ctx = createMockContext("user");
       const caller = newsAdminRouter.createCaller(ctx);
 
-      await expect(caller.getExecutionHistory()).rejects.toThrow("Admin access required");
+      await expect(caller.getExecutionHistory()).rejects.toThrow(
+        "Admin access required"
+      );
     });
 
     it("should include execution stats in history", async () => {
@@ -280,14 +286,18 @@ describe("News Admin Router", () => {
       const ctx = createMockContext("user");
       const caller = newsAdminRouter.createCaller(ctx);
 
-      await expect(caller.getMonitoringDashboard()).rejects.toThrow("Admin access required");
+      await expect(caller.getMonitoringDashboard()).rejects.toThrow(
+        "Admin access required"
+      );
     });
   });
 
   describe("Error Handling", () => {
     it("should handle ingestion failures gracefully", async () => {
       const { manualNewsIngestion } = await import("./news-cron-scheduler");
-      vi.mocked(manualNewsIngestion).mockRejectedValueOnce(new Error("Network error"));
+      vi.mocked(manualNewsIngestion).mockRejectedValueOnce(
+        new Error("Network error")
+      );
 
       const ctx = createMockContext("admin");
       const caller = newsAdminRouter.createCaller(ctx);
@@ -297,7 +307,9 @@ describe("News Admin Router", () => {
 
     it("should handle archival failures gracefully", async () => {
       const { manualNewsArchival } = await import("./news-cron-scheduler");
-      vi.mocked(manualNewsArchival).mockRejectedValueOnce(new Error("Database error"));
+      vi.mocked(manualNewsArchival).mockRejectedValueOnce(
+        new Error("Database error")
+      );
 
       const ctx = createMockContext("admin");
       const caller = newsAdminRouter.createCaller(ctx);

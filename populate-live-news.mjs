@@ -66,19 +66,24 @@ try {
 
       // Generate recommendations
       try {
-        await generateRecommendations(newsId, processed.headline, processed.summary, processed.whyItMatters);
+        await generateRecommendations(
+          newsId,
+          processed.headline,
+          processed.summary,
+          processed.whyItMatters
+        );
       } catch (error) {
         console.log(`  ⚠️  Recommendations failed: ${error.message}`);
       }
       inserted++;
-
     } catch (error) {
       console.error(`  ❌ Error:`, error.message);
     }
   }
 
-  console.log(`\n🎉 Successfully inserted ${inserted}/${articles.length} articles`);
-
+  console.log(
+    `\n🎉 Successfully inserted ${inserted}/${articles.length} articles`
+  );
 } catch (error) {
   console.error("❌ Fatal error:", error);
   process.exit(1);

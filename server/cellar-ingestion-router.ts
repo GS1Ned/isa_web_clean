@@ -1,6 +1,6 @@
 /**
  * CELLAR Ingestion tRPC Router
- * 
+ *
  * Provides admin procedures for managing automated regulation ingestion from CELLAR.
  */
 
@@ -24,10 +24,10 @@ import { notifyOwner } from "./_core/notification";
  * Admin-only procedure (requires admin role)
  */
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
-  if (ctx.user.role !== 'admin') {
+  if (ctx.user.role !== "admin") {
     throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'Admin access required',
+      code: "FORBIDDEN",
+      message: "Admin access required",
     });
   }
   return next({ ctx });
@@ -37,7 +37,7 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
  * Log ingestion operation to database
  */
 async function logIngestion(
-  status: 'success' | 'failed',
+  status: "success" | "failed",
   inserted: number,
   updated: number,
   total: number,
@@ -47,9 +47,11 @@ async function logIngestion(
 ) {
   const db = await getDb();
   if (!db) return;
-  
-  const startTime = new Date(Date.now() - (durationSeconds ? durationSeconds * 1000 : 0));
-  
+
+  const startTime = new Date(
+    Date.now() - (durationSeconds ? durationSeconds * 1000 : 0)
+  );
+
   await db.insert(ingestionLogs).values({
     syncStartTime: startTime,
     syncEndTime: new Date(),
@@ -71,7 +73,7 @@ export const cellarIngestionRouter = router({
     const isConnected = await cellarConnector.testConnection();
     return {
       success: isConnected,
-      endpoint: 'https://publications.europa.eu/webapi/rdf/sparql',
+      endpoint: "https://publications.europa.eu/webapi/rdf/sparql",
     };
   }),
 
@@ -80,20 +82,20 @@ export const cellarIngestionRouter = router({
    */
   getSyncHistory: adminProcedure.query(async () => {
     const db = await getDb();
-    if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
-    
+    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
     const logs = await db
       .select()
       .from(ingestionLogs)
       .orderBy(desc(ingestionLogs.syncStartTime))
       .limit(50);
-    
+
     return {
       logs,
       totalSyncs: logs.length,
       lastSync: logs[0] || null,
-      successCount: logs.filter(l => l.status === 'success').length,
-      failureCount: logs.filter(l => l.status === 'failed').length,
+      successCount: logs.filter(l => l.status === "success").length,
+      failureCount: logs.filter(l => l.status === "failed").length,
     };
   }),
 
@@ -102,14 +104,14 @@ export const cellarIngestionRouter = router({
    */
   getLatestSyncStatus: adminProcedure.query(async () => {
     const db = await getDb();
-    if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
-    
+    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
     const [latest] = await db
       .select()
       .from(ingestionLogs)
       .orderBy(desc(ingestionLogs.syncStartTime))
       .limit(1);
-    
+
     return latest || null;
   }),
 
@@ -190,8 +192,8 @@ export const cellarIngestionRouter = router({
         const db = await getDb();
         if (!db) {
           throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Database connection not available',
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Database connection not available",
           });
         }
 
@@ -228,10 +230,10 @@ export const cellarIngestionRouter = router({
         }
 
         const durationSeconds = Math.round((Date.now() - startTime) / 1000);
-        
+
         // Log the ingestion operation
         await logIngestion(
-          'success',
+          "success",
           inserted,
           updated,
           valid.length,
@@ -239,7 +241,7 @@ export const cellarIngestionRouter = router({
           errors > 0 ? `${errors} regulations failed to process` : undefined,
           durationSeconds
         );
-        
+
         // Notify owner if significant new regulations detected
         if (inserted > 5) {
           await notifyOwner({
@@ -247,7 +249,7 @@ export const cellarIngestionRouter = router({
             content: `The automated CELLAR sync has successfully imported ${inserted} new EU regulations into ISA.\n\nSync Summary:\n- New regulations: ${inserted}\n- Updated regulations: ${updated}\n- Total processed: ${valid.length}\n- Duration: ${durationSeconds}s\n\nView details in Admin → CELLAR Sync Monitor.`,
           });
         }
-        
+
         return {
           dryRun: false,
           stats,
@@ -261,24 +263,24 @@ export const cellarIngestionRouter = router({
         // Log the failed ingestion
         const durationSeconds = Math.round((Date.now() - startTime) / 1000);
         await logIngestion(
-          'failed',
+          "failed",
           0,
           0,
           0,
           1,
-          error instanceof Error ? error.message : 'Unknown error',
+          error instanceof Error ? error.message : "Unknown error",
           durationSeconds
         );
-        
+
         // Notify owner of sync failure
         await notifyOwner({
           title: `⚠️ CELLAR Sync Failed`,
-          content: `The automated CELLAR sync has failed.\n\nError Details:\n${error instanceof Error ? error.message : 'Unknown error'}\n\nDuration: ${durationSeconds}s\n\nPlease check Admin → CELLAR Sync Monitor for details and retry manually if needed.`,
+          content: `The automated CELLAR sync has failed.\n\nError Details:\n${error instanceof Error ? error.message : "Unknown error"}\n\nDuration: ${durationSeconds}s\n\nPlease check Admin → CELLAR Sync Monitor for details and retry manually if needed.`,
         });
-        
+
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `Ingestion failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Ingestion failed: ${error instanceof Error ? error.message : "Unknown error"}`,
         });
       }
     }),
@@ -306,7 +308,10 @@ export const cellarIngestionRouter = router({
       })
     )
     .query(async ({ input }) => {
-      const acts = await cellarConnector.searchActsByKeyword(input.keyword, input.limit);
+      const acts = await cellarConnector.searchActsByKeyword(
+        input.keyword,
+        input.limit
+      );
       const normalized = normalizeEULegalActsBatch(acts);
       return {
         results: normalized,
@@ -327,7 +332,7 @@ export const cellarIngestionRouter = router({
       const act = await cellarConnector.getActByCelex(input.celexId);
       if (!act) {
         throw new TRPCError({
-          code: 'NOT_FOUND',
+          code: "NOT_FOUND",
           message: `Regulation with CELEX ID ${input.celexId} not found`,
         });
       }

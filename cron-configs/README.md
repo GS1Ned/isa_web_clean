@@ -6,30 +6,22 @@
 
 ## Available Configurations
 
-
 ### cron-job.org Configuration
 
 See: `cron-job.org-instructions.md`
 
-
-
 ### EasyCron Configuration
 
 See: `easycron-instructions.md`
-
-
 
 ### GitHub Actions Workflow
 
 See: `github-actions-instructions.md`
 Config file: `.github/workflows/isa-news-cron.yml`
 
-
 ### cURL Test Commands
 
 See: `curl-test-instructions.md`
-
-
 
 ## Quick Start
 
@@ -47,6 +39,7 @@ See: `curl-test-instructions.md`
 ## Authentication
 
 All protected endpoints require:
+
 ```
 Authorization: Bearer c11f32585dcc3641dd108e4b6d9c3d4c9a718a41eeab7869775bb8ee97ca3f9b
 ```

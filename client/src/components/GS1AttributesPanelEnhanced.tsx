@@ -1,20 +1,40 @@
 /**
  * GS1 Attributes Panel (Enhanced v0.1)
- * 
+ *
  * Operationalized compliance tool with Excel export, coverage metrics,
  * enhanced filtering, and search functionality.
  */
 
 import { useState, useMemo } from "react";
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Info, Package, Leaf, CheckCircle2, Download, Search, Filter } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Info,
+  Package,
+  Leaf,
+  CheckCircle2,
+  Download,
+  Search,
+  Filter,
+} from "lucide-react";
 import * as XLSX from "xlsx";
 
 interface GS1AttributesPanelEnhancedProps {
@@ -22,32 +42,38 @@ interface GS1AttributesPanelEnhancedProps {
   regulationName: string;
 }
 
-export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1AttributesPanelEnhancedProps) {
+export function GS1AttributesPanelEnhanced({
+  regulationId,
+  regulationName,
+}: GS1AttributesPanelEnhancedProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sectorFilter, setSectorFilter] = useState<string>("all");
   const [flagFilter, setFlagFilter] = useState<string>("all");
 
-  const { data: attributes, isLoading: attributesLoading } = trpc.gs1Attributes.getAttributesByRegulation.useQuery({
-    regulationId,
-  });
+  const { data: attributes, isLoading: attributesLoading } =
+    trpc.gs1Attributes.getAttributesByRegulation.useQuery({
+      regulationId,
+    });
 
-  const { data: webVocab, isLoading: webVocabLoading } = trpc.gs1Attributes.getWebVocabularyByRegulation.useQuery({
-    regulationId,
-  });
+  const { data: webVocab, isLoading: webVocabLoading } =
+    trpc.gs1Attributes.getWebVocabularyByRegulation.useQuery({
+      regulationId,
+    });
 
   // Filter attributes based on search and filters
   const filteredAttributes = useMemo(() => {
     if (!attributes) return [];
-    
+
     let filtered = attributes;
 
     // Search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(attr =>
-        attr.attributeName.toLowerCase().includes(query) ||
-        attr.attributeCode?.toLowerCase().includes(query) ||
-        attr.description?.toLowerCase().includes(query)
+      filtered = filtered.filter(
+        attr =>
+          attr.attributeName.toLowerCase().includes(query) ||
+          attr.attributeCode?.toLowerCase().includes(query) ||
+          attr.description?.toLowerCase().includes(query)
       );
     }
 
@@ -69,13 +95,14 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
   // Filter web vocabulary
   const filteredWebVocab = useMemo(() => {
     if (!webVocab) return [];
-    
+
     if (!searchQuery) return webVocab;
 
     const query = searchQuery.toLowerCase();
-    return webVocab.filter(term =>
-      term.termName.toLowerCase().includes(query) ||
-      term.description?.toLowerCase().includes(query)
+    return webVocab.filter(
+      term =>
+        term.termName.toLowerCase().includes(query) ||
+        term.description?.toLowerCase().includes(query)
     );
   }, [webVocab, searchQuery]);
 
@@ -85,11 +112,14 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
 
     const totalAttributes = attributes.length;
     const packagingCount = attributes.filter(a => a.packagingRelated).length;
-    const sustainabilityCount = attributes.filter(a => a.sustainabilityRelated).length;
-    
+    const sustainabilityCount = attributes.filter(
+      a => a.sustainabilityRelated
+    ).length;
+
     const sectors = {
       food_hb: attributes.filter(a => a.sector === "food_hb").length,
-      diy_garden_pet: attributes.filter(a => a.sector === "diy_garden_pet").length,
+      diy_garden_pet: attributes.filter(a => a.sector === "diy_garden_pet")
+        .length,
       healthcare: attributes.filter(a => a.sector === "healthcare").length,
     };
 
@@ -109,9 +139,9 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
     const attributesData = filteredAttributes.map(attr => ({
       "Attribute Code": attr.attributeCode || "",
       "Attribute Name": attr.attributeName,
-      "Sector": attr.sector,
+      Sector: attr.sector,
       "Data Type": attr.datatype || "",
-      "Description": attr.description || "",
+      Description: attr.description || "",
       "Packaging Related": attr.packagingRelated ? "Yes" : "No",
       "Sustainability Related": attr.sustainabilityRelated ? "Yes" : "No",
       "Relevance Score": attr.relevanceScore || "",
@@ -122,7 +152,7 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
       "Term Name": term.termName,
       "Term URI": term.termUri,
       "Term Type": term.termType,
-      "Description": term.description || "",
+      Description: term.description || "",
       "DPP Relevant": term.dppRelevant ? "Yes" : "No",
       "ESRS Relevant": term.esrsRelevant ? "Yes" : "No",
       "EUDR Relevant": term.eudrRelevant ? "Yes" : "No",
@@ -130,10 +160,10 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
 
     // Create workbook
     const wb = XLSX.utils.book_new();
-    
+
     const wsAttributes = XLSX.utils.json_to_sheet(attributesData);
     const wsWebVocab = XLSX.utils.json_to_sheet(webVocabData);
-    
+
     XLSX.utils.book_append_sheet(wb, wsAttributes, "Data Source Attributes");
     XLSX.utils.book_append_sheet(wb, wsWebVocab, "Web Vocabulary");
 
@@ -143,14 +173,20 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
       { Field: "Export Date", Value: new Date().toLocaleDateString() },
       { Field: "Total Attributes", Value: coverageMetrics?.total || 0 },
       { Field: "Packaging Attributes", Value: coverageMetrics?.packaging || 0 },
-      { Field: "Sustainability Attributes", Value: coverageMetrics?.sustainability || 0 },
+      {
+        Field: "Sustainability Attributes",
+        Value: coverageMetrics?.sustainability || 0,
+      },
       { Field: "Web Vocabulary Terms", Value: webVocab.length },
     ];
     const wsMetadata = XLSX.utils.json_to_sheet(metadata);
     XLSX.utils.book_append_sheet(wb, wsMetadata, "Metadata");
 
     // Download
-    XLSX.writeFile(wb, `${regulationName.replace(/\s+/g, "_")}_GS1_Compliance_Checklist.xlsx`);
+    XLSX.writeFile(
+      wb,
+      `${regulationName.replace(/\s+/g, "_")}_GS1_Compliance_Checklist.xlsx`
+    );
   };
 
   if (attributesLoading || webVocabLoading) {
@@ -158,7 +194,9 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
       <Card>
         <CardHeader>
           <CardTitle>GS1 Attributes You Need</CardTitle>
-          <CardDescription>Loading GS1 data model requirements...</CardDescription>
+          <CardDescription>
+            Loading GS1 data model requirements...
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-3">
@@ -187,9 +225,10 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              No GS1 attributes or Web Vocabulary terms have been mapped to this regulation yet.
-              This may indicate that the regulation is not directly related to product data,
-              or that the mapping is still in progress.
+              No GS1 attributes or Web Vocabulary terms have been mapped to this
+              regulation yet. This may indicate that the regulation is not
+              directly related to product data, or that the mapping is still in
+              progress.
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -218,19 +257,29 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
             <div className="bg-muted p-3 rounded-lg">
               <div className="text-2xl font-bold">{coverageMetrics.total}</div>
-              <div className="text-sm text-muted-foreground">Total Attributes</div>
+              <div className="text-sm text-muted-foreground">
+                Total Attributes
+              </div>
             </div>
             <div className="bg-muted p-3 rounded-lg">
-              <div className="text-2xl font-bold">{coverageMetrics.packaging}</div>
+              <div className="text-2xl font-bold">
+                {coverageMetrics.packaging}
+              </div>
               <div className="text-sm text-muted-foreground">Packaging</div>
             </div>
             <div className="bg-muted p-3 rounded-lg">
-              <div className="text-2xl font-bold">{coverageMetrics.sustainability}</div>
-              <div className="text-sm text-muted-foreground">Sustainability</div>
+              <div className="text-2xl font-bold">
+                {coverageMetrics.sustainability}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Sustainability
+              </div>
             </div>
             <div className="bg-muted p-3 rounded-lg">
               <div className="text-2xl font-bold">{webVocab?.length || 0}</div>
-              <div className="text-sm text-muted-foreground">Web Vocab Terms</div>
+              <div className="text-sm text-muted-foreground">
+                Web Vocab Terms
+              </div>
             </div>
           </div>
         )}
@@ -242,7 +291,7 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
             <Input
               placeholder="Search attributes..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="pl-9"
             />
           </div>
@@ -264,7 +313,9 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
             <SelectContent>
               <SelectItem value="all">All Attributes</SelectItem>
               <SelectItem value="packaging">Packaging Only</SelectItem>
-              <SelectItem value="sustainability">Sustainability Only</SelectItem>
+              <SelectItem value="sustainability">
+                Sustainability Only
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -286,16 +337,19 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
               <Alert>
                 <Info className="h-4 w-4" />
                 <AlertDescription>
-                  No attributes match your current filters. Try adjusting your search or filters.
+                  No attributes match your current filters. Try adjusting your
+                  search or filters.
                 </AlertDescription>
               </Alert>
             ) : (
-              filteredAttributes.map((attr) => (
+              filteredAttributes.map(attr => (
                 <Card key={attr.id} className="border-l-4 border-l-primary/30">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
-                        <CardTitle className="text-base">{attr.attributeName}</CardTitle>
+                        <CardTitle className="text-base">
+                          {attr.attributeName}
+                        </CardTitle>
                         {attr.attributeCode && (
                           <CardDescription className="font-mono text-xs">
                             {attr.attributeCode}
@@ -320,14 +374,24 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
                   </CardHeader>
                   <CardContent className="space-y-2">
                     {attr.description && (
-                      <p className="text-sm text-muted-foreground">{attr.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {attr.description}
+                      </p>
                     )}
                     <div className="flex flex-wrap gap-2 text-xs">
-                      <Badge variant="outline">{attr.sector.replace("_", " ").toUpperCase()}</Badge>
-                      {attr.datatype && <Badge variant="outline">{attr.datatype}</Badge>}
+                      <Badge variant="outline">
+                        {attr.sector.replace("_", " ").toUpperCase()}
+                      </Badge>
+                      {attr.datatype && (
+                        <Badge variant="outline">{attr.datatype}</Badge>
+                      )}
                       {attr.relevanceScore && (
                         <Badge variant="outline">
-                          Relevance: {(parseFloat(String(attr.relevanceScore)) * 100).toFixed(0)}%
+                          Relevance:{" "}
+                          {(
+                            parseFloat(String(attr.relevanceScore)) * 100
+                          ).toFixed(0)}
+                          %
                         </Badge>
                       )}
                     </div>
@@ -346,12 +410,14 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
                 </AlertDescription>
               </Alert>
             ) : (
-              filteredWebVocab.map((term) => (
+              filteredWebVocab.map(term => (
                 <Card key={term.id} className="border-l-4 border-l-blue-500/30">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
-                        <CardTitle className="text-base">{term.termName}</CardTitle>
+                        <CardTitle className="text-base">
+                          {term.termName}
+                        </CardTitle>
                         <CardDescription className="font-mono text-xs break-all">
                           {term.termUri}
                         </CardDescription>
@@ -380,12 +446,18 @@ export function GS1AttributesPanelEnhanced({ regulationId, regulationName }: GS1
                   </CardHeader>
                   <CardContent className="space-y-2">
                     {term.description && (
-                      <p className="text-sm text-muted-foreground">{term.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {term.description}
+                      </p>
                     )}
                     <div className="flex flex-wrap gap-2 text-xs">
                       <Badge variant="outline">{term.termType}</Badge>
-                      {term.domain && <Badge variant="outline">Domain: {term.domain}</Badge>}
-                      {term.range && <Badge variant="outline">Range: {term.range}</Badge>}
+                      {term.domain && (
+                        <Badge variant="outline">Domain: {term.domain}</Badge>
+                      )}
+                      {term.range && (
+                        <Badge variant="outline">Range: {term.range}</Badge>
+                      )}
                     </div>
                   </CardContent>
                 </Card>

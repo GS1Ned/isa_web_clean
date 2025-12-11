@@ -12,12 +12,12 @@ const CRON_SECRET = process.env.CRON_SECRET || "change-me-in-production";
 function validateCronSecret(req: Request): boolean {
   const authHeader = req.headers.authorization;
   if (!authHeader) return false;
-  
+
   // Support both "Bearer <token>" and direct token
-  const token = authHeader.startsWith("Bearer ") 
-    ? authHeader.substring(7) 
+  const token = authHeader.startsWith("Bearer ")
+    ? authHeader.substring(7)
     : authHeader;
-  
+
   return token === CRON_SECRET;
 }
 
@@ -44,7 +44,7 @@ export async function handleDailyNewsIngestion(req: Request, res: Response) {
       dailyNewsIngestion,
       3 // Alert after 3 consecutive failures
     );
-    
+
     res.status(200).json({
       success: true,
       message: "Daily news ingestion completed",
@@ -58,7 +58,7 @@ export async function handleDailyNewsIngestion(req: Request, res: Response) {
     });
   } catch (error) {
     console.error("[cron-endpoint] Daily news ingestion failed:", error);
-    
+
     res.status(500).json({
       success: false,
       message: "Daily news ingestion failed",
@@ -90,7 +90,7 @@ export async function handleWeeklyNewsArchival(req: Request, res: Response) {
       weeklyNewsArchival,
       3 // Alert after 3 consecutive failures
     );
-    
+
     res.status(200).json({
       success: true,
       message: "Weekly news archival completed",
@@ -102,7 +102,7 @@ export async function handleWeeklyNewsArchival(req: Request, res: Response) {
     });
   } catch (error) {
     console.error("[cron-endpoint] Weekly news archival failed:", error);
-    
+
     res.status(500).json({
       success: false,
       message: "Weekly news archival failed",

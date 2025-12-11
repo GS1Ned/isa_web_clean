@@ -56,7 +56,9 @@ describe("Cron Router", () => {
     });
 
     it("should accept valid secret and trigger ingestion", async () => {
-      const result = await caller.cron.dailyNewsIngestion({ secret: VALID_SECRET });
+      const result = await caller.cron.dailyNewsIngestion({
+        secret: VALID_SECRET,
+      });
 
       expect(result.success).toBe(true);
       expect(result.message).toBe("Daily news ingestion completed");
@@ -71,9 +73,13 @@ describe("Cron Router", () => {
 
     it("should handle ingestion errors gracefully", async () => {
       const { dailyNewsIngestion } = await import("./news-cron-scheduler");
-      vi.mocked(dailyNewsIngestion).mockRejectedValueOnce(new Error("Network error"));
+      vi.mocked(dailyNewsIngestion).mockRejectedValueOnce(
+        new Error("Network error")
+      );
 
-      const result = await caller.cron.dailyNewsIngestion({ secret: VALID_SECRET });
+      const result = await caller.cron.dailyNewsIngestion({
+        secret: VALID_SECRET,
+      });
 
       expect(result.success).toBe(false);
       expect(result.message).toBe("Daily news ingestion failed");
@@ -89,7 +95,9 @@ describe("Cron Router", () => {
     });
 
     it("should accept valid secret and trigger archival", async () => {
-      const result = await caller.cron.weeklyNewsArchival({ secret: VALID_SECRET });
+      const result = await caller.cron.weeklyNewsArchival({
+        secret: VALID_SECRET,
+      });
 
       expect(result.success).toBe(true);
       expect(result.message).toBe("Weekly news archival completed");
@@ -102,9 +110,13 @@ describe("Cron Router", () => {
 
     it("should handle archival errors gracefully", async () => {
       const { weeklyNewsArchival } = await import("./news-cron-scheduler");
-      vi.mocked(weeklyNewsArchival).mockRejectedValueOnce(new Error("Database error"));
+      vi.mocked(weeklyNewsArchival).mockRejectedValueOnce(
+        new Error("Database error")
+      );
 
-      const result = await caller.cron.weeklyNewsArchival({ secret: VALID_SECRET });
+      const result = await caller.cron.weeklyNewsArchival({
+        secret: VALID_SECRET,
+      });
 
       expect(result.success).toBe(false);
       expect(result.message).toBe("Weekly news archival failed");

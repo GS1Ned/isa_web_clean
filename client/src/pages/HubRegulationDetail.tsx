@@ -1,10 +1,25 @@
 import { useRoute, Link } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bookmark, Share2, ArrowLeft, Calendar, FileText, ExternalLink, Sparkles, AlertCircle } from "lucide-react";
+import {
+  Bookmark,
+  Share2,
+  ArrowLeft,
+  Calendar,
+  FileText,
+  ExternalLink,
+  Sparkles,
+  AlertCircle,
+} from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -18,14 +33,12 @@ export default function HubRegulationDetail() {
   const [isSaved, setIsSaved] = useState(false);
 
   const regulationId = parseInt(params?.id || "0");
-  
+
   // Fetch regulation data with standards
   const { data, isLoading, error } = trpc.regulations.getWithStandards.useQuery(
     { regulationId },
     { enabled: regulationId > 0 }
   );
-
-
 
   // Fetch ESRS mappings
   const { data: esrsMappings } = trpc.regulations.getEsrsMappings.useQuery(
@@ -73,7 +86,10 @@ export default function HubRegulationDetail() {
       <div className="min-h-screen flex flex-col bg-background">
         <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
           <div className="container flex items-center justify-between h-16">
-            <Link href="/hub/regulations" className="text-blue-600 hover:text-blue-700 transition font-medium flex items-center gap-2">
+            <Link
+              href="/hub/regulations"
+              className="text-blue-600 hover:text-blue-700 transition font-medium flex items-center gap-2"
+            >
               <ArrowLeft className="w-4 h-4" />
               Back to Regulations
             </Link>
@@ -82,9 +98,12 @@ export default function HubRegulationDetail() {
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center py-12 px-4">
             <AlertCircle className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-foreground mb-2">Regulation not found</h1>
+            <h1 className="text-2xl font-bold text-foreground mb-2">
+              Regulation not found
+            </h1>
             <p className="text-muted-foreground mb-6">
-              The regulation you're looking for doesn't exist or has been removed.
+              The regulation you're looking for doesn't exist or has been
+              removed.
             </p>
             <Link href="/hub/regulations">
               <Button>Browse All Regulations</Button>
@@ -102,7 +121,10 @@ export default function HubRegulationDetail() {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/hub/regulations" className="text-blue-600 hover:text-blue-700 transition font-medium flex items-center gap-2">
+          <Link
+            href="/hub/regulations"
+            className="text-blue-600 hover:text-blue-700 transition font-medium flex items-center gap-2"
+          >
             <ArrowLeft className="w-4 h-4" />
             Back to Regulations
           </Link>
@@ -118,13 +140,11 @@ export default function HubRegulationDetail() {
               onClick={handleSave}
               disabled={!user}
             >
-              <Bookmark className={`w-5 h-5 ${isSaved ? "fill-current" : ""}`} />
+              <Bookmark
+                className={`w-5 h-5 ${isSaved ? "fill-current" : ""}`}
+              />
             </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleShare}
-            >
+            <Button variant="outline" size="icon" onClick={handleShare}>
               <Share2 className="w-5 h-5" />
             </Button>
           </div>
@@ -142,7 +162,10 @@ export default function HubRegulationDetail() {
                 </Badge>
               )}
               {regulation.celexId && (
-                <Badge variant="outline" className="bg-white/10 border-white/30 text-white">
+                <Badge
+                  variant="outline"
+                  className="bg-white/10 border-white/30 text-white"
+                >
                   CELEX: {regulation.celexId}
                 </Badge>
               )}
@@ -163,7 +186,10 @@ export default function HubRegulationDetail() {
               {regulation.effectiveDate && (
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  <span>Effective: {new Date(regulation.effectiveDate).toLocaleDateString()}</span>
+                  <span>
+                    Effective:{" "}
+                    {new Date(regulation.effectiveDate).toLocaleDateString()}
+                  </span>
                 </div>
               )}
               {regulation.sourceUrl && (
@@ -192,9 +218,7 @@ export default function HubRegulationDetail() {
                 <TabsTrigger value="standards">
                   GS1 Standards ({mappings?.length || 0})
                 </TabsTrigger>
-                <TabsTrigger value="attributes">
-                  GS1 Attributes
-                </TabsTrigger>
+                <TabsTrigger value="attributes">GS1 Attributes</TabsTrigger>
                 <TabsTrigger value="datapoints">
                   ESRS Datapoints ({esrsMappings?.length || 0})
                 </TabsTrigger>
@@ -212,31 +236,43 @@ export default function HubRegulationDetail() {
                   <CardContent className="space-y-4">
                     {regulation.celexId && (
                       <div>
-                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">CELEX ID</h3>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">
+                          CELEX ID
+                        </h3>
                         <p className="text-foreground">{regulation.celexId}</p>
                       </div>
                     )}
                     {regulation.effectiveDate && (
                       <div>
-                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">Effective Date</h3>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">
+                          Effective Date
+                        </h3>
                         <p className="text-foreground">
-                          {new Date(regulation.effectiveDate).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
+                          {new Date(
+                            regulation.effectiveDate
+                          ).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
                           })}
                         </p>
                       </div>
                     )}
                     {regulation.regulationType && (
                       <div>
-                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">Type</h3>
-                        <p className="text-foreground">{regulation.regulationType}</p>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">
+                          Type
+                        </h3>
+                        <p className="text-foreground">
+                          {regulation.regulationType}
+                        </p>
                       </div>
                     )}
                     {regulation.description && (
                       <div>
-                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">Description</h3>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">
+                          Description
+                        </h3>
                         <p className="text-foreground leading-relaxed whitespace-pre-wrap">
                           {regulation.description}
                         </p>
@@ -244,7 +280,9 @@ export default function HubRegulationDetail() {
                     )}
                     {regulation.sourceUrl && (
                       <div>
-                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">Official Source</h3>
+                        <h3 className="font-semibold text-sm text-muted-foreground mb-1">
+                          Official Source
+                        </h3>
                         <a
                           href={regulation.sourceUrl}
                           target="_blank"
@@ -266,13 +304,16 @@ export default function HubRegulationDetail() {
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground">
-                        {new Date(regulation.lastUpdated).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
+                        {new Date(regulation.lastUpdated).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
                       </p>
                     </CardContent>
                   </Card>
@@ -283,15 +324,18 @@ export default function HubRegulationDetail() {
               <TabsContent value="standards" className="space-y-6">
                 {mappings && mappings.length > 0 ? (
                   <div className="space-y-4">
-                    {mappings.map((mapping) => {
-                      const standard = standards?.find(s => s.id === mapping.standardId);
+                    {mappings.map(mapping => {
+                      const standard = standards?.find(
+                        s => s.id === mapping.standardId
+                      );
                       return (
                         <Card key={mapping.id}>
                           <CardHeader>
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
                                 <CardTitle className="text-lg">
-                                  {standard?.standardName || `Standard ID: ${mapping.standardId}`}
+                                  {standard?.standardName ||
+                                    `Standard ID: ${mapping.standardId}`}
                                 </CardTitle>
                                 {standard?.standardCode && (
                                   <CardDescription className="mt-1">
@@ -301,7 +345,11 @@ export default function HubRegulationDetail() {
                               </div>
                               {mapping.relevanceScore !== null && (
                                 <Badge variant="outline" className="ml-4">
-                                  Score: {(parseFloat(mapping.relevanceScore) * 100).toFixed(0)}%
+                                  Score:{" "}
+                                  {(
+                                    parseFloat(mapping.relevanceScore) * 100
+                                  ).toFixed(0)}
+                                  %
                                 </Badge>
                               )}
                             </div>
@@ -309,7 +357,9 @@ export default function HubRegulationDetail() {
                           <CardContent className="space-y-3">
                             {mapping.mappingReason && (
                               <div>
-                                <h4 className="font-semibold text-sm text-muted-foreground mb-2">Mapping Rationale</h4>
+                                <h4 className="font-semibold text-sm text-muted-foreground mb-2">
+                                  Mapping Rationale
+                                </h4>
                                 <p className="text-sm leading-relaxed whitespace-pre-wrap">
                                   {mapping.mappingReason}
                                 </p>
@@ -317,14 +367,19 @@ export default function HubRegulationDetail() {
                             )}
                             {standard?.description && (
                               <div>
-                                <h4 className="font-semibold text-sm text-muted-foreground mb-2">Standard Description</h4>
+                                <h4 className="font-semibold text-sm text-muted-foreground mb-2">
+                                  Standard Description
+                                </h4>
                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                   {standard.description}
                                 </p>
                               </div>
                             )}
                             {mapping.verifiedByAdmin && (
-                              <Badge variant="outline" className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300">
+                              <Badge
+                                variant="outline"
+                                className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300"
+                              >
                                 ✓ Verified by Admin
                               </Badge>
                             )}
@@ -347,8 +402,8 @@ export default function HubRegulationDetail() {
 
               {/* GS1 Attributes Tab */}
               <TabsContent value="attributes">
-                <GS1AttributesPanelEnhanced 
-                  regulationId={regulationId} 
+                <GS1AttributesPanelEnhanced
+                  regulationId={regulationId}
                   regulationName={regulation.title}
                 />
               </TabsContent>

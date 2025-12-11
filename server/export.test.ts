@@ -145,7 +145,7 @@ describe("Export Utilities", () => {
     it("should properly escape CSV values with commas", () => {
       const regulationWithCommas: RegulationExportData = {
         ...mockRegulation,
-        description: "Description with, comma and \"quotes\"",
+        description: 'Description with, comma and "quotes"',
       };
 
       const csvContent = exportRegulationToCSV(regulationWithCommas);
@@ -234,7 +234,10 @@ describe("Export Utilities", () => {
 
   describe("generateExportFilename", () => {
     it("should generate valid PDF filename", () => {
-      const filename = generateExportFilename("Corporate Sustainability Reporting Directive", "pdf");
+      const filename = generateExportFilename(
+        "Corporate Sustainability Reporting Directive",
+        "pdf"
+      );
 
       expect(filename).toMatch(/\.pdf$/);
       expect(filename).toContain("regulation-");
@@ -242,7 +245,10 @@ describe("Export Utilities", () => {
     });
 
     it("should generate valid CSV filename", () => {
-      const filename = generateExportFilename("Corporate Sustainability Reporting Directive", "csv");
+      const filename = generateExportFilename(
+        "Corporate Sustainability Reporting Directive",
+        "csv"
+      );
 
       expect(filename).toMatch(/\.csv$/);
       expect(filename).toContain("regulation-");

@@ -43,7 +43,7 @@ export function searchRegulations(
     // Text matching
     if (queryTerms.length > 0) {
       const searchableText = `${reg.title} ${reg.description}`.toLowerCase();
-      
+
       for (const term of queryTerms) {
         if (searchableText.includes(term)) {
           // Higher score for title matches
@@ -52,7 +52,7 @@ export function searchRegulations(
           } else {
             relevanceScore += 5;
           }
-          
+
           if (!matchedTerms.includes(term)) {
             matchedTerms.push(term);
           }
@@ -102,7 +102,9 @@ export function searchRegulations(
 
       // Related standards filter
       if (filters.relatedStandards && filters.relatedStandards.length > 0) {
-        const regStandards = (reg.relatedStandards || []).map((s: string) => s.toLowerCase());
+        const regStandards = (reg.relatedStandards || []).map((s: string) =>
+          s.toLowerCase()
+        );
         const hasMatchingStandard = filters.relatedStandards.some(standard =>
           regStandards.includes(standard.toLowerCase())
         );
@@ -143,7 +145,9 @@ export function getFilterOptions(regulations: any[]) {
     if (reg.status) statuses.add(reg.status);
     if (reg.regulationType) types.add(reg.regulationType);
     if (reg.affectedSectors) {
-      reg.affectedSectors.split(",").forEach((s: string) => sectors.add(s.trim()));
+      reg.affectedSectors
+        .split(",")
+        .forEach((s: string) => sectors.add(s.trim()));
     }
     if (Array.isArray(reg.relatedStandards)) {
       reg.relatedStandards.forEach((s: string) => standards.add(s));
@@ -184,7 +188,7 @@ export function getRelatedRegulations(
   if (!target) return [];
 
   const targetStandards = new Set(target.relatedStandards || []);
-  
+
   return regulations
     .filter(r => r.id !== regulationId)
     .map(r => ({

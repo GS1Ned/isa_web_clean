@@ -85,7 +85,9 @@ describe("ISA tRPC Routers", () => {
     it("should have getWithStandards procedure", async () => {
       // This test verifies the procedure exists
       // It may return null if the regulation doesn't exist
-      const result = await caller.regulations.getWithStandards({ regulationId: 999 });
+      const result = await caller.regulations.getWithStandards({
+        regulationId: 999,
+      });
       expect(result === null || typeof result === "object").toBe(true);
     });
   });

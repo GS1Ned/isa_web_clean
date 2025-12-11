@@ -6,8 +6,14 @@
 
 import Parser from "rss-parser";
 import { NEWS_SOURCES, type NewsSource } from "./news-sources";
-import { scrapeGS1NetherlandsNewsPlaywright, scrapeArticleDetailPlaywright } from "./news-scraper-playwright";
-import { scrapeEFRAGNewsPlaywright, scrapeEFRAGArticleDetail } from "./news-scraper-efrag";
+import {
+  scrapeGS1NetherlandsNewsPlaywright,
+  scrapeArticleDetailPlaywright,
+} from "./news-scraper-playwright";
+import {
+  scrapeEFRAGNewsPlaywright,
+  scrapeEFRAGArticleDetail,
+} from "./news-scraper-efrag";
 import { scrapeGreenDealZorg } from "./news/news-scraper-greendeal";
 import { scrapeZESNews } from "./news/news-scraper-zes";
 
@@ -35,14 +41,16 @@ export interface FetchResult {
 const parser = new Parser({
   timeout: 10000, // 10 second timeout per feed
   headers: {
-    'User-Agent': 'ISA-News-Aggregator/1.0 (GS1 Netherlands ESG Intelligence)',
+    "User-Agent": "ISA-News-Aggregator/1.0 (GS1 Netherlands ESG Intelligence)",
   },
 });
 
 /**
  * Fetch news from a single RSS source
  */
-export async function fetchFromSource(source: NewsSource): Promise<FetchResult> {
+export async function fetchFromSource(
+  source: NewsSource
+): Promise<FetchResult> {
   if (!source.enabled) {
     return {
       success: false,
@@ -58,11 +66,13 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
   if (source.id === "gs1-nl-news") {
     try {
       const articles = await scrapeGS1NetherlandsNewsPlaywright();
-      
+
       // Fetch full content for each article (parallel)
-      console.log(`[news-fetcher] Fetching full content for ${articles.length} GS1.nl articles...`);
+      console.log(
+        `[news-fetcher] Fetching full content for ${articles.length} GS1.nl articles...`
+      );
       const articlesWithContent = await Promise.all(
-        articles.map(async (article) => {
+        articles.map(async article => {
           const fullContent = await scrapeArticleDetailPlaywright(article.url);
           return {
             ...article,
@@ -70,7 +80,7 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
           };
         })
       );
-      
+
       // Skip keyword filtering - articles are pre-filtered by GS1's sustainability category
       const relevantItems = articlesWithContent
         .filter(article => {
@@ -163,11 +173,13 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
   if (source.id === "efrag-sustainability") {
     try {
       const articles = await scrapeEFRAGNewsPlaywright();
-      
+
       // Fetch full content for each article (parallel)
-      console.log(`[news-fetcher] Fetching full content for ${articles.length} EFRAG articles...`);
+      console.log(
+        `[news-fetcher] Fetching full content for ${articles.length} EFRAG articles...`
+      );
       const articlesWithContent = await Promise.all(
-        articles.map(async (article) => {
+        articles.map(async article => {
           const fullContent = await scrapeEFRAGArticleDetail(article.url);
           return {
             ...article,
@@ -175,7 +187,7 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
           };
         })
       );
-      
+
       const relevantItems = articlesWithContent
         .filter(article => {
           // Only filter by date - keep articles from past 3 months
@@ -229,7 +241,7 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
 
   try {
     const feed = await parser.parseURL(source.rssUrl);
-    
+
     // Filter items by ESG keywords
     const relevantItems = feed.items
       .filter(item => isRelevant(item, source.keywords))
@@ -270,18 +282,22 @@ export async function fetchFromSource(source: NewsSource): Promise<FetchResult> 
  */
 export async function fetchAllNews(): Promise<FetchResult[]> {
   const enabledSources = NEWS_SOURCES.filter(s => s.enabled);
-  
-  console.log(`[news-fetcher] Fetching from ${enabledSources.length} sources...`);
-  
+
+  console.log(
+    `[news-fetcher] Fetching from ${enabledSources.length} sources...`
+  );
+
   const results = await Promise.all(
     enabledSources.map(source => fetchFromSource(source))
   );
-  
+
   const totalItems = results.reduce((sum, r) => sum + r.itemsFetched, 0);
   const successCount = results.filter(r => r.success).length;
-  
-  console.log(`[news-fetcher] Completed: ${successCount}/${enabledSources.length} sources, ${totalItems} items`);
-  
+
+  console.log(
+    `[news-fetcher] Completed: ${successCount}/${enabledSources.length} sources, ${totalItems} items`
+  );
+
   return results;
 }
 
@@ -294,12 +310,12 @@ function isRelevant(item: any, keywords: string[]): boolean {
     item.contentSnippet || "",
     item.content || "",
     ...(item.categories || []),
-  ].join(" ").toLowerCase();
-  
+  ]
+    .join(" ")
+    .toLowerCase();
+
   // Check if any keyword appears in the text
-  return keywords.some(keyword => 
-    searchText.includes(keyword.toLowerCase())
-  );
+  return keywords.some(keyword => searchText.includes(keyword.toLowerCase()));
 }
 
 /**
@@ -308,7 +324,7 @@ function isRelevant(item: any, keywords: string[]): boolean {
 export function deduplicateByUrl(items: RawNewsItem[]): RawNewsItem[] {
   const seen = new Set<string>();
   const unique: RawNewsItem[] = [];
-  
+
   for (const item of items) {
     const normalizedUrl = normalizeUrl(item.link);
     if (!seen.has(normalizedUrl)) {
@@ -316,8 +332,10 @@ export function deduplicateByUrl(items: RawNewsItem[]): RawNewsItem[] {
       unique.push(item);
     }
   }
-  
-  console.log(`[news-fetcher] Deduplication: ${items.length} → ${unique.length} items`);
+
+  console.log(
+    `[news-fetcher] Deduplication: ${items.length} → ${unique.length} items`
+  );
   return unique;
 }
 
@@ -327,7 +345,10 @@ export function deduplicateByUrl(items: RawNewsItem[]): RawNewsItem[] {
 function normalizeUrl(url: string): string {
   try {
     const parsed = new URL(url);
-    return `${parsed.protocol}//${parsed.host}${parsed.pathname}`.replace(/\/$/, "");
+    return `${parsed.protocol}//${parsed.host}${parsed.pathname}`.replace(
+      /\/$/,
+      ""
+    );
   } catch {
     return url.toLowerCase().trim();
   }
@@ -348,10 +369,13 @@ export function validateNewsItem(item: RawNewsItem): boolean {
 /**
  * Filter out items older than specified days
  */
-export function filterByAge(items: RawNewsItem[], maxAgeDays: number): RawNewsItem[] {
+export function filterByAge(
+  items: RawNewsItem[],
+  maxAgeDays: number
+): RawNewsItem[] {
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - maxAgeDays);
-  
+
   return items.filter(item => {
     try {
       const itemDate = new Date(item.pubDate);

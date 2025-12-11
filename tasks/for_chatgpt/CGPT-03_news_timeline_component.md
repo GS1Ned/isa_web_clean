@@ -136,12 +136,12 @@ export function NewsTimeline(props: NewsTimelineProps): JSX.Element;
 
 **Event Styling by Type:**
 
-| Type | Icon | Color | Border |
-|------|------|-------|--------|
-| `milestone` | 🏁 (or Lucide `Flag`) | Blue | Solid |
-| `news` | 📰 (or Lucide `Newspaper`) | Green | Dashed |
-| `deadline` | ⏰ (or Lucide `Clock`) | Red | Solid |
-| `amendment` | ✏️ (or Lucide `Edit`) | Orange | Dashed |
+| Type        | Icon                       | Color  | Border |
+| ----------- | -------------------------- | ------ | ------ |
+| `milestone` | 🏁 (or Lucide `Flag`)      | Blue   | Solid  |
+| `news`      | 📰 (or Lucide `Newspaper`) | Green  | Dashed |
+| `deadline`  | ⏰ (or Lucide `Clock`)     | Red    | Solid  |
+| `amendment` | ✏️ (or Lucide `Edit`)      | Orange | Dashed |
 
 **Responsive Behavior:**
 
@@ -162,8 +162,8 @@ export function NewsTimeline(props: NewsTimelineProps): JSX.Element;
 
 ```typescript
 // Events should be sorted by date (oldest first) automatically
-const sortedEvents = [...props.events].sort((a, b) => 
-  a.date.getTime() - b.date.getTime()
+const sortedEvents = [...props.events].sort(
+  (a, b) => a.date.getTime() - b.date.getTime()
 );
 ```
 
@@ -173,9 +173,8 @@ const sortedEvents = [...props.events].sort((a, b) =>
 // If dateRange prop provided, filter events
 const filteredEvents = props.dateRange
   ? sortedEvents.filter(
-      (event) =>
-        event.date >= props.dateRange.start &&
-        event.date <= props.dateRange.end
+      event =>
+        event.date >= props.dateRange.start && event.date <= props.dateRange.end
     )
   : sortedEvents;
 ```
@@ -211,13 +210,15 @@ Use **Tailwind CSS** classes for all styling. Follow ISA's design system:
 **Example Event Card Styling:**
 
 ```tsx
-<div className={`
+<div
+  className={`
   rounded-lg border p-4 bg-card shadow-sm
   hover:shadow-md transition-shadow cursor-pointer
-  ${isHighlighted ? 'ring-2 ring-accent' : ''}
-  ${event.type === 'milestone' ? 'border-blue-500' : ''}
-  ${event.type === 'news' ? 'border-green-500 border-dashed' : ''}
-`}>
+  ${isHighlighted ? "ring-2 ring-accent" : ""}
+  ${event.type === "milestone" ? "border-blue-500" : ""}
+  ${event.type === "news" ? "border-green-500 border-dashed" : ""}
+`}
+>
   {/* Event content */}
 </div>
 ```
@@ -306,12 +307,12 @@ export function NewsTimeline(props: NewsTimelineProps) {
   // 1. Sort and filter events
   // 2. Render timeline structure
   // 3. Map events to TimelineEvent components
-  
+
   return (
     <div className="relative">
       {/* Timeline line */}
       <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-border" />
-      
+
       {/* Events */}
       {sortedEvents.map((event, index) => (
         <NewsTimelineEvent
@@ -340,11 +341,13 @@ export function NewsTimeline(props: NewsTimelineProps) {
 ### What Manus Guarantees
 
 **Existing Components:**
+
 - shadcn/ui components are available (`@/components/ui/*`)
 - Lucide icons are installed (`lucide-react`)
 - Tailwind CSS is configured and working
 
 **No Backend Changes Required:**
+
 - This is a pure frontend component
 - Data will be passed via props (no tRPC calls needed in component)
 

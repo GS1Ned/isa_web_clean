@@ -104,29 +104,34 @@ const getImpactLabel = (value: number) => {
 };
 
 export default function HubImpactMatrix() {
-  const [selectedRegulation, setSelectedRegulation] = useState<string | null>(null);
+  const [selectedRegulation, setSelectedRegulation] = useState<string | null>(
+    null
+  );
   const [selectedStandard, setSelectedStandard] = useState<string | null>(null);
 
   const highlightedRegulations = selectedStandard
     ? GS1_STANDARDS.indexOf(selectedStandard) >= 0
-      ? REGULATIONS.filter((reg) => IMPACT_MATRIX[reg][selectedStandard] > 0)
+      ? REGULATIONS.filter(reg => IMPACT_MATRIX[reg][selectedStandard] > 0)
       : []
     : selectedRegulation
-    ? [selectedRegulation]
-    : [];
+      ? [selectedRegulation]
+      : [];
 
   const highlightedStandards = selectedRegulation
-    ? GS1_STANDARDS.filter((std) => IMPACT_MATRIX[selectedRegulation][std] > 0)
+    ? GS1_STANDARDS.filter(std => IMPACT_MATRIX[selectedRegulation][std] > 0)
     : selectedStandard
-    ? [selectedStandard]
-    : [];
+      ? [selectedStandard]
+      : [];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/hub" className="text-accent hover:text-accent/80 transition font-medium">
+          <Link
+            href="/hub"
+            className="text-accent hover:text-accent/80 transition font-medium"
+          >
             ← Back to Hub
           </Link>
           <h1 className="text-lg font-bold text-foreground">Impact Matrix</h1>
@@ -139,10 +144,13 @@ export default function HubImpactMatrix() {
         <div className="container py-8">
           {/* Header */}
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Regulation Impact Matrix</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-2">
+              Regulation Impact Matrix
+            </h2>
             <p className="text-muted-foreground">
-              Interactive visualization showing which GS1 standards are required, recommended, or optional for each ESG regulation.
-              Click on a regulation or standard to highlight its relationships.
+              Interactive visualization showing which GS1 standards are
+              required, recommended, or optional for each ESG regulation. Click
+              on a regulation or standard to highlight its relationships.
             </p>
           </div>
 
@@ -176,10 +184,14 @@ export default function HubImpactMatrix() {
                   <th className="sticky left-0 bg-card border border-border p-3 text-left font-semibold text-foreground z-10">
                     GS1 Standard
                   </th>
-                  {REGULATIONS.map((reg) => (
+                  {REGULATIONS.map(reg => (
                     <th
                       key={reg}
-                      onClick={() => setSelectedRegulation(selectedRegulation === reg ? null : reg)}
+                      onClick={() =>
+                        setSelectedRegulation(
+                          selectedRegulation === reg ? null : reg
+                        )
+                      }
                       className={`border border-border p-3 text-center font-semibold cursor-pointer transition ${
                         highlightedRegulations.includes(reg)
                           ? "bg-accent text-accent-foreground"
@@ -192,10 +204,14 @@ export default function HubImpactMatrix() {
                 </tr>
               </thead>
               <tbody>
-                {GS1_STANDARDS.map((standard) => (
+                {GS1_STANDARDS.map(standard => (
                   <tr key={standard}>
                     <td
-                      onClick={() => setSelectedStandard(selectedStandard === standard ? null : standard)}
+                      onClick={() =>
+                        setSelectedStandard(
+                          selectedStandard === standard ? null : standard
+                        )
+                      }
                       className={`sticky left-0 border border-border p-3 font-medium cursor-pointer transition z-10 ${
                         highlightedStandards.includes(standard)
                           ? "bg-accent text-accent-foreground"
@@ -204,10 +220,11 @@ export default function HubImpactMatrix() {
                     >
                       {standard}
                     </td>
-                    {REGULATIONS.map((reg) => {
+                    {REGULATIONS.map(reg => {
                       const impact = IMPACT_MATRIX[reg][standard];
                       const isHighlighted =
-                        highlightedRegulations.includes(reg) || highlightedStandards.includes(standard);
+                        highlightedRegulations.includes(reg) ||
+                        highlightedStandards.includes(standard);
 
                       return (
                         <td
@@ -232,24 +249,32 @@ export default function HubImpactMatrix() {
 
           {/* Regulation Overlaps Section */}
           <div className="mb-8">
-            <h3 className="text-2xl font-bold text-foreground mb-4">Regulation Overlaps & Dependencies</h3>
+            <h3 className="text-2xl font-bold text-foreground mb-4">
+              Regulation Overlaps & Dependencies
+            </h3>
             <div className="grid md:grid-cols-2 gap-4">
-              {REGULATIONS.map((reg) => (
+              {REGULATIONS.map(reg => (
                 <div key={reg} className="card-elevated p-6">
                   <h4 className="font-semibold text-foreground mb-3">{reg}</h4>
                   <div className="flex flex-wrap gap-2">
                     {REGULATION_OVERLAPS[reg].length > 0 ? (
-                      REGULATION_OVERLAPS[reg].map((overlap) => (
-                        <span key={overlap} className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-sm font-medium">
+                      REGULATION_OVERLAPS[reg].map(overlap => (
+                        <span
+                          key={overlap}
+                          className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-sm font-medium"
+                        >
                           {overlap}
                         </span>
                       ))
                     ) : (
-                      <span className="text-sm text-muted-foreground">No overlaps</span>
+                      <span className="text-sm text-muted-foreground">
+                        No overlaps
+                      </span>
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground mt-3">
-                    {REGULATION_OVERLAPS[reg].length} overlapping regulation{REGULATION_OVERLAPS[reg].length !== 1 ? "s" : ""}
+                    {REGULATION_OVERLAPS[reg].length} overlapping regulation
+                    {REGULATION_OVERLAPS[reg].length !== 1 ? "s" : ""}
                   </p>
                 </div>
               ))}
@@ -261,13 +286,30 @@ export default function HubImpactMatrix() {
             <div className="flex items-start gap-3">
               <Info className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-foreground mb-2">Key Insights</h4>
+                <h4 className="font-semibold text-foreground mb-2">
+                  Key Insights
+                </h4>
                 <ul className="text-sm text-muted-foreground space-y-2">
-                  <li>• <strong>GTIN</strong> is required by 5 out of 6 regulations - the most critical standard</li>
-                  <li>• <strong>Digital Product Passport</strong> is required by DPP and ESPR, recommended by CSRD/ESRS</li>
-                  <li>• <strong>EPCIS</strong> is essential for EUDR compliance and supply chain traceability</li>
-                  <li>• <strong>Product Data</strong> standards satisfy requirements across all major regulations</li>
-                  <li>• Implementing standards for CSRD/ESRS and ESPR together creates significant synergies</li>
+                  <li>
+                    • <strong>GTIN</strong> is required by 5 out of 6
+                    regulations - the most critical standard
+                  </li>
+                  <li>
+                    • <strong>Digital Product Passport</strong> is required by
+                    DPP and ESPR, recommended by CSRD/ESRS
+                  </li>
+                  <li>
+                    • <strong>EPCIS</strong> is essential for EUDR compliance
+                    and supply chain traceability
+                  </li>
+                  <li>
+                    • <strong>Product Data</strong> standards satisfy
+                    requirements across all major regulations
+                  </li>
+                  <li>
+                    • Implementing standards for CSRD/ESRS and ESPR together
+                    creates significant synergies
+                  </li>
                 </ul>
               </div>
             </div>
@@ -290,7 +332,9 @@ export default function HubImpactMatrix() {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-8 mt-8">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Intelligent Standards Architect - ESG Regulations Hub</p>
+          <p>
+            &copy; 2025 Intelligent Standards Architect - ESG Regulations Hub
+          </p>
         </div>
       </footer>
     </div>

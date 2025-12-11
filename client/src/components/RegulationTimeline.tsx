@@ -1,6 +1,6 @@
 /**
  * Regulation Timeline Component
- * 
+ *
  * Displays a chronological timeline of regulation milestones and related news events.
  * Features:
  * - Vertical timeline with visual markers
@@ -13,7 +13,14 @@ import { useState, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Newspaper, Milestone, Filter, TrendingUp, ExternalLink } from "lucide-react";
+import {
+  Calendar,
+  Newspaper,
+  Milestone,
+  Filter,
+  TrendingUp,
+  ExternalLink,
+} from "lucide-react";
 import { Link } from "wouter";
 import { format, parseISO, isAfter, isBefore } from "date-fns";
 import { trpc } from "@/lib/trpc";
@@ -42,12 +49,17 @@ type TimelineEvent = {
   sourceTitle?: string;
 };
 
-export function RegulationTimeline({ regulationCode, milestones }: RegulationTimelineProps) {
+export function RegulationTimeline({
+  regulationCode,
+  milestones,
+}: RegulationTimelineProps) {
   const [showMilestones, setShowMilestones] = useState(true);
   const [showNews, setShowNews] = useState(true);
   const [dateRange, setDateRange] = useState<"all" | "past" | "future">("all");
 
-  const { data: newsItems, isLoading } = trpc.hub.getRecentNews.useQuery({ limit: 100 });
+  const { data: newsItems, isLoading } = trpc.hub.getRecentNews.useQuery({
+    limit: 100,
+  });
 
   // Combine milestones and news into a unified timeline
   const timelineEvents = useMemo(() => {
@@ -70,10 +82,12 @@ export function RegulationTimeline({ regulationCode, milestones }: RegulationTim
     // Add related news
     if (showNews && newsItems) {
       const relatedNews = newsItems.filter(
-        (item) => Array.isArray(item.regulationTags) && item.regulationTags.includes(regulationCode)
+        item =>
+          Array.isArray(item.regulationTags) &&
+          item.regulationTags.includes(regulationCode)
       );
 
-      relatedNews.forEach((news) => {
+      relatedNews.forEach(news => {
         events.push({
           id: `news-${news.id}`,
           date: new Date(news.publishedDate || news.createdAt),
@@ -93,13 +107,20 @@ export function RegulationTimeline({ regulationCode, milestones }: RegulationTim
     // Apply date range filter
     const now = new Date();
     if (dateRange === "past") {
-      return events.filter((event) => isBefore(event.date, now));
+      return events.filter(event => isBefore(event.date, now));
     } else if (dateRange === "future") {
-      return events.filter((event) => isAfter(event.date, now));
+      return events.filter(event => isAfter(event.date, now));
     }
 
     return events;
-  }, [milestones, newsItems, showMilestones, showNews, dateRange, regulationCode]);
+  }, [
+    milestones,
+    newsItems,
+    showMilestones,
+    showNews,
+    dateRange,
+    regulationCode,
+  ]);
 
   const impactColors = {
     HIGH: "bg-red-500/10 text-red-600 border-red-500/20",
@@ -131,7 +152,8 @@ export function RegulationTimeline({ regulationCode, milestones }: RegulationTim
               <Calendar className="h-5 w-5 text-primary" />
               <h3 className="text-xl font-bold">Timeline</h3>
               <Badge variant="secondary">
-                {timelineEvents.length} {timelineEvents.length === 1 ? "event" : "events"}
+                {timelineEvents.length}{" "}
+                {timelineEvents.length === 1 ? "event" : "events"}
               </Badge>
             </div>
 
@@ -212,8 +234,8 @@ export function RegulationTimeline({ regulationCode, milestones }: RegulationTim
                           ? event.status === "completed"
                             ? "bg-green-500"
                             : event.status === "upcoming"
-                            ? "bg-blue-500"
-                            : "bg-slate-300"
+                              ? "bg-blue-500"
+                              : "bg-slate-300"
                           : "bg-purple-500"
                       }`}
                     >
@@ -239,8 +261,8 @@ export function RegulationTimeline({ regulationCode, milestones }: RegulationTim
                               event.status === "completed"
                                 ? "bg-green-500/10 text-green-700"
                                 : event.status === "upcoming"
-                                ? "bg-blue-500/10 text-blue-700"
-                                : "bg-slate-500/10 text-slate-700"
+                                  ? "bg-blue-500/10 text-blue-700"
+                                  : "bg-slate-500/10 text-slate-700"
                             }
                           >
                             {event.status}
@@ -256,7 +278,9 @@ export function RegulationTimeline({ regulationCode, milestones }: RegulationTim
                           </h4>
                         </Link>
                       ) : (
-                        <h4 className="font-bold text-lg mb-2">{event.title}</h4>
+                        <h4 className="font-bold text-lg mb-2">
+                          {event.title}
+                        </h4>
                       )}
 
                       {/* Description */}
@@ -271,7 +295,13 @@ export function RegulationTimeline({ regulationCode, milestones }: RegulationTim
                         {event.type === "news" && (
                           <>
                             {event.impactLevel && (
-                              <Badge className={impactColors[event.impactLevel as keyof typeof impactColors]}>
+                              <Badge
+                                className={
+                                  impactColors[
+                                    event.impactLevel as keyof typeof impactColors
+                                  ]
+                                }
+                              >
                                 <TrendingUp className="mr-1 h-3 w-3" />
                                 {event.impactLevel} Impact
                               </Badge>

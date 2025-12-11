@@ -48,59 +48,74 @@ The GS1 Attribute Mapper requires two new database tables that integrate with IS
 This table stores the canonical list of GS1 technical attributes across all three implementation layers (GDSN, EDI, JSON-LD).
 
 ```typescript
-import { mysqlTable, int, varchar, text, timestamp, mysqlEnum, boolean, index } from "drizzle-orm/mysql-core";
+import {
+  mysqlTable,
+  int,
+  varchar,
+  text,
+  timestamp,
+  mysqlEnum,
+  boolean,
+  index,
+} from "drizzle-orm/mysql-core";
 
 /**
  * GS1 Attributes - Technical specifications for GS1 standard implementation
  * Stores GDSN XML tags, EDI segments, and JSON-LD properties required for ESG compliance
  */
-export const gs1Attributes = mysqlTable("gs1_attributes", {
-  id: int("id").autoincrement().primaryKey(),
-  
-  // Relationship to GS1 Standard
-  standardId: int("standardId").notNull(), // Foreign key to gs1_standards table
-  
-  // Attribute Identification
-  attributeName: varchar("attributeName", { length: 255 }).notNull(), // e.g., "packagingMaterialTypeCode", "DDS Reference Number"
-  attributeDisplayName: varchar("attributeDisplayName", { length: 255 }).notNull(), // Human-readable name for UI
-  
-  // Technical Format Classification
-  technicalFormat: mysqlEnum("technicalFormat", [
-    "GDSN_XML",      // GDSN master data attribute
-    "EDI_SEGMENT",   // EDIFACT/EANCOM segment
-    "JSON_LD",       // GS1 Web Vocabulary property
-    "MULTI_FORMAT"   // Attribute exists in multiple formats
-  ]).notNull(),
-  
-  // Data Type & Validation
-  dataType: varchar("dataType", { length: 50 }).notNull(), // "string", "number", "boolean", "date", "enum", "object", "array"
-  isRequired: boolean("isRequired").default(false), // Mandatory vs. optional
-  validationRules: text("validationRules"), // JSON string with validation constraints (e.g., {"minLength": 10, "pattern": "^[A-Z0-9]+$"})
-  
-  // Format-Specific Technical Details
-  gdsnXmlTag: varchar("gdsnXmlTag", { length: 255 }), // e.g., "<packagingMaterialTypeCode>"
-  gdsnModule: varchar("gdsnModule", { length: 100 }), // e.g., "Packaging Information Module", "Regulatory Information Module"
-  ediSegment: varchar("ediSegment", { length: 100 }), // e.g., "RFF+DDR", "RFF+DDV"
-  ediQualifier: varchar("ediQualifier", { length: 50 }), // e.g., "DDR", "DDV"
-  jsonLdProperty: varchar("jsonLdProperty", { length: 255 }), // e.g., "gs1:carbonFootprint", "gs1:materialComposition"
-  
-  // Documentation & Examples
-  description: text("description").notNull(), // Detailed explanation of the attribute's purpose
-  exampleValue: text("exampleValue"), // Sample value (e.g., "PET_TRANSPARENT", "RFF+DDR:1234567890:1")
-  codeExample: text("codeExample"), // Full code snippet showing usage in context
-  
-  // Reference Links
-  gs1NavigatorUrl: varchar("gs1NavigatorUrl", { length: 512 }), // Link to GS1 Navigator documentation
-  implementationGuideUrl: varchar("implementationGuideUrl", { length: 512 }), // Link to GS1 implementation guide
-  
-  // Metadata
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-}, (table) => ({
-  standardIdIdx: index("standardId_idx").on(table.standardId),
-  technicalFormatIdx: index("technicalFormat_idx").on(table.technicalFormat),
-  attributeNameIdx: index("attributeName_idx").on(table.attributeName),
-}));
+export const gs1Attributes = mysqlTable(
+  "gs1_attributes",
+  {
+    id: int("id").autoincrement().primaryKey(),
+
+    // Relationship to GS1 Standard
+    standardId: int("standardId").notNull(), // Foreign key to gs1_standards table
+
+    // Attribute Identification
+    attributeName: varchar("attributeName", { length: 255 }).notNull(), // e.g., "packagingMaterialTypeCode", "DDS Reference Number"
+    attributeDisplayName: varchar("attributeDisplayName", {
+      length: 255,
+    }).notNull(), // Human-readable name for UI
+
+    // Technical Format Classification
+    technicalFormat: mysqlEnum("technicalFormat", [
+      "GDSN_XML", // GDSN master data attribute
+      "EDI_SEGMENT", // EDIFACT/EANCOM segment
+      "JSON_LD", // GS1 Web Vocabulary property
+      "MULTI_FORMAT", // Attribute exists in multiple formats
+    ]).notNull(),
+
+    // Data Type & Validation
+    dataType: varchar("dataType", { length: 50 }).notNull(), // "string", "number", "boolean", "date", "enum", "object", "array"
+    isRequired: boolean("isRequired").default(false), // Mandatory vs. optional
+    validationRules: text("validationRules"), // JSON string with validation constraints (e.g., {"minLength": 10, "pattern": "^[A-Z0-9]+$"})
+
+    // Format-Specific Technical Details
+    gdsnXmlTag: varchar("gdsnXmlTag", { length: 255 }), // e.g., "<packagingMaterialTypeCode>"
+    gdsnModule: varchar("gdsnModule", { length: 100 }), // e.g., "Packaging Information Module", "Regulatory Information Module"
+    ediSegment: varchar("ediSegment", { length: 100 }), // e.g., "RFF+DDR", "RFF+DDV"
+    ediQualifier: varchar("ediQualifier", { length: 50 }), // e.g., "DDR", "DDV"
+    jsonLdProperty: varchar("jsonLdProperty", { length: 255 }), // e.g., "gs1:carbonFootprint", "gs1:materialComposition"
+
+    // Documentation & Examples
+    description: text("description").notNull(), // Detailed explanation of the attribute's purpose
+    exampleValue: text("exampleValue"), // Sample value (e.g., "PET_TRANSPARENT", "RFF+DDR:1234567890:1")
+    codeExample: text("codeExample"), // Full code snippet showing usage in context
+
+    // Reference Links
+    gs1NavigatorUrl: varchar("gs1NavigatorUrl", { length: 512 }), // Link to GS1 Navigator documentation
+    implementationGuideUrl: varchar("implementationGuideUrl", { length: 512 }), // Link to GS1 implementation guide
+
+    // Metadata
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  table => ({
+    standardIdIdx: index("standardId_idx").on(table.standardId),
+    technicalFormatIdx: index("technicalFormat_idx").on(table.technicalFormat),
+    attributeNameIdx: index("attributeName_idx").on(table.attributeName),
+  })
+);
 
 export type GS1Attribute = typeof gs1Attributes.$inferSelect;
 export type InsertGS1Attribute = typeof gs1Attributes.$inferInsert;
@@ -119,50 +134,61 @@ This table links regulations to specific GS1 attributes, creating the actionable
  * Regulation-to-Attribute Mappings
  * Links EU regulations to specific GS1 technical attributes required for compliance
  */
-export const regulationAttributeMappings = mysqlTable("regulation_attribute_mappings", {
-  id: int("id").autoincrement().primaryKey(),
-  
-  // Relationships
-  regulationId: int("regulationId").notNull(), // Foreign key to regulations table
-  attributeId: int("attributeId").notNull(), // Foreign key to gs1_attributes table
-  
-  // Requirement Classification
-  requirementLevel: mysqlEnum("requirementLevel", [
-    "MANDATORY",     // Legally required for compliance
-    "RECOMMENDED",   // Best practice but not legally required
-    "OPTIONAL",      // Nice-to-have for enhanced compliance
-    "CONDITIONAL"    // Required only under specific circumstances
-  ]).notNull(),
-  
-  // Compliance Context
-  rationale: text("rationale").notNull(), // Explanation of why this attribute is required (e.g., "EUDR Article 9 requires geolocation data for all commodities")
-  complianceDeadline: timestamp("complianceDeadline"), // When this requirement becomes mandatory
-  applicableScenarios: text("applicableScenarios"), // JSON array of scenarios where this applies (e.g., ["coffee_import", "cocoa_import"])
-  
-  // Sector & Geography Filters
-  applicableSectors: text("applicableSectors"), // JSON array (e.g., ["textiles", "food", "electronics"])
-  applicableCountries: text("applicableCountries"), // JSON array (e.g., ["NL", "DE", "BE"]) - null means all EU
-  
-  // Verification & Quality
-  verifiedByExpert: boolean("verifiedByExpert").default(false), // Manual validation by GS1 expert
-  verificationDate: timestamp("verificationDate"),
-  verifiedBy: varchar("verifiedBy", { length: 255 }), // Name of verifying expert
-  
-  // Usage Tracking
-  viewCount: int("viewCount").default(0), // How many times this mapping was viewed
-  
-  // Metadata
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-}, (table) => ({
-  regulationIdIdx: index("regulationId_idx").on(table.regulationId),
-  attributeIdIdx: index("attributeId_idx").on(table.attributeId),
-  requirementLevelIdx: index("requirementLevel_idx").on(table.requirementLevel),
-  uniqueMapping: index("unique_mapping_idx").on(table.regulationId, table.attributeId), // Prevent duplicate mappings
-}));
+export const regulationAttributeMappings = mysqlTable(
+  "regulation_attribute_mappings",
+  {
+    id: int("id").autoincrement().primaryKey(),
 
-export type RegulationAttributeMapping = typeof regulationAttributeMappings.$inferSelect;
-export type InsertRegulationAttributeMapping = typeof regulationAttributeMappings.$inferInsert;
+    // Relationships
+    regulationId: int("regulationId").notNull(), // Foreign key to regulations table
+    attributeId: int("attributeId").notNull(), // Foreign key to gs1_attributes table
+
+    // Requirement Classification
+    requirementLevel: mysqlEnum("requirementLevel", [
+      "MANDATORY", // Legally required for compliance
+      "RECOMMENDED", // Best practice but not legally required
+      "OPTIONAL", // Nice-to-have for enhanced compliance
+      "CONDITIONAL", // Required only under specific circumstances
+    ]).notNull(),
+
+    // Compliance Context
+    rationale: text("rationale").notNull(), // Explanation of why this attribute is required (e.g., "EUDR Article 9 requires geolocation data for all commodities")
+    complianceDeadline: timestamp("complianceDeadline"), // When this requirement becomes mandatory
+    applicableScenarios: text("applicableScenarios"), // JSON array of scenarios where this applies (e.g., ["coffee_import", "cocoa_import"])
+
+    // Sector & Geography Filters
+    applicableSectors: text("applicableSectors"), // JSON array (e.g., ["textiles", "food", "electronics"])
+    applicableCountries: text("applicableCountries"), // JSON array (e.g., ["NL", "DE", "BE"]) - null means all EU
+
+    // Verification & Quality
+    verifiedByExpert: boolean("verifiedByExpert").default(false), // Manual validation by GS1 expert
+    verificationDate: timestamp("verificationDate"),
+    verifiedBy: varchar("verifiedBy", { length: 255 }), // Name of verifying expert
+
+    // Usage Tracking
+    viewCount: int("viewCount").default(0), // How many times this mapping was viewed
+
+    // Metadata
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  table => ({
+    regulationIdIdx: index("regulationId_idx").on(table.regulationId),
+    attributeIdIdx: index("attributeId_idx").on(table.attributeId),
+    requirementLevelIdx: index("requirementLevel_idx").on(
+      table.requirementLevel
+    ),
+    uniqueMapping: index("unique_mapping_idx").on(
+      table.regulationId,
+      table.attributeId
+    ), // Prevent duplicate mappings
+  })
+);
+
+export type RegulationAttributeMapping =
+  typeof regulationAttributeMappings.$inferSelect;
+export type InsertRegulationAttributeMapping =
+  typeof regulationAttributeMappings.$inferInsert;
 ```
 
 **Design Rationale:**
@@ -265,19 +291,14 @@ Populating the GS1 attributes database requires a hybrid approach combining manu
 
 1. **Table 1: VSME Basic Module** (Report 2, Lines 63-110)
    - 8 GDSN Entity Attributes (totalEnergyConsumption, gasesEmissionsScope1, gasesEmissionsScope2, pollutantEmissionQuantity, totalWasteGenerated, wasteRecyclingPercentage, employeeCount, genderDiversityRatio)
-   
 2. **Table 2: EUDR EDI Segments** (Report 2, Lines 149-180)
    - 2 EDI Segments (RFF+DDR, RFF+DDV)
-   
 3. **Table 3: EUDR Master Data** (Report 2, Lines 187-208)
    - 4 GDSN Attributes (regulationTypeCode, countryOfProduction, scientificName, commodityCode)
-   
 4. **Table 4: Textile DPP** (Report 2, Lines 236-265)
    - 7 JSON-LD Properties (gs1:gtin, gs1:materialComposition, gs1:recycledContentPercentage, gs1:repairabilityScore, gs1:durabilityIndex, gs1:certification)
-   
 5. **Table 5: Battery Passport** (Report 2, Lines 272-288)
    - 4 Attribute Categories (Performance, Durability, Carbon Footprint, Chemistry)
-   
 6. **Table 6: PPWR Packaging** (Report 2, Lines 311-332)
    - 5 GDSN Packaging Attributes (packagingMaterialTypeCode, packagingRecyclingSchemeCode, packagingRecyclabilityAssessmentSpecificationCode, packagingRecycledContent, packagingWeight)
 
@@ -326,7 +347,7 @@ interface AttributeRow {
 
 async function seedGS1Attributes() {
   console.log("Loading GS1 attributes from CSV...");
-  
+
   const csvContent = fs.readFileSync("./data/gs1_attributes.csv", "utf-8");
   const records: AttributeRow[] = csv.parse(csvContent, {
     columns: true,
@@ -335,11 +356,11 @@ async function seedGS1Attributes() {
       if (context.column === "isRequired") return value === "true";
       if (context.column === "standardId") return parseInt(value);
       return value;
-    }
+    },
   });
-  
+
   console.log(`Parsed ${records.length} attributes from CSV`);
-  
+
   let inserted = 0;
   for (const record of records) {
     try {
@@ -365,8 +386,10 @@ async function seedGS1Attributes() {
       console.error(`Failed to insert ${record.attributeName}:`, error);
     }
   }
-  
-  console.log(`✅ Successfully inserted ${inserted}/${records.length} attributes`);
+
+  console.log(
+    `✅ Successfully inserted ${inserted}/${records.length} attributes`
+  );
 }
 
 seedGS1Attributes().catch(console.error);
@@ -422,38 +445,54 @@ interface GS1NavigatorAttribute {
 
 async function scrapeGS1Navigator() {
   console.log("Fetching attributes from GS1 Navigator API...");
-  
+
   const response = await axios.get<GS1NavigatorAttribute[]>(
     "https://navigator.gs1.org/api/gdsn/attributes?version=13"
   );
-  
+
   const allAttributes = response.data;
   console.log(`Fetched ${allAttributes.length} total attributes`);
-  
+
   // Filter for ESG-relevant attributes
   const esgKeywords = [
-    "packaging", "recycl", "sustain", "carbon", "emission", "energy",
-    "waste", "circular", "environment", "regulat", "compliance",
-    "certification", "material", "chemical", "hazard", "safety"
+    "packaging",
+    "recycl",
+    "sustain",
+    "carbon",
+    "emission",
+    "energy",
+    "waste",
+    "circular",
+    "environment",
+    "regulat",
+    "compliance",
+    "certification",
+    "material",
+    "chemical",
+    "hazard",
+    "safety",
   ];
-  
+
   const esgAttributes = allAttributes.filter(attr => {
-    const searchText = `${attr.name} ${attr.displayName} ${attr.description}`.toLowerCase();
+    const searchText =
+      `${attr.name} ${attr.displayName} ${attr.description}`.toLowerCase();
     return esgKeywords.some(keyword => searchText.includes(keyword));
   });
-  
+
   console.log(`Filtered to ${esgAttributes.length} ESG-relevant attributes`);
-  
+
   // Check which attributes already exist (from Phase 1 manual curation)
   const existingNames = await db
     .select({ name: gs1Attributes.attributeName })
     .from(gs1Attributes);
-  
+
   const existingSet = new Set(existingNames.map(r => r.name));
-  
-  const newAttributes = esgAttributes.filter(attr => !existingSet.has(attr.name));
+
+  const newAttributes = esgAttributes.filter(
+    attr => !existingSet.has(attr.name)
+  );
   console.log(`${newAttributes.length} new attributes to import`);
-  
+
   // Map GS1 modules to standard IDs (requires manual mapping table)
   const moduleToStandardId: Record<string, number> = {
     "Packaging Information Module": 15, // GDSN standard ID
@@ -461,11 +500,11 @@ async function scrapeGS1Navigator() {
     "Sustainability Module": 18,
     // ... add more mappings
   };
-  
+
   let inserted = 0;
   for (const attr of newAttributes) {
     const standardId = moduleToStandardId[attr.module] || 1; // Default to generic GDSN
-    
+
     try {
       await db.insert(gs1Attributes).values({
         standardId,
@@ -485,8 +524,10 @@ async function scrapeGS1Navigator() {
       console.error(`Failed to insert ${attr.name}:`, error);
     }
   }
-  
-  console.log(`✅ Successfully inserted ${inserted}/${newAttributes.length} attributes`);
+
+  console.log(
+    `✅ Successfully inserted ${inserted}/${newAttributes.length} attributes`
+  );
 }
 
 scrapeGS1Navigator().catch(console.error);
@@ -526,7 +567,11 @@ For the remaining 30 regulations, use LLM to generate initial mappings that can 
 
 import { invokeLLM } from "./server/_core/llm";
 import { db } from "./db";
-import { regulations, gs1Attributes, regulationAttributeMappings } from "../drizzle/schema";
+import {
+  regulations,
+  gs1Attributes,
+  regulationAttributeMappings,
+} from "../drizzle/schema";
 
 async function generateAttributeMappings(regulationId: number) {
   // Fetch regulation details
@@ -535,17 +580,14 @@ async function generateAttributeMappings(regulationId: number) {
     .from(regulations)
     .where(eq(regulations.id, regulationId))
     .limit(1);
-  
+
   if (!regulation[0]) {
     throw new Error(`Regulation ${regulationId} not found`);
   }
-  
+
   // Fetch all available attributes
-  const attributes = await db
-    .select()
-    .from(gs1Attributes)
-    .limit(500);
-  
+  const attributes = await db.select().from(gs1Attributes).limit(500);
+
   // Build LLM prompt
   const prompt = `You are an expert in EU sustainability regulations and GS1 standards.
 
@@ -572,8 +614,11 @@ Focus on attributes that are directly required by the regulation's legal text, n
 
   const response = await invokeLLM({
     messages: [
-      { role: "system", content: "You are a compliance expert specializing in GS1 standards." },
-      { role: "user", content: prompt }
+      {
+        role: "system",
+        content: "You are a compliance expert specializing in GS1 standards.",
+      },
+      { role: "user", content: prompt },
     ],
     response_format: {
       type: "json_schema",
@@ -589,30 +634,43 @@ Focus on attributes that are directly required by the regulation's legal text, n
                 type: "object",
                 properties: {
                   attributeName: { type: "string" },
-                  requirementLevel: { type: "string", enum: ["MANDATORY", "RECOMMENDED", "OPTIONAL", "CONDITIONAL"] },
+                  requirementLevel: {
+                    type: "string",
+                    enum: [
+                      "MANDATORY",
+                      "RECOMMENDED",
+                      "OPTIONAL",
+                      "CONDITIONAL",
+                    ],
+                  },
                   rationale: { type: "string" },
-                  applicableSectors: { type: "array", items: { type: "string" } }
+                  applicableSectors: {
+                    type: "array",
+                    items: { type: "string" },
+                  },
                 },
                 required: ["attributeName", "requirementLevel", "rationale"],
-                additionalProperties: false
-              }
-            }
+                additionalProperties: false,
+              },
+            },
           },
           required: ["mappings"],
-          additionalProperties: false
-        }
-      }
-    }
+          additionalProperties: false,
+        },
+      },
+    },
   });
-  
+
   const result = JSON.parse(response.choices[0].message.content);
-  
+
   // Insert mappings into database
   let inserted = 0;
   for (const mapping of result.mappings) {
-    const attribute = attributes.find(a => a.attributeName === mapping.attributeName);
+    const attribute = attributes.find(
+      a => a.attributeName === mapping.attributeName
+    );
     if (!attribute) continue;
-    
+
     try {
       await db.insert(regulationAttributeMappings).values({
         regulationId: regulation[0].id,
@@ -624,28 +682,35 @@ Focus on attributes that are directly required by the regulation's legal text, n
       });
       inserted++;
     } catch (error) {
-      console.error(`Failed to insert mapping for ${mapping.attributeName}:`, error);
+      console.error(
+        `Failed to insert mapping for ${mapping.attributeName}:`,
+        error
+      );
     }
   }
-  
-  console.log(`✅ Generated ${inserted} attribute mappings for regulation ${regulationId}`);
+
+  console.log(
+    `✅ Generated ${inserted} attribute mappings for regulation ${regulationId}`
+  );
   return inserted;
 }
 
 // Batch process all regulations
 async function batchGenerateMappings() {
-  const allRegulations = await db.select({ id: regulations.id }).from(regulations);
-  
+  const allRegulations = await db
+    .select({ id: regulations.id })
+    .from(regulations);
+
   let totalMappings = 0;
   for (const reg of allRegulations) {
     console.log(`\nProcessing regulation ${reg.id}...`);
     const count = await generateAttributeMappings(reg.id);
     totalMappings += count;
-    
+
     // Rate limiting: wait 2 seconds between LLM calls
     await new Promise(resolve => setTimeout(resolve, 2000));
   }
-  
+
   console.log(`\n✅ Total mappings generated: ${totalMappings}`);
 }
 
@@ -664,7 +729,11 @@ batchGenerateMappings().catch(console.error);
 
 ```typescript
 import { db } from "./db";
-import { gs1Attributes, regulationAttributeMappings, gs1Standards } from "../drizzle/schema";
+import {
+  gs1Attributes,
+  regulationAttributeMappings,
+  gs1Standards,
+} from "../drizzle/schema";
 import { eq, and, inArray, sql } from "drizzle-orm";
 
 // ============================================
@@ -679,7 +748,9 @@ export async function getAttributesByStandard(standardId: number) {
     .orderBy(gs1Attributes.attributeName);
 }
 
-export async function getAttributesByFormat(format: "GDSN_XML" | "EDI_SEGMENT" | "JSON_LD" | "MULTI_FORMAT") {
+export async function getAttributesByFormat(
+  format: "GDSN_XML" | "EDI_SEGMENT" | "JSON_LD" | "MULTI_FORMAT"
+) {
   return db
     .select()
     .from(gs1Attributes)
@@ -707,7 +778,7 @@ export async function getAttributeById(attributeId: number) {
     .leftJoin(gs1Standards, eq(gs1Attributes.standardId, gs1Standards.id))
     .where(eq(gs1Attributes.id, attributeId))
     .limit(1);
-  
+
   return result[0] || null;
 }
 
@@ -730,27 +801,34 @@ export async function getAttributesByRegulation(
       standard: gs1Standards,
     })
     .from(regulationAttributeMappings)
-    .leftJoin(gs1Attributes, eq(regulationAttributeMappings.attributeId, gs1Attributes.id))
+    .leftJoin(
+      gs1Attributes,
+      eq(regulationAttributeMappings.attributeId, gs1Attributes.id)
+    )
     .leftJoin(gs1Standards, eq(gs1Attributes.standardId, gs1Standards.id))
     .where(eq(regulationAttributeMappings.regulationId, regulationId));
-  
+
   // Apply filters
   if (filters?.requirementLevel) {
-    query = query.where(eq(regulationAttributeMappings.requirementLevel, filters.requirementLevel));
+    query = query.where(
+      eq(regulationAttributeMappings.requirementLevel, filters.requirementLevel)
+    );
   }
-  
+
   if (filters?.technicalFormat) {
-    query = query.where(eq(gs1Attributes.technicalFormat, filters.technicalFormat));
+    query = query.where(
+      eq(gs1Attributes.technicalFormat, filters.technicalFormat)
+    );
   }
-  
+
   if (filters?.sector) {
     query = query.where(
       sql`JSON_CONTAINS(${regulationAttributeMappings.applicableSectors}, JSON_QUOTE(${filters.sector}))`
     );
   }
-  
+
   const results = await query;
-  
+
   return results.map(r => ({
     ...r.mapping,
     attribute: r.attribute,
@@ -765,7 +843,10 @@ export async function getRegulationsByAttribute(attributeId: number) {
       regulation: regulations,
     })
     .from(regulationAttributeMappings)
-    .leftJoin(regulations, eq(regulationAttributeMappings.regulationId, regulations.id))
+    .leftJoin(
+      regulations,
+      eq(regulationAttributeMappings.regulationId, regulations.id)
+    )
     .where(eq(regulationAttributeMappings.attributeId, attributeId))
     .orderBy(regulationAttributeMappings.requirementLevel);
 }
@@ -779,12 +860,14 @@ export async function getAttributeMappingStats(regulationId: number) {
     .from(regulationAttributeMappings)
     .where(eq(regulationAttributeMappings.regulationId, regulationId))
     .groupBy(regulationAttributeMappings.requirementLevel);
-  
+
   return {
     mandatory: stats.find(s => s.requirementLevel === "MANDATORY")?.count || 0,
-    recommended: stats.find(s => s.requirementLevel === "RECOMMENDED")?.count || 0,
+    recommended:
+      stats.find(s => s.requirementLevel === "RECOMMENDED")?.count || 0,
     optional: stats.find(s => s.requirementLevel === "OPTIONAL")?.count || 0,
-    conditional: stats.find(s => s.requirementLevel === "CONDITIONAL")?.count || 0,
+    conditional:
+      stats.find(s => s.requirementLevel === "CONDITIONAL")?.count || 0,
     total: stats.reduce((sum, s) => sum + Number(s.count), 0),
   };
 }
@@ -813,57 +896,67 @@ import * as db from "./db";
 export const gs1AttributesRouter = router({
   // List all attributes with optional filters
   list: publicProcedure
-    .input(z.object({
-      standardId: z.number().optional(),
-      technicalFormat: z.enum(["GDSN_XML", "EDI_SEGMENT", "JSON_LD", "MULTI_FORMAT"]).optional(),
-      search: z.string().optional(),
-      limit: z.number().min(1).max(500).default(100),
-      offset: z.number().min(0).default(0),
-    }))
+    .input(
+      z.object({
+        standardId: z.number().optional(),
+        technicalFormat: z
+          .enum(["GDSN_XML", "EDI_SEGMENT", "JSON_LD", "MULTI_FORMAT"])
+          .optional(),
+        search: z.string().optional(),
+        limit: z.number().min(1).max(500).default(100),
+        offset: z.number().min(0).default(0),
+      })
+    )
     .query(async ({ input }) => {
       if (input.search) {
         return db.searchAttributes(input.search, input.limit);
       }
-      
+
       if (input.standardId) {
         return db.getAttributesByStandard(input.standardId);
       }
-      
+
       if (input.technicalFormat) {
         return db.getAttributesByFormat(input.technicalFormat);
       }
-      
+
       // Default: return all attributes with pagination
       return db.getAllAttributes(input.limit, input.offset);
     }),
-  
+
   // Get single attribute with full details
   getById: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input }) => {
       return db.getAttributeById(input.id);
     }),
-  
+
   // Get attributes required for a specific regulation
   getByRegulation: publicProcedure
-    .input(z.object({
-      regulationId: z.number(),
-      requirementLevel: z.enum(["MANDATORY", "RECOMMENDED", "OPTIONAL", "CONDITIONAL"]).optional(),
-      technicalFormat: z.enum(["GDSN_XML", "EDI_SEGMENT", "JSON_LD", "MULTI_FORMAT"]).optional(),
-      sector: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        regulationId: z.number(),
+        requirementLevel: z
+          .enum(["MANDATORY", "RECOMMENDED", "OPTIONAL", "CONDITIONAL"])
+          .optional(),
+        technicalFormat: z
+          .enum(["GDSN_XML", "EDI_SEGMENT", "JSON_LD", "MULTI_FORMAT"])
+          .optional(),
+        sector: z.string().optional(),
+      })
+    )
     .query(async ({ input }) => {
       const { regulationId, ...filters } = input;
       return db.getAttributesByRegulation(regulationId, filters);
     }),
-  
+
   // Get attribute mapping statistics for a regulation
   getStats: publicProcedure
     .input(z.object({ regulationId: z.number() }))
     .query(async ({ input }) => {
       return db.getAttributeMappingStats(input.regulationId);
     }),
-  
+
   // Track attribute view (for analytics)
   trackView: publicProcedure
     .input(z.object({ mappingId: z.number() }))
@@ -882,13 +975,13 @@ export const appRouter = router({
 
 ### 3.3 API Endpoints Summary
 
-| Endpoint | Method | Auth | Purpose |
-|----------|--------|------|---------|
-| `gs1Attributes.list` | Query | Public | List attributes with filters (standard, format, search) |
-| `gs1Attributes.getById` | Query | Public | Get single attribute with full details |
-| `gs1Attributes.getByRegulation` | Query | Public | Get attributes required for specific regulation |
-| `gs1Attributes.getStats` | Query | Public | Get attribute mapping statistics |
-| `gs1Attributes.trackView` | Mutation | Public | Track attribute view for analytics |
+| Endpoint                        | Method   | Auth   | Purpose                                                 |
+| ------------------------------- | -------- | ------ | ------------------------------------------------------- |
+| `gs1Attributes.list`            | Query    | Public | List attributes with filters (standard, format, search) |
+| `gs1Attributes.getById`         | Query    | Public | Get single attribute with full details                  |
+| `gs1Attributes.getByRegulation` | Query    | Public | Get attributes required for specific regulation         |
+| `gs1Attributes.getStats`        | Query    | Public | Get attribute mapping statistics                        |
+| `gs1Attributes.trackView`       | Mutation | Public | Track attribute view for analytics                      |
 
 ---
 
@@ -917,21 +1010,21 @@ interface AttributeMapperTabProps {
 export function AttributeMapperTab({ regulationId }: AttributeMapperTabProps) {
   const [selectedFormat, setSelectedFormat] = useState<string>("all");
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
-  
+
   // Fetch attribute mappings
   const { data: mappings, isLoading } = trpc.gs1Attributes.getByRegulation.useQuery({
     regulationId,
     requirementLevel: selectedLevel === "all" ? undefined : selectedLevel as any,
     technicalFormat: selectedFormat === "all" ? undefined : selectedFormat as any,
   });
-  
+
   // Fetch statistics
   const { data: stats } = trpc.gs1Attributes.getStats.useQuery({ regulationId });
-  
+
   if (isLoading) {
     return <div className="flex items-center justify-center h-64">Loading attributes...</div>;
   }
-  
+
   if (!mappings || mappings.length === 0) {
     return (
       <Alert>
@@ -942,12 +1035,12 @@ export function AttributeMapperTab({ regulationId }: AttributeMapperTabProps) {
       </Alert>
     );
   }
-  
+
   // Group mappings by technical format
   const gdsnAttributes = mappings.filter(m => m.attribute?.technicalFormat === "GDSN_XML");
   const ediAttributes = mappings.filter(m => m.attribute?.technicalFormat === "EDI_SEGMENT");
   const jsonLdAttributes = mappings.filter(m => m.attribute?.technicalFormat === "JSON_LD");
-  
+
   return (
     <div className="space-y-6">
       {/* Statistics Summary */}
@@ -977,7 +1070,7 @@ export function AttributeMapperTab({ regulationId }: AttributeMapperTabProps) {
           </CardHeader>
         </Card>
       </div>
-      
+
       {/* Filters */}
       <div className="flex gap-4">
         <select
@@ -991,7 +1084,7 @@ export function AttributeMapperTab({ regulationId }: AttributeMapperTabProps) {
           <option value="OPTIONAL">Optional Only</option>
           <option value="CONDITIONAL">Conditional Only</option>
         </select>
-        
+
         <select
           value={selectedFormat}
           onChange={(e) => setSelectedFormat(e.target.value)}
@@ -1003,7 +1096,7 @@ export function AttributeMapperTab({ regulationId }: AttributeMapperTabProps) {
           <option value="JSON_LD">JSON-LD Only</option>
         </select>
       </div>
-      
+
       {/* Attribute Tabs by Format */}
       <Tabs defaultValue="gdsn" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
@@ -1020,7 +1113,7 @@ export function AttributeMapperTab({ regulationId }: AttributeMapperTabProps) {
             JSON-LD ({jsonLdAttributes.length})
           </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="gdsn" className="space-y-4">
           {gdsnAttributes.length === 0 ? (
             <Alert>
@@ -1032,7 +1125,7 @@ export function AttributeMapperTab({ regulationId }: AttributeMapperTabProps) {
             ))
           )}
         </TabsContent>
-        
+
         <TabsContent value="edi" className="space-y-4">
           {ediAttributes.length === 0 ? (
             <Alert>
@@ -1044,7 +1137,7 @@ export function AttributeMapperTab({ regulationId }: AttributeMapperTabProps) {
             ))
           )}
         </TabsContent>
-        
+
         <TabsContent value="jsonld" className="space-y-4">
           {jsonLdAttributes.length === 0 ? (
             <Alert>
@@ -1064,18 +1157,18 @@ export function AttributeMapperTab({ regulationId }: AttributeMapperTabProps) {
 // Individual Attribute Card Component
 function AttributeCard({ mapping }: { mapping: any }) {
   const trackView = trpc.gs1Attributes.trackView.useMutation();
-  
+
   const handleViewDocs = () => {
     trackView.mutate({ mappingId: mapping.id });
   };
-  
+
   const requirementLevelColor = {
     MANDATORY: "bg-red-100 text-red-800",
     RECOMMENDED: "bg-yellow-100 text-yellow-800",
     OPTIONAL: "bg-green-100 text-green-800",
     CONDITIONAL: "bg-blue-100 text-blue-800",
   };
-  
+
   return (
     <Card>
       <CardHeader>
@@ -1099,15 +1192,15 @@ function AttributeCard({ mapping }: { mapping: any }) {
           <h4 className="font-semibold text-sm mb-1">Description</h4>
           <p className="text-sm text-gray-600">{mapping.attribute?.description}</p>
         </div>
-        
+
         {/* Compliance Rationale */}
         <div>
           <h4 className="font-semibold text-sm mb-1">Compliance Rationale</h4>
           <p className="text-sm text-gray-600">{mapping.rationale}</p>
         </div>
-        
+
         <Separator />
-        
+
         {/* Technical Details */}
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
@@ -1122,7 +1215,7 @@ function AttributeCard({ mapping }: { mapping: any }) {
             </div>
           )}
         </div>
-        
+
         {/* Example Value */}
         {mapping.attribute?.exampleValue && (
           <div>
@@ -1130,7 +1223,7 @@ function AttributeCard({ mapping }: { mapping: any }) {
             <code className="block text-sm bg-gray-100 p-2 rounded">{mapping.attribute.exampleValue}</code>
           </div>
         )}
-        
+
         {/* Code Example */}
         {mapping.attribute?.codeExample && (
           <div>
@@ -1140,7 +1233,7 @@ function AttributeCard({ mapping }: { mapping: any }) {
             </pre>
           </div>
         )}
-        
+
         {/* Documentation Links */}
         {mapping.attribute?.gs1NavigatorUrl && (
           <a
@@ -1172,13 +1265,13 @@ import { AttributeMapperTab } from "@/components/AttributeMapperTab";
 export function HubRegulationDetail() {
   const { id } = useParams();
   const regulationId = parseInt(id || "0");
-  
+
   // ... existing code
-  
+
   return (
     <div className="container mx-auto py-8">
       {/* ... existing header */}
-      
+
       <Tabs defaultValue="overview" className="mt-6">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -1187,9 +1280,9 @@ export function HubRegulationDetail() {
           <TabsTrigger value="standards">GS1 Standards</TabsTrigger>
           <TabsTrigger value="news">Related News</TabsTrigger>
         </TabsList>
-        
+
         {/* ... existing tabs */}
-        
+
         <TabsContent value="attributes">
           <AttributeMapperTab regulationId={regulationId} />
         </TabsContent>
@@ -1216,13 +1309,13 @@ import { Search } from "lucide-react";
 export function AttributeBrowser() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFormat, setSelectedFormat] = useState<string>("all");
-  
+
   const { data: attributes, isLoading } = trpc.gs1Attributes.list.useQuery({
     search: searchQuery || undefined,
     technicalFormat: selectedFormat === "all" ? undefined : selectedFormat as any,
     limit: 100,
   });
-  
+
   return (
     <div className="container mx-auto py-8">
       <div className="mb-8">
@@ -1231,7 +1324,7 @@ export function AttributeBrowser() {
           Explore {attributes?.length || 0} GS1 technical attributes for ESG compliance implementation
         </p>
       </div>
-      
+
       {/* Search & Filters */}
       <div className="flex gap-4 mb-6">
         <div className="relative flex-1">
@@ -1243,7 +1336,7 @@ export function AttributeBrowser() {
             className="pl-10"
           />
         </div>
-        
+
         <select
           value={selectedFormat}
           onChange={(e) => setSelectedFormat(e.target.value)}
@@ -1255,7 +1348,7 @@ export function AttributeBrowser() {
           <option value="JSON_LD">JSON-LD</option>
         </select>
       </div>
-      
+
       {/* Attribute Grid */}
       {isLoading ? (
         <div className="text-center py-12">Loading attributes...</div>
@@ -1312,71 +1405,87 @@ Add route to `App.tsx`:
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { db } from "./db";
 import * as dbHelpers from "./db";
-import { gs1Attributes, gs1Standards, regulations, regulationAttributeMappings } from "../drizzle/schema";
+import {
+  gs1Attributes,
+  gs1Standards,
+  regulations,
+  regulationAttributeMappings,
+} from "../drizzle/schema";
 
 describe("GS1 Attributes Database Helpers", () => {
   let testStandardId: number;
   let testRegulationId: number;
   let testAttributeId: number;
-  
+
   beforeAll(async () => {
     // Create test standard
-    const [standard] = await db.insert(gs1Standards).values({
-      standardCode: "TEST_STANDARD",
-      standardName: "Test Standard",
-      description: "Test standard for attribute mapper",
-      category: "Testing",
-    }).$returningId();
+    const [standard] = await db
+      .insert(gs1Standards)
+      .values({
+        standardCode: "TEST_STANDARD",
+        standardName: "Test Standard",
+        description: "Test standard for attribute mapper",
+        category: "Testing",
+      })
+      .$returningId();
     testStandardId = standard.id;
-    
+
     // Create test regulation
-    const [regulation] = await db.insert(regulations).values({
-      title: "Test Regulation",
-      description: "Test regulation for attribute mapper",
-      regulationType: "OTHER",
-    }).$returningId();
+    const [regulation] = await db
+      .insert(regulations)
+      .values({
+        title: "Test Regulation",
+        description: "Test regulation for attribute mapper",
+        regulationType: "OTHER",
+      })
+      .$returningId();
     testRegulationId = regulation.id;
-    
+
     // Create test attribute
-    const [attribute] = await db.insert(gs1Attributes).values({
-      standardId: testStandardId,
-      attributeName: "testAttribute",
-      attributeDisplayName: "Test Attribute",
-      technicalFormat: "GDSN_XML",
-      dataType: "string",
-      isRequired: true,
-      gdsnXmlTag: "<testAttribute>",
-      description: "Test attribute for unit testing",
-      exampleValue: "TEST_VALUE",
-    }).$returningId();
+    const [attribute] = await db
+      .insert(gs1Attributes)
+      .values({
+        standardId: testStandardId,
+        attributeName: "testAttribute",
+        attributeDisplayName: "Test Attribute",
+        technicalFormat: "GDSN_XML",
+        dataType: "string",
+        isRequired: true,
+        gdsnXmlTag: "<testAttribute>",
+        description: "Test attribute for unit testing",
+        exampleValue: "TEST_VALUE",
+      })
+      .$returningId();
     testAttributeId = attribute.id;
   });
-  
+
   afterAll(async () => {
     // Cleanup
-    await db.delete(regulationAttributeMappings).where(eq(regulationAttributeMappings.regulationId, testRegulationId));
+    await db
+      .delete(regulationAttributeMappings)
+      .where(eq(regulationAttributeMappings.regulationId, testRegulationId));
     await db.delete(gs1Attributes).where(eq(gs1Attributes.id, testAttributeId));
     await db.delete(regulations).where(eq(regulations.id, testRegulationId));
     await db.delete(gs1Standards).where(eq(gs1Standards.id, testStandardId));
   });
-  
+
   it("should retrieve attributes by standard", async () => {
     const attributes = await dbHelpers.getAttributesByStandard(testStandardId);
     expect(attributes).toHaveLength(1);
     expect(attributes[0].attributeName).toBe("testAttribute");
   });
-  
+
   it("should retrieve attributes by technical format", async () => {
     const attributes = await dbHelpers.getAttributesByFormat("GDSN_XML");
     expect(attributes.length).toBeGreaterThan(0);
     expect(attributes.every(a => a.technicalFormat === "GDSN_XML")).toBe(true);
   });
-  
+
   it("should search attributes by keyword", async () => {
     const attributes = await dbHelpers.searchAttributes("test");
     expect(attributes.length).toBeGreaterThan(0);
   });
-  
+
   it("should create regulation-attribute mapping", async () => {
     await db.insert(regulationAttributeMappings).values({
       regulationId: testRegulationId,
@@ -1384,41 +1493,47 @@ describe("GS1 Attributes Database Helpers", () => {
       requirementLevel: "MANDATORY",
       rationale: "Test mapping for unit testing",
     });
-    
-    const mappings = await dbHelpers.getAttributesByRegulation(testRegulationId);
+
+    const mappings =
+      await dbHelpers.getAttributesByRegulation(testRegulationId);
     expect(mappings).toHaveLength(1);
     expect(mappings[0].requirementLevel).toBe("MANDATORY");
   });
-  
+
   it("should filter mappings by requirement level", async () => {
-    const mandatoryOnly = await dbHelpers.getAttributesByRegulation(testRegulationId, {
-      requirementLevel: "MANDATORY",
-    });
-    expect(mandatoryOnly.every(m => m.requirementLevel === "MANDATORY")).toBe(true);
+    const mandatoryOnly = await dbHelpers.getAttributesByRegulation(
+      testRegulationId,
+      {
+        requirementLevel: "MANDATORY",
+      }
+    );
+    expect(mandatoryOnly.every(m => m.requirementLevel === "MANDATORY")).toBe(
+      true
+    );
   });
-  
+
   it("should calculate attribute mapping statistics", async () => {
     const stats = await dbHelpers.getAttributeMappingStats(testRegulationId);
     expect(stats.mandatory).toBe(1);
     expect(stats.total).toBe(1);
   });
-  
+
   it("should increment view count", async () => {
     const [mapping] = await db
       .select()
       .from(regulationAttributeMappings)
       .where(eq(regulationAttributeMappings.regulationId, testRegulationId))
       .limit(1);
-    
+
     const initialCount = mapping.viewCount;
     await dbHelpers.incrementAttributeViewCount(mapping.id);
-    
+
     const [updated] = await db
       .select()
       .from(regulationAttributeMappings)
       .where(eq(regulationAttributeMappings.id, mapping.id))
       .limit(1);
-    
+
     expect(updated.viewCount).toBe(initialCount + 1);
   });
 });
@@ -1445,38 +1560,42 @@ const createCaller = createCallerFactory(appRouter);
 
 describe("GS1 Attributes tRPC Router", () => {
   const caller = createCaller({ user: null }); // Public procedures
-  
+
   it("should list attributes with pagination", async () => {
     const result = await caller.gs1Attributes.list({ limit: 10, offset: 0 });
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBeLessThanOrEqual(10);
   });
-  
+
   it("should filter attributes by technical format", async () => {
-    const result = await caller.gs1Attributes.list({ technicalFormat: "GDSN_XML" });
+    const result = await caller.gs1Attributes.list({
+      technicalFormat: "GDSN_XML",
+    });
     expect(result.every(a => a.technicalFormat === "GDSN_XML")).toBe(true);
   });
-  
+
   it("should search attributes by keyword", async () => {
     const result = await caller.gs1Attributes.list({ search: "packaging" });
     expect(result.length).toBeGreaterThan(0);
   });
-  
+
   it("should get attribute by ID", async () => {
     const allAttributes = await caller.gs1Attributes.list({ limit: 1 });
     const attributeId = allAttributes[0].id;
-    
+
     const result = await caller.gs1Attributes.getById({ id: attributeId });
     expect(result).not.toBeNull();
     expect(result?.attribute.id).toBe(attributeId);
   });
-  
+
   it("should get attributes by regulation", async () => {
     // Assuming regulation ID 5 is EUDR (from existing data)
-    const result = await caller.gs1Attributes.getByRegulation({ regulationId: 5 });
+    const result = await caller.gs1Attributes.getByRegulation({
+      regulationId: 5,
+    });
     expect(Array.isArray(result)).toBe(true);
   });
-  
+
   it("should get attribute mapping statistics", async () => {
     const result = await caller.gs1Attributes.getStats({ regulationId: 5 });
     expect(result).toHaveProperty("mandatory");
@@ -1530,45 +1649,50 @@ pnpm test server/gs1-attributes-router.test.ts
 
 ### 6.1 Task Breakdown
 
-| Task | Description | Estimated Hours | Dependencies |
-|------|-------------|-----------------|--------------|
-| **Database Schema** | Create tables, write migration script, test locally | 4 hours | None |
-| **Data Population - Phase 1** | Manual curation of 80-100 attributes from reports | 20 hours | Schema complete |
-| **Data Population - Phase 2** | GS1 Navigator scraping script | 16 hours | Phase 1 complete |
-| **Data Population - Phase 3** | Regulation-attribute mapping (manual + LLM) | 24 hours | Phase 2 complete |
-| **Backend - Database Helpers** | Write 8-10 helper functions in db.ts | 8 hours | Schema complete |
-| **Backend - tRPC Procedures** | Create gs1AttributesRouter with 5 procedures | 6 hours | Database helpers complete |
-| **Frontend - AttributeMapperTab** | Build regulation detail tab component | 12 hours | tRPC procedures complete |
-| **Frontend - AttributeBrowser** | Build standalone attribute browser page | 8 hours | tRPC procedures complete |
-| **Testing - Unit Tests** | Write 15-20 vitest tests for database helpers | 6 hours | Backend complete |
-| **Testing - Integration Tests** | Write 10-15 tRPC procedure tests | 4 hours | Backend complete |
-| **Testing - Manual QA** | End-to-end testing, bug fixes | 8 hours | Frontend complete |
-| **Documentation** | Update README, write user guide | 4 hours | All features complete |
+| Task                              | Description                                         | Estimated Hours | Dependencies              |
+| --------------------------------- | --------------------------------------------------- | --------------- | ------------------------- |
+| **Database Schema**               | Create tables, write migration script, test locally | 4 hours         | None                      |
+| **Data Population - Phase 1**     | Manual curation of 80-100 attributes from reports   | 20 hours        | Schema complete           |
+| **Data Population - Phase 2**     | GS1 Navigator scraping script                       | 16 hours        | Phase 1 complete          |
+| **Data Population - Phase 3**     | Regulation-attribute mapping (manual + LLM)         | 24 hours        | Phase 2 complete          |
+| **Backend - Database Helpers**    | Write 8-10 helper functions in db.ts                | 8 hours         | Schema complete           |
+| **Backend - tRPC Procedures**     | Create gs1AttributesRouter with 5 procedures        | 6 hours         | Database helpers complete |
+| **Frontend - AttributeMapperTab** | Build regulation detail tab component               | 12 hours        | tRPC procedures complete  |
+| **Frontend - AttributeBrowser**   | Build standalone attribute browser page             | 8 hours         | tRPC procedures complete  |
+| **Testing - Unit Tests**          | Write 15-20 vitest tests for database helpers       | 6 hours         | Backend complete          |
+| **Testing - Integration Tests**   | Write 10-15 tRPC procedure tests                    | 4 hours         | Backend complete          |
+| **Testing - Manual QA**           | End-to-end testing, bug fixes                       | 8 hours         | Frontend complete         |
+| **Documentation**                 | Update README, write user guide                     | 4 hours         | All features complete     |
 
 **Total Estimated Effort:** 120 hours (3 weeks at 40 hours/week)
 
 ### 6.2 Team Allocation
 
 **Recommended Team:**
+
 - **1 Full-Stack Developer** (80 hours) - Backend + Frontend implementation
 - **1 Data Curator** (40 hours) - Manual attribute curation + mapping validation
 
 **Alternative (Solo Developer):**
+
 - **1 Full-Stack Developer** (120 hours) - All tasks
 
 ### 6.3 Timeline (3-Week Sprint)
 
 **Week 1: Database & Data Foundation**
+
 - Day 1-2: Database schema design, migration, testing (8 hours)
 - Day 3-5: Manual attribute curation from reports (20 hours)
 - Weekend: Buffer for data quality review
 
 **Week 2: Automation & Backend**
+
 - Day 1-2: GS1 Navigator scraping script (16 hours)
 - Day 3-4: LLM-assisted regulation-attribute mapping (24 hours)
 - Day 5: Database helpers + tRPC procedures (14 hours)
 
 **Week 3: Frontend & Testing**
+
 - Day 1-2: AttributeMapperTab component (12 hours)
 - Day 3: AttributeBrowser page (8 hours)
 - Day 4: Unit + integration tests (10 hours)
@@ -1577,15 +1701,19 @@ pnpm test server/gs1-attributes-router.test.ts
 ### 6.4 Risk Mitigation
 
 **Risk 1: Data Quality Issues**
+
 - **Mitigation:** Implement validation checks in import scripts, manual review of Phase 1 data before proceeding to Phase 2
 
 **Risk 2: GS1 Navigator API Changes**
+
 - **Mitigation:** Build scraper with error handling, fallback to manual curation if API unavailable
 
 **Risk 3: LLM Mapping Accuracy**
+
 - **Mitigation:** Mark LLM-generated mappings as "unverified", implement expert review workflow
 
 **Risk 4: Scope Creep**
+
 - **Mitigation:** Focus on MVP (80-100 attributes, 5-8 regulations), defer advanced features (user-contributed mappings, AI re-training)
 
 ---
@@ -1594,32 +1722,32 @@ pnpm test server/gs1-attributes-router.test.ts
 
 ### 7.1 Launch Metrics (Week 4)
 
-| Metric | Target | Measurement Method |
-|--------|--------|-------------------|
-| **Attributes Populated** | 300-500 | Database count query |
-| **Regulation Mappings** | 500-1,000 | Database count query |
-| **Test Coverage** | 90%+ | Vitest coverage report |
-| **Page Load Time** | <2 seconds | Lighthouse performance audit |
-| **Zero Critical Bugs** | 0 | Manual QA checklist |
+| Metric                   | Target     | Measurement Method           |
+| ------------------------ | ---------- | ---------------------------- |
+| **Attributes Populated** | 300-500    | Database count query         |
+| **Regulation Mappings**  | 500-1,000  | Database count query         |
+| **Test Coverage**        | 90%+       | Vitest coverage report       |
+| **Page Load Time**       | <2 seconds | Lighthouse performance audit |
+| **Zero Critical Bugs**   | 0          | Manual QA checklist          |
 
 ### 7.2 Post-Launch Metrics (Month 1)
 
-| Metric | Target | Measurement Method |
-|--------|--------|-------------------|
-| **Daily Active Users** | 50+ | Analytics (view count tracking) |
-| **Attribute Views** | 500+/week | Database analytics query |
-| **User Engagement** | 5+ minutes avg. session | Analytics |
-| **Documentation Link Clicks** | 100+/week | Click tracking |
-| **User Feedback** | 80%+ positive | Feedback form |
+| Metric                        | Target                  | Measurement Method              |
+| ----------------------------- | ----------------------- | ------------------------------- |
+| **Daily Active Users**        | 50+                     | Analytics (view count tracking) |
+| **Attribute Views**           | 500+/week               | Database analytics query        |
+| **User Engagement**           | 5+ minutes avg. session | Analytics                       |
+| **Documentation Link Clicks** | 100+/week               | Click tracking                  |
+| **User Feedback**             | 80%+ positive           | Feedback form                   |
 
 ### 7.3 Business Impact Metrics (Quarter 1)
 
-| Metric | Target | Measurement Method |
-|--------|--------|-------------------|
-| **B2B Leads Generated** | 20+ | Contact form submissions |
-| **Enterprise Trials** | 5+ | Paid subscription signups |
-| **Revenue** | €5,000+ MRR | Subscription billing |
-| **Market Positioning** | #1 for "GS1 ESG compliance" | SEO ranking |
+| Metric                  | Target                      | Measurement Method        |
+| ----------------------- | --------------------------- | ------------------------- |
+| **B2B Leads Generated** | 20+                         | Contact form submissions  |
+| **Enterprise Trials**   | 5+                          | Paid subscription signups |
+| **Revenue**             | €5,000+ MRR                 | Subscription billing      |
+| **Market Positioning**  | #1 for "GS1 ESG compliance" | SEO ranking               |
 
 ---
 
@@ -1630,6 +1758,7 @@ pnpm test server/gs1-attributes-router.test.ts
 **Feature:** Allow GS1 Netherlands members to suggest attribute mappings and vote on accuracy.
 
 **Implementation:**
+
 - Add `user_contributed_mappings` table
 - Build submission form with admin approval workflow
 - Implement upvote/downvote system (similar to ESRS mapping feedback)
@@ -1641,11 +1770,13 @@ pnpm test server/gs1-attributes-router.test.ts
 **Feature:** Generate implementation code snippets based on selected attributes.
 
 **Example:** User selects "EUDR compliance for coffee import" → System generates:
+
 - GDSN XML template with required fields
 - EDI DESADV message with RFF segments
 - JSON-LD DPP structure
 
 **Implementation:**
+
 - Template engine (Handlebars or similar)
 - Language selection (XML, JSON, Python, JavaScript)
 - Download as ZIP file
@@ -1657,11 +1788,13 @@ pnpm test server/gs1-attributes-router.test.ts
 **Feature:** Generate printable compliance checklists for auditors.
 
 **Example:** "PPWR Compliance Checklist for Packaging Manufacturers"
+
 - [ ] Populate packagingMaterialTypeCode (MANDATORY)
 - [ ] Populate packagingWeight (MANDATORY)
 - [ ] Populate packagingRecycledContent (RECOMMENDED)
 
 **Implementation:**
+
 - PDF generation library (jsPDF)
 - Customizable checklist templates
 - Export to Excel for project management

@@ -10,14 +10,17 @@ and this project adheres to semantic versioning principles.
 ## [Unreleased] - Phase 42 (In Progress)
 
 ### Added
+
 - STATUS.md as single source of truth for project status
 - CHANGELOG.md for partner-facing progress tracking
 - Documentation master index with status badges
 
 ### Changed
+
 - GS1_DATA_MODELS.md updated to reflect current 3-sector coverage
 
 ### Planned
+
 - GS1 Attribute Mapper v0.1 operationalization
 - ESRS IG3 datapoint ingestion
 - Cron reliability hardening + monitoring dashboard
@@ -27,12 +30,12 @@ and this project adheres to semantic versioning principles.
 ## [46f0e76a] - 2025-12-04 - Phase 41: Multi-Sector GS1 Expansion
 
 ### Added
+
 - **DIY/Garden/Pet Sector Integration**
   - 3,009 attributes from GS1 Benelux DHZTD 3.1.33 model
   - 93 packaging-related attributes
   - 128 sustainability-related attributes
   - 408 attribute-to-regulation mappings (PPWR, DPP, CSRD, ESRS, REACH)
-  
 - **Healthcare Sector Integration**
   - 186 attributes from GS1 Benelux ECHO 3133 model
   - Medical device identification and safety attributes
@@ -44,14 +47,17 @@ and this project adheres to semantic versioning principles.
   - Multi-sector integration tests (9/11 passed)
 
 ### Changed
+
 - Total GS1 Data Source coverage: 473 → 3,668 attributes (677% increase)
 - Total attribute-to-regulation mappings: 217 → 625 (188% increase)
 - GS1AttributesPanel component now supports all 3 sectors
 
 ### Fixed
+
 - None
 
 ### Known Issues
+
 - Healthcare sector has 0 mappings (MDR/IVDR regulations not in database)
 - DIY picklist format requires investigation (0 code lists parsed)
 
@@ -60,6 +66,7 @@ and this project adheres to semantic versioning principles.
 ## [88d3ed38] - 2025-12-04 - Phase 40: GS1 Data Model Integration
 
 ### Added
+
 - **GS1 Data Source Benelux (Food/H&B)**
   - 473 attributes from FMCG data model 31335
   - 282 code list enumerated values
@@ -93,10 +100,12 @@ and this project adheres to semantic versioning principles.
   - Data sources and maintenance info
 
 ### Changed
+
 - Regulation detail pages now show "GS1 Attributes" tab
 - tRPC router extended with 4 new procedures for GS1 attributes
 
 ### Fixed
+
 - None
 
 ---
@@ -104,6 +113,7 @@ and this project adheres to semantic versioning principles.
 ## [2e49bb2c] - 2025-12-04 - Phase 39: Automation Infrastructure
 
 ### Added
+
 - **Weekly EUR-Lex Auto-Ingestion**
   - CELLAR SPARQL connector for regulation discovery
   - Deduplication logic (checks celexId before insert)
@@ -125,10 +135,12 @@ and this project adheres to semantic versioning principles.
   - db-knowledge-vector.ts for fast semantic search
 
 ### Changed
+
 - Ask ISA query performance: 60s → 0.6s (100x faster)
 - Database schema: added `embedding` JSON columns to regulations and gs1_standards tables
 
 ### Fixed
+
 - None
 
 ---
@@ -136,6 +148,7 @@ and this project adheres to semantic versioning principles.
 ## Earlier Phases (Pre-Changelog)
 
 ### Phase 1-38: Foundation & Core Features
+
 - ESG Hub with 38 regulations (CSRD, ESRS, PPWR, DPP, EUDR, EU Taxonomy)
 - GS1 Standards Registry with 60 standards
 - Regulation detail pages with ESRS datapoints
@@ -174,17 +187,20 @@ and this project adheres to semantic versioning principles.
 ## Upcoming Releases
 
 ### Phase 42: Documentation & Feature Gap Closure
+
 - STATUS.md, GS1_DATA_MODELS.md, CHANGELOG.md
 - GS1 Attribute Mapper v0.1 operationalization
 - ESRS IG3 datapoint ingestion
 - Cron reliability hardening + monitoring dashboard
 
 ### Phase 43: DPP & Traceability
+
 - DPP JSON-LD profiles ingestion
 - EPCIS event templates (EUDR pilot)
 - PAC packaging dataset
 
 ### Phase 44: User Features & Healthcare
+
 - User auth + saved analyses
 - MDR/IVDR regulations
 - Compliance alerts + timeline awareness

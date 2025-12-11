@@ -40,6 +40,7 @@ The CELLAR Ingestion Scheduler is an automated system that synchronizes the ISA 
 ## Components
 
 ### 1. CELLAR Connector (`server/cellar-connector.ts`)
+
 - Connects to EU Publications Office SPARQL endpoint
 - Executes SPARQL queries for ESG regulations
 - Parses RDF/JSON responses into TypeScript types
@@ -50,6 +51,7 @@ The CELLAR Ingestion Scheduler is an automated system that synchronizes the ISA 
   - `testConnection()` - Verify endpoint availability
 
 ### 2. CELLAR Normalizer (`server/cellar-normalizer.ts`)
+
 - Transforms CELLAR data to ISA database schema
 - Maps CELEX IDs to regulation types (CSRD, ESRS, DPP, etc.)
 - Validates data integrity
@@ -57,6 +59,7 @@ The CELLAR Ingestion Scheduler is an automated system that synchronizes the ISA 
 - Merges with existing database records
 
 ### 3. Ingestion Scheduler (`server/cellar-ingestion-scheduler.mjs`)
+
 - Orchestrates the ingestion workflow
 - Runs as a cron job (daily at 3 AM)
 - Implements retry logic with exponential backoff
@@ -105,11 +108,11 @@ Edit `server/cellar-ingestion-scheduler.mjs`:
 
 ```javascript
 const INGESTION_CONFIG = {
-  yearsBack: 5,           // How many years back to search
-  maxRegulations: 500,    // Maximum regulations per run
-  maxRetries: 3,          // Retry attempts on failure
-  retryDelayMs: 5000,     // Delay between retries (ms)
-  verbose: true,          // Enable detailed logging
+  yearsBack: 5, // How many years back to search
+  maxRegulations: 500, // Maximum regulations per run
+  maxRetries: 3, // Retry attempts on failure
+  retryDelayMs: 5000, // Delay between retries (ms)
+  verbose: true, // Enable detailed logging
 };
 ```
 
@@ -249,11 +252,13 @@ grep "Regulation statistics" logs/cellar-ingestion.log | tail -1 | jq .
 ### Issue: Scheduler fails to connect to CELLAR
 
 **Symptoms:**
+
 ```json
-{"level":"error","message":"Failed to connect to CELLAR endpoint"}
+{ "level": "error", "message": "Failed to connect to CELLAR endpoint" }
 ```
 
 **Solutions:**
+
 1. Check internet connectivity
 2. Verify CELLAR endpoint is accessible: `curl https://publications.europa.eu/webapi/rdf/sparql`
 3. Check firewall rules
@@ -261,11 +266,13 @@ grep "Regulation statistics" logs/cellar-ingestion.log | tail -1 | jq .
 ### Issue: Database connection fails
 
 **Symptoms:**
+
 ```json
-{"level":"error","message":"Database connection failed"}
+{ "level": "error", "message": "Database connection failed" }
 ```
 
 **Solutions:**
+
 1. Verify `DATABASE_URL` environment variable
 2. Check database server is running
 3. Verify credentials and permissions
@@ -273,11 +280,13 @@ grep "Regulation statistics" logs/cellar-ingestion.log | tail -1 | jq .
 ### Issue: No regulations inserted/updated
 
 **Symptoms:**
+
 ```json
-{"inserted":0,"updated":0,"total":0}
+{ "inserted": 0, "updated": 0, "total": 0 }
 ```
 
 **Solutions:**
+
 1. Check if regulations already exist in database
 2. Verify SPARQL queries are returning results
 3. Check normalization filters (may be filtering out non-ESG acts)
@@ -286,11 +295,13 @@ grep "Regulation statistics" logs/cellar-ingestion.log | tail -1 | jq .
 ### Issue: High error rate
 
 **Symptoms:**
+
 ```json
-{"errors":25,"total":50}
+{ "errors": 25, "total": 50 }
 ```
 
 **Solutions:**
+
 1. Check database schema matches `InsertRegulation` type
 2. Verify validation logic in `cellar-normalizer.ts`
 3. Check for duplicate CELEX IDs in database
@@ -365,6 +376,7 @@ The CELLAR ingestion scheduler complements the existing RSS aggregator:
 ### Audit Trail
 
 All ingestion operations are logged with:
+
 - Timestamp
 - Operation type (insert/update)
 - Regulation CELEX ID
@@ -373,6 +385,7 @@ All ingestion operations are logged with:
 ## Support
 
 For issues or questions:
+
 1. Check logs: `logs/cellar-ingestion.log`
 2. Review this documentation
 3. Test manually: `node server/cellar-ingestion-scheduler.mjs`

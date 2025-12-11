@@ -1,27 +1,42 @@
 import React, { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, AlertCircle, Clock, FileUp, Plus, ChevronRight } from "lucide-react";
+import {
+  CheckCircle2,
+  AlertCircle,
+  Clock,
+  FileUp,
+  Plus,
+  ChevronRight,
+} from "lucide-react";
 
 export default function RiskRemediation() {
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
   const [selectedStepId, setSelectedStepId] = useState<number | null>(null);
 
   // Fetch user's remediation plans
-  const { data: plans, isLoading: plansLoading } = trpc.remediation.listPlans.useQuery({
-    limit: 20,
-    offset: 0,
-  });
+  const { data: plans, isLoading: plansLoading } =
+    trpc.remediation.listPlans.useQuery({
+      limit: 20,
+      offset: 0,
+    });
 
   // Fetch selected plan details
-  const { data: planDetails, isLoading: planLoading } = trpc.remediation.getPlan.useQuery(
-    { planId: selectedPlanId! },
-    { enabled: !!selectedPlanId }
-  );
+  const { data: planDetails, isLoading: planLoading } =
+    trpc.remediation.getPlan.useQuery(
+      { planId: selectedPlanId! },
+      { enabled: !!selectedPlanId }
+    );
 
   // Fetch evidence for selected step
   const { data: evidence } = trpc.remediation.getStepEvidence.useQuery(
@@ -99,7 +114,9 @@ export default function RiskRemediation() {
     <div className="container mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Risk Remediation</h1>
-        <p className="text-gray-600">Manage compliance risks with guided remediation workflows</p>
+        <p className="text-gray-600">
+          Manage compliance risks with guided remediation workflows
+        </p>
       </div>
 
       <Tabs defaultValue="plans" className="w-full">
@@ -117,12 +134,14 @@ export default function RiskRemediation() {
             <Card>
               <CardContent className="pt-6 text-center">
                 <p className="text-gray-600 mb-4">No remediation plans yet</p>
-                <p className="text-sm text-gray-500">Create a plan from the risk management dashboard</p>
+                <p className="text-sm text-gray-500">
+                  Create a plan from the risk management dashboard
+                </p>
               </CardContent>
             </Card>
           ) : (
             <div className="grid gap-4">
-              {plans.map((plan) => (
+              {plans.map(plan => (
                 <Card
                   key={plan.id}
                   className="cursor-pointer hover:shadow-lg transition-shadow"
@@ -133,11 +152,18 @@ export default function RiskRemediation() {
                       <div className="flex items-center gap-3">
                         {getStatusIcon(plan.status)}
                         <div>
-                          <CardTitle className="text-lg">{plan.title}</CardTitle>
-                          <CardDescription>Created {new Date(plan.createdAt).toLocaleDateString()}</CardDescription>
+                          <CardTitle className="text-lg">
+                            {plan.title}
+                          </CardTitle>
+                          <CardDescription>
+                            Created{" "}
+                            {new Date(plan.createdAt).toLocaleDateString()}
+                          </CardDescription>
                         </div>
                       </div>
-                      <Badge className={getStatusColor(plan.status)}>{plan.status}</Badge>
+                      <Badge className={getStatusColor(plan.status)}>
+                        {plan.status}
+                      </Badge>
                     </div>
                   </CardHeader>
                 </Card>
@@ -164,9 +190,13 @@ export default function RiskRemediation() {
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle>{planDetails.title}</CardTitle>
-                      <CardDescription>{planDetails.description}</CardDescription>
+                      <CardDescription>
+                        {planDetails.description}
+                      </CardDescription>
                     </div>
-                    <Badge className={getStatusColor(planDetails.status)}>{planDetails.status}</Badge>
+                    <Badge className={getStatusColor(planDetails.status)}>
+                      {planDetails.status}
+                    </Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -174,23 +204,33 @@ export default function RiskRemediation() {
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span>Progress</span>
-                        <span className="font-semibold">{planDetails.progress.progressPercentage}%</span>
+                        <span className="font-semibold">
+                          {planDetails.progress.progressPercentage}%
+                        </span>
                       </div>
-                      <Progress value={planDetails.progress.progressPercentage} className="h-2" />
+                      <Progress
+                        value={planDetails.progress.progressPercentage}
+                        className="h-2"
+                      />
                       <div className="grid grid-cols-3 gap-4 mt-4 text-sm">
                         <div>
                           <p className="text-gray-600">Steps Completed</p>
                           <p className="text-lg font-semibold">
-                            {planDetails.progress.completedSteps}/{planDetails.progress.totalSteps}
+                            {planDetails.progress.completedSteps}/
+                            {planDetails.progress.totalSteps}
                           </p>
                         </div>
                         <div>
                           <p className="text-gray-600">Evidence Submitted</p>
-                          <p className="text-lg font-semibold">{planDetails.progress.evidenceSubmitted}</p>
+                          <p className="text-lg font-semibold">
+                            {planDetails.progress.evidenceSubmitted}
+                          </p>
                         </div>
                         <div>
                           <p className="text-gray-600">Evidence Verified</p>
-                          <p className="text-lg font-semibold">{planDetails.progress.evidenceVerified}</p>
+                          <p className="text-lg font-semibold">
+                            {planDetails.progress.evidenceVerified}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -216,7 +256,9 @@ export default function RiskRemediation() {
                         </div>
                         <div className="flex-grow">
                           <h4 className="font-semibold">{step.title}</h4>
-                          <p className="text-sm text-gray-600">{step.description}</p>
+                          <p className="text-sm text-gray-600">
+                            {step.description}
+                          </p>
                           {step.dueDate && (
                             <p className="text-xs text-gray-500 mt-1">
                               Due: {new Date(step.dueDate).toLocaleDateString()}
@@ -225,7 +267,9 @@ export default function RiskRemediation() {
                         </div>
                         <div className="flex items-center gap-2">
                           {getStatusIcon(step.status)}
-                          <Badge className={getStatusColor(step.status)}>{step.status}</Badge>
+                          <Badge className={getStatusColor(step.status)}>
+                            {step.status}
+                          </Badge>
                         </div>
                       </div>
                     ))}
@@ -268,7 +312,9 @@ export default function RiskRemediation() {
                 <CardContent>
                   {!evidence || evidence.length === 0 ? (
                     <div className="text-center py-8">
-                      <p className="text-gray-600 mb-4">No evidence uploaded yet</p>
+                      <p className="text-gray-600 mb-4">
+                        No evidence uploaded yet
+                      </p>
                       <Button variant="outline">
                         <Plus className="w-4 h-4 mr-2" />
                         Upload Evidence
@@ -276,12 +322,19 @@ export default function RiskRemediation() {
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      {evidence.map((item) => (
-                        <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      {evidence.map(item => (
+                        <div
+                          key={item.id}
+                          className="flex items-center justify-between p-4 border rounded-lg"
+                        >
                           <div>
                             <h4 className="font-semibold">{item.title}</h4>
-                            <p className="text-sm text-gray-600">{item.evidenceType}</p>
-                            <p className="text-xs text-gray-500 mt-1">Uploaded by: {item.uploadedBy}</p>
+                            <p className="text-sm text-gray-600">
+                              {item.evidenceType}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Uploaded by: {item.uploadedBy}
+                            </p>
                           </div>
                           <Badge
                             className={

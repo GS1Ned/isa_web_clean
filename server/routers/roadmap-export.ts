@@ -25,7 +25,7 @@ export const roadmapExportRouter = router({
       }
 
       return {
-        filename: `roadmap-${roadmap.id}-${new Date().toISOString().split('T')[0]}.json`,
+        filename: `roadmap-${roadmap.id}-${new Date().toISOString().split("T")[0]}.json`,
         data: JSON.stringify(
           {
             title: roadmap.title,
@@ -38,7 +38,7 @@ export const roadmapExportRouter = router({
             status: roadmap.status,
             startDate: roadmap.startDate,
             targetCompletionDate: roadmap.targetCompletionDate,
-            actions: roadmap.actions.map((a) => ({
+            actions: roadmap.actions.map(a => ({
               sequenceNumber: a.sequenceNumber,
               title: a.title,
               description: a.description,
@@ -50,7 +50,7 @@ export const roadmapExportRouter = router({
               targetDate: a.targetDate,
               successCriteria: a.successCriteria,
             })),
-            milestones: roadmap.milestones.map((m) => ({
+            milestones: roadmap.milestones.map(m => ({
               title: m.title,
               description: m.description,
               targetDate: m.targetDate,
@@ -101,8 +101,8 @@ export const roadmapExportRouter = router({
         roadmap.estimatedEffort,
         roadmap.estimatedImpact,
         roadmap.status,
-        new Date(roadmap.startDate).toISOString().split('T')[0],
-        new Date(roadmap.targetCompletionDate).toISOString().split('T')[0],
+        new Date(roadmap.startDate).toISOString().split("T")[0],
+        new Date(roadmap.targetCompletionDate).toISOString().split("T")[0],
       ];
 
       // Create actions section
@@ -118,41 +118,46 @@ export const roadmapExportRouter = router({
         "Success Criteria",
       ];
 
-      const actionRows = roadmap.actions.map((a) => [
+      const actionRows = roadmap.actions.map(a => [
         a.sequenceNumber,
         a.title,
         a.actionType,
         a.priority,
         a.estimatedEffort,
         a.estimatedImpact,
-        new Date(a.startDate).toISOString().split('T')[0],
-        new Date(a.targetDate).toISOString().split('T')[0],
+        new Date(a.startDate).toISOString().split("T")[0],
+        new Date(a.targetDate).toISOString().split("T")[0],
         a.successCriteria || "",
       ]);
 
       // Create milestones section
-      const milestoneHeaders = ["Milestone #", "Title", "Target Date", "Target Score (%)"];
+      const milestoneHeaders = [
+        "Milestone #",
+        "Title",
+        "Target Date",
+        "Target Score (%)",
+      ];
       const milestoneRows = roadmap.milestones.map((m, idx) => [
         idx + 1,
         m.title,
-        new Date(m.targetDate).toISOString().split('T')[0],
+        new Date(m.targetDate).toISOString().split("T")[0],
         m.targetScore,
       ]);
 
       // Combine all sections
       const csv = [
         headers.join(","),
-        summaryRow.map((v) => `"${v}"`).join(","),
+        summaryRow.map(v => `"${v}"`).join(","),
         "",
         actionHeaders.join(","),
-        ...actionRows.map((row) => row.map((v) => `"${v}"`).join(",")),
+        ...actionRows.map(row => row.map(v => `"${v}"`).join(",")),
         "",
         milestoneHeaders.join(","),
-        ...milestoneRows.map((row) => row.map((v) => `"${v}"`).join(",")),
+        ...milestoneRows.map(row => row.map(v => `"${v}"`).join(",")),
       ].join("\n");
 
       return {
-        filename: `roadmap-${roadmap.id}-${new Date().toISOString().split('T')[0]}.csv`,
+        filename: `roadmap-${roadmap.id}-${new Date().toISOString().split("T")[0]}.csv`,
         data: csv,
       };
     }),
@@ -173,15 +178,29 @@ export const roadmapExportRouter = router({
         return null;
       }
 
-      const completedActions = roadmap.actions.filter((a) => a.status === "completed").length;
-      const inProgressActions = roadmap.actions.filter((a) => a.status === "in_progress").length;
-      const blockedActions = roadmap.actions.filter((a) => a.status === "blocked").length;
-      const pendingActions = roadmap.actions.length - completedActions - inProgressActions - blockedActions;
+      const completedActions = roadmap.actions.filter(
+        a => a.status === "completed"
+      ).length;
+      const inProgressActions = roadmap.actions.filter(
+        a => a.status === "in_progress"
+      ).length;
+      const blockedActions = roadmap.actions.filter(
+        a => a.status === "blocked"
+      ).length;
+      const pendingActions =
+        roadmap.actions.length -
+        completedActions -
+        inProgressActions -
+        blockedActions;
 
-      const completedMilestones = roadmap.milestones.filter((m) => m.status === "completed").length;
+      const completedMilestones = roadmap.milestones.filter(
+        m => m.status === "completed"
+      ).length;
 
       const scoreImprovement = roadmap.projectedScore - roadmap.currentScore;
-      const completionPercentage = Math.round((completedActions / roadmap.actions.length) * 100);
+      const completionPercentage = Math.round(
+        (completedActions / roadmap.actions.length) * 100
+      );
 
       return {
         title: roadmap.title,
@@ -190,7 +209,10 @@ export const roadmapExportRouter = router({
           currentScore: roadmap.currentScore,
           projectedScore: roadmap.projectedScore,
           scoreImprovement: scoreImprovement,
-          scoreImprovementPercent: ((scoreImprovement / roadmap.currentScore) * 100).toFixed(1),
+          scoreImprovementPercent: (
+            (scoreImprovement / roadmap.currentScore) *
+            100
+          ).toFixed(1),
         },
         timeline: {
           startDate: roadmap.startDate,
@@ -198,7 +220,8 @@ export const roadmapExportRouter = router({
           daysRemaining: Math.max(
             0,
             Math.floor(
-              (new Date(roadmap.targetCompletionDate).getTime() - new Date().getTime()) /
+              (new Date(roadmap.targetCompletionDate).getTime() -
+                new Date().getTime()) /
                 (24 * 60 * 60 * 1000)
             )
           ),
@@ -217,9 +240,11 @@ export const roadmapExportRouter = router({
           totalMilestones: roadmap.milestones.length,
         },
         topActions: roadmap.actions
-          .sort((a, b) => (b.estimatedImpact as any) - (a.estimatedImpact as any))
+          .sort(
+            (a, b) => (b.estimatedImpact as any) - (a.estimatedImpact as any)
+          )
           .slice(0, 5)
-          .map((a) => ({
+          .map(a => ({
             title: a.title,
             impact: a.estimatedImpact,
             priority: a.priority,
@@ -232,7 +257,10 @@ export const roadmapExportRouter = router({
 /**
  * Generate recommendations based on roadmap status
  */
-function generateRecommendations(roadmap: any, completionPercentage: number): string[] {
+function generateRecommendations(
+  roadmap: any,
+  completionPercentage: number
+): string[] {
   const recommendations = [];
 
   // Score-based recommendations
@@ -245,15 +273,23 @@ function generateRecommendations(roadmap: any, completionPercentage: number): st
 
   // Progress-based recommendations
   if (completionPercentage < 20) {
-    recommendations.push("Roadmap is just starting. Focus on quick wins to build momentum.");
+    recommendations.push(
+      "Roadmap is just starting. Focus on quick wins to build momentum."
+    );
   } else if (completionPercentage > 80) {
-    recommendations.push("Excellent progress! Focus on completing final actions and milestones.");
+    recommendations.push(
+      "Excellent progress! Focus on completing final actions and milestones."
+    );
   } else if (completionPercentage > 50) {
-    recommendations.push("Halfway there! Maintain current pace to stay on track.");
+    recommendations.push(
+      "Halfway there! Maintain current pace to stay on track."
+    );
   }
 
   // Blocked actions
-  const blockedActions = roadmap.actions.filter((a: any) => a.status === "blocked");
+  const blockedActions = roadmap.actions.filter(
+    (a: any) => a.status === "blocked"
+  );
   if (blockedActions.length > 0) {
     recommendations.push(
       `Address ${blockedActions.length} blocked action(s) to prevent delays.`
@@ -272,7 +308,9 @@ function generateRecommendations(roadmap: any, completionPercentage: number): st
   if (daysRemaining > 0 && actionsRemaining > 0) {
     const daysPerAction = daysRemaining / actionsRemaining;
     if (daysPerAction < 3) {
-      recommendations.push("Timeline is tight. Consider extending deadline or reducing scope.");
+      recommendations.push(
+        "Timeline is tight. Consider extending deadline or reducing scope."
+      );
     }
   }
 

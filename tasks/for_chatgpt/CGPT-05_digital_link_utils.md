@@ -42,7 +42,10 @@ Implement **two pure TypeScript functions**:
 
 ```typescript
 // In server/routers/dpp.ts
-import { buildDigitalLinkURI, validateDigitalLinkURI } from "../utils/digital-link";
+import {
+  buildDigitalLinkURI,
+  validateDigitalLinkURI,
+} from "../utils/digital-link";
 
 const generateDPP = protectedProcedure
   .input(z.object({ gtin: z.string(), batch: z.string().optional() }))
@@ -52,7 +55,7 @@ const generateDPP = protectedProcedure
       gtin: input.gtin,
       qualifiers: input.batch ? { batch: input.batch } : undefined,
     });
-    
+
     // Generate QR code with this URI
     return { dppUri: uri };
   });
@@ -80,11 +83,11 @@ const generateDPP = protectedProcedure
 ```typescript
 /**
  * Builds a GS1 Digital Link URI from product identifiers
- * 
+ *
  * @param params - Digital Link parameters
  * @returns Valid GS1 Digital Link URI
  * @throws Error if parameters are invalid
- * 
+ *
  * @example
  * const uri = buildDigitalLinkURI({
  *   domain: "id.gs1.org",
@@ -98,10 +101,10 @@ export function buildDigitalLinkURI(params: DigitalLinkParams): string;
 
 /**
  * Validates a GS1 Digital Link URI
- * 
+ *
  * @param uri - URI to validate
  * @returns Validation result with parsed components or error details
- * 
+ *
  * @example
  * const result = validateDigitalLinkURI("https://id.gs1.org/01/09506000134352");
  * if (result.valid) {
@@ -119,10 +122,10 @@ export interface DigitalLinkParams {
   gtin: string;
   /** Optional qualifiers (batch, serial, expiry, etc.) */
   qualifiers?: {
-    batch?: string;        // AI 10
-    serial?: string;       // AI 21
-    expiry?: string;       // AI 17 (YYMMDD format)
-    lotNumber?: string;    // AI 10 (alias for batch)
+    batch?: string; // AI 10
+    serial?: string; // AI 21
+    expiry?: string; // AI 17 (YYMMDD format)
+    lotNumber?: string; // AI 10 (alias for batch)
   };
   /** Optional link type (URL to resource type) */
   linkType?: string;
@@ -229,17 +232,17 @@ export const GS1_AI_CODES = {
 function validateGTINCheckDigit(gtin: string): boolean {
   // Pad to 14 digits (GTIN-14 format)
   const paddedGTIN = gtin.padStart(14, "0");
-  
+
   // Calculate check digit
   let sum = 0;
   for (let i = 0; i < 13; i++) {
     const digit = parseInt(paddedGTIN[i]);
     sum += digit * (i % 2 === 0 ? 3 : 1);
   }
-  
+
   const checkDigit = (10 - (sum % 10)) % 10;
   const providedCheckDigit = parseInt(paddedGTIN[13]);
-  
+
   return checkDigit === providedCheckDigit;
 }
 ```
@@ -284,7 +287,9 @@ const uri = buildDigitalLinkURI({
 **Example 4: Validation - Valid URI**
 
 ```typescript
-const result = validateDigitalLinkURI("https://id.gs1.org/01/09506000134352/10/ABC123");
+const result = validateDigitalLinkURI(
+  "https://id.gs1.org/01/09506000134352/10/ABC123"
+);
 // Returns:
 // {
 //   valid: true,
@@ -338,10 +343,12 @@ const result = validateDigitalLinkURI("https://id.gs1.org/01/12345");
 ### What Manus Guarantees
 
 **No External Dependencies:**
+
 - Use only built-in TypeScript/Node.js features
 - No npm packages required
 
 **Stable Interfaces:**
+
 - Function signatures won't change during implementation
 
 ### What You Must NOT Change

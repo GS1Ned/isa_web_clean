@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -65,7 +71,9 @@ export default function SupplyChainDashboard() {
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center max-w-md">
           <AlertTriangle className="w-12 h-12 mx-auto mb-4 text-amber-600" />
-          <h2 className="text-2xl font-bold text-foreground mb-2">Login Required</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-2">
+            Login Required
+          </h2>
           <p className="text-muted-foreground">
             Please log in to access the supply chain dashboard.
           </p>
@@ -104,7 +112,8 @@ export default function SupplyChainDashboard() {
             Supply Chain Dashboard
           </h1>
           <p className="text-muted-foreground">
-            Monitor EPCIS events, track compliance risks, and visualize supply chain networks
+            Monitor EPCIS events, track compliance risks, and visualize supply
+            chain networks
           </p>
         </div>
 
@@ -117,8 +126,12 @@ export default function SupplyChainDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{analytics?.totalEvents || 0}</div>
-              <p className="text-xs text-muted-foreground mt-1">EPCIS events tracked</p>
+              <div className="text-3xl font-bold">
+                {analytics?.totalEvents || 0}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                EPCIS events tracked
+              </p>
             </CardContent>
           </Card>
 
@@ -129,8 +142,12 @@ export default function SupplyChainDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{analytics?.totalNodes || 0}</div>
-              <p className="text-xs text-muted-foreground mt-1">Organizations tracked</p>
+              <div className="text-3xl font-bold">
+                {analytics?.totalNodes || 0}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Organizations tracked
+              </p>
             </CardContent>
           </Card>
 
@@ -144,7 +161,9 @@ export default function SupplyChainDashboard() {
               <div className="text-3xl font-bold text-green-600">
                 {Math.round(analytics?.complianceScore || 0)}%
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Supply chain health</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Supply chain health
+              </p>
             </CardContent>
           </Card>
 
@@ -155,10 +174,14 @@ export default function SupplyChainDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className={`text-3xl font-bold ${(analytics?.highRiskNodes || 0) > 0 ? "text-red-600" : "text-green-600"}`}>
+              <div
+                className={`text-3xl font-bold ${(analytics?.highRiskNodes || 0) > 0 ? "text-red-600" : "text-green-600"}`}
+              >
                 {analytics?.highRiskNodes || 0}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Require attention</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Require attention
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -203,7 +226,9 @@ export default function SupplyChainDashboard() {
                       <Upload className="w-12 h-12 text-muted-foreground" />
                       <div>
                         <p className="font-semibold">
-                          {selectedFile ? selectedFile.name : "Click to select file"}
+                          {selectedFile
+                            ? selectedFile.name
+                            : "Click to select file"}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {selectedFile
@@ -253,18 +278,22 @@ export default function SupplyChainDashboard() {
                 <CardContent className="flex items-center justify-center h-64">
                   <div className="text-center text-muted-foreground">
                     <FileUp className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>No batch jobs yet. Upload an EPCIS file to get started.</p>
+                    <p>
+                      No batch jobs yet. Upload an EPCIS file to get started.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
             ) : (
               <div className="space-y-4">
-                {batches.map((batch) => (
+                {batches.map(batch => (
                   <Card key={batch.id}>
                     <CardHeader>
                       <div className="flex items-start justify-between">
                         <div>
-                          <CardTitle className="text-base">{batch.fileName}</CardTitle>
+                          <CardTitle className="text-base">
+                            {batch.fileName}
+                          </CardTitle>
                           <CardDescription>
                             {new Date(batch.createdAt).toLocaleString()}
                           </CardDescription>
@@ -274,8 +303,8 @@ export default function SupplyChainDashboard() {
                             batch.status === "completed"
                               ? "default"
                               : batch.status === "failed"
-                              ? "destructive"
-                              : "secondary"
+                                ? "destructive"
+                                : "secondary"
                           }
                         >
                           {batch.status}
@@ -285,7 +314,9 @@ export default function SupplyChainDashboard() {
                     <CardContent className="space-y-4">
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Progress</span>
+                          <span className="text-muted-foreground">
+                            Progress
+                          </span>
                           <span className="font-medium">{batch.progress}%</span>
                         </div>
                         <Progress value={batch.progress} />
@@ -353,7 +384,11 @@ export default function SupplyChainDashboard() {
                     <Alert variant="destructive">
                       <AlertTriangle className="h-4 w-4" />
                       <AlertDescription>
-                        <strong>{analytics?.highRiskNodes} high-risk nodes</strong> detected in your supply chain. Review and remediate immediately.
+                        <strong>
+                          {analytics?.highRiskNodes} high-risk nodes
+                        </strong>{" "}
+                        detected in your supply chain. Review and remediate
+                        immediately.
                       </AlertDescription>
                     </Alert>
                   )}
@@ -362,7 +397,8 @@ export default function SupplyChainDashboard() {
                     <Alert>
                       <AlertCircle className="h-4 w-4" />
                       <AlertDescription>
-                        Compliance score below 70%. Prioritize addressing identified risks to improve supply chain resilience.
+                        Compliance score below 70%. Prioritize addressing
+                        identified risks to improve supply chain resilience.
                       </AlertDescription>
                     </Alert>
                   )}
@@ -371,19 +407,22 @@ export default function SupplyChainDashboard() {
                     <Alert>
                       <AlertCircle className="h-4 w-4" />
                       <AlertDescription>
-                        Traceability gaps detected. Ensure all events include EPC identifiers for full EUDR compliance.
+                        Traceability gaps detected. Ensure all events include
+                        EPC identifiers for full EUDR compliance.
                       </AlertDescription>
                     </Alert>
                   )}
 
-                  {(analytics?.complianceScore || 0) >= 80 && (analytics?.highRiskNodes || 0) === 0 && (
-                    <Alert>
-                      <CheckCircle2 className="h-4 w-4 text-green-600" />
-                      <AlertDescription className="text-green-600">
-                        Your supply chain is in good compliance standing. Continue monitoring for new risks.
-                      </AlertDescription>
-                    </Alert>
-                  )}
+                  {(analytics?.complianceScore || 0) >= 80 &&
+                    (analytics?.highRiskNodes || 0) === 0 && (
+                      <Alert>
+                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <AlertDescription className="text-green-600">
+                          Your supply chain is in good compliance standing.
+                          Continue monitoring for new risks.
+                        </AlertDescription>
+                      </Alert>
+                    )}
                 </div>
 
                 {/* Network Stats */}

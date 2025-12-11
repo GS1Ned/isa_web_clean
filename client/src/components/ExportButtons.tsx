@@ -21,7 +21,7 @@ export function ExportButtons({
 
   // PDF export mutation
   const pdfExport = trpc.export.regulationToPDF.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       if (data.success && data.buffer) {
         // Convert base64 to blob and download
         const binaryString = atob(data.buffer);
@@ -43,7 +43,7 @@ export function ExportButtons({
       }
       setIsExporting(false);
     },
-    onError: (error) => {
+    onError: error => {
       console.error("[Export] Failed to export PDF:", error);
       setIsExporting(false);
     },
@@ -51,7 +51,7 @@ export function ExportButtons({
 
   // CSV export mutation
   const csvExport = trpc.export.regulationToCSV.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       if (data.success && data.content) {
         // Create blob and download
         const blob = new Blob([data.content], { type: "text/csv" });
@@ -68,7 +68,7 @@ export function ExportButtons({
       }
       setIsExporting(false);
     },
-    onError: (error) => {
+    onError: error => {
       console.error("[Export] Failed to export CSV:", error);
       setIsExporting(false);
     },
@@ -125,7 +125,7 @@ export function BulkExportButtons({
   const [isExporting, setIsExporting] = useState(false);
 
   const csvExport = trpc.export.regulationsListToCSV.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       if (data.success && data.content) {
         const blob = new Blob([data.content], { type: "text/csv" });
         const url = window.URL.createObjectURL(blob);
@@ -137,11 +137,13 @@ export function BulkExportButtons({
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
 
-        console.log(`[Export] ${regulationIds.length} regulations exported as CSV`);
+        console.log(
+          `[Export] ${regulationIds.length} regulations exported as CSV`
+        );
       }
       setIsExporting(false);
     },
-    onError: (error) => {
+    onError: error => {
       console.error("[Export] Failed to export regulations:", error);
       setIsExporting(false);
     },
@@ -162,11 +164,18 @@ export function BulkExportButtons({
       variant="outline"
       size="sm"
       onClick={handleBulkExport}
-      disabled={disabled || isExporting || csvExport.isPending || regulationIds.length === 0}
+      disabled={
+        disabled ||
+        isExporting ||
+        csvExport.isPending ||
+        regulationIds.length === 0
+      }
       className="gap-2"
     >
       <Download className="h-4 w-4" />
-      {csvExport.isPending ? "Exporting..." : `Export ${regulationIds.length} Regulations`}
+      {csvExport.isPending
+        ? "Exporting..."
+        : `Export ${regulationIds.length} Regulations`}
     </Button>
   );
 }

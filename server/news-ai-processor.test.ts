@@ -38,7 +38,9 @@ describe("News AI Processor - GS1 Enhancement", () => {
     expect(result.regulationTags).toContain("CSRD");
     expect(result.regulationTags).toContain("ESRS");
     expect(result.impactLevel).toMatch(/^(LOW|MEDIUM|HIGH)$/);
-    expect(result.newsType).toMatch(/^(NEW_LAW|AMENDMENT|ENFORCEMENT|COURT_DECISION|GUIDANCE|PROPOSAL)$/);
+    expect(result.newsType).toMatch(
+      /^(NEW_LAW|AMENDMENT|ENFORCEMENT|COURT_DECISION|GUIDANCE|PROPOSAL)$/
+    );
 
     // GS1-specific fields
     expect(result.gs1ImpactTags).toBeInstanceOf(Array);
@@ -81,8 +83,16 @@ describe("News AI Processor - GS1 Enhancement", () => {
     const result = await processNewsItem(mockItem);
 
     expect(result.gs1ImpactTags).toContain("DPP");
-    expect(result.gs1ImpactAnalysis).toMatch(/digital link|qr code|2d barcode/i);
-    expect(result.suggestedActions.some(action => action.toLowerCase().includes("digital link") || action.toLowerCase().includes("qr"))).toBe(true);
+    expect(result.gs1ImpactAnalysis).toMatch(
+      /digital link|qr code|2d barcode/i
+    );
+    expect(
+      result.suggestedActions.some(
+        action =>
+          action.toLowerCase().includes("digital link") ||
+          action.toLowerCase().includes("qr")
+      )
+    ).toBe(true);
 
     console.log("✅ Processed DPP news:", {
       gs1ImpactTags: result.gs1ImpactTags,
@@ -120,7 +130,8 @@ describe("News AI Processor - GS1 Enhancement", () => {
 
 describe("GS1 Impact Tag Inference", () => {
   it("should infer DPP and TRACEABILITY tags from DPP content", () => {
-    const text = "Digital Product Passport requirements include QR codes, traceability data, and supply chain transparency using EPCIS events.";
+    const text =
+      "Digital Product Passport requirements include QR codes, traceability data, and supply chain transparency using EPCIS events.";
     const tags = inferGS1ImpactTags(text, 3);
 
     expect(tags).toContain("DPP");
@@ -128,14 +139,16 @@ describe("GS1 Impact Tag Inference", () => {
   });
 
   it("should infer PACKAGING_ATTRIBUTES from PPWR content", () => {
-    const text = "Packaging and Packaging Waste Regulation (PPWR) requires recyclability data and material composition information in GDSN.";
+    const text =
+      "Packaging and Packaging Waste Regulation (PPWR) requires recyclability data and material composition information in GDSN.";
     const tags = inferGS1ImpactTags(text, 3);
 
     expect(tags).toContain("PACKAGING_ATTRIBUTES");
   });
 
   it("should infer ESG_REPORTING from CSRD content", () => {
-    const text = "CSRD and ESRS require companies to report sustainability data including carbon emissions and ESG metrics.";
+    const text =
+      "CSRD and ESRS require companies to report sustainability data including carbon emissions and ESG metrics.";
     const tags = inferGS1ImpactTags(text, 3);
 
     expect(tags).toContain("ESG_REPORTING");
@@ -144,21 +157,24 @@ describe("GS1 Impact Tag Inference", () => {
 
 describe("Sector Tag Inference", () => {
   it("should infer RETAIL sector from retail keywords", () => {
-    const text = "New regulations affect supermarkets, retail stores, and e-commerce platforms selling consumer goods.";
+    const text =
+      "New regulations affect supermarkets, retail stores, and e-commerce platforms selling consumer goods.";
     const tags = inferSectorTags(text, 3);
 
     expect(tags).toContain("RETAIL");
   });
 
   it("should infer HEALTHCARE sector from medical keywords", () => {
-    const text = "Hospitals and pharmaceutical companies must comply with new medical device traceability requirements.";
+    const text =
+      "Hospitals and pharmaceutical companies must comply with new medical device traceability requirements.";
     const tags = inferSectorTags(text, 3);
 
     expect(tags).toContain("HEALTHCARE");
   });
 
   it("should infer FOOD sector from food keywords", () => {
-    const text = "Food safety regulations require farm-to-fork traceability for all food and beverage products.";
+    const text =
+      "Food safety regulations require farm-to-fork traceability for all food and beverage products.";
     const tags = inferSectorTags(text, 3);
 
     expect(tags).toContain("FOOD");

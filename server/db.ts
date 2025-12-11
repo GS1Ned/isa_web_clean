@@ -1,7 +1,20 @@
 import { eq, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, regulations, gs1Standards, regulationStandardMappings, userAnalyses, regulatoryChangeAlerts, userPreferences, InsertContact, contacts, hubNews, userAlerts } from "../drizzle/schema";
-import { ENV } from './_core/env';
+import {
+  InsertUser,
+  users,
+  regulations,
+  gs1Standards,
+  regulationStandardMappings,
+  userAnalyses,
+  regulatoryChangeAlerts,
+  userPreferences,
+  InsertContact,
+  contacts,
+  hubNews,
+  userAlerts,
+} from "../drizzle/schema";
+import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -56,8 +69,8 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       values.role = user.role;
       updateSet.role = user.role;
     } else if (user.openId === ENV.ownerOpenId) {
-      values.role = 'admin';
-      updateSet.role = 'admin';
+      values.role = "admin";
+      updateSet.role = "admin";
     }
 
     if (!values.lastSignedIn) {
@@ -84,7 +97,11 @@ export async function getUserByOpenId(openId: string) {
     return undefined;
   }
 
-  const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.openId, openId))
+    .limit(1);
 
   return result.length > 0 ? result[0] : undefined;
 }
@@ -102,9 +119,15 @@ export async function getRegulations(type?: string) {
 
   try {
     if (type) {
-      return await db.select().from(regulations).where(eq(regulations.regulationType, type as any));
+      return await db
+        .select()
+        .from(regulations)
+        .where(eq(regulations.regulationType, type as any));
     }
-    return await db.select().from(regulations).orderBy(desc(regulations.createdAt));
+    return await db
+      .select()
+      .from(regulations)
+      .orderBy(desc(regulations.createdAt));
   } catch (error) {
     console.error("[Database] Failed to get regulations:", error);
     return [];
@@ -179,7 +202,11 @@ export async function getRegulationWithStandards(regulationId: number) {
   if (!db) return null;
 
   try {
-    const regulation = await db.select().from(regulations).where(eq(regulations.id, regulationId)).limit(1);
+    const regulation = await db
+      .select()
+      .from(regulations)
+      .where(eq(regulations.id, regulationId))
+      .limit(1);
     if (!regulation.length) return null;
 
     const mappings = await db
@@ -188,11 +215,14 @@ export async function getRegulationWithStandards(regulationId: number) {
       .where(eq(regulationStandardMappings.regulationId, regulationId));
 
     const standardIds = mappings.map(m => m.standardId);
-    const standards: typeof gs1Standards.$inferSelect[] = [];
+    const standards: (typeof gs1Standards.$inferSelect)[] = [];
     if (standardIds.length > 0) {
       // Fetch all standards by their IDs
       for (const standardId of standardIds) {
-        const result = await db.select().from(gs1Standards).where(eq(gs1Standards.id, standardId));
+        const result = await db
+          .select()
+          .from(gs1Standards)
+          .where(eq(gs1Standards.id, standardId));
         if (result.length > 0) {
           standards.push(result[0]);
         }
@@ -202,11 +232,9 @@ export async function getRegulationWithStandards(regulationId: number) {
     const result = {
       regulation: regulation[0],
       mappings,
-      standards
+      standards,
     };
-    
 
-    
     return result;
   } catch (error) {
     console.error("[Database] Failed to get regulation with standards:", error);
@@ -222,7 +250,10 @@ export async function getGS1Standards() {
   if (!db) return [];
 
   try {
-    return await db.select().from(gs1Standards).orderBy(gs1Standards.standardCode);
+    return await db
+      .select()
+      .from(gs1Standards)
+      .orderBy(gs1Standards.standardCode);
   } catch (error) {
     console.error("[Database] Failed to get GS1 standards:", error);
     return [];
@@ -251,7 +282,10 @@ export async function getRecentRegulatoryChanges(limit: number = 10) {
 /**
  * Get user's analysis history
  */
-export async function getUserAnalysisHistory(userId: number, limit: number = 20) {
+export async function getUserAnalysisHistory(
+  userId: number,
+  limit: number = 20
+) {
   const db = await getDb();
   if (!db) return [];
 
@@ -412,17 +446,27 @@ export async function getDashboardStats() {
   }
 }
 
-
 /**
  * Create a new hub news item
  */
 export async function createHubNews(news: {
   title: string;
   content: string;
-  newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
+  newsType:
+    | "NEW_LAW"
+    | "AMENDMENT"
+    | "ENFORCEMENT"
+    | "COURT_DECISION"
+    | "GUIDANCE"
+    | "PROPOSAL";
   sourceUrl?: string;
   sourceTitle?: string;
-  sourceType?: "EU_OFFICIAL" | "GS1_OFFICIAL" | "DUTCH_NATIONAL" | "INDUSTRY" | "MEDIA";
+  sourceType?:
+    | "EU_OFFICIAL"
+    | "GS1_OFFICIAL"
+    | "DUTCH_NATIONAL"
+    | "INDUSTRY"
+    | "MEDIA";
   relatedRegulationIds?: number[];
   regulationTags?: string[];
   impactLevel?: "LOW" | "MEDIUM" | "HIGH";
@@ -431,7 +475,7 @@ export async function createHubNews(news: {
   retrievedAt?: Date;
   isAutomated?: boolean;
   summary?: string;
-  
+
   // GS1-specific fields
   gs1ImpactTags?: string[];
   sectorTags?: string[];
@@ -454,7 +498,9 @@ export async function createHubNews(news: {
       sourceUrl: news.sourceUrl,
       sourceTitle: news.sourceTitle,
       sourceType: news.sourceType,
-      relatedRegulationIds: news.relatedRegulationIds ? JSON.stringify(news.relatedRegulationIds) : null,
+      relatedRegulationIds: news.relatedRegulationIds
+        ? JSON.stringify(news.relatedRegulationIds)
+        : null,
       regulationTags: news.regulationTags || null,
       impactLevel: news.impactLevel,
       credibilityScore: news.credibilityScore,
@@ -462,7 +508,7 @@ export async function createHubNews(news: {
       retrievedAt: news.retrievedAt || new Date(),
       isAutomated: news.isAutomated ?? false,
       summary: news.summary,
-      
+
       // GS1-specific fields
       gs1ImpactTags: news.gs1ImpactTags || null,
       sectorTags: news.sectorTags || null,
@@ -507,7 +553,11 @@ export async function getRecentHubNews(limit: number = 20) {
 export async function createUserAlert(alert: {
   userId: number;
   regulationId?: number;
-  alertType: "REGULATION_UPDATE" | "DEADLINE_APPROACHING" | "NEW_REGULATION" | "ENFORCEMENT_ACTION";
+  alertType:
+    | "REGULATION_UPDATE"
+    | "DEADLINE_APPROACHING"
+    | "NEW_REGULATION"
+    | "ENFORCEMENT_ACTION";
   isActive?: boolean;
   daysBeforeDeadline?: number;
 }) {
@@ -543,7 +593,10 @@ export async function getUserAlerts(userId: number) {
   }
 
   try {
-    return await db.select().from(userAlerts).where(eq(userAlerts.userId, userId));
+    return await db
+      .select()
+      .from(userAlerts)
+      .where(eq(userAlerts.userId, userId));
   } catch (error) {
     console.error("[Database] Failed to get user alerts:", error);
     return [];
@@ -556,7 +609,9 @@ export async function getUserAlerts(userId: number) {
 export async function getUsersWithActiveAlerts() {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot get users with alerts: database not available");
+    console.warn(
+      "[Database] Cannot get users with alerts: database not available"
+    );
     return [];
   }
 
@@ -571,19 +626,22 @@ export async function getUsersWithActiveAlerts() {
   }
 }
 
-
 /**
  * Get ESRS datapoint mappings for a regulation
  */
 export async function getRegulationEsrsMappings(regulationId: number) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot get regulation ESRS mappings: database not available");
+    console.warn(
+      "[Database] Cannot get regulation ESRS mappings: database not available"
+    );
     return [];
   }
 
   try {
-    const { regulationEsrsMappings, esrsDatapoints } = await import("../drizzle/schema");
+    const { regulationEsrsMappings, esrsDatapoints } = await import(
+      "../drizzle/schema"
+    );
     const { eq } = await import("drizzle-orm");
 
     return await db
@@ -606,7 +664,10 @@ export async function getRegulationEsrsMappings(regulationId: number) {
         },
       })
       .from(regulationEsrsMappings)
-      .leftJoin(esrsDatapoints, eq(regulationEsrsMappings.datapointId, esrsDatapoints.id))
+      .leftJoin(
+        esrsDatapoints,
+        eq(regulationEsrsMappings.datapointId, esrsDatapoints.id)
+      )
       .where(eq(regulationEsrsMappings.regulationId, regulationId))
       .orderBy(regulationEsrsMappings.relevanceScore);
   } catch (error) {
@@ -626,7 +687,9 @@ export async function upsertRegulationEsrsMapping(mapping: {
 }) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot upsert regulation ESRS mapping: database not available");
+    console.warn(
+      "[Database] Cannot upsert regulation ESRS mapping: database not available"
+    );
     return null;
   }
 
@@ -668,7 +731,10 @@ export async function upsertRegulationEsrsMapping(mapping: {
       return { id: Number((result as any).insertId), ...mapping };
     }
   } catch (error) {
-    console.error("[Database] Failed to upsert regulation ESRS mapping:", error);
+    console.error(
+      "[Database] Failed to upsert regulation ESRS mapping:",
+      error
+    );
     return null;
   }
 }
@@ -679,7 +745,9 @@ export async function upsertRegulationEsrsMapping(mapping: {
 export async function deleteRegulationEsrsMappings(regulationId: number) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot delete regulation ESRS mappings: database not available");
+    console.warn(
+      "[Database] Cannot delete regulation ESRS mappings: database not available"
+    );
     return false;
   }
 
@@ -692,11 +760,13 @@ export async function deleteRegulationEsrsMappings(regulationId: number) {
       .where(eq(regulationEsrsMappings.regulationId, regulationId));
     return true;
   } catch (error) {
-    console.error("[Database] Failed to delete regulation ESRS mappings:", error);
+    console.error(
+      "[Database] Failed to delete regulation ESRS mappings:",
+      error
+    );
     return false;
   }
 }
-
 
 /**
  * Submit or update user feedback on an ESRS mapping
@@ -708,7 +778,9 @@ export async function submitMappingFeedback(params: {
 }) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot submit mapping feedback: database not available");
+    console.warn(
+      "[Database] Cannot submit mapping feedback: database not available"
+    );
     return null;
   }
 
@@ -749,7 +821,10 @@ export async function submitMappingFeedback(params: {
 /**
  * Get user's feedback for a specific mapping
  */
-export async function getUserMappingFeedback(userId: number, mappingId: number) {
+export async function getUserMappingFeedback(
+  userId: number,
+  mappingId: number
+) {
   const db = await getDb();
   if (!db) return null;
 
@@ -836,7 +911,7 @@ export async function getBatchMappingFeedbackStats(mappingIds: number[]) {
       { totalVotes: number; positiveVotes: number; positivePercentage: number }
     > = {};
 
-    stats.forEach((stat) => {
+    stats.forEach(stat => {
       const totalVotes = Number(stat.totalVotes);
       const positiveVotes = Number(stat.positiveVotes);
       const positivePercentage =
@@ -850,11 +925,13 @@ export async function getBatchMappingFeedbackStats(mappingIds: number[]) {
 
     return statsMap;
   } catch (error) {
-    console.error("[Database] Failed to get batch mapping feedback stats:", error);
+    console.error(
+      "[Database] Failed to get batch mapping feedback stats:",
+      error
+    );
     return {};
   }
 }
-
 
 /**
  * Get low-scored ESRS mappings (< 50% approval)
@@ -864,7 +941,8 @@ export async function getLowScoredMappings(minVotes: number = 3) {
   if (!db) return [];
 
   try {
-    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } = await import("../drizzle/schema");
+    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } =
+      await import("../drizzle/schema");
     const { count, sql, desc, gte } = await import("drizzle-orm");
 
     const lowScored = await db
@@ -880,15 +958,21 @@ export async function getLowScoredMappings(minVotes: number = 3) {
         positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
       })
       .from(regulationEsrsMappings)
-      .innerJoin(esrsDatapoints, sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`)
-      .leftJoin(mappingFeedback, sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`)
+      .innerJoin(
+        esrsDatapoints,
+        sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`
+      )
+      .leftJoin(
+        mappingFeedback,
+        sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`
+      )
       .groupBy(regulationEsrsMappings.id)
       .having(
         sql`COUNT(${mappingFeedback.id}) >= ${minVotes} AND (SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END) / COUNT(${mappingFeedback.id})) < 0.5`
       )
       .orderBy(desc(sql`COUNT(${mappingFeedback.id})`));
 
-    return lowScored.map((m) => ({
+    return lowScored.map(m => ({
       mappingId: m.mappingId,
       regulationId: m.regulationId,
       datapointId: m.datapointId,
@@ -898,7 +982,12 @@ export async function getLowScoredMappings(minVotes: number = 3) {
       reasoning: m.reasoning,
       totalVotes: Number(m.totalVotes),
       positiveVotes: Number(m.positiveVotes || 0),
-      approvalPercentage: Number(m.totalVotes) > 0 ? Math.round((Number(m.positiveVotes || 0) / Number(m.totalVotes)) * 100) : 0,
+      approvalPercentage:
+        Number(m.totalVotes) > 0
+          ? Math.round(
+              (Number(m.positiveVotes || 0) / Number(m.totalVotes)) * 100
+            )
+          : 0,
     }));
   } catch (error) {
     console.error("[Database] Failed to get low-scored mappings:", error);
@@ -914,7 +1003,8 @@ export async function getVoteDistributionByStandard() {
   if (!db) return [];
 
   try {
-    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } = await import("../drizzle/schema");
+    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } =
+      await import("../drizzle/schema");
     const { count, sql } = await import("drizzle-orm");
 
     const distribution = await db
@@ -925,19 +1015,33 @@ export async function getVoteDistributionByStandard() {
         positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
       })
       .from(regulationEsrsMappings)
-      .innerJoin(esrsDatapoints, sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`)
-      .leftJoin(mappingFeedback, sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`)
+      .innerJoin(
+        esrsDatapoints,
+        sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`
+      )
+      .leftJoin(
+        mappingFeedback,
+        sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`
+      )
       .groupBy(esrsDatapoints.esrsStandard);
 
-    return distribution.map((d) => ({
+    return distribution.map(d => ({
       esrsStandard: d.esrsStandard,
       totalMappings: Number(d.totalMappings),
       totalVotes: Number(d.totalVotes),
       positiveVotes: Number(d.positiveVotes || 0),
-      approvalPercentage: Number(d.totalVotes) > 0 ? Math.round((Number(d.positiveVotes || 0) / Number(d.totalVotes)) * 100) : 0,
+      approvalPercentage:
+        Number(d.totalVotes) > 0
+          ? Math.round(
+              (Number(d.positiveVotes || 0) / Number(d.totalVotes)) * 100
+            )
+          : 0,
     }));
   } catch (error) {
-    console.error("[Database] Failed to get vote distribution by standard:", error);
+    console.error(
+      "[Database] Failed to get vote distribution by standard:",
+      error
+    );
     return [];
   }
 }
@@ -950,7 +1054,8 @@ export async function getMostVotedMappings(limit: number = 10) {
   if (!db) return [];
 
   try {
-    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } = await import("../drizzle/schema");
+    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } =
+      await import("../drizzle/schema");
     const { count, sql, desc } = await import("drizzle-orm");
 
     const mostVoted = await db
@@ -965,14 +1070,20 @@ export async function getMostVotedMappings(limit: number = 10) {
         positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
       })
       .from(regulationEsrsMappings)
-      .innerJoin(esrsDatapoints, sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`)
-      .leftJoin(mappingFeedback, sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`)
+      .innerJoin(
+        esrsDatapoints,
+        sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`
+      )
+      .leftJoin(
+        mappingFeedback,
+        sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`
+      )
       .groupBy(regulationEsrsMappings.id)
       .having(sql`COUNT(${mappingFeedback.id}) > 0`)
       .orderBy(desc(count(mappingFeedback.id)))
       .limit(limit);
 
-    return mostVoted.map((m) => ({
+    return mostVoted.map(m => ({
       mappingId: m.mappingId,
       regulationId: m.regulationId,
       datapointId: m.datapointId,
@@ -981,14 +1092,18 @@ export async function getMostVotedMappings(limit: number = 10) {
       relevanceScore: m.relevanceScore,
       totalVotes: Number(m.totalVotes),
       positiveVotes: Number(m.positiveVotes || 0),
-      approvalPercentage: Number(m.totalVotes) > 0 ? Math.round((Number(m.positiveVotes || 0) / Number(m.totalVotes)) * 100) : 0,
+      approvalPercentage:
+        Number(m.totalVotes) > 0
+          ? Math.round(
+              (Number(m.positiveVotes || 0) / Number(m.totalVotes)) * 100
+            )
+          : 0,
     }));
   } catch (error) {
     console.error("[Database] Failed to get most-voted mappings:", error);
     return [];
   }
 }
-
 
 // ============================================================================
 // User Onboarding Progress Helpers
@@ -1155,12 +1270,12 @@ export async function getDutchInitiativeWithMappings(initiativeId: number) {
   if (!db) return null;
 
   try {
-    const { 
-      dutchInitiatives, 
-      initiativeRegulationMappings, 
+    const {
+      dutchInitiatives,
+      initiativeRegulationMappings,
       initiativeStandardMappings,
       regulations,
-      gs1Standards
+      gs1Standards,
     } = await import("../drizzle/schema");
     const { eq } = await import("drizzle-orm");
 
@@ -1181,7 +1296,10 @@ export async function getDutchInitiativeWithMappings(initiativeId: number) {
         regulation: regulations,
       })
       .from(initiativeRegulationMappings)
-      .leftJoin(regulations, eq(initiativeRegulationMappings.regulationId, regulations.id))
+      .leftJoin(
+        regulations,
+        eq(initiativeRegulationMappings.regulationId, regulations.id)
+      )
       .where(eq(initiativeRegulationMappings.initiativeId, initiativeId));
 
     // Get standard mappings
@@ -1193,7 +1311,10 @@ export async function getDutchInitiativeWithMappings(initiativeId: number) {
         standard: gs1Standards,
       })
       .from(initiativeStandardMappings)
-      .leftJoin(gs1Standards, eq(initiativeStandardMappings.standardId, gs1Standards.id))
+      .leftJoin(
+        gs1Standards,
+        eq(initiativeStandardMappings.standardId, gs1Standards.id)
+      )
       .where(eq(initiativeStandardMappings.initiativeId, initiativeId));
 
     return {
@@ -1202,7 +1323,10 @@ export async function getDutchInitiativeWithMappings(initiativeId: number) {
       standardMappings: stdMappings,
     };
   } catch (error) {
-    console.error("[Database] Failed to get Dutch initiative with mappings:", error);
+    console.error(
+      "[Database] Failed to get Dutch initiative with mappings:",
+      error
+    );
     return null;
   }
 }
@@ -1338,17 +1462,15 @@ export async function createQAConversation(userId?: number, title?: string) {
   if (!db) return null;
 
   try {
-    const { qaConversations } = await import('../drizzle/schema');
-    
-    const [result] = await db
-      .insert(qaConversations)
-      .values({
-        userId,
-        title,
-        messageCount: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+    const { qaConversations } = await import("../drizzle/schema");
+
+    const [result] = await db.insert(qaConversations).values({
+      userId,
+      title,
+      messageCount: 0,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
 
     return {
       id: result.insertId,
@@ -1359,7 +1481,7 @@ export async function createQAConversation(userId?: number, title?: string) {
       updatedAt: new Date(),
     };
   } catch (error) {
-    console.error('[Database] Failed to create conversation:', error);
+    console.error("[Database] Failed to create conversation:", error);
     return null;
   }
 }
@@ -1369,7 +1491,7 @@ export async function createQAConversation(userId?: number, title?: string) {
  */
 export async function addQAMessage(data: {
   conversationId: number;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   sources?: any[];
   retrievedChunks?: number;
@@ -1378,19 +1500,17 @@ export async function addQAMessage(data: {
   if (!db) return null;
 
   try {
-    const { qaMessages, qaConversations } = await import('../drizzle/schema');
-    
+    const { qaMessages, qaConversations } = await import("../drizzle/schema");
+
     // Insert message
-    const [result] = await db
-      .insert(qaMessages)
-      .values({
-        conversationId: data.conversationId,
-        role: data.role,
-        content: data.content,
-        sources: data.sources as any,
-        retrievedChunks: data.retrievedChunks,
-        createdAt: new Date(),
-      });
+    const [result] = await db.insert(qaMessages).values({
+      conversationId: data.conversationId,
+      role: data.role,
+      content: data.content,
+      sources: data.sources as any,
+      retrievedChunks: data.retrievedChunks,
+      createdAt: new Date(),
+    });
 
     // Update conversation message count
     await db
@@ -1407,7 +1527,7 @@ export async function addQAMessage(data: {
       createdAt: new Date(),
     };
   } catch (error) {
-    console.error('[Database] Failed to add message:', error);
+    console.error("[Database] Failed to add message:", error);
     return null;
   }
 }
@@ -1420,8 +1540,8 @@ export async function getQAConversation(conversationId: number) {
   if (!db) return null;
 
   try {
-    const { qaConversations, qaMessages } = await import('../drizzle/schema');
-    
+    const { qaConversations, qaMessages } = await import("../drizzle/schema");
+
     // Get conversation
     const conversation = await db
       .select()
@@ -1445,7 +1565,7 @@ export async function getQAConversation(conversationId: number) {
       messages,
     };
   } catch (error) {
-    console.error('[Database] Failed to get conversation:', error);
+    console.error("[Database] Failed to get conversation:", error);
     return null;
   }
 }
@@ -1453,13 +1573,16 @@ export async function getQAConversation(conversationId: number) {
 /**
  * Get user's Q&A conversations
  */
-export async function getUserQAConversations(userId: number, limit: number = 20) {
+export async function getUserQAConversations(
+  userId: number,
+  limit: number = 20
+) {
   const db = await getDb();
   if (!db) return [];
 
   try {
-    const { qaConversations } = await import('../drizzle/schema');
-    
+    const { qaConversations } = await import("../drizzle/schema");
+
     return await db
       .select()
       .from(qaConversations)
@@ -1467,7 +1590,7 @@ export async function getUserQAConversations(userId: number, limit: number = 20)
       .orderBy(desc(qaConversations.updatedAt))
       .limit(limit);
   } catch (error) {
-    console.error('[Database] Failed to get conversations:', error);
+    console.error("[Database] Failed to get conversations:", error);
     return [];
   }
 }
@@ -1475,13 +1598,16 @@ export async function getUserQAConversations(userId: number, limit: number = 20)
 /**
  * Delete Q&A conversation
  */
-export async function deleteQAConversation(conversationId: number, userId: number) {
+export async function deleteQAConversation(
+  conversationId: number,
+  userId: number
+) {
   const db = await getDb();
   if (!db) return false;
 
   try {
-    const { qaConversations, qaMessages } = await import('../drizzle/schema');
-    
+    const { qaConversations, qaMessages } = await import("../drizzle/schema");
+
     // Verify ownership
     const conversation = await db
       .select()
@@ -1505,7 +1631,7 @@ export async function deleteQAConversation(conversationId: number, userId: numbe
 
     return true;
   } catch (error) {
-    console.error('[Database] Failed to delete conversation:', error);
+    console.error("[Database] Failed to delete conversation:", error);
     return false;
   }
 }

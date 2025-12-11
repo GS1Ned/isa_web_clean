@@ -16,6 +16,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 ## Technology Stack
 
 ### Frontend
+
 - **Framework:** React 19 + TypeScript
 - **Styling:** Tailwind CSS 4 + shadcn/ui components
 - **Routing:** Wouter (lightweight client-side routing)
@@ -23,6 +24,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - **Build Tool:** Vite
 
 ### Backend
+
 - **Runtime:** Node.js 22 + TypeScript
 - **API Layer:** tRPC 11 (type-safe RPC)
 - **Web Server:** Express 4
@@ -31,11 +33,13 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - **Authentication:** Manus OAuth
 
 ### AI/ML Services
+
 - **LLM API:** Manus Forge API (OpenAI-compatible)
 - **Semantic Matching:** LLM-based relevance scoring (0-10 scale)
 - **Embedding Alternative:** Direct LLM scoring instead of vector embeddings
 
 ### Infrastructure
+
 - **Deployment:** Manus platform (managed)
 - **Database:** TiDB Cloud (serverless MySQL)
 - **File Storage:** S3-compatible object storage
@@ -86,6 +90,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 ## Key Features
 
 ### 1. ESG Hub - Regulation Explorer
+
 **Path:** `/hub/regulations`
 
 - Browse 35 EU regulations with AI-enhanced descriptions
@@ -94,6 +99,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - See GS1 standards relevant to each regulation
 
 ### 2. GS1 Standards Catalog
+
 **Path:** `/hub/standards` (planned)
 
 - 60 GS1 standards (GTIN, GLN, Digital Link, EPCIS, etc.)
@@ -101,6 +107,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - Attribute-level compliance requirements
 
 ### 3. ESRS Datapoints
+
 **Path:** `/hub/esrs-datapoints`
 
 - 1,184 EFRAG disclosure requirements
@@ -108,6 +115,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - Searchable by standard, topic, and requirement type
 
 ### 4. Dutch Initiatives
+
 **Path:** `/hub/dutch-initiatives`
 
 - 10 national compliance programs (UPV Textiel, Green Deal Zorg, etc.)
@@ -115,6 +123,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - Integration with EU regulations and GS1 standards
 
 ### 4.5. News Hub - ESG Intelligence Layer
+
 **Path:** `/hub/news`
 
 - Automated news aggregation from EU, GS1, and Dutch/Benelux sources
@@ -126,6 +135,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - Source types: EU Official Journal, GS1 Standards News, Dutch national initiatives
 
 ### 5. Ask ISA - RAG-Powered Q&A
+
 **Path:** `/ask`
 
 - Natural language questions about regulations and standards
@@ -134,6 +144,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - Conversation history and follow-up questions
 
 ### 6. Admin Knowledge Base Manager
+
 **Path:** `/admin/knowledge-base`
 
 - Generate searchable knowledge chunks from existing data
@@ -142,6 +153,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - Progress tracking and error reporting
 
 ### 7. Timeline Visualization
+
 **Path:** `/hub/regulations/:id` (Timeline tab)
 
 - Chronological display of regulation milestones and related news
@@ -150,6 +162,7 @@ Enable organizations to quickly understand which GS1 standards and data attribut
 - Direct navigation to news detail pages
 
 ### 8. Multi-Regulation Comparison
+
 **Path:** `/hub/regulations/compare`
 
 - Side-by-side comparison of 2-4 regulations
@@ -253,17 +266,20 @@ News Hub UI displays enriched articles
 ## Security & Authentication
 
 ### Manus OAuth Flow
+
 1. User clicks "Login" → Redirects to Manus OAuth portal
 2. User authenticates → OAuth server returns to `/api/oauth/callback`
 3. Backend validates token → Creates session cookie (JWT)
 4. Frontend reads session → `useAuth()` hook provides user state
 
 ### Protected Routes
+
 - **Public:** Home, ESG Hub, Regulations, Standards, Ask ISA
 - **Protected:** Dashboard, Admin Panel, Knowledge Base Manager
 - **Admin-only:** Analytics, Prompt Optimization, Ingestion Tools
 
 ### Role-Based Access Control
+
 - **User role:** Standard access to all public features
 - **Admin role:** Access to admin panel and management tools
 - **Owner:** Full access including system configuration
@@ -273,18 +289,21 @@ News Hub UI displays enriched articles
 ## Performance Optimizations
 
 ### Frontend
+
 - **Lazy Loading:** Route-based code splitting for faster initial load
 - **tRPC Caching:** React Query caches API responses automatically
 - **Optimistic Updates:** Instant UI feedback for mutations
 - **Component Memoization:** Prevent unnecessary re-renders
 
 ### Backend
+
 - **Database Indexing:** Indexes on frequently queried fields
 - **Content Hash Deduplication:** Avoid storing duplicate knowledge chunks
 - **Batch Processing:** Generate embeddings in batches of 10
 - **Connection Pooling:** Reuse database connections
 
 ### LLM Usage
+
 - **Relevance Scoring:** Batch score multiple documents in parallel
 - **Caching:** Store knowledge chunks to avoid re-generating
 - **Rate Limiting:** Respect API limits with controlled concurrency
@@ -294,13 +313,16 @@ News Hub UI displays enriched articles
 ## Deployment
 
 ### Manus Platform
+
 - **Dev Server:** Hot-reload development environment
 - **Checkpoints:** Git-based versioning with screenshots
 - **Publish:** One-click deployment to production
 - **Rollback:** Instant rollback to previous checkpoints
 
 ### Environment Variables
+
 All secrets managed via Manus platform:
+
 - `DATABASE_URL` - TiDB connection string
 - `JWT_SECRET` - Session signing key
 - `BUILT_IN_FORGE_API_KEY` - LLM API access
@@ -311,16 +333,19 @@ All secrets managed via Manus platform:
 ## Future Architecture Considerations
 
 ### Scalability
+
 - **Vector Embeddings:** Migrate to proper vector DB when Manus adds embeddings API
 - **Caching Layer:** Add Redis for frequently accessed data
 - **CDN:** Serve static assets via CDN for global performance
 
 ### Automation
+
 - **EUR-Lex Crawler:** Automated ingestion of new regulations
 - **EFRAG XBRL Parser:** Auto-update ESRS datapoints from official sources
 - **Change Monitoring:** Track regulation amendments and notify users
 
 ### Advanced Features
+
 - **Multi-language Support:** Translate regulations and standards
 - **Export to PDF:** Generate compliance reports
 - **API Access:** Public API for third-party integrations
@@ -331,16 +356,19 @@ All secrets managed via Manus platform:
 ## Maintenance
 
 ### Regular Tasks
+
 - **Weekly:** Review Ask ISA Q&A quality and update knowledge base
 - **Monthly:** Check for new regulations and standards
 - **Quarterly:** Audit AI-generated mappings for accuracy
 
 ### Monitoring
+
 - **Health Checks:** TypeScript compilation, LSP errors, build status
 - **Analytics:** Track page views, Ask ISA usage, popular questions
 - **Error Tracking:** Monitor console errors and failed API calls
 
 ### Documentation
+
 - **Architecture:** This document (update after major changes)
 - **Data Model:** `DATA_MODEL.md` (update after schema changes)
 - **Ingestion:** `INGESTION.md` (update after pipeline changes)

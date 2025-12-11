@@ -1,9 +1,21 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, Upload, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
+import {
+  Loader2,
+  Upload,
+  CheckCircle2,
+  XCircle,
+  AlertTriangle,
+} from "lucide-react";
 
 /**
  * EPCIS Upload Page
@@ -19,13 +31,13 @@ export default function EPCISUpload() {
   const generateMapMutation = trpc.epcis.generateSupplyChainMap.useMutation();
 
   const uploadMutation = trpc.epcis.uploadEvents.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       setUploadResult(data);
       setValidationError(null);
       // Automatically generate supply chain map after upload
       generateMapMutation.mutate();
     },
-    onError: (error) => {
+    onError: error => {
       setValidationError(error.message);
       setUploadResult(null);
     },
@@ -34,20 +46,26 @@ export default function EPCISUpload() {
   const handleValidate = () => {
     try {
       const parsed = JSON.parse(jsonInput);
-      
+
       // Basic EPCIS document structure validation
       if (!parsed.type || parsed.type !== "EPCISDocument") {
-        setValidationError("Invalid EPCIS document: missing or incorrect 'type' field");
+        setValidationError(
+          "Invalid EPCIS document: missing or incorrect 'type' field"
+        );
         return false;
       }
 
       if (!parsed.epcisBody || !parsed.epcisBody.eventList) {
-        setValidationError("Invalid EPCIS document: missing 'epcisBody.eventList'");
+        setValidationError(
+          "Invalid EPCIS document: missing 'epcisBody.eventList'"
+        );
         return false;
       }
 
       if (!Array.isArray(parsed.epcisBody.eventList)) {
-        setValidationError("Invalid EPCIS document: 'eventList' must be an array");
+        setValidationError(
+          "Invalid EPCIS document: 'eventList' must be an array"
+        );
         return false;
       }
 
@@ -90,7 +108,8 @@ export default function EPCISUpload() {
 
   const handleLoadExample = () => {
     const exampleDocument = {
-      "@context": "https://ref.gs1.org/standards/epcis/2.0.0/epcis-context.jsonld",
+      "@context":
+        "https://ref.gs1.org/standards/epcis/2.0.0/epcis-context.jsonld",
       type: "EPCISDocument",
       schemaVersion: "2.0",
       creationDate: new Date().toISOString(),
@@ -137,7 +156,8 @@ export default function EPCISUpload() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">EPCIS Event Upload</h1>
         <p className="text-muted-foreground">
-          Upload EPCIS 2.0 documents (JSON or XML) to track supply chain events and validate EUDR compliance
+          Upload EPCIS 2.0 documents (JSON or XML) to track supply chain events
+          and validate EUDR compliance
         </p>
       </div>
 
@@ -147,7 +167,8 @@ export default function EPCISUpload() {
           <CardHeader>
             <CardTitle>EPCIS Document</CardTitle>
             <CardDescription>
-              Paste your EPCIS 2.0 document (JSON or XML) below or load an example
+              Paste your EPCIS 2.0 document (JSON or XML) below or load an
+              example
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -162,7 +183,7 @@ export default function EPCISUpload() {
 
             <textarea
               value={jsonInput}
-              onChange={(e) => {
+              onChange={e => {
                 setJsonInput(e.target.value);
                 setValidationError(null);
                 setUploadResult(null);
@@ -227,7 +248,9 @@ export default function EPCISUpload() {
             {uploadMutation.isPending && (
               <div className="flex flex-col items-center justify-center h-96">
                 <Loader2 className="h-16 w-16 animate-spin text-primary mb-4" />
-                <p className="text-muted-foreground">Processing EPCIS events...</p>
+                <p className="text-muted-foreground">
+                  Processing EPCIS events...
+                </p>
               </div>
             )}
 
@@ -248,7 +271,9 @@ export default function EPCISUpload() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold">{uploadResult.eventsUploaded}</div>
+                      <div className="text-3xl font-bold">
+                        {uploadResult.eventsUploaded}
+                      </div>
                     </CardContent>
                   </Card>
 
@@ -259,7 +284,9 @@ export default function EPCISUpload() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold text-green-600">Success</div>
+                      <div className="text-3xl font-bold text-green-600">
+                        Success
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
@@ -271,7 +298,10 @@ export default function EPCISUpload() {
                       <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5" />
                       <span>
                         View your events in the{" "}
-                        <a href="/epcis/events" className="text-primary hover:underline">
+                        <a
+                          href="/epcis/events"
+                          className="text-primary hover:underline"
+                        >
                           Events Dashboard
                         </a>
                       </span>
@@ -280,7 +310,10 @@ export default function EPCISUpload() {
                       <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5" />
                       <span>
                         Visualize your supply chain in the{" "}
-                        <a href="/epcis/supply-chain" className="text-primary hover:underline">
+                        <a
+                          href="/epcis/supply-chain"
+                          className="text-primary hover:underline"
+                        >
                           Supply Chain Map
                         </a>
                       </span>
@@ -289,7 +322,10 @@ export default function EPCISUpload() {
                       <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5" />
                       <span>
                         Check EUDR compliance for your products in the{" "}
-                        <a href="/epcis/eudr-map" className="text-primary hover:underline">
+                        <a
+                          href="/epcis/eudr-map"
+                          className="text-primary hover:underline"
+                        >
                           EUDR Mapper
                         </a>
                       </span>
@@ -335,13 +371,15 @@ export default function EPCISUpload() {
                   type: "AssociationEvent",
                   desc: "Track associations between objects (pallets → containers)",
                 },
-              ].map((event) => (
+              ].map(event => (
                 <Card key={event.type}>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm">{event.type}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-xs text-muted-foreground">{event.desc}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {event.desc}
+                    </p>
                   </CardContent>
                 </Card>
               ))}

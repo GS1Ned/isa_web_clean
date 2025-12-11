@@ -1,27 +1,44 @@
 import React, { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle2, Clock, AlertCircle, Target, TrendingUp, Calendar } from "lucide-react";
+import {
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+  Target,
+  TrendingUp,
+  Calendar,
+} from "lucide-react";
 
 export default function ComplianceRoadmap() {
   const [selectedStrategy, setSelectedStrategy] = useState<string | null>(null);
   const [currentScore, setCurrentScore] = useState(60);
   const [targetScore, setTargetScore] = useState(85);
   const [timelineWeeks, setTimelineWeeks] = useState(12);
-  const [selectedRoadmapId, setSelectedRoadmapId] = useState<number | null>(null);
-
-  const { data: roadmaps, isLoading: roadmapsLoading } = trpc.roadmap.listRoadmaps.useQuery({
-    limit: 10,
-  });
-
-  const { data: roadmapDetails, isLoading: detailsLoading } = trpc.roadmap.getRoadmap.useQuery(
-    { roadmapId: selectedRoadmapId! },
-    { enabled: !!selectedRoadmapId }
+  const [selectedRoadmapId, setSelectedRoadmapId] = useState<number | null>(
+    null
   );
+
+  const { data: roadmaps, isLoading: roadmapsLoading } =
+    trpc.roadmap.listRoadmaps.useQuery({
+      limit: 10,
+    });
+
+  const { data: roadmapDetails, isLoading: detailsLoading } =
+    trpc.roadmap.getRoadmap.useQuery(
+      { roadmapId: selectedRoadmapId! },
+      { enabled: !!selectedRoadmapId }
+    );
 
   const { data: roadmapStats } = trpc.roadmap.getRoadmapStats.useQuery(
     { roadmapId: selectedRoadmapId! },
@@ -83,7 +100,9 @@ export default function ComplianceRoadmap() {
     <div className="container mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Compliance Roadmap</h1>
-        <p className="text-gray-600">Generate strategic implementation plans to improve compliance</p>
+        <p className="text-gray-600">
+          Generate strategic implementation plans to improve compliance
+        </p>
       </div>
 
       <Tabs defaultValue="generate" className="w-full">
@@ -97,12 +116,16 @@ export default function ComplianceRoadmap() {
           <Card>
             <CardHeader>
               <CardTitle>Create New Roadmap</CardTitle>
-              <CardDescription>Choose a strategy and set your compliance goals</CardDescription>
+              <CardDescription>
+                Choose a strategy and set your compliance goals
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Strategy Selection */}
               <div>
-                <label className="block text-sm font-medium mb-3">Strategy</label>
+                <label className="block text-sm font-medium mb-3">
+                  Strategy
+                </label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     {
@@ -125,7 +148,7 @@ export default function ComplianceRoadmap() {
                       name: "Comprehensive",
                       description: "All improvements",
                     },
-                  ].map((strategy) => (
+                  ].map(strategy => (
                     <button
                       key={strategy.id}
                       onClick={() => setSelectedStrategy(strategy.id)}
@@ -136,7 +159,9 @@ export default function ComplianceRoadmap() {
                       }`}
                     >
                       <h4 className="font-semibold">{strategy.name}</h4>
-                      <p className="text-sm text-gray-600">{strategy.description}</p>
+                      <p className="text-sm text-gray-600">
+                        {strategy.description}
+                      </p>
                     </button>
                   ))}
                 </div>
@@ -145,26 +170,30 @@ export default function ComplianceRoadmap() {
               {/* Score Settings */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Current Score</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Current Score
+                  </label>
                   <input
                     type="number"
                     min="0"
                     max="100"
                     value={currentScore}
-                    onChange={(e) => setCurrentScore(parseInt(e.target.value))}
+                    onChange={e => setCurrentScore(parseInt(e.target.value))}
                     className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <p className="text-xs text-gray-500 mt-1">{currentScore}%</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Target Score</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Target Score
+                  </label>
                   <input
                     type="number"
                     min="0"
                     max="100"
                     value={targetScore}
-                    onChange={(e) => setTargetScore(parseInt(e.target.value))}
+                    onChange={e => setTargetScore(parseInt(e.target.value))}
                     className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <p className="text-xs text-gray-500 mt-1">{targetScore}%</p>
@@ -173,16 +202,20 @@ export default function ComplianceRoadmap() {
 
               {/* Timeline */}
               <div>
-                <label className="block text-sm font-medium mb-2">Timeline (weeks)</label>
+                <label className="block text-sm font-medium mb-2">
+                  Timeline (weeks)
+                </label>
                 <input
                   type="number"
                   min="1"
                   max="52"
                   value={timelineWeeks}
-                  onChange={(e) => setTimelineWeeks(parseInt(e.target.value))}
+                  onChange={e => setTimelineWeeks(parseInt(e.target.value))}
                   className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <p className="text-xs text-gray-500 mt-1">{timelineWeeks} weeks</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {timelineWeeks} weeks
+                </p>
               </div>
 
               {/* Generate Button */}
@@ -191,7 +224,9 @@ export default function ComplianceRoadmap() {
                 disabled={!selectedStrategy || generateMutation.isPending}
                 className="w-full"
               >
-                {generateMutation.isPending ? "Generating..." : "Generate Roadmap"}
+                {generateMutation.isPending
+                  ? "Generating..."
+                  : "Generate Roadmap"}
               </Button>
             </CardContent>
           </Card>
@@ -204,12 +239,14 @@ export default function ComplianceRoadmap() {
           ) : !roadmaps || roadmaps.length === 0 ? (
             <Card>
               <CardContent className="pt-6 text-center">
-                <p className="text-gray-600">No roadmaps yet. Generate one to get started!</p>
+                <p className="text-gray-600">
+                  No roadmaps yet. Generate one to get started!
+                </p>
               </CardContent>
             </Card>
           ) : (
             <div className="grid gap-4">
-              {roadmaps.map((roadmap) => (
+              {roadmaps.map(roadmap => (
                 <Card
                   key={roadmap.id}
                   className="cursor-pointer hover:shadow-lg transition-shadow"
@@ -239,31 +276,51 @@ export default function ComplianceRoadmap() {
                       <div>
                         <div className="flex justify-between text-sm mb-1">
                           <span>Progress</span>
-                          <span className="font-semibold">{roadmap.progressPercentage}%</span>
+                          <span className="font-semibold">
+                            {roadmap.progressPercentage}%
+                          </span>
                         </div>
-                        <Progress value={roadmap.progressPercentage} className="h-2" />
+                        <Progress
+                          value={roadmap.progressPercentage}
+                          className="h-2"
+                        />
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-sm">
                         <div>
                           <p className="text-gray-600">Current</p>
-                          <p className="font-semibold">{typeof roadmap.currentScore === 'number' ? roadmap.currentScore.toFixed(1) : parseFloat(roadmap.currentScore as any).toFixed(1)}%</p>
+                          <p className="font-semibold">
+                            {typeof roadmap.currentScore === "number"
+                              ? roadmap.currentScore.toFixed(1)
+                              : parseFloat(roadmap.currentScore as any).toFixed(
+                                  1
+                                )}
+                            %
+                          </p>
                         </div>
                         <div>
                           <p className="text-gray-600">Projected</p>
                           <p className="font-semibold text-green-600">
-                            {typeof roadmap.projectedScore === 'number' ? roadmap.projectedScore.toFixed(1) : parseFloat(roadmap.projectedScore as any).toFixed(1)}%
+                            {typeof roadmap.projectedScore === "number"
+                              ? roadmap.projectedScore.toFixed(1)
+                              : parseFloat(
+                                  roadmap.projectedScore as any
+                                ).toFixed(1)}
+                            %
                           </p>
                         </div>
                         <div>
-                    <p className="text-sm text-gray-600">Timeline</p>
+                          <p className="text-sm text-gray-600">Timeline</p>
                           <p className="font-semibold">
                             {Math.ceil(
-                              (new Date(roadmap.targetCompletionDate as any).getTime() -
+                              (new Date(
+                                roadmap.targetCompletionDate as any
+                              ).getTime() -
                                 new Date(roadmap.startDate as any).getTime()) /
                                 (7 * 24 * 60 * 60 * 1000)
                             )}{" "}
                             weeks
-                          </p>                       </div>
+                          </p>{" "}
+                        </div>
                       </div>
                     </div>
                   </CardContent>
@@ -288,22 +345,40 @@ export default function ComplianceRoadmap() {
               <div className="grid grid-cols-4 gap-4">
                 <div>
                   <p className="text-sm text-gray-600">Current Score</p>
-                  <p className="text-2xl font-bold">{typeof roadmapDetails.currentScore === 'number' ? roadmapDetails.currentScore.toFixed(1) : parseFloat(roadmapDetails.currentScore as any).toFixed(1)}%</p>
+                  <p className="text-2xl font-bold">
+                    {typeof roadmapDetails.currentScore === "number"
+                      ? roadmapDetails.currentScore.toFixed(1)
+                      : parseFloat(roadmapDetails.currentScore as any).toFixed(
+                          1
+                        )}
+                    %
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Projected Score</p>
                   <p className="text-2xl font-bold text-green-600">
-                    {typeof roadmapDetails.projectedScore === 'number' ? roadmapDetails.projectedScore.toFixed(1) : parseFloat(roadmapDetails.projectedScore as any).toFixed(1)}%
+                    {typeof roadmapDetails.projectedScore === "number"
+                      ? roadmapDetails.projectedScore.toFixed(1)
+                      : parseFloat(
+                          roadmapDetails.projectedScore as any
+                        ).toFixed(1)}
+                    %
                   </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Estimated Effort</p>
-                  <p className="text-2xl font-bold">{roadmapDetails.estimatedEffort}h</p>
+                  <p className="text-2xl font-bold">
+                    {roadmapDetails.estimatedEffort}h
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Est. Impact</p>
                   <p className="text-2xl font-bold text-blue-600">
-                    +{roadmapDetails.estimatedImpact ? (roadmapDetails.estimatedImpact as any).toFixed(1) : '0'}%
+                    +
+                    {roadmapDetails.estimatedImpact
+                      ? (roadmapDetails.estimatedImpact as any).toFixed(1)
+                      : "0"}
+                    %
                   </p>
                 </div>
               </div>
@@ -330,20 +405,37 @@ export default function ComplianceRoadmap() {
                     </div>
                     <div className="flex-grow">
                       <h4 className="font-semibold">{action.title}</h4>
-                      <p className="text-sm text-gray-600">{action.description}</p>
+                      <p className="text-sm text-gray-600">
+                        {action.description}
+                      </p>
                       <div className="flex gap-2 mt-2">
                         <Badge className={getPriorityColor(action.priority)}>
                           {action.priority}
                         </Badge>
-                        <Badge variant="outline">{action.estimatedEffort}h effort</Badge>
-                        <Badge variant="outline">+{(action.estimatedImpact as any).toFixed(1)}%</Badge>
+                        <Badge variant="outline">
+                          {action.estimatedEffort}h effort
+                        </Badge>
+                        <Badge variant="outline">
+                          +{(action.estimatedImpact as any).toFixed(1)}%
+                        </Badge>
                       </div>
                       <p className="text-xs text-gray-500 mt-2">
-                        {action.startDate ? new Date(action.startDate as any).toLocaleDateString() : 'TBD'} -{" "}
-                        {action.targetDate ? new Date(action.targetDate as any).toLocaleDateString() : 'TBD'}
+                        {action.startDate
+                          ? new Date(
+                              action.startDate as any
+                            ).toLocaleDateString()
+                          : "TBD"}{" "}
+                        -{" "}
+                        {action.targetDate
+                          ? new Date(
+                              action.targetDate as any
+                            ).toLocaleDateString()
+                          : "TBD"}
                       </p>
                     </div>
-                    <div className="flex-shrink-0">{getStatusIcon(action.status || 'pending')}</div>
+                    <div className="flex-shrink-0">
+                      {getStatusIcon(action.status || "pending")}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -357,16 +449,23 @@ export default function ComplianceRoadmap() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {roadmapDetails.milestones.map((milestone) => (
-                  <div key={milestone.id} className="flex items-center justify-between p-3 border rounded-lg">
+                {roadmapDetails.milestones.map(milestone => (
+                  <div
+                    key={milestone.id}
+                    className="flex items-center justify-between p-3 border rounded-lg"
+                  >
                     <div>
                       <h4 className="font-semibold">{milestone.title}</h4>
                       <p className="text-sm text-gray-600">
-                        {new Date(milestone.targetDate as any).toLocaleDateString()}
+                        {new Date(
+                          milestone.targetDate as any
+                        ).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-bold text-blue-600">{(milestone.targetScore as any).toFixed(1)}%</p>
+                      <p className="text-lg font-bold text-blue-600">
+                        {(milestone.targetScore as any).toFixed(1)}%
+                      </p>
                       {milestone.status === "completed" && (
                         <CheckCircle2 className="w-5 h-5 text-green-600 mx-auto mt-1" />
                       )}

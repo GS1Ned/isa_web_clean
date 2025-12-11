@@ -41,17 +41,20 @@ const sampleData: EUDRSampleData[] = [
     deforestationRisk: "high",
     geofenceGeoJSON: {
       type: "Polygon",
-      coordinates: [[
-        [-62.3, -3.5],
-        [-62.1, -3.5],
-        [-62.1, -3.4],
-        [-62.3, -3.4],
-        [-62.3, -3.5],
-      ]],
+      coordinates: [
+        [
+          [-62.3, -3.5],
+          [-62.1, -3.5],
+          [-62.1, -3.4],
+          [-62.3, -3.4],
+          [-62.3, -3.5],
+        ],
+      ],
     },
     dueDiligenceStatement: {
       certified: false,
-      deforestationAlert: "Satellite imagery shows recent forest clearing within 5km",
+      deforestationAlert:
+        "Satellite imagery shows recent forest clearing within 5km",
       riskLevel: "High - requires immediate verification",
       actionRequired: "Suspend sourcing until verification complete",
     },
@@ -80,13 +83,15 @@ const sampleData: EUDRSampleData[] = [
     deforestationRisk: "medium",
     geofenceGeoJSON: {
       type: "Polygon",
-      coordinates: [[
-        [-1.7, 6.6],
-        [-1.5, 6.6],
-        [-1.5, 6.8],
-        [-1.7, 6.8],
-        [-1.7, 6.6],
-      ]],
+      coordinates: [
+        [
+          [-1.7, 6.6],
+          [-1.5, 6.6],
+          [-1.5, 6.8],
+          [-1.7, 6.8],
+          [-1.7, 6.6],
+        ],
+      ],
     },
     dueDiligenceStatement: {
       certified: true,
@@ -99,24 +104,27 @@ const sampleData: EUDRSampleData[] = [
   {
     productGtin: "00234567890130",
     productName: "Cocoa Beans - Ivory Coast",
-    originLat: 7.5400,
+    originLat: 7.54,
     originLng: -5.5471,
     deforestationRisk: "high",
     geofenceGeoJSON: {
       type: "Polygon",
-      coordinates: [[
-        [-5.6, 7.5],
-        [-5.4, 7.5],
-        [-5.4, 7.6],
-        [-5.6, 7.6],
-        [-5.6, 7.5],
-      ]],
+      coordinates: [
+        [
+          [-5.6, 7.5],
+          [-5.4, 7.5],
+          [-5.4, 7.6],
+          [-5.6, 7.6],
+          [-5.6, 7.5],
+        ],
+      ],
     },
     dueDiligenceStatement: {
       certified: false,
       deforestationAlert: "Located within 2km of protected forest area",
       riskLevel: "High - protected area encroachment risk",
-      actionRequired: "Require supplier to provide GPS coordinates and land title",
+      actionRequired:
+        "Require supplier to provide GPS coordinates and land title",
     },
   },
 
@@ -129,19 +137,22 @@ const sampleData: EUDRSampleData[] = [
     deforestationRisk: "high",
     geofenceGeoJSON: {
       type: "Polygon",
-      coordinates: [[
-        [99.5, 2.9],
-        [99.7, 2.9],
-        [99.7, 3.1],
-        [99.5, 3.1],
-        [99.5, 2.9],
-      ]],
+      coordinates: [
+        [
+          [99.5, 2.9],
+          [99.7, 2.9],
+          [99.7, 3.1],
+          [99.5, 3.1],
+          [99.5, 2.9],
+        ],
+      ],
     },
     dueDiligenceStatement: {
       certified: false,
       deforestationAlert: "Plantation expansion detected in peatland area",
       riskLevel: "High - peatland conversion detected",
-      actionRequired: "Immediate audit required, consider alternative suppliers",
+      actionRequired:
+        "Immediate audit required, consider alternative suppliers",
     },
   },
   {
@@ -165,17 +176,19 @@ const sampleData: EUDRSampleData[] = [
     productGtin: "00456789012345",
     productName: "Teak Wood - Myanmar",
     originLat: 21.9162,
-    originLng: 95.9560,
+    originLng: 95.956,
     deforestationRisk: "high",
     geofenceGeoJSON: {
       type: "Polygon",
-      coordinates: [[
-        [95.8, 21.8],
-        [96.1, 21.8],
-        [96.1, 22.0],
-        [95.8, 22.0],
-        [95.8, 21.8],
-      ]],
+      coordinates: [
+        [
+          [95.8, 21.8],
+          [96.1, 21.8],
+          [96.1, 22.0],
+          [95.8, 22.0],
+          [95.8, 21.8],
+        ],
+      ],
     },
     dueDiligenceStatement: {
       certified: false,
@@ -188,7 +201,7 @@ const sampleData: EUDRSampleData[] = [
     productGtin: "00456789012352",
     productName: "FSC Certified Pine - Sweden",
     originLat: 62.3908,
-    originLng: 16.3250,
+    originLng: 16.325,
     deforestationRisk: "low",
     dueDiligenceStatement: {
       certified: true,
@@ -209,13 +222,15 @@ const sampleData: EUDRSampleData[] = [
     deforestationRisk: "medium",
     geofenceGeoJSON: {
       type: "Polygon",
-      coordinates: [[
-        [-48.0, -15.9],
-        [-47.7, -15.9],
-        [-47.7, -15.7],
-        [-48.0, -15.7],
-        [-48.0, -15.9],
-      ]],
+      coordinates: [
+        [
+          [-48.0, -15.9],
+          [-47.7, -15.9],
+          [-47.7, -15.7],
+          [-48.0, -15.7],
+          [-48.0, -15.9],
+        ],
+      ],
     },
     dueDiligenceStatement: {
       certified: true,
@@ -249,19 +264,22 @@ const sampleData: EUDRSampleData[] = [
     deforestationRisk: "high",
     geofenceGeoJSON: {
       type: "Polygon",
-      coordinates: [[
-        [-52.5, -3.8],
-        [-52.1, -3.8],
-        [-52.1, -3.6],
-        [-52.5, -3.6],
-        [-52.5, -3.8],
-      ]],
+      coordinates: [
+        [
+          [-52.5, -3.8],
+          [-52.1, -3.8],
+          [-52.1, -3.6],
+          [-52.5, -3.6],
+          [-52.5, -3.8],
+        ],
+      ],
     },
     dueDiligenceStatement: {
       certified: false,
       deforestationAlert: "Ranch located in Amazon deforestation hotspot",
       riskLevel: "High - Amazon deforestation risk",
-      actionRequired: "Require satellite monitoring and ranch-level traceability",
+      actionRequired:
+        "Require satellite monitoring and ranch-level traceability",
     },
   },
 ];

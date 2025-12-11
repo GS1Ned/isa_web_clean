@@ -7,7 +7,9 @@ import { Plus, Edit2, Trash2, Eye, EyeOff, Copy, Save } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
 export default function AdminTemplateManager() {
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
+  const [selectedCategory, setSelectedCategory] = useState<
+    string | undefined
+  >();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
   const [editMode, setEditMode] = useState(false);
@@ -27,24 +29,31 @@ export default function AdminTemplateManager() {
   });
 
   // Fetch templates
-  const { data: templates, refetch: refetchTemplates } = trpc.adminTemplates.listAdminTemplates.useQuery({
-    category: selectedCategory,
-    search: searchTerm || undefined,
-    limit: 50,
-  });
+  const { data: templates, refetch: refetchTemplates } =
+    trpc.adminTemplates.listAdminTemplates.useQuery({
+      category: selectedCategory,
+      search: searchTerm || undefined,
+      limit: 50,
+    });
 
   // Fetch template details
-  const { data: templateDetails } = trpc.adminTemplates.getTemplateForEdit.useQuery(
-    { templateId: selectedTemplate || 0 },
-    { enabled: selectedTemplate !== null && editMode }
-  );
+  const { data: templateDetails } =
+    trpc.adminTemplates.getTemplateForEdit.useQuery(
+      { templateId: selectedTemplate || 0 },
+      { enabled: selectedTemplate !== null && editMode }
+    );
 
   // Mutations
-  const createTemplateMutation = trpc.adminTemplates.createTemplate.useMutation();
-  const updateTemplateMutation = trpc.adminTemplates.updateTemplate.useMutation();
-  const deleteTemplateMutation = trpc.adminTemplates.deleteTemplate.useMutation();
-  const publishTemplateMutation = trpc.adminTemplates.publishTemplate.useMutation();
-  const unpublishTemplateMutation = trpc.adminTemplates.unpublishTemplate.useMutation();
+  const createTemplateMutation =
+    trpc.adminTemplates.createTemplate.useMutation();
+  const updateTemplateMutation =
+    trpc.adminTemplates.updateTemplate.useMutation();
+  const deleteTemplateMutation =
+    trpc.adminTemplates.deleteTemplate.useMutation();
+  const publishTemplateMutation =
+    trpc.adminTemplates.publishTemplate.useMutation();
+  const unpublishTemplateMutation =
+    trpc.adminTemplates.unpublishTemplate.useMutation();
 
   const handleCreateTemplate = async () => {
     if (!formData.name.trim()) return;
@@ -123,7 +132,9 @@ export default function AdminTemplateManager() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold mb-2">Template Manager</h1>
-          <p className="text-gray-600">Create and manage custom compliance roadmap templates</p>
+          <p className="text-gray-600">
+            Create and manage custom compliance roadmap templates
+          </p>
         </div>
         <Button onClick={() => setShowCreateForm(true)} className="gap-2">
           <Plus className="w-4 h-4" />
@@ -143,7 +154,9 @@ export default function AdminTemplateManager() {
                 <label className="text-sm font-medium">Template Name</label>
                 <Input
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={e =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   placeholder="e.g., CSRD Quick Start"
                 />
               </div>
@@ -151,7 +164,12 @@ export default function AdminTemplateManager() {
                 <label className="text-sm font-medium">Category</label>
                 <select
                   value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      category: e.target.value as any,
+                    })
+                  }
                   className="w-full px-3 py-2 border rounded-md"
                 >
                   <option value="csrd">CSRD</option>
@@ -166,7 +184,9 @@ export default function AdminTemplateManager() {
               <label className="text-sm font-medium">Description</label>
               <textarea
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={e =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 placeholder="Describe the template purpose..."
                 className="w-full px-3 py-2 border rounded-md"
                 rows={3}
@@ -178,7 +198,12 @@ export default function AdminTemplateManager() {
                 <label className="text-sm font-medium">Strategy</label>
                 <select
                   value={formData.strategy}
-                  onChange={(e) => setFormData({ ...formData, strategy: e.target.value as any })}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      strategy: e.target.value as any,
+                    })
+                  }
                   className="w-full px-3 py-2 border rounded-md"
                 >
                   <option value="risk_first">Risk First</option>
@@ -188,11 +213,18 @@ export default function AdminTemplateManager() {
                 </select>
               </div>
               <div>
-                <label className="text-sm font-medium">Estimated Effort (hours)</label>
+                <label className="text-sm font-medium">
+                  Estimated Effort (hours)
+                </label>
                 <Input
                   type="number"
                   value={formData.estimatedEffort}
-                  onChange={(e) => setFormData({ ...formData, estimatedEffort: parseInt(e.target.value) })}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      estimatedEffort: parseInt(e.target.value),
+                    })
+                  }
                 />
               </div>
               <div>
@@ -200,7 +232,12 @@ export default function AdminTemplateManager() {
                 <Input
                   type="number"
                   value={formData.targetScore}
-                  onChange={(e) => setFormData({ ...formData, targetScore: parseInt(e.target.value) })}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      targetScore: parseInt(e.target.value),
+                    })
+                  }
                   min="0"
                   max="100"
                 />
@@ -211,7 +248,9 @@ export default function AdminTemplateManager() {
               <input
                 type="checkbox"
                 checked={formData.isPublic}
-                onChange={(e) => setFormData({ ...formData, isPublic: e.target.checked })}
+                onChange={e =>
+                  setFormData({ ...formData, isPublic: e.target.checked })
+                }
                 id="isPublic"
               />
               <label htmlFor="isPublic" className="text-sm font-medium">
@@ -222,12 +261,20 @@ export default function AdminTemplateManager() {
             <div className="flex gap-2">
               <Button
                 onClick={handleCreateTemplate}
-                disabled={!formData.name.trim() || createTemplateMutation.isPending}
+                disabled={
+                  !formData.name.trim() || createTemplateMutation.isPending
+                }
                 className="flex-1"
               >
-                {createTemplateMutation.isPending ? "Creating..." : "Create Template"}
+                {createTemplateMutation.isPending
+                  ? "Creating..."
+                  : "Create Template"}
               </Button>
-              <Button variant="outline" onClick={() => setShowCreateForm(false)} className="flex-1">
+              <Button
+                variant="outline"
+                onClick={() => setShowCreateForm(false)}
+                className="flex-1"
+              >
                 Cancel
               </Button>
             </div>
@@ -240,7 +287,7 @@ export default function AdminTemplateManager() {
         <Input
           placeholder="Search templates..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
           className="w-full"
         />
 
@@ -251,7 +298,7 @@ export default function AdminTemplateManager() {
           >
             All
           </Button>
-          {["csrd", "eudr", "esrs", "custom"].map((cat) => (
+          {["csrd", "eudr", "esrs", "custom"].map(cat => (
             <Button
               key={cat}
               variant={selectedCategory === cat ? "default" : "outline"}
@@ -266,7 +313,7 @@ export default function AdminTemplateManager() {
       {/* Templates List */}
       <div className="space-y-3">
         {templates && templates.length > 0 ? (
-          templates.map((template) => (
+          templates.map(template => (
             <Card
               key={template.id}
               className={`cursor-pointer transition-all ${
@@ -283,19 +330,31 @@ export default function AdminTemplateManager() {
                     <div className="flex items-center gap-2 mb-2">
                       <h3 className="font-bold text-lg">{template.name}</h3>
                       {template.isPublic ? (
-                        <Badge className="bg-green-100 text-green-800">Public</Badge>
+                        <Badge className="bg-green-100 text-green-800">
+                          Public
+                        </Badge>
                       ) : (
-                        <Badge className="bg-gray-100 text-gray-800">Private</Badge>
+                        <Badge className="bg-gray-100 text-gray-800">
+                          Private
+                        </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 mb-3">{template.description}</p>
+                    <p className="text-sm text-gray-600 mb-3">
+                      {template.description}
+                    </p>
                     <div className="flex gap-2 flex-wrap">
                       <Badge className={getStrategyColor(template.strategy)}>
                         {template.strategy.replace(/_/g, " ")}
                       </Badge>
-                      <Badge variant="outline">{template.estimatedEffort}h effort</Badge>
-                      <Badge variant="outline">Target: {template.targetScore}%</Badge>
-                      <Badge variant="outline">Used {template.usageCount} times</Badge>
+                      <Badge variant="outline">
+                        {template.estimatedEffort}h effort
+                      </Badge>
+                      <Badge variant="outline">
+                        Target: {template.targetScore}%
+                      </Badge>
+                      <Badge variant="outline">
+                        Used {template.usageCount} times
+                      </Badge>
                     </div>
                   </div>
                   <div className="flex gap-2 ml-4">
@@ -303,7 +362,7 @@ export default function AdminTemplateManager() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           handleUnpublishTemplate(template.id);
                         }}
@@ -314,7 +373,7 @@ export default function AdminTemplateManager() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           handlePublishTemplate(template.id);
                         }}
@@ -325,7 +384,7 @@ export default function AdminTemplateManager() {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         setSelectedTemplate(template.id);
                         setEditMode(true);
@@ -336,7 +395,7 @@ export default function AdminTemplateManager() {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         handleDeleteTemplate(template.id);
                       }}
@@ -357,7 +416,9 @@ export default function AdminTemplateManager() {
       {selectedTemplate && editMode && templateDetails && (
         <Card className="border-2 border-blue-600">
           <CardHeader>
-            <CardTitle>Edit Template: {templateDetails.template.name}</CardTitle>
+            <CardTitle>
+              Edit Template: {templateDetails.template.name}
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -365,14 +426,21 @@ export default function AdminTemplateManager() {
                 <label className="text-sm font-medium">Template Name</label>
                 <Input
                   value={formData.name || templateDetails.template.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={e =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                 />
               </div>
               <div>
                 <label className="text-sm font-medium">Strategy</label>
                 <select
                   value={formData.strategy || templateDetails.template.strategy}
-                  onChange={(e) => setFormData({ ...formData, strategy: e.target.value as any })}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      strategy: e.target.value as any,
+                    })
+                  }
                   className="w-full px-3 py-2 border rounded-md"
                 >
                   <option value="risk_first">Risk First</option>
@@ -386,8 +454,14 @@ export default function AdminTemplateManager() {
             <div>
               <label className="text-sm font-medium">Description</label>
               <textarea
-                value={formData.description || templateDetails.template.description || ""}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                value={
+                  formData.description ||
+                  templateDetails.template.description ||
+                  ""
+                }
+                onChange={e =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 className="w-full px-3 py-2 border rounded-md"
                 rows={3}
               />
@@ -395,12 +469,19 @@ export default function AdminTemplateManager() {
 
             {templateDetails.actions && templateDetails.actions.length > 0 && (
               <div>
-                <h4 className="font-medium mb-2">Actions ({templateDetails.actions.length})</h4>
+                <h4 className="font-medium mb-2">
+                  Actions ({templateDetails.actions.length})
+                </h4>
                 <div className="space-y-2 max-h-48 overflow-y-auto">
-                  {templateDetails.actions.map((action) => (
-                    <div key={action.id} className="text-sm border-l-2 border-blue-300 pl-3">
+                  {templateDetails.actions.map(action => (
+                    <div
+                      key={action.id}
+                      className="text-sm border-l-2 border-blue-300 pl-3"
+                    >
                       <p className="font-medium">{action.title}</p>
-                      <p className="text-xs text-gray-500">{action.description}</p>
+                      <p className="text-xs text-gray-500">
+                        {action.description}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -414,9 +495,15 @@ export default function AdminTemplateManager() {
                 className="flex-1 gap-2"
               >
                 <Save className="w-4 h-4" />
-                {updateTemplateMutation.isPending ? "Saving..." : "Save Changes"}
+                {updateTemplateMutation.isPending
+                  ? "Saving..."
+                  : "Save Changes"}
               </Button>
-              <Button variant="outline" onClick={() => setEditMode(false)} className="flex-1">
+              <Button
+                variant="outline"
+                onClick={() => setEditMode(false)}
+                className="flex-1"
+              >
                 Cancel
               </Button>
             </div>

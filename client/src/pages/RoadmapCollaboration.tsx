@@ -4,36 +4,47 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, XCircle, MessageSquare, Users, Clock } from "lucide-react";
+import {
+  CheckCircle2,
+  XCircle,
+  MessageSquare,
+  Users,
+  Clock,
+} from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
 interface RoadmapCollaborationProps {
   roadmapId: number;
 }
 
-export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaborationProps) {
-  const [activeTab, setActiveTab] = useState<"comments" | "approvals" | "team" | "activity">(
-    "comments"
-  );
+export default function RoadmapCollaboration({
+  roadmapId,
+}: RoadmapCollaborationProps) {
+  const [activeTab, setActiveTab] = useState<
+    "comments" | "approvals" | "team" | "activity"
+  >("comments");
   const [newComment, setNewComment] = useState("");
   const [showApprovalForm, setShowApprovalForm] = useState(false);
   const [approverIds, setApproverIds] = useState<string>("");
-  const [approverRole, setApproverRole] = useState<"stakeholder" | "manager" | "admin">(
-    "stakeholder"
-  );
+  const [approverRole, setApproverRole] = useState<
+    "stakeholder" | "manager" | "admin"
+  >("stakeholder");
 
   // Fetch comments
-  const { data: comments, isLoading: commentsLoading } = trpc.collaboration.getComments.useQuery({
-    roadmapId,
-  });
+  const { data: comments, isLoading: commentsLoading } =
+    trpc.collaboration.getComments.useQuery({
+      roadmapId,
+    });
 
   // Fetch approval status
-  const { data: approvalStatus } = trpc.collaboration.getApprovalStatus.useQuery({
-    roadmapId,
-  });
+  const { data: approvalStatus } =
+    trpc.collaboration.getApprovalStatus.useQuery({
+      roadmapId,
+    });
 
   // Fetch pending approvals
-  const { data: pendingApprovals } = trpc.collaboration.getPendingApprovals.useQuery({});
+  const { data: pendingApprovals } =
+    trpc.collaboration.getPendingApprovals.useQuery({});
 
   // Fetch activity log
   const { data: activityLog } = trpc.collaboration.getActivityLog.useQuery({
@@ -47,7 +58,8 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
 
   // Mutations
   const addCommentMutation = trpc.collaboration.addComment.useMutation();
-  const requestApprovalMutation = trpc.collaboration.requestApproval.useMutation();
+  const requestApprovalMutation =
+    trpc.collaboration.requestApproval.useMutation();
   const grantAccessMutation = trpc.collaboration.grantAccess.useMutation();
 
   const handleAddComment = async () => {
@@ -64,8 +76,8 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
   const handleRequestApproval = async () => {
     const ids = approverIds
       .split(",")
-      .map((id) => parseInt(id.trim()))
-      .filter((id) => !isNaN(id));
+      .map(id => parseInt(id.trim()))
+      .filter(id => !isNaN(id));
 
     if (ids.length === 0) return;
 
@@ -107,20 +119,27 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
     <div className="space-y-6">
       {/* Approval Status Overview */}
       {approvalStatus && (
-        <Card className={`border ${getApprovalStatusColor(approvalStatus.status)}`}>
+        <Card
+          className={`border ${getApprovalStatusColor(approvalStatus.status)}`}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 {getApprovalStatusIcon(approvalStatus.status)}
                 <div>
-                  <p className="font-semibold capitalize">{approvalStatus.status}</p>
+                  <p className="font-semibold capitalize">
+                    {approvalStatus.status}
+                  </p>
                   <p className="text-sm text-gray-600">
-                    {approvalStatus.approved} of {approvalStatus.totalApprovals} approvals
+                    {approvalStatus.approved} of {approvalStatus.totalApprovals}{" "}
+                    approvals
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold">{approvalStatus.approvalPercentage}%</p>
+                <p className="text-2xl font-bold">
+                  {approvalStatus.approvalPercentage}%
+                </p>
                 <p className="text-xs text-gray-600">Complete</p>
               </div>
             </div>
@@ -154,7 +173,9 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
         <button
           onClick={() => setActiveTab("team")}
           className={`px-4 py-2 font-medium ${
-            activeTab === "team" ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600"
+            activeTab === "team"
+              ? "border-b-2 border-blue-600 text-blue-600"
+              : "text-gray-600"
           }`}
         >
           <Users className="w-4 h-4 inline mr-2" />
@@ -184,7 +205,7 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
               <Textarea
                 placeholder="Share your thoughts, feedback, or approval..."
                 value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
+                onChange={e => setNewComment(e.target.value)}
                 className="min-h-24"
               />
               <Button
@@ -201,7 +222,7 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
             {commentsLoading ? (
               <p className="text-gray-500">Loading comments...</p>
             ) : comments && comments.length > 0 ? (
-              comments.map((comment) => (
+              comments.map(comment => (
                 <Card key={comment.id}>
                   <CardContent className="pt-6">
                     <div className="flex justify-between items-start mb-2">
@@ -243,22 +264,28 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
             </CardHeader>
             <CardContent className="space-y-3">
               {!showApprovalForm ? (
-                <Button onClick={() => setShowApprovalForm(true)}>Request Approval</Button>
+                <Button onClick={() => setShowApprovalForm(true)}>
+                  Request Approval
+                </Button>
               ) : (
                 <>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Approver IDs (comma-separated)</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Approver IDs (comma-separated)
+                    </label>
                     <Input
                       placeholder="e.g., 1, 2, 3"
                       value={approverIds}
-                      onChange={(e) => setApproverIds(e.target.value)}
+                      onChange={e => setApproverIds(e.target.value)}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Approver Role</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Approver Role
+                    </label>
                     <select
                       value={approverRole}
-                      onChange={(e) => setApproverRole(e.target.value as any)}
+                      onChange={e => setApproverRole(e.target.value as any)}
                       className="w-full px-3 py-2 border rounded-md"
                     >
                       <option value="stakeholder">Stakeholder</option>
@@ -269,9 +296,13 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
                   <div className="flex gap-2">
                     <Button
                       onClick={handleRequestApproval}
-                      disabled={!approverIds.trim() || requestApprovalMutation.isPending}
+                      disabled={
+                        !approverIds.trim() || requestApprovalMutation.isPending
+                      }
                     >
-                      {requestApprovalMutation.isPending ? "Requesting..." : "Request"}
+                      {requestApprovalMutation.isPending
+                        ? "Requesting..."
+                        : "Request"}
                     </Button>
                     <Button
                       variant="outline"
@@ -296,13 +327,15 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {pendingApprovals.map((approval) => (
+                  {pendingApprovals.map(approval => (
                     <div
                       key={approval.id}
                       className="flex items-center justify-between p-3 border rounded-lg"
                     >
                       <div>
-                        <p className="font-medium">Roadmap {approval.roadmapId}</p>
+                        <p className="font-medium">
+                          Roadmap {approval.roadmapId}
+                        </p>
                         <p className="text-xs text-gray-500">
                           {new Date(approval.createdAt).toLocaleDateString()}
                         </p>
@@ -327,7 +360,7 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
             <CardContent>
               {teamAccess && teamAccess.length > 0 ? (
                 <div className="space-y-2">
-                  {teamAccess.map((member) => (
+                  {teamAccess.map(member => (
                     <div
                       key={member.id}
                       className="flex items-center justify-between p-3 border rounded-lg"
@@ -354,11 +387,18 @@ export default function RoadmapCollaboration({ roadmapId }: RoadmapCollaboration
           <CardContent>
             {activityLog && activityLog.length > 0 ? (
               <div className="space-y-3">
-                {activityLog.map((activity) => (
-                  <div key={activity.id} className="flex gap-3 pb-3 border-b last:border-b-0">
+                {activityLog.map(activity => (
+                  <div
+                    key={activity.id}
+                    className="flex gap-3 pb-3 border-b last:border-b-0"
+                  >
                     <div className="flex-1">
-                      <p className="font-medium capitalize">{activity.activityType}</p>
-                      <p className="text-sm text-gray-600">{activity.description}</p>
+                      <p className="font-medium capitalize">
+                        {activity.activityType}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {activity.description}
+                      </p>
                       <p className="text-xs text-gray-500">
                         {new Date(activity.createdAt).toLocaleString()}
                       </p>

@@ -1,29 +1,29 @@
 /**
  * RSS Feed Aggregator for ESG Regulations Hub
  * Fetches news from official sources and populates the hub_news table
- * 
+ *
  * Usage: node server/rss-aggregator.mjs
  * Schedule: Run daily via cron or scheduler
  */
 
-import fetch from 'node-fetch';
-import { parseStringPromise } from 'xml2js';
+import fetch from "node-fetch";
+import { parseStringPromise } from "xml2js";
 
 const RSS_SOURCES = [
   {
-    name: 'EU Commission - Sustainability',
-    url: 'https://ec.europa.eu/info/rss_en',
-    category: 'OFFICIAL',
+    name: "EU Commission - Sustainability",
+    url: "https://ec.europa.eu/info/rss_en",
+    category: "OFFICIAL",
   },
   {
-    name: 'EFRAG News',
-    url: 'https://www.efrag.org/news',
-    category: 'OFFICIAL',
+    name: "EFRAG News",
+    url: "https://www.efrag.org/news",
+    category: "OFFICIAL",
   },
   {
-    name: 'GS1 Standards Updates',
-    url: 'https://www.gs1.org/standards/news',
-    category: 'OFFICIAL',
+    name: "GS1 Standards Updates",
+    url: "https://www.gs1.org/standards/news",
+    category: "OFFICIAL",
   },
 ];
 
@@ -34,7 +34,7 @@ async function fetchRSSFeed(url) {
   try {
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'ISA-Hub/1.0 (ESG Regulations News Aggregator)',
+        "User-Agent": "ISA-Hub/1.0 (ESG Regulations News Aggregator)",
       },
     });
 
@@ -49,12 +49,12 @@ async function fetchRSSFeed(url) {
     // Extract items from RSS feed
     const items = parsed.rss?.channel?.[0]?.item || [];
 
-    return items.map((item) => ({
-      title: item.title?.[0] || 'Untitled',
-      link: item.link?.[0] || '',
-      description: item.description?.[0] || '',
+    return items.map(item => ({
+      title: item.title?.[0] || "Untitled",
+      link: item.link?.[0] || "",
+      description: item.description?.[0] || "",
       pubDate: item.pubDate?.[0] || new Date().toISOString(),
-      source: item.source?.[0]?.title?.[0] || 'Unknown',
+      source: item.source?.[0]?.title?.[0] || "Unknown",
     }));
   } catch (error) {
     console.error(`[RSS] Error fetching ${url}:`, error.message);
@@ -66,7 +66,7 @@ async function fetchRSSFeed(url) {
  * Aggregate news from all sources
  */
 async function aggregateNews() {
-  console.log('[RSS] Starting news aggregation...');
+  console.log("[RSS] Starting news aggregation...");
 
   const allNews = [];
 
@@ -76,7 +76,7 @@ async function aggregateNews() {
     console.log(`[RSS] Found ${items.length} items from ${source.name}`);
 
     allNews.push(
-      ...items.map((item) => ({
+      ...items.map(item => ({
         ...item,
         category: source.category,
         sourceUrl: source.url,
@@ -99,7 +99,15 @@ async function aggregateNews() {
  * Detect regulation mentions in news content
  */
 function detectRegulations(text) {
-  const regulations = ['CSRD', 'ESRS', 'EUDR', 'DPP', 'ESPR', 'EU_TAXONOMY', 'CSDDD'];
+  const regulations = [
+    "CSRD",
+    "ESRS",
+    "EUDR",
+    "DPP",
+    "ESPR",
+    "EU_TAXONOMY",
+    "CSDDD",
+  ];
   const mentioned = [];
 
   for (const reg of regulations) {
@@ -115,7 +123,14 @@ function detectRegulations(text) {
  * Detect GS1 standards mentions
  */
 function detectStandards(text) {
-  const standards = ['GTIN', 'EPCIS', 'GLN', 'Digital Product Passport', 'QR Code', 'Traceability'];
+  const standards = [
+    "GTIN",
+    "EPCIS",
+    "GLN",
+    "Digital Product Passport",
+    "QR Code",
+    "Traceability",
+  ];
   const mentioned = [];
 
   for (const std of standards) {
@@ -135,22 +150,24 @@ async function main() {
     const news = await aggregateNews();
 
     // Enrich with regulation and standard detection
-    const enrichedNews = news.map((item) => ({
+    const enrichedNews = news.map(item => ({
       ...item,
-      regulationsMentioned: detectRegulations(item.title + ' ' + item.description),
-      standardsMentioned: detectStandards(item.title + ' ' + item.description),
+      regulationsMentioned: detectRegulations(
+        item.title + " " + item.description
+      ),
+      standardsMentioned: detectStandards(item.title + " " + item.description),
     }));
 
     // Log sample
     if (enrichedNews.length > 0) {
-      console.log('\n[RSS] Sample enriched news item:');
+      console.log("\n[RSS] Sample enriched news item:");
       console.log(JSON.stringify(enrichedNews[0], null, 2));
     }
 
-    console.log('[RSS] News aggregation completed successfully');
+    console.log("[RSS] News aggregation completed successfully");
     process.exit(0);
   } catch (error) {
-    console.error('[RSS] Aggregation failed:', error);
+    console.error("[RSS] Aggregation failed:", error);
     process.exit(1);
   }
 }

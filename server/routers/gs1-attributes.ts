@@ -1,6 +1,6 @@
 /**
  * GS1 Attributes Router
- * 
+ *
  * Provides tRPC procedures for fetching GS1 Data Source Benelux attributes
  * and GS1 Web Vocabulary terms mapped to regulations.
  */
@@ -8,12 +8,12 @@
 import { router, publicProcedure } from "../_core/trpc";
 import { z } from "zod";
 import { getDb } from "../db";
-import { 
-  gs1Attributes, 
+import {
+  gs1Attributes,
   gs1AttributeCodeLists,
   gs1WebVocabulary,
   attributeRegulationMappings,
-  regulations 
+  regulations,
 } from "../../drizzle/schema";
 import { eq, and, desc } from "drizzle-orm";
 
@@ -22,10 +22,12 @@ export const gs1AttributesRouter = router({
    * Get GS1 Data Source Benelux attributes for a regulation
    */
   getAttributesByRegulation: publicProcedure
-    .input(z.object({
-      regulationId: z.number(),
-      sector: z.enum(["food_hb", "diy_garden_pet", "healthcare"]).optional(),
-    }))
+    .input(
+      z.object({
+        regulationId: z.number(),
+        sector: z.enum(["food_hb", "diy_garden_pet", "healthcare"]).optional(),
+      })
+    )
     .query(async ({ input }) => {
       const db = await getDb();
       if (!db) throw new Error("Database not available");
@@ -37,7 +39,10 @@ export const gs1AttributesRouter = router({
           mapping: attributeRegulationMappings,
         })
         .from(attributeRegulationMappings)
-        .innerJoin(gs1Attributes, eq(attributeRegulationMappings.attributeId, gs1Attributes.id))
+        .innerJoin(
+          gs1Attributes,
+          eq(attributeRegulationMappings.attributeId, gs1Attributes.id)
+        )
         .where(eq(attributeRegulationMappings.regulationId, input.regulationId))
         .orderBy(desc(attributeRegulationMappings.relevanceScore));
 
@@ -72,10 +77,12 @@ export const gs1AttributesRouter = router({
    * Get GS1 Web Vocabulary terms for a regulation
    */
   getWebVocabularyByRegulation: publicProcedure
-    .input(z.object({
-      regulationId: z.number(),
-      termType: z.enum(["class", "property"]).optional(),
-    }))
+    .input(
+      z.object({
+        regulationId: z.number(),
+        termType: z.enum(["class", "property"]).optional(),
+      })
+    )
     .query(async ({ input }) => {
       const db = await getDb();
       if (!db) throw new Error("Database not available");
@@ -95,7 +102,10 @@ export const gs1AttributesRouter = router({
       let relevanceFilter;
       if (regulation.regulationType === "DPP") {
         relevanceFilter = eq(gs1WebVocabulary.dppRelevant, true);
-      } else if (regulation.regulationType === "ESRS" || regulation.regulationType === "CSRD") {
+      } else if (
+        regulation.regulationType === "ESRS" ||
+        regulation.regulationType === "CSRD"
+      ) {
         relevanceFilter = eq(gs1WebVocabulary.esrsRelevant, true);
       } else if (regulation.regulationType === "EUDR") {
         relevanceFilter = eq(gs1WebVocabulary.eudrRelevant, true);
@@ -107,7 +117,10 @@ export const gs1AttributesRouter = router({
       }
 
       // Build query conditions
-      const conditions = [relevanceFilter, eq(gs1WebVocabulary.isDeprecated, false)];
+      const conditions = [
+        relevanceFilter,
+        eq(gs1WebVocabulary.isDeprecated, false),
+      ];
       if (input.termType) {
         conditions.push(eq(gs1WebVocabulary.termType, input.termType));
       }
@@ -124,12 +137,14 @@ export const gs1AttributesRouter = router({
    * Get all GS1 attributes (for admin/exploration)
    */
   getAllAttributes: publicProcedure
-    .input(z.object({
-      sector: z.enum(["food_hb", "diy_garden_pet", "healthcare"]).optional(),
-      packagingRelated: z.boolean().optional(),
-      sustainabilityRelated: z.boolean().optional(),
-      limit: z.number().default(100),
-    }))
+    .input(
+      z.object({
+        sector: z.enum(["food_hb", "diy_garden_pet", "healthcare"]).optional(),
+        packagingRelated: z.boolean().optional(),
+        sustainabilityRelated: z.boolean().optional(),
+        limit: z.number().default(100),
+      })
+    )
     .query(async ({ input }) => {
       const db = await getDb();
       if (!db) throw new Error("Database not available");
@@ -139,10 +154,14 @@ export const gs1AttributesRouter = router({
         conditions.push(eq(gs1Attributes.sector, input.sector));
       }
       if (input.packagingRelated !== undefined) {
-        conditions.push(eq(gs1Attributes.packagingRelated, input.packagingRelated));
+        conditions.push(
+          eq(gs1Attributes.packagingRelated, input.packagingRelated)
+        );
       }
       if (input.sustainabilityRelated !== undefined) {
-        conditions.push(eq(gs1Attributes.sustainabilityRelated, input.sustainabilityRelated));
+        conditions.push(
+          eq(gs1Attributes.sustainabilityRelated, input.sustainabilityRelated)
+        );
       }
 
       const attributes = await db
@@ -157,35 +176,36 @@ export const gs1AttributesRouter = router({
   /**
    * Get attribute statistics
    */
-  getAttributeStats: publicProcedure
-    .query(async () => {
-      const db = await getDb();
-      if (!db) throw new Error("Database not available");
+  getAttributeStats: publicProcedure.query(async () => {
+    const db = await getDb();
+    if (!db) throw new Error("Database not available");
 
-      const [attributes, webVocabTerms, mappings] = await Promise.all([
-        db.select().from(gs1Attributes),
-        db.select().from(gs1WebVocabulary),
-        db.select().from(attributeRegulationMappings),
-      ]);
+    const [attributes, webVocabTerms, mappings] = await Promise.all([
+      db.select().from(gs1Attributes),
+      db.select().from(gs1WebVocabulary),
+      db.select().from(attributeRegulationMappings),
+    ]);
 
-      return {
-        totalAttributes: attributes.length,
-        packagingAttributes: attributes.filter(a => a.packagingRelated).length,
-        sustainabilityAttributes: attributes.filter(a => a.sustainabilityRelated).length,
-        sectorBreakdown: {
-          food_hb: attributes.filter(a => a.sector === "food_hb").length,
-          diy_garden_pet: attributes.filter(a => a.sector === "diy_garden_pet").length,
-          healthcare: attributes.filter(a => a.sector === "healthcare").length,
-        },
-        webVocabulary: {
-          totalTerms: webVocabTerms.length,
-          classes: webVocabTerms.filter(t => t.termType === "class").length,
-          properties: webVocabTerms.filter(t => t.termType === "property").length,
-          dppRelevant: webVocabTerms.filter(t => t.dppRelevant).length,
-          esrsRelevant: webVocabTerms.filter(t => t.esrsRelevant).length,
-          eudrRelevant: webVocabTerms.filter(t => t.eudrRelevant).length,
-        },
-        totalMappings: mappings.length,
-      };
-    }),
+    return {
+      totalAttributes: attributes.length,
+      packagingAttributes: attributes.filter(a => a.packagingRelated).length,
+      sustainabilityAttributes: attributes.filter(a => a.sustainabilityRelated)
+        .length,
+      sectorBreakdown: {
+        food_hb: attributes.filter(a => a.sector === "food_hb").length,
+        diy_garden_pet: attributes.filter(a => a.sector === "diy_garden_pet")
+          .length,
+        healthcare: attributes.filter(a => a.sector === "healthcare").length,
+      },
+      webVocabulary: {
+        totalTerms: webVocabTerms.length,
+        classes: webVocabTerms.filter(t => t.termType === "class").length,
+        properties: webVocabTerms.filter(t => t.termType === "property").length,
+        dppRelevant: webVocabTerms.filter(t => t.dppRelevant).length,
+        esrsRelevant: webVocabTerms.filter(t => t.esrsRelevant).length,
+        eudrRelevant: webVocabTerms.filter(t => t.eudrRelevant).length,
+      },
+      totalMappings: mappings.length,
+    };
+  }),
 });

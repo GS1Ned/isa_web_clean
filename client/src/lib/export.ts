@@ -14,7 +14,10 @@ export interface Regulation {
 /**
  * Export regulations to JSON format
  */
-export function exportToJSON(regulations: Regulation[], filename: string = "regulations.json") {
+export function exportToJSON(
+  regulations: Regulation[],
+  filename: string = "regulations.json"
+) {
   const dataStr = JSON.stringify(regulations, null, 2);
   const dataBlob = new Blob([dataStr], { type: "application/json" });
   downloadFile(dataBlob, filename);
@@ -23,10 +26,20 @@ export function exportToJSON(regulations: Regulation[], filename: string = "regu
 /**
  * Export regulations to CSV format
  */
-export function exportToCSV(regulations: Regulation[], filename: string = "regulations.csv") {
-  const headers = ["CELEX ID", "Title", "Type", "Description", "Effective Date", "Source URL"];
+export function exportToCSV(
+  regulations: Regulation[],
+  filename: string = "regulations.csv"
+) {
+  const headers = [
+    "CELEX ID",
+    "Title",
+    "Type",
+    "Description",
+    "Effective Date",
+    "Source URL",
+  ];
 
-  const rows = regulations.map((reg) => [
+  const rows = regulations.map(reg => [
     reg.celexId || "",
     reg.title || "",
     reg.regulationType || "",
@@ -36,8 +49,10 @@ export function exportToCSV(regulations: Regulation[], filename: string = "regul
   ]);
 
   const csvContent = [
-    headers.map((h) => `"${h}"`).join(","),
-    ...rows.map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")),
+    headers.map(h => `"${h}"`).join(","),
+    ...rows.map(row =>
+      row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+    ),
   ].join("\n");
 
   const dataBlob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -47,7 +62,10 @@ export function exportToCSV(regulations: Regulation[], filename: string = "regul
 /**
  * Export regulations to PDF format
  */
-export function exportToPDF(regulations: Regulation[], filename: string = "regulations.pdf") {
+export function exportToPDF(
+  regulations: Regulation[],
+  filename: string = "regulations.pdf"
+) {
   const doc = new jsPDF();
 
   // Add title
@@ -61,7 +79,7 @@ export function exportToPDF(regulations: Regulation[], filename: string = "regul
   doc.text(`Total Regulations: ${regulations.length}`, 14, 32);
 
   // Add table
-  const tableData = regulations.map((reg) => [
+  const tableData = regulations.map(reg => [
     reg.celexId || "—",
     reg.title || "—",
     reg.regulationType || "—",
@@ -93,7 +111,10 @@ export function exportToPDF(regulations: Regulation[], filename: string = "regul
 /**
  * Export regulations to HTML format
  */
-export function exportToHTML(regulations: Regulation[], filename: string = "regulations.html") {
+export function exportToHTML(
+  regulations: Regulation[],
+  filename: string = "regulations.html"
+) {
   const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
@@ -145,7 +166,7 @@ export function exportToHTML(regulations: Regulation[], filename: string = "regu
       <tbody>
         ${regulations
           .map(
-            (reg) => `
+            reg => `
         <tr>
           <td>${reg.celexId || "—"}</td>
           <td>${reg.title || "—"}</td>
@@ -167,7 +188,9 @@ export function exportToHTML(regulations: Regulation[], filename: string = "regu
 </html>
   `;
 
-  const dataBlob = new Blob([htmlContent], { type: "text/html;charset=utf-8;" });
+  const dataBlob = new Blob([htmlContent], {
+    type: "text/html;charset=utf-8;",
+  });
   downloadFile(dataBlob, filename);
 }
 
@@ -188,7 +211,9 @@ function downloadFile(blob: Blob, filename: string) {
 /**
  * Generate filename with timestamp
  */
-export function generateFilename(format: "json" | "csv" | "pdf" | "html"): string {
+export function generateFilename(
+  format: "json" | "csv" | "pdf" | "html"
+): string {
   const timestamp = new Date().toISOString().split("T")[0];
   const extensions: Record<string, string> = {
     json: "json",

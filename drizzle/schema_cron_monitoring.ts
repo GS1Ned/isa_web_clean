@@ -3,7 +3,14 @@
  * Tables for tracking cron job execution history
  */
 
-import { mysqlTable, int, varchar, text, datetime, timestamp } from "drizzle-orm/mysql-core";
+import {
+  mysqlTable,
+  int,
+  varchar,
+  text,
+  datetime,
+  timestamp,
+} from "drizzle-orm/mysql-core";
 
 /**
  * Cron execution logs table

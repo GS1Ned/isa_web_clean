@@ -16,13 +16,18 @@ export async function getRecommendationsByNewsId(newsId: number) {
       .from(newsRecommendations)
       .where(eq(newsRecommendations.newsId, newsId));
 
-    return recs.map((rec) => ({
+    return recs.map(rec => ({
       ...rec,
       relevanceScore: Number(rec.relevanceScore),
-      matchedKeywords: rec.matchedKeywords ? JSON.parse(rec.matchedKeywords) : [],
+      matchedKeywords: rec.matchedKeywords
+        ? JSON.parse(rec.matchedKeywords)
+        : [],
     }));
   } catch (error) {
-    console.error("[db-recommendations] Failed to fetch recommendations:", error);
+    console.error(
+      "[db-recommendations] Failed to fetch recommendations:",
+      error
+    );
     return [];
   }
 }

@@ -7,7 +7,9 @@ import { Star, Copy, TrendingUp, Users } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
 export default function TemplateLibrary() {
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
+  const [selectedCategory, setSelectedCategory] = useState<
+    string | undefined
+  >();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
   const [showCloneForm, setShowCloneForm] = useState(false);
@@ -17,11 +19,12 @@ export default function TemplateLibrary() {
   const { data: categories } = trpc.templates.getCategories.useQuery();
 
   // Fetch templates
-  const { data: templates, isLoading: templatesLoading } = trpc.templates.listTemplates.useQuery({
-    category: selectedCategory,
-    search: searchTerm || undefined,
-    limit: 20,
-  });
+  const { data: templates, isLoading: templatesLoading } =
+    trpc.templates.listTemplates.useQuery({
+      category: selectedCategory,
+      search: searchTerm || undefined,
+      limit: 20,
+    });
 
   // Fetch template details
   const { data: templateDetails } = trpc.templates.getTemplate.useQuery(
@@ -80,7 +83,8 @@ export default function TemplateLibrary() {
       <div>
         <h1 className="text-3xl font-bold mb-2">Roadmap Templates</h1>
         <p className="text-gray-600">
-          Start your compliance journey with pre-built roadmaps for common scenarios
+          Start your compliance journey with pre-built roadmaps for common
+          scenarios
         </p>
       </div>
 
@@ -114,7 +118,7 @@ export default function TemplateLibrary() {
               <div>
                 <p className="text-sm text-gray-600">Top Rated</p>
                 <div className="flex gap-1 mt-2">
-                  {stats.topRated.slice(0, 3).map((t) => (
+                  {stats.topRated.slice(0, 3).map(t => (
                     <Badge key={t.id} variant="outline" className="text-xs">
                       {t.name.substring(0, 8)}...
                     </Badge>
@@ -128,7 +132,7 @@ export default function TemplateLibrary() {
               <div>
                 <p className="text-sm text-gray-600">Most Used</p>
                 <div className="flex gap-1 mt-2">
-                  {stats.mostUsed.slice(0, 3).map((t) => (
+                  {stats.mostUsed.slice(0, 3).map(t => (
                     <Badge key={t.id} variant="outline" className="text-xs">
                       {t.name.substring(0, 8)}...
                     </Badge>
@@ -145,7 +149,7 @@ export default function TemplateLibrary() {
         <Input
           placeholder="Search templates..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
           className="w-full"
         />
 
@@ -156,7 +160,7 @@ export default function TemplateLibrary() {
           >
             All
           </Button>
-          {categories?.map((cat) => (
+          {categories?.map(cat => (
             <Button
               key={cat.id}
               variant={selectedCategory === cat.id ? "default" : "outline"}
@@ -173,7 +177,7 @@ export default function TemplateLibrary() {
         {templatesLoading ? (
           <p className="text-gray-500">Loading templates...</p>
         ) : templates && templates.length > 0 ? (
-          templates.map((template) => (
+          templates.map(template => (
             <Card
               key={template.id}
               className={`cursor-pointer transition-all ${
@@ -185,11 +189,15 @@ export default function TemplateLibrary() {
                 <div className="flex justify-between items-start">
                   <div>
                     <CardTitle className="text-lg">{template.name}</CardTitle>
-                    <p className="text-xs text-gray-500 mt-1">{template.category}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {template.category}
+                    </p>
                   </div>
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm font-medium">{template.rating}</span>
+                    <span className="text-sm font-medium">
+                      {template.rating}
+                    </span>
                   </div>
                 </div>
               </CardHeader>
@@ -200,7 +208,9 @@ export default function TemplateLibrary() {
                   <Badge className={getStrategyColor(template.strategy)}>
                     {template.strategy.replace(/_/g, " ")}
                   </Badge>
-                  <Badge variant="outline">{template.estimatedEffort}h effort</Badge>
+                  <Badge variant="outline">
+                    {template.estimatedEffort}h effort
+                  </Badge>
                 </div>
 
                 <div className="flex justify-between text-xs text-gray-500">
@@ -210,7 +220,7 @@ export default function TemplateLibrary() {
 
                 <Button
                   className="w-full"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     setShowCloneForm(true);
                   }}
@@ -235,7 +245,9 @@ export default function TemplateLibrary() {
           <CardContent className="space-y-4">
             <div>
               <h4 className="font-medium mb-2">Description</h4>
-              <p className="text-sm text-gray-600">{templateDetails.description}</p>
+              <p className="text-sm text-gray-600">
+                {templateDetails.description}
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -249,47 +261,66 @@ export default function TemplateLibrary() {
               </div>
               <div>
                 <p className="text-xs text-gray-500">Estimated Effort</p>
-                <p className="font-medium">{templateDetails.estimatedEffort} hours</p>
+                <p className="font-medium">
+                  {templateDetails.estimatedEffort} hours
+                </p>
               </div>
               <div>
                 <p className="text-xs text-gray-500">Estimated Impact</p>
-                <p className="font-medium">+{templateDetails.estimatedImpact}%</p>
+                <p className="font-medium">
+                  +{templateDetails.estimatedImpact}%
+                </p>
               </div>
             </div>
 
             {templateDetails.actions && templateDetails.actions.length > 0 && (
               <div>
-                <h4 className="font-medium mb-2">Actions ({templateDetails.actions.length})</h4>
+                <h4 className="font-medium mb-2">
+                  Actions ({templateDetails.actions.length})
+                </h4>
                 <div className="space-y-2 max-h-48 overflow-y-auto">
-                  {templateDetails.actions.map((action) => (
-                    <div key={action.id} className="text-sm border-l-2 border-blue-300 pl-3">
+                  {templateDetails.actions.map(action => (
+                    <div
+                      key={action.id}
+                      className="text-sm border-l-2 border-blue-300 pl-3"
+                    >
                       <p className="font-medium">{action.title}</p>
-                      <p className="text-xs text-gray-500">{action.description}</p>
+                      <p className="text-xs text-gray-500">
+                        {action.description}
+                      </p>
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {templateDetails.milestones && templateDetails.milestones.length > 0 && (
-              <div>
-                <h4 className="font-medium mb-2">Milestones ({templateDetails.milestones.length})</h4>
-                <div className="space-y-2">
-                  {templateDetails.milestones.map((milestone) => (
-                    <div key={milestone.id} className="text-sm flex justify-between">
-                      <span>{milestone.title}</span>
-                      <span className="text-gray-500">{milestone.targetScore}%</span>
-                    </div>
-                  ))}
+            {templateDetails.milestones &&
+              templateDetails.milestones.length > 0 && (
+                <div>
+                  <h4 className="font-medium mb-2">
+                    Milestones ({templateDetails.milestones.length})
+                  </h4>
+                  <div className="space-y-2">
+                    {templateDetails.milestones.map(milestone => (
+                      <div
+                        key={milestone.id}
+                        className="text-sm flex justify-between"
+                      >
+                        <span>{milestone.title}</span>
+                        <span className="text-gray-500">
+                          {milestone.targetScore}%
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {/* Rating */}
             <div>
               <p className="text-sm font-medium mb-2">Rate this template</p>
               <div className="flex gap-1">
-                {[1, 2, 3, 4, 5].map((rating) => (
+                {[1, 2, 3, 4, 5].map(rating => (
                   <button
                     key={rating}
                     onClick={() => handleRateTemplate(rating)}
@@ -297,7 +328,8 @@ export default function TemplateLibrary() {
                   >
                     <Star
                       className={`w-5 h-5 ${
-                        rating <= parseFloat((templateDetails.rating || 0).toString())
+                        rating <=
+                        parseFloat((templateDetails.rating || 0).toString())
                           ? "fill-yellow-400 text-yellow-400"
                           : "text-gray-300"
                       }`}
@@ -314,16 +346,20 @@ export default function TemplateLibrary() {
                   type="text"
                   placeholder="Enter roadmap title..."
                   value={cloneTitle}
-                  onChange={(e) => setCloneTitle(e.target.value)}
+                  onChange={e => setCloneTitle(e.target.value)}
                   className="w-full px-3 py-2 border rounded-md"
                 />
                 <div className="flex gap-2">
                   <Button
                     onClick={handleCloneTemplate}
-                    disabled={!cloneTitle.trim() || cloneTemplateMutation.isPending}
+                    disabled={
+                      !cloneTitle.trim() || cloneTemplateMutation.isPending
+                    }
                     className="flex-1"
                   >
-                    {cloneTemplateMutation.isPending ? "Creating..." : "Create Roadmap"}
+                    {cloneTemplateMutation.isPending
+                      ? "Creating..."
+                      : "Create Roadmap"}
                   </Button>
                   <Button
                     variant="outline"

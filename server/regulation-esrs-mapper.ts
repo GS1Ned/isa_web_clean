@@ -1,6 +1,9 @@
 import { invokeLLM } from "./_core/llm";
 import { getDb } from "./db";
-import { upsertRegulationEsrsMapping, deleteRegulationEsrsMappings } from "./db";
+import {
+  upsertRegulationEsrsMapping,
+  deleteRegulationEsrsMappings,
+} from "./db";
 
 /**
  * LLM-powered regulation-to-ESRS datapoint mapper
@@ -17,7 +20,9 @@ interface DatapointMatch {
 /**
  * Generate ESRS datapoint mappings for a regulation using LLM
  */
-export async function generateRegulationEsrsMappings(regulationId: number): Promise<{
+export async function generateRegulationEsrsMappings(
+  regulationId: number
+): Promise<{
   success: boolean;
   mappingsCount: number;
   error?: string;
@@ -25,7 +30,11 @@ export async function generateRegulationEsrsMappings(regulationId: number): Prom
   try {
     const db = await getDb();
     if (!db) {
-      return { success: false, mappingsCount: 0, error: "Database not available" };
+      return {
+        success: false,
+        mappingsCount: 0,
+        error: "Database not available",
+      };
     }
 
     // 1. Fetch regulation details
@@ -39,7 +48,11 @@ export async function generateRegulationEsrsMappings(regulationId: number): Prom
       .limit(1);
 
     if (regulationResults.length === 0) {
-      return { success: false, mappingsCount: 0, error: "Regulation not found" };
+      return {
+        success: false,
+        mappingsCount: 0,
+        error: "Regulation not found",
+      };
     }
 
     const regulation = regulationResults[0];
@@ -49,7 +62,11 @@ export async function generateRegulationEsrsMappings(regulationId: number): Prom
     const allDatapoints = await db.select().from(esrsDatapoints);
 
     if (allDatapoints.length === 0) {
-      return { success: false, mappingsCount: 0, error: "No ESRS datapoints found" };
+      return {
+        success: false,
+        mappingsCount: 0,
+        error: "No ESRS datapoints found",
+      };
     }
 
     // 3. Build LLM prompt
@@ -60,7 +77,8 @@ export async function generateRegulationEsrsMappings(regulationId: number): Prom
       messages: [
         {
           role: "system",
-          content: "You are an ESG compliance expert specializing in ESRS (European Sustainability Reporting Standards). Your task is to analyze EU regulations and identify which ESRS datapoints are relevant for compliance reporting.",
+          content:
+            "You are an ESG compliance expert specializing in ESRS (European Sustainability Reporting Standards). Your task is to analyze EU regulations and identify which ESRS datapoints are relevant for compliance reporting.",
         },
         {
           role: "user",
@@ -90,14 +108,21 @@ export async function generateRegulationEsrsMappings(regulationId: number): Prom
                     },
                     relevanceScore: {
                       type: "integer",
-                      description: "Relevance score from 1-10 (10 = highly relevant)",
+                      description:
+                        "Relevance score from 1-10 (10 = highly relevant)",
                     },
                     reasoning: {
                       type: "string",
-                      description: "Brief explanation of why this datapoint is relevant",
+                      description:
+                        "Brief explanation of why this datapoint is relevant",
                     },
                   },
-                  required: ["datapointId", "esrsStandard", "relevanceScore", "reasoning"],
+                  required: [
+                    "datapointId",
+                    "esrsStandard",
+                    "relevanceScore",
+                    "reasoning",
+                  ],
                   additionalProperties: false,
                 },
               },
@@ -112,7 +137,11 @@ export async function generateRegulationEsrsMappings(regulationId: number): Prom
     // 5. Parse LLM response
     const content = response.choices[0]?.message?.content;
     if (!content || typeof content !== "string") {
-      return { success: false, mappingsCount: 0, error: "Invalid LLM response" };
+      return {
+        success: false,
+        mappingsCount: 0,
+        error: "Invalid LLM response",
+      };
     }
 
     const result = JSON.parse(content) as { mappings: DatapointMatch[] };
@@ -124,9 +153,13 @@ export async function generateRegulationEsrsMappings(regulationId: number): Prom
     let insertedCount = 0;
     for (const match of result.mappings) {
       // Find datapoint by datapointId
-      const datapoint = allDatapoints.find(dp => dp.datapointId === match.datapointId);
+      const datapoint = allDatapoints.find(
+        dp => dp.datapointId === match.datapointId
+      );
       if (!datapoint) {
-        console.warn(`[Mapper] Datapoint ${match.datapointId} not found, skipping`);
+        console.warn(
+          `[Mapper] Datapoint ${match.datapointId} not found, skipping`
+        );
         continue;
       }
 
@@ -142,7 +175,9 @@ export async function generateRegulationEsrsMappings(regulationId: number): Prom
       }
     }
 
-    console.log(`[Mapper] Generated ${insertedCount} ESRS mappings for regulation ${regulationId}`);
+    console.log(
+      `[Mapper] Generated ${insertedCount} ESRS mappings for regulation ${regulationId}`
+    );
 
     return {
       success: true,
@@ -162,8 +197,17 @@ export async function generateRegulationEsrsMappings(regulationId: number): Prom
  * Build LLM prompt for mapping regulation to ESRS datapoints
  */
 function buildMappingPrompt(
-  regulation: { title: string; description: string | null; regulationType: string },
-  datapoints: Array<{ datapointId: string; esrsStandard: string; datapointName: string; dataType: string | null }>
+  regulation: {
+    title: string;
+    description: string | null;
+    regulationType: string;
+  },
+  datapoints: Array<{
+    datapointId: string;
+    esrsStandard: string;
+    datapointName: string;
+    dataType: string | null;
+  }>
 ): string {
   // Group datapoints by standard for better context
   const datapointsByStandard: Record<string, typeof datapoints> = {};

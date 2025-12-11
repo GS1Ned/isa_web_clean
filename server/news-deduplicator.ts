@@ -65,8 +65,8 @@ function titleSimilarity(title1: string, title2: string): number {
 
   const distance = levenshteinDistance(normalized1, normalized2);
   const maxLength = Math.max(normalized1.length, normalized2.length);
-  
-  return 1 - (distance / maxLength);
+
+  return 1 - distance / maxLength;
 }
 
 /**
@@ -101,10 +101,16 @@ function isDuplicate(item1: NewsItem, item2: NewsItem): boolean {
   if (contentSim >= 0.6 && titleSim >= 0.5) return true;
 
   // Check if titles share significant keywords
-  const words1 = item1.title.toLowerCase().split(/\s+/).filter(w => w.length > 4);
-  const words2 = item2.title.toLowerCase().split(/\s+/).filter(w => w.length > 4);
+  const words1 = item1.title
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(w => w.length > 4);
+  const words2 = item2.title
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(w => w.length > 4);
   const sharedWords = words1.filter(w => words2.includes(w));
-  
+
   if (sharedWords.length >= 3 && contentSim >= 0.5) return true;
 
   return false;
@@ -183,9 +189,9 @@ export function logDeduplicationStats(
   console.log(`[Deduplication] Multi-source items: ${multiSourceItems.length}`);
 
   if (multiSourceItems.length > 0) {
-    console.log('\n[Deduplication] Multi-source articles:');
+    console.log("\n[Deduplication] Multi-source articles:");
     multiSourceItems.forEach(item => {
-      const sourceNames = item.sources.map(s => s.name).join(', ');
+      const sourceNames = item.sources.map(s => s.name).join(", ");
       console.log(`  - "${item.title}" (${sourceNames})`);
     });
   }

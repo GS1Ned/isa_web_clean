@@ -19,7 +19,13 @@ interface NewsCardProps {
     sourceUrl: string;
     sourceTitle: string;
     sourceType: "EU_OFFICIAL" | "GS1_OFFICIAL" | "INDUSTRY" | "MEDIA";
-    newsType: "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL";
+    newsType:
+      | "NEW_LAW"
+      | "AMENDMENT"
+      | "ENFORCEMENT"
+      | "COURT_DECISION"
+      | "GUIDANCE"
+      | "PROPOSAL";
     sources?: Array<{ name: string; type: string; url: string }> | null;
   };
 }
@@ -40,7 +46,7 @@ export function NewsCard({ news }: NewsCardProps) {
     newsType,
     sources,
   } = news;
-  
+
   const isMultiSource = sources && sources.length > 1;
   const impactConfig = {
     HIGH: {
@@ -87,65 +93,74 @@ export function NewsCard({ news }: NewsCardProps) {
 
   return (
     <Link href={`/news/${id}`}>
-      <Card className={`hover:shadow-lg transition-shadow border-l-4 ${config.borderColor} cursor-pointer`}>
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-lg leading-tight mb-2 line-clamp-2">
-              {title}
-            </h3>
-            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-              <span>{formatDistanceToNow(new Date(publishedDate), { addSuffix: true })}</span>
-              <span>•</span>
-              {isMultiSource ? (
-                <span className="font-medium text-primary">
-                  {sources.length} sources
+      <Card
+        className={`hover:shadow-lg transition-shadow border-l-4 ${config.borderColor} cursor-pointer`}
+      >
+        <CardHeader className="pb-3">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-lg leading-tight mb-2 line-clamp-2">
+                {title}
+              </h3>
+              <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                <span>
+                  {formatDistanceToNow(new Date(publishedDate), {
+                    addSuffix: true,
+                  })}
                 </span>
-              ) : (
-                <span>{sourceTypeLabels[sourceType]}</span>
-              )}
+                <span>•</span>
+                {isMultiSource ? (
+                  <span className="font-medium text-primary">
+                    {sources.length} sources
+                  </span>
+                ) : (
+                  <span>{sourceTypeLabels[sourceType]}</span>
+                )}
+              </div>
+            </div>
+            <div
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md ${config.bgColor} shrink-0`}
+            >
+              <ImpactIcon className={`h-4 w-4 ${config.color}`} />
+              <span className={`text-xs font-medium ${config.color}`}>
+                {config.label}
+              </span>
             </div>
           </div>
-          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md ${config.bgColor} shrink-0`}>
-            <ImpactIcon className={`h-4 w-4 ${config.color}`} />
-            <span className={`text-xs font-medium ${config.color}`}>
-              {config.label}
-            </span>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <p className="text-sm text-muted-foreground line-clamp-3">
-          {summary}
-        </p>
-        
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary" className="text-xs">
-            {newsTypeLabels[newsType]}
-          </Badge>
-          {Array.isArray(regulationTags) && regulationTags.slice(0, 4).map((tag) => (
-            <Badge key={tag} variant="outline" className="text-xs">
-              {tag}
-            </Badge>
-          ))}
-          {Array.isArray(regulationTags) && regulationTags.length > 4 && (
-            <Badge variant="outline" className="text-xs">
-              +{regulationTags.length - 4} more
-            </Badge>
-          )}
-        </div>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <p className="text-sm text-muted-foreground line-clamp-3">
+            {summary}
+          </p>
 
-        <a
-          href={sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
-        >
-          <span>Read full article</span>
-          <ExternalLink className="h-3.5 w-3.5" />
-        </a>
-      </CardContent>
-    </Card>
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="secondary" className="text-xs">
+              {newsTypeLabels[newsType]}
+            </Badge>
+            {Array.isArray(regulationTags) &&
+              regulationTags.slice(0, 4).map(tag => (
+                <Badge key={tag} variant="outline" className="text-xs">
+                  {tag}
+                </Badge>
+              ))}
+            {Array.isArray(regulationTags) && regulationTags.length > 4 && (
+              <Badge variant="outline" className="text-xs">
+                +{regulationTags.length - 4} more
+              </Badge>
+            )}
+          </div>
+
+          <a
+            href={sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+          >
+            <span>Read full article</span>
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+        </CardContent>
+      </Card>
     </Link>
   );
 }

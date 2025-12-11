@@ -22,7 +22,12 @@ export const roadmapRouter = router({
   generateRoadmap: protectedProcedure
     .input(
       z.object({
-        strategy: z.enum(["risk_first", "quick_wins", "balanced", "comprehensive"]),
+        strategy: z.enum([
+          "risk_first",
+          "quick_wins",
+          "balanced",
+          "comprehensive",
+        ]),
         currentScore: z.number().min(0).max(100),
         targetScore: z.number().min(0).max(100),
         timelineWeeks: z.number().min(1).max(52),
@@ -83,7 +88,7 @@ export const roadmapRouter = router({
         progressPercentage: roadmap.progressPercentage,
         startDate: roadmap.startDate,
         targetCompletionDate: roadmap.targetCompletionDate,
-        actions: roadmap.actions.map((a) => ({
+        actions: roadmap.actions.map(a => ({
           id: a.id,
           title: a.title,
           description: a.description,
@@ -97,7 +102,7 @@ export const roadmapRouter = router({
           status: a.status,
           successCriteria: a.successCriteria,
         })),
-        milestones: roadmap.milestones.map((m) => ({
+        milestones: roadmap.milestones.map(m => ({
           id: m.id,
           title: m.title,
           description: m.description,
@@ -123,10 +128,10 @@ export const roadmapRouter = router({
 
       let filtered = roadmaps;
       if (input.status) {
-        filtered = roadmaps.filter((r) => r.status === input.status);
+        filtered = roadmaps.filter(r => r.status === input.status);
       }
 
-      return filtered.slice(0, input.limit).map((r) => ({
+      return filtered.slice(0, input.limit).map(r => ({
         id: r.id,
         title: r.title,
         strategy: r.strategy,
@@ -199,17 +204,17 @@ export const roadmapRouter = router({
       }
 
       const completedActions = roadmap.actions.filter(
-        (a) => a.status === "completed"
+        a => a.status === "completed"
       ).length;
       const inProgressActions = roadmap.actions.filter(
-        (a) => a.status === "in_progress"
+        a => a.status === "in_progress"
       ).length;
       const blockedActions = roadmap.actions.filter(
-        (a) => a.status === "blocked"
+        a => a.status === "blocked"
       ).length;
 
       const completedMilestones = roadmap.milestones.filter(
-        (m) => m.status === "completed"
+        m => m.status === "completed"
       ).length;
 
       return {
@@ -217,7 +222,11 @@ export const roadmapRouter = router({
         completedActions,
         inProgressActions,
         blockedActions,
-        pendingActions: roadmap.actions.length - completedActions - inProgressActions - blockedActions,
+        pendingActions:
+          roadmap.actions.length -
+          completedActions -
+          inProgressActions -
+          blockedActions,
         completionPercentage: Math.round(
           (completedActions / roadmap.actions.length) * 100
         ),

@@ -17,12 +17,16 @@ export interface ArchivalResult {
 /**
  * Archive news items older than specified days
  */
-export async function archiveOldNews(daysThreshold: number = 200): Promise<ArchivalResult> {
+export async function archiveOldNews(
+  daysThreshold: number = 200
+): Promise<ArchivalResult> {
   const startTime = Date.now();
   const errors: string[] = [];
   let archived = 0;
 
-  console.log(`[news-archival] Starting archival for items older than ${daysThreshold} days...`);
+  console.log(
+    `[news-archival] Starting archival for items older than ${daysThreshold} days...`
+  );
 
   try {
     const db = await getDb();
@@ -88,7 +92,9 @@ export async function archiveOldNews(daysThreshold: number = 200): Promise<Archi
     }
 
     const duration = Date.now() - startTime;
-    console.log(`[news-archival] Archival complete: ${archived} archived, ${errors.length} errors, ${duration}ms`);
+    console.log(
+      `[news-archival] Archival complete: ${archived} archived, ${errors.length} errors, ${duration}ms`
+    );
 
     return {
       success: errors.length === 0,
@@ -120,8 +126,12 @@ export async function getArchivalStats() {
       return null;
     }
 
-    const [activeCount] = await db.select({ count: sql<number>`count(*)` }).from(hubNews);
-    const [archivedCount] = await db.select({ count: sql<number>`count(*)` }).from(hubNewsHistory);
+    const [activeCount] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(hubNews);
+    const [archivedCount] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(hubNewsHistory);
 
     // Calculate oldest active news
     const oldestActive = await db

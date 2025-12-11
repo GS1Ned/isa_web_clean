@@ -1,6 +1,10 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { getDb } from "./db";
-import { epcisEvents, supplyChainNodes, supplyChainEdges } from "../drizzle/schema";
+import {
+  epcisEvents,
+  supplyChainNodes,
+  supplyChainEdges,
+} from "../drizzle/schema";
 
 /**
  * EPCIS UI Integration Tests
@@ -99,7 +103,10 @@ describe("EPCIS UI Integration", () => {
       expect(node).toBeTruthy();
 
       // Verify node was created
-      const nodes = await db!.select().from(supplyChainNodes).where({ userId: testUserId });
+      const nodes = await db!
+        .select()
+        .from(supplyChainNodes)
+        .where({ userId: testUserId });
       expect(nodes.length).toBeGreaterThan(0);
       expect(nodes[0].name).toContain("Test Supplier");
       expect(nodes[0].nodeType).toBe("supplier");
@@ -132,7 +139,10 @@ describe("EPCIS UI Integration", () => {
       expect(edge).toBeTruthy();
 
       // Verify edge was created
-      const edges = await db!.select().from(supplyChainEdges).where({ userId: testUserId });
+      const edges = await db!
+        .select()
+        .from(supplyChainEdges)
+        .where({ userId: testUserId });
       expect(edges.length).toBeGreaterThan(0);
       expect(edges[0].relationshipType).toBe("supplies");
     });
@@ -152,10 +162,13 @@ describe("EPCIS UI Integration", () => {
         expect(node).toBeTruthy();
       }
 
-      const nodes = await db!.select().from(supplyChainNodes).where({ userId: testUserId });
-      const lowRisk = nodes.filter((n) => n.riskLevel === "low");
-      const mediumRisk = nodes.filter((n) => n.riskLevel === "medium");
-      const highRisk = nodes.filter((n) => n.riskLevel === "high");
+      const nodes = await db!
+        .select()
+        .from(supplyChainNodes)
+        .where({ userId: testUserId });
+      const lowRisk = nodes.filter(n => n.riskLevel === "low");
+      const mediumRisk = nodes.filter(n => n.riskLevel === "medium");
+      const highRisk = nodes.filter(n => n.riskLevel === "high");
 
       expect(lowRisk.length).toBeGreaterThan(0);
       expect(mediumRisk.length).toBeGreaterThan(0);
@@ -174,8 +187,11 @@ describe("EPCIS UI Integration", () => {
 
       expect(node).toBeTruthy();
 
-      const nodes = await db!.select().from(supplyChainNodes).where({ userId: testUserId });
-      const geoNode = nodes.find((n) => n.name === "Geolocated Supplier");
+      const nodes = await db!
+        .select()
+        .from(supplyChainNodes)
+        .where({ userId: testUserId });
+      const geoNode = nodes.find(n => n.name === "Geolocated Supplier");
 
       expect(geoNode).toBeTruthy();
       expect(geoNode!.locationLat).toBeTruthy();

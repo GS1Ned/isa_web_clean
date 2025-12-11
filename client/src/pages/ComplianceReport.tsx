@@ -1,19 +1,32 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, AlertTriangle, XCircle, FileText, Download } from "lucide-react";
+import {
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+  FileText,
+  Download,
+} from "lucide-react";
 
 export default function ComplianceReport() {
   const [report, setReport] = useState<any>(null);
 
-  const generateReportMutation = trpc.epcis.generateComplianceReport.useMutation({
-    onSuccess: (data) => {
-      setReport(data);
-    },
-  });
+  const generateReportMutation =
+    trpc.epcis.generateComplianceReport.useMutation({
+      onSuccess: data => {
+        setReport(data);
+      },
+    });
 
   const handleGenerateReport = () => {
     setReport(null);
@@ -51,7 +64,8 @@ export default function ComplianceReport() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">EUDR Compliance Report</h1>
         <p className="text-muted-foreground">
-          Generate comprehensive compliance reports analyzing your supply chain data against EUDR requirements
+          Generate comprehensive compliance reports analyzing your supply chain
+          data against EUDR requirements
         </p>
       </div>
 
@@ -60,7 +74,8 @@ export default function ComplianceReport() {
         <CardHeader>
           <CardTitle>Generate Compliance Report</CardTitle>
           <CardDescription>
-            Analyze your uploaded EPCIS events and geolocation data for EUDR compliance
+            Analyze your uploaded EPCIS events and geolocation data for EUDR
+            compliance
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -71,7 +86,9 @@ export default function ComplianceReport() {
               size="lg"
             >
               <FileText className="mr-2 h-5 w-5" />
-              {generateReportMutation.isPending ? "Generating Report..." : "Generate Report"}
+              {generateReportMutation.isPending
+                ? "Generating Report..."
+                : "Generate Report"}
             </Button>
 
             {report && (
@@ -103,14 +120,20 @@ export default function ComplianceReport() {
             <CardContent>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <div className="text-5xl font-bold mb-2">{report.overallScore}/100</div>
+                  <div className="text-5xl font-bold mb-2">
+                    {report.overallScore}/100
+                  </div>
                   <Badge className={getStatusColor(report.status)}>
                     {report.status.toUpperCase()}
                   </Badge>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-muted-foreground mb-1">Total Products</div>
-                  <div className="text-3xl font-bold">{report.statistics.totalProducts}</div>
+                  <div className="text-sm text-muted-foreground mb-1">
+                    Total Products
+                  </div>
+                  <div className="text-3xl font-bold">
+                    {report.statistics.totalProducts}
+                  </div>
                 </div>
               </div>
               <p className="text-muted-foreground">{report.summary}</p>
@@ -125,17 +148,27 @@ export default function ComplianceReport() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="border rounded-lg p-4">
-                  <div className="text-sm text-muted-foreground mb-1">Products with Geolocation</div>
+                  <div className="text-sm text-muted-foreground mb-1">
+                    Products with Geolocation
+                  </div>
                   <div className="text-2xl font-bold">
-                    {report.statistics.productsWithGeolocation}/{report.statistics.totalProducts}
+                    {report.statistics.productsWithGeolocation}/
+                    {report.statistics.totalProducts}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
-                    {((report.statistics.productsWithGeolocation / report.statistics.totalProducts) * 100).toFixed(1)}% coverage
+                    {(
+                      (report.statistics.productsWithGeolocation /
+                        report.statistics.totalProducts) *
+                      100
+                    ).toFixed(1)}
+                    % coverage
                   </div>
                 </div>
 
                 <div className="border rounded-lg p-4">
-                  <div className="text-sm text-muted-foreground mb-1">Products in Risk Zones</div>
+                  <div className="text-sm text-muted-foreground mb-1">
+                    Products in Risk Zones
+                  </div>
                   <div className="text-2xl font-bold text-yellow-600">
                     {report.statistics.productsInRiskZones}
                   </div>
@@ -145,12 +178,22 @@ export default function ComplianceReport() {
                 </div>
 
                 <div className="border rounded-lg p-4">
-                  <div className="text-sm text-muted-foreground mb-1">Due Diligence Statements</div>
+                  <div className="text-sm text-muted-foreground mb-1">
+                    Due Diligence Statements
+                  </div>
                   <div className="text-2xl font-bold">
                     {report.statistics.productsWithDueDiligence}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
-                    {((report.statistics.productsWithDueDiligence / Math.max(report.statistics.productsWithGeolocation, 1)) * 100).toFixed(1)}% of geolocated products
+                    {(
+                      (report.statistics.productsWithDueDiligence /
+                        Math.max(
+                          report.statistics.productsWithGeolocation,
+                          1
+                        )) *
+                      100
+                    ).toFixed(1)}
+                    % of geolocated products
                   </div>
                 </div>
               </div>
@@ -174,16 +217,23 @@ export default function ComplianceReport() {
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="font-semibold">{finding.category}</h3>
-                          <Badge variant={
-                            finding.status === 'pass' ? 'default' :
-                            finding.status === 'warning' ? 'secondary' : 'destructive'
-                          }>
+                          <Badge
+                            variant={
+                              finding.status === "pass"
+                                ? "default"
+                                : finding.status === "warning"
+                                  ? "secondary"
+                                  : "destructive"
+                            }
+                          >
                             {finding.status.toUpperCase()}
                           </Badge>
                         </div>
                         <p className="text-sm mb-2">{finding.message}</p>
                         {finding.details && (
-                          <p className="text-sm text-muted-foreground">{finding.details}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {finding.details}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -224,7 +274,8 @@ export default function ComplianceReport() {
             <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-lg font-semibold mb-2">No Report Generated</h3>
             <p className="text-muted-foreground mb-4">
-              Click "Generate Report" to analyze your supply chain data for EUDR compliance
+              Click "Generate Report" to analyze your supply chain data for EUDR
+              compliance
             </p>
           </CardContent>
         </Card>

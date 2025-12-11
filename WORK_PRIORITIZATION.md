@@ -9,18 +9,21 @@
 ## Prioritization Framework
 
 ### Value Dimensions
+
 1. **User Value** - Direct benefit to GS1 NL internal/external users
 2. **Automation** - Reduces manual work, enables autonomous operation
 3. **Maintainability** - Improves code quality, reduces technical debt
 4. **Risk Reduction** - Prevents failures, improves reliability
 
 ### Cost Dimensions
+
 1. **Development Time** - Hours of implementation work
 2. **Token Usage** - LLM API calls for AI features
 3. **Maintenance Burden** - Ongoing support and updates required
 4. **Complexity** - Technical difficulty and risk
 
 ### Scoring
+
 - **Value Score:** 1-10 (10 = highest value)
 - **Cost Score:** 1-10 (10 = highest cost)
 - **Value/Cost Ratio:** Value ÷ Cost (higher = better)
@@ -32,9 +35,11 @@
 ### Category 1: Production Readiness & Reliability
 
 #### 1.1 Error Handling for News Scrapers
+
 **Description:** Add try-catch blocks, retry logic, and graceful degradation
 
 **Value Analysis:**
+
 - User Value: 7/10 (prevents missing news, improves reliability)
 - Automation: 8/10 (enables autonomous recovery from failures)
 - Maintainability: 7/10 (easier debugging, clearer error messages)
@@ -42,6 +47,7 @@
 - **Total Value: 7.75/10**
 
 **Cost Analysis:**
+
 - Development Time: 3/10 (2-3 hours, straightforward implementation)
 - Token Usage: 1/10 (no LLM calls needed)
 - Maintenance Burden: 2/10 (low, standard error handling patterns)
@@ -55,9 +61,11 @@
 ---
 
 #### 1.2 Scraper Health Monitoring
+
 **Description:** Dashboard showing last successful scrape, error rates, data freshness
 
 **Value Analysis:**
+
 - User Value: 5/10 (admin-only, but critical for operations)
 - Automation: 7/10 (enables proactive issue detection)
 - Maintainability: 8/10 (visibility into system health)
@@ -65,6 +73,7 @@
 - **Total Value: 7/10**
 
 **Cost Analysis:**
+
 - Development Time: 4/10 (4-5 hours, UI + backend)
 - Token Usage: 1/10 (no LLM calls)
 - Maintenance Burden: 3/10 (need to keep metrics updated)
@@ -78,9 +87,11 @@
 ---
 
 #### 1.3 Performance Monitoring for AI Enrichment
+
 **Description:** Track token usage, latency, error rates for LLM calls
 
 **Value Analysis:**
+
 - User Value: 4/10 (indirect, enables cost optimization)
 - Automation: 6/10 (enables automated cost alerts)
 - Maintainability: 7/10 (visibility into AI performance)
@@ -88,6 +99,7 @@
 - **Total Value: 5.75/10**
 
 **Cost Analysis:**
+
 - Development Time: 3/10 (2-3 hours, add logging + dashboard)
 - Token Usage: 1/10 (no additional LLM calls)
 - Maintenance Burden: 2/10 (low, standard metrics)
@@ -103,9 +115,11 @@
 ### Category 2: User-Facing Features
 
 #### 2.1 Impact Level Filtering in News Hub
+
 **Description:** Filter news by HIGH/MEDIUM/LOW impact level
 
 **Value Analysis:**
+
 - User Value: 8/10 (helps users prioritize critical news)
 - Automation: 3/10 (user-triggered, not automated)
 - Maintainability: 5/10 (simple feature, low maintenance)
@@ -113,6 +127,7 @@
 - **Total Value: 4.5/10**
 
 **Cost Analysis:**
+
 - Development Time: 2/10 (1-2 hours, simple filter UI)
 - Token Usage: 1/10 (no LLM calls)
 - Maintenance Burden: 1/10 (very low, standard filter)
@@ -126,9 +141,11 @@
 ---
 
 #### 2.2 Timeline Export to PDF
+
 **Description:** Download regulation timeline as PDF for sharing
 
 **Value Analysis:**
+
 - User Value: 7/10 (enables stakeholder communication)
 - Automation: 2/10 (user-triggered export)
 - Maintainability: 4/10 (PDF generation can be brittle)
@@ -136,6 +153,7 @@
 - **Total Value: 3.5/10**
 
 **Cost Analysis:**
+
 - Development Time: 6/10 (6-8 hours, PDF layout + styling)
 - Token Usage: 1/10 (no LLM calls)
 - Maintenance Burden: 5/10 (PDF libraries can break with updates)
@@ -149,9 +167,11 @@
 ---
 
 #### 2.3 Gantt Chart Visualization Mode
+
 **Description:** Alternative timeline view with horizontal bars
 
 **Value Analysis:**
+
 - User Value: 6/10 (nice-to-have, alternative visualization)
 - Automation: 2/10 (user-triggered view switch)
 - Maintainability: 5/10 (new component to maintain)
@@ -159,6 +179,7 @@
 - **Total Value: 3.5/10**
 
 **Cost Analysis:**
+
 - Development Time: 7/10 (8-10 hours, complex visualization)
 - Token Usage: 1/10 (no LLM calls)
 - Maintenance Burden: 6/10 (complex component, responsive design)
@@ -172,9 +193,11 @@
 ---
 
 #### 2.4 Advanced Filters (GS1 Impact Tags, Sector Tags)
+
 **Description:** Filter news by GS1 impact areas and sectors
 
 **Value Analysis:**
+
 - User Value: 9/10 (high value for sector-specific users)
 - Automation: 3/10 (user-triggered filtering)
 - Maintainability: 6/10 (moderate, filter UI maintenance)
@@ -182,6 +205,7 @@
 - **Total Value: 5/10**
 
 **Cost Analysis:**
+
 - Development Time: 3/10 (3-4 hours, multi-select filters)
 - Token Usage: 1/10 (no LLM calls)
 - Maintenance Burden: 3/10 (filter state management)
@@ -197,9 +221,11 @@
 ### Category 3: Technical Debt & Code Quality
 
 #### 3.1 Refactor news-ai-processor.ts for Modularity
+
 **Description:** Break monolithic processor into smaller, testable functions
 
 **Value Analysis:**
+
 - User Value: 2/10 (indirect, no user-facing changes)
 - Automation: 4/10 (easier to extend automation)
 - Maintainability: 9/10 (much easier to maintain and extend)
@@ -207,6 +233,7 @@
 - **Total Value: 5.5/10**
 
 **Cost Analysis:**
+
 - Development Time: 5/10 (5-6 hours, refactoring work)
 - Token Usage: 1/10 (no LLM calls)
 - Maintenance Burden: -2/10 (REDUCES maintenance burden)
@@ -220,9 +247,11 @@
 ---
 
 #### 3.2 Add Unit Tests for News Scrapers
+
 **Description:** Test coverage for all scraper functions
 
 **Value Analysis:**
+
 - User Value: 3/10 (indirect, prevents regressions)
 - Automation: 5/10 (enables automated testing)
 - Maintainability: 8/10 (easier to refactor with confidence)
@@ -230,6 +259,7 @@
 - **Total Value: 6/10**
 
 **Cost Analysis:**
+
 - Development Time: 6/10 (6-8 hours, comprehensive test suite)
 - Token Usage: 1/10 (no LLM calls)
 - Maintenance Burden: 4/10 (tests need updates when scrapers change)
@@ -243,9 +273,11 @@
 ---
 
 #### 3.3 Optimize Database Queries for News Listing
+
 **Description:** Add indexes, optimize JOIN queries, implement pagination
 
 **Value Analysis:**
+
 - User Value: 5/10 (faster page loads, better UX)
 - Automation: 3/10 (enables larger datasets)
 - Maintainability: 6/10 (cleaner query patterns)
@@ -253,6 +285,7 @@
 - **Total Value: 5/10**
 
 **Cost Analysis:**
+
 - Development Time: 4/10 (4-5 hours, query optimization)
 - Token Usage: 1/10 (no LLM calls)
 - Maintenance Burden: 2/10 (low, standard optimization)
@@ -268,9 +301,11 @@
 ### Category 4: New Features & Extensions
 
 #### 4.1 Add CS3D/CSDDD News Source
+
 **Description:** Scraper for Corporate Sustainability Due Diligence Directive
 
 **Value Analysis:**
+
 - User Value: 7/10 (important regulation, high user demand)
 - Automation: 6/10 (extends automated news coverage)
 - Maintainability: 5/10 (one more scraper to maintain)
@@ -278,6 +313,7 @@
 - **Total Value: 5.25/10**
 
 **Cost Analysis:**
+
 - Development Time: 5/10 (5-6 hours, new Playwright scraper)
 - Token Usage: 2/10 (AI enrichment for new articles)
 - Maintenance Burden: 4/10 (scraper maintenance, source changes)
@@ -291,9 +327,11 @@
 ---
 
 #### 4.2 Timeline View for GS1 Standards Pages
+
 **Description:** Show timeline of standard updates and related news
 
 **Value Analysis:**
+
 - User Value: 6/10 (useful for standards tracking)
 - Automation: 3/10 (user-triggered view)
 - Maintainability: 6/10 (reuses existing timeline component)
@@ -301,6 +339,7 @@
 - **Total Value: 4.25/10**
 
 **Cost Analysis:**
+
 - Development Time: 4/10 (4-5 hours, adapt timeline component)
 - Token Usage: 1/10 (no LLM calls)
 - Maintenance Burden: 3/10 (moderate, timeline maintenance)
@@ -314,9 +353,11 @@
 ---
 
 #### 4.3 News Recommendations Based on User Role/Sector
+
 **Description:** Personalized news feed based on user profile
 
 **Value Analysis:**
+
 - User Value: 8/10 (highly personalized experience)
 - Automation: 7/10 (automated personalization)
 - Maintainability: 6/10 (recommendation logic maintenance)
@@ -324,6 +365,7 @@
 - **Total Value: 6/10**
 
 **Cost Analysis:**
+
 - Development Time: 7/10 (8-10 hours, recommendation engine)
 - Token Usage: 4/10 (LLM calls for personalization)
 - Maintenance Burden: 6/10 (complex recommendation logic)
@@ -404,11 +446,13 @@
 **Focus:** Tier 1 work (5-8 hours total)
 
 **Sequence:**
+
 1. Error Handling for News Scrapers (2-3 hours)
 2. Impact Level Filtering (1-2 hours)
 3. Performance Monitoring for AI Enrichment (2-3 hours)
 
 **Outcome:**
+
 - More reliable news pipeline
 - Better user experience (priority filtering)
 - Cost visibility and control
@@ -422,11 +466,13 @@
 **Focus:** Tier 2 work (12-15 hours total)
 
 **Sequence:**
+
 1. Refactor news-ai-processor.ts (5-6 hours)
 2. Scraper Health Monitoring (4-5 hours)
 3. Advanced Filters (3-4 hours)
 
 **Outcome:**
+
 - Cleaner, more maintainable codebase
 - Operational visibility
 - Enhanced user segmentation
@@ -440,11 +486,13 @@
 **Focus:** Cherry-pick highest-value Tier 3 items
 
 **Recommended:**
+
 - Optimize Database Queries (if performance issues emerge)
 - Add Unit Tests (if refactoring frequently)
 - Timeline View for GS1 Standards (if user demand)
 
 **Defer:**
+
 - Timeline Export to PDF (low ROI)
 - Gantt Chart Visualization (low ROI)
 - News Recommendations (complex, low ROI)
@@ -480,16 +528,19 @@
 ## Success Metrics
 
 ### Phase 5 Success Criteria
+
 - [ ] News scraper error rate < 1%
 - [ ] Impact level filter reduces news list by 60%+ (HIGH filter)
 - [ ] Token usage dashboard shows real-time costs
 
 ### Phase 6 Success Criteria
+
 - [ ] news-ai-processor.ts has < 200 lines per function
 - [ ] Scraper health dashboard shows 99%+ uptime
 - [ ] Advanced filters reduce news list by 70%+ (sector filter)
 
 ### Phase 7 Success Criteria
+
 - [ ] Database queries < 100ms for news listing
 - [ ] Unit test coverage > 80% for scrapers
 - [ ] GS1 standards timeline shows 50+ events
@@ -499,6 +550,7 @@
 ## Conclusion
 
 **Recommended Approach:**
+
 1. Execute Tier 1 work immediately (5-8 hours, high ROI)
 2. Follow with Tier 2 work (12-15 hours, good ROI)
 3. Defer most Tier 3 work (low ROI, high cost)

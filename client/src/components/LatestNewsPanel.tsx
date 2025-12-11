@@ -11,7 +11,9 @@ import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 
 export function LatestNewsPanel() {
-  const { data: newsItems, isLoading } = trpc.hub.getRecentNews.useQuery({ limit: 6 });
+  const { data: newsItems, isLoading } = trpc.hub.getRecentNews.useQuery({
+    limit: 6,
+  });
 
   if (isLoading) {
     return (
@@ -43,7 +45,10 @@ export function LatestNewsPanel() {
             </div>
             <h3 className="text-lg font-semibold">Latest News</h3>
           </div>
-          <p className="text-sm text-muted-foreground">No news articles available yet. Check back soon for ESG regulatory updates.</p>
+          <p className="text-sm text-muted-foreground">
+            No news articles available yet. Check back soon for ESG regulatory
+            updates.
+          </p>
           <Link href="/news" className="mt-4 block">
             <Button variant="outline" size="sm" className="w-full gap-2">
               Explore News Hub
@@ -84,14 +89,15 @@ export function LatestNewsPanel() {
                 title: item.title,
                 summary: item.summary || "",
                 publishedDate: new Date(item.publishedDate || item.createdAt),
-                regulationTags: Array.isArray(item.regulationTags) ? item.regulationTags : [],
+                regulationTags: Array.isArray(item.regulationTags)
+                  ? item.regulationTags
+                  : [],
                 impactLevel: item.impactLevel || "MEDIUM",
                 newsType: item.newsType,
               }}
             />
           ))}
         </div>
-
       </div>
     </div>
   );

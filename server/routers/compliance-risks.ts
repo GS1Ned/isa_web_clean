@@ -1,7 +1,11 @@
 import { protectedProcedure, router } from "../_core/trpc";
 import { z } from "zod";
 import { getDb } from "../db";
-import { supplyChainRisks, epcisEvents, supplyChainNodes } from "../../drizzle/schema";
+import {
+  supplyChainRisks,
+  epcisEvents,
+  supplyChainNodes,
+} from "../../drizzle/schema";
 import { eq, and, desc, SQL } from "drizzle-orm";
 
 /**
@@ -27,7 +31,7 @@ export const complianceRisksRouter = router({
       if (!db) throw new Error("Database not available");
 
       const conditions: SQL[] = [eq(supplyChainRisks.userId, ctx.user.id)];
-      
+
       if (input.severity) {
         conditions.push(eq(supplyChainRisks.severity, input.severity as any));
       }
@@ -44,7 +48,7 @@ export const complianceRisksRouter = router({
         .limit(input.limit)
         .offset(input.offset);
 
-      return risks.map((risk) => ({
+      return risks.map(risk => ({
         id: risk.id,
         riskType: risk.riskType,
         severity: risk.severity,
@@ -68,16 +72,19 @@ export const complianceRisksRouter = router({
       .from(supplyChainRisks)
       .where(eq(supplyChainRisks.userId, ctx.user.id));
 
-    const criticalRisks = allRisks.filter((r) => r.severity === "critical").length;
-    const highRisks = allRisks.filter((r) => r.severity === "high").length;
-    const mediumRisks = allRisks.filter((r) => r.severity === "medium").length;
-    const lowRisks = allRisks.filter((r) => r.severity === "low").length;
-    const unresolvedRisks = allRisks.filter((r) => !r.isResolved).length;
+    const criticalRisks = allRisks.filter(
+      r => r.severity === "critical"
+    ).length;
+    const highRisks = allRisks.filter(r => r.severity === "high").length;
+    const mediumRisks = allRisks.filter(r => r.severity === "medium").length;
+    const lowRisks = allRisks.filter(r => r.severity === "low").length;
+    const unresolvedRisks = allRisks.filter(r => !r.isResolved).length;
 
     // Risk types breakdown
     const riskTypeBreakdown: Record<string, number> = {};
-    allRisks.forEach((risk) => {
-      riskTypeBreakdown[risk.riskType] = (riskTypeBreakdown[risk.riskType] || 0) + 1;
+    allRisks.forEach(risk => {
+      riskTypeBreakdown[risk.riskType] =
+        (riskTypeBreakdown[risk.riskType] || 0) + 1;
     });
 
     return {
@@ -147,7 +154,7 @@ export const complianceRisksRouter = router({
         )
         .orderBy(desc(supplyChainRisks.severity));
 
-      return risks.map((risk) => ({
+      return risks.map(risk => ({
         id: risk.id,
         severity: risk.severity,
         description: risk.description,
@@ -177,7 +184,7 @@ export const complianceRisksRouter = router({
       .orderBy(desc(supplyChainRisks.createdAt))
       .limit(10);
 
-    return risks.map((risk) => ({
+    return risks.map(risk => ({
       id: risk.id,
       riskType: risk.riskType,
       description: risk.description,
@@ -212,7 +219,7 @@ export const complianceRisksRouter = router({
         .where(eq(supplyChainRisks.nodeId, input.nodeId))
         .orderBy(desc(supplyChainRisks.severity));
 
-      return risks.map((risk) => ({
+      return risks.map(risk => ({
         id: risk.id,
         riskType: risk.riskType,
         severity: risk.severity,
@@ -236,14 +243,19 @@ export const complianceRisksRouter = router({
       .orderBy(supplyChainRisks.createdAt);
 
     // Group by date
-    const trendsByDate: Record<string, { critical: number; high: number; medium: number; low: number }> = {};
+    const trendsByDate: Record<
+      string,
+      { critical: number; high: number; medium: number; low: number }
+    > = {};
 
-    risks.forEach((risk) => {
+    risks.forEach(risk => {
       const date = new Date(risk.createdAt).toISOString().split("T")[0];
       if (!trendsByDate[date]) {
         trendsByDate[date] = { critical: 0, high: 0, medium: 0, low: 0 };
       }
-      trendsByDate[date][risk.severity as keyof typeof trendsByDate[string]]++;
+      trendsByDate[date][
+        risk.severity as keyof (typeof trendsByDate)[string]
+      ]++;
     });
 
     return Object.entries(trendsByDate).map(([date, counts]) => ({
@@ -274,8 +286,13 @@ export const complianceRisksRouter = router({
       .from(supplyChainNodes)
       .where(eq(supplyChainNodes.userId, ctx.user.id));
 
-    const unresolvedRisks = risks.filter((r) => !r.isResolved);
-    const riskScore = risks.length > 0 ? Math.round(((risks.length - unresolvedRisks.length) / risks.length) * 100) : 100;
+    const unresolvedRisks = risks.filter(r => !r.isResolved);
+    const riskScore =
+      risks.length > 0
+        ? Math.round(
+            ((risks.length - unresolvedRisks.length) / risks.length) * 100
+          )
+        : 100;
 
     return {
       reportDate: new Date(),
@@ -287,18 +304,21 @@ export const complianceRisksRouter = router({
         riskScore,
       },
       riskBreakdown: {
-        critical: risks.filter((r) => r.severity === "critical").length,
-        high: risks.filter((r) => r.severity === "high").length,
-        medium: risks.filter((r) => r.severity === "medium").length,
-        low: risks.filter((r) => r.severity === "low").length,
+        critical: risks.filter(r => r.severity === "critical").length,
+        high: risks.filter(r => r.severity === "high").length,
+        medium: risks.filter(r => r.severity === "medium").length,
+        low: risks.filter(r => r.severity === "low").length,
       },
       topRisks: unresolvedRisks
         .sort((a, b) => {
           const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
-          return severityOrder[a.severity as keyof typeof severityOrder] - severityOrder[b.severity as keyof typeof severityOrder];
+          return (
+            severityOrder[a.severity as keyof typeof severityOrder] -
+            severityOrder[b.severity as keyof typeof severityOrder]
+          );
         })
         .slice(0, 5)
-        .map((r) => ({
+        .map(r => ({
           type: r.riskType,
           severity: r.severity,
           description: r.description,
@@ -318,8 +338,10 @@ function generateRecommendations(
 ): string[] {
   const recommendations: string[] = [];
 
-  const criticalCount = unresolvedRisks.filter((r) => r.severity === "critical").length;
-  const highCount = unresolvedRisks.filter((r) => r.severity === "high").length;
+  const criticalCount = unresolvedRisks.filter(
+    r => r.severity === "critical"
+  ).length;
+  const highCount = unresolvedRisks.filter(r => r.severity === "high").length;
 
   if (criticalCount > 0) {
     recommendations.push(
@@ -333,21 +355,27 @@ function generateRecommendations(
     );
   }
 
-  const deforestationRisks = unresolvedRisks.filter((r) => r.riskType === "deforestation");
+  const deforestationRisks = unresolvedRisks.filter(
+    r => r.riskType === "deforestation"
+  );
   if (deforestationRisks.length > 0) {
     recommendations.push(
       "Verify geolocation data and certifications for all suppliers to ensure EUDR compliance."
     );
   }
 
-  const traceabilityRisks = unresolvedRisks.filter((r) => r.riskType === "traceability");
+  const traceabilityRisks = unresolvedRisks.filter(
+    r => r.riskType === "traceability"
+  );
   if (traceabilityRisks.length > 0) {
     recommendations.push(
       "Ensure all EPCIS events include complete EPC identifiers for full supply chain visibility."
     );
   }
 
-  const certificationRisks = unresolvedRisks.filter((r) => r.riskType === "certification");
+  const certificationRisks = unresolvedRisks.filter(
+    r => r.riskType === "certification"
+  );
   if (certificationRisks.length > 0) {
     recommendations.push(
       "Update supplier certifications and conduct compliance audits for all tier-1 suppliers."

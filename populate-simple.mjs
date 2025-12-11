@@ -58,14 +58,14 @@ try {
 
       console.log(`   ✅ Inserted\n`);
       inserted++;
-
     } catch (error) {
       console.error(`   ❌ Error: ${error.message}\n`);
     }
   }
 
-  console.log(`\n🎉 Successfully inserted ${inserted}/${articles.length} articles`);
-
+  console.log(
+    `\n🎉 Successfully inserted ${inserted}/${articles.length} articles`
+  );
 } catch (error) {
   console.error("❌ Fatal error:", error);
   process.exit(1);

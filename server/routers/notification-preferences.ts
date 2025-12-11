@@ -118,8 +118,14 @@ export const notificationPreferencesRouter = router({
     .input(
       z.object({
         quietHoursEnabled: z.boolean(),
-        quietHoursStart: z.string().regex(/^\d{2}:\d{2}$/).optional(),
-        quietHoursEnd: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+        quietHoursStart: z
+          .string()
+          .regex(/^\d{2}:\d{2}$/)
+          .optional(),
+        quietHoursEnd: z
+          .string()
+          .regex(/^\d{2}:\d{2}$/)
+          .optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {

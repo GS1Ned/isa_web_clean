@@ -105,7 +105,7 @@ export const collaborationRouter = router({
 
       const comments = await query.limit(input.limit);
 
-      return comments.map((c) => ({
+      return comments.map(c => ({
         id: c.id,
         content: c.content,
         userId: c.userId,
@@ -283,7 +283,7 @@ export const collaborationRouter = router({
         )
         .limit(input.limit);
 
-      return approvals.map((a) => ({
+      return approvals.map(a => ({
         id: a.id,
         roadmapId: a.roadmapId,
         approverRole: a.approverRole,
@@ -309,9 +309,9 @@ export const collaborationRouter = router({
         .from(roadmapApprovals)
         .where(eq(roadmapApprovals.roadmapId, input.roadmapId));
 
-      const approved = approvals.filter((a) => a.status === "approved").length;
-      const rejected = approvals.filter((a) => a.status === "rejected").length;
-      const pending = approvals.filter((a) => a.status === "pending").length;
+      const approved = approvals.filter(a => a.status === "approved").length;
+      const rejected = approvals.filter(a => a.status === "rejected").length;
+      const pending = approvals.filter(a => a.status === "pending").length;
 
       return {
         totalApprovals: approvals.length,
@@ -319,7 +319,9 @@ export const collaborationRouter = router({
         rejected,
         pending,
         approvalPercentage:
-          approvals.length > 0 ? Math.round((approved / approvals.length) * 100) : 0,
+          approvals.length > 0
+            ? Math.round((approved / approvals.length) * 100)
+            : 0,
         status:
           rejected > 0
             ? "rejected"
@@ -351,7 +353,7 @@ export const collaborationRouter = router({
         .where(eq(roadmapActivityLog.roadmapId, input.roadmapId))
         .limit(input.limit);
 
-      return activities.map((a) => ({
+      return activities.map(a => ({
         id: a.id,
         activityType: a.activityType,
         description: a.description,
@@ -428,7 +430,7 @@ export const collaborationRouter = router({
         .from(teamRoadmapAccess)
         .where(eq(teamRoadmapAccess.roadmapId, input.roadmapId));
 
-      return access.map((a) => ({
+      return access.map(a => ({
         id: a.id,
         userId: a.userId,
         accessLevel: a.accessLevel,

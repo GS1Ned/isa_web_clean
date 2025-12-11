@@ -86,6 +86,7 @@
 ### Phase 1: Inventory and Analysis ⏳ IN PROGRESS
 
 **Actions:**
+
 - [x] Check file sizes and accessibility
 - [x] Read linktypes.json structure (60 link types identified)
 - [ ] Scan PDF metadata (versions, page counts)
@@ -102,12 +103,14 @@
 **2.1 GS1 Global Data Model (GDM) v2.16**
 
 **Target Extraction:**
+
 - Attribute definitions (name, description, data type, usage)
 - Attribute groups/categories
 - Relationships and dependencies
 - ESG-relevant attributes (sustainability, traceability, circularity)
 
 **Output Format:** CSV files
+
 - `gdm_attributes.csv` - All attributes with definitions
 - `gdm_esg_attributes.csv` - ESG-relevant subset
 - `gdm_attribute_groups.csv` - Attribute categories
@@ -115,6 +118,7 @@
 **Estimated Rows:** ~500-1000 attributes
 
 **Integration Target:**
+
 - `server/gs1-data-model.ts` - Attribute lookup functions
 - `regulation_gs1_mappings` table - ESG → GS1 attribute mappings
 - Ask ISA knowledge base
@@ -124,18 +128,21 @@
 **2.2 Attribute Definitions for Business (ADB)**
 
 **Target Extraction:**
+
 - Business-friendly attribute names
 - Usage examples and context
 - Industry-specific guidance
 - Mapping to GDM attributes
 
 **Output Format:** CSV files
+
 - `adb_attributes.csv` - Business attribute definitions
 - `adb_gdm_mapping.csv` - ADB ↔ GDM cross-reference
 
 **Estimated Rows:** ~300-500 attributes
 
 **Integration Target:**
+
 - Complement GDM data in `server/gs1-data-model.ts`
 - Enhance Ask ISA responses with business context
 - Support News Hub GS1 impact analysis
@@ -153,6 +160,7 @@
 **Status:** ✅ Already machine-readable!
 
 **Content:**
+
 - 60 GS1 Digital Link types
 - Each with: title, description, status (stable/deprecated), restrictions
 - Key types for ISA:
@@ -165,6 +173,7 @@
   - `traceability` - Traceability information
 
 **Action:**
+
 - Copy to `data/gs1_link_types/linktypes.json`
 - Create TypeScript types in `shared/gs1-link-types.ts`
 - Integrate into Digital Link resolver logic (future)
@@ -177,15 +186,18 @@
 **3.2 Detailed_Log_website_posting.pdf**
 
 **Target Extraction:**
+
 - List of all GS1 standards with URLs
 - Publication dates and versions
 - Standard categories (identification, data carriers, data exchange, etc.)
 
 **Output Format:**
+
 - `gs1_standards_catalog.csv` - All standards with metadata
 - Update `EXTERNAL_REFERENCES.md` with canonical URLs
 
 **Integration Target:**
+
 - `gs1_standards` table - Populate with comprehensive standard list
 - News Hub source monitoring - Track standard updates
 - Ask ISA knowledge base
@@ -199,6 +211,7 @@
 **4.1 GS1 System Architecture (2.7MB, ~100 pages)**
 
 **Target Summary:**
+
 - Single Semantic Model explanation
 - GS1 standards hierarchy (identification → data carriers → data exchange)
 - Semantic alignment principles
@@ -214,6 +227,7 @@
 **4.2 EPCIS Standard 2.0.1 (4.7MB, ~200 pages)**
 
 **Target Summary:**
+
 - EPCIS event types (Object, Aggregation, Transaction, Transformation)
 - Core data model (What, When, Where, Why)
 - JSON/XML schema overview
@@ -229,6 +243,7 @@
 **4.3 Core Business Vocabulary (CBV) Standard (1.3MB, ~150 pages)**
 
 **Target Summary:**
+
 - CBV vocabulary structure
 - Business step types
 - Disposition types
@@ -245,6 +260,7 @@
 **4.4 GS1 Digital Link URI Syntax 1.6.0 (722KB, ~80 pages)**
 
 **Target Summary:**
+
 - URI syntax rules (GS1 keys → URLs)
 - Application Identifier (AI) encoding
 - Link type usage
@@ -264,6 +280,7 @@
 ### Phase 5: Update ISA Artefact Inventory
 
 **Actions:**
+
 - Update `ISA_GS1_ARTIFACT_INVENTORY.md` with ✅ status for all 8 files
 - Update `NEEDS_USER_UPLOAD.md` to mark high-priority items as received
 - Document versions and metadata
@@ -278,6 +295,7 @@
 **6.1 Database Integration**
 
 **Actions:**
+
 - Populate `gs1_standards` table with comprehensive standard list (from Detailed_Log)
 - Enhance `regulation_gs1_mappings` with GDM attributes
 - Add GS1 link types to database (new table or JSON field)
@@ -289,6 +307,7 @@
 **6.2 Code Integration**
 
 **Actions:**
+
 - Create `server/gs1-data-model.ts` with GDM attribute lookup functions
 - Create `shared/gs1-link-types.ts` with TypeScript types
 - Update `server/news-ai-processor.ts` to use GDM attributes for tagging
@@ -301,6 +320,7 @@
 **6.3 News Hub Integration**
 
 **Actions:**
+
 - Enhance News Hub GS1 impact analysis with GDM attributes
 - Add Digital Link awareness to DPP-related news
 - Improve regulation → GS1 standard mapping accuracy
@@ -316,6 +336,7 @@
 ### Phase 7: Verification and Delivery
 
 **Actions:**
+
 - Verify all extracted data files are valid
 - Test GDM attribute lookup functions
 - Test News Hub GS1 tagging improvements
@@ -335,7 +356,7 @@
 **Phase 4:** 4.5 hours (PDF summaries)  
 **Phase 5:** 15 minutes (inventory update)  
 **Phase 6:** 4 hours (ISA integration)  
-**Phase 7:** 1 hour (verification)  
+**Phase 7:** 1 hour (verification)
 
 **Total:** 14-15 hours of processing work
 
@@ -346,6 +367,7 @@
 Given the 14-15 hour estimate, I'll use a **phased, value-first approach**:
 
 ### Immediate Value (Phase 1-3): ~4 hours
+
 - Process linktypes.json (30 min) - **Immediate value, machine-readable**
 - Extract GDM attributes (2 hours) - **Critical for ESG mapping**
 - Extract ADB attributes (1 hour) - **Enhances GDM**
@@ -354,12 +376,14 @@ Given the 14-15 hour estimate, I'll use a **phased, value-first approach**:
 **Deliverable:** Machine-readable GS1 data integrated into ISA
 
 ### High Value (Phase 4): ~4.5 hours
+
 - Summarize all 4 PDFs
 - Create structured notes in `data/` directories
 
 **Deliverable:** Comprehensive GS1 knowledge base
 
 ### Integration (Phase 5-7): ~5 hours
+
 - Update ISA code and database
 - Verify and test
 - Deliver results

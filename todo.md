@@ -1,7 +1,9 @@
 # ISA News Hub Evolution - Comprehensive Audit & Roadmap
 
 ## Mission
+
 Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
+
 - Covers EU + Dutch/Benelux ESG regulations and sector initiatives
 - Explicitly maps regulations to GS1 standards and data models
 - Provides actionable insights for GS1 NL users by sector
@@ -12,12 +14,14 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Phase 1: Deep Understanding & Validation ⏳
 
 ### 1.1 Synthesized Report Analysis
+
 - [ ] Read and internalize full synthesized report
 - [ ] Extract key findings on coverage gaps
 - [ ] Note recommendations for schema, sources, UX, operations
 - [ ] Document discrepancies between report and actual codebase
 
 ### 1.2 Codebase Audit - News Pipeline
+
 - [ ] Audit news-pipeline.ts orchestration logic
 - [ ] Audit news-fetcher.ts source integration
 - [ ] Audit news-ai-processor.ts AI summarization
@@ -30,6 +34,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Audit news-recommendation-engine.ts linkage logic
 
 ### 1.3 Codebase Audit - Database Schema
+
 - [ ] Audit drizzle/schema.ts hubNews table structure
 - [ ] Audit hubNewsHistory table
 - [ ] Audit newsRecommendations table
@@ -37,6 +42,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Identify missing fields: gs1ImpactTags, sectorTags, relatedStandardIds
 
 ### 1.4 Codebase Audit - Frontend/UX
+
 - [ ] Audit LatestNewsPanel.tsx homepage integration
 - [ ] Audit NewsHub.tsx filters and display logic
 - [ ] Audit NewsDetail.tsx content structure
@@ -45,12 +51,14 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Check GS1 standard pages for news integration
 
 ### 1.5 Codebase Audit - Documentation
+
 - [ ] Read NEWS_PIPELINE.md
 - [ ] Read ARCHITECTURE.md (if exists)
 - [ ] Check for ESG scope documentation
 - [ ] Check for GS1 mapping documentation
 
 ### 1.6 Coverage Analysis
+
 - [ ] List current sources (EU official, GS1 official)
 - [ ] Identify covered regulations: CSRD/ESRS, PPWR, ESPR/DPP, EUDR, Batteries
 - [ ] Identify missing regulations: CS3D/CSDDD, Green Claims, ESPR delegated acts
@@ -58,6 +66,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Identify missing GS1 responses: standard updates, white papers, guidance
 
 ### 1.7 Produce Updated Audit Document
+
 - [ ] Create ISA_NEWSHUB_AUDIT_UPDATED.md
 - [ ] Document current sources and ESG topic coverage
 - [ ] Document current data model (all news tables and fields)
@@ -71,6 +80,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Phase 2: Target Design
 
 ### 2.1 Coverage & Sources Design
+
 - [ ] Define monitored ESG topic list (EU + national)
 - [ ] Design source strategy for missing regulations
 - [ ] Design source strategy for Dutch/Benelux initiatives
@@ -78,6 +88,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Document source-level configurations
 
 ### 2.2 Schema & Linkage Design
+
 - [ ] Design gs1ImpactTags enum and values
 - [ ] Design sectorTags enum and values
 - [ ] Design relatedStandardIds linkage
@@ -85,6 +96,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Design how recommendations feed back into news
 
 ### 2.3 UX & User Journeys Design
+
 - [ ] Design bidirectional news-regulation integration
 - [ ] Design "Impact on GS1" sections
 - [ ] Design "What to do next" sections
@@ -93,6 +105,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Design regulation impact summary blocks
 
 ### 2.4 Operations & Observability Design
+
 - [ ] Design coverage analytics dashboard
 - [ ] Design source health monitoring
 - [ ] Design ingestion window parameterization
@@ -100,6 +113,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Design backfill strategy
 
 ### 2.5 Produce Target Design Document
+
 - [ ] Create ISA_NEWSHUB_TARGET_DESIGN.md
 - [ ] Document rationale for all design decisions
 - [ ] Document trade-offs and constraints
@@ -111,6 +125,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Phase 3: Schema & Data Model Implementation ✅ COMPLETE
 
 ### 3.1 Database Schema Changes
+
 - [x] Add gs1ImpactTags JSON field to hubNews
 - [x] Add sectorTags JSON field to hubNews
 - [x] Add relatedStandardIds JSON field to hubNews
@@ -122,10 +137,12 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Created news-tags.ts with GS1_IMPACT_TAGS and SECTOR_TAGS enums
 
 ### 3.2 Database Helper Updates
+
 - [x] Update db.ts createHubNews() to save new fields
 - [x] Database helpers use Drizzle auto-inferred types (no changes needed)
 
 ### 3.3 AI Processing Updates
+
 - [x] Enhanced news-ai-processor.ts with GS1-specific AI prompts
 - [x] Added gs1ImpactAnalysis generation (2-3 sentences explaining GS1 relevance)
 - [x] Added suggestedActions generation (2-4 actionable steps)
@@ -136,6 +153,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Updated news-pipeline.ts to pass AI fields to database
 
 ### 3.4 Tests
+
 - [x] Wrote comprehensive unit tests (10 tests)
 - [x] Test CSRD news processing with GS1 analysis
 - [x] Test DPP news processing with relevant tags
@@ -145,6 +163,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] All tests passing (21.88s duration)
 
 ### 3.5 Validation Results
+
 - ✅ CSRD news: ESG_REPORTING, PRODUCT_MASTER_DATA, TRACEABILITY tags
 - ✅ DPP news: DPP, IDENTIFICATION, CIRCULAR_ECONOMY tags
 - ✅ AI generates 4 specific actionable steps (GTIN, GDSN, EPCIS mentions)
@@ -158,6 +177,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Phase 4: Source Expansion ✅ COMPLETE
 
 ### 4.1 EU Sources
+
 - [ ] Add CS3D/CSDDD source
 - [ ] Add Green Claims Directive source
 - [ ] Add ESPR delegated acts source
@@ -165,6 +185,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add Battery passport technical details source
 
 ### 4.2 Dutch/Benelux Sources
+
 - [x] Add Green Deal Sustainable Healthcare source
 - [ ] Add Plastic Pact NL source (deferred - using secondary sources)
 - [x] Add Zero-emission city logistics (ZES) source
@@ -172,12 +193,14 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add sector Green Deals (food, construction, textiles) sources
 
 ### 4.3 GS1 Sources
+
 - [ ] Add GS1 NL/Benelux data model updates source
 - [ ] Add GS1 Europe white papers source
 - [ ] Add GS1 provisional standards source
 - [ ] Add GS1 working groups and guidance source
 
 ### 4.4 Source Configuration
+
 - [ ] Update news-sources.ts with new sources
 - [ ] Add scrapers for new sources as needed
 - [ ] Configure credibility scores
@@ -189,6 +212,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Phase 5: AI Processing Enhancements ✅ COMPLETE
 
 ### 5.1 Content Analyzer Upgrades
+
 - [ ] Extend news-content-analyzer.ts to infer gs1ImpactTags
 - [ ] Extend to infer sectorTags
 - [ ] Add GS1 data model catalog integration
@@ -196,6 +220,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add heuristics for common patterns
 
 ### 5.2 AI Processor Schema Updates
+
 - [ ] Update news-ai-processor.ts JSON schema
 - [ ] Add gs1ImpactTags to AI output
 - [ ] Add sectorTags to AI output
@@ -204,12 +229,14 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Update prompts for GS1-specific context
 
 ### 5.3 Recommendation Engine Enhancements
+
 - [ ] Update news-recommendation-engine.ts to write relatedStandardIds
 - [ ] Improve GS1 standard matching logic
 - [ ] Add sector-aware recommendation scoring
 - [ ] Add gs1ImpactTags-aware recommendations
 
 ### 5.4 Tests
+
 - [ ] Test AI processing with new fields
 - [ ] Validate gs1ImpactTags inference quality
 - [ ] Validate sectorTags inference quality
@@ -220,18 +247,21 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Phase 6: Bidirectional News-Regulation Integration ✅ COMPLETE
 
 ### 6.1 Regulation Pages Enhancement
+
 - [x] Add "Recent developments" panel to regulation detail pages
 - [x] Query hubNews by regulationTags
 - [x] Display timeline of regulation-related news
 - [x] Show impact level, summary, and publication date
 
 ### 6.2 GS1 Standard Pages Enhancement
+
 - [ ] Add "Related news" panel to GS1 standard pages
 - [ ] Query hubNews by relatedStandardIds
 - [ ] Display news mentioning the standard
 - [ ] Link to full news detail
 
 ### 6.3 Regulation Impact Summaries
+
 - [ ] Create regulation impact summary component
 - [ ] Define structure: obligations, GS1 standards, timelines, docs
 - [ ] Add to regulation detail pages
@@ -239,6 +269,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Support manual curation for high-impact regulations
 
 ### 6.4 Tests
+
 - [ ] Test bidirectional navigation
 - [ ] Verify query performance
 - [ ] Test impact summary rendering
@@ -248,6 +279,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Phase 7: Timeline Views & Enhanced Filters
 
 ### 7.1 Timeline View Component
+
 - [ ] Create timeline view component
 - [ ] Support per-regulation timeline
 - [ ] Support per-sector timeline
@@ -255,6 +287,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add date range selector
 
 ### 7.2 Enhanced Filters
+
 - [ ] Add gs1ImpactTags filter to News Hub
 - [ ] Add sectorTags filter to News Hub
 - [ ] Add "High impact / milestones only" toggle
@@ -262,6 +295,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Persist filter state in URL params
 
 ### 7.3 News Detail Template Enhancements
+
 - [ ] Add "Impact on GS1 data & standards" section
 - [ ] Add "Suggested actions / next steps" section
 - [ ] Improve visual hierarchy
@@ -269,6 +303,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add GS1 impact badges
 
 ### 7.4 Tests
+
 - [ ] Test timeline view rendering
 - [ ] Test filter combinations
 - [ ] Test news detail template
@@ -278,6 +313,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Phase 8: Coverage Analytics & Observability
 
 ### 8.1 Coverage Analytics Dashboard
+
 - [ ] Create admin dashboard for coverage analytics
 - [ ] Show news count per regulation per month
 - [ ] Show news count per sector per month
@@ -286,6 +322,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add coverage heatmap visualization
 
 ### 8.2 Pipeline Observability
+
 - [ ] Add structured logging to pipeline
 - [ ] Add metrics for ingestion success/failure
 - [ ] Add metrics for AI processing quality
@@ -293,6 +330,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add alerts for coverage gaps
 
 ### 8.3 Ingestion Window Configuration
+
 - [ ] Make filterByAge configurable
 - [ ] Add normal mode (30-60 days)
 - [ ] Add backfill mode (200 days)
@@ -300,12 +338,14 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Document backfill procedure
 
 ### 8.4 Critical Events Tracking
+
 - [ ] Define critical event types per regulation
 - [ ] Track event capture SLAs
 - [ ] Add dashboard for event coverage
 - [ ] Alert on missed critical events
 
 ### 8.5 Tests
+
 - [ ] Test coverage analytics queries
 - [ ] Test observability metrics
 - [ ] Test backfill mode
@@ -315,6 +355,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Phase 9: Documentation & Final Validation
 
 ### 9.1 Documentation Updates
+
 - [ ] Update NEWS_PIPELINE.md with new sources, fields, logic
 - [ ] Update ARCHITECTURE.md with data flows
 - [ ] Document gs1ImpactTags enum values
@@ -324,12 +365,14 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Document critical events definitions
 
 ### 9.2 Design Documentation
+
 - [ ] Finalize ISA_NEWSHUB_TARGET_DESIGN.md
 - [ ] Document limitations and open questions
 - [ ] Document future iteration suggestions
 - [ ] Document cost analysis and optimization
 
 ### 9.3 Summary Report
+
 - [ ] Create ISA_NEWSHUB_EVOLUTION_SUMMARY.md
 - [ ] Explain what changed
 - [ ] Explain how News Hub now works
@@ -339,6 +382,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Explain improvements in operations
 
 ### 9.4 Final Validation
+
 - [ ] Run full test suite
 - [ ] Verify all new sources ingesting
 - [ ] Verify AI tagging quality
@@ -363,7 +407,6 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ✅ **Documentation**: All changes documented with clear rationale and usage instructions
 
-
 ## Timeline Visualization Feature ✅ COMPLETE
 
 - [x] Design timeline component structure and data model
@@ -377,7 +420,6 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Implement interactive hover states and links
 - [x] Test timeline with CSRD regulation
 - [x] Add empty state for regulations with no timeline data
-
 
 ## Multi-Regulation Timeline Comparison Feature ✅ COMPLETE
 
@@ -395,12 +437,12 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add export comparison feature (future enhancement)
 - [x] Test with 2-4 regulations simultaneously
 
-
 ---
 
 ## Documentation & Alignment Tasks \u23f3 IN PROGRESS
 
 ### Core Documentation Updates
+
 - [x] Audit ARCHITECTURE.md for drift and gaps
 - [x] Audit DATA_MODEL.md for missing tables
 - [x] Audit ROADMAP.md for timeline accuracy
@@ -414,6 +456,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Update DATASET_INVENTORY.md with news data
 
 ### Production Readiness
+
 - [ ] Add error handling for news scrapers
 - [ ] Implement scraper health monitoring
 - [ ] Add retry logic for failed scrapes
@@ -423,6 +466,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Optimize token usage in news processing
 
 ### Next High-Value Features
+
 - [ ] Add impact level filtering to News Hub
 - [ ] Implement timeline export to PDF
 - [ ] Create Gantt chart visualization mode
@@ -432,6 +476,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add news recommendations based on user role/sector
 
 ### Technical Debt
+
 - [ ] Refactor news-ai-processor.ts for better modularity
 - [ ] Add comprehensive error logging
 - [ ] Implement caching for frequently accessed news
@@ -439,7 +484,6 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add unit tests for news scrapers
 - [ ] Add integration tests for AI enrichment pipeline
 - [ ] Document API contracts for news endpoints
-
 
 ---
 
@@ -458,12 +502,12 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 **Outcome:** ISA was already clean. Removed ~250KB unused files. Created comprehensive GS1 artefact tracking. Identified 5 high-priority artefacts for user upload.
 
-
 ---
 
 ## GS1 Artefact Processing & Integration
 
 ### Phase 1: Inventory and Analysis ✅ COMPLETE
+
 - [x] Check uploaded file sizes and accessibility (8 files, ~11.2MB)
 - [x] Read linktypes.json structure (60 link types)
 - [x] Scan PDF metadata (versions, page counts)
@@ -472,6 +516,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Create processing priority order
 
 ### Phase 2: Extract Machine-Readable Data (XLSX) ✅ COMPLETE
+
 - [x] Extract GDM v2.16 Combined Models to CSV (189 rows)
 - [x] Extract ADB Release 2.11 to CSV (451 rows)
 - [ ] Extract ESG-relevant GDM attributes (deferred to Phase 6)
@@ -480,6 +525,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Validate extracted data quality
 
 ### Phase 3: Process Bonus Files ✅ COMPLETE
+
 - [x] Copy linktypes.json to data/gs1_link_types/
 - [x] Create TypeScript types in shared/gs1-link-types.ts
 - [x] Extract GS1 standards recent updates from Detailed_Log.pdf (pages 1-5)
@@ -487,6 +533,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Create full gs1_standards_catalog.csv (deferred to Phase 6)
 
 ### Phase 4: Create Structured Summaries (PDFs)
+
 - [ ] Summarize GS1 System Architecture (hierarchy, semantic model)
 - [ ] Summarize EPCIS 2.0.1 (event types, traceability use cases)
 - [ ] Summarize CBV Standard (vocabulary structure, business steps)
@@ -494,11 +541,13 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Update EXTERNAL_REFERENCES.md with all 4 PDFs
 
 ### Phase 5: Update ISA Artefact Inventory
+
 - [ ] Mark all 8 files as ✅ received in ISA_GS1_ARTIFACT_INVENTORY.md
 - [ ] Update NEEDS_USER_UPLOAD.md status
 - [ ] Document versions and metadata
 
 ### Phase 6: Integrate into ISA Knowledge Base
+
 - [ ] Create server/gs1-data-model.ts with GDM lookup functions
 - [ ] Create shared/gs1-link-types.ts with TypeScript types
 - [ ] Populate gs1_standards table with comprehensive catalog
@@ -507,6 +556,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Enhance Ask ISA with GS1 architecture understanding
 
 ### Phase 7: Verification and Delivery
+
 - [ ] Verify all extracted CSV files are valid
 - [ ] Test GDM attribute lookup functions
 - [ ] Test News Hub GS1 tagging improvements
@@ -517,12 +567,12 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 **Estimated Total Time:** 14-15 hours  
 **Approach:** Phased, value-first (immediate value → high value → integration)
 
-
 ---
 
 ## EPCIS/CBV Traceability Layer Integration
 
 ### Phase 1: Ingest EPCIS Classes & Properties
+
 - [ ] Access ref.gs1.org/epcis/ to identify core event classes
 - [ ] Extract EPCISEvent subclasses (ObjectEvent, AggregationEvent, TransformationEvent, TransactionEvent, AssociationEvent)
 - [ ] Extract key supporting structures (QuantityElement, ILMD, EPCISDocument)
@@ -531,6 +581,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Document property types and CBV code list references
 
 ### Phase 2: Ingest CBV Code Lists
+
 - [ ] Access ref.gs1.org/cbv/ to identify vocabularies
 - [ ] Extract Business Steps (bizStep codes)
 - [ ] Extract Dispositions (disposition codes)
@@ -541,6 +592,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] For each code: capture URI, code payload, label, definition, EPCIS field usage
 
 ### Phase 3: Create Curated JSON Datasets
+
 - [ ] Create data/epcis-model.json (classes, properties, definitions)
 - [ ] Create data/cbv-bizsteps.json
 - [ ] Create data/cbv-dispositions.json
@@ -551,6 +603,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Validate JSON structure and completeness
 
 ### Phase 4: Build TypeScript Types & Helpers
+
 - [ ] Create shared/epcis-model.ts with TypeScript types
 - [ ] Create shared/cbv-vocabularies.ts with TypeScript types
 - [ ] Create helper functions for loading EPCIS/CBV data
@@ -558,6 +611,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Create validation helpers for EPCIS event structures
 
 ### Phase 5: Design ESG/Green Deal Mapping Hooks
+
 - [ ] Design regulation → EPCIS/CBV mapping schema
 - [ ] Create example mappings (EUDR → ObjectEvent + TransformationEvent + specific bizSteps)
 - [ ] Add EPCIS event type tags to regulation schema
@@ -565,6 +619,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Create UI components for displaying EPCIS/CBV requirements
 
 ### Phase 6: Integrate into ISA
+
 - [ ] Enhance News Hub with EPCIS event type tagging
 - [ ] Add CBV code filtering to News Hub
 - [ ] Update regulation detail pages with EPCIS/CBV requirements
@@ -572,6 +627,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add EPCIS/CBV to GS1 standard mappings
 
 ### Phase 7: Verification & Reporting
+
 - [ ] Verify all JSON datasets are valid and complete
 - [ ] Test EPCIS/CBV lookup functions
 - [ ] Test News Hub EPCIS tagging
@@ -582,12 +638,12 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 **Estimated Total Time:** 6-8 hours  
 **Approach:** Canonical sources (ref.gs1.org), lightweight JSON, ESG mapping hooks
 
-
 ---
 
 ## EPCIS/CBV Traceability Layer Integration ✅ COMPLETE
 
 ### Phase 1: Ingest EPCIS Classes and Properties ✅
+
 - [x] Research ref.gs1.org/epcis/ structure
 - [x] Document EPCIS event types (ObjectEvent, AggregationEvent, etc.)
 - [x] Document key EPCIS properties (bizStep, disposition, etc.)
@@ -595,6 +651,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Create epcis_classes_raw.txt
 
 ### Phase 2: Ingest CBV Code Lists ✅
+
 - [x] Research ref.gs1.org/cbv/ structure
 - [x] Identify ESG-relevant code lists (BizStep, Disp, BTT, SDT)
 - [x] Create curated ESG-focused CBV vocabularies (cbv_esg_curated.json)
@@ -605,6 +662,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Extract 4 sensor MeasurementTypes
 
 ### Phase 3: Create Curated JSON Datasets ✅
+
 - [x] Create cbv_esg_curated.json (ESG-focused subset)
 - [x] Map each code to EUDR/CSRD/PPWR regulations
 - [x] Add esgUseCases for each code
@@ -612,6 +670,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Create traceability chain guides (EUDR, CSRD, PPWR)
 
 ### Phase 4: Build TypeScript Types ✅
+
 - [x] Create shared/epcis-cbv-types.ts
 - [x] Define CBVBizStep, CBVDisposition, etc. types
 - [x] Create RegulationEPCISMapping interface
@@ -620,12 +679,14 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Create traceability pattern interfaces (EUDR, CSRD, PPWR)
 
 ### Phase 5: Design ESG/Green Deal Mapping Hooks ✅
+
 - [x] Define EUDR traceability requirements
 - [x] Define CSRD Scope 3 requirements
 - [x] Define PPWR circular economy requirements
 - [x] Create regulation-to-EPCIS mapping logic (in types file)
 
 ### Phase 6: Integrate into ISA ✅
+
 - [x] Add EPCIS/CBV tab to regulation detail pages
 - [x] Create EPCISTraceabilityPanel component
 - [x] Display required BizSteps, Dispositions, etc.
@@ -633,6 +694,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Update News Hub AI processor to tag EPCIS/CBV concepts (deferred)
 
 ### Phase 7: Verification and Documentation ✅
+
 - [x] Test EPCIS/CBV tab rendering
 - [x] Verify TypeScript compilation
 - [x] Create implementation files and documentation
@@ -643,6 +705,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Manual News Ingestion Trigger Feature
 
 ### Admin Panel Enhancement
+
 - [x] Add tRPC procedures for manual news ingestion trigger
 - [x] Add tRPC procedures for execution history retrieval
 - [x] Create admin UI component with trigger button
@@ -652,12 +715,12 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Test manual trigger functionality
 - [x] Save checkpoint
 
-
 ---
 
 ## Agent Collaboration Architecture (Manus ↔ ChatGPT)
 
 ### Phase 1: Project Analysis
+
 - [x] Review codebase structure (backend, frontend, ETL, scripts)
 - [x] Review documentation (architecture, NEWS_PIPELINE, GS1/ESG mappings)
 - [x] Summarize tech stack and conventions
@@ -665,6 +728,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Identify low-risk/delegable areas
 
 ### Phase 2: Collaboration Rules
+
 - [x] Create `docs/ISA_AGENT_COLLABORATION.md`
 - [x] Define ownership and boundaries
 - [x] Define interface and contract management
@@ -672,24 +736,40 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Create `docs/CHANGELOG_FOR_CHATGPT.md`
 
 ### Phase 3: Work Plan
+
 - [x] Scan roadmap and TODO for delegable tasks
 - [x] Create `tasks/CHATGPT_WORK_PLAN.md`
 - [x] List concrete tasks with IDs (CGPT-01, CGPT-02, etc.)
 - [x] Prioritize tasks by risk level and dependencies
 
 ### Phase 4: Task Specifications
+
 - [x] Create `tasks/for_chatgpt/` directory
 - [x] Write detailed specs for 3-5 high-priority tasks
 - [x] Include context, exact task, technical spec, constraints
 - [x] Include dependency assumptions and acceptance criteria
 
 ### Phase 5: Integration Workflow
+
 - [x] Document integration rules in collaboration doc
 - [x] Define testing and validation procedures
 - [x] Create integration checklist
 
 ### Phase 6: Delivery
+
 - [x] Summary document for user
 - [x] List of collaboration artifacts
 - [x] Initial task specs ready for ChatGPT
 
+
+---
+
+## CGPT-01: ESRS-to-GS1 Mapping Library (Pilot Task)
+
+- [x] ChatGPT implemented mapping library
+- [x] Manus integrated code into `/server/mappings/`
+- [x] Fixed pattern matching bug (wildcard escaping issue)
+- [x] All 6 unit tests passing
+- [x] TypeScript compilation successful
+- [x] Code formatted with Prettier
+- [x] Ready to commit

@@ -1,6 +1,11 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { getDb } from "./db";
-import { epcisEvents, supplyChainNodes, supplyChainEdges, eudrGeolocation } from "../drizzle/schema";
+import {
+  epcisEvents,
+  supplyChainNodes,
+  supplyChainEdges,
+  eudrGeolocation,
+} from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 
 /**
@@ -21,9 +26,15 @@ describe("EPCIS Integration", () => {
     const db = await getDb();
     if (db) {
       await db.delete(epcisEvents).where(eq(epcisEvents.userId, testUserId));
-      await db.delete(supplyChainNodes).where(eq(supplyChainNodes.userId, testUserId));
-      await db.delete(supplyChainEdges).where(eq(supplyChainEdges.userId, testUserId));
-      await db.delete(eudrGeolocation).where(eq(eudrGeolocation.userId, testUserId));
+      await db
+        .delete(supplyChainNodes)
+        .where(eq(supplyChainNodes.userId, testUserId));
+      await db
+        .delete(supplyChainEdges)
+        .where(eq(supplyChainEdges.userId, testUserId));
+      await db
+        .delete(eudrGeolocation)
+        .where(eq(eudrGeolocation.userId, testUserId));
     }
   });
 
@@ -158,7 +169,9 @@ describe("EPCIS Integration", () => {
         riskAssessmentDate: new Date("2024-01-15"),
       };
 
-      const [inserted] = await db!.insert(eudrGeolocation).values(testGeolocation);
+      const [inserted] = await db!
+        .insert(eudrGeolocation)
+        .values(testGeolocation);
       expect(inserted).toBeDefined();
 
       const retrieved = await db!
@@ -262,7 +275,7 @@ describe("EPCIS Integration", () => {
         .from(epcisEvents)
         .where(eq(epcisEvents.userId, testUserId));
 
-      const storedBizSteps = events.map((e) => e.bizStep).filter(Boolean);
+      const storedBizSteps = events.map(e => e.bizStep).filter(Boolean);
       expect(storedBizSteps.length).toBeGreaterThan(0);
     });
 
@@ -374,7 +387,9 @@ describe("EPCIS Integration", () => {
         eventTime: new Date(),
         bizLocation: "urn:epc:id:sgln:4012345.00001.0",
         epcList: [`urn:epc:id:sgtin:${productGtin}.987`],
-        sourceList: [{ type: "owning_party", source: "urn:epc:id:pgln:4012345.00000" }],
+        sourceList: [
+          { type: "owning_party", source: "urn:epc:id:pgln:4012345.00000" },
+        ],
         rawEvent: { type: "ObjectEvent" },
       });
 
@@ -402,14 +417,18 @@ describe("EPCIS Integration", () => {
         .from(epcisEvents)
         .where(eq(epcisEvents.userId, testUserId));
 
-      const productEvents = events.filter((event) => {
+      const productEvents = events.filter(event => {
         const epcList = event.epcList as string[] | null;
-        return epcList?.some((epc) => epc.includes(productGtin));
+        return epcList?.some(epc => epc.includes(productGtin));
       });
 
-      const hasOriginTracking = productEvents.some((e) => e.sourceList && (e.sourceList as any[]).length > 0);
-      const hasGeolocation = productEvents.some((e) => e.bizLocation);
-      const hasTransformationEvents = productEvents.some((e) => e.eventType === "TransformationEvent");
+      const hasOriginTracking = productEvents.some(
+        e => e.sourceList && (e.sourceList as any[]).length > 0
+      );
+      const hasGeolocation = productEvents.some(e => e.bizLocation);
+      const hasTransformationEvents = productEvents.some(
+        e => e.eventType === "TransformationEvent"
+      );
 
       const geolocationData = await db!
         .select()
@@ -443,14 +462,18 @@ describe("EPCIS Integration", () => {
         .from(epcisEvents)
         .where(eq(epcisEvents.userId, testUserId));
 
-      const productEvents = events.filter((event) => {
+      const productEvents = events.filter(event => {
         const epcList = event.epcList as string[] | null;
-        return epcList?.some((epc) => epc.includes(productGtin));
+        return epcList?.some(epc => epc.includes(productGtin));
       });
 
-      const hasOriginTracking = productEvents.some((e) => e.sourceList && (e.sourceList as any[]).length > 0);
-      const hasGeolocation = productEvents.some((e) => e.bizLocation);
-      const hasTransformationEvents = productEvents.some((e) => e.eventType === "TransformationEvent");
+      const hasOriginTracking = productEvents.some(
+        e => e.sourceList && (e.sourceList as any[]).length > 0
+      );
+      const hasGeolocation = productEvents.some(e => e.bizLocation);
+      const hasTransformationEvents = productEvents.some(
+        e => e.eventType === "TransformationEvent"
+      );
 
       const geolocationData = await db!
         .select()
@@ -463,7 +486,9 @@ describe("EPCIS Integration", () => {
       const missingRequirements = [
         ...(!hasOriginTracking ? ["Origin tracking (sourceList)"] : []),
         ...(!hasGeolocation ? ["Business location (bizLocation)"] : []),
-        ...(!hasTransformationEvents ? ["Transformation events (manufacturing)"] : []),
+        ...(!hasTransformationEvents
+          ? ["Transformation events (manufacturing)"]
+          : []),
         ...(!hasEUDRGeolocation ? ["EUDR geolocation data"] : []),
       ];
 
@@ -504,7 +529,7 @@ describe("EPCIS Integration", () => {
         .from(epcisEvents)
         .where(eq(epcisEvents.userId, testUserId));
 
-      const eventsWithSensors = events.filter((e) => e.sensorElementList);
+      const eventsWithSensors = events.filter(e => e.sensorElementList);
       expect(eventsWithSensors.length).toBeGreaterThan(0);
     });
   });

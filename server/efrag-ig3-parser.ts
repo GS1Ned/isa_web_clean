@@ -1,6 +1,6 @@
 /**
  * EFRAG IG3 Datapoints Parser
- * 
+ *
  * Parses the EFRAG Implementation Guidance 3 (IG3) Excel file containing
  * the comprehensive list of ESRS datapoints across all 12 standards.
  */
@@ -25,7 +25,9 @@ interface IG3Datapoint {
   appendixC_AllUndertakings: boolean;
 }
 
-export async function parseIG3Datapoints(filePath: string): Promise<IG3Datapoint[]> {
+export async function parseIG3Datapoints(
+  filePath: string
+): Promise<IG3Datapoint[]> {
   console.log(`\n=== Parsing EFRAG IG3 Datapoints ===`);
   console.log(`File: ${filePath}`);
 
@@ -37,7 +39,7 @@ export async function parseIG3Datapoints(filePath: string): Promise<IG3Datapoint
 
   for (const sheetName of esrsSheets) {
     console.log(`\nParsing sheet: ${sheetName}...`);
-    
+
     const sheet = wb.Sheets[sheetName];
     const data = XLSX.utils.sheet_to_json(sheet, { header: 1 }) as any[][];
 
@@ -45,9 +47,11 @@ export async function parseIG3Datapoints(filePath: string): Promise<IG3Datapoint
     let headerRowIndex = -1;
     for (let i = 0; i < Math.min(20, data.length); i++) {
       if (data[i] && data[i].length > 5) {
-        if (data[i].some((cell: any) => 
-          typeof cell === "string" && cell.includes("ID")
-        )) {
+        if (
+          data[i].some(
+            (cell: any) => typeof cell === "string" && cell.includes("ID")
+          )
+        ) {
           headerRowIndex = i;
           break;
         }
@@ -100,7 +104,9 @@ export async function parseIG3Datapoints(filePath: string): Promise<IG3Datapoint
   return allDatapoints;
 }
 
-export async function ingestIG3Datapoints(datapoints: IG3Datapoint[]): Promise<void> {
+export async function ingestIG3Datapoints(
+  datapoints: IG3Datapoint[]
+): Promise<void> {
   console.log(`\n=== Ingesting IG3 Datapoints to Database ===`);
 
   const db = await getDb();
@@ -153,15 +159,16 @@ export async function ingestIG3Datapoints(datapoints: IG3Datapoint[]): Promise<v
 
 // Main execution
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const filePath = "/home/ubuntu/upload/EFRAGIG3ListofESRSDataPoints(1)(1).xlsx";
-  
+  const filePath =
+    "/home/ubuntu/upload/EFRAGIG3ListofESRSDataPoints(1)(1).xlsx";
+
   parseIG3Datapoints(filePath)
-    .then(async (datapoints) => {
+    .then(async datapoints => {
       await ingestIG3Datapoints(datapoints);
       console.log("\n✅ IG3 datapoints ingestion complete!");
       process.exit(0);
     })
-    .catch((error) => {
+    .catch(error => {
       console.error("❌ Error:", error);
       process.exit(1);
     });

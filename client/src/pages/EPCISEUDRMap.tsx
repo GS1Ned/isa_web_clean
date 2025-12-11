@@ -4,16 +4,25 @@ import { trpc } from "@/lib/trpc";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, MapPin, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
+import {
+  Loader2,
+  MapPin,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 // Fix Leaflet default icon issue with Vite
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
 // Custom marker icons for risk levels
@@ -23,7 +32,7 @@ const createRiskIcon = (riskLevel: string) => {
     medium: "#f59e0b",
     high: "#ef4444",
   };
-  
+
   return L.divIcon({
     className: "custom-marker",
     html: `<div style="background-color: ${colors[riskLevel as keyof typeof colors]}; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`,
@@ -33,7 +42,9 @@ const createRiskIcon = (riskLevel: string) => {
 };
 
 export default function EPCISEUDRMap() {
-  const [selectedRisk, setSelectedRisk] = useState<"low" | "medium" | "high" | undefined>();
+  const [selectedRisk, setSelectedRisk] = useState<
+    "low" | "medium" | "high" | undefined
+  >();
   const [selectedGtin, setSelectedGtin] = useState<string | undefined>();
 
   const { data, isLoading, error } = trpc.epcis.getEUDRGeolocations.useQuery({
@@ -83,8 +94,10 @@ export default function EPCISEUDRMap() {
   // Calculate center of all markers
   const center: [number, number] = data?.geolocations.length
     ? [
-        data.geolocations.reduce((sum, g) => sum + g.lat, 0) / data.geolocations.length,
-        data.geolocations.reduce((sum, g) => sum + g.lng, 0) / data.geolocations.length,
+        data.geolocations.reduce((sum, g) => sum + g.lat, 0) /
+          data.geolocations.length,
+        data.geolocations.reduce((sum, g) => sum + g.lng, 0) /
+          data.geolocations.length,
       ]
     : [51.5074, -0.1278]; // Default to London
 
@@ -95,7 +108,9 @@ export default function EPCISEUDRMap() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">EUDR Geolocation Map</h1>
+              <h1 className="text-3xl font-bold text-foreground">
+                EUDR Geolocation Map
+              </h1>
               <p className="text-muted-foreground mt-1">
                 Product origins and deforestation risk assessment
               </p>
@@ -149,12 +164,18 @@ export default function EPCISEUDRMap() {
                   <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
                 </div>
               ) : error ? (
-                <div className="text-sm text-destructive">Error loading data</div>
+                <div className="text-sm text-destructive">
+                  Error loading data
+                </div>
               ) : (
                 <div className="space-y-3">
                   <div>
-                    <div className="text-2xl font-bold">{data?.totalCount || 0}</div>
-                    <div className="text-xs text-muted-foreground">Total Locations</div>
+                    <div className="text-2xl font-bold">
+                      {data?.totalCount || 0}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Total Locations
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
@@ -163,7 +184,8 @@ export default function EPCISEUDRMap() {
                         <span className="text-sm">Compliant</span>
                       </div>
                       <span className="text-sm font-medium">
-                        {data?.geolocations.filter((g) => g.riskLevel === "low").length || 0}
+                        {data?.geolocations.filter(g => g.riskLevel === "low")
+                          .length || 0}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
@@ -172,7 +194,9 @@ export default function EPCISEUDRMap() {
                         <span className="text-sm">At Risk</span>
                       </div>
                       <span className="text-sm font-medium">
-                        {data?.geolocations.filter((g) => g.riskLevel === "medium").length || 0}
+                        {data?.geolocations.filter(
+                          g => g.riskLevel === "medium"
+                        ).length || 0}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
@@ -181,7 +205,8 @@ export default function EPCISEUDRMap() {
                         <span className="text-sm">Non-Compliant</span>
                       </div>
                       <span className="text-sm font-medium">
-                        {data?.geolocations.filter((g) => g.riskLevel === "high").length || 0}
+                        {data?.geolocations.filter(g => g.riskLevel === "high")
+                          .length || 0}
                       </span>
                     </div>
                   </div>
@@ -248,7 +273,8 @@ export default function EPCISEUDRMap() {
                       No geolocation data available
                     </div>
                     <div className="text-xs text-muted-foreground mt-1">
-                      Upload EPCIS events with geolocation data to see them on the map
+                      Upload EPCIS events with geolocation data to see them on
+                      the map
                     </div>
                   </div>
                 </div>
@@ -262,7 +288,7 @@ export default function EPCISEUDRMap() {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
-                  {data?.geolocations.map((location) => (
+                  {data?.geolocations.map(location => (
                     <>
                       <Marker
                         key={location.id}
@@ -276,16 +302,22 @@ export default function EPCISEUDRMap() {
                             </div>
                             <div className="space-y-1 text-sm">
                               <div className="flex items-center gap-2">
-                                <Badge className={getRiskColor(location.riskLevel)}>
+                                <Badge
+                                  className={getRiskColor(location.riskLevel)}
+                                >
                                   {getRiskLabel(location.riskLevel)}
                                 </Badge>
                               </div>
                               <div className="text-muted-foreground">
-                                Lat: {location.lat.toFixed(6)}, Lng: {location.lng.toFixed(6)}
+                                Lat: {location.lat.toFixed(6)}, Lng:{" "}
+                                {location.lng.toFixed(6)}
                               </div>
                               {location.riskAssessmentDate && (
                                 <div className="text-muted-foreground text-xs">
-                                  Assessed: {new Date(location.riskAssessmentDate).toLocaleDateString()}
+                                  Assessed:{" "}
+                                  {new Date(
+                                    location.riskAssessmentDate
+                                  ).toLocaleDateString()}
                                 </div>
                               )}
                             </div>
@@ -298,8 +330,18 @@ export default function EPCISEUDRMap() {
                           center={[location.lat, location.lng]}
                           radius={5000}
                           pathOptions={{
-                            color: location.riskLevel === "high" ? "#ef4444" : location.riskLevel === "medium" ? "#f59e0b" : "#22c55e",
-                            fillColor: location.riskLevel === "high" ? "#ef4444" : location.riskLevel === "medium" ? "#f59e0b" : "#22c55e",
+                            color:
+                              location.riskLevel === "high"
+                                ? "#ef4444"
+                                : location.riskLevel === "medium"
+                                  ? "#f59e0b"
+                                  : "#22c55e",
+                            fillColor:
+                              location.riskLevel === "high"
+                                ? "#ef4444"
+                                : location.riskLevel === "medium"
+                                  ? "#f59e0b"
+                                  : "#22c55e",
                             fillOpacity: 0.1,
                           }}
                         />

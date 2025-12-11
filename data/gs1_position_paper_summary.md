@@ -19,11 +19,13 @@ This position paper addresses how traceability and transparency are emerging as 
 ### 1. Regulation Classification
 
 **Company-Level Regulations:**
+
 - CSRD (Corporate Sustainability Reporting Directive)
 - CSDDD (Corporate Sustainability Due Diligence Directive)
 - TCFD (Task Force on Climate-Related Financial Disclosures)
 
 **Product-Level Regulations:**
+
 - EUDR (EU Deforestation Regulation)
 - PPWR (Packaging and Packaging Waste Regulation)
 - ESPR (Ecodesign for Sustainable Products Regulation)
@@ -45,6 +47,7 @@ The position paper identifies **common data categories** that appear across mult
 **Definition:** CTEs are the critical events that must be recorded for effective traceability to be possible. These are instances where a product is moved, transformed, or otherwise requires data collection to be traceable through the value chain.
 
 **Examples of CTEs:**
+
 - CTE #1: Raw material sent to producer
 - CTE #2: Raw material sent to producer
 - CTE #3: Producer ships to distributor
@@ -59,6 +62,7 @@ The position paper identifies **common data categories** that appear across mult
 **Definition:** KDEs are the data points that must be captured at each CTE to ensure effective traceability and sufficient availability of traceability data.
 
 **The 5W+1H Framework:**
+
 - **Who** - Physical location handling a product (Where)
 - **What** - Product identification
 - **What** - Batch/lot numbers for received and delivered products (increased granularity)
@@ -98,11 +102,13 @@ The position paper identifies **common data categories** that appear across mult
 ### GS1 Standards for Traceability
 
 **Identification Standards:**
+
 - **GTIN** (Global Trade Item Number) - Product identification
 - **GLN** (Global Location Number) - Party and location identification
 - **Batch/Lot/Serial qualifiers** - Increased granularity for product tracking
 
 **Data Sharing Standards:**
+
 - **EPCIS** (Electronic Product Code Information Services) - Visibility event standard for sharing traceability data
 - **GRP** (GS1 Registry Platform) - Global registry for GTINs and GLNs enabling searchability and data access
 - **GDSN** (Global Data Synchronisation Network) - Product Master Data sharing
@@ -110,6 +116,7 @@ The position paper identifies **common data categories** that appear across mult
 - **GDM** (Global Data Model) - Attribute definitions
 
 **Data Carrier Standards:**
+
 - **Barcodes** (1D and 2D)
 - **QR codes with GS1 Digital Link**
 - **RFID**

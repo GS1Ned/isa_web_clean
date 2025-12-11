@@ -24,7 +24,11 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
     }
 
     // Fall back to SMTP
-    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
+    if (
+      process.env.SMTP_HOST &&
+      process.env.SMTP_USER &&
+      process.env.SMTP_PASSWORD
+    ) {
       return await sendViaSMTP(options);
     }
 
@@ -53,7 +57,7 @@ async function sendViaSendGrid(options: EmailOptions): Promise<boolean> {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        personalizations: recipients.map((email) => ({
+        personalizations: recipients.map(email => ({
           to: [{ email }],
         })),
         from: {
@@ -111,7 +115,9 @@ async function sendViaSMTP(options: EmailOptions): Promise<boolean> {
       },
     });
 
-    const recipients = Array.isArray(options.to) ? options.to.join(",") : options.to;
+    const recipients = Array.isArray(options.to)
+      ? options.to.join(",")
+      : options.to;
 
     const info = await transporter.sendMail({
       from: process.env.SENDER_EMAIL || "noreply@isa-hub.com",
@@ -136,7 +142,9 @@ async function sendViaNotifications(options: EmailOptions): Promise<boolean> {
   try {
     const { notifyOwner } = await import("./_core/notification");
 
-    const recipients = Array.isArray(options.to) ? options.to.join(", ") : options.to;
+    const recipients = Array.isArray(options.to)
+      ? options.to.join(", ")
+      : options.to;
 
     await notifyOwner({
       title: options.subject,
@@ -255,7 +263,7 @@ export function createDailyDigestEmail(
             <div style="background-color: white; border-left: 4px solid #10b981; padding: 15px; margin: 20px 0;">
               <h3 style="margin-top: 0; color: #1f2937;">🆕 New Regulations (${newRegulations.length})</h3>
               <ul style="margin: 0; padding-left: 20px;">
-                ${newRegulations.map((reg) => `<li style="margin: 5px 0; color: #374151;">${reg.code}: ${reg.name}</li>`).join("")}
+                ${newRegulations.map(reg => `<li style="margin: 5px 0; color: #374151;">${reg.code}: ${reg.name}</li>`).join("")}
               </ul>
             </div>
           `
@@ -268,12 +276,16 @@ export function createDailyDigestEmail(
             <div style="background-color: white; border-left: 4px solid #3b82f6; padding: 15px; margin: 20px 0;">
               <h3 style="margin-top: 0; color: #1f2937;">📰 Latest News (${newNews.length})</h3>
               <ul style="margin: 0; padding-left: 20px;">
-                ${newNews.map((news) => `
+                ${newNews
+                  .map(
+                    news => `
                   <li style="margin: 10px 0; color: #374151;">
                     <strong>${news.title}</strong><br>
                     <span style="color: #6b7280; font-size: 14px;">${news.summary}</span>
                   </li>
-                `).join("")}
+                `
+                  )
+                  .join("")}
               </ul>
             </div>
           `
@@ -286,11 +298,15 @@ export function createDailyDigestEmail(
             <div style="background-color: white; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0;">
               <h3 style="margin-top: 0; color: #1f2937;">⏰ Upcoming Deadlines (${upcomingDeadlines.length})</h3>
               <ul style="margin: 0; padding-left: 20px;">
-                ${upcomingDeadlines.map((deadline) => `
+                ${upcomingDeadlines
+                  .map(
+                    deadline => `
                   <li style="margin: 5px 0; color: #374151;">
                     ${deadline.name} - <strong>${deadline.daysUntil} days</strong>
                   </li>
-                `).join("")}
+                `
+                  )
+                  .join("")}
               </ul>
             </div>
           `
@@ -310,27 +326,27 @@ ${
   newRegulations.length > 0
     ? `
 NEW REGULATIONS (${newRegulations.length})
-${newRegulations.map((reg) => `- ${reg.code}: ${reg.name}`).join("\n")}
+${newRegulations.map(reg => `- ${reg.code}: ${reg.name}`).join("\n")}
 
 `
     : ""
 }${
-  newNews.length > 0
-    ? `
+      newNews.length > 0
+        ? `
 LATEST NEWS (${newNews.length})
-${newNews.map((news) => `- ${news.title}\n  ${news.summary}`).join("\n")}
+${newNews.map(news => `- ${news.title}\n  ${news.summary}`).join("\n")}
 
 `
-    : ""
-}${
-  upcomingDeadlines.length > 0
-    ? `
+        : ""
+    }${
+      upcomingDeadlines.length > 0
+        ? `
 UPCOMING DEADLINES (${upcomingDeadlines.length})
-${upcomingDeadlines.map((deadline) => `- ${deadline.name} (${deadline.daysUntil} days)`).join("\n")}
+${upcomingDeadlines.map(deadline => `- ${deadline.name} (${deadline.daysUntil} days)`).join("\n")}
 
 `
-    : ""
-}
+        : ""
+    }
 ---
 This is an automated message from ISA Hub.
     `,

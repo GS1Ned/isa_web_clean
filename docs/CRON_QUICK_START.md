@@ -32,7 +32,7 @@ Your ISA project is now fully configured with:
    **Basic Settings:**
    - Title: `ISA Daily News Ingestion`
    - URL: `https://your-isa-domain.manus.space/cron/daily-news-ingestion`
-     *(Replace `your-isa-domain` with your actual Manus domain)*
+     _(Replace `your-isa-domain` with your actual Manus domain)_
 
    **Schedule:**
    - Select: **"Every day"**
@@ -44,7 +44,7 @@ Your ISA project is now fully configured with:
    - Headers: Click "Add header"
      - Name: `Authorization`
      - Value: `Bearer c11f32585dcc3641dd108e4b6d9c3d4c9a718a41eeab7869775bb8ee97ca3f9b`
-       *(This is your CRON_SECRET - keep it secure!)*
+       _(This is your CRON_SECRET - keep it secure!)_
 
 3. Click **"Create cronjob"**
 
@@ -88,16 +88,19 @@ Your ISA project is now fully configured with:
 ### View Execution Logs
 
 **In cron-job.org:**
+
 - Go to your cronjob → "Execution log" tab
 - See all past executions, status codes, and response times
 
 **In your ISA server:**
+
 - Logs are saved to: `logs/cron/cron-YYYY-MM-DD.log`
 - View today's log: `tail -f logs/cron/cron-$(date +%Y-%m-%d).log`
 
 ### Automatic Failure Alerts
 
 If a cron job fails **3 times consecutively**, you'll automatically receive a notification via Manus with:
+
 - Error details
 - Recent execution history
 - Troubleshooting steps
@@ -105,6 +108,7 @@ If a cron job fails **3 times consecutively**, you'll automatically receive a no
 ### Monitoring Dashboard
 
 View execution statistics:
+
 ```bash
 # Generate monitoring report
 node scripts/generate-cron-config.mjs
@@ -119,6 +123,7 @@ node scripts/generate-cron-config.mjs
 **Cause:** CRON_SECRET mismatch
 
 **Solution:**
+
 1. Verify your CRON_SECRET in cron-job.org matches the one in Manus secrets
 2. Check Authorization header format: `Bearer <secret>` (note the space after "Bearer")
 
@@ -127,6 +132,7 @@ node scripts/generate-cron-config.mjs
 **Cause:** News fetching takes too long
 
 **Solution:**
+
 1. This is normal - news collection can take 30-60 seconds
 2. Increase timeout in cron-job.org settings to 120 seconds:
    - Edit cronjob → Advanced → Timeout: `120`
@@ -136,6 +142,7 @@ node scripts/generate-cron-config.mjs
 **Cause:** Some news sources may be temporarily unavailable or rate-limiting
 
 **Solution:**
+
 - This is expected and handled gracefully
 - The pipeline will skip unavailable sources and continue
 - Check logs for: `[news-fetcher] Error fetching from...`
@@ -146,6 +153,7 @@ node scripts/generate-cron-config.mjs
 **Cause:** All fetched news items may already exist in database
 
 **Solution:**
+
 - This is normal behavior (deduplication working correctly)
 - Check response: `"skipped": 10` means 10 items were already in database
 - New news will be inserted as it becomes available
@@ -185,16 +193,19 @@ node scripts/generate-cron-config.mjs
 ## 📈 Expected Results
 
 **First run:**
+
 - Fetched: 10-50 items (depending on sources)
 - Inserted: 10-50 items (all new)
 - Skipped: 0 items
 
 **Subsequent runs:**
+
 - Fetched: 5-20 items
 - Inserted: 0-10 items (only new ones)
 - Skipped: 5-15 items (already in database)
 
 **Weekly archival:**
+
 - Archived: 0-50 items (depends on age)
 
 ---
@@ -244,6 +255,7 @@ A: See `cron-configs/` directory for configurations for EasyCron, GitHub Actions
 
 **Q: How do I test manually?**
 A: Use curl:
+
 ```bash
 curl -H "Authorization: Bearer c11f32585dcc3641dd108e4b6d9c3d4c9a718a41eeab7869775bb8ee97ca3f9b" \
   https://your-domain.manus.space/cron/daily-news-ingestion
@@ -259,6 +271,7 @@ A: In your project directory: `logs/cron/cron-YYYY-MM-DD.log`
 Your ISA news collection is now fully automated and monitored. Sit back and let the system keep you updated with the latest EU sustainability regulations and GS1 standards news!
 
 **Next Steps:**
+
 1. ✅ Mark this guide as complete
 2. 📧 Check your email for the first failure alert (if any)
 3. 📊 Review execution logs after 24 hours

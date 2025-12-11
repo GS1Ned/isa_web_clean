@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { Bell, X, AlertTriangle, CheckCircle, MessageSquare, Zap } from "lucide-react";
+import {
+  Bell,
+  X,
+  AlertTriangle,
+  CheckCircle,
+  MessageSquare,
+  Zap,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
 
@@ -8,9 +15,10 @@ export function NotificationCenter() {
   const [notifications, setNotifications] = useState<any[]>([]);
 
   // Fetch pending notifications on mount
-  const { data: pendingNotifications } = trpc.realtime.getPendingNotifications.useQuery(undefined, {
-    refetchInterval: 5000, // Poll every 5 seconds
-  });
+  const { data: pendingNotifications } =
+    trpc.realtime.getPendingNotifications.useQuery(undefined, {
+      refetchInterval: 5000, // Poll every 5 seconds
+    });
 
   // Poll for new notifications every 5 seconds
   useEffect(() => {
@@ -24,7 +32,7 @@ export function NotificationCenter() {
   // Load initial pending notifications
   useEffect(() => {
     if (pendingNotifications) {
-      setNotifications((prev) => {
+      setNotifications(prev => {
         const combined = [...pendingNotifications, ...prev];
         return combined.slice(0, 50);
       });
@@ -34,7 +42,7 @@ export function NotificationCenter() {
   const unreadCount = notifications.length;
 
   const clearNotification = (idx: number) => {
-    setNotifications((prev) => prev.filter((_, i) => i !== idx));
+    setNotifications(prev => prev.filter((_, i) => i !== idx));
   };
 
   const getIcon = (type: string) => {
@@ -112,10 +120,14 @@ export function NotificationCenter() {
                     </button>
                   </div>
                   <div className="flex gap-3">
-                    <div className="flex-shrink-0 mt-1">{getIcon(notif.type)}</div>
+                    <div className="flex-shrink-0 mt-1">
+                      {getIcon(notif.type)}
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-sm">{notif.title}</p>
-                      <p className="text-sm text-gray-700 mt-1">{notif.message}</p>
+                      <p className="text-sm text-gray-700 mt-1">
+                        {notif.message}
+                      </p>
                       <div className="flex gap-2 mt-2">
                         <Badge variant="outline" className="text-xs">
                           {notif.type.replace(/_/g, " ")}

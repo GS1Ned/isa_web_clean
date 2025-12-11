@@ -17,18 +17,30 @@ async function createDutchInitiativesTables() {
       readFileSync("./scripts/create-dutch-initiatives-tables.sql", "utf-8")
         .split("CREATE TABLE IF NOT EXISTS `initiative_regulation_mappings`")[0]
         .split(";")
-        .find(s => s.includes("CREATE TABLE IF NOT EXISTS `dutch_initiatives`")),
+        .find(s =>
+          s.includes("CREATE TABLE IF NOT EXISTS `dutch_initiatives`")
+        ),
       // 2. Create mapping tables after
       readFileSync("./scripts/create-dutch-initiatives-tables.sql", "utf-8")
         .split(";")
-        .find(s => s.includes("CREATE TABLE IF NOT EXISTS `initiative_regulation_mappings`")),
+        .find(s =>
+          s.includes(
+            "CREATE TABLE IF NOT EXISTS `initiative_regulation_mappings`"
+          )
+        ),
       readFileSync("./scripts/create-dutch-initiatives-tables.sql", "utf-8")
         .split(";")
-        .find(s => s.includes("CREATE TABLE IF NOT EXISTS `initiative_standard_mappings`"))
+        .find(s =>
+          s.includes(
+            "CREATE TABLE IF NOT EXISTS `initiative_standard_mappings`"
+          )
+        ),
     ].filter(Boolean);
 
     for (const statement of statements) {
-      const tableName = statement.match(/CREATE TABLE IF NOT EXISTS `([^`]+)`/)?.[1] || "unknown";
+      const tableName =
+        statement.match(/CREATE TABLE IF NOT EXISTS `([^`]+)`/)?.[1] ||
+        "unknown";
       console.log(`Creating table: ${tableName}`);
       await db.execute(statement.trim());
       console.log("✓ Success");

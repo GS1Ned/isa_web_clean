@@ -43,6 +43,7 @@ This document defines the **complete workflow** for assigning tasks to ChatGPT, 
 **Steps:**
 
 1. **Clean workspace:**
+
    ```bash
    cd /home/ubuntu/isa_web
    pnpm check  # Ensure no TypeScript errors
@@ -50,6 +51,7 @@ This document defines the **complete workflow** for assigning tasks to ChatGPT, 
    ```
 
 2. **Create zip archive:**
+
    ```bash
    # Exclude unnecessary files
    zip -r isa_web_snapshot.zip . \
@@ -71,9 +73,9 @@ This document defines the **complete workflow** for assigning tasks to ChatGPT, 
 **File:** `tasks/CHATGPT_WORK_PLAN.md`
 
 ```markdown
-| ID | Task Name | Risk Level | Status | Dependencies |
-|----|-----------|------------|--------|--------------|
-| CGPT-01 | ESRS-to-GS1 Mapping | Low | **In Progress** | None |
+| ID      | Task Name           | Risk Level | Status          | Dependencies |
+| ------- | ------------------- | ---------- | --------------- | ------------ |
+| CGPT-01 | ESRS-to-GS1 Mapping | Low        | **In Progress** | None         |
 ```
 
 ---
@@ -89,12 +91,12 @@ This document defines the **complete workflow** for assigning tasks to ChatGPT, 
 3. **Brief introduction:**
 
 ```
-I'm working on the ISA (Intelligent Standards Architect) project, which bridges 
+I'm working on the ISA (Intelligent Standards Architect) project, which bridges
 EU sustainability regulations with GS1 supply chain standards.
 
 I need you to implement a specific module according to the attached task specification.
 
-The project snapshot (zip file) contains the full codebase, documentation, and 
+The project snapshot (zip file) contains the full codebase, documentation, and
 task spec. Please read the task spec carefully and implement exactly as specified.
 
 Task: CGPT-01 - ESRS-to-GS1 Attribute Mapping Library
@@ -137,7 +139,7 @@ Please confirm you understand the task before starting implementation.
 
 **Deliverable format:**
 
-```
+````
 # CGPT-01 Deliverables
 
 ## Files Created
@@ -145,26 +147,29 @@ Please confirm you understand the task before starting implementation.
 ### /server/mappings/esrs-to-gs1-mapper.ts
 ```typescript
 // [Full file content here]
-```
+````
 
 ### /server/mappings/esrs-gs1-mapping-data.ts
+
 ```typescript
 // [Full file content here]
 ```
 
 ### /server/mappings/esrs-to-gs1-mapper.test.ts
+
 ```typescript
 // [Full file content here]
 ```
 
 ### /server/mappings/README.md
+
 ```markdown
 // [Full file content here]
 ```
 
 ## Implementation Notes
 
-- Assumed ESRS datapoint patterns follow "E{standard}-{section}_{number}" format
+- Assumed ESRS datapoint patterns follow "E{standard}-{section}\_{number}" format
 - Used glob pattern matching for flexible datapoint matching
 - Mapping confidence scores based on directness of attribute relationship
 - Covered E1-E5 ESRS standards with 50+ mapping rules
@@ -180,7 +185,8 @@ Please confirm you understand the task before starting implementation.
 - Only covers top 5 ESRS standards (E1-E5)
 - Pattern matching is basic (no complex regex)
 - No external API validation of GS1 attributes
-```
+
+````
 
 ---
 
@@ -220,7 +226,7 @@ mkdir -p /home/ubuntu/isa_web/server/mappings
 # - /server/mappings/esrs-gs1-mapping-data.ts
 # - /server/mappings/esrs-to-gs1-mapper.test.ts
 # - /server/mappings/README.md
-```
+````
 
 ### 4.3 Run Validation Steps
 
@@ -301,9 +307,9 @@ Task spec: tasks/for_chatgpt/CGPT-01_esrs_to_gs1_mapping.md
 **File:** `tasks/CHATGPT_WORK_PLAN.md`
 
 ```markdown
-| ID | Task Name | Risk Level | Status | Dependencies |
-|----|-----------|------------|--------|--------------|
-| CGPT-01 | ESRS-to-GS1 Mapping | Low | **Completed** | None |
+| ID      | Task Name           | Risk Level | Status        | Dependencies |
+| ------- | ------------------- | ---------- | ------------- | ------------ |
+| CGPT-01 | ESRS-to-GS1 Mapping | Low        | **Completed** | None         |
 ```
 
 ---
@@ -452,9 +458,9 @@ Task spec: tasks/for_chatgpt/CGPT-01_esrs_to_gs1_mapping.md
 
 ## Version History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-12-11 | Initial integration workflow document |
+| Version | Date       | Changes                               |
+| ------- | ---------- | ------------------------------------- |
+| 1.0     | 2025-12-11 | Initial integration workflow document |
 
 ---
 

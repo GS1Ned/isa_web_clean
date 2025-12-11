@@ -36,15 +36,25 @@ const HubResources = lazy(() => import("./pages/HubResources"));
 const HubImpactMatrix = lazy(() => import("./pages/HubImpactMatrix"));
 const HubUserDashboard = lazy(() => import("./pages/HubUserDashboard"));
 const AdminNewsPanel = lazy(() => import("./pages/AdminNewsPanel"));
-const AdminNewsPipelineManager = lazy(() => import("./pages/AdminNewsPipelineManager"));
-const NewsAdmin = lazy(() => import("./pages/NewsAdmin").then(m => ({ default: m.NewsAdmin })));
+const AdminNewsPipelineManager = lazy(
+  () => import("./pages/AdminNewsPipelineManager")
+);
+const NewsAdmin = lazy(() =>
+  import("./pages/NewsAdmin").then(m => ({ default: m.NewsAdmin }))
+);
 const HubCompare = lazy(() => import("./pages/HubCompare"));
 const HubCompareEnhanced = lazy(() => import("./pages/HubCompareEnhanced"));
 const AdminCellarIngestion = lazy(() => import("./pages/AdminCellarIngestion"));
 const AdminEUDRSeeder = lazy(() => import("./pages/AdminEUDRSeeder"));
-const AdminCellarSyncMonitor = lazy(() => import("./pages/AdminCellarSyncMonitor"));
-const AdminAnalyticsDashboard = lazy(() => import("./pages/AdminAnalyticsDashboard"));
-const AdminPromptOptimization = lazy(() => import("./pages/AdminPromptOptimization"));
+const AdminCellarSyncMonitor = lazy(
+  () => import("./pages/AdminCellarSyncMonitor")
+);
+const AdminAnalyticsDashboard = lazy(
+  () => import("./pages/AdminAnalyticsDashboard")
+);
+const AdminPromptOptimization = lazy(
+  () => import("./pages/AdminPromptOptimization")
+);
 const EPCISUpload = lazy(() => import("./pages/EPCISUpload"));
 const EPCISUploadEnhanced = lazy(() => import("./pages/EPCISUploadEnhanced"));
 const EPCISSupplyChain = lazy(() => import("./pages/EPCISSupplyChain"));
@@ -54,16 +64,30 @@ const ComplianceReport = lazy(() => import("./pages/ComplianceReport"));
 const ESRSDatapoints = lazy(() => import("./pages/ESRSDatapoints"));
 const SupplyChainDashboard = lazy(() => import("./pages/SupplyChainDashboard"));
 const RiskRemediation = lazy(() => import("./pages/RiskRemediation"));
-const AdminEvidenceVerification = lazy(() => import("./pages/AdminEvidenceVerification"));
+const AdminEvidenceVerification = lazy(
+  () => import("./pages/AdminEvidenceVerification")
+);
 const ComplianceScoreboard = lazy(() => import("./pages/ComplianceScoreboard"));
 const ComplianceRoadmap = lazy(() => import("./pages/ComplianceRoadmap"));
 const TemplateLibrary = lazy(() => import("./pages/TemplateLibrary"));
 const AdminTemplateManager = lazy(() => import("./pages/AdminTemplateManager"));
-const TemplateAnalyticsDashboard = lazy(() => import("./pages/TemplateAnalyticsDashboard"));
-const NotificationPreferences = lazy(() => import("./pages/NotificationPreferences").then(m => ({ default: m.NotificationPreferences })));
-const ExecutiveScorecard = lazy(() => import("./pages/ExecutiveScorecard").then(m => ({ default: m.ExecutiveScorecard })));
+const TemplateAnalyticsDashboard = lazy(
+  () => import("./pages/TemplateAnalyticsDashboard")
+);
+const NotificationPreferences = lazy(() =>
+  import("./pages/NotificationPreferences").then(m => ({
+    default: m.NotificationPreferences,
+  }))
+);
+const ExecutiveScorecard = lazy(() =>
+  import("./pages/ExecutiveScorecard").then(m => ({
+    default: m.ExecutiveScorecard,
+  }))
+);
 const HubDutchInitiatives = lazy(() => import("./pages/HubDutchInitiatives"));
-const HubDutchInitiativeDetail = lazy(() => import("./pages/HubDutchInitiativeDetail"));
+const HubDutchInitiativeDetail = lazy(
+  () => import("./pages/HubDutchInitiativeDetail")
+);
 const AskISA = lazy(() => import("./pages/AskISA"));
 const AdminKnowledgeBase = lazy(() => import("./pages/AdminKnowledgeBase"));
 const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
@@ -76,7 +100,8 @@ const PageLoader = () => (
 );
 function Router() {
   // make sure to consider if you need authentication for certain routes
-  return (    <Switch>
+  return (
+    <Switch>
       <Route path={"//"} component={Home} />
       <Route path={"/hub/regulations/:id"} component={HubRegulationDetail} />
       <Route path={"/about"} component={About} />
@@ -104,7 +129,10 @@ function Router() {
       <Route path="/hub/compare" component={HubCompareEnhanced} />
       <Route path="/hub/compare-legacy" component={HubCompare} />
       <Route path="/hub/esrs-datapoints" component={ESRSDatapoints} />
-      <Route path="/hub/dutch-initiatives/:id" component={HubDutchInitiativeDetail} />
+      <Route
+        path="/hub/dutch-initiatives/:id"
+        component={HubDutchInitiativeDetail}
+      />
       <Route path="/hub/dutch-initiatives" component={HubDutchInitiatives} />
       <Route path="/ask" component={AskISA} />
       <Route path="/admin/knowledge-base" component={AdminKnowledgeBase} />
@@ -124,14 +152,26 @@ function Router() {
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path="/admin/analytics" component={AdminAnalyticsDashboard} />
-      <Route path="/admin/prompt-optimization" component={AdminPromptOptimization} />
-      <Route path="/admin/evidence-verification" component={AdminEvidenceVerification} />
+      <Route
+        path="/admin/prompt-optimization"
+        component={AdminPromptOptimization}
+      />
+      <Route
+        path="/admin/evidence-verification"
+        component={AdminEvidenceVerification}
+      />
       <Route path="/scoreboard" component={ComplianceScoreboard} />
       <Route path="/compliance/roadmap" component={ComplianceRoadmap} />
       <Route path="/templates" component={TemplateLibrary} />
       <Route path="/admin/templates" component={AdminTemplateManager} />
-      <Route path="/admin/template-analytics" component={TemplateAnalyticsDashboard} />
-      <Route path="/notification-preferences" component={NotificationPreferences} />
+      <Route
+        path="/admin/template-analytics"
+        component={TemplateAnalyticsDashboard}
+      />
+      <Route
+        path="/notification-preferences"
+        component={NotificationPreferences}
+      />
       <Route path="/admin/executive-scorecard" component={ExecutiveScorecard} />
       <Route path="404" component={NotFound} />
       {/* Final fallback route */}

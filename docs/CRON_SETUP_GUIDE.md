@@ -42,6 +42,7 @@ The cron endpoints are public (no login required) but protected by a secret toke
 ### How?
 
 1. **Generate a strong secret:**
+
    ```bash
    openssl rand -hex 32
    # Example output: 4f8a3b2c1d9e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a
@@ -68,16 +69,19 @@ The cron endpoints are public (no login required) but protected by a secret toke
 #### Option 1: cron-job.org (Free, Easy)
 
 **Pros:**
+
 - Free tier: 50 jobs, 1-minute intervals
 - Simple web interface
 - No credit card required
 - Reliable
 
 **Cons:**
+
 - Limited to 50 jobs on free tier
 - No advanced features (retries, monitoring)
 
 **Setup:**
+
 1. Go to https://cron-job.org
 2. Sign up for free account
 3. Create new cron job (see Step 3 below)
@@ -85,15 +89,18 @@ The cron endpoints are public (no login required) but protected by a secret toke
 #### Option 2: EasyCron (Free tier available)
 
 **Pros:**
+
 - Free tier: 1 job, 1-day intervals
 - Advanced features: retries, notifications
 - Good for production use
 
 **Cons:**
+
 - Free tier limited to 1 job
 - Requires credit card for paid tiers
 
 **Setup:**
+
 1. Go to https://www.easycron.com
 2. Sign up for free account
 3. Create new cron job (see Step 3 below)
@@ -101,11 +108,13 @@ The cron endpoints are public (no login required) but protected by a secret toke
 #### Option 3: GitHub Actions (Free for public repos)
 
 **Pros:**
+
 - Free for public repositories
 - Integrated with your codebase
 - Full control over workflow
 
 **Cons:**
+
 - Requires GitHub repository
 - More complex setup
 - Not recommended for private projects
@@ -152,7 +161,7 @@ name: ISA News Collection
 on:
   schedule:
     # Daily at 2:00 AM UTC
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
   workflow_dispatch: # Allow manual trigger
 
 jobs:
@@ -180,6 +189,7 @@ jobs:
 ```
 
 **Setup:**
+
 1. Add `CRON_SECRET` to your GitHub repository secrets (Settings → Secrets → Actions)
 2. Commit the workflow file to your repository
 3. GitHub will automatically run the workflow on schedule
@@ -238,11 +248,13 @@ curl https://your-isa-domain.manus.space/cron/health
 ### Check Cron Execution Logs
 
 **In cron-job.org:**
+
 1. Go to your cron job
 2. Click **"Execution log"** tab
 3. Check for successful executions and error messages
 
 **In your ISA app:**
+
 1. Check server logs for `[cron]` and `[news-cron]` prefixes
 2. Look for error messages or unexpected behavior
 
@@ -253,6 +265,7 @@ curl https://your-isa-domain.manus.space/cron/health
 **Cause:** CRON_SECRET mismatch between environment variable and cron job body
 
 **Solution:**
+
 1. Verify CRON_SECRET is set correctly in Manus project secrets
 2. Verify cron job body contains correct secret
 3. Restart dev server to pick up new environment variable
@@ -262,6 +275,7 @@ curl https://your-isa-domain.manus.space/cron/health
 **Cause:** News sources may be temporarily unavailable or rate-limited
 
 **Solution:**
+
 1. Check server logs for specific error messages
 2. Verify network connectivity from your deployed app
 3. Check if news source APIs are operational
@@ -272,6 +286,7 @@ curl https://your-isa-domain.manus.space/cron/health
 **Cause:** Cron service may be down or misconfigured
 
 **Solution:**
+
 1. Check cron service status page
 2. Verify cron job is enabled
 3. Test manually via curl to isolate issue
@@ -302,11 +317,13 @@ curl https://your-isa-domain.manus.space/cron/health
 ## Recommended Schedule
 
 **Daily News Ingestion:**
+
 - Frequency: Every day
 - Time: 2:00 AM (your timezone)
 - Reason: Low traffic time, ensures fresh news for morning users
 
 **Weekly News Archival:**
+
 - Frequency: Every Sunday
 - Time: 3:00 AM (your timezone)
 - Reason: Weekly cleanup to keep database size manageable
@@ -328,6 +345,7 @@ curl https://your-isa-domain.manus.space/cron/health
 ## Support
 
 If you encounter issues:
+
 1. Check this guide's troubleshooting section
 2. Review server logs for error messages
 3. Test endpoints manually via curl
@@ -342,11 +360,13 @@ If you encounter issues:
 **Endpoint:** `GET /cron/daily-news-ingestion`
 
 **Headers:**
+
 ```
 Authorization: Bearer your-cron-secret
 ```
 
 **Response (Success):**
+
 ```json
 {
   "success": true,
@@ -362,6 +382,7 @@ Authorization: Bearer your-cron-secret
 ```
 
 **Response (Error):**
+
 ```json
 {
   "success": false,
@@ -375,11 +396,13 @@ Authorization: Bearer your-cron-secret
 **Endpoint:** `GET /cron/weekly-news-archival`
 
 **Headers:**
+
 ```
 Authorization: Bearer your-cron-secret
 ```
 
 **Response (Success):**
+
 ```json
 {
   "success": true,
@@ -393,6 +416,7 @@ Authorization: Bearer your-cron-secret
 ```
 
 **Response (Error):**
+
 ```json
 {
   "success": false,
@@ -406,6 +430,7 @@ Authorization: Bearer your-cron-secret
 **Endpoint:** `GET /cron/health`
 
 **Response:**
+
 ```json
 {
   "status": "ok",

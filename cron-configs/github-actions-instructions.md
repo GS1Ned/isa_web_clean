@@ -1,4 +1,3 @@
-
 # GitHub Actions Setup Instructions
 
 1. Add CRON_SECRET to your GitHub repository secrets:

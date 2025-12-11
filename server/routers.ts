@@ -71,9 +71,11 @@ export const appRouter = router({
      */
     list: publicProcedure
       .input(
-        z.object({
-          type: z.string().optional(),
-        }).optional()
+        z
+          .object({
+            type: z.string().optional(),
+          })
+          .optional()
       )
       .query(async ({ input }) => {
         return await getRegulations(input?.type);
@@ -105,11 +107,13 @@ export const appRouter = router({
       .input(z.object({ regulationId: z.number() }))
       .mutation(async ({ ctx, input }) => {
         // Only admins can trigger LLM mapping generation
-        if (ctx.user.role !== 'admin') {
-          throw new TRPCError({ code: 'FORBIDDEN' });
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
         }
 
-        const { generateRegulationEsrsMappings } = await import("./regulation-esrs-mapper");
+        const { generateRegulationEsrsMappings } = await import(
+          "./regulation-esrs-mapper"
+        );
         return await generateRegulationEsrsMappings(input.regulationId);
       }),
 
@@ -165,13 +169,15 @@ export const appRouter = router({
     getLowScoredMappings: protectedProcedure
       .input(z.object({ minVotes: z.number().optional() }))
       .query(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") throw new TRPCError({ code: "FORBIDDEN" });
+        if (ctx.user?.role !== "admin")
+          throw new TRPCError({ code: "FORBIDDEN" });
         const { getLowScoredMappings } = await import("./db");
         return await getLowScoredMappings(input.minVotes || 3);
       }),
 
     getVoteDistributionByStandard: protectedProcedure.query(async ({ ctx }) => {
-      if (ctx.user?.role !== "admin") throw new TRPCError({ code: "FORBIDDEN" });
+      if (ctx.user?.role !== "admin")
+        throw new TRPCError({ code: "FORBIDDEN" });
       const { getVoteDistributionByStandard } = await import("./db");
       return await getVoteDistributionByStandard();
     }),
@@ -179,7 +185,8 @@ export const appRouter = router({
     getMostVotedMappings: protectedProcedure
       .input(z.object({ limit: z.number().optional() }))
       .query(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") throw new TRPCError({ code: "FORBIDDEN" });
+        if (ctx.user?.role !== "admin")
+          throw new TRPCError({ code: "FORBIDDEN" });
         const { getMostVotedMappings } = await import("./db");
         return await getMostVotedMappings(input.limit || 10);
       }),
@@ -203,9 +210,11 @@ export const appRouter = router({
      */
     recentChanges: publicProcedure
       .input(
-        z.object({
-          limit: z.number().default(10),
-        }).optional()
+        z
+          .object({
+            limit: z.number().default(10),
+          })
+          .optional()
       )
       .query(async ({ input }) => {
         return await getRecentRegulatoryChanges(input?.limit || 10);
@@ -228,9 +237,11 @@ export const appRouter = router({
      */
     analysisHistory: protectedProcedure
       .input(
-        z.object({
-          limit: z.number().default(20),
-        }).optional()
+        z
+          .object({
+            limit: z.number().default(20),
+          })
+          .optional()
       )
       .query(async ({ ctx, input }) => {
         return await getUserAnalysisHistory(ctx.user.id, input?.limit || 20);
@@ -274,7 +285,9 @@ export const appRouter = router({
           interestedStandards: z.array(z.number()).optional(),
           notificationsEnabled: z.boolean().optional(),
           industryFocus: z.string().optional(),
-          companySize: z.enum(["STARTUP", "SME", "ENTERPRISE", "OTHER"]).optional(),
+          companySize: z
+            .enum(["STARTUP", "SME", "ENTERPRISE", "OTHER"])
+            .optional(),
         })
       )
       .mutation(async ({ ctx, input }) => {
@@ -318,12 +331,14 @@ export const appRouter = router({
           const db = await getDb();
           if (!db) return { success: false };
 
-          await db.delete(userSavedItems).where(
-            and(
-              eq(userSavedItems.userId, ctx.user.id),
-              eq(userSavedItems.itemId, input.regulationId)
-            )
-          );
+          await db
+            .delete(userSavedItems)
+            .where(
+              and(
+                eq(userSavedItems.userId, ctx.user.id),
+                eq(userSavedItems.itemId, input.regulationId)
+              )
+            );
 
           return { success: true };
         } catch (error) {
@@ -363,12 +378,14 @@ export const appRouter = router({
           const db = await getDb();
           if (!db) return { success: false };
 
-          await db.delete(userAlerts).where(
-            and(
-              eq(userAlerts.userId, ctx.user.id),
-              eq(userAlerts.regulationId, input.regulationId)
-            )
-          );
+          await db
+            .delete(userAlerts)
+            .where(
+              and(
+                eq(userAlerts.userId, ctx.user.id),
+                eq(userAlerts.regulationId, input.regulationId)
+              )
+            );
 
           return { success: true };
         } catch (error) {
@@ -383,12 +400,15 @@ export const appRouter = router({
         const db = await getDb();
         if (!db) return [];
 
-        const saved = await db.select().from(userSavedItems).where(
-          and(
-            eq(userSavedItems.userId, ctx.user.id),
-            eq(userSavedItems.itemType, "REGULATION" as any)
-          )
-        );
+        const saved = await db
+          .select()
+          .from(userSavedItems)
+          .where(
+            and(
+              eq(userSavedItems.userId, ctx.user.id),
+              eq(userSavedItems.itemType, "REGULATION" as any)
+            )
+          );
 
         return saved;
       } catch (error) {
@@ -403,9 +423,10 @@ export const appRouter = router({
         const db = await getDb();
         if (!db) return [];
 
-        const alerts = await db.select().from(userAlerts).where(
-          eq(userAlerts.userId, ctx.user.id)
-        );
+        const alerts = await db
+          .select()
+          .from(userAlerts)
+          .where(eq(userAlerts.userId, ctx.user.id));
 
         return alerts;
       } catch (error) {
@@ -423,7 +444,9 @@ export const appRouter = router({
           if (!db) return [];
 
           const limit = input?.limit || 20;
-          const news = await db.select().from(hubNews)
+          const news = await db
+            .select()
+            .from(hubNews)
             .orderBy(desc(hubNews.publishedDate))
             .limit(limit);
 
@@ -439,8 +462,12 @@ export const appRouter = router({
       .input(z.object({ newsId: z.number() }))
       .query(async ({ input }) => {
         try {
-          const { getRecommendationsByNewsId } = await import("./db-recommendations");
-          const recommendations = await getRecommendationsByNewsId(input.newsId);
+          const { getRecommendationsByNewsId } = await import(
+            "./db-recommendations"
+          );
+          const recommendations = await getRecommendationsByNewsId(
+            input.newsId
+          );
           return recommendations;
         } catch (error) {
           console.error("[tRPC] Get news recommendations failed:", error);
@@ -455,8 +482,8 @@ export const appRouter = router({
   analytics: router({
     // Get hub engagement metrics
     getHubMetrics: protectedProcedure.query(async ({ ctx }) => {
-      if (ctx.user.role !== 'admin') {
-        throw new TRPCError({ code: 'FORBIDDEN' });
+      if (ctx.user.role !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN" });
       }
       return {
         totalUsers: 1250,
@@ -464,21 +491,23 @@ export const appRouter = router({
         totalPageViews: 15680,
         avgSessionDuration: 4.2,
         topRegulations: [
-          { id: 1, title: 'CSRD', views: 3421 },
-          { id: 2, title: 'ESRS', views: 2156 },
-          { id: 3, title: 'DPP', views: 1892 },
+          { id: 1, title: "CSRD", views: 3421 },
+          { id: 2, title: "ESRS", views: 2156 },
+          { id: 3, title: "DPP", views: 1892 },
         ],
         topStandards: [
-          { id: 1, title: 'GTIN', views: 2341 },
-          { id: 2, title: 'EPCIS', views: 1876 },
-          { id: 3, title: 'Digital Product Passport', views: 1654 },
+          { id: 1, title: "GTIN", views: 2341 },
+          { id: 2, title: "EPCIS", views: 1876 },
+          { id: 3, title: "Digital Product Passport", views: 1654 },
         ],
       };
     }),
 
     // Track page view
     trackPageView: publicProcedure
-      .input(z.object({ page: z.string(), regulationId: z.number().optional() }))
+      .input(
+        z.object({ page: z.string(), regulationId: z.number().optional() })
+      )
       .mutation(async ({ input }) => {
         // In production, save to database
         return { success: true };
@@ -486,8 +515,8 @@ export const appRouter = router({
 
     // Get user engagement stats
     getUserEngagement: protectedProcedure.query(async ({ ctx }) => {
-      if (ctx.user.role !== 'admin') {
-        throw new TRPCError({ code: 'FORBIDDEN' });
+      if (ctx.user.role !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN" });
       }
       return {
         newUsersThisWeek: 87,
@@ -511,7 +540,13 @@ export const appRouter = router({
           email: z.string().email(),
           company: z.string().min(1),
           phone: z.string().optional(),
-          inquiryType: z.enum(["demo", "pricing", "partnership", "support", "other"]),
+          inquiryType: z.enum([
+            "demo",
+            "pricing",
+            "partnership",
+            "support",
+            "other",
+          ]),
           message: z.string().optional(),
         })
       )
@@ -552,9 +587,12 @@ export const appRouter = router({
       .input(z.object({ regulationId: z.string() }))
       .mutation(async ({ input }) => {
         try {
-          const { exportRegulationToPDF, generateExportFilename } = await import("./export-utils");
+          const { exportRegulationToPDF, generateExportFilename } =
+            await import("./export-utils");
           const regulations = await getRegulations();
-          const regulation = regulations.find(r => String(r.id) === input.regulationId);
+          const regulation = regulations.find(
+            r => String(r.id) === input.regulationId
+          );
 
           if (!regulation) {
             throw new Error("Regulation not found");
@@ -597,9 +635,12 @@ export const appRouter = router({
       .input(z.object({ regulationId: z.string() }))
       .mutation(async ({ input }) => {
         try {
-          const { exportRegulationToCSV, generateExportFilename } = await import("./export-utils");
+          const { exportRegulationToCSV, generateExportFilename } =
+            await import("./export-utils");
           const regulations = await getRegulations();
-          const regulation = regulations.find(r => String(r.id) === input.regulationId);
+          const regulation = regulations.find(
+            r => String(r.id) === input.regulationId
+          );
 
           if (!regulation) {
             throw new Error("Regulation not found");
@@ -644,7 +685,9 @@ export const appRouter = router({
         try {
           const { exportRegulationsListToCSV } = await import("./export-utils");
           const allRegulations = await getRegulations();
-          const regulations = allRegulations.filter(r => input.regulationIds.includes(String(r.id)));
+          const regulations = allRegulations.filter(r =>
+            input.regulationIds.includes(String(r.id))
+          );
 
           if (regulations.length === 0) {
             throw new Error("No valid regulations found");
@@ -661,7 +704,9 @@ export const appRouter = router({
             applicableGS1Standards: [],
           }));
 
-          const csvContent = exportRegulationsListToCSV(regulationsWithStandards);
+          const csvContent = exportRegulationsListToCSV(
+            regulationsWithStandards
+          );
 
           return {
             success: true,
@@ -772,14 +817,16 @@ export const appRouter = router({
      */
     list: publicProcedure
       .input(
-        z.object({
-          page: z.number().default(1),
-          pageSize: z.number().default(50),
-          search: z.string().optional(),
-          standard: z.string().optional(), // e.g., "ESRS E1", "ESRS S1"
-          dataType: z.string().optional(), // e.g., "narrative", "quantitative"
-          voluntary: z.boolean().optional(),
-        }).optional()
+        z
+          .object({
+            page: z.number().default(1),
+            pageSize: z.number().default(50),
+            search: z.string().optional(),
+            standard: z.string().optional(), // e.g., "ESRS E1", "ESRS S1"
+            dataType: z.string().optional(), // e.g., "narrative", "quantitative"
+            voluntary: z.boolean().optional(),
+          })
+          .optional()
       )
       .query(async ({ input }) => {
         const db = await getDb();
@@ -959,7 +1006,6 @@ export const appRouter = router({
       return await getDutchInitiativeSectors();
     }),
   }),
-
 });
 
 export type AppRouter = typeof appRouter;

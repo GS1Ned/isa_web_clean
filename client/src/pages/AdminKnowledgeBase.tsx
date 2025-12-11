@@ -1,10 +1,16 @@
-import { useState } from 'react';
-import { trpc } from '@/lib/trpc';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Progress } from '@/components/ui/progress';
+import { useState } from "react";
+import { trpc } from "@/lib/trpc";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
 import {
   Database,
   FileText,
@@ -15,17 +21,17 @@ import {
   CheckCircle2,
   AlertCircle,
   RefreshCw,
-} from 'lucide-react';
+} from "lucide-react";
 
 /**
  * Admin Knowledge Base Manager
- * 
+ *
  * Manage vector embeddings for Ask ISA RAG system.
  * Generate embeddings for regulations, standards, ESRS datapoints, and Dutch initiatives.
  */
 
 interface SourceTypeConfig {
-  type: 'regulation' | 'standard' | 'esrs_datapoint' | 'dutch_initiative';
+  type: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative";
   label: string;
   icon: typeof FileText;
   description: string;
@@ -35,36 +41,37 @@ interface SourceTypeConfig {
 
 const SOURCE_TYPES: SourceTypeConfig[] = [
   {
-    type: 'regulation',
-    label: 'EU Regulations',
+    type: "regulation",
+    label: "EU Regulations",
     icon: FileText,
-    description: 'CSRD, EUDR, DPP, and other EU sustainability regulations',
+    description: "CSRD, EUDR, DPP, and other EU sustainability regulations",
     estimatedCount: 35,
-    estimatedTime: '~2 minutes',
+    estimatedTime: "~2 minutes",
   },
   {
-    type: 'standard',
-    label: 'GS1 Standards',
+    type: "standard",
+    label: "GS1 Standards",
     icon: BookOpen,
-    description: 'GTIN, GLN, Digital Link, EPCIS, and other GS1 standards',
+    description: "GTIN, GLN, Digital Link, EPCIS, and other GS1 standards",
     estimatedCount: 60,
-    estimatedTime: '~3 minutes',
+    estimatedTime: "~3 minutes",
   },
   {
-    type: 'esrs_datapoint',
-    label: 'ESRS Datapoints',
+    type: "esrs_datapoint",
+    label: "ESRS Datapoints",
     icon: FileText,
-    description: 'EFRAG disclosure requirements from ESRS standards',
+    description: "EFRAG disclosure requirements from ESRS standards",
     estimatedCount: 1184,
-    estimatedTime: '~15 minutes',
+    estimatedTime: "~15 minutes",
   },
   {
-    type: 'dutch_initiative',
-    label: 'Dutch Initiatives',
+    type: "dutch_initiative",
+    label: "Dutch Initiatives",
     icon: Lightbulb,
-    description: 'National compliance programs (UPV Textiel, Green Deal Zorg, etc.)',
+    description:
+      "National compliance programs (UPV Textiel, Green Deal Zorg, etc.)",
     estimatedCount: 10,
-    estimatedTime: '~30 seconds',
+    estimatedTime: "~30 seconds",
   },
 ];
 
@@ -72,21 +79,25 @@ export default function AdminKnowledgeBase() {
   const [generatingType, setGeneratingType] = useState<string | null>(null);
 
   // Fetch embedding statistics
-  const { data: stats, isLoading: statsLoading, refetch: refetchStats } = trpc.askISA.getEmbeddingStats.useQuery();
+  const {
+    data: stats,
+    isLoading: statsLoading,
+    refetch: refetchStats,
+  } = trpc.askISA.getEmbeddingStats.useQuery();
 
   // Generate embeddings mutation
   const generateMutation = trpc.askISA.generateEmbeddings.useMutation({
-    onSuccess: (result) => {
+    onSuccess: result => {
       setGeneratingType(null);
       refetchStats();
     },
-    onError: (error) => {
-      console.error('Failed to generate embeddings:', error);
+    onError: error => {
+      console.error("Failed to generate embeddings:", error);
       setGeneratingType(null);
     },
   });
 
-  const handleGenerate = (sourceType: SourceTypeConfig['type']) => {
+  const handleGenerate = (sourceType: SourceTypeConfig["type"]) => {
     if (generatingType) return;
 
     setGeneratingType(sourceType);
@@ -103,7 +114,8 @@ export default function AdminKnowledgeBase() {
     return <Icon className="h-5 w-5" />;
   };
 
-  const totalEmbeddings = stats?.reduce((sum, s) => sum + (s.count || 0), 0) || 0;
+  const totalEmbeddings =
+    stats?.reduce((sum, s) => sum + (s.count || 0), 0) || 0;
 
   return (
     <div className="container mx-auto py-8 max-w-6xl">
@@ -129,19 +141,27 @@ export default function AdminKnowledgeBase() {
               Embedding Statistics
             </CardTitle>
             <CardDescription>
-              Vector embeddings enable semantic search across regulations and standards
+              Vector embeddings enable semantic search across regulations and
+              standards
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Total Embeddings</p>
-                <p className="text-3xl font-bold">{statsLoading ? '...' : totalEmbeddings.toLocaleString()}</p>
+                <p className="text-sm text-muted-foreground mb-1">
+                  Total Embeddings
+                </p>
+                <p className="text-3xl font-bold">
+                  {statsLoading ? "..." : totalEmbeddings.toLocaleString()}
+                </p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Coverage</p>
                 <div className="flex items-center gap-2">
-                  <Progress value={(totalEmbeddings / 1289) * 100} className="flex-1" />
+                  <Progress
+                    value={(totalEmbeddings / 1289) * 100}
+                    className="flex-1"
+                  />
                   <span className="text-sm font-medium">
                     {Math.round((totalEmbeddings / 1289) * 100)}%
                   </span>
@@ -159,7 +179,9 @@ export default function AdminKnowledgeBase() {
               onClick={() => refetchStats()}
               disabled={statsLoading}
             >
-              <RefreshCw className={`h-4 w-4 mr-2 ${statsLoading ? 'animate-spin' : ''}`} />
+              <RefreshCw
+                className={`h-4 w-4 mr-2 ${statsLoading ? "animate-spin" : ""}`}
+              />
               Refresh Stats
             </Button>
           </CardContent>
@@ -172,8 +194,8 @@ export default function AdminKnowledgeBase() {
           <Loader2 className="h-4 w-4 animate-spin" />
           <AlertTitle>Generating Embeddings...</AlertTitle>
           <AlertDescription>
-            Processing {generatingType}. This may take several minutes depending on the source type.
-            Do not close this page.
+            Processing {generatingType}. This may take several minutes depending
+            on the source type. Do not close this page.
           </AlertDescription>
         </Alert>
       )}
@@ -185,7 +207,8 @@ export default function AdminKnowledgeBase() {
             Generation Complete!
           </AlertTitle>
           <AlertDescription className="text-green-800 dark:text-green-200">
-            Processed {generateMutation.data.processed} sources: {generateMutation.data.successCount} succeeded,{' '}
+            Processed {generateMutation.data.processed} sources:{" "}
+            {generateMutation.data.successCount} succeeded,{" "}
             {generateMutation.data.errorCount} failed.
           </AlertDescription>
         </Alert>
@@ -194,7 +217,9 @@ export default function AdminKnowledgeBase() {
       {generateMutation.isError && (
         <Alert className="mb-6 border-red-500 bg-red-50 dark:bg-red-950">
           <AlertCircle className="h-4 w-4 text-red-600" />
-          <AlertTitle className="text-red-900 dark:text-red-100">Generation Failed</AlertTitle>
+          <AlertTitle className="text-red-900 dark:text-red-100">
+            Generation Failed
+          </AlertTitle>
           <AlertDescription className="text-red-800 dark:text-red-200">
             {generateMutation.error.message}
           </AlertDescription>
@@ -203,23 +228,29 @@ export default function AdminKnowledgeBase() {
 
       {/* Source Type Cards */}
       <div className="grid gap-6">
-        {SOURCE_TYPES.map((sourceType) => {
+        {SOURCE_TYPES.map(sourceType => {
           const Icon = sourceType.icon;
           const currentCount = getStatsForType(sourceType.type);
           const isGenerating = generatingType === sourceType.type;
           const isComplete = currentCount >= sourceType.estimatedCount;
-          const progress = Math.min((currentCount / sourceType.estimatedCount) * 100, 100);
+          const progress = Math.min(
+            (currentCount / sourceType.estimatedCount) * 100,
+            100
+          );
 
           return (
-            <Card key={sourceType.type} className={isGenerating ? 'ring-2 ring-primary' : ''}>
+            <Card
+              key={sourceType.type}
+              className={isGenerating ? "ring-2 ring-primary" : ""}
+            >
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-3">
                     <div
                       className={`p-2 rounded-lg ${
                         isComplete
-                          ? 'bg-green-100 dark:bg-green-900'
-                          : 'bg-secondary'
+                          ? "bg-green-100 dark:bg-green-900"
+                          : "bg-secondary"
                       }`}
                     >
                       {getSourceIcon(Icon)}
@@ -234,7 +265,9 @@ export default function AdminKnowledgeBase() {
                           </Badge>
                         )}
                       </div>
-                      <CardDescription className="mt-1">{sourceType.description}</CardDescription>
+                      <CardDescription className="mt-1">
+                        {sourceType.description}
+                      </CardDescription>
                     </div>
                   </div>
                 </div>
@@ -247,7 +280,9 @@ export default function AdminKnowledgeBase() {
                       <span className="text-sm text-muted-foreground">
                         {currentCount} / {sourceType.estimatedCount} embeddings
                       </span>
-                      <span className="text-sm font-medium">{Math.round(progress)}%</span>
+                      <span className="text-sm font-medium">
+                        {Math.round(progress)}%
+                      </span>
                     </div>
                     <Progress value={progress} />
                   </div>
@@ -257,7 +292,7 @@ export default function AdminKnowledgeBase() {
                     <Button
                       onClick={() => handleGenerate(sourceType.type)}
                       disabled={isGenerating || generateMutation.isPending}
-                      variant={isComplete ? 'outline' : 'default'}
+                      variant={isComplete ? "outline" : "default"}
                     >
                       {isGenerating ? (
                         <>
@@ -283,12 +318,13 @@ export default function AdminKnowledgeBase() {
                   </div>
 
                   {/* Warning for large datasets */}
-                  {sourceType.type === 'esrs_datapoint' && !isComplete && (
+                  {sourceType.type === "esrs_datapoint" && !isComplete && (
                     <Alert>
                       <AlertCircle className="h-4 w-4" />
                       <AlertDescription className="text-xs">
-                        <strong>Note:</strong> ESRS datapoints will take ~15 minutes to process all 1,184
-                        items. Consider running this during off-peak hours.
+                        <strong>Note:</strong> ESRS datapoints will take ~15
+                        minutes to process all 1,184 items. Consider running
+                        this during off-peak hours.
                       </AlertDescription>
                     </Alert>
                   )}
@@ -309,18 +345,20 @@ export default function AdminKnowledgeBase() {
         </CardHeader>
         <CardContent className="text-sm text-muted-foreground space-y-2">
           <p>
-            Vector embeddings convert text into numerical representations that capture semantic meaning.
-            This enables Ask ISA to understand questions and find relevant information even when exact
-            keywords don't match.
+            Vector embeddings convert text into numerical representations that
+            capture semantic meaning. This enables Ask ISA to understand
+            questions and find relevant information even when exact keywords
+            don't match.
           </p>
           <p>
-            <strong>Generation process:</strong> Each source (regulation, standard, etc.) is converted
-            into a 1536-dimensional vector using OpenAI's text-embedding-3-small model via Manus Forge
-            API.
+            <strong>Generation process:</strong> Each source (regulation,
+            standard, etc.) is converted into a 1536-dimensional vector using
+            OpenAI's text-embedding-3-small model via Manus Forge API.
           </p>
           <p>
-            <strong>When to regenerate:</strong> Run generation again when content is updated or new
-            regulations/standards are added to the database.
+            <strong>When to regenerate:</strong> Run generation again when
+            content is updated or new regulations/standards are added to the
+            database.
           </p>
         </CardContent>
       </Card>

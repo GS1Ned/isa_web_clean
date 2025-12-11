@@ -73,7 +73,8 @@ async function batchGenerateEsrsMappings() {
       }
     } catch (error) {
       failureCount++;
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
       console.log(`  ❌ Error: ${errorMessage}`);
 
       results.push({
@@ -87,7 +88,7 @@ async function batchGenerateEsrsMappings() {
 
     // Small delay to avoid rate limiting
     if (i < allRegulations.length - 1) {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     console.log("");
@@ -99,18 +100,23 @@ async function batchGenerateEsrsMappings() {
   console.log(`✅ Success: ${successCount}`);
   console.log(`❌ Failures: ${failureCount}`);
   console.log(`📊 Total Mappings: ${totalMappings}`);
-  console.log(`📈 Average per Regulation: ${(totalMappings / successCount).toFixed(1)}`);
+  console.log(
+    `📈 Average per Regulation: ${(totalMappings / successCount).toFixed(1)}`
+  );
 
   // Print distribution
   console.log("\n=== Mapping Distribution ===\n");
   const distribution = results
-    .filter((r) => r.success)
-    .reduce((acc, r) => {
-      const bucket = Math.floor(r.mappingsCount / 5) * 5; // Group by 5s
-      const key = `${bucket}-${bucket + 4}`;
-      acc[key] = (acc[key] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    .filter(r => r.success)
+    .reduce(
+      (acc, r) => {
+        const bucket = Math.floor(r.mappingsCount / 5) * 5; // Group by 5s
+        const key = `${bucket}-${bucket + 4}`;
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
   Object.entries(distribution)
     .sort(([a], [b]) => parseInt(a) - parseInt(b))
@@ -122,8 +128,8 @@ async function batchGenerateEsrsMappings() {
   if (failureCount > 0) {
     console.log("\n=== Failures ===\n");
     results
-      .filter((r) => !r.success)
-      .forEach((r) => {
+      .filter(r => !r.success)
+      .forEach(r => {
         console.log(`  - ${r.title}: ${r.error}`);
       });
   }
@@ -134,7 +140,7 @@ async function batchGenerateEsrsMappings() {
 // Run if executed directly
 batchGenerateEsrsMappings()
   .then(() => process.exit(0))
-  .catch((error) => {
+  .catch(error => {
     console.error("Fatal error:", error);
     process.exit(1);
   });

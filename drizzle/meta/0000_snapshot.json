@@ -125,23 +125,17 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "stepId_idx": {
           "name": "stepId_idx",
-          "columns": [
-            "stepId"
-          ],
+          "columns": ["stepId"],
           "isUnique": false
         },
         "verificationStatus_idx": {
           "name": "verificationStatus_idx",
-          "columns": [
-            "verificationStatus"
-          ],
+          "columns": ["verificationStatus"],
           "isUnique": false
         }
       },
@@ -149,9 +143,7 @@
       "compositePrimaryKeys": {
         "compliance_evidence_id": {
           "name": "compliance_evidence_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -282,16 +274,12 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "status_idx": {
           "name": "status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         }
       },
@@ -299,9 +287,7 @@
       "compositePrimaryKeys": {
         "compliance_roadmaps_id": {
           "name": "compliance_roadmaps_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -436,16 +422,12 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "overallScore_idx": {
           "name": "overallScore_idx",
-          "columns": [
-            "overallScore"
-          ],
+          "columns": ["overallScore"],
           "isUnique": false
         }
       },
@@ -453,9 +435,7 @@
       "compositePrimaryKeys": {
         "compliance_scores_id": {
           "name": "compliance_scores_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -544,9 +524,7 @@
       "compositePrimaryKeys": {
         "contacts_id": {
           "name": "contacts_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -709,16 +687,12 @@
       "indexes": {
         "sector_idx": {
           "name": "sector_idx",
-          "columns": [
-            "sector"
-          ],
+          "columns": ["sector"],
           "isUnique": false
         },
         "status_idx": {
           "name": "status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         }
       },
@@ -726,9 +700,7 @@
       "compositePrimaryKeys": {
         "dutch_initiatives_id": {
           "name": "dutch_initiatives_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -839,23 +811,17 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "status_idx": {
           "name": "status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         },
         "createdAt_idx": {
           "name": "createdAt_idx",
-          "columns": [
-            "createdAt"
-          ],
+          "columns": ["createdAt"],
           "isUnique": false
         }
       },
@@ -863,9 +829,7 @@
       "compositePrimaryKeys": {
         "epcis_batch_jobs_id": {
           "name": "epcis_batch_jobs_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -1005,23 +969,17 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "eventTime_idx": {
           "name": "eventTime_idx",
-          "columns": [
-            "eventTime"
-          ],
+          "columns": ["eventTime"],
           "isUnique": false
         },
         "eventType_idx": {
           "name": "eventType_idx",
-          "columns": [
-            "eventType"
-          ],
+          "columns": ["eventType"],
           "isUnique": false
         }
       },
@@ -1029,9 +987,7 @@
       "compositePrimaryKeys": {
         "epcis_events_id": {
           "name": "epcis_events_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -1131,16 +1087,12 @@
       "indexes": {
         "esrsStandard_idx": {
           "name": "esrsStandard_idx",
-          "columns": [
-            "esrsStandard"
-          ],
+          "columns": ["esrsStandard"],
           "isUnique": false
         },
         "disclosureRequirement_idx": {
           "name": "disclosureRequirement_idx",
-          "columns": [
-            "disclosureRequirement"
-          ],
+          "columns": ["disclosureRequirement"],
           "isUnique": false
         }
       },
@@ -1148,17 +1100,13 @@
       "compositePrimaryKeys": {
         "esrs_datapoints_id": {
           "name": "esrs_datapoints_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "esrs_datapoints_datapointId_unique": {
           "name": "esrs_datapoints_datapointId_unique",
-          "columns": [
-            "datapointId"
-          ]
+          "columns": ["datapointId"]
         }
       },
       "checkConstraint": {}
@@ -1250,16 +1198,12 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "productGtin_idx": {
           "name": "productGtin_idx",
-          "columns": [
-            "productGtin"
-          ],
+          "columns": ["productGtin"],
           "isUnique": false
         }
       },
@@ -1267,9 +1211,7 @@
       "compositePrimaryKeys": {
         "eudr_geolocation_id": {
           "name": "eudr_geolocation_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -1350,17 +1292,13 @@
       "compositePrimaryKeys": {
         "gs1_standards_id": {
           "name": "gs1_standards_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "gs1_standards_standardCode_unique": {
           "name": "gs1_standards_standardCode_unique",
-          "columns": [
-            "standardCode"
-          ]
+          "columns": ["standardCode"]
         }
       },
       "checkConstraint": {}
@@ -1462,9 +1400,7 @@
       "compositePrimaryKeys": {
         "hub_news_id": {
           "name": "hub_news_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -1553,9 +1489,7 @@
       "compositePrimaryKeys": {
         "hub_resources_id": {
           "name": "hub_resources_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -1651,16 +1585,12 @@
       "indexes": {
         "status_idx": {
           "name": "status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         },
         "syncStartTime_idx": {
           "name": "syncStartTime_idx",
-          "columns": [
-            "syncStartTime"
-          ],
+          "columns": ["syncStartTime"],
           "isUnique": false
         }
       },
@@ -1668,9 +1598,7 @@
       "compositePrimaryKeys": {
         "ingestion_logs_id": {
           "name": "ingestion_logs_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -1726,16 +1654,12 @@
       "indexes": {
         "initiativeId_idx": {
           "name": "initiativeId_idx",
-          "columns": [
-            "initiativeId"
-          ],
+          "columns": ["initiativeId"],
           "isUnique": false
         },
         "regulationId_idx": {
           "name": "regulationId_idx",
-          "columns": [
-            "regulationId"
-          ],
+          "columns": ["regulationId"],
           "isUnique": false
         }
       },
@@ -1744,12 +1668,8 @@
           "name": "initiative_regulation_mappings_initiativeId_dutch_initiatives_id_fk",
           "tableFrom": "initiative_regulation_mappings",
           "tableTo": "dutch_initiatives",
-          "columnsFrom": [
-            "initiativeId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["initiativeId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1757,12 +1677,8 @@
           "name": "initiative_regulation_mappings_regulationId_regulations_id_fk",
           "tableFrom": "initiative_regulation_mappings",
           "tableTo": "regulations",
-          "columnsFrom": [
-            "regulationId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["regulationId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1770,9 +1686,7 @@
       "compositePrimaryKeys": {
         "initiative_regulation_mappings_id": {
           "name": "initiative_regulation_mappings_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -1828,16 +1742,12 @@
       "indexes": {
         "initiativeId_idx": {
           "name": "initiativeId_idx",
-          "columns": [
-            "initiativeId"
-          ],
+          "columns": ["initiativeId"],
           "isUnique": false
         },
         "standardId_idx": {
           "name": "standardId_idx",
-          "columns": [
-            "standardId"
-          ],
+          "columns": ["standardId"],
           "isUnique": false
         }
       },
@@ -1846,12 +1756,8 @@
           "name": "initiative_standard_mappings_initiativeId_dutch_initiatives_id_fk",
           "tableFrom": "initiative_standard_mappings",
           "tableTo": "dutch_initiatives",
-          "columnsFrom": [
-            "initiativeId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["initiativeId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1859,12 +1765,8 @@
           "name": "initiative_standard_mappings_standardId_gs1_standards_id_fk",
           "tableFrom": "initiative_standard_mappings",
           "tableTo": "gs1_standards",
-          "columnsFrom": [
-            "standardId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["standardId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1872,9 +1774,7 @@
       "compositePrimaryKeys": {
         "initiative_standard_mappings_id": {
           "name": "initiative_standard_mappings_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -1968,31 +1868,22 @@
       "indexes": {
         "source_type_idx": {
           "name": "source_type_idx",
-          "columns": [
-            "sourceType"
-          ],
+          "columns": ["sourceType"],
           "isUnique": false
         },
         "source_id_idx": {
           "name": "source_id_idx",
-          "columns": [
-            "sourceId"
-          ],
+          "columns": ["sourceId"],
           "isUnique": false
         },
         "content_hash_idx": {
           "name": "content_hash_idx",
-          "columns": [
-            "contentHash"
-          ],
+          "columns": ["contentHash"],
           "isUnique": false
         },
         "source_composite_idx": {
           "name": "source_composite_idx",
-          "columns": [
-            "sourceType",
-            "sourceId"
-          ],
+          "columns": ["sourceType", "sourceId"],
           "isUnique": false
         }
       },
@@ -2000,9 +1891,7 @@
       "compositePrimaryKeys": {
         "knowledge_embeddings_id": {
           "name": "knowledge_embeddings_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -2051,24 +1940,17 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "mappingId_idx": {
           "name": "mappingId_idx",
-          "columns": [
-            "mappingId"
-          ],
+          "columns": ["mappingId"],
           "isUnique": false
         },
         "unique_vote_idx": {
           "name": "unique_vote_idx",
-          "columns": [
-            "userId",
-            "mappingId"
-          ],
+          "columns": ["userId", "mappingId"],
           "isUnique": false
         }
       },
@@ -2076,9 +1958,7 @@
       "compositePrimaryKeys": {
         "mapping_feedback_id": {
           "name": "mapping_feedback_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -2248,9 +2128,7 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         }
       },
@@ -2258,17 +2136,13 @@
       "compositePrimaryKeys": {
         "notification_preferences_id": {
           "name": "notification_preferences_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "notification_preferences_userId_unique": {
           "name": "notification_preferences_userId_unique",
-          "columns": [
-            "userId"
-          ]
+          "columns": ["userId"]
         }
       },
       "checkConstraint": {}
@@ -2326,16 +2200,12 @@
       "indexes": {
         "user_id_idx": {
           "name": "user_id_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "created_at_idx": {
           "name": "created_at_idx",
-          "columns": [
-            "createdAt"
-          ],
+          "columns": ["createdAt"],
           "isUnique": false
         }
       },
@@ -2344,12 +2214,8 @@
           "name": "qa_conversations_userId_users_id_fk",
           "tableFrom": "qa_conversations",
           "tableTo": "users",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -2357,9 +2223,7 @@
       "compositePrimaryKeys": {
         "qa_conversations_id": {
           "name": "qa_conversations_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -2422,16 +2286,12 @@
       "indexes": {
         "conversation_id_idx": {
           "name": "conversation_id_idx",
-          "columns": [
-            "conversationId"
-          ],
+          "columns": ["conversationId"],
           "isUnique": false
         },
         "created_at_idx": {
           "name": "created_at_idx",
-          "columns": [
-            "createdAt"
-          ],
+          "columns": ["createdAt"],
           "isUnique": false
         }
       },
@@ -2440,12 +2300,8 @@
           "name": "qa_messages_conversationId_qa_conversations_id_fk",
           "tableFrom": "qa_messages",
           "tableTo": "qa_conversations",
-          "columnsFrom": [
-            "conversationId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["conversationId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -2453,9 +2309,7 @@
       "compositePrimaryKeys": {
         "qa_messages_id": {
           "name": "qa_messages_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -2521,24 +2375,17 @@
       "indexes": {
         "regulationId_idx": {
           "name": "regulationId_idx",
-          "columns": [
-            "regulationId"
-          ],
+          "columns": ["regulationId"],
           "isUnique": false
         },
         "datapointId_idx": {
           "name": "datapointId_idx",
-          "columns": [
-            "datapointId"
-          ],
+          "columns": ["datapointId"],
           "isUnique": false
         },
         "unique_mapping_idx": {
           "name": "unique_mapping_idx",
-          "columns": [
-            "regulationId",
-            "datapointId"
-          ],
+          "columns": ["regulationId", "datapointId"],
           "isUnique": false
         }
       },
@@ -2546,9 +2393,7 @@
       "compositePrimaryKeys": {
         "regulation_esrs_mappings_id": {
           "name": "regulation_esrs_mappings_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -2623,9 +2468,7 @@
       "compositePrimaryKeys": {
         "regulation_standard_mappings_id": {
           "name": "regulation_standard_mappings_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -2706,17 +2549,13 @@
       "compositePrimaryKeys": {
         "regulations_id": {
           "name": "regulations_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "regulations_celexId_unique": {
           "name": "regulations_celexId_unique",
-          "columns": [
-            "celexId"
-          ]
+          "columns": ["celexId"]
         }
       },
       "checkConstraint": {}
@@ -2790,9 +2629,7 @@
       "compositePrimaryKeys": {
         "regulatory_change_alerts_id": {
           "name": "regulatory_change_alerts_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -2874,16 +2711,12 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "planId_idx": {
           "name": "planId_idx",
-          "columns": [
-            "planId"
-          ],
+          "columns": ["planId"],
           "isUnique": false
         }
       },
@@ -2891,9 +2724,7 @@
       "compositePrimaryKeys": {
         "remediation_progress_id": {
           "name": "remediation_progress_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -3001,16 +2832,12 @@
       "indexes": {
         "planId_idx": {
           "name": "planId_idx",
-          "columns": [
-            "planId"
-          ],
+          "columns": ["planId"],
           "isUnique": false
         },
         "status_idx": {
           "name": "status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         }
       },
@@ -3018,9 +2845,7 @@
       "compositePrimaryKeys": {
         "remediation_steps_id": {
           "name": "remediation_steps_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -3100,9 +2925,7 @@
       "indexes": {
         "riskType_idx": {
           "name": "riskType_idx",
-          "columns": [
-            "riskType"
-          ],
+          "columns": ["riskType"],
           "isUnique": false
         }
       },
@@ -3110,9 +2933,7 @@
       "compositePrimaryKeys": {
         "remediation_templates_id": {
           "name": "remediation_templates_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -3199,23 +3020,17 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "riskId_idx": {
           "name": "riskId_idx",
-          "columns": [
-            "riskId"
-          ],
+          "columns": ["riskId"],
           "isUnique": false
         },
         "status_idx": {
           "name": "status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         }
       },
@@ -3223,9 +3038,7 @@
       "compositePrimaryKeys": {
         "risk_remediation_plans_id": {
           "name": "risk_remediation_plans_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -3366,23 +3179,17 @@
       "indexes": {
         "roadmapId_idx": {
           "name": "roadmapId_idx",
-          "columns": [
-            "roadmapId"
-          ],
+          "columns": ["roadmapId"],
           "isUnique": false
         },
         "priority_idx": {
           "name": "priority_idx",
-          "columns": [
-            "priority"
-          ],
+          "columns": ["priority"],
           "isUnique": false
         },
         "status_idx": {
           "name": "status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         }
       },
@@ -3390,9 +3197,7 @@
       "compositePrimaryKeys": {
         "roadmap_actions_id": {
           "name": "roadmap_actions_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -3455,23 +3260,17 @@
       "indexes": {
         "roadmapId_idx": {
           "name": "roadmapId_idx",
-          "columns": [
-            "roadmapId"
-          ],
+          "columns": ["roadmapId"],
           "isUnique": false
         },
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "activityType_idx": {
           "name": "activityType_idx",
-          "columns": [
-            "activityType"
-          ],
+          "columns": ["activityType"],
           "isUnique": false
         }
       },
@@ -3479,9 +3278,7 @@
       "compositePrimaryKeys": {
         "roadmap_activity_log_id": {
           "name": "roadmap_activity_log_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -3559,23 +3356,17 @@
       "indexes": {
         "roadmapId_idx": {
           "name": "roadmapId_idx",
-          "columns": [
-            "roadmapId"
-          ],
+          "columns": ["roadmapId"],
           "isUnique": false
         },
         "requiredApproverId_idx": {
           "name": "requiredApproverId_idx",
-          "columns": [
-            "requiredApproverId"
-          ],
+          "columns": ["requiredApproverId"],
           "isUnique": false
         },
         "status_idx": {
           "name": "status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         }
       },
@@ -3583,9 +3374,7 @@
       "compositePrimaryKeys": {
         "roadmap_approvals_id": {
           "name": "roadmap_approvals_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -3665,23 +3454,17 @@
       "indexes": {
         "roadmapId_idx": {
           "name": "roadmapId_idx",
-          "columns": [
-            "roadmapId"
-          ],
+          "columns": ["roadmapId"],
           "isUnique": false
         },
         "actionId_idx": {
           "name": "actionId_idx",
-          "columns": [
-            "actionId"
-          ],
+          "columns": ["actionId"],
           "isUnique": false
         },
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         }
       },
@@ -3689,9 +3472,7 @@
       "compositePrimaryKeys": {
         "roadmap_comments_id": {
           "name": "roadmap_comments_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -3740,16 +3521,12 @@
       "indexes": {
         "fromActionId_idx": {
           "name": "fromActionId_idx",
-          "columns": [
-            "fromActionId"
-          ],
+          "columns": ["fromActionId"],
           "isUnique": false
         },
         "toActionId_idx": {
           "name": "toActionId_idx",
-          "columns": [
-            "toActionId"
-          ],
+          "columns": ["toActionId"],
           "isUnique": false
         }
       },
@@ -3757,9 +3534,7 @@
       "compositePrimaryKeys": {
         "roadmap_dependencies_id": {
           "name": "roadmap_dependencies_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -3837,9 +3612,7 @@
       "indexes": {
         "roadmapId_idx": {
           "name": "roadmapId_idx",
-          "columns": [
-            "roadmapId"
-          ],
+          "columns": ["roadmapId"],
           "isUnique": false
         }
       },
@@ -3847,9 +3620,7 @@
       "compositePrimaryKeys": {
         "roadmap_milestones_id": {
           "name": "roadmap_milestones_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -3973,16 +3744,12 @@
       "indexes": {
         "category_idx": {
           "name": "category_idx",
-          "columns": [
-            "category"
-          ],
+          "columns": ["category"],
           "isUnique": false
         },
         "createdBy_idx": {
           "name": "createdBy_idx",
-          "columns": [
-            "createdBy"
-          ],
+          "columns": ["createdBy"],
           "isUnique": false
         }
       },
@@ -3990,9 +3757,7 @@
       "compositePrimaryKeys": {
         "roadmap_templates_id": {
           "name": "roadmap_templates_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -4069,16 +3834,12 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "createdAt_idx": {
           "name": "createdAt_idx",
-          "columns": [
-            "createdAt"
-          ],
+          "columns": ["createdAt"],
           "isUnique": false
         }
       },
@@ -4086,9 +3847,7 @@
       "compositePrimaryKeys": {
         "score_history_id": {
           "name": "score_history_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -4158,16 +3917,12 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "achievedAt_idx": {
           "name": "achievedAt_idx",
-          "columns": [
-            "achievedAt"
-          ],
+          "columns": ["achievedAt"],
           "isUnique": false
         }
       },
@@ -4175,9 +3930,7 @@
       "compositePrimaryKeys": {
         "score_milestones_id": {
           "name": "score_milestones_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -4277,10 +4030,7 @@
       "indexes": {
         "industry_region_idx": {
           "name": "industry_region_idx",
-          "columns": [
-            "industry",
-            "region"
-          ],
+          "columns": ["industry", "region"],
           "isUnique": false
         }
       },
@@ -4288,9 +4038,7 @@
       "compositePrimaryKeys": {
         "scoring_benchmarks_id": {
           "name": "scoring_benchmarks_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -4379,16 +4127,12 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "metricDate_idx": {
           "name": "metricDate_idx",
-          "columns": [
-            "metricDate"
-          ],
+          "columns": ["metricDate"],
           "isUnique": false
         }
       },
@@ -4396,9 +4140,7 @@
       "compositePrimaryKeys": {
         "supply_chain_analytics_id": {
           "name": "supply_chain_analytics_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -4468,23 +4210,17 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "fromNode_idx": {
           "name": "fromNode_idx",
-          "columns": [
-            "fromNodeId"
-          ],
+          "columns": ["fromNodeId"],
           "isUnique": false
         },
         "toNode_idx": {
           "name": "toNode_idx",
-          "columns": [
-            "toNodeId"
-          ],
+          "columns": ["toNodeId"],
           "isUnique": false
         }
       },
@@ -4492,9 +4228,7 @@
       "compositePrimaryKeys": {
         "supply_chain_edges_id": {
           "name": "supply_chain_edges_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -4601,16 +4335,12 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "gln_idx": {
           "name": "gln_idx",
-          "columns": [
-            "gln"
-          ],
+          "columns": ["gln"],
           "isUnique": false
         }
       },
@@ -4618,9 +4348,7 @@
       "compositePrimaryKeys": {
         "supply_chain_nodes_id": {
           "name": "supply_chain_nodes_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -4719,37 +4447,27 @@
       "indexes": {
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "eventId_idx": {
           "name": "eventId_idx",
-          "columns": [
-            "eventId"
-          ],
+          "columns": ["eventId"],
           "isUnique": false
         },
         "nodeId_idx": {
           "name": "nodeId_idx",
-          "columns": [
-            "nodeId"
-          ],
+          "columns": ["nodeId"],
           "isUnique": false
         },
         "severity_idx": {
           "name": "severity_idx",
-          "columns": [
-            "severity"
-          ],
+          "columns": ["severity"],
           "isUnique": false
         },
         "riskType_idx": {
           "name": "riskType_idx",
-          "columns": [
-            "riskType"
-          ],
+          "columns": ["riskType"],
           "isUnique": false
         }
       },
@@ -4757,9 +4475,7 @@
       "compositePrimaryKeys": {
         "supply_chain_risks_id": {
           "name": "supply_chain_risks_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -4815,16 +4531,12 @@
       "indexes": {
         "roadmapId_idx": {
           "name": "roadmapId_idx",
-          "columns": [
-            "roadmapId"
-          ],
+          "columns": ["roadmapId"],
           "isUnique": false
         },
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         }
       },
@@ -4832,9 +4544,7 @@
       "compositePrimaryKeys": {
         "team_roadmap_access_id": {
           "name": "team_roadmap_access_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -4924,9 +4634,7 @@
       "indexes": {
         "templateId_idx": {
           "name": "templateId_idx",
-          "columns": [
-            "templateId"
-          ],
+          "columns": ["templateId"],
           "isUnique": false
         }
       },
@@ -4934,9 +4642,7 @@
       "compositePrimaryKeys": {
         "template_actions_id": {
           "name": "template_actions_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -4998,9 +4704,7 @@
       "indexes": {
         "templateId_idx": {
           "name": "templateId_idx",
-          "columns": [
-            "templateId"
-          ],
+          "columns": ["templateId"],
           "isUnique": false
         }
       },
@@ -5008,9 +4712,7 @@
       "compositePrimaryKeys": {
         "template_milestones_id": {
           "name": "template_milestones_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -5073,16 +4775,12 @@
       "indexes": {
         "templateId_idx": {
           "name": "templateId_idx",
-          "columns": [
-            "templateId"
-          ],
+          "columns": ["templateId"],
           "isUnique": false
         },
         "userId_idx": {
           "name": "userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         }
       },
@@ -5090,9 +4788,7 @@
       "compositePrimaryKeys": {
         "template_usage_id": {
           "name": "template_usage_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -5174,9 +4870,7 @@
       "compositePrimaryKeys": {
         "user_alerts_id": {
           "name": "user_alerts_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -5256,9 +4950,7 @@
       "compositePrimaryKeys": {
         "user_analyses_id": {
           "name": "user_analyses_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -5340,17 +5032,13 @@
       "compositePrimaryKeys": {
         "user_preferences_id": {
           "name": "user_preferences_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "user_preferences_userId_unique": {
           "name": "user_preferences_userId_unique",
-          "columns": [
-            "userId"
-          ]
+          "columns": ["userId"]
         }
       },
       "checkConstraint": {}
@@ -5407,9 +5095,7 @@
       "compositePrimaryKeys": {
         "user_saved_items_id": {
           "name": "user_saved_items_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {},
@@ -5492,17 +5178,13 @@
       "compositePrimaryKeys": {
         "users_id": {
           "name": "users_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "users_openId_unique": {
           "name": "users_openId_unique",
-          "columns": [
-            "openId"
-          ]
+          "columns": ["openId"]
         }
       },
       "checkConstraint": {}

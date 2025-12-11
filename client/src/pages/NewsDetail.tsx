@@ -17,12 +17,13 @@ export default function NewsDetail() {
   const newsId = params?.id ? parseInt(params.id) : 0;
 
   const { data: newsItems } = trpc.hub.getRecentNews.useQuery({ limit: 100 });
-  const { data: recommendations, isLoading: recsLoading } = trpc.hub.getNewsRecommendations.useQuery(
-    { newsId },
-    { enabled: newsId > 0 }
-  );
+  const { data: recommendations, isLoading: recsLoading } =
+    trpc.hub.getNewsRecommendations.useQuery(
+      { newsId },
+      { enabled: newsId > 0 }
+    );
 
-  const newsItem = newsItems?.find((item) => item.id === newsId);
+  const newsItem = newsItems?.find(item => item.id === newsId);
 
   if (!newsItem) {
     return (
@@ -64,16 +65,23 @@ export default function NewsDetail() {
               <div className="space-y-4 mb-6">
                 <div className="flex flex-wrap gap-2">
                   {newsItem.impactLevel && (
-                    <Badge className={impactColors[newsItem.impactLevel as keyof typeof impactColors]}>
+                    <Badge
+                      className={
+                        impactColors[
+                          newsItem.impactLevel as keyof typeof impactColors
+                        ]
+                      }
+                    >
                       <TrendingUp className="mr-1 h-3 w-3" />
                       {newsItem.impactLevel} Impact
                     </Badge>
                   )}
-                  {Array.isArray(newsItem.regulationTags) && newsItem.regulationTags.map((tag) => (
-                    <Badge key={tag} variant="secondary">
-                      {tag}
-                    </Badge>
-                  ))}
+                  {Array.isArray(newsItem.regulationTags) &&
+                    newsItem.regulationTags.map(tag => (
+                      <Badge key={tag} variant="secondary">
+                        {tag}
+                      </Badge>
+                    ))}
                 </div>
 
                 <h1 className="text-3xl font-bold">{newsItem.title}</h1>
@@ -81,7 +89,10 @@ export default function NewsDetail() {
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Calendar className="h-4 w-4" />
-                    {format(new Date(newsItem.publishedDate || newsItem.createdAt), "MMMM d, yyyy")}
+                    {format(
+                      new Date(newsItem.publishedDate || newsItem.createdAt),
+                      "MMMM d, yyyy"
+                    )}
                   </div>
                   {newsItem.sourceTitle && (
                     <div className="flex items-center gap-1">
@@ -105,7 +116,10 @@ export default function NewsDetail() {
               </div>
 
               {/* GS1 Insights Section */}
-              {(newsItem.gs1ImpactAnalysis || newsItem.suggestedActions || newsItem.gs1ImpactTags || newsItem.sectorTags) && (
+              {(newsItem.gs1ImpactAnalysis ||
+                newsItem.suggestedActions ||
+                newsItem.gs1ImpactTags ||
+                newsItem.sectorTags) && (
                 <div className="mt-6 pt-6 border-t space-y-4">
                   <h3 className="font-semibold text-lg flex items-center gap-2">
                     <TrendingUp className="h-5 w-5 text-primary" />
@@ -115,23 +129,33 @@ export default function NewsDetail() {
                   {/* GS1 Impact Tags & Sector Tags */}
                   {(newsItem.gs1ImpactTags || newsItem.sectorTags) && (
                     <div className="flex flex-wrap gap-2">
-                      {Array.isArray(newsItem.gs1ImpactTags) && newsItem.gs1ImpactTags.map((tag) => (
-                        <Badge key={tag} className="bg-purple-500/10 text-purple-700 border-purple-500/20">
-                          {tag.replace(/_/g, ' ')}
-                        </Badge>
-                      ))}
-                      {Array.isArray(newsItem.sectorTags) && newsItem.sectorTags.map((tag) => (
-                        <Badge key={tag} className="bg-blue-500/10 text-blue-700 border-blue-500/20">
-                          {tag}
-                        </Badge>
-                      ))}
+                      {Array.isArray(newsItem.gs1ImpactTags) &&
+                        newsItem.gs1ImpactTags.map(tag => (
+                          <Badge
+                            key={tag}
+                            className="bg-purple-500/10 text-purple-700 border-purple-500/20"
+                          >
+                            {tag.replace(/_/g, " ")}
+                          </Badge>
+                        ))}
+                      {Array.isArray(newsItem.sectorTags) &&
+                        newsItem.sectorTags.map(tag => (
+                          <Badge
+                            key={tag}
+                            className="bg-blue-500/10 text-blue-700 border-blue-500/20"
+                          >
+                            {tag}
+                          </Badge>
+                        ))}
                     </div>
                   )}
 
                   {/* GS1 Impact Analysis */}
                   {newsItem.gs1ImpactAnalysis && (
                     <div className="bg-purple-50 dark:bg-purple-950/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
-                      <h4 className="font-semibold text-sm text-purple-900 dark:text-purple-100 mb-2">Impact Analysis</h4>
+                      <h4 className="font-semibold text-sm text-purple-900 dark:text-purple-100 mb-2">
+                        Impact Analysis
+                      </h4>
                       <p className="text-sm text-purple-800 dark:text-purple-200 leading-relaxed whitespace-pre-wrap">
                         {newsItem.gs1ImpactAnalysis}
                       </p>
@@ -139,19 +163,27 @@ export default function NewsDetail() {
                   )}
 
                   {/* Suggested Actions */}
-                  {Array.isArray(newsItem.suggestedActions) && newsItem.suggestedActions.length > 0 && (
-                    <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-                      <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-100 mb-3">Recommended Actions</h4>
-                      <ul className="space-y-2">
-                        {newsItem.suggestedActions.map((action, index) => (
-                          <li key={index} className="flex items-start gap-2 text-sm text-blue-800 dark:text-blue-200">
-                            <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
-                            <span>{action}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {Array.isArray(newsItem.suggestedActions) &&
+                    newsItem.suggestedActions.length > 0 && (
+                      <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                        <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-100 mb-3">
+                          Recommended Actions
+                        </h4>
+                        <ul className="space-y-2">
+                          {newsItem.suggestedActions.map((action, index) => (
+                            <li
+                              key={index}
+                              className="flex items-start gap-2 text-sm text-blue-800 dark:text-blue-200"
+                            >
+                              <span className="text-blue-600 dark:text-blue-400 mt-0.5">
+                                •
+                              </span>
+                              <span>{action}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                 </div>
               )}
 
@@ -174,15 +206,28 @@ export default function NewsDetail() {
                         MEDIA: "Media",
                       };
                       const sourceTypeColors: Record<string, string> = {
-                        EU_OFFICIAL: "bg-blue-500/10 text-blue-600 border-blue-500/20",
-                        GS1_OFFICIAL: "bg-purple-500/10 text-purple-600 border-purple-500/20",
-                        DUTCH_NATIONAL: "bg-orange-500/10 text-orange-600 border-orange-500/20",
-                        INDUSTRY: "bg-green-500/10 text-green-600 border-green-500/20",
-                        MEDIA: "bg-gray-500/10 text-gray-600 border-gray-500/20",
+                        EU_OFFICIAL:
+                          "bg-blue-500/10 text-blue-600 border-blue-500/20",
+                        GS1_OFFICIAL:
+                          "bg-purple-500/10 text-purple-600 border-purple-500/20",
+                        DUTCH_NATIONAL:
+                          "bg-orange-500/10 text-orange-600 border-orange-500/20",
+                        INDUSTRY:
+                          "bg-green-500/10 text-green-600 border-green-500/20",
+                        MEDIA:
+                          "bg-gray-500/10 text-gray-600 border-gray-500/20",
                       };
                       return (
-                        <div key={index} className="flex items-center gap-3 p-3 rounded-lg border bg-accent/30">
-                          <Badge className={sourceTypeColors[source.type] || sourceTypeColors.MEDIA}>
+                        <div
+                          key={index}
+                          className="flex items-center gap-3 p-3 rounded-lg border bg-accent/30"
+                        >
+                          <Badge
+                            className={
+                              sourceTypeColors[source.type] ||
+                              sourceTypeColors.MEDIA
+                            }
+                          >
                             {sourceTypeLabels[source.type] || source.type}
                           </Badge>
                           <a
@@ -229,7 +274,10 @@ export default function NewsDetail() {
               </CardContent>
             </Card>
           ) : recommendations && recommendations.length > 0 ? (
-            <RecommendedResources recommendations={recommendations as any} maxDisplay={8} />
+            <RecommendedResources
+              recommendations={recommendations as any}
+              maxDisplay={8}
+            />
           ) : null}
         </div>
       </div>

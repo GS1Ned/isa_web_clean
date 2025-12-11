@@ -1,6 +1,6 @@
 /**
  * Compare Regulations Page
- * 
+ *
  * Allows users to select and compare multiple regulations side-by-side.
  * Features:
  * - Multi-select regulation picker
@@ -149,29 +149,35 @@ const AVAILABLE_REGULATIONS = [
 export default function CompareRegulations() {
   const searchParams = useSearch();
   const [, setLocation] = useLocation();
-  
+
   // Parse selected regulations from URL
   const urlParams = new URLSearchParams(searchParams);
-  const urlSelected = urlParams.get("regulations")?.split(",").filter(Boolean) || [];
-  
+  const urlSelected =
+    urlParams.get("regulations")?.split(",").filter(Boolean) || [];
+
   const [selectedCodes, setSelectedCodes] = useState<string[]>(urlSelected);
   const [showSelector, setShowSelector] = useState(selectedCodes.length === 0);
 
   // Update URL when selection changes
   useEffect(() => {
     if (selectedCodes.length > 0) {
-      setLocation(`/hub/regulations/compare?regulations=${selectedCodes.join(",")}`, { replace: true });
+      setLocation(
+        `/hub/regulations/compare?regulations=${selectedCodes.join(",")}`,
+        { replace: true }
+      );
     } else {
       setLocation("/hub/regulations/compare", { replace: true });
     }
   }, [selectedCodes, setLocation]);
 
-  const selectedRegulations = AVAILABLE_REGULATIONS.filter((reg) => selectedCodes.includes(reg.code));
+  const selectedRegulations = AVAILABLE_REGULATIONS.filter(reg =>
+    selectedCodes.includes(reg.code)
+  );
 
   const handleToggleRegulation = (code: string) => {
-    setSelectedCodes((prev) => {
+    setSelectedCodes(prev => {
       if (prev.includes(code)) {
-        return prev.filter((c) => c !== code);
+        return prev.filter(c => c !== code);
       } else {
         if (prev.length >= 4) {
           return prev; // Max 4 regulations
@@ -182,7 +188,7 @@ export default function CompareRegulations() {
   };
 
   const handleRemoveRegulation = (code: string) => {
-    setSelectedCodes((prev) => prev.filter((c) => c !== code));
+    setSelectedCodes(prev => prev.filter(c => c !== code));
   };
 
   const handleAddRegulation = () => {
@@ -205,7 +211,8 @@ export default function CompareRegulations() {
           <div>
             <h1 className="text-3xl font-bold">Compare Regulations</h1>
             <p className="text-muted-foreground">
-              Compare timelines across multiple regulations to identify overlapping deadlines and dependencies
+              Compare timelines across multiple regulations to identify
+              overlapping deadlines and dependencies
             </p>
           </div>
         </div>
@@ -217,12 +224,25 @@ export default function CompareRegulations() {
           <div className="flex items-start gap-3">
             <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">How to Use Timeline Comparison</h4>
+              <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                How to Use Timeline Comparison
+              </h4>
               <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-                <li>• Select 2-4 regulations to compare their implementation timelines</li>
-                <li>• Overlapping periods are highlighted to help coordinate compliance activities</li>
-                <li>• Use filters to focus on specific time ranges or event types</li>
-                <li>• Click news titles to read full articles and understand regulatory context</li>
+                <li>
+                  • Select 2-4 regulations to compare their implementation
+                  timelines
+                </li>
+                <li>
+                  • Overlapping periods are highlighted to help coordinate
+                  compliance activities
+                </li>
+                <li>
+                  • Use filters to focus on specific time ranges or event types
+                </li>
+                <li>
+                  • Click news titles to read full articles and understand
+                  regulatory context
+                </li>
               </ul>
             </div>
           </div>
@@ -234,11 +254,13 @@ export default function CompareRegulations() {
         <Card className="mb-6">
           <CardHeader>
             <CardTitle>Select Regulations to Compare</CardTitle>
-            <p className="text-sm text-muted-foreground">Choose 2-4 regulations (maximum 4)</p>
+            <p className="text-sm text-muted-foreground">
+              Choose 2-4 regulations (maximum 4)
+            </p>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
-              {AVAILABLE_REGULATIONS.map((reg) => {
+              {AVAILABLE_REGULATIONS.map(reg => {
                 const isSelected = selectedCodes.includes(reg.code);
                 const isDisabled = !isSelected && selectedCodes.length >= 4;
 
@@ -249,10 +271,12 @@ export default function CompareRegulations() {
                       isSelected
                         ? "border-primary bg-primary/5"
                         : isDisabled
-                        ? "border-border bg-muted opacity-50 cursor-not-allowed"
-                        : "border-border hover:border-primary/50 cursor-pointer"
+                          ? "border-border bg-muted opacity-50 cursor-not-allowed"
+                          : "border-border hover:border-primary/50 cursor-pointer"
                     }`}
-                    onClick={() => !isDisabled && handleToggleRegulation(reg.code)}
+                    onClick={() =>
+                      !isDisabled && handleToggleRegulation(reg.code)
+                    }
                   >
                     <Checkbox
                       checked={isSelected}
@@ -262,12 +286,16 @@ export default function CompareRegulations() {
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: reg.color }} />
+                        <div
+                          className="w-3 h-3 rounded-full"
+                          style={{ backgroundColor: reg.color }}
+                        />
                         <Badge variant="secondary">{reg.code}</Badge>
                       </div>
                       <h4 className="font-semibold mb-1">{reg.title}</h4>
                       <p className="text-sm text-muted-foreground">
-                        {reg.timeline.length} {reg.timeline.length === 1 ? "milestone" : "milestones"}
+                        {reg.timeline.length}{" "}
+                        {reg.timeline.length === 1 ? "milestone" : "milestones"}
                       </p>
                     </div>
                   </div>
@@ -291,7 +319,9 @@ export default function CompareRegulations() {
         <CompareTimelines
           regulations={selectedRegulations}
           onRemoveRegulation={handleRemoveRegulation}
-          onAddRegulation={selectedCodes.length < 4 ? handleAddRegulation : undefined}
+          onAddRegulation={
+            selectedCodes.length < 4 ? handleAddRegulation : undefined
+          }
         />
       )}
 
@@ -301,11 +331,16 @@ export default function CompareRegulations() {
           <CardContent className="pt-6">
             <div className="text-center py-12">
               <GitCompare className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No Regulations Selected</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                No Regulations Selected
+              </h3>
               <p className="text-muted-foreground mb-4">
-                Select at least 2 regulations to start comparing their timelines.
+                Select at least 2 regulations to start comparing their
+                timelines.
               </p>
-              <Button onClick={() => setShowSelector(true)}>Select Regulations</Button>
+              <Button onClick={() => setShowSelector(true)}>
+                Select Regulations
+              </Button>
             </div>
           </CardContent>
         </Card>

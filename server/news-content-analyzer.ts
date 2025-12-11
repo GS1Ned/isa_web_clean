@@ -28,7 +28,8 @@ export async function analyzeNewsContent(
       messages: [
         {
           role: "system",
-          content: "You are an expert analyst specializing in EU sustainability regulations and GS1 supply chain standards. Extract structured information from news articles. Return JSON only.",
+          content:
+            "You are an expert analyst specializing in EU sustainability regulations and GS1 supply chain standards. Extract structured information from news articles. Return JSON only.",
         },
         {
           role: "user",
@@ -38,7 +39,9 @@ export async function analyzeNewsContent(
     });
 
     const content_str = response.choices[0].message.content;
-    const analysis = JSON.parse(typeof content_str === "string" ? content_str : "{}");
+    const analysis = JSON.parse(
+      typeof content_str === "string" ? content_str : "{}"
+    );
 
     return {
       mainTopics: analysis.mainTopics || [],
@@ -56,11 +59,15 @@ export async function analyzeNewsContent(
   }
 }
 
-function fallbackAnalysis(title: string, summary: string, content: string): ContentAnalysis {
+function fallbackAnalysis(
+  title: string,
+  summary: string,
+  content: string
+): ContentAnalysis {
   const fullText = `${title} ${summary} ${content}`.toLowerCase();
   const regulationKeywords = ["csrd", "esrs", "eudr", "dpp", "ppwr", "espr"];
   const standardKeywords = ["gtin", "gln", "epcis"];
-  
+
   return {
     mainTopics: [],
     regulationMentions: regulationKeywords.filter(k => fullText.includes(k)),

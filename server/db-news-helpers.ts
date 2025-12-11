@@ -16,7 +16,11 @@ export async function getNewsBySourceUrl(sourceUrl: string) {
   }
 
   try {
-    const result = await db.select().from(hubNews).where(eq(hubNews.sourceUrl, sourceUrl)).limit(1);
+    const result = await db
+      .select()
+      .from(hubNews)
+      .where(eq(hubNews.sourceUrl, sourceUrl))
+      .limit(1);
     return result[0] || null;
   } catch (error) {
     console.error("[Database] Failed to get news by source URL:", error);
