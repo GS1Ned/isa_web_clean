@@ -42,6 +42,7 @@ import { executiveAnalyticsRouter } from "./routers/executive-analytics.js";
 import { askISARouter } from "./routers/ask-isa.js";
 import { gs1AttributesRouter } from "./routers/gs1-attributes.js";
 import { newsAdminRouter } from "./news-admin-router.js";
+import { cronRouter } from "./routers/cron.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -915,6 +916,11 @@ export const appRouter = router({
    * News Admin Router - Manual pipeline triggers and stats
    */
   newsAdmin: newsAdminRouter,
+
+  /**
+   * Cron Router - Public endpoints for scheduled tasks
+   */
+  cron: cronRouter,
 
   /**
    * Dutch Initiatives Router
