@@ -1,6 +1,9 @@
 import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, json, boolean, decimal, index } from "drizzle-orm/mysql-core";
 import { sql } from "drizzle-orm";
 
+// Export ESG extension tables
+export * from "./schema_esg_extensions";
+
 /**
  * Core user table backing auth flow.
  * Extend this file with additional tables as your product grows.
