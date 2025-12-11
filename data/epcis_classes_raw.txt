@@ -1,0 +1,106 @@
+EPCIS Classes from ref.gs1.org/epcis/
+Source: https://ref.gs1.org/epcis/?show=classes
+Date: December 10, 2025
+
+CORE EVENT CLASSES (EPCISEvent subclasses):
+
+1. EPCISEvent (Base Class)
+   URI: https://ref.gs1.org/epcis/EPCISEvent
+   Description: A logistics event. This is a common superclass (base type) for all EPCIS events. All of the more specific event types are subclasses of EPCISEvent.
+
+2. ObjectEvent
+   URI: https://ref.gs1.org/epcis/ObjectEvent
+   Description: An ObjectEvent captures information about an event pertaining to one or more physical or digital objects identified by instance-level (EPC) or class-level (EPC Class) identifiers. In most situations, an ObjectEvent is envisioned to represent an actual observations of objects, but strictly speaking it can be used for any event a Capturing Application wants to assert about objects, including for example capturing the fact that an expected observation failed to occur.
+   ESG Relevance: HIGH - Core traceability event for EUDR, CSRD Scope 3, PPWR
+
+3. AggregationEvent
+   URI: https://ref.gs1.org/epcis/AggregationEvent
+   Description: The event type AggregationEvent describes events that apply to objects that have been aggregated to one another. In such an event, there is a set of 'contained' objects that have been aggregated within a 'containing' entity that's meant to identify the aggregation itself. This event type is intended to be used for 'aggregations', meaning an association where there is a strong physical relationship between the containing and the contained objects such that they will all occupy the same location at the same time, until such time as they are disaggregated.
+   ESG Relevance: MEDIUM - Packaging aggregation for PPWR, logistics consolidation
+
+4. TransformationEvent
+   URI: https://ref.gs1.org/epcis/TransformationEvent
+   Description: A TransformationEvent captures information about an event in which one or more physical or digital objects identified by instance-level (EPC) or class-level (EPC Class) identifiers are fully or partially consumed as inputs and one or more objects identified by instance-level (EPC) or class-level (EPC Class) identifiers are produced as outputs. The TransformationEvent captures the relationship between the inputs and the outputs, such that any of the inputs may have contributed in some way to each of the outputs.
+   ESG Relevance: CRITICAL - Manufacturing transformation for EUDR (raw materials → products), CSRD value chain
+
+5. TransactionEvent
+   URI: https://ref.gs1.org/epcis/TransactionEvent
+   Description: The event type TransactionEvent describes the association or disassociation of physical or digital objects to one or more business transactions. While other event types have an optional bizTransactionList field that may be used to provide context for an event, the TransactionEvent is used to declare in an unequivocal way that certain objects have been associated or disassociated with one or more business transactions as part of the event.
+   ESG Relevance: MEDIUM - Business transaction traceability for CSRD, ownership transfer
+
+6. AssociationEvent
+   URI: https://ref.gs1.org/epcis/AssociationEvent
+   Description: The event type AssociationEvent describes the association or disassociation of one or several physical objects with a parent object or a specific physical location. Like the AggregationEvent, the AssociationEvent is also used to capture associations where there is a strong physical relationship between the containing and the contained objects such that they will all occupy the same location at the same time, until such time as they are disaggregated. However, the AggregationEvent does not allow for associations of objects with physical locations; if action is DELETE while omitting the childEPC and childQuantityList field, all contained children are disaggregated from the containing parent. Because there are situations in which associations are more permanent, i.e. beyond the physical flow of goods (e.g. packing/unpacking and loading/unloading), an AssociationEvent SHOULD be used: (a) when objects need to be associated with a physical location or (b) when the parent object could also be subject to other, more temporary associations (i.e. captured using AggregationEvent).
+   ESG Relevance: MEDIUM - Location-based traceability, asset tracking
+
+SUPPORTING STRUCTURES:
+
+7. Transformation
+   URI: https://ref.gs1.org/epcis/Transformation
+   Description: A transformation business processes that takes a longer period of time than a single TransformationEvent, so is associated with a series of such events. When events share the same Transformation, the meaning is that the inputs to any of those events may have contributed in some way to each of the outputs in any of those same events.
+   ESG Relevance: HIGH - Multi-step manufacturing processes for EUDR, CSRD
+
+8. BizTransaction
+   URI: https://ref.gs1.org/epcis/BizTransaction
+   Description: Document that describes a particular business transaction. An example is a specific Purchase Order or Despatch Advice. Business Transaction information may be included in EPCIS events to record an event's participation in particular business transactions.
+
+9. EPCISDocument
+   URI: https://ref.gs1.org/epcis/EPCISDocument
+   Description: An EPCISDocument is a means to transport a collection of EPCIS events, optionally accompanied by relevant master data, as a single electronic document. It is used by the concrete bindings of the EPCIS Capture Interface. In addition, trading partners may by mutual agreement use it as a single electronic document.
+
+10. EPCISDocumentBody
+    URI: https://ref.gs1.org/epcis/EPCISDocumentBody
+    Description: Intermediate node that is connected to EPCISDocument using epcisBody, and includes a list of events using eventList
+
+11. EPCISDocumentHeader
+    URI: https://ref.gs1.org/epcis/EPCISDocumentHeader
+    Description: Intermediate node that is connected to EPCISDocument using epcisHeader, and may include master data using masterData
+
+12. ErrorDeclaration
+    URI: https://ref.gs1.org/epcis/ErrorDeclaration
+    Description: When an event contains an ErrorDeclaration element, it indicates that this event has special semantics: instead of the normal semantics which assert that various things happened and that various things are true following the event, the semantics of this event assert that those prior assertions are in error. An event containing an ErrorDeclaration element SHALL be otherwise identical to a prior event.
+    ESG Relevance: MEDIUM - Error correction for compliance data quality
+
+13. ILMD (Instance/Lot Master Data)
+    URI: https://ref.gs1.org/epcis/ILMD
+    Description: Instance/Lot master data (ILMD) is data that describes a specific instance of a physical or digital object, or a specific batch/lot of objects that are produced in batches/lots. ILMD consists of a set of descriptive attributes that provide information about one or more specific objects or lots. It is similar to ordinary master data, which also consists of a set of descriptive attributes that provide information about objects. But whereas master data attributes have the same values for a large class of objects, (e.g., for all objects having a given GTIN), the values of ILMD attributes may be different for much smaller groupings of objects (e.g., a single batch or lot), and may be different for each object (i.e., different for each instance).
+    ESG Relevance: CRITICAL - Batch/lot-level ESG attributes (origin, certifications, sustainability metrics)
+
+14. MasterData
+    URI: https://ref.gs1.org/epcis/MasterData
+    Description: Intermediate node that is connected to EPCISDocumentHeader using masterData, and may include vocabulary elements using vocabularyList
+
+15. PersistentDisposition
+    URI: https://ref.gs1.org/epcis/PersistentDisposition
+    Description: The persistentDisposition field of an event specifies one or more business conditions of the event's objects, subsequent to the event. One or more persistentDisposition values can be set or unset, independently of each other. Values that are set are considered to remain valid until explicitly unset. Like disposition, persistentDisposition leverages the DispositionID Standard Vocabulary.
+    ESG Relevance: HIGH - Long-term product status (recalled, expired, destroyed, recycled)
+
+16. QuantityElement
+    URI: https://ref.gs1.org/epcis/QuantityElement
+    Description: A QuantityElement is a structure that identifies objects identified by a specific class-level identifier, either a specific quantity or an unspecified quantity.
+
+17. SensorElement
+    URI: https://ref.gs1.org/epcis/SensorElement
+    Description: A SensorElement is a structure that contains an optional sensorMetadata structure and one or several sensorReport structures
+    ESG Relevance: CRITICAL - Environmental monitoring (temperature, humidity, CO2) for cold chain, CSRD Scope 3
+
+18. SensorMetadata
+    URI: https://ref.gs1.org/epcis/SensorMetadata
+    Description: A class containing one or several metadata attributes, which are applicable to all sensorReport structures that are part of the same sensorElement
+
+19. SensorReport
+    URI: https://ref.gs1.org/epcis/SensorReport
+    Description: A class containing one or several attributes that pertain to a specific sensor observation.
+    ESG Relevance: CRITICAL - Actual sensor readings for environmental compliance
+
+20. SourceOrDestination
+    URI: https://ref.gs1.org/epcis/SourceOrDestination
+    Description: Provides additional business context when an EPCIS event is part of a business transfer; that is, a process in which there is a change in ownership or custody.
+    ESG Relevance: HIGH - Supply chain custody transfer for EUDR, CSRD Scope 3
+
+---
+
+NEXT STEPS:
+1. Click "EPCIS Fields" to extract property definitions
+2. Extract key properties for each event class (eventTime, epcList, bizStep, disposition, etc.)
+3. Identify which properties reference CBV code lists

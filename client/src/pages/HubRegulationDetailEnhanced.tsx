@@ -255,6 +255,198 @@ function RecentDevelopmentsPanel({ regulationCode }: { regulationCode: string })
   );
 }
 
+// EPCIS/CBV Traceability Panel Component
+function EPCISTraceabilityPanel({ regulationCode }: { regulationCode: string }) {
+  // Import EPCIS/CBV mapping from shared types
+  const mapping = {
+    CSRD: {
+      requiredBizSteps: [
+        { code: "BizStep-shipping", label: "Shipping", description: "Transport of goods for Scope 3 emissions tracking" },
+        { code: "BizStep-transforming", label: "Transforming", description: "Manufacturing processes for emissions calculation" },
+      ],
+      requiredDispositions: [
+        { code: "Disp-in_transit", label: "In Transit", description: "Goods moving between locations" },
+      ],
+      requiredSensorTypes: [
+        { code: "Temperature", label: "Temperature", description: "Cold chain monitoring for refrigerant emissions" },
+        { code: "Speed", label: "Speed", description: "Vehicle speed for transport emissions" },
+        { code: "Mileage", label: "Mileage", description: "Distance traveled for emissions calculation" },
+      ],
+      traceabilityRequirements: [
+        "Scope 3 transport emissions (shipping + sensor data)",
+        "Manufacturing facility locations",
+        "Supply chain mapping (custody chain)",
+      ],
+    },
+    EUDR: {
+      requiredBizSteps: [
+        { code: "BizStep-commissioning", label: "Commissioning", description: "Origin tracking (harvesting, catching, slaughtering)" },
+        { code: "BizStep-transforming", label: "Transforming", description: "Processing steps in supply chain" },
+        { code: "BizStep-shipping", label: "Shipping", description: "Transport between locations" },
+        { code: "BizStep-receiving", label: "Receiving", description: "Custody transfer checkpoints" },
+      ],
+      requiredDispositions: [],
+      requiredTransactionTypes: [
+        { code: "BTT-cert", label: "Certification", description: "FSC, PEFC, organic certifications" },
+        { code: "BTT-pedigree", label: "Pedigree", description: "Provenance documentation" },
+      ],
+      requiredSensorTypes: [],
+      traceabilityRequirements: [
+        "Geographic origin (commissioning location with coordinates)",
+        "Custody chain (owning_party, possessing_party)",
+        "Transformation steps (inputs → outputs)",
+        "Certifications (FSC, PEFC, organic)",
+      ],
+    },
+    PPWR: {
+      requiredBizSteps: [
+        { code: "BizStep-commissioning", label: "Commissioning", description: "Production/manufacturing" },
+        { code: "BizStep-collecting", label: "Collecting", description: "Collection for recycling/reuse" },
+        { code: "BizStep-recycling", label: "Recycling", description: "Recycling process" },
+        { code: "BizStep-destroying", label: "Destroying", description: "Disposal/end-of-life" },
+        { code: "BizStep-repairing", label: "Repairing", description: "Repair for lifetime extension" },
+      ],
+      requiredDispositions: [
+        { code: "Disp-active", label: "Active", description: "Product in use" },
+        { code: "Disp-recyclable", label: "Recyclable", description: "Designated for recycling" },
+        { code: "Disp-returned", label: "Returned", description: "Take-back schemes" },
+        { code: "Disp-destroyed", label: "Destroyed", description: "End-of-life verification" },
+      ],
+      requiredSensorTypes: [],
+      traceabilityRequirements: [
+        "Product lifecycle tracking (commissioning → active → collecting → recycling/destroying)",
+        "Recycled content verification (transformation inputs)",
+        "Take-back scheme compliance (returned disposition)",
+        "Repair and reuse tracking (repairing bizStep)",
+      ],
+    },
+  }[regulationCode] || null;
+
+  if (!mapping) {
+    return (
+      <Card className="p-8">
+        <p className="text-slate-600">EPCIS/CBV traceability mapping not yet available for this regulation.</p>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Overview Card */}
+      <Card className="p-8 bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
+        <h3 className="text-2xl font-bold text-slate-900 mb-4">EPCIS/CBV Traceability Requirements</h3>
+        <p className="text-slate-700 mb-6">
+          This regulation requires specific GS1 EPCIS events and CBV vocabularies for supply chain traceability and compliance verification.
+          Use these codes when implementing EPCIS-based traceability systems.
+        </p>
+        <div className="flex items-center gap-2 text-sm text-purple-700">
+          <ExternalLink className="h-4 w-4" />
+          <a href="https://ref.gs1.org/epcis/" target="_blank" rel="noopener noreferrer" className="hover:underline">
+            View EPCIS/CBV Standard Documentation
+          </a>
+        </div>
+      </Card>
+
+      {/* Required BizSteps */}
+      {mapping.requiredBizSteps && mapping.requiredBizSteps.length > 0 && (
+        <Card className="p-8">
+          <h4 className="text-xl font-bold text-slate-900 mb-4">Required Business Steps (bizStep)</h4>
+          <p className="text-sm text-slate-600 mb-6">
+            Business process steps that must be captured in EPCIS events to demonstrate compliance.
+          </p>
+          <div className="space-y-4">
+            {mapping.requiredBizSteps.map((step: any) => (
+              <div key={step.code} className="border-l-4 border-blue-500 pl-4 py-2">
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge variant="outline" className="font-mono text-xs">{step.code}</Badge>
+                  <span className="font-semibold text-slate-900">{step.label}</span>
+                </div>
+                <p className="text-sm text-slate-600">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Required Dispositions */}
+      {mapping.requiredDispositions && mapping.requiredDispositions.length > 0 && (
+        <Card className="p-8">
+          <h4 className="text-xl font-bold text-slate-900 mb-4">Required Dispositions (disposition)</h4>
+          <p className="text-sm text-slate-600 mb-6">
+            Business conditions that must be tracked to demonstrate product status and lifecycle.
+          </p>
+          <div className="space-y-4">
+            {mapping.requiredDispositions.map((disp: any) => (
+              <div key={disp.code} className="border-l-4 border-green-500 pl-4 py-2">
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge variant="outline" className="font-mono text-xs">{disp.code}</Badge>
+                  <span className="font-semibold text-slate-900">{disp.label}</span>
+                </div>
+                <p className="text-sm text-slate-600">{disp.description}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Required Transaction Types */}
+      {mapping.requiredTransactionTypes && mapping.requiredTransactionTypes.length > 0 && (
+        <Card className="p-8">
+          <h4 className="text-xl font-bold text-slate-900 mb-4">Required Transaction Types (bizTransactionList)</h4>
+          <p className="text-sm text-slate-600 mb-6">
+            Business documents that must be linked to EPCIS events for compliance verification.
+          </p>
+          <div className="space-y-4">
+            {mapping.requiredTransactionTypes.map((txn: any) => (
+              <div key={txn.code} className="border-l-4 border-amber-500 pl-4 py-2">
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge variant="outline" className="font-mono text-xs">{txn.code}</Badge>
+                  <span className="font-semibold text-slate-900">{txn.label}</span>
+                </div>
+                <p className="text-sm text-slate-600">{txn.description}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Required Sensor Types */}
+      {mapping.requiredSensorTypes && mapping.requiredSensorTypes.length > 0 && (
+        <Card className="p-8">
+          <h4 className="text-xl font-bold text-slate-900 mb-4">Required Sensor Measurements (sensorReport)</h4>
+          <p className="text-sm text-slate-600 mb-6">
+            Environmental sensor data that must be captured for compliance verification.
+          </p>
+          <div className="space-y-4">
+            {mapping.requiredSensorTypes.map((sensor: any) => (
+              <div key={sensor.code} className="border-l-4 border-purple-500 pl-4 py-2">
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge variant="outline" className="font-mono text-xs">{sensor.code}</Badge>
+                  <span className="font-semibold text-slate-900">{sensor.label}</span>
+                </div>
+                <p className="text-sm text-slate-600">{sensor.description}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Traceability Requirements Summary */}
+      <Card className="p-8 bg-slate-50">
+        <h4 className="text-xl font-bold text-slate-900 mb-4">Traceability Requirements Summary</h4>
+        <ul className="space-y-2">
+          {mapping.traceabilityRequirements.map((req: string, idx: number) => (
+            <li key={idx} className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+              <span className="text-slate-700">{req}</span>
+            </li>
+          ))}
+        </ul>
+      </Card>
+    </div>
+  );
+}
+
 export default function HubRegulationDetailEnhanced() {
   const [isSaved, setIsSaved] = useState(false);
   const [hasAlert, setHasAlert] = useState(false);
@@ -316,8 +508,9 @@ export default function HubRegulationDetailEnhanced() {
 
         {/* Tabs */}
         <Tabs defaultValue="timeline" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
+            <TabsTrigger value="traceability">EPCIS/CBV Traceability</TabsTrigger>
             <TabsTrigger value="standards">Standards</TabsTrigger>
             <TabsTrigger value="news">Recent Developments</TabsTrigger>
             <TabsTrigger value="checklist">Checklist</TabsTrigger>
@@ -327,6 +520,11 @@ export default function HubRegulationDetailEnhanced() {
           {/* Timeline Tab */}
           <TabsContent value="timeline" className="space-y-6">
             <RegulationTimeline regulationCode={reg.code} milestones={reg.timeline} />
+          </TabsContent>
+
+          {/* EPCIS/CBV Traceability Tab */}
+          <TabsContent value="traceability" className="space-y-6">
+            <EPCISTraceabilityPanel regulationCode={reg.code} />
           </TabsContent>
 
           {/* Standards Tab */}

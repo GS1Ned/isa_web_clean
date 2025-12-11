@@ -516,3 +516,124 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 **Estimated Total Time:** 14-15 hours  
 **Approach:** Phased, value-first (immediate value → high value → integration)
+
+
+---
+
+## EPCIS/CBV Traceability Layer Integration
+
+### Phase 1: Ingest EPCIS Classes & Properties
+- [ ] Access ref.gs1.org/epcis/ to identify core event classes
+- [ ] Extract EPCISEvent subclasses (ObjectEvent, AggregationEvent, TransformationEvent, TransactionEvent, AssociationEvent)
+- [ ] Extract key supporting structures (QuantityElement, ILMD, EPCISDocument)
+- [ ] For each class: capture URI, label, definition, key properties
+- [ ] Extract property definitions (eventTime, epcList, bizStep, disposition, readPoint, bizLocation, etc.)
+- [ ] Document property types and CBV code list references
+
+### Phase 2: Ingest CBV Code Lists
+- [ ] Access ref.gs1.org/cbv/ to identify vocabularies
+- [ ] Extract Business Steps (bizStep codes)
+- [ ] Extract Dispositions (disposition codes)
+- [ ] Extract Business Transaction Types (BTT codes)
+- [ ] Extract Source/Destination Types (sdt codes)
+- [ ] Extract Error Reasons (er codes)
+- [ ] Extract Sensor Measurement Types
+- [ ] For each code: capture URI, code payload, label, definition, EPCIS field usage
+
+### Phase 3: Create Curated JSON Datasets
+- [ ] Create data/epcis-model.json (classes, properties, definitions)
+- [ ] Create data/cbv-bizsteps.json
+- [ ] Create data/cbv-dispositions.json
+- [ ] Create data/cbv-bizTransactionTypes.json
+- [ ] Create data/cbv-sourceDestinationTypes.json
+- [ ] Create data/cbv-errorReasons.json
+- [ ] Create data/cbv-sensorMeasurementTypes.json
+- [ ] Validate JSON structure and completeness
+
+### Phase 4: Build TypeScript Types & Helpers
+- [ ] Create shared/epcis-model.ts with TypeScript types
+- [ ] Create shared/cbv-vocabularies.ts with TypeScript types
+- [ ] Create helper functions for loading EPCIS/CBV data
+- [ ] Create lookup functions (getEventClass, getBizStep, getDisposition, etc.)
+- [ ] Create validation helpers for EPCIS event structures
+
+### Phase 5: Design ESG/Green Deal Mapping Hooks
+- [ ] Design regulation → EPCIS/CBV mapping schema
+- [ ] Create example mappings (EUDR → ObjectEvent + TransformationEvent + specific bizSteps)
+- [ ] Add EPCIS event type tags to regulation schema
+- [ ] Add CBV code references to regulation schema
+- [ ] Create UI components for displaying EPCIS/CBV requirements
+
+### Phase 6: Integrate into ISA
+- [ ] Enhance News Hub with EPCIS event type tagging
+- [ ] Add CBV code filtering to News Hub
+- [ ] Update regulation detail pages with EPCIS/CBV requirements
+- [ ] Integrate EPCIS/CBV into Ask ISA knowledge base
+- [ ] Add EPCIS/CBV to GS1 standard mappings
+
+### Phase 7: Verification & Reporting
+- [ ] Verify all JSON datasets are valid and complete
+- [ ] Test EPCIS/CBV lookup functions
+- [ ] Test News Hub EPCIS tagging
+- [ ] Test regulation mapping views
+- [ ] Create EPCIS_CBV_INTEGRATION_REPORT.md
+- [ ] Save checkpoint
+
+**Estimated Total Time:** 6-8 hours  
+**Approach:** Canonical sources (ref.gs1.org), lightweight JSON, ESG mapping hooks
+
+
+---
+
+## EPCIS/CBV Traceability Layer Integration ✅ COMPLETE
+
+### Phase 1: Ingest EPCIS Classes and Properties ✅
+- [x] Research ref.gs1.org/epcis/ structure
+- [x] Document EPCIS event types (ObjectEvent, AggregationEvent, etc.)
+- [x] Document key EPCIS properties (bizStep, disposition, etc.)
+- [x] Create epcis_fields_raw.txt (documented 40+ properties)
+- [x] Create epcis_classes_raw.txt
+
+### Phase 2: Ingest CBV Code Lists ✅
+- [x] Research ref.gs1.org/cbv/ structure
+- [x] Identify ESG-relevant code lists (BizStep, Disp, BTT, SDT)
+- [x] Create curated ESG-focused CBV vocabularies (cbv_esg_curated.json)
+- [x] Extract 8 critical BizSteps
+- [x] Extract 7 key Dispositions
+- [x] Extract 4 ESG-relevant BizTransactionTypes
+- [x] Extract 3 SourceDestTypes
+- [x] Extract 4 sensor MeasurementTypes
+
+### Phase 3: Create Curated JSON Datasets ✅
+- [x] Create cbv_esg_curated.json (ESG-focused subset)
+- [x] Map each code to EUDR/CSRD/PPWR regulations
+- [x] Add esgUseCases for each code
+- [x] Add regulationMapping for each code
+- [x] Create traceability chain guides (EUDR, CSRD, PPWR)
+
+### Phase 4: Build TypeScript Types ✅
+- [x] Create shared/epcis-cbv-types.ts
+- [x] Define CBVBizStep, CBVDisposition, etc. types
+- [x] Create RegulationEPCISMapping interface
+- [x] Create REGULATION_EPCIS_MAPPINGS constant
+- [x] Add helper functions (getEPCISCodesForRegulation, etc.)
+- [x] Create traceability pattern interfaces (EUDR, CSRD, PPWR)
+
+### Phase 5: Design ESG/Green Deal Mapping Hooks ✅
+- [x] Define EUDR traceability requirements
+- [x] Define CSRD Scope 3 requirements
+- [x] Define PPWR circular economy requirements
+- [x] Create regulation-to-EPCIS mapping logic (in types file)
+
+### Phase 6: Integrate into ISA ✅
+- [x] Add EPCIS/CBV tab to regulation detail pages
+- [x] Create EPCISTraceabilityPanel component
+- [x] Display required BizSteps, Dispositions, etc.
+- [x] Add links to ref.gs1.org documentation
+- [ ] Update News Hub AI processor to tag EPCIS/CBV concepts (deferred)
+
+### Phase 7: Verification and Documentation ✅
+- [x] Test EPCIS/CBV tab rendering
+- [x] Verify TypeScript compilation
+- [x] Create implementation files and documentation
+- [x] Ready for checkpoint
