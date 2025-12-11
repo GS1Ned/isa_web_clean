@@ -37,6 +37,7 @@ const HubImpactMatrix = lazy(() => import("./pages/HubImpactMatrix"));
 const HubUserDashboard = lazy(() => import("./pages/HubUserDashboard"));
 const AdminNewsPanel = lazy(() => import("./pages/AdminNewsPanel"));
 const AdminNewsPipelineManager = lazy(() => import("./pages/AdminNewsPipelineManager"));
+const NewsAdmin = lazy(() => import("./pages/NewsAdmin").then(m => ({ default: m.NewsAdmin })));
 const HubCompare = lazy(() => import("./pages/HubCompare"));
 const HubCompareEnhanced = lazy(() => import("./pages/HubCompareEnhanced"));
 const AdminCellarIngestion = lazy(() => import("./pages/AdminCellarIngestion"));
@@ -111,6 +112,7 @@ function Router() {
       <Route path="/admin/cellar" component={AdminCellarIngestion} />
       <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />
       <Route path="/admin/news-pipeline" component={AdminNewsPipelineManager} />
+      <Route path="/admin/news" component={NewsAdmin} />
       <Route path="/epcis/upload" component={EPCISUploadEnhanced} />
       <Route path="/epcis/upload-legacy" component={EPCISUpload} />
       <Route path="/epcis/supply-chain" component={EPCISSupplyChain} />

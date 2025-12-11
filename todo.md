@@ -637,3 +637,18 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Verify TypeScript compilation
 - [x] Create implementation files and documentation
 - [x] Ready for checkpoint
+
+---
+
+## Manual News Ingestion Trigger Feature
+
+### Admin Panel Enhancement
+- [x] Add tRPC procedures for manual news ingestion trigger
+- [x] Add tRPC procedures for execution history retrieval
+- [x] Create admin UI component with trigger button
+- [x] Add real-time progress display during ingestion
+- [x] Add execution history table showing past runs
+- [x] Add monitoring dashboard with success/failure stats
+- [x] Test manual trigger functionality
+- [x] Save checkpoint
+

@@ -219,7 +219,11 @@ export default function AdminPanel() {
 
           {/* Quick Links */}
           <div className="mt-8 space-y-3">
-            <h3 className="font-semibold text-foreground mb-4">Quick Links</h3>
+            <h3 className="font-semibold text-foreground mb-4">Admin Tools</h3>
+            <Link href="/admin/news" className="block p-4 rounded-lg bg-card border border-border hover:border-accent transition">
+              <p className="font-medium text-foreground">📰 News Administration</p>
+              <p className="text-sm text-muted-foreground">Manually trigger news ingestion and monitor pipeline health</p>
+            </Link>
             <Link href="/dashboard" className="block p-4 rounded-lg bg-card border border-border hover:border-accent transition">
               <p className="font-medium text-foreground">View Demo Dashboard</p>
               <p className="text-sm text-muted-foreground">See the regulatory mapping explorer</p>
