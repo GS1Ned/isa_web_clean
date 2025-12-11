@@ -821,3 +821,15 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Create task-specific prompt
 - [x] Delegate to ChatGPT
 - [x] Integrate deliverables (6 min, 22/22 tests passing, 4 mechanical fixes)
+
+## Integration Automation
+
+### Build Integration Automation Script
+- [x] Design script architecture and workflow
+- [x] Create file extraction module
+- [x] Create validation module (separators, braces, config consistency)
+- [x] Create auto-fix module (remove separators, add missing braces)
+- [x] Create test execution and reporting module
+- [x] Integrate modules and create CLI interface
+- [x] Test with Batch 01 data
+- [x] Document usage in INTEGRATION_AUTOMATION.md

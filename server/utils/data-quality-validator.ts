@@ -1,3 +1,4 @@
+
 import type { DigitalLinkValidationResult } from "./digital-link";
 import { validateDigitalLinkURI, validateGTIN } from "./digital-link";
 import type {
@@ -41,9 +42,9 @@ export interface GLNValidationResult {
  */
 export function validateGLN(gln: string): GLNValidationResult {
   const errors: FieldValidationIssue[] = [];
-  const input = (gln || "").trim();
+  const digits = (gln || "").replace(/[^0-9]/g, "");
 
-  if (!input.length) {
+  if (!digits.length) {
     errors.push({
       field: "gln",
       code: "GLN_INVALID_LENGTH",
@@ -55,20 +56,7 @@ export function validateGLN(gln: string): GLNValidationResult {
     };
   }
 
-  // Check for invalid characters BEFORE stripping
-  if (!/^[0-9]+$/.test(input)) {
-    errors.push({
-      field: "gln",
-      code: "GLN_INVALID_CHARACTERS",
-      message: "GLN may only contain numeric digits."
-    });
-    return {
-      valid: false,
-      errors
-    };
-  }
-
-  if (input.length != 13) {
+  if (digits.length != 13) {
     errors.push({
       field: "gln",
       code: "GLN_INVALID_LENGTH",
@@ -80,7 +68,17 @@ export function validateGLN(gln: string): GLNValidationResult {
     };
   }
 
-  const digits = input;
+  if (!/^[0-9]+$/.test(digits)) {
+    errors.push({
+      field: "gln",
+      code: "GLN_INVALID_CHARACTERS",
+      message: "GLN may only contain numeric digits."
+    });
+    return {
+      valid: false,
+      errors
+    };
+  }
 
   const body = digits.slice(0, -1);
   const checkDigit = digits.slice(-1);
@@ -191,22 +189,6 @@ function parseIsoDate(input: string, fieldName: string): DateValidationResult {
   const candidate = new Date(Date.UTC(year, month - 1, day));
 
   if (Number.isNaN(candidate.getTime())) {
-    return {
-      valid: false,
-      errors: [
-        {
-          field: fieldName,
-          code: "DATE_INVALID",
-          message: "Date value is not a valid calendar date."
-        }
-      ]
-    };
-  }
-
-  // Validate that the date components match (catch Feb 30 -> Mar 2 rollover)
-  if (candidate.getUTCFullYear() !== year || 
-      candidate.getUTCMonth() !== month - 1 || 
-      candidate.getUTCDate() !== day) {
     return {
       valid: false,
       errors: [
