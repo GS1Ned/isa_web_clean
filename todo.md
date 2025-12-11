@@ -819,5 +819,5 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ### CGPT-17: Data Quality Validation Library
 - [x] Write detailed task specification
 - [x] Create task-specific prompt
-- [ ] Delegate to ChatGPT (NOT DELIVERED - need retry)
-- [ ] Create standalone retry task spec
+- [x] Delegate to ChatGPT
+- [x] Integrate deliverables (6 min, 22/22 tests passing, 4 mechanical fixes)
