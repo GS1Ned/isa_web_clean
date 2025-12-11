@@ -114,13 +114,30 @@ export function mapGPCToGS1(input) {
    - Adds `});` to end of file if exactly 1 closing brace is missing
    - Only applied to `.ts`/`.tsx` files
 
+3. **Fix import paths** (NEW)
+   - Corrects relative imports to `shared/` directory for client files
+   - Example: `../../shared/file` → `../../../shared/file`
+   - Calculates correct depth based on file location
+
+4. **Convert JSX namespace** (NEW)
+   - Converts `JSX.Element` → `React.JSX.Element`
+   - Applied to all `.tsx` files
+
+5. **Auto-inject React imports** (NEW)
+   - Adds `import * as React from "react";` if missing
+   - Only applied to `.tsx` files using `React.JSX.Element`
+   - Checks for existing React imports first
+
 **Example Output:**
 ```
 🔧 Applying auto-fixes...
-   Applied 3 fix(es)
-   - /shared/gpc-attribute-mappings.ts: Removed 1 separator line(s)
-   - /server/utils/gpc-to-gs1-mapper.ts: Removed 1 separator line(s)
-   - /server/utils/gpc-to-gs1-mapper.test.ts: Added missing closing brace
+   Applied 6 fix(es)
+   - /client/src/components/RegulationComparisonMatrix.tsx: Converted JSX.Element to React.JSX.Element
+   - /client/src/components/GS1ImpactAnalysis.tsx: Converted JSX.Element to React.JSX.Element
+   - /client/src/components/SectorFilter.tsx: Fixed 1 import path(s) to shared/
+   - /client/src/components/SectorFilter.tsx: Converted JSX.Element to React.JSX.Element
+   - /client/src/components/SectorFilter.test.tsx: Fixed 1 import path(s) to shared/
+   - /client/src/components/ExportButton.tsx: Converted JSX.Element to React.JSX.Element
 ```
 
 ### 4. File Writing

@@ -1,3 +1,4 @@
+
 export interface SectorDefinition {
   id: string;
   name: string;
@@ -79,3 +80,4 @@ export const SECTOR_DEFINITIONS: SectorDefinition[] = [
     description: "Multi-category and general retail operations."
   }
 ];
+

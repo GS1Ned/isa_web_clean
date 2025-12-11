@@ -231,6 +231,60 @@ function validateDeliverables(tasks: TaskDeliverable[]): ValidationIssue[] {
 // ============================================================================
 
 /**
+ * Detect missing files referenced in imports
+ */
+function detectMissingFiles(tasks: TaskDeliverable[]): string[] {
+  const missingFiles: string[] = [];
+  const extractedPaths = new Set<string>();
+  const referencedPaths = new Set<string>();
+  
+  // Collect all extracted file paths
+  for (const task of tasks) {
+    for (const file of task.files) {
+      extractedPaths.add(file.path);
+    }
+  }
+  
+  // Scan for import statements and collect referenced paths
+  for (const task of tasks) {
+    for (const file of task.files) {
+      const lines = file.content.split("\n");
+      for (const line of lines) {
+        const importMatch = line.match(/^import.*from\s+["'](.+)["'];?$/);
+        if (importMatch) {
+          const importPath = importMatch[1];
+          // Convert relative imports to absolute paths
+          if (importPath.startsWith(".")) {
+            const fileDir = path.dirname(file.path);
+            const resolvedPath = path.normalize(path.join(fileDir, importPath));
+            // Add common extensions if not present
+            const possiblePaths = [
+              resolvedPath,
+              resolvedPath + ".ts",
+              resolvedPath + ".tsx",
+              resolvedPath + "/index.ts",
+              resolvedPath + "/index.tsx",
+            ];
+            for (const p of possiblePaths) {
+              referencedPaths.add(p);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // Find referenced but not extracted files
+  for (const refPath of referencedPaths) {
+    if (!extractedPaths.has(refPath)) {
+      missingFiles.push(refPath);
+    }
+  }
+  
+  return missingFiles;
+}
+
+/**
  * Automatically fix common mechanical issues
  */
 function autoFixIssues(tasks: TaskDeliverable[], issues: ValidationIssue[]): string[] {
@@ -261,6 +315,58 @@ function autoFixIssues(tasks: TaskDeliverable[], issues: ValidationIssue[]): str
         content = content + "\n});\n";
         modified = true;
         fixesApplied.push(`${file.path}: Added missing closing brace`);
+      }
+      
+      // Fix: Correct import paths (../../shared → ../../../shared for client files)
+      const normalizedPath = file.path.startsWith("/") ? file.path.substring(1) : file.path;
+      if (normalizedPath.startsWith("client/src/")) {
+        const originalContent = content;
+        let replacementCount = 0;
+        content = content.replace(
+          /from\s+["'](\.\.\/)+shared\/([^"']+)["']/g,
+          (match, dots, sharedPath) => {
+            replacementCount++;
+            // Count directory depth from project root
+            // For client/src/components/File.tsx: parts = [client, src, components, File.tsx]
+            // Need 3 levels up: ../../../ (one for each of: File.tsx, components, src)
+            const pathParts = normalizedPath.split("/");
+            const depth = pathParts.length - 1; // -1 to exclude filename
+            const correctDots = "../".repeat(depth);
+            return `from "${correctDots}shared/${sharedPath}"`;
+          }
+        );
+        if (content !== originalContent && replacementCount > 0) {
+          modified = true;
+          fixesApplied.push(`${file.path}: Fixed ${replacementCount} import path(s) to shared/`);
+        }
+      }
+      
+      // Fix: Convert JSX.Element to React.JSX.Element
+      if (file.path.match(/\.(tsx)$/)) {
+        const originalContent = content;
+        content = content.replace(/:\s*JSX\.Element\s*{/g, ": React.JSX.Element {");
+        if (content !== originalContent) {
+          modified = true;
+          fixesApplied.push(`${file.path}: Converted JSX.Element to React.JSX.Element`);
+        }
+      }
+      
+      // Fix: Add missing React import for JSX components
+      if (file.path.match(/\.(tsx)$/) && content.includes("React.JSX.Element")) {
+        const hasReactImport = /^import\s+.*React.*from\s+["']react["']/m.test(content);
+        if (!hasReactImport) {
+          // Add React import at the top after any initial comments
+          const lines = content.split("\n");
+          let insertIndex = 0;
+          // Skip initial empty lines and comments
+          while (insertIndex < lines.length && (lines[insertIndex].trim() === "" || lines[insertIndex].trim().startsWith("//"))) {
+            insertIndex++;
+          }
+          lines.splice(insertIndex, 0, "import * as React from \"react\";");
+          content = lines.join("\n");
+          modified = true;
+          fixesApplied.push(`${file.path}: Added missing React import`);
+        }
       }
       
       // Update file content if modified
@@ -527,15 +633,28 @@ async function main() {
   const tasks = extractDeliverables(contentPath);
   console.log(`   Found ${tasks.length} task(s) with ${tasks.reduce((sum, t) => sum + t.files.length, 0)} file(s)`);
   
-  // Step 2: Validate
+  // Step 2: Detect missing files
+  console.log("\n🔍 Detecting missing files...");
+  const missingFiles = detectMissingFiles(tasks);
+  if (missingFiles.length > 0) {
+    console.log(`   ⚠️  Found ${missingFiles.length} missing file(s):`);
+    missingFiles.forEach((f) => console.log(`      - ${f}`));
+  } else {
+    console.log(`   ✅ No missing files detected`);
+  }
+  
+  // Step 3: Validate
   console.log("\n🔍 Validating files...");
   const issues = validateDeliverables(tasks);
   console.log(`   Found ${issues.length} issue(s)`);
   
-  // Step 3: Auto-fix
+  // Step 4: Auto-fix
   console.log("\n🔧 Applying auto-fixes...");
   const fixes = autoFixIssues(tasks, issues);
   console.log(`   Applied ${fixes.length} fix(es)`);
+  if (fixes.length > 0) {
+    fixes.forEach((f) => console.log(`      - ${f}`));
+  }
   
   // Step 4: Write files
   writeFiles(tasks);
