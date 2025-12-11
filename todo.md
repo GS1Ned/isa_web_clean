@@ -800,7 +800,8 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ### CGPT-05: Digital Link URL Builder/Validator
 - [x] Write detailed task specification
 - [x] Create task-specific prompt
-- [ ] Delegate to ChatGPT
+- [x] Delegate to ChatGPT
+- [x] Integrate deliverables (18 min, 15/15 tests passing, 3 mechanical fixes)
 
 ### CGPT-13: ESRS Coverage Gap Analysis Tool
 - [x] Write detailed task specification
