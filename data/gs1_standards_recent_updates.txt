@@ -1,0 +1,165 @@
+GS1 Standards and Guidelines Postings Log
+Source: Detailed_Log_website_posting.pdf
+Date: December 2025 (Constantly updated)
+Pages Reviewed: 1-5 of 31
+
+Key Recent Updates (Dec 2025 - May 2024):
+
+DECEMBER 2025:
+- ADB Release 2.11 (9 Dec 25) - GS1 Attribute Definitions for Business
+- GDM Release 1.15 (9 Dec 25) - GS1 Global Data Model Attribute Implementation Guide
+- ADB Release 2.11 (9 Dec 25) - GS1 Attribute Definitions for Business
+
+NOVEMBER 2025:
+- GPC (28 Nov 25) - Global Product Classification
+- GS1 Web Vocabulary Release 1.17 (19 Nov 25)
+- ADB Release 2.10.2 (13 Nov 25)
+- GDSN Release 3.1.33 & 3.1.34 (10 Nov 25)
+
+OCTOBER 2025:
+- GSCN 25-282 EPC/RFID and NFC (31 Oct 25) - Need GA approval Dec 2025
+- EPC Tag Data Standard (TDS) Release 2.3 (31 Oct 25) - Need GA approval Dec 2025
+- GSCN 25-199 National Healthcare Reimbursement Number AI (Z17) for Costa Rica (31 Oct 25)
+- GSCN 24-181 GS1 Identification Standard and GSCN 25-062 Multiple Data Carrier management (21 Oct 25)
+- Provisional GS1 European Union Deforestation Regulation Standard Release P (7 Oct 25) - Not ratified
+
+SEPTEMBER 2025:
+- GDM Attribute Analysis Tool Release 2.15 (5 Sep 25)
+
+AUGUST 2025:
+- ADB Release 2.10 (29 Aug 25)
+- GDSN Release 3.1.32 & 3.1.33 (xx Aug 25)
+- GDM Release 2.15 (22 Aug 25)
+- GSCN 25-043 and GSCN 25-061 Additional data carrier clarifications for DataMatrix and QR Code containing DL URI (4 Aug 25)
+
+JULY 2025:
+- GS1 Style Guide Release 5.6 (11 Jul 25)
+- GS1 Digital Link URI: Compression Technical Standard for EPC binary strings Release 1.0 (11 Jul 25)
+- Provisional GSCN 23-103 Digital Product Passport (DPP) Release P (1 Jul 25) - Not ratified
+
+JUNE 2025:
+- GDM Attribute Implementation Guide Release 1.14 (25 Jun 25)
+- ADB Release 2.9 (4 Jun 25)
+- GDM Release 2.14 (4 Jun 25)
+
+MAY 2025:
+- GPC (9 May 25)
+- GSCN 25-081 Abbreviations for measures used in GS1 Application Identifiers & GSCN 24-354 Alignment of SST 4 and SST 9 with note on 2D X-dimension (9 May 25)
+- EDI Release 3.7.1 (7 May 25) - https://www.gs1.org/standards/gs1-xml/3-7-1
+
+APRIL 2025:
+- GSCN 25-020 Corrects AI (01) 9 and AI (242) mandatory association (24 Apr 25)
+- GS1 Digital Link URI Syntax Release 1.6 (8 Apr 25)
+- EPC/RFID possible data carrier in application standards (8 Apr 25)
+- GSCN 25-016 AIDC application standard for use of GSRN AI (8018) (7 Apr 25)
+
+MARCH 2025:
+- EDI Release 3.7 (28 Mar 25) - https://www.gs1.org/standards/gs1-xml/3-7
+- GS1-Conformant Resolver Standard Release 1.1 (4 Mar 25)
+
+FEBRUARY 2025:
+- ADB Release 2.8 (18 Feb 25)
+- GDM Release 2.13 (18 Feb 25)
+- GS1 EPC Tag Data Translation (TDT) Standard Release 2.2 (12 Feb 25)
+- EPC Tag Data Standard (TDS) Release 2.2 (12 Feb 25)
+- GS1 Web Vocabulary Release 1.14 (10 Feb 25)
+
+JANUARY 2025:
+- GS1 General Specifications Release 24 (29 Jan 25)
+- GS1 Web Vocabulary Release 1.13 (14 Jan 25)
+
+NOVEMBER 2024:
+- Consumer Product Variant - Implementation Guide Release 1.1 (25 Nov 24)
+- GPC (xx Nov 25) - 9 May 25
+- GDM Attribute Implementation Guide Release 1.13 (8 Nov 24)
+- ADB Release 2.7 (8 Nov 24)
+- GDM Release 2.12 (7 Nov 24)
+- GS1 Style Guide Release 5.5 (7 Nov 24)
+
+OCTOBER 2024:
+- GS1 System Architecture Release 12.0 (18 Oct 24)
+- GS1 Digital Signatures Technical Implementation Guideline Release 1.0 (11 Sep 24)
+
+SEPTEMBER 2024:
+- GSCN 24-011 2D verification report (10 Sep 24)
+- GS1 Web Vocabulary Release 1.12 (9 Sep 24)
+
+AUGUST 2024:
+- ADB Release 2.6 (xx Aug 24)
+- GDM Release 2.11 (xx Aug 24)
+
+JULY 2024:
+- GS1 Web Vocabulary Release 1.11 (8 Jul 24)
+
+JUNE 2024:
+- GS1 EPC Compliant Generation-2 RFID Devices Conformance Requirements Release 3.0 (19 Jun 24)
+- GS1 Digital Link Standard: URI Syntax Release 1.5.0 (1 Jun 24)
+
+MAY 2024:
+- 2D Barcodes at Retail Point-of-Sale Implementation Guideline Release 1.0 (28 May 24)
+- 3-part Tagged Item Performance Protocol Guideline Release 1.3 (28 May 24)
+- ADB Release 2.5 (27 May 24)
+- GDM Release 2.10 (27 May 24)
+- GSCN 22-246 Electronic health record patient demographics (27 May 24)
+- GS1 Product Video Standard Release 1.0 (7 May 24)
+
+---
+
+ESG-RELEVANT STANDARDS IDENTIFIED:
+
+1. **Digital Product Passport (DPP)**
+   - Provisional GSCN 23-103 Digital Product Passport (DPP) Release P (1 Jul 25) - Not ratified
+   - Status: Provisional, awaiting ratification
+   - Relevance: CRITICAL for PPWR and ESPR compliance
+
+2. **EU Deforestation Regulation (EUDR)**
+   - Provisional GS1 European Union Deforestation Regulation Standard Release P (7 Oct 25) - Not ratified
+   - Status: Provisional, awaiting ratification
+   - Relevance: CRITICAL for EUDR compliance
+
+3. **EPCIS & Traceability**
+   - EPC Tag Data Standard (TDS) Release 2.3 (31 Oct 25) - Need GA approval Dec 2025
+   - EPC Tag Data Standard (TDS) Release 2.2 (12 Feb 25)
+   - GS1 EPC Tag Data Translation (TDT) Standard Release 2.2 (12 Feb 25)
+   - GS1 EPC Compliant Generation-2 RFID Devices Conformance Requirements Release 3.0 (19 Jun 24)
+   - Relevance: HIGH for CSRD Scope 3, EUDR, PPWR traceability
+
+4. **Digital Link (DPP Foundation)**
+   - GS1 Digital Link URI Syntax Release 1.6 (8 Apr 25)
+   - GS1 Digital Link Standard: URI Syntax Release 1.5.0 (1 Jun 24)
+   - GS1 Digital Link URI: Compression Technical Standard for EPC binary strings Release 1.0 (11 Jul 25)
+   - GS1-Conformant Resolver Standard Release 1.1 (4 Mar 25)
+   - Relevance: CRITICAL for DPP implementation
+
+5. **Master Data (GDM, ADB)**
+   - GDM Release 2.16 (latest, Dec 2025)
+   - ADB Release 2.11 (latest, Dec 2025)
+   - GDM Attribute Implementation Guide Release 1.15 (9 Dec 25)
+   - GDM Attribute Analysis Tool Release 2.15 (5 Sep 25)
+   - Relevance: HIGH for ESG data attribute mapping
+
+6. **Product Classification (GPC)**
+   - Global Product Classification (GPC) (28 Nov 25, 9 May 25)
+   - Relevance: MEDIUM for sector-specific ESG requirements
+
+7. **2D Barcodes (DPP Data Carriers)**
+   - 2D Barcodes at Retail Point-of-Sale Implementation Guideline Release 1.0 (28 May 24)
+   - GSCN 25-043 and GSCN 25-061 Additional data carrier clarifications for DataMatrix and QR Code containing DL URI (4 Aug 25)
+   - GSCN 24-181 GS1 Identification Standard and GSCN 25-062 Multiple Data Carrier management (21 Oct 25)
+   - Relevance: HIGH for PPWR data carrier requirements
+
+---
+
+CANONICAL URL FOR FULL LOG:
+http://www.gs1.org/standards/log
+
+CANONICAL URL FOR REFERENCE DOCUMENTS:
+https://ref.gs1.org/
+
+---
+
+NEXT STEPS FOR ISA:
+1. Monitor Detailed_Log for updates to DPP and EUDR provisional standards
+2. Track ratification status of provisional standards
+3. Create News Hub source monitoring https://www.gs1.org/standards/log
+4. Extract full 31-page catalog to CSV for comprehensive GS1 standards database

@@ -457,3 +457,62 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Create PROJECT_SIZE_CLEANUP.md (final report)
 
 **Outcome:** ISA was already clean. Removed ~250KB unused files. Created comprehensive GS1 artefact tracking. Identified 5 high-priority artefacts for user upload.
+
+
+---
+
+## GS1 Artefact Processing & Integration
+
+### Phase 1: Inventory and Analysis ✅ COMPLETE
+- [x] Check uploaded file sizes and accessibility (8 files, ~11.2MB)
+- [x] Read linktypes.json structure (60 link types)
+- [x] Scan PDF metadata (versions, page counts)
+- [x] Scan XLSX structure (GDM, ADB sheet names and row counts)
+- [x] Assess Detailed_Log content
+- [x] Create processing priority order
+
+### Phase 2: Extract Machine-Readable Data (XLSX) ✅ COMPLETE
+- [x] Extract GDM v2.16 Combined Models to CSV (189 rows)
+- [x] Extract ADB Release 2.11 to CSV (451 rows)
+- [ ] Extract ESG-relevant GDM attributes (deferred to Phase 6)
+- [ ] Extract GDM attribute groups (deferred to Phase 6)
+- [ ] Create ADB ↔ GDM mapping (deferred to Phase 6)
+- [x] Validate extracted data quality
+
+### Phase 3: Process Bonus Files ✅ COMPLETE
+- [x] Copy linktypes.json to data/gs1_link_types/
+- [x] Create TypeScript types in shared/gs1-link-types.ts
+- [x] Extract GS1 standards recent updates from Detailed_Log.pdf (pages 1-5)
+- [x] Identify ESG-relevant standards (DPP, EUDR, EPCIS, Digital Link)
+- [ ] Create full gs1_standards_catalog.csv (deferred to Phase 6)
+
+### Phase 4: Create Structured Summaries (PDFs)
+- [ ] Summarize GS1 System Architecture (hierarchy, semantic model)
+- [ ] Summarize EPCIS 2.0.1 (event types, traceability use cases)
+- [ ] Summarize CBV Standard (vocabulary structure, business steps)
+- [ ] Summarize Digital Link URI Syntax (DPP compliance, AI encoding)
+- [ ] Update EXTERNAL_REFERENCES.md with all 4 PDFs
+
+### Phase 5: Update ISA Artefact Inventory
+- [ ] Mark all 8 files as ✅ received in ISA_GS1_ARTIFACT_INVENTORY.md
+- [ ] Update NEEDS_USER_UPLOAD.md status
+- [ ] Document versions and metadata
+
+### Phase 6: Integrate into ISA Knowledge Base
+- [ ] Create server/gs1-data-model.ts with GDM lookup functions
+- [ ] Create shared/gs1-link-types.ts with TypeScript types
+- [ ] Populate gs1_standards table with comprehensive catalog
+- [ ] Enhance regulation_gs1_mappings with GDM attributes
+- [ ] Update news-ai-processor.ts to use GDM for tagging
+- [ ] Enhance Ask ISA with GS1 architecture understanding
+
+### Phase 7: Verification and Delivery
+- [ ] Verify all extracted CSV files are valid
+- [ ] Test GDM attribute lookup functions
+- [ ] Test News Hub GS1 tagging improvements
+- [ ] Run full test suite
+- [ ] Create GS1_INTEGRATION_REPORT.md
+- [ ] Save checkpoint
+
+**Estimated Total Time:** 14-15 hours  
+**Approach:** Phased, value-first (immediate value → high value → integration)
