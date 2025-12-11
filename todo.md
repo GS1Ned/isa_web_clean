@@ -795,7 +795,8 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ### CGPT-02: GPC-to-GS1 Attribute Mapping Engine
 - [x] Write detailed task specification
 - [x] Create task-specific prompt
-- [ ] Delegate to ChatGPT
+- [x] Delegate to ChatGPT
+- [x] Integrate deliverables (12 min, 10/10 tests passing, 2 mechanical fixes)
 
 ### CGPT-05: Digital Link URL Builder/Validator
 - [x] Write detailed task specification
@@ -806,14 +807,17 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ### CGPT-13: ESRS Coverage Gap Analysis Tool
 - [x] Write detailed task specification
 - [x] Create task-specific prompt
-- [ ] Delegate to ChatGPT
+- [x] Delegate to ChatGPT
+- [x] Integrate deliverables (15 min, 8/8 tests passing, 2 mechanical fixes)
 
 ### CGPT-15: ISA User Guide Documentation
 - [x] Write detailed task specification
 - [x] Create task-specific prompt
-- [ ] Delegate to ChatGPT
+- [x] Delegate to ChatGPT
+- [x] Integrate deliverables (2 min, documentation only)
 
 ### CGPT-17: Data Quality Validation Library
 - [x] Write detailed task specification
 - [x] Create task-specific prompt
-- [ ] Delegate to ChatGPT
+- [ ] Delegate to ChatGPT (NOT DELIVERED - need retry)
+- [ ] Create standalone retry task spec
