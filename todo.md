@@ -786,3 +786,33 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Integrate code into ISA project
 - [x] Run tests and validate (1/4 passing, component functional)
 - [x] Commit and save checkpoint
+
+
+---
+
+## Batch 01: Parallel ChatGPT Delegation (5 Tasks)
+
+### CGPT-02: GPC-to-GS1 Attribute Mapping Engine
+- [x] Write detailed task specification
+- [x] Create task-specific prompt
+- [ ] Delegate to ChatGPT
+
+### CGPT-05: Digital Link URL Builder/Validator
+- [x] Write detailed task specification
+- [x] Create task-specific prompt
+- [ ] Delegate to ChatGPT
+
+### CGPT-13: ESRS Coverage Gap Analysis Tool
+- [x] Write detailed task specification
+- [x] Create task-specific prompt
+- [ ] Delegate to ChatGPT
+
+### CGPT-15: ISA User Guide Documentation
+- [x] Write detailed task specification
+- [x] Create task-specific prompt
+- [ ] Delegate to ChatGPT
+
+### CGPT-17: Data Quality Validation Library
+- [x] Write detailed task specification
+- [x] Create task-specific prompt
+- [ ] Delegate to ChatGPT
