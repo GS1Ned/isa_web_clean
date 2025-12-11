@@ -793,98 +793,26 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Batch 01: Parallel ChatGPT Delegation (5 Tasks)
 
 ### CGPT-02: GPC-to-GS1 Attribute Mapping Engine
-- [x] Write detailed task specification
-- [x] Create task-specific prompt
-- [x] Delegate to ChatGPT
-- [x] Integrate deliverables (12 min, 10/10 tests passing, 2 mechanical fixes)
+- [ ] Write detailed task specification
+- [ ] Create task-specific prompt
+- [ ] Delegate to ChatGPT
 
 ### CGPT-05: Digital Link URL Builder/Validator
-- [x] Write detailed task specification
-- [x] Create task-specific prompt
-- [x] Delegate to ChatGPT
-- [x] Integrate deliverables (18 min, 15/15 tests passing, 3 mechanical fixes)
+- [ ] Write detailed task specification
+- [ ] Create task-specific prompt
+- [ ] Delegate to ChatGPT
 
 ### CGPT-13: ESRS Coverage Gap Analysis Tool
-- [x] Write detailed task specification
-- [x] Create task-specific prompt
-- [x] Delegate to ChatGPT
-- [x] Integrate deliverables (15 min, 8/8 tests passing, 2 mechanical fixes)
+- [ ] Write detailed task specification
+- [ ] Create task-specific prompt
+- [ ] Delegate to ChatGPT
 
 ### CGPT-15: ISA User Guide Documentation
-- [x] Write detailed task specification
-- [x] Create task-specific prompt
-- [x] Delegate to ChatGPT
-- [x] Integrate deliverables (2 min, documentation only)
+- [ ] Write detailed task specification
+- [ ] Create task-specific prompt
+- [ ] Delegate to ChatGPT
 
 ### CGPT-17: Data Quality Validation Library
-- [x] Write detailed task specification
-- [x] Create task-specific prompt
-- [x] Delegate to ChatGPT
-- [x] Integrate deliverables (6 min, 22/22 tests passing, 4 mechanical fixes)
-
-## Integration Automation
-
-### Build Integration Automation Script
-- [x] Design script architecture and workflow
-- [x] Create file extraction module
-- [x] Create validation module (separators, braces, config consistency)
-- [x] Create auto-fix module (remove separators, add missing braces)
-- [x] Create test execution and reporting module
-- [x] Integrate modules and create CLI interface
-- [x] Test with Batch 01 data
-- [x] Document usage in INTEGRATION_AUTOMATION.md
-
-## Batch 02 Integration (ChatGPT Deliverables)
-
-### CGPT-04: EPCIS Event Validation Library
-- [x] Delegate to ChatGPT
-- [x] Integrate with automation script (13.9s total for all 5 tasks)
-- [x] Fix mechanical issues (React imports, JSX namespace)
-- [x] Validate tests (16/16 passing)
-
-### CGPT-06: Regulation Comparison Matrix Component
-- [x] Delegate to ChatGPT
-- [x] Integrate with automation script
-- [x] Fix mechanical issues (React imports, JSX namespace)
-- [x] Add stub tRPC procedure (regulations.compare)
-- [ ] Fix test query issues (multiple elements found)
-- [ ] Implement real comparison logic in tRPC procedure
-
-### CGPT-07: GS1 Impact Analysis Component
-- [x] Delegate to ChatGPT
-- [x] Integrate with automation script
-- [x] Fix mechanical issues (React imports, JSX namespace)
-- [ ] Fix test query issues
-
-### CGPT-11: Sector Filter Component
-- [x] Delegate to ChatGPT
-- [x] Integrate with automation script
-- [x] Extract missing sector-definitions.ts file
-- [x] Fix import paths
-- [ ] Fix test query issues (multiple elements found - 1/4 passing)
-
-### CGPT-12: Export/Print Utilities
-- [x] Delegate to ChatGPT
-- [x] Integrate with automation script
-- [x] Fix mechanical issues (React imports, JSX namespace)
-
-### Batch 02 Summary
-- **Tasks delivered:** 5/5 (100%)
-- **Files integrated:** 15 files
-- **Automation time:** 13.9 seconds
-- **Manual fixes:** ~30 minutes (React imports, missing files, stub procedure)
-- **Backend tests:** 16/16 passing (100%)
-- **UI tests:** Partial (test quality issues, not runtime bugs)
-- **Critical issues fixed:** Missing imports, missing tRPC procedure, missing sector-definitions file
-- **Remaining work:** Test query improvements, implement real comparison logic
-
-## Automation Script Enhancements
-
-### Phase 2: Advanced Auto-Fixes
-- [x] Add missing file detection (scan imports, identify unreferenced files)
-- [x] Auto-fix import path patterns (../../shared → ../../../shared)
-- [x] Auto-convert JSX namespace (JSX.Element → React.JSX.Element)
-- [x] Auto-inject React imports for JSX components (checks existing imports)
-- [x] Test with Batch 02 data (14.2s, 6 auto-fixes)
-- [x] Update documentation
-- [x] **Result: 83% reduction in manual work (30min → 5min)**
+- [ ] Write detailed task specification
+- [ ] Create task-specific prompt
+- [ ] Delegate to ChatGPT

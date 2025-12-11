@@ -1,0 +1,162 @@
+[
+  {
+    "id": "webvoc",
+    "sourceZip": "Archive 2/WebVoc-master.zip",
+    "standards": ["GS1 Web Vocabulary", "GS1 Digital Link"],
+    "regulations": [],
+    "roles": ["semantic_reference"],
+    "priority": "high"
+  },
+  {
+    "id": "vc-data-model-verifier",
+    "sourceZip": "Archive 2/vc-data-model-verifier-main.zip",
+    "standards": ["GS1 Verifiable Credentials"],
+    "regulations": [],
+    "roles": ["validation_reference", "test_case_source"],
+    "priority": "medium-high"
+  },
+  {
+    "id": "vc-data-model",
+    "sourceZip": "Archive 2/VC-Data-Model-main.zip",
+    "standards": ["GS1 Verifiable Credentials"],
+    "regulations": [],
+    "roles": ["schema_reference"],
+    "priority": "medium-high"
+  },
+  {
+    "id": "tds",
+    "sourceZip": "Archive 2/TDS-main.zip",
+    "standards": ["GS1 Tag Data Standard"],
+    "regulations": [],
+    "roles": ["technical_reference"],
+    "priority": "medium"
+  },
+  {
+    "id": "modulecount",
+    "sourceZip": "Archive 2/moduleCount-main.zip",
+    "standards": [],
+    "regulations": [],
+    "roles": ["low_priority_reference"],
+    "priority": "low"
+  },
+  {
+    "id": "linkset",
+    "sourceZip": "Archive 2/linkset-master.zip",
+    "standards": ["GS1 Digital Link"],
+    "regulations": [],
+    "roles": ["pattern_reference", "test_case_source"],
+    "priority": "high"
+  },
+  {
+    "id": "interpretgs1scan",
+    "sourceZip": "Archive 2/interpretGS1scan-master.zip",
+    "standards": ["GS1 barcodes", "GS1 Digital Link"],
+    "regulations": [],
+    "roles": ["parsing_reference", "test_case_source"],
+    "priority": "high"
+  },
+  {
+    "id": "gs1dl-resolver-testsuite",
+    "sourceZip": "Archive 2/GS1DL-resolver-testsuite-master.zip",
+    "standards": ["GS1 Digital Link"],
+    "regulations": [],
+    "roles": ["conformance_test_reference"],
+    "priority": "medium-high"
+  },
+  {
+    "id": "gs1-digital-link-toolkit-js",
+    "sourceZip": "Archive 2/GS1DigitalLinkToolkit.js-master.zip",
+    "standards": ["GS1 Digital Link"],
+    "regulations": [],
+    "roles": ["generation_reference", "test_case_source"],
+    "priority": "high"
+  },
+  {
+    "id": "gs1-syntax-engine",
+    "sourceZip": "Archive 2/gs1-syntax-engine-main.zip",
+    "standards": ["GS1 Barcode Syntax"],
+    "regulations": [],
+    "roles": ["validation_reference"],
+    "priority": "high"
+  },
+  {
+    "id": "gs1-syntax-dictionary",
+    "sourceZip": "Archive 2/gs1-syntax-dictionary-main.zip",
+    "standards": ["GS1 Barcode Syntax"],
+    "regulations": [],
+    "roles": ["ingestion_candidate", "schema_reference"],
+    "priority": "high"
+  },
+  {
+    "id": "gs1-digital-link-uri-simple-parser",
+    "sourceZip": "Archive 2/gs1-digital-link-uri-simple-parser-main.zip",
+    "standards": ["GS1 Digital Link"],
+    "regulations": [],
+    "roles": ["parsing_reference", "test_case_source"],
+    "priority": "medium"
+  },
+  {
+    "id": "gs1-digital-link-resolver-ce",
+    "sourceZip": "Archive 2/GS1_DigitalLink_Resolver_CE-master.zip",
+    "standards": ["GS1 Digital Link"],
+    "regulations": [],
+    "roles": ["architecture_reference", "conformance_reference"],
+    "priority": "medium"
+  },
+  {
+    "id": "gmn-helpers",
+    "sourceZip": "Archive 2/gmn-helpers-master.zip",
+    "standards": ["GS1 GMN"],
+    "regulations": [],
+    "roles": ["identifier_reference", "test_case_source"],
+    "priority": "medium"
+  },
+  {
+    "id": "gdsn-legacy-3-1-31",
+    "sourceZip": "Archive 2/GDSN Legacy v3.1.31.zip",
+    "standards": ["GDSN 3.1.31"],
+    "regulations": [],
+    "roles": ["historical_reference"],
+    "priority": "low-medium"
+  },
+  {
+    "id": "flex-schema",
+    "sourceZip": "Archive 2/Flex Schema.zip",
+    "standards": [],
+    "regulations": [],
+    "roles": ["pattern_reference"],
+    "priority": "low"
+  },
+  {
+    "id": "eudr-tool",
+    "sourceZip": "Archive 2/EUDR-tool-main.zip",
+    "standards": ["GS1 Web Vocabulary"],
+    "regulations": ["EUDR"],
+    "roles": ["pattern_reference", "test_case_source"],
+    "priority": "high"
+  },
+  {
+    "id": "epcis",
+    "sourceZip": "Archive 2/EPCIS-master.zip",
+    "standards": ["EPCIS", "CBV"],
+    "regulations": [],
+    "roles": ["traceability_reference", "test_case_source"],
+    "priority": "high"
+  },
+  {
+    "id": "digital-link-js",
+    "sourceZip": "Archive 2/digital-link.js-master.zip",
+    "standards": ["GS1 Digital Link"],
+    "regulations": [],
+    "roles": ["generation_reference", "validation_reference"],
+    "priority": "high"
+  },
+  {
+    "id": "digital-template-xbrl-converter",
+    "sourceZip": "Archive 2/Digital-Template-to-XBRL-Converter-main.zip",
+    "standards": ["XBRL"],
+    "regulations": ["ESRS"],
+    "roles": ["esg_reference", "export_pattern_reference"],
+    "priority": "high"
+  }
+]

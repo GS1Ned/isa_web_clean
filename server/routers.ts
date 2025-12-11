@@ -190,34 +190,6 @@ export const appRouter = router({
         const { getMostVotedMappings } = await import("./db");
         return await getMostVotedMappings(input.limit || 10);
       }),
-
-    /**
-     * Compare multiple regulations across specified attributes
-     * TODO: Implement proper comparison logic with real data
-     */
-    compare: publicProcedure
-      .input(
-        z.object({
-          regulationIds: z.array(z.string()),
-          attributes: z.array(
-            z.enum(["scope", "deadlines", "dataPoints", "gs1Standards", "complexity"])
-          ),
-        })
-      )
-      .query(async ({ input }) => {
-        // STUB: Return mock data for now
-        // TODO: Implement real comparison logic
-        return input.regulationIds.map((id) => ({
-          id,
-          name: `Regulation ${id}`,
-          scope: "Mock scope data",
-          deadlines: "Mock deadline data",
-          dataPoints: "Mock data points",
-          gs1Standards: ["GTIN", "GLN"],
-          complexity: "medium" as const,
-          url: undefined,
-        }));
-      }),
   }),
 
   standards: router({
