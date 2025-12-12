@@ -1905,3 +1905,412 @@ export const newsRecommendations = mysqlTable("news_recommendations", {
 
 export type NewsRecommendation = typeof newsRecommendations.$inferSelect;
 export type InsertNewsRecommendation = typeof newsRecommendations.$inferInsert;
+
+// ============================================================================
+// INGEST-02: GDSN Current v3.1.32 Tables
+// ============================================================================
+
+/**
+ * Raw GDSN Classes - 1:1 staging table
+ */
+export const rawGdsnClasses = mysqlTable(
+  "raw_gdsn_classes",
+  {
+    id: int("id").primaryKey(), // Use source id directly
+    name: varchar("name", { length: 255 }).notNull(),
+    definition: text("definition"),
+    type: int("type"), // 1=String, 2=Boolean, 3=Integer, 4=Enum, etc.
+    extensions: json("extensions").$type<unknown[]>(),
+    rawJson: json("raw_json").$type<unknown>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    nameIndex: index("idx_raw_gdsn_class_name").on(table.name),
+  })
+);
+
+export type RawGdsnClass = typeof rawGdsnClasses.$inferSelect;
+export type InsertRawGdsnClass = typeof rawGdsnClasses.$inferInsert;
+
+/**
+ * Canonical GDSN Classes table
+ */
+export const gdsnClasses = mysqlTable(
+  "gdsn_classes",
+  {
+    id: int("id").primaryKey(), // Use source id directly
+    name: varchar("name", { length: 255 }).notNull(),
+    definition: text("definition"),
+    type: int("type"),
+    extensions: json("extensions").$type<unknown[]>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    nameIndex: index("idx_gdsn_class_name").on(table.name),
+  })
+);
+
+export type GdsnClass = typeof gdsnClasses.$inferSelect;
+export type InsertGdsnClass = typeof gdsnClasses.$inferInsert;
+
+/**
+ * Raw GDSN Class Attributes - 1:1 staging table
+ */
+export const rawGdsnClassAttributes = mysqlTable(
+  "raw_gdsn_class_attributes",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    classId: int("class_id").notNull(),
+    attributeCode: varchar("attribute_code", { length: 255 }).notNull(),
+    attributeName: varchar("attribute_name", { length: 255 }),
+    dataType: varchar("data_type", { length: 50 }),
+    required: boolean("required").default(false),
+    rawJson: json("raw_json").$type<unknown>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    classIdIndex: index("idx_raw_gdsn_attr_class").on(table.classId),
+    attrCodeIndex: index("idx_raw_gdsn_attr_code").on(table.attributeCode),
+  })
+);
+
+export type RawGdsnClassAttribute = typeof rawGdsnClassAttributes.$inferSelect;
+export type InsertRawGdsnClassAttribute = typeof rawGdsnClassAttributes.$inferInsert;
+
+/**
+ * Canonical GDSN Class Attributes table
+ */
+export const gdsnClassAttributes = mysqlTable(
+  "gdsn_class_attributes",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    classId: int("class_id").notNull(),
+    attributeCode: varchar("attribute_code", { length: 255 }).notNull(),
+    attributeName: varchar("attribute_name", { length: 255 }),
+    dataType: varchar("data_type", { length: 50 }),
+    required: boolean("required").default(false),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    classIdIndex: index("idx_gdsn_attr_class").on(table.classId),
+    attrCodeIndex: index("idx_gdsn_attr_code").on(table.attributeCode),
+    uniqueClassAttr: index("unique_class_attr_idx").on(table.classId, table.attributeCode),
+  })
+);
+
+export type GdsnClassAttribute = typeof gdsnClassAttributes.$inferSelect;
+export type InsertGdsnClassAttribute = typeof gdsnClassAttributes.$inferInsert;
+
+/**
+ * Raw GDSN Validation Rules - 1:1 staging table
+ */
+export const rawGdsnValidationRules = mysqlTable(
+  "raw_gdsn_validation_rules",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    ruleId: varchar("rule_id", { length: 255 }).notNull(),
+    classId: int("class_id"),
+    attributeCode: varchar("attribute_code", { length: 255 }),
+    ruleType: varchar("rule_type", { length: 50 }),
+    ruleExpression: text("rule_expression"),
+    errorMessage: text("error_message"),
+    rawJson: json("raw_json").$type<unknown>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    ruleIdIndex: index("idx_raw_gdsn_rule_id").on(table.ruleId),
+    classIdIndex: index("idx_raw_gdsn_rule_class").on(table.classId),
+  })
+);
+
+export type RawGdsnValidationRule = typeof rawGdsnValidationRules.$inferSelect;
+export type InsertRawGdsnValidationRule = typeof rawGdsnValidationRules.$inferInsert;
+
+/**
+ * Canonical GDSN Validation Rules table
+ */
+export const gdsnValidationRules = mysqlTable(
+  "gdsn_validation_rules",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    ruleId: varchar("rule_id", { length: 255 }).notNull().unique(),
+    classId: int("class_id"),
+    attributeCode: varchar("attribute_code", { length: 255 }),
+    ruleType: varchar("rule_type", { length: 50 }),
+    ruleExpression: text("rule_expression"),
+    errorMessage: text("error_message"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    ruleIdIndex: index("idx_gdsn_rule_id").on(table.ruleId),
+    classIdIndex: index("idx_gdsn_rule_class").on(table.classId),
+    attrCodeIndex: index("idx_gdsn_rule_attr").on(table.attributeCode),
+  })
+);
+
+export type GdsnValidationRule = typeof gdsnValidationRules.$inferSelect;
+export type InsertGdsnValidationRule = typeof gdsnValidationRules.$inferInsert;
+
+// ============================================================================
+// INGEST-04: CTEs and KDEs Tables
+// ============================================================================
+
+/**
+ * Raw CTEs and KDEs - 1:1 staging table
+ */
+export const rawCtesKdes = mysqlTable(
+  "raw_ctes_kdes",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    rawJson: json("raw_json").$type<unknown>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  }
+);
+
+export type RawCteKde = typeof rawCtesKdes.$inferSelect;
+export type InsertRawCteKde = typeof rawCtesKdes.$inferInsert;
+
+/**
+ * Critical Tracking Events (CTEs)
+ */
+export const ctes = mysqlTable(
+  "ctes",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    code: varchar("code", { length: 100 }).notNull().unique(),
+    name: varchar("name", { length: 255 }).notNull(),
+    description: text("description"),
+    category: varchar("category", { length: 100 }),
+    regulationContext: varchar("regulation_context", { length: 255 }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    codeIndex: index("idx_cte_code").on(table.code),
+    categoryIndex: index("idx_cte_category").on(table.category),
+  })
+);
+
+export type Cte = typeof ctes.$inferSelect;
+export type InsertCte = typeof ctes.$inferInsert;
+
+/**
+ * Key Data Elements (KDEs)
+ */
+export const kdes = mysqlTable(
+  "kdes",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    code: varchar("code", { length: 100 }).notNull().unique(),
+    name: varchar("name", { length: 255 }).notNull(),
+    description: text("description"),
+    dataType: varchar("data_type", { length: 50 }),
+    mandatory: boolean("mandatory").default(false),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    codeIndex: index("idx_kde_code").on(table.code),
+  })
+);
+
+export type Kde = typeof kdes.$inferSelect;
+export type InsertKde = typeof kdes.$inferInsert;
+
+/**
+ * CTE to KDE Mappings (many-to-many)
+ */
+export const cteKdeMappings = mysqlTable(
+  "cte_kde_mappings",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    cteId: int("cte_id").notNull(),
+    kdeId: int("kde_id").notNull(),
+    required: boolean("required").default(true),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    cteIdIndex: index("idx_cte_kde_cte").on(table.cteId),
+    kdeIdIndex: index("idx_cte_kde_kde").on(table.kdeId),
+    uniqueMapping: index("unique_cte_kde_idx").on(table.cteId, table.kdeId),
+  })
+);
+
+export type CteKdeMapping = typeof cteKdeMappings.$inferSelect;
+export type InsertCteKdeMapping = typeof cteKdeMappings.$inferInsert;
+
+// ============================================================================
+// INGEST-05: DPP Identification Rules Tables
+// ============================================================================
+
+/**
+ * Raw DPP Identifier Components - 1:1 staging table
+ */
+export const rawDppIdentifierComponents = mysqlTable(
+  "raw_dpp_identifier_components",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    rawJson: json("raw_json").$type<unknown>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  }
+);
+
+export type RawDppIdentifierComponent = typeof rawDppIdentifierComponents.$inferSelect;
+export type InsertRawDppIdentifierComponent = typeof rawDppIdentifierComponents.$inferInsert;
+
+/**
+ * DPP Identifier Components (GTIN, GLN, SSCC, etc.)
+ */
+export const dppIdentifierComponents = mysqlTable(
+  "dpp_identifier_components",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    componentCode: varchar("component_code", { length: 50 }).notNull().unique(),
+    componentName: varchar("component_name", { length: 255 }).notNull(),
+    description: text("description"),
+    gs1Standard: varchar("gs1_standard", { length: 100 }),
+    format: varchar("format", { length: 100 }),
+    example: varchar("example", { length: 255 }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    codeIndex: index("idx_dpp_comp_code").on(table.componentCode),
+  })
+);
+
+export type DppIdentifierComponent = typeof dppIdentifierComponents.$inferSelect;
+export type InsertDppIdentifierComponent = typeof dppIdentifierComponents.$inferInsert;
+
+/**
+ * Raw DPP Identification Rules - 1:1 staging table
+ */
+export const rawDppIdentificationRules = mysqlTable(
+  "raw_dpp_identification_rules",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    rawJson: json("raw_json").$type<unknown>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  }
+);
+
+export type RawDppIdentificationRule = typeof rawDppIdentificationRules.$inferSelect;
+export type InsertRawDppIdentificationRule = typeof rawDppIdentificationRules.$inferInsert;
+
+/**
+ * DPP Identification Rules by product category
+ */
+export const dppIdentificationRules = mysqlTable(
+  "dpp_identification_rules",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    ruleCode: varchar("rule_code", { length: 100 }).notNull().unique(),
+    productCategory: varchar("product_category", { length: 255 }).notNull(),
+    requiredComponents: json("required_components").$type<string[]>(),
+    optionalComponents: json("optional_components").$type<string[]>(),
+    description: text("description"),
+    regulationContext: varchar("regulation_context", { length: 255 }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    ruleCodeIndex: index("idx_dpp_rule_code").on(table.ruleCode),
+    categoryIndex: index("idx_dpp_rule_category").on(table.productCategory),
+  })
+);
+
+export type DppIdentificationRule = typeof dppIdentificationRules.$inferSelect;
+export type InsertDppIdentificationRule = typeof dppIdentificationRules.$inferInsert;
+
+// ============================================================================
+// INGEST-06: CBV Vocabularies & Digital Link Types Tables
+// ============================================================================
+
+/**
+ * Raw CBV Vocabularies - 1:1 staging table
+ */
+export const rawCbvVocabularies = mysqlTable(
+  "raw_cbv_vocabularies",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    rawJson: json("raw_json").$type<unknown>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  }
+);
+
+export type RawCbvVocabulary = typeof rawCbvVocabularies.$inferSelect;
+export type InsertRawCbvVocabulary = typeof rawCbvVocabularies.$inferInsert;
+
+/**
+ * CBV Vocabularies (BizSteps, Dispositions, etc.)
+ */
+export const cbvVocabularies = mysqlTable(
+  "cbv_vocabularies",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    vocabularyType: varchar("vocabulary_type", { length: 100 }).notNull(),
+    code: varchar("code", { length: 255 }).notNull(),
+    label: varchar("label", { length: 255 }).notNull(),
+    definition: text("definition"),
+    regulationRelevance: json("regulation_relevance").$type<string[]>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    typeIndex: index("idx_cbv_type").on(table.vocabularyType),
+    codeIndex: index("idx_cbv_code").on(table.code),
+    uniqueTypeCode: index("unique_cbv_type_code_idx").on(table.vocabularyType, table.code),
+  })
+);
+
+export type CbvVocabulary = typeof cbvVocabularies.$inferSelect;
+export type InsertCbvVocabulary = typeof cbvVocabularies.$inferInsert;
+
+/**
+ * Raw Digital Link Types - 1:1 staging table
+ */
+export const rawDigitalLinkTypes = mysqlTable(
+  "raw_digital_link_types",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    rawJson: json("raw_json").$type<unknown>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  }
+);
+
+export type RawDigitalLinkType = typeof rawDigitalLinkTypes.$inferSelect;
+export type InsertRawDigitalLinkType = typeof rawDigitalLinkTypes.$inferInsert;
+
+/**
+ * Digital Link Types (relationship types for semantic web linking)
+ */
+export const digitalLinkTypes = mysqlTable(
+  "digital_link_types",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    linkType: varchar("link_type", { length: 100 }).notNull().unique(),
+    title: varchar("title", { length: 255 }).notNull(),
+    description: text("description"),
+    gs1Curie: varchar("gs1_curie", { length: 100 }),
+    schemaOrgEquivalent: varchar("schema_org_equivalent", { length: 255 }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    linkTypeIndex: index("idx_digital_link_type").on(table.linkType),
+  })
+);
+
+export type DigitalLinkType = typeof digitalLinkTypes.$inferSelect;
+export type InsertDigitalLinkType = typeof digitalLinkTypes.$inferInsert;

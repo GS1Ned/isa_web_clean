@@ -1,0 +1,289 @@
+{
+  "metadata": {
+    "title": "ESG-Focused CBV Vocabularies (Curated)",
+    "description": "Curated subset of GS1 Core Business Vocabulary focusing on ESG traceability, sustainability, and regulatory compliance use cases",
+    "source": "https://ref.gs1.org/cbv/",
+    "standards": ["EPCIS 2.0", "CBV 2.0"],
+    "curated_date": "2025-12-10",
+    "esg_relevance": "HIGH",
+    "use_cases": [
+      "EUDR origin traceability",
+      "CSRD Scope 3 supply chain mapping",
+      "PPWR packaging lifecycle tracking",
+      "Circular economy material flows"
+    ]
+  },
+  "bizSteps": {
+    "description": "Business process steps - populate the bizStep field in EPCIS events",
+    "esg_critical": [
+      {
+        "code": "BizStep-commissioning",
+        "uri": "https://ref.gs1.org/cbv/BizStep-commissioning",
+        "label": "Commissioning",
+        "description": "Process of associating an instance-level identifier with a specific object. Encompasses catching (fish), harvesting (crops), picking (produce), slaughtering (livestock).",
+        "esg_use_cases": ["EUDR origin tracking", "CSRD raw material sourcing", "Farm-to-fork traceability"],
+        "regulation_mapping": ["EUDR", "CSRD", "Organic Regulation"]
+      },
+      {
+        "code": "BizStep-shipping",
+        "uri": "https://ref.gs1.org/cbv/BizStep-shipping",
+        "label": "Shipping",
+        "description": "Process of staging outbound, loading, and departing. Used when granular process step information is unknown.",
+        "esg_use_cases": ["CSRD Scope 3 transport emissions", "Supply chain mapping"],
+        "regulation_mapping": ["CSRD", "CBAM"]
+      },
+      {
+        "code": "BizStep-receiving",
+        "uri": "https://ref.gs1.org/cbv/BizStep-receiving",
+        "label": "Receiving",
+        "description": "Process of accepting goods at a destination location.",
+        "esg_use_cases": ["Custody chain verification", "EUDR due diligence checkpoints"],
+        "regulation_mapping": ["EUDR", "CSRD"]
+      },
+      {
+        "code": "BizStep-transforming",
+        "uri": "https://ref.gs1.org/cbv/BizStep-transforming",
+        "label": "Transforming",
+        "description": "Process where input objects are consumed to produce output objects (manufacturing, processing).",
+        "esg_use_cases": ["EUDR product transformation tracking", "CSRD manufacturing emissions", "PPWR material composition"],
+        "regulation_mapping": ["EUDR", "CSRD", "PPWR"]
+      },
+      {
+        "code": "BizStep-destroying",
+        "uri": "https://ref.gs1.org/cbv/BizStep-destroying",
+        "label": "Destroying",
+        "description": "Process of terminating an object (disposal, incineration).",
+        "esg_use_cases": ["PPWR end-of-life tracking", "Circular economy waste flows"],
+        "regulation_mapping": ["PPWR", "Waste Framework Directive"]
+      },
+      {
+        "code": "BizStep-recycling",
+        "uri": "https://ref.gs1.org/cbv/BizStep-recycling",
+        "label": "Recycling",
+        "description": "Process of converting waste materials into new materials and objects.",
+        "esg_use_cases": ["PPWR recycled content verification", "Circular economy material loops"],
+        "regulation_mapping": ["PPWR", "Circular Economy Action Plan"]
+      },
+      {
+        "code": "BizStep-repairing",
+        "uri": "https://ref.gs1.org/cbv/BizStep-repairing",
+        "label": "Repairing",
+        "description": "Process of restoring an object to a functional state.",
+        "esg_use_cases": ["PPWR product lifetime extension", "Right to repair compliance"],
+        "regulation_mapping": ["PPWR", "Ecodesign Directive"]
+      },
+      {
+        "code": "BizStep-collecting",
+        "uri": "https://ref.gs1.org/cbv/BizStep-collecting",
+        "label": "Collecting",
+        "description": "Process of picking up objects for future disposal, recycling, or reuse.",
+        "esg_use_cases": ["PPWR collection schemes", "EPR compliance tracking"],
+        "regulation_mapping": ["PPWR", "EPR Directive"]
+      }
+    ]
+  },
+  "dispositions": {
+    "description": "Business conditions of objects - populate the disposition field in EPCIS events",
+    "esg_critical": [
+      {
+        "code": "Disp-in_transit",
+        "uri": "https://ref.gs1.org/cbv/Disp-in_transit",
+        "label": "In Transit",
+        "description": "Object is moving between locations.",
+        "esg_use_cases": ["CSRD Scope 3 transport tracking", "CBAM emissions calculation"],
+        "regulation_mapping": ["CSRD", "CBAM"]
+      },
+      {
+        "code": "Disp-active",
+        "uri": "https://ref.gs1.org/cbv/Disp-active",
+        "label": "Active",
+        "description": "Object is in active use or circulation.",
+        "esg_use_cases": ["Product lifetime tracking", "Circular economy status"],
+        "regulation_mapping": ["PPWR", "Ecodesign"]
+      },
+      {
+        "code": "Disp-recalled",
+        "uri": "https://ref.gs1.org/cbv/Disp-recalled",
+        "label": "Recalled",
+        "description": "Object has been recalled due to safety or quality issues.",
+        "esg_use_cases": ["Product safety compliance", "Supply chain risk management"],
+        "regulation_mapping": ["General Product Safety Regulation"]
+      },
+      {
+        "code": "Disp-expired",
+        "uri": "https://ref.gs1.org/cbv/Disp-expired",
+        "label": "Expired",
+        "description": "Object has passed its expiration date.",
+        "esg_use_cases": ["Food waste tracking", "PPWR waste prevention"],
+        "regulation_mapping": ["PPWR", "Food Waste Directive"]
+      },
+      {
+        "code": "Disp-destroyed",
+        "uri": "https://ref.gs1.org/cbv/Disp-destroyed",
+        "label": "Destroyed",
+        "description": "Object has been permanently destroyed.",
+        "esg_use_cases": ["PPWR end-of-life verification", "Waste tracking"],
+        "regulation_mapping": ["PPWR", "Waste Framework Directive"]
+      },
+      {
+        "code": "Disp-recyclable",
+        "uri": "https://ref.gs1.org/cbv/Disp-recyclable",
+        "label": "Recyclable",
+        "description": "Object is designated for recycling.",
+        "esg_use_cases": ["PPWR recycling compliance", "Circular economy flows"],
+        "regulation_mapping": ["PPWR"]
+      },
+      {
+        "code": "Disp-returned",
+        "uri": "https://ref.gs1.org/cbv/Disp-returned",
+        "label": "Returned",
+        "description": "Object has been returned by customer or trading partner.",
+        "esg_use_cases": ["PPWR take-back schemes", "Reverse logistics"],
+        "regulation_mapping": ["PPWR", "EPR Directive"]
+      }
+    ]
+  },
+  "bizTransactionTypes": {
+    "description": "Business transaction document types - populate the type attribute of bizTransaction elements",
+    "esg_relevant": [
+      {
+        "code": "BTT-cert",
+        "uri": "https://ref.gs1.org/cbv/BTT-cert",
+        "label": "Certification",
+        "description": "Document confirming certain characteristics of an object, person, or organization, typically issued by a third party.",
+        "esg_use_cases": ["EUDR certification tracking (FSC, PEFC)", "CSRD sustainability certifications", "Organic certifications"],
+        "regulation_mapping": ["EUDR", "CSRD", "Organic Regulation"]
+      },
+      {
+        "code": "BTT-pedigree",
+        "uri": "https://ref.gs1.org/cbv/BTT-pedigree",
+        "label": "Pedigree",
+        "description": "Record that traces the ownership or custody and transactions of a product as it moves among trading partners.",
+        "esg_use_cases": ["EUDR due diligence documentation", "CSRD supply chain transparency"],
+        "regulation_mapping": ["EUDR", "CSRD"]
+      },
+      {
+        "code": "BTT-po",
+        "uri": "https://ref.gs1.org/cbv/BTT-po",
+        "label": "Purchase Order",
+        "description": "Document specifying details for goods and services ordered.",
+        "esg_use_cases": ["Supply chain mapping", "Procurement transparency"],
+        "regulation_mapping": ["CSRD"]
+      },
+      {
+        "code": "BTT-desadv",
+        "uri": "https://ref.gs1.org/cbv/BTT-desadv",
+        "label": "Despatch Advice",
+        "description": "Document informing the consignee about the despatch of goods (Advanced Shipment Notice).",
+        "esg_use_cases": ["CSRD Scope 3 shipment tracking", "Transport emissions"],
+        "regulation_mapping": ["CSRD", "CBAM"]
+      }
+    ]
+  },
+  "sourceDestTypes": {
+    "description": "Source/Destination types - populate the type attribute of source or destination elements",
+    "esg_relevant": [
+      {
+        "code": "SDT-owning_party",
+        "uri": "https://ref.gs1.org/cbv/SDT-owning_party",
+        "label": "Owning Party",
+        "description": "Party that owns the object.",
+        "esg_use_cases": ["EUDR ownership chain", "CSRD custody tracking"],
+        "regulation_mapping": ["EUDR", "CSRD"]
+      },
+      {
+        "code": "SDT-possessing_party",
+        "uri": "https://ref.gs1.org/cbv/SDT-possessing_party",
+        "label": "Possessing Party",
+        "description": "Party that physically possesses the object.",
+        "esg_use_cases": ["EUDR custody chain", "Supply chain mapping"],
+        "regulation_mapping": ["EUDR", "CSRD"]
+      },
+      {
+        "code": "SDT-location",
+        "uri": "https://ref.gs1.org/cbv/SDT-location",
+        "label": "Location",
+        "description": "Physical location (source or destination).",
+        "esg_use_cases": ["EUDR geographic origin", "CSRD facility tracking"],
+        "regulation_mapping": ["EUDR", "CSRD", "CBAM"]
+      }
+    ]
+  },
+  "errorReasons": {
+    "description": "Error reasons - populate the reason attribute of errorDeclaration elements",
+    "esg_relevant": [
+      {
+        "code": "ER-incorrect_data",
+        "uri": "https://ref.gs1.org/cbv/ER-incorrect_data",
+        "label": "Incorrect Data",
+        "description": "Previously reported data was incorrect.",
+        "esg_use_cases": ["Data quality management", "CSRD data assurance"],
+        "regulation_mapping": ["CSRD"]
+      }
+    ]
+  },
+  "sensorMeasurementTypes": {
+    "description": "Sensor measurement types for environmental monitoring",
+    "esg_critical": [
+      {
+        "code": "Temperature",
+        "uri": "https://gs1.org/voc/MeasurementType-Temperature",
+        "label": "Temperature",
+        "description": "Temperature measurement (typically in Celsius or Fahrenheit).",
+        "esg_use_cases": ["Cold chain monitoring", "CSRD Scope 3 refrigerant emissions", "Food safety"],
+        "regulation_mapping": ["CSRD", "Food Safety Regulation"]
+      },
+      {
+        "code": "Humidity",
+        "uri": "https://gs1.org/voc/MeasurementType-Humidity",
+        "label": "Humidity",
+        "description": "Relative humidity measurement.",
+        "esg_use_cases": ["Storage condition monitoring", "Product quality assurance"],
+        "regulation_mapping": ["Food Safety Regulation"]
+      },
+      {
+        "code": "Speed",
+        "uri": "https://gs1.org/voc/MeasurementType-Speed",
+        "label": "Speed",
+        "description": "Speed measurement (e.g., vehicle speed).",
+        "esg_use_cases": ["CSRD Scope 3 transport emissions calculation", "Fleet efficiency"],
+        "regulation_mapping": ["CSRD", "CBAM"]
+      },
+      {
+        "code": "Mileage",
+        "uri": "https://gs1.org/voc/MeasurementType-Mileage",
+        "label": "Mileage",
+        "description": "Distance traveled measurement.",
+        "esg_use_cases": ["CSRD Scope 3 transport distance", "CBAM emissions calculation"],
+        "regulation_mapping": ["CSRD", "CBAM"]
+      }
+    ]
+  },
+  "esg_mapping_guide": {
+    "eudr_traceability_chain": [
+      "BizStep-commissioning (origin)",
+      "SDT-location (geographic coordinates)",
+      "BTT-cert (FSC/PEFC certification)",
+      "BizStep-transforming (processing steps)",
+      "SDT-owning_party (custody chain)",
+      "BizStep-shipping + BizStep-receiving (transport)"
+    ],
+    "csrd_scope3_emissions": [
+      "BizStep-shipping (transport)",
+      "Disp-in_transit (goods in transit)",
+      "MeasurementType-Speed (vehicle speed)",
+      "MeasurementType-Mileage (distance)",
+      "SDT-location (facility locations)",
+      "BizStep-transforming (manufacturing emissions)"
+    ],
+    "ppwr_circular_economy": [
+      "BizStep-commissioning (production)",
+      "Disp-active (in use)",
+      "BizStep-collecting (collection)",
+      "BizStep-recycling (recycling process)",
+      "Disp-recyclable (recyclable status)",
+      "BizStep-destroying (disposal)",
+      "Disp-returned (take-back)"
+    ]
+  }
+}
