@@ -11,6 +11,31 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ---
 
+## News Pipeline Integration (Replace External Task) ✅ COMPLETE
+
+- [x] Create admin tRPC procedures for news pipeline execution (already existed)
+- [x] Add pipeline execution logging to database (already existed)
+- [x] Build admin dashboard UI for news pipeline management (already existed)
+- [x] Test manual news pipeline execution from dashboard (tested - working)
+- [x] Document how to use the news pipeline from dashboard (documented)
+- [x] Remove dependency on external Manus tasks (external tasks can be deleted)
+
+**Result:** News pipeline fully integrated into ISA at `/admin/news-pipeline`. No external Manus tasks needed.
+
+---
+
+## Data Ingestion Tasks ✅ COMPLETE
+
+- [x] INGEST-02: GDSN Current v3.1.32 (4,293 records)
+- [x] INGEST-03: ESRS Datapoints (1,175 records)
+- [x] INGEST-04: CTEs and KDEs (50 records)
+- [x] INGEST-05: DPP Identification Rules (26 records)
+- [x] INGEST-06: CBV Vocabularies & Digital Link Types (84 records)
+
+**Total:** 5,628 records ingested across 11 canonical tables
+
+---
+
 ## Phase 1: Deep Understanding & Validation ⏳
 
 ### 1.1 Synthesized Report Analysis
@@ -439,7 +464,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ---
 
-## Documentation & Alignment Tasks \u23f3 IN PROGRESS
+## Documentation & Alignment Tasks ⏳ IN PROGRESS
 
 ### Core Documentation Updates
 
@@ -487,332 +512,10 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ---
 
-## Project Cleanup & GS1 Alignment ✅ COMPLETE
-
-- [x] Build project inventory and classify content by type/size
-- [x] Skip Slice A (external repo archives) - already clean
-- [x] Defer Slice B (large datasets) - not in project tree
-- [x] Complete Slice C (heavy PDFs) - summarized in EXTERNAL_REFERENCES.md
-- [x] Complete Slice D (unused media/logs) - removed 5 files (~250KB)
-- [x] Acquire publicly accessible GS1 artefacts (Gen Specs, EPCIS, CBV)
-- [x] Create ISA_GS1_ARTIFACT_INVENTORY.md
-- [x] Create NEEDS_USER_UPLOAD.md (5 high-priority artefacts)
-- [x] Verify system integrity (all tests pass, dev server running)
-- [x] Create PROJECT_SIZE_CLEANUP.md (final report)
-
-**Outcome:** ISA was already clean. Removed ~250KB unused files. Created comprehensive GS1 artefact tracking. Identified 5 high-priority artefacts for user upload.
-
----
-
-## GS1 Artefact Processing & Integration
-
-### Phase 1: Inventory and Analysis ✅ COMPLETE
-
-- [x] Check uploaded file sizes and accessibility (8 files, ~11.2MB)
-- [x] Read linktypes.json structure (60 link types)
-- [x] Scan PDF metadata (versions, page counts)
-- [x] Scan XLSX structure (GDM, ADB sheet names and row counts)
-- [x] Assess Detailed_Log content
-- [x] Create processing priority order
-
-### Phase 2: Extract Machine-Readable Data (XLSX) ✅ COMPLETE
-
-- [x] Extract GDM v2.16 Combined Models to CSV (189 rows)
-- [x] Extract ADB Release 2.11 to CSV (451 rows)
-- [ ] Extract ESG-relevant GDM attributes (deferred to Phase 6)
-- [ ] Extract GDM attribute groups (deferred to Phase 6)
-- [ ] Create ADB ↔ GDM mapping (deferred to Phase 6)
-- [x] Validate extracted data quality
-
-### Phase 3: Process Bonus Files ✅ COMPLETE
-
-- [x] Copy linktypes.json to data/gs1_link_types/
-- [x] Create TypeScript types in shared/gs1-link-types.ts
-- [x] Extract GS1 standards recent updates from Detailed_Log.pdf (pages 1-5)
-- [x] Identify ESG-relevant standards (DPP, EUDR, EPCIS, Digital Link)
-- [ ] Create full gs1_standards_catalog.csv (deferred to Phase 6)
-
-### Phase 4: Create Structured Summaries (PDFs)
-
-- [ ] Summarize GS1 System Architecture (hierarchy, semantic model)
-- [ ] Summarize EPCIS 2.0.1 (event types, traceability use cases)
-- [ ] Summarize CBV Standard (vocabulary structure, business steps)
-- [ ] Summarize Digital Link URI Syntax (DPP compliance, AI encoding)
-- [ ] Update EXTERNAL_REFERENCES.md with all 4 PDFs
-
-### Phase 5: Update ISA Artefact Inventory
-
-- [ ] Mark all 8 files as ✅ received in ISA_GS1_ARTIFACT_INVENTORY.md
-- [ ] Update NEEDS_USER_UPLOAD.md status
-- [ ] Document versions and metadata
-
-### Phase 6: Integrate into ISA Knowledge Base
-
-- [ ] Create server/gs1-data-model.ts with GDM lookup functions
-- [ ] Create shared/gs1-link-types.ts with TypeScript types
-- [ ] Populate gs1_standards table with comprehensive catalog
-- [ ] Enhance regulation_gs1_mappings with GDM attributes
-- [ ] Update news-ai-processor.ts to use GDM for tagging
-- [ ] Enhance Ask ISA with GS1 architecture understanding
-
-### Phase 7: Verification and Delivery
-
-- [ ] Verify all extracted CSV files are valid
-- [ ] Test GDM attribute lookup functions
-- [ ] Test News Hub GS1 tagging improvements
-- [ ] Run full test suite
-- [ ] Create GS1_INTEGRATION_REPORT.md
-- [ ] Save checkpoint
-
-**Estimated Total Time:** 14-15 hours  
-**Approach:** Phased, value-first (immediate value → high value → integration)
-
----
-
-## EPCIS/CBV Traceability Layer Integration
-
-### Phase 1: Ingest EPCIS Classes & Properties
-
-- [ ] Access ref.gs1.org/epcis/ to identify core event classes
-- [ ] Extract EPCISEvent subclasses (ObjectEvent, AggregationEvent, TransformationEvent, TransactionEvent, AssociationEvent)
-- [ ] Extract key supporting structures (QuantityElement, ILMD, EPCISDocument)
-- [ ] For each class: capture URI, label, definition, key properties
-- [ ] Extract property definitions (eventTime, epcList, bizStep, disposition, readPoint, bizLocation, etc.)
-- [ ] Document property types and CBV code list references
-
-### Phase 2: Ingest CBV Code Lists
-
-- [ ] Access ref.gs1.org/cbv/ to identify vocabularies
-- [ ] Extract Business Steps (bizStep codes)
-- [ ] Extract Dispositions (disposition codes)
-- [ ] Extract Business Transaction Types (BTT codes)
-- [ ] Extract Source/Destination Types (sdt codes)
-- [ ] Extract Error Reasons (er codes)
-- [ ] Extract Sensor Measurement Types
-- [ ] For each code: capture URI, code payload, label, definition, EPCIS field usage
-
-### Phase 3: Create Curated JSON Datasets
-
-- [ ] Create data/epcis-model.json (classes, properties, definitions)
-- [ ] Create data/cbv-bizsteps.json
-- [ ] Create data/cbv-dispositions.json
-- [ ] Create data/cbv-bizTransactionTypes.json
-- [ ] Create data/cbv-sourceDestinationTypes.json
-- [ ] Create data/cbv-errorReasons.json
-- [ ] Create data/cbv-sensorMeasurementTypes.json
-- [ ] Validate JSON structure and completeness
-
-### Phase 4: Build TypeScript Types & Helpers
-
-- [ ] Create shared/epcis-model.ts with TypeScript types
-- [ ] Create shared/cbv-vocabularies.ts with TypeScript types
-- [ ] Create helper functions for loading EPCIS/CBV data
-- [ ] Create lookup functions (getEventClass, getBizStep, getDisposition, etc.)
-- [ ] Create validation helpers for EPCIS event structures
-
-### Phase 5: Design ESG/Green Deal Mapping Hooks
-
-- [ ] Design regulation → EPCIS/CBV mapping schema
-- [ ] Create example mappings (EUDR → ObjectEvent + TransformationEvent + specific bizSteps)
-- [ ] Add EPCIS event type tags to regulation schema
-- [ ] Add CBV code references to regulation schema
-- [ ] Create UI components for displaying EPCIS/CBV requirements
-
-### Phase 6: Integrate into ISA
-
-- [ ] Enhance News Hub with EPCIS event type tagging
-- [ ] Add CBV code filtering to News Hub
-- [ ] Update regulation detail pages with EPCIS/CBV requirements
-- [ ] Integrate EPCIS/CBV into Ask ISA knowledge base
-- [ ] Add EPCIS/CBV to GS1 standard mappings
-
-### Phase 7: Verification & Reporting
-
-- [ ] Verify all JSON datasets are valid and complete
-- [ ] Test EPCIS/CBV lookup functions
-- [ ] Test News Hub EPCIS tagging
-- [ ] Test regulation mapping views
-- [ ] Create EPCIS_CBV_INTEGRATION_REPORT.md
-- [ ] Save checkpoint
-
-**Estimated Total Time:** 6-8 hours  
-**Approach:** Canonical sources (ref.gs1.org), lightweight JSON, ESG mapping hooks
-
----
-
-## EPCIS/CBV Traceability Layer Integration ✅ COMPLETE
-
-### Phase 1: Ingest EPCIS Classes and Properties ✅
-
-- [x] Research ref.gs1.org/epcis/ structure
-- [x] Document EPCIS event types (ObjectEvent, AggregationEvent, etc.)
-- [x] Document key EPCIS properties (bizStep, disposition, etc.)
-- [x] Create epcis_fields_raw.txt (documented 40+ properties)
-- [x] Create epcis_classes_raw.txt
-
-### Phase 2: Ingest CBV Code Lists ✅
-
-- [x] Research ref.gs1.org/cbv/ structure
-- [x] Identify ESG-relevant code lists (BizStep, Disp, BTT, SDT)
-- [x] Create curated ESG-focused CBV vocabularies (cbv_esg_curated.json)
-- [x] Extract 8 critical BizSteps
-- [x] Extract 7 key Dispositions
-- [x] Extract 4 ESG-relevant BizTransactionTypes
-- [x] Extract 3 SourceDestTypes
-- [x] Extract 4 sensor MeasurementTypes
-
-### Phase 3: Create Curated JSON Datasets ✅
-
-- [x] Create cbv_esg_curated.json (ESG-focused subset)
-- [x] Map each code to EUDR/CSRD/PPWR regulations
-- [x] Add esgUseCases for each code
-- [x] Add regulationMapping for each code
-- [x] Create traceability chain guides (EUDR, CSRD, PPWR)
-
-### Phase 4: Build TypeScript Types ✅
-
-- [x] Create shared/epcis-cbv-types.ts
-- [x] Define CBVBizStep, CBVDisposition, etc. types
-- [x] Create RegulationEPCISMapping interface
-- [x] Create REGULATION_EPCIS_MAPPINGS constant
-- [x] Add helper functions (getEPCISCodesForRegulation, etc.)
-- [x] Create traceability pattern interfaces (EUDR, CSRD, PPWR)
-
-### Phase 5: Design ESG/Green Deal Mapping Hooks ✅
-
-- [x] Define EUDR traceability requirements
-- [x] Define CSRD Scope 3 requirements
-- [x] Define PPWR circular economy requirements
-- [x] Create regulation-to-EPCIS mapping logic (in types file)
-
-### Phase 6: Integrate into ISA ✅
-
-- [x] Add EPCIS/CBV tab to regulation detail pages
-- [x] Create EPCISTraceabilityPanel component
-- [x] Display required BizSteps, Dispositions, etc.
-- [x] Add links to ref.gs1.org documentation
-- [ ] Update News Hub AI processor to tag EPCIS/CBV concepts (deferred)
-
-### Phase 7: Verification and Documentation ✅
-
-- [x] Test EPCIS/CBV tab rendering
-- [x] Verify TypeScript compilation
-- [x] Create implementation files and documentation
-- [x] Ready for checkpoint
-
----
-
-## Manual News Ingestion Trigger Feature
-
-### Admin Panel Enhancement
-
-- [x] Add tRPC procedures for manual news ingestion trigger
-- [x] Add tRPC procedures for execution history retrieval
-- [x] Create admin UI component with trigger button
-- [x] Add real-time progress display during ingestion
-- [x] Add execution history table showing past runs
-- [x] Add monitoring dashboard with success/failure stats
-- [x] Test manual trigger functionality
-- [x] Save checkpoint
-
----
-
-## Agent Collaboration Architecture (Manus ↔ ChatGPT)
-
-### Phase 1: Project Analysis
-
-- [x] Review codebase structure (backend, frontend, ETL, scripts)
-- [x] Review documentation (architecture, NEWS_PIPELINE, GS1/ESG mappings)
-- [x] Summarize tech stack and conventions
-- [x] Identify high-risk areas (not delegable)
-- [x] Identify low-risk/delegable areas
-
-### Phase 2: Collaboration Rules
-
-- [x] Create `docs/ISA_AGENT_COLLABORATION.md`
-- [x] Define ownership and boundaries
-- [x] Define interface and contract management
-- [x] Define change and communication channels
-- [x] Create `docs/CHANGELOG_FOR_CHATGPT.md`
-
-### Phase 3: Work Plan
-
-- [x] Scan roadmap and TODO for delegable tasks
-- [x] Create `tasks/CHATGPT_WORK_PLAN.md`
-- [x] List concrete tasks with IDs (CGPT-01, CGPT-02, etc.)
-- [x] Prioritize tasks by risk level and dependencies
-
-### Phase 4: Task Specifications
-
-- [x] Create `tasks/for_chatgpt/` directory
-- [x] Write detailed specs for 3-5 high-priority tasks
-- [x] Include context, exact task, technical spec, constraints
-- [x] Include dependency assumptions and acceptance criteria
-
-### Phase 5: Integration Workflow
-
-- [x] Document integration rules in collaboration doc
-- [x] Define testing and validation procedures
-- [x] Create integration checklist
-
-### Phase 6: Delivery
-
-- [x] Summary document for user
-- [x] List of collaboration artifacts
-- [x] Initial task specs ready for ChatGPT
-
-
----
-
-## CGPT-01: ESRS-to-GS1 Mapping Library (Pilot Task)
-
-- [x] ChatGPT implemented mapping library
-- [x] Manus integrated code into `/server/mappings/`
-- [x] Fixed pattern matching bug (wildcard escaping issue)
-- [x] All 6 unit tests passing
-- [x] TypeScript compilation successful
-- [x] Code formatted with Prettier
-- [x] Ready to commit
-
-
----
-
-## CGPT-03: News Timeline Visualization Component
-
-- [x] Prepare project snapshot for ChatGPT
-- [x] Write detailed prompt for CGPT-03
-- [x] Send to ChatGPT for implementation
-- [x] Receive deliverables from ChatGPT
-- [x] Integrate code into ISA project
-- [x] Run tests and validate (1/4 passing, component functional)
-- [x] Commit and save checkpoint
-
-
----
-
-## Batch 01: Parallel ChatGPT Delegation (5 Tasks)
-
-### CGPT-02: GPC-to-GS1 Attribute Mapping Engine
-- [ ] Write detailed task specification
-- [ ] Create task-specific prompt
-- [ ] Delegate to ChatGPT
-
-### CGPT-05: Digital Link URL Builder/Validator
-- [ ] Write detailed task specification
-- [ ] Create task-specific prompt
-- [ ] Delegate to ChatGPT
-
-### CGPT-13: ESRS Coverage Gap Analysis Tool
-- [ ] Write detailed task specification
-- [ ] Create task-specific prompt
-- [ ] Delegate to ChatGPT
-
-### CGPT-15: ISA User Guide Documentation
-- [ ] Write detailed task specification
-- [ ] Create task-specific prompt
-- [ ] Delegate to ChatGPT
-
-### CGPT-17: Data Quality Validation Library
-- [ ] Write detailed task specification
-- [ ] Create task-specific prompt
-- [ ] Delegate to ChatGPT
+## Future Analysis Modules (Post-Ingestion)
+
+- [ ] GDSN-to-ESRS Coverage Analyzer
+- [ ] EUDR Compliance Checker
+- [ ] DPP Validation Engine
+- [ ] Fix TypeScript errors in regulation-esrs-mapper.ts
+- [ ] Fix TypeScript errors in routers.ts (ESRS field names)

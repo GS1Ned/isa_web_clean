@@ -1,0 +1,361 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gs1isa.com/schemas/datasets-catalog.schema.json",
+  "title": "ISA Dataset Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["catalogVersion", "generatedAt", "generatedBy", "datasets"],
+  "properties": {
+    "catalogVersion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Version of the catalog file format/schema used to generate this catalog."
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this catalog was generated."
+    },
+    "generatedBy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent", "runId"],
+      "properties": {
+        "agent": { "type": "string", "minLength": 1 },
+        "runId": { "type": "string", "minLength": 1 },
+        "sourceRepo": { "type": "string" },
+        "sourceCommit": { "type": "string" }
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "assumedLicense": { "type": "string" },
+        "assumedAccess": {
+          "type": "string",
+          "enum": ["open", "registration", "licensed", "subscription", "internal", "restricted", "unknown"]
+        },
+        "assumedUpdateCadence": {
+          "type": "string",
+          "enum": ["daily", "weekly", "monthly", "quarterly", "semiannual", "annual", "ad-hoc", "unknown"]
+        }
+      }
+    },
+    "datasets": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/dataset" }
+    }
+  },
+  "$defs": {
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "datasetId",
+        "name",
+        "publisher",
+        "jurisdiction",
+        "status",
+        "versions",
+        "canonicalDomains",
+        "intendedUse",
+        "relevance",
+        "access",
+        "formats",
+        "locations",
+        "lineage"
+      ],
+      "properties": {
+        "datasetId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{2,80}$",
+          "description": "Stable ID used by ISA (lowercase slug)."
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "publisher": { "$ref": "#/$defs/publisher" },
+        "jurisdiction": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": ["EU", "NL", "BE", "LU", "DE", "FR", "GLOBAL", "OTHER"]
+          },
+          "description": "Primary jurisdiction(s) relevant to ISA; keep EU/NL dominant."
+        },
+        "standards": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/standardRef" }
+        },
+        "regulations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/regulationRef" }
+        },
+        "canonicalDomains": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/canonicalDomain" }
+        },
+        "intendedUse": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "advisory_evidence",
+              "mapping_reference",
+              "terminology_vocab",
+              "identifier_reference",
+              "standard_model_reference",
+              "regulation_text_reference",
+              "timeline_deadlines",
+              "sector_model_reference",
+              "impact_analysis_inputs",
+              "demo_fixtures",
+              "test_cases"
+            ]
+          }
+        },
+        "relevance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mvp", "priority"],
+          "properties": {
+            "mvp": { "type": "boolean" },
+            "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+            "notes": { "type": "string" }
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": ["current", "future", "draft", "deprecated", "unknown"],
+          "description": "Whether this dataset/version is current or future/planned."
+        },
+        "access": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["open", "registration", "licensed", "subscription", "internal", "restricted", "unknown"]
+            },
+            "licenseName": { "type": "string" },
+            "licenseUrl": { "type": "string", "format": "uri" },
+            "termsNotes": { "type": "string" },
+            "requiresAuth": { "type": "boolean" },
+            "authNotes": { "type": "string" }
+          }
+        },
+        "formats": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/datasetFormat" }
+        },
+        "versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/datasetVersion" }
+        },
+        "locations": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/location" }
+        },
+        "updateCadence": {
+          "type": "string",
+          "enum": ["daily", "weekly", "monthly", "quarterly", "semiannual", "annual", "ad-hoc", "unknown"]
+        },
+        "lineage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sourceType", "sourceUrl", "retrievedAt"],
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": ["official", "mirror", "derived", "internal_extract", "unknown"]
+            },
+            "sourceUrl": { "type": "string", "format": "uri" },
+            "sourcePageUrl": { "type": "string", "format": "uri" },
+            "retrievedAt": { "type": "string", "format": "date-time" },
+            "retrievedBy": { "type": "string" },
+            "method": { "type": "string", "description": "e.g., manual download, API, git clone." },
+            "transformations": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/transformation" }
+            }
+          }
+        },
+        "quality": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "coverageNotes": { "type": "string" },
+            "knownIssues": { "type": "array", "items": { "type": "string" } },
+            "validation": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "checks": { "type": "array", "items": { "type": "string" } },
+                "lastValidatedAt": { "type": "string", "format": "date-time" },
+                "validatedBy": { "type": "string" }
+              }
+            }
+          }
+        },
+        "refreshPlan": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "nextReviewDate": { "type": "string", "format": "date" },
+            "watchUrls": { "type": "array", "items": { "type": "string", "format": "uri" } },
+            "notes": { "type": "string" }
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "publisher": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "type"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": {
+          "type": "string",
+          "enum": ["EU_body", "NL_government", "GS1", "NGO", "industry", "academic", "vendor", "other"]
+        },
+        "website": { "type": "string", "format": "uri" },
+        "contact": { "type": "string" }
+      }
+    },
+    "standardRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": "string" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "regulationRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "description": "Internal ISA ID or CELEX where applicable." },
+        "name": { "type": "string", "minLength": 1 },
+        "celex": { "type": "string" },
+        "status": { "type": "string", "enum": ["in_force", "delegated", "draft", "proposal", "guidance", "unknown"] },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "canonicalDomain": {
+      "type": "string",
+      "enum": [
+        "regulatory_landscape",
+        "gs1_standards_models",
+        "sector_data_models_gs1_nl",
+        "product_identity_and_master_data",
+        "traceability_and_events",
+        "circularity_and_packaging",
+        "substances_and_compliance",
+        "environmental_footprints_and_impacts",
+        "social_and_due_diligence",
+        "governance_and_reporting",
+        "assurance_and_auditability",
+        "terminology_and_taxonomies"
+      ]
+    },
+    "datasetFormat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mediaType"],
+      "properties": {
+        "mediaType": {
+          "type": "string",
+          "enum": [
+            "application/json",
+            "text/csv",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/pdf",
+            "text/html",
+            "application/xml",
+            "text/plain",
+            "application/zip",
+            "application/rdf+xml",
+            "text/turtle",
+            "application/ld+json",
+            "other"
+          ]
+        },
+        "fileExtension": { "type": "string" },
+        "encoding": { "type": "string" },
+        "schema": { "type": "string", "description": "Optional reference to a schema/shape definition." },
+        "notes": { "type": "string" }
+      }
+    },
+    "datasetVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "publicationDate", "status"],
+      "properties": {
+        "version": { "type": "string", "minLength": 1 },
+        "publicationDate": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["current", "future", "draft", "deprecated", "unknown"] },
+        "effectiveFrom": { "type": "string", "format": "date" },
+        "effectiveTo": { "type": "string", "format": "date" },
+        "releaseNotesUrl": { "type": "string", "format": "uri" },
+        "contentFingerprint": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+            "bytes": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "pathOrUrl"],
+      "properties": {
+        "type": { "type": "string", "enum": ["repo_path", "url", "api", "s3", "git"] },
+        "pathOrUrl": { "type": "string", "minLength": 1 },
+        "isPrimary": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+    "transformation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "performedAt"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "unzip",
+            "convert_xlsx_to_csv",
+            "normalize_fields",
+            "deduplicate",
+            "schema_mapping",
+            "extract_subset",
+            "language_split",
+            "other"
+          ]
+        },
+        "performedAt": { "type": "string", "format": "date-time" },
+        "tool": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}
