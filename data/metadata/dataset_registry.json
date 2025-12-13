@@ -1,0 +1,248 @@
+{
+  "registryVersion": "1.0.0",
+  "generatedAt": "2025-12-13T20:00:29.217178Z",
+  "generatedBy": "ISA Dataset Governance Script",
+  "notes": "Day-1 canonical dataset registry for ISA MVP. Includes ESRS datapoints, GS1 NL sector models, and validation rules.",
+  "datasets": [
+    {
+      "id": "gs1nl.benelux.diy_garden_pet.v3.1.33",
+      "title": "GS1 NL Data Source - DIY/Garden/Pets (DHZTD)",
+      "description": "GS1 Netherlands Data Source sector model for DIY/Garden/Pets products",
+      "publisher": "GS1 Netherlands",
+      "jurisdiction": "NL",
+      "sourceType": "data_model",
+      "canonicalDomains": [
+        "GS1_Sector_Data_Models",
+        "Product_and_Packaging"
+      ],
+      "status": "mvp",
+      "version": "3.1.33",
+      "releaseDate": "2023-09-08",
+      "language": [
+        "NL",
+        "EN"
+      ],
+      "license": {
+        "type": "licensed",
+        "notes": "GS1 Netherlands Data Source License"
+      },
+      "access": {
+        "method": "portal",
+        "credentialsRequired": true,
+        "notes": "Requires GS1 Netherlands membership"
+      },
+      "formats": [
+        {
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/standards/gs1-nl/benelux-datasource/v3.1.33/GS1 Data Source Datamodel 3.1.33.xlsx",
+          "role": "canonical",
+          "bytes": 12148005
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "cbd4cbac8d7a18c1f6952967e609998458a2b2f77469a78cfbe670d9c3ce3100"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-gs1-nl-complete.ts",
+        "targetTables": [
+          "gs1_attributes"
+        ],
+        "refreshCadence": "annual"
+      },
+      "tags": [
+        "gs1-nl",
+        "benelux",
+        "diy-garden-pets"
+      ]
+    },
+    {
+      "id": "gs1nl.benelux.fmcg.v3.1.33.5",
+      "title": "GS1 NL Data Source - FMCG (Food/Health/Beauty)",
+      "description": "GS1 Netherlands Data Source sector model for Food/Health/Beauty products",
+      "publisher": "GS1 Netherlands",
+      "jurisdiction": "NL",
+      "sourceType": "data_model",
+      "canonicalDomains": [
+        "GS1_Sector_Data_Models",
+        "Product_and_Packaging"
+      ],
+      "status": "mvp",
+      "version": "3.1.33.5",
+      "releaseDate": "2024-05-09",
+      "language": [
+        "NL",
+        "EN"
+      ],
+      "license": {
+        "type": "licensed",
+        "notes": "GS1 Netherlands Data Source License"
+      },
+      "access": {
+        "method": "portal",
+        "credentialsRequired": true,
+        "notes": "Requires GS1 Netherlands membership"
+      },
+      "formats": [
+        {
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/standards/gs1-nl/benelux-datasource/v3.1.33/benelux-fmcg-data-model-31335-nederlands.xlsx",
+          "role": "canonical",
+          "bytes": 2022517
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "7caf26bbf6b8afe3002e3af2c2a9d00c0ee1549bb318baab1e482ad75cd0ed5f"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-gs1-nl-complete.ts",
+        "targetTables": [
+          "gs1_attributes"
+        ],
+        "refreshCadence": "annual"
+      },
+      "tags": [
+        "gs1-nl",
+        "benelux",
+        "food-health-beauty"
+      ]
+    },
+    {
+      "id": "gs1nl.benelux.healthcare.v3.1.33",
+      "title": "GS1 NL Data Source - Healthcare (ECHO)",
+      "description": "GS1 Netherlands Data Source sector model for Healthcare products",
+      "publisher": "GS1 Netherlands",
+      "jurisdiction": "NL",
+      "sourceType": "data_model",
+      "canonicalDomains": [
+        "GS1_Sector_Data_Models",
+        "Product_and_Packaging"
+      ],
+      "status": "mvp",
+      "version": "3.1.33",
+      "releaseDate": "2023-09-08",
+      "language": [
+        "NL",
+        "EN"
+      ],
+      "license": {
+        "type": "licensed",
+        "notes": "GS1 Netherlands Data Source License"
+      },
+      "access": {
+        "method": "portal",
+        "credentialsRequired": true,
+        "notes": "Requires GS1 Netherlands membership"
+      },
+      "formats": [
+        {
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/standards/gs1-nl/benelux-datasource/v3.1.33/common-echo-datamodel_3133.xlsx",
+          "role": "canonical",
+          "bytes": 418765
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "82ba6237f667696250e1f4c25a7ae12f2613405f83c88b4c883495f66ecc6a7e"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-gs1-nl-complete.ts",
+        "targetTables": [
+          "gs1_attributes"
+        ],
+        "refreshCadence": "annual"
+      },
+      "tags": [
+        "gs1-nl",
+        "benelux",
+        "healthcare"
+      ]
+    },
+    {
+      "id": "gs1nl.benelux.validation_rules.v3.1.33.4",
+      "title": "GS1 NL/Benelux Validation Rules",
+      "description": "GS1 Netherlands/Benelux validation rules and data quality constraints",
+      "publisher": "GS1 Netherlands",
+      "jurisdiction": "NL",
+      "sourceType": "standard_spec",
+      "canonicalDomains": [
+        "GS1_Sector_Data_Models",
+        "Assurance_and_Auditability"
+      ],
+      "status": "mvp",
+      "version": "3.1.33.4",
+      "releaseDate": "2024-11-15",
+      "language": [
+        "NL",
+        "EN"
+      ],
+      "license": {
+        "type": "licensed",
+        "notes": "GS1 Netherlands Data Source License"
+      },
+      "access": {
+        "method": "portal",
+        "credentialsRequired": true
+      },
+      "formats": [
+        {
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/standards/gs1-nl/benelux-datasource/v3.1.33/overview_of_validation_rules_for_the_benelux-31334.xlsx",
+          "role": "canonical",
+          "bytes": 1742727
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "1293bee028b949eb2cfe400001540bfd5da7ec419ce229b477d78d55e95e42a7"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-validation-rules.ts",
+        "targetTables": [
+          "gs1_validation_rules",
+          "gs1_local_code_lists"
+        ],
+        "refreshCadence": "annual"
+      },
+      "tags": [
+        "gs1-nl",
+        "validation",
+        "data-quality"
+      ]
+    }
+  ]
+}
