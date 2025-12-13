@@ -1662,7 +1662,7 @@ export const gs1Attributes = mysqlTable(
   "gs1_attributes",
   {
     id: int("id").autoincrement().primaryKey(),
-    attributeCode: varchar("attributeCode", { length: 100 }).notNull().unique(),
+    attributeCode: varchar("attributeCode", { length: 100 }).notNull(),
     attributeName: varchar("attributeName", { length: 255 }).notNull(),
     sector: mysqlEnum("sector", [
       "food_hb",
@@ -1693,6 +1693,8 @@ export const gs1Attributes = mysqlTable(
     sustainabilityIdx: index("sustainability_idx").on(
       table.sustainabilityRelated
     ),
+    // Composite unique constraint: same code can exist across sectors
+    uniqueCodeSector: index("unique_code_sector").on(table.attributeCode, table.sector),
   })
 );
 

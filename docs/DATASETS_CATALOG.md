@@ -1,8 +1,8 @@
 # ISA Dataset Catalog
 
-**Version:** 1.0.0  
-**Generated:** 2025-12-12  
-**Status:** Day-1 Baseline
+**Version:** 1.1.0  
+**Generated:** 2025-12-13  
+**Status:** MVP Complete - GS1 NL Ingested
 
 ---
 
@@ -10,9 +10,9 @@
 
 This catalog documents all canonical datasets used by ISA for advisory and mapping outputs. Every dataset entry includes versioning metadata, lineage information, and refresh plans to ensure traceability and trust in ISA recommendations.
 
-**Total Datasets:** 5  
-**Total Records:** 5,628  
-**Coverage:** EU regulations, GS1 standards, GS1 NL sector models
+**Total Datasets:** 8  
+**Total Records:** 9,295  
+**Coverage:** EU regulations, GS1 global standards, GS1 NL/Benelux sector models
 
 ---
 
@@ -259,12 +259,138 @@ Per MANUS_EXECUTION_BRIEF Section 5.1, every dataset must include:
 
 ---
 
-## Planned Datasets (Post-MVP)
+---
 
-### GS1 NL Data Source / Benelux Model
-- **Status:** Planned
-- **Priority:** Critical for MVP completion
-- **Notes:** Awaiting official GS1 NL delivery of sector-specific data model
+### 6. GS1 NL Data Source - DIY/Garden/Pets (DHZTD)
+
+**Dataset ID:** `gs1nl.benelux.diy_garden_pet.v3.1.33`  
+**Publisher:** GS1 Netherlands / GS1 Benelux  
+**Status:** Current  
+**Priority:** High (MVP)
+
+**Description:**  
+GS1 Netherlands Data Source sector model for Do-it-yourself, Garden, and Pets products. Canonical attribute catalog for Dutch market ESG→GS1 mapping.
+
+**Coverage:**
+- 3,009 attributes ingested
+- Sector: DIY/Garden/Pets (DHZTD)
+- ESG relevance flags: 107 packaging-related, 74 sustainability-related
+
+**Version:**
+- Current: 3.1.33 (Published: 2023-09-08)
+- Location: `data/standards/gs1-nl/benelux-datasource/v3.1.33/GS1 Data Source Datamodel 3.1.33.xlsx`
+- Format: Excel (.xlsx)
+
+**Refresh Plan:**
+- Cadence: Release-based (~yearly)
+- Next Review: 2025-09-01
+- Watch: GS1 Netherlands release notifications
+- Notes: Monitor for v3.1.34 or v3.1.35 releases
+
+**Canonical Domains:**
+- GS1 NL sector models
+- Product attributes and master data
+- Dutch market requirements
+
+**Intended Use:**
+- ESG→GS1 NL mapping reference
+- Gap analysis for Dutch market
+- Advisory outputs on GS1 NL standards evolution
+
+**Access:**
+- Type: Licensed
+- License: GS1 Netherlands Data Source License
+- Authority Level: Normative (national GS1 standard)
+
+---
+
+### 7. GS1 NL Data Source - FMCG (Food/Health/Beauty)
+
+**Dataset ID:** `gs1nl.benelux.fmcg.v3.1.33.5`  
+**Publisher:** GS1 Netherlands / GS1 Benelux  
+**Status:** Current  
+**Priority:** High (MVP)
+
+**Description:**  
+GS1 Netherlands Data Source sector model for Food, Health & Beauty products. Canonical attribute catalog for Dutch FMCG market ESG→GS1 mapping.
+
+**Coverage:**
+- 473 attributes ingested
+- Sector: Food/Health/Beauty (FMCG)
+- Includes allergen, ingredient, and nutrition attributes
+
+**Version:**
+- Current: 3.1.33.5 (Published: 2024-05-09)
+- Location: `data/standards/gs1-nl/benelux-datasource/v3.1.33/benelux-fmcg-data-model-31335-nederlands.xlsx`
+- Format: Excel (.xlsx)
+
+**Refresh Plan:**
+- Cadence: Release-based (~yearly)
+- Next Review: 2025-09-01
+- Watch: GS1 Netherlands release notifications
+- Notes: Monitor for v3.1.34 or higher releases
+
+**Canonical Domains:**
+- GS1 NL sector models
+- Food and health product attributes
+- Dutch FMCG market requirements
+
+**Intended Use:**
+- ESG→GS1 NL mapping reference
+- Gap analysis for Dutch FMCG market
+- Advisory outputs on GS1 NL standards evolution
+
+**Access:**
+- Type: Licensed
+- License: GS1 Netherlands Data Source License
+- Authority Level: Normative (national GS1 standard)
+
+---
+
+### 8. GS1 NL Data Source - Healthcare (ECHO)
+
+**Dataset ID:** `gs1nl.benelux.healthcare.v3.1.33`  
+**Publisher:** GS1 Netherlands / GS1 Benelux  
+**Status:** Current  
+**Priority:** High (MVP)
+
+**Description:**  
+GS1 Netherlands Data Source sector model for Healthcare products (ECHO Common Data Set). Canonical attribute catalog for Dutch healthcare market ESG→GS1 mapping.
+
+**Coverage:**
+- 185 attributes ingested
+- Sector: Healthcare (ECHO)
+- Includes medical device and sterile product attributes
+
+**Version:**
+- Current: 3.1.33 (Published: 2023-09-08)
+- Location: `data/standards/gs1-nl/benelux-datasource/v3.1.33/common-echo-datamodel_3133.xlsx`
+- Format: Excel (.xlsx)
+
+**Refresh Plan:**
+- Cadence: Release-based (~yearly)
+- Next Review: 2025-09-01
+- Watch: GS1 Netherlands release notifications
+- Notes: Monitor for v3.1.34 or higher releases
+
+**Canonical Domains:**
+- GS1 NL sector models
+- Healthcare product attributes
+- Dutch healthcare market requirements
+
+**Intended Use:**
+- ESG→GS1 NL mapping reference
+- Gap analysis for Dutch healthcare market
+- Advisory outputs on GS1 NL standards evolution
+
+**Access:**
+- Type: Licensed
+- License: GS1 Netherlands Data Source License
+- Authority Level: Normative (national GS1 standard)
+
+---
+
+## Planned Datasets (Post-MVP)
 
 ### GDSN Future (v3.1.33 or v3.1.35)
 - **Status:** Planned
@@ -334,6 +460,6 @@ Use the JSON catalog for automated validation and tooling integration.
 
 ---
 
-**Last Updated:** 2025-12-12  
+**Last Updated:** 2025-12-13  
 **Owner:** ISA Project Team  
-**Canonical Document:** Yes (v1.0)
+**Canonical Document:** Yes (v1.1)
