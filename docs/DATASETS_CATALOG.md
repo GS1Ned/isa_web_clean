@@ -1,8 +1,8 @@
 # ISA Dataset Catalog
 
-**Version:** 1.1.0  
+**Version:** 1.2.0  
 **Generated:** 2025-12-13  
-**Status:** MVP Complete - GS1 NL Ingested
+**Status:** MVP Complete - GS1 NL + Validation Rules Ingested
 
 ---
 
@@ -10,9 +10,9 @@
 
 This catalog documents all canonical datasets used by ISA for advisory and mapping outputs. Every dataset entry includes versioning metadata, lineage information, and refresh plans to ensure traceability and trust in ISA recommendations.
 
-**Total Datasets:** 8  
-**Total Records:** 9,295  
-**Coverage:** EU regulations, GS1 global standards, GS1 NL/Benelux sector models
+**Total Datasets:** 9  
+**Total Records:** 11,197  
+**Coverage:** EU regulations, GS1 global standards, GS1 NL/Benelux sector models, validation rules
 
 ---
 
@@ -390,6 +390,56 @@ GS1 Netherlands Data Source sector model for Healthcare products (ECHO Common Da
 
 ---
 
+### 9. GS1 NL/Benelux Validation Rules
+
+**Dataset ID:** `gs1nl.benelux.validation_rules.v3.1.33.4`  
+**Publisher:** GS1 Netherlands / GS1 Benelux  
+**Status:** Current  
+**Priority:** High (MVP)
+
+**Description:**  
+GS1 Netherlands/Benelux validation rules and data quality constraints. Defines business rules, error messages, and local code lists for Dutch market compliance.
+
+**Coverage:**
+- 847 validation rules (817 active, 30 deprecated)
+- 1,055 local code list entries
+- Rule types: BeNeLux-specific, GDSN global, local Dutch rules
+- Includes error messages in Dutch, English, and French
+
+**Version:**
+- Current: 3.1.33.4 (Published: 2024-11-15)
+- Location: `data/standards/gs1-nl/benelux-datasource/v3.1.33/overview_of_validation_rules_for_the_benelux-31334.xlsx`
+- Format: Excel (.xlsx)
+
+**Refresh Plan:**
+- Cadence: Release-based (~yearly)
+- Next Review: 2025-11-01
+- Watch: GS1 Netherlands release notifications
+- Notes: Monitor for v3.1.34 or higher releases
+
+**Canonical Domains:**
+- Data quality and validation
+- Dutch market compliance
+- Business rules and constraints
+
+**Intended Use:**
+- Data quality validation for GS1 NL attributes
+- Compliance checking for Dutch market
+- Advisory outputs on validation requirements
+- Gap analysis for data quality standards
+
+**Access:**
+- Type: Licensed
+- License: GS1 Netherlands Data Source License
+- Authority Level: Normative (national GS1 standard)
+
+**Linked Datasets:**
+- GS1 NL Data Source - DIY/Garden/Pets (v3.1.33)
+- GS1 NL Data Source - FMCG (v3.1.33.5)
+- GS1 NL Data Source - Healthcare (v3.1.33)
+
+---
+
 ## Planned Datasets (Post-MVP)
 
 ### GDSN Future (v3.1.33 or v3.1.35)
@@ -462,4 +512,4 @@ Use the JSON catalog for automated validation and tooling integration.
 
 **Last Updated:** 2025-12-13  
 **Owner:** ISA Project Team  
-**Canonical Document:** Yes (v1.1)
+**Canonical Document:** Yes (v1.2)

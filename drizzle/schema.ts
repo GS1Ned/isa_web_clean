@@ -2316,3 +2316,68 @@ export const digitalLinkTypes = mysqlTable(
 
 export type DigitalLinkType = typeof digitalLinkTypes.$inferSelect;
 export type InsertDigitalLinkType = typeof digitalLinkTypes.$inferInsert;
+
+/**
+ * GS1 NL/Benelux Validation Rules
+ * Stores data quality constraints and business rules for GS1 attributes
+ */
+export const gs1ValidationRules = mysqlTable(
+  "gs1_validation_rules",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    ruleId: varchar("ruleId", { length: 50 }).notNull(),
+    ruleIdBelu: varchar("ruleIdBelu", { length: 50 }),
+    ruleType: mysqlEnum("ruleType", [
+      "benelux",
+      "gdsn",
+      "local",
+    ]).notNull(),
+    errorMessageDutch: text("errorMessageDutch"),
+    errorMessageEnglish: text("errorMessageEnglish"),
+    severity: mysqlEnum("severity", ["error", "warning", "info"]).default("error"),
+    targetMarkets: text("targetMarkets"), // JSON array of market codes
+    targetSectors: text("targetSectors"), // JSON array of sector codes
+    affectedAttributes: text("affectedAttributes"), // JSON array of attribute codes
+    validationLogic: text("validationLogic"), // Description or algorithm
+    addedInVersion: varchar("addedInVersion", { length: 20 }),
+    changeType: mysqlEnum("changeType", ["new", "technical", "textual", "delete"]),
+    isActive: boolean("isActive").default(true),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  table => ({
+    ruleIdIdx: index("rule_id_idx").on(table.ruleId),
+    ruleTypeIdx: index("rule_type_idx").on(table.ruleType),
+    activeIdx: index("active_idx").on(table.isActive),
+  })
+);
+
+export type GS1ValidationRule = typeof gs1ValidationRules.$inferSelect;
+export type InsertGS1ValidationRule = typeof gs1ValidationRules.$inferInsert;
+
+/**
+ * GS1 NL Local Code Lists
+ * Stores Dutch-specific code list values referenced by validation rules
+ */
+export const gs1LocalCodeLists = mysqlTable(
+  "gs1_local_code_lists",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    validationRuleId: varchar("validationRuleId", { length: 50 }).notNull(),
+    codeListName: varchar("codeListName", { length: 255 }).notNull(),
+    codeValue: varchar("codeValue", { length: 255 }).notNull(),
+    codeDescription: text("codeDescription"),
+    codeListSegment: varchar("codeListSegment", { length: 255 }),
+    addedInVersion: varchar("addedInVersion", { length: 20 }),
+    isActive: boolean("isActive").default(true),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+  },
+  table => ({
+    ruleIdIdx: index("lcl_rule_id_idx").on(table.validationRuleId),
+    codeListIdx: index("lcl_code_list_idx").on(table.codeListName),
+    activeIdx: index("lcl_active_idx").on(table.isActive),
+  })
+);
+
+export type GS1LocalCodeList = typeof gs1LocalCodeLists.$inferSelect;
+export type InsertGS1LocalCodeList = typeof gs1LocalCodeLists.$inferInsert;

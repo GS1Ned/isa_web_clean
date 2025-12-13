@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS gs1_local_code_lists (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  validationRuleId VARCHAR(50) NOT NULL,\n  codeListName VARCHAR(255) NOT NULL,\n  codeValue VARCHAR(255) NOT NULL,\n  codeDescription TEXT,\n  codeListSegment VARCHAR(255),\n  addedInVersion VARCHAR(20),\n  isActive BOOLEAN DEFAULT TRUE,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  INDEX lcl_rule_id_idx (validationRuleId),\n  INDEX lcl_code_list_idx (codeListName),\n  INDEX lcl_active_idx (isActive)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS gs1_local_code_lists (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  validationRuleId VARCHAR(50) NOT NULL,\n  codeListName VARCHAR(255) NOT NULL,\n  codeValue VARCHAR(255) NOT NULL,\n  codeDescription TEXT,\n  codeListSegment VARCHAR(255),\n  addedInVersion VARCHAR(20),\n  isActive BOOLEAN DEFAULT TRUE,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  INDEX lcl_rule_id_idx (validationRuleId),\n  INDEX lcl_code_list_idx (codeListName),\n  INDEX lcl_active_idx (isActive)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 176
+}
