@@ -1,0 +1,41 @@
+{
+  "documentId": "GS1_STYLE_GUIDE_v5.6",
+  "type": "SUPPORTING_REFERENCE",
+  "title": "GS1 Style Guide",
+  "description": "Sets rules and conventions for grammatical style, naming conventions, figure and table use etc. to improve the quality and consistency of all GS1 documentation",
+  "publisher": "GS1 AISBL",
+  "version": "5.6",
+  "releaseDate": "2025-07",
+  "status": "Approved",
+  "filePath": "/home/ubuntu/isa_web/docs/references/gs1/GS1-Style-Guide.pdf",
+  "sha256": "3ed3ca677a41a6c1883937160ba3652b9c892167f587641fb8f587ead9b28ca3",
+  "sourceUrl": "https://www.gs1.org/standards/style-guide",
+  "pageCount": 45,
+  "relevanceToISA": "ISA advisory outputs must align to GS1 editorial standards to ensure credibility with GS1 stakeholders, reduce review friction, and make deliverables GS1-grade for leadership and standards development audiences.",
+  "applicableToOutputs": [
+    "ISA advisory reports (Markdown/PDF/HTML)",
+    "Governance documentation",
+    "Gap analysis reports",
+    "Recommendation documents",
+    "Dataset documentation"
+  ],
+  "notApplicableTo": [
+    "Machine-readable artifacts (JSON, schemas, code, APIs)",
+    "Database field names",
+    "API endpoints",
+    "Variable names in code"
+  ],
+  "keyChangesInVersion5.6": [
+    "Removed exceptions for the GS1 General Specifications figure and table numbering",
+    "Greater emphasis on accessibility for all (Section 2.8.2)",
+    "Unit of measure clarifications (Section 2.13)",
+    "Link added to the 2D in Retail Colour and Quality Guideline (Section 2.18)",
+    "Update to the disclaimer (Section 3.2)",
+    "Referenced sources layout aligned with industry norms (Section 3.15)",
+    "Simplified content checklist (Section 5)"
+  ],
+  "extractedRulesFile": "/home/ubuntu/isa_web/docs/references/gs1/GS1_STYLE_GUIDE_EXTRACT.md",
+  "adoptionGuideFile": "/home/ubuntu/isa_web/docs/STYLE_GUIDE_ADOPTION.md",
+  "ingestedAt": "2025-01-14T18:00:00Z",
+  "ingestedBy": "ISA_v1.0_Style_Guide_Ingestion"
+}
