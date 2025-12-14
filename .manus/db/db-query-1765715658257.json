@@ -1,0 +1,460 @@
+{
+  "query": "SELECT \n    code,\n    esrs_standard,\n    disclosure_requirement,\n    name,\n    data_type,\n    conditional,\n    voluntary\nFROM esrs_datapoints\nWHERE name LIKE '%product%' \n   OR name LIKE '%material%' \n   OR name LIKE '%packaging%'\n   OR name LIKE '%supply%'\n   OR name LIKE '%chain%'\n   OR name LIKE '%waste%'\n   OR name LIKE '%recycl%'\n   OR name LIKE '%circular%'\n   OR name LIKE '%emission%'\n   OR name LIKE '%footprint%'\nLIMIT 50",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT \n    code,\n    esrs_standard,\n    disclosure_requirement,\n    name,\n    data_type,\n    conditional,\n    voluntary\nFROM esrs_datapoints\nWHERE name LIKE '%product%' \n   OR name LIKE '%material%' \n   OR name LIKE '%packaging%'\n   OR name LIKE '%supply%'\n   OR name LIKE '%chain%'\n   OR name LIKE '%waste%'\n   OR name LIKE '%recycl%'\n   OR name LIKE '%circular%'\n   OR name LIKE '%emission%'\n   OR name LIKE '%footprint%'\nLIMIT 50",
+  "rows": [
+    {
+      "code": "BP-1_04",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-1",
+      "name": "Disclosure of extent to which sustainability statement covers upstream and downstream value chain",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_03",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Disclosure of metrics that include value chain data estimated using indirect sources",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_04",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Description of basis for preparation of metrics that include value chain data estimated using indirect sources",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_05",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Description of resulting level of accuracy of metrics that include value chain data estimated using indirect sources",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_06",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Description of planned actions to improve accuracy in future of metrics that include value chain data estimated using indirect sources",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_13",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Disclosure of nature of prior period material errors",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_21",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Topics (E4, S1, S2, S3, S4) have been assessed to be material",
+      "data_type": "semiNarrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_22",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "List of sustainability matters assessed to be material (phase-in)",
+      "data_type": "semiNarrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_23",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Disclosure of how business model and strategy take account of impacts related to sustainability matters assessed to be material (phase-in)",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_24",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Description of any time-bound targets set related to sustainability matters assessed to be material (phase-in) and progress made towards achieving those targets",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_25",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Description of policies related to sustainability matters assessed to be material (phase-in)",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_26",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Description of actions taken to identify, monitor, prevent, mitigate, remediate or bring end to actual or potential adverse impacts related to sustainability matters assessed to be material (phase-in) and result of such actions",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "BP-2_27",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "BP-2",
+      "name": "Disclosure of metrics related to sustainability matters assessed to be material (phase-in)",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "GOV-1_04",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "GOV-1",
+      "name": "Information about member's experience relevant to sectors, products and geographic locations of undertaking",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "GOV-1_14",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "GOV-1",
+      "name": "Disclosure of how administrative, management and supervisory bodies and senior executive management oversee setting of targets related to material impacts, risks and opportunities and how progress towards them is monitored",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "GOV-1_17",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "GOV-1",
+      "name": "Disclosure of how sustainability-related skills and expertise relate to material impacts, risks and opportunities",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "GOV-2_01",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "GOV-2",
+      "name": "Disclosure of whether, by whom and how frequently administrative, management and supervisory bodies are informed about material impacts, risks and opportunities, implementation of due diligence, and results and effectiveness of policies, actions, metrics and targets adopted to address them",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "GOV-2_03",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "GOV-2",
+      "name": "Disclosure of list of material impacts, risks and opportunities addressed by administrative, management and supervisory bodies or their relevant committees",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_01",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "Description of significant groups of products and (or) services offered",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_05",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "Description of products and services that are banned in certain markets",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_08",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "List of additional significant ESRS sectors in which significant activities are developed or in which undertaking is or may be connected to material impacts",
+      "data_type": "semiNarrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_15",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "Undertaking is active in chemicals production",
+      "data_type": "semiNarrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_16",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "Revenue from chemicals production",
+      "data_type": "monetary",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_19",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "Undertaking is active in cultivation and production of tobacco",
+      "data_type": "semiNarrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_20",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "Revenue from cultivation and production of tobacco",
+      "data_type": "monetary",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_21",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "Description of sustainability-related goals in terms of significant groups of products and services, customer categories, geographical areas and relationships with stakeholders",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_22",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "Disclosure of assessment of current significant products and (or) services, and significant markets and customer groups, in relation to sustainability-related goals",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_25",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "Description of business model and value chain",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-1_28",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-1",
+      "name": "Description of main features of upstream and downstream value chain and undertakings position in value chain",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_01",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Description of material impacts resulting from materiality assessment",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_02",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Description of material risks and opportunities resulting from materiality assessment",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_03",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Disclosure of current and anticipated effects of material impacts, risks and opportunities on business model, value chain, strategy and decision-making, and how undertaking has responded or plans to respond to these effects",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_04",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Disclosure of how material negative and positive impacts affect (or are likely to affect) people or environment",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_05",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Disclosure of whether and how material impacts originate from or are connected to strategy and business model",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_06",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Disclosure of reasonably expected time horizons of material impacts",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_07",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Description of nature of activities or business relationships through which undertaking is involved with material impacts",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_08",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Disclosure of current financial effects of material risks and opportunities on financial position, financial performance and cash flows and material risks and opportunities for which there is significant risk of material adjustment within next annual reporting period to carrying amounts of assets and liabilities reported in related financial statements",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_09",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Disclosure of anticipated financial effects of material risks and opportunities on financial position, financial performance and cash flows over short-, medium- and long-term",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_10",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Information about resilience of strategy and business model regarding capacity to address material impacts and risks and to take advantage of material opportunities",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "SBM-3_11",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "SBM-3",
+      "name": "Disclosure of changes to material impacts, risks and opportunities compared to previous reporting period",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "IRO-1_06",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "IRO-1",
+      "name": "Description of how process prioritises negative impacts based on their relative severity and likelihood and positive impacts based on their relative scale, scope and likelihood and determines which sustainability matters are material for reporting purposes",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "IRO-1_14",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "IRO-1",
+      "name": "Description of input parameters used in process to identify, assess and manage material impacts, risks and opportunities",
+      "data_type": "narrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "IRO-2_02",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "IRO-2",
+      "name": "Disclosure of list of ESRS Disclosure Requirements complied with in preparing sustainability statement following outcome of materiality assessment",
+      "data_type": "semiNarrative",
+      "conditional": "0",
+      "voluntary": "0"
+    },
+    {
+      "code": "IRO-2_03",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "IRO-2",
+      "name": "Explanation of negative materiality assessment for ESRS E1 Climate change",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "0"
+    },
+    {
+      "code": "IRO-2_04",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "IRO-2",
+      "name": "Explanation of negative materiality assessment for ESRS E2 Pollution",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "1"
+    },
+    {
+      "code": "IRO-2_05",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "IRO-2",
+      "name": "Explanation of negative materiality assessment for ESRS E3 Water and marine resources",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "1"
+    },
+    {
+      "code": "IRO-2_06",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "IRO-2",
+      "name": "Explanation of negative materiality assessment for ESRS E4 Biodiversity and ecosystems",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "1"
+    },
+    {
+      "code": "IRO-2_07",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "IRO-2",
+      "name": "Explanation of negative materiality assessment for ESRS E5 Circular economy",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "1"
+    },
+    {
+      "code": "IRO-2_08",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "IRO-2",
+      "name": "Explanation of negative materiality assessment for ESRS S1 Own workforce",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "1"
+    },
+    {
+      "code": "IRO-2_09",
+      "esrs_standard": "ESRS 2",
+      "disclosure_requirement": "IRO-2",
+      "name": "Explanation of negative materiality assessment for ESRS S2 Workers in value chain",
+      "data_type": "narrative",
+      "conditional": "1",
+      "voluntary": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "code\tesrs_standard\tdisclosure_requirement\tname\tdata_type\tconditional\tvoluntary\nBP-1_04\tESRS 2\tBP-1\tDisclosure of extent to which sustainability statement covers upstream and downstream value chain\tnarrative\t0\t0\nBP-2_03\tESRS 2\tBP-2\tDisclosure of metrics that include value chain data estimated using indirect sources\tnarrative\t1\t0\nBP-2_04\tESRS 2\tBP-2\tDescription of basis for preparation of metrics that include value chain data estimated using indirect sources\tnarrative\t1\t0\nBP-2_05\tESRS 2\tBP-2\tDescription of resulting level of accuracy of metrics that include value chain data estimated using indirect sources\tnarrative\t1\t0\nBP-2_06\tESRS 2\tBP-2\tDescription of planned actions to improve accuracy in future of metrics that include value chain data estimated using indirect sources\tnarrative\t1\t0\nBP-2_13\tESRS 2\tBP-2\tDisclosure of nature of prior period material errors\tnarrative\t1\t0\nBP-2_21\tESRS 2\tBP-2\tTopics (E4, S1, S2, S3, S4) have been assessed to be material\tsemiNarrative\t1\t0\nBP-2_22\tESRS 2\tBP-2\tList of sustainability matters assessed to be material (phase-in)\tsemiNarrative\t1\t0\nBP-2_23\tESRS 2\tBP-2\tDisclosure of how business model and strategy take account of impacts related to sustainability matters assessed to be material (phase-in)\tnarrative\t1\t0\nBP-2_24\tESRS 2\tBP-2\tDescription of any time-bound targets set related to sustainability matters assessed to be material (phase-in) and progress made towards achieving those targets\tnarrative\t1\t0\nBP-2_25\tESRS 2\tBP-2\tDescription of policies related to sustainability matters assessed to be material (phase-in)\tnarrative\t1\t0\nBP-2_26\tESRS 2\tBP-2\tDescription of actions taken to identify, monitor, prevent, mitigate, remediate or bring end to actual or potential adverse impacts related to sustainability matters assessed to be material (phase-in) and result of such actions\tnarrative\t1\t0\nBP-2_27\tESRS 2\tBP-2\tDisclosure of metrics related to sustainability matters assessed to be material (phase-in)\tnarrative\t1\t0\nGOV-1_04\tESRS 2\tGOV-1\tInformation about member's experience relevant to sectors, products and geographic locations of undertaking\tnarrative\t0\t0\nGOV-1_14\tESRS 2\tGOV-1\tDisclosure of how administrative, management and supervisory bodies and senior executive management oversee setting of targets related to material impacts, risks and opportunities and how progress towards them is monitored\tnarrative\t0\t0\nGOV-1_17\tESRS 2\tGOV-1\tDisclosure of how sustainability-related skills and expertise relate to material impacts, risks and opportunities\tnarrative\t0\t0\nGOV-2_01\tESRS 2\tGOV-2\tDisclosure of whether, by whom and how frequently administrative, management and supervisory bodies are informed about material impacts, risks and opportunities, implementation of due diligence, and results and effectiveness of policies, actions, metrics and targets adopted to address them\tnarrative\t0\t0\nGOV-2_03\tESRS 2\tGOV-2\tDisclosure of list of material impacts, risks and opportunities addressed by administrative, management and supervisory bodies or their relevant committees\tnarrative\t0\t0\nSBM-1_01\tESRS 2\tSBM-1\tDescription of significant groups of products and (or) services offered\tnarrative\t0\t0\nSBM-1_05\tESRS 2\tSBM-1\tDescription of products and services that are banned in certain markets\tnarrative\t1\t0\nSBM-1_08\tESRS 2\tSBM-1\tList of additional significant ESRS sectors in which significant activities are developed or in which undertaking is or may be connected to material impacts\tsemiNarrative\t0\t0\nSBM-1_15\tESRS 2\tSBM-1\tUndertaking is active in chemicals production\tsemiNarrative\t1\t0\nSBM-1_16\tESRS 2\tSBM-1\tRevenue from chemicals production\tmonetary\t1\t0\nSBM-1_19\tESRS 2\tSBM-1\tUndertaking is active in cultivation and production of tobacco\tsemiNarrative\t1\t0\nSBM-1_20\tESRS 2\tSBM-1\tRevenue from cultivation and production of tobacco\tmonetary\t1\t0\nSBM-1_21\tESRS 2\tSBM-1\tDescription of sustainability-related goals in terms of significant groups of products and services, customer categories, geographical areas and relationships with stakeholders\tnarrative\t0\t0\nSBM-1_22\tESRS 2\tSBM-1\tDisclosure of assessment of current significant products and (or) services, and significant markets and customer groups, in relation to sustainability-related goals\tnarrative\t0\t0\nSBM-1_25\tESRS 2\tSBM-1\tDescription of business model and value chain\tnarrative\t0\t0\nSBM-1_28\tESRS 2\tSBM-1\tDescription of main features of upstream and downstream value chain and undertakings position in value chain\tnarrative\t0\t0\nSBM-3_01\tESRS 2\tSBM-3\tDescription of material impacts resulting from materiality assessment\tnarrative\t0\t0\nSBM-3_02\tESRS 2\tSBM-3\tDescription of material risks and opportunities resulting from materiality assessment\tnarrative\t0\t0\nSBM-3_03\tESRS 2\tSBM-3\tDisclosure of current and anticipated effects of material impacts, risks and opportunities on business model, value chain, strategy and decision-making, and how undertaking has responded or plans to respond to these effects\tnarrative\t0\t0\nSBM-3_04\tESRS 2\tSBM-3\tDisclosure of how material negative and positive impacts affect (or are likely to affect) people or environment\tnarrative\t0\t0\nSBM-3_05\tESRS 2\tSBM-3\tDisclosure of whether and how material impacts originate from or are connected to strategy and business model\tnarrative\t0\t0\nSBM-3_06\tESRS 2\tSBM-3\tDisclosure of reasonably expected time horizons of material impacts\tnarrative\t0\t0\nSBM-3_07\tESRS 2\tSBM-3\tDescription of nature of activities or business relationships through which undertaking is involved with material impacts\tnarrative\t0\t0\nSBM-3_08\tESRS 2\tSBM-3\tDisclosure of current financial effects of material risks and opportunities on financial position, financial performance and cash flows and material risks and opportunities for which there is significant risk of material adjustment within next annual reporting period to carrying amounts of assets and liabilities reported in related financial statements\tnarrative\t0\t0\nSBM-3_09\tESRS 2\tSBM-3\tDisclosure of anticipated financial effects of material risks and opportunities on financial position, financial performance and cash flows over short-, medium- and long-term\tnarrative\t0\t0\nSBM-3_10\tESRS 2\tSBM-3\tInformation about resilience of strategy and business model regarding capacity to address material impacts and risks and to take advantage of material opportunities\tnarrative\t0\t0\nSBM-3_11\tESRS 2\tSBM-3\tDisclosure of changes to material impacts, risks and opportunities compared to previous reporting period\tnarrative\t0\t0\nIRO-1_06\tESRS 2\tIRO-1\tDescription of how process prioritises negative impacts based on their relative severity and likelihood and positive impacts based on their relative scale, scope and likelihood and determines which sustainability matters are material for reporting purposes\tnarrative\t0\t0\nIRO-1_14\tESRS 2\tIRO-1\tDescription of input parameters used in process to identify, assess and manage material impacts, risks and opportunities\tnarrative\t0\t0\nIRO-2_02\tESRS 2\tIRO-2\tDisclosure of list of ESRS Disclosure Requirements complied with in preparing sustainability statement following outcome of materiality assessment\tsemiNarrative\t0\t0\nIRO-2_03\tESRS 2\tIRO-2\tExplanation of negative materiality assessment for ESRS E1 Climate change\tnarrative\t1\t0\nIRO-2_04\tESRS 2\tIRO-2\tExplanation of negative materiality assessment for ESRS E2 Pollution\tnarrative\t1\t1\nIRO-2_05\tESRS 2\tIRO-2\tExplanation of negative materiality assessment for ESRS E3 Water and marine resources\tnarrative\t1\t1\nIRO-2_06\tESRS 2\tIRO-2\tExplanation of negative materiality assessment for ESRS E4 Biodiversity and ecosystems\tnarrative\t1\t1\nIRO-2_07\tESRS 2\tIRO-2\tExplanation of negative materiality assessment for ESRS E5 Circular economy\tnarrative\t1\t1\nIRO-2_08\tESRS 2\tIRO-2\tExplanation of negative materiality assessment for ESRS S1 Own workforce\tnarrative\t1\t1\nIRO-2_09\tESRS 2\tIRO-2\tExplanation of negative materiality assessment for ESRS S2 Workers in value chain\tnarrative\t1\t1\n",
+  "stderr": "",
+  "execution_time_ms": 67
+}
