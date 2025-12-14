@@ -49,6 +49,10 @@ const AdminEUDRSeeder = lazy(() => import("./pages/AdminEUDRSeeder"));
 const AdminCellarSyncMonitor = lazy(
   () => import("./pages/AdminCellarSyncMonitor")
 );
+const AdvisoryDashboard = lazy(() => import("./pages/AdvisoryDashboard"));
+const AdvisoryExplorer = lazy(() => import("./pages/AdvisoryExplorer"));
+const AdvisoryTraceability = lazy(() => import("./pages/AdvisoryTraceability")
+);
 const AdminAnalyticsDashboard = lazy(
   () => import("./pages/AdminAnalyticsDashboard")
 );
@@ -135,6 +139,9 @@ function Router() {
       />
       <Route path="/hub/dutch-initiatives" component={HubDutchInitiatives} />
       <Route path="/ask" component={AskISA} />
+      <Route path="/advisory/dashboard" component={AdvisoryDashboard} />
+      <Route path="/advisory/explorer" component={AdvisoryExplorer} />
+      <Route path="/advisory/traceability" component={AdvisoryTraceability} />
       <Route path="/admin/knowledge-base" component={AdminKnowledgeBase} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
       <Route path="/admin/cellar" component={AdminCellarIngestion} />

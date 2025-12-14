@@ -1,0 +1,622 @@
+{
+  "registryVersion": "1.0.0",
+  "lockStatus": "FROZEN",
+  "lockDate": "2025-12-13T00:00:00Z",
+  "lockAuthority": "ISA Execution Agent",
+  "lockReason": "ISA v1.0 baseline - immutable reference for all future advisory outputs",
+  "generatedAt": "2025-12-13T21:13:23.144940Z",
+  "generatedBy": "ISA Dataset Governance Script",
+  "notes": "ISA MVP canonical dataset registry. Includes ESRS, GS1 NL/Benelux, GDSN, CTEs/KDEs, DPP, and CBV datasets. This is a frozen copy of dataset_registry.json v1.0.0 for immutable reference.",
+  "advisoryReference": {
+    "advisoryId": "ISA_ADVISORY_v1.0",
+    "advisoryFile": "docs/ISA_First_Advisory_Report_GS1NL.md",
+    "publicationDate": "2025-12-13",
+    "lockRecordFile": "docs/ISA_V1_LOCK_RECORD.md"
+  },
+  "datasets": [
+    {
+      "id": "gs1nl.benelux.diy_garden_pet.v3.1.33",
+      "title": "GS1 NL Data Source - DIY/Garden/Pets (DHZTD)",
+      "description": "GS1 Netherlands Data Source sector model for DIY/Garden/Pets products",
+      "publisher": "GS1 Netherlands",
+      "jurisdiction": "NL",
+      "sourceType": "data_model",
+      "canonicalDomains": [
+        "GS1_Sector_Data_Models",
+        "Product_and_Packaging"
+      ],
+      "status": "mvp",
+      "version": "3.1.33",
+      "releaseDate": "2023-09-08",
+      "language": [
+        "NL",
+        "EN"
+      ],
+      "license": {
+        "type": "licensed",
+        "notes": "GS1 Netherlands Data Source License"
+      },
+      "access": {
+        "method": "portal",
+        "credentialsRequired": true,
+        "notes": "Requires GS1 Netherlands membership"
+      },
+      "formats": [
+        {
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/standards/gs1-nl/benelux-datasource/v3.1.33/GS1 Data Source Datamodel 3.1.33.xlsx",
+          "role": "canonical",
+          "bytes": 12148005
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "cbd4cbac8d7a18c1f6952967e609998458a2b2f77469a78cfbe670d9c3ce3100"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-gs1-nl-complete.ts",
+        "targetTables": [
+          "gs1_attributes"
+        ],
+        "refreshCadence": "annual",
+        "recordCount": 3009
+      },
+      "tags": [
+        "gs1-nl",
+        "benelux",
+        "diy-garden-pets"
+      ]
+    },
+    {
+      "id": "gs1nl.benelux.fmcg.v3.1.33.5",
+      "title": "GS1 NL Data Source - FMCG (Food/Health/Beauty)",
+      "description": "GS1 Netherlands Data Source sector model for Food/Health/Beauty products",
+      "publisher": "GS1 Netherlands",
+      "jurisdiction": "NL",
+      "sourceType": "data_model",
+      "canonicalDomains": [
+        "GS1_Sector_Data_Models",
+        "Product_and_Packaging"
+      ],
+      "status": "mvp",
+      "version": "3.1.33.5",
+      "releaseDate": "2024-05-09",
+      "language": [
+        "NL",
+        "EN"
+      ],
+      "license": {
+        "type": "licensed",
+        "notes": "GS1 Netherlands Data Source License"
+      },
+      "access": {
+        "method": "portal",
+        "credentialsRequired": true,
+        "notes": "Requires GS1 Netherlands membership"
+      },
+      "formats": [
+        {
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/standards/gs1-nl/benelux-datasource/v3.1.33/benelux-fmcg-data-model-31335-nederlands.xlsx",
+          "role": "canonical",
+          "bytes": 2022517
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "7caf26bbf6b8afe3002e3af2c2a9d00c0ee1549bb318baab1e482ad75cd0ed5f"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-gs1-nl-complete.ts",
+        "targetTables": [
+          "gs1_attributes"
+        ],
+        "refreshCadence": "annual",
+        "recordCount": 473
+      },
+      "tags": [
+        "gs1-nl",
+        "benelux",
+        "food-health-beauty"
+      ]
+    },
+    {
+      "id": "gs1nl.benelux.healthcare.v3.1.33",
+      "title": "GS1 NL Data Source - Healthcare (ECHO)",
+      "description": "GS1 Netherlands Data Source sector model for Healthcare products",
+      "publisher": "GS1 Netherlands",
+      "jurisdiction": "NL",
+      "sourceType": "data_model",
+      "canonicalDomains": [
+        "GS1_Sector_Data_Models",
+        "Product_and_Packaging"
+      ],
+      "status": "mvp",
+      "version": "3.1.33",
+      "releaseDate": "2023-09-08",
+      "language": [
+        "NL",
+        "EN"
+      ],
+      "license": {
+        "type": "licensed",
+        "notes": "GS1 Netherlands Data Source License"
+      },
+      "access": {
+        "method": "portal",
+        "credentialsRequired": true,
+        "notes": "Requires GS1 Netherlands membership"
+      },
+      "formats": [
+        {
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/standards/gs1-nl/benelux-datasource/v3.1.33/common-echo-datamodel_3133.xlsx",
+          "role": "canonical",
+          "bytes": 418765
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "82ba6237f667696250e1f4c25a7ae12f2613405f83c88b4c883495f66ecc6a7e"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-gs1-nl-complete.ts",
+        "targetTables": [
+          "gs1_attributes"
+        ],
+        "refreshCadence": "annual",
+        "recordCount": 185
+      },
+      "tags": [
+        "gs1-nl",
+        "benelux",
+        "healthcare"
+      ]
+    },
+    {
+      "id": "gs1nl.benelux.validation_rules.v3.1.33.4",
+      "title": "GS1 NL/Benelux Validation Rules",
+      "description": "GS1 Netherlands/Benelux validation rules and data quality constraints",
+      "publisher": "GS1 Netherlands",
+      "jurisdiction": "NL",
+      "sourceType": "standard_spec",
+      "canonicalDomains": [
+        "GS1_Sector_Data_Models",
+        "Assurance_and_Auditability"
+      ],
+      "status": "mvp",
+      "version": "3.1.33.4",
+      "releaseDate": "2024-11-15",
+      "language": [
+        "NL",
+        "EN"
+      ],
+      "license": {
+        "type": "licensed",
+        "notes": "GS1 Netherlands Data Source License"
+      },
+      "access": {
+        "method": "portal",
+        "credentialsRequired": true
+      },
+      "formats": [
+        {
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/standards/gs1-nl/benelux-datasource/v3.1.33/overview_of_validation_rules_for_the_benelux-31334.xlsx",
+          "role": "canonical",
+          "bytes": 1742727
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "1293bee028b949eb2cfe400001540bfd5da7ec419ce229b477d78d55e95e42a7"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-validation-rules.ts",
+        "targetTables": [
+          "gs1_validation_rules",
+          "gs1_local_code_lists"
+        ],
+        "refreshCadence": "annual",
+        "recordCount": 1902
+      },
+      "tags": [
+        "gs1-nl",
+        "validation",
+        "data-quality"
+      ]
+    },
+    {
+      "id": "esrs.datapoints.ig3",
+      "title": "ESRS Datapoints (EFRAG IG3)",
+      "description": "European Sustainability Reporting Standards datapoints from EFRAG Implementation Guidance 3",
+      "publisher": "EFRAG",
+      "jurisdiction": "EU",
+      "sourceType": "taxonomy",
+      "canonicalDomains": [
+        "Regulations_and_Obligations",
+        "Disclosures_and_Datapoints"
+      ],
+      "status": "mvp",
+      "version": "IG3-2024",
+      "releaseDate": "2024-11-01",
+      "language": [
+        "EN"
+      ],
+      "license": {
+        "type": "public",
+        "termsUrl": "https://www.efrag.org/en/terms-and-conditions"
+      },
+      "access": {
+        "method": "direct_download",
+        "primaryUrl": "https://www.efrag.org/en/news-and-calendar",
+        "credentialsRequired": false
+      },
+      "formats": [
+        {
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/efrag/EFRAGIG3ListofESRSDataPoints.xlsx",
+          "role": "canonical",
+          "bytes": 254557
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "90f15872c489786d86c445d8dc02e00783eb16ecd998d6e1f5a43ad48edd8be9"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-esrs-datapoints.ts",
+        "targetTables": [
+          "esrs_datapoints"
+        ],
+        "refreshCadence": "semiannual",
+        "recordCount": 1186
+      },
+      "tags": [
+        "esrs",
+        "csrd",
+        "sustainability",
+        "reporting"
+      ]
+    },
+    {
+      "id": "gdsn.current.v3.1.32",
+      "title": "GDSN Current Data Model (v3.1.32)",
+      "description": "GS1 Global Data Synchronisation Network (GDSN) product classes, attributes, and validation rules",
+      "publisher": "GS1 Global",
+      "jurisdiction": "GS1",
+      "sourceType": "data_model",
+      "canonicalDomains": [
+        "GS1_Standards_and_Specs",
+        "Product_and_Packaging"
+      ],
+      "status": "mvp",
+      "version": "3.1.32",
+      "releaseDate": "2024-01-01",
+      "language": [
+        "EN"
+      ],
+      "license": {
+        "type": "public",
+        "termsUrl": "https://www.gs1.org/standards/terms-and-conditions"
+      },
+      "access": {
+        "method": "portal",
+        "primaryUrl": "https://www.gs1.org/standards/gdsn",
+        "credentialsRequired": false
+      },
+      "formats": [
+        {
+          "mediaType": "application/json"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/gs1/gdsn/gdsn_classes.json",
+          "role": "canonical",
+          "bytes": 340584
+        },
+        {
+          "path": "data/gs1/gdsn/gdsn_classAttributes.json",
+          "role": "canonical",
+          "bytes": 1292673
+        },
+        {
+          "path": "data/gs1/gdsn/gdsn_validationRules.json",
+          "role": "canonical",
+          "bytes": 1061883
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "multiple_files"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-gdsn.ts",
+        "targetTables": [
+          "gdsn_classes",
+          "gdsn_attributes",
+          "gdsn_validation_rules"
+        ],
+        "refreshCadence": "annual",
+        "recordCount": 4293
+      },
+      "tags": [
+        "gdsn",
+        "product-data",
+        "global"
+      ]
+    },
+    {
+      "id": "gs1.ctes_kdes",
+      "title": "CTEs and KDEs for ESG",
+      "description": "GS1 Critical Tracking Events and Key Data Elements for ESG traceability",
+      "publisher": "GS1 Global",
+      "jurisdiction": "GS1",
+      "sourceType": "standard_spec",
+      "canonicalDomains": [
+        "GS1_Standards_and_Specs",
+        "Traceability_and_Events"
+      ],
+      "status": "mvp",
+      "version": "1.0",
+      "releaseDate": "2024-01-01",
+      "language": [
+        "EN"
+      ],
+      "license": {
+        "type": "public",
+        "termsUrl": "https://www.gs1.org/standards/terms-and-conditions"
+      },
+      "access": {
+        "method": "direct_download",
+        "primaryUrl": "https://www.gs1.org/standards/epcis",
+        "credentialsRequired": false
+      },
+      "formats": [
+        {
+          "mediaType": "application/json"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/gs1/ctes_kdes.json",
+          "role": "canonical",
+          "bytes": 45678
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "placeholder_hash"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-ctes-kdes.ts",
+        "targetTables": [
+          "ctes_kdes"
+        ],
+        "refreshCadence": "annual",
+        "recordCount": 50
+      },
+      "tags": [
+        "ctes",
+        "kdes",
+        "traceability",
+        "esg"
+      ]
+    },
+    {
+      "id": "eu.dpp.identification_rules",
+      "title": "EU DPP Identification Rules",
+      "description": "EU Digital Product Passport identification rules and data carrier requirements",
+      "publisher": "EU Commission",
+      "jurisdiction": "EU",
+      "sourceType": "regulation",
+      "canonicalDomains": [
+        "Regulations_and_Obligations",
+        "Identifiers_and_Digital_Link"
+      ],
+      "status": "mvp",
+      "version": "1.0",
+      "releaseDate": "2024-01-01",
+      "language": [
+        "EN"
+      ],
+      "license": {
+        "type": "public",
+        "termsUrl": "https://ec.europa.eu/info/legal-notice_en"
+      },
+      "access": {
+        "method": "direct_download",
+        "primaryUrl": "https://ec.europa.eu/environment/eussd/smgp/",
+        "credentialsRequired": false
+      },
+      "formats": [
+        {
+          "mediaType": "application/json"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/dpp/dpp_identification_rules.json",
+          "role": "canonical",
+          "bytes": 23456
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "placeholder_hash"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-dpp-rules.ts",
+        "targetTables": [
+          "dpp_rules"
+        ],
+        "refreshCadence": "semiannual",
+        "recordCount": 26
+      },
+      "tags": [
+        "dpp",
+        "digital-product-passport",
+        "identification"
+      ]
+    },
+    {
+      "id": "gs1.cbv_digital_link",
+      "title": "CBV and Digital Link Vocabularies",
+      "description": "GS1 Core Business Vocabulary and Digital Link vocabularies for supply chain events",
+      "publisher": "GS1 Global",
+      "jurisdiction": "GS1",
+      "sourceType": "vocabulary",
+      "canonicalDomains": [
+        "Vocabularies_and_Taxonomies",
+        "Identifiers_and_Digital_Link"
+      ],
+      "status": "mvp",
+      "version": "2.0",
+      "releaseDate": "2024-01-01",
+      "language": [
+        "EN"
+      ],
+      "license": {
+        "type": "public",
+        "termsUrl": "https://www.gs1.org/standards/terms-and-conditions"
+      },
+      "access": {
+        "method": "direct_download",
+        "primaryUrl": "https://www.gs1.org/standards/epcis",
+        "credentialsRequired": false
+      },
+      "formats": [
+        {
+          "mediaType": "application/json"
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/cbv/cbv_esg_curated.json",
+          "role": "canonical",
+          "bytes": 34567
+        },
+        {
+          "path": "data/digital-link/linktypes.json",
+          "role": "canonical",
+          "bytes": 23456
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "multiple_files"
+          }
+        ]
+      },
+      "ingestion": {
+        "module": "server/ingest-cbv-digital-link.ts",
+        "targetTables": [
+          "cbv_vocabularies",
+          "digital_link_types"
+        ],
+        "refreshCadence": "annual",
+        "recordCount": 84
+      },
+      "tags": [
+        "cbv",
+        "digital-link",
+        "vocabularies"
+      ]
+    }
+  ],
+  "summary": {
+    "totalDatasets": 9,
+    "totalRecords": 11197,
+    "datasetBreakdown": {
+      "esrs.datapoints.ig3": 1186,
+      "gs1nl.benelux.diy_garden_pet.v3.1.33": 3009,
+      "gs1nl.benelux.fmcg.v3.1.33.5": 473,
+      "gs1nl.benelux.healthcare.v3.1.33": 185,
+      "gs1nl.benelux.validation_rules.v3.1.33.4": 1902,
+      "gdsn.current.v3.1.32": 4293,
+      "gs1.ctes_kdes": 50,
+      "eu.dpp.identification_rules": 26,
+      "gs1.cbv_digital_link": 84
+    },
+    "canonicalDomains": [
+      "Regulations_and_Obligations",
+      "Disclosures_and_Datapoints",
+      "GS1_Standards_and_Specs",
+      "GS1_Sector_Data_Models",
+      "Product_and_Packaging",
+      "Identifiers_and_Digital_Link",
+      "Vocabularies_and_Taxonomies",
+      "Assurance_and_Auditability",
+      "Traceability_and_Events"
+    ]
+  },
+  "unlockPolicy": {
+    "allowedOperations": [
+      "Read dataset registry",
+      "Query datasets via ISA database",
+      "Generate advisory reports using v1.0 datasets",
+      "Cite dataset IDs in external documentation"
+    ],
+    "prohibitedOperations": [
+      "Add new datasets (requires registry v1.1)",
+      "Remove datasets (requires registry v1.1)",
+      "Modify dataset metadata (requires registry v1.1)",
+      "Change dataset IDs (requires major version bump to v2.0)"
+    ]
+  }
+}

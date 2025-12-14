@@ -1,0 +1,40 @@
+ISA v1.0 Lock Verification Checksums
+====================================
+
+Lock Date: December 13, 2025
+Lock Authority: ISA Execution Agent
+
+SHA256 Hashes
+-------------
+
+Advisory Report (ISA_ADVISORY_v1.0):
+c0a27b2f558a64ee526f6d79d1a066a72b66688fdcd8509cce64031e911b8d52  docs/ISA_First_Advisory_Report_GS1NL.md
+
+Lock Record:
+99f5e861e8aff06ba05a8faa2696dc59160949e4ef693c6cdae03c983f141646  docs/ISA_V1_LOCK_RECORD.md
+
+Frozen Dataset Registry (v1.0.0):
+e2f655a9095ef4fa089d360b19189d73f9f6415762cd03baed0b7e97b6dcbc14  data/metadata/dataset_registry_v1.0_FROZEN.json
+
+Verification Command
+--------------------
+
+To verify ISA v1.0 lock integrity, run:
+
+cd /home/ubuntu/isa_web
+sha256sum -c docs/ISA_V1_LOCK_CHECKSUMS.txt
+
+Expected Output:
+docs/ISA_First_Advisory_Report_GS1NL.md: OK
+docs/ISA_V1_LOCK_RECORD.md: OK
+data/metadata/dataset_registry_v1.0_FROZEN.json: OK
+
+Lock Policy
+-----------
+
+Any modification to these files invalidates ISA v1.0 lock.
+Future ISA versions must reference these checksums for comparison.
+
+---
+
+Generated: 2025-12-13

@@ -43,6 +43,7 @@ import { askISARouter } from "./routers/ask-isa.js";
 import { gs1AttributesRouter } from "./routers/gs1-attributes.js";
 import { newsAdminRouter } from "./news-admin-router.js";
 import { cronRouter } from "./routers/cron.js";
+import { advisoryRouter } from "./routers/advisory.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -968,6 +969,11 @@ export const appRouter = router({
    * Cron Router - Public endpoints for scheduled tasks
    */
   cron: cronRouter,
+
+  /**
+   * ISA Advisory API Router
+   */
+  advisory: advisoryRouter,
 
   /**
    * Dutch Initiatives Router
