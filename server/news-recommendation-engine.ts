@@ -182,12 +182,12 @@ async function findMatchingDatapoints(
       analysis.regulationMentions.includes("CSRD") ||
       analysis.regulationMentions.includes("ESRS")
     ) {
-      conditions.push(like(esrsDatapoints.datapointName, `%`));
+      conditions.push(like(esrsDatapoints.name, `%`));
     }
 
     // Match by themes
     for (const theme of analysis.themes) {
-      conditions.push(like(esrsDatapoints.datapointName, `%${theme}%`));
+      conditions.push(like(esrsDatapoints.name, `%${theme}%`));
     }
 
     if (conditions.length === 0) return [];
@@ -201,7 +201,7 @@ async function findMatchingDatapoints(
     return matches.map(dp => ({
       resourceType: "ESRS_DATAPOINT" as const,
       resourceId: dp.id,
-      resourceTitle: dp.datapointName || "ESRS Datapoint",
+      resourceTitle: dp.name || "ESRS Datapoint",
       relevanceScore: 0,
       reasoning: `Related to CSRD/ESRS reporting requirements`,
       matchedKeywords: ["CSRD", "ESRS"],

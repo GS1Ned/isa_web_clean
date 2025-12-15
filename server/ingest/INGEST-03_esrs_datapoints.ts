@@ -39,7 +39,7 @@ export interface ParsedEsrsRow {
   esrsStandard: string | null;
   disclosureRequirement: string | null;
   paragraph: string | null;
-  relatedAr: string | null;
+  relatedAR: string | null;
   name: string;
   dataType: string;
   conditional: boolean;
@@ -195,7 +195,7 @@ function parseWorkbook(
         esrsStandard: esrsStandardValue,
         disclosureRequirement: disclosureRequirementValue,
         paragraph: paragraphValue,
-        relatedAr: relatedArValue,
+        relatedAR: relatedArValue,
         name: nameValue,
         dataType: dataTypeValue,
         conditional: conditionalValue,
@@ -253,7 +253,7 @@ export async function ingestEsrsDatapoints(
           esrsStandard: row.esrsStandard,
           disclosureRequirement: row.disclosureRequirement,
           paragraph: row.paragraph,
-          relatedAr: row.relatedAr,
+          relatedAR: row.relatedAR,
           name: row.name,
           dataTypeRaw: row.dataType,
           conditionalRaw: row.conditional,
@@ -274,7 +274,7 @@ export async function ingestEsrsDatapoints(
               esrsStandard: row.esrsStandard,
               disclosureRequirement: row.disclosureRequirement,
               paragraph: row.paragraph,
-              relatedAr: row.relatedAr,
+              relatedAR: row.relatedAR,
               name: row.name,
               dataTypeRaw: row.dataType,
               conditionalRaw: row.conditional,
@@ -291,7 +291,7 @@ export async function ingestEsrsDatapoints(
             esrsStandard: row.esrsStandard,
             disclosureRequirement: row.disclosureRequirement,
             paragraph: row.paragraph,
-            relatedAr: row.relatedAr,
+            relatedAR: row.relatedAR,
             name: row.name,
             dataTypeRaw: row.dataType,
             conditionalRaw: row.conditional,
@@ -314,7 +314,7 @@ export async function ingestEsrsDatapoints(
               esrsStandard: row.esrsStandard,
               disclosureRequirement: row.disclosureRequirement,
               paragraph: row.paragraph,
-              relatedAr: row.relatedAr,
+              relatedAR: row.relatedAR,
               name: row.name,
               dataType: row.dataType,
               conditional: row.conditional,
@@ -329,7 +329,7 @@ export async function ingestEsrsDatapoints(
             esrsStandard: row.esrsStandard,
             disclosureRequirement: row.disclosureRequirement,
             paragraph: row.paragraph,
-            relatedAr: row.relatedAr,
+            relatedAR: row.relatedAR,
             name: row.name,
             dataType: row.dataType,
             conditional: row.conditional,

@@ -1,0 +1,40 @@
+# ISA Terms Dictionary
+# ISA-specific terminology and project names
+
+# ISA Project
+ISA
+Manus
+
+# ISA Concepts
+datapoint
+datapoints
+artefact
+artefacts
+
+# EU Regulations
+CSRD
+ESRS
+EUDR
+DPP
+PPWR
+ESPR
+SFDR
+
+# Organizations
+EFRAG
+EUR-Lex
+Cellar
+
+# Technical Terms
+tRPC
+Drizzle
+TiDB
+MySQL
+superjson
+Vitest
+markdownlint
+cspell
+
+# Dutch Terms
+Benelux
+Nederland

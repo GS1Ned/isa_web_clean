@@ -120,8 +120,13 @@ ISA quality is measured across five dimensions:
 - [ ] Terminology from GS1 glossary
 
 **Tools:**
-- `pnpm lint:style` – Markdownlint + British English spell-checker (to be implemented)
+- `pnpm lint:style` – Markdownlint + British English spell-checker (✅ IMPLEMENTED)
 - Manual review against Top 20 Style Rules checklist
+
+**Templates:**
+- `/docs/templates/ADVISORY_REPORT_TEMPLATE.md` – GS1-compliant advisory report template
+- `/docs/templates/GAP_ANALYSIS_TEMPLATE.md` – GS1-compliant gap analysis template
+- `/docs/templates/RECOMMENDATION_TEMPLATE.md` – GS1-compliant recommendation template
 
 **Reference:**
 - `/docs/STYLE_GUIDE_ADOPTION.md` – ISA style adoption guide

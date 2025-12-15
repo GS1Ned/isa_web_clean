@@ -519,3 +519,48 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] DPP Validation Engine
 - [ ] Fix TypeScript errors in regulation-esrs-mapper.ts
 - [ ] Fix TypeScript errors in routers.ts (ESRS field names)
+
+
+---
+
+## URGENT: Foundation Hardening (January 2025) ⚠️ BLOCKING
+
+### Priority 1: Fix TypeScript Schema Mismatches ✅ COMPLETE (32 → 13 errors)
+- [x] Search codebase for all references to `datapointId`, `datapointName`, `mayVoluntary` (59 references found)
+- [x] Update `server/regulation-esrs-mapper.ts` to use correct column names (`code`, `name`, `voluntary`)
+- [x] Update `server/routers.ts` to use correct column names
+- [x] Update `server/db.ts` column references (preserved API property names)
+- [x] Update `server/news-recommendation-engine.ts` column references
+- [x] Update `client/src/pages/ESRSDatapoints.tsx` frontend references
+- [x] Update `server/efrag-ig3-parser.ts` ingestion script
+- [x] Fix `relatedAr` → `relatedAR` typo in INGEST-03
+- [x] All production schema mismatches resolved (19 files updated)
+- [ ] Fix remaining 13 non-blocking errors (implicit any, config issues) - LOW PRIORITY
+
+### Priority 2: Regulatory Change Log MVP (ISA Design Contract Compliance)
+- [ ] Create database schema for `regulatory_change_log` table
+- [ ] Implement tRPC procedure: `regulatoryChangeLog.create` (admin-only)
+- [ ] Implement tRPC procedure: `regulatoryChangeLog.list` (with filters)
+- [ ] Implement tRPC procedure: `regulatoryChangeLog.getById`
+- [ ] Build admin UI at `/admin/regulatory-change-log` (create form)
+- [ ] Build admin UI at `/admin/regulatory-change-log` (list view with filters)
+- [ ] Seed 4-6 initial entries (GS1 EU PCF v1.0, GS1 DPP, GS1 Resolver v1.1.0, ESRS IG4)
+- [ ] Link regulatory change log entries to advisory metadata
+- [ ] Document regulatory change log usage in admin guide
+
+### Priority 3: Advisory Diff Tracking (Version Discipline)
+- [ ] Validate existing `compute_advisory_diff.cjs` script
+- [ ] Create database schema for `advisory_diffs` table
+- [ ] Compute diff for ISA v1.0 → v1.1 (GS1 EU PCF update)
+- [ ] Store diff metadata in database (added, removed, modified classifications)
+- [ ] Build UI to display advisory diffs at `/admin/advisory-diffs`
+- [ ] Test diff computation with sample advisory updates
+
+### Priority 4: Vitest Test Coverage (Quality Foundation)
+- [ ] Write tests for tRPC mapping procedures
+- [ ] Write tests for tRPC gap analysis procedures
+- [ ] Write tests for tRPC recommendation procedures
+- [ ] Write tests for advisory generation logic
+- [ ] Write tests for gap classification logic
+- [ ] Achieve 80%+ code coverage for server-side logic
+- [ ] Add test coverage reporting to CI/CD pipeline

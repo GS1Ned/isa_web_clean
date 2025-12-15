@@ -15,6 +15,9 @@ import { sql } from "drizzle-orm";
 // Export ESG extension tables
 export * from "./schema_esg_extensions";
 
+// Export GS1 EU Carbon Footprint tables
+export * from "./schema_gs1_eu_pcf";
+
 // Export cron monitoring tables
 export * from "./schema_cron_monitoring";
 

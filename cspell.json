@@ -1,0 +1,66 @@
+{
+  "version": "0.2",
+  "language": "en-GB",
+  "dictionaries": [
+    "en-gb",
+    "companies",
+    "softwareTerms",
+    "typescript",
+    "node",
+    "html",
+    "css"
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "gs1-terms",
+      "path": "./cspell-gs1-terms.txt",
+      "addWords": true
+    },
+    {
+      "name": "isa-terms",
+      "path": "./cspell-isa-terms.txt",
+      "addWords": true
+    }
+  ],
+  "dictionaries": [
+    "en-gb",
+    "companies",
+    "softwareTerms",
+    "typescript",
+    "node",
+    "html",
+    "css",
+    "gs1-terms",
+    "isa-terms"
+  ],
+  "ignorePaths": [
+    "node_modules/**",
+    ".git/**",
+    "dist/**",
+    "build/**",
+    "*.min.js",
+    "*.min.css",
+    "package-lock.json",
+    "pnpm-lock.yaml",
+    ".next/**",
+    "coverage/**",
+    "*.log"
+  ],
+  "ignoreRegExpList": [
+    "/\\b[A-Z]{2,}\\b/g",
+    "/\\b\\d+\\.\\d+\\.\\d+\\b/g",
+    "/https?:\\/\\/[^\\s]+/g"
+  ],
+  "words": [],
+  "flagWords": [
+    "analyze",
+    "artifact",
+    "center",
+    "defense",
+    "organization",
+    "standardize",
+    "color",
+    "favor",
+    "labor"
+  ]
+}

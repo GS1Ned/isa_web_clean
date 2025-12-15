@@ -122,7 +122,7 @@ export async function ingestIG3Datapoints(
       const existing = await db
         .select()
         .from(esrsDatapoints)
-        .where(eq(esrsDatapoints.datapointId, dp.datapointId))
+        .where(eq(esrsDatapoints.code, dp.datapointId))
         .limit(1);
 
       if (existing.length > 0) {
@@ -132,18 +132,16 @@ export async function ingestIG3Datapoints(
 
       // Insert datapoint
       await db.insert(esrsDatapoints).values({
-        datapointId: dp.datapointId,
+        code: dp.datapointId,
         esrsStandard: dp.esrsStandard,
         disclosureRequirement: dp.disclosureRequirement,
-        paragraph: dp.paragraph,
+        paragraph: dp.paragraph?.toString() || null,
         relatedAR: dp.relatedAR,
-        datapointName: dp.datapointName,
+        name: dp.datapointName,
         dataType: dp.dataType,
-        conditionalOrAlternative: dp.conditionalOrAlternative,
-        mayVoluntary: dp.mayVoluntary,
-        appendixB_SFDR: dp.appendixB_SFDR,
-        appendixC_LessThan750: dp.appendixC_LessThan750,
-        appendixC_AllUndertakings: dp.appendixC_AllUndertakings,
+        conditional: dp.conditionalOrAlternative,
+        voluntary: dp.mayVoluntary,
+        sfdrMapping: dp.appendixB_SFDR ? 'SFDR' : null,
       });
 
       insertedCount++;

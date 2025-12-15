@@ -11,7 +11,7 @@ import {
  */
 
 interface DatapointMatch {
-  datapointId: string; // e.g., "BP-1_01"
+  code: string; // e.g., "BP-1_01"
   esrsStandard: string; // e.g., "ESRS E1"
   relevanceScore: number; // 1-10
   reasoning: string; // Why this datapoint is relevant
@@ -69,8 +69,16 @@ export async function generateRegulationEsrsMappings(
       };
     }
 
-    // 3. Build LLM prompt
-    const prompt = buildMappingPrompt(regulation, allDatapoints);
+    // 3. Build LLM prompt (filter datapoints with required fields)
+    const validDatapoints = allDatapoints.filter(
+      dp => dp.code && dp.esrsStandard && dp.name
+    ) as Array<{
+      code: string;
+      esrsStandard: string;
+      name: string;
+      dataType: string | null;
+    }>;
+    const prompt = buildMappingPrompt(regulation, validDatapoints);
 
     // 4. Call LLM with structured output
     const response = await invokeLLM({
@@ -98,9 +106,9 @@ export async function generateRegulationEsrsMappings(
                 items: {
                   type: "object",
                   properties: {
-                    datapointId: {
+                    code: {
                       type: "string",
-                      description: "The ESRS datapoint ID (e.g., 'BP-1_01')",
+                      description: "The ESRS datapoint code (e.g., 'BP-1_01')",
                     },
                     esrsStandard: {
                       type: "string",
@@ -118,7 +126,7 @@ export async function generateRegulationEsrsMappings(
                     },
                   },
                   required: [
-                    "datapointId",
+                    "code",
                     "esrsStandard",
                     "relevanceScore",
                     "reasoning",
@@ -152,13 +160,13 @@ export async function generateRegulationEsrsMappings(
     // 7. Insert new mappings
     let insertedCount = 0;
     for (const match of result.mappings) {
-      // Find datapoint by datapointId
+      // Find datapoint by code
       const datapoint = allDatapoints.find(
-        dp => dp.datapointId === match.datapointId
+        dp => dp.code === match.code
       );
       if (!datapoint) {
         console.warn(
-          `[Mapper] Datapoint ${match.datapointId} not found, skipping`
+          `[Mapper] Datapoint ${match.code} not found, skipping`
         );
         continue;
       }
@@ -203,9 +211,9 @@ function buildMappingPrompt(
     regulationType: string;
   },
   datapoints: Array<{
-    datapointId: string;
+    code: string;
     esrsStandard: string;
-    datapointName: string;
+    name: string;
     dataType: string | null;
   }>
 ): string {
@@ -222,7 +230,7 @@ function buildMappingPrompt(
     .map(([standard, dps]) => {
       const dpList = dps
         .slice(0, 20) // Limit to first 20 per standard to avoid token overflow
-        .map(dp => `  - ${dp.datapointId}: ${dp.datapointName || "N/A"}`)
+        .map(dp => `  - ${dp.code}: ${dp.name || "N/A"}`)
         .join("\n");
       return `${standard} (${dps.length} datapoints):\n${dpList}`;
     })
@@ -252,7 +260,7 @@ ${datapointContext}
 
 ## Output Format
 Return a JSON object with an array of mappings. Each mapping must include:
-- datapointId: The exact datapoint ID from the list above
+- code: The exact datapoint code from the list above
 - esrsStandard: The ESRS standard (e.g., "ESRS E1")
 - relevanceScore: Integer from 1-10
 - reasoning: Brief explanation (1-2 sentences)
@@ -261,7 +269,7 @@ Return a JSON object with an array of mappings. Each mapping must include:
 {
   "mappings": [
     {
-      "datapointId": "E1-1_01",
+      "code": "E1-1_01",
       "esrsStandard": "ESRS E1",
       "relevanceScore": 10,
       "reasoning": "This regulation requires disclosure of climate transition plans, which directly maps to ESRS E1-1 climate change strategy."

@@ -270,7 +270,7 @@ export default function ESRSDatapoints() {
                     {data.datapoints.map(dp => (
                       <TableRow key={dp.id}>
                         <TableCell className="font-mono text-xs">
-                          {dp.datapointId}
+                          {dp.code}
                         </TableCell>
                         <TableCell>
                           <Badge variant="outline">{dp.esrsStandard}</Badge>
@@ -281,16 +281,16 @@ export default function ESRSDatapoints() {
                         <TableCell className="max-w-md">
                           <div
                             className="truncate"
-                            title={dp.datapointName || ""}
+                            title={dp.name || ""}
                           >
-                            {dp.datapointName}
+                            {dp.name}
                           </div>
                         </TableCell>
                         <TableCell>
                           <Badge variant="secondary">{dp.dataType}</Badge>
                         </TableCell>
                         <TableCell>
-                          {dp.mayVoluntary ? (
+                          {dp.voluntary ? (
                             <Badge
                               variant="outline"
                               className="bg-blue-50 text-blue-700 border-blue-200"

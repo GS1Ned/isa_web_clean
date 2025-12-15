@@ -655,12 +655,12 @@ export async function getRegulationEsrsMappings(regulationId: number) {
         // Join with datapoint details
         datapoint: {
           id: esrsDatapoints.id,
-          datapointId: esrsDatapoints.datapointId,
+          datapointId: esrsDatapoints.code,
           esrsStandard: esrsDatapoints.esrsStandard,
           disclosureRequirement: esrsDatapoints.disclosureRequirement,
-          datapointName: esrsDatapoints.datapointName,
+          datapointName: esrsDatapoints.name,
           dataType: esrsDatapoints.dataType,
-          mayVoluntary: esrsDatapoints.mayVoluntary,
+          mayVoluntary: esrsDatapoints.voluntary,
         },
       })
       .from(regulationEsrsMappings)
@@ -950,7 +950,7 @@ export async function getLowScoredMappings(minVotes: number = 3) {
         mappingId: regulationEsrsMappings.id,
         regulationId: regulationEsrsMappings.regulationId,
         datapointId: regulationEsrsMappings.datapointId,
-        datapointName: esrsDatapoints.datapointName,
+        datapointName: esrsDatapoints.name,
         esrsStandard: esrsDatapoints.esrsStandard,
         relevanceScore: regulationEsrsMappings.relevanceScore,
         reasoning: regulationEsrsMappings.reasoning,
@@ -1063,7 +1063,7 @@ export async function getMostVotedMappings(limit: number = 10) {
         mappingId: regulationEsrsMappings.id,
         regulationId: regulationEsrsMappings.regulationId,
         datapointId: regulationEsrsMappings.datapointId,
-        datapointName: esrsDatapoints.datapointName,
+        datapointName: esrsDatapoints.name,
         esrsStandard: esrsDatapoints.esrsStandard,
         relevanceScore: regulationEsrsMappings.relevanceScore,
         totalVotes: count(mappingFeedback.id),

@@ -845,8 +845,8 @@ export const appRouter = router({
         if (input?.search) {
           conditions.push(
             sql`(
-              ${esrsDatapoints.datapointId} LIKE ${`%${input.search}%`} OR
-              ${esrsDatapoints.datapointName} LIKE ${`%${input.search}%`} OR
+              ${esrsDatapoints.code} LIKE ${`%${input.search}%`} OR
+              ${esrsDatapoints.name} LIKE ${`%${input.search}%`} OR
               ${esrsDatapoints.disclosureRequirement} LIKE ${`%${input.search}%`}
             )`
           );
@@ -858,7 +858,7 @@ export const appRouter = router({
           conditions.push(like(esrsDatapoints.dataType, `%${input.dataType}%`));
         }
         if (input?.voluntary !== undefined) {
-          conditions.push(eq(esrsDatapoints.mayVoluntary, input.voluntary));
+          conditions.push(eq(esrsDatapoints.voluntary, input.voluntary));
         }
 
         // Get total count
