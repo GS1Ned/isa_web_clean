@@ -21,6 +21,9 @@ export * from "./schema_gs1_eu_pcf";
 // Export cron monitoring tables
 export * from "./schema_cron_monitoring";
 
+// Export regulatory change log tables
+export * from "./schema_regulatory_change_log";
+
 /**
  * Core user table backing auth flow.
  * Extend this file with additional tables as your product grows.

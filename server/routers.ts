@@ -44,6 +44,7 @@ import { gs1AttributesRouter } from "./routers/gs1-attributes.js";
 import { newsAdminRouter } from "./news-admin-router.js";
 import { cronRouter } from "./routers/cron.js";
 import { advisoryRouter } from "./routers/advisory.js";
+import { regulatoryChangeLogRouter } from "./routers/regulatory-change-log.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -974,6 +975,11 @@ export const appRouter = router({
    * ISA Advisory API Router
    */
   advisory: advisoryRouter,
+
+  /**
+   * Regulatory Change Log Router
+   */
+  regulatoryChangeLog: regulatoryChangeLogRouter,
 
   /**
    * Dutch Initiatives Router

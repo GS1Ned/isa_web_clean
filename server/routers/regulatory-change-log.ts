@@ -1,0 +1,131 @@
+import { router, publicProcedure, protectedProcedure } from "../_core/trpc";
+import { z } from "zod";
+import { TRPCError } from "@trpc/server";
+import {
+  createRegulatoryChangeLogEntry,
+  getRegulatoryChangeLogEntries,
+  getRegulatoryChangeLogEntryById,
+  getRegulatoryChangeLogEntriesByVersion,
+  getRegulatoryChangeLogStatsBySourceType,
+  getRegulatoryChangeLogStatsByVersion,
+} from "../db-regulatory-change-log";
+
+/**
+ * tRPC router for Regulatory Change Log
+ *
+ * Adheres to ISA Design Contract:
+ * - Admin-only creation (protectedProcedure with role check)
+ * - Public read access for transparency
+ * - Immutable entries (no update/delete procedures)
+ * - Traceable to source documents
+ */
+
+const sourceTypeEnum = z.enum([
+  "EU_DIRECTIVE",
+  "EU_REGULATION",
+  "EU_DELEGATED_ACT",
+  "EU_IMPLEMENTING_ACT",
+  "EFRAG_IG",
+  "EFRAG_QA",
+  "EFRAG_TAXONOMY",
+  "GS1_AISBL",
+  "GS1_EUROPE",
+  "GS1_NL",
+]);
+
+export const regulatoryChangeLogRouter = router({
+  /**
+   * Create a new regulatory change log entry (admin-only)
+   */
+  create: protectedProcedure
+    .input(
+      z.object({
+        entryDate: z.string(), // ISO 8601 date string
+        sourceType: sourceTypeEnum,
+        sourceOrg: z.string().min(1).max(255),
+        title: z.string().min(1).max(512),
+        description: z.string().min(1),
+        url: z.string().url().max(512),
+        documentHash: z.string().length(64).optional(),
+        impactAssessment: z.string().optional(),
+        isaVersionAffected: z.string().max(16).optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Admin-only authorization
+      if (ctx.user.role !== "admin") {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Only administrators can create regulatory change log entries",
+        });
+      }
+
+      // Convert ISO string to Date
+      const entryDate = new Date(input.entryDate);
+
+      const entry = await createRegulatoryChangeLogEntry({
+        ...input,
+        entryDate,
+      });
+
+      return entry;
+    }),
+
+  /**
+   * Get all regulatory change log entries with optional filters (public)
+   */
+  list: publicProcedure
+    .input(
+      z
+        .object({
+          sourceType: sourceTypeEnum.optional(),
+          isaVersionAffected: z.string().optional(),
+          limit: z.number().min(1).max(200).optional(),
+        })
+        .optional()
+    )
+    .query(async ({ input }) => {
+      return await getRegulatoryChangeLogEntries(input);
+    }),
+
+  /**
+   * Get a single regulatory change log entry by ID (public)
+   */
+  getById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input }) => {
+      const entry = await getRegulatoryChangeLogEntryById(input.id);
+
+      if (!entry) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `Regulatory change log entry with ID ${input.id} not found`,
+        });
+      }
+
+      return entry;
+    }),
+
+  /**
+   * Get regulatory change log entries by ISA version (public)
+   */
+  getByVersion: publicProcedure
+    .input(z.object({ isaVersion: z.string() }))
+    .query(async ({ input }) => {
+      return await getRegulatoryChangeLogEntriesByVersion(input.isaVersion);
+    }),
+
+  /**
+   * Get statistics on regulatory change log entries by source type (public)
+   */
+  statsBySourceType: publicProcedure.query(async () => {
+    return await getRegulatoryChangeLogStatsBySourceType();
+  }),
+
+  /**
+   * Get statistics on regulatory change log entries by ISA version (public)
+   */
+  statsByVersion: publicProcedure.query(async () => {
+    return await getRegulatoryChangeLogStatsByVersion();
+  }),
+});

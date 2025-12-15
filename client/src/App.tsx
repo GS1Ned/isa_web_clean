@@ -95,6 +95,7 @@ const HubDutchInitiativeDetail = lazy(
 const AskISA = lazy(() => import("./pages/AskISA"));
 const AdminKnowledgeBase = lazy(() => import("./pages/AdminKnowledgeBase"));
 const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
+const RegulatoryChangeLog = lazy(() => import("./pages/RegulatoryChangeLog"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -143,6 +144,7 @@ function Router() {
       <Route path="/advisory/explorer" component={AdvisoryExplorer} />
       <Route path="/advisory/traceability" component={AdvisoryTraceability} />
       <Route path="/admin/knowledge-base" component={AdminKnowledgeBase} />
+      <Route path="/admin/regulatory-change-log" component={RegulatoryChangeLog} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
       <Route path="/admin/cellar" component={AdminCellarIngestion} />
       <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />
