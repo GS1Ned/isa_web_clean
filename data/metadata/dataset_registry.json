@@ -1,8 +1,8 @@
 {
-  "registryVersion": "1.3.0",
-  "generatedAt": "2025-01-14T19:50:00.000Z",
+  "registryVersion": "1.4.0",
+  "generatedAt": "2025-12-15T12:58:12.065562Z",
   "generatedBy": "ISA Dataset Governance Script",
-  "notes": "ISA dataset registry v1.3.0. Adds GS1 EU Carbon Footprint Guideline v1.0 and registers all 15 GS1 standards from comprehensive catalog.",
+  "notes": "ISA dataset registry v1.4.0. Adds GS1 Reference Portal Bundle (352 documents from ref.gs1.org).",
   "changelog": {
     "v1.3.0": {
       "date": "2025-01-14",
@@ -19,9 +19,119 @@
         "Initial ISA MVP dataset registry",
         "Includes ESRS, GS1 NL/Benelux, GDSN, CTEs/KDEs, DPP, and CBV datasets"
       ]
+    },
+    "v1.4.0": {
+      "date": "2025-12-15",
+      "changes": [
+        "Added GS1 Reference Portal Bundle (352 documents from ref.gs1.org)",
+        "Includes 228 HTML context pages, 92 PDFs, 67 XML schemas, 52 JSON/JSON-LD files",
+        "Covers GS1 standards, architecture, tools, and technical artefacts",
+        "Authoritative crawl date: 2025-12-15 (sitemap-based, no recursive crawl)",
+        "SHA256 checksums for all documents (integrity verification)"
+      ]
     }
   },
   "newDatasets": [
+    {
+      "id": "gs1.ref.bundle.2025-12-15",
+      "title": "GS1 Reference Portal Bundle",
+      "description": "Authoritative snapshot of GS1 Reference Portal (ref.gs1.org) containing standards, guidelines, schemas, and technical artefacts. Crawled from official Drupal XML sitemap with 234 URLs.",
+      "publisher": "GS1 AISBL",
+      "jurisdiction": "Global",
+      "sourceType": "reference_corpus",
+      "canonicalDomains": [
+        "GS1_Standards",
+        "EPCIS",
+        "CBV",
+        "Digital_Link",
+        "GDSN",
+        "Architecture"
+      ],
+      "status": "mvp_critical",
+      "version": "2025-12-15",
+      "releaseDate": "2025-12-15",
+      "effectiveDate": "2025-12-15",
+      "language": [
+        "EN"
+      ],
+      "license": {
+        "type": "licensed",
+        "notes": "GS1 IP Policy - reference material for standards implementation"
+      },
+      "access": {
+        "method": "local_bundle",
+        "credentialsRequired": false,
+        "url": "https://ref.gs1.org/sitemap.xml"
+      },
+      "formats": [
+        {
+          "mediaType": "text/html",
+          "count": 228
+        },
+        {
+          "mediaType": "application/pdf",
+          "count": 92
+        },
+        {
+          "mediaType": "application/xml",
+          "count": 67
+        },
+        {
+          "mediaType": "application/json",
+          "count": 52
+        },
+        {
+          "mediaType": "text/turtle",
+          "count": 3
+        }
+      ],
+      "repoAssets": [
+        {
+          "path": "data/isa_gs1_ref_bundle_2025-12-15/manifest.json",
+          "role": "manifest",
+          "bytes": 149143
+        },
+        {
+          "path": "data/isa_gs1_ref_bundle_2025-12-15/html/",
+          "role": "context_html",
+          "count": 228
+        },
+        {
+          "path": "data/isa_gs1_ref_bundle_2025-12-15/downloads/",
+          "role": "documents",
+          "count": 124
+        }
+      ],
+      "lineage": {
+        "hashes": [
+          {
+            "alg": "sha256",
+            "value": "per_document_in_manifest",
+            "applies_to": "All 352 documents in manifest.json"
+          }
+        ],
+        "derivedFrom": [],
+        "extractionDate": "2025-12-15",
+        "extractionMethod": "Sitemap-based crawl (ref.gs1.org/sitemap.xml), strict scope"
+      },
+      "ingestion": {
+        "status": "complete",
+        "date": "2025-12-15",
+        "recordCount": 352,
+        "tables": [],
+        "script": "Manual bundle extraction + registry creation"
+      },
+      "isaUsage": "RAG corpus for Ask ISA, knowledge graph foundation",
+      "isaDomainTags": [
+        "GS1_Standards",
+        "EPCIS",
+        "CBV",
+        "Digital_Link",
+        "Architecture"
+      ],
+      "updateCadence": "quarterly (re-crawl sitemap)",
+      "monitoringUrl": "https://ref.gs1.org/sitemap.xml"
+    },
     {
       "id": "gs1eu.gdsn.carbon_footprint.v1.0",
       "title": "GS1 EU GDSN Implementation Guideline for Exchanging Carbon Footprint Data",
@@ -39,7 +149,9 @@
       "version": "1.0",
       "releaseDate": "2025-02",
       "effectiveDate": "2025-02",
-      "language": ["EN"],
+      "language": [
+        "EN"
+      ],
       "license": {
         "type": "licensed",
         "notes": "GS1 IP Policy - royalty-free license for GS1 members"
@@ -89,7 +201,12 @@
         "script": "scripts/datasets/ingest-gs1-eu-pcf.mjs"
       },
       "isaUsage": "MVP-critical",
-      "isaDomainTags": ["ESG", "GDSN", "Attributes", "Sustainability"],
+      "isaDomainTags": [
+        "ESG",
+        "GDSN",
+        "Attributes",
+        "Sustainability"
+      ],
       "isaGapResolution": {
         "gap": "ISA v1.0 Gap #1: Product Carbon Footprint",
         "before": "MISSING",
@@ -116,7 +233,11 @@
       "fileFormat": "ZIP",
       "updateCadence": "irregular (per release)",
       "isaUsage": "MVP-critical",
-      "isaDomainTags": ["DIY/Garden", "DataModel", "Taxonomy"],
+      "isaDomainTags": [
+        "DIY/Garden",
+        "DataModel",
+        "Taxonomy"
+      ],
       "ingestionStatus": "complete"
     },
     {
@@ -134,7 +255,10 @@
       "fileFormat": "XLSX",
       "updateCadence": "irregular (per release)",
       "isaUsage": "Background-only",
-      "isaDomainTags": ["DIY/Garden", "Validation"],
+      "isaDomainTags": [
+        "DIY/Garden",
+        "Validation"
+      ],
       "ingestionStatus": "complete"
     },
     {
@@ -152,7 +276,11 @@
       "fileFormat": "XLSX",
       "updateCadence": "irregular (per release)",
       "isaUsage": "Background-only",
-      "isaDomainTags": ["FMCG", "DataModel", "Taxonomy"],
+      "isaDomainTags": [
+        "FMCG",
+        "DataModel",
+        "Taxonomy"
+      ],
       "ingestionStatus": "complete"
     },
     {
@@ -170,7 +298,11 @@
       "fileFormat": "PDF",
       "updateCadence": "irregular",
       "isaUsage": "Background-only",
-      "isaDomainTags": ["FMCG", "DataModel", "Attributes"],
+      "isaDomainTags": [
+        "FMCG",
+        "DataModel",
+        "Attributes"
+      ],
       "ingestionStatus": "not_started"
     },
     {
@@ -188,7 +320,11 @@
       "fileFormat": "XLSX",
       "updateCadence": "irregular (aligned with GDSN)",
       "isaUsage": "Background-only",
-      "isaDomainTags": ["Healthcare", "GDSN", "ECHO"],
+      "isaDomainTags": [
+        "Healthcare",
+        "GDSN",
+        "ECHO"
+      ],
       "ingestionStatus": "complete"
     },
     {
@@ -206,7 +342,11 @@
       "fileFormat": "XLSX",
       "updateCadence": "superseded by 3.1.33",
       "isaUsage": "Background-only",
-      "isaDomainTags": ["Healthcare", "GDSN", "ECHO"],
+      "isaDomainTags": [
+        "Healthcare",
+        "GDSN",
+        "ECHO"
+      ],
       "ingestionStatus": "not_started"
     },
     {
@@ -224,7 +364,10 @@
       "fileFormat": "XLSX",
       "updateCadence": "irregular (per release)",
       "isaUsage": "Background-only",
-      "isaDomainTags": ["Healthcare", "Validation"],
+      "isaDomainTags": [
+        "Healthcare",
+        "Validation"
+      ],
       "ingestionStatus": "complete"
     },
     {
@@ -242,7 +385,12 @@
       "fileFormat": "PDF",
       "updateCadence": "one-time (sectoral release)",
       "isaUsage": "MVP-critical",
-      "isaDomainTags": ["ESG", "GDSN", "Attributes", "Sustainability"],
+      "isaDomainTags": [
+        "ESG",
+        "GDSN",
+        "Attributes",
+        "Sustainability"
+      ],
       "ingestionStatus": "complete"
     },
     {
@@ -260,7 +408,10 @@
       "fileFormat": "PDF",
       "updateCadence": "major update (multi-year)",
       "isaUsage": "Future-relevant",
-      "isaDomainTags": ["EPCIS", "Traceability"],
+      "isaDomainTags": [
+        "EPCIS",
+        "Traceability"
+      ],
       "ingestionStatus": "partial"
     },
     {
@@ -278,7 +429,11 @@
       "fileFormat": "PDF",
       "updateCadence": "major update (multi-year)",
       "isaUsage": "Future-relevant",
-      "isaDomainTags": ["CBV", "Vocabulary", "EPCIS"],
+      "isaDomainTags": [
+        "CBV",
+        "Vocabulary",
+        "EPCIS"
+      ],
       "ingestionStatus": "partial"
     },
     {
@@ -296,7 +451,11 @@
       "fileFormat": "PDF",
       "updateCadence": "periodic (API-driven)",
       "isaUsage": "MVP-critical",
-      "isaDomainTags": ["Digital Link", "URI", "WebID"],
+      "isaDomainTags": [
+        "Digital Link",
+        "URI",
+        "WebID"
+      ],
       "ingestionStatus": "complete"
     },
     {
@@ -314,7 +473,11 @@
       "fileFormat": "PDF",
       "updateCadence": "one-time (extension possible)",
       "isaUsage": "Future-relevant",
-      "isaDomainTags": ["Digital Link", "Resolver", "Web"],
+      "isaDomainTags": [
+        "Digital Link",
+        "Resolver",
+        "Web"
+      ],
       "ingestionStatus": "not_started"
     },
     {
@@ -332,7 +495,12 @@
       "fileFormat": "PDF",
       "updateCadence": "TBD (await full ratification)",
       "isaUsage": "Future-relevant",
-      "isaDomainTags": ["DPP", "AIDC", "Circularity", "Regulatory"],
+      "isaDomainTags": [
+        "DPP",
+        "AIDC",
+        "Circularity",
+        "Regulatory"
+      ],
       "ingestionStatus": "not_started"
     }
   ],

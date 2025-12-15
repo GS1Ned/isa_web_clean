@@ -564,3 +564,44 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Write tests for gap classification logic
 - [ ] Achieve 80%+ code coverage for server-side logic
 - [ ] Add test coverage reporting to CI/CD pipeline
+
+---
+
+## AI-Powered Features (Must-Have Future Development) 🚀
+
+### Phase 2.1: Ask ISA MVP (Q3 2025)
+- [ ] Build Ask ISA natural language query interface
+- [ ] Implement RAG pipeline over advisory v1.1 artifacts
+- [ ] Integrate 30-query library for validation testing
+- [ ] Add citation extraction and display
+- [ ] Implement guardrails per ISA Design Contract (refuse out-of-scope queries)
+- [ ] Add query logging for analytics
+- [ ] Test with GS1 NL stakeholders
+
+### Phase 2.2: AI-Powered Summaries
+- [ ] Auto-generate regulatory change log impact assessments
+- [ ] Generate GS1 relevance analysis for new regulations
+- [ ] Create sector-specific impact summaries (DIY, FMCG, Healthcare)
+- [ ] Add suggested actions generation
+- [ ] Integrate with news pipeline for automatic enrichment
+
+### Phase 2.3: Gap Analysis Assistant
+- [ ] Build dataset comparison engine
+- [ ] Identify coverage gaps between ESRS datapoints and GS1 attributes
+- [ ] Generate gap severity classifications (MISSING, PARTIAL, COMPLETE)
+- [ ] Create gap-to-recommendation linkage
+- [ ] Visualize coverage heatmaps by sector and regulation
+
+### Phase 2.4: Advisory Regeneration Engine
+- [ ] Implement AI-assisted advisory updates
+- [ ] Trigger regeneration when regulatory change log entries added
+- [ ] Compute advisory diffs automatically
+- [ ] Generate version comparison summaries
+- [ ] Maintain audit trail for all regenerations
+
+### OpenAI Integration (Pre-configured)
+- [x] OpenAI API key configured via Manus platform
+- [x] invokeLLM helper available in server/_core/llm.ts
+- [x] Structured JSON output supported via response_format
+- [ ] Add streaming support for long-form responses
+- [ ] Implement token usage tracking and cost monitoring
