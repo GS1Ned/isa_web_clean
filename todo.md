@@ -690,3 +690,16 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - EUR-Lex scraper tests: 5 passed
 - Fetch utilities tests: 15 passed (20 total news tests)
 
+
+
+---
+
+## Deployment Fix (December 2025) ✅ COMPLETE
+
+### Symlink Issue Resolution
+- [x] Identified symlinks in data/gs1_ref_corpus pointing to external directories
+- [x] Replaced html_context, pdf, structured, xlsx symlinks with actual directories + .gitkeep
+- [x] Replaced data/esg/*.json symlinks with actual file copies
+- [x] Removed data/isa_gs1_ref_bundle_2025-12-15 symlink
+- [x] Verified no symlinks remain outside node_modules
+
