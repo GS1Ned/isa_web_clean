@@ -716,3 +716,13 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Removed data/isa_gs1_ref_bundle_2025-12-15 symlink
 - [x] Verified no symlinks remain outside node_modules
 
+
+
+---
+
+## Database & TypeScript Improvements (December 2025)
+
+- [x] Run pnpm db:push to apply datatype enum schema changes
+- [x] Re-run ESRS datapoint ingestion with corrected field names (1186 records updated)
+- [x] Add stricter TypeScript settings (noImplicitAny, strictNullChecks, noImplicitReturns, noFallthroughCasesInSwitch)
+

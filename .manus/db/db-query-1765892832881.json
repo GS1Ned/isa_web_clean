@@ -1,0 +1,18 @@
+{
+  "query": "SHOW COLUMNS FROM gs1_attributes LIKE 'datatype';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SHOW COLUMNS FROM gs1_attributes LIKE 'datatype';",
+  "rows": [
+    {
+      "Field": "datatype",
+      "Type": "enum('text','number','boolean','date','code_list')",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    }
+  ],
+  "messages": [],
+  "stdout": "Field\tType\tNull\tKey\tDefault\tExtra\ndatatype\tenum('text','number','boolean','date','code_list')\tNO\t\tNULL\t\n",
+  "stderr": "",
+  "execution_time_ms": 106
+}
