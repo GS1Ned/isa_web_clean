@@ -605,3 +605,88 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Structured JSON output supported via response_format
 - [ ] Add streaming support for long-form responses
 - [ ] Implement token usage tracking and cost monitoring
+
+
+---
+
+## GS1 Reference Corpus Ingestion (2025-12-15) ✅ COMPLETE
+
+### Extraction & Classification
+- [x] Extract 8 GS1 reference batches from ref.gs1.org
+- [x] Parse metadata.jsonl manifest (372 documents)
+- [x] Classify documents by authority (123 authoritative, 248 context)
+- [x] Build document index (gs1_document_index.json)
+- [x] Link corpus to ISA data directory
+- [x] Create README documentation
+
+### Corpus Statistics
+- **Total Documents:** 372
+- **Authoritative Sources:** 123 (PDF, XLSX, JSON-LD, RDF, TTL, XSD, SHACL)
+- **Context Sources:** 248 (HTML pages)
+- **Key Standards:** EPCIS, CBV, TDT, GDM, ADB, EDI, Architecture
+
+### RAG Pipeline Integration (Pending)
+- [ ] Generate embeddings for authoritative documents
+- [ ] Build RAG pipeline for Ask ISA queries
+- [ ] Create knowledge graph from ontologies
+- [ ] Index structured artefacts (JSON-LD, TTL, XSD)
+- [ ] Link to existing ISA datasets
+
+
+---
+
+## News Pipeline Async Fix (2025-12-16) ✅ COMPLETE
+
+- [x] Diagnose tRPC timeout causing HTML error response
+- [x] Implement async pipeline execution with status tracking
+- [x] Add getPipelineStatus query for polling
+- [x] Update AdminNewsPipelineManager UI with status polling
+- [x] Add elapsed time display during pipeline run
+- [x] Add reset status functionality
+
+
+---
+
+## News Source Fixes (2025-12-16)
+
+- [x] Create GS1 Europe Playwright scraper (RSS blocked by Cloudflare)
+- [x] Fix EU Commission RSS URL → Press Corner API (working)
+- [x] Disable GS1 Global (Azure WAF blocking all requests)
+- [x] Update manifest.json with ISA ingestion metadata
+- [x] Create discovered_urls.txt (351 URLs)
+- [ ] Fix EUR-Lex RSS URL (still failing - needs Playwright scraper)
+- [ ] Add source health monitoring
+
+
+---
+
+## News Source Fixes (December 2025) ✅ COMPLETE
+
+### EUR-Lex Playwright Scraper
+- [x] Created news-scraper-eurlex.ts for Official Journal L series
+- [x] Scrapes daily legislation view with Playwright
+- [x] Filters for ESG-relevant legislation
+- [x] Detects regulation tags (CSRD, EUDR, CSDDD, etc.)
+- [x] Added eurlex-oj source to news-sources.ts
+- [x] Integrated scraper into news-fetcher.ts
+- [x] Unit tests passing (5 tests)
+
+### Timeout and Retry Handling
+- [x] Created news-fetch-utils.ts with utilities
+- [x] withTimeout() for operation timeouts
+- [x] withRetry() with exponential backoff
+- [x] fetchWithErrorHandling() wrapper
+- [x] Unit tests passing (15 tests)
+
+### Source Health Monitoring
+- [x] Implemented SourceHealth tracking interface
+- [x] recordSuccess() and recordFailure() functions
+- [x] shouldSkipSource() for unhealthy source detection
+- [x] Added getSourceHealth endpoint to news-admin-router
+- [x] Added resetSourceHealthStatus mutation
+- [x] Health status shows in admin dashboard
+
+### Test Results
+- EUR-Lex scraper tests: 5 passed
+- Fetch utilities tests: 15 passed (20 total news tests)
+

@@ -1,9 +1,10 @@
 /**
  * Admin News Pipeline Manager
  * Manually trigger news ingestion, archival, and view statistics
+ * Uses async execution with status polling for long-running operations
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,17 +23,37 @@ import {
   BarChart3,
   RefreshCw,
   AlertCircle,
+  CheckCircle2,
+  XCircle,
+  Clock,
 } from "lucide-react";
 import { Link } from "wouter";
 
 export default function AdminNewsPipelineManager() {
   const { user } = useAuth();
-  const [isRunning, setIsRunning] = useState(false);
-  const [lastResult, setLastResult] = useState<any>(null);
+  const [pollingEnabled, setPollingEnabled] = useState(false);
 
   const runPipeline = trpc.newsAdmin.triggerIngestion.useMutation();
   const runArchival = trpc.newsAdmin.triggerArchival.useMutation();
+  const resetStatus = trpc.newsAdmin.resetPipelineStatus.useMutation();
   const { data: stats } = trpc.newsAdmin.getStats.useQuery();
+  
+  // Poll for pipeline status when running
+  const { data: pipelineStatus, refetch: refetchStatus } = trpc.newsAdmin.getPipelineStatus.useQuery(
+    undefined,
+    {
+      refetchInterval: pollingEnabled ? 2000 : false, // Poll every 2 seconds when enabled
+    }
+  );
+
+  // Start/stop polling based on pipeline status
+  useEffect(() => {
+    if (pipelineStatus?.status === "running") {
+      setPollingEnabled(true);
+    } else if (pipelineStatus?.status === "completed" || pipelineStatus?.status === "failed") {
+      setPollingEnabled(false);
+    }
+  }, [pipelineStatus?.status]);
 
   // Redirect non-admin users
   if (user?.role !== "admin") {
@@ -51,16 +72,12 @@ export default function AdminNewsPipelineManager() {
   }
 
   const handleRunPipeline = async () => {
-    setIsRunning(true);
-    setLastResult(null);
     try {
-      const result = await runPipeline.mutateAsync();
-      setLastResult(result);
+      await runPipeline.mutateAsync();
+      setPollingEnabled(true);
+      refetchStatus();
     } catch (error) {
-      console.error("Pipeline failed:", error);
-      setLastResult({ success: false, error: String(error) });
-    } finally {
-      setIsRunning(false);
+      console.error("Failed to start pipeline:", error);
     }
   };
 
@@ -73,6 +90,25 @@ export default function AdminNewsPipelineManager() {
       alert("Archival failed: " + String(error));
     }
   };
+
+  const handleResetStatus = async () => {
+    try {
+      await resetStatus.mutateAsync();
+      refetchStatus();
+    } catch (error) {
+      console.error("Failed to reset status:", error);
+    }
+  };
+
+  const formatDuration = (ms: number) => {
+    if (ms < 1000) return `${ms}ms`;
+    if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
+    return `${(ms / 60000).toFixed(1)}m`;
+  };
+
+  const isRunning = pipelineStatus?.status === "running";
+  const isCompleted = pipelineStatus?.status === "completed";
+  const isFailed = pipelineStatus?.status === "failed";
 
   return (
     <div className="container py-8">
@@ -173,15 +209,15 @@ export default function AdminNewsPipelineManager() {
         <CardHeader>
           <CardTitle>Pipeline Controls</CardTitle>
           <CardDescription>
-            Manually trigger news ingestion from 6 configured sources (EUR-Lex,
-            EFRAG, EU Commission, GS1 NL/Global/EU)
+            Manually trigger news ingestion from 8 configured sources (EUR-Lex,
+            EFRAG, EU Commission, GS1 NL/Global/EU, Green Deal Zorg, ZES)
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-3">
             <Button
               onClick={handleRunPipeline}
-              disabled={isRunning}
+              disabled={isRunning || runPipeline.isPending}
               className="gap-2"
             >
               {isRunning ? (
@@ -199,7 +235,7 @@ export default function AdminNewsPipelineManager() {
             <Button
               onClick={handleRunArchival}
               variant="outline"
-              disabled={isRunning}
+              disabled={isRunning || runArchival.isPending}
               className="gap-2"
             >
               <Archive className="h-4 w-4" />
@@ -207,58 +243,113 @@ export default function AdminNewsPipelineManager() {
             </Button>
           </div>
 
-          {/* Pipeline Result */}
-          {lastResult && (
+          {/* Pipeline Status */}
+          {pipelineStatus && pipelineStatus.status !== "idle" && (
             <Card
               className={
-                lastResult.success ? "border-green-500" : "border-red-500"
+                isCompleted && pipelineStatus.result?.success
+                  ? "border-green-500"
+                  : isFailed || (isCompleted && !pipelineStatus.result?.success)
+                  ? "border-red-500"
+                  : "border-blue-500"
               }
             >
               <CardContent className="pt-6">
-                <h4 className="font-semibold mb-3">
-                  {lastResult.success
-                    ? "✅ Pipeline Completed"
-                    : "❌ Pipeline Failed"}
-                </h4>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Fetched:</span>{" "}
-                    <span className="font-medium">
-                      {lastResult.fetched || 0}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Processed:</span>{" "}
-                    <span className="font-medium">
-                      {lastResult.processed || 0}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Inserted:</span>{" "}
-                    <span className="font-medium text-green-600">
-                      {lastResult.inserted || 0}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Skipped:</span>{" "}
-                    <span className="font-medium">
-                      {lastResult.skipped || 0}
-                    </span>
-                  </div>
-                  <div className="col-span-2">
-                    <span className="text-muted-foreground">Duration:</span>{" "}
-                    <span className="font-medium">
-                      {lastResult.duration || 0}ms
-                    </span>
-                  </div>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-semibold flex items-center gap-2">
+                    {isRunning && (
+                      <>
+                        <RefreshCw className="h-4 w-4 animate-spin text-blue-500" />
+                        Pipeline Running...
+                      </>
+                    )}
+                    {isCompleted && pipelineStatus.result?.success && (
+                      <>
+                        <CheckCircle2 className="h-4 w-4 text-green-500" />
+                        Pipeline Completed
+                      </>
+                    )}
+                    {(isFailed || (isCompleted && !pipelineStatus.result?.success)) && (
+                      <>
+                        <XCircle className="h-4 w-4 text-red-500" />
+                        Pipeline Failed
+                      </>
+                    )}
+                  </h4>
+                  {!isRunning && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleResetStatus}
+                    >
+                      Dismiss
+                    </Button>
+                  )}
                 </div>
-                {lastResult.errors && lastResult.errors.length > 0 && (
+
+                {/* Running status */}
+                {isRunning && pipelineStatus.elapsedMs && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Clock className="h-4 w-4" />
+                    Elapsed: {formatDuration(pipelineStatus.elapsedMs)}
+                    <span className="text-xs">(typically takes 30-60 seconds)</span>
+                  </div>
+                )}
+
+                {/* Completed results */}
+                {isCompleted && pipelineStatus.result && (
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Fetched:</span>{" "}
+                      <span className="font-medium">
+                        {pipelineStatus.result.fetched || 0}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Processed:</span>{" "}
+                      <span className="font-medium">
+                        {pipelineStatus.result.processed || 0}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Inserted:</span>{" "}
+                      <span className="font-medium text-green-600">
+                        {pipelineStatus.result.inserted || 0}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Skipped:</span>{" "}
+                      <span className="font-medium">
+                        {pipelineStatus.result.skipped || 0}
+                      </span>
+                    </div>
+                    <div className="col-span-2">
+                      <span className="text-muted-foreground">Duration:</span>{" "}
+                      <span className="font-medium">
+                        {formatDuration(pipelineStatus.result.duration || 0)}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Error display */}
+                {isFailed && pipelineStatus.error && (
                   <div className="mt-3 p-3 bg-destructive/10 rounded text-sm">
                     <p className="font-semibold text-destructive mb-1">
-                      Errors:
+                      Error:
+                    </p>
+                    <p className="text-destructive/80">{pipelineStatus.error}</p>
+                  </div>
+                )}
+
+                {/* Errors from completed run */}
+                {isCompleted && pipelineStatus.result?.errors && pipelineStatus.result.errors.length > 0 && (
+                  <div className="mt-3 p-3 bg-destructive/10 rounded text-sm">
+                    <p className="font-semibold text-destructive mb-1">
+                      Errors ({pipelineStatus.result.errors.length}):
                     </p>
                     <ul className="list-disc list-inside space-y-1">
-                      {lastResult.errors
+                      {pipelineStatus.result.errors
                         .slice(0, 5)
                         .map((err: string, i: number) => (
                           <li key={i} className="text-destructive/80">
@@ -279,7 +370,7 @@ export default function AdminNewsPipelineManager() {
         <CardHeader>
           <CardTitle>Configured News Sources</CardTitle>
           <CardDescription>
-            6 sources monitored for ESG regulatory updates
+            8 sources monitored for ESG regulatory updates
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -337,6 +428,24 @@ export default function AdminNewsPipelineManager() {
                 </p>
               </div>
               <Badge variant="secondary">GS1 Official</Badge>
+            </div>
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div>
+                <p className="font-medium">Green Deal Duurzame Zorg</p>
+                <p className="text-sm text-muted-foreground">
+                  Dutch Initiative • Credibility: 0.85
+                </p>
+              </div>
+              <Badge variant="outline">Dutch Initiative</Badge>
+            </div>
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div>
+                <p className="font-medium">Zero Emission Stadslogistiek (ZES)</p>
+                <p className="text-sm text-muted-foreground">
+                  Dutch Initiative • Credibility: 0.85
+                </p>
+              </div>
+              <Badge variant="outline">Dutch Initiative</Badge>
             </div>
           </div>
         </CardContent>

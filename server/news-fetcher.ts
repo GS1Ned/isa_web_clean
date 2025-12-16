@@ -16,6 +16,8 @@ import {
 } from "./news-scraper-efrag";
 import { scrapeGreenDealZorg } from "./news/news-scraper-greendeal";
 import { scrapeZESNews } from "./news/news-scraper-zes";
+import { scrapeGS1EuropeNews } from "./news/news-scraper-gs1eu";
+import { fetchEURLexNews } from "./news/news-scraper-eurlex";
 
 export interface RawNewsItem {
   title: string;
@@ -149,6 +151,54 @@ export async function fetchFromSource(
   if (source.id === "zes-logistics") {
     try {
       const articles = await scrapeZESNews();
+      return {
+        success: true,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: articles.length,
+        items: articles,
+      };
+    } catch (error) {
+      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      return {
+        success: false,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: 0,
+        items: [],
+        error: error instanceof Error ? error.message : "Scraping failed",
+      };
+    }
+  }
+
+  // Use Playwright scraper for EUR-Lex Official Journal
+  if (source.id === "eurlex-oj") {
+    try {
+      const articles = await fetchEURLexNews();
+      return {
+        success: true,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: articles.length,
+        items: articles,
+      };
+    } catch (error) {
+      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      return {
+        success: false,
+        sourceId: source.id,
+        sourceName: source.name,
+        itemsFetched: 0,
+        items: [],
+        error: error instanceof Error ? error.message : "Scraping failed",
+      };
+    }
+  }
+
+  // Use web scraper for GS1 Europe (RSS blocked by Cloudflare)
+  if (source.id === "gs1-eu-updates") {
+    try {
+      const articles = await scrapeGS1EuropeNews();
       return {
         success: true,
         sourceId: source.id,

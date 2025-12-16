@@ -1,0 +1,140 @@
+{
+  "taxonomy_id": "gs1_ref_gs1_org_taxonomy_v1",
+  "generated_at": "2025-12-15",
+  "source_bundle_id": "isa_gs1_ref_bundle_2025-12-15",
+  "source": "manifest.json (ref.gs1.org sitemap-based bundle)",
+  "stats_observed_from_manifest": {
+    "sitemap_urls": 234,
+    "pages_downloaded": 228,
+    "documents_discovered": 127,
+    "documents_downloaded": 124,
+    "manifest_items": 352
+  },
+  "dimensions": {
+    "section": {
+      "values": [
+        "root",
+        "architecture",
+        "ai",
+        "cbv",
+        "docs",
+        "epcis",
+        "gs1",
+        "standards",
+        "test-suites",
+        "tools",
+        "voc"
+      ],
+      "derivation": "first path segment of URL (e.g., /standards/... => standards)"
+    },
+    "artifact_type": {
+      "values": [
+        "html",
+        "pdf",
+        "spreadsheet",
+        "xml",
+        "xsd_schema",
+        "json",
+        "json_schema",
+        "jsonld",
+        "turtle",
+        "shacl_ttl",
+        "zip",
+        "sitemap",
+        "other"
+      ],
+      "derivation": "file extension OR content-type OR known URL patterns (e.g., /sitemap.xml)"
+    },
+    "standard_family": {
+      "values_observed": [
+        "adb",
+        "digital-link",
+        "epcis",
+        "eudr",
+        "gdm",
+        "gpc",
+        "tds",
+        "tdt",
+        "xml"
+      ],
+      "derivation": "/standards/<family>/..."
+    },
+    "version": {
+      "pattern": "^\\d+(?:\\.\\d+){0,3}(?:-[A-Za-z0-9]+)?$",
+      "derivation": "first path segment that matches version pattern (commonly /standards/<family>/<version>/...)"
+    },
+    "gs1_domain": {
+      "values": [
+        "Architecture & Governance",
+        "Data Carriers",
+        "Data Exchange",
+        "Digital Link",
+        "Governance & Policy",
+        "Master Data",
+        "Regulatory Solutions",
+        "Tools & Conformance",
+        "Traceability",
+        "Vocabulary/Linked Data",
+        "Whitepapers & Guidance",
+        "Other"
+      ],
+      "derivation": "rules below (family + URL keywords + section defaults)"
+    }
+  },
+  "rules": [
+    {
+      "id": "section_from_first_path_segment",
+      "priority": 100,
+      "match": { "url_regex": "^https?://ref\\.gs1\\.org/" },
+      "emit": { "section": "$path_seg1_or_root" }
+    },
+    {
+      "id": "standard_family",
+      "priority": 90,
+      "match": { "url_regex": "^https?://ref\\.gs1\\.org/standards/([^/]+)/" },
+      "emit": { "standard_family": "$1" }
+    },
+    {
+      "id": "version_any_segment",
+      "priority": 80,
+      "match": { "path_segment_regex": "^\\d+(?:\\.\\d+){0,3}(?:-[A-Za-z0-9]+)?$" },
+      "emit": { "version": "$segment" }
+    },
+    {
+      "id": "archive_flag",
+      "priority": 70,
+      "match": { "url_regex": "/archive(?:/|$)" },
+      "emit": { "is_archive": true }
+    },
+    { "id": "artifact_pdf", "priority": 60, "match": { "url_regex": "\\.pdf(?:$|\\?)" }, "emit": { "artifact_type": "pdf", "format": "pdf" } },
+    { "id": "artifact_xlsx", "priority": 60, "match": { "url_regex": "\\.xlsx(?:$|\\?)" }, "emit": { "artifact_type": "spreadsheet", "format": "xlsx" } },
+    { "id": "artifact_xsd", "priority": 60, "match": { "url_regex": "\\.xsd(?:$|\\?)" }, "emit": { "artifact_type": "xsd_schema", "format": "xsd" } },
+    { "id": "artifact_jsonld", "priority": 60, "match": { "url_regex": "\\.jsonld(?:$|\\?)" }, "emit": { "artifact_type": "jsonld", "format": "jsonld" } },
+    { "id": "artifact_shacl_ttl", "priority": 60, "match": { "url_regex": "shacl\\.ttl(?:$|\\?)" }, "emit": { "artifact_type": "shacl_ttl", "format": "ttl" } },
+    { "id": "artifact_ttl", "priority": 55, "match": { "url_regex": "\\.ttl(?:$|\\?)" }, "emit": { "artifact_type": "turtle", "format": "ttl" } },
+    { "id": "artifact_json_schema", "priority": 55, "match": { "url_regex": "(json-schema\\.json|schema\\.json)(?:$|\\?)" }, "emit": { "artifact_type": "json_schema", "format": "json" } },
+    { "id": "artifact_sitemap", "priority": 55, "match": { "url_regex": "/sitemap\\.xml$" }, "emit": { "artifact_type": "sitemap", "format": "xml" } },
+    { "id": "artifact_zip", "priority": 55, "match": { "url_regex": "\\.zip(?:$|\\?)" }, "emit": { "artifact_type": "zip", "format": "zip" } },
+    {
+      "id": "html_context",
+      "priority": 50,
+      "match": { "content_type_regex": "^text/html" },
+      "emit": { "artifact_type": "html", "format": "html", "is_context": true }
+    },
+    { "id": "domain_traceability_epcis", "priority": 40, "match": { "url_regex": "/standards/epcis/|/epcis/" }, "emit": { "gs1_domain": "Traceability", "topic": "EPCIS" } },
+    { "id": "domain_traceability_cbv", "priority": 40, "match": { "url_regex": "/standards/cbv/|/cbv/" }, "emit": { "gs1_domain": "Traceability", "topic": "CBV" } },
+    { "id": "domain_digital_link", "priority": 40, "match": { "url_regex": "/standards/digital-link/|digital-link" }, "emit": { "gs1_domain": "Digital Link", "topic": "Digital Link" } },
+    { "id": "domain_master_data", "priority": 40, "match": { "url_regex": "/standards/(adb|gdm|gpc)/" }, "emit": { "gs1_domain": "Master Data" } },
+    { "id": "domain_data_exchange", "priority": 40, "match": { "url_regex": "/standards/(xml)/|/standards/(eancom)/|/uncefact-xml/|/edi-" }, "emit": { "gs1_domain": "Data Exchange" } },
+    { "id": "domain_data_carriers", "priority": 40, "match": { "url_regex": "/standards/(tdt|tds)/|/2d|/datamatrix|/barcode" }, "emit": { "gs1_domain": "Data Carriers" } },
+    { "id": "domain_regulatory_eudr", "priority": 35, "match": { "url_regex": "/standards/eudr/" }, "emit": { "gs1_domain": "Regulatory Solutions", "topic": "EUDR" } },
+    { "id": "domain_architecture", "priority": 35, "match": { "url_regex": "^https?://ref\\.gs1\\.org/architecture/" }, "emit": { "gs1_domain": "Architecture & Governance" } },
+    { "id": "domain_governance", "priority": 35, "match": { "url_regex": "^https?://ref\\.gs1\\.org/gs1/" }, "emit": { "gs1_domain": "Governance & Policy" } },
+    { "id": "domain_vocab", "priority": 35, "match": { "url_regex": "^https?://ref\\.gs1\\.org/voc/" }, "emit": { "gs1_domain": "Vocabulary/Linked Data" } },
+    { "id": "domain_tools_tests", "priority": 35, "match": { "url_regex": "^https?://ref\\.gs1\\.org/(tools|test-suites)/" }, "emit": { "gs1_domain": "Tools & Conformance" } },
+    { "id": "domain_docs", "priority": 30, "match": { "url_regex": "^https?://ref\\.gs1\\.org/docs/" }, "emit": { "gs1_domain": "Whitepapers & Guidance" } }
+  ],
+  "defaults": {
+    "gs1_domain": "Other"
+  }
+}

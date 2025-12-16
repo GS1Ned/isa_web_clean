@@ -1,6 +1,7 @@
 /**
  * News Admin Router
  * Admin-only procedures for managing news pipeline
+ * Uses async execution with status tracking for long-running operations
  */
 
 import { router, protectedProcedure } from "./_core/trpc";
@@ -16,10 +17,32 @@ import {
   getExecutionStats,
   getMonitoringDashboard,
 } from "./cron-monitoring-simple";
+import { getAllSourceHealth, resetSourceHealth } from "./news/news-fetch-utils";
+import { NEWS_SOURCES } from "./news-sources";
+import { z } from "zod";
+
+// In-memory status tracking for async pipeline execution
+interface PipelineStatus {
+  status: "idle" | "running" | "completed" | "failed";
+  startedAt?: Date;
+  completedAt?: Date;
+  result?: {
+    success: boolean;
+    fetched: number;
+    processed: number;
+    inserted: number;
+    skipped: number;
+    errors: string[];
+    duration: number;
+  };
+  error?: string;
+}
+
+let pipelineStatus: PipelineStatus = { status: "idle" };
 
 export const newsAdminRouter = router({
   /**
-   * Manually trigger news ingestion pipeline (with monitoring)
+   * Manually trigger news ingestion pipeline (async - returns immediately)
    */
   triggerIngestion: protectedProcedure.mutation(async ({ ctx }) => {
     if (ctx.user.role !== "admin") {
@@ -29,31 +52,113 @@ export const newsAdminRouter = router({
       });
     }
 
-    try {
-      const result = await monitoredCronJob(
-        "manual-news-ingestion",
-        manualNewsIngestion,
-        3
-      );
+    // Check if already running
+    if (pipelineStatus.status === "running") {
       return {
-        success: result.success,
-        fetched: result.fetched,
-        processed: result.processed,
-        inserted: result.inserted,
-        skipped: result.skipped,
-        errors: result.errors,
-        duration: result.duration,
+        success: false,
+        message: "Pipeline is already running",
+        status: pipelineStatus.status,
+        startedAt: pipelineStatus.startedAt?.toISOString(),
       };
-    } catch (error) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: error instanceof Error ? error.message : "Ingestion failed",
-      });
     }
+
+    // Start pipeline asynchronously
+    pipelineStatus = {
+      status: "running",
+      startedAt: new Date(),
+    };
+
+    // Run in background (don't await)
+    (async () => {
+      try {
+        console.log("[news-admin] Starting async pipeline execution...");
+        const result = await monitoredCronJob(
+          "manual-news-ingestion",
+          manualNewsIngestion,
+          3
+        );
+        
+        pipelineStatus = {
+          status: "completed",
+          startedAt: pipelineStatus.startedAt,
+          completedAt: new Date(),
+          result: {
+            success: result.success,
+            fetched: result.fetched,
+            processed: result.processed,
+            inserted: result.inserted,
+            skipped: result.skipped,
+            errors: result.errors,
+            duration: result.duration,
+          },
+        };
+        console.log("[news-admin] Pipeline completed successfully:", result);
+      } catch (error) {
+        pipelineStatus = {
+          status: "failed",
+          startedAt: pipelineStatus.startedAt,
+          completedAt: new Date(),
+          error: error instanceof Error ? error.message : "Unknown error",
+        };
+        console.error("[news-admin] Pipeline failed:", error);
+      }
+    })();
+
+    // Return immediately
+    return {
+      success: true,
+      message: "Pipeline started. Check status for results.",
+      status: "running",
+      startedAt: pipelineStatus.startedAt?.toISOString(),
+    };
   }),
 
   /**
-   * Manually trigger news archival (with monitoring)
+   * Get current pipeline execution status
+   */
+  getPipelineStatus: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Admin access required",
+      });
+    }
+
+    return {
+      status: pipelineStatus.status,
+      startedAt: pipelineStatus.startedAt?.toISOString(),
+      completedAt: pipelineStatus.completedAt?.toISOString(),
+      result: pipelineStatus.result,
+      error: pipelineStatus.error,
+      // Calculate elapsed time if running
+      elapsedMs: pipelineStatus.startedAt && pipelineStatus.status === "running"
+        ? Date.now() - pipelineStatus.startedAt.getTime()
+        : undefined,
+    };
+  }),
+
+  /**
+   * Reset pipeline status (useful after viewing results)
+   */
+  resetPipelineStatus: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Admin access required",
+      });
+    }
+
+    // Only reset if not running
+    if (pipelineStatus.status !== "running") {
+      pipelineStatus = { status: "idle" };
+      return { success: true, message: "Status reset" };
+    }
+
+    return { success: false, message: "Cannot reset while pipeline is running" };
+  }),
+
+  /**
+   * Manually trigger news archival (async)
    */
   triggerArchival: protectedProcedure.mutation(async ({ ctx }) => {
     if (ctx.user.role !== "admin") {
@@ -152,6 +257,76 @@ export const newsAdminRouter = router({
       });
     }
   }),
+
+  /**
+   * Get source health status
+   */
+  getSourceHealth: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Admin access required",
+      });
+    }
+
+    const healthRecords = getAllSourceHealth();
+    const sources = NEWS_SOURCES.filter(s => s.enabled);
+
+    // Merge health data with source config
+    const sourceStatus = sources.map(source => {
+      const health = healthRecords.find(h => h.sourceId === source.id);
+      return {
+        id: source.id,
+        name: source.name,
+        type: source.type,
+        enabled: source.enabled,
+        credibilityScore: source.credibilityScore,
+        hasRss: !!source.rssUrl,
+        health: health || {
+          sourceId: source.id,
+          lastSuccess: null,
+          lastFailure: null,
+          consecutiveFailures: 0,
+          totalRequests: 0,
+          totalFailures: 0,
+          averageResponseTime: 0,
+          isHealthy: true
+        }
+      };
+    });
+
+    // Calculate overall stats
+    const totalSources = sources.length;
+    const healthySources = sourceStatus.filter(s => s.health.isHealthy).length;
+    const failingSources = sourceStatus.filter(s => !s.health.isHealthy).length;
+
+    return {
+      sources: sourceStatus,
+      summary: {
+        total: totalSources,
+        healthy: healthySources,
+        failing: failingSources,
+        healthPercentage: totalSources > 0 ? Math.round((healthySources / totalSources) * 100) : 100
+      }
+    };
+  }),
+
+  /**
+   * Reset health for a specific source
+   */
+  resetSourceHealthStatus: protectedProcedure
+    .input(z.object({ sourceId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      if (ctx.user.role !== "admin") {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Admin access required",
+        });
+      }
+
+      resetSourceHealth(input.sourceId);
+      return { success: true, message: `Health reset for source: ${input.sourceId}` };
+    }),
 
   /**
    * Get monitoring dashboard data

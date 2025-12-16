@@ -25,10 +25,23 @@ export interface NewsSource {
 export const NEWS_SOURCES: NewsSource[] = [
   // EU Official Sources (Authoritative Regulatory News)
   {
+    id: "eurlex-oj",
+    name: "EUR-Lex Official Journal",
+    type: "EU_OFFICIAL",
+    // No RSS - uses Playwright scraper for Official Journal L series daily view
+    credibilityScore: 1.0,
+    keywords: [
+      "CSRD", "ESRS", "EUDR", "DPP", "PPWR", "ESPR",
+      "sustainability", "environment", "climate", "deforestation",
+      "due diligence", "packaging", "battery", "taxonomy"
+    ],
+    enabled: true,
+  },
+  {
     id: "eur-lex-press",
     name: "EUR-Lex Press Releases",
     type: "EU_OFFICIAL",
-    rssUrl: "https://eur-lex.europa.eu/EN/display-rss.html",
+    rssUrl: "https://eur-lex.europa.eu/rss/rss.xml",  // Updated URL
     credibilityScore: 1.0,
     keywords: [
       "CSRD",
@@ -48,10 +61,9 @@ export const NEWS_SOURCES: NewsSource[] = [
   },
   {
     id: "eu-commission-environment",
-    name: "European Commission - Environment",
+    name: "European Commission Press Corner",
     type: "EU_OFFICIAL",
-    rssUrl:
-      "https://ec.europa.eu/newsroom/env/rss-feeds/specific-newsroom-rss-feed_en?newsroom=29",
+    rssUrl: "https://ec.europa.eu/commission/presscorner/api/rss?language=en",  // Updated to working Press Corner RSS
     credibilityScore: 1.0,
     keywords: [
       "CSRD",
@@ -118,7 +130,7 @@ export const NEWS_SOURCES: NewsSource[] = [
       "circular economy",
       "supply chain transparency",
     ],
-    enabled: true,
+    enabled: false,  // Disabled: Azure WAF blocks all automated requests
   },
   {
     id: "gs1-eu-updates",
