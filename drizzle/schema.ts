@@ -2389,3 +2389,6 @@ export const gs1LocalCodeLists = mysqlTable(
 
 export type GS1LocalCodeList = typeof gs1LocalCodeLists.$inferSelect;
 export type InsertGS1LocalCodeList = typeof gs1LocalCodeLists.$inferInsert;
+
+// Export GS1-ESRS mapping tables
+export * from "./schema_gs1_esrs_mappings";

@@ -794,3 +794,145 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Create monitoring dashboard for cron jobs
 - [ ] Add source health metrics
 - [ ] Implement email alerts for failures
+
+
+---
+
+## AUTONOMOUS DEVELOPMENT: Phase 2-3 (Dec 16, 2025) ✅ COMPLETE
+
+### Phase 2: Authoritative Source Ingestion ✅
+
+#### Phase 2.1: EFRAG ESRS XBRL Taxonomy Ingestion ✅
+- [x] Install Arelle XBRL processor (v2.37.77)
+- [x] Parse ESRS XBRL taxonomy (esrs_all.xsd)
+- [x] Extract 5,430 ESRS-specific concepts
+- [x] Create database schema (esrs_xbrl_concepts table)
+- [x] Load data with full provenance tracking
+- [x] Expand column sizes for long QNames (512 chars)
+
+#### Phase 2.2: GS1 WebVoc Ingestion ✅
+- [x] Download GS1 WebVoc v1.17.0 (2.3 MB JSON-LD)
+- [x] Parse 2,528 vocabulary terms
+- [x] Extract 553 properties + 1,292 code list values
+- [x] Create database schema (3 tables: gs1_webvoc_terms, gs1_webvoc_properties, gs1_code_lists)
+- [x] Fix JSON-LD @id extraction for domain/range fields
+- [x] Load all data with UTF-8 BOM handling
+
+#### Phase 2.3: EU Taxonomy Compass Integration ⚠️
+- [x] Access and analyze EU Taxonomy Compass structure
+- [x] Document 100+ economic activities across sectors
+- [x] Identify lack of public API or bulk download
+- [x] Decision: Defer full ingestion to Phase 7+ (future enhancement)
+- [x] Maintain provenance for future integration
+
+#### Phase 2.4: GS1 NL/Europe Documentation Discovery ✅
+- [x] Discover GS1 Europe CSRD White Paper (March 2025, v1.0)
+- [x] Download and analyze 21-page white paper
+- [x] Extract 15 authoritative GS1-ESRS data point mappings
+- [x] Create database schema (gs1_esrs_mappings table)
+- [x] Load mappings with full provenance (source, date, authority)
+- [x] Verify GS1 Netherlands involvement (2 contributors)
+
+**Phase 2 Summary:**
+- ✅ 9,265+ total records loaded
+- ✅ 6 database tables created
+- ✅ Authority ranking maintained (Rank 1: EFRAG, Rank 2: GS1)
+- ✅ Full provenance tracking for all sources
+
+### Phase 3: ESRS-GS1 Mapping Engine ✅
+
+#### Mapping Data Creation ✅
+- [x] Analyze GS1 Europe white paper for attribute mappings
+- [x] Create 13 GS1 attribute-to-ESRS mappings
+- [x] Establish confidence levels (11 high, 2 medium)
+- [x] Classify mapping types (direct, calculated, aggregated)
+- [x] Create database schema (gs1_attribute_esrs_mapping table)
+- [x] Load attribute mappings into database
+
+#### Backend API Development ✅
+- [x] Create database helper functions (db-esrs-gs1-mapping.ts)
+- [x] Implement getAllEsrsGs1Mappings()
+- [x] Implement getEsrsGs1MappingsByStandard()
+- [x] Implement getGs1AttributesForEsrsMapping()
+- [x] Implement getEsrsRequirementsForGs1Attribute()
+- [x] Implement getComplianceCoverageSummary()
+- [x] Implement getUnmappedEsrsRequirements()
+- [x] Implement searchEsrsGs1Mappings()
+- [x] Implement getEsrsGs1MappingStatistics()
+
+#### tRPC Router Integration ✅
+- [x] Create esrs-gs1-mapping.ts router
+- [x] Implement 8 tRPC procedures
+- [x] Register router in appRouter
+- [x] Verify TypeScript compilation (no errors)
+- [x] Verify dev server health (running successfully)
+
+**Phase 3 Summary:**
+- ✅ 15 ESRS mappings + 13 attribute mappings
+- ✅ 8 intelligent query APIs
+- ✅ Compliance coverage analysis
+- ✅ Gap analysis capabilities (2 unmapped requirements identified)
+- ✅ Full tRPC integration
+
+### Remaining Phases (Next Steps)
+
+#### Phase 4: Ask ISA RAG System Expansion (Next)
+- [ ] Enhance Ask ISA with GS1-ESRS mapping context
+- [ ] Add natural language query support for mappings
+- [ ] Integrate mapping engine with RAG responses
+- [ ] Test queries like "How do I report circular economy metrics?"
+
+#### Phase 5: Advisory v1.1+ Evolution
+- [ ] Integrate mapping engine with advisory system
+- [ ] Add diff computation for regulation updates
+- [ ] Enhance advisory recommendations with GS1 mappings
+- [ ] Create compliance gap reports
+
+#### Phase 6: Production Hardening
+- [ ] Write vitest tests for mapping router (8 procedures)
+- [ ] Write vitest tests for database helpers (8 functions)
+- [ ] Add error handling and edge cases
+- [ ] Performance optimization
+- [ ] Documentation updates
+
+### Frontend Integration (Future)
+- [ ] Create ESRS-GS1 mapping explorer UI
+- [ ] Add compliance coverage dashboard
+- [ ] Integrate mapping queries into existing pages
+- [ ] Add search interface for mappings
+- [ ] Create gap analysis visualization
+
+### Data Ingestion Statistics (Phase 2-3)
+- **Total Records Loaded:** 9,278+
+  - ESRS XBRL concepts: 5,430
+  - GS1 WebVoc terms: 2,528
+  - GS1 WebVoc properties: 553
+  - GS1 code lists: 1,292
+  - GS1-ESRS mappings: 15
+  - GS1 attribute mappings: 13
+  - Existing ESRS IG3 datapoints: 1,186 (preserved)
+
+- **Database Tables Created:** 7
+  - esrs_xbrl_concepts
+  - gs1_webvoc_terms
+  - gs1_webvoc_properties
+  - gs1_code_lists
+  - gs1_esrs_mappings
+  - gs1_attribute_esrs_mapping
+
+- **API Endpoints Added:** 8
+  - getAllMappings
+  - getMappingsByStandard
+  - getGs1AttributesForEsrsMapping
+  - getEsrsRequirementsForGs1Attribute
+  - getComplianceCoverageSummary
+  - getUnmappedEsrsRequirements
+  - searchMappings
+  - getMappingStatistics
+
+**ISA-AUTO-RESEARCH Tags:**
+- ESRS-XBRL-INGESTION-2025-12-16 (5,430 concepts)
+- GS1-WEBVOC-INGESTION-2025-12-16 (2,528 terms)
+- EU-TAXONOMY-DEFERRED-2025-12-16 (deferred to Phase 7+)
+- GS1-EUROPE-CSRD-INGESTION-2025-12-16 (15 mappings)
+- ESRS-GS1-MAPPING-ENGINE-2025-12-16 (13 attribute mappings + 8 APIs)

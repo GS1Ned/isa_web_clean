@@ -46,6 +46,7 @@ import { cronRouter } from "./routers/cron.js";
 import { advisoryRouter } from "./routers/advisory.js";
 import { regulatoryChangeLogRouter } from "./routers/regulatory-change-log.js";
 import { monitoringRouter } from "./routers/monitoring.js";
+import { esrsGs1MappingRouter } from "./routers/esrs-gs1-mapping.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -982,6 +983,11 @@ export const appRouter = router({
    */
   regulatoryChangeLog: regulatoryChangeLogRouter,
   monitoring: monitoringRouter,
+
+  /**
+   * ESRS-GS1 Mapping Router
+   */
+  esrsGs1Mapping: esrsGs1MappingRouter,
 
   /**
    * Dutch Initiatives Router
