@@ -80,7 +80,7 @@ export async function batchScoreRelevance(
  * Prepare content for storage based on source type
  */
 export function prepareContentForEmbedding(
-  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative",
+  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative" | "esrs_gs1_mapping",
   source: any
 ): string {
   switch (sourceType) {
@@ -96,6 +96,9 @@ export function prepareContentForEmbedding(
     case "dutch_initiative":
       return `${source.name}\n\nSector: ${source.sector || ""}\n\nDescription: ${source.description || ""}\n\nScope: ${source.scope || ""}\n\nKey Targets: ${source.keyTargets || ""}`.trim();
 
+    case "esrs_gs1_mapping":
+      return `ESRS ${source.esrsStandard} → GS1 ${source.gs1Standard}\n\nESRS Requirement: ${source.esrsRequirement}\n\nGS1 Attribute: ${source.gs1Attribute}\n\nMapping Type: ${source.mappingType || ""}\n\nConfidence: ${source.confidence || ""}\n\nRationale: ${source.rationale || ""}`.trim();
+
     default:
       return JSON.stringify(source);
   }
@@ -105,7 +108,7 @@ export function prepareContentForEmbedding(
  * Generate human-readable title for search results
  */
 export function generateEmbeddingTitle(
-  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative",
+  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative" | "esrs_gs1_mapping",
   source: any
 ): string {
   switch (sourceType) {
@@ -124,6 +127,9 @@ export function generateEmbeddingTitle(
     case "dutch_initiative":
       return source.name || `Initiative ${source.id}`;
 
+    case "esrs_gs1_mapping":
+      return `${source.esrsStandard} → ${source.gs1Standard}: ${source.gs1Attribute}` || `Mapping ${source.id}`;
+
     default:
       return `Source ${source.id}`;
   }
@@ -133,7 +139,7 @@ export function generateEmbeddingTitle(
  * Generate URL for source detail page
  */
 export function generateEmbeddingUrl(
-  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative",
+  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative" | "esrs_gs1_mapping",
   sourceId: number
 ): string {
   switch (sourceType) {
@@ -148,6 +154,9 @@ export function generateEmbeddingUrl(
 
     case "dutch_initiative":
       return `/hub/dutch-initiatives/${sourceId}`;
+
+    case "esrs_gs1_mapping":
+      return `/hub/esrs-gs1-mappings`;
 
     default:
       return `/hub`;

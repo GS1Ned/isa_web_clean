@@ -1,0 +1,93 @@
+{
+  "version": "1.1",
+  "generatedAt": "2025-12-16T13:00:00Z",
+  "description": "ISA Advisory v1.1 Summary - Enhanced with ESRS-GS1 Compliance Mapping Intelligence",
+  "stats": {
+    "totalMappings": 13,
+    "directMappings": 13,
+    "partialMappings": 0,
+    "missingMappings": 0,
+    "totalGaps": 3,
+    "criticalGaps": 0,
+    "moderateGaps": 2,
+    "lowPriorityGaps": 1,
+    "overallCoveragePercentage": 62.5
+  },
+  "coverageByESRS": {
+    "E1": {
+      "name": "Climate Change",
+      "mappings": 4,
+      "coverage": "comprehensive",
+      "keyAttributes": ["carbonFootprintValue", "greenhouseGasEmissionsValue", "energyConsumptionValue", "renewableEnergyPercentage"]
+    },
+    "E2": {
+      "name": "Pollution",
+      "mappings": 1,
+      "coverage": "comprehensive",
+      "keyAttributes": ["waterConsumptionValue"]
+    },
+    "E3": {
+      "name": "Water and Marine Resources",
+      "mappings": 1,
+      "coverage": "comprehensive",
+      "keyAttributes": ["waterUsageValue"]
+    },
+    "E4": {
+      "name": "Biodiversity and Ecosystems",
+      "mappings": 2,
+      "coverage": "comprehensive",
+      "keyAttributes": ["deforestationRiskLevel", "landUseChangeIndicator"]
+    },
+    "E5": {
+      "name": "Circular Economy",
+      "mappings": 5,
+      "coverage": "comprehensive",
+      "keyAttributes": ["GS1_Circular_Economy_Attributes", "recycledContentPercentage", "recyclabilityIndicator", "productDurabilityValue", "repairabilityScore"]
+    },
+    "S1": {
+      "name": "Own Workforce",
+      "mappings": 0,
+      "coverage": "gap",
+      "keyAttributes": []
+    },
+    "S2": {
+      "name": "Workers in Value Chain",
+      "mappings": 0,
+      "coverage": "gap",
+      "keyAttributes": []
+    },
+    "G1": {
+      "name": "Business Conduct",
+      "mappings": 0,
+      "coverage": "gap",
+      "keyAttributes": []
+    }
+  },
+  "topRecommendations": [
+    {
+      "id": "rec-integrate-epcis-esrs",
+      "title": "Integrate EPCIS with ESRS Reporting",
+      "priority": "critical",
+      "estimatedROI": "high"
+    },
+    {
+      "id": "rec-dpp-esrs-alignment",
+      "title": "Align Digital Product Passport with ESRS Disclosures",
+      "priority": "critical",
+      "estimatedROI": "high"
+    },
+    {
+      "id": "rec-gs1-webvoc-esrs-extension",
+      "title": "Extend GS1 WebVoc with ESRS-Specific Attributes",
+      "priority": "high",
+      "estimatedROI": "medium"
+    }
+  ],
+  "changelog": [
+    "Added 15 official ESRS-GS1 datapoint mappings from GS1 Netherlands Position Paper",
+    "Added 13 GS1 WebVoc attribute mappings for ESRS E1-E5 compliance",
+    "Integrated mapping confidence levels (high/medium) based on source authority",
+    "Enhanced gap analysis with specific GS1 attribute recommendations",
+    "Added circular economy, climate, biodiversity, and water resource mapping coverage"
+  ]
+}

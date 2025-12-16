@@ -936,3 +936,44 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - EU-TAXONOMY-DEFERRED-2025-12-16 (deferred to Phase 7+)
 - GS1-EUROPE-CSRD-INGESTION-2025-12-16 (15 mappings)
 - ESRS-GS1-MAPPING-ENGINE-2025-12-16 (13 attribute mappings + 8 APIs)
+
+
+## Phase 4-6: Ask ISA RAG System Expansion & Advisory Evolution (Autonomous Development) ✅ COMPLETE
+
+### Phase 4.1: Enhance Ask ISA knowledge base with mapping data ✅
+- [x] Add esrs_gs1_mapping source type to embedding helper
+- [x] Update knowledgeEmbeddings schema to support esrs_gs1_mapping
+- [x] Create populate-ask-isa-mappings script
+- [x] Successfully populate 15 ESRS-GS1 mappings into knowledge base
+
+### Phase 4.2: Add mapping-aware query processing to RAG system ✅
+- [x] Update Ask ISA system prompt with ESRS-GS1 mapping capabilities
+- [x] Add mapping knowledge to vector search context
+- [x] Enable semantic search across ESRS-GS1 mappings
+
+### Phase 4.3: Test Ask ISA with GS1-ESRS mapping queries ✅
+- [x] Test query: "How do I report circular economy metrics using GS1 standards?"
+- [x] Verify correct retrieval of ESRS E5 → GS1 Circular Economy Attributes mapping
+- [x] Confirm source citations and confidence levels
+- [x] Document test results in test-results/ask-isa-mapping-test.md
+
+### Phase 5: Advisory v1.1 evolution with mapping recommendations ✅
+- [x] Create ISA_ADVISORY_v1.1.json with 13 GS1 WebVoc attribute mappings
+- [x] Add ESRS E1-E5 compliance coverage analysis
+- [x] Include gap analysis for ESRS S1, S2, G1
+- [x] Add implementation recommendations for EPCIS-ESRS integration
+- [x] Create ISA_ADVISORY_v1.1.summary.json for fast UI loading
+- [x] Update advisory router to support v1.1
+
+### Phase 6: Production hardening with vitest tests ✅
+- [x] Create esrs-gs1-mapping.test.ts with 10 test cases
+- [x] Test getAllEsrsGs1Mappings function
+- [x] Test getEsrsGs1MappingsByStandard function
+- [x] Test getComplianceCoverageSummary function
+- [x] Verify data integrity (15+ mappings, ESRS E1/E5 coverage)
+- [x] All tests passing (10/10)
+
+**ISA-AUTO-DEVELOPMENT Tags:**
+- ASK-ISA-MAPPING-INTEGRATION-2025-12-16 (15 mappings in knowledge base)
+- ADVISORY-V1.1-ESRS-GS1-2025-12-16 (13 attribute mappings + gap analysis)
+- VITEST-MAPPING-COVERAGE-2025-12-16 (10 tests passing)

@@ -11,8 +11,9 @@ import fs from "fs";
 import path from "path";
 
 // Load advisory and summary JSON files
-const ADVISORY_PATH = path.join(process.cwd(), "data/advisories/ISA_ADVISORY_v1.0.json");
-const SUMMARY_PATH = path.join(process.cwd(), "data/advisories/ISA_ADVISORY_v1.0.summary.json");
+const ADVISORY_VERSION = process.env.ISA_ADVISORY_VERSION || "1.1"; // Default to v1.1
+const ADVISORY_PATH = path.join(process.cwd(), `data/advisories/ISA_ADVISORY_v${ADVISORY_VERSION}.json`);
+const SUMMARY_PATH = path.join(process.cwd(), `data/advisories/ISA_ADVISORY_v${ADVISORY_VERSION}.summary.json`);
 
 let advisoryCache: any = null;
 let summaryCache: any = null;

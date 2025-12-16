@@ -13,7 +13,7 @@ import { generateContentHash, scoreRelevance } from "./embedding";
  * Store knowledge chunk (without embeddings)
  */
 export async function storeKnowledgeChunk(data: {
-  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative";
+  sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative" | "esrs_gs1_mapping";
   sourceId: number;
   content: string;
   title: string;
@@ -66,7 +66,7 @@ export async function searchKnowledgeChunks(
   query: string,
   limit: number = 10,
   sourceTypes?: Array<
-    "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative"
+    "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative" | "esrs_gs1_mapping"
   >
 ) {
   const db = await getDb();

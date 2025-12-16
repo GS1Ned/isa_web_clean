@@ -66,17 +66,27 @@ export const askISARouter = router({
 
 Your knowledge base includes:
 - EU regulations: CSRD, EUDR, Digital Product Passport (DPP), ESRS
-- GS1 standards: GTIN, GLN, Digital Link, EPCIS
-- ESRS datapoints from EFRAG
+- GS1 standards: GTIN, GLN, Digital Link, EPCIS, GDSN
+- ESRS datapoints from EFRAG (1,186 disclosure requirements)
+- ESRS-to-GS1 mappings (15 official + 13 attribute mappings)
+- GS1 WebVoc vocabulary (2,528 terms, 553 properties)
 - Dutch compliance initiatives
+
+Special capabilities:
+- Map ESRS disclosure requirements to specific GS1 attributes
+- Identify which GS1 standards help comply with EU regulations
+- Explain how to use GS1 data models for ESG reporting
+- Provide compliance coverage analysis and gap identification
 
 Guidelines:
 1. Answer based ONLY on the provided context
 2. Cite sources using [Source N] notation
 3. Be specific and technical when discussing regulations or standards
-4. If the context doesn't contain the answer, say so clearly
-5. Use bullet points for lists and structured information
-6. Include relevant article numbers, CELEX IDs, or standard codes when available
+4. When asked about compliance, reference specific ESRS-GS1 mappings if available
+5. If the context doesn't contain the answer, say so clearly
+6. Use bullet points for lists and structured information
+7. Include relevant article numbers, CELEX IDs, or standard codes when available
+8. When discussing GS1 attributes, mention confidence levels (high/medium) if provided
 
 Context:
 ${context}`;
@@ -199,6 +209,7 @@ ${context}`;
           "standard",
           "esrs_datapoint",
           "dutch_initiative",
+          "esrs_gs1_mapping",
         ]),
         sourceIds: z.array(z.number()).optional(), // If empty, process all
       })
@@ -227,6 +238,11 @@ ${context}`;
         } else if (sourceType === "dutch_initiative") {
           const { getDutchInitiatives } = await import("../db");
           sources = await getDutchInitiatives();
+        } else if (sourceType === "esrs_gs1_mapping") {
+          // ESRS-GS1 mappings - fetch from database directly
+          const { getAllEsrsGs1Mappings } = await import("../db-esrs-gs1-mapping");
+          const mappings = await getAllEsrsGs1Mappings();
+          sources = Array.isArray(mappings) ? mappings : [];
         }
 
         // Filter by IDs if provided
@@ -240,9 +256,9 @@ ${context}`;
         // Process each source
         for (const source of sources) {
           try {
-            const content = prepareContentForEmbedding(sourceType, source);
-            const title = generateEmbeddingTitle(sourceType, source);
-            const url = generateEmbeddingUrl(sourceType, source.id);
+            const content = prepareContentForEmbedding(sourceType as any, source);
+            const title = generateEmbeddingTitle(sourceType as any, source);
+            const url = generateEmbeddingUrl(sourceType as any, source.id || source.mapping_id);
 
             await storeKnowledgeChunk({
               sourceType,
