@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { RecommendedResources } from "@/components/RecommendedResources";
-import { ArrowLeft, Calendar, ExternalLink, TrendingUp } from "lucide-react";
+import { ArrowLeft, Calendar, ExternalLink, TrendingUp, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
 
 export default function NewsDetail() {
@@ -49,12 +49,24 @@ export default function NewsDetail() {
 
   return (
     <div className="container py-8">
-      <Link href="/news">
-        <Button variant="ghost" className="mb-6">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to News Hub
-        </Button>
-      </Link>
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+        <Link href="/" className="hover:text-foreground transition-colors">
+          Home
+        </Link>
+        <ChevronRight className="h-4 w-4" />
+        <Link href="/hub" className="hover:text-foreground transition-colors">
+          ESG Hub
+        </Link>
+        <ChevronRight className="h-4 w-4" />
+        <Link href="/news" className="hover:text-foreground transition-colors">
+          News
+        </Link>
+        <ChevronRight className="h-4 w-4" />
+        <span className="text-foreground font-medium truncate max-w-md">
+          {newsItem.title}
+        </span>
+      </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}

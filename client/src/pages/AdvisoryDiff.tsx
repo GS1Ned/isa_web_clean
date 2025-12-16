@@ -3,6 +3,7 @@ import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -135,7 +136,15 @@ export default function AdvisoryDiff() {
   if (loading) {
     return (
       <div className="container py-8 max-w-7xl">
-        <div className="text-center">Loading advisory diff...</div>
+        <div className="space-y-6">
+          <Skeleton className="h-12 w-96" />
+          <Skeleton className="h-32 w-full" />
+          <div className="grid gap-6 md:grid-cols-2">
+            <Skeleton className="h-48" />
+            <Skeleton className="h-48" />
+          </div>
+          <Skeleton className="h-64 w-full" />
+        </div>
       </div>
     );
   }
@@ -167,8 +176,21 @@ export default function AdvisoryDiff() {
     <div className="container py-8 max-w-7xl">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Advisory Diff Analysis</h1>
-        <p className="text-muted-foreground mt-2">
+        <div className="flex items-center gap-3 mb-3">
+          <h1 className="text-3xl font-bold">Advisory Diff Analysis</h1>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+              <CheckCircle2 className="h-3 w-3 mr-1" />
+              {metadata.version1.version}
+            </Badge>
+            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+              <CheckCircle2 className="h-3 w-3 mr-1" />
+              {metadata.version2.version}
+            </Badge>
+          </div>
+        </div>
+        <p className="text-muted-foreground">
           Governance-grade comparison of ISA advisory versions
         </p>
       </div>

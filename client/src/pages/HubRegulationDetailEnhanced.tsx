@@ -19,6 +19,7 @@ import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { RegulationTimeline } from "@/components/RegulationTimeline";
+import { ChevronRight } from "lucide-react";
 
 // Sample regulation data
 const REGULATION_DATA = {
@@ -644,14 +645,25 @@ export default function HubRegulationDetailEnhanced() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
       <div className="max-w-4xl mx-auto">
+        {/* Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+          <Link href="/" className="hover:text-foreground transition-colors">
+            Home
+          </Link>
+          <ChevronRight className="h-4 w-4" />
+          <Link href="/hub" className="hover:text-foreground transition-colors">
+            ESG Hub
+          </Link>
+          <ChevronRight className="h-4 w-4" />
+          <Link href="/hub/regulations" className="hover:text-foreground transition-colors">
+            Regulations
+          </Link>
+          <ChevronRight className="h-4 w-4" />
+          <span className="text-foreground font-medium">{reg.code}</span>
+        </nav>
+
         {/* Header */}
         <div className="mb-8">
-          <Link
-            href="/hub/regulations"
-            className="text-sm text-blue-600 hover:text-blue-700 mb-4 inline-block"
-          >
-            ← Back to Regulations
-          </Link>
 
           <div className="flex items-start justify-between mb-6">
             <div>

@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ExternalLink, Plus, Filter } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 
@@ -361,7 +362,26 @@ export default function RegulatoryChangeLog() {
 
       {/* Entries List */}
       <div className="space-y-4">
-        {isLoading && <div className="text-center py-8 text-muted-foreground">Loading...</div>}
+        {isLoading && (
+          <div className="space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-6 w-3/4" />
+                      <Skeleton className="h-4 w-1/2" />
+                    </div>
+                    <Skeleton className="h-6 w-20" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-16 w-full" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
         {!isLoading && entries && entries.length === 0 && (
           <Card>
@@ -434,6 +454,16 @@ export default function RegulatoryChangeLog() {
                     month: "long",
                     year: "numeric",
                   })}
+                  {entry.updatedAt && entry.updatedAt !== entry.createdAt && (
+                    <>
+                      {" "}• Last updated:{" "}
+                      {new Date(entry.updatedAt).toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </>
+                  )}
                 </div>
               </CardContent>
             </Card>

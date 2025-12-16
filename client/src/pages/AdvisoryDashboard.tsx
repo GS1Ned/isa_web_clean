@@ -41,9 +41,15 @@ export default function AdvisoryDashboard() {
     <div className="container py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">ISA Advisory Dashboard</h1>
+        <div className="flex items-center gap-3 mb-4">
+          <h1 className="text-4xl font-bold">ISA Advisory Dashboard</h1>
+          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+            <CheckCircle2 className="h-3 w-3 mr-1" />
+            Locked v{summary.version}
+          </Badge>
+        </div>
         <p className="text-muted-foreground">
-          {summary.advisoryId} v{summary.version} • Published {summary.publicationDate}
+          {summary.advisoryId} • Published {summary.publicationDate}
         </p>
       </div>
 

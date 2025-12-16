@@ -78,9 +78,15 @@ export default function AdvisoryExplorer() {
     <div className="container py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Advisory Explorer</h1>
+        <div className="flex items-center gap-3 mb-4">
+          <h1 className="text-4xl font-bold">Advisory Explorer</h1>
+          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+            <CheckCircle2 className="h-3 w-3 mr-1" />
+            ISA v1.0 Locked
+          </Badge>
+        </div>
         <p className="text-muted-foreground">
-          Browse and filter mappings, gaps, and recommendations
+          Browse and filter mappings, gaps, and recommendations from the locked advisory
         </p>
       </div>
 
