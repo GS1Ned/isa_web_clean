@@ -7,7 +7,6 @@ import {
   CheckCircle,
   Bell,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const SAMPLE_DEADLINES = [
   {
@@ -169,7 +168,7 @@ export default function HubCalendar() {
 
           {/* Timeline */}
           <div className="space-y-4">
-            {sortedDeadlines.map((deadline, idx) => (
+            {sortedDeadlines.map((deadline, _idx) => (
               <div
                 key={deadline.id}
                 className={`card-elevated p-6 border-l-4 ${PRIORITY_COLORS[deadline.priority as keyof typeof PRIORITY_COLORS]}`}

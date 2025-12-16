@@ -3,7 +3,6 @@
  * Supports SendGrid, SMTP, and built-in notification system
  */
 
-import { ENV } from "./_core/env";
 
 export interface EmailOptions {
   to: string | string[];

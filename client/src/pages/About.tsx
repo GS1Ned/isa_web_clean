@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Zap, Target, Users, Lightbulb } from "lucide-react";
+import { Zap, Target, Lightbulb } from "lucide-react";
 
 export default function About() {
   return (

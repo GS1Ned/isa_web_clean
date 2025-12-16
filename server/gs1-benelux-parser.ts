@@ -62,7 +62,7 @@ export async function parseAttributesSheet(
   );
 
   // Find header row (row 1, index 1)
-  const headerRow = data[1];
+  const _headerRow = data[1];
   const localNameIdx = 0;
   const gdsnNameIdx = 1;
   const bmsIdIdx = 2;

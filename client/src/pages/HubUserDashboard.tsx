@@ -75,7 +75,7 @@ const SAMPLE_ALERTS = [
 
 export default function HubUserDashboard() {
   const { user, loading } = useAuth();
-  const [location] = useLocation();
+  const [_location] = useLocation();
   const [savedRegulations, setSavedRegulations] = useState(
     SAMPLE_SAVED_REGULATIONS
   );

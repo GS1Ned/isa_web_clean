@@ -1,23 +1,23 @@
 import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
+
 import {
   ArrowRight,
   Zap,
   Globe,
   TrendingUp,
   Shield,
-  Lightbulb,
+  
   FileText,
   Database,
   Sparkles,
 } from "lucide-react";
-import { getLoginUrl } from "@/const";
+
 import { Link } from "wouter";
 import { NavigationMenu } from "@/components/NavigationMenu";
 import { LatestNewsPanel } from "@/components/LatestNewsPanel";
 
 export default function Home() {
-  const { isAuthenticated } = useAuth();
+  useAuth(); // Auth context for potential future use
 
   return (
     <div className="min-h-screen flex flex-col bg-background">

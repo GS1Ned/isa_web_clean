@@ -95,7 +95,7 @@ export default function FeaturesComparison() {
     },
   ];
 
-  const getIcon = (v03: boolean, v10: boolean, v20: boolean) => {
+  const _getIcon = (v03: boolean, v10: boolean, v20: boolean) => {
     if (v20) return "v2.0";
     if (v10) return "v1.0";
     if (v03) return "v0.3";

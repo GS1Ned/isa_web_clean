@@ -17,7 +17,7 @@ import {
   Clock,
   FileUp,
   Plus,
-  ChevronRight,
+
 } from "lucide-react";
 
 export default function RiskRemediation() {
@@ -49,7 +49,7 @@ export default function RiskRemediation() {
   const updateStepMutation = trpc.remediation.updateStepStatus.useMutation();
   const completePlanMutation = trpc.remediation.completePlan.useMutation();
 
-  const handleCreatePlan = async (riskId: number) => {
+  const _handleCreatePlan = async (riskId: number) => {
     try {
       const result = await createPlanMutation.mutateAsync({
         riskId,
@@ -63,7 +63,7 @@ export default function RiskRemediation() {
     }
   };
 
-  const handleCompleteStep = async (stepId: number) => {
+  const _handleCompleteStep = async (stepId: number) => {
     try {
       await updateStepMutation.mutateAsync({
         stepId,

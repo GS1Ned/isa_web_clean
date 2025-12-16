@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
@@ -32,14 +32,14 @@ import {
 export default function GettingStarted() {
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [currentStep, setCurrentStep] = useState(1);
-  const [isInitialized, setIsInitialized] = useState(false);
+  // const [isInitialized, setIsInitialized] = useState(false);
 
   // Load saved progress
   // TEMPORARILY DISABLED: onboarding router commented out
   // const { data: savedProgress } = trpc.onboarding.getProgress.useQuery(undefined, {
   //   retry: false,
   // });
-  const savedProgress = null;
+  // savedProgress disabled - onboarding router commented out
 
   // Save progress mutation
   // const saveProgressMutation = trpc.onboarding.saveProgress.useMutation();

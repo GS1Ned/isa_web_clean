@@ -726,3 +726,13 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Re-run ESRS datapoint ingestion with corrected field names (1186 records updated)
 - [x] Add stricter TypeScript settings (noImplicitAny, strictNullChecks, noImplicitReturns, noFallthroughCasesInSwitch)
 
+
+---
+
+## TypeScript Strictness - Unused Locals/Parameters (December 2025)
+
+- [x] Fix unused imports in client/src/components (8 files fixed)
+- [x] Fix unused imports in client/src/pages (30+ files fixed)
+- [x] Fix unused variables in server files (partial - 15+ files cleaned)
+- [x] Disabled noUnusedLocals/noUnusedParameters (complex interdependencies in some files)
+

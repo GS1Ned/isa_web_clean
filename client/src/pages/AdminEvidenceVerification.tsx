@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, XCircle, Clock, Download, Eye } from "lucide-react";
+import { CheckCircle2, XCircle, Clock } from "lucide-react";
 
 export default function AdminEvidenceVerification() {
   const [selectedEvidenceId, setSelectedEvidenceId] = useState<number | null>(

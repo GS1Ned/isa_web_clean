@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import {
   Search,
-  Filter,
+
   ExternalLink,
   AlertCircle,
   CheckCircle,

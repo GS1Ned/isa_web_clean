@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { Zap, Search, Loader2, ArrowRight } from "lucide-react";
+import { Zap, Loader2, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 
 export default function ComparisonTool() {

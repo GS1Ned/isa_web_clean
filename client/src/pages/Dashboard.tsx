@@ -1,11 +1,11 @@
 import { useAuth } from "@/_core/hooks/useAuth";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import {
   Zap,
   Search,
-  Filter,
+
   TrendingUp,
   AlertCircle,
   Loader2,

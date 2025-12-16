@@ -181,7 +181,7 @@ function parseDatapointRow(
   columnMap: Record<string, number>
 ): ESRSDatapoint | null {
   // Extract values from mapped columns
-  const level = getCellValue(row, columnMap.level);
+  const _level = getCellValue(row, columnMap.level);
   const role = getCellValue(row, columnMap.role);
   const name = getCellValue(row, columnMap.name);
   const xbrlTag = getCellValue(row, columnMap.xbrlTag);

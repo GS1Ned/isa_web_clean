@@ -224,7 +224,7 @@ export function RegulationTimeline({
 
             {/* Timeline Events */}
             <div className="space-y-6">
-              {timelineEvents.map((event, index) => (
+              {timelineEvents.map((event) => (
                 <div key={event.id} className="relative flex gap-4">
                   {/* Timeline Marker */}
                   <div className="relative flex-shrink-0">

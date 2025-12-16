@@ -92,7 +92,7 @@ export async function cacheExport(
     const mimeType = format === "pdf" ? "application/pdf" : "text/csv";
 
     // Upload to S3
-    const { url, key } = await storagePut(s3Key, buffer, mimeType);
+    const { url: _url, key } = await storagePut(s3Key, buffer, mimeType);
 
     // Calculate checksum for cache validation
     const crypto = await import("crypto");

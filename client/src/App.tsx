@@ -24,8 +24,7 @@ const FeaturesComparison = lazy(() => import("./pages/FeaturesComparison"));
 const UseCases = lazy(() => import("./pages/UseCases"));
 const Contact = lazy(() => import("./pages/Contact"));
 const ComparisonTool = lazy(() => import("./pages/ComparisonTool"));
-const Blog = lazy(() => import("./pages/Blog"));
-const FAQ = lazy(() => import("./pages/FAQ"));
+// Blog and FAQ pages available but not currently routed
 const HubAbout = lazy(() => import("./pages/HubAbout"));
 const HubNews = lazy(() => import("./pages/HubNews"));
 const NewsHub = lazy(() => import("./pages/NewsHub"));
@@ -35,7 +34,7 @@ const HubStandardsMapping = lazy(() => import("./pages/HubStandardsMapping"));
 const HubResources = lazy(() => import("./pages/HubResources"));
 const HubImpactMatrix = lazy(() => import("./pages/HubImpactMatrix"));
 const HubUserDashboard = lazy(() => import("./pages/HubUserDashboard"));
-const AdminNewsPanel = lazy(() => import("./pages/AdminNewsPanel"));
+// AdminNewsPanel available but not currently routed
 const AdminNewsPipelineManager = lazy(
   () => import("./pages/AdminNewsPipelineManager")
 );

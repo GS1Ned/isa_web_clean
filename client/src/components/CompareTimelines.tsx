@@ -26,7 +26,7 @@ import {
   Plus,
 } from "lucide-react";
 import { Link } from "wouter";
-import { format, parseISO, isSameMonth, isSameYear } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { trpc } from "@/lib/trpc";
 
 interface RegulationData {

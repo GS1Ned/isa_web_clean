@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,13 +12,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import {
-  ArrowRight,
+
   CheckCircle2,
   AlertCircle,
   Loader2,
   TrendingUp,
   Layers,
-  Calendar,
+
   GitCompare,
 } from "lucide-react";
 

@@ -60,7 +60,7 @@ export default function RoadmapCollaboration({
   const addCommentMutation = trpc.collaboration.addComment.useMutation();
   const requestApprovalMutation =
     trpc.collaboration.requestApproval.useMutation();
-  const grantAccessMutation = trpc.collaboration.grantAccess.useMutation();
+  const _grantAccessMutation = trpc.collaboration.grantAccess.useMutation();
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;

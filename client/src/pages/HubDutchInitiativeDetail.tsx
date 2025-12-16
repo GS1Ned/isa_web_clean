@@ -15,7 +15,7 @@ import {
   Calendar,
   ExternalLink,
   FileText,
-  CheckCircle,
+
   AlertCircle,
   Target,
   Link as LinkIcon,

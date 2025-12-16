@@ -41,7 +41,6 @@ export function NewsCard({ news }: NewsCardProps) {
     regulationTags,
     impactLevel,
     sourceUrl,
-    sourceTitle,
     sourceType,
     newsType,
     sources,

@@ -34,19 +34,19 @@ export default function ComplianceRoadmap() {
       limit: 10,
     });
 
-  const { data: roadmapDetails, isLoading: detailsLoading } =
+  const { data: roadmapDetails, isLoading: _detailsLoading } =
     trpc.roadmap.getRoadmap.useQuery(
       { roadmapId: selectedRoadmapId! },
       { enabled: !!selectedRoadmapId }
     );
 
-  const { data: roadmapStats } = trpc.roadmap.getRoadmapStats.useQuery(
+  const { data: _roadmapStats } = trpc.roadmap.getRoadmapStats.useQuery(
     { roadmapId: selectedRoadmapId! },
     { enabled: !!selectedRoadmapId }
   );
 
   const generateMutation = trpc.roadmap.generateRoadmap.useMutation();
-  const updateStatusMutation = trpc.roadmap.updateActionStatus.useMutation();
+  const _updateStatusMutation = trpc.roadmap.updateActionStatus.useMutation();
 
   const handleGenerateRoadmap = async () => {
     if (!selectedStrategy) return;

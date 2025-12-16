@@ -63,7 +63,7 @@ export async function parseIG3Datapoints(
       continue;
     }
 
-    const headers = data[headerRowIndex];
+    const _headers = data[headerRowIndex];
     console.log(`  Found header at row ${headerRowIndex}`);
 
     // Parse datapoints

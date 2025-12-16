@@ -123,7 +123,7 @@ export default function FAQ() {
       item.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const categories = [
+  const _categories = [
     "All",
     ...Array.from(new Set(faqItems.map(item => item.category))),
   ];

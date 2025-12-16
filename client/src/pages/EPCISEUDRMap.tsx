@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import { trpc } from "@/lib/trpc";
 import { Card } from "@/components/ui/card";
@@ -45,7 +45,7 @@ export default function EPCISEUDRMap() {
   const [selectedRisk, setSelectedRisk] = useState<
     "low" | "medium" | "high" | undefined
   >();
-  const [selectedGtin, setSelectedGtin] = useState<string | undefined>();
+  const [selectedGtin, _setSelectedGtin] = useState<string | undefined>();
 
   const { data, isLoading, error } = trpc.epcis.getEUDRGeolocations.useQuery({
     riskLevel: selectedRisk,
@@ -65,7 +65,7 @@ export default function EPCISEUDRMap() {
     }
   };
 
-  const getRiskIcon = (risk: string) => {
+  const _getRiskIcon = (risk: string) => {
     switch (risk) {
       case "low":
         return <CheckCircle className="w-4 h-4" />;

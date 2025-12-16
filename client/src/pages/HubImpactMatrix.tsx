@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Link } from "wouter";
-import { Grid3x3, Download, Info } from "lucide-react";
+import { Download, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const REGULATIONS = ["CSRD", "ESRS", "EUDR", "DPP", "ESPR", "EU_TAXONOMY"];

@@ -34,7 +34,7 @@ export function parseEPCISXML(xmlString: string): EPCISDocument {
     parsed["epcis:EPCISDocument"] || parsed.EPCISDocument || parsed;
 
   // Extract header information
-  const header = epcisDoc["EPCISHeader"] || epcisDoc["epcis:EPCISHeader"] || {};
+  const _header = epcisDoc["EPCISHeader"] || epcisDoc["epcis:EPCISHeader"] || {};
   const body = epcisDoc["EPCISBody"] || epcisDoc["epcis:EPCISBody"] || {};
   const eventList = body["EventList"] || body["epcis:EventList"] || {};
 

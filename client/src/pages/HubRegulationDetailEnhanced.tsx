@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import {
   CheckCircle,
-  AlertCircle,
+
   Calendar,
   BookOpen,
   HelpCircle,

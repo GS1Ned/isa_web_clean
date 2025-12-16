@@ -84,7 +84,7 @@ const LEVEL_COLORS = {
   OPTIONAL: "bg-green-100 text-green-800",
 };
 
-const LEVEL_ICONS = {
+const _LEVEL_ICONS = {
   REQUIRED: <AlertCircle className="w-4 h-4" />,
   RECOMMENDED: <AlertCircle className="w-4 h-4" />,
   OPTIONAL: <CheckCircle className="w-4 h-4" />,

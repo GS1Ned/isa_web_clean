@@ -9,7 +9,7 @@ import { eq } from "drizzle-orm";
  */
 
 export async function notifyComment(
-  roadmapId: number,
+  _roadmapId: number,
   roadmapTitle: string,
   commenterName: string,
   commentContent: string,
@@ -40,7 +40,7 @@ export async function notifyComment(
 }
 
 export async function notifyApprovalRequested(
-  roadmapId: number,
+  _roadmapId: number,
   roadmapTitle: string,
   requesterName: string,
   approverRole: string,
@@ -71,7 +71,7 @@ export async function notifyApprovalRequested(
 }
 
 export async function notifyApprovalDecision(
-  roadmapId: number,
+  _roadmapId: number,
   roadmapTitle: string,
   approverName: string,
   decision: "approved" | "rejected",
@@ -107,7 +107,7 @@ export async function notifyApprovalDecision(
 }
 
 export async function notifyTeamAccessGranted(
-  roadmapId: number,
+  _roadmapId: number,
   roadmapTitle: string,
   grantedByName: string,
   accessLevel: string,
@@ -138,7 +138,7 @@ export async function notifyTeamAccessGranted(
 }
 
 export async function notifyRoadmapCompleted(
-  roadmapId: number,
+  _roadmapId: number,
   roadmapTitle: string,
   completedByName: string,
   projectedScore: number,
@@ -169,7 +169,7 @@ export async function notifyRoadmapCompleted(
 }
 
 export async function notifyActionCompleted(
-  roadmapId: number,
+  _roadmapId: number,
   roadmapTitle: string,
   actionTitle: string,
   completedByName: string,
@@ -200,7 +200,7 @@ export async function notifyActionCompleted(
 }
 
 export async function notifyMilestoneReached(
-  roadmapId: number,
+  _roadmapId: number,
   roadmapTitle: string,
   milestoneTitle: string,
   targetScore: number,

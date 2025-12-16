@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "wouter";
 import {
   TrendingUp,
@@ -22,11 +21,9 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
+  
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
+  
 } from "recharts";
 
 export default function AdminAnalyticsDashboard() {

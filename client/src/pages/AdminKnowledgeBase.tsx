@@ -87,7 +87,7 @@ export default function AdminKnowledgeBase() {
 
   // Generate embeddings mutation
   const generateMutation = trpc.askISA.generateEmbeddings.useMutation({
-    onSuccess: result => {
+    onSuccess: () => {
       setGeneratingType(null);
       refetchStats();
     },

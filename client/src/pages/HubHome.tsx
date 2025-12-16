@@ -1,11 +1,11 @@
 import { Link } from "wouter";
 import {
   Zap,
-  TrendingUp,
+
   Calendar,
-  BookOpen,
+
   AlertCircle,
-  Search,
+
   ArrowRight,
   Database,
   Sparkles,

@@ -1,5 +1,4 @@
 import { EventEmitter } from "events";
-import { getDb } from "./db";
 
 /**
  * Real-time notification event types
