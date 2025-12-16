@@ -70,8 +70,7 @@ export default function RegulatoryChangeLog() {
   // Mutations
   const createMutation = trpc.regulatoryChangeLog.create.useMutation({
     onSuccess: () => {
-      toast({
-        title: "Entry created",
+      toast.success("Entry created", {
         description: "Regulatory change log entry has been created successfully.",
       });
       setShowCreateForm(false);
@@ -89,10 +88,8 @@ export default function RegulatoryChangeLog() {
       refetch();
     },
     onError: (error) => {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: error.message,
-        variant: "destructive",
       });
     },
   });
@@ -100,7 +97,12 @@ export default function RegulatoryChangeLog() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createMutation.mutate({
-      ...formData,
+      entryDate: formData.entryDate,
+      sourceType: formData.sourceType as "EU_DIRECTIVE" | "EU_REGULATION" | "EU_DELEGATED_ACT" | "EU_IMPLEMENTING_ACT" | "EFRAG_IG" | "EFRAG_QA" | "EFRAG_TAXONOMY" | "GS1_AISBL" | "GS1_EUROPE" | "GS1_NL",
+      sourceOrg: formData.sourceOrg,
+      title: formData.title,
+      description: formData.description,
+      url: formData.url,
       documentHash: formData.documentHash || undefined,
       impactAssessment: formData.impactAssessment || undefined,
       isaVersionAffected: formData.isaVersionAffected || undefined,

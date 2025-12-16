@@ -181,7 +181,7 @@ export default function ESRSDatapoints() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Standards</SelectItem>
-                {standards?.map(std => (
+                {standards?.filter((std): std is string => std !== null).map(std => (
                   <SelectItem key={std} value={std}>
                     {std}
                   </SelectItem>

@@ -15,9 +15,18 @@ import mysql from 'mysql2/promise';
 import * as schema from '../drizzle/schema';
 import { gs1ValidationRules, gs1LocalCodeLists } from '../drizzle/schema';
 
-// Database connection
-const connection = await mysql.createConnection(process.env.DATABASE_URL!);
-const db = drizzle(connection, { schema, mode: 'default' });
+// Database connection - lazy initialization
+let connection: mysql.Connection | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _dbInstance: any = null;
+
+async function getDb() {
+  if (!_dbInstance) {
+    connection = await mysql.createConnection(process.env.DATABASE_URL!);
+    _dbInstance = drizzle(connection, { schema, mode: 'default' });
+  }
+  return _dbInstance;
+}
 
 interface ValidationRuleRecord {
   ruleId: string;
@@ -184,6 +193,9 @@ async function parseLCLCodeLists(workbook: ExcelJS.Workbook): Promise<CodeListRe
 async function ingestValidationRules() {
   console.log('\n=== GS1 NL/Benelux Validation Rules Ingestion ===\n');
   
+  // Get database connection
+  const dbInstance = await getDb();
+  
   try {
     const workbook = new ExcelJS.Workbook();
     const filePath = '/home/ubuntu/isa_web/data/standards/gs1-nl/benelux-datasource/v3.1.33/overview_of_validation_rules_for_the_benelux-31334.xlsx';
@@ -201,15 +213,15 @@ async function ingestValidationRules() {
     
     // Clear existing data
     console.log('\nClearing existing validation data...');
-    await db.delete(gs1ValidationRules);
-    await db.delete(gs1LocalCodeLists);
+    await dbInstance.delete(gs1ValidationRules);
+    await dbInstance.delete(gs1LocalCodeLists);
     
     // Insert validation rules in batches
     console.log('\nInserting validation rules...');
     const ruleBatchSize = 500;
     for (let i = 0; i < rules.length; i += ruleBatchSize) {
       const batch = rules.slice(i, i + ruleBatchSize);
-      await db.insert(gs1ValidationRules).values(batch);
+      await dbInstance.insert(gs1ValidationRules).values(batch);
       console.log(`  Inserted batch ${Math.floor(i / ruleBatchSize) + 1}/${Math.ceil(rules.length / ruleBatchSize)}`);
     }
     
@@ -218,7 +230,7 @@ async function ingestValidationRules() {
     const codeListBatchSize = 500;
     for (let i = 0; i < codeLists.length; i += codeListBatchSize) {
       const batch = codeLists.slice(i, i + codeListBatchSize);
-      await db.insert(gs1LocalCodeLists).values(batch);
+      await dbInstance.insert(gs1LocalCodeLists).values(batch);
       console.log(`  Inserted batch ${Math.floor(i / codeListBatchSize) + 1}/${Math.ceil(codeLists.length / codeListBatchSize)}`);
     }
     
@@ -238,7 +250,7 @@ async function ingestValidationRules() {
     console.error('❌ Ingestion failed:', error);
     throw error;
   } finally {
-    await connection.end();
+    if (connection) await connection.end();
   }
 }
 

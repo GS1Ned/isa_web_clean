@@ -253,7 +253,7 @@ export async function ingestEsrsDatapoints(
           esrsStandard: row.esrsStandard,
           disclosureRequirement: row.disclosureRequirement,
           paragraph: row.paragraph,
-          relatedAR: row.relatedAR,
+          relatedAr: row.relatedAR,
           name: row.name,
           dataTypeRaw: row.dataType,
           conditionalRaw: row.conditional,
@@ -274,7 +274,7 @@ export async function ingestEsrsDatapoints(
               esrsStandard: row.esrsStandard,
               disclosureRequirement: row.disclosureRequirement,
               paragraph: row.paragraph,
-              relatedAR: row.relatedAR,
+              relatedAr: row.relatedAR,
               name: row.name,
               dataTypeRaw: row.dataType,
               conditionalRaw: row.conditional,
@@ -291,7 +291,7 @@ export async function ingestEsrsDatapoints(
             esrsStandard: row.esrsStandard,
             disclosureRequirement: row.disclosureRequirement,
             paragraph: row.paragraph,
-            relatedAR: row.relatedAR,
+            relatedAr: row.relatedAR,
             name: row.name,
             dataTypeRaw: row.dataType,
             conditionalRaw: row.conditional,
@@ -314,12 +314,12 @@ export async function ingestEsrsDatapoints(
               esrsStandard: row.esrsStandard,
               disclosureRequirement: row.disclosureRequirement,
               paragraph: row.paragraph,
-              relatedAR: row.relatedAR,
-              name: row.name,
-              dataType: row.dataType,
-              conditional: row.conditional,
-              voluntary: row.voluntary,
-              sfdrMapping: row.sfdrMapping
+            relatedAR: row.relatedAR,
+            name: row.name,
+            dataType: row.dataType,
+            conditional: row.conditional,
+            voluntary: row.voluntary,
+            sfdrMapping: row.sfdrMapping
             })
             .where(eq(esrsDatapoints.id, existingCanonical[0].id));
           result.recordsUpdated += 1;

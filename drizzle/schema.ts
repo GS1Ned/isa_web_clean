@@ -1683,6 +1683,8 @@ export const gs1Attributes = mysqlTable(
       "boolean",
       "date",
       "code_list",
+      "url",
+      "other",
     ]).notNull(),
     codeListId: int("codeListId"),
     isMandatory: boolean("isMandatory").default(false),

@@ -108,7 +108,7 @@ export async function ingestCtesKdes(
     const kdeIdMap = new Map<string, number>();
     let kdeCount = 0;
 
-    for (const [kdeCode, kdeData] of kdeMap) {
+    for (const [kdeCode, kdeData] of Array.from(kdeMap)) {
       if (limit !== undefined && kdeCount >= limit) {
         break;
       }

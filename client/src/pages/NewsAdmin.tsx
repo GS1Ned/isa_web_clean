@@ -50,9 +50,15 @@ export function NewsAdmin() {
   // Mutations
   const triggerIngestion = trpc.newsAdmin.triggerIngestion.useMutation({
     onSuccess: data => {
-      showToast.success("News Ingestion Complete", {
-        description: `Fetched: ${data.fetched} | Inserted: ${data.inserted} | Skipped: ${data.skipped} | Duration: ${data.duration}ms`,
-      });
+      if (data.status === "running") {
+        showToast.info("News Ingestion Started", {
+          description: data.message,
+        });
+      } else {
+        showToast.success("News Ingestion Complete", {
+          description: data.message,
+        });
+      }
       setIsIngesting(false);
       refetchStats();
       refetchHistory();

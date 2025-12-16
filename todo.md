@@ -694,6 +694,19 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ---
 
+## TypeScript Fixes (December 2025) ✅ COMPLETE
+
+- [x] Fixed relatedAR/relatedAr field name mismatch in INGEST-03_esrs_datapoints.ts
+- [x] Fixed Map iteration in INGEST-04_ctes_kdes.ts using Array.from()
+- [x] Fixed top-level await in ingest-gs1-nl-complete.ts and ingest-validation-rules.ts
+- [x] Added url and other to gs1Attributes datatype enum in schema
+- [x] Fixed implicit any types in AdvisoryExplorer.tsx filter callbacks
+- [x] Fixed null check for standards in ESRSDatapoints.tsx
+- [x] Fixed NewsAdmin.tsx to handle async pipeline response
+- [x] Fixed RegulatoryChangeLog.tsx toast and sourceType type
+
+---
+
 ## Deployment Fix (December 2025) ✅ COMPLETE
 
 ### Symlink Issue Resolution

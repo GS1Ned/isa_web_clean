@@ -16,9 +16,18 @@ import mysql from 'mysql2/promise';
 import * as schema from '../drizzle/schema';
 import { gs1Attributes, gs1AttributeCodeLists } from '../drizzle/schema';
 
-// Database connection
-const connection = await mysql.createConnection(process.env.DATABASE_URL!);
-const db = drizzle(connection, { schema, mode: 'default' });
+// Database connection - lazy initialization
+let connection: mysql.Connection | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _dbInstance: any = null;
+
+async function getDb() {
+  if (!_dbInstance) {
+    connection = await mysql.createConnection(process.env.DATABASE_URL!);
+    _dbInstance = drizzle(connection, { schema, mode: 'default' });
+  }
+  return _dbInstance;
+}
 
 interface AttributeRecord {
   attributeCode: string;
@@ -303,6 +312,9 @@ async function ingestGS1NLComplete() {
   console.log('\n=== GS1 NL/Benelux Complete Ingestion ===\n');
   
   try {
+    // Get database connection
+    const dbInstance = await getDb();
+    
     // Parse all 3 sector models
     const diyData = await parseDIYModel();
     const fmcgData = await parseFMCGModel();
@@ -323,14 +335,14 @@ async function ingestGS1NLComplete() {
     
     // Clear existing data
     console.log('\nClearing existing gs1_attributes data...');
-    await db.delete(gs1Attributes);
+    await dbInstance.delete(gs1Attributes);
     
     // Insert in batches of 500
     console.log('\nInserting attributes...');
     const batchSize = 500;
     for (let i = 0; i < allAttributes.length; i += batchSize) {
       const batch = allAttributes.slice(i, i + batchSize);
-      await db.insert(gs1Attributes).values(batch);
+      await dbInstance.insert(gs1Attributes).values(batch);
       console.log(`  Inserted batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(allAttributes.length / batchSize)}`);
     }
     

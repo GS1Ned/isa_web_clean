@@ -42,19 +42,19 @@ export default function AdvisoryExplorer() {
   });
 
   // Filter by search query (client-side)
-  const filteredMappings = mappingsData?.mappings.filter(m =>
+  const filteredMappings = mappingsData?.mappings.filter((m: typeof mappingsData.mappings[number]) =>
     searchQuery === "" ||
     m.regulationDatapoint.toLowerCase().includes(searchQuery.toLowerCase()) ||
     m.gs1Attribute?.toLowerCase().includes(searchQuery.toLowerCase())
   ) || [];
 
-  const filteredGaps = gapsData?.gaps.filter(g =>
+  const filteredGaps = gapsData?.gaps.filter((g: typeof gapsData.gaps[number]) =>
     searchQuery === "" ||
     g.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     g.description.toLowerCase().includes(searchQuery.toLowerCase())
   ) || [];
 
-  const filteredRecommendations = recommendationsData?.recommendations.filter(r =>
+  const filteredRecommendations = recommendationsData?.recommendations.filter((r: typeof recommendationsData.recommendations[number]) =>
     searchQuery === "" ||
     r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     r.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -229,7 +229,7 @@ export default function AdvisoryExplorer() {
               </CardContent>
             </Card>
           ) : (
-            filteredMappings.map((mapping) => (
+            filteredMappings.map((mapping: typeof filteredMappings[number]) => (
               <Card key={mapping.mappingId} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => openDetails(mapping)}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -282,7 +282,7 @@ export default function AdvisoryExplorer() {
               </CardContent>
             </Card>
           ) : (
-            filteredGaps.map((gap) => (
+            filteredGaps.map((gap: typeof filteredGaps[number]) => (
               <Card key={gap.gapId} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => openDetails(gap)}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -325,7 +325,7 @@ export default function AdvisoryExplorer() {
               </CardContent>
             </Card>
           ) : (
-            filteredRecommendations.map((rec) => (
+            filteredRecommendations.map((rec: typeof filteredRecommendations[number]) => (
               <Card key={rec.recommendationId} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => openDetails(rec)}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
