@@ -128,4 +128,43 @@ export const regulatoryChangeLogRouter = router({
   statsByVersion: publicProcedure.query(async () => {
     return await getRegulatoryChangeLogStatsByVersion();
   }),
+
+  /**
+   * Bulk import regulatory change log entries from high-impact news (admin-only)
+   */
+  bulkImportFromNews: protectedProcedure
+    .input(
+      z.object({
+        newsIds: z.array(z.number()).optional(),
+        impactThreshold: z.enum(["HIGH", "CRITICAL"]).optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Admin-only authorization
+      if (ctx.user.role !== "admin") {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Only administrators can bulk import change log entries",
+        });
+      }
+
+      const { bulkCreateChangeLogEntriesFromNews } = await import("../news-regulatory-integration");
+      const { getHighImpactNews, getNewsByIds } = await import("../db-news-helpers-additions");
+
+      // Get news items to process
+      let newsItems;
+      if (input.newsIds && input.newsIds.length > 0) {
+        // Import specific news items by ID
+        newsItems = await getNewsByIds(input.newsIds);
+      } else {
+        // Import all high-impact news
+        const threshold = input.impactThreshold || "HIGH";
+        newsItems = await getHighImpactNews(threshold);
+      }
+
+      // Bulk create change log entries
+      const result = await bulkCreateChangeLogEntriesFromNews(newsItems);
+
+      return result;
+    }),
 });

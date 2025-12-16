@@ -95,6 +95,7 @@ const AskISA = lazy(() => import("./pages/AskISA"));
 const AdminKnowledgeBase = lazy(() => import("./pages/AdminKnowledgeBase"));
 const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 const RegulatoryChangeLog = lazy(() => import("./pages/RegulatoryChangeLog"));
+const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -143,7 +144,9 @@ function Router() {
       <Route path="/advisory/explorer" component={AdvisoryExplorer} />
       <Route path="/advisory/traceability" component={AdvisoryTraceability} />
       <Route path="/admin/knowledge-base" component={AdminKnowledgeBase} />
-      <Route path="/admin/regulatory-change-log" component={RegulatoryChangeLog} />
+      <Route path="/regulatory-changes" component={RegulatoryChangeLog} />
+      <Route path="/admin/regulatory-changes" component={RegulatoryChangeLog} />
+      <Route path="/admin/monitoring" component={AdminMonitoring} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
       <Route path="/admin/cellar" component={AdminCellarIngestion} />
       <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />

@@ -45,6 +45,7 @@ import { newsAdminRouter } from "./news-admin-router.js";
 import { cronRouter } from "./routers/cron.js";
 import { advisoryRouter } from "./routers/advisory.js";
 import { regulatoryChangeLogRouter } from "./routers/regulatory-change-log.js";
+import { monitoringRouter } from "./routers/monitoring.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -980,6 +981,7 @@ export const appRouter = router({
    * Regulatory Change Log Router
    */
   regulatoryChangeLog: regulatoryChangeLogRouter,
+  monitoring: monitoringRouter,
 
   /**
    * Dutch Initiatives Router
