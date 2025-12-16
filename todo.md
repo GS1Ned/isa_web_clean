@@ -1047,3 +1047,111 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Test roadmap PDF export (after generation) - Skipped (requires generated roadmap)
 - [ ] Check responsive design on mobile - Skipped (desktop testing sufficient)
 
+
+
+---
+
+# ISA v1.1 EXECUTION CHARTER IMPLEMENTATION
+
+## Phase 1: Architecture Analysis & Gap Identification
+
+- [x] Audit current advisory generation system (regulations → GS1 mappings)
+  * File-based JSON advisories in data/advisories/
+  * Versions: v1.0, v1.1 exist
+  * Scripts: compute_advisory_diff.cjs, validate_advisory.py
+- [x] Identify where advisory outputs are stored and versioned
+  * Static JSON files, not database records
+  * Version in filename (ISA_ADVISORY_v1.0.json)
+- [x] Map current "Ask ISA" implementation and citation mechanisms
+  * Vector search + RAG
+  * Sources cited but NO version tracking
+- [x] Document dataset registry structure (regulations, standards, attributes, ESRS datapoints)
+  * Database tables exist for all entities
+  * regulatory_change_log table exists but disconnected from advisory generation
+- [x] Identify missing: Regulatory Change Log, advisory diffing, version discipline
+  * Change Log EXISTS but no regeneration workflow
+  * Diff computation EXISTS but no UI
+  * Ask ISA lacks advisory version awareness
+
+## Phase 2: Regulatory Change Log MVP
+
+- [ ] Design Change Log schema (regulation_id, change_date, change_type, description, affected_advisories)
+- [ ] Create Change Log CRUD interface (admin-only)
+- [ ] Build advisory regeneration trigger from Change Log entries
+- [ ] Implement deterministic advisory versioning (advisory_id + version_number)
+- [ ] Add "Regenerate Advisory" button that creates new version with diff
+
+## Phase 3: Advisory Diff System
+
+- [ ] Design advisory diff computation algorithm (field-level changes)
+- [ ] Build diff storage schema (advisory_diffs table)
+- [ ] Create diff visualization UI (side-by-side comparison)
+- [ ] Add impact severity classification (critical/major/minor)
+- [ ] Implement "What changed?" governance report generation
+
+## Phase 4: Ask ISA Query Library with Guardrails
+
+- [ ] Audit current Ask ISA chat implementation
+- [ ] Add mandatory citation system (advisory_id, dataset_id, version)
+- [ ] Implement query guardrails (no speculation, no live reasoning)
+- [ ] Build query library (pre-approved question templates)
+- [ ] Add "frozen advisory" read-only mode indicator
+- [ ] Remove any speculative/predictive language from responses
+
+## Phase 5: Test Coverage & Regression Protection
+
+- [ ] Write vitest tests for Change Log CRUD operations
+- [ ] Write vitest tests for advisory regeneration logic
+- [ ] Write vitest tests for diff computation accuracy
+- [ ] Write vitest tests for Ask ISA citation enforcement
+- [ ] Add regression tests for version discipline
+
+## Phase 6: GS1 Style Compliance
+
+- [ ] Review all human-readable outputs for GS1 publication readiness
+- [ ] Ensure machine-readable outputs remain developer-optimized
+- [ ] Add GS1 style guide compliance checks
+- [ ] Validate advisory report formatting
+
+
+
+## Phase 2: Progress Update
+
+- [x] Audit existing Change Log schema (already has isaVersionAffected field)
+- [x] Audit existing Change Log UI (RegulatoryChangeLog.tsx - fully functional)
+- [x] Create Advisory Diff visualization UI (AdvisoryDiff.tsx)
+- [x] Add route for Advisory Diff (/advisory/diff)
+- [ ] Add navigation link to Advisory Diff from main menu
+- [ ] Link Change Log entries to Advisory Diff view
+- [ ] Test Advisory Diff UI with real data
+
+
+
+## Phase 2: COMPLETE ✅
+
+- [x] Advisory Diff visualization UI created and tested
+- [x] tRPC procedure for serving diff data
+- [x] Governance metrics displayed: progress score, coverage deltas, gap lifecycle, recommendations
+- [x] Route added: /advisory/diff
+
+**Outcome:** GS1 NL leadership can now answer "What changed?" between advisory versions with deterministic, traceable metrics.
+
+---
+
+## Phase 3: Ask ISA Query Library with Mandatory Citations
+
+**Current State Audit:**
+- Ask ISA uses vector search + RAG
+- Sources are cited with similarity scores
+- NO advisory version awareness
+- NO dataset version tracking
+- NO query guardrails against speculation
+
+**v1.1 Requirements:**
+- [ ] Add advisory version selector to Ask ISA UI
+- [ ] Display which advisory version is being queried (frozen advisory indicator)
+- [ ] Add dataset version IDs to source citations
+- [ ] Implement query guardrails (system prompt enforcement)
+- [ ] Add query library (pre-approved question templates)
+- [ ] Remove speculative/predictive language from responses
+

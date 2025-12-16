@@ -34,6 +34,29 @@ function loadSummary() {
 
 export const advisoryRouter = router({
   /**
+   * Get advisory diff between two versions
+   */
+  getDiff: publicProcedure
+    .input(
+      z.object({
+        version1: z.string().optional().default("v1.0"),
+        version2: z.string().optional().default("v1.0"),
+      })
+    )
+    .query(({ input }) => {
+      const diffPath = path.join(
+        process.cwd(),
+        `data/advisories/ISA_ADVISORY_DIFF_${input.version1}_to_${input.version2}.json`
+      );
+      
+      if (!fs.existsSync(diffPath)) {
+        throw new Error(`Diff file not found for ${input.version1} to ${input.version2}`);
+      }
+      
+      return JSON.parse(fs.readFileSync(diffPath, "utf8"));
+    }),
+
+  /**
    * Get advisory summary (fast stats for UI)
    */
   getSummary: publicProcedure.query(() => {
