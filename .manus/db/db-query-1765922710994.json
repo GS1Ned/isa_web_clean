@@ -1,0 +1,49 @@
+{
+  "query": "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'esrs_datapoints' AND TABLE_SCHEMA = DATABASE();",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'esrs_datapoints' AND TABLE_SCHEMA = DATABASE();",
+  "rows": [
+    {
+      "COLUMN_NAME": "id"
+    },
+    {
+      "COLUMN_NAME": "code"
+    },
+    {
+      "COLUMN_NAME": "esrs_standard"
+    },
+    {
+      "COLUMN_NAME": "disclosure_requirement"
+    },
+    {
+      "COLUMN_NAME": "paragraph"
+    },
+    {
+      "COLUMN_NAME": "related_ar"
+    },
+    {
+      "COLUMN_NAME": "name"
+    },
+    {
+      "COLUMN_NAME": "data_type"
+    },
+    {
+      "COLUMN_NAME": "conditional"
+    },
+    {
+      "COLUMN_NAME": "voluntary"
+    },
+    {
+      "COLUMN_NAME": "sfdr_mapping"
+    },
+    {
+      "COLUMN_NAME": "created_at"
+    },
+    {
+      "COLUMN_NAME": "updated_at"
+    }
+  ],
+  "messages": [],
+  "stdout": "COLUMN_NAME\nid\ncode\nesrs_standard\ndisclosure_requirement\nparagraph\nrelated_ar\nname\ndata_type\nconditional\nvoluntary\nsfdr_mapping\ncreated_at\nupdated_at\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

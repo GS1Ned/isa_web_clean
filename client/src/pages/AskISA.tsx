@@ -23,6 +23,9 @@ import {
   Lightbulb,
 } from "lucide-react";
 import { Streamdown } from "streamdown";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CheckCircle2, Library } from "lucide-react";
 
 /**
  * Ask ISA - RAG-Powered Q&A Interface
@@ -43,19 +46,64 @@ interface Message {
   }>;
 }
 
+// Query library organized by category (30 pre-approved questions from ASK_ISA_QUERY_LIBRARY.md)
+const QUERY_LIBRARY = {
+  gap: [
+    "Which gaps exist for CSRD and ESRS in DIY?",
+    "Which gaps exist for EUDR in FMCG?",
+    "What is the status of Gap #1 (Product Carbon Footprint) in healthcare?",
+    "Which critical gaps remain MISSING across all sectors in ISA v1.1?",
+    "Which gaps are PARTIAL in DIY and what evidence supports the PARTIAL classification?",
+  ],
+  mapping: [
+    "Which GS1 Netherlands attributes cover ESRS E1 (Climate change) datapoints for DIY and where are the gaps?",
+    "Which GS1 Netherlands attributes partially cover ESRS E1-6 (Gross Scopes 1, 2 and 3 emissions) for FMCG?",
+    "Which healthcare attributes map to deforestation due diligence requirements relevant to EUDR?",
+    "Which GS1 Netherlands attributes are referenced by the Digital Product Passport gap analysis for DIY?",
+    "Which mappings exist for supplier due diligence and which are missing for FMCG?",
+  ],
+  version: [
+    "What changed between ISA v1.0 and v1.1 for Gap #1 (Product Carbon Footprint)?",
+    "Which gaps were upgraded from MISSING to PARTIAL in v1.1 and why?",
+    "What new dataset entries were introduced in dataset registry v1.3.0 to support v1.1?",
+    "What changed between v1.0 and v1.1 in recommendations for FMCG regarding Product Carbon Footprint?",
+    "What changed between v1.0 and v1.1 in overall mapping coverage for DIY?",
+  ],
+  provenance: [
+    "Which datasets underpin the Product Carbon Footprint recommendations for DIY?",
+    "What is the authoritative source of ESRS E1 datapoint definitions used in the advisory?",
+    "Which GS1 Netherlands sector model version is used for healthcare analysis?",
+    "Which datasets underpin Gap #5 (Circularity data) assessment in FMCG?",
+    "Which datasets are referenced by the Digital Product Passport gap and recommendations for healthcare?",
+  ],
+  recommendation: [
+    "What are the short-term recommendations for DIY for 2025–2026?",
+    "What are the short-term recommendations for FMCG to address Product Carbon Footprint?",
+    "Which recommendations require adoption or alignment with GS1 in Europe publications for healthcare?",
+    "What are the medium-term recommendations for healthcare to address supplier due diligence?",
+    "What are the long-term recommendations for FMCG to close Circularity data gaps?",
+  ],
+  coverage: [
+    "What is the coverage percentage for ESRS E1 (Climate change) in DIY and which topics drive the missing coverage?",
+    "What is the coverage percentage for EUDR-related requirements in FMCG?",
+    "Which ESRS topic has the highest coverage in healthcare in ISA v1.1?",
+    "What percentage of Digital Product Passport identification requirements are covered in DIY?",
+    "What is the coverage percentage for supplier due diligence in healthcare?",
+  ],
+};
+
 const SUGGESTED_QUESTIONS = [
-  "What GS1 codes are required for EUDR compliance?",
-  "How does CSRD relate to GS1 Digital Link?",
-  "Which ESRS datapoints cover supply chain traceability?",
-  "What are the key requirements of the Digital Product Passport?",
-  "How can EPCIS help with EUDR deforestation tracking?",
-  "What Dutch initiatives support textile circularity?",
+  ...QUERY_LIBRARY.gap.slice(0, 2),
+  ...QUERY_LIBRARY.mapping.slice(0, 1),
+  ...QUERY_LIBRARY.recommendation.slice(0, 2),
+  ...QUERY_LIBRARY.coverage.slice(0, 1),
 ];
 
 export default function AskISA() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [conversationId, setConversationId] = useState<number | undefined>();
+  const [advisoryVersion, setAdvisoryVersion] = useState("v1.0");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const askMutation = trpc.askISA.ask.useMutation({
@@ -158,14 +206,44 @@ export default function AskISA() {
     <div className="container mx-auto py-8 max-w-7xl">
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-            <Sparkles className="h-8 w-8 text-white" />
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+              <Sparkles className="h-8 w-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold">Ask ISA</h1>
+              <p className="text-muted-foreground mt-1">
+                AI-powered assistant for EU regulations and GS1 standards
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-4xl font-bold">Ask ISA</h1>
-            <p className="text-muted-foreground mt-1">
-              AI-powered assistant for EU regulations and GS1 standards
+          
+          {/* Advisory Version Selector */}
+          <div className="flex flex-col items-end gap-2">
+            <label className="text-sm font-medium text-muted-foreground">
+              Advisory Version
+            </label>
+            <Select value={advisoryVersion} onValueChange={setAdvisoryVersion}>
+              <SelectTrigger className="w-48">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="v1.0">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span>ISA v1.0 (Locked)</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="v1.1" disabled>
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground">ISA v1.1 (Coming Soon)</span>
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Querying locked advisory from 2024-11-07
             </p>
           </div>
         </div>
@@ -233,22 +311,117 @@ export default function AskISA() {
                 standards, ESRS datapoints, and Dutch compliance initiatives.
               </p>
 
-              {/* Suggested Questions */}
-              <div className="w-full max-w-2xl">
-                <p className="text-sm font-medium mb-3">Try asking:</p>
-                <div className="grid gap-2">
-                  {SUGGESTED_QUESTIONS.map((question, idx) => (
-                    <Button
-                      key={idx}
-                      variant="outline"
-                      className="justify-start text-left h-auto py-3 px-4"
-                      onClick={() => handleSuggestedQuestion(question)}
-                    >
-                      <Lightbulb className="h-4 w-4 mr-2 flex-shrink-0" />
-                      <span className="text-sm">{question}</span>
-                    </Button>
-                  ))}
+              {/* Query Library */}
+              <div className="w-full max-w-3xl">
+                <div className="flex items-center gap-2 mb-4">
+                  <Library className="h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-semibold">Query Library</h3>
+                  <Badge variant="secondary" className="ml-2">30 pre-approved questions</Badge>
                 </div>
+                
+                <Tabs defaultValue="suggested" className="w-full">
+                  <TabsList className="grid w-full grid-cols-7 mb-4">
+                    <TabsTrigger value="suggested">Suggested</TabsTrigger>
+                    <TabsTrigger value="gap">Gap</TabsTrigger>
+                    <TabsTrigger value="mapping">Mapping</TabsTrigger>
+                    <TabsTrigger value="version">Version</TabsTrigger>
+                    <TabsTrigger value="provenance">Provenance</TabsTrigger>
+                    <TabsTrigger value="recommendation">Recommendation</TabsTrigger>
+                    <TabsTrigger value="coverage">Coverage</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="suggested" className="space-y-2">
+                    {SUGGESTED_QUESTIONS.map((question, idx) => (
+                      <Button
+                        key={idx}
+                        variant="outline"
+                        className="justify-start text-left h-auto py-3 px-4 w-full"
+                        onClick={() => handleSuggestedQuestion(question)}
+                      >
+                        <Lightbulb className="h-4 w-4 mr-2 flex-shrink-0" />
+                        <span className="text-sm">{question}</span>
+                      </Button>
+                    ))}
+                  </TabsContent>
+                  
+                  <TabsContent value="gap" className="space-y-2">
+                    {QUERY_LIBRARY.gap.map((question, idx) => (
+                      <Button
+                        key={idx}
+                        variant="outline"
+                        className="justify-start text-left h-auto py-3 px-4 w-full"
+                        onClick={() => handleSuggestedQuestion(question)}
+                      >
+                        <span className="text-sm">{question}</span>
+                      </Button>
+                    ))}
+                  </TabsContent>
+                  
+                  <TabsContent value="mapping" className="space-y-2">
+                    {QUERY_LIBRARY.mapping.map((question, idx) => (
+                      <Button
+                        key={idx}
+                        variant="outline"
+                        className="justify-start text-left h-auto py-3 px-4 w-full"
+                        onClick={() => handleSuggestedQuestion(question)}
+                      >
+                        <span className="text-sm">{question}</span>
+                      </Button>
+                    ))}
+                  </TabsContent>
+                  
+                  <TabsContent value="version" className="space-y-2">
+                    {QUERY_LIBRARY.version.map((question, idx) => (
+                      <Button
+                        key={idx}
+                        variant="outline"
+                        className="justify-start text-left h-auto py-3 px-4 w-full"
+                        onClick={() => handleSuggestedQuestion(question)}
+                      >
+                        <span className="text-sm">{question}</span>
+                      </Button>
+                    ))}
+                  </TabsContent>
+                  
+                  <TabsContent value="provenance" className="space-y-2">
+                    {QUERY_LIBRARY.provenance.map((question, idx) => (
+                      <Button
+                        key={idx}
+                        variant="outline"
+                        className="justify-start text-left h-auto py-3 px-4 w-full"
+                        onClick={() => handleSuggestedQuestion(question)}
+                      >
+                        <span className="text-sm">{question}</span>
+                      </Button>
+                    ))}
+                  </TabsContent>
+                  
+                  <TabsContent value="recommendation" className="space-y-2">
+                    {QUERY_LIBRARY.recommendation.map((question, idx) => (
+                      <Button
+                        key={idx}
+                        variant="outline"
+                        className="justify-start text-left h-auto py-3 px-4 w-full"
+                        onClick={() => handleSuggestedQuestion(question)}
+                      >
+                        <span className="text-sm">{question}</span>
+                      </Button>
+                    ))}
+                  </TabsContent>
+                  
+                  <TabsContent value="coverage" className="space-y-2">
+                    {QUERY_LIBRARY.coverage.map((question, idx) => (
+                      <Button
+                        key={idx}
+                        variant="outline"
+                        className="justify-start text-left h-auto py-3 px-4 w-full"
+                        onClick={() => handleSuggestedQuestion(question)}
+                      >
+                        <span className="text-sm">{question}</span>
+                      </Button>
+                    ))}
+                  </TabsContent>
+                </Tabs>
               </div>
             </div>
           ) : (
@@ -300,7 +473,7 @@ export default function AskISA() {
                                     <CardTitle className="text-sm line-clamp-1">
                                       {source.title}
                                     </CardTitle>
-                                    <div className="flex items-center gap-2 mt-1">
+                                    <div className="flex items-center gap-2 mt-1 flex-wrap">
                                       <Badge
                                         variant="secondary"
                                         className="text-xs"
@@ -312,6 +485,15 @@ export default function AskISA() {
                                         className="text-xs"
                                       >
                                         {source.similarity}% match
+                                      </Badge>
+                                      {/* Dataset version indicator */}
+                                      <Badge
+                                        variant="outline"
+                                        className="text-xs font-mono text-green-700 dark:text-green-400"
+                                        title="Dataset version - click for provenance details"
+                                      >
+                                        <CheckCircle2 className="h-3 w-3 mr-1" />
+                                        v1.0 locked
                                       </Badge>
                                     </div>
                                   </div>
