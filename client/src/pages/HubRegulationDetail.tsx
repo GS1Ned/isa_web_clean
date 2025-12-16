@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { ExportButtons } from "@/components/ExportButtons";
 import { ESRSDatapointsSection } from "@/components/ESRSDatapointsSection";
 import { GS1AttributesPanelEnhanced } from "@/components/GS1AttributesPanelEnhanced";
+import { AskISAWidget } from "@/components/AskISAWidget";
 
 export default function HubRegulationDetail() {
   const [, params] = useRoute("/hub/regulations/:id");
@@ -211,7 +212,9 @@ export default function HubRegulationDetail() {
       {/* Main Content */}
       <div className="flex-1 py-8">
         <div className="container">
-          <div className="max-w-4xl">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Main Content Column */}
+            <div className="lg:col-span-2">
             <Tabs defaultValue="overview" className="space-y-6">
               <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -413,6 +416,16 @@ export default function HubRegulationDetail() {
                 <ESRSDatapointsSection regulationId={regulationId} />
               </TabsContent>
             </Tabs>
+            </div>
+
+            {/* Sidebar Column */}
+            <div className="lg:col-span-1 space-y-6">
+              <AskISAWidget 
+                regulationId={regulation.id.toString()}
+                regulationName={regulation.title}
+                contextHint={`${regulation.title} compliance and GS1 standards mapping`}
+              />
+            </div>
           </div>
         </div>
       </div>
