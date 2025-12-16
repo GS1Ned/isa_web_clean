@@ -47,6 +47,7 @@ import { advisoryRouter } from "./routers/advisory.js";
 import { regulatoryChangeLogRouter } from "./routers/regulatory-change-log.js";
 import { monitoringRouter } from "./routers/monitoring.js";
 import { esrsGs1MappingRouter } from "./routers/esrs-gs1-mapping.js";
+import { esrsRoadmapRouter } from "./routers/esrs-roadmap.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -988,6 +989,11 @@ export const appRouter = router({
    * ESRS-GS1 Mapping Router
    */
   esrsGs1Mapping: esrsGs1MappingRouter,
+
+  /**
+   * ESRS-GS1 Compliance Roadmap Generator
+   */
+  esrsRoadmap: esrsRoadmapRouter,
 
   /**
    * Dutch Initiatives Router

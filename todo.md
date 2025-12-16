@@ -991,3 +991,29 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Test mapping explorer (all 3 tabs functional)
 - [x] Test Ask ISA widget on CSRD regulation page
 - [x] Verify data accuracy (13 mappings, 62.5% coverage, 3 gaps)
+
+
+## Phase 8: Compliance Roadmap Generator (Autonomous Development - Dec 16, 2025) ⏳ IN PROGRESS
+
+- [ ] Design roadmap data model (phases, milestones, dependencies)
+- [ ] Create tRPC procedure for roadmap generation
+- [ ] Build LLM-powered roadmap algorithm using ESRS-GS1 mappings
+- [ ] Create roadmap generator UI with sector selection
+- [ ] Add ESRS requirement multi-select
+- [ ] Build roadmap timeline visualization component
+- [ ] Add quick wins / medium-term / long-term phase grouping
+- [ ] Implement PDF export functionality
+- [ ] Test roadmap generation for different sectors
+- [ ] Write vitest tests for roadmap logic
+
+
+## Phase 8: ESRS-GS1 Compliance Roadmap Generator ✅ COMPLETE
+
+- [x] Design roadmap data model and backend logic
+- [x] Build roadmap generation algorithm with LLM integration  
+- [x] Create roadmap generator UI with sector/requirement selection
+- [x] Add roadmap visualization with timeframe grouping
+- [x] Test roadmap generator with Food & Beverage + ESRS E1/E5
+- [x] Save checkpoint for Phase 8
+
+**Result:** LLM-powered roadmap generator at `/tools/compliance-roadmap` creates personalized 18-24 month implementation plans with 5 phases, GS1 attribute mappings, and actionable steps tailored to sector and maturity level.

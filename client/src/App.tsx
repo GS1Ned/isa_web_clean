@@ -32,6 +32,7 @@ const NewsDetail = lazy(() => import("./pages/NewsDetail"));
 const HubCalendar = lazy(() => import("./pages/HubCalendar"));
 const HubStandardsMapping = lazy(() => import("./pages/HubStandardsMapping"));
 const HubEsrsGs1Mappings = lazy(() => import("./pages/HubEsrsGs1Mappings"));
+const ToolsComplianceRoadmap = lazy(() => import("./pages/ToolsComplianceRoadmap"));
 const HubResources = lazy(() => import("./pages/HubResources"));
 const HubImpactMatrix = lazy(() => import("./pages/HubImpactMatrix"));
 const HubUserDashboard = lazy(() => import("./pages/HubUserDashboard"));
@@ -129,6 +130,7 @@ function Router() {
       <Route path="/hub/calendar" component={HubCalendar} />
       <Route path="/hub/standards-mapping" component={HubStandardsMapping} />
       <Route path="/hub/esrs-gs1-mappings" component={HubEsrsGs1Mappings} />
+      <Route path="/tools/compliance-roadmap" component={ToolsComplianceRoadmap} />
       <Route path="/hub/resources" component={HubResources} />
       <Route path="/hub/impact-matrix" component={HubImpactMatrix} />
       <Route path="/hub/dashboard" component={HubUserDashboard} />
