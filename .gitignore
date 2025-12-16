@@ -105,5 +105,16 @@ temp/
 *.db
 *.sqlite
 *.sqlite3
-data/isa_gs1_ref_bundle_2025-12-15
+
+# Symlinks - prevent deployment failures
+# These cause "no such file or directory" errors during zip creation
+data/isa_gs1_ref_bundle_*
+data/gs1_ref_corpus/html_context
+data/gs1_ref_corpus/pdf
+data/gs1_ref_corpus/structured
+data/gs1_ref_corpus/xlsx
+!data/gs1_ref_corpus/**/.gitkeep
+
+# External archives
 __MACOSX
+data/external/
