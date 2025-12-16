@@ -553,8 +553,8 @@ export const esrsDatapoints = mysqlTable(
   {
     id: int("id").autoincrement().primaryKey(),
     code: varchar("code", { length: 100 }).notNull().unique(),
-    esrsStandard: varchar("esrsStandard", { length: 50 }),
-    disclosureRequirement: varchar("disclosureRequirement", { length: 100 }),
+    esrsStandard: varchar("esrs_standard", { length: 50 }),
+    disclosureRequirement: varchar("disclosure_requirement", { length: 100 }),
     paragraph: varchar("paragraph", { length: 100 }),
     relatedAR: varchar("related_ar", { length: 100 }),
     name: text("name").notNull(),

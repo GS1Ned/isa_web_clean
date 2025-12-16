@@ -163,6 +163,65 @@ export const roadmapExportRouter = router({
     }),
 
   /**
+   * Export roadmap as PDF
+   */
+  exportAsPDF: protectedProcedure
+    .input(
+      z.object({
+        roadmapId: z.number(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const roadmap = await getRoadmapById(input.roadmapId);
+
+      if (!roadmap || roadmap.userId !== ctx.user.id) {
+        throw new Error("Roadmap not found or access denied");
+      }
+
+      // Generate markdown content
+      const markdown = generateRoadmapMarkdown(roadmap);
+
+      // Write markdown to temp file
+      const { writeFile, unlink } = await import("fs/promises");
+      const { tmpdir } = await import("os");
+      const { join } = await import("path");
+      const { randomBytes } = await import("crypto");
+      const { exec } = await import("child_process");
+      const { promisify } = await import("util");
+      const execAsync = promisify(exec);
+
+      const tempId = randomBytes(8).toString("hex");
+      const mdPath = join(tmpdir(), `roadmap-${tempId}.md`);
+      const pdfPath = join(tmpdir(), `roadmap-${tempId}.pdf`);
+
+      try {
+        await writeFile(mdPath, markdown, "utf-8");
+
+        // Convert to PDF using manus-md-to-pdf
+        await execAsync(`manus-md-to-pdf ${mdPath} ${pdfPath}`);
+
+        // Read PDF file
+        const { readFile } = await import("fs/promises");
+        const pdfBuffer = await readFile(pdfPath);
+
+        // Clean up temp files
+        await unlink(mdPath).catch(() => {});
+        await unlink(pdfPath).catch(() => {});
+
+        return {
+          filename: `roadmap-${roadmap.id}-${new Date().toISOString().split("T")[0]}.pdf`,
+          data: pdfBuffer.toString("base64"),
+          mimeType: "application/pdf",
+        };
+      } catch (error) {
+        // Clean up on error
+        await unlink(mdPath).catch(() => {});
+        await unlink(pdfPath).catch(() => {});
+        throw error;
+      }
+    }),
+
+  /**
    * Generate roadmap summary report
    */
   generateSummaryReport: protectedProcedure
@@ -322,4 +381,74 @@ function generateRecommendations(
   }
 
   return recommendations;
+}
+
+/**
+ * Generate markdown content for roadmap PDF export
+ */
+function generateRoadmapMarkdown(roadmap: any): string {
+  const formatDate = (date: any) => new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const completedActions = roadmap.actions.filter(
+    (a: any) => a.status === "completed"
+  ).length;
+  const progressPercent = Math.round(
+    (completedActions / roadmap.actions.length) * 100
+  );
+
+  let md = `# ${roadmap.title}\n\n`;
+  md += `**Strategy:** ${roadmap.strategy}\n\n`;
+  md += `**Status:** ${roadmap.status}\n\n`;
+  md += `---\n\n`;
+
+  // Executive Summary
+  md += `## Executive Summary\n\n`;
+  md += `This compliance roadmap outlines a structured path to improve your organization's compliance score from **${roadmap.currentScore}%** to **${roadmap.projectedScore}%** over a ${Math.ceil((new Date(roadmap.targetCompletionDate).getTime() - new Date(roadmap.startDate).getTime()) / (7 * 24 * 60 * 60 * 1000))}-week period.\n\n`;
+  md += `- **Current Progress:** ${progressPercent}% complete (${completedActions}/${roadmap.actions.length} actions)\n`;
+  md += `- **Estimated Effort:** ${roadmap.estimatedEffort} hours\n`;
+  md += `- **Projected Impact:** +${roadmap.estimatedImpact}% compliance score\n`;
+  md += `- **Timeline:** ${formatDate(roadmap.startDate)} to ${formatDate(roadmap.targetCompletionDate)}\n\n`;
+  md += `---\n\n`;
+
+  // Actions
+  md += `## Action Plan\n\n`;
+  md += `The following ${roadmap.actions.length} actions are prioritized to maximize compliance impact:\n\n`;
+
+  roadmap.actions.forEach((action: any, idx: number) => {
+    md += `### ${idx + 1}. ${action.title}\n\n`;
+    md += `**Priority:** ${action.priority} | **Type:** ${action.actionType} | **Status:** ${action.status || "pending"}\n\n`;
+    md += `${action.description}\n\n`;
+    md += `- **Effort:** ${action.estimatedEffort} hours\n`;
+    md += `- **Impact:** +${(action.estimatedImpact as any).toFixed(1)}% compliance score\n`;
+    md += `- **Timeline:** ${formatDate(action.startDate)} to ${formatDate(action.targetDate)}\n`;
+    if (action.successCriteria) {
+      md += `- **Success Criteria:** ${action.successCriteria}\n`;
+    }
+    md += `\n`;
+  });
+
+  md += `---\n\n`;
+
+  // Milestones
+  md += `## Milestones\n\n`;
+  md += `Key checkpoints to track progress:\n\n`;
+
+  roadmap.milestones.forEach((milestone: any, idx: number) => {
+    md += `### Milestone ${idx + 1}: ${milestone.title}\n\n`;
+    md += `- **Target Date:** ${formatDate(milestone.targetDate)}\n`;
+    md += `- **Target Score:** ${(milestone.targetScore as any).toFixed(1)}%\n`;
+    if (milestone.description) {
+      md += `- **Description:** ${milestone.description}\n`;
+    }
+    md += `- **Status:** ${milestone.status || "pending"}\n\n`;
+  });
+
+  md += `---\n\n`;
+  md += `*Generated on ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}*\n`;
+
+  return md;
 }

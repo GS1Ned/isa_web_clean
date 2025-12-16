@@ -18,6 +18,9 @@ import {
   Target,
   TrendingUp,
   Calendar,
+  Download,
+  FileText,
+  FileSpreadsheet,
 } from "lucide-react";
 
 export default function ComplianceRoadmap() {
@@ -47,6 +50,77 @@ export default function ComplianceRoadmap() {
 
   const generateMutation = trpc.roadmap.generateRoadmap.useMutation();
   const _updateStatusMutation = trpc.roadmap.updateActionStatus.useMutation();
+  const exportPDFMutation = trpc.roadmapExport.exportAsPDF.useMutation();
+  const { data: csvData } = trpc.roadmapExport.exportAsCSV.useQuery(
+    { roadmapId: selectedRoadmapId! },
+    { enabled: false }
+  );
+  const { data: jsonData } = trpc.roadmapExport.exportAsJSON.useQuery(
+    { roadmapId: selectedRoadmapId! },
+    { enabled: false }
+  );
+
+  const handleExportPDF = async () => {
+    if (!selectedRoadmapId) return;
+    try {
+      const result = await exportPDFMutation.mutateAsync({
+        roadmapId: selectedRoadmapId,
+      });
+      // Download PDF
+      const blob = new Blob(
+        [Uint8Array.from(atob(result.data), c => c.charCodeAt(0))],
+        { type: result.mimeType }
+      );
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = result.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("PDF export failed:", error);
+    }
+  };
+
+  const handleExportCSV = async () => {
+    if (!selectedRoadmapId) return;
+    const utils = trpc.useUtils();
+    const result = await utils.roadmapExport.exportAsCSV.fetch({
+      roadmapId: selectedRoadmapId,
+    });
+    if (result) {
+      const blob = new Blob([result.data], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = result.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const handleExportJSON = async () => {
+    if (!selectedRoadmapId) return;
+    const utils = trpc.useUtils();
+    const result = await utils.roadmapExport.exportAsJSON.fetch({
+      roadmapId: selectedRoadmapId,
+    });
+    if (result) {
+      const blob = new Blob([result.data], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = result.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  };
 
   const handleGenerateRoadmap = async () => {
     if (!selectedStrategy) return;
@@ -336,10 +410,39 @@ export default function ComplianceRoadmap() {
         <div className="mt-8 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5" />
-                {roadmapDetails.title}
-              </CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5" />
+                  {roadmapDetails.title}
+                </CardTitle>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleExportPDF}
+                    disabled={exportPDFMutation.isPending}
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    {exportPDFMutation.isPending ? "Generating..." : "PDF"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleExportCSV}
+                  >
+                    <FileSpreadsheet className="w-4 h-4 mr-2" />
+                    CSV
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleExportJSON}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    JSON
+                  </Button>
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-4 gap-4">
@@ -376,7 +479,9 @@ export default function ComplianceRoadmap() {
                   <p className="text-2xl font-bold text-blue-600">
                     +
                     {roadmapDetails.estimatedImpact
-                      ? (roadmapDetails.estimatedImpact as any).toFixed(1)
+                      ? (typeof roadmapDetails.estimatedImpact === "number"
+                          ? (roadmapDetails.estimatedImpact as number).toFixed(1)
+                          : parseFloat(String(roadmapDetails.estimatedImpact)).toFixed(1))
                       : "0"}
                     %
                   </p>
@@ -416,7 +521,9 @@ export default function ComplianceRoadmap() {
                           {action.estimatedEffort}h effort
                         </Badge>
                         <Badge variant="outline">
-                          +{(action.estimatedImpact as any).toFixed(1)}%
+                          +{typeof action.estimatedImpact === "number"
+                            ? (action.estimatedImpact as number).toFixed(1)
+                            : parseFloat(String(action.estimatedImpact)).toFixed(1)}%
                         </Badge>
                       </div>
                       <p className="text-xs text-gray-500 mt-2">
@@ -464,7 +571,9 @@ export default function ComplianceRoadmap() {
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-blue-600">
-                        {(milestone.targetScore as any).toFixed(1)}%
+                        {typeof milestone.targetScore === "number"
+                          ? (milestone.targetScore as number).toFixed(1)
+                          : parseFloat(String(milestone.targetScore)).toFixed(1)}%
                       </p>
                       {milestone.status === "completed" && (
                         <CheckCircle2 className="w-5 h-5 text-green-600 mx-auto mt-1" />
