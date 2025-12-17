@@ -1308,3 +1308,48 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - Retry logic: First attempt success, multi-attempt recovery, max attempts exhaustion
 - Health monitoring: Success/failure recording, success rate calculation, consecutive failure tracking
 - Alert system: Triggers after 3 failures, sends owner notification
+
+### Database Persistence for Health Monitoring ✅ COMPLETE (2025-12-17)
+
+- [x] Create database tables (scraper_executions, scraper_health_summary)
+- [x] Migrate health monitor from in-memory to database-backed storage
+- [x] Update recordScraperExecution to persist to database
+- [x] Update getSourceHealth to query from database
+- [x] Update getAllSourcesHealth to query from database
+- [x] Implement 24-hour metrics calculation
+- [x] Add alert deduplication (don't spam on repeated failures)
+- [x] Write unit tests for database persistence (10/10 passing)
+- [x] Write integration tests for pipeline health tracking (5/5 passing)
+- [x] Verify cross-restart persistence
+
+**Implementation Details:**
+- Created `scraper_executions` table: tracks individual scraper runs with full metadata
+- Created `scraper_health_summary` table: aggregated 24h metrics per source
+- Health metrics persist across server restarts (no more in-memory reset)
+- Consecutive failure tracking works across pipeline runs
+- Alert system prevents spam (marks alerts as sent in database)
+- Graceful fallback when database unavailable
+
+**Test Coverage:**
+- 10 unit tests: persistence, summary creation/updates, failure tracking, metrics calculation
+- 5 integration tests: end-to-end pipeline with retry logic and health monitoring
+- All 15 tests passing (1.6s unit, 11.1s integration)
+
+**Database Schema:**
+```sql
+scraper_executions:
+  - id, source_id, source_name, success, items_fetched
+  - error_message, attempts, duration_ms, triggered_by
+  - execution_id (for grouping pipeline runs)
+  - started_at, completed_at, created_at
+
+scraper_health_summary:
+  - id, source_id, source_name
+  - success_rate_24h, total_executions_24h, failed_executions_24h
+  - avg_items_fetched_24h, avg_duration_ms_24h
+  - last_execution_success, last_execution_at, last_success_at
+  - last_error_message, consecutive_failures
+  - alert_sent, alert_sent_at
+  - updated_at, created_at
+```
+

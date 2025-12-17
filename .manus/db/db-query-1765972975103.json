@@ -1,0 +1,9 @@
+{
+  "query": "-- Create scraper_executions table\nCREATE TABLE IF NOT EXISTS `scraper_executions` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `source_id` VARCHAR(64) NOT NULL,\n  `source_name` VARCHAR(255) NOT NULL,\n  `success` BOOLEAN NOT NULL,\n  `items_fetched` INT NOT NULL DEFAULT 0,\n  `error_message` TEXT,\n  `attempts` INT NOT NULL DEFAULT 1,\n  `duration_ms` INT,\n  `triggered_by` ENUM('cron', 'manual', 'api') NOT NULL DEFAULT 'cron',\n  `execution_id` VARCHAR(64),\n  `started_at` TIMESTAMP NOT NULL,\n  `completed_at` TIMESTAMP NOT NULL,\n  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  INDEX `idx_source_id` (`source_id`),\n  INDEX `idx_execution_id` (`execution_id`),\n  INDEX `idx_started_at` (`started_at`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute -- Create scraper_executions table\nCREATE TABLE IF NOT EXISTS `scraper_executions` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `source_id` VARCHAR(64) NOT NULL,\n  `source_name` VARCHAR(255) NOT NULL,\n  `success` BOOLEAN NOT NULL,\n  `items_fetched` INT NOT NULL DEFAULT 0,\n  `error_message` TEXT,\n  `attempts` INT NOT NULL DEFAULT 1,\n  `duration_ms` INT,\n  `triggered_by` ENUM('cron', 'manual', 'api') NOT NULL DEFAULT 'cron',\n  `execution_id` VARCHAR(64),\n  `started_at` TIMESTAMP NOT NULL,\n  `completed_at` TIMESTAMP NOT NULL,\n  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  INDEX `idx_source_id` (`source_id`),\n  INDEX `idx_execution_id` (`execution_id`),\n  INDEX `idx_started_at` (`started_at`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 231
+}
