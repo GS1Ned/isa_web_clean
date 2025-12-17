@@ -184,6 +184,11 @@ export function NavigationMenu() {
           href: "/regulatory-changes",
           description: "View regulatory updates",
         },
+        {
+          label: "Scraper Health",
+          href: "/admin/scraper-health",
+          description: "Monitor news scraper reliability",
+        },
       ],
     });
   }

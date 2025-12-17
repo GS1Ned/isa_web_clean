@@ -1398,3 +1398,15 @@ scraper_health_summary:
 **Result:** Production-ready health monitoring dashboard accessible at `/admin/scraper-health` for real-time scraper observability.
 
 ---
+
+---
+
+## Health Monitoring Enhancements ✅ COMPLETE
+
+- [x] Add Scraper Health link to Admin dropdown menu
+- [x] Verify email alert integration (already implemented)
+- [x] Extend historical trend analysis from 7 days to 30 days
+- [x] Add 30d button to time range selector UI
+- [x] Test all enhancements in browser
+
+**Result:** Production-grade health monitoring with improved navigation, verified alerting, and extended historical analysis (24h/48h/7d/30d).

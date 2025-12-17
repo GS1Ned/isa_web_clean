@@ -169,6 +169,13 @@ export default function AdminScraperHealth() {
         >
           7d
         </Button>
+        <Button
+          variant={timeRange === 720 ? "default" : "outline"}
+          size="sm"
+          onClick={() => setTimeRange(720)}
+        >
+          30d
+        </Button>
       </div>
 
       <Tabs defaultValue="sources" className="space-y-4">

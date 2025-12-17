@@ -131,7 +131,7 @@ export const scraperHealthRouter = router({
   getExecutionStats: adminProcedure
     .input(
       z.object({
-        hoursBack: z.number().min(1).max(168).default(24), // Max 7 days
+        hoursBack: z.number().min(1).max(720).default(24), // Max 30 days
       })
     )
     .query(async ({ input }) => {
