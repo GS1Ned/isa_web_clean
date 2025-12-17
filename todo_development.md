@@ -43,6 +43,22 @@
 
 ## Feature 2: Ask ISA RAG Query Interface (3-4 days)
 
+### Backend Infrastructure (COMPLETE ✅)
+- [x] Guardrails implementation with query classification
+- [x] Query library with 30 production queries
+- [x] Enhanced citation validation system
+- [x] Confidence scoring based on source count
+- [x] 4 new tRPC procedures (getProductionQueries, getQueriesByCategory, getQueriesBySector, searchQueries)
+- [x] 28 Vitest tests passing (query classification, refusal patterns, citation validation, confidence scoring)
+
+### Frontend UI (TODO)
+- [ ] Query interface at /ask with autocomplete
+- [ ] Response display with citation blocks
+- [ ] Query history (last 10 queries per user)
+- [ ] Refusal message display with suggested alternatives
+- [ ] Confidence indicator (high/medium/low)
+- [ ] Integration with existing Ask ISA page
+
 ### Query Interface UI (/ask)
 - [ ] Create AskISA.tsx page component
 - [ ] Query input with autocomplete from Query Library (30 queries)

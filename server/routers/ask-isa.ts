@@ -29,6 +29,18 @@ import {
   vectorSearchKnowledge,
   buildContextFromVectorResults,
 } from "../db-knowledge-vector";
+import {
+  classifyQuery,
+  generateRefusalMessage,
+  validateCitations,
+  calculateConfidence,
+} from "../ask-isa-guardrails";
+import {
+  getAllProductionQueries,
+  getQueriesByCategory,
+  getQueriesBySector,
+  searchProductionQueries,
+} from "../ask-isa-query-library";
 
 export const askISARouter = router({
   /**
@@ -46,6 +58,19 @@ export const askISARouter = router({
       const { question, conversationId, userId } = input;
 
       try {
+        // Step 0: Apply guardrails - classify query type
+        const classification = classifyQuery(question);
+
+        if (!classification.allowed) {
+          const refusalMessage = generateRefusalMessage(classification);
+          return {
+            answer: refusalMessage,
+            sources: [],
+            conversationId: conversationId || null,
+            queryType: classification.type,
+            confidence: { level: "low" as const, score: 0 },
+          };
+        }
         // Step 1: Search for relevant content using vector similarity (FAST!)
         const relevantResults = await vectorSearchKnowledge(question, 5);
 
@@ -139,6 +164,10 @@ ${context}`;
           });
         }
 
+        // Step 6: Validate citations and calculate confidence
+        const citationValidation = validateCitations(answer);
+        const confidence = calculateConfidence(relevantResults.length);
+
         return {
           answer,
           sources: relevantResults.map(result => ({
@@ -149,6 +178,10 @@ ${context}`;
             similarity: Math.round(result.similarity * 100),
           })),
           conversationId: finalConversationId,
+          queryType: classification.type,
+          confidence,
+          citationValid: citationValidation.valid,
+          missingCitations: citationValidation.missingElements,
         };
       } catch (error) {
         console.error("[AskISA] Failed to answer question:", error);
@@ -301,4 +334,57 @@ ${context}`;
       return [];
     }
   }),
+
+  /**
+   * Get all production queries for autocomplete
+   */
+  getProductionQueries: publicProcedure.query(async () => {
+    return getAllProductionQueries();
+  }),
+
+  /**
+   * Get production queries by category
+   */
+  getQueriesByCategory: publicProcedure
+    .input(
+      z.object({
+        category: z.enum([
+          "gap",
+          "mapping",
+          "version_comparison",
+          "dataset_provenance",
+          "recommendation",
+          "coverage",
+        ]),
+      })
+    )
+    .query(async ({ input }) => {
+      return getQueriesByCategory(input.category);
+    }),
+
+  /**
+   * Get production queries by sector
+   */
+  getQueriesBySector: publicProcedure
+    .input(
+      z.object({
+        sector: z.enum(["DIY", "FMCG", "Healthcare", "All"]),
+      })
+    )
+    .query(async ({ input }) => {
+      return getQueriesBySector(input.sector);
+    }),
+
+  /**
+   * Search production queries
+   */
+  searchQueries: publicProcedure
+    .input(
+      z.object({
+        searchTerm: z.string().min(1),
+      })
+    )
+    .query(async ({ input }) => {
+      return searchProductionQueries(input.searchTerm);
+    }),
 });
