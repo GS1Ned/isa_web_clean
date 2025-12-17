@@ -36,6 +36,12 @@ import {
   calculateConfidence,
 } from "../ask-isa-guardrails";
 import {
+  assembleAskISAPrompt,
+  validateAskISAResponse,
+  verifyAskISAResponse,
+  type AskISAContextParams,
+} from "../prompts/ask_isa";
+import {
   getAllProductionQueries,
   getQueriesByCategory,
   getQueriesBySector,
@@ -83,43 +89,26 @@ export const askISARouter = router({
           };
         }
 
-        // Step 2: Build context from vector search results
-        const context = await buildContextFromVectorResults(relevantResults);
+        // Step 2: Build modular prompt using v2.0 system
+        const contextParams: AskISAContextParams = {
+          question,
+          relevantChunks: relevantResults.map(r => ({
+            id: r.id,
+            sourceType: r.type as any,
+            title: r.title,
+            content: r.description || r.title, // Use description as content
+            url: r.url,
+            similarity: Math.round(r.similarity * 100),
+          })),
+        };
 
-        // Step 3: Generate AI answer using LLM
-        const systemPrompt = `You are ISA (Intelligent Standards Architect), an AI assistant specialized in EU sustainability regulations and GS1 standards.
+        const fullPrompt = assembleAskISAPrompt(contextParams, 'v2_modular');
 
-Your knowledge base includes:
-- EU regulations: CSRD, EUDR, Digital Product Passport (DPP), ESRS
-- GS1 standards: GTIN, GLN, Digital Link, EPCIS, GDSN
-- ESRS datapoints from EFRAG (1,186 disclosure requirements)
-- ESRS-to-GS1 mappings (15 official + 13 attribute mappings)
-- GS1 WebVoc vocabulary (2,528 terms, 553 properties)
-- Dutch compliance initiatives
-
-Special capabilities:
-- Map ESRS disclosure requirements to specific GS1 attributes
-- Identify which GS1 standards help comply with EU regulations
-- Explain how to use GS1 data models for ESG reporting
-- Provide compliance coverage analysis and gap identification
-
-Guidelines:
-1. Answer based ONLY on the provided context
-2. Cite sources using [Source N] notation
-3. Be specific and technical when discussing regulations or standards
-4. When asked about compliance, reference specific ESRS-GS1 mappings if available
-5. If the context doesn't contain the answer, say so clearly
-6. Use bullet points for lists and structured information
-7. Include relevant article numbers, CELEX IDs, or standard codes when available
-8. When discussing GS1 attributes, mention confidence levels (high/medium) if provided
-
-Context:
-${context}`;
+        // Step 3: Generate AI answer using LLM with modular prompt
 
         const response = await invokeLLM({
           messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: question },
+            { role: "user", content: fullPrompt },
           ],
         });
 
@@ -167,6 +156,20 @@ ${context}`;
         // Step 6: Validate citations and calculate confidence
         const citationValidation = validateCitations(answer);
         const confidence = calculateConfidence(relevantResults.length);
+
+        // Step 7: Programmatic verification (v2.0 modular prompt system)
+        const verification = verifyAskISAResponse(
+          answer,
+          relevantResults,
+          confidence.score
+        );
+
+        if (!verification.passed) {
+          console.warn('[AskISA] Verification failed:', verification.issues);
+        }
+        if (verification.warnings.length > 0) {
+          console.warn('[AskISA] Verification warnings:', verification.warnings);
+        }
 
         return {
           answer,
@@ -386,5 +389,50 @@ ${context}`;
     )
     .query(async ({ input }) => {
       return searchProductionQueries(input.searchTerm);
+    }),
+
+  /**
+   * Submit user feedback for Ask ISA response
+   */
+  submitFeedback: protectedProcedure
+    .input(
+      z.object({
+        questionId: z.string(),
+        questionText: z.string(),
+        answerText: z.string(),
+        feedbackType: z.enum(["positive", "negative"]),
+        feedbackComment: z.string().optional(),
+        promptVariant: z.string().optional(),
+        confidenceScore: z.number().optional(),
+        sourcesCount: z.number().optional(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { getDb } = await import("../db");
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      const { askIsaFeedback } = await import("../../drizzle/schema");
+
+      try {
+        await db.insert(askIsaFeedback).values({
+          questionId: input.questionId,
+          userId: ctx.user.id,
+          questionText: input.questionText,
+          answerText: input.answerText,
+          feedbackType: input.feedbackType,
+          feedbackComment: input.feedbackComment,
+          promptVariant: input.promptVariant || "v2_modular",
+          confidenceScore: input.confidenceScore
+            ? input.confidenceScore.toString()
+            : null,
+          sourcesCount: input.sourcesCount || null,
+        });
+
+        return { success: true };
+      } catch (error) {
+        console.error("[AskISA] Failed to submit feedback:", error);
+        throw new Error("Failed to submit feedback");
+      }
     }),
 });

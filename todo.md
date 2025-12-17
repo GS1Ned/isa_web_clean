@@ -1222,8 +1222,10 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ### Phase 3: Error Recovery & Observability
 - [x] Create ingestion_errors database table
 - [x] Add ask_isa_feedback table for user feedback
+- [x] Create AskISAFeedbackButtons component
+- [x] Add submitFeedback tRPC procedure
+- [x] Integrate modular prompts into production Ask ISA
 - [ ] Implement error preservation in ingestion context
-- [ ] Create FeedbackButtons component enhancement
 - [ ] Add A/B testing framework for prompts
 
 ### Phase 4: Wide Research Integration
@@ -1231,9 +1233,9 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Identify optimal batch processing candidates
 - [ ] Create Wide Research templates for ingestion
 - [ ] Create Wide Research templates for news enrichment
-
 ### Phase 5: Evaluation & Testing
-- [ ] Define ISA-specific success metrics
-- [ ] Create automated evaluation suite
-- [ ] Establish baseline metrics for all workflows
-- [ ] Implement production trace sampling
+- [x] Define ISA-specific success metrics
+- [x] Create automated evaluation suite (ask_isa.test.ts)
+- [x] Run eval suite and verify all tests pass (11/11 passed)
+- [ ] Establish baseline metrics (requires production data)
+- [ ] Run eval suite on current prompts (completed for v2.0)uction trace sampling
