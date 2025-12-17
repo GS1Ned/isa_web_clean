@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Newspaper, Search, Filter, X } from "lucide-react";
+import { Newspaper, Search, Filter, X, Link2, Check } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import {
   GS1_IMPACT_TAG_LABELS,
@@ -70,6 +70,7 @@ export default function NewsHub() {
   const [highImpactOnly, setHighImpactOnly] = useState(initialState.highImpactOnly);
   const [sortBy, setSortBy] = useState<"date" | "impact">(initialState.sortBy);
   const [displayLimit, setDisplayLimit] = useState(20);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   // Sync state to URL params
   useEffect(() => {
@@ -451,22 +452,45 @@ export default function NewsHub() {
                   </button>
                 </Badge>
               )}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setRegulationFilter("All");
-                  setImpactFilter("All");
-                  setSourceTypeFilter("All");
-                  setGs1ImpactFilters([]);
-                  setSectorFilters([]);
-                  setHighImpactOnly(false);
-                  setSearchQuery("");
-                }}
-                className="ml-auto"
-              >
-                Clear all
-              </Button>
+              <div className="ml-auto flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    setLinkCopied(true);
+                    setTimeout(() => setLinkCopied(false), 2000);
+                  }}
+                  className="gap-2"
+                >
+                  {linkCopied ? (
+                    <>
+                      <Check className="h-4 w-4" />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Link2 className="h-4 w-4" />
+                      Copy Link
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setRegulationFilter("All");
+                    setImpactFilter("All");
+                    setSourceTypeFilter("All");
+                    setGs1ImpactFilters([]);
+                    setSectorFilters([]);
+                    setHighImpactOnly(false);
+                    setSearchQuery("");
+                  }}
+                >
+                  Clear all
+                </Button>
+              </div>
             </div>
           )}
         </div>

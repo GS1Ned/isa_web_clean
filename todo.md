@@ -311,21 +311,21 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add milestone highlighting
 - [ ] Add date range selector
 
-### 7.2 Enhanced Filters
+### 7.2 Enhanced Filters ✅ COMPLETE
 
-- [ ] Add gs1ImpactTags filter to News Hub
-- [ ] Add sectorTags filter to News Hub
-- [ ] Add "High impact / milestones only" toggle
-- [ ] Update filter UI for better UX
-- [ ] Persist filter state in URL params
+- [x] Add gs1ImpactTags filter to News Hub
+- [x] Add sectorTags filter to News Hub
+- [x] Add "High impact / milestones only" toggle
+- [x] Update filter UI for better UX
+- [x] Persist filter state in URL params
 
-### 7.3 News Detail Template Enhancements
+### 7.3 News Detail Template Enhancements ✅ COMPLETE
 
-- [ ] Add "Impact on GS1 data & standards" section
-- [ ] Add "Suggested actions / next steps" section
-- [ ] Improve visual hierarchy
-- [ ] Add sector badges
-- [ ] Add GS1 impact badges
+- [x] Add "Impact on GS1 data & standards" section
+- [x] Add "Suggested actions / next steps" section
+- [x] Improve visual hierarchy
+- [x] Add sector badges
+- [x] Add GS1 impact badges
 
 ### 7.4 Tests
 
@@ -1277,3 +1277,12 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 **Technical Debt:**
 - CompareRegulations uses hardcoded regulation timeline data (acceptable for MVP, defer until timeline data needs to be admin-editable)
+
+### Copy Link Feature ✅ COMPLETE (2025-12-17)
+
+- [x] Add "Copy Link" button to News Hub active filters section
+- [x] Implement clipboard API integration
+- [x] Add visual feedback (button state changes to "Copied!" for 2 seconds)
+- [x] Position button between filter badges and Clear all button
+- [x] Test with single and multiple filters
+- [x] Verify URL includes all filter parameters
