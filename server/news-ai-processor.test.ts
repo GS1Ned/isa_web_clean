@@ -4,7 +4,7 @@
 
 import { describe, it, expect } from "vitest";
 import { processNewsItem } from "./news-ai-processor";
-import { inferGS1ImpactTags, inferSectorTags } from "./news-tags";
+import { inferGS1ImpactTags, inferSectorTags } from "../shared/news-tags";
 import type { RawNewsItem } from "./news-fetcher";
 
 describe("News AI Processor - GS1 Enhancement", () => {

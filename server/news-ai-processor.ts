@@ -13,7 +13,7 @@ import {
   inferSectorTags,
   type GS1ImpactTag,
   type SectorTag,
-} from "./news-tags";
+} from "../shared/news-tags";
 import type { RawNewsItem } from "./news-fetcher";
 
 export interface ProcessedNews {

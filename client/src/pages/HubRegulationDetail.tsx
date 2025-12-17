@@ -27,6 +27,7 @@ import { ExportButtons } from "@/components/ExportButtons";
 import { ESRSDatapointsSection } from "@/components/ESRSDatapointsSection";
 import { GS1AttributesPanelEnhanced } from "@/components/GS1AttributesPanelEnhanced";
 import { AskISAWidget } from "@/components/AskISAWidget";
+import { RegulationTimeline } from "@/components/RegulationTimeline";
 
 export default function HubRegulationDetail() {
   const [, params] = useRoute("/hub/regulations/:id");
@@ -216,7 +217,7 @@ export default function HubRegulationDetail() {
             {/* Main Content Column */}
             <div className="lg:col-span-2">
             <Tabs defaultValue="overview" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-5">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="standards">
                   GS1 Standards ({mappings?.length || 0})
@@ -225,6 +226,7 @@ export default function HubRegulationDetail() {
                 <TabsTrigger value="datapoints">
                   ESRS Datapoints ({esrsMappings?.length || 0})
                 </TabsTrigger>
+                <TabsTrigger value="timeline">Timeline</TabsTrigger>
               </TabsList>
 
               {/* Overview Tab */}
@@ -414,6 +416,31 @@ export default function HubRegulationDetail() {
               {/* ESRS Datapoints Tab */}
               <TabsContent value="datapoints">
                 <ESRSDatapointsSection regulationId={regulationId} />
+              </TabsContent>
+
+              {/* Timeline Tab */}
+              <TabsContent value="timeline">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Regulation Timeline</CardTitle>
+                    <CardDescription>
+                      Chronological view of regulation milestones and related news developments
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <RegulationTimeline
+                      regulationCode={regulation.celexId || regulation.title}
+                      milestones={[
+                        {
+                          date: regulation.effectiveDate ? new Date(regulation.effectiveDate).toISOString() : new Date().toISOString(),
+                          event: "Regulation Effective Date",
+                          description: `${regulation.title} becomes effective`,
+                          status: regulation.effectiveDate && new Date(regulation.effectiveDate) < new Date() ? "completed" : "upcoming"
+                        }
+                      ]}
+                    />
+                  </CardContent>
+                </Card>
               </TabsContent>
             </Tabs>
             </div>

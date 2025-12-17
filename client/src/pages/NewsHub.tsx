@@ -9,6 +9,7 @@ import { NewsCardSkeleton } from "@/components/NewsCardSkeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -16,8 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Newspaper, Search, Filter } from "lucide-react";
+import { Newspaper, Search, Filter, X } from "lucide-react";
 import { trpc } from "@/lib/trpc";
+import {
+  GS1_IMPACT_TAG_LABELS,
+  SECTOR_TAG_LABELS,
+  type GS1ImpactTag,
+  type SectorTag,
+} from "@shared/news-tags";
 
 const REGULATION_FILTERS = [
   "All",
@@ -39,6 +46,9 @@ export default function NewsHub() {
   const [regulationFilter, setRegulationFilter] = useState("All");
   const [impactFilter, setImpactFilter] = useState("All");
   const [sourceTypeFilter, setSourceTypeFilter] = useState("All");
+  const [gs1ImpactFilters, setGs1ImpactFilters] = useState<GS1ImpactTag[]>([]);
+  const [sectorFilters, setSectorFilters] = useState<SectorTag[]>([]);
+  const [highImpactOnly, setHighImpactOnly] = useState(false);
   const [sortBy, setSortBy] = useState<"date" | "impact">("date");
   const [displayLimit, setDisplayLimit] = useState(20);
 
@@ -72,8 +82,27 @@ export default function NewsHub() {
         (sourceTypeFilter === "EU Official" &&
           item.sourceType === "EU_OFFICIAL");
 
+      const matchesGS1Impact =
+        gs1ImpactFilters.length === 0 ||
+        (Array.isArray(item.gs1ImpactTags) &&
+          gs1ImpactFilters.some(filter => item.gs1ImpactTags.includes(filter)));
+
+      const matchesSector =
+        sectorFilters.length === 0 ||
+        (Array.isArray(item.sectorTags) &&
+          sectorFilters.some(filter => item.sectorTags.includes(filter)));
+
+      const matchesHighImpact =
+        !highImpactOnly || item.impactLevel === "HIGH";
+
       return (
-        matchesSearch && matchesRegulation && matchesImpact && matchesSourceType
+        matchesSearch &&
+        matchesRegulation &&
+        matchesImpact &&
+        matchesSourceType &&
+        matchesGS1Impact &&
+        matchesSector &&
+        matchesHighImpact
       );
     })
     .sort((a: any, b: any) => {
@@ -197,24 +226,101 @@ export default function NewsHub() {
             </Select>
           </div>
 
-          {/* Sort */}
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">Sort by:</span>
-            <div className="flex gap-2">
-              <Button
-                variant={sortBy === "date" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSortBy("date")}
+          {/* Advanced Filters Row */}
+          <div className="border-t pt-4 mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* GS1 Impact Tags Filter */}
+              <div>
+                <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                  GS1 Impact Areas
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {(Object.keys(GS1_IMPACT_TAG_LABELS) as GS1ImpactTag[]).slice(0, 6).map(tag => (
+                    <Badge
+                      key={tag}
+                      variant={gs1ImpactFilters.includes(tag) ? "default" : "outline"}
+                      className="cursor-pointer hover:bg-primary/90"
+                      onClick={() => {
+                        setGs1ImpactFilters(prev =>
+                          prev.includes(tag)
+                            ? prev.filter(t => t !== tag)
+                            : [...prev, tag]
+                        );
+                        resetPagination();
+                      }}
+                    >
+                      {GS1_IMPACT_TAG_LABELS[tag]}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sector Tags Filter */}
+              <div>
+                <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                  Industry Sectors
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {(Object.keys(SECTOR_TAG_LABELS) as SectorTag[]).slice(0, 6).map(tag => (
+                    <Badge
+                      key={tag}
+                      variant={sectorFilters.includes(tag) ? "default" : "outline"}
+                      className="cursor-pointer hover:bg-primary/90"
+                      onClick={() => {
+                        setSectorFilters(prev =>
+                          prev.includes(tag)
+                            ? prev.filter(t => t !== tag)
+                            : [...prev, tag]
+                        );
+                        resetPagination();
+                      }}
+                    >
+                      {SECTOR_TAG_LABELS[tag]}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sort and High Impact Toggle */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-muted-foreground">Sort by:</span>
+              <div className="flex gap-2">
+                <Button
+                  variant={sortBy === "date" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSortBy("date")}
+                >
+                  Latest First
+                </Button>
+                <Button
+                  variant={sortBy === "impact" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSortBy("impact")}
+                >
+                  Highest Impact
+                </Button>
+              </div>
+            </div>
+            
+            {/* High Impact Only Toggle */}
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="high-impact"
+                checked={highImpactOnly}
+                onCheckedChange={(checked) => {
+                  setHighImpactOnly(checked === true);
+                  resetPagination();
+                }}
+              />
+              <label
+                htmlFor="high-impact"
+                className="text-sm font-medium cursor-pointer"
               >
-                Latest First
-              </Button>
-              <Button
-                variant={sortBy === "impact" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSortBy("impact")}
-              >
-                Highest Impact
-              </Button>
+                High Impact Only
+              </label>
             </div>
           </div>
 
@@ -222,6 +328,9 @@ export default function NewsHub() {
           {(regulationFilter !== "All" ||
             impactFilter !== "All" ||
             sourceTypeFilter !== "All" ||
+            gs1ImpactFilters.length > 0 ||
+            sectorFilters.length > 0 ||
+            highImpactOnly ||
             searchQuery) && (
             <div className="flex items-center gap-2 pt-2 border-t">
               <span className="text-sm text-muted-foreground">
@@ -271,6 +380,39 @@ export default function NewsHub() {
                   </button>
                 </Badge>
               )}
+              {gs1ImpactFilters.map(tag => (
+                <Badge key={tag} variant="secondary" className="gap-1">
+                  {GS1_IMPACT_TAG_LABELS[tag]}
+                  <button
+                    onClick={() => setGs1ImpactFilters(prev => prev.filter(t => t !== tag))}
+                    className="ml-1 hover:text-destructive"
+                  >
+                    ×
+                  </button>
+                </Badge>
+              ))}
+              {sectorFilters.map(tag => (
+                <Badge key={tag} variant="secondary" className="gap-1">
+                  {SECTOR_TAG_LABELS[tag]}
+                  <button
+                    onClick={() => setSectorFilters(prev => prev.filter(t => t !== tag))}
+                    className="ml-1 hover:text-destructive"
+                  >
+                    ×
+                  </button>
+                </Badge>
+              ))}
+              {highImpactOnly && (
+                <Badge variant="secondary" className="gap-1">
+                  High Impact Only
+                  <button
+                    onClick={() => setHighImpactOnly(false)}
+                    className="ml-1 hover:text-destructive"
+                  >
+                    ×
+                  </button>
+                </Badge>
+              )}
               <Button
                 variant="ghost"
                 size="sm"
@@ -278,6 +420,9 @@ export default function NewsHub() {
                   setRegulationFilter("All");
                   setImpactFilter("All");
                   setSourceTypeFilter("All");
+                  setGs1ImpactFilters([]);
+                  setSectorFilters([]);
+                  setHighImpactOnly(false);
                   setSearchQuery("");
                 }}
                 className="ml-auto"
