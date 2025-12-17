@@ -50,6 +50,7 @@ import { scraperHealthRouter } from "./routers/scraper-health.js";
 import { esrsGs1MappingRouter } from "./routers/esrs-gs1-mapping.js";
 import { esrsRoadmapRouter } from "./routers/esrs-roadmap.js";
 import { advisoryDiffRouter } from "./routers/advisory-diff.js";
+import { coverageAnalyticsRouter } from "./routers/coverage-analytics.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -982,10 +983,11 @@ export const appRouter = router({
   advisory: advisoryRouter,
 
   /**
-   * Regulatory Change Log Router
+   * Monitoring Router
    */
   regulatoryChangeLog: regulatoryChangeLogRouter,
   monitoring: monitoringRouter,
+  coverageAnalytics: coverageAnalyticsRouter,
 
   /**
    * Scraper Health Router - News scraper health monitoring

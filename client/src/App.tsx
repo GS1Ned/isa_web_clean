@@ -101,6 +101,7 @@ const AdvisoryDiff = lazy(() => import("./pages/AdvisoryDiff"));
 const AdminScraperHealth = lazy(() => import("./pages/AdminScraperHealth"));
 const AdvisoryDiffComparison = lazy(() => import("./pages/AdvisoryDiffComparison"));
 const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
+const AdminCoverageAnalytics = lazy(() => import("./pages/admin/CoverageAnalytics"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -156,6 +157,7 @@ function Router() {
       <Route path="/advisory/diff" component={AdvisoryDiff} />
       <Route path="/advisory/compare" component={AdvisoryDiffComparison} />
       <Route path="/admin/monitoring" component={AdminMonitoring} />
+      <Route path="/admin/coverage-analytics" component={AdminCoverageAnalytics} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
       <Route path="/admin/cellar" component={AdminCellarIngestion} />
       <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />

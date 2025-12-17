@@ -1437,3 +1437,14 @@ scraper_health_summary:
 - [x] Verify responsive design and dark mode compatibility
 
 **Result:** Production-grade trend visualization enabling pattern detection and proactive monitoring. Charts display hourly/daily aggregated metrics across all scrapers with color-coded source differentiation.
+
+
+## Phase 8.1 Complete - 2025-12-17
+
+- [x] Create admin dashboard for coverage analytics
+- [x] Show news count per regulation per month
+- [x] Show news count per sector per month
+- [x] Show source health (uptime, errors)
+- [x] Show expected milestones vs captured
+- [x] Add coverage heatmap visualization
+- [x] Write vitest tests for coverage analytics (10/10 passing)

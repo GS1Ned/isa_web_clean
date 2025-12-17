@@ -189,6 +189,11 @@ export function NavigationMenu() {
           href: "/admin/scraper-health",
           description: "Monitor news scraper reliability",
         },
+        {
+          label: "Coverage Analytics",
+          href: "/admin/coverage-analytics",
+          description: "News coverage by regulation and sector",
+        },
       ],
     });
   }
