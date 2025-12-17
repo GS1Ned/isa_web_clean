@@ -53,6 +53,9 @@ import { advisoryDiffRouter } from "./routers/advisory-diff.js";
 import { coverageAnalyticsRouter } from "./routers/coverage-analytics.js";
 import { pipelineObservabilityRouter } from "./routers/pipeline-observability.js";
 import { observabilityRouter } from "./routers/observability.js";
+import { datasetRegistryRouter } from "./routers/dataset-registry.js";
+import { advisoryReportsRouter } from "./routers/advisory-reports.js";
+import { governanceDocumentsRouter } from "./routers/governance-documents.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -1005,6 +1008,21 @@ export const appRouter = router({
    * Observability Router - Pipeline metrics and monitoring
    */
   observability: observabilityRouter,
+
+  /**
+   * Dataset Registry Router (Decision 3)
+   */
+  datasetRegistry: datasetRegistryRouter,
+
+  /**
+   * Advisory Reports Router (Decision 4)
+   */
+  advisoryReports: advisoryReportsRouter,
+
+  /**
+   * Governance Documents Router
+   */
+  governanceDocuments: governanceDocumentsRouter,
 
   /**
    * ESRS-GS1 Mapping Router

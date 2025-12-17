@@ -2402,3 +2402,12 @@ export type InsertGS1LocalCodeList = typeof gs1LocalCodeLists.$inferInsert;
 
 // Export GS1-ESRS mapping tables
 export * from "./schema_gs1_esrs_mappings";
+
+// Export dataset registry tables
+export * from "./schema_dataset_registry";
+
+// Export advisory reports tables
+export * from "./schema_advisory_reports";
+
+// Export governance documents tables
+export * from "./schema_governance_documents";

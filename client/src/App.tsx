@@ -54,6 +54,9 @@ const AdvisoryDashboard = lazy(() => import("./pages/AdvisoryDashboard"));
 const AdvisoryExplorer = lazy(() => import("./pages/AdvisoryExplorer"));
 const AdvisoryTraceability = lazy(() => import("./pages/AdvisoryTraceability")
 );
+const DatasetRegistry = lazy(() => import("./pages/DatasetRegistry"));
+const AdvisoryReports = lazy(() => import("./pages/AdvisoryReports"));
+const GovernanceDocuments = lazy(() => import("./pages/GovernanceDocuments"));
 const AdminAnalyticsDashboard = lazy(
   () => import("./pages/AdminAnalyticsDashboard")
 );
@@ -158,6 +161,9 @@ function Router() {
       <Route path="/admin/regulatory-changes" component={RegulatoryChangeLog} />
       <Route path="/advisory/diff" component={AdvisoryDiff} />
       <Route path="/advisory/compare" component={AdvisoryDiffComparison} />
+      <Route path="/dataset-registry" component={DatasetRegistry} />
+      <Route path="/advisory-reports" component={AdvisoryReports} />
+      <Route path="/governance-documents" component={GovernanceDocuments} />
       <Route path="/admin/monitoring" component={AdminMonitoring} />
       <Route path="/admin/coverage-analytics" component={AdminCoverageAnalytics} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />

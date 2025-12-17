@@ -1573,3 +1573,219 @@ Phase 8 is complete. Remaining todo.md items:
    - Next: Create consolidated Phase 8 completion report
 
 **Status:** In progress - documentation consolidation phase
+
+
+---
+
+## GitHub Integration & Workflow (December 2025) ✅ COMPLETE
+
+**Repository:** https://github.com/GS1-ISA/isa  
+**Date:** 2025-12-17
+
+### Repository Setup
+
+- [x] Create private repository under GS1-ISA organization
+- [x] Initialize governance files (README, SECURITY, CODEOWNERS, .gitignore)
+- [x] Add integration planning documentation (4 policy docs)
+- [x] Seed integrations_registry.json with 9 entries
+- [x] Set up CI workflows (ci.yml, scheduled_checks.yml)
+- [x] Configure branch protection on main (manual UI)
+- [x] Validate permissions (issue, branch, PR creation)
+
+### Development Workflow Updates
+
+- [x] Document GitHub-first workflow in ROADMAP_GITHUB_INTEGRATION.md
+- [x] Update main ROADMAP.md with GitHub integration section
+- [x] Define sync cadence (minimum once per development day)
+- [x] Establish commit standards (feat, fix, docs, refactor, test, chore, data)
+- [x] Define branch naming conventions (feature/, fix/, docs/, etc.)
+
+### Integration Research Framework
+
+- [x] Create INTEGRATIONS_PLAN.md (phased roadmap)
+- [x] Create INTEGRATIONS_RESEARCH_PROTOCOL.md (evaluation framework)
+- [x] Create REPO_SYNC_POLICY.md (sync rules and workflow)
+- [x] Create RESEARCH_INGESTION_POLICY.md (data provenance and integrity)
+- [x] Seed integration registry with mandatory, authoritative, and supplementary sources
+
+### Next Steps (Ongoing)
+
+- [ ] Sync current ISA codebase to GitHub (first full sync)
+- [ ] Create feature branch for first GitHub-based development
+- [ ] Open first PR following new workflow
+- [ ] Validate CI pipeline execution on real code
+- [ ] Document lessons learned from first GitHub workflow cycle
+- [ ] Begin Phase 1: Mandatory Source Monitoring (Q1 2026)
+
+**Impact:** ISA development now operates with GitHub-first workflow, systematic integration research, and automated CI/CD. Roadmap updated to reflect integration phases (Q1-Q3 2026).
+
+
+---
+
+## GOVERNANCE PHASE 2 DECISIONS (2025-12-17) — Lane C Constraints
+
+### Decision 1: GitHub Repository Synchronization
+- [ ] Prepare .gitignore for sensitive files
+- [ ] Document commit message conventions
+- [ ] Create initial commit checklist
+- [ ] Draft README.md for repository
+- [ ] **BLOCKED**: Actual sync/push deferred to Phase 9 complete
+
+### Decision 2: News Pipeline Scraper Expansion
+- [x] Maintain current 7 news sources (no expansion until Lane B)
+- [ ] Document current source list and coverage
+- [ ] Monitor source health and reliability
+
+### Decision 3: Dataset Registry Version Lock
+- [ ] Add `last_verified_date` field to dataset registry (additive only)
+- [ ] Create UI for manual verification date updates
+- [ ] Display verification staleness warnings
+- [ ] **CONSTRAINT**: No breaking schema changes; additive evolution only
+
+### Decision 4: Advisory Report v1.1 Publication
+- [ ] **DEFERRED**: Advisory Report v1.1 publication until Phase 9 complete
+- [ ] Continue internal development and testing
+
+### Decision 5: GS1 Style Guide Compliance Enforcement
+- [ ] Implement GS1 compliance checker (advisory warnings only)
+- [ ] Display warnings in UI (non-blocking)
+- [ ] Add "Advisory only" disclaimers to compliance results
+- [ ] **CONSTRAINT**: No blocking enforcement; warnings only
+
+### Decision 6: ESRS–GS1 Mapping Expansion
+- [ ] **DEFERRED**: Wait for official GS1 mappings before expansion
+- [ ] Document current mapping coverage
+- [ ] Monitor GS1 official releases
+
+### Lane C Governance Enforcement
+- [ ] Add Lane C governance notices to all UI pages
+- [ ] Include timestamps on all generated content
+- [ ] Add disclaimers for currency and completeness claims
+- [ ] Document all prohibitions in README
+- [ ] Ensure no GitHub sync/push operations
+- [ ] Ensure no new integrations without approval
+- [ ] Ensure no privilege changes
+- [ ] Ensure no irreversible operations
+
+
+
+## Phase 2 Schema Implementation ✅ COMPLETE
+
+### Database Schema Extensions
+- [x] Create dataset_registry table with last_verified_date field (Decision 3)
+- [x] Create advisory_reports table for LLM-generated reports
+- [x] Create advisory_report_versions table for version tracking
+- [x] Create governance_documents table for official documentation catalog
+- [x] Add schema exports to main schema.ts
+- [x] Execute SQL to create tables in database
+
+**Result:** All Phase 2 schema extensions created successfully. Dataset registry includes `last_verified_date` field per Decision 3 (additive only). Advisory reports support Lane C governance with publication deferral per Decision 4.
+
+
+
+## Phase 3 Backend Implementation ✅ COMPLETE
+
+### Database Helpers
+- [x] Create db-dataset-registry.ts with CRUD operations
+- [x] Create db-advisory-reports.ts with report management
+- [x] Create db-governance-documents.ts with document catalog
+
+### tRPC Routers
+- [x] Create dataset-registry router with list, getById, create, updateVerification procedures
+- [x] Create advisory-reports router with list, getById, create, update, review status procedures
+- [x] Create governance-documents router with list, search, getById, create, update procedures
+- [x] Add router imports to server/routers.ts
+- [x] Register routers in appRouter
+
+### Lane C Governance Enforcement
+- [x] All create operations enforce laneStatus = "LANE_C"
+- [x] Admin-only access for create/update operations
+- [x] Advisory reports default to publicationStatus = "INTERNAL_ONLY" (Decision 4)
+- [x] Dataset verification tracking with last_verified_date (Decision 3)
+
+**Result:** All backend tRPC procedures implemented with Lane C governance constraints. TypeScript compiles without errors. Ready for frontend integration.
+
+
+
+## Phase 4 Frontend Implementation ✅ COMPLETE
+
+### Page Components Created
+- [x] Create DatasetRegistry.tsx with filtering, verification status display
+- [x] Create AdvisoryReports.tsx with report listing, quality scores
+- [x] Create GovernanceDocuments.tsx with search, document catalog
+- [x] Add lazy imports for all three pages in App.tsx
+- [x] Register routes: /dataset-registry, /advisory-reports, /governance-documents
+
+### Lane C Governance UI Elements
+- [x] Add Lane C governance banners to all three pages
+- [x] Display verification status warnings for stale datasets/documents
+- [x] Show "Internal Use Only" notices on advisory reports (Decision 4)
+- [x] Include currency disclaimers with timestamps
+- [x] Implement verification staleness indicators (90-day threshold per Decision 3)
+
+### UI Features
+- [x] Dataset Registry: category/format filters, verification tracking, staleness warnings
+- [x] Advisory Reports: report type/review status filters, quality scores, publication status
+- [x] Governance Documents: full-text search, document type/category/status filters
+- [x] Statistics cards for all three pages
+- [x] Responsive card layouts with badges and metadata
+- [x] External link buttons for downloads and source URLs
+
+**Result:** All frontend pages implemented with Lane C governance constraints. TypeScript compiles without errors. Dev server running successfully. Pages accessible at defined routes.
+
+
+
+## Phase 5 Testing ✅ COMPLETE
+
+### Vitest Test Suites Created
+- [x] server/routers/dataset-registry.test.ts (12 tests)
+- [x] server/routers/advisory-reports.test.ts (14 tests)
+- [x] server/routers/governance-documents.test.ts (19 tests)
+
+### Test Coverage
+**Dataset Registry Tests:**
+- [x] List datasets with filtering (category, format, active status)
+- [x] Get dataset statistics
+- [x] Get datasets needing verification (90+ days)
+- [x] Admin-only create dataset with Lane C enforcement
+- [x] Reject non-admin create attempts
+- [x] Admin-only update verification with timestamp tracking
+- [x] Admin-only update dataset metadata
+
+**Advisory Reports Tests:**
+- [x] List reports with filtering (report type, review status)
+- [x] Get report statistics
+- [x] Admin-only create report with Decision 4 enforcement (INTERNAL_ONLY default)
+- [x] Verify Lane C governance on created reports
+- [x] Verify generatedBy field set to admin user
+- [x] Admin-only update report content
+- [x] Admin-only update review status with reviewer tracking
+- [x] Admin-only create report versions
+
+**Governance Documents Tests:**
+- [x] List documents with filtering (type, category, status, search)
+- [x] Get document statistics
+- [x] Full-text search functionality
+- [x] Get documents needing verification (90+ days)
+- [x] Admin-only create document with Lane C enforcement
+- [x] Admin-only update document metadata
+- [x] Admin-only update verification with timestamp tracking
+- [x] Get document by code (unique lookup)
+- [x] Get documents by regulation IDs
+- [x] Get documents by standard IDs
+
+### Test Results
+**All 45 tests passing ✅**
+- Dataset Registry: 12/12 passed
+- Advisory Reports: 14/14 passed
+- Governance Documents: 19/19 passed
+
+### Governance Constraints Verified
+- [x] Lane C status enforced on all created records
+- [x] Decision 4: Advisory reports default to INTERNAL_ONLY publication status
+- [x] Decision 3: Verification date tracking with 90-day staleness threshold
+- [x] Admin-only access for create/update operations
+- [x] User tracking (generatedBy, verifiedBy, reviewedBy fields)
+
+**Result:** Comprehensive test coverage for all new Phase 2 features. All governance constraints validated. Ready for final delivery.
+

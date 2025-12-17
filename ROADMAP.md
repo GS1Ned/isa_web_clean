@@ -528,3 +528,72 @@ This roadmap is a living document. Priorities may shift based on:
 - Business goals and resource availability
 
 **Update Frequency:** Monthly review, quarterly major revisions
+
+
+---
+
+## GitHub Integration (December 2025)
+
+**Status:** ✅ Complete  
+**Date:** 2025-12-17
+
+ISA development now operates with a **GitHub-first workflow** backed by the repository at https://github.com/GS1-ISA/isa.
+
+### Key Changes
+
+1. **Repository Established**
+   - Private repository under GS1-ISA organization
+   - Governance files (README, SECURITY, CODEOWNERS, .gitignore)
+   - Integration planning documentation
+   - CI/CD workflows for automated checks
+
+2. **Development Workflow**
+   - Feature branch workflow with PR discipline
+   - Daily sync cadence (minimum once per development day)
+   - Automated CI checks (lint, test, security, registry validation)
+   - Branch protection on main (requires PR approval)
+
+3. **Integration Research Framework**
+   - Systematic evaluation protocol for third-party integrations
+   - Machine-readable integration registry (`isa/registry/integrations_registry.json`)
+   - Phased integration roadmap (Mandatory → Authoritative → Supplementary)
+   - Decision gates with go/no-go criteria
+
+4. **Seeded Integrations**
+   - **Mandatory (Phase 1):** GS1 Global, GS1 NL, GS1 EU, EFRAG
+   - **Authoritative (Phase 2):** CELLAR, EUR-Lex, DG GROW
+   - **Supplementary (Phase 3-4):** GitHub Actions, automation layer
+
+### Roadmap Impact
+
+**Q1 2026 Additions:**
+- GitHub workflow adoption (Critical)
+- Phase 1: Mandatory source monitoring (GS1 Global/NL/EU, EFRAG)
+
+**Q2 2026 Additions:**
+- Phase 2: EU institutional data (CELLAR, EUR-Lex, DG GROW)
+- Phase 3: Development workflow integration (enhanced CI/CD, webhooks)
+
+**Q3 2026 Additions:**
+- Phase 4: Opportunistic integrations (evaluate 3+ supplementary sources)
+
+**Deferred Items:**
+- Conversation history sidebar (Q1 → Q2)
+- Export to PDF (Q1 → Q2)
+- Multi-language support (Q2 → Q3)
+- Public API (Q2 → Q3)
+- Blockchain verification (Q3 → Q4)
+- Enterprise features (Q3 → Q4)
+
+### Documentation
+
+See `ROADMAP_GITHUB_INTEGRATION.md` for complete details on:
+- GitHub repository structure
+- Development workflow changes
+- Sync cadence and commit standards
+- Integration research framework
+- Updated quarterly priorities
+- Quality gates and CI/CD pipeline
+- Success metrics and risk mitigation
+
+**Repository:** https://github.com/GS1-ISA/isa

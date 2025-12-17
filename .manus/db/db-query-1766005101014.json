@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS advisory_report_versions (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  reportId INT NOT NULL,\n  version VARCHAR(32) NOT NULL,\n  content TEXT NOT NULL,\n  changeLog TEXT,\n  createdBy VARCHAR(255),\n  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  INDEX reportId_idx (reportId)\n)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS advisory_report_versions (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  reportId INT NOT NULL,\n  version VARCHAR(32) NOT NULL,\n  content TEXT NOT NULL,\n  changeLog TEXT,\n  createdBy VARCHAR(255),\n  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  INDEX reportId_idx (reportId)\n)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 180
+}
