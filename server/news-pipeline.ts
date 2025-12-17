@@ -97,6 +97,22 @@ export async function runNewsPipeline(triggeredBy: 'cron' | 'manual' | 'api' = '
     );
 
     if (newItems.length === 0) {
+      const duration = Date.now() - startTime;
+      console.log(
+        `[news-pipeline] Pipeline complete: 0 inserted, ${validItems.length} skipped (already in database), 0 errors, ${duration}ms`
+      );
+      
+      // Mark pipeline as complete and save execution log
+      ctx.complete('success');
+      
+      try {
+        await savePipelineExecutionLog(ctx.getSummary());
+        console.log(`[news-pipeline] Execution log saved: ${ctx.executionId}`);
+      } catch (logError) {
+        console.error('[news-pipeline] Failed to save execution log:', logError);
+        // Don't fail pipeline if logging fails
+      }
+      
       return {
         success: true,
         fetched: allItems.length,
@@ -104,7 +120,7 @@ export async function runNewsPipeline(triggeredBy: 'cron' | 'manual' | 'api' = '
         inserted: 0,
         skipped: validItems.length,
         errors: [],
-        duration: Date.now() - startTime,
+        duration,
       };
     }
 

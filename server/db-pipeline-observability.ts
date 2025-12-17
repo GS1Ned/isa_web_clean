@@ -43,8 +43,23 @@ export async function savePipelineExecutionLog(data: {
 }) {
   const db = await getDb();
   if (!db) throw new Error('Database not available');
-  const [result] = await db.insert(pipelineExecutionLog).values(data);
-  return result;
+  
+  try {
+    console.log('[savePipelineExecutionLog] Attempting to save execution log:', {
+      executionId: data.executionId,
+      pipelineType: data.pipelineType,
+      status: data.status,
+    });
+    
+    const result = await db.insert(pipelineExecutionLog).values(data);
+    
+    console.log('[savePipelineExecutionLog] Insert successful:', result);
+    return result;
+  } catch (error) {
+    console.error('[savePipelineExecutionLog] Insert failed:', error);
+    console.error('[savePipelineExecutionLog] Data that failed to insert:', JSON.stringify(data, null, 2));
+    throw error;
+  }
 }
 
 /**
