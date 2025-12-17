@@ -41,7 +41,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     id: "eur-lex-press",
     name: "EUR-Lex Press Releases",
     type: "EU_OFFICIAL",
-    rssUrl: "https://eur-lex.europa.eu/rss/rss.xml",  // Updated URL
+    rssUrl: "https://eur-lex.europa.eu/rss/rss.xml",
     credibilityScore: 1.0,
     keywords: [
       "CSRD",
@@ -57,7 +57,10 @@ export const NEWS_SOURCES: NewsSource[] = [
       "circular economy",
       "packaging",
     ],
-    enabled: true,
+    // Disabled: EUR-Lex RSS feed protected by AWS WAF CAPTCHA challenge
+    // Returns HTTP 202 with empty response, causing XML parse errors
+    // Coverage provided by EU Commission Press Corner source instead
+    enabled: false,
   },
   {
     id: "eu-commission-environment",
