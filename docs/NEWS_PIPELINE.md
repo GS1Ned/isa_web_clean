@@ -26,6 +26,11 @@ The ISA News Pipeline is a fully automated system that fetches, processes, and d
    - Extracts regulation tags (CSRD, PPWR, EUDR, etc.)
    - Scores impact level (HIGH/MEDIUM/LOW)
    - Classifies news type (NEW_LAW, AMENDMENT, etc.)
+   - **NEW:** GS1 impact analysis (2-3 sentences on standards relevance)
+   - **NEW:** Suggested actions (2-4 actionable steps for members)
+   - **NEW:** GS1 impact tags (12 categories: DPP, ESG_REPORTING, TRACEABILITY, etc.)
+   - **NEW:** Sector tags (12 sectors: FOOD, HEALTHCARE, TEXTILES, etc.)
+   - **NEW:** AI quality scoring (0.0-1.0 composite metric)
    - Fallback keyword-based processing
 
 4. **Pipeline Orchestrator** (`server/news-pipeline.ts`)
@@ -64,6 +69,11 @@ The ISA News Pipeline is a fully automated system that fetches, processes, and d
 | publishedDate    | TIMESTAMP    | Original publication date                  |
 | retrievedAt      | TIMESTAMP    | When fetched by automation                 |
 | isAutomated      | BOOLEAN      | True if AI-generated                       |
+| gs1ImpactAnalysis | TEXT        | **NEW:** AI-generated GS1 relevance explanation |
+| suggestedActions | JSON         | **NEW:** Array of actionable steps for members |
+| gs1ImpactTags    | JSON         | **NEW:** Array of GS1 impact categories    |
+| sectorTags       | JSON         | **NEW:** Array of affected industry sectors |
+| relatedStandardIds | JSON       | **NEW:** Array of related GS1 standard IDs |
 | createdAt        | TIMESTAMP    | Database insertion time                    |
 | updatedAt        | TIMESTAMP    | Last update time                           |
 
@@ -321,15 +331,98 @@ All operations log to console with prefix:
 - `[news-archival]` - Archival operations
 - `[news-cron]` - Cron job execution
 
+## Phase 8 Enhancements (December 2025)
+
+### 8.1 Coverage Analytics Dashboard
+
+**Location:** `/admin/coverage-analytics`
+
+**Features:**
+- News distribution by regulation (monthly trends)
+- News distribution by sector (monthly trends)
+- Source health monitoring (uptime, error rates)
+- Coverage gaps identification
+- Interactive Recharts visualizations
+
+**Metrics:**
+- Total articles ingested
+- Unique regulations covered
+- Coverage rate (% of monitored regulations with recent news)
+- Top regulations by news volume
+- Top sectors by news volume
+- Top sources by article count
+- GS1 impact area distribution
+
+**Use Cases:**
+- Identify under-covered regulations
+- Monitor source reliability
+- Track regulatory activity trends
+- Validate ingestion strategy
+
+### 8.2 Pipeline Observability
+
+**Location:** `/admin/pipeline-observability`
+
+**Database:** `pipeline_execution_log` table tracks:
+- Execution ID (unique per run)
+- Pipeline type (news_ingestion, archival, etc.)
+- Status (success, partial_success, failed)
+- Items processed/saved
+- Duration (ms)
+- Error count/messages
+- Structured event log (JSON)
+
+**Structured Logging Events:**
+- `pipeline_start` - Execution begins
+- `source_fetch` - RSS source fetched (success/failure, item count)
+- `ai_process` - AI processing (success/failure, quality score)
+- `pipeline_complete` - Execution ends (status, duration, metrics)
+
+**AI Quality Metrics:**
+- Summary coherence (0.0-1.0)
+- Tag accuracy (0.0-1.0)
+- Citation completeness (0.0-1.0)
+- Composite quality score (average of above)
+
+**Dashboard Features:**
+- Execution history (last 100 runs)
+- Success rate trends
+- AI quality trends
+- Source reliability trends
+- Performance metrics (duration, throughput)
+- Error analysis
+
+**Use Cases:**
+- Debug pipeline failures
+- Monitor AI quality degradation
+- Identify slow/unreliable sources
+- Track operational costs
+- Validate SLA compliance
+
+### 8.3 Ingestion Window Configuration
+
+**Modes:**
+- **Normal Mode:** 30-60 day window (default)
+- **Backfill Mode:** 200 day window (manual trigger)
+
+**Configuration:** `server/news-fetcher.ts` `filterByAge` parameter
+
+**Use Cases:**
+- Normal: Daily incremental updates
+- Backfill: Initial ingestion or gap filling
+
+**Admin UI:** `/admin/news-pipeline` includes backfill trigger button
+
 ## Future Enhancements
 
-1. **Email Notifications**: Alert users to high-impact news
-2. **Regulation Cross-Linking**: Link news to specific regulation detail pages
-3. **User Preferences**: Personalized news feed based on saved regulations
-4. **RSS Export**: Allow users to subscribe to ISA news feed
-5. **Sentiment Analysis**: Track regulatory sentiment trends
-6. **Multi-Language Support**: Translate summaries to Dutch
-7. **Mobile App**: Push notifications for breaking news
+1. **Critical Events Tracking**: Automated detection and alerts for compliance deadlines, consultation periods, and enforcement actions (design complete in `docs/CRITICAL_EVENTS_TAXONOMY.md`)
+2. **Email Notifications**: Alert users to high-impact news
+3. **Regulation Cross-Linking**: Enhanced bidirectional linking (partially implemented)
+4. **User Preferences**: Personalized news feed based on saved regulations
+5. **RSS Export**: Allow users to subscribe to ISA news feed
+6. **Sentiment Analysis**: Track regulatory sentiment trends
+7. **Multi-Language Support**: Translate summaries to Dutch
+8. **Mobile App**: Push notifications for breaking news
 
 ## Troubleshooting
 
