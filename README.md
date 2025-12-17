@@ -1,37 +1,88 @@
 # ISA — Intelligent Standards Architect
 
-**Status:** Active Development  
+**Status:** Phase 9 Consolidation Complete  
 **Governance Mode:** Lane C (User-Decision Mode)  
-**Last Updated:** 2025-12-17
+**Last Updated:** 2025-12-17  
+**Phase:** 9 (Consolidation, Hardening, Close-Out)
 
 ---
 
-## Overview
+## What ISA Is
 
-ISA (Intelligent Standards Architect) is a revolutionary sustainability compliance platform that maps EU regulations (CSRD, ESRS, EUDR, DPP) to GS1 standards using AI-powered analysis and a comprehensive knowledge graph.
+ISA (Intelligent Standards Architect) is a sustainability compliance intelligence platform that connects EU ESG regulations to GS1 standards through AI-powered analysis and a structured knowledge graph.
 
-**Core Value Proposition:**
-- Map EU ESG regulations to GS1 NL/Benelux sector data models
-- Provide actionable compliance guidance for GS1 Netherlands members
-- Maintain authoritative, versioned advisory outputs with full traceability
+**Core Capabilities (verified as of 2025-12-17):**
+
+ISA provides **regulation-to-standard mapping intelligence** for GS1 Netherlands members navigating EU sustainability compliance requirements. The platform ingests regulatory content from authoritative sources (EUR-Lex, EFRAG), processes GS1 technical standards (GDSN, EPCIS, WebVoc), and generates structured mappings using AI-assisted analysis. Users can query the knowledge graph, explore compliance timelines, and access versioned advisory outputs that trace every data point back to its source.
+
+The system operates under strict governance constraints (Lane C) that prioritize data integrity, citation accuracy, and user authority over convenience or automation. All AI-generated content includes mandatory citations, all datasets carry provenance metadata, and all potentially impactful decisions require explicit user approval.
 
 ---
 
-## Governance
+## What ISA Is NOT
 
-**⚠️ IMPORTANT:** This project operates under strict governance requirements.
+**ISA does NOT:**
+- Provide legal advice or compliance guarantees
+- Claim 100% coverage of any regulation or standard
+- Offer real-time regulatory updates (news pipeline operates on scheduled intervals)
+- Replace professional ESG consultants or auditors
+- Guarantee currency beyond explicitly timestamped verification dates
+- Support jurisdictions outside EU + Dutch/Benelux focus
+- Provide production-ready EPCIS validation (tools are exploratory)
+- Offer public API access (internal use only)
 
-**Current Governance Mode:** Lane C — User-Decision Mode
+**Scope Boundaries:**
+- **Geographic:** EU regulations + Dutch/Benelux initiatives only
+- **Temporal:** Datasets verified as of their documented `last_verified_date`
+- **Regulatory:** Focus on CSRD/ESRS, EUDR, DPP, PPWR, Batteries (not exhaustive)
+- **Standards:** GS1 standards only (no ISO, UNECE, or other SDOs)
+- **Audience:** GS1 Netherlands members and stakeholders
 
-All development activities are subject to the governance framework defined in:
+---
 
+## Verified Coverage (as of 2025-12-17)
+
+**Regulations Tracked:** 38 EU regulations  
+**ESRS Datapoints:** 1,184 datapoints from EFRAG IG3 (verified 2024-12-15)  
+**GS1 Standards:** 60+ standards cataloged (verified 2024-11-30)  
+**AI Mappings:** 450+ regulation-to-standard mappings (generated 2024-12-10)  
+**News Sources:** 7 sources monitored (100% health rate as of 2025-12-17)  
+**Advisory Reports:** 2 versions (v1.0, v1.1) under Lane C review  
+**Test Coverage:** 517/574 tests passing (90.1%)
+
+**Known Gaps (intentionally deferred):**
+- CS3D/CSDDD detailed implementation guidance
+- ESPR delegated acts (pending publication)
+- Sector-specific Green Deals (partial coverage)
+- Real-time regulatory change detection
+- Multi-language support (English only)
+- EPCIS 2.0 validation (exploratory only)
+
+---
+
+## Governance Status
+
+**Current Mode:** Lane C (User-Decision Mode)
+
+ISA operates under a three-lane governance framework designed to balance development velocity with data integrity and user authority. Lane C is the most restrictive mode, requiring explicit user approval for all potentially impactful decisions.
+
+**Authoritative Governance Document:**  
 📄 **[ISA_GOVERNANCE.md](./ISA_GOVERNANCE.md)**
 
 **Key Governance Principles:**
-- Mandatory escalation for all potentially impactful decisions
-- No assumptions, no "safe defaults", no forward execution without approval
-- Data integrity, security, transparency, reversibility, and user authority are inviolable
-- Silence is NOT consent
+1. **Data Integrity:** All datasets include source, version, format, last_verified_date
+2. **Citation Accuracy:** All AI-generated content includes mandatory citations
+3. **User Authority:** Silence is NOT consent; explicit approval required for Lane C triggers
+4. **Transparency:** All decisions documented with rationale and alternatives
+5. **Reversibility:** All changes tracked in version control with rollback capability
+
+**Lane C Triggers (require escalation):**
+- Schema changes affecting data integrity
+- New data sources or ingestion pipelines
+- Changes to AI prompts or mapping logic
+- Advisory report generation or publication
+- Governance framework modifications
+- External integrations or API exposure
 
 **For Developers:**
 - Read ISA_GOVERNANCE.md before making any changes
@@ -41,100 +92,57 @@ All development activities are subject to the governance framework defined in:
 
 ---
 
+## Technology Stack
+
+**Frontend:** React 19 + TypeScript + Tailwind CSS 4 + shadcn/ui + Wouter + tRPC client  
+**Backend:** Express 4 + tRPC 11 + Drizzle ORM + MySQL/TiDB + Manus OAuth  
+**AI/ML:** OpenAI GPT-4 (advisory, Q&A) + text-embedding-3-small (semantic search)  
+**Infrastructure:** Manus hosting + GitHub (version control) + Playwright (scraping) + Vitest (testing)
+
+---
+
 ## Project Structure
 
 ```
 isa_web/
 ├── ISA_GOVERNANCE.md          # Authoritative governance framework
+├── ARCHITECTURE.md            # System architecture (current state)
 ├── ROADMAP.md                 # Development roadmap
-├── ROADMAP_GITHUB_INTEGRATION.md  # GitHub workflow documentation
-├── todo.md                    # Development task tracking
-├── client/                    # Frontend application (React 19 + Tailwind 4)
-├── server/                    # Backend application (Express 4 + tRPC 11)
+├── todo.md                    # Task tracking
+├── client/                    # Frontend (React 19 + Tailwind 4)
+├── server/                    # Backend (Express 4 + tRPC 11)
 ├── drizzle/                   # Database schema and migrations
 ├── data/                      # Dataset files and metadata
-├── docs/                      # Documentation and governance policies
-└── scripts/                   # Automation and utility scripts
+├── docs/                      # Documentation (see docs/README.md)
+└── scripts/                   # Automation scripts
 ```
 
----
-
-## Technology Stack
-
-**Frontend:**
-- React 19 with TypeScript
-- Tailwind CSS 4
-- shadcn/ui components
-- Wouter (routing)
-- tRPC client
-
-**Backend:**
-- Express 4
-- tRPC 11 (type-safe API)
-- Drizzle ORM
-- MySQL/TiDB database
-- Manus OAuth
-
-**AI/ML:**
-- OpenAI GPT-4 (advisory generation, Q&A)
-- OpenAI text-embedding-3-small (semantic search)
-- LLM-powered regulation-to-standard mapping
-
-**Infrastructure:**
-- Manus hosting platform
-- GitHub (version control and CI/CD)
-- Playwright (web scraping)
-- Vitest (testing)
+**Documentation Map:** See [docs/README.md](./docs/README.md) for full documentation structure.
 
 ---
 
 ## Key Features
 
 ### ESG Hub
-- 38 EU regulations tracked (CSRD, ESRS, EUDR, DPP, PPWR, etc.)
-- 1,184 ESRS datapoints from EFRAG IG3
-- 60+ GS1 standards catalog
-- 450+ AI-powered regulation-to-standard mappings
-- Real-time news feed (7 sources, 100% health rate)
-- Compliance calendar with deadline tracking
-- Regulation comparison tool
-
-### EPCIS Tools
-- Supply chain traceability visualization
-- EUDR geolocation mapper
-- Barcode scanner for GTIN lookup
-- EPCIS event upload (JSON/XML)
-- Compliance report generation
+Tracks 38 EU regulations with compliance timelines, regulation comparison tool, and real-time news feed from 7 sources. Includes 1,184 ESRS datapoints from EFRAG IG3 and 60+ GS1 standards catalog.
 
 ### Advisory System
-- Versioned advisory outputs (v1.0, v1.1)
-- Dataset registry with provenance tracking
-- Advisory diff computation
-- GS1-to-ESRS mapping engine
-- Compliance roadmap generator
+Generates versioned advisory outputs (v1.0, v1.1) with full dataset provenance tracking, advisory diff computation, and GS1-to-ESRS mapping engine. All outputs subject to Lane C review before publication.
 
 ### Ask ISA
-- RAG-powered Q&A system
-- 30 production queries with mandatory citations
-- Query guardrails (6 allowed types, 5 forbidden types)
-- Confidence scoring and citation validation
-- Conversation history
+RAG-powered Q&A system with 30 production queries, mandatory citations, query guardrails (6 allowed types, 5 forbidden types), and confidence scoring. All responses include source citations.
+
+### EPCIS Tools
+Exploratory supply chain traceability tools including EUDR geolocation mapper, barcode scanner, EPCIS event upload (JSON/XML), and compliance report generation. NOT production-ready.
 
 ### Admin Tools
-- News pipeline management
-- Regulatory change log
-- Scraper health monitoring
-- Coverage analytics
-- Pipeline observability
-- ESRS-GS1 mapping explorer
+News pipeline management, regulatory change log, scraper health monitoring, coverage analytics, pipeline observability, and ESRS-GS1 mapping explorer.
 
 ---
 
 ## Development Workflow
 
-### GitHub-First Workflow
-
-**⚠️ All development MUST follow GitHub workflow as of 2025-12-17.**
+### GitHub-First Workflow (Required as of 2025-12-17)
 
 **Repository:** https://github.com/GS1-ISA/isa
 
@@ -143,7 +151,7 @@ isa_web/
 2. Make changes in local sandbox
 3. Commit with conventional commit messages (feat, fix, docs, refactor, test, chore, data)
 4. Push to GitHub
-5. Open pull request
+5. Open pull request with governance checklist
 6. CI checks run automatically
 7. Request review from CODEOWNERS
 8. Merge after approval
@@ -154,33 +162,18 @@ isa_web/
 
 ### Local Development
 
-**Prerequisites:**
-- Node.js 22.13.0
-- pnpm package manager
-- MySQL/TiDB database
+**Prerequisites:** Node.js 22.13.0 + pnpm + MySQL/TiDB
 
 **Setup:**
 ```bash
-# Install dependencies
-pnpm install
-
-# Run database migrations
-pnpm db:push
-
-# Start development server
-pnpm dev
-
-# Run tests
-pnpm test
-
-# Type checking
-pnpm tsc
+pnpm install          # Install dependencies
+pnpm db:push          # Run database migrations
+pnpm dev              # Start development server
+pnpm test             # Run tests
+pnpm tsc              # Type checking
 ```
 
-**Environment Variables:**
-- All system environment variables are pre-configured in Manus platform
-- See `server/_core/env.ts` for available environment variables
-- Never commit `.env` files
+**Environment Variables:** All system environment variables pre-configured in Manus platform. See `server/_core/env.ts` for available variables. Never commit `.env` files.
 
 ---
 
@@ -192,29 +185,21 @@ ISA maintains a machine-readable dataset registry at:
 
 📄 **data/metadata/dataset_registry.json**
 
-**Registry Version:** 1.4.0 (Locked)
+**Registry Version:** 1.4.0 (Locked as of 2025-12-15)
 
-**Registered Datasets:**
-- 15 canonical datasets
-- 11,197+ total records
-- 100% MVP requirements covered
+**Registered Datasets:** 15 canonical datasets, 11,197+ total records, 100% MVP requirements covered
 
 **Key Datasets:**
-- ESRS Datapoints (EFRAG IG3): 1,186 records
-- GS1 NL Benelux Sector Models: 3,667 attributes
-- GS1 Validation Rules: 847 rules + 1,055 code lists
-- GDSN Current: 4,293 records
-- GS1 WebVoc: 4,373 terms
-- EFRAG ESRS XBRL Taxonomy: 5,430 concepts
+- ESRS Datapoints (EFRAG IG3): 1,186 records (verified 2024-12-15)
+- GS1 NL Benelux Sector Models: 3,667 attributes (verified 2024-11-30)
+- GS1 Validation Rules: 847 rules + 1,055 code lists (verified 2024-11-25)
+- GDSN Current: 4,293 records (verified 2024-11-20)
+- GS1 WebVoc: 4,373 terms (verified 2024-11-15)
+- EFRAG ESRS XBRL Taxonomy: 5,430 concepts (verified 2024-12-01)
 
 ### Data Provenance
 
-All datasets include:
-- Publisher and jurisdiction
-- Version and release date
-- SHA256 checksums
-- Lineage and source URLs
-- Ingestion date and method
+All datasets include: publisher, jurisdiction, version, release date, SHA256 checksums, lineage, source URLs, ingestion date, and ingestion method.
 
 **Documentation:** See [docs/DATASETS_CATALOG.md](./docs/DATASETS_CATALOG.md)
 
@@ -222,13 +207,8 @@ All datasets include:
 
 ## Testing
 
-**Test Framework:** Vitest
-
-**Current Status:**
-- 517/574 tests passing (90.1%)
-- 57 test failures (all non-critical, categorized in test-failure-analysis-2025-12-17.md)
-- TypeScript: 0 errors
-- All production features working
+**Framework:** Vitest  
+**Status (as of 2025-12-17):** 517/574 tests passing (90.1%), 57 non-critical failures, TypeScript: 0 errors
 
 **Test Categories:**
 - Unit tests (server/\*.test.ts)
@@ -237,47 +217,36 @@ All datasets include:
 
 **Run Tests:**
 ```bash
-# All tests
-pnpm test
-
-# Specific test file
-pnpm test server/routers.test.ts
-
-# Watch mode
-pnpm test --watch
+pnpm test                        # All tests
+pnpm test server/routers.test.ts # Specific file
+pnpm test --watch                # Watch mode
 ```
+
+**Test Failure Analysis:** See [docs/test-failure-analysis-2025-12-17.md](./docs/test-failure-analysis-2025-12-17.md)
 
 ---
 
 ## Documentation
 
-### Governance
+### Core Documentation
 - [ISA_GOVERNANCE.md](./ISA_GOVERNANCE.md) - Authoritative governance framework
-- [docs/GITHUB_PROVISIONING_REPORT.md](./docs/GITHUB_PROVISIONING_REPORT.md) - GitHub setup report
-
-### Development
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - System architecture (current state only)
 - [ROADMAP.md](./ROADMAP.md) - Development roadmap
-- [ROADMAP_GITHUB_INTEGRATION.md](./ROADMAP_GITHUB_INTEGRATION.md) - GitHub workflow
-- [todo.md](./todo.md) - Task tracking
-- [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) - System architecture
-- [docs/DATA_MODEL.md](./docs/DATA_MODEL.md) - Database schema
+- [docs/README.md](./docs/README.md) - Documentation map
 
 ### Data & Ingestion
 - [docs/DATASETS_CATALOG.md](./docs/DATASETS_CATALOG.md) - Dataset inventory
-- [docs/INGESTION.md](./docs/INGESTION.md) - Data ingestion pipelines
-- [docs/DATASET_INVENTORY.md](./docs/DATASET_INVENTORY.md) - Dataset registry
-
-### News Hub
 - [docs/NEWS_PIPELINE.md](./docs/NEWS_PIPELINE.md) - News pipeline architecture
-- [docs/NEWS_HEALTH_MONITORING.md](./docs/NEWS_HEALTH_MONITORING.md) - Health monitoring
 
 ### Advisory System
-- [docs/ISA_First_Advisory_Report_GS1NL.md](./docs/ISA_First_Advisory_Report_GS1NL.md) - First advisory report
+- [docs/ISA_First_Advisory_Report_GS1NL.md](./docs/ISA_First_Advisory_Report_GS1NL.md) - Advisory v1.0
 - [docs/ADVISORY_METHOD.md](./docs/ADVISORY_METHOD.md) - Advisory methodology
 
-### Agent Collaboration
-- [docs/MANUS_BEST_PRACTICES_FOR_ISA.md](./docs/MANUS_BEST_PRACTICES_FOR_ISA.md) - Best practices
-- [docs/ISA_AGENT_COLLABORATION.md](./docs/ISA_AGENT_COLLABORATION.md) - Collaboration framework
+### Quality & Testing
+- [docs/QUALITY_BAR.md](./docs/QUALITY_BAR.md) - Quality standards
+- [docs/test-failure-analysis-2025-12-17.md](./docs/test-failure-analysis-2025-12-17.md) - Test analysis
+
+**Full Documentation Map:** See [docs/README.md](./docs/README.md)
 
 ---
 
@@ -301,7 +270,7 @@ pnpm test --watch
 
 ## Contributing
 
-**⚠️ GOVERNANCE REQUIREMENT:** All contributions are subject to ISA governance framework.
+**⚠️ GOVERNANCE REQUIREMENT:** All contributions subject to ISA governance framework.
 
 **Before Contributing:**
 1. Read [ISA_GOVERNANCE.md](./ISA_GOVERNANCE.md)
@@ -310,7 +279,7 @@ pnpm test --watch
 4. Ensure all changes comply with red-line principles
 
 **Contribution Workflow:**
-1. Fork repository (or create branch if you have write access)
+1. Fork repository (or create branch if write access)
 2. Create feature branch (feature/your-feature-name)
 3. Make changes following governance requirements
 4. Write tests for new functionality
@@ -318,7 +287,7 @@ pnpm test --watch
 6. Ensure TypeScript compiles (pnpm tsc)
 7. Commit with conventional commit messages
 8. Push to GitHub
-9. Open pull request
+9. Open pull request with governance checklist
 10. Request review from CODEOWNERS
 11. Address review feedback
 12. Merge after approval
@@ -357,23 +326,14 @@ pnpm test --watch
 
 ## Acknowledgments
 
-**Data Sources:**
-- EFRAG (European Financial Reporting Advisory Group)
-- EUR-Lex (EU Publications Office)
-- GS1 Global Office
-- GS1 Netherlands
-- GS1 Europe
-- European Commission
+**Data Sources:** EFRAG, EUR-Lex, GS1 Global Office, GS1 Netherlands, GS1 Europe, European Commission
 
-**Technology Partners:**
-- Manus (hosting and AI infrastructure)
-- OpenAI (LLM and embeddings)
-- GitHub (version control and CI/CD)
+**Technology Partners:** Manus (hosting and AI infrastructure), OpenAI (LLM and embeddings), GitHub (version control and CI/CD)
 
 ---
 
-**Last Updated:** 2025-12-17  
+**Phase 9 Status:** Consolidation Complete  
 **Governance Mode:** Lane C (User-Decision Mode)  
-**Status:** Active Development
+**Last Updated:** 2025-12-17
 
 For governance questions or escalations, refer to [ISA_GOVERNANCE.md](./ISA_GOVERNANCE.md).
