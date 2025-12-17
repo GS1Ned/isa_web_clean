@@ -384,9 +384,9 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ### 8.5 Tests
 
-- [ ] Test coverage analytics queries
-- [ ] Test observability metrics
-- [ ] Test backfill mode
+- [x] Test coverage analytics queries (10/10 passing)
+- [x] Test observability metrics (18/18 passing)
+- [ ] Test backfill mode (pending Phase 8.3)
 
 ---
 
@@ -394,13 +394,15 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ### 9.1 Documentation Updates
 
+- [x] Create PHASE_8_NEWS_HUB_OBSERVABILITY_COMPLETE.md (comprehensive technical summary)
+- [x] Create ISA_NEWSHUB_EVOLUTION_SUMMARY.md (stakeholder-facing summary)
 - [ ] Update NEWS_PIPELINE.md with new sources, fields, logic
 - [ ] Update ARCHITECTURE.md with data flows
 - [ ] Document gs1ImpactTags enum values
 - [ ] Document sectorTags enum values
-- [ ] Document backfill procedure
+- [ ] Document backfill procedure (pending Phase 8.3)
 - [ ] Document coverage strategy
-- [ ] Document critical events definitions
+- [ ] Document critical events definitions (pending Phase 8.4)
 
 ### 9.2 Design Documentation
 
