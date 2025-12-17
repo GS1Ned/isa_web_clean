@@ -19,6 +19,8 @@ import {
 import { getNewsBySourceUrl } from "./db-news-helpers";
 import { generateRecommendations } from "./news-recommendation-engine";
 import type { InsertHubNews } from "../drizzle/schema";
+import { PipelineExecutionContext, calculateQualityScore } from "./utils/pipeline-logger";
+import { savePipelineExecutionLog } from "./db-pipeline-observability";
 
 export interface PipelineResult {
   success: boolean;
@@ -33,11 +35,18 @@ export interface PipelineResult {
 /**
  * Run the complete news ingestion pipeline
  */
-export async function runNewsPipeline(): Promise<PipelineResult> {
+export async function runNewsPipeline(triggeredBy: 'cron' | 'manual' | 'api' = 'cron'): Promise<PipelineResult> {
   const startTime = Date.now();
   const errors: string[] = [];
+  const ctx = new PipelineExecutionContext('news_ingestion', triggeredBy);
 
-  console.log("[news-pipeline] Starting news ingestion pipeline...");
+  console.log(`[news-pipeline] Starting news ingestion pipeline (execution: ${ctx.executionId})...`);
+  ctx.log({
+    eventType: 'pipeline_start',
+    level: 'info',
+    message: 'News ingestion pipeline started',
+    data: { triggeredBy },
+  });
 
   try {
     // Step 1: Fetch from all sources
@@ -46,9 +55,22 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
     console.log(
       `[news-pipeline] Fetched ${allItems.length} items from ${fetchResults.length} sources`
     );
+    
+    // Record source fetch metrics
+    for (const result of fetchResults) {
+      ctx.recordSourceAttempt(
+        result.sourceId,
+        result.success,
+        result.items.length
+      );
+    }
 
     // Step 2: Deduplicate by URL
     const uniqueItems = deduplicateByUrl(allItems);
+    const urlDuplicates = allItems.length - uniqueItems.length;
+    if (urlDuplicates > 0) {
+      ctx.recordDeduplication(urlDuplicates);
+    }
 
     // Step 3: Filter by age (only last 30 days)
     const recentItems = filterByAge(uniqueItems, 30);
@@ -102,6 +124,10 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
 
     const deduplicated = deduplicateNews(itemsForDedup);
     logDeduplicationStats(newItems.length, deduplicated.length, deduplicated);
+    const crossSourceDuplicates = newItems.length - deduplicated.length;
+    if (crossSourceDuplicates > 0) {
+      ctx.recordDeduplication(crossSourceDuplicates);
+    }
 
     // Step 7: Insert into database (with ESG relevance filtering)
     let inserted = 0;
@@ -160,6 +186,25 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
 
         const createdNews = await createHubNews(newsItem);
         inserted++;
+        
+        // Record item processing with quality metrics
+        const qualityScore = calculateQualityScore({
+          summary: processed.summary,
+          regulationTags: processed.regulationTags,
+          gs1ImpactTags: processed.gs1ImpactTags,
+          sectorTags: processed.sectorTags,
+          suggestedActions: processed.suggestedActions,
+          relatedStandardIds: [], // Not yet implemented
+        });
+        
+        ctx.recordAiProcessing(true, qualityScore);
+        ctx.recordItemProcessed(true, {
+          hasSummary: !!processed.summary && processed.summary.length > 0,
+          hasRegulationTags: processed.regulationTags.length > 0,
+          hasGs1ImpactTags: processed.gs1ImpactTags.length > 0,
+          hasSectorTags: processed.sectorTags.length > 0,
+          hasRecommendations: processed.suggestedActions.length > 0,
+        });
 
         // Generate AI recommendations for this news article
         if (createdNews && createdNews.id) {
@@ -185,6 +230,25 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
         const errorMsg = `Failed to insert: ${raw.link} - ${error instanceof Error ? error.message : "Unknown error"}`;
         console.error(`[news-pipeline] ${errorMsg}`);
         errors.push(errorMsg);
+        
+        // Record failed item processing
+        ctx.recordItemProcessed(false, {
+          hasSummary: false,
+          hasRegulationTags: false,
+          hasGs1ImpactTags: false,
+          hasSectorTags: false,
+          hasRecommendations: false,
+        });
+        
+        ctx.log({
+          eventType: 'error',
+          level: 'error',
+          message: 'Failed to save news item',
+          error: error instanceof Error ? {
+            message: error.message,
+            stack: error.stack,
+          } : { message: errorMsg },
+        });
       }
     }
 
@@ -192,6 +256,18 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
     console.log(
       `[news-pipeline] Pipeline complete: ${inserted} inserted, ${skippedNonESG} non-ESG filtered, ${errors.length} errors, ${duration}ms`
     );
+    
+    // Mark pipeline as complete and save execution log
+    const status = errors.length === 0 ? 'success' : inserted > 0 ? 'partial_success' : 'failed';
+    ctx.complete(status);
+    
+    try {
+      await savePipelineExecutionLog(ctx.getSummary());
+      console.log(`[news-pipeline] Execution log saved: ${ctx.executionId}`);
+    } catch (logError) {
+      console.error('[news-pipeline] Failed to save execution log:', logError);
+      // Don't fail pipeline if logging fails
+    }
 
     return {
       success: errors.length === 0,
@@ -206,6 +282,25 @@ export async function runNewsPipeline(): Promise<PipelineResult> {
     const errorMsg = error instanceof Error ? error.message : "Unknown error";
     console.error("[news-pipeline] Pipeline failed:", error);
     errors.push(errorMsg);
+    
+    // Log catastrophic failure
+    ctx.log({
+      eventType: 'error',
+      level: 'error',
+      message: 'Pipeline failed with unhandled error',
+      error: error instanceof Error ? {
+        message: error.message,
+        stack: error.stack,
+      } : { message: errorMsg },
+    });
+    
+    ctx.complete('failed');
+    
+    try {
+      await savePipelineExecutionLog(ctx.getSummary());
+    } catch (logError) {
+      console.error('[news-pipeline] Failed to save error execution log:', logError);
+    }
 
     return {
       success: false,

@@ -30,6 +30,9 @@ export * from "./schema_ask_isa_feedback";
 // Export scraper health monitoring tables
 export * from "./schema_scraper_health";
 
+// Export pipeline observability tables
+export * from "./schema_pipeline_observability";
+
 /**
  * Core user table backing auth flow.
  * Extend this file with additional tables as your product grows.

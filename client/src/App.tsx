@@ -102,6 +102,7 @@ const AdminScraperHealth = lazy(() => import("./pages/AdminScraperHealth"));
 const AdvisoryDiffComparison = lazy(() => import("./pages/AdvisoryDiffComparison"));
 const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
 const AdminCoverageAnalytics = lazy(() => import("./pages/admin/CoverageAnalytics"));
+const AdminPipelineObservability = lazy(() => import("./pages/AdminPipelineObservability"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -164,6 +165,7 @@ function Router() {
       <Route path="/admin/news-pipeline" component={AdminNewsPipelineManager} />
       <Route path="/admin/news" component={NewsAdmin} />
       <Route path="/admin/scraper-health" component={AdminScraperHealth} />
+      <Route path="/admin/pipeline-observability" component={AdminPipelineObservability} />
       <Route path="/epcis/upload" component={EPCISUploadEnhanced} />
       <Route path="/epcis/upload-legacy" component={EPCISUpload} />
       <Route path="/epcis/supply-chain" component={EPCISSupplyChain} />
