@@ -1199,3 +1199,41 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - Advisory Diff Comparison page at `/advisory/compare`
 - Integration test suite in `server/ask-isa-integration.test.ts`
 - Updated diff computation script with robust error handling
+
+
+---
+
+## Manus Best Practices Implementation (December 2025)
+
+### Phase 1: Context Engineering Foundation
+- [x] Audit JSON serialization in ingestion scripts for deterministic output
+- [x] Install sort-keys package for deterministic JSON
+- [x] Create deterministic JSON utility module
+- [x] Document file system memory architecture
+- [x] Create prompt versioning infrastructure
+
+### Phase 2: Modular Prompt Infrastructure
+- [x] Create server/prompts/ directory structure
+- [x] Refactor Ask ISA prompts to 5-block structure
+- [x] Refactor ingestion prompts to 5-block structure
+- [ ] Refactor news enrichment prompts to 5-block structure
+- [ ] Refactor advisory prompts to 5-block structure
+
+### Phase 3: Error Recovery & Observability
+- [x] Create ingestion_errors database table
+- [x] Add ask_isa_feedback table for user feedback
+- [ ] Implement error preservation in ingestion context
+- [ ] Create FeedbackButtons component enhancement
+- [ ] Add A/B testing framework for prompts
+
+### Phase 4: Wide Research Integration
+- [x] Document Wide Research usage patterns
+- [ ] Identify optimal batch processing candidates
+- [ ] Create Wide Research templates for ingestion
+- [ ] Create Wide Research templates for news enrichment
+
+### Phase 5: Evaluation & Testing
+- [ ] Define ISA-specific success metrics
+- [ ] Create automated evaluation suite
+- [ ] Establish baseline metrics for all workflows
+- [ ] Implement production trace sampling
