@@ -12,7 +12,7 @@ import {
 
 interface DatapointMatch {
   code: string; // e.g., "BP-1_01"
-  esrsStandard: string; // e.g., "ESRS E1"
+  esrs_standard: string; // e.g., "ESRS E1"
   relevanceScore: number; // 1-10
   reasoning: string; // Why this datapoint is relevant
 }
@@ -71,12 +71,12 @@ export async function generateRegulationEsrsMappings(
 
     // 3. Build LLM prompt (filter datapoints with required fields)
     const validDatapoints = allDatapoints.filter(
-      dp => dp.code && dp.esrsStandard && dp.name
+      dp => dp.code && dp.esrs_standard && dp.name
     ) as Array<{
       code: string;
-      esrsStandard: string;
+      esrs_standard: string;
       name: string;
-      dataType: string | null;
+      data_type: string | null;
     }>;
     const prompt = buildMappingPrompt(regulation, validDatapoints);
 
@@ -110,7 +110,7 @@ export async function generateRegulationEsrsMappings(
                       type: "string",
                       description: "The ESRS datapoint code (e.g., 'BP-1_01')",
                     },
-                    esrsStandard: {
+                    esrs_standard: {
                       type: "string",
                       description: "The ESRS standard (e.g., 'ESRS E1')",
                     },
@@ -127,7 +127,7 @@ export async function generateRegulationEsrsMappings(
                   },
                   required: [
                     "code",
-                    "esrsStandard",
+                    "esrs_standard",
                     "relevanceScore",
                     "reasoning",
                   ],
@@ -212,18 +212,18 @@ function buildMappingPrompt(
   },
   datapoints: Array<{
     code: string;
-    esrsStandard: string;
+    esrs_standard: string;
     name: string;
-    dataType: string | null;
+    data_type: string | null;
   }>
 ): string {
   // Group datapoints by standard for better context
   const datapointsByStandard: Record<string, typeof datapoints> = {};
   for (const dp of datapoints) {
-    if (!datapointsByStandard[dp.esrsStandard]) {
-      datapointsByStandard[dp.esrsStandard] = [];
+    if (!datapointsByStandard[dp.esrs_standard]) {
+      datapointsByStandard[dp.esrs_standard] = [];
     }
-    datapointsByStandard[dp.esrsStandard].push(dp);
+    datapointsByStandard[dp.esrs_standard].push(dp);
   }
 
   const datapointContext = Object.entries(datapointsByStandard)
@@ -261,7 +261,7 @@ ${datapointContext}
 ## Output Format
 Return a JSON object with an array of mappings. Each mapping must include:
 - code: The exact datapoint code from the list above
-- esrsStandard: The ESRS standard (e.g., "ESRS E1")
+- esrs_standard: The ESRS standard (e.g., "ESRS E1")
 - relevanceScore: Integer from 1-10
 - reasoning: Brief explanation (1-2 sentences)
 

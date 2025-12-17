@@ -110,7 +110,7 @@ describe("Regulation-ESRS Mapping", () => {
 
     // Validate datapoint details
     expect(firstMapping.datapoint).toHaveProperty("datapointId");
-    expect(firstMapping.datapoint).toHaveProperty("esrsStandard");
+    expect(firstMapping.datapoint).toHaveProperty("esrs_standard");
     expect(firstMapping.datapoint).toHaveProperty("name");
 
     // Validate relevance score range
@@ -118,7 +118,7 @@ describe("Regulation-ESRS Mapping", () => {
     expect(firstMapping.relevanceScore).toBeLessThanOrEqual(10);
 
     console.log(
-      `[Test] Sample mapping: ${firstMapping.datapoint?.datapointId} (${firstMapping.datapoint?.esrsStandard}) - Relevance: ${firstMapping.relevanceScore}/10`
+      `[Test] Sample mapping: ${firstMapping.datapoint?.datapointId} (${firstMapping.datapoint?.esrs_standard}) - Relevance: ${firstMapping.relevanceScore}/10`
     );
   });
 
@@ -131,7 +131,7 @@ describe("Regulation-ESRS Mapping", () => {
 
     const mappingsByStandard = mappings.reduce(
       (acc, mapping) => {
-        const standard = mapping.datapoint?.esrsStandard || "Unknown";
+        const standard = mapping.datapoint?.esrs_standard || "Unknown";
         if (!acc[standard]) {
           acc[standard] = 0;
         }

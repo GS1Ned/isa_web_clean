@@ -91,13 +91,13 @@ export function prepareContentForEmbedding(
       return `${source.standardName}\n\nCategory: ${source.category || ""}\n\nDescription: ${source.description || ""}\n\nUse Cases: ${source.useCases || ""}`.trim();
 
     case "esrs_datapoint":
-      return `${source.datapointCode}: ${source.datapointName}\n\nDescription: ${source.description || ""}\n\nData Type: ${source.dataType || ""}\n\nMandatory: ${source.isMandatory ? "Yes" : "No"}`.trim();
+      return `${source.datapointCode}: ${source.datapointName}\n\nDescription: ${source.description || ""}\n\nData Type: ${source.data_type || ""}\n\nMandatory: ${source.isMandatory ? "Yes" : "No"}`.trim();
 
     case "dutch_initiative":
       return `${source.name}\n\nSector: ${source.sector || ""}\n\nDescription: ${source.description || ""}\n\nScope: ${source.scope || ""}\n\nKey Targets: ${source.keyTargets || ""}`.trim();
 
     case "esrs_gs1_mapping":
-      return `ESRS ${source.esrsStandard} → GS1 ${source.gs1Standard}\n\nESRS Requirement: ${source.esrsRequirement}\n\nGS1 Attribute: ${source.gs1Attribute}\n\nMapping Type: ${source.mappingType || ""}\n\nConfidence: ${source.confidence || ""}\n\nRationale: ${source.rationale || ""}`.trim();
+      return `ESRS ${source.esrs_standard} → GS1 ${source.gs1Standard}\n\nESRS Requirement: ${source.esrsRequirement}\n\nGS1 Attribute: ${source.gs1Attribute}\n\nMapping Type: ${source.mappingType || ""}\n\nConfidence: ${source.confidence || ""}\n\nRationale: ${source.rationale || ""}`.trim();
 
     default:
       return JSON.stringify(source);
@@ -128,7 +128,7 @@ export function generateEmbeddingTitle(
       return source.name || `Initiative ${source.id}`;
 
     case "esrs_gs1_mapping":
-      return `${source.esrsStandard} → ${source.gs1Standard}: ${source.gs1Attribute}` || `Mapping ${source.id}`;
+      return `${source.esrs_standard} → ${source.gs1Standard}: ${source.gs1Attribute}` || `Mapping ${source.id}`;
 
     default:
       return `Source ${source.id}`;

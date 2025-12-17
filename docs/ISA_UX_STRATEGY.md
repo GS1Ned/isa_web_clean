@@ -1,7 +1,7 @@
 # ISA UX Strategy: Excellence Without Compromise
 
 **Document Version:** 1.0  
-**Date:** 11 December 2024  
+**Date:** 11 December 2025  
 **Status:** Foundational Strategy  
 **Scope:** UX design track parallel to ISA v1.1 execution
 

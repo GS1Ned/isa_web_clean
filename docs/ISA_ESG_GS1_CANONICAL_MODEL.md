@@ -1,7 +1,7 @@
 # ISA ESG & GS1 Canonical Model
 
 **Version:** 1.0  
-**Last Updated:** December 11, 2024  
+**Last Updated:** December 11, 2025  
 **Status:** Active
 
 ---

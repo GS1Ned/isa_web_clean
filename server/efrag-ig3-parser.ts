@@ -12,12 +12,12 @@ import { eq } from "drizzle-orm";
 
 interface IG3Datapoint {
   datapointId: string;
-  esrsStandard: string;
-  disclosureRequirement: string;
+  esrs_standard: string;
+  disclosure_requirement: string;
   paragraph: number | null;
-  relatedAR: string | null;
+  related_ar: string | null;
   datapointName: string;
-  dataType: string;
+  data_type: string;
   conditionalOrAlternative: boolean;
   mayVoluntary: boolean;
   appendixB_SFDR: boolean;
@@ -77,12 +77,12 @@ export async function parseIG3Datapoints(
 
       const datapoint: IG3Datapoint = {
         datapointId: id,
-        esrsStandard: row[1] || sheetName,
-        disclosureRequirement: row[2] || "",
+        esrs_standard: row[1] || sheetName,
+        disclosure_requirement: row[2] || "",
         paragraph: typeof row[3] === "number" ? row[3] : null,
-        relatedAR: row[4] || null,
+        related_ar: row[4] || null,
         datapointName: row[5] || "",
-        dataType: row[6] || "unknown",
+        data_type: row[6] || "unknown",
         conditionalOrAlternative: !!row[7],
         mayVoluntary: !!row[8],
         appendixB_SFDR: !!row[9],
@@ -133,15 +133,15 @@ export async function ingestIG3Datapoints(
       // Insert datapoint
       await db.insert(esrsDatapoints).values({
         code: dp.datapointId,
-        esrsStandard: dp.esrsStandard,
-        disclosureRequirement: dp.disclosureRequirement,
+        esrs_standard: dp.esrs_standard,
+        disclosure_requirement: dp.disclosure_requirement,
         paragraph: dp.paragraph?.toString() || null,
-        relatedAR: dp.relatedAR,
+        related_ar: dp.related_ar,
         name: dp.datapointName,
-        dataType: dp.dataType,
+        data_type: dp.data_type,
         conditional: dp.conditionalOrAlternative,
         voluntary: dp.mayVoluntary,
-        sfdrMapping: dp.appendixB_SFDR ? 'SFDR' : null,
+        sfdr_mapping: dp.appendixB_SFDR ? 'SFDR' : null,
       });
 
       insertedCount++;

@@ -37,7 +37,7 @@ export async function getAllEsrsGs1Mappings() {
 /**
  * Get mappings for a specific ESRS standard (e.g., "ESRS E1", "ESRS E5")
  */
-export async function getEsrsGs1MappingsByStandard(esrsStandard: string) {
+export async function getEsrsGs1MappingsByStandard(esrs_standard: string) {
   const db = await getDb();
   if (!db) throw new Error('Database not available');
   
@@ -52,7 +52,7 @@ export async function getEsrsGs1MappingsByStandard(esrsStandard: string) {
       definition,
       gs1_relevance
     FROM gs1_esrs_mappings
-    WHERE esrs_standard = ${esrsStandard}
+    WHERE esrs_standard = ${esrs_standard}
     ORDER BY mapping_id
   `);
   

@@ -119,7 +119,7 @@ export async function ingestCtesKdes(
             code: kdeCode,
             name: kdeData.name,
             description: kdeData.description,
-            dataType: kdeData.gs1Standard,
+            data_type: kdeData.gs1Standard,
             mandatory: false,
           });
         } catch (error) {

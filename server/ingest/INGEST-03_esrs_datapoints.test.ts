@@ -133,7 +133,7 @@ describe("INGEST-03: ESRS Datapoints ingestion", () => {
     );
     expect(semiNarrative).toBeDefined();
     if (semiNarrative) {
-      expect(semiNarrative.dataType).toBe("semiNarrative");
+      expect(semiNarrative.data_type).toBe("semiNarrative");
       expect(semiNarrative.conditional).toBe(false);
       expect(semiNarrative.voluntary).toBe(false);
     }

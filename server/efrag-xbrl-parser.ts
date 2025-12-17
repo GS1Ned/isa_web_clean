@@ -17,10 +17,10 @@ import path from "path";
 export interface ESRSDatapoint {
   datapointId: string; // Unique identifier (e.g., "ESRS2_MDR-M_1")
   standard: string; // ESRS standard (e.g., "ESRS 2", "ESRS E1")
-  disclosureRequirement: string; // DR code (e.g., "MDR-M", "E1-1")
+  disclosure_requirement: string; // DR code (e.g., "MDR-M", "E1-1")
   name: string; // Human-readable name
   description?: string; // Detailed description
-  dataType: string; // Data type (text, number, date, boolean, etc.)
+  data_type: string; // Data type (text, number, date, boolean, etc.)
   mandatory: boolean; // true if mandatory, false if voluntary
   xbrlTag?: string; // XBRL element name
   taxonomyVersion: string; // Version of taxonomy (e.g., "2024-08-30")
@@ -163,7 +163,7 @@ function extractColumnMap(headerRow: ExcelJS.Row): Record<string, number> {
     if (header === "technical name") map.xbrlTag = colNumber;
     if (header === "abstract") map.abstract = colNumber;
     if (header === "type name short" || header.includes("type"))
-      map.dataType = colNumber;
+      map.data_type = colNumber;
     if (header === "period type") map.periodType = colNumber;
     if (header === "balance") map.balance = colNumber;
     if (header === "substitution group") map.substitutionGroup = colNumber;
@@ -186,7 +186,7 @@ function parseDatapointRow(
   const name = getCellValue(row, columnMap.name);
   const xbrlTag = getCellValue(row, columnMap.xbrlTag);
   const abstract = getCellValue(row, columnMap.abstract);
-  const dataType = getCellValue(row, columnMap.dataType);
+  const data_type = getCellValue(row, columnMap.data_type);
   const references = getCellValue(row, columnMap.references);
 
   // Skip abstract elements (they're just grouping headers, not actual datapoints)
@@ -197,7 +197,7 @@ function parseDatapointRow(
 
   // Extract standard and DR from role column
   // Format: "[200510] ESRS2.BP-1 General ba"
-  const { standard, disclosureRequirement } = extractStandardAndDR(
+  const { standard, disclosure_requirement } = extractStandardAndDR(
     role,
     references
   );
@@ -212,10 +212,10 @@ function parseDatapointRow(
   return {
     datapointId,
     standard,
-    disclosureRequirement,
+    disclosure_requirement,
     name,
     description: undefined, // Not available in PresentationLinkbase
-    dataType: normalizeDataType(dataType),
+    data_type: normalizeDataType(data_type),
     mandatory,
     xbrlTag,
     taxonomyVersion: "2024-08-30",
@@ -228,12 +228,12 @@ function parseDatapointRow(
 function extractStandardAndDR(
   role: string,
   references: string
-): { standard: string; disclosureRequirement: string } {
+): { standard: string; disclosure_requirement: string } {
   // Role format: "[200510] ESRS2.BP-1 General ba"
   // References format: "Name: ESRS; Number: ESRS 2; Pa..."
 
   let standard = "";
-  let disclosureRequirement = "";
+  let disclosure_requirement = "";
 
   // Extract from references if available
   const refMatch = references.match(/Number:\s*ESRS\s*([^;]+)/i);
@@ -244,7 +244,7 @@ function extractStandardAndDR(
   // Extract DR from role
   const roleMatch = role.match(/ESRS[0-9A-Z]+\.([A-Z]+-[A-Z0-9-]+)/i);
   if (roleMatch) {
-    disclosureRequirement = roleMatch[1];
+    disclosure_requirement = roleMatch[1];
   }
 
   // Fallback: extract from role if references didn't work
@@ -255,7 +255,7 @@ function extractStandardAndDR(
     }
   }
 
-  return { standard, disclosureRequirement };
+  return { standard, disclosure_requirement };
 }
 
 /**
@@ -302,8 +302,8 @@ function normalizeStandard(standard: string): string {
 /**
  * Normalize data type
  */
-function normalizeDataType(dataType: string): string {
-  const normalized = dataType.toLowerCase().trim();
+function normalizeDataType(data_type: string): string {
+  const normalized = data_type.toLowerCase().trim();
 
   // Map common XBRL types to simple types
   if (normalized.includes("string") || normalized.includes("text"))

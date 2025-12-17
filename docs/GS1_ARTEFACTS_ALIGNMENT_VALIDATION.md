@@ -1,6 +1,6 @@
 # GS1 Artefacts Alignment Validation Report
 
-**Date:** December 11, 2024  
+**Date:** December 11, 2025  
 **Purpose:** Validate consistency between ISA's ESG canonical model and existing GS1 artefacts  
 **Status:** Validated
 

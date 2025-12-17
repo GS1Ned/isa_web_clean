@@ -1,6 +1,6 @@
 # ISA ESG Integration - Final Report
 
-**Date:** December 11, 2024  
+**Date:** December 11, 2025  
 **Task:** Extract structured knowledge from GS1 ESG/Green Deal documents and integrate into ISA  
 **Status:** ✅ Completed
 

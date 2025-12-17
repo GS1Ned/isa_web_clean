@@ -36,15 +36,15 @@ type SheetRow = [
 
 export interface ParsedEsrsRow {
   code: string;
-  esrsStandard: string | null;
-  disclosureRequirement: string | null;
+  esrs_standard: string | null;
+  disclosure_requirement: string | null;
   paragraph: string | null;
-  relatedAR: string | null;
+  related_ar: string | null;
   name: string;
-  dataType: string;
+  data_type: string;
   conditional: boolean;
   voluntary: boolean;
-  sfdrMapping: string | null;
+  sfdr_mapping: string | null;
   sheetName: string;
   rowIndex: number;
 }
@@ -192,15 +192,15 @@ function parseWorkbook(
       const voluntaryValue = parseVoluntaryFlag(voluntaryRaw);
       parsed.push({
         code: codeValue,
-        esrsStandard: esrsStandardValue,
-        disclosureRequirement: disclosureRequirementValue,
+        esrs_standard: esrsStandardValue,
+        disclosure_requirement: disclosureRequirementValue,
         paragraph: paragraphValue,
-        relatedAR: relatedArValue,
+        related_ar: relatedArValue,
         name: nameValue,
-        dataType: dataTypeValue,
+        data_type: dataTypeValue,
         conditional: conditionalValue,
         voluntary: voluntaryValue,
-        sfdrMapping: sfdrMappingValue,
+        sfdr_mapping: sfdrMappingValue,
         sheetName,
         rowIndex: index + 1
       });
@@ -250,15 +250,15 @@ export async function ingestEsrsDatapoints(
       if (!dryRun) {
         const rawPayload = {
           code: row.code,
-          esrsStandard: row.esrsStandard,
-          disclosureRequirement: row.disclosureRequirement,
+          esrs_standard: row.esrs_standard,
+          disclosure_requirement: row.disclosure_requirement,
           paragraph: row.paragraph,
-          relatedAr: row.relatedAR,
+          relatedAr: row.related_ar,
           name: row.name,
-          dataTypeRaw: row.dataType,
+          dataTypeRaw: row.data_type,
           conditionalRaw: row.conditional,
           voluntaryRaw: row.voluntary,
-          sfdrMapping: row.sfdrMapping,
+          sfdr_mapping: row.sfdr_mapping,
           sheetName: row.sheetName,
           rowIndex: row.rowIndex
         };
@@ -271,15 +271,15 @@ export async function ingestEsrsDatapoints(
           await db
             .update(rawEsrsDatapoints)
             .set({
-              esrsStandard: row.esrsStandard,
-              disclosureRequirement: row.disclosureRequirement,
+              esrs_standard: row.esrs_standard,
+              disclosure_requirement: row.disclosure_requirement,
               paragraph: row.paragraph,
-              relatedAr: row.relatedAR,
+              relatedAr: row.related_ar,
               name: row.name,
-              dataTypeRaw: row.dataType,
+              dataTypeRaw: row.data_type,
               conditionalRaw: row.conditional,
               voluntaryRaw: row.voluntary,
-              sfdrMapping: row.sfdrMapping,
+              sfdr_mapping: row.sfdr_mapping,
               sheetName: row.sheetName,
               rowIndex: row.rowIndex,
               rawJson: rawPayload
@@ -288,15 +288,15 @@ export async function ingestEsrsDatapoints(
         } else {
           await db.insert(rawEsrsDatapoints).values({
             code: row.code,
-            esrsStandard: row.esrsStandard,
-            disclosureRequirement: row.disclosureRequirement,
+            esrs_standard: row.esrs_standard,
+            disclosure_requirement: row.disclosure_requirement,
             paragraph: row.paragraph,
-            relatedAr: row.relatedAR,
+            relatedAr: row.related_ar,
             name: row.name,
-            dataTypeRaw: row.dataType,
+            dataTypeRaw: row.data_type,
             conditionalRaw: row.conditional,
             voluntaryRaw: row.voluntary,
-            sfdrMapping: row.sfdrMapping,
+            sfdr_mapping: row.sfdr_mapping,
             sheetName: row.sheetName,
             rowIndex: row.rowIndex,
             rawJson: rawPayload
@@ -311,30 +311,30 @@ export async function ingestEsrsDatapoints(
           await db
             .update(esrsDatapoints)
             .set({
-              esrsStandard: row.esrsStandard,
-              disclosureRequirement: row.disclosureRequirement,
+              esrs_standard: row.esrs_standard,
+              disclosure_requirement: row.disclosure_requirement,
               paragraph: row.paragraph,
-            relatedAR: row.relatedAR,
+            related_ar: row.related_ar,
             name: row.name,
-            dataType: row.dataType,
+            data_type: row.data_type,
             conditional: row.conditional,
             voluntary: row.voluntary,
-            sfdrMapping: row.sfdrMapping
+            sfdr_mapping: row.sfdr_mapping
             })
             .where(eq(esrsDatapoints.id, existingCanonical[0].id));
           result.recordsUpdated += 1;
         } else {
           await db.insert(esrsDatapoints).values({
             code: row.code,
-            esrsStandard: row.esrsStandard,
-            disclosureRequirement: row.disclosureRequirement,
+            esrs_standard: row.esrs_standard,
+            disclosure_requirement: row.disclosure_requirement,
             paragraph: row.paragraph,
-            relatedAR: row.relatedAR,
+            related_ar: row.related_ar,
             name: row.name,
-            dataType: row.dataType,
+            data_type: row.data_type,
             conditional: row.conditional,
             voluntary: row.voluntary,
-            sfdrMapping: row.sfdrMapping
+            sfdr_mapping: row.sfdr_mapping
           });
           result.recordsInserted += 1;
         }

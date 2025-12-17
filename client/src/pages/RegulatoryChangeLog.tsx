@@ -136,7 +136,7 @@ export default function RegulatoryChangeLog() {
             <CardTitle className="text-sm font-medium">Total Entries</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{entries?.length || 0}</div>
+            <div className="text-2xl font-bold">{entries?.total || 0}</div>
           </CardContent>
         </Card>
         <Card>
@@ -383,7 +383,7 @@ export default function RegulatoryChangeLog() {
           </div>
         )}
 
-        {!isLoading && entries && entries.length === 0 && (
+        {!isLoading && entries && entries.total === 0 && (
           <Card>
             <CardContent className="py-12 text-center text-muted-foreground">
               No regulatory change log entries found.
@@ -394,7 +394,7 @@ export default function RegulatoryChangeLog() {
 
         {!isLoading &&
           entries &&
-          entries.map((entry) => (
+          entries.entries.map((entry) => (
             <Card key={entry.id}>
               <CardHeader>
                 <div className="flex items-start justify-between gap-4">

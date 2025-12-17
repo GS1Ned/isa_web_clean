@@ -226,7 +226,7 @@ export async function ingestGdsnClassAttributes(
             classId: attr.parentClassId || 0,
             attributeCode: attr.name,
             attributeName: attr.definition || attr.name,
-            dataType: attr.type ? String(attr.type) : null,
+            data_type: attr.type ? String(attr.type) : null,
             required: attr.multiplicity?.includes("1") || false,
             rawJson: attr,
           });
@@ -236,7 +236,7 @@ export async function ingestGdsnClassAttributes(
             classId: attr.parentClassId || 0,
             attributeCode: attr.name,
             attributeName: attr.definition || attr.name,
-            dataType: attr.type ? String(attr.type) : null,
+            data_type: attr.type ? String(attr.type) : null,
             required: attr.multiplicity?.includes("1") || false,
           });
 

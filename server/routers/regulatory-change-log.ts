@@ -8,6 +8,7 @@ import {
   getRegulatoryChangeLogEntriesByVersion,
   getRegulatoryChangeLogStatsBySourceType,
   getRegulatoryChangeLogStatsByVersion,
+  deleteRegulatoryChangeLogEntry,
 } from "../db-regulatory-change-log";
 
 /**
@@ -72,7 +73,7 @@ export const regulatoryChangeLogRouter = router({
     }),
 
   /**
-   * Get all regulatory change log entries with optional filters (public)
+   * Get all regulatory change log entries with optional filters and pagination (public)
    */
   list: publicProcedure
     .input(
@@ -80,12 +81,23 @@ export const regulatoryChangeLogRouter = router({
         .object({
           sourceType: sourceTypeEnum.optional(),
           isaVersionAffected: z.string().optional(),
+          sourceOrg: z.string().optional(),
+          search: z.string().optional(),
+          startDate: z.string().optional(), // ISO date string
+          endDate: z.string().optional(), // ISO date string
+          page: z.number().min(1).optional(),
+          pageSize: z.number().min(1).max(100).optional(),
           limit: z.number().min(1).max(200).optional(),
         })
         .optional()
     )
     .query(async ({ input }) => {
-      return await getRegulatoryChangeLogEntries(input);
+      const filters = {
+        ...input,
+        startDate: input?.startDate ? new Date(input.startDate) : undefined,
+        endDate: input?.endDate ? new Date(input.endDate) : undefined,
+      };
+      return await getRegulatoryChangeLogEntries(filters);
     }),
 
   /**
@@ -166,5 +178,31 @@ export const regulatoryChangeLogRouter = router({
       const result = await bulkCreateChangeLogEntriesFromNews(newsItems);
 
       return result;
+    }),
+
+  /**
+   * Delete a regulatory change log entry (admin-only)
+   */
+  delete: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      // Admin-only authorization
+      if (ctx.user.role !== "admin") {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Only administrators can delete regulatory change log entries",
+        });
+      }
+
+      const deleted = await deleteRegulatoryChangeLogEntry(input.id);
+
+      if (!deleted) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `Regulatory change log entry with ID ${input.id} not found`,
+        });
+      }
+
+      return { success: true };
     }),
 });

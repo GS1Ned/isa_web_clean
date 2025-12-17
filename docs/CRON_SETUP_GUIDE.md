@@ -2,7 +2,7 @@
 
 **Purpose:** Set up automated daily news ingestion and weekly archival using external cron services
 
-**Last Updated:** December 11, 2024
+**Last Updated:** December 11, 2025
 
 ---
 

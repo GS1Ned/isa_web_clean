@@ -656,10 +656,10 @@ export async function getRegulationEsrsMappings(regulationId: number) {
         datapoint: {
           id: esrsDatapoints.id,
           datapointId: esrsDatapoints.code,
-          esrsStandard: esrsDatapoints.esrsStandard,
-          disclosureRequirement: esrsDatapoints.disclosureRequirement,
+          esrs_standard: esrsDatapoints.esrs_standard,
+          disclosure_requirement: esrsDatapoints.disclosure_requirement,
           datapointName: esrsDatapoints.name,
-          dataType: esrsDatapoints.dataType,
+          data_type: esrsDatapoints.data_type,
           mayVoluntary: esrsDatapoints.voluntary,
         },
       })
@@ -951,7 +951,7 @@ export async function getLowScoredMappings(minVotes: number = 3) {
         regulationId: regulationEsrsMappings.regulationId,
         datapointId: regulationEsrsMappings.datapointId,
         datapointName: esrsDatapoints.name,
-        esrsStandard: esrsDatapoints.esrsStandard,
+        esrs_standard: esrsDatapoints.esrs_standard,
         relevanceScore: regulationEsrsMappings.relevanceScore,
         reasoning: regulationEsrsMappings.reasoning,
         totalVotes: count(mappingFeedback.id),
@@ -977,7 +977,7 @@ export async function getLowScoredMappings(minVotes: number = 3) {
       regulationId: m.regulationId,
       datapointId: m.datapointId,
       datapointName: m.datapointName,
-      esrsStandard: m.esrsStandard,
+      esrs_standard: m.esrs_standard,
       relevanceScore: m.relevanceScore,
       reasoning: m.reasoning,
       totalVotes: Number(m.totalVotes),
@@ -1009,7 +1009,7 @@ export async function getVoteDistributionByStandard() {
 
     const distribution = await db
       .select({
-        esrsStandard: esrsDatapoints.esrsStandard,
+        esrs_standard: esrsDatapoints.esrs_standard,
         totalMappings: count(regulationEsrsMappings.id),
         totalVotes: count(mappingFeedback.id),
         positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
@@ -1023,10 +1023,10 @@ export async function getVoteDistributionByStandard() {
         mappingFeedback,
         sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`
       )
-      .groupBy(esrsDatapoints.esrsStandard);
+      .groupBy(esrsDatapoints.esrs_standard);
 
     return distribution.map(d => ({
-      esrsStandard: d.esrsStandard,
+      esrs_standard: d.esrs_standard,
       totalMappings: Number(d.totalMappings),
       totalVotes: Number(d.totalVotes),
       positiveVotes: Number(d.positiveVotes || 0),
@@ -1064,7 +1064,7 @@ export async function getMostVotedMappings(limit: number = 10) {
         regulationId: regulationEsrsMappings.regulationId,
         datapointId: regulationEsrsMappings.datapointId,
         datapointName: esrsDatapoints.name,
-        esrsStandard: esrsDatapoints.esrsStandard,
+        esrs_standard: esrsDatapoints.esrs_standard,
         relevanceScore: regulationEsrsMappings.relevanceScore,
         totalVotes: count(mappingFeedback.id),
         positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
@@ -1088,7 +1088,7 @@ export async function getMostVotedMappings(limit: number = 10) {
       regulationId: m.regulationId,
       datapointId: m.datapointId,
       datapointName: m.datapointName,
-      esrsStandard: m.esrsStandard,
+      esrs_standard: m.esrs_standard,
       relevanceScore: m.relevanceScore,
       totalVotes: Number(m.totalVotes),
       positiveVotes: Number(m.positiveVotes || 0),

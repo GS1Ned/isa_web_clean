@@ -519,20 +519,20 @@ export const rawEsrsDatapoints = mysqlTable(
   {
     id: int("id").autoincrement().primaryKey(),
     code: varchar("code", { length: 100 }).notNull(),
-    esrsStandard: varchar("esrs_standard", { length: 50 }),
-    disclosureRequirement: varchar("disclosure_requirement", { length: 100 }),
+    esrs_standard: varchar("esrs_standard", { length: 50 }),
+    disclosure_requirement: varchar("disclosure_requirement", { length: 100 }),
     paragraph: varchar("paragraph", { length: 100 }),
     relatedAr: varchar("related_ar", { length: 100 }),
     name: text("name").notNull(),
     dataTypeRaw: varchar("data_type_raw", { length: 100 }),
     conditionalRaw: boolean("conditional_raw").default(false),
     voluntaryRaw: boolean("voluntary_raw").default(false),
-    sfdrMapping: varchar("sfdr_mapping", { length: 255 }),
+    sfdr_mapping: varchar("sfdr_mapping", { length: 255 }),
     sheetName: varchar("sheet_name", { length: 50 }),
     rowIndex: int("row_index"),
     rawJson: json("raw_json").$type<unknown>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     codeIndex: index("idx_raw_esrs_code").on(table.code),
@@ -553,21 +553,21 @@ export const esrsDatapoints = mysqlTable(
   {
     id: int("id").autoincrement().primaryKey(),
     code: varchar("code", { length: 100 }).notNull().unique(),
-    esrsStandard: varchar("esrs_standard", { length: 50 }),
-    disclosureRequirement: varchar("disclosure_requirement", { length: 100 }),
+    esrs_standard: varchar("esrs_standard", { length: 50 }),
+    disclosure_requirement: varchar("disclosure_requirement", { length: 100 }),
     paragraph: varchar("paragraph", { length: 100 }),
-    relatedAR: varchar("related_ar", { length: 100 }),
+    related_ar: varchar("related_ar", { length: 100 }),
     name: text("name").notNull(),
-    dataType: varchar("data_type", { length: 50 }),
+    data_type: varchar("data_type", { length: 50 }),
     conditional: boolean("conditional").default(false),
     voluntary: boolean("voluntary").default(false),
-    sfdrMapping: varchar("sfdr_mapping", { length: 255 }),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    sfdr_mapping: varchar("sfdr_mapping", { length: 255 }),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     codeIndex: index("idx_esrs_code").on(table.code),
-    standardIndex: index("idx_esrs_standard").on(table.esrsStandard),
+    standardIndex: index("idx_esrs_standard").on(table.esrs_standard),
   })
 );
 
@@ -1933,8 +1933,8 @@ export const rawGdsnClasses = mysqlTable(
     type: int("type"), // 1=String, 2=Boolean, 3=Integer, 4=Enum, etc.
     extensions: json("extensions").$type<unknown[]>(),
     rawJson: json("raw_json").$type<unknown>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     nameIndex: index("idx_raw_gdsn_class_name").on(table.name),
@@ -1955,8 +1955,8 @@ export const gdsnClasses = mysqlTable(
     definition: text("definition"),
     type: int("type"),
     extensions: json("extensions").$type<unknown[]>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     nameIndex: index("idx_gdsn_class_name").on(table.name),
@@ -1976,11 +1976,11 @@ export const rawGdsnClassAttributes = mysqlTable(
     classId: int("class_id").notNull(),
     attributeCode: varchar("attribute_code", { length: 255 }).notNull(),
     attributeName: varchar("attribute_name", { length: 255 }),
-    dataType: varchar("data_type", { length: 50 }),
+    data_type: varchar("data_type", { length: 50 }),
     required: boolean("required").default(false),
     rawJson: json("raw_json").$type<unknown>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     classIdIndex: index("idx_raw_gdsn_attr_class").on(table.classId),
@@ -2001,10 +2001,10 @@ export const gdsnClassAttributes = mysqlTable(
     classId: int("class_id").notNull(),
     attributeCode: varchar("attribute_code", { length: 255 }).notNull(),
     attributeName: varchar("attribute_name", { length: 255 }),
-    dataType: varchar("data_type", { length: 50 }),
+    data_type: varchar("data_type", { length: 50 }),
     required: boolean("required").default(false),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     classIdIndex: index("idx_gdsn_attr_class").on(table.classId),
@@ -2030,8 +2030,8 @@ export const rawGdsnValidationRules = mysqlTable(
     ruleExpression: text("rule_expression"),
     errorMessage: text("error_message"),
     rawJson: json("raw_json").$type<unknown>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     ruleIdIndex: index("idx_raw_gdsn_rule_id").on(table.ruleId),
@@ -2055,8 +2055,8 @@ export const gdsnValidationRules = mysqlTable(
     ruleType: varchar("rule_type", { length: 50 }),
     ruleExpression: text("rule_expression"),
     errorMessage: text("error_message"),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     ruleIdIndex: index("idx_gdsn_rule_id").on(table.ruleId),
@@ -2080,8 +2080,8 @@ export const rawCtesKdes = mysqlTable(
   {
     id: int("id").autoincrement().primaryKey(),
     rawJson: json("raw_json").$type<unknown>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   }
 );
 
@@ -2100,8 +2100,8 @@ export const ctes = mysqlTable(
     description: text("description"),
     category: varchar("category", { length: 100 }),
     regulationContext: varchar("regulation_context", { length: 255 }),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     codeIndex: index("idx_cte_code").on(table.code),
@@ -2122,10 +2122,10 @@ export const kdes = mysqlTable(
     code: varchar("code", { length: 100 }).notNull().unique(),
     name: varchar("name", { length: 255 }).notNull(),
     description: text("description"),
-    dataType: varchar("data_type", { length: 50 }),
+    data_type: varchar("data_type", { length: 50 }),
     mandatory: boolean("mandatory").default(false),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     codeIndex: index("idx_kde_code").on(table.code),
@@ -2145,7 +2145,7 @@ export const cteKdeMappings = mysqlTable(
     cteId: int("cte_id").notNull(),
     kdeId: int("kde_id").notNull(),
     required: boolean("required").default(true),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
   },
   (table) => ({
     cteIdIndex: index("idx_cte_kde_cte").on(table.cteId),
@@ -2169,8 +2169,8 @@ export const rawDppIdentifierComponents = mysqlTable(
   {
     id: int("id").autoincrement().primaryKey(),
     rawJson: json("raw_json").$type<unknown>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   }
 );
 
@@ -2190,8 +2190,8 @@ export const dppIdentifierComponents = mysqlTable(
     gs1Standard: varchar("gs1_standard", { length: 100 }),
     format: varchar("format", { length: 100 }),
     example: varchar("example", { length: 255 }),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     codeIndex: index("idx_dpp_comp_code").on(table.componentCode),
@@ -2209,8 +2209,8 @@ export const rawDppIdentificationRules = mysqlTable(
   {
     id: int("id").autoincrement().primaryKey(),
     rawJson: json("raw_json").$type<unknown>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   }
 );
 
@@ -2230,8 +2230,8 @@ export const dppIdentificationRules = mysqlTable(
     optionalComponents: json("optional_components").$type<string[]>(),
     description: text("description"),
     regulationContext: varchar("regulation_context", { length: 255 }),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     ruleCodeIndex: index("idx_dpp_rule_code").on(table.ruleCode),
@@ -2254,8 +2254,8 @@ export const rawCbvVocabularies = mysqlTable(
   {
     id: int("id").autoincrement().primaryKey(),
     rawJson: json("raw_json").$type<unknown>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   }
 );
 
@@ -2274,8 +2274,8 @@ export const cbvVocabularies = mysqlTable(
     label: varchar("label", { length: 255 }).notNull(),
     definition: text("definition"),
     regulationRelevance: json("regulation_relevance").$type<string[]>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     typeIndex: index("idx_cbv_type").on(table.vocabularyType),
@@ -2295,8 +2295,8 @@ export const rawDigitalLinkTypes = mysqlTable(
   {
     id: int("id").autoincrement().primaryKey(),
     rawJson: json("raw_json").$type<unknown>(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   }
 );
 
@@ -2315,8 +2315,8 @@ export const digitalLinkTypes = mysqlTable(
     description: text("description"),
     gs1Curie: varchar("gs1_curie", { length: 100 }),
     schemaOrgEquivalent: varchar("schema_org_equivalent", { length: 255 }),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   (table) => ({
     linkTypeIndex: index("idx_digital_link_type").on(table.linkType),

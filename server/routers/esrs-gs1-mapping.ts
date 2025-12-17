@@ -34,10 +34,10 @@ export const esrsGs1MappingRouter = router({
    */
   getMappingsByStandard: publicProcedure
     .input(z.object({
-      esrsStandard: z.string()
+      esrs_standard: z.string()
     }))
     .query(async ({ input }) => {
-      return await getEsrsGs1MappingsByStandard(input.esrsStandard);
+      return await getEsrsGs1MappingsByStandard(input.esrs_standard);
     }),
 
   /**
