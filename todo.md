@@ -1422,3 +1422,18 @@ scraper_health_summary:
 - [x] Document root cause and fix in code comments
 
 **Result:** 100% scraper health rate achieved. EUR-Lex Press Releases disabled due to AWS WAF protection. Coverage maintained via EU Commission Press Corner.
+
+## Scraper Health Trend Visualization ✅ COMPLETE
+
+- [x] Design trend chart specifications (success rate, items fetched, duration)
+- [x] Implement getTrendData tRPC procedure with time-bucketed aggregation
+- [x] Install Recharts library for data visualization
+- [x] Create SuccessRateTrendChart component (line chart)
+- [x] Create ItemsFetchedTrendChart component (stacked area chart)
+- [x] Create DurationTrendChart component (line chart)
+- [x] Integrate charts into AdminScraperHealth dashboard
+- [x] Add Trends tab to health monitoring interface
+- [x] Test charts with real scraper data
+- [x] Verify responsive design and dark mode compatibility
+
+**Result:** Production-grade trend visualization enabling pattern detection and proactive monitoring. Charts display hourly/daily aggregated metrics across all scrapers with color-coded source differentiation.

@@ -5,6 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, CheckCircle, Clock, TrendingDown, TrendingUp, XCircle, RefreshCw } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SuccessRateTrendChart from "@/components/charts/SuccessRateTrendChart";
+import ItemsFetchedTrendChart from "@/components/charts/ItemsFetchedTrendChart";
+import DurationTrendChart from "@/components/charts/DurationTrendChart";
 
 export default function AdminScraperHealth() {
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
@@ -34,6 +37,11 @@ export default function AdminScraperHealth() {
     }
   );
 
+  // Query trend data for charts
+  const { data: trendData, isLoading: loadingTrends } = trpc.scraperHealth.getTrendData.useQuery({
+    hoursBack: timeRange,
+  });
+
   // Clear alert mutation
   const clearAlertMutation = trpc.scraperHealth.clearAlert.useMutation({
     onSuccess: () => {
@@ -44,6 +52,10 @@ export default function AdminScraperHealth() {
   const handleRefresh = () => {
     refetchSources();
     refetchStats();
+  };
+
+  const refetchTrends = () => {
+    // Trend data will auto-refetch when timeRange changes
   };
 
   const handleClearAlert = (sourceId: string) => {
@@ -181,6 +193,7 @@ export default function AdminScraperHealth() {
       <Tabs defaultValue="sources" className="space-y-4">
         <TabsList>
           <TabsTrigger value="sources">All Sources</TabsTrigger>
+          <TabsTrigger value="trends">Trends</TabsTrigger>
           <TabsTrigger value="failures">Recent Failures</TabsTrigger>
           {selectedSource && <TabsTrigger value="history">Execution History</TabsTrigger>}
         </TabsList>
@@ -296,6 +309,41 @@ export default function AdminScraperHealth() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Trends Tab */}
+        <TabsContent value="trends" className="space-y-4">
+          {loadingTrends ? (
+            <div className="text-center py-8 text-muted-foreground">Loading trend data...</div>
+          ) : trendData && trendData.trendData.length > 0 ? (
+            <>
+              <SuccessRateTrendChart 
+                data={trendData.trendData}
+                title="Success Rate Trend"
+                description={`Success rate percentage over the last ${timeRange === 24 ? '24 hours' : timeRange === 48 ? '48 hours' : timeRange === 168 ? '7 days' : '30 days'}`}
+              />
+              
+              <ItemsFetchedTrendChart 
+                data={trendData.trendData}
+                title="Items Fetched Trend"
+                description={`Number of news items fetched over the last ${timeRange === 24 ? '24 hours' : timeRange === 48 ? '48 hours' : timeRange === 168 ? '7 days' : '30 days'}`}
+              />
+              
+              <DurationTrendChart 
+                data={trendData.trendData}
+                title="Execution Duration Trend"
+                description={`Average execution time per scraper over the last ${timeRange === 24 ? '24 hours' : timeRange === 48 ? '48 hours' : timeRange === 168 ? '7 days' : '30 days'}`}
+              />
+            </>
+          ) : (
+            <Card>
+              <CardContent className="py-8">
+                <div className="text-center text-muted-foreground">
+                  No trend data available for the selected time range
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         {/* Recent Failures Tab */}

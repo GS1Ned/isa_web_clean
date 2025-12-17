@@ -273,4 +273,189 @@ export const scraperHealthRouter = router({
 
       return { success: true };
     }),
+
+  /**
+   * Get trend data for visualization
+   * Returns time-bucketed metrics for charting
+   * Admin-only for performance monitoring
+   */
+  getTrendData: adminProcedure
+    .input(
+      z.object({
+        hoursBack: z.number().min(1).max(720).default(24),
+      })
+    )
+    .query(async ({ input }) => {
+      const db = await getDb();
+      if (!db) {
+        throw new Error("Database not available");
+      }
+
+      const cutoffTime = new Date(Date.now() - input.hoursBack * 60 * 60 * 1000);
+
+      const executions = await db
+        .select()
+        .from(scraperExecutions)
+        .where(gte(scraperExecutions.startedAt, cutoffTime))
+        .orderBy(scraperExecutions.startedAt);
+
+      // Determine bucket size based on time range
+      // 24h: 1-hour buckets (24 points)
+      // 48h: 2-hour buckets (24 points)
+      // 7d: 6-hour buckets (28 points)
+      // 30d: 1-day buckets (30 points)
+      let bucketSizeMs: number;
+      if (input.hoursBack <= 24) {
+        bucketSizeMs = 60 * 60 * 1000; // 1 hour
+      } else if (input.hoursBack <= 48) {
+        bucketSizeMs = 2 * 60 * 60 * 1000; // 2 hours
+      } else if (input.hoursBack <= 168) {
+        bucketSizeMs = 6 * 60 * 60 * 1000; // 6 hours
+      } else {
+        bucketSizeMs = 24 * 60 * 60 * 1000; // 1 day
+      }
+
+      // Create time buckets
+      const buckets = new Map<
+        number,
+        Map<
+          string,
+          {
+            sourceName: string;
+            executions: number;
+            successful: number;
+            failed: number;
+            totalItems: number;
+            totalDuration: number;
+          }
+        >
+      >();
+
+      // Initialize buckets
+      const startBucket = Math.floor(cutoffTime.getTime() / bucketSizeMs) * bucketSizeMs;
+      const endBucket = Math.floor(Date.now() / bucketSizeMs) * bucketSizeMs;
+      for (let bucket = startBucket; bucket <= endBucket; bucket += bucketSizeMs) {
+        buckets.set(bucket, new Map());
+      }
+
+      // Aggregate executions into buckets
+      for (const exec of executions) {
+        const bucketTime = Math.floor(exec.startedAt.getTime() / bucketSizeMs) * bucketSizeMs;
+        
+        if (!buckets.has(bucketTime)) {
+          buckets.set(bucketTime, new Map());
+        }
+
+        const bucket = buckets.get(bucketTime)!;
+        
+        if (!bucket.has(exec.sourceId)) {
+          bucket.set(exec.sourceId, {
+            sourceName: exec.sourceName,
+            executions: 0,
+            successful: 0,
+            failed: 0,
+            totalItems: 0,
+            totalDuration: 0,
+          });
+        }
+
+        const sourceData = bucket.get(exec.sourceId)!;
+        sourceData.executions++;
+        if (exec.success) {
+          sourceData.successful++;
+        } else {
+          sourceData.failed++;
+        }
+        sourceData.totalItems += exec.itemsFetched;
+        sourceData.totalDuration += exec.durationMs || 0;
+      }
+
+      // Convert to chart-friendly format
+      const trendData: Array<{
+        timestamp: number;
+        timestampLabel: string;
+        overall: {
+          successRate: number;
+          itemsFetched: number;
+          avgDuration: number;
+        };
+        bySource: Array<{
+          sourceId: string;
+          sourceName: string;
+          successRate: number;
+          itemsFetched: number;
+          avgDuration: number;
+        }>;
+      }> = [];
+
+      const sortedBuckets = Array.from(buckets.keys()).sort((a, b) => a - b);
+
+      for (const bucketTime of sortedBuckets) {
+        const bucket = buckets.get(bucketTime)!;
+        
+        // Calculate overall metrics
+        let overallExecs = 0;
+        let overallSuccessful = 0;
+        let overallItems = 0;
+        let overallDuration = 0;
+
+        const bySource: Array<{
+          sourceId: string;
+          sourceName: string;
+          successRate: number;
+          itemsFetched: number;
+          avgDuration: number;
+        }> = [];
+
+        bucket.forEach((data, sourceId) => {
+          overallExecs += data.executions;
+          overallSuccessful += data.successful;
+          overallItems += data.totalItems;
+          overallDuration += data.totalDuration;
+
+          const successRate = data.executions > 0 
+            ? Math.round((data.successful / data.executions) * 100)
+            : 100;
+          const avgDuration = data.executions > 0
+            ? Math.round(data.totalDuration / data.executions)
+            : 0;
+
+          bySource.push({
+            sourceId,
+            sourceName: data.sourceName,
+            successRate,
+            itemsFetched: data.totalItems,
+            avgDuration,
+          });
+        });
+
+        const overallSuccessRate = overallExecs > 0
+          ? Math.round((overallSuccessful / overallExecs) * 100)
+          : 100;
+        const overallAvgDuration = overallExecs > 0
+          ? Math.round(overallDuration / overallExecs)
+          : 0;
+
+        trendData.push({
+          timestamp: bucketTime,
+          timestampLabel: new Date(bucketTime).toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          overall: {
+            successRate: overallSuccessRate,
+            itemsFetched: overallItems,
+            avgDuration: overallAvgDuration,
+          },
+          bySource,
+        });
+      }
+
+      return {
+        bucketSizeMs,
+        trendData,
+      };
+    }),
 });
