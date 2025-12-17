@@ -1265,3 +1265,15 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Test all filter combinations (browser testing complete)
 - [x] Write and run vitest tests for filter logic (15/15 passing)
 - [ ] Persist filter state in URL params (deferred - not critical for MVP)
+
+### URL State Persistence & Navigation (December 17, 2025)
+- [x] Implement URL state persistence for News Hub filters
+- [x] Add useEffect hook to sync filter state to URL params
+- [x] Initialize filters from URL params on page load
+- [x] Add "Compare Regulations" link to ESG Hub menu
+- [x] Add "Advisory Diff" link to Admin menu
+- [x] Add "Regulatory Change Log" link to Admin menu
+- [ ] Refactor CompareRegulations to use database queries (deferred - requires milestone schema design)
+
+**Technical Debt:**
+- CompareRegulations uses hardcoded regulation timeline data (acceptable for MVP, defer until timeline data needs to be admin-editable)

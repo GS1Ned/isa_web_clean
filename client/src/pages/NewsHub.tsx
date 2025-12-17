@@ -3,7 +3,8 @@
  * Full news feed with filtering, sorting, and pagination
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useRoute } from "wouter";
 import { NewsCard } from "@/components/NewsCard";
 import { NewsCardSkeleton } from "@/components/NewsCardSkeleton";
 import { Button } from "@/components/ui/button";
@@ -42,15 +43,52 @@ const IMPACT_FILTERS = ["All", "HIGH", "MEDIUM", "LOW"];
 const SOURCE_TYPE_FILTERS = ["All", "GS1 Official", "EU Official"];
 
 export default function NewsHub() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [regulationFilter, setRegulationFilter] = useState("All");
-  const [impactFilter, setImpactFilter] = useState("All");
-  const [sourceTypeFilter, setSourceTypeFilter] = useState("All");
-  const [gs1ImpactFilters, setGs1ImpactFilters] = useState<GS1ImpactTag[]>([]);
-  const [sectorFilters, setSectorFilters] = useState<SectorTag[]>([]);
-  const [highImpactOnly, setHighImpactOnly] = useState(false);
-  const [sortBy, setSortBy] = useState<"date" | "impact">("date");
+  const [location, setLocation] = useLocation();
+  
+  // Initialize state from URL params
+  const getInitialState = () => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      searchQuery: params.get('search') || '',
+      regulationFilter: params.get('regulation') || 'All',
+      impactFilter: params.get('impact') || 'All',
+      sourceTypeFilter: params.get('source') || 'All',
+      gs1ImpactFilters: params.get('gs1Impact')?.split(',').filter(Boolean) as GS1ImpactTag[] || [],
+      sectorFilters: params.get('sector')?.split(',').filter(Boolean) as SectorTag[] || [],
+      highImpactOnly: params.get('highImpact') === 'true',
+      sortBy: (params.get('sort') as 'date' | 'impact') || 'date',
+    };
+  };
+
+  const initialState = getInitialState();
+  const [searchQuery, setSearchQuery] = useState(initialState.searchQuery);
+  const [regulationFilter, setRegulationFilter] = useState(initialState.regulationFilter);
+  const [impactFilter, setImpactFilter] = useState(initialState.impactFilter);
+  const [sourceTypeFilter, setSourceTypeFilter] = useState(initialState.sourceTypeFilter);
+  const [gs1ImpactFilters, setGs1ImpactFilters] = useState<GS1ImpactTag[]>(initialState.gs1ImpactFilters);
+  const [sectorFilters, setSectorFilters] = useState<SectorTag[]>(initialState.sectorFilters);
+  const [highImpactOnly, setHighImpactOnly] = useState(initialState.highImpactOnly);
+  const [sortBy, setSortBy] = useState<"date" | "impact">(initialState.sortBy);
   const [displayLimit, setDisplayLimit] = useState(20);
+
+  // Sync state to URL params
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (searchQuery) params.set('search', searchQuery);
+    if (regulationFilter !== 'All') params.set('regulation', regulationFilter);
+    if (impactFilter !== 'All') params.set('impact', impactFilter);
+    if (sourceTypeFilter !== 'All') params.set('source', sourceTypeFilter);
+    if (gs1ImpactFilters.length > 0) params.set('gs1Impact', gs1ImpactFilters.join(','));
+    if (sectorFilters.length > 0) params.set('sector', sectorFilters.join(','));
+    if (highImpactOnly) params.set('highImpact', 'true');
+    if (sortBy !== 'date') params.set('sort', sortBy);
+    
+    const newSearch = params.toString();
+    const currentSearch = window.location.search.slice(1);
+    if (newSearch !== currentSearch) {
+      setLocation(`/news${newSearch ? '?' + newSearch : ''}`, { replace: true });
+    }
+  }, [searchQuery, regulationFilter, impactFilter, sourceTypeFilter, gs1ImpactFilters, sectorFilters, highImpactOnly, sortBy, setLocation]);
 
   // Reset pagination when filters change
   const resetPagination = () => setDisplayLimit(20);

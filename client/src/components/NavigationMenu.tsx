@@ -85,6 +85,11 @@ export function NavigationMenu() {
           href: "/hub/impact-matrix",
           description: "Regulation overlap analysis",
         },
+        {
+          label: "Compare Regulations",
+          href: "/hub/compare-regulations",
+          description: "Side-by-side regulation comparison",
+        },
       ],
     },
     {
@@ -168,6 +173,16 @@ export function NavigationMenu() {
           label: "EUDR Data Seeder",
           href: "/admin/eudr-seeder",
           description: "Populate sample data",
+        },
+        {
+          label: "Advisory Diff",
+          href: "/advisory/diff",
+          description: "Compare advisory versions",
+        },
+        {
+          label: "Regulatory Change Log",
+          href: "/regulatory-changes",
+          description: "View regulatory updates",
         },
       ],
     });
