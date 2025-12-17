@@ -144,8 +144,9 @@ function computeCoverageDeltas(adv1, adv2) {
 // ============================================================================
 
 function computeGapLifecycle(adv1, adv2) {
-  const gaps1 = new Map(adv1.gaps.map(g => [g.gapId, g]));
-  const gaps2 = new Map(adv2.gaps.map(g => [g.gapId, g]));
+  // Handle missing gaps field gracefully
+  const gaps1 = new Map((adv1.gaps || []).map(g => [g.gapId, g]));
+  const gaps2 = new Map((adv2.gaps || []).map(g => [g.gapId, g]));
 
   const closed = [];
   const newGaps = [];
@@ -178,7 +179,7 @@ function computeGapLifecycle(adv1, adv2) {
   // Count by severity
   const countBySeverity = (gaps) => {
     const counts = { critical: 0, moderate: 0, 'low-priority': 0 };
-    for (const g of gaps) {
+    for (const g of (gaps || [])) {
       counts[g.category]++;
     }
     return counts;
@@ -189,9 +190,9 @@ function computeGapLifecycle(adv1, adv2) {
 
   return {
     totalGaps: {
-      [version1]: adv1.gaps.length,
-      [version2]: adv2.gaps.length,
-      delta: adv2.gaps.length - adv1.gaps.length,
+      [version1]: (adv1.gaps || []).length,
+      [version2]: (adv2.gaps || []).length,
+      delta: (adv2.gaps || []).length - (adv1.gaps || []).length,
     },
     gapsClosed: closed.length,
     newGaps: newGaps.length,
@@ -279,21 +280,22 @@ function computeRecommendationLifecycle(adv1, adv2) {
 
 function computeTraceabilityDeltas(adv1, adv2) {
   const hashChanged = (artifact1, artifact2) => {
+    if (!artifact1 || !artifact2) return false;
     return artifact1.sha256 !== artifact2.sha256;
   };
 
   const changes = {
     advisoryMarkdown: hashChanged(
-      adv1.sourceArtifacts.advisoryMarkdown,
-      adv2.sourceArtifacts.advisoryMarkdown
+      adv1.sourceArtifacts?.advisoryMarkdown,
+      adv2.sourceArtifacts?.advisoryMarkdown
     ),
     datasetRegistry: hashChanged(
-      adv1.sourceArtifacts.datasetRegistry,
-      adv2.sourceArtifacts.datasetRegistry
+      adv1.sourceArtifacts?.datasetRegistry,
+      adv2.sourceArtifacts?.datasetRegistry
     ),
     schema: hashChanged(
-      adv1.sourceArtifacts.schema,
-      adv2.sourceArtifacts.schema
+      adv1.sourceArtifacts?.schema,
+      adv2.sourceArtifacts?.schema
     ),
   };
 

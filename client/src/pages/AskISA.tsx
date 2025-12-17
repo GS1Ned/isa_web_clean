@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,6 +22,9 @@ import {
   BookOpen,
   FileText,
   Lightbulb,
+  History,
+  Plus,
+  Trash2,
 } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -44,6 +48,13 @@ interface Message {
     url?: string | null;
     similarity: number;
   }>;
+  queryType?: string;
+  confidence?: {
+    level: "high" | "medium" | "low";
+    score: number;
+  };
+  citationValid?: boolean;
+  missingCitations?: string[];
 }
 
 // Query library organized by category (30 pre-approved questions from ASK_ISA_QUERY_LIBRARY.md)
@@ -100,11 +111,25 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 export default function AskISA() {
+  const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [conversationId, setConversationId] = useState<number | undefined>();
   const [advisoryVersion, setAdvisoryVersion] = useState("v1.0");
+  const [showHistory, setShowHistory] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Fetch conversation history (only for authenticated users)
+  const conversationsQuery = trpc.askISA.getMyConversations.useQuery(
+    { limit: 20 },
+    { enabled: !!user }
+  );
+
+  const deleteConversationMutation = trpc.askISA.deleteConversation.useMutation({
+    onSuccess: () => {
+      conversationsQuery.refetch();
+    },
+  });
 
   const askMutation = trpc.askISA.ask.useMutation({
     onSuccess: data => {
@@ -114,6 +139,10 @@ export default function AskISA() {
           role: "assistant",
           content: data.answer,
           sources: data.sources,
+          queryType: data.queryType,
+          confidence: data.confidence,
+          citationValid: data.citationValid,
+          missingCitations: data.missingCitations,
         },
       ]);
 
@@ -202,6 +231,95 @@ export default function AskISA() {
     }
   };
 
+  const getConfidenceBadge = (confidence?: { level: "high" | "medium" | "low"; score: number }) => {
+    if (!confidence) return null;
+
+    const colors = {
+      high: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+      medium: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+      low: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+    };
+
+    return (
+      <Badge className={colors[confidence.level]}>
+        {confidence.level.toUpperCase()} Confidence ({confidence.score} sources)
+      </Badge>
+    );
+  };
+
+  const getQueryTypeBadge = (queryType?: string) => {
+    if (!queryType) return null;
+
+    const labels: Record<string, string> = {
+      gap: "Gap Analysis",
+      mapping: "Mapping Query",
+      version: "Version Comparison",
+      provenance: "Dataset Provenance",
+      recommendation: "Recommendation",
+      coverage: "Coverage Analysis",
+      general_esg: "General ESG (Not Allowed)",
+      hypothetical: "Hypothetical (Not Allowed)",
+      speculative: "Speculative (Not Allowed)",
+      calculation: "Calculation (Not Allowed)",
+      conversational: "Conversational (Not Allowed)",
+    };
+
+    return (
+      <Badge variant="outline" className="text-xs">
+        {labels[queryType] || queryType}
+      </Badge>
+    );
+  };
+
+  const parseRefusalMessage = (content: string) => {
+    const parts = content.split("\n\n");
+    return {
+      reason: parts[0] || content,
+      suggestion: parts[1] || null,
+    };
+  };
+
+  const isRefusalMessage = (message: Message) => {
+    return (
+      message.role === "assistant" &&
+      message.content.startsWith("ISA cannot answer this question")
+    );
+  };
+
+  const handleNewConversation = () => {
+    setMessages([]);
+    setConversationId(undefined);
+  };
+
+  const handleLoadConversation = async (convId: number) => {
+    try {
+      const utils = trpc.useUtils();
+      const conversation = await utils.askISA.getConversation.fetch({ conversationId: convId });
+      if (conversation) {
+        setConversationId(convId);
+        // Convert conversation messages to Message format
+        const loadedMessages: Message[] = conversation.messages.map((msg: any) => ({
+          role: msg.role as "user" | "assistant",
+          content: msg.content,
+          sources: msg.sources || [],
+        }));
+        setMessages(loadedMessages);
+        setShowHistory(false);
+      }
+    } catch (error) {
+      console.error("Failed to load conversation:", error);
+    }
+  };
+
+  const handleDeleteConversation = async (convId: number) => {
+    if (confirm("Delete this conversation?")) {
+      await deleteConversationMutation.mutateAsync({ conversationId: convId });
+      if (conversationId === convId) {
+        handleNewConversation();
+      }
+    }
+  };
+
   return (
     <div className="container mx-auto py-8 max-w-7xl">
       {/* Header */}
@@ -219,32 +337,59 @@ export default function AskISA() {
             </div>
           </div>
           
-          {/* Advisory Version Selector */}
-          <div className="flex flex-col items-end gap-2">
-            <label className="text-sm font-medium text-muted-foreground">
-              Advisory Version
-            </label>
-            <Select value={advisoryVersion} onValueChange={setAdvisoryVersion}>
-              <SelectTrigger className="w-48">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="v1.0">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <span>ISA v1.0 (Locked)</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="v1.1" disabled>
-                  <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground">ISA v1.1 (Coming Soon)</span>
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            <p className="text-xs text-muted-foreground">
-              Querying locked advisory from 2024-11-07
-            </p>
+          {/* Action Buttons and Advisory Version Selector */}
+          <div className="flex items-center gap-3">
+            {/* New Conversation Button */}
+            {messages.length > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleNewConversation}
+                className="gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                New Chat
+              </Button>
+            )}
+
+            {/* History Toggle Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowHistory(!showHistory)}
+              className="gap-2"
+            >
+              <History className="h-4 w-4" />
+              History
+            </Button>
+
+            {/* Advisory Version Selector */}
+            <div className="flex flex-col items-end gap-2">
+              <label className="text-sm font-medium text-muted-foreground">
+                Advisory Version
+              </label>
+              <Select value={advisoryVersion} onValueChange={setAdvisoryVersion}>
+                <SelectTrigger className="w-48">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="v1.0">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-600" />
+                      <span>ISA v1.0 (Locked)</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="v1.1" disabled>
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground">ISA v1.1 (Coming Soon)</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Querying locked advisory from 2024-11-07
+              </p>
+            </div>
           </div>
         </div>
 
@@ -296,8 +441,75 @@ export default function AskISA() {
         </div>
       </div>
 
-      {/* Chat Interface */}
-      <Card className="h-[600px] flex flex-col">
+      {/* Main Layout with Optional History Sidebar */}
+      <div className="flex gap-4">
+        {/* Conversation History Sidebar */}
+        {showHistory && user && (
+          <Card className="w-80 h-[600px] flex flex-col">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Conversation History</CardTitle>
+              <CardDescription className="text-xs">
+                {conversationsQuery.data?.length || 0} conversations
+              </CardDescription>
+            </CardHeader>
+            <Separator />
+            <ScrollArea className="flex-1 p-4">
+              {conversationsQuery.isLoading ? (
+                <div className="flex items-center justify-center h-32">
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : conversationsQuery.data && conversationsQuery.data.length > 0 ? (
+                <div className="space-y-2">
+                  {conversationsQuery.data.map((conv: any) => (
+                    <Card
+                      key={conv.id}
+                      className={`cursor-pointer hover:bg-accent transition-colors ${
+                        conversationId === conv.id ? "border-primary" : ""
+                      }`}
+                      onClick={() => handleLoadConversation(conv.id)}
+                    >
+                      <CardHeader className="p-3">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <CardTitle className="text-sm line-clamp-2">
+                              {conv.title || "Untitled Conversation"}
+                            </CardTitle>
+                            <CardDescription className="text-xs mt-1">
+                              {new Date(conv.createdAt).toLocaleDateString()}
+                            </CardDescription>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteConversation(conv.id);
+                            }}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-32 text-center">
+                  <History className="h-8 w-8 text-muted-foreground mb-2" />
+                  <p className="text-sm text-muted-foreground">
+                    No conversation history yet
+                  </p>
+                </div>
+              )}
+            </ScrollArea>
+          </Card>
+        )}
+
+        {/* Chat Interface */}
+        <Card className={`h-[600px] flex flex-col ${
+          showHistory && user ? "flex-1" : "w-full"
+        }`}>
         {/* Messages Area */}
         <ScrollArea className="flex-1 p-6">
           {messages.length === 0 ? (
@@ -442,9 +654,45 @@ export default function AskISA() {
                       }`}
                     >
                       {message.role === "assistant" ? (
-                        <div className="prose prose-sm dark:prose-invert max-w-none">
-                          <Streamdown>{message.content}</Streamdown>
-                        </div>
+                        <>
+                          {isRefusalMessage(message) ? (
+                            // Refusal message with suggested alternative
+                            <div className="space-y-3">
+                              <div className="prose prose-sm dark:prose-invert max-w-none">
+                                <Streamdown>{parseRefusalMessage(message.content).reason}</Streamdown>
+                              </div>
+                              {parseRefusalMessage(message.content).suggestion && (
+                                <div className="space-y-2">
+                                  <p className="text-xs font-medium text-muted-foreground">
+                                    Try this instead:
+                                  </p>
+                                  <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded-md border border-blue-200 dark:border-blue-800">
+                                    <p className="text-sm text-blue-900 dark:text-blue-100">
+                                      {parseRefusalMessage(message.content).suggestion}
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            // Normal answer
+                            <div className="prose prose-sm dark:prose-invert max-w-none">
+                              <Streamdown>{message.content}</Streamdown>
+                            </div>
+                          )}
+                          {/* Metadata badges */}
+                          {(message.confidence || message.queryType) && (
+                            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/50">
+                              {getQueryTypeBadge(message.queryType)}
+                              {getConfidenceBadge(message.confidence)}
+                              {message.citationValid === false && message.missingCitations && message.missingCitations.length > 0 && (
+                                <Badge variant="outline" className="text-xs text-orange-700 dark:text-orange-400">
+                                  Missing: {message.missingCitations.join(", ")}
+                                </Badge>
+                              )}
+                            </div>
+                          )}
+                        </>
                       ) : (
                         <p className="text-sm">{message.content}</p>
                       )}
@@ -570,6 +818,7 @@ export default function AskISA() {
           </p>
         </div>
       </Card>
+      </div>
     </div>
   );
 }

@@ -98,6 +98,7 @@ const AdminKnowledgeBase = lazy(() => import("./pages/AdminKnowledgeBase"));
 const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 const RegulatoryChangeLog = lazy(() => import("./pages/RegulatoryChangeLog"));
 const AdvisoryDiff = lazy(() => import("./pages/AdvisoryDiff"));
+const AdvisoryDiffComparison = lazy(() => import("./pages/AdvisoryDiffComparison"));
 const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
 
 // Loading fallback component
@@ -152,6 +153,7 @@ function Router() {
       <Route path="/regulatory-changes" component={RegulatoryChangeLog} />
       <Route path="/admin/regulatory-changes" component={RegulatoryChangeLog} />
       <Route path="/advisory/diff" component={AdvisoryDiff} />
+      <Route path="/advisory/compare" component={AdvisoryDiffComparison} />
       <Route path="/admin/monitoring" component={AdminMonitoring} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
       <Route path="/admin/cellar" component={AdminCellarIngestion} />

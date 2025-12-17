@@ -1155,3 +1155,47 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [ ] Add query library (pre-approved question templates)
 - [ ] Remove speculative/predictive language from responses
 
+
+---
+
+## ISA v1.1 Development ✅ COMPLETE
+
+### Feature 2: Ask ISA RAG Query Interface
+
+- [x] Enhanced frontend with confidence indicators (HIGH/MEDIUM/LOW)
+- [x] Query type classification badges (Gap, Mapping, Version, etc.)
+- [x] Citation validation warnings for missing elements
+- [x] Conversation history sidebar with load/delete functionality
+- [x] New conversation button for fresh chat sessions
+- [x] Refusal message handling with suggested alternative queries
+- [x] Query guardrails integration (classifyQuery, validateCitations, calculateConfidence)
+- [x] Metadata display for all backend response fields
+
+### Feature 3: Advisory Diff Computation
+
+- [x] Backend tRPC router with 3 procedures (computeDiff, listVersions, getAdvisorySummary)
+- [x] Diff computation engine reusing existing compute_advisory_diff.cjs script
+- [x] Visualization UI at /advisory/compare with version selector
+- [x] Coverage deltas display with confidence transitions
+- [x] Gap lifecycle tracking (new, closed, severity changes)
+- [x] Metrics cards with trend indicators (green/red/yellow)
+- [x] Tabbed interface for Coverage/Gaps/Recommendations
+- [x] Graceful handling of missing fields in advisory JSON
+
+### Production Hardening
+
+- [x] Integration tests for Ask ISA guardrails (18 tests passing)
+- [x] Query classification tests (6 query types)
+- [x] Citation validation tests (complete/missing citations)
+- [x] Confidence scoring tests (high/medium/low levels)
+- [x] Advisory Diff API tests (version listing, diff computation, summary loading)
+- [x] Diff structure validation tests (coverage deltas, gap lifecycle)
+- [x] Fixed diff computation script to handle missing gaps/sourceArtifacts fields
+- [x] TypeScript compilation clean (0 errors)
+- [x] Dev server running successfully
+
+**Deliverables:**
+- Enhanced Ask ISA page at `/ask` with full guardrails integration
+- Advisory Diff Comparison page at `/advisory/compare`
+- Integration test suite in `server/ask-isa-integration.test.ts`
+- Updated diff computation script with robust error handling
