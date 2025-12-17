@@ -18,6 +18,8 @@ import { scrapeGreenDealZorg } from "./news/news-scraper-greendeal";
 import { scrapeZESNews } from "./news/news-scraper-zes";
 import { scrapeGS1EuropeNews } from "./news/news-scraper-gs1eu";
 import { fetchEURLexNews } from "./news/news-scraper-eurlex";
+import { retryWithBackoff } from "./news-retry-util";
+import { recordScraperExecution, printHealthSummary } from "./news-health-monitor";
 
 export interface RawNewsItem {
   title: string;
@@ -67,7 +69,11 @@ export async function fetchFromSource(
   // Use web scraper for GS1 Netherlands
   if (source.id === "gs1-nl-news") {
     try {
-      const articles = await scrapeGS1NetherlandsNewsPlaywright();
+      const articles = await retryWithBackoff(
+        () => scrapeGS1NetherlandsNewsPlaywright(),
+        { maxAttempts: 3, initialDelayMs: 2000 },
+        "GS1 NL scraper"
+      );
 
       // Fetch full content for each article (parallel)
       console.log(
@@ -126,7 +132,11 @@ export async function fetchFromSource(
   // Use web scraper for Green Deal Zorg
   if (source.id === "greendeal-healthcare") {
     try {
-      const articles = await scrapeGreenDealZorg();
+      const articles = await retryWithBackoff(
+        () => scrapeGreenDealZorg(),
+        { maxAttempts: 3, initialDelayMs: 2000 },
+        "Green Deal Zorg scraper"
+      );
       return {
         success: true,
         sourceId: source.id,
@@ -150,7 +160,11 @@ export async function fetchFromSource(
   // Use web scraper for ZES (Zero-Emission Zones)
   if (source.id === "zes-logistics") {
     try {
-      const articles = await scrapeZESNews();
+      const articles = await retryWithBackoff(
+        () => scrapeZESNews(),
+        { maxAttempts: 3, initialDelayMs: 2000 },
+        "ZES scraper"
+      );
       return {
         success: true,
         sourceId: source.id,
@@ -174,7 +188,11 @@ export async function fetchFromSource(
   // Use Playwright scraper for EUR-Lex Official Journal
   if (source.id === "eurlex-oj") {
     try {
-      const articles = await fetchEURLexNews();
+      const articles = await retryWithBackoff(
+        () => fetchEURLexNews(),
+        { maxAttempts: 3, initialDelayMs: 2000 },
+        "EUR-Lex scraper"
+      );
       return {
         success: true,
         sourceId: source.id,
@@ -198,7 +216,11 @@ export async function fetchFromSource(
   // Use web scraper for GS1 Europe (RSS blocked by Cloudflare)
   if (source.id === "gs1-eu-updates") {
     try {
-      const articles = await scrapeGS1EuropeNews();
+      const articles = await retryWithBackoff(
+        () => scrapeGS1EuropeNews(),
+        { maxAttempts: 3, initialDelayMs: 2000 },
+        "GS1 Europe scraper"
+      );
       return {
         success: true,
         sourceId: source.id,
@@ -222,7 +244,11 @@ export async function fetchFromSource(
   // Use web scraper for EFRAG
   if (source.id === "efrag-sustainability") {
     try {
-      const articles = await scrapeEFRAGNewsPlaywright();
+      const articles = await retryWithBackoff(
+        () => scrapeEFRAGNewsPlaywright(),
+        { maxAttempts: 3, initialDelayMs: 2000 },
+        "EFRAG scraper"
+      );
 
       // Fetch full content for each article (parallel)
       console.log(
@@ -328,7 +354,7 @@ export async function fetchFromSource(
 }
 
 /**
- * Fetch news from all enabled sources
+ * Fetch news from all enabled sources with health monitoring
  */
 export async function fetchAllNews(): Promise<FetchResult[]> {
   const enabledSources = NEWS_SOURCES.filter(s => s.enabled);
@@ -337,8 +363,55 @@ export async function fetchAllNews(): Promise<FetchResult[]> {
     `[news-fetcher] Fetching from ${enabledSources.length} sources...`
   );
 
+  // Fetch from all sources with individual timing
   const results = await Promise.all(
-    enabledSources.map(source => fetchFromSource(source))
+    enabledSources.map(async source => {
+      const startTime = Date.now();
+      
+      try {
+        const result = await fetchFromSource(source);
+        
+        // Estimate attempts from retry logic (if failed after retries, attempts = 3)
+        const attempts = result.success ? 1 : 3;
+        
+        // Record health metrics
+        recordScraperExecution({
+          sourceId: source.id,
+          sourceName: source.name,
+          success: result.success,
+          itemsFetched: result.itemsFetched,
+          error: result.error,
+          attempts,
+          durationMs: Date.now() - startTime,
+          timestamp: new Date(),
+        });
+        
+        return result;
+      } catch (error) {
+        // Unexpected error outside fetchFromSource
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        
+        recordScraperExecution({
+          sourceId: source.id,
+          sourceName: source.name,
+          success: false,
+          itemsFetched: 0,
+          error: errorMessage,
+          attempts: 3,
+          durationMs: Date.now() - startTime,
+          timestamp: new Date(),
+        });
+        
+        return {
+          success: false,
+          sourceId: source.id,
+          sourceName: source.name,
+          itemsFetched: 0,
+          items: [],
+          error: errorMessage,
+        };
+      }
+    })
   );
 
   const totalItems = results.reduce((sum, r) => sum + r.itemsFetched, 0);
@@ -347,6 +420,9 @@ export async function fetchAllNews(): Promise<FetchResult[]> {
   console.log(
     `[news-fetcher] Completed: ${successCount}/${enabledSources.length} sources, ${totalItems} items`
   );
+  
+  // Print health summary after each run
+  printHealthSummary();
 
   return results;
 }

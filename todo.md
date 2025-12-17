@@ -1286,3 +1286,25 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Position button between filter badges and Clear all button
 - [x] Test with single and multiple filters
 - [x] Verify URL includes all filter parameters
+
+### Production Readiness: News Scraper Reliability ✅ COMPLETE (2025-12-17)
+
+- [x] Implement retry logic with exponential backoff (3 attempts, 2s initial delay)
+- [x] Add health monitoring for all scrapers (success rate, consecutive failures)
+- [x] Implement owner alerts for persistent failures (3+ consecutive failures)
+- [x] Add detailed console logging with status icons (✅/❌)
+- [x] Create health summary reporting after each pipeline run
+- [x] Write comprehensive tests (11/11 passing)
+- [x] Integrate monitoring into fetchAllNews() wrapper
+
+**Implementation Details:**
+- Created `news-retry-util.ts` with configurable retry logic
+- Created `news-health-monitor.ts` with in-memory health tracking
+- Integrated into all 7 news scrapers (GS1 NL, EFRAG, Green Deal, ZES, EUR-Lex, GS1 EU)
+- Alert threshold: 3 consecutive failures → owner notification
+- Database schema prepared (`schema_scraper_health.ts`) for future persistence
+
+**Test Coverage:**
+- Retry logic: First attempt success, multi-attempt recovery, max attempts exhaustion
+- Health monitoring: Success/failure recording, success rate calculation, consecutive failure tracking
+- Alert system: Triggers after 3 failures, sends owner notification

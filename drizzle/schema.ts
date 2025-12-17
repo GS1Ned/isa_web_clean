@@ -27,6 +27,9 @@ export * from "./schema_regulatory_change_log";
 // Export Ask ISA feedback tables
 export * from "./schema_ask_isa_feedback";
 
+// Export scraper health monitoring tables
+export * from "./schema_scraper_health";
+
 /**
  * Core user table backing auth flow.
  * Extend this file with additional tables as your product grows.
