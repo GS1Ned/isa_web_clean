@@ -28,6 +28,7 @@ import { ESRSDatapointsSection } from "@/components/ESRSDatapointsSection";
 import { GS1AttributesPanelEnhanced } from "@/components/GS1AttributesPanelEnhanced";
 import { AskISAWidget } from "@/components/AskISAWidget";
 import { RegulationTimeline } from "@/components/RegulationTimeline";
+import { getRegulationMilestones } from "@/lib/regulation-milestones";
 
 export default function HubRegulationDetail() {
   const [, params] = useRoute("/hub/regulations/:id");
@@ -430,14 +431,10 @@ export default function HubRegulationDetail() {
                   <CardContent>
                     <RegulationTimeline
                       regulationCode={regulation.celexId || regulation.title}
-                      milestones={[
-                        {
-                          date: regulation.effectiveDate ? new Date(regulation.effectiveDate).toISOString() : new Date().toISOString(),
-                          event: "Regulation Effective Date",
-                          description: `${regulation.title} becomes effective`,
-                          status: regulation.effectiveDate && new Date(regulation.effectiveDate) < new Date() ? "completed" : "upcoming"
-                        }
-                      ]}
+                      milestones={getRegulationMilestones(
+                        regulation.celexId || regulation.title,
+                        regulation.effectiveDate ? new Date(regulation.effectiveDate).toISOString() : undefined
+                      )}
                     />
                   </CardContent>
                 </Card>

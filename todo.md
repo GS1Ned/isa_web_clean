@@ -301,15 +301,15 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 
 ---
 
-## Phase 7: Timeline Views & Enhanced Filters
+## Phase 7: Timeline Views & Enhanced Filters ✅ COMPLETE
 
-### 7.1 Timeline View Component
+### 7.1 Timeline View Component ✅ COMPLETE
 
-- [ ] Create timeline view component
-- [ ] Support per-regulation timeline
-- [ ] Support per-sector timeline
-- [ ] Add milestone highlighting
-- [ ] Add date range selector
+- [x] Create timeline view component
+- [x] Support per-regulation timeline
+- [x] Support per-sector timeline (via regulation filtering)
+- [x] Add milestone highlighting (color-coded status markers)
+- [x] Add date range selector (All Time, Past, Future filters)
 
 ### 7.2 Enhanced Filters ✅ COMPLETE
 
@@ -327,11 +327,11 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 - [x] Add sector badges
 - [x] Add GS1 impact badges
 
-### 7.4 Tests
+### 7.4 Tests ✅ COMPLETE
 
-- [ ] Test timeline view rendering
-- [ ] Test filter combinations
-- [ ] Test news detail template
+- [x] Test timeline view rendering (CSRD, EUDR verified)
+- [x] Test filter combinations (Milestones/News toggles, date ranges)
+- [x] Test news detail template (GS1 impact sections verified)
 
 ---
 
