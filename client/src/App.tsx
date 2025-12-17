@@ -98,6 +98,7 @@ const AdminKnowledgeBase = lazy(() => import("./pages/AdminKnowledgeBase"));
 const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
 const RegulatoryChangeLog = lazy(() => import("./pages/RegulatoryChangeLog"));
 const AdvisoryDiff = lazy(() => import("./pages/AdvisoryDiff"));
+const AdminScraperHealth = lazy(() => import("./pages/AdminScraperHealth"));
 const AdvisoryDiffComparison = lazy(() => import("./pages/AdvisoryDiffComparison"));
 const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
 
@@ -160,6 +161,7 @@ function Router() {
       <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />
       <Route path="/admin/news-pipeline" component={AdminNewsPipelineManager} />
       <Route path="/admin/news" component={NewsAdmin} />
+      <Route path="/admin/scraper-health" component={AdminScraperHealth} />
       <Route path="/epcis/upload" component={EPCISUploadEnhanced} />
       <Route path="/epcis/upload-legacy" component={EPCISUpload} />
       <Route path="/epcis/supply-chain" component={EPCISSupplyChain} />

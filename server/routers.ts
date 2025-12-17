@@ -46,6 +46,7 @@ import { cronRouter } from "./routers/cron.js";
 import { advisoryRouter } from "./routers/advisory.js";
 import { regulatoryChangeLogRouter } from "./routers/regulatory-change-log.js";
 import { monitoringRouter } from "./routers/monitoring.js";
+import { scraperHealthRouter } from "./routers/scraper-health.js";
 import { esrsGs1MappingRouter } from "./routers/esrs-gs1-mapping.js";
 import { esrsRoadmapRouter } from "./routers/esrs-roadmap.js";
 import { advisoryDiffRouter } from "./routers/advisory-diff.js";
@@ -985,6 +986,11 @@ export const appRouter = router({
    */
   regulatoryChangeLog: regulatoryChangeLogRouter,
   monitoring: monitoringRouter,
+
+  /**
+   * Scraper Health Router - News scraper health monitoring
+   */
+  scraperHealth: scraperHealthRouter,
 
   /**
    * ESRS-GS1 Mapping Router

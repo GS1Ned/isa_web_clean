@@ -1353,3 +1353,48 @@ scraper_health_summary:
   - updated_at, created_at
 ```
 
+
+
+## Admin Health Dashboard (December 17, 2025) ✅ COMPLETE
+
+**Objective:** Build comprehensive health monitoring dashboard for news scraper infrastructure.
+
+### Health Monitoring Infrastructure ✅
+- [x] Database-backed health tracking with 24h rolling metrics
+- [x] Automatic alerting on 3+ consecutive failures
+- [x] Retry logic with exponential backoff
+- [x] Health summary aggregation per source
+- [x] Execution history persistence
+- [x] 15/15 health monitoring tests passing
+
+### tRPC API Endpoints ✅
+- [x] `scraperHealth.getAllSourcesHealth` - Public health summaries
+- [x] `scraperHealth.getSourceHealth` - Individual source health
+- [x] `scraperHealth.getExecutionHistory` - Admin execution logs
+- [x] `scraperHealth.getRecentFailures` - Admin failure diagnostics
+- [x] `scraperHealth.getExecutionStats` - Admin trend analysis
+- [x] `scraperHealth.clearAlert` - Admin alert management
+- [x] 14/14 router tests passing
+
+### Admin Dashboard UI ✅
+- [x] Real-time health metrics overview (success rate, items fetched, duration, failures)
+- [x] Time range selector (24h, 48h, 7d)
+- [x] Source health summary with status badges (Healthy, Good, Degraded, Critical)
+- [x] Consecutive failure tracking with error messages
+- [x] Recent failures tab with diagnostics
+- [x] Execution history tab per source
+- [x] Alert management (clear alert button)
+- [x] Refresh functionality
+- [x] Responsive design with shadcn/ui components
+- [x] Route integrated at `/admin/scraper-health`
+
+### Testing & Validation ✅
+- [x] All 14 tRPC router tests passing
+- [x] Browser testing confirmed UI functionality
+- [x] Empty state handling verified
+- [x] Tab navigation working correctly
+- [x] TypeScript: 0 errors maintained
+
+**Result:** Production-ready health monitoring dashboard accessible at `/admin/scraper-health` for real-time scraper observability.
+
+---
