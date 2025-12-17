@@ -32,6 +32,7 @@ import { Link } from "wouter";
 export default function AdminNewsPipelineManager() {
   const { user } = useAuth();
   const [pollingEnabled, setPollingEnabled] = useState(false);
+  const [ingestionMode, setIngestionMode] = useState<'normal' | 'backfill'>('normal');
 
   const runPipeline = trpc.newsAdmin.triggerIngestion.useMutation();
   const runArchival = trpc.newsAdmin.triggerArchival.useMutation();
@@ -73,7 +74,7 @@ export default function AdminNewsPipelineManager() {
 
   const handleRunPipeline = async () => {
     try {
-      await runPipeline.mutateAsync();
+      await runPipeline.mutateAsync({ mode: ingestionMode });
       setPollingEnabled(true);
       refetchStatus();
     } catch (error) {
@@ -214,6 +215,36 @@ export default function AdminNewsPipelineManager() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Mode Selector */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Ingestion Mode</label>
+            <div className="flex gap-2">
+              <Button
+                variant={ingestionMode === 'normal' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setIngestionMode('normal')}
+                disabled={isRunning}
+                className="flex-1"
+              >
+                Normal (30 days)
+              </Button>
+              <Button
+                variant={ingestionMode === 'backfill' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setIngestionMode('backfill')}
+                disabled={isRunning}
+                className="flex-1"
+              >
+                Backfill (200 days)
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {ingestionMode === 'normal' 
+                ? 'Fetches news from the last 30 days (recommended for daily runs)'
+                : 'Fetches news from the last 200 days (use for initial setup or data recovery)'}
+            </p>
+          </div>
+
           <div className="flex gap-3">
             <Button
               onClick={handleRunPipeline}
@@ -228,7 +259,7 @@ export default function AdminNewsPipelineManager() {
               ) : (
                 <>
                   <Download className="h-4 w-4" />
-                  Run News Ingestion
+                  Run News Ingestion ({ingestionMode === 'normal' ? '30' : '200'} days)
                 </>
               )}
             </Button>
@@ -321,6 +352,18 @@ export default function AdminNewsPipelineManager() {
                       <span className="text-muted-foreground">Skipped:</span>{" "}
                       <span className="font-medium">
                         {pipelineStatus.result.skipped || 0}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Mode:</span>{" "}
+                      <Badge variant="secondary">
+                        {pipelineStatus.result.mode || 'normal'}
+                      </Badge>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Window:</span>{" "}
+                      <span className="font-medium">
+                        {pipelineStatus.result.maxAgeDays || 30} days
                       </span>
                     </div>
                     <div className="col-span-2">

@@ -341,7 +341,15 @@ async function ingestGS1NLComplete() {
     console.log('\nInserting attributes...');
     const batchSize = 500;
     for (let i = 0; i < allAttributes.length; i += batchSize) {
-      const batch = allAttributes.slice(i, i + batchSize);
+      const batch = allAttributes.slice(i, i + batchSize).map(attr => ({
+        attributeCode: attr.attributeCode,
+        attributeName: attr.attributeName,
+        sector: attr.sector,
+        description: attr.description,
+        datatype: attr.datatype,
+        packagingRelated: attr.isPackagingRelated,
+        sustainabilityRelated: attr.isSustainabilityRelated,
+      }));
       await dbInstance.insert(gs1Attributes).values(batch);
       console.log(`  Inserted batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(allAttributes.length / batchSize)}`);
     }

@@ -34,6 +34,8 @@ interface PipelineStatus {
     skipped: number;
     errors: string[];
     duration: number;
+    mode: 'normal' | 'backfill';
+    maxAgeDays: number;
   };
   error?: string;
 }
@@ -44,7 +46,11 @@ export const newsAdminRouter = router({
   /**
    * Manually trigger news ingestion pipeline (async - returns immediately)
    */
-  triggerIngestion: protectedProcedure.mutation(async ({ ctx }) => {
+  triggerIngestion: protectedProcedure
+    .input(z.object({
+      mode: z.enum(['normal', 'backfill']).optional(),
+    }).optional())
+    .mutation(async ({ ctx, input }) => {
     if (ctx.user.role !== "admin") {
       throw new TRPCError({
         code: "FORBIDDEN",
@@ -71,10 +77,11 @@ export const newsAdminRouter = router({
     // Run in background (don't await)
     (async () => {
       try {
-        console.log("[news-admin] Starting async pipeline execution...");
+        const mode = input?.mode || 'normal';
+        console.log(`[news-admin] Starting async pipeline execution (mode: ${mode})...`);
         const result = await monitoredCronJob(
           "manual-news-ingestion",
-          manualNewsIngestion,
+          () => manualNewsIngestion({ mode }),
           3
         );
         
@@ -90,6 +97,8 @@ export const newsAdminRouter = router({
             skipped: result.skipped,
             errors: result.errors,
             duration: result.duration,
+            mode: result.mode,
+            maxAgeDays: result.maxAgeDays,
           },
         };
         console.log("[news-admin] Pipeline completed successfully:", result);

@@ -14,6 +14,7 @@ export type LogLevel = 'info' | 'warn' | 'error';
 export type EventType = 
   | 'pipeline_start' 
   | 'source_fetch' 
+  | 'age_filter'
   | 'ai_process' 
   | 'item_save' 
   | 'pipeline_complete' 

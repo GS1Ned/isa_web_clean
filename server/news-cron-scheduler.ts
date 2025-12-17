@@ -3,7 +3,7 @@
  * Schedules daily news ingestion and weekly archival
  */
 
-import { runNewsPipeline } from "./news-pipeline";
+import { runNewsPipeline, type PipelineOptions } from "./news-pipeline";
 import { archiveOldNews } from "./news-archival";
 
 /**
@@ -14,7 +14,7 @@ export async function dailyNewsIngestion() {
   console.log("[news-cron] Starting daily news ingestion...");
 
   try {
-    const result = await runNewsPipeline();
+    const result = await runNewsPipeline({ mode: 'normal', triggeredBy: 'cron' });
 
     console.log("[news-cron] Daily ingestion complete:", {
       success: result.success,
@@ -68,10 +68,33 @@ export async function weeklyNewsArchival() {
 
 /**
  * Manual trigger for testing
+ * @param options Pipeline execution options
  */
-export async function manualNewsIngestion() {
-  console.log("[news-cron] Manual news ingestion triggered");
-  return await dailyNewsIngestion();
+export async function manualNewsIngestion(options?: PipelineOptions) {
+  console.log("[news-cron] Manual news ingestion triggered", options);
+  
+  try {
+    const result = await runNewsPipeline({
+      mode: options?.mode || 'normal',
+      triggeredBy: 'manual',
+    });
+
+    console.log("[news-cron] Manual ingestion complete:", {
+      success: result.success,
+      fetched: result.fetched,
+      inserted: result.inserted,
+      skipped: result.skipped,
+      errors: result.errors.length,
+      duration: `${result.duration}ms`,
+      mode: result.mode,
+      maxAgeDays: result.maxAgeDays,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("[news-cron] Manual ingestion failed:", error);
+    throw error;
+  }
 }
 
 /**

@@ -1463,3 +1463,32 @@ scraper_health_summary:
 - [x] Show expected milestones vs captured
 - [x] Add coverage heatmap visualization
 - [x] Write vitest tests for coverage analytics (10/10 passing)
+
+
+---
+
+## Phase 8.3: Ingestion Window Configuration ✅ COMPLETE (2025-12-17)
+
+- [x] Make filterByAge configurable
+- [x] Add normal mode (30 days)
+- [x] Add backfill mode (200 days)
+- [x] Add admin UI for triggering backfills
+- [x] Document backfill procedure
+
+**Implementation Details:**
+- Added `PipelineOptions` interface with `mode` parameter to `news-pipeline.ts`
+- Updated `runNewsPipeline()` to accept mode and dynamically set `maxAgeDays` (30 or 200)
+- Modified `news-cron-scheduler.ts` to pass mode through manual triggers
+- Updated `news-admin-router.ts` tRPC procedure to accept mode input
+- Added mode selector UI in `AdminNewsPipelineManager.tsx` with toggle buttons
+- Result display shows mode and window size in admin dashboard
+- Added observability logging for age filter events
+
+**Usage:**
+- Normal mode: `/admin/news-pipeline` → Select "Normal (30 days)" → Run
+- Backfill mode: `/admin/news-pipeline` → Select "Backfill (200 days)" → Run
+- API: `trpc.newsAdmin.triggerIngestion.mutate({ mode: 'normal' | 'backfill' })`
+
+**Testing:**
+- Manual testing recommended via admin UI
+- Automated tests exist but require database mocking improvements

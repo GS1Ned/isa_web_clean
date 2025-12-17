@@ -22,6 +22,13 @@ import type { InsertHubNews } from "../drizzle/schema";
 import { PipelineExecutionContext, calculateQualityScore } from "./utils/pipeline-logger";
 import { savePipelineExecutionLog } from "./db-pipeline-observability";
 
+export interface PipelineOptions {
+  /** Ingestion mode: 'normal' (30 days) or 'backfill' (200 days) */
+  mode?: 'normal' | 'backfill';
+  /** Who triggered the pipeline */
+  triggeredBy?: 'cron' | 'manual' | 'api';
+}
+
 export interface PipelineResult {
   success: boolean;
   fetched: number;
@@ -30,12 +37,19 @@ export interface PipelineResult {
   skipped: number;
   errors: string[];
   duration: number;
+  mode: 'normal' | 'backfill';
+  maxAgeDays: number;
 }
 
 /**
  * Run the complete news ingestion pipeline
+ * @param options Pipeline execution options
+ * @param options.mode Ingestion mode: 'normal' (30 days) or 'backfill' (200 days)
+ * @param options.triggeredBy Who triggered the pipeline
  */
-export async function runNewsPipeline(triggeredBy: 'cron' | 'manual' | 'api' = 'cron'): Promise<PipelineResult> {
+export async function runNewsPipeline(options: PipelineOptions = {}): Promise<PipelineResult> {
+  const { mode = 'normal', triggeredBy = 'cron' } = options;
+  const maxAgeDays = mode === 'backfill' ? 200 : 30;
   const startTime = Date.now();
   const errors: string[] = [];
   const ctx = new PipelineExecutionContext('news_ingestion', triggeredBy);
@@ -72,11 +86,17 @@ export async function runNewsPipeline(triggeredBy: 'cron' | 'manual' | 'api' = '
       ctx.recordDeduplication(urlDuplicates);
     }
 
-    // Step 3: Filter by age (only last 30 days)
-    const recentItems = filterByAge(uniqueItems, 30);
+    // Step 3: Filter by age
+    const recentItems = filterByAge(uniqueItems, maxAgeDays);
     console.log(
-      `[news-pipeline] Filtered to ${recentItems.length} recent items (last 30 days)`
+      `[news-pipeline] Filtered to ${recentItems.length} recent items (last ${maxAgeDays} days, mode: ${mode})`
     );
+    ctx.log({
+      eventType: 'age_filter',
+      level: 'info',
+      message: `Filtered items by age: ${mode} mode`,
+      data: { maxAgeDays, mode, itemsBeforeFilter: uniqueItems.length, itemsAfterFilter: recentItems.length },
+    });
 
     // Step 4: Validate items
     const validItems = recentItems.filter(validateNewsItem);
@@ -121,6 +141,8 @@ export async function runNewsPipeline(triggeredBy: 'cron' | 'manual' | 'api' = '
         skipped: validItems.length,
         errors: [],
         duration,
+        mode,
+        maxAgeDays,
       };
     }
 
@@ -293,6 +315,8 @@ export async function runNewsPipeline(triggeredBy: 'cron' | 'manual' | 'api' = '
       skipped: validItems.length - newItems.length + skippedNonESG,
       errors,
       duration,
+      mode,
+      maxAgeDays,
     };
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : "Unknown error";
@@ -326,6 +350,8 @@ export async function runNewsPipeline(triggeredBy: 'cron' | 'manual' | 'api' = '
       skipped: 0,
       errors,
       duration: Date.now() - startTime,
+      mode,
+      maxAgeDays,
     };
   }
 }
