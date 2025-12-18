@@ -107,6 +107,7 @@ const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
 const AdminCoverageAnalytics = lazy(() => import("./pages/admin/CoverageAnalytics"));
 const AdminPipelineObservability = lazy(() => import("./pages/AdminPipelineObservability"));
 const ObservabilityDashboard = lazy(() => import("./pages/admin/ObservabilityDashboard"));
+const StakeholderDashboard = lazy(() => import("./pages/StakeholderDashboard").then(m => ({ default: m.StakeholderDashboard })));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -153,6 +154,7 @@ function Router() {
       />
       <Route path="/hub/dutch-initiatives" component={HubDutchInitiatives} />
       <Route path="/ask" component={AskISA} />
+      <Route path="/stakeholder-dashboard" component={StakeholderDashboard} />
       <Route path="/advisory/dashboard" component={AdvisoryDashboard} />
       <Route path="/advisory/explorer" component={AdvisoryExplorer} />
       <Route path="/advisory/traceability" component={AdvisoryTraceability} />

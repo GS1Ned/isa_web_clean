@@ -250,6 +250,12 @@ export default function Home() {
               Explore ESG Hub <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
             <Link
+              href="/stakeholder-dashboard"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-lg border-2 border-border text-foreground font-semibold text-lg hover:bg-card hover:border-blue-600 transition"
+            >
+              View Project Status
+            </Link>
+            <Link
               href="/features"
               className="inline-flex items-center justify-center px-8 py-4 rounded-lg border-2 border-blue-600 text-blue-600 dark:text-blue-400 font-semibold text-lg hover:bg-blue-50 dark:hover:bg-blue-950/20 transition"
             >

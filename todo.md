@@ -1789,3 +1789,70 @@ Phase 8 is complete. Remaining todo.md items:
 
 **Result:** Comprehensive test coverage for all new Phase 2 features. All governance constraints validated. Ready for final delivery.
 
+
+
+---
+
+## Stakeholder Dashboard Website (December 2025)
+
+### Implementation Complete ✅
+
+- [x] Create backend tRPC router for dashboard metrics (`server/routers/stakeholder-dashboard.ts`)
+- [x] Build StakeholderDashboard page component (`client/src/pages/StakeholderDashboard.tsx`)
+- [x] Add route to App.tsx (`/stakeholder-dashboard`)
+- [x] Add navigation link from Home page ("View Project Status" button)
+- [x] Implement Delivery Requirements tab (4 priorities with effort estimates)
+- [x] Implement Pending Decisions tab (7 decisions: 3 immediate, 4 strategic)
+- [x] Implement Coverage Metrics tab (ESRS coverage, GS1 sector coverage, critical gaps)
+- [x] Test all dashboard functionality in browser
+
+### Known Issues to Fix
+
+- [ ] Fix ESRS Datapoints count in metrics card (showing 5 instead of 1,184)
+- [ ] Connect Risk Assessment tab to real risk data
+- [ ] Connect Phase Roadmap tab to real timeline data
+- [ ] Replace mock data with actual database queries
+
+### Dashboard Features Delivered
+
+**Metrics Overview:**
+- EU Regulations: 38 tracked with CELLAR sync
+- ESRS Datapoints: 5 (needs fix - should be 1,184)
+- GS1 Attributes: 3,667 across DIY, FMCG, Healthcare
+- Test Pass Rate: 90.1% (517/574 tests)
+
+**Governance Status:**
+- Current Lane: C (Internal Use Only)
+- Prohibited Claims: 209 across 38 files
+- Datasets Verified: 14/15 (93%)
+- Scraper Health: 100% (7/7 sources)
+
+**Delivery Requirements (4 Priorities):**
+1. Governance Transition (Lane C → B): 2-3 weeks, HIGH priority, BLOCKED
+2. Critical Data Gaps: 4-6 weeks, HIGH priority, BLOCKED
+3. Production Hardening: 2-3 weeks, MEDIUM priority, READY
+4. Feature Completeness: 3-4 weeks, MEDIUM priority, BLOCKED
+
+**Pending Decisions (7 Questions):**
+- Immediate (3): Lane B transition, GitHub sync, Advisory v1.1 publication
+- Strategic (4): ESG attributes for GS1 NL v3.1.34, ESRS coverage priorities, external access model, Dutch translations
+
+**Coverage Metrics:**
+- ESRS Coverage: Environmental 62.5%, Social 0%, Governance 0%
+- GS1 Sector Coverage: DIY (3009), FMCG (473), Healthcare (185)
+- Critical Gaps: Product Carbon Footprint, Recycled Content, EUDR Traceability, ESRS S1/S2/G1
+
+**Timeline Estimates:**
+- Minimum (Lane B Only): 3 weeks
+- Recommended (Lane B + Critical Data): 8 weeks
+- Full Feature Set: 13 weeks
+
+### Future Enhancements
+
+- [ ] Add real-time data refresh with WebSocket updates
+- [ ] Add export functionality for PDF/Excel reports
+- [ ] Add historical trend charts for metrics
+- [ ] Add notification system for decision deadlines
+- [ ] Add user authentication and role-based access
+- [ ] Add commenting system for collaborative decision-making
+- [ ] Add integration with project management tools (Jira, Asana)
