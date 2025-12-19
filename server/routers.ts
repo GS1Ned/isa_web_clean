@@ -57,6 +57,7 @@ import { datasetRegistryRouter } from "./routers/dataset-registry.js";
 import { advisoryReportsRouter } from "./routers/advisory-reports.js";
 import { governanceDocumentsRouter } from "./routers/governance-documents.js";
 import { stakeholderDashboardRouter } from "./routers/stakeholder-dashboard.js";
+import { dataQualityRouter } from "./routers-data-quality.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -1082,6 +1083,11 @@ export const appRouter = router({
    * Stakeholder Dashboard - Live project status and metrics
    */
   stakeholderDashboard: stakeholderDashboardRouter,
+
+  /**
+   * Data Quality - Track B Priority 1
+   */
+  dataQuality: dataQualityRouter,
 });
 
 export type AppRouter = typeof appRouter;
