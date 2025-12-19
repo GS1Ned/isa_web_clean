@@ -369,7 +369,7 @@ export const standardsDirectoryRouter = router({
         const datapoints = await db
           .select()
           .from(esrsDatapoints)
-          .where(eq(esrsDatapoints.esrs_standard, standard as any));
+          .where(eq(esrsDatapoints.esrsStandard, standard as any));
 
         return {
           id: input.id,

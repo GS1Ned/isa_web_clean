@@ -1938,3 +1938,44 @@ Phase 8 is complete. Remaining todo.md items:
 - [x] Frontend displays provenance metadata and warnings
 
 **Result:** Citation system now tracks dataset versions, verification dates, and deprecation status. Deprecated or stale sources are flagged in Ask ISA responses.
+
+
+---
+
+## Track B Priority 3: Standards Discovery UI ✅ COMPLETE
+
+**Objective:** Enable deterministic browsing of standards across multiple sources without interpretation or recommendations.
+
+### Implementation Complete
+
+- [x] Analyze standards data sources (gs1_standards, gs1_attributes, gs1_web_vocabulary, esrs_datapoints)
+- [x] Backend tRPC procedures (standardsDirectoryRouter with list and getDetail)
+- [x] Frontend Standards Directory page with filters (organization, jurisdiction, sector, lifecycle status, search)
+- [x] Frontend Standard Detail page with transparency metadata
+- [x] Navigation integration (added to DashboardLayout sidebar with BookOpen icon)
+- [x] Vitest tests (23/23 passing)
+- [x] Bug fix: Corrected field name from esrs_standard to esrsStandard in getDetail procedure
+
+### Data Sources Covered
+
+1. **GS1 Standards** (gs1_standards table) - Official GS1 standards catalog
+2. **GS1 Attributes** (gs1_attributes table) - GS1 NL/Benelux sector data models (v3.1.33)
+3. **GS1 Web Vocabulary** (gs1_web_vocabulary table) - GS1 semantic vocabulary (v1.17.0)
+4. **ESRS Datapoints** (esrs_datapoints table) - EFRAG Implementation Guidance 3
+
+### Features Delivered
+
+- **Filters:** Organization (GS1_Global, GS1_EU, GS1_NL, EFRAG, EU), Jurisdiction (Global, EU, NL, Benelux), Sector (DIY, FMCG, Healthcare, All), Lifecycle Status (current, ratified, draft, deprecated, superseded), Search
+- **Transparency Metadata:** Authoritative source URL, dataset identifier, last verified date
+- **Read-Only Display:** No interpretation, reasoning, or cross-standard relationships
+- **Navigation:** Accessible via Dashboard sidebar → "Standards Directory"
+
+### Test Coverage
+
+- List procedure with all filter combinations (organization, jurisdiction, sector, lifecycle status, search)
+- GetDetail procedure for all 4 source types
+- Data source coverage verification
+- Field validation and transparency metadata
+- Combined filter scenarios
+
+**Status:** Ready for user testing. All implementation constraints met.
