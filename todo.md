@@ -1856,3 +1856,38 @@ Phase 8 is complete. Remaining todo.md items:
 - [ ] Add user authentication and role-based access
 - [ ] Add commenting system for collaborative decision-making
 - [ ] Add integration with project management tools (Jira, Asana)
+
+
+---
+
+## Track B - Core ISA Development (Dec 2025)
+
+### Priority 1: Data Quality Foundation ✅ COMPLETE
+- [x] Add completeness_score to gs1_attributes table
+- [x] Add validation_status to gs1_attributes table
+- [x] Add last_verified_date to gs1_attributes table
+- [x] Create Data Quality router with metrics endpoint
+- [x] Create Data Quality admin page
+- [x] Run database migration (pnpm db:push)
+- [x] Write and pass vitest tests for data quality router
+- [x] Save checkpoint for Priority 1
+
+### Priority 2: Provenance and Citation Enhancement ⏸️ DEFERRED
+- [ ] BLOCKED: Requires esrs_datapoints schema changes (deferred per user decision)
+- [ ] Add source_document_url to esrs_datapoints
+- [ ] Add source_document_page to esrs_datapoints
+- [ ] Add extraction_date to esrs_datapoints
+- [ ] Add extraction_method to esrs_datapoints
+- [ ] Create provenance display UI
+
+### Priority 3: Standards Discovery UI ✅ COMPLETE
+- [x] Create standards-directory tRPC router
+- [x] Implement list procedure with filtering (organization, jurisdiction, sector, lifecycle)
+- [x] Implement getDetail procedure with transparency metadata
+- [x] Create StandardsDirectory frontend page
+- [x] Create StandardDetail frontend page
+- [x] Add routes to App.tsx
+- [x] Add "Standards Directory" to ESG Hub dropdown navigation
+- [x] Write and pass vitest tests (16/16 passing)
+- [x] Verify deterministic behavior (no interpretation/reasoning)
+- [x] Ready for checkpoint

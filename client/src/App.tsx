@@ -109,6 +109,8 @@ const AdminCoverageAnalytics = lazy(() => import("./pages/admin/CoverageAnalytic
 const AdminPipelineObservability = lazy(() => import("./pages/AdminPipelineObservability"));
 const ObservabilityDashboard = lazy(() => import("./pages/admin/ObservabilityDashboard"));
 const StakeholderDashboard = lazy(() => import("./pages/StakeholderDashboard").then(m => ({ default: m.StakeholderDashboard })));
+const StandardsDirectory = lazy(() => import("./pages/StandardsDirectory").then(m => ({ default: m.StandardsDirectory })));
+const StandardDetail = lazy(() => import("./pages/StandardDetail").then(m => ({ default: m.StandardDetail })));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -161,6 +163,8 @@ function Router() {
       <Route path="/advisory/traceability" component={AdvisoryTraceability} />
       <Route path="/admin/knowledge-base" component={AdminKnowledgeBase} />
       <Route path="/admin/data-quality" component={DataQuality} />
+      <Route path="/standards-directory/:id" component={StandardDetail} />
+      <Route path="/standards-directory" component={StandardsDirectory} />
       <Route path="/regulatory-changes" component={RegulatoryChangeLog} />
       <Route path="/admin/regulatory-changes" component={RegulatoryChangeLog} />
       <Route path="/advisory/diff" component={AdvisoryDiff} />

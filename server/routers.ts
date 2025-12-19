@@ -58,6 +58,7 @@ import { advisoryReportsRouter } from "./routers/advisory-reports.js";
 import { governanceDocumentsRouter } from "./routers/governance-documents.js";
 import { stakeholderDashboardRouter } from "./routers/stakeholder-dashboard.js";
 import { dataQualityRouter } from "./routers-data-quality.js";
+import { standardsDirectoryRouter } from "./routers/standards-directory.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -1088,6 +1089,12 @@ export const appRouter = router({
    * Data Quality - Track B Priority 1
    */
   dataQuality: dataQualityRouter,
+
+  /**
+   * Standards Directory - Track B Priority 3
+   * Deterministic discovery of standards without interpretation
+   */
+  standardsDirectory: standardsDirectoryRouter,
 });
 
 export type AppRouter = typeof appRouter;

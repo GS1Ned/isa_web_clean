@@ -66,6 +66,11 @@ export function NavigationMenu() {
           description: "GS1 standards by regulation",
         },
         {
+          label: "Standards Directory",
+          href: "/standards-directory",
+          description: "Discover standards by organization and jurisdiction",
+        },
+        {
           label: "ESRS Datapoints",
           href: "/hub/esrs-datapoints",
           description: "Browse 1,184 EFRAG disclosure requirements",
