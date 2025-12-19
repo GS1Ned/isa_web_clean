@@ -22,13 +22,6 @@
       "when": 1764834891797,
       "tag": "0002_cloudy_starhawk",
       "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1766183379375,
-      "tag": "0003_tiny_garia",
-      "breakpoints": true
     }
   ]
 }

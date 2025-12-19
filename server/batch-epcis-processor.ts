@@ -1,7 +1,7 @@
 import { getDb } from "./db";
 import {
   epcisEvents,
-  epciBatchJobs,
+  epcisBatchJobs,
   supplyChainNodes,
   supplyChainEdges,
   supplyChainRisks,
@@ -148,14 +148,14 @@ export async function processEPCISEvents(
   // Update job status
   if (db) {
     await db
-      .update(epciBatchJobs)
+      .update(epcisBatchJobs)
       .set({
         processedEvents: processedCount,
         failedEvents: failedCount,
         status: failedCount > 0 ? "completed" : "completed",
         completedAt: new Date(),
       })
-      .where(eq(epciBatchJobs.id, jobId));
+      .where(eq(epcisBatchJobs.id, jobId));
   }
 
   return { processedCount, failedCount };

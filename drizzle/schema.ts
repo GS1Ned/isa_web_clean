@@ -1,2413 +1,1805 @@
-import {
-  int,
-  mysqlEnum,
-  mysqlTable,
-  text,
-  timestamp,
-  varchar,
-  json,
-  boolean,
-  decimal,
-  index,
-} from "drizzle-orm/mysql-core";
-import { sql } from "drizzle-orm";
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, index, int, varchar, text, timestamp, mysqlEnum, json, decimal, foreignKey, float, tinyint } from "drizzle-orm/mysql-core"
+import { sql } from "drizzle-orm"
 
-// Export ESG extension tables
-export * from "./schema_esg_extensions";
+export const advisoryReportVersions = mysqlTable("advisory_report_versions", {
+	id: int().autoincrement().notNull(),
+	reportId: int().notNull(),
+	version: varchar({ length: 32 }).notNull(),
+	content: text().notNull(),
+	changeLog: text(),
+	createdBy: varchar({ length: 255 }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("reportId_idx").on(table.reportId),
+]);
 
-// Export GS1 EU Carbon Footprint tables
-export * from "./schema_gs1_eu_pcf";
+export const advisoryReports = mysqlTable("advisory_reports", {
+	id: int().autoincrement().notNull(),
+	title: varchar({ length: 512 }).notNull(),
+	reportType: mysqlEnum(['COMPLIANCE_ASSESSMENT','STANDARDS_MAPPING','REGULATION_IMPACT','IMPLEMENTATION_GUIDE','GAP_ANALYSIS','SECTOR_ADVISORY','CUSTOM']).notNull(),
+	executiveSummary: text(),
+	content: text().notNull(),
+	findings: json(),
+	recommendations: json(),
+	targetRegulationIds: json(),
+	targetStandardIds: json(),
+	sectorTags: json(),
+	gs1ImpactTags: json(),
+	version: varchar({ length: 32 }).notNull(),
+	generatedDate: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	generatedBy: varchar({ length: 255 }),
+	llmModel: varchar({ length: 128 }),
+	generationPrompt: text(),
+	qualityScore: decimal({ precision: 3, scale: 2 }),
+	reviewStatus: mysqlEnum(['DRAFT','UNDER_REVIEW','APPROVED','PUBLISHED','ARCHIVED']).default('DRAFT').notNull(),
+	reviewedBy: varchar({ length: 255 }),
+	reviewedAt: timestamp({ mode: 'string' }),
+	reviewNotes: text(),
+	publicationStatus: mysqlEnum(['INTERNAL_ONLY','READY_FOR_PUBLICATION','PUBLISHED','WITHDRAWN']).default('INTERNAL_ONLY').notNull(),
+	laneStatus: mysqlEnum(['LANE_A','LANE_B','LANE_C']).default('LANE_C').notNull(),
+	governanceNotes: text(),
+	viewCount: int().default(0),
+	downloadCount: int().default(0),
+	lastAccessedAt: timestamp({ mode: 'string' }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("reportType_idx").on(table.reportType),
+	index("reviewStatus_idx").on(table.reviewStatus),
+	index("publicationStatus_idx").on(table.publicationStatus),
+	index("generatedDate_idx").on(table.generatedDate),
+]);
 
-// Export cron monitoring tables
-export * from "./schema_cron_monitoring";
+export const askIsaFeedback = mysqlTable("ask_isa_feedback", {
+	id: int().autoincrement().notNull(),
+	questionId: varchar("question_id", { length: 255 }).notNull(),
+	userId: int("user_id"),
+	questionText: text("question_text").notNull(),
+	answerText: text("answer_text").notNull(),
+	feedbackType: mysqlEnum("feedback_type", ['positive','negative']).notNull(),
+	feedbackComment: text("feedback_comment"),
+	promptVariant: varchar("prompt_variant", { length: 50 }),
+	confidenceScore: decimal("confidence_score", { precision: 3, scale: 2 }),
+	sourcesCount: int("sources_count"),
+	timestamp: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP'),
+},
+(table) => [
+	index("idx_question_id").on(table.questionId),
+	index("idx_user_id").on(table.userId),
+	index("idx_feedback_type").on(table.feedbackType),
+	index("idx_prompt_variant").on(table.promptVariant),
+	index("idx_timestamp").on(table.timestamp),
+]);
 
-// Export regulatory change log tables
-export * from "./schema_regulatory_change_log";
+export const attributeRegulationMappings = mysqlTable("attribute_regulation_mappings", {
+	id: int().autoincrement().notNull(),
+	attributeId: int().notNull(),
+	regulationId: int().notNull(),
+	esrsDatapointId: int(),
+	mappingReason: text(),
+	relevanceScore: decimal({ precision: 3, scale: 2 }).default('0.00'),
+	verifiedByAdmin: tinyint().default(0),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("attribute_id_idx").on(table.attributeId),
+	index("regulation_id_idx").on(table.regulationId),
+]);
 
-// Export Ask ISA feedback tables
-export * from "./schema_ask_isa_feedback";
+export const cbvVocabularies = mysqlTable("cbv_vocabularies", {
+	id: int().autoincrement().notNull(),
+	vocabularyType: varchar("vocabulary_type", { length: 100 }).notNull(),
+	code: varchar({ length: 255 }).notNull(),
+	label: varchar({ length: 255 }).notNull(),
+	definition: text(),
+	regulationRelevance: json("regulation_relevance"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_cbv_type").on(table.vocabularyType),
+	index("idx_cbv_code").on(table.code),
+	index("unique_cbv_type_code_idx").on(table.vocabularyType, table.code),
+]);
 
-// Export scraper health monitoring tables
-export * from "./schema_scraper_health";
+export const complianceEvidence = mysqlTable("compliance_evidence", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	stepId: int().notNull(),
+	evidenceType: varchar({ length: 128 }).notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	fileUrl: varchar({ length: 512 }),
+	fileKey: varchar({ length: 512 }),
+	mimeType: varchar({ length: 128 }),
+	fileSize: int(),
+	uploadedBy: varchar({ length: 255 }),
+	verificationStatus: mysqlEnum(['pending','verified','rejected']).default('pending').notNull(),
+	verifiedAt: timestamp({ mode: 'string' }),
+	verifiedBy: varchar({ length: 255 }),
+	verificationNotes: text(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("stepId_idx").on(table.stepId),
+	index("verificationStatus_idx").on(table.verificationStatus),
+]);
 
-// Export pipeline observability tables
-export * from "./schema_pipeline_observability";
+export const complianceRoadmaps = mysqlTable("compliance_roadmaps", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	strategy: varchar({ length: 128 }).notNull(),
+	targetScore: int().default(80),
+	currentScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	projectedScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	status: varchar({ length: 32 }).default('draft'),
+	startDate: timestamp({ mode: 'string' }).notNull(),
+	targetCompletionDate: timestamp({ mode: 'string' }).notNull(),
+	estimatedEffort: int(),
+	estimatedImpact: decimal({ precision: 5, scale: 2 }),
+	progressPercentage: int().default(0),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("status_idx").on(table.status),
+]);
 
-/**
- * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
- * Columns use camelCase to match both database fields and generated types.
- */
-export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
-  id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
-  openId: varchar("openId", { length: 64 }).notNull().unique(),
-  name: text("name"),
-  email: varchar("email", { length: 320 }),
-  loginMethod: varchar("loginMethod", { length: 64 }),
-  role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
-});
-export type User = typeof users.$inferSelect;
-export type InsertUser = typeof users.$inferInsert;
+export const complianceScores = mysqlTable("compliance_scores", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	overallScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	riskManagementScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	remediationScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	evidenceScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	regulationScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	totalRisks: int().default(0),
+	resolvedRisks: int().default(0),
+	totalRemediationPlans: int().default(0),
+	completedPlans: int().default(0),
+	totalEvidence: int().default(0),
+	verifiedEvidence: int().default(0),
+	regulationsCovered: int().default(0),
+	lastUpdated: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("overallScore_idx").on(table.overallScore),
+]);
 
-/**
- * Contact submissions from the contact form
- */
 export const contacts = mysqlTable("contacts", {
-  id: int("id").autoincrement().primaryKey(),
-  name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 320 }).notNull(),
-  company: varchar("company", { length: 255 }).notNull(),
-  phone: varchar("phone", { length: 20 }),
-  inquiryType: varchar("inquiryType", { length: 50 }).notNull(),
-  message: text("message"),
-  status: mysqlEnum("status", ["new", "contacted", "converted", "archived"])
-    .default("new")
-    .notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+	id: int().autoincrement().notNull(),
+	name: varchar({ length: 255 }).notNull(),
+	email: varchar({ length: 320 }).notNull(),
+	company: varchar({ length: 255 }).notNull(),
+	phone: varchar({ length: 20 }),
+	inquiryType: varchar({ length: 50 }).notNull(),
+	message: text(),
+	status: mysqlEnum(['new','contacted','converted','archived']).default('new').notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
 });
 
-export type Contact = typeof contacts.$inferSelect;
-export type InsertContact = typeof contacts.$inferInsert;
+export const criticalEventAcknowledgments = mysqlTable("critical_event_acknowledgments", {
+	id: int().autoincrement().notNull(),
+	eventId: int().notNull(),
+	userId: int().notNull(),
+	viewedAt: timestamp({ mode: 'string' }).notNull(),
+	acknowledgedAt: timestamp({ mode: 'string' }),
+	userNotes: text(),
+	dismissed: tinyint().default(0),
+	dismissalReason: text(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("eventId_idx").on(table.eventId),
+	index("userId_idx").on(table.userId),
+	index("acknowledgedAt_idx").on(table.acknowledgedAt),
+]);
 
-/**
- * Regulations table - stores information about CSRD, ESRS, DPP, and other EU regulations
- */
-export const regulations = mysqlTable("regulations", {
-  id: int("id").autoincrement().primaryKey(),
-  celexId: varchar("celexId", { length: 64 }).unique(),
-  title: varchar("title", { length: 255 }).notNull(),
-  description: text("description"),
-  regulationType: mysqlEnum("regulationType", [
-    "CSRD",
-    "ESRS",
-    "DPP",
-    "EUDR",
-    "ESPR",
-    "PPWR",
-    "EU_TAXONOMY",
-    "OTHER",
-  ]).notNull(),
-  effectiveDate: timestamp("effectiveDate"),
-  sourceUrl: varchar("sourceUrl", { length: 512 }),
-  embedding: json("embedding").$type<number[]>(),
-  lastUpdated: timestamp("lastUpdated").defaultNow().onUpdateNow().notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
+export const criticalEventAlerts = mysqlTable("critical_event_alerts", {
+	id: int().autoincrement().notNull(),
+	eventId: int().notNull(),
+	deliveryMethod: mysqlEnum(['EMAIL','DASHBOARD_BANNER','DASHBOARD_NOTIFICATION','SLACK','TEAMS']).notNull(),
+	userId: int(),
+	status: mysqlEnum(['PENDING','SENT','DELIVERED','FAILED','BOUNCED']).default('PENDING').notNull(),
+	errorMessage: text(),
+	sentAt: timestamp({ mode: 'string' }),
+	deliveredAt: timestamp({ mode: 'string' }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("eventId_idx").on(table.eventId),
+	index("userId_idx").on(table.userId),
+	index("status_idx").on(table.status),
+]);
+
+export const criticalEvents = mysqlTable("critical_events", {
+	id: int().autoincrement().notNull(),
+	newsId: int().notNull(),
+	eventType: mysqlEnum(['COMPLIANCE_DEADLINE','REGULATORY_AMENDMENT','CONSULTATION_PERIOD','NEW_REGULATION','GS1_STANDARD_UPDATE','ENFORCEMENT_ACTION','TECHNICAL_GUIDANCE','SECTOR_MANDATE']).notNull(),
+	severity: mysqlEnum(['CRITICAL','HIGH','MEDIUM','LOW']).notNull(),
+	eventDate: timestamp({ mode: 'string' }),
+	daysUntilEvent: int(),
+	detectionConfidence: decimal({ precision: 3, scale: 2 }),
+	affectedRegulations: json(),
+	affectedStandards: json(),
+	affectedSectors: json(),
+	actionRequired: text(),
+	alertSent: tinyint().default(0),
+	alertSentAt: timestamp({ mode: 'string' }),
+	viewCount: int().default(0),
+	acknowledgeCount: int().default(0),
+	reviewed: tinyint().default(0),
+	reviewNotes: text(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("newsId_idx").on(table.newsId),
+	index("eventType_idx").on(table.eventType),
+	index("severity_idx").on(table.severity),
+	index("eventDate_idx").on(table.eventDate),
+	index("alertSent_idx").on(table.alertSent),
+]);
+
+export const cteKdeMappings = mysqlTable("cte_kde_mappings", {
+	id: int().autoincrement().notNull(),
+	cteId: int("cte_id").notNull(),
+	kdeId: int("kde_id").notNull(),
+	required: tinyint().default(1),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("idx_cte_kde_cte").on(table.cteId),
+	index("idx_cte_kde_kde").on(table.kdeId),
+	index("unique_cte_kde_idx").on(table.cteId, table.kdeId),
+]);
+
+export const ctes = mysqlTable("ctes", {
+	id: int().autoincrement().notNull(),
+	code: varchar({ length: 100 }).notNull(),
+	name: varchar({ length: 255 }).notNull(),
+	description: text(),
+	category: varchar({ length: 100 }),
+	regulationContext: varchar("regulation_context", { length: 255 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_cte_code").on(table.code),
+	index("idx_cte_category").on(table.category),
+	index("code").on(table.code),
+]);
+
+export const datasetRegistry = mysqlTable("dataset_registry", {
+	id: int().autoincrement().notNull(),
+	name: varchar({ length: 255 }).notNull(),
+	description: text(),
+	category: mysqlEnum(['GS1_STANDARDS','GDSN_DATA','ESRS_DATAPOINTS','CBV_VOCABULARIES','DPP_RULES','EU_REGULATIONS','INDUSTRY_DATASETS','OTHER']).notNull(),
+	source: varchar({ length: 512 }).notNull(),
+	format: mysqlEnum(['JSON','CSV','XML','XLSX','PDF','API','OTHER']).notNull(),
+	version: varchar({ length: 64 }),
+	recordCount: int(),
+	fileSize: int(),
+	downloadUrl: varchar({ length: 512 }),
+	apiEndpoint: varchar({ length: 512 }),
+	lastVerifiedDate: timestamp({ mode: 'string' }),
+	verifiedBy: varchar({ length: 255 }),
+	verificationNotes: text(),
+	isActive: tinyint().default(1).notNull(),
+	metadata: json(),
+	tags: json(),
+	relatedRegulationIds: json(),
+	relatedStandardIds: json(),
+	governanceNotes: text(),
+	laneStatus: mysqlEnum(['LANE_A','LANE_B','LANE_C']).default('LANE_C').notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("category_idx").on(table.category),
+	index("lastVerified_idx").on(table.lastVerifiedDate),
+	index("isActive_idx").on(table.isActive),
+]);
+
+export const digitalLinkTypes = mysqlTable("digital_link_types", {
+	id: int().autoincrement().notNull(),
+	linkType: varchar("link_type", { length: 100 }).notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	gs1Curie: varchar("gs1_curie", { length: 100 }),
+	schemaOrgEquivalent: varchar("schema_org_equivalent", { length: 255 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_digital_link_type").on(table.linkType),
+	index("link_type").on(table.linkType),
+]);
+
+export const dppIdentificationRules = mysqlTable("dpp_identification_rules", {
+	id: int().autoincrement().notNull(),
+	ruleCode: varchar("rule_code", { length: 100 }).notNull(),
+	productCategory: varchar("product_category", { length: 255 }).notNull(),
+	requiredComponents: json("required_components"),
+	optionalComponents: json("optional_components"),
+	description: text(),
+	regulationContext: varchar("regulation_context", { length: 255 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_dpp_rule_code").on(table.ruleCode),
+	index("idx_dpp_rule_category").on(table.productCategory),
+	index("rule_code").on(table.ruleCode),
+]);
+
+export const dppIdentifierComponents = mysqlTable("dpp_identifier_components", {
+	id: int().autoincrement().notNull(),
+	componentCode: varchar("component_code", { length: 50 }).notNull(),
+	componentName: varchar("component_name", { length: 255 }).notNull(),
+	description: text(),
+	gs1Standard: varchar("gs1_standard", { length: 100 }),
+	format: varchar({ length: 100 }),
+	example: varchar({ length: 255 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_dpp_comp_code").on(table.componentCode),
+	index("component_code").on(table.componentCode),
+]);
+
+export const dutchInitiatives = mysqlTable("dutch_initiatives", {
+	id: int().autoincrement().notNull(),
+	initiativeName: varchar({ length: 255 }).notNull(),
+	shortName: varchar({ length: 100 }).notNull(),
+	initiativeType: varchar({ length: 100 }).notNull(),
+	status: varchar({ length: 100 }).notNull(),
+	sector: varchar({ length: 255 }).notNull(),
+	scope: text().notNull(),
+	startDate: timestamp({ mode: 'string' }),
+	endDate: timestamp({ mode: 'string' }),
+	reportingDeadline: varchar({ length: 255 }),
+	keyTargets: json().notNull(),
+	complianceRequirements: text().notNull(),
+	gs1Relevance: text().notNull(),
+	requiredGs1Standards: json(),
+	requiredGdsnAttributes: json(),
+	relatedEuRegulations: json(),
+	managingOrganization: varchar({ length: 255 }),
+	officialUrl: varchar({ length: 500 }),
+	documentationUrl: varchar({ length: 500 }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("sector_idx").on(table.sector),
+	index("status_idx").on(table.status),
+]);
+
+export const epcisBatchJobs = mysqlTable("epcis_batch_jobs", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	fileName: varchar({ length: 255 }).notNull(),
+	fileSize: int().notNull(),
+	status: mysqlEnum(['queued','processing','completed','failed']).default('queued').notNull(),
+	totalEvents: int().default(0),
+	processedEvents: int().default(0),
+	failedEvents: int().default(0),
+	errorMessage: text(),
+	startedAt: timestamp({ mode: 'string' }),
+	completedAt: timestamp({ mode: 'string' }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("status_idx").on(table.status),
+	index("createdAt_idx").on(table.createdAt),
+]);
+
+export const epcisEventTemplates = mysqlTable("epcis_event_templates", {
+	id: int().autoincrement().notNull(),
+	templateName: varchar({ length: 255 }).notNull(),
+	eventType: mysqlEnum(['object','aggregation','transformation','transaction','association']).notNull(),
+	useCase: varchar({ length: 255 }),
+	regulationId: int(),
+	esrsDatapointId: int(),
+	eventSchema: json().notNull(),
+	cbvVocabulary: json(),
+	description: text(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("use_case_idx").on(table.useCase),
+	index("regulation_id_idx").on(table.regulationId),
+]);
+
+export const epcisEvents = mysqlTable("epcis_events", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	eventType: mysqlEnum(['ObjectEvent','AggregationEvent','TransactionEvent','TransformationEvent','AssociationEvent']).notNull(),
+	eventTime: timestamp({ mode: 'string' }).notNull(),
+	eventTimeZoneOffset: varchar({ length: 10 }),
+	action: mysqlEnum(['OBSERVE','ADD','DELETE']),
+	bizStep: varchar({ length: 255 }),
+	disposition: varchar({ length: 255 }),
+	readPoint: varchar({ length: 255 }),
+	bizLocation: varchar({ length: 255 }),
+	epcList: json(),
+	quantityList: json(),
+	sensorElementList: json(),
+	sourceList: json(),
+	destinationList: json(),
+	ilmd: json(),
+	rawEvent: json().notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("eventTime_idx").on(table.eventTime),
+	index("eventType_idx").on(table.eventType),
+]);
+
+export const esrsDatapoints = mysqlTable("esrs_datapoints", {
+	id: int().autoincrement().notNull(),
+	code: varchar({ length: 100 }).notNull(),
+	esrsStandard: varchar("esrs_standard", { length: 50 }),
+	disclosureRequirement: varchar("disclosure_requirement", { length: 100 }),
+	paragraph: varchar({ length: 100 }),
+	relatedAr: varchar("related_ar", { length: 100 }),
+	name: text().notNull(),
+	dataType: varchar("data_type", { length: 50 }),
+	conditional: tinyint().default(0),
+	voluntary: tinyint().default(0),
+	sfdrMapping: varchar("sfdr_mapping", { length: 255 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_esrs_code").on(table.code),
+	index("idx_esrs_standard").on(table.esrsStandard),
+	index("code").on(table.code),
+]);
+
+export const esrsXbrlConcepts = mysqlTable("esrs_xbrl_concepts", {
+	id: int().autoincrement().notNull(),
+	datapointId: varchar({ length: 512 }).notNull(),
+	datapointName: varchar({ length: 512 }).notNull(),
+	namespace: varchar({ length: 512 }).notNull(),
+	dataType: varchar({ length: 255 }),
+	periodType: varchar({ length: 50 }),
+	balance: varchar({ length: 50 }),
+	isAbstract: tinyint().default(0).notNull(),
+	isNillable: tinyint().default(0).notNull(),
+	substitutionGroup: varchar({ length: 255 }),
+	labelEn: text(),
+	documentationEn: text(),
+	terseLabelEn: text(),
+	verboseLabelEn: text(),
+	allLabels: json(),
+	references: json(),
+	taxonomyVersion: varchar({ length: 50 }).notNull(),
+	taxonomyUrl: varchar({ length: 512 }).notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("esrs_xbrl_concepts_datapointId_unique").on(table.datapointId),
+	index("datapointName_idx").on(table.datapointName),
+	index("namespace_idx").on(table.namespace),
+	index("isAbstract_idx").on(table.isAbstract),
+]);
+
+export const eudrGeolocation = mysqlTable("eudr_geolocation", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	productGtin: varchar({ length: 14 }).notNull(),
+	originLat: decimal({ precision: 10, scale: 8 }).notNull(),
+	originLng: decimal({ precision: 11, scale: 8 }).notNull(),
+	geofenceGeoJson: json(),
+	deforestationRisk: mysqlEnum(['low','medium','high']),
+	riskAssessmentDate: timestamp({ mode: 'string' }),
+	dueDiligenceStatement: json(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("productGtin_idx").on(table.productGtin),
+]);
+
+export const gdsnClassAttributes = mysqlTable("gdsn_class_attributes", {
+	id: int().autoincrement().notNull(),
+	classId: int("class_id").notNull(),
+	attributeCode: varchar("attribute_code", { length: 255 }).notNull(),
+	attributeName: varchar("attribute_name", { length: 255 }),
+	dataType: varchar("data_type", { length: 50 }),
+	required: tinyint().default(0),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_gdsn_attr_class").on(table.classId),
+	index("idx_gdsn_attr_code").on(table.attributeCode),
+	index("unique_class_attr_idx").on(table.classId, table.attributeCode),
+]);
+
+export const gdsnClasses = mysqlTable("gdsn_classes", {
+	id: int().notNull(),
+	name: varchar({ length: 255 }).notNull(),
+	definition: text(),
+	type: int(),
+	extensions: json(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_gdsn_class_name").on(table.name),
+]);
+
+export const gdsnValidationRules = mysqlTable("gdsn_validation_rules", {
+	id: int().autoincrement().notNull(),
+	ruleId: varchar("rule_id", { length: 255 }).notNull(),
+	classId: int("class_id"),
+	attributeCode: varchar("attribute_code", { length: 255 }),
+	ruleType: varchar("rule_type", { length: 50 }),
+	ruleExpression: text("rule_expression"),
+	errorMessage: text("error_message"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_gdsn_rule_id").on(table.ruleId),
+	index("idx_gdsn_rule_class").on(table.classId),
+	index("idx_gdsn_rule_attr").on(table.attributeCode),
+	index("rule_id").on(table.ruleId),
+]);
+
+export const governanceDocuments = mysqlTable("governance_documents", {
+	id: int().autoincrement().notNull(),
+	title: varchar({ length: 512 }).notNull(),
+	documentType: mysqlEnum(['GS1_STANDARD','GS1_GUIDELINE','GS1_WHITE_PAPER','EU_REGULATION','EU_DIRECTIVE','EU_IMPLEMENTING_ACT','EU_DELEGATED_ACT','TECHNICAL_SPECIFICATION','INDUSTRY_GUIDANCE','OTHER']).notNull(),
+	category: mysqlEnum(['IDENTIFICATION','CAPTURE','SHARE','ESG_REPORTING','TRACEABILITY','DIGITAL_PRODUCT_PASSPORT','CIRCULAR_ECONOMY','DUE_DILIGENCE','PACKAGING','OTHER']).notNull(),
+	version: varchar({ length: 64 }),
+	documentCode: varchar({ length: 128 }),
+	publishedDate: timestamp({ mode: 'string' }),
+	effectiveDate: timestamp({ mode: 'string' }),
+	expiryDate: timestamp({ mode: 'string' }),
+	description: text(),
+	url: varchar({ length: 512 }).notNull(),
+	downloadUrl: varchar({ length: 512 }),
+	language: varchar({ length: 10 }).default('en').notNull(),
+	status: mysqlEnum(['DRAFT','PUBLISHED','SUPERSEDED','WITHDRAWN','ARCHIVED']).default('PUBLISHED').notNull(),
+	supersededBy: int(),
+	isOfficial: tinyint().default(1).notNull(),
+	lastVerifiedDate: timestamp({ mode: 'string' }),
+	verifiedBy: varchar({ length: 255 }),
+	currencyDisclaimer: text(),
+	laneStatus: mysqlEnum(['LANE_A','LANE_B','LANE_C']).default('LANE_C').notNull(),
+	relatedRegulationIds: json(),
+	relatedStandardIds: json(),
+	tags: json(),
+	keywords: json(),
+	metadata: json(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("documentType_idx").on(table.documentType),
+	index("category_idx").on(table.category),
+	index("status_idx").on(table.status),
+	index("publishedDate_idx").on(table.publishedDate),
+	index("documentCode_idx").on(table.documentCode),
+]);
+
+export const gs1AttributeCodeLists = mysqlTable("gs1_attribute_code_lists", {
+	id: int().autoincrement().notNull(),
+	attributeId: int().notNull(),
+	code: varchar({ length: 50 }).notNull(),
+	description: text(),
+	sortOrder: int().default(0),
+	isActive: tinyint().default(1),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("attribute_id_idx").on(table.attributeId),
+]);
+
+export const gs1AttributeEsrsMapping = mysqlTable("gs1_attribute_esrs_mapping", {
+	id: int().autoincrement().notNull(),
+	gs1AttributeId: varchar("gs1_attribute_id", { length: 255 }).notNull(),
+	gs1AttributeName: varchar("gs1_attribute_name", { length: 255 }).notNull(),
+	esrsMappingId: int("esrs_mapping_id").notNull(),
+	mappingType: mysqlEnum("mapping_type", ['direct','calculated','aggregated']).notNull(),
+	mappingNotes: text("mapping_notes"),
+	confidence: mysqlEnum(['high','medium','low']).notNull(),
+	validatedBy: varchar("validated_by", { length: 255 }),
+	validatedAt: timestamp("validated_at", { mode: 'string' }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP'),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow(),
+},
+(table) => [
+	index("idx_gs1_attr").on(table.gs1AttributeId),
+	index("idx_esrs_mapping").on(table.esrsMappingId),
+	index("idx_confidence").on(table.confidence),
+]);
+
+export const gs1Attributes = mysqlTable("gs1_attributes", {
+	id: int().autoincrement().notNull(),
+	attributeCode: varchar({ length: 100 }).notNull(),
+	attributeName: varchar({ length: 255 }).notNull(),
+	sector: mysqlEnum(['food_hb','diy_garden_pet','healthcare','agriculture']).notNull(),
+	description: text(),
+	datatype: mysqlEnum(['text','number','boolean','date','code_list','url','other']).notNull(),
+	codeListId: int(),
+	isMandatory: tinyint().default(0),
+	esrsRelevance: text(),
+	dppRelevance: text(),
+	packagingRelated: tinyint().default(0),
+	sustainabilityRelated: tinyint().default(0),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("sector_idx").on(table.sector),
+	index("packaging_idx").on(table.packagingRelated),
+	index("sustainability_idx").on(table.sustainabilityRelated),
+]);
+
+export const gs1CodeLists = mysqlTable("gs1_code_lists", {
+	id: int().autoincrement().notNull(),
+	codeListType: varchar({ length: 255 }).notNull(),
+	codeValue: varchar({ length: 512 }).notNull(),
+	label: text(),
+	description: text(),
+	gs1Code: varchar({ length: 255 }),
+	deprecated: tinyint().default(0).notNull(),
+	esrsRelevance: varchar({ length: 50 }),
+	vocabularyVersion: varchar({ length: 50 }).notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("codeListType_idx").on(table.codeListType),
+	index("codeValue_idx").on(table.codeValue),
+	index("deprecated_idx").on(table.deprecated),
+]);
+
+export const gs1EsrsMappings = mysqlTable("gs1_esrs_mappings", {
+	mappingId: int("mapping_id").notNull(),
+	level: mysqlEnum(['product','company']).notNull(),
+	esrsStandard: varchar("esrs_standard", { length: 50 }).notNull(),
+	esrsTopic: varchar("esrs_topic", { length: 255 }).notNull(),
+	dataPointName: text("data_point_name").notNull(),
+	shortName: varchar("short_name", { length: 512 }).notNull(),
+	definition: text().notNull(),
+	gs1Relevance: text("gs1_relevance").notNull(),
+	sourceDocument: varchar("source_document", { length: 255 }).default('GS1 Europe CSRD White Paper v1.0'),
+	sourceDate: varchar("source_date", { length: 20 }).default('2025-03-21'),
+	sourceAuthority: varchar("source_authority", { length: 100 }).default('GS1 in Europe'),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP'),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow(),
 });
 
-export type Regulation = typeof regulations.$inferSelect;
-export type InsertRegulation = typeof regulations.$inferInsert;
+export const gs1EuCarbonFootprintAttributes = mysqlTable("gs1_eu_carbon_footprint_attributes", {
+	id: int().autoincrement().notNull(),
+	bmsId: varchar({ length: 10 }).notNull(),
+	gdsnName: varchar({ length: 100 }).notNull(),
+	attributeName: varchar({ length: 255 }).notNull(),
+	className: mysqlEnum(['CarbonFootPrintHeader','CarbonFootprintDetail']).notNull(),
+	definition: text().notNull(),
+	instruction: text(),
+	businessUsage: text(),
+	dataType: mysqlEnum(['Code','Date','Numeric','Text']).notNull(),
+	codeList: varchar({ length: 100 }),
+	example: text(),
+	mandatory: tinyint().default(0).notNull(),
+	repeatable: tinyint().default(0).notNull(),
+	sourceDocument: varchar({ length: 255 }).default('GDSN Implementation Guideline for exchanging Carbon Footprint Data v1.0').notNull(),
+	sourcePublisher: varchar({ length: 100 }).default('GS1 in Europe').notNull(),
+	sourceVersion: varchar({ length: 20 }).default('1.0').notNull(),
+	sourceDate: varchar({ length: 20 }).default('2025-02').notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("bmsId_idx").on(table.bmsId),
+	index("gdsnName_idx").on(table.gdsnName),
+	index("className_idx").on(table.className),
+	index("bmsId").on(table.bmsId),
+]);
 
-/**
- * GS1 Standards table - stores canonical GS1 standards
- */
+export const gs1EuCarbonFootprintCodeLists = mysqlTable("gs1_eu_carbon_footprint_code_lists", {
+	id: int().autoincrement().notNull(),
+	codeListName: varchar({ length: 100 }).notNull(),
+	attributeBmsId: varchar({ length: 10 }).notNull(),
+	code: varchar({ length: 100 }).notNull(),
+	definition: text().notNull(),
+	sortOrder: int().default(0),
+	isActive: tinyint().default(1).notNull(),
+	sourceDocument: varchar({ length: 255 }).default('GDSN Implementation Guideline for exchanging Carbon Footprint Data v1.0').notNull(),
+	sourceVersion: varchar({ length: 20 }).default('1.0').notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("codeListName_idx").on(table.codeListName),
+	index("attributeBmsId_idx").on(table.attributeBmsId),
+	index("code_idx").on(table.code),
+]);
+
+export const gs1LocalCodeLists = mysqlTable("gs1_local_code_lists", {
+	id: int().autoincrement().notNull(),
+	validationRuleId: varchar({ length: 50 }).notNull(),
+	codeListName: varchar({ length: 255 }).notNull(),
+	codeValue: varchar({ length: 255 }).notNull(),
+	codeDescription: text(),
+	codeListSegment: varchar({ length: 255 }),
+	addedInVersion: varchar({ length: 20 }),
+	isActive: tinyint().default(1),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("lcl_rule_id_idx").on(table.validationRuleId),
+	index("lcl_code_list_idx").on(table.codeListName),
+	index("lcl_active_idx").on(table.isActive),
+]);
+
 export const gs1Standards = mysqlTable("gs1_standards", {
-  id: int("id").autoincrement().primaryKey(),
-  standardCode: varchar("standardCode", { length: 64 }).unique().notNull(),
-  standardName: varchar("standardName", { length: 255 }).notNull(),
-  description: text("description"),
-  category: varchar("category", { length: 128 }),
-  scope: text("scope"),
-  referenceUrl: varchar("referenceUrl", { length: 512 }),
-  embedding: json("embedding").$type<number[]>(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+	id: int().autoincrement().notNull(),
+	standardCode: varchar({ length: 64 }).notNull(),
+	standardName: varchar({ length: 255 }).notNull(),
+	description: text(),
+	category: varchar({ length: 128 }),
+	scope: text(),
+	referenceUrl: varchar({ length: 512 }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+	embedding: json(),
+},
+(table) => [
+	index("gs1_standards_standardCode_unique").on(table.standardCode),
+]);
+
+export const gs1ValidationRules = mysqlTable("gs1_validation_rules", {
+	id: int().autoincrement().notNull(),
+	ruleId: varchar({ length: 50 }).notNull(),
+	ruleIdBelu: varchar({ length: 50 }),
+	ruleType: mysqlEnum(['benelux','gdsn','local']).notNull(),
+	errorMessageDutch: text(),
+	errorMessageEnglish: text(),
+	severity: mysqlEnum(['error','warning','info']).default('error'),
+	targetMarkets: text(),
+	targetSectors: text(),
+	affectedAttributes: text(),
+	validationLogic: text(),
+	addedInVersion: varchar({ length: 20 }),
+	changeType: mysqlEnum(['new','technical','textual','delete']),
+	isActive: tinyint().default(1),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("rule_id_idx").on(table.ruleId),
+	index("rule_type_idx").on(table.ruleType),
+	index("active_idx").on(table.isActive),
+]);
+
+export const gs1WebVocabulary = mysqlTable("gs1_web_vocabulary", {
+	id: int().autoincrement().notNull(),
+	termUri: varchar({ length: 500 }).notNull(),
+	termType: mysqlEnum(['class','property']).notNull(),
+	termName: varchar({ length: 255 }).notNull(),
+	label: varchar({ length: 500 }).notNull(),
+	description: text(),
+	domain: varchar({ length: 500 }),
+	range: varchar({ length: 500 }),
+	dppRelevant: tinyint().default(0),
+	esrsRelevant: tinyint().default(0),
+	eudrRelevant: tinyint().default(0),
+	packagingRelated: tinyint().default(0),
+	sustainabilityRelated: tinyint().default(0),
+	isDeprecated: tinyint().default(0),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP'),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow(),
+},
+(table) => [
+	index("term_type_idx").on(table.termType),
+	index("dpp_relevant_idx").on(table.dppRelevant),
+	index("esrs_relevant_idx").on(table.esrsRelevant),
+	index("eudr_relevant_idx").on(table.eudrRelevant),
+	index("termUri").on(table.termUri),
+]);
+
+export const gs1WebvocProperties = mysqlTable("gs1_webvoc_properties", {
+	id: int().autoincrement().notNull(),
+	propertyId: varchar({ length: 512 }).notNull(),
+	propertyName: varchar({ length: 255 }).notNull(),
+	label: text(),
+	description: text(),
+	domain: varchar({ length: 512 }),
+	range: varchar({ length: 512 }),
+	propertyType: varchar({ length: 50 }),
+	esrsTopic: varchar({ length: 50 }),
+	esrsRelevance: varchar({ length: 50 }),
+	vocabularyVersion: varchar({ length: 50 }).notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("gs1_webvoc_properties_propertyId_unique").on(table.propertyId),
+	index("propertyName_idx").on(table.propertyName),
+	index("domain_idx").on(table.domain),
+	index("esrsTopic_idx").on(table.esrsTopic),
+]);
+
+export const gs1WebvocTerms = mysqlTable("gs1_webvoc_terms", {
+	id: int().autoincrement().notNull(),
+	termId: varchar({ length: 512 }).notNull(),
+	termType: varchar({ length: 255 }).notNull(),
+	label: text(),
+	comment: text(),
+	domain: varchar({ length: 512 }),
+	range: varchar({ length: 512 }),
+	subClassOf: varchar({ length: 512 }),
+	subPropertyOf: varchar({ length: 512 }),
+	gs1Code: varchar({ length: 255 }),
+	deprecated: tinyint().default(0).notNull(),
+	jsonldEntry: json(),
+	vocabularyVersion: varchar({ length: 50 }).notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("gs1_webvoc_terms_termId_unique").on(table.termId),
+	index("termType_idx").on(table.termType),
+	index("label_idx").on(table.label),
+	index("deprecated_idx").on(table.deprecated),
+]);
+
+export const hubNews = mysqlTable("hub_news", {
+	id: int().autoincrement().notNull(),
+	title: varchar({ length: 512 }).notNull(),
+	summary: text(),
+	content: text(),
+	newsType: mysqlEnum(['NEW_LAW','AMENDMENT','ENFORCEMENT','COURT_DECISION','GUIDANCE','PROPOSAL']).notNull(),
+	relatedRegulationIds: json(),
+	sourceUrl: varchar({ length: 512 }),
+	sourceTitle: varchar({ length: 255 }),
+	credibilityScore: decimal({ precision: 3, scale: 2 }).default('0.00'),
+	gs1ImpactTags: json(),
+	sectorTags: json(),
+	relatedStandardIds: json(),
+	gs1ImpactAnalysis: text(),
+	suggestedActions: json(),
+	publishedDate: timestamp({ mode: 'string' }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+	regulationTags: json(),
+	impactLevel: mysqlEnum(['LOW','MEDIUM','HIGH']).default('MEDIUM'),
+	sourceType: mysqlEnum(['EU_OFFICIAL','GS1_OFFICIAL','DUTCH_NATIONAL','INDUSTRY','MEDIA']).default('EU_OFFICIAL'),
+	retrievedAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP'),
+	isAutomated: tinyint().default(0),
+	sources: json(),
 });
 
-export type GS1Standard = typeof gs1Standards.$inferSelect;
-export type InsertGS1Standard = typeof gs1Standards.$inferInsert;
+export const hubNewsHistory = mysqlTable("hub_news_history", {
+	id: int().autoincrement().notNull(),
+	originalId: int().notNull(),
+	title: varchar({ length: 512 }).notNull(),
+	summary: text(),
+	content: text(),
+	newsType: mysqlEnum(['NEW_LAW','AMENDMENT','ENFORCEMENT','COURT_DECISION','GUIDANCE','PROPOSAL']).notNull(),
+	relatedRegulationIds: json(),
+	regulationTags: json(),
+	impactLevel: mysqlEnum(['LOW','MEDIUM','HIGH']).default('MEDIUM'),
+	sourceUrl: varchar({ length: 512 }),
+	sourceTitle: varchar({ length: 255 }),
+	sourceType: mysqlEnum(['EU_OFFICIAL','GS1_OFFICIAL','DUTCH_NATIONAL','INDUSTRY','MEDIA']).default('EU_OFFICIAL'),
+	credibilityScore: decimal({ precision: 3, scale: 2 }).default('0.00'),
+	gs1ImpactTags: json(),
+	publishedDate: timestamp({ mode: 'string' }),
+	retrievedAt: timestamp({ mode: 'string' }).notNull(),
+	isAutomated: tinyint().default(0),
+	archivedAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP'),
+	originalCreatedAt: timestamp({ mode: 'string' }).notNull(),
+	originalUpdatedAt: timestamp({ mode: 'string' }).notNull(),
+	sources: json(),
+	sectorTags: json(),
+	relatedStandardIds: json(),
+	gs1ImpactAnalysis: text(),
+	suggestedActions: json(),
+},
+(table) => [
+	index("idx_originalId").on(table.originalId),
+	index("idx_publishedDate").on(table.publishedDate),
+	index("idx_archivedAt").on(table.archivedAt),
+]);
 
-/**
- * Regulation-to-Standards Mapping - links regulations to applicable GS1 standards
- */
-export const regulationStandardMappings = mysqlTable(
-  "regulation_standard_mappings",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    regulationId: int("regulationId").notNull(),
-    standardId: int("standardId").notNull(),
-    relevanceScore: decimal("relevanceScore", {
-      precision: 3,
-      scale: 2,
-    }).default("0.00"),
-    mappingReason: text("mappingReason"),
-    detectedAt: timestamp("detectedAt").defaultNow().notNull(),
-    verifiedByAdmin: boolean("verifiedByAdmin").default(false),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  }
-);
-
-export type RegulationStandardMapping =
-  typeof regulationStandardMappings.$inferSelect;
-export type InsertRegulationStandardMapping =
-  typeof regulationStandardMappings.$inferInsert;
-
-/**
- * User Analyses - tracks when users analyze regulations
- */
-export const userAnalyses = mysqlTable("user_analyses", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull(),
-  regulationId: int("regulationId"),
-  documentTitle: varchar("documentTitle", { length: 255 }),
-  documentUrl: varchar("documentUrl", { length: 512 }),
-  analysisType: mysqlEnum("analysisType", [
-    "CELEX",
-    "DOCUMENT_UPLOAD",
-    "URL",
-    "TEXT",
-  ]).notNull(),
-  detectedStandardsCount: int("detectedStandardsCount").default(0),
-  analysisResult: json("analysisResult"),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
-
-export type UserAnalysis = typeof userAnalyses.$inferSelect;
-export type InsertUserAnalysis = typeof userAnalyses.$inferInsert;
-
-/**
- * Regulatory Change Alerts - tracks new regulations and changes
- */
-export const regulatoryChangeAlerts = mysqlTable("regulatory_change_alerts", {
-  id: int("id").autoincrement().primaryKey(),
-  regulationId: int("regulationId").notNull(),
-  changeType: mysqlEnum("changeType", [
-    "NEW",
-    "UPDATED",
-    "EFFECTIVE_DATE_CHANGED",
-    "SCOPE_EXPANDED",
-    "DEPRECATED",
-  ]).notNull(),
-  changeDescription: text("changeDescription"),
-  affectedStandardsCount: int("affectedStandardsCount").default(0),
-  severity: mysqlEnum("severity", [
-    "LOW",
-    "MEDIUM",
-    "HIGH",
-    "CRITICAL",
-  ]).default("MEDIUM"),
-  detectedAt: timestamp("detectedAt").defaultNow().notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
-
-export type RegulatoryChangeAlert = typeof regulatoryChangeAlerts.$inferSelect;
-export type InsertRegulatoryChangeAlert =
-  typeof regulatoryChangeAlerts.$inferInsert;
-
-/**
- * User Preferences - stores user-specific settings and interests
- */
-export const userPreferences = mysqlTable("user_preferences", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull().unique(),
-  interestedRegulations: json("interestedRegulations"),
-  interestedStandards: json("interestedStandards"),
-  notificationsEnabled: boolean("notificationsEnabled").default(true),
-  industryFocus: varchar("industryFocus", { length: 128 }),
-  companySize: mysqlEnum("companySize", [
-    "STARTUP",
-    "SME",
-    "ENTERPRISE",
-    "OTHER",
-  ]),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
-export type UserPreference = typeof userPreferences.$inferSelect;
-export type InsertUserPreference = typeof userPreferences.$inferInsert;
-
-/**
- * ESG Hub News - curated news and updates about regulations
- * Extended for automated ingestion pipeline with AI summarization
- */
-export const hubNews = mysqlTable(
-  "hub_news",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    title: varchar("title", { length: 512 }).notNull(),
-    summary: text("summary"),
-    content: text("content"),
-    newsType: mysqlEnum("newsType", [
-      "NEW_LAW",
-      "AMENDMENT",
-      "ENFORCEMENT",
-      "COURT_DECISION",
-      "GUIDANCE",
-      "PROPOSAL",
-    ]).notNull(),
-    relatedRegulationIds: json("relatedRegulationIds"),
-    regulationTags: json("regulationTags").$type<string[]>(), // CSRD, PPWR, EUDR, DPP, etc.
-    impactLevel: mysqlEnum("impactLevel", ["LOW", "MEDIUM", "HIGH"]).default(
-      "MEDIUM"
-    ),
-    sourceUrl: varchar("sourceUrl", { length: 512 }),
-    sourceTitle: varchar("sourceTitle", { length: 255 }),
-    sourceType: mysqlEnum("sourceType", [
-      "EU_OFFICIAL",
-      "GS1_OFFICIAL",
-      "DUTCH_NATIONAL",
-      "INDUSTRY",
-      "MEDIA",
-    ]).default("EU_OFFICIAL"),
-    sources:
-      json("sources").$type<
-        Array<{ name: string; type: string; url: string }>
-      >(), // Multi-source attribution for deduplicated news
-    credibilityScore: decimal("credibilityScore", {
-      precision: 3,
-      scale: 2,
-    }).default("0.00"),
-
-    // GS1-specific fields for enhanced intelligence
-    gs1ImpactTags: json("gs1ImpactTags").$type<string[]>(), // IDENTIFICATION, PACKAGING_ATTRIBUTES, ESG_REPORTING, DUE_DILIGENCE, TRACEABILITY, DPP, etc.
-    sectorTags: json("sectorTags").$type<string[]>(), // RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION, TEXTILES, etc.
-    relatedStandardIds: json("relatedStandardIds").$type<string[]>(), // Direct linkage to GS1 standards (gtin, gln, epcis, gdsn, digital-link, etc.)
-    gs1ImpactAnalysis: text("gs1ImpactAnalysis"), // AI-generated analysis of GS1 relevance and impact
-    suggestedActions: json("suggestedActions").$type<string[]>(), // Actionable next steps for GS1 NL members
-
-    publishedDate: timestamp("publishedDate"),
-    retrievedAt: timestamp("retrievedAt").defaultNow().notNull(), // when fetched by automation
-    isAutomated: boolean("isAutomated").default(false), // true if AI-generated
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    sourceUrlIdx: index("sourceUrl_idx").on(table.sourceUrl),
-    publishedDateIdx: index("publishedDate_idx").on(table.publishedDate),
-    impactLevelIdx: index("impactLevel_idx").on(table.impactLevel),
-  })
-);
-
-export type HubNews = typeof hubNews.$inferSelect;
-export type InsertHubNews = typeof hubNews.$inferInsert;
-
-/**
- * ESG Hub Resources - downloadable guides, checklists, templates
- */
 export const hubResources = mysqlTable("hub_resources", {
-  id: int("id").autoincrement().primaryKey(),
-  title: varchar("title", { length: 512 }).notNull(),
-  description: text("description"),
-  resourceType: mysqlEnum("resourceType", [
-    "GUIDE",
-    "CHECKLIST",
-    "TEMPLATE",
-    "CASE_STUDY",
-    "WHITEPAPER",
-    "TOOL",
-  ]).notNull(),
-  relatedRegulationIds: json("relatedRegulationIds"),
-  relatedStandardIds: json("relatedStandardIds"),
-  fileUrl: varchar("fileUrl", { length: 512 }),
-  downloadCount: int("downloadCount").default(0),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+	id: int().autoincrement().notNull(),
+	title: varchar({ length: 512 }).notNull(),
+	description: text(),
+	resourceType: mysqlEnum(['GUIDE','CHECKLIST','TEMPLATE','CASE_STUDY','WHITEPAPER','TOOL']).notNull(),
+	relatedRegulationIds: json(),
+	relatedStandardIds: json(),
+	fileUrl: varchar({ length: 512 }),
+	downloadCount: int().default(0),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
 });
 
-export type HubResource = typeof hubResources.$inferSelect;
-export type InsertHubResource = typeof hubResources.$inferInsert;
+export const ingestionLogs = mysqlTable("ingestion_logs", {
+	id: int().autoincrement().notNull(),
+	syncStartTime: timestamp({ mode: 'string' }).notNull(),
+	syncEndTime: timestamp({ mode: 'string' }),
+	status: mysqlEnum(['pending','success','failed']).default('pending').notNull(),
+	regulationsInserted: int().default(0).notNull(),
+	regulationsUpdated: int().default(0).notNull(),
+	regulationsTotal: int().default(0).notNull(),
+	errors: int().default(0).notNull(),
+	errorDetails: text(),
+	durationSeconds: int(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("status_idx").on(table.status),
+	index("syncStartTime_idx").on(table.syncStartTime),
+]);
+
+export const initiativeRegulationMappings = mysqlTable("initiative_regulation_mappings", {
+	id: int().autoincrement().notNull(),
+	initiativeId: int().notNull().references(() => dutchInitiatives.id),
+	regulationId: int().notNull().references(() => regulations.id),
+	relationshipType: varchar({ length: 100 }).notNull(),
+	description: text(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("initiativeId_idx").on(table.initiativeId),
+	index("regulationId_idx").on(table.regulationId),
+]);
+
+export const initiativeStandardMappings = mysqlTable("initiative_standard_mappings", {
+	id: int().autoincrement().notNull(),
+	initiativeId: int().notNull().references(() => dutchInitiatives.id),
+	standardId: int().notNull().references(() => gs1Standards.id),
+	criticality: varchar({ length: 50 }).notNull(),
+	implementationNotes: text(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("initiativeId_idx").on(table.initiativeId),
+	index("standardId_idx").on(table.standardId),
+]);
+
+export const kdes = mysqlTable("kdes", {
+	id: int().autoincrement().notNull(),
+	code: varchar({ length: 100 }).notNull(),
+	name: varchar({ length: 255 }).notNull(),
+	description: text(),
+	dataType: varchar("data_type", { length: 50 }),
+	mandatory: tinyint().default(0),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_kde_code").on(table.code),
+	index("code").on(table.code),
+]);
+
+export const knowledgeEmbeddings = mysqlTable("knowledge_embeddings", {
+	id: int().autoincrement().notNull(),
+	sourceType: mysqlEnum(['regulation','standard','esrs_datapoint','dutch_initiative','esrs_gs1_mapping']).notNull(),
+	sourceId: int().notNull(),
+	content: text().notNull(),
+	contentHash: varchar({ length: 64 }).notNull(),
+	embedding: json().notNull(),
+	embeddingModel: varchar({ length: 64 }).default('text-embedding-3-small').notNull(),
+	title: varchar({ length: 512 }).notNull(),
+	url: varchar({ length: 512 }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("source_type_idx").on(table.sourceType),
+	index("source_id_idx").on(table.sourceId),
+	index("content_hash_idx").on(table.contentHash),
+	index("source_composite_idx").on(table.sourceType, table.sourceId),
+]);
+
+export const mappingFeedback = mysqlTable("mapping_feedback", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	mappingId: int().notNull(),
+	vote: tinyint().notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("mappingId_idx").on(table.mappingId),
+	index("unique_vote_idx").on(table.userId, table.mappingId),
+]);
 
-/**
- * User Saved Items - regulations, news, resources saved by users
- */
-export const userSavedItems = mysqlTable("user_saved_items", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull(),
-  itemType: mysqlEnum("itemType", ["REGULATION", "NEWS", "RESOURCE"]).notNull(),
-  itemId: int("itemId").notNull(),
-  notes: text("notes"),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
-
-export type UserSavedItem = typeof userSavedItems.$inferSelect;
-export type InsertUserSavedItem = typeof userSavedItems.$inferInsert;
-
-/**
- * User Alerts - notification preferences for regulations and deadlines
- */
-export const userAlerts = mysqlTable("user_alerts", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull(),
-  alertType: mysqlEnum("alertType", [
-    "REGULATION_UPDATE",
-    "DEADLINE_APPROACHING",
-    "NEW_REGULATION",
-    "ENFORCEMENT_ACTION",
-  ]).notNull(),
-  regulationId: int("regulationId"),
-  standardId: int("standardId"),
-  daysBeforeDeadline: int("daysBeforeDeadline"),
-  isActive: boolean("isActive").default(true),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
-export type UserAlert = typeof userAlerts.$inferSelect;
-export type InsertUserAlert = typeof userAlerts.$inferInsert;
-
-/**
- * EPCIS Events - Supply chain traceability events for EUDR/CSDDD compliance
- */
-export const epcisEvents = mysqlTable(
-  "epcis_events",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    eventType: mysqlEnum("eventType", [
-      "ObjectEvent",
-      "AggregationEvent",
-      "TransactionEvent",
-      "TransformationEvent",
-      "AssociationEvent",
-    ]).notNull(),
-    eventTime: timestamp("eventTime").notNull(),
-    eventTimeZoneOffset: varchar("eventTimeZoneOffset", { length: 10 }),
-    action: mysqlEnum("action", ["OBSERVE", "ADD", "DELETE"]),
-    bizStep: varchar("bizStep", { length: 255 }),
-    disposition: varchar("disposition", { length: 255 }),
-    readPoint: varchar("readPoint", { length: 255 }),
-    bizLocation: varchar("bizLocation", { length: 255 }),
-    epcList: json("epcList"),
-    quantityList: json("quantityList"),
-    sensorElementList: json("sensorElementList"),
-    sourceList: json("sourceList"),
-    destinationList: json("destinationList"),
-    ilmd: json("ilmd"),
-    rawEvent: json("rawEvent").notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    eventTimeIdx: index("eventTime_idx").on(table.eventTime),
-    eventTypeIdx: index("eventType_idx").on(table.eventType),
-  })
-);
-
-export type EPCISEvent = typeof epcisEvents.$inferSelect;
-export type InsertEPCISEvent = typeof epcisEvents.$inferInsert;
-
-/**
- * Supply Chain Nodes - Organizations in the supply chain (suppliers, manufacturers, etc.)
- */
-export const supplyChainNodes = mysqlTable(
-  "supply_chain_nodes",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    nodeType: mysqlEnum("nodeType", [
-      "supplier",
-      "manufacturer",
-      "distributor",
-      "retailer",
-      "recycler",
-    ]).notNull(),
-    gln: varchar("gln", { length: 255 }),
-    name: varchar("name", { length: 255 }).notNull(),
-    tierLevel: int("tierLevel"),
-    locationLat: decimal("locationLat", { precision: 10, scale: 8 }),
-    locationLng: decimal("locationLng", { precision: 11, scale: 8 }),
-    riskLevel: mysqlEnum("riskLevel", ["low", "medium", "high"]),
-    riskFactors: json("riskFactors"),
-    certifications: json("certifications"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    glnIdx: index("gln_idx").on(table.gln),
-  })
-);
-
-export type SupplyChainNode = typeof supplyChainNodes.$inferSelect;
-export type InsertSupplyChainNode = typeof supplyChainNodes.$inferInsert;
-
-/**
- * Supply Chain Edges - Relationships between supply chain nodes
- */
-export const supplyChainEdges = mysqlTable(
-  "supply_chain_edges",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    fromNodeId: int("fromNodeId").notNull(),
-    toNodeId: int("toNodeId").notNull(),
-    productGtin: varchar("productGtin", { length: 14 }),
-    relationshipType: mysqlEnum("relationshipType", [
-      "supplies",
-      "manufactures",
-      "distributes",
-      "retails",
-    ]).notNull(),
-    lastTransactionDate: timestamp("lastTransactionDate"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    fromNodeIdx: index("fromNode_idx").on(table.fromNodeId),
-    toNodeIdx: index("toNode_idx").on(table.toNodeId),
-  })
-);
-
-export type SupplyChainEdge = typeof supplyChainEdges.$inferSelect;
-export type InsertSupplyChainEdge = typeof supplyChainEdges.$inferInsert;
-
-/**
- * EUDR Geolocation Data - Geographic origin data for EUDR compliance
- */
-export const eudrGeolocation = mysqlTable(
-  "eudr_geolocation",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    productGtin: varchar("productGtin", { length: 14 }).notNull(),
-    originLat: decimal("originLat", { precision: 10, scale: 8 }).notNull(),
-    originLng: decimal("originLng", { precision: 11, scale: 8 }).notNull(),
-    geofenceGeoJSON: json("geofenceGeoJSON"),
-    deforestationRisk: mysqlEnum("deforestationRisk", [
-      "low",
-      "medium",
-      "high",
-    ]),
-    riskAssessmentDate: timestamp("riskAssessmentDate"),
-    dueDiligenceStatement: json("dueDiligenceStatement"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    productGtinIdx: index("productGtin_idx").on(table.productGtin),
-  })
-);
-
-export type EUDRGeolocation = typeof eudrGeolocation.$inferSelect;
-export type InsertEUDRGeolocation = typeof eudrGeolocation.$inferInsert;
-
-/**
- * Ingestion Logs - Track CELLAR regulation sync history
- */
-export const ingestionLogs = mysqlTable(
-  "ingestion_logs",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    syncStartTime: timestamp("syncStartTime").notNull(),
-    syncEndTime: timestamp("syncEndTime"),
-    status: mysqlEnum("status", ["pending", "success", "failed"])
-      .default("pending")
-      .notNull(),
-    regulationsInserted: int("regulationsInserted").default(0).notNull(),
-    regulationsUpdated: int("regulationsUpdated").default(0).notNull(),
-    regulationsTotal: int("regulationsTotal").default(0).notNull(),
-    errors: int("errors").default(0).notNull(),
-    errorDetails: text("errorDetails"),
-    durationSeconds: int("durationSeconds"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    statusIdx: index("status_idx").on(table.status),
-    syncStartTimeIdx: index("syncStartTime_idx").on(table.syncStartTime),
-  })
-);
-export type IngestionLog = typeof ingestionLogs.$inferSelect;
-export type InsertIngestionLog = typeof ingestionLogs.$inferInsert;
-
-/**
- * Raw ESRS datapoints table for staging rows from the EFRAG IG3 Excel file
- * Source: EFRAGIG3ListofESRSDataPoints.xlsx
- */
-export const rawEsrsDatapoints = mysqlTable(
-  "raw_esrs_datapoints",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    code: varchar("code", { length: 100 }).notNull(),
-    esrs_standard: varchar("esrs_standard", { length: 50 }),
-    disclosure_requirement: varchar("disclosure_requirement", { length: 100 }),
-    paragraph: varchar("paragraph", { length: 100 }),
-    relatedAr: varchar("related_ar", { length: 100 }),
-    name: text("name").notNull(),
-    dataTypeRaw: varchar("data_type_raw", { length: 100 }),
-    conditionalRaw: boolean("conditional_raw").default(false),
-    voluntaryRaw: boolean("voluntary_raw").default(false),
-    sfdr_mapping: varchar("sfdr_mapping", { length: 255 }),
-    sheetName: varchar("sheet_name", { length: 50 }),
-    rowIndex: int("row_index"),
-    rawJson: json("raw_json").$type<unknown>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    codeIndex: index("idx_raw_esrs_code").on(table.code),
-    sheetIndex: index("idx_raw_esrs_sheet").on(table.sheetName),
-  })
-);
-
-export type RawESRSDatapoint = typeof rawEsrsDatapoints.$inferSelect;
-export type InsertRawESRSDatapoint = typeof rawEsrsDatapoints.$inferInsert;
-
-/**
- * Canonical ESRS datapoints table
- * Source: EFRAG Implementation Guidance 3 (IG3)
- * https://www.efrag.org/en/projects/esrs-implementation-guidance-documents
- */
-export const esrsDatapoints = mysqlTable(
-  "esrs_datapoints",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    code: varchar("code", { length: 100 }).notNull().unique(),
-    esrs_standard: varchar("esrs_standard", { length: 50 }),
-    disclosure_requirement: varchar("disclosure_requirement", { length: 100 }),
-    paragraph: varchar("paragraph", { length: 100 }),
-    related_ar: varchar("related_ar", { length: 100 }),
-    name: text("name").notNull(),
-    data_type: varchar("data_type", { length: 50 }),
-    conditional: boolean("conditional").default(false),
-    voluntary: boolean("voluntary").default(false),
-    sfdr_mapping: varchar("sfdr_mapping", { length: 255 }),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    codeIndex: index("idx_esrs_code").on(table.code),
-    standardIndex: index("idx_esrs_standard").on(table.esrs_standard),
-  })
-);
-
-export type ESRSDatapoint = typeof esrsDatapoints.$inferSelect;
-export type InsertESRSDatapoint = typeof esrsDatapoints.$inferInsert;
-
-/**
- * Regulation to ESRS Datapoint Mappings
- * Stores LLM-generated mappings between regulations and relevant ESRS disclosure requirements
- */
-export const regulationEsrsMappings = mysqlTable(
-  "regulation_esrs_mappings",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    regulationId: int("regulationId").notNull(), // Foreign key to regulations table
-    datapointId: int("datapointId").notNull(), // Foreign key to esrs_datapoints table
-    relevanceScore: int("relevanceScore").default(5).notNull(), // 1-10 scale, how relevant is this datapoint
-    reasoning: text("reasoning"), // LLM explanation of why this datapoint is relevant
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    regulationIdIdx: index("regulationId_idx").on(table.regulationId),
-    datapointIdIdx: index("datapointId_idx").on(table.datapointId),
-    uniqueMapping: index("unique_mapping_idx").on(
-      table.regulationId,
-      table.datapointId
-    ),
-  })
-);
-
-export type RegulationEsrsMapping = typeof regulationEsrsMappings.$inferSelect;
-export type InsertRegulationEsrsMapping =
-  typeof regulationEsrsMappings.$inferInsert;
-
-/**
- * Mapping Feedback - User validation of ESRS mapping accuracy
- * Collects thumbs up/down votes to improve LLM prompt quality
- */
-export const mappingFeedback = mysqlTable(
-  "mapping_feedback",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(), // Foreign key to users table
-    mappingId: int("mappingId").notNull(), // Foreign key to regulation_esrs_mappings table
-    vote: boolean("vote").notNull(), // true = thumbs up, false = thumbs down
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    mappingIdIdx: index("mappingId_idx").on(table.mappingId),
-    uniqueVote: index("unique_vote_idx").on(table.userId, table.mappingId), // One vote per user per mapping
-  })
-);
-
-export type MappingFeedback = typeof mappingFeedback.$inferSelect;
-export type InsertMappingFeedback = typeof mappingFeedback.$inferInsert;
-
-/**
- * EPCIS Batch Jobs - Tracks batch processing of EPCIS files
- */
-export const epciBatchJobs = mysqlTable(
-  "epcis_batch_jobs",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    fileName: varchar("fileName", { length: 255 }).notNull(),
-    fileSize: int("fileSize").notNull(), // in bytes
-    status: mysqlEnum("status", ["queued", "processing", "completed", "failed"])
-      .default("queued")
-      .notNull(),
-    totalEvents: int("totalEvents").default(0),
-    processedEvents: int("processedEvents").default(0),
-    failedEvents: int("failedEvents").default(0),
-    errorMessage: text("errorMessage"),
-    startedAt: timestamp("startedAt"),
-    completedAt: timestamp("completedAt"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    statusIdx: index("status_idx").on(table.status),
-    createdAtIdx: index("createdAt_idx").on(table.createdAt),
-  })
-);
-
-export type EPCISBatchJob = typeof epciBatchJobs.$inferSelect;
-export type InsertEPCISBatchJob = typeof epciBatchJobs.$inferInsert;
-
-/**
- * Supply Chain Compliance Risks - Detected compliance issues in supply chain
- */
-export const supplyChainRisks = mysqlTable(
-  "supply_chain_risks",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    eventId: int("eventId").notNull(),
-    nodeId: int("nodeId"),
-    riskType: mysqlEnum("riskType", [
-      "deforestation",
-      "labor",
-      "environmental",
-      "traceability",
-      "certification",
-      "geolocation",
-    ]).notNull(),
-    severity: mysqlEnum("severity", [
-      "low",
-      "medium",
-      "high",
-      "critical",
-    ]).notNull(),
-    description: text("description").notNull(),
-    regulationId: int("regulationId"),
-    recommendedAction: text("recommendedAction"),
-    isResolved: boolean("isResolved").default(false),
-    resolvedAt: timestamp("resolvedAt"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    eventIdIdx: index("eventId_idx").on(table.eventId),
-    nodeIdIdx: index("nodeId_idx").on(table.nodeId),
-    severityIdx: index("severity_idx").on(table.severity),
-    riskTypeIdx: index("riskType_idx").on(table.riskType),
-  })
-);
-
-export type SupplyChainRisk = typeof supplyChainRisks.$inferSelect;
-export type InsertSupplyChainRisk = typeof supplyChainRisks.$inferInsert;
-
-/**
- * Supply Chain Analytics - Aggregated metrics for dashboard
- */
-export const supplyChainAnalytics = mysqlTable(
-  "supply_chain_analytics",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    metricDate: timestamp("metricDate").notNull(),
-    totalEvents: int("totalEvents").default(0),
-    totalNodes: int("totalNodes").default(0),
-    totalEdges: int("totalEdges").default(0),
-    highRiskNodes: int("highRiskNodes").default(0),
-    averageTraceabilityScore: decimal("averageTraceabilityScore", {
-      precision: 5,
-      scale: 2,
-    }),
-    complianceScore: decimal("complianceScore", { precision: 5, scale: 2 }),
-    lastUpdated: timestamp("lastUpdated").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    metricDateIdx: index("metricDate_idx").on(table.metricDate),
-  })
-);
-
-export type SupplyChainAnalytics = typeof supplyChainAnalytics.$inferSelect;
-export type InsertSupplyChainAnalytics =
-  typeof supplyChainAnalytics.$inferInsert;
-
-/**
- * Risk Remediation Plans - Structured workflows for addressing compliance risks
- */
-export const riskRemediationPlans = mysqlTable(
-  "risk_remediation_plans",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    riskId: int("riskId").notNull(),
-    status: mysqlEnum("status", [
-      "draft",
-      "in_progress",
-      "completed",
-      "cancelled",
-    ])
-      .default("draft")
-      .notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
-    description: text("description"),
-    targetCompletionDate: timestamp("targetCompletionDate"),
-    completedAt: timestamp("completedAt"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    riskIdIdx: index("riskId_idx").on(table.riskId),
-    statusIdx: index("status_idx").on(table.status),
-  })
-);
-
-export type RiskRemediationPlan = typeof riskRemediationPlans.$inferSelect;
-export type InsertRiskRemediationPlan =
-  typeof riskRemediationPlans.$inferInsert;
-
-/**
- * Remediation Steps - Individual action items within a remediation plan
- */
-export const remediationSteps = mysqlTable(
-  "remediation_steps",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    planId: int("planId").notNull(),
-    stepNumber: int("stepNumber").notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
-    description: text("description"),
-    requiredEvidence: text("requiredEvidence"), // JSON array of evidence types
-    status: mysqlEnum("status", [
-      "pending",
-      "in_progress",
-      "completed",
-      "skipped",
-    ])
-      .default("pending")
-      .notNull(),
-    assignedTo: varchar("assignedTo", { length: 255 }),
-    dueDate: timestamp("dueDate"),
-    completedAt: timestamp("completedAt"),
-    notes: text("notes"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    planIdIdx: index("planId_idx").on(table.planId),
-    statusIdx: index("status_idx").on(table.status),
-  })
-);
-
-export type RemediationStep = typeof remediationSteps.$inferSelect;
-export type InsertRemediationStep = typeof remediationSteps.$inferInsert;
-
-/**
- * Compliance Evidence - Documents and records proving remediation
- */
-export const complianceEvidence = mysqlTable(
-  "compliance_evidence",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    stepId: int("stepId").notNull(),
-    evidenceType: varchar("evidenceType", { length: 128 }).notNull(), // e.g., "certification", "audit_report", "supplier_declaration"
-    title: varchar("title", { length: 255 }).notNull(),
-    description: text("description"),
-    fileUrl: varchar("fileUrl", { length: 512 }), // S3 URL
-    fileKey: varchar("fileKey", { length: 512 }), // S3 key for retrieval
-    mimeType: varchar("mimeType", { length: 128 }),
-    fileSize: int("fileSize"), // in bytes
-    uploadedBy: varchar("uploadedBy", { length: 255 }),
-    verificationStatus: mysqlEnum("verificationStatus", [
-      "pending",
-      "verified",
-      "rejected",
-    ])
-      .default("pending")
-      .notNull(),
-    verifiedAt: timestamp("verifiedAt"),
-    verifiedBy: varchar("verifiedBy", { length: 255 }),
-    verificationNotes: text("verificationNotes"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    stepIdIdx: index("stepId_idx").on(table.stepId),
-    verificationStatusIdx: index("verificationStatus_idx").on(
-      table.verificationStatus
-    ),
-  })
-);
-
-export type ComplianceEvidence = typeof complianceEvidence.$inferSelect;
-export type InsertComplianceEvidence = typeof complianceEvidence.$inferInsert;
-
-/**
- * Remediation Templates - Pre-built workflows for common risk types
- */
-export const remediationTemplates = mysqlTable(
-  "remediation_templates",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    riskType: varchar("riskType", { length: 128 }).notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
-    description: text("description"),
-    steps: json("steps").notNull(), // JSON array of step templates
-    estimatedDays: int("estimatedDays"),
-    isActive: boolean("isActive").default(true),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    riskTypeIdx: index("riskType_idx").on(table.riskType),
-  })
-);
-
-export type RemediationTemplate = typeof remediationTemplates.$inferSelect;
-export type InsertRemediationTemplate =
-  typeof remediationTemplates.$inferInsert;
-
-/**
- * Remediation Progress - Track completion metrics
- */
-export const remediationProgress = mysqlTable(
-  "remediation_progress",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    planId: int("planId").notNull(),
-    totalSteps: int("totalSteps").notNull(),
-    completedSteps: int("completedSteps").default(0),
-    evidenceSubmitted: int("evidenceSubmitted").default(0),
-    evidenceVerified: int("evidenceVerified").default(0),
-    progressPercentage: int("progressPercentage").default(0),
-    lastUpdated: timestamp("lastUpdated").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    planIdIdx: index("planId_idx").on(table.planId),
-  })
-);
-
-export type RemediationProgress = typeof remediationProgress.$inferSelect;
-export type InsertRemediationProgress = typeof remediationProgress.$inferInsert;
-
-/**
- * Compliance Scores - Real-time compliance metrics for users
- */
-export const complianceScores = mysqlTable(
-  "compliance_scores",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    overallScore: decimal("overallScore", { precision: 5, scale: 2 }).notNull(), // 0-100
-    riskManagementScore: decimal("riskManagementScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    remediationScore: decimal("remediationScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    evidenceScore: decimal("evidenceScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    regulationScore: decimal("regulationScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    totalRisks: int("totalRisks").default(0),
-    resolvedRisks: int("resolvedRisks").default(0),
-    totalRemediationPlans: int("totalRemediationPlans").default(0),
-    completedPlans: int("completedPlans").default(0),
-    totalEvidence: int("totalEvidence").default(0),
-    verifiedEvidence: int("verifiedEvidence").default(0),
-    regulationsCovered: int("regulationsCovered").default(0),
-    lastUpdated: timestamp("lastUpdated").defaultNow().onUpdateNow().notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    overallScoreIdx: index("overallScore_idx").on(table.overallScore),
-  })
-);
-
-export type ComplianceScore = typeof complianceScores.$inferSelect;
-export type InsertComplianceScore = typeof complianceScores.$inferInsert;
-
-/**
- * Score History - Track compliance score changes over time
- */
-export const scoreHistory = mysqlTable(
-  "score_history",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    overallScore: decimal("overallScore", { precision: 5, scale: 2 }).notNull(),
-    riskManagementScore: decimal("riskManagementScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    remediationScore: decimal("remediationScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    evidenceScore: decimal("evidenceScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    regulationScore: decimal("regulationScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    changeReason: varchar("changeReason", { length: 255 }), // e.g., "risk_resolved", "evidence_verified"
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    createdAtIdx: index("createdAt_idx").on(table.createdAt),
-  })
-);
-
-export type ScoreHistory = typeof scoreHistory.$inferSelect;
-export type InsertScoreHistory = typeof scoreHistory.$inferInsert;
-
-/**
- * Scoring Benchmarks - Compare user scores against industry standards
- */
-export const scoringBenchmarks = mysqlTable(
-  "scoring_benchmarks",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    industry: varchar("industry", { length: 128 }).notNull(),
-    region: varchar("region", { length: 128 }).notNull(),
-    avgOverallScore: decimal("avgOverallScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    avgRiskManagementScore: decimal("avgRiskManagementScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    avgRemediationScore: decimal("avgRemediationScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    avgEvidenceScore: decimal("avgEvidenceScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    avgRegulationScore: decimal("avgRegulationScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    percentile75: decimal("percentile75", { precision: 5, scale: 2 }).notNull(),
-    percentile90: decimal("percentile90", { precision: 5, scale: 2 }).notNull(),
-    dataPoints: int("dataPoints").default(0),
-    lastUpdated: timestamp("lastUpdated").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    industryRegionIdx: index("industry_region_idx").on(
-      table.industry,
-      table.region
-    ),
-  })
-);
-
-export type ScoringBenchmark = typeof scoringBenchmarks.$inferSelect;
-export type InsertScoringBenchmark = typeof scoringBenchmarks.$inferInsert;
-
-/**
- * Score Milestones - Track achievement of compliance milestones
- */
-export const scoreMilestones = mysqlTable(
-  "score_milestones",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    milestoneType: varchar("milestoneType", { length: 128 }).notNull(), // e.g., "score_50", "all_risks_resolved", "100_evidence_verified"
-    milestoneTitle: varchar("milestoneTitle", { length: 255 }).notNull(),
-    description: text("description"),
-    achievedAt: timestamp("achievedAt").notNull(),
-    badge: varchar("badge", { length: 128 }), // emoji or icon identifier
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    achievedAtIdx: index("achievedAt_idx").on(table.achievedAt),
-  })
-);
-
-export type ScoreMilestone = typeof scoreMilestones.$inferSelect;
-export type InsertScoreMilestone = typeof scoreMilestones.$inferInsert;
-
-/**
- * Compliance Roadmaps - Strategic implementation plans
- */
-export const complianceRoadmaps = mysqlTable(
-  "compliance_roadmaps",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
-    description: text("description"),
-    strategy: varchar("strategy", { length: 128 }).notNull(), // "risk_first", "quick_wins", "balanced", "comprehensive"
-    targetScore: int("targetScore").default(80), // Target compliance score
-    currentScore: decimal("currentScore", { precision: 5, scale: 2 }).notNull(),
-    projectedScore: decimal("projectedScore", {
-      precision: 5,
-      scale: 2,
-    }).notNull(),
-    status: varchar("status", { length: 32 }).default("draft"), // draft, active, completed
-    startDate: timestamp("startDate").notNull(),
-    targetCompletionDate: timestamp("targetCompletionDate").notNull(),
-    estimatedEffort: int("estimatedEffort"), // hours
-    estimatedImpact: decimal("estimatedImpact", { precision: 5, scale: 2 }), // score improvement
-    progressPercentage: int("progressPercentage").default(0),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-    statusIdx: index("status_idx").on(table.status),
-  })
-);
-
-export type ComplianceRoadmap = typeof complianceRoadmaps.$inferSelect;
-export type InsertComplianceRoadmap = typeof complianceRoadmaps.$inferInsert;
-
-/**
- * Roadmap Actions - Individual remediation actions in roadmap
- */
-export const roadmapActions = mysqlTable(
-  "roadmap_actions",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    roadmapId: int("roadmapId").notNull(),
-    actionType: varchar("actionType", { length: 128 }).notNull(), // "resolve_risk", "complete_plan", "verify_evidence", "improve_coverage"
-    title: varchar("title", { length: 255 }).notNull(),
-    description: text("description"),
-    priority: varchar("priority", { length: 32 }).notNull(), // "critical", "high", "medium", "low"
-    sequenceNumber: int("sequenceNumber").notNull(), // Order in roadmap
-    estimatedEffort: int("estimatedEffort"), // hours
-    estimatedImpact: decimal("estimatedImpact", { precision: 5, scale: 2 }), // score improvement
-    startDate: timestamp("startDate").notNull(),
-    targetDate: timestamp("targetDate").notNull(),
-    status: varchar("status", { length: 32 }).default("pending"), // pending, in_progress, completed, blocked
-    relatedRiskId: int("relatedRiskId"), // Foreign key to supply_chain_risks
-    relatedPlanId: int("relatedPlanId"), // Foreign key to risk_remediation_plans
-    successCriteria: text("successCriteria"),
-    blockers: text("blockers"),
-    completedAt: timestamp("completedAt"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
-    priorityIdx: index("priority_idx").on(table.priority),
-    statusIdx: index("status_idx").on(table.status),
-  })
-);
-
-export type RoadmapAction = typeof roadmapActions.$inferSelect;
-export type InsertRoadmapAction = typeof roadmapActions.$inferInsert;
-
-/**
- * Roadmap Dependencies - Track action dependencies
- */
-export const roadmapDependencies = mysqlTable(
-  "roadmap_dependencies",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    fromActionId: int("fromActionId").notNull(), // Action that must complete first
-    toActionId: int("toActionId").notNull(), // Action that depends on fromAction
-    dependencyType: varchar("dependencyType", { length: 64 }).notNull(), // "blocking", "soft_dependency"
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    fromActionIdIdx: index("fromActionId_idx").on(table.fromActionId),
-    toActionIdIdx: index("toActionId_idx").on(table.toActionId),
-  })
-);
-
-export type RoadmapDependency = typeof roadmapDependencies.$inferSelect;
-export type InsertRoadmapDependency = typeof roadmapDependencies.$inferInsert;
-
-/**
- * Roadmap Milestones - Track progress checkpoints
- */
-export const roadmapMilestones = mysqlTable(
-  "roadmap_milestones",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    roadmapId: int("roadmapId").notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
-    description: text("description"),
-    targetDate: timestamp("targetDate").notNull(),
-    targetScore: decimal("targetScore", { precision: 5, scale: 2 }).notNull(),
-    completedDate: timestamp("completedDate"),
-    status: varchar("status", { length: 32 }).default("pending"), // pending, completed
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
-  })
-);
-
-export type RoadmapMilestone = typeof roadmapMilestones.$inferSelect;
-export type InsertRoadmapMilestone = typeof roadmapMilestones.$inferInsert;
-
-/**
- * Roadmap Comments - Team discussion on roadmaps
- */
-export const roadmapComments = mysqlTable(
-  "roadmap_comments",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    roadmapId: int("roadmapId").notNull(),
-    actionId: int("actionId"), // Optional: comment on specific action
-    userId: int("userId").notNull(),
-    content: text("content").notNull(),
-    isApproval: boolean("isApproval").default(false), // Mark as approval/rejection
-    approvalStatus: varchar("approvalStatus", { length: 32 }), // approved, rejected, pending
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
-    actionIdIdx: index("actionId_idx").on(table.actionId),
-    userIdIdx: index("userId_idx").on(table.userId),
-  })
-);
-
-export type RoadmapComment = typeof roadmapComments.$inferSelect;
-export type InsertRoadmapComment = typeof roadmapComments.$inferInsert;
-
-/**
- * Roadmap Approvals - Track approval workflows
- */
-export const roadmapApprovals = mysqlTable(
-  "roadmap_approvals",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    roadmapId: int("roadmapId").notNull(),
-    actionId: int("actionId"), // Optional: approval for specific action
-    requiredApproverId: int("requiredApproverId").notNull(), // User who needs to approve
-    approverRole: varchar("approverRole", { length: 64 }), // stakeholder, manager, admin
-    status: varchar("status", { length: 32 }).default("pending"), // pending, approved, rejected
-    approvedAt: timestamp("approvedAt"),
-    approverComments: text("approverComments"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
-    requiredApproverIdIdx: index("requiredApproverId_idx").on(
-      table.requiredApproverId
-    ),
-    statusIdx: index("status_idx").on(table.status),
-  })
-);
-
-export type RoadmapApproval = typeof roadmapApprovals.$inferSelect;
-export type InsertRoadmapApproval = typeof roadmapApprovals.$inferInsert;
-
-/**
- * Roadmap Activity Log - Track all changes and discussions
- */
-export const roadmapActivityLog = mysqlTable(
-  "roadmap_activity_log",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    roadmapId: int("roadmapId").notNull(),
-    userId: int("userId").notNull(),
-    activityType: varchar("activityType", { length: 64 }).notNull(), // created, updated, commented, approved, rejected, action_completed
-    description: text("description"),
-    metadata: json("metadata"), // Additional context
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
-    userIdIdx: index("userId_idx").on(table.userId),
-    activityTypeIdx: index("activityType_idx").on(table.activityType),
-  })
-);
-
-export type RoadmapActivityLog = typeof roadmapActivityLog.$inferSelect;
-export type InsertRoadmapActivityLog = typeof roadmapActivityLog.$inferInsert;
-
-/**
- * Team Roadmap Access - Control who can view/edit roadmaps
- */
-export const teamRoadmapAccess = mysqlTable(
-  "team_roadmap_access",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    roadmapId: int("roadmapId").notNull(),
-    userId: int("userId").notNull(),
-    accessLevel: varchar("accessLevel", { length: 32 }).notNull(), // viewer, editor, approver
-    grantedBy: int("grantedBy").notNull(), // User who granted access
-    grantedAt: timestamp("grantedAt").defaultNow().notNull(),
-  },
-  table => ({
-    roadmapIdIdx: index("roadmapId_idx").on(table.roadmapId),
-    userIdIdx: index("userId_idx").on(table.userId),
-  })
-);
-
-export type TeamRoadmapAccess = typeof teamRoadmapAccess.$inferSelect;
-export type InsertTeamRoadmapAccess = typeof teamRoadmapAccess.$inferInsert;
-
-/**
- * Roadmap Templates - Pre-built compliance roadmaps
- */
-export const roadmapTemplates = mysqlTable(
-  "roadmap_templates",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    name: varchar("name", { length: 255 }).notNull(),
-    description: text("description"),
-    category: varchar("category", { length: 64 }).notNull(), // csrd, eudr, esrs, custom
-    strategy: varchar("strategy", { length: 32 }).notNull(), // risk_first, quick_wins, balanced, comprehensive
-    estimatedEffort: int("estimatedEffort").notNull(), // hours
-    estimatedImpact: decimal("estimatedImpact", { precision: 5, scale: 2 }), // percentage
-    targetScore: decimal("targetScore", { precision: 5, scale: 2 }), // projected score
-    isPublic: boolean("isPublic").default(true), // available to all users
-    createdBy: int("createdBy").notNull(),
-    usageCount: int("usageCount").default(0), // track popularity
-    rating: decimal("rating", { precision: 3, scale: 2 }).default("0.00"), // average rating
-    tags: json("tags"), // array of tags for filtering
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    categoryIdx: index("category_idx").on(table.category),
-    createdByIdx: index("createdBy_idx").on(table.createdBy),
-  })
-);
-
-export type RoadmapTemplate = typeof roadmapTemplates.$inferSelect;
-export type InsertRoadmapTemplate = typeof roadmapTemplates.$inferInsert;
-
-/**
- * Template Actions - Pre-configured actions in templates
- */
-export const templateActions = mysqlTable(
-  "template_actions",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    templateId: int("templateId").notNull(),
-    sequenceNumber: int("sequenceNumber").notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
-    description: text("description"),
-    actionType: varchar("actionType", { length: 64 }).notNull(), // resolve_risk, complete_plan, verify_evidence, improve_coverage
-    priority: varchar("priority", { length: 32 }).notNull(), // critical, high, medium, low
-    estimatedEffort: int("estimatedEffort").notNull(), // hours
-    estimatedImpact: decimal("estimatedImpact", { precision: 5, scale: 2 }), // percentage
-    successCriteria: text("successCriteria"),
-    relatedStandards: json("relatedStandards"), // array of ESRS standards
-  },
-  table => ({
-    templateIdIdx: index("templateId_idx").on(table.templateId),
-  })
-);
-
-export type TemplateAction = typeof templateActions.$inferSelect;
-export type InsertTemplateAction = typeof templateActions.$inferInsert;
-
-/**
- * Template Milestones - Pre-configured milestones in templates
- */
-export const templateMilestones = mysqlTable(
-  "template_milestones",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    templateId: int("templateId").notNull(),
-    sequenceNumber: int("sequenceNumber").notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
-    description: text("description"),
-    targetScore: decimal("targetScore", { precision: 5, scale: 2 }).notNull(),
-    daysFromStart: int("daysFromStart").notNull(), // relative timeline
-  },
-  table => ({
-    templateIdIdx: index("templateId_idx").on(table.templateId),
-  })
-);
-
-export type TemplateMilestone = typeof templateMilestones.$inferSelect;
-export type InsertTemplateMilestone = typeof templateMilestones.$inferInsert;
-
-/**
- * Template Usage - Track template usage and ratings
- */
-export const templateUsage = mysqlTable(
-  "template_usage",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    templateId: int("templateId").notNull(),
-    userId: int("userId").notNull(),
-    roadmapId: int("roadmapId").notNull(),
-    rating: int("rating"), // 1-5 stars
-    feedback: text("feedback"),
-    usedAt: timestamp("usedAt").defaultNow().notNull(),
-  },
-  table => ({
-    templateIdIdx: index("templateId_idx").on(table.templateId),
-    userIdIdx: index("userId_idx").on(table.userId),
-  })
-);
-
-export type TemplateUsage = typeof templateUsage.$inferSelect;
-export type InsertTemplateUsage = typeof templateUsage.$inferInsert;
-
-/**
- * Notification Preferences - User customization for alerts
- */
-export const notificationPreferences = mysqlTable(
-  "notification_preferences",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").notNull().unique(),
-    // Notification type toggles
-    riskDetected: boolean("riskDetected").default(true),
-    remediationUpdated: boolean("remediationUpdated").default(true),
-    commentAdded: boolean("commentAdded").default(true),
-    approvalRequested: boolean("approvalRequested").default(true),
-    approvalDecision: boolean("approvalDecision").default(true),
-    templateUpdated: boolean("templateUpdated").default(true),
-    scoreChanged: boolean("scoreChanged").default(true),
-    milestoneAchieved: boolean("milestoneAchieved").default(true),
-    // Severity filtering
-    minSeverity: varchar("minSeverity", { length: 32 }).default("low"), // low, medium, high, critical
-    // Delivery channels
-    inAppNotifications: boolean("inAppNotifications").default(true),
-    emailNotifications: boolean("emailNotifications").default(false),
-    // Quiet hours
-    quietHoursEnabled: boolean("quietHoursEnabled").default(false),
-    quietHoursStart: varchar("quietHoursStart", { length: 5 }), // HH:MM format
-    quietHoursEnd: varchar("quietHoursEnd", { length: 5 }), // HH:MM format
-    // Notification frequency
-    batchNotifications: boolean("batchNotifications").default(false),
-    batchInterval: int("batchInterval").default(60), // minutes
-    // Timestamps
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("userId_idx").on(table.userId),
-  })
-);
-
-export type NotificationPreference =
-  typeof notificationPreferences.$inferSelect;
-export type InsertNotificationPreference =
-  typeof notificationPreferences.$inferInsert;
-
-/**
- * User Onboarding Progress - Track completion of getting started steps
- * TEMPORARILY DISABLED: TiDB doesn't support JSON default values
- */
-// export const userOnboardingProgress = mysqlTable("user_onboarding_progress", {
-//   id: int("id").autoincrement().primaryKey(),
-//   userId: int("userId").notNull().unique(),
-//   completedSteps: json("completedSteps").$type<number[]>(), // array of completed step IDs
-//   currentStep: int("currentStep").default(1), // current active step
-//   completionPercentage: int("completionPercentage").default(0), // 0-100
-//   isCompleted: boolean("isCompleted").default(false), // all steps done
-//   startedAt: timestamp("startedAt").defaultNow().notNull(),
-//   completedAt: timestamp("completedAt"),
-//   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-// }, (table) => ({
-//   userIdIdx: index("userId_idx").on(table.userId),
-// }));
-
-// export type UserOnboardingProgress = typeof userOnboardingProgress.$inferSelect;
-// export type InsertUserOnboardingProgress = typeof userOnboardingProgress.$inferInsert;
-
-/**
- * Dutch Compliance Initiatives - National programs that complement EU regulations
- * Examples: UPV Textiel, Green Deal Zorg, DSGO, Denim Deal, Verpact
- */
-export const dutchInitiatives = mysqlTable(
-  "dutch_initiatives",
-  {
-    id: int("id").autoincrement().primaryKey(),
-
-    // Basic Information
-    initiativeName: varchar("initiativeName", { length: 255 }).notNull(),
-    shortName: varchar("shortName", { length: 100 }).notNull(), // e.g., "UPV Textiel", "DSGO"
-    initiativeType: varchar("initiativeType", { length: 100 }).notNull(), // "EPR Scheme", "Voluntary Covenant", "Data Framework"
-    status: varchar("status", { length: 100 }).notNull(), // "Active", "Proposed", "Pilot"
-
-    // Scope & Sector
-    sector: varchar("sector", { length: 255 }).notNull(), // "Textiles", "Healthcare", "Construction", "Packaging"
-    scope: text("scope").notNull(), // Detailed description of what's covered
-
-    // Timeline
-    startDate: timestamp("startDate"), // When initiative started
-    endDate: timestamp("endDate"), // For covenants with expiry (e.g., Green Deal 2022-2026)
-    reportingDeadline: varchar("reportingDeadline", { length: 255 }), // e.g., "Mid-year annually"
-
-    // Targets & Requirements
-    keyTargets: json("keyTargets").$type<string[]>().notNull(), // Array of targets
-    complianceRequirements: text("complianceRequirements").notNull(), // What companies must do
-
-    // GS1 Integration
-    gs1Relevance: text("gs1Relevance").notNull(), // How GS1 standards apply
-    requiredGS1Standards: json("requiredGS1Standards").$type<number[]>(), // Array of standard IDs
-    requiredGDSNAttributes: json("requiredGDSNAttributes").$type<string[]>(), // Array of attribute names
-
-    // Relationships
-    relatedEURegulations: json("relatedEURegulations").$type<number[]>(), // Array of regulation IDs
-    managingOrganization: varchar("managingOrganization", { length: 255 }), // e.g., "RIVM", "Verpact"
-
-    // Resources
-    officialUrl: varchar("officialUrl", { length: 500 }),
-    documentationUrl: varchar("documentationUrl", { length: 500 }),
-
-    // Metadata
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    sectorIdx: index("sector_idx").on(table.sector),
-    statusIdx: index("status_idx").on(table.status),
-  })
-);
-
-export type DutchInitiative = typeof dutchInitiatives.$inferSelect;
-export type InsertDutchInitiative = typeof dutchInitiatives.$inferInsert;
-
-/**
- * Initiative-Regulation Mappings - Links Dutch initiatives to EU regulations
- */
-export const initiativeRegulationMappings = mysqlTable(
-  "initiative_regulation_mappings",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    initiativeId: int("initiativeId")
-      .notNull()
-      .references(() => dutchInitiatives.id),
-    regulationId: int("regulationId")
-      .notNull()
-      .references(() => regulations.id),
-    relationshipType: varchar("relationshipType", { length: 100 }).notNull(), // "Implements", "Complements", "Aligns With"
-    description: text("description"), // How they relate
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    initiativeIdIdx: index("initiativeId_idx").on(table.initiativeId),
-    regulationIdIdx: index("regulationId_idx").on(table.regulationId),
-  })
-);
-
-export type InitiativeRegulationMapping =
-  typeof initiativeRegulationMappings.$inferSelect;
-export type InsertInitiativeRegulationMapping =
-  typeof initiativeRegulationMappings.$inferInsert;
-
-/**
- * Initiative-Standard Mappings - Links Dutch initiatives to GS1 standards
- */
-export const initiativeStandardMappings = mysqlTable(
-  "initiative_standard_mappings",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    initiativeId: int("initiativeId")
-      .notNull()
-      .references(() => dutchInitiatives.id),
-    standardId: int("standardId")
-      .notNull()
-      .references(() => gs1Standards.id),
-    criticality: varchar("criticality", { length: 50 }).notNull(), // "CRITICAL", "RECOMMENDED", "OPTIONAL"
-    implementationNotes: text("implementationNotes"), // Specific guidance
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    initiativeIdIdx: index("initiativeId_idx").on(table.initiativeId),
-    standardIdIdx: index("standardId_idx").on(table.standardId),
-  })
-);
-
-export type InitiativeStandardMapping =
-  typeof initiativeStandardMappings.$inferSelect;
-export type InsertInitiativeStandardMapping =
-  typeof initiativeStandardMappings.$inferInsert;
-
-// ============================================================================
-// ASK ISA - RAG-POWERED Q&A SYSTEM
-// ============================================================================
-
-/**
- * Knowledge Embeddings - Vector embeddings for semantic search
- * Stores embeddings for regulations, standards, ESRS datapoints, and Dutch initiatives
- */
-export const knowledgeEmbeddings = mysqlTable(
-  "knowledge_embeddings",
-  {
-    id: int("id").autoincrement().primaryKey(),
-
-    // Source reference
-    sourceType: mysqlEnum("sourceType", [
-      "regulation",
-      "standard",
-      "esrs_datapoint",
-      "dutch_initiative",
-      "esrs_gs1_mapping",
-    ]).notNull(),
-    sourceId: int("sourceId").notNull(), // ID in the source table
-
-    // Content
-    content: text("content").notNull(), // The text that was embedded
-    contentHash: varchar("contentHash", { length: 64 }).notNull(), // SHA-256 hash for deduplication
-
-    // Embedding vector (stored as JSON array of floats)
-    embedding: json("embedding").$type<number[]>().notNull(),
-    embeddingModel: varchar("embeddingModel", { length: 64 })
-      .default("text-embedding-3-small")
-      .notNull(),
-
-    // Metadata for search result display
-    title: varchar("title", { length: 512 }).notNull(),
-    url: varchar("url", { length: 512 }), // Link to detail page
-
-    // Timestamps
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    sourceTypeIdx: index("source_type_idx").on(table.sourceType),
-    sourceIdIdx: index("source_id_idx").on(table.sourceId),
-    contentHashIdx: index("content_hash_idx").on(table.contentHash),
-    // Composite index for efficient source lookups
-    sourceCompositeIdx: index("source_composite_idx").on(
-      table.sourceType,
-      table.sourceId
-    ),
-  })
-);
-
-export type KnowledgeEmbedding = typeof knowledgeEmbeddings.$inferSelect;
-export type InsertKnowledgeEmbedding = typeof knowledgeEmbeddings.$inferInsert;
-
-/**
- * Q&A Conversations - User question/answer sessions
- */
-export const qaConversations = mysqlTable(
-  "qa_conversations",
-  {
-    id: int("id").autoincrement().primaryKey(),
-
-    // User reference (nullable for anonymous users)
-    userId: int("userId").references(() => users.id),
-
-    // Conversation metadata
-    title: varchar("title", { length: 255 }), // Auto-generated from first question
-    messageCount: int("messageCount").default(0).notNull(),
-
-    // Timestamps
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    userIdIdx: index("user_id_idx").on(table.userId),
-    createdAtIdx: index("created_at_idx").on(table.createdAt),
-  })
-);
-
-export type QAConversation = typeof qaConversations.$inferSelect;
-export type InsertQAConversation = typeof qaConversations.$inferInsert;
-
-/**
- * Q&A Messages - Individual messages in conversations
- */
-export const qaMessages = mysqlTable(
-  "qa_messages",
-  {
-    id: int("id").autoincrement().primaryKey(),
-
-    // Conversation reference
-    conversationId: int("conversationId")
-      .notNull()
-      .references(() => qaConversations.id),
-
-    // Message content
-    role: mysqlEnum("role", ["user", "assistant"]).notNull(),
-    content: text("content").notNull(),
-
-    // Source citations (for assistant messages)
-    sources: json("sources").$type<
-      Array<{
-        type: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative";
-        id: number;
-        title: string;
-        url: string;
-        relevanceScore: number;
-      }>
-    >(),
-
-    // Search metadata
-    retrievedChunks: int("retrievedChunks"), // Number of chunks retrieved from vector search
-
-    // Timestamps
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    conversationIdIdx: index("conversation_id_idx").on(table.conversationId),
-    createdAtIdx: index("created_at_idx").on(table.createdAt),
-  })
-);
-
-export type QAMessage = typeof qaMessages.$inferSelect;
-export type InsertQAMessage = typeof qaMessages.$inferInsert;
-
-/**
- * GS1 Attributes - Benelux sector-specific attribute catalog
- * Stores attributes from GS1 Data Source Benelux data models (Food/H&B, DIY, Healthcare)
- */
-export const gs1Attributes = mysqlTable(
-  "gs1_attributes",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    attributeCode: varchar("attributeCode", { length: 100 }).notNull(),
-    attributeName: varchar("attributeName", { length: 255 }).notNull(),
-    sector: mysqlEnum("sector", [
-      "food_hb",
-      "diy_garden_pet",
-      "healthcare",
-      "agriculture",
-    ]).notNull(),
-    description: text("description"),
-    datatype: mysqlEnum("datatype", [
-      "text",
-      "number",
-      "boolean",
-      "date",
-      "code_list",
-      "url",
-      "other",
-    ]).notNull(),
-    codeListId: int("codeListId"),
-    isMandatory: boolean("isMandatory").default(false),
-    esrsRelevance: text("esrsRelevance"),
-    dppRelevance: text("dppRelevance"),
-    packagingRelated: boolean("packagingRelated").default(false),
-    sustainabilityRelated: boolean("sustainabilityRelated").default(false),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    sectorIdx: index("sector_idx").on(table.sector),
-    packagingIdx: index("packaging_idx").on(table.packagingRelated),
-    sustainabilityIdx: index("sustainability_idx").on(
-      table.sustainabilityRelated
-    ),
-    // Composite unique constraint: same code can exist across sectors
-    uniqueCodeSector: index("unique_code_sector").on(table.attributeCode, table.sector),
-  })
-);
-
-export type GS1Attribute = typeof gs1Attributes.$inferSelect;
-export type InsertGS1Attribute = typeof gs1Attributes.$inferInsert;
-
-/**
- * GS1 Attribute Code Lists - Enumerated values for code_list type attributes
- */
-export const gs1AttributeCodeLists = mysqlTable(
-  "gs1_attribute_code_lists",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    attributeId: int("attributeId").notNull(),
-    code: varchar("code", { length: 50 }).notNull(),
-    description: text("description"),
-    sortOrder: int("sortOrder").default(0),
-    isActive: boolean("isActive").default(true),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    attributeIdIdx: index("attribute_id_idx").on(table.attributeId),
-  })
-);
-
-export type GS1AttributeCodeList = typeof gs1AttributeCodeLists.$inferSelect;
-export type InsertGS1AttributeCodeList =
-  typeof gs1AttributeCodeLists.$inferInsert;
-
-/**
- * GS1 Web Vocabulary - JSON-LD classes and properties for Digital Product Passport
- */
-export const gs1WebVocabulary = mysqlTable(
-  "gs1_web_vocabulary",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    termUri: varchar("termUri", { length: 500 }).notNull().unique(),
-    termType: mysqlEnum("termType", ["class", "property"]).notNull(),
-    termName: varchar("termName", { length: 255 }).notNull(),
-    label: varchar("label", { length: 500 }).notNull(),
-    description: text("description"),
-    domain: varchar("domain", { length: 500 }),
-    range: varchar("range", { length: 500 }),
-    dppRelevant: boolean("dppRelevant").default(false),
-    esrsRelevant: boolean("esrsRelevant").default(false),
-    eudrRelevant: boolean("eudrRelevant").default(false),
-    packagingRelated: boolean("packagingRelated").default(false),
-    sustainabilityRelated: boolean("sustainabilityRelated").default(false),
-    isDeprecated: boolean("isDeprecated").default(false),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    termTypeIdx: index("term_type_idx").on(table.termType),
-    dppRelevantIdx: index("dpp_relevant_idx").on(table.dppRelevant),
-    esrsRelevantIdx: index("esrs_relevant_idx").on(table.esrsRelevant),
-    eudrRelevantIdx: index("eudr_relevant_idx").on(table.eudrRelevant),
-  })
-);
-
-export type GS1WebVocabularyTerm = typeof gs1WebVocabulary.$inferSelect;
-export type InsertGS1WebVocabularyTerm = typeof gs1WebVocabulary.$inferInsert;
-
-/**
- * EPCIS Event Templates - Canonical traceability event flows
- */
-export const epcisEventTemplates = mysqlTable(
-  "epcis_event_templates",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    templateName: varchar("templateName", { length: 255 }).notNull(),
-    eventType: mysqlEnum("eventType", [
-      "object",
-      "aggregation",
-      "transformation",
-      "transaction",
-      "association",
-    ]).notNull(),
-    useCase: varchar("useCase", { length: 255 }),
-    regulationId: int("regulationId"),
-    esrsDatapointId: int("esrsDatapointId"),
-    eventSchema: json("eventSchema").$type<Record<string, any>>().notNull(),
-    cbvVocabulary: json("cbvVocabulary").$type<Record<string, any>>(),
-    description: text("description"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    useCaseIdx: index("use_case_idx").on(table.useCase),
-    regulationIdIdx: index("regulation_id_idx").on(table.regulationId),
-  })
-);
-
-export type EPCISEventTemplate = typeof epcisEventTemplates.$inferSelect;
-export type InsertEPCISEventTemplate = typeof epcisEventTemplates.$inferInsert;
-
-/**
- * Attribute-to-Regulation Mappings - Links GS1 attributes to regulatory requirements
- */
-export const attributeRegulationMappings = mysqlTable(
-  "attribute_regulation_mappings",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    attributeId: int("attributeId").notNull(),
-    regulationId: int("regulationId").notNull(),
-    esrsDatapointId: int("esrsDatapointId"),
-    mappingReason: text("mappingReason"),
-    relevanceScore: decimal("relevanceScore", {
-      precision: 3,
-      scale: 2,
-    }).default("0.00"),
-    verifiedByAdmin: boolean("verifiedByAdmin").default(false),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    attributeIdIdx: index("attribute_id_idx").on(table.attributeId),
-    regulationIdIdx: index("regulation_id_idx").on(table.regulationId),
-  })
-);
-
-export type AttributeRegulationMapping =
-  typeof attributeRegulationMappings.$inferSelect;
-export type InsertAttributeRegulationMapping =
-  typeof attributeRegulationMappings.$inferInsert;
-
-/**
- * ESG Hub News History - Archive for news items older than 200 days
- * Keeps main hubNews table lean while preserving historical data
- */
-export const hubNewsHistory = mysqlTable(
-  "hub_news_history",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    originalId: int("originalId").notNull(), // Reference to original hubNews id
-    title: varchar("title", { length: 512 }).notNull(),
-    summary: text("summary"),
-    content: text("content"),
-    newsType: mysqlEnum("newsType", [
-      "NEW_LAW",
-      "AMENDMENT",
-      "ENFORCEMENT",
-      "COURT_DECISION",
-      "GUIDANCE",
-      "PROPOSAL",
-    ]).notNull(),
-    relatedRegulationIds: json("relatedRegulationIds"),
-    regulationTags: json("regulationTags").$type<string[]>(),
-    impactLevel: mysqlEnum("impactLevel", ["LOW", "MEDIUM", "HIGH"]).default(
-      "MEDIUM"
-    ),
-    sourceUrl: varchar("sourceUrl", { length: 512 }),
-    sourceTitle: varchar("sourceTitle", { length: 255 }),
-    sourceType: mysqlEnum("sourceType", [
-      "EU_OFFICIAL",
-      "GS1_OFFICIAL",
-      "DUTCH_NATIONAL",
-      "INDUSTRY",
-      "MEDIA",
-    ]).default("EU_OFFICIAL"),
-    sources:
-      json("sources").$type<
-        Array<{ name: string; type: string; url: string }>
-      >(), // Multi-source attribution for deduplicated news
-    credibilityScore: decimal("credibilityScore", {
-      precision: 3,
-      scale: 2,
-    }).default("0.00"),
-
-    // GS1-specific fields for enhanced intelligence
-    gs1ImpactTags: json("gs1ImpactTags").$type<string[]>(), // IDENTIFICATION, PACKAGING_ATTRIBUTES, ESG_REPORTING, DUE_DILIGENCE, TRACEABILITY, DPP, etc.
-    sectorTags: json("sectorTags").$type<string[]>(), // RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION, TEXTILES, etc.
-    relatedStandardIds: json("relatedStandardIds").$type<string[]>(), // Direct linkage to GS1 standards (gtin, gln, epcis, gdsn, digital-link, etc.)
-    gs1ImpactAnalysis: text("gs1ImpactAnalysis"), // AI-generated analysis of GS1 relevance and impact
-    suggestedActions: json("suggestedActions").$type<string[]>(), // Actionable next steps for GS1 NL members
-
-    publishedDate: timestamp("publishedDate"),
-    retrievedAt: timestamp("retrievedAt").notNull(),
-    isAutomated: boolean("isAutomated").default(false),
-    archivedAt: timestamp("archivedAt").defaultNow().notNull(), // when moved to history
-    originalCreatedAt: timestamp("originalCreatedAt").notNull(),
-    originalUpdatedAt: timestamp("originalUpdatedAt").notNull(),
-  },
-  table => ({
-    originalIdIdx: index("originalId_idx").on(table.originalId),
-    publishedDateIdx: index("publishedDate_idx").on(table.publishedDate),
-    archivedAtIdx: index("archivedAt_idx").on(table.archivedAt),
-  })
-);
-
-export type HubNewsHistory = typeof hubNewsHistory.$inferSelect;
-export type InsertHubNewsHistory = typeof hubNewsHistory.$inferInsert;
-
-/**
- * News Recommendations - AI-generated links between news and internal resources
- */
 export const newsRecommendations = mysqlTable("news_recommendations", {
-  id: int("id").primaryKey().autoincrement(),
-  newsId: int("news_id").notNull(),
-  resourceType: varchar("resource_type", { length: 50 }).notNull(),
-  resourceId: int("resource_id").notNull(),
-  resourceTitle: varchar("resource_title", { length: 512 }),
-  relevanceScore: decimal("relevance_score", {
-    precision: 3,
-    scale: 2,
-  }).notNull(),
-  reasoning: text("reasoning"),
-  matchedKeywords: text("matched_keywords"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+	id: int().autoincrement().notNull(),
+	newsId: int("news_id").notNull(),
+	resourceType: varchar("resource_type", { length: 50 }).notNull(),
+	resourceId: int("resource_id").notNull(),
+	resourceTitle: varchar("resource_title", { length: 512 }),
+	relevanceScore: decimal("relevance_score", { precision: 3, scale: 2 }).notNull(),
+	reasoning: text(),
+	matchedKeywords: text("matched_keywords"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("idx_news_id").on(table.newsId),
+	index("idx_resource").on(table.resourceType, table.resourceId),
+]);
+
+export const notificationPreferences = mysqlTable("notification_preferences", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	riskDetected: tinyint().default(1),
+	remediationUpdated: tinyint().default(1),
+	commentAdded: tinyint().default(1),
+	approvalRequested: tinyint().default(1),
+	approvalDecision: tinyint().default(1),
+	templateUpdated: tinyint().default(1),
+	scoreChanged: tinyint().default(1),
+	milestoneAchieved: tinyint().default(1),
+	minSeverity: varchar({ length: 32 }).default('low'),
+	inAppNotifications: tinyint().default(1),
+	emailNotifications: tinyint().default(0),
+	quietHoursEnabled: tinyint().default(0),
+	quietHoursStart: varchar({ length: 5 }),
+	quietHoursEnd: varchar({ length: 5 }),
+	batchNotifications: tinyint().default(0),
+	batchInterval: int().default(60),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("notification_preferences_userId_unique").on(table.userId),
+	index("userId_idx").on(table.userId),
+]);
+
+export const pipelineExecutionLog = mysqlTable("pipeline_execution_log", {
+	id: int().autoincrement().notNull(),
+	executionId: varchar("execution_id", { length: 50 }).notNull(),
+	pipelineType: varchar("pipeline_type", { length: 50 }).notNull(),
+	triggeredBy: varchar("triggered_by", { length: 50 }).notNull(),
+	startedAt: timestamp("started_at", { mode: 'string' }).notNull(),
+	completedAt: timestamp("completed_at", { mode: 'string' }),
+	durationMs: int("duration_ms"),
+	status: varchar({ length: 20 }).notNull(),
+	sourcesAttempted: int("sources_attempted").notNull(),
+	sourcesSucceeded: int("sources_succeeded").notNull(),
+	sourcesFailed: int("sources_failed").notNull(),
+	itemsFetched: int("items_fetched").notNull(),
+	itemsDeduplicated: int("items_deduplicated").notNull(),
+	itemsProcessed: int("items_processed").notNull(),
+	itemsSaved: int("items_saved").notNull(),
+	itemsFailed: int("items_failed").notNull(),
+	aiCallsMade: int("ai_calls_made").notNull(),
+	aiCallsSucceeded: int("ai_calls_succeeded").notNull(),
+	aiCallsFailed: int("ai_calls_failed").notNull(),
+	aiAvgQualityScore: float("ai_avg_quality_score"),
+	itemsWithSummary: int("items_with_summary").notNull(),
+	itemsWithRegulationTags: int("items_with_regulation_tags").notNull(),
+	itemsWithGs1ImpactTags: int("items_with_gs1_impact_tags").notNull(),
+	itemsWithSectorTags: int("items_with_sector_tags").notNull(),
+	itemsWithRecommendations: int("items_with_recommendations").notNull(),
+	errorCount: int("error_count").default(0).notNull(),
+	errorMessages: text("error_messages"),
+	warnings: text(),
+	configSnapshot: text("config_snapshot"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("idx_started_at").on(table.startedAt),
+	index("idx_status").on(table.status),
+	index("idx_pipeline_type").on(table.pipelineType),
+	index("idx_execution_id").on(table.executionId),
+	index("execution_id").on(table.executionId),
+]);
+
+export const qaConversations = mysqlTable("qa_conversations", {
+	id: int().autoincrement().notNull(),
+	userId: int(),
+	title: varchar({ length: 255 }),
+	messageCount: int().default(0).notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("user_id_idx").on(table.userId),
+	index("created_at_idx").on(table.createdAt),
+]);
+
+export const qaMessages = mysqlTable("qa_messages", {
+	id: int().autoincrement().notNull(),
+	conversationId: int().notNull(),
+	role: mysqlEnum(['user','assistant']).notNull(),
+	content: text().notNull(),
+	sources: json(),
+	retrievedChunks: int(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("conversation_id_idx").on(table.conversationId),
+	index("created_at_idx").on(table.createdAt),
+]);
+
+export const rawCbvVocabularies = mysqlTable("raw_cbv_vocabularies", {
+	id: int().autoincrement().notNull(),
+	rawJson: json("raw_json"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
 });
 
-export type NewsRecommendation = typeof newsRecommendations.$inferSelect;
-export type InsertNewsRecommendation = typeof newsRecommendations.$inferInsert;
+export const rawCtesKdes = mysqlTable("raw_ctes_kdes", {
+	id: int().autoincrement().notNull(),
+	rawJson: json("raw_json"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+});
 
-// ============================================================================
-// INGEST-02: GDSN Current v3.1.32 Tables
-// ============================================================================
+export const rawDigitalLinkTypes = mysqlTable("raw_digital_link_types", {
+	id: int().autoincrement().notNull(),
+	rawJson: json("raw_json"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+});
 
-/**
- * Raw GDSN Classes - 1:1 staging table
- */
-export const rawGdsnClasses = mysqlTable(
-  "raw_gdsn_classes",
-  {
-    id: int("id").primaryKey(), // Use source id directly
-    name: varchar("name", { length: 255 }).notNull(),
-    definition: text("definition"),
-    type: int("type"), // 1=String, 2=Boolean, 3=Integer, 4=Enum, etc.
-    extensions: json("extensions").$type<unknown[]>(),
-    rawJson: json("raw_json").$type<unknown>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    nameIndex: index("idx_raw_gdsn_class_name").on(table.name),
-  })
-);
+export const rawDppIdentificationRules = mysqlTable("raw_dpp_identification_rules", {
+	id: int().autoincrement().notNull(),
+	rawJson: json("raw_json"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+});
 
-export type RawGdsnClass = typeof rawGdsnClasses.$inferSelect;
-export type InsertRawGdsnClass = typeof rawGdsnClasses.$inferInsert;
+export const rawDppIdentifierComponents = mysqlTable("raw_dpp_identifier_components", {
+	id: int().autoincrement().notNull(),
+	rawJson: json("raw_json"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+});
 
-/**
- * Canonical GDSN Classes table
- */
-export const gdsnClasses = mysqlTable(
-  "gdsn_classes",
-  {
-    id: int("id").primaryKey(), // Use source id directly
-    name: varchar("name", { length: 255 }).notNull(),
-    definition: text("definition"),
-    type: int("type"),
-    extensions: json("extensions").$type<unknown[]>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    nameIndex: index("idx_gdsn_class_name").on(table.name),
-  })
-);
+export const rawEsrsDatapoints = mysqlTable("raw_esrs_datapoints", {
+	id: int().autoincrement().notNull(),
+	code: varchar({ length: 100 }).notNull(),
+	esrsStandard: varchar("esrs_standard", { length: 50 }),
+	disclosureRequirement: varchar("disclosure_requirement", { length: 100 }),
+	paragraph: varchar({ length: 100 }),
+	relatedAr: varchar("related_ar", { length: 100 }),
+	name: text().notNull(),
+	dataTypeRaw: varchar("data_type_raw", { length: 100 }),
+	conditionalRaw: tinyint("conditional_raw").default(0),
+	voluntaryRaw: tinyint("voluntary_raw").default(0),
+	sfdrMapping: varchar("sfdr_mapping", { length: 255 }),
+	sheetName: varchar("sheet_name", { length: 50 }),
+	rowIndex: int("row_index"),
+	rawJson: json("raw_json"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_raw_esrs_code").on(table.code),
+	index("idx_raw_esrs_sheet").on(table.sheetName),
+]);
 
-export type GdsnClass = typeof gdsnClasses.$inferSelect;
-export type InsertGdsnClass = typeof gdsnClasses.$inferInsert;
+export const rawGdsnClassAttributes = mysqlTable("raw_gdsn_class_attributes", {
+	id: int().autoincrement().notNull(),
+	classId: int("class_id").notNull(),
+	attributeCode: varchar("attribute_code", { length: 255 }).notNull(),
+	attributeName: varchar("attribute_name", { length: 255 }),
+	dataType: varchar("data_type", { length: 50 }),
+	required: tinyint().default(0),
+	rawJson: json("raw_json"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_raw_gdsn_attr_class").on(table.classId),
+	index("idx_raw_gdsn_attr_code").on(table.attributeCode),
+]);
 
-/**
- * Raw GDSN Class Attributes - 1:1 staging table
- */
-export const rawGdsnClassAttributes = mysqlTable(
-  "raw_gdsn_class_attributes",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    classId: int("class_id").notNull(),
-    attributeCode: varchar("attribute_code", { length: 255 }).notNull(),
-    attributeName: varchar("attribute_name", { length: 255 }),
-    data_type: varchar("data_type", { length: 50 }),
-    required: boolean("required").default(false),
-    rawJson: json("raw_json").$type<unknown>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    classIdIndex: index("idx_raw_gdsn_attr_class").on(table.classId),
-    attrCodeIndex: index("idx_raw_gdsn_attr_code").on(table.attributeCode),
-  })
-);
+export const rawGdsnClasses = mysqlTable("raw_gdsn_classes", {
+	id: int().notNull(),
+	name: varchar({ length: 255 }).notNull(),
+	definition: text(),
+	type: int(),
+	extensions: json(),
+	rawJson: json("raw_json"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_raw_gdsn_class_name").on(table.name),
+]);
 
-export type RawGdsnClassAttribute = typeof rawGdsnClassAttributes.$inferSelect;
-export type InsertRawGdsnClassAttribute = typeof rawGdsnClassAttributes.$inferInsert;
+export const rawGdsnValidationRules = mysqlTable("raw_gdsn_validation_rules", {
+	id: int().autoincrement().notNull(),
+	ruleId: varchar("rule_id", { length: 255 }).notNull(),
+	classId: int("class_id"),
+	attributeCode: varchar("attribute_code", { length: 255 }),
+	ruleType: varchar("rule_type", { length: 50 }),
+	ruleExpression: text("rule_expression"),
+	errorMessage: text("error_message"),
+	rawJson: json("raw_json"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_raw_gdsn_rule_id").on(table.ruleId),
+	index("idx_raw_gdsn_rule_class").on(table.classId),
+]);
 
-/**
- * Canonical GDSN Class Attributes table
- */
-export const gdsnClassAttributes = mysqlTable(
-  "gdsn_class_attributes",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    classId: int("class_id").notNull(),
-    attributeCode: varchar("attribute_code", { length: 255 }).notNull(),
-    attributeName: varchar("attribute_name", { length: 255 }),
-    data_type: varchar("data_type", { length: 50 }),
-    required: boolean("required").default(false),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    classIdIndex: index("idx_gdsn_attr_class").on(table.classId),
-    attrCodeIndex: index("idx_gdsn_attr_code").on(table.attributeCode),
-    uniqueClassAttr: index("unique_class_attr_idx").on(table.classId, table.attributeCode),
-  })
-);
+export const regulationEsrsMappings = mysqlTable("regulation_esrs_mappings", {
+	id: int().autoincrement().notNull(),
+	regulationId: int().notNull(),
+	datapointId: int().notNull(),
+	relevanceScore: int().default(5).notNull(),
+	reasoning: text(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("regulationId_idx").on(table.regulationId),
+	index("datapointId_idx").on(table.datapointId),
+	index("unique_mapping_idx").on(table.regulationId, table.datapointId),
+]);
 
-export type GdsnClassAttribute = typeof gdsnClassAttributes.$inferSelect;
-export type InsertGdsnClassAttribute = typeof gdsnClassAttributes.$inferInsert;
+export const regulationStandardMappings = mysqlTable("regulation_standard_mappings", {
+	id: int().autoincrement().notNull(),
+	regulationId: int().notNull(),
+	standardId: int().notNull(),
+	relevanceScore: decimal({ precision: 3, scale: 2 }).default('0.00'),
+	mappingReason: text(),
+	detectedAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	verifiedByAdmin: tinyint().default(0),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+});
 
-/**
- * Raw GDSN Validation Rules - 1:1 staging table
- */
-export const rawGdsnValidationRules = mysqlTable(
-  "raw_gdsn_validation_rules",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    ruleId: varchar("rule_id", { length: 255 }).notNull(),
-    classId: int("class_id"),
-    attributeCode: varchar("attribute_code", { length: 255 }),
-    ruleType: varchar("rule_type", { length: 50 }),
-    ruleExpression: text("rule_expression"),
-    errorMessage: text("error_message"),
-    rawJson: json("raw_json").$type<unknown>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    ruleIdIndex: index("idx_raw_gdsn_rule_id").on(table.ruleId),
-    classIdIndex: index("idx_raw_gdsn_rule_class").on(table.classId),
-  })
-);
+export const regulations = mysqlTable("regulations", {
+	id: int().autoincrement().notNull(),
+	celexId: varchar({ length: 64 }),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	regulationType: mysqlEnum(['CSRD','ESRS','DPP','EUDR','ESPR','PPWR','EU_TAXONOMY','OTHER']).notNull(),
+	effectiveDate: timestamp({ mode: 'string' }),
+	sourceUrl: varchar({ length: 512 }),
+	lastUpdated: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	embedding: json(),
+},
+(table) => [
+	index("regulations_celexId_unique").on(table.celexId),
+]);
 
-export type RawGdsnValidationRule = typeof rawGdsnValidationRules.$inferSelect;
-export type InsertRawGdsnValidationRule = typeof rawGdsnValidationRules.$inferInsert;
+export const regulatoryChangeAlerts = mysqlTable("regulatory_change_alerts", {
+	id: int().autoincrement().notNull(),
+	regulationId: int().notNull(),
+	changeType: mysqlEnum(['NEW','UPDATED','EFFECTIVE_DATE_CHANGED','SCOPE_EXPANDED','DEPRECATED']).notNull(),
+	changeDescription: text(),
+	affectedStandardsCount: int().default(0),
+	severity: mysqlEnum(['LOW','MEDIUM','HIGH','CRITICAL']).default('MEDIUM'),
+	detectedAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+});
 
-/**
- * Canonical GDSN Validation Rules table
- */
-export const gdsnValidationRules = mysqlTable(
-  "gdsn_validation_rules",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    ruleId: varchar("rule_id", { length: 255 }).notNull().unique(),
-    classId: int("class_id"),
-    attributeCode: varchar("attribute_code", { length: 255 }),
-    ruleType: varchar("rule_type", { length: 50 }),
-    ruleExpression: text("rule_expression"),
-    errorMessage: text("error_message"),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    ruleIdIndex: index("idx_gdsn_rule_id").on(table.ruleId),
-    classIdIndex: index("idx_gdsn_rule_class").on(table.classId),
-    attrCodeIndex: index("idx_gdsn_rule_attr").on(table.attributeCode),
-  })
-);
+export const regulatoryChangeLog = mysqlTable("regulatory_change_log", {
+	id: int().autoincrement().notNull(),
+	entryDate: timestamp({ mode: 'string' }).notNull(),
+	sourceType: mysqlEnum(['EU_DIRECTIVE','EU_REGULATION','EU_DELEGATED_ACT','EU_IMPLEMENTING_ACT','EFRAG_IG','EFRAG_QA','EFRAG_TAXONOMY','GS1_AISBL','GS1_EUROPE','GS1_NL']).notNull(),
+	sourceOrg: varchar({ length: 255 }).notNull(),
+	title: varchar({ length: 512 }).notNull(),
+	description: text().notNull(),
+	url: varchar({ length: 512 }).notNull(),
+	documentHash: varchar({ length: 64 }),
+	impactAssessment: text(),
+	isaVersionAffected: varchar({ length: 16 }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("entryDate_idx").on(table.entryDate),
+	index("sourceType_idx").on(table.sourceType),
+	index("isaVersion_idx").on(table.isaVersionAffected),
+]);
 
-export type GdsnValidationRule = typeof gdsnValidationRules.$inferSelect;
-export type InsertGdsnValidationRule = typeof gdsnValidationRules.$inferInsert;
+export const remediationProgress = mysqlTable("remediation_progress", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	planId: int().notNull(),
+	totalSteps: int().notNull(),
+	completedSteps: int().default(0),
+	evidenceSubmitted: int().default(0),
+	evidenceVerified: int().default(0),
+	progressPercentage: int().default(0),
+	lastUpdated: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("planId_idx").on(table.planId),
+]);
 
-// ============================================================================
-// INGEST-04: CTEs and KDEs Tables
-// ============================================================================
+export const remediationSteps = mysqlTable("remediation_steps", {
+	id: int().autoincrement().notNull(),
+	planId: int().notNull(),
+	stepNumber: int().notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	requiredEvidence: text(),
+	status: mysqlEnum(['pending','in_progress','completed','skipped']).default('pending').notNull(),
+	assignedTo: varchar({ length: 255 }),
+	dueDate: timestamp({ mode: 'string' }),
+	completedAt: timestamp({ mode: 'string' }),
+	notes: text(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("planId_idx").on(table.planId),
+	index("status_idx").on(table.status),
+]);
 
-/**
- * Raw CTEs and KDEs - 1:1 staging table
- */
-export const rawCtesKdes = mysqlTable(
-  "raw_ctes_kdes",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    rawJson: json("raw_json").$type<unknown>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  }
-);
+export const remediationTemplates = mysqlTable("remediation_templates", {
+	id: int().autoincrement().notNull(),
+	riskType: varchar({ length: 128 }).notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	steps: json().notNull(),
+	estimatedDays: int(),
+	isActive: tinyint().default(1),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("riskType_idx").on(table.riskType),
+]);
 
-export type RawCteKde = typeof rawCtesKdes.$inferSelect;
-export type InsertRawCteKde = typeof rawCtesKdes.$inferInsert;
+export const riskRemediationPlans = mysqlTable("risk_remediation_plans", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	riskId: int().notNull(),
+	status: mysqlEnum(['draft','in_progress','completed','cancelled']).default('draft').notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	targetCompletionDate: timestamp({ mode: 'string' }),
+	completedAt: timestamp({ mode: 'string' }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("riskId_idx").on(table.riskId),
+	index("status_idx").on(table.status),
+]);
 
-/**
- * Critical Tracking Events (CTEs)
- */
-export const ctes = mysqlTable(
-  "ctes",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    code: varchar("code", { length: 100 }).notNull().unique(),
-    name: varchar("name", { length: 255 }).notNull(),
-    description: text("description"),
-    category: varchar("category", { length: 100 }),
-    regulationContext: varchar("regulation_context", { length: 255 }),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    codeIndex: index("idx_cte_code").on(table.code),
-    categoryIndex: index("idx_cte_category").on(table.category),
-  })
-);
+export const roadmapActions = mysqlTable("roadmap_actions", {
+	id: int().autoincrement().notNull(),
+	roadmapId: int().notNull(),
+	actionType: varchar({ length: 128 }).notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	priority: varchar({ length: 32 }).notNull(),
+	sequenceNumber: int().notNull(),
+	estimatedEffort: int(),
+	estimatedImpact: decimal({ precision: 5, scale: 2 }),
+	startDate: timestamp({ mode: 'string' }).notNull(),
+	targetDate: timestamp({ mode: 'string' }).notNull(),
+	status: varchar({ length: 32 }).default('pending'),
+	relatedRiskId: int(),
+	relatedPlanId: int(),
+	successCriteria: text(),
+	blockers: text(),
+	completedAt: timestamp({ mode: 'string' }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("roadmapId_idx").on(table.roadmapId),
+	index("priority_idx").on(table.priority),
+	index("status_idx").on(table.status),
+]);
 
-export type Cte = typeof ctes.$inferSelect;
-export type InsertCte = typeof ctes.$inferInsert;
+export const roadmapActivityLog = mysqlTable("roadmap_activity_log", {
+	id: int().autoincrement().notNull(),
+	roadmapId: int().notNull(),
+	userId: int().notNull(),
+	activityType: varchar({ length: 64 }).notNull(),
+	description: text(),
+	metadata: json(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("roadmapId_idx").on(table.roadmapId),
+	index("userId_idx").on(table.userId),
+	index("activityType_idx").on(table.activityType),
+]);
 
-/**
- * Key Data Elements (KDEs)
- */
-export const kdes = mysqlTable(
-  "kdes",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    code: varchar("code", { length: 100 }).notNull().unique(),
-    name: varchar("name", { length: 255 }).notNull(),
-    description: text("description"),
-    data_type: varchar("data_type", { length: 50 }),
-    mandatory: boolean("mandatory").default(false),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    codeIndex: index("idx_kde_code").on(table.code),
-  })
-);
+export const roadmapApprovals = mysqlTable("roadmap_approvals", {
+	id: int().autoincrement().notNull(),
+	roadmapId: int().notNull(),
+	actionId: int(),
+	requiredApproverId: int().notNull(),
+	approverRole: varchar({ length: 64 }),
+	status: varchar({ length: 32 }).default('pending'),
+	approvedAt: timestamp({ mode: 'string' }),
+	approverComments: text(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("roadmapId_idx").on(table.roadmapId),
+	index("requiredApproverId_idx").on(table.requiredApproverId),
+	index("status_idx").on(table.status),
+]);
 
-export type Kde = typeof kdes.$inferSelect;
-export type InsertKde = typeof kdes.$inferInsert;
+export const roadmapComments = mysqlTable("roadmap_comments", {
+	id: int().autoincrement().notNull(),
+	roadmapId: int().notNull(),
+	actionId: int(),
+	userId: int().notNull(),
+	content: text().notNull(),
+	isApproval: tinyint().default(0),
+	approvalStatus: varchar({ length: 32 }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("roadmapId_idx").on(table.roadmapId),
+	index("actionId_idx").on(table.actionId),
+	index("userId_idx").on(table.userId),
+]);
 
-/**
- * CTE to KDE Mappings (many-to-many)
- */
-export const cteKdeMappings = mysqlTable(
-  "cte_kde_mappings",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    cteId: int("cte_id").notNull(),
-    kdeId: int("kde_id").notNull(),
-    required: boolean("required").default(true),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-  },
-  (table) => ({
-    cteIdIndex: index("idx_cte_kde_cte").on(table.cteId),
-    kdeIdIndex: index("idx_cte_kde_kde").on(table.kdeId),
-    uniqueMapping: index("unique_cte_kde_idx").on(table.cteId, table.kdeId),
-  })
-);
+export const roadmapDependencies = mysqlTable("roadmap_dependencies", {
+	id: int().autoincrement().notNull(),
+	fromActionId: int().notNull(),
+	toActionId: int().notNull(),
+	dependencyType: varchar({ length: 64 }).notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("fromActionId_idx").on(table.fromActionId),
+	index("toActionId_idx").on(table.toActionId),
+]);
 
-export type CteKdeMapping = typeof cteKdeMappings.$inferSelect;
-export type InsertCteKdeMapping = typeof cteKdeMappings.$inferInsert;
+export const roadmapMilestones = mysqlTable("roadmap_milestones", {
+	id: int().autoincrement().notNull(),
+	roadmapId: int().notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	targetDate: timestamp({ mode: 'string' }).notNull(),
+	targetScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	completedDate: timestamp({ mode: 'string' }),
+	status: varchar({ length: 32 }).default('pending'),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("roadmapId_idx").on(table.roadmapId),
+]);
 
-// ============================================================================
-// INGEST-05: DPP Identification Rules Tables
-// ============================================================================
+export const roadmapTemplates = mysqlTable("roadmap_templates", {
+	id: int().autoincrement().notNull(),
+	name: varchar({ length: 255 }).notNull(),
+	description: text(),
+	category: varchar({ length: 64 }).notNull(),
+	strategy: varchar({ length: 32 }).notNull(),
+	estimatedEffort: int().notNull(),
+	estimatedImpact: decimal({ precision: 5, scale: 2 }),
+	targetScore: decimal({ precision: 5, scale: 2 }),
+	isPublic: tinyint().default(1),
+	createdBy: int().notNull(),
+	usageCount: int().default(0),
+	rating: decimal({ precision: 3, scale: 2 }).default('0.00'),
+	tags: json(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("category_idx").on(table.category),
+	index("createdBy_idx").on(table.createdBy),
+]);
 
-/**
- * Raw DPP Identifier Components - 1:1 staging table
- */
-export const rawDppIdentifierComponents = mysqlTable(
-  "raw_dpp_identifier_components",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    rawJson: json("raw_json").$type<unknown>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  }
-);
+export const scoreHistory = mysqlTable("score_history", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	overallScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	riskManagementScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	remediationScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	evidenceScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	regulationScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	changeReason: varchar({ length: 255 }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("createdAt_idx").on(table.createdAt),
+]);
 
-export type RawDppIdentifierComponent = typeof rawDppIdentifierComponents.$inferSelect;
-export type InsertRawDppIdentifierComponent = typeof rawDppIdentifierComponents.$inferInsert;
+export const scoreMilestones = mysqlTable("score_milestones", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	milestoneType: varchar({ length: 128 }).notNull(),
+	milestoneTitle: varchar({ length: 255 }).notNull(),
+	description: text(),
+	achievedAt: timestamp({ mode: 'string' }).notNull(),
+	badge: varchar({ length: 128 }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("achievedAt_idx").on(table.achievedAt),
+]);
 
-/**
- * DPP Identifier Components (GTIN, GLN, SSCC, etc.)
- */
-export const dppIdentifierComponents = mysqlTable(
-  "dpp_identifier_components",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    componentCode: varchar("component_code", { length: 50 }).notNull().unique(),
-    componentName: varchar("component_name", { length: 255 }).notNull(),
-    description: text("description"),
-    gs1Standard: varchar("gs1_standard", { length: 100 }),
-    format: varchar("format", { length: 100 }),
-    example: varchar("example", { length: 255 }),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    codeIndex: index("idx_dpp_comp_code").on(table.componentCode),
-  })
-);
+export const scoringBenchmarks = mysqlTable("scoring_benchmarks", {
+	id: int().autoincrement().notNull(),
+	industry: varchar({ length: 128 }).notNull(),
+	region: varchar({ length: 128 }).notNull(),
+	avgOverallScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	avgRiskManagementScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	avgRemediationScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	avgEvidenceScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	avgRegulationScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	percentile75: decimal({ precision: 5, scale: 2 }).notNull(),
+	percentile90: decimal({ precision: 5, scale: 2 }).notNull(),
+	dataPoints: int().default(0),
+	lastUpdated: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("industry_region_idx").on(table.industry, table.region),
+]);
 
-export type DppIdentifierComponent = typeof dppIdentifierComponents.$inferSelect;
-export type InsertDppIdentifierComponent = typeof dppIdentifierComponents.$inferInsert;
+export const scraperExecutions = mysqlTable("scraper_executions", {
+	id: int().autoincrement().notNull(),
+	sourceId: varchar("source_id", { length: 64 }).notNull(),
+	sourceName: varchar("source_name", { length: 255 }).notNull(),
+	success: tinyint().notNull(),
+	itemsFetched: int("items_fetched").default(0).notNull(),
+	errorMessage: text("error_message"),
+	attempts: int().default(1).notNull(),
+	durationMs: int("duration_ms"),
+	triggeredBy: mysqlEnum("triggered_by", ['cron','manual','api']).default('cron').notNull(),
+	executionId: varchar("execution_id", { length: 64 }),
+	startedAt: timestamp("started_at", { mode: 'string' }).notNull(),
+	completedAt: timestamp("completed_at", { mode: 'string' }).notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("idx_source_id").on(table.sourceId),
+	index("idx_execution_id").on(table.executionId),
+	index("idx_started_at").on(table.startedAt),
+]);
 
-/**
- * Raw DPP Identification Rules - 1:1 staging table
- */
-export const rawDppIdentificationRules = mysqlTable(
-  "raw_dpp_identification_rules",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    rawJson: json("raw_json").$type<unknown>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  }
-);
+export const scraperHealthSummary = mysqlTable("scraper_health_summary", {
+	id: int().autoincrement().notNull(),
+	sourceId: varchar("source_id", { length: 64 }).notNull(),
+	sourceName: varchar("source_name", { length: 255 }).notNull(),
+	successRate24H: int("success_rate_24h").default(100).notNull(),
+	totalExecutions24H: int("total_executions_24h").default(0).notNull(),
+	failedExecutions24H: int("failed_executions_24h").default(0).notNull(),
+	avgItemsFetched24H: int("avg_items_fetched_24h").default(0).notNull(),
+	avgDurationMs24H: int("avg_duration_ms_24h"),
+	lastExecutionSuccess: tinyint("last_execution_success"),
+	lastExecutionAt: timestamp("last_execution_at", { mode: 'string' }),
+	lastSuccessAt: timestamp("last_success_at", { mode: 'string' }),
+	lastErrorMessage: text("last_error_message"),
+	consecutiveFailures: int("consecutive_failures").default(0).notNull(),
+	alertSent: tinyint("alert_sent").default(0).notNull(),
+	alertSentAt: timestamp("alert_sent_at", { mode: 'string' }),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("idx_source_id").on(table.sourceId),
+	index("idx_last_execution_at").on(table.lastExecutionAt),
+	index("source_id").on(table.sourceId),
+]);
 
-export type RawDppIdentificationRule = typeof rawDppIdentificationRules.$inferSelect;
-export type InsertRawDppIdentificationRule = typeof rawDppIdentificationRules.$inferInsert;
+export const supplyChainAnalytics = mysqlTable("supply_chain_analytics", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	metricDate: timestamp({ mode: 'string' }).notNull(),
+	totalEvents: int().default(0),
+	totalNodes: int().default(0),
+	totalEdges: int().default(0),
+	highRiskNodes: int().default(0),
+	averageTraceabilityScore: decimal({ precision: 5, scale: 2 }),
+	complianceScore: decimal({ precision: 5, scale: 2 }),
+	lastUpdated: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("metricDate_idx").on(table.metricDate),
+]);
 
-/**
- * DPP Identification Rules by product category
- */
-export const dppIdentificationRules = mysqlTable(
-  "dpp_identification_rules",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    ruleCode: varchar("rule_code", { length: 100 }).notNull().unique(),
-    productCategory: varchar("product_category", { length: 255 }).notNull(),
-    requiredComponents: json("required_components").$type<string[]>(),
-    optionalComponents: json("optional_components").$type<string[]>(),
-    description: text("description"),
-    regulationContext: varchar("regulation_context", { length: 255 }),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    ruleCodeIndex: index("idx_dpp_rule_code").on(table.ruleCode),
-    categoryIndex: index("idx_dpp_rule_category").on(table.productCategory),
-  })
-);
+export const supplyChainEdges = mysqlTable("supply_chain_edges", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	fromNodeId: int().notNull(),
+	toNodeId: int().notNull(),
+	productGtin: varchar({ length: 14 }),
+	relationshipType: mysqlEnum(['supplies','manufactures','distributes','retails']).notNull(),
+	lastTransactionDate: timestamp({ mode: 'string' }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("fromNode_idx").on(table.fromNodeId),
+	index("toNode_idx").on(table.toNodeId),
+]);
 
-export type DppIdentificationRule = typeof dppIdentificationRules.$inferSelect;
-export type InsertDppIdentificationRule = typeof dppIdentificationRules.$inferInsert;
+export const supplyChainNodes = mysqlTable("supply_chain_nodes", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	nodeType: mysqlEnum(['supplier','manufacturer','distributor','retailer','recycler']).notNull(),
+	gln: varchar({ length: 255 }),
+	name: varchar({ length: 255 }).notNull(),
+	tierLevel: int(),
+	locationLat: decimal({ precision: 10, scale: 8 }),
+	locationLng: decimal({ precision: 11, scale: 8 }),
+	riskLevel: mysqlEnum(['low','medium','high']),
+	riskFactors: json(),
+	certifications: json(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("gln_idx").on(table.gln),
+]);
 
-// ============================================================================
-// INGEST-06: CBV Vocabularies & Digital Link Types Tables
-// ============================================================================
+export const supplyChainRisks = mysqlTable("supply_chain_risks", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	eventId: int().notNull(),
+	nodeId: int(),
+	riskType: mysqlEnum(['deforestation','labor','environmental','traceability','certification','geolocation']).notNull(),
+	severity: mysqlEnum(['low','medium','high','critical']).notNull(),
+	description: text().notNull(),
+	regulationId: int(),
+	recommendedAction: text(),
+	isResolved: tinyint().default(0),
+	resolvedAt: timestamp({ mode: 'string' }),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("userId_idx").on(table.userId),
+	index("eventId_idx").on(table.eventId),
+	index("nodeId_idx").on(table.nodeId),
+	index("severity_idx").on(table.severity),
+	index("riskType_idx").on(table.riskType),
+]);
 
-/**
- * Raw CBV Vocabularies - 1:1 staging table
- */
-export const rawCbvVocabularies = mysqlTable(
-  "raw_cbv_vocabularies",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    rawJson: json("raw_json").$type<unknown>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  }
-);
+export const teamRoadmapAccess = mysqlTable("team_roadmap_access", {
+	id: int().autoincrement().notNull(),
+	roadmapId: int().notNull(),
+	userId: int().notNull(),
+	accessLevel: varchar({ length: 32 }).notNull(),
+	grantedBy: int().notNull(),
+	grantedAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("roadmapId_idx").on(table.roadmapId),
+	index("userId_idx").on(table.userId),
+]);
 
-export type RawCbvVocabulary = typeof rawCbvVocabularies.$inferSelect;
-export type InsertRawCbvVocabulary = typeof rawCbvVocabularies.$inferInsert;
+export const templateActions = mysqlTable("template_actions", {
+	id: int().autoincrement().notNull(),
+	templateId: int().notNull(),
+	sequenceNumber: int().notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	actionType: varchar({ length: 64 }).notNull(),
+	priority: varchar({ length: 32 }).notNull(),
+	estimatedEffort: int().notNull(),
+	estimatedImpact: decimal({ precision: 5, scale: 2 }),
+	successCriteria: text(),
+	relatedStandards: json(),
+},
+(table) => [
+	index("templateId_idx").on(table.templateId),
+]);
 
-/**
- * CBV Vocabularies (BizSteps, Dispositions, etc.)
- */
-export const cbvVocabularies = mysqlTable(
-  "cbv_vocabularies",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    vocabularyType: varchar("vocabulary_type", { length: 100 }).notNull(),
-    code: varchar("code", { length: 255 }).notNull(),
-    label: varchar("label", { length: 255 }).notNull(),
-    definition: text("definition"),
-    regulationRelevance: json("regulation_relevance").$type<string[]>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    typeIndex: index("idx_cbv_type").on(table.vocabularyType),
-    codeIndex: index("idx_cbv_code").on(table.code),
-    uniqueTypeCode: index("unique_cbv_type_code_idx").on(table.vocabularyType, table.code),
-  })
-);
+export const templateMilestones = mysqlTable("template_milestones", {
+	id: int().autoincrement().notNull(),
+	templateId: int().notNull(),
+	sequenceNumber: int().notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	description: text(),
+	targetScore: decimal({ precision: 5, scale: 2 }).notNull(),
+	daysFromStart: int().notNull(),
+},
+(table) => [
+	index("templateId_idx").on(table.templateId),
+]);
 
-export type CbvVocabulary = typeof cbvVocabularies.$inferSelect;
-export type InsertCbvVocabulary = typeof cbvVocabularies.$inferInsert;
+export const templateUsage = mysqlTable("template_usage", {
+	id: int().autoincrement().notNull(),
+	templateId: int().notNull(),
+	userId: int().notNull(),
+	roadmapId: int().notNull(),
+	rating: int(),
+	feedback: text(),
+	usedAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("templateId_idx").on(table.templateId),
+	index("userId_idx").on(table.userId),
+]);
 
-/**
- * Raw Digital Link Types - 1:1 staging table
- */
-export const rawDigitalLinkTypes = mysqlTable(
-  "raw_digital_link_types",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    rawJson: json("raw_json").$type<unknown>(),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  }
-);
+export const userAlerts = mysqlTable("user_alerts", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	alertType: mysqlEnum(['REGULATION_UPDATE','DEADLINE_APPROACHING','NEW_REGULATION','ENFORCEMENT_ACTION']).notNull(),
+	regulationId: int(),
+	standardId: int(),
+	daysBeforeDeadline: int(),
+	isActive: tinyint().default(1),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+});
 
-export type RawDigitalLinkType = typeof rawDigitalLinkTypes.$inferSelect;
-export type InsertRawDigitalLinkType = typeof rawDigitalLinkTypes.$inferInsert;
+export const userAnalyses = mysqlTable("user_analyses", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	regulationId: int(),
+	documentTitle: varchar({ length: 255 }),
+	documentUrl: varchar({ length: 512 }),
+	analysisType: mysqlEnum(['CELEX','DOCUMENT_UPLOAD','URL','TEXT']).notNull(),
+	detectedStandardsCount: int().default(0),
+	analysisResult: json(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+});
 
-/**
- * Digital Link Types (relationship types for semantic web linking)
- */
-export const digitalLinkTypes = mysqlTable(
-  "digital_link_types",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    linkType: varchar("link_type", { length: 100 }).notNull().unique(),
-    title: varchar("title", { length: 255 }).notNull(),
-    description: text("description"),
-    gs1Curie: varchar("gs1_curie", { length: 100 }),
-    schemaOrgEquivalent: varchar("schema_org_equivalent", { length: 255 }),
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-  },
-  (table) => ({
-    linkTypeIndex: index("idx_digital_link_type").on(table.linkType),
-  })
-);
+export const userPreferences = mysqlTable("user_preferences", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	interestedRegulations: json(),
+	interestedStandards: json(),
+	notificationsEnabled: tinyint().default(1),
+	industryFocus: varchar({ length: 128 }),
+	companySize: mysqlEnum(['STARTUP','SME','ENTERPRISE','OTHER']),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("user_preferences_userId_unique").on(table.userId),
+]);
 
-export type DigitalLinkType = typeof digitalLinkTypes.$inferSelect;
-export type InsertDigitalLinkType = typeof digitalLinkTypes.$inferInsert;
+export const userSavedItems = mysqlTable("user_saved_items", {
+	id: int().autoincrement().notNull(),
+	userId: int().notNull(),
+	itemType: mysqlEnum(['REGULATION','NEWS','RESOURCE']).notNull(),
+	itemId: int().notNull(),
+	notes: text(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+});
 
-/**
- * GS1 NL/Benelux Validation Rules
- * Stores data quality constraints and business rules for GS1 attributes
- */
-export const gs1ValidationRules = mysqlTable(
-  "gs1_validation_rules",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    ruleId: varchar("ruleId", { length: 50 }).notNull(),
-    ruleIdBelu: varchar("ruleIdBelu", { length: 50 }),
-    ruleType: mysqlEnum("ruleType", [
-      "benelux",
-      "gdsn",
-      "local",
-    ]).notNull(),
-    errorMessageDutch: text("errorMessageDutch"),
-    errorMessageEnglish: text("errorMessageEnglish"),
-    severity: mysqlEnum("severity", ["error", "warning", "info"]).default("error"),
-    targetMarkets: text("targetMarkets"), // JSON array of market codes
-    targetSectors: text("targetSectors"), // JSON array of sector codes
-    affectedAttributes: text("affectedAttributes"), // JSON array of attribute codes
-    validationLogic: text("validationLogic"), // Description or algorithm
-    addedInVersion: varchar("addedInVersion", { length: 20 }),
-    changeType: mysqlEnum("changeType", ["new", "technical", "textual", "delete"]),
-    isActive: boolean("isActive").default(true),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    ruleIdIdx: index("rule_id_idx").on(table.ruleId),
-    ruleTypeIdx: index("rule_type_idx").on(table.ruleType),
-    activeIdx: index("active_idx").on(table.isActive),
-  })
-);
-
-export type GS1ValidationRule = typeof gs1ValidationRules.$inferSelect;
-export type InsertGS1ValidationRule = typeof gs1ValidationRules.$inferInsert;
-
-/**
- * GS1 NL Local Code Lists
- * Stores Dutch-specific code list values referenced by validation rules
- */
-export const gs1LocalCodeLists = mysqlTable(
-  "gs1_local_code_lists",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    validationRuleId: varchar("validationRuleId", { length: 50 }).notNull(),
-    codeListName: varchar("codeListName", { length: 255 }).notNull(),
-    codeValue: varchar("codeValue", { length: 255 }).notNull(),
-    codeDescription: text("codeDescription"),
-    codeListSegment: varchar("codeListSegment", { length: 255 }),
-    addedInVersion: varchar("addedInVersion", { length: 20 }),
-    isActive: boolean("isActive").default(true),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    ruleIdIdx: index("lcl_rule_id_idx").on(table.validationRuleId),
-    codeListIdx: index("lcl_code_list_idx").on(table.codeListName),
-    activeIdx: index("lcl_active_idx").on(table.isActive),
-  })
-);
-
-export type GS1LocalCodeList = typeof gs1LocalCodeLists.$inferSelect;
-export type InsertGS1LocalCodeList = typeof gs1LocalCodeLists.$inferInsert;
-
-// Export GS1-ESRS mapping tables
-export * from "./schema_gs1_esrs_mappings";
-
-// Export dataset registry tables
-export * from "./schema_dataset_registry";
-
-// Export advisory reports tables
-export * from "./schema_advisory_reports";
-
-// Export governance documents tables
-export * from "./schema_governance_documents";
+export const users = mysqlTable("users", {
+	id: int().autoincrement().notNull(),
+	openId: varchar({ length: 64 }).notNull(),
+	name: text(),
+	email: varchar({ length: 320 }),
+	loginMethod: varchar({ length: 64 }),
+	role: mysqlEnum(['user','admin']).default('user').notNull(),
+	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+	lastSignedIn: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("users_openId_unique").on(table.openId),
+]);

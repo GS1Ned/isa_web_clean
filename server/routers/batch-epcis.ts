@@ -1,7 +1,7 @@
 import { protectedProcedure, router } from "../_core/trpc";
 import { z } from "zod";
 import { getDb } from "../db";
-import { epciBatchJobs, supplyChainAnalytics } from "../../drizzle/schema";
+import { epcisBatchJobs, supplyChainAnalytics } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
 import {
   parseEPCISDocument,
@@ -45,7 +45,7 @@ export const batchEpcisRouter = router({
         const eventCount = document.epcisBody.eventList.length;
 
         // Create batch job record
-        const [batchJob] = await db.insert(epciBatchJobs).values({
+        const [batchJob] = await db.insert(epcisBatchJobs).values({
           userId: ctx.user.id,
           fileName: input.fileName,
           fileSize: input.fileSize,
@@ -58,9 +58,9 @@ export const batchEpcisRouter = router({
           try {
             // Update status to processing
             await db
-              .update(epciBatchJobs)
+              .update(epcisBatchJobs)
               .set({ status: "processing" })
-              .where(eq(epciBatchJobs.id, batchJob.insertId as number));
+              .where(eq(epcisBatchJobs.id, batchJob.insertId as number));
 
             // Process all events
             const result = await processEPCISEvents(
@@ -79,22 +79,22 @@ export const batchEpcisRouter = router({
 
             // Update batch job status
             await db
-              .update(epciBatchJobs)
+              .update(epcisBatchJobs)
               .set({
                 status: "completed",
                 completedAt: new Date(),
               })
-              .where(eq(epciBatchJobs.id, batchJob.insertId as number));
+              .where(eq(epcisBatchJobs.id, batchJob.insertId as number));
           } catch (error) {
             console.error("Batch processing error:", error);
             await db
-              .update(epciBatchJobs)
+              .update(epcisBatchJobs)
               .set({
                 status: "failed",
                 errorMessage: (error as Error).message,
                 completedAt: new Date(),
               })
-              .where(eq(epciBatchJobs.id, batchJob.insertId as number));
+              .where(eq(epcisBatchJobs.id, batchJob.insertId as number));
           }
         });
 
@@ -120,8 +120,8 @@ export const batchEpcisRouter = router({
 
       const jobs = await db
         .select()
-        .from(epciBatchJobs)
-        .where(eq(epciBatchJobs.id, input.jobId))
+        .from(epcisBatchJobs)
+        .where(eq(epcisBatchJobs.id, input.jobId))
         .limit(1);
       const job = jobs[0];
 
@@ -165,9 +165,9 @@ export const batchEpcisRouter = router({
 
       const jobs = await db
         .select()
-        .from(epciBatchJobs)
-        .where(eq(epciBatchJobs.userId, ctx.user.id))
-        .orderBy(epciBatchJobs.createdAt)
+        .from(epcisBatchJobs)
+        .where(eq(epcisBatchJobs.userId, ctx.user.id))
+        .orderBy(epcisBatchJobs.createdAt)
         .limit(input.limit)
         .offset(input.offset);
 
