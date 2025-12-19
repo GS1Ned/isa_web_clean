@@ -40,6 +40,7 @@ import { realtimeRouter } from "./routers/realtime.js";
 import { notificationPreferencesRouter } from "./routers/notification-preferences.js";
 import { executiveAnalyticsRouter } from "./routers/executive-analytics.js";
 import { askISARouter } from "./routers/ask-isa.js";
+import { citationAdminRouter } from "./routers/citation-admin.js";
 import { gs1AttributesRouter } from "./routers/gs1-attributes.js";
 import { newsAdminRouter } from "./news-admin-router.js";
 import { cronRouter } from "./routers/cron.js";
@@ -969,6 +970,11 @@ export const appRouter = router({
    * Ask ISA - RAG-powered Q&A Router
    */
   askISA: askISARouter,
+
+  /**
+   * Citation Administration - Provenance and Deprecation Management
+   */
+  citationAdmin: citationAdminRouter,
 
   /**
    * GS1 Attributes Router - Benelux attributes and Web Vocabulary

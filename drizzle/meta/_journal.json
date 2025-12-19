@@ -29,6 +29,13 @@
       "when": 1766183379375,
       "tag": "0003_tiny_garia",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1766183922197,
+      "tag": "0004_optimal_whistler",
+      "breakpoints": true
     }
   ]
 }

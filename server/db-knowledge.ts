@@ -18,6 +18,9 @@ export async function storeKnowledgeChunk(data: {
   content: string;
   title: string;
   url?: string;
+  datasetId?: string;
+  datasetVersion?: string;
+  lastVerifiedDate?: Date;
 }) {
   const db = await getDb();
   if (!db) return null;
@@ -48,6 +51,11 @@ export async function storeKnowledgeChunk(data: {
       embeddingModel: "llm-scoring",
       title: data.title,
       url: data.url,
+      datasetId: data.datasetId,
+      datasetVersion: data.datasetVersion,
+      lastVerifiedDate: data.lastVerifiedDate,
+      isDeprecated: 0,
+      deprecationReason: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

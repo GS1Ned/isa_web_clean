@@ -1891,3 +1891,50 @@ Phase 8 is complete. Remaining todo.md items:
 - [x] Write and pass vitest tests (16/16 passing)
 - [x] Verify deterministic behavior (no interpretation/reasoning)
 - [x] Ready for checkpoint
+
+---
+
+## Track B - Priority 2: Provenance and Citation Enhancement ✅ COMPLETE
+
+### Database Schema
+- [x] Add datasetId field to knowledge_embeddings table
+- [x] Add datasetVersion field to knowledge_embeddings table
+- [x] Add lastVerifiedDate timestamp field to knowledge_embeddings table
+- [x] Add isDeprecated flag field to knowledge_embeddings table
+- [x] Add deprecationReason text field to knowledge_embeddings table
+- [x] Run database migration (0004_optimal_whistler.sql)
+
+### Backend Implementation
+- [x] Update storeKnowledgeChunk() to accept provenance parameters
+- [x] Create citation-validation.ts helper module with validation functions
+- [x] Implement isChunkDeprecated() check function
+- [x] Implement needsVerification() check function (>90 days)
+- [x] Implement validateCitations() to enrich sources with provenance metadata
+- [x] Implement markChunkDeprecated() admin function
+- [x] Implement updateVerificationDate() admin function
+- [x] Update Ask ISA router to use citation validation
+- [x] Enhance source response with provenance fields (datasetId, datasetVersion, lastVerifiedDate, isDeprecated, needsVerification, deprecationReason)
+
+### Admin Procedures
+- [x] Create citation-admin.ts router for admin operations
+- [x] Implement markDeprecated procedure (admin-only)
+- [x] Implement updateVerification procedure (admin-only)
+- [x] Implement bulkUpdateProvenance procedure (admin-only)
+- [x] Implement getChunksNeedingVerification query (admin-only)
+- [x] Register citationAdmin router in main routers.ts
+
+### Frontend Enhancement
+- [x] Update Message interface with provenance fields
+- [x] Add dataset version badge display in source citations
+- [x] Add deprecation warning badge (red, with reason tooltip)
+- [x] Add verification warning badge (yellow, with last verified date)
+- [x] Conditional rendering based on source metadata
+
+### Validation
+- [x] Schema migration successful (5 new fields added)
+- [x] TypeScript types updated automatically via Drizzle
+- [x] Citation validation integrated into Ask ISA flow
+- [x] Admin procedures protected by role-based access control
+- [x] Frontend displays provenance metadata and warnings
+
+**Result:** Citation system now tracks dataset versions, verification dates, and deprecation status. Deprecated or stale sources are flagged in Ask ISA responses.

@@ -32,9 +32,10 @@ import {
 import {
   classifyQuery,
   generateRefusalMessage,
-  validateCitations,
+  validateCitations as validateCitationFormat,
   calculateConfidence,
 } from "../ask-isa-guardrails";
+import { validateCitations } from "../citation-validation";
 import {
   assembleAskISAPrompt,
   validateAskISAResponse,
@@ -154,8 +155,18 @@ export const askISARouter = router({
         }
 
         // Step 6: Validate citations and calculate confidence
-        const citationValidation = validateCitations(answer);
+        const citationValidation = validateCitationFormat(answer);
         const confidence = calculateConfidence(relevantResults.length);
+
+        // Step 6.5: Validate citation provenance and deprecation status
+        const validatedSources = await validateCitations(
+          relevantResults.map(r => ({
+            id: r.id,
+            title: r.title,
+            url: r.url,
+            similarity: r.similarity,
+          }))
+        );
 
         // Step 7: Programmatic verification (v2.0 modular prompt system)
         const verification = verifyAskISAResponse(
@@ -173,12 +184,17 @@ export const askISARouter = router({
 
         return {
           answer,
-          sources: relevantResults.map(result => ({
-            id: result.id,
-            type: result.type,
-            title: result.title,
-            url: result.url,
-            similarity: Math.round(result.similarity * 100),
+          sources: validatedSources.map(source => ({
+            id: source.id,
+            title: source.title,
+            url: source.url,
+            similarity: Math.round(source.similarity * 100),
+            datasetId: source.datasetId,
+            datasetVersion: source.datasetVersion,
+            lastVerifiedDate: source.lastVerifiedDate,
+            isDeprecated: source.isDeprecated,
+            needsVerification: source.needsVerification,
+            deprecationReason: source.deprecationReason,
           })),
           conversationId: finalConversationId,
           queryType: classification.type,

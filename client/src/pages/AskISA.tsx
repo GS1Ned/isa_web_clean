@@ -47,6 +47,12 @@ interface Message {
     title: string;
     url?: string | null;
     similarity: number;
+    datasetId?: string;
+    datasetVersion?: string;
+    lastVerifiedDate?: string;
+    isDeprecated?: boolean;
+    needsVerification?: boolean;
+    deprecationReason?: string;
   }>;
   queryType?: string;
   confidence?: {
@@ -735,14 +741,36 @@ export default function AskISA() {
                                         {source.similarity}% match
                                       </Badge>
                                       {/* Dataset version indicator */}
-                                      <Badge
-                                        variant="outline"
-                                        className="text-xs font-mono text-green-700 dark:text-green-400"
-                                        title="Dataset version - click for provenance details"
-                                      >
-                                        <CheckCircle2 className="h-3 w-3 mr-1" />
-                                        v1.0 locked
-                                      </Badge>
+                                      {source.datasetVersion && (
+                                        <Badge
+                                          variant="outline"
+                                          className="text-xs font-mono text-green-700 dark:text-green-400"
+                                          title={`Dataset: ${source.datasetId || 'Unknown'} v${source.datasetVersion}`}
+                                        >
+                                          <CheckCircle2 className="h-3 w-3 mr-1" />
+                                          {source.datasetVersion}
+                                        </Badge>
+                                      )}
+                                      {/* Deprecation warning */}
+                                      {source.isDeprecated && (
+                                        <Badge
+                                          variant="destructive"
+                                          className="text-xs"
+                                          title={source.deprecationReason || 'This source has been deprecated'}
+                                        >
+                                          ⚠️ Deprecated
+                                        </Badge>
+                                      )}
+                                      {/* Verification warning */}
+                                      {source.needsVerification && !source.isDeprecated && (
+                                        <Badge
+                                          variant="outline"
+                                          className="text-xs text-yellow-700 dark:text-yellow-400"
+                                          title={source.lastVerifiedDate ? `Last verified: ${new Date(source.lastVerifiedDate).toLocaleDateString()}` : 'Not yet verified'}
+                                        >
+                                          ⚠️ Needs verification
+                                        </Badge>
+                                      )}
                                     </div>
                                   </div>
                                 </div>
