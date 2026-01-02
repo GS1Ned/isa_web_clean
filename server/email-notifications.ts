@@ -236,7 +236,7 @@ export async function sendDailyDigests(): Promise<number> {
     const usersWithAlerts = await db
       .selectDistinct({ userId: userAlerts.userId })
       .from(userAlerts)
-      .where(eq(userAlerts.isActive, true));
+      .where(eq(userAlerts.isActive, 1));
 
     let sentCount = 0;
 
@@ -310,7 +310,7 @@ export async function processPendingAlerts(
     const activeAlerts = await db
       .select()
       .from(userAlerts)
-      .where(eq(userAlerts.isActive, true));
+      .where(eq(userAlerts.isActive, 1));
 
     for (const alert of activeAlerts) {
       if (

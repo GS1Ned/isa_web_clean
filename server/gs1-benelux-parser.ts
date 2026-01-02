@@ -290,9 +290,9 @@ export async function ingestAttributes(
           sector: attr.sector,
           description: attr.description,
           datatype: attr.datatype,
-          isMandatory: attr.mandatory,
-          packagingRelated: attr.packagingRelated,
-          sustainabilityRelated: attr.sustainabilityRelated,
+          isMandatory: attr.mandatory ? 1 : 0,
+          packagingRelated: attr.packagingRelated ? 1 : 0,
+          sustainabilityRelated: attr.sustainabilityRelated ? 1 : 0,
           esrsRelevance: attr.sustainabilityRelated
             ? "Potentially relevant for ESRS E1-E5"
             : null,
@@ -304,6 +304,16 @@ export async function ingestAttributes(
           set: {
             attributeName: attr.localName,
             description: attr.description,
+            datatype: attr.datatype,
+            isMandatory: attr.mandatory ? 1 : 0,
+            packagingRelated: attr.packagingRelated ? 1 : 0,
+            sustainabilityRelated: attr.sustainabilityRelated ? 1 : 0,
+            esrsRelevance: attr.sustainabilityRelated
+              ? "Potentially relevant for ESRS E1-E5"
+              : null,
+            dppRelevance: attr.packagingRelated
+              ? "Relevant for Digital Product Passport"
+              : null,
           },
         });
 

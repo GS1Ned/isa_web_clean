@@ -127,7 +127,7 @@ export async function notifyUsersOfChanges(
       .where(
         and(
           eq(userAlerts.regulationId, regulationId),
-          eq(userAlerts.isActive, true)
+          eq(userAlerts.isActive, 1)
         )
       );
 

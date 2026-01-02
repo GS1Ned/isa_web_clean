@@ -201,9 +201,7 @@ export default function HubDutchInitiativeDetail() {
                     {initiative.scope}
                   </p>
                 </div>
-                {initiative.keyTargets &&
-                  Array.isArray(initiative.keyTargets) &&
-                  initiative.keyTargets.length > 0 && (
+                {(Array.isArray(initiative.keyTargets) && initiative.keyTargets.length > 0) && (
                     <div>
                       <h3 className="font-semibold text-sm text-muted-foreground mb-2">
                         Key Targets

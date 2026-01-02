@@ -116,16 +116,21 @@ export default function NewsDetail() {
               </div>
 
               {/* Summary */}
-              {newsItem.summary && (
+              {(() => {
+                const summary = newsItem.summary as string | null;
+                return summary && (
                 <div className="bg-accent/50 rounded-lg p-4 mb-6">
-                  <p className="text-lg leading-relaxed">{newsItem.summary}</p>
+                  <p className="text-lg leading-relaxed">{summary}</p>
                 </div>
-              )}
+              );
+              })()}
 
               {/* Content */}
-              <div className="prose prose-sm max-w-none">
-                <p className="whitespace-pre-wrap">{newsItem.content}</p>
-              </div>
+              {newsItem.content && typeof newsItem.content === 'string' && (
+                <div className="prose prose-sm max-w-none">
+                  <p className="whitespace-pre-wrap">{newsItem.content}</p>
+                </div>
+              )}
 
               {/* GS1 Insights Section */}
               {(newsItem.gs1ImpactAnalysis ||
@@ -139,7 +144,7 @@ export default function NewsDetail() {
                   </h3>
 
                   {/* GS1 Impact Tags & Sector Tags */}
-                  {(newsItem.gs1ImpactTags || newsItem.sectorTags) && (
+                  {((Array.isArray(newsItem.gs1ImpactTags) && newsItem.gs1ImpactTags.length > 0) || (Array.isArray(newsItem.sectorTags) && newsItem.sectorTags.length > 0)) && (
                     <div className="flex flex-wrap gap-2">
                       {Array.isArray(newsItem.gs1ImpactTags) &&
                         newsItem.gs1ImpactTags.map(tag => (

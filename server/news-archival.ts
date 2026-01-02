@@ -37,12 +37,13 @@ export async function archiveOldNews(
     // Calculate cutoff date
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - daysThreshold);
+    const cutoffDateStr = cutoffDate.toISOString();
 
     // Find old news items
     const oldNews = await db
       .select()
       .from(hubNews)
-      .where(lt(hubNews.publishedDate, cutoffDate));
+      .where(lt(hubNews.publishedDate, cutoffDateStr));
 
     console.log(`[news-archival] Found ${oldNews.length} items to archive`);
 
@@ -73,11 +74,17 @@ export async function archiveOldNews(
           sourceType: item.sourceType,
           credibilityScore: item.credibilityScore,
           publishedDate: item.publishedDate,
-          retrievedAt: item.retrievedAt,
+          retrievedAt: item.retrievedAt || new Date().toISOString(),
           isAutomated: item.isAutomated,
           archivedAt: new Date().toISOString(),
           originalCreatedAt: item.createdAt,
           originalUpdatedAt: item.updatedAt,
+          sources: item.sources,
+          sectorTags: item.sectorTags,
+          relatedStandardIds: item.relatedStandardIds,
+          gs1ImpactTags: item.gs1ImpactTags,
+          gs1ImpactAnalysis: item.gs1ImpactAnalysis,
+          suggestedActions: item.suggestedActions,
         });
 
         // Delete from main table

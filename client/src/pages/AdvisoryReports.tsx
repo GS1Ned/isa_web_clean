@@ -234,7 +234,7 @@ export default function AdvisoryReports() {
               </div>
 
               {/* Quality Score */}
-              {report.qualityScore && (
+              {report.qualityScore && typeof report.qualityScore !== 'object' && (
                 <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
                   <div className="flex-1">
                     <div className="text-sm font-medium">Quality Score</div>
@@ -247,7 +247,7 @@ export default function AdvisoryReports() {
               )}
 
               {/* Tags */}
-              {(report.sectorTags || report.gs1ImpactTags) && (
+              {((Array.isArray(report.sectorTags) && report.sectorTags.length > 0) || (Array.isArray(report.gs1ImpactTags) && report.gs1ImpactTags.length > 0)) && (
                 <div className="flex flex-wrap gap-2">
                   {(report.sectorTags as string[] | undefined)?.map((tag: string) => (
                     <Badge key={tag} variant="outline">

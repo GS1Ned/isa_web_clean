@@ -10,7 +10,7 @@ export interface NewsItem {
   content: string;
   source: string;
   sourceType: string;
-  publishedAt: Date;
+  publishedAt: string;
   regulationTags?: string[];
 }
 

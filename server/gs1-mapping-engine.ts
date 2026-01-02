@@ -418,7 +418,7 @@ export async function saveMappings(
       standardId: mapping.standardId,
       relevanceScore: mapping.relevanceScore.toString(), // Convert to decimal string
       mappingReason: mapping.mappingReason,
-      verifiedByAdmin: false,
+      verifiedByAdmin: 0,
     });
   }
 }

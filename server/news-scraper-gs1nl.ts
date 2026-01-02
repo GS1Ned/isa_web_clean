@@ -9,7 +9,7 @@ import * as cheerio from "cheerio";
 export interface ScrapedArticle {
   title: string;
   url: string;
-  publishedAt: Date;
+  publishedAt: string;
   summary?: string;
   imageUrl?: string;
 }
@@ -97,7 +97,7 @@ export async function scrapeGS1NetherlandsNews(): Promise<ScrapedArticle[]> {
         articles.push({
           title,
           url: fullUrl,
-          publishedAt,
+          publishedAt: publishedAt.toISOString(),
           imageUrl: imageUrl?.startsWith("http")
             ? imageUrl
             : imageUrl

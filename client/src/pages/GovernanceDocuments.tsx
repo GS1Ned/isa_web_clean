@@ -273,21 +273,24 @@ export default function GovernanceDocuments() {
               </div>
 
               {/* Verification Status */}
-              {doc.lastVerifiedDate && (
+              {(() => {
+                const verifiedDate = doc.lastVerifiedDate as string | null;
+                return verifiedDate && (
                 <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
                   <div className="flex-1">
                     <div className="text-sm font-medium">Verification Status</div>
                     <div className="text-sm text-muted-foreground">
-                      Last verified {formatDistanceToNow(new Date(doc.lastVerifiedDate))} ago
+                      Last verified {doc.lastVerifiedDate && typeof doc.lastVerifiedDate === 'string' ? formatDistanceToNow(new Date(doc.lastVerifiedDate)) : 'N/A'} ago
                       {doc.verifiedBy && ` by ${doc.verifiedBy}`}
                     </div>
                   </div>
-                  {getVerificationBadge(doc.lastVerifiedDate)}
+                  {getVerificationBadge(verifiedDate)}
                 </div>
-              )}
+              );
+              })()}
 
               {/* Currency Disclaimer */}
-              {doc.currencyDisclaimer && (
+              {doc.currencyDisclaimer && typeof doc.currencyDisclaimer === 'string' && (
                 <Alert>
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription className="text-sm">{doc.currencyDisclaimer}</AlertDescription>

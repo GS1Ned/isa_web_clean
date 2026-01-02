@@ -53,7 +53,7 @@ async function logIngestion(
   );
 
   await db.insert(ingestionLogs).values({
-    syncStartTime: startTime,
+    syncStartTime: startTime.toISOString(),
     syncEndTime: new Date().toISOString(),
     status,
     regulationsInserted: inserted,

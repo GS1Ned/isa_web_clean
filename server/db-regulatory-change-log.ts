@@ -27,16 +27,17 @@ export async function createRegulatoryChangeLogEntry(
     throw new Error("Database not available");
   }
 
-  const [created] = await db
+  const created = await db
     .insert(regulatoryChangeLog)
     .values(entry)
-    .$returningId();
+    .$returningId() as any;
 
   // Fetch the complete entry
+  const createdId = Array.isArray(created) ? created[0]?.id : created?.id;
   const [fullEntry] = await db
     .select()
     .from(regulatoryChangeLog)
-    .where(eq(regulatoryChangeLog.id, created.id));
+    .where(eq(regulatoryChangeLog.id, createdId));
 
   return fullEntry;
 }

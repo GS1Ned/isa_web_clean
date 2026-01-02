@@ -41,7 +41,8 @@ export function shouldCreateChangeLogEntry(newsItem: HubNews): boolean {
   }
 
   // Must have regulation tags
-  if (!newsItem.regulationTags || newsItem.regulationTags.length === 0) {
+  const tags = Array.isArray(newsItem.regulationTags) ? newsItem.regulationTags : [];
+  if (tags.length === 0) {
     return false;
   }
 
@@ -102,12 +103,13 @@ export async function createChangeLogEntryFromNews(
     const isaVersionAffected = extractIsaVersion(newsItem);
 
     // Create impact assessment from GS1 impact analysis
+    const tags = Array.isArray(newsItem.regulationTags) ? newsItem.regulationTags : [];
     const impactAssessment = newsItem.gs1ImpactAnalysis || 
-      `Impact level: ${newsItem.impactLevel}. Affects regulations: ${(newsItem.regulationTags || []).join(", ")}.`;
+      `Impact level: ${newsItem.impactLevel}. Affects regulations: ${tags.join(", ")}.`;
 
     // Create entry
     const entry = await createRegulatoryChangeLogEntry({
-      entryDate: newsItem.publishedDate || new Date(),
+      entryDate: typeof newsItem.publishedDate === 'string' ? newsItem.publishedDate : new Date().toISOString(),
       sourceType: sourceType as any,
       sourceOrg: newsItem.sourceTitle || "Unknown",
       title: newsItem.title || "Untitled",

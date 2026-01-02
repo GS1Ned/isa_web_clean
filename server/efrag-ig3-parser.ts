@@ -133,15 +133,15 @@ export async function ingestIG3Datapoints(
       // Insert datapoint
       await db.insert(esrsDatapoints).values({
         code: dp.datapointId,
-        esrs_standard: dp.esrs_standard,
-        disclosure_requirement: dp.disclosure_requirement,
+        esrsStandard: dp.esrs_standard,
+        disclosureRequirement: dp.disclosure_requirement,
         paragraph: dp.paragraph?.toString() || null,
-        related_ar: dp.related_ar,
+        relatedAr: dp.related_ar,
         name: dp.datapointName,
-        data_type: dp.data_type,
-        conditional: dp.conditionalOrAlternative,
-        voluntary: dp.mayVoluntary,
-        sfdr_mapping: dp.appendixB_SFDR ? 'SFDR' : null,
+        dataType: dp.data_type,
+        conditional: dp.conditionalOrAlternative ? 1 : 0,
+        voluntary: dp.mayVoluntary ? 1 : 0,
+        sfdrMapping: dp.appendixB_SFDR ? 'SFDR' : null,
       });
 
       insertedCount++;

@@ -294,9 +294,9 @@ export async function ingestDIYAttributes(
           sector: "diy_garden_pet",
           description: attr.definitionEnglish || attr.attributeNameEnglish,
           datatype,
-          isMandatory: attr.mandatory,
-          packagingRelated: attr.packagingRelated,
-          sustainabilityRelated: attr.sustainabilityRelated,
+          isMandatory: attr.mandatory ? 1 : 0,
+          packagingRelated: attr.packagingRelated ? 1 : 0,
+          sustainabilityRelated: attr.sustainabilityRelated ? 1 : 0,
           esrsRelevance: attr.sustainabilityRelated
             ? "Potentially relevant for ESRS E1-E5"
             : null,
@@ -308,6 +308,16 @@ export async function ingestDIYAttributes(
           set: {
             attributeName: attr.attributeNameEnglish,
             description: attr.definitionEnglish || attr.attributeNameEnglish,
+            datatype,
+            isMandatory: attr.mandatory ? 1 : 0,
+            packagingRelated: attr.packagingRelated ? 1 : 0,
+            sustainabilityRelated: attr.sustainabilityRelated ? 1 : 0,
+            esrsRelevance: attr.sustainabilityRelated
+              ? "Potentially relevant for ESRS E1-E5"
+              : null,
+            dppRelevance: attr.packagingRelated
+              ? "Relevant for Digital Product Passport"
+              : null,
           },
         });
 

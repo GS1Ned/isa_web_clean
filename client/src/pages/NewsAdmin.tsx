@@ -471,12 +471,12 @@ export function NewsAdmin() {
                     <span>
                       Sources:{" "}
                       {Array.isArray(news.sources)
-                        ? news.sources.join(", ")
-                        : news.sources}
+                        ? news.sources.map((s: any) => typeof s === 'string' ? s : s.name).join(", ")
+                        : (news.sources ? String(news.sources) : 'N/A')}
                     </span>
                     <span>•</span>
                     <span>
-                      {new Date(news.retrievedAt).toLocaleDateString()}
+                      {news.retrievedAt ? new Date(news.retrievedAt).toLocaleDateString() : 'N/A'}
                     </span>
                   </div>
                 </div>

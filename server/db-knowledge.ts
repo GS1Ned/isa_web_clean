@@ -53,7 +53,7 @@ export async function storeKnowledgeChunk(data: {
       url: data.url,
       datasetId: data.datasetId,
       datasetVersion: data.datasetVersion,
-      lastVerifiedDate: data.lastVerifiedDate,
+      lastVerifiedDate: data.lastVerifiedDate ? (typeof data.lastVerifiedDate === 'string' ? data.lastVerifiedDate : data.lastVerifiedDate.toISOString()) : null,
       isDeprecated: 0,
       deprecationReason: null,
       createdAt: new Date().toISOString(),

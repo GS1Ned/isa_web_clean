@@ -141,7 +141,7 @@ export async function upsertRegulation(regulation: {
   title: string;
   celexId?: string | null;
   description?: string | null;
-  effectiveDate?: Date | null;
+  effectiveDate?: Date | string | null;
   sourceUrl?: string | null;
   regulationType?: string | null;
 }) {
@@ -167,7 +167,7 @@ export async function upsertRegulation(regulation: {
         .set({
           title: regulation.title,
           description: regulation.description,
-          effectiveDate: regulation.effectiveDate ? regulation.effectiveDate.toISOString() : null,
+          effectiveDate: regulation.effectiveDate ? (typeof regulation.effectiveDate === 'string' ? regulation.effectiveDate : regulation.effectiveDate.toISOString()) : null,
           sourceUrl: regulation.sourceUrl,
           regulationType: regulation.regulationType as any,
         })
@@ -180,7 +180,7 @@ export async function upsertRegulation(regulation: {
         title: regulation.title,
         celexId: regulation.celexId,
         description: regulation.description,
-        effectiveDate: regulation.effectiveDate ? regulation.effectiveDate.toISOString() : null,
+        effectiveDate: regulation.effectiveDate ? (typeof regulation.effectiveDate === 'string' ? regulation.effectiveDate : regulation.effectiveDate.toISOString()) : null,
         sourceUrl: regulation.sourceUrl,
         regulationType: regulation.regulationType as any,
       });
@@ -471,9 +471,9 @@ export async function createHubNews(news: {
   regulationTags?: string[];
   impactLevel?: "LOW" | "MEDIUM" | "HIGH";
   credibilityScore?: string;
-  publishedDate?: Date;
-  retrievedAt?: Date;
-  isAutomated?: boolean;
+  publishedDate?: Date | string;
+  retrievedAt?: Date | string;
+  isAutomated?: boolean | number;
   summary?: string;
 
   // GS1-specific fields
@@ -504,8 +504,8 @@ export async function createHubNews(news: {
       regulationTags: news.regulationTags || null,
       impactLevel: news.impactLevel,
       credibilityScore: news.credibilityScore,
-      publishedDate: news.publishedDate ? news.publishedDate.toISOString() : new Date().toISOString(),
-      retrievedAt: news.retrievedAt ? news.retrievedAt.toISOString() : new Date().toISOString(),
+      publishedDate: news.publishedDate ? (typeof news.publishedDate === 'string' ? news.publishedDate : news.publishedDate.toISOString()) : new Date().toISOString(),
+      retrievedAt: news.retrievedAt ? (typeof news.retrievedAt === 'string' ? news.retrievedAt : news.retrievedAt.toISOString()) : new Date().toISOString(),
       isAutomated: news.isAutomated ? 1 : 0,
       summary: news.summary,
 
@@ -809,8 +809,12 @@ export async function submitMappingFeedback(params: {
       return { ...existing[0], vote: params.vote ? 1 : 0 };
     } else {
       // Insert new vote
-      const result = await db.insert(mappingFeedback).values(params);
-      return { id: Number((result as any).insertId), ...params };
+      const result = await db.insert(mappingFeedback).values({
+        userId: params.userId,
+        mappingId: params.mappingId,
+        vote: params.vote ? 1 : 0,
+      });
+      return { id: Number((result as any).insertId), userId: params.userId, mappingId: params.mappingId, vote: params.vote ? 1 : 0 };
     }
   } catch (error) {
     console.error("[Database] Failed to submit mapping feedback:", error);
