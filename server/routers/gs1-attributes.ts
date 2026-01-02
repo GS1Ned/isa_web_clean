@@ -101,25 +101,25 @@ export const gs1AttributesRouter = router({
       // Determine which relevance flag to filter by
       let relevanceFilter;
       if (regulation.regulationType === "DPP") {
-        relevanceFilter = eq(gs1WebVocabulary.dppRelevant, true);
+        relevanceFilter = eq(gs1WebVocabulary.dppRelevant, 1);
       } else if (
         regulation.regulationType === "ESRS" ||
         regulation.regulationType === "CSRD"
       ) {
-        relevanceFilter = eq(gs1WebVocabulary.esrsRelevant, true);
+        relevanceFilter = eq(gs1WebVocabulary.esrsRelevant, 1);
       } else if (regulation.regulationType === "EUDR") {
-        relevanceFilter = eq(gs1WebVocabulary.eudrRelevant, true);
+        relevanceFilter = eq(gs1WebVocabulary.eudrRelevant, 1);
       } else if (regulation.regulationType === "PPWR") {
-        relevanceFilter = eq(gs1WebVocabulary.packagingRelated, true);
+        relevanceFilter = eq(gs1WebVocabulary.packagingRelated, 1);
       } else {
         // Default: show sustainability-related terms
-        relevanceFilter = eq(gs1WebVocabulary.sustainabilityRelated, true);
+        relevanceFilter = eq(gs1WebVocabulary.sustainabilityRelated, 1);
       }
 
       // Build query conditions
       const conditions = [
         relevanceFilter,
-        eq(gs1WebVocabulary.isDeprecated, false),
+        eq(gs1WebVocabulary.isDeprecated, 0),
       ];
       if (input.termType) {
         conditions.push(eq(gs1WebVocabulary.termType, input.termType));
@@ -155,12 +155,12 @@ export const gs1AttributesRouter = router({
       }
       if (input.packagingRelated !== undefined) {
         conditions.push(
-          eq(gs1Attributes.packagingRelated, input.packagingRelated)
+          eq(gs1Attributes.packagingRelated, input.packagingRelated ? 1 : 0)
         );
       }
       if (input.sustainabilityRelated !== undefined) {
         conditions.push(
-          eq(gs1Attributes.sustainabilityRelated, input.sustainabilityRelated)
+          eq(gs1Attributes.sustainabilityRelated, input.sustainabilityRelated ? 1 : 0)
         );
       }
 

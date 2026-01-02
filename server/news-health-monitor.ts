@@ -55,7 +55,7 @@ export async function recordScraperExecution(metrics: ScraperHealthMetrics): Pro
     await db.insert(scraperExecutions).values({
       sourceId,
       sourceName,
-      success,
+      success: success ? 1 : 0,
       itemsFetched,
       errorMessage: error || null,
       attempts,
@@ -120,7 +120,7 @@ async function updateHealthSummary(
     .where(
       and(
         eq(scraperExecutions.sourceId, sourceId),
-        gte(scraperExecutions.startedAt, twentyFourHoursAgo)
+        gte(scraperExecutions.startedAt, twentyFourHoursAgo.toISOString())
       )
     );
   
@@ -157,31 +157,31 @@ async function updateHealthSummary(
     await db.insert(scraperHealthSummary).values({
       sourceId,
       sourceName,
-      successRate24h,
-      totalExecutions24h,
-      failedExecutions24h,
-      avgItemsFetched24h,
-      avgDurationMs24h,
-      lastExecutionSuccess: success,
-      lastExecutionAt: now,
-      lastSuccessAt: success ? now : null,
+      successRate24H: successRate24h,
+      totalExecutions24H: totalExecutions24h,
+      failedExecutions24H: failedExecutions24h,
+      avgItemsFetched24H: avgItemsFetched24h,
+      avgDurationMs24H: avgDurationMs24h,
+      lastExecutionSuccess: success ? 1 : 0,
+      lastExecutionAt: now.toISOString(),
+      lastSuccessAt: success ? now.toISOString() : null,
       lastErrorMessage: error || null,
       consecutiveFailures,
-      alertSent: false,
+      alertSent: 0,
     });
   } else {
     // Update existing summary
     await db
       .update(scraperHealthSummary)
       .set({
-        successRate24h,
-        totalExecutions24h,
-        failedExecutions24h,
-        avgItemsFetched24h,
-        avgDurationMs24h,
-        lastExecutionSuccess: success,
-        lastExecutionAt: now,
-        lastSuccessAt: success ? now : existing[0].lastSuccessAt,
+        successRate24H: successRate24h,
+        totalExecutions24H: totalExecutions24h,
+        failedExecutions24H: failedExecutions24h,
+        avgItemsFetched24H: avgItemsFetched24h,
+        avgDurationMs24H: avgDurationMs24h,
+        lastExecutionSuccess: success ? 1 : 0,
+        lastExecutionAt: now.toISOString(),
+        lastSuccessAt: success ? now.toISOString() : existing[0].lastSuccessAt,
         lastErrorMessage: error || null,
         consecutiveFailures,
       })
@@ -230,11 +230,11 @@ export async function getSourceHealth(sourceId: string): Promise<{
   const s = summary[0];
   
   return {
-    successRate: s.successRate24h,
-    totalExecutions: s.totalExecutions24h,
+    successRate: s.successRate24H,
+    totalExecutions: s.totalExecutions24H,
     consecutiveFailures: s.consecutiveFailures,
-    avgItemsFetched: s.avgItemsFetched24h,
-    avgDurationMs: s.avgDurationMs24h || 0,
+    avgItemsFetched: s.avgItemsFetched24H,
+    avgDurationMs: s.avgDurationMs24H || 0,
   };
 }
 
@@ -251,11 +251,11 @@ export async function getAllSourcesHealth(): Promise<Map<string, Awaited<ReturnT
   
   for (const s of allSummaries) {
     summary.set(s.sourceId, {
-      successRate: s.successRate24h,
-      totalExecutions: s.totalExecutions24h,
+      successRate: s.successRate24H,
+      totalExecutions: s.totalExecutions24H,
       consecutiveFailures: s.consecutiveFailures,
-      avgItemsFetched: s.avgItemsFetched24h,
-      avgDurationMs: s.avgDurationMs24h || 0,
+      avgItemsFetched: s.avgItemsFetched24H,
+      avgDurationMs: s.avgDurationMs24H || 0,
     });
   }
   
@@ -305,7 +305,7 @@ async function checkHealthAndAlert(sourceId: string, sourceName: string): Promis
       await db
         .update(scraperHealthSummary)
         .set({
-          alertSent: true,
+          alertSent: 1,
           alertSentAt: new Date().toISOString(),
         })
         .where(eq(scraperHealthSummary.sourceId, sourceId));

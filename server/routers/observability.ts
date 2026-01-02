@@ -10,7 +10,7 @@ import {
   getRecentPipelineExecutions,
   getPipelineSuccessRate,
   getAverageAiQualityScore,
-  getSourceReliabilityMetrics,
+  getSourceHealthMetrics,
   getPipelinePerformanceMetrics,
   getQualityMetricsDistribution,
   getFailedExecutions,

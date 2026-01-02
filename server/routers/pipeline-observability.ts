@@ -13,7 +13,7 @@ import {
   getPipelineSuccessRate,
   getAverageAiQualityScore,
   getAiQualityScoreTrend,
-  getSourceReliabilityMetrics,
+  getSourceHealthMetrics,
   getPipelinePerformanceMetrics,
   getQualityMetricsDistribution,
   getFailedExecutions,
@@ -114,7 +114,7 @@ export const pipelineObservabilityRouter = router({
       })
     )
     .query(async ({ input }) => {
-      return await getSourceReliabilityMetrics(input.days);
+      return await getSourceHealthMetrics(input.days);
     }),
 
   /**
@@ -176,7 +176,7 @@ export const pipelineObservabilityRouter = router({
       ] = await Promise.all([
         getPipelineSuccessRate(input.days),
         getAverageAiQualityScore(input.days),
-        getSourceReliabilityMetrics(input.days),
+        getSourceHealthMetrics(input.days),
         getPipelinePerformanceMetrics(input.days),
         getQualityMetricsDistribution(input.days),
         getRecentPipelineExecutions(10),

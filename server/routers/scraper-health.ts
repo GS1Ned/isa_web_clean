@@ -117,7 +117,7 @@ export const scraperHealthRouter = router({
       const failures = await db
         .select()
         .from(scraperExecutions)
-        .where(eq(scraperExecutions.success, false))
+        .where(eq(scraperExecutions.success, 0))
         .orderBy(desc(scraperExecutions.startedAt))
         .limit(input.limit);
 
@@ -145,7 +145,7 @@ export const scraperHealthRouter = router({
       const executions = await db
         .select()
         .from(scraperExecutions)
-        .where(gte(scraperExecutions.startedAt, cutoffTime));
+        .where(gte(scraperExecutions.startedAt, cutoffTime.toISOString()));
 
       const totalExecutions = executions.length;
       const successfulExecutions = executions.filter((e) => e.success).length;
@@ -266,7 +266,7 @@ export const scraperHealthRouter = router({
       await db
         .update(scraperHealthSummary)
         .set({
-          alertSent: false,
+          alertSent: 0,
           alertSentAt: null,
         })
         .where(eq(scraperHealthSummary.sourceId, input.sourceId));
@@ -296,7 +296,7 @@ export const scraperHealthRouter = router({
       const executions = await db
         .select()
         .from(scraperExecutions)
-        .where(gte(scraperExecutions.startedAt, cutoffTime))
+        .where(gte(scraperExecutions.startedAt, cutoffTime.toISOString()))
         .orderBy(scraperExecutions.startedAt);
 
       // Determine bucket size based on time range
@@ -340,7 +340,7 @@ export const scraperHealthRouter = router({
 
       // Aggregate executions into buckets
       for (const exec of executions) {
-        const bucketTime = Math.floor(exec.startedAt.getTime() / bucketSizeMs) * bucketSizeMs;
+        const bucketTime = Math.floor(new Date(exec.startedAt).getTime() / bucketSizeMs) * bucketSizeMs;
         
         if (!buckets.has(bucketTime)) {
           buckets.set(bucketTime, new Map());

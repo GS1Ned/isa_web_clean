@@ -37,7 +37,7 @@ export const templatesRouter = router({
       let query = db
         .select()
         .from(roadmapTemplates)
-        .where(eq(roadmapTemplates.isPublic, true));
+        .where(eq(roadmapTemplates.isPublic, 1));
 
       if (input.category) {
         query = db
@@ -45,7 +45,7 @@ export const templatesRouter = router({
           .from(roadmapTemplates)
           .where(
             and(
-              eq(roadmapTemplates.isPublic, true),
+              eq(roadmapTemplates.isPublic, 1),
               eq(roadmapTemplates.category, input.category)
             )
           );
@@ -57,7 +57,7 @@ export const templatesRouter = router({
           .from(roadmapTemplates)
           .where(
             and(
-              eq(roadmapTemplates.isPublic, true),
+              eq(roadmapTemplates.isPublic, 1),
               like(roadmapTemplates.name, `%${input.search}%`)
             )
           );
@@ -188,8 +188,8 @@ export const templatesRouter = router({
           ? parseFloat(t.estimatedImpact.toString())
           : 0) as any,
         status: "draft",
-        startDate,
-        targetCompletionDate,
+        startDate: startDate.toISOString(),
+        targetCompletionDate: targetCompletionDate.toISOString(),
       });
 
       const roadmapId = (roadmapResult as any).insertId;
@@ -216,11 +216,11 @@ export const templatesRouter = router({
           status: "pending",
           startDate: new Date(
             startDate.getTime() + ta.sequenceNumber * 7 * 24 * 60 * 60 * 1000
-          ),
+          ).toISOString(),
           targetDate: new Date(
             startDate.getTime() +
               (ta.sequenceNumber + 1) * 7 * 24 * 60 * 60 * 1000
-          ),
+          ).toISOString(),
           successCriteria: ta.successCriteria,
         });
       }
@@ -242,7 +242,7 @@ export const templatesRouter = router({
             : 0) as any,
           targetDate: new Date(
             startDate.getTime() + tm.daysFromStart * 24 * 60 * 60 * 1000
-          ),
+          ).toISOString(),
           status: "pending",
         });
       }

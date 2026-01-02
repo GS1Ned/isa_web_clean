@@ -621,7 +621,7 @@ export const appRouter = router({
             type: regulation.regulationType,
             celexId: regulation.celexId || "",
             description: regulation.description || "",
-            effectiveDate: regulation.effectiveDate || new Date(),
+            effectiveDate: regulation.effectiveDate ? new Date(regulation.effectiveDate) : new Date(),
             enforcementDate: null,
             status: "Active",
             applicableSectors: [],
@@ -669,7 +669,7 @@ export const appRouter = router({
             type: regulation.regulationType,
             celexId: regulation.celexId || "",
             description: regulation.description || "",
-            effectiveDate: regulation.effectiveDate || new Date(),
+            effectiveDate: regulation.effectiveDate ? new Date(regulation.effectiveDate) : new Date(),
             enforcementDate: null,
             status: "Active",
             applicableSectors: [],
@@ -716,7 +716,7 @@ export const appRouter = router({
             type: reg.regulationType,
             celexId: reg.celexId || "",
             status: "Active",
-            effectiveDate: reg.effectiveDate || new Date(),
+            effectiveDate: reg.effectiveDate ? new Date(reg.effectiveDate) : new Date(),
             applicableSectors: [],
             applicableGS1Standards: [],
           }));
@@ -870,8 +870,8 @@ export const appRouter = router({
         if (input?.standard) {
           conditions.push(eq(esrsDatapoints.esrsStandard, input.standard));
         }
-        if (input?.dataType) {
-          conditions.push(like(esrsDatapoints.dataType, `%${input.dataType}%`));
+        if (input?.data_type) {
+          conditions.push(like(esrsDatapoints.dataType, `%${input.data_type}%`));
         }
         if (input?.voluntary !== undefined) {
           conditions.push(eq(esrsDatapoints.voluntary, input.voluntary ? 1 : 0));
@@ -959,7 +959,7 @@ export const appRouter = router({
         .groupBy(esrsDatapoints.dataType);
 
       const byDataType = Object.fromEntries(
-        byDataTypeResult.map(r => [r.dataType || "unknown", Number(r.count)])
+        byDataTypeResult.map(r => [r.data_type || "unknown", Number(r.count)])
       );
 
       return { total, byStandard, byDataType };

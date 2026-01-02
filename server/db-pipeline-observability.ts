@@ -15,8 +15,8 @@ export async function savePipelineExecutionLog(data: {
   executionId: string;
   pipelineType: string;
   triggeredBy: string;
-  startedAt: Date;
-  completedAt?: Date | null;
+  startedAt: string;
+  completedAt?: string | null;
   durationMs?: number | null;
   status: string;
   sourcesAttempted: number;
@@ -92,8 +92,8 @@ export async function getPipelineExecutionById(executionId: string) {
  * Get pipeline executions by date range
  */
 export async function getPipelineExecutionsByDateRange(
-  startDate: Date,
-  endDate: Date,
+  startDate: string,
+  endDate: string,
   pipelineType?: string
 ) {
   const conditions = [
@@ -129,7 +129,7 @@ export async function getPipelineSuccessRate(days = 7) {
       successful: sql<number>`SUM(CASE WHEN ${pipelineExecutionLog.status} = 'success' THEN 1 ELSE 0 END)`,
     })
     .from(pipelineExecutionLog)
-    .where(gte(pipelineExecutionLog.startedAt, startDate));
+    .where(gte(pipelineExecutionLog.startedAt, startDate.toISOString()));
   
   const { total, successful } = result[0];
   return total > 0 ? (successful / total) * 100 : 0;
@@ -151,7 +151,7 @@ export async function getAverageAiQualityScore(days = 7) {
     .from(pipelineExecutionLog)
     .where(
       and(
-        gte(pipelineExecutionLog.startedAt, startDate),
+        gte(pipelineExecutionLog.startedAt, startDate.toISOString()),
         sql`${pipelineExecutionLog.aiAvgQualityScore} IS NOT NULL`
       )
     );
@@ -177,7 +177,7 @@ export async function getAiQualityScoreTrend(days = 30) {
     .from(pipelineExecutionLog)
     .where(
       and(
-        gte(pipelineExecutionLog.startedAt, startDate),
+        gte(pipelineExecutionLog.startedAt, startDate.toISOString()),
         sql`${pipelineExecutionLog.aiAvgQualityScore} IS NOT NULL`
       )
     )
@@ -188,7 +188,7 @@ export async function getAiQualityScoreTrend(days = 30) {
 /**
  * Get source reliability metrics
  */
-export async function getSourceReliabilityMetrics(days = 7) {
+export async function getSourceHealthMetrics(days = 7) {
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
   
@@ -201,7 +201,7 @@ export async function getSourceReliabilityMetrics(days = 7) {
       totalFailed: sql<number>`SUM(${pipelineExecutionLog.sourcesFailed})`,
     })
     .from(pipelineExecutionLog)
-    .where(gte(pipelineExecutionLog.startedAt, startDate));
+    .where(gte(pipelineExecutionLog.startedAt, startDate.toISOString()));
   
   const { totalAttempts, totalSucceeded, totalFailed } = result[0];
   const successRate = totalAttempts > 0 ? (totalSucceeded / totalAttempts) * 100 : 0;
@@ -233,7 +233,7 @@ export async function getPipelinePerformanceMetrics(days = 7) {
     .from(pipelineExecutionLog)
     .where(
       and(
-        gte(pipelineExecutionLog.startedAt, startDate),
+        gte(pipelineExecutionLog.startedAt, startDate.toISOString()),
         sql`${pipelineExecutionLog.durationMs} IS NOT NULL`
       )
     );
@@ -260,7 +260,7 @@ export async function getQualityMetricsDistribution(days = 7) {
       withRecommendations: sql<number>`SUM(${pipelineExecutionLog.itemsWithRecommendations})`,
     })
     .from(pipelineExecutionLog)
-    .where(gte(pipelineExecutionLog.startedAt, startDate));
+    .where(gte(pipelineExecutionLog.startedAt, startDate.toISOString()));
   
   const metrics = result[0];
   const total = metrics.totalProcessed || 1; // Avoid division by zero
@@ -300,7 +300,7 @@ export async function cleanupOldExecutionLogs(retentionDays = 30) {
   if (!db) throw new Error('Database not available');
   const result = await db
     .delete(pipelineExecutionLog)
-    .where(lte(pipelineExecutionLog.startedAt, cutoffDate));
+    .where(lte(pipelineExecutionLog.startedAt, cutoffDate.toISOString()));
   
   return result;
 }
