@@ -46,7 +46,7 @@ export default function GovernanceDocuments() {
     }
   };
 
-  const getVerificationBadge = (lastVerifiedDate: Date | null) => {
+  const getVerificationBadge = (lastVerifiedDate: string | null) => {
     if (!lastVerifiedDate) {
       return <Badge variant="destructive">Never Verified</Badge>;
     }
@@ -295,9 +295,9 @@ export default function GovernanceDocuments() {
               )}
 
               {/* Tags */}
-              {doc.tags && doc.tags.length > 0 && (
+              {doc.tags && (doc.tags as string[]).length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {doc.tags.map((tag: string) => (
+                  {(doc.tags as string[]).map((tag: string) => (
                     <Badge key={tag} variant="secondary">
                       {tag}
                     </Badge>

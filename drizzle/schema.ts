@@ -1822,8 +1822,5 @@ export type InsertGS1Standard = typeof gs1Standards.$inferInsert;
 export type HubNews = typeof hubNews.$inferSelect;
 export type InsertHubNews = typeof hubNews.$inferInsert;
 
-export type EudrSupplyChain = typeof eudrSupplyChains.$inferSelect;
-export type InsertEudrSupplyChain = typeof eudrSupplyChains.$inferInsert;
-
 export type Contact = typeof contacts.$inferSelect;
 export type InsertContact = typeof contacts.$inferInsert;

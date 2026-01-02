@@ -1,9 +1,8 @@
 import { getDb } from "./db";
-import {
-  regulatoryChangeLog,
-  type RegulatoryChangeLogEntry,
-  type InsertRegulatoryChangeLogEntry,
-} from "../drizzle/schema";
+import { regulatoryChangeLog } from "../drizzle/schema";
+
+type RegulatoryChangeLogEntry = typeof regulatoryChangeLog.$inferSelect;
+type InsertRegulatoryChangeLogEntry = typeof regulatoryChangeLog.$inferInsert;
 import { eq, desc, and, sql } from "drizzle-orm";
 
 /**

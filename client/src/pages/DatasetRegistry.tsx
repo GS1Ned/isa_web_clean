@@ -27,7 +27,7 @@ export default function DatasetRegistry() {
 
   const { data: stats } = trpc.datasetRegistry.stats.useQuery();
 
-  const getVerificationStatus = (lastVerifiedDate: Date | null) => {
+  const getVerificationStatus = (lastVerifiedDate: string | null) => {
     if (!lastVerifiedDate) {
       return { status: "never", color: "destructive", text: "Never verified" };
     }

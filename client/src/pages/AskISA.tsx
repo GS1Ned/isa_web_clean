@@ -207,7 +207,7 @@ export default function AskISA() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const getSourceIcon = (type: string) => {
+  const getSourceIcon = (type?: string) => {
     switch (type) {
       case "regulation":
         return <FileText className="h-4 w-4" />;
@@ -222,7 +222,7 @@ export default function AskISA() {
     }
   };
 
-  const getSourceTypeLabel = (type: string) => {
+  const getSourceTypeLabel = (type?: string) => {
     switch (type) {
       case "regulation":
         return "EU Regulation";

@@ -200,16 +200,16 @@ export default function NewsDetail() {
               )}
 
               {/* Multi-Source Display */}
-              {newsItem.sources && newsItem.sources.length > 1 ? (
+              {newsItem.sources && (newsItem.sources as any[]).length > 1 ? (
                 <div className="mt-6 pt-6 border-t space-y-4">
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-sm">Multiple Sources</h3>
                     <Badge variant="secondary" className="text-xs">
-                      {newsItem.sources.length} sources
+                      {(newsItem.sources as any[]).length} sources
                     </Badge>
                   </div>
                   <div className="space-y-3">
-                    {newsItem.sources.map((source, index) => {
+                    {(newsItem.sources as any[]).map((source: any, index: number) => {
                       const sourceTypeLabels: Record<string, string> = {
                         EU_OFFICIAL: "EU Official",
                         GS1_OFFICIAL: "GS1 Official",
