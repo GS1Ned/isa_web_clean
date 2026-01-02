@@ -6,6 +6,7 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
+import { performHealthCheck } from "../health";
 import { serveStatic, setupVite } from "./vite";
 import {
   handleDailyNewsIngestion,
@@ -40,6 +41,21 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+  // Health check endpoint (public, no auth required)
+  app.get("/health", async (req, res) => {
+    try {
+      const health = await performHealthCheck();
+      const statusCode = health.status === 'healthy' ? 200 : health.status === 'degraded' ? 200 : 503;
+      res.status(statusCode).json(health);
+    } catch (error) {
+      res.status(503).json({
+        status: 'unhealthy',
+        timestamp: new Date().toISOString(),
+        error: error instanceof Error ? error.message : 'Health check failed',
+      });
+    }
+  });
+
   // Cron REST endpoints (before tRPC to avoid conflicts)
   app.get("/cron/health", handleCronHealth);
   app.get("/cron/daily-news-ingestion", handleDailyNewsIngestion);
