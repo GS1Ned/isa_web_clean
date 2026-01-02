@@ -1866,3 +1866,42 @@ export const performanceLog = mysqlTable("performance_log", {
 	index("duration_idx").on(table.duration),
 	index("userId_idx").on(table.userId),
 ]);
+
+// Alert History Table
+export const alertHistory = mysqlTable("alert_history", {
+	id: int().autoincrement().notNull(),
+	alertType: varchar("alert_type", { length: 50 }).notNull(), // 'error_rate', 'critical_error', 'performance_degradation'
+	severity: varchar({ length: 20 }).notNull(), // 'info', 'warning', 'critical'
+	title: varchar({ length: 255 }).notNull(),
+	message: text().notNull(),
+	metadata: json(), // { errorRate, operations, thresholds, etc. }
+	notificationSent: tinyint("notification_sent").default(0).notNull(), // 0 = false, 1 = true
+	acknowledgedAt: timestamp("acknowledged_at", { mode: 'string' }),
+	acknowledgedBy: int("acknowledged_by"), // userId
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("alert_type_idx").on(table.alertType),
+	index("severity_idx").on(table.severity),
+	index("created_at_idx").on(table.createdAt),
+	index("acknowledged_at_idx").on(table.acknowledgedAt),
+]);
+
+// Alert Cooldowns Table
+export const alertCooldowns = mysqlTable("alert_cooldowns", {
+	id: int().autoincrement().notNull(),
+	alertType: varchar("alert_type", { length: 50 }).notNull(),
+	alertKey: varchar("alert_key", { length: 255 }).notNull(), // e.g., 'error_rate' or 'performance_degradation:operation_name'
+	lastTriggeredAt: timestamp("last_triggered_at", { mode: 'string' }).notNull(),
+	expiresAt: timestamp("expires_at", { mode: 'string' }).notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("alert_type_key_idx").on(table.alertType, table.alertKey),
+	index("expires_at_idx").on(table.expiresAt),
+]);
+
+export type AlertHistory = typeof alertHistory.$inferSelect;
+export type InsertAlertHistory = typeof alertHistory.$inferInsert;
+export type AlertCooldown = typeof alertCooldowns.$inferSelect;
+export type InsertAlertCooldown = typeof alertCooldowns.$inferInsert;

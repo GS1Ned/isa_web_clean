@@ -122,6 +122,7 @@ export default function SystemMonitoring() {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="errors">Error tracking</TabsTrigger>
           <TabsTrigger value="performance">Performance</TabsTrigger>
+          <TabsTrigger value="alerts">Alert History</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -449,7 +450,261 @@ export default function SystemMonitoring() {
             </Card>
           </div>
         </TabsContent>
+
+        <TabsContent value="alerts" className="space-y-6">
+          <AlertHistoryTab />
+        </TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+/**
+ * Alert History Tab Component
+ */
+function AlertHistoryTab() {
+  const [filter, setFilter] = useState<{
+    alertType?: "error_rate" | "critical_error" | "performance_degradation";
+    severity?: "info" | "warning" | "critical";
+    unacknowledgedOnly: boolean;
+  }>({ unacknowledgedOnly: false });
+
+  const { data: alertHistory, refetch } = trpc.productionMonitoring.getAlertHistory.useQuery(
+    {
+      limit: 50,
+      ...filter,
+    },
+    { refetchInterval: 30000 }
+  );
+
+  const { data: unacknowledgedCount } = trpc.productionMonitoring.getUnacknowledgedAlertCount.useQuery(
+    undefined,
+    { refetchInterval: 30000 }
+  );
+
+  const acknowledgeMutation = trpc.productionMonitoring.acknowledgeAlert.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  const triggerDetectionMutation = trpc.productionMonitoring.triggerAlertDetection.useMutation();
+
+  const handleAcknowledge = (alertId: number) => {
+    acknowledgeMutation.mutate({ alertId });
+  };
+
+  const handleTriggerDetection = () => {
+    triggerDetectionMutation.mutate();
+  };
+
+  const getAlertTypeLabel = (type: string) => {
+    switch (type) {
+      case "error_rate":
+        return "Error Rate";
+      case "critical_error":
+        return "Critical Error";
+      case "performance_degradation":
+        return "Performance Degradation";
+      default:
+        return type;
+    }
+  };
+
+  const getSeverityBadge = (severity: string) => {
+    switch (severity) {
+      case "critical":
+        return <Badge variant="destructive">Critical</Badge>;
+      case "warning":
+        return <Badge variant="default">Warning</Badge>;
+      case "info":
+        return <Badge variant="secondary">Info</Badge>;
+      default:
+        return <Badge>{severity}</Badge>;
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Summary Cards */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Total Alerts
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{alertHistory?.length || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Last 50 alerts</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Unacknowledged
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-orange-600">
+              {unacknowledgedCount?.count || 0}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">Require attention</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Actions
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Button
+              size="sm"
+              onClick={handleTriggerDetection}
+              disabled={triggerDetectionMutation.isPending}
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Trigger Detection
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Filters</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-wrap gap-4">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium">Alert Type:</label>
+              <select
+                className="border rounded px-2 py-1 text-sm"
+                value={filter.alertType || ""}
+                onChange={(e) =>
+                  setFilter({
+                    ...filter,
+                    alertType: e.target.value as any || undefined,
+                  })
+                }
+              >
+                <option value="">All</option>
+                <option value="error_rate">Error Rate</option>
+                <option value="critical_error">Critical Error</option>
+                <option value="performance_degradation">Performance Degradation</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium">Severity:</label>
+              <select
+                className="border rounded px-2 py-1 text-sm"
+                value={filter.severity || ""}
+                onChange={(e) =>
+                  setFilter({
+                    ...filter,
+                    severity: e.target.value as any || undefined,
+                  })
+                }
+              >
+                <option value="">All</option>
+                <option value="info">Info</option>
+                <option value="warning">Warning</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium">
+                <input
+                  type="checkbox"
+                  checked={filter.unacknowledgedOnly}
+                  onChange={(e) =>
+                    setFilter({ ...filter, unacknowledgedOnly: e.target.checked })
+                  }
+                  className="mr-2"
+                />
+                Unacknowledged only
+              </label>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Alert History Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Alert History</CardTitle>
+          <CardDescription>
+            Recent alerts triggered by the monitoring system
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Time</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Severity</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead>Notification</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {alertHistory?.map((alert: any) => (
+                <TableRow key={alert.id}>
+                  <TableCell className="text-sm">
+                    {formatDistanceToNow(new Date(alert.createdAt), { addSuffix: true })}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline">{getAlertTypeLabel(alert.alertType)}</Badge>
+                  </TableCell>
+                  <TableCell>{getSeverityBadge(alert.severity)}</TableCell>
+                  <TableCell className="font-medium">{alert.title}</TableCell>
+                  <TableCell>
+                    {alert.notificationSent ? (
+                      <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    ) : (
+                      <XCircle className="h-4 w-4 text-gray-400" />
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {alert.acknowledgedAt ? (
+                      <Badge variant="secondary">Acknowledged</Badge>
+                    ) : (
+                      <Badge variant="default">Pending</Badge>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {!alert.acknowledgedAt && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleAcknowledge(alert.id)}
+                        disabled={acknowledgeMutation.isPending}
+                      >
+                        Acknowledge
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          {(!alertHistory || alertHistory.length === 0) && (
+            <div className="text-center py-8 text-muted-foreground">
+              No alerts found
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

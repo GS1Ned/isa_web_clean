@@ -2298,3 +2298,48 @@ All production-critical systems are now type-safe. The remaining errors are acce
   - [x] Test error handling and edge cases
   - [x] Test admin authorization enforcement (covered by database helper tests)
 - [ ] Update documentation with dashboard usage guide
+
+
+---
+
+## Real-Time Alerting System for Monitoring Dashboard
+
+### Phase 1: Design Alerting Thresholds and Notification Rules
+- [x] Define error rate thresholds (e.g., >10 errors/hour triggers warning, >50 errors/hour triggers critical)
+- [x] Define critical error thresholds (e.g., >5 critical errors in 15 minutes)
+- [x] Define performance degradation thresholds (e.g., p95 duration >2x baseline)
+- [x] Define alert cooldown periods to prevent notification spam
+- [x] Design alert severity levels (info, warning, critical)
+- [x] Design notification channels (email, in-app, future: Slack/Teams)
+
+### Phase 2: Implement Alert Detection Logic
+- [x] Create alert-detection.ts module with threshold checking functions
+- [x] Add checkErrorRateThreshold() function
+- [x] Add checkCriticalErrorThreshold() function
+- [x] Add checkPerformanceDegradation() function
+- [x] Add alert cooldown tracking to prevent duplicate notifications
+- [x] Write unit tests for alert detection logic
+
+### Phase 3: Create Alert Notification Service
+- [x] Create alert-notification-service.ts module
+- [x] Implement sendErrorRateAlert() using notifyOwner API
+- [x] Implement sendCriticalErrorAlert() with error details
+- [x] Implement sendPerformanceDegradationAlert() with metrics
+- [x] Add alert history tracking in database (alert_history table)
+- [x] Add alert acknowledgment functionality
+
+### Phase 4: Add Alert Configuration UI
+- [x] Create AlertConfiguration component for admin dashboard
+- [x] Add threshold configuration form (error rate, critical errors, performance)
+- [x] Add cooldown period configuration
+- [x] Add notification channel toggles
+- [x] Add alert history viewer with acknowledgment actions
+- [x] Integrate into /admin/system-monitoring page
+
+### Phase 5: Test and Document
+- [x] Write integration tests for end-to-end alerting flow
+- [x] Test alert triggering with simulated error spikes
+- [x] Test alert cooldown functionality
+- [x] Test alert acknowledgment workflow
+- [x] Create ALERTING_SYSTEM.md documentation
+- [ ] Update MONITORING_TESTS.md with alerting tests

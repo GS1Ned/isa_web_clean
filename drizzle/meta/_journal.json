@@ -36,6 +36,13 @@
       "when": 1766183922197,
       "tag": "0004_optimal_whistler",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1767376428436,
+      "tag": "0005_aspiring_sphinx",
+      "breakpoints": true
     }
   ]
 }

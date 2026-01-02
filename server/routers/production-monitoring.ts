@@ -18,6 +18,12 @@ import {
   getPerformanceSummary,
   clearMetrics,
 } from "../_core/performance-monitoring";
+import {
+  getAlertHistory,
+  acknowledgeAlert,
+  getUnacknowledgedCount,
+} from "../alert-notification-service";
+import { detectAllAlerts, DEFAULT_THRESHOLDS } from "../alert-detection";
 
 export const productionMonitoringRouter = router({
   /**
@@ -99,5 +105,64 @@ export const productionMonitoringRouter = router({
   clearMetrics: adminProcedure.mutation(() => {
     clearMetrics();
     return { success: true };
+  }),
+
+  /**
+   * Get alert history
+   */
+  getAlertHistory: adminProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(200).optional().default(50),
+        alertType: z.enum(["error_rate", "critical_error", "performance_degradation"]).optional(),
+        severity: z.enum(["info", "warning", "critical"]).optional(),
+        unacknowledgedOnly: z.boolean().optional().default(false),
+      })
+    )
+    .query(async ({ input }) => {
+      return getAlertHistory(
+        input.limit,
+        input.alertType,
+        input.severity,
+        input.unacknowledgedOnly
+      );
+    }),
+
+  /**
+   * Acknowledge an alert
+   */
+  acknowledgeAlert: adminProcedure
+    .input(
+      z.object({
+        alertId: z.number(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const success = await acknowledgeAlert(input.alertId, ctx.user.id);
+      return { success };
+    }),
+
+  /**
+   * Get unacknowledged alert count
+   */
+  getUnacknowledgedAlertCount: adminProcedure.query(async () => {
+    const count = await getUnacknowledgedCount();
+    return { count };
+  }),
+
+  /**
+   * Manually trigger alert detection (for testing)
+   */
+  triggerAlertDetection: adminProcedure.mutation(async () => {
+    const alerts = await detectAllAlerts(DEFAULT_THRESHOLDS);
+    return {
+      success: true,
+      alertsDetected: alerts.length,
+      alerts: alerts.map((a) => ({
+        type: a.alertType,
+        severity: a.severity,
+        title: a.title,
+      })),
+    };
   }),
 });

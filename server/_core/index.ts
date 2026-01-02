@@ -15,6 +15,7 @@ import {
   handleWeeklyNewsArchival,
   handleCronHealth,
 } from "../cron-endpoint";
+import { scheduleAlertMonitoring } from "../alert-monitoring-cron";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -97,6 +98,9 @@ async function startServer() {
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
+    
+    // Start alert monitoring (runs every 5 minutes)
+    scheduleAlertMonitoring();
   });
 }
 
