@@ -1808,3 +1808,22 @@ export const users = mysqlTable("users", {
 (table) => [
 	index("users_openId_unique").on(table.openId),
 ]);
+
+// Type exports for commonly used tables
+export type User = typeof users.$inferSelect;
+export type InsertUser = typeof users.$inferInsert;
+
+export type Regulation = typeof regulations.$inferSelect;
+export type InsertRegulation = typeof regulations.$inferInsert;
+
+export type GS1Standard = typeof gs1Standards.$inferSelect;
+export type InsertGS1Standard = typeof gs1Standards.$inferInsert;
+
+export type HubNews = typeof hubNews.$inferSelect;
+export type InsertHubNews = typeof hubNews.$inferInsert;
+
+export type EudrSupplyChain = typeof eudrSupplyChains.$inferSelect;
+export type InsertEudrSupplyChain = typeof eudrSupplyChains.$inferInsert;
+
+export type Contact = typeof contacts.$inferSelect;
+export type InsertContact = typeof contacts.$inferInsert;

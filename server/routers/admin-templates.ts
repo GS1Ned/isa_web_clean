@@ -373,7 +373,7 @@ export const adminTemplatesRouter = router({
 
       await db
         .update(roadmapTemplates)
-        .set({ isPublic: true })
+        .set({ isPublic: 1 })
         .where(eq(roadmapTemplates.id, input.templateId));
 
       return { message: "Template published successfully" };
@@ -394,7 +394,7 @@ export const adminTemplatesRouter = router({
 
       await db
         .update(roadmapTemplates)
-        .set({ isPublic: false })
+        .set({ isPublic: 0 })
         .where(eq(roadmapTemplates.id, input.templateId));
 
       return { message: "Template unpublished successfully" };

@@ -179,7 +179,7 @@ async function parseLCLCodeLists(workbook: ExcelJS.Workbook): Promise<CodeListRe
       codeDescription: null,
       codeListSegment: null,
       addedInVersion: changed || null,
-      isActive: true,
+      isActive: 1,
     });
   }
   

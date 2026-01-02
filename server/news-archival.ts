@@ -75,7 +75,7 @@ export async function archiveOldNews(
           publishedDate: item.publishedDate,
           retrievedAt: item.retrievedAt,
           isAutomated: item.isAutomated,
-          archivedAt: new Date(),
+          archivedAt: new Date().toISOString(),
           originalCreatedAt: item.createdAt,
           originalUpdatedAt: item.updatedAt,
         });

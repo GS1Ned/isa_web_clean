@@ -82,7 +82,7 @@ export const batchEpcisRouter = router({
               .update(epcisBatchJobs)
               .set({
                 status: "completed",
-                completedAt: new Date(),
+                completedAt: new Date().toISOString(),
               })
               .where(eq(epcisBatchJobs.id, batchJob.insertId as number));
           } catch (error) {
@@ -92,7 +92,7 @@ export const batchEpcisRouter = router({
               .set({
                 status: "failed",
                 errorMessage: (error as Error).message,
-                completedAt: new Date(),
+                completedAt: new Date().toISOString(),
               })
               .where(eq(epcisBatchJobs.id, batchJob.insertId as number));
           }

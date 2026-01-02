@@ -104,7 +104,7 @@ export const epcisRouter = router({
         const [insertedEvent] = await db.insert(epcisEvents).values({
           userId,
           eventType: event.type,
-          eventTime: new Date(event.eventTime),
+          eventTime: new Date(event.eventTime).toISOString(),
           eventTimeZoneOffset: event.eventTimeZoneOffset,
           action: event.action,
           bizStep: event.bizStep,

@@ -99,7 +99,7 @@ async function insertRegulation(regulation: any): Promise<void> {
     title: regulation.title,
     regulationType: regulation.type || "OTHER",
     effectiveDate: regulation.effectiveDate
-      ? new Date(regulation.effectiveDate)
+      ? new Date(regulation.effectiveDate).toISOString()
       : null,
     description: regulation.description || null,
     sourceUrl: regulation.eurlexUrl || null,

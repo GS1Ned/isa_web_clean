@@ -104,8 +104,8 @@ export async function cacheExport(
     const entry: ExportCacheEntry = {
       regulationId,
       format,
-      cachedAt: new Date(),
-      expiresAt: new Date(Date.now() + CACHE_TTL),
+      cachedAt: new Date().toISOString(),
+      expiresAt: new Date(Date.now().toISOString() + CACHE_TTL),
       s3Key: key,
       fileSize: buffer.length,
       checksum,

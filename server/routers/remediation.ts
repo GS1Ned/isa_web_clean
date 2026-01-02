@@ -426,7 +426,7 @@ export const remediationRouter = router({
         .update(complianceEvidence)
         .set({
           verificationStatus: status,
-          verifiedAt: new Date(),
+          verifiedAt: new Date().toISOString(),
           verifiedBy: ctx.user.name || "Unknown",
           verificationNotes: input.notes,
         })
@@ -459,7 +459,7 @@ export const remediationRouter = router({
         .update(riskRemediationPlans)
         .set({
           status: "completed",
-          completedAt: new Date(),
+          completedAt: new Date().toISOString(),
         })
         .where(eq(riskRemediationPlans.id, input.planId));
 
@@ -467,8 +467,8 @@ export const remediationRouter = router({
       await db
         .update(supplyChainRisks)
         .set({
-          isResolved: true,
-          resolvedAt: new Date(),
+          isResolved: 1,
+          resolvedAt: new Date().toISOString(),
         })
         .where(eq(supplyChainRisks.id, plans[0].riskId));
 

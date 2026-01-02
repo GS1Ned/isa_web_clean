@@ -56,8 +56,8 @@ export async function storeKnowledgeChunk(data: {
       lastVerifiedDate: data.lastVerifiedDate,
       isDeprecated: 0,
       deprecationReason: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     });
 
     return result;
@@ -171,8 +171,8 @@ export async function createQAConversation(userId?: number, title?: string) {
       userId,
       title,
       messageCount: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     });
 
     return {
@@ -180,8 +180,8 @@ export async function createQAConversation(userId?: number, title?: string) {
       userId,
       title,
       messageCount: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
   } catch (error) {
     console.error("[Database] Failed to create conversation:", error);
@@ -212,7 +212,7 @@ export async function addQAMessage(data: {
       content: data.content,
       sources: data.sources as any,
       retrievedChunks: data.retrievedChunks,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     });
 
     // Update conversation message count
@@ -220,14 +220,14 @@ export async function addQAMessage(data: {
       .update(qaConversations)
       .set({
         messageCount: sql`${qaConversations.messageCount} + 1`,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       })
       .where(eq(qaConversations.id, data.conversationId));
 
     return {
       id: result.insertId,
       ...data,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
   } catch (error) {
     console.error("[Database] Failed to add message:", error);

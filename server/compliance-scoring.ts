@@ -369,7 +369,7 @@ async function checkAndAwardMilestones(
         milestoneTitle: milestone.title,
         description: milestone.description,
         badge: milestone.badge,
-        achievedAt: new Date(),
+        achievedAt: new Date().toISOString(),
       });
     }
   }

@@ -236,7 +236,7 @@ export async function ingestCodeLists(
         code: codeList.code,
         description: codeList.description,
         sortOrder: 0,
-        isActive: true,
+        isActive: 1,
       });
 
       success++;

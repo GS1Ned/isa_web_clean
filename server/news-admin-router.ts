@@ -71,7 +71,7 @@ export const newsAdminRouter = router({
     // Start pipeline asynchronously
     pipelineStatus = {
       status: "running",
-      startedAt: new Date(),
+      startedAt: new Date().toISOString(),
     };
 
     // Run in background (don't await)
@@ -88,7 +88,7 @@ export const newsAdminRouter = router({
         pipelineStatus = {
           status: "completed",
           startedAt: pipelineStatus.startedAt,
-          completedAt: new Date(),
+          completedAt: new Date().toISOString(),
           result: {
             success: result.success,
             fetched: result.fetched,
@@ -106,7 +106,7 @@ export const newsAdminRouter = router({
         pipelineStatus = {
           status: "failed",
           startedAt: pipelineStatus.startedAt,
-          completedAt: new Date(),
+          completedAt: new Date().toISOString(),
           error: error instanceof Error ? error.message : "Unknown error",
         };
         console.error("[news-admin] Pipeline failed:", error);
@@ -299,7 +299,7 @@ export const newsAdminRouter = router({
           totalRequests: 0,
           totalFailures: 0,
           averageResponseTime: 0,
-          isHealthy: true
+          isHealthy: 1
         }
       };
     });

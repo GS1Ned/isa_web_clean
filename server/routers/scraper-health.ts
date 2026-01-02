@@ -232,7 +232,7 @@ export const scraperHealthRouter = router({
         timeRange: {
           hoursBack: input.hoursBack,
           startTime: cutoffTime,
-          endTime: new Date(),
+          endTime: new Date().toISOString(),
         },
         overall: {
           totalExecutions,

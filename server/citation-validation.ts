@@ -93,7 +93,7 @@ export async function validateCitations(
   }>
 > {
   const db = await getDb();
-  if (!db) return sources.map(s => ({ ...s, isDeprecated: false, needsVerification: false }));
+  if (!db) return sources.map(s => ({ ...s, isDeprecated: 0, needsVerification: false }));
 
   try {
     const { knowledgeEmbeddings } = await import("../drizzle/schema");
@@ -109,7 +109,7 @@ export async function validateCitations(
         if (chunks.length === 0) {
           return {
             ...source,
-            isDeprecated: false,
+            isDeprecated: 0,
             needsVerification: true,
           };
         }
@@ -143,7 +143,7 @@ export async function validateCitations(
     return validatedSources;
   } catch (error) {
     console.error("[Citation] Failed to validate citations:", error);
-    return sources.map(s => ({ ...s, isDeprecated: false, needsVerification: false }));
+    return sources.map(s => ({ ...s, isDeprecated: 0, needsVerification: false }));
   }
 }
 
@@ -165,7 +165,7 @@ export async function markChunkDeprecated(
       .set({
         isDeprecated: 1,
         deprecationReason: reason,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       })
       .where(eq(knowledgeEmbeddings.id, chunkId));
 
@@ -189,8 +189,8 @@ export async function updateVerificationDate(chunkId: number): Promise<boolean> 
     await db
       .update(knowledgeEmbeddings)
       .set({
-        lastVerifiedDate: new Date(),
-        updatedAt: new Date(),
+        lastVerifiedDate: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       })
       .where(eq(knowledgeEmbeddings.id, chunkId));
 

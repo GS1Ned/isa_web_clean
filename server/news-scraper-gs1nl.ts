@@ -154,7 +154,7 @@ export async function scrapeGS1NetherlandsNews(): Promise<ScrapedArticle[]> {
           articles.push({
             title,
             url: fullUrl,
-            publishedAt: new Date(`${year}-01-01`), // Default to Jan 1 of the year
+            publishedAt: new Date(`${year}-01-01`).toISOString(), // Default to Jan 1 of the year
           });
         }
       );

@@ -188,7 +188,7 @@ export const collaborationRouter = router({
         .update(roadmapApprovals)
         .set({
           status: "approved",
-          approvedAt: new Date(),
+          approvedAt: new Date().toISOString(),
           approverComments: input.comments,
         })
         .where(eq(roadmapApprovals.id, input.approvalId));

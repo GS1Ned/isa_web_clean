@@ -113,7 +113,7 @@ export async function updateGovernanceDocument(
     .update(governanceDocuments)
     .set({
       ...updates,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     })
     .where(eq(governanceDocuments.id, id));
   
@@ -133,9 +133,9 @@ export async function updateDocumentVerification(
   const result = await db
     .update(governanceDocuments)
     .set({
-      lastVerifiedDate: new Date(),
+      lastVerifiedDate: new Date().toISOString(),
       verifiedBy,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     })
     .where(eq(governanceDocuments.id, id));
   

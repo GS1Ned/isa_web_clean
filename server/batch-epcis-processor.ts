@@ -116,7 +116,7 @@ export async function processEPCISEvents(
       const _insertedEvent = await db.insert(epcisEvents).values({
         userId,
         eventType: event.type as any,
-        eventTime: new Date(event.eventTime),
+        eventTime: new Date(event.eventTime).toISOString(),
         eventTimeZoneOffset: event.eventTimeZoneOffset,
         action: event.action as any,
         bizStep: event.bizStep,
@@ -153,7 +153,7 @@ export async function processEPCISEvents(
         processedEvents: processedCount,
         failedEvents: failedCount,
         status: failedCount > 0 ? "completed" : "completed",
-        completedAt: new Date(),
+        completedAt: new Date().toISOString(),
       })
       .where(eq(epcisBatchJobs.id, jobId));
   }
@@ -290,7 +290,7 @@ export async function detectComplianceRisks(
       severity: risk.severity,
       description: risk.description,
       recommendedAction: risk.recommendedAction,
-      isResolved: false,
+      isResolved: 0,
     });
   }
 }
@@ -357,7 +357,7 @@ export async function updateSupplyChainAnalytics(
       .insert(supplyChainAnalytics)
       .values({
         userId,
-        metricDate: new Date(),
+        metricDate: new Date().toISOString(),
         totalEvents: eventCount.length,
         totalNodes: nodeCount.length,
         totalEdges: edgeCount.length,

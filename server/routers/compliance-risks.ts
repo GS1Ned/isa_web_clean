@@ -126,8 +126,8 @@ export const complianceRisksRouter = router({
       await db
         .update(supplyChainRisks)
         .set({
-          isResolved: true,
-          resolvedAt: new Date(),
+          isResolved: 1,
+          resolvedAt: new Date().toISOString(),
         })
         .where(eq(supplyChainRisks.id, input.riskId));
 
@@ -295,7 +295,7 @@ export const complianceRisksRouter = router({
         : 100;
 
     return {
-      reportDate: new Date(),
+      reportDate: new Date().toISOString(),
       summary: {
         totalEvents: events.length,
         totalNodes: nodes.length,

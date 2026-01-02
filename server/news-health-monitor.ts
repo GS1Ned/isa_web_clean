@@ -61,8 +61,8 @@ export async function recordScraperExecution(metrics: ScraperHealthMetrics): Pro
       attempts,
       durationMs,
       triggeredBy: "cron",
-      startedAt: timestamp,
-      completedAt: timestamp,
+      startedAt: timestamp?.toISOString(),
+      completedAt: timestamp?.toISOString(),
     });
     
     // Update health summary
@@ -306,7 +306,7 @@ async function checkHealthAndAlert(sourceId: string, sourceName: string): Promis
         .update(scraperHealthSummary)
         .set({
           alertSent: true,
-          alertSentAt: new Date(),
+          alertSentAt: new Date().toISOString(),
         })
         .where(eq(scraperHealthSummary.sourceId, sourceId));
     } catch (notifyError) {

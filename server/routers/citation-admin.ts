@@ -118,8 +118,8 @@ export const citationAdminRouter = router({
           .set({
             datasetId: input.datasetId,
             datasetVersion: input.datasetVersion,
-            lastVerifiedDate: new Date(),
-            updatedAt: new Date(),
+            lastVerifiedDate: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
           })
           .where(eq(knowledgeEmbeddings.sourceType, input.sourceType));
 

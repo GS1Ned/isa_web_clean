@@ -330,7 +330,7 @@ export const appRouter = router({
             userId: ctx.user.id,
             itemId: input.regulationId,
             itemType: "REGULATION",
-            createdAt: new Date(),
+            createdAt: new Date().toISOString(),
           });
 
           return { success: true };
@@ -377,7 +377,7 @@ export const appRouter = router({
             regulationId: input.regulationId,
             alertType: input.alertType as any,
             isActive: 1,
-            createdAt: new Date(),
+            createdAt: new Date().toISOString(),
           });
 
           return { success: true };

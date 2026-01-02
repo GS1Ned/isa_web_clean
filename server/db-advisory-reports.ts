@@ -87,7 +87,7 @@ export async function updateAdvisoryReport(
     .update(advisoryReports)
     .set({
       ...updates,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     })
     .where(eq(advisoryReports.id, id));
   
@@ -111,9 +111,9 @@ export async function updateReportReviewStatus(
     .set({
       reviewStatus: reviewStatus as any,
       reviewedBy,
-      reviewedAt: new Date(),
+      reviewedAt: new Date().toISOString(),
       reviewNotes,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     })
     .where(eq(advisoryReports.id, id));
   
@@ -131,7 +131,7 @@ export async function incrementReportViewCount(id: number) {
     .update(advisoryReports)
     .set({
       viewCount: sql`${advisoryReports.viewCount} + 1`,
-      lastAccessedAt: new Date(),
+      lastAccessedAt: new Date().toISOString(),
     })
     .where(eq(advisoryReports.id, id));
   

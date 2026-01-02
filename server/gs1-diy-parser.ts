@@ -386,7 +386,7 @@ export async function ingestPicklists(
           code: picklist.code,
           description: picklist.descriptionEnglish || picklist.descriptionDutch,
           sortOrder: 0,
-          isActive: true,
+          isActive: 1,
         });
 
         success++;

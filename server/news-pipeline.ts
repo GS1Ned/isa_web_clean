@@ -156,7 +156,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
       content: raw.content || raw.contentSnippet || "",
       source: raw.source.name,
       sourceType: raw.source.type,
-      publishedAt: new Date(raw.pubDate),
+      publishedAt: new Date(raw.pubDate).toISOString(),
       regulationTags: processedItems[i].regulationTags,
     }));
 
@@ -211,9 +211,9 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
               ? deduplicatedItem.sources
               : undefined, // Multi-source attribution
           credibilityScore: raw.source.credibilityScore.toString(),
-          publishedDate: new Date(raw.pubDate),
-          retrievedAt: new Date(),
-          isAutomated: true,
+          publishedDate: new Date(raw.pubDate).toISOString(),
+          retrievedAt: new Date().toISOString(),
+          isAutomated: 1,
 
           // GS1-specific fields
           gs1ImpactTags: processed.gs1ImpactTags,

@@ -74,11 +74,11 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     }
 
     if (!values.lastSignedIn) {
-      values.lastSignedIn = new Date();
+      values.lastSignedIn = new Date().toISOString();
     }
 
     if (Object.keys(updateSet).length === 0) {
-      updateSet.lastSignedIn = new Date();
+      updateSet.lastSignedIn = new Date().toISOString();
     }
 
     await db.insert(users).values(values).onDuplicateKeyUpdate({
@@ -716,7 +716,7 @@ export async function upsertRegulationEsrsMapping(mapping: {
         .set({
           relevanceScore: mapping.relevanceScore,
           reasoning: mapping.reasoning,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
         })
         .where(eq(regulationEsrsMappings.id, existing[0].id));
       return existing[0];
@@ -977,7 +977,7 @@ export async function getLowScoredMappings(minVotes: number = 3) {
       regulationId: m.regulationId,
       datapointId: m.datapointId,
       datapointName: m.datapointName,
-      esrs_standard: m.esrsStandard,
+      esrs_standard: m.esrs_standard,
       relevanceScore: m.relevanceScore,
       reasoning: m.reasoning,
       totalVotes: Number(m.totalVotes),
@@ -1026,7 +1026,7 @@ export async function getVoteDistributionByStandard() {
       .groupBy(esrsDatapoints.esrsStandard);
 
     return distribution.map(d => ({
-      esrs_standard: d.esrsStandard,
+      esrs_standard: d.esrsStandard || d.esrs_standard,
       totalMappings: Number(d.totalMappings),
       totalVotes: Number(d.totalVotes),
       positiveVotes: Number(d.positiveVotes || 0),
@@ -1088,7 +1088,7 @@ export async function getMostVotedMappings(limit: number = 10) {
       regulationId: m.regulationId,
       datapointId: m.datapointId,
       datapointName: m.datapointName,
-      esrs_standard: m.esrsStandard,
+      esrs_standard: m.esrs_standard,
       relevanceScore: m.relevanceScore,
       totalVotes: Number(m.totalVotes),
       positiveVotes: Number(m.positiveVotes || 0),
@@ -1160,7 +1160,7 @@ export async function getMostVotedMappings(limit: number = 10) {
           completionPercentage,
           isCompleted,
           completedAt: isCompleted ? new Date() : null,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
         })
         .where(eq(userOnboardingProgress.userId, userId));
 
@@ -1181,9 +1181,9 @@ export async function getMostVotedMappings(limit: number = 10) {
           currentStep,
           completionPercentage,
           isCompleted,
-          startedAt: new Date(),
+          startedAt: new Date().toISOString(),
           completedAt: isCompleted ? new Date() : null,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
         });
 
       return {
@@ -1193,9 +1193,9 @@ export async function getMostVotedMappings(limit: number = 10) {
         currentStep,
         completionPercentage,
         isCompleted,
-        startedAt: new Date(),
+        startedAt: new Date().toISOString(),
         completedAt: isCompleted ? new Date() : null,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       };
     }
   } catch (error) {
@@ -1400,8 +1400,8 @@ export async function getDutchInitiativeSectors() {
         embeddingModel: data.embeddingModel,
         title: data.title,
         url: data.url,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
 
     return result;
@@ -1468,8 +1468,8 @@ export async function createQAConversation(userId?: number, title?: string) {
       userId,
       title,
       messageCount: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     });
 
     return {
@@ -1477,8 +1477,8 @@ export async function createQAConversation(userId?: number, title?: string) {
       userId,
       title,
       messageCount: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
   } catch (error) {
     console.error("[Database] Failed to create conversation:", error);
@@ -1509,7 +1509,7 @@ export async function addQAMessage(data: {
       content: data.content,
       sources: data.sources as any,
       retrievedChunks: data.retrievedChunks,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     });
 
     // Update conversation message count
@@ -1517,14 +1517,14 @@ export async function addQAMessage(data: {
       .update(qaConversations)
       .set({
         messageCount: sql`${qaConversations.messageCount} + 1`,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       })
       .where(eq(qaConversations.id, data.conversationId));
 
     return {
       id: result.insertId,
       ...data,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
   } catch (error) {
     console.error("[Database] Failed to add message:", error);

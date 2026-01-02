@@ -13,7 +13,7 @@ interface EUDRSampleData {
   originLat: number;
   originLng: number;
   deforestationRisk: "low" | "medium" | "high";
-  geofenceGeoJSON?: any;
+  geofenceGeoJson?: any;
   dueDiligenceStatement?: any;
 }
 
@@ -39,7 +39,7 @@ const sampleData: EUDRSampleData[] = [
     originLat: -3.4653,
     originLng: -62.2159,
     deforestationRisk: "high",
-    geofenceGeoJSON: {
+    geofenceGeoJson: {
       type: "Polygon",
       coordinates: [
         [
@@ -81,7 +81,7 @@ const sampleData: EUDRSampleData[] = [
     originLat: 6.6885,
     originLng: -1.6244,
     deforestationRisk: "medium",
-    geofenceGeoJSON: {
+    geofenceGeoJson: {
       type: "Polygon",
       coordinates: [
         [
@@ -107,7 +107,7 @@ const sampleData: EUDRSampleData[] = [
     originLat: 7.54,
     originLng: -5.5471,
     deforestationRisk: "high",
-    geofenceGeoJSON: {
+    geofenceGeoJson: {
       type: "Polygon",
       coordinates: [
         [
@@ -135,7 +135,7 @@ const sampleData: EUDRSampleData[] = [
     originLat: 2.9938,
     originLng: 99.6094,
     deforestationRisk: "high",
-    geofenceGeoJSON: {
+    geofenceGeoJson: {
       type: "Polygon",
       coordinates: [
         [
@@ -178,7 +178,7 @@ const sampleData: EUDRSampleData[] = [
     originLat: 21.9162,
     originLng: 95.956,
     deforestationRisk: "high",
-    geofenceGeoJSON: {
+    geofenceGeoJson: {
       type: "Polygon",
       coordinates: [
         [
@@ -220,7 +220,7 @@ const sampleData: EUDRSampleData[] = [
     originLat: -15.7942,
     originLng: -47.8822,
     deforestationRisk: "medium",
-    geofenceGeoJSON: {
+    geofenceGeoJson: {
       type: "Polygon",
       coordinates: [
         [
@@ -262,7 +262,7 @@ const sampleData: EUDRSampleData[] = [
     originLat: -3.7183,
     originLng: -52.3267,
     deforestationRisk: "high",
-    geofenceGeoJSON: {
+    geofenceGeoJson: {
       type: "Polygon",
       coordinates: [
         [
@@ -300,9 +300,9 @@ export async function seedEUDRData(userId: number) {
         productGtin: data.productGtin,
         originLat: data.originLat.toString(),
         originLng: data.originLng.toString(),
-        geofenceGeoJSON: data.geofenceGeoJSON || null,
+        geofenceGeoJson: data.geofenceGeoJson || null,
         deforestationRisk: data.deforestationRisk,
-        riskAssessmentDate: new Date(),
+        riskAssessmentDate: new Date().toISOString(),
         dueDiligenceStatement: data.dueDiligenceStatement || null,
       });
       inserted++;

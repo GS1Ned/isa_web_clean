@@ -84,10 +84,10 @@ export async function updateDatasetVerification(
   const result = await db
     .update(datasetRegistry)
     .set({
-      lastVerifiedDate: new Date(),
+      lastVerifiedDate: new Date().toISOString(),
       verifiedBy,
       verificationNotes: notes,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     })
     .where(eq(datasetRegistry.id, id));
   
@@ -107,7 +107,7 @@ export async function updateDataset(
     .update(datasetRegistry)
     .set({
       ...updates,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     })
     .where(eq(datasetRegistry.id, id));
   

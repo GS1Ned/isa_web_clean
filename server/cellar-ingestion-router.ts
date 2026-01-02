@@ -54,7 +54,7 @@ async function logIngestion(
 
   await db.insert(ingestionLogs).values({
     syncStartTime: startTime,
-    syncEndTime: new Date(),
+    syncEndTime: new Date().toISOString(),
     status,
     regulationsInserted: inserted,
     regulationsUpdated: updated,
