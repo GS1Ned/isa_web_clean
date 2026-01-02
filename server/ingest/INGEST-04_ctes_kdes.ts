@@ -120,7 +120,7 @@ export async function ingestCtesKdes(
             name: kdeData.name,
             description: kdeData.description,
             data_type: kdeData.gs1Standard,
-            mandatory: false,
+            mandatory: 0,
           });
         } catch (error) {
           // Ignore duplicate key errors
@@ -179,9 +179,9 @@ export async function ingestCtesKdes(
               await db.insert(cteKdeMappings).values({
                 cteId: cteRecord.id,
                 kdeId,
-                required: true,
+                required: 1,
               }).onDuplicateKeyUpdate({
-                set: { required: true },
+                set: { required: 1 },
               });
             }
           }

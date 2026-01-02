@@ -249,12 +249,12 @@ export default function AdvisoryReports() {
               {/* Tags */}
               {(report.sectorTags || report.gs1ImpactTags) && (
                 <div className="flex flex-wrap gap-2">
-                  {report.sectorTags?.map((tag: string) => (
+                  {(report.sectorTags as string[] | undefined)?.map((tag: string) => (
                     <Badge key={tag} variant="outline">
                       {tag}
                     </Badge>
                   ))}
-                  {report.gs1ImpactTags?.map((tag: string) => (
+                  {(report.gs1ImpactTags as string[] | undefined)?.map((tag: string) => (
                     <Badge key={tag} variant="secondary">
                       {tag}
                     </Badge>

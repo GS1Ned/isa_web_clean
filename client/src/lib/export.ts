@@ -7,8 +7,11 @@ export interface Regulation {
   title: string;
   description?: string | null;
   regulationType: string;
-  effectiveDate?: Date | null;
+  effectiveDate?: string | null;
   sourceUrl?: string | null;
+  lastUpdated?: string;
+  createdAt?: string;
+  embedding?: unknown;
 }
 
 /**

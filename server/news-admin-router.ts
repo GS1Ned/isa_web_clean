@@ -64,7 +64,7 @@ export const newsAdminRouter = router({
         success: false,
         message: "Pipeline is already running",
         status: pipelineStatus.status,
-        startedAt: pipelineStatus.startedAt?.toISOString(),
+        startedAt: pipelineStatus.startedAt,
       };
     }
 
@@ -118,7 +118,7 @@ export const newsAdminRouter = router({
       success: true,
       message: "Pipeline started. Check status for results.",
       status: "running",
-      startedAt: pipelineStatus.startedAt?.toISOString(),
+      startedAt: pipelineStatus.startedAt,
     };
   }),
 
@@ -135,13 +135,13 @@ export const newsAdminRouter = router({
 
     return {
       status: pipelineStatus.status,
-      startedAt: pipelineStatus.startedAt?.toISOString(),
-      completedAt: pipelineStatus.completedAt?.toISOString(),
+      startedAt: pipelineStatus.startedAt,
+      completedAt: pipelineStatus.completedAt,
       result: pipelineStatus.result,
       error: pipelineStatus.error,
       // Calculate elapsed time if running
       elapsedMs: pipelineStatus.startedAt && pipelineStatus.status === "running"
-        ? Date.now() - pipelineStatus.startedAt.getTime()
+        ? Date.now() - new Date(pipelineStatus.startedAt).getTime()
         : undefined,
     };
   }),

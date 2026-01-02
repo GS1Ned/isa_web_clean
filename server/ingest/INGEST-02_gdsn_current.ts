@@ -227,7 +227,7 @@ export async function ingestGdsnClassAttributes(
             attributeCode: attr.name,
             attributeName: attr.definition || attr.name,
             data_type: attr.type ? String(attr.type) : null,
-            required: attr.multiplicity?.includes("1") || false,
+            required: attr.multiplicity?.includes("1") ? 1 : 0,
             rawJson: attr,
           });
 
@@ -237,7 +237,7 @@ export async function ingestGdsnClassAttributes(
             attributeCode: attr.name,
             attributeName: attr.definition || attr.name,
             data_type: attr.type ? String(attr.type) : null,
-            required: attr.multiplicity?.includes("1") || false,
+            required: attr.multiplicity?.includes("1") ? 1 : 0,
           });
 
           result.recordsInserted += 1;

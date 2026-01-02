@@ -43,7 +43,7 @@ interface Message {
   content: string;
   sources?: Array<{
     id: number;
-    type: string;
+    type?: string;
     title: string;
     url?: string | null;
     similarity: number;
