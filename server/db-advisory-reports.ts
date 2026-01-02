@@ -2,8 +2,6 @@ import { getDb } from "./db";
 import {
   advisoryReports,
   advisoryReportVersions,
-  type InsertAdvisoryReport,
-  type InsertAdvisoryReportVersion,
 } from "../drizzle/schema";
 import { eq, and, desc, sql, inArray } from "drizzle-orm";
 
@@ -66,7 +64,7 @@ export async function getAdvisoryReportById(id: number) {
 /**
  * Create a new advisory report
  */
-export async function createAdvisoryReport(data: InsertAdvisoryReport) {
+export async function createAdvisoryReport(data: typeof advisoryReports.$inferInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   const [result] = await db.insert(advisoryReports).values(data);
@@ -78,7 +76,7 @@ export async function createAdvisoryReport(data: InsertAdvisoryReport) {
  */
 export async function updateAdvisoryReport(
   id: number,
-  updates: Partial<InsertAdvisoryReport>
+  updates: Partial<typeof advisoryReports.$inferInsert>
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
@@ -157,7 +155,7 @@ export async function getReportVersions(reportId: number) {
 /**
  * Create report version
  */
-export async function createReportVersion(data: InsertAdvisoryReportVersion) {
+export async function createReportVersion(data: typeof advisoryReportVersions.$inferInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   

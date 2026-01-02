@@ -41,7 +41,7 @@ interface ValidationRuleRecord {
   validationLogic: string | null;
   addedInVersion: string | null;
   changeType: 'new' | 'technical' | 'textual' | 'delete' | null;
-  isActive: boolean;
+  isActive: number;
 }
 
 interface CodeListRecord {
@@ -51,7 +51,7 @@ interface CodeListRecord {
   codeDescription: string | null;
   codeListSegment: string | null;
   addedInVersion: string | null;
-  isActive: boolean;
+  isActive: number;
 }
 
 /**
@@ -100,8 +100,8 @@ async function parseBeNeLuxValidations(workbook: ExcelJS.Workbook): Promise<Vali
     const errorDutch = String(row.getCell(errorDutchIdx + 1).value || '').trim();
     const errorEnglish = String(row.getCell(errorEnglishIdx + 1).value || '').trim();
     
-    // Determine if rule is active (not deleted)
-    const isActive = changeType !== 'del' && changeType !== 'delete';
+    // Determine if rule is active (not deleted) - convert to number for schema
+    const isActive = (changeType !== 'del' && changeType !== 'delete') ? 1 : 0;
     
     // Map change type
     let mappedChangeType: ValidationRuleRecord['changeType'] = null;

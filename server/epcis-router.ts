@@ -206,11 +206,11 @@ export const epcisRouter = router({
       dateRange: {
         earliest:
           events.length > 0
-            ? new Date(Math.min(...events.map(e => e.eventTime.getTime())))
+            ? new Date(Math.min(...events.map(e => new Date(e.eventTime).getTime())))
             : null,
         latest:
           events.length > 0
-            ? new Date(Math.max(...events.map(e => e.eventTime.getTime())))
+            ? new Date(Math.max(...events.map(e => new Date(e.eventTime).getTime())))
             : null,
       },
     };
@@ -489,7 +489,7 @@ export const epcisRouter = router({
           lng: parseFloat(g.originLng),
           riskLevel: g.deforestationRisk || "low",
           riskAssessmentDate: g.riskAssessmentDate,
-          geofence: g.geofenceGeoJSON,
+          geofence: g.geofenceGeoJson,
           dueDiligence: g.dueDiligenceStatement,
         })),
         totalCount: geolocations.length,

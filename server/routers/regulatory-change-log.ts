@@ -61,12 +61,10 @@ export const regulatoryChangeLogRouter = router({
         });
       }
 
-      // Convert ISO string to Date
-      const entryDate = new Date(input.entryDate);
-
+      // Keep entryDate as string (schema uses timestamp with mode: 'string')
       const entry = await createRegulatoryChangeLogEntry({
         ...input,
-        entryDate,
+        entryDate: input.entryDate,
       });
 
       return entry;

@@ -71,13 +71,13 @@ export async function generateRegulationEsrsMappings(
 
     // 3. Build LLM prompt (filter datapoints with required fields)
     const validDatapoints = allDatapoints.filter(
-      dp => dp.code && dp.esrs_standard && dp.name
-    ) as Array<{
-      code: string;
-      esrs_standard: string;
-      name: string;
-      data_type: string | null;
-    }>;
+      dp => dp.code && dp.esrsStandard && dp.name
+    ).map(dp => ({
+      code: dp.code,
+      esrs_standard: dp.esrsStandard!,
+      name: dp.name,
+      data_type: dp.dataType,
+    }));
     const prompt = buildMappingPrompt(regulation, validDatapoints);
 
     // 4. Call LLM with structured output

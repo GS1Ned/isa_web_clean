@@ -83,8 +83,8 @@ export function normalizeEULegalAct(act: EULegalAct): InsertRegulation | null {
     return null;
   }
 
-  // Extract effective date
-  const effectiveDate = act.dateEntryIntoForce || null;
+  // Extract effective date (convert Date to string for schema compatibility)
+  const effectiveDate = act.dateEntryIntoForce ? act.dateEntryIntoForce.toISOString() : null;
 
   // Build source URL (EUR-Lex)
   const sourceUrl = `https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:${act.celexId}`;

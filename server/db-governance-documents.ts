@@ -1,7 +1,6 @@
 import { getDb } from "./db";
 import {
   governanceDocuments,
-  type InsertGovernanceDocument,
 } from "../drizzle/schema";
 import { eq, and, desc, sql, like, or } from "drizzle-orm";
 
@@ -91,7 +90,7 @@ export async function getGovernanceDocumentByCode(documentCode: string) {
 /**
  * Create a new governance document
  */
-export async function createGovernanceDocument(data: InsertGovernanceDocument) {
+export async function createGovernanceDocument(data: typeof governanceDocuments.$inferInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
@@ -104,7 +103,7 @@ export async function createGovernanceDocument(data: InsertGovernanceDocument) {
  */
 export async function updateGovernanceDocument(
   id: number,
-  updates: Partial<InsertGovernanceDocument>
+  updates: Partial<typeof governanceDocuments.$inferInsert>
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");

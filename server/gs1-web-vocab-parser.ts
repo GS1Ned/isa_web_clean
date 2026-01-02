@@ -374,12 +374,12 @@ export async function ingestWebVocabulary(
         description: term.description,
         domain: term.domain,
         range: term.range,
-        dppRelevant: term.dppRelevant,
-        esrsRelevant: term.esrsRelevant,
-        eudrRelevant: term.eudrRelevant,
-        packagingRelated: term.packagingRelated,
-        sustainabilityRelated: term.sustainabilityRelated,
-        isDeprecated: term.isDeprecated,
+        dppRelevant: term.dppRelevant ? 1 : 0,
+        esrsRelevant: term.esrsRelevant ? 1 : 0,
+        eudrRelevant: term.eudrRelevant ? 1 : 0,
+        packagingRelated: term.packagingRelated ? 1 : 0,
+        sustainabilityRelated: term.sustainabilityRelated ? 1 : 0,
+        isDeprecated: term.isDeprecated ? 1 : 0,
       });
 
       success++;

@@ -116,10 +116,13 @@ export async function getNewsByMonth(months: number = 6) {
   // Group by month
   const counts = new Map<string, number>();
   allNews.forEach(news => {
-    const date = news.publishedDate || news.createdAt;
-    if (date && date >= cutoffDate) {
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      counts.set(monthKey, (counts.get(monthKey) || 0) + 1);
+    const dateStr = news.publishedDate || news.createdAt;
+    if (dateStr) {
+      const date = new Date(dateStr);
+      if (date >= cutoffDate) {
+        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        counts.set(monthKey, (counts.get(monthKey) || 0) + 1);
+      }
     }
   });
   

@@ -104,7 +104,7 @@ export function getSourceHealth(sourceId: string): SourceHealth {
       totalRequests: 0,
       totalFailures: 0,
       averageResponseTime: 0,
-      isHealthy: 1
+      isHealthy: true
     });
   }
   return sourceHealthMap.get(sourceId)!;

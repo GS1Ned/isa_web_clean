@@ -52,7 +52,7 @@ export const adminTemplatesRouter = router({
         targetScore: (input.targetScore
           ? parseFloat(input.targetScore.toString())
           : 0) as any,
-        isPublic: input.isPublic,
+        isPublic: input.isPublic ? 1 : 0,
         createdBy: ctx.user.id,
         tags: input.tags ? JSON.stringify(input.tags) : null,
       });
