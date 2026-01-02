@@ -1,0 +1,19 @@
+{
+  "query": "SELECT COUNT(*) as esrs_count FROM gs1_esrs_mappings UNION ALL SELECT COUNT(*) FROM gs1_attributes UNION ALL SELECT COUNT(*) FROM gs1_attribute_esrs_mapping",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT COUNT(*) as esrs_count FROM gs1_esrs_mappings UNION ALL SELECT COUNT(*) FROM gs1_attributes UNION ALL SELECT COUNT(*) FROM gs1_attribute_esrs_mapping",
+  "rows": [
+    {
+      "esrs_count": "13"
+    },
+    {
+      "esrs_count": "15"
+    },
+    {
+      "esrs_count": "3667"
+    }
+  ],
+  "messages": [],
+  "stdout": "esrs_count\n13\n15\n3667\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}

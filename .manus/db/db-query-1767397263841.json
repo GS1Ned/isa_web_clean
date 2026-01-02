@@ -1,0 +1,14 @@
+{
+  "query": "SELECT 'esrs_datapoints' as metric, COUNT(*) as count FROM gs1_esrs_mappings",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT 'esrs_datapoints' as metric, COUNT(*) as count FROM gs1_esrs_mappings",
+  "rows": [
+    {
+      "metric": "esrs_datapoints",
+      "count": "15"
+    }
+  ],
+  "messages": [],
+  "stdout": "metric\tcount\nesrs_datapoints\t15\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

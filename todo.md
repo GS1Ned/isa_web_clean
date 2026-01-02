@@ -2488,3 +2488,26 @@ All production-critical systems are now type-safe. The remaining errors are acce
 - [x] Pre-populate Impact Simulator with Core 1 gap data
 - [x] Add navigation entry for Dual-Core tools in main menu
 - [ ] End-to-end validation of integrated workflow
+
+
+---
+
+## Dual-Core PoC Enhancement (Jan 2026)
+
+### Scope & Boundaries Panel ✅ COMPLETE
+
+- [x] Add Scope & Boundaries panel to DualCoreDemo page
+  - [x] Data coverage statistics (15 ESRS datapoints, 12 GS1 attributes, 4 scenarios, 13 sectors)
+  - [x] Explicit "What's Included" vs "What's NOT Included" sections
+  - [x] Epistemic framework explanation with limitations for each status type
+  - [x] Key Caveat callout: "A gap not shown does not mean compliant"
+  - [x] Data freshness timestamps (December 2024)
+
+**Rationale:** First-time expert users (GS1 consultants, policy analysts) need to understand the PoC's boundaries before interpreting results. Without this, they may over-trust outputs or misinterpret missing gaps as compliance.
+
+**Acceptance Criteria:**
+- [x] Panel visible immediately on DualCoreDemo page (before scrolling to tools)
+- [x] Concrete numbers for data coverage (not vague "sample data")
+- [x] Clear statement that absence of gap ≠ compliance
+- [x] Limitations stated for each epistemic status (Fact, Inference, Uncertain)
+- [x] Last-updated timestamps for data and scenarios
