@@ -2290,6 +2290,7 @@ All production-critical systems are now type-safe. The remaining errors are acce
 - [x] Create database helpers (db-error-tracking.ts, db-performance-tracking.ts)
 - [x] Create tRPC routers (router-error-tracking.ts, router-performance-tracking.ts)
 - [x] Integrate routers into main appRouter
-- [ ] Add "System Monitoring" link to Admin dropdown menu
+- [x] Add "System Monitoring" link to Admin dropdown menu
+- [x] Fix TypeScript enum type errors in db-error-tracking.ts
 - [ ] Write vitest tests for dashboard components
 - [ ] Update documentation with dashboard usage guide

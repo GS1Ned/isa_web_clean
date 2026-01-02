@@ -79,7 +79,8 @@ export async function getRecentErrors(
 
   const conditions = [];
   if (severity) {
-    conditions.push(eq(errorLog.severity, severity));
+    // Cast to enum type to satisfy Drizzle ORM type checking
+    conditions.push(eq(errorLog.severity, severity as "critical" | "error" | "warning" | "info"));
   }
   if (operation) {
     conditions.push(eq(errorLog.operation, operation));

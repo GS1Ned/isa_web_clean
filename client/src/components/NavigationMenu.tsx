@@ -199,6 +199,16 @@ export function NavigationMenu() {
           href: "/admin/coverage-analytics",
           description: "News coverage by regulation and sector",
         },
+        {
+          label: "Pipeline Observability",
+          href: "/admin/observability",
+          description: "Monitor news pipeline execution quality",
+        },
+        {
+          label: "System Monitoring",
+          href: "/admin/system-monitoring",
+          description: "Error tracking and performance metrics",
+        },
       ],
     });
   }
