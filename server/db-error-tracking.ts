@@ -54,13 +54,25 @@ export async function getErrorStats(hours: number = 24) {
     .from(errorLog)
     .where(gte(errorLog.timestamp, since));
 
-  return stats || {
-    totalErrors: 0,
-    criticalCount: 0,
-    errorCount: 0,
-    warningCount: 0,
-    uniqueErrors: 0,
-    errorRate: 0,
+  if (!stats) {
+    return {
+      totalErrors: 0,
+      criticalCount: 0,
+      errorCount: 0,
+      warningCount: 0,
+      uniqueErrors: 0,
+      errorRate: 0,
+    };
+  }
+
+  // Convert string values to numbers (MySQL returns strings for aggregates)
+  return {
+    totalErrors: Number(stats.totalErrors) || 0,
+    criticalCount: Number(stats.criticalCount) || 0,
+    errorCount: Number(stats.errorCount) || 0,
+    warningCount: Number(stats.warningCount) || 0,
+    uniqueErrors: Number(stats.uniqueErrors) || 0,
+    errorRate: Number(stats.errorRate) || 0,
   };
 }
 
@@ -110,24 +122,37 @@ export async function getErrorTrends(hours: number = 24, interval: "hour" | "day
 
   const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
 
-  const dateFormat = interval === "hour" 
-    ? sql`DATE_FORMAT(${errorLog.timestamp}, '%Y-%m-%d %H:00:00')`
-    : sql`DATE_FORMAT(${errorLog.timestamp}, '%Y-%m-%d')`;
+  // Use raw SQL to satisfy MySQL's only_full_group_by mode
+  const dateFormatPattern = interval === "hour" 
+    ? '%Y-%m-%d %H:00:00'
+    : '%Y-%m-%d';
 
-  const trends = await db
-    .select({
-      hour: dateFormat,
-      critical: sql<number>`SUM(CASE WHEN severity = 'critical' THEN 1 ELSE 0 END)`,
-      error: sql<number>`SUM(CASE WHEN severity = 'error' THEN 1 ELSE 0 END)`,
-      warning: sql<number>`SUM(CASE WHEN severity = 'warning' THEN 1 ELSE 0 END)`,
-      total: sql<number>`COUNT(*)`,
-    })
-    .from(errorLog)
-    .where(gte(errorLog.timestamp, since))
-    .groupBy(dateFormat)
-    .orderBy(dateFormat);
+  const query = sql`
+    SELECT 
+      DATE_FORMAT(${errorLog.timestamp}, ${dateFormatPattern}) as hour,
+      SUM(CASE WHEN ${errorLog.severity} = 'critical' THEN 1 ELSE 0 END) as criticalCount,
+      SUM(CASE WHEN ${errorLog.severity} = 'error' THEN 1 ELSE 0 END) as errorCount,
+      SUM(CASE WHEN ${errorLog.severity} = 'warning' THEN 1 ELSE 0 END) as warningCount,
+      COUNT(*) as total
+    FROM ${errorLog}
+    WHERE ${errorLog.timestamp} >= ${since}
+    GROUP BY hour
+    ORDER BY hour
+  `;
 
-  return trends;
+  const result = await db.execute(query);
+  
+  // db.execute() returns [rows, fields], we want just the rows
+  const rows = Array.isArray(result[0]) ? result[0] : result;
+  
+  // Convert string values to numbers (MySQL returns strings for aggregates)
+  return rows.map((row: any) => ({
+    hour: row.hour,
+    criticalCount: Number(row.criticalCount) || 0,
+    errorCount: Number(row.errorCount) || 0,
+    warningCount: Number(row.warningCount) || 0,
+    total: Number(row.total) || 0,
+  }));
 }
 
 /**
@@ -146,7 +171,7 @@ export async function getErrorsByOperation(hours: number = 24, limit: number = 2
       operation: errorLog.operation,
       errorCount: sql<number>`COUNT(*)`,
       criticalCount: sql<number>`SUM(CASE WHEN severity = 'critical' THEN 1 ELSE 0 END)`,
-      lastOccurrence: sql<string>`MAX(${errorLog.timestamp})`,
+      lastError: sql<Date>`MAX(${errorLog.timestamp})`,
     })
     .from(errorLog)
     .where(gte(errorLog.timestamp, since))
