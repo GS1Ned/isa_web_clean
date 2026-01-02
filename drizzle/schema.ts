@@ -1824,3 +1824,45 @@ export type InsertHubNews = typeof hubNews.$inferInsert;
 
 export type Contact = typeof contacts.$inferSelect;
 export type InsertContact = typeof contacts.$inferInsert;
+
+
+// Error Tracking Table
+export const errorLog = mysqlTable("error_log", {
+	id: int().autoincrement().notNull(),
+	timestamp: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	severity: mysqlEnum(['critical', 'error', 'warning', 'info']).notNull(),
+	message: text().notNull(),
+	operation: varchar({ length: 255 }).notNull(),
+	stackTrace: text(),
+	context: json(),
+	userId: int(),
+	requestId: varchar({ length: 128 }),
+	resolved: tinyint().default(0).notNull(),
+	resolvedAt: timestamp({ mode: 'string' }),
+	resolvedBy: varchar({ length: 255 }),
+	notes: text(),
+},
+(table) => [
+	index("timestamp_idx").on(table.timestamp),
+	index("severity_idx").on(table.severity),
+	index("operation_idx").on(table.operation),
+	index("userId_idx").on(table.userId),
+]);
+
+// Performance Tracking Table
+export const performanceLog = mysqlTable("performance_log", {
+	id: int().autoincrement().notNull(),
+	timestamp: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	operation: varchar({ length: 255 }).notNull(),
+	duration: int().notNull(), // milliseconds
+	success: tinyint().default(1).notNull(),
+	userId: int(),
+	requestId: varchar({ length: 128 }),
+	metadata: json(),
+},
+(table) => [
+	index("timestamp_idx").on(table.timestamp),
+	index("operation_idx").on(table.operation),
+	index("duration_idx").on(table.duration),
+	index("userId_idx").on(table.userId),
+]);

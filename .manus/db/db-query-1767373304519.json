@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS performance_log (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  operation VARCHAR(255) NOT NULL,\n  duration INT NOT NULL,\n  success TINYINT DEFAULT 1 NOT NULL,\n  userId INT,\n  requestId VARCHAR(128),\n  metadata JSON,\n  INDEX timestamp_idx (timestamp),\n  INDEX operation_idx (operation),\n  INDEX duration_idx (duration),\n  INDEX userId_idx (userId)\n)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS performance_log (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  operation VARCHAR(255) NOT NULL,\n  duration INT NOT NULL,\n  success TINYINT DEFAULT 1 NOT NULL,\n  userId INT,\n  requestId VARCHAR(128),\n  metadata JSON,\n  INDEX timestamp_idx (timestamp),\n  INDEX operation_idx (operation),\n  INDEX duration_idx (duration),\n  INDEX userId_idx (userId)\n)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 327
+}

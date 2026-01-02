@@ -2261,3 +2261,35 @@ All production-critical systems are now type-safe. The remaining errors are acce
 - [x] Add footer links to legal pages
 - [x] Review and finalize legal content with stakeholders
 - [x] Add last updated dates to legal pages
+
+
+---
+
+## Admin Monitoring Dashboard (January 2026)
+
+### Phase 1: Dashboard Design
+- [x] Design dashboard layout with tabs (Overview, Errors, Performance, Alerts)
+- [x] Define data refresh intervals and real-time update strategy
+- [x] Plan chart types for error trends and performance metrics
+
+### Phase 2: Error Tracking UI
+- [x] Create ErrorOverviewCard component with key metrics
+- [x] Create ErrorTrendChart component with Recharts
+- [x] Create ErrorListTable component with filtering and pagination
+- [x] Create ErrorDetailModal component for stack traces
+
+### Phase 3: Performance Monitoring UI
+- [x] Create PerformanceOverviewCard component with percentiles
+- [x] Create PerformanceChart component showing operation trends
+- [x] Create SlowOperationsTable component with threshold warnings
+- [x] Create PerformanceDistributionChart component
+
+### Phase 4: Integration & Testing
+- [x] Add /admin/system-monitoring route to App.tsx
+- [x] Add error_log and performance_log tables to database schema
+- [x] Create database helpers (db-error-tracking.ts, db-performance-tracking.ts)
+- [x] Create tRPC routers (router-error-tracking.ts, router-performance-tracking.ts)
+- [x] Integrate routers into main appRouter
+- [ ] Add "System Monitoring" link to Admin dropdown menu
+- [ ] Write vitest tests for dashboard components
+- [ ] Update documentation with dashboard usage guide

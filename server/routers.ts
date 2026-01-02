@@ -61,6 +61,8 @@ import { stakeholderDashboardRouter } from "./routers/stakeholder-dashboard.js";
 import { dataQualityRouter } from "./routers-data-quality.js";
 import { standardsDirectoryRouter } from "./routers/standards-directory.js";
 import { productionMonitoringRouter } from "./routers/production-monitoring.js";
+import { errorTrackingRouter } from "./router-error-tracking.js";
+import { performanceTrackingRouter } from "./router-performance-tracking.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -1106,6 +1108,8 @@ export const appRouter = router({
    * Production Monitoring - Error tracking and performance metrics
    */
   productionMonitoring: productionMonitoringRouter,
+  errorTracking: errorTrackingRouter,
+  performanceTracking: performanceTrackingRouter,
 });
 
 export type AppRouter = typeof appRouter;

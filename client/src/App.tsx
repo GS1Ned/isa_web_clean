@@ -105,6 +105,7 @@ const AdvisoryDiff = lazy(() => import("./pages/AdvisoryDiff"));
 const AdminScraperHealth = lazy(() => import("./pages/AdminScraperHealth"));
 const AdvisoryDiffComparison = lazy(() => import("./pages/AdvisoryDiffComparison"));
 const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
+const SystemMonitoring = lazy(() => import("./pages/SystemMonitoring"));
 const AdminCoverageAnalytics = lazy(() => import("./pages/admin/CoverageAnalytics"));
 const AdminPipelineObservability = lazy(() => import("./pages/AdminPipelineObservability"));
 const ObservabilityDashboard = lazy(() => import("./pages/admin/ObservabilityDashboard"));
@@ -175,6 +176,7 @@ function Router() {
       <Route path="/advisory-reports" component={AdvisoryReports} />
       <Route path="/governance-documents" component={GovernanceDocuments} />
       <Route path="/admin/monitoring" component={AdminMonitoring} />
+      <Route path="/admin/system-monitoring" component={SystemMonitoring} />
       <Route path="/admin/coverage-analytics" component={AdminCoverageAnalytics} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
       <Route path="/admin/cellar" component={AdminCellarIngestion} />

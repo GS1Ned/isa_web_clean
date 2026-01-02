@@ -116,14 +116,11 @@ export default function NewsDetail() {
               </div>
 
               {/* Summary */}
-              {(() => {
-                const summary = newsItem.summary as string | null;
-                return summary && (
+              {((newsItem.summary && typeof newsItem.summary === 'string' ? (
                 <div className="bg-accent/50 rounded-lg p-4 mb-6">
-                  <p className="text-lg leading-relaxed">{summary}</p>
+                  <p className="text-lg leading-relaxed">{newsItem.summary}</p>
                 </div>
-              );
-              })()}
+              ) : null) as React.ReactNode)}
 
               {/* Content */}
               {newsItem.content && typeof newsItem.content === 'string' && (
