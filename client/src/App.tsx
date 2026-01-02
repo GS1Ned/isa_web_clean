@@ -111,6 +111,8 @@ const ObservabilityDashboard = lazy(() => import("./pages/admin/ObservabilityDas
 const StakeholderDashboard = lazy(() => import("./pages/StakeholderDashboard").then(m => ({ default: m.StakeholderDashboard })));
 const StandardsDirectory = lazy(() => import("./pages/StandardsDirectory").then(m => ({ default: m.StandardsDirectory })));
 const StandardDetail = lazy(() => import("./pages/StandardDetail").then(m => ({ default: m.StandardDetail })));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -214,6 +216,8 @@ function Router() {
         component={NotificationPreferences}
       />
       <Route path="/admin/executive-scorecard" component={ExecutiveScorecard} />
+      <Route path="/privacy" component={PrivacyPolicy} />
+      <Route path="/terms" component={TermsOfService} />
       <Route path="404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

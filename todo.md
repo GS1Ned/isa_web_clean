@@ -2228,3 +2228,36 @@ All production-critical systems are now type-safe. The remaining errors are acce
 - [x] Establish quality gates (TypeScript errors ≤2, test pass rate ≥90%)
 
 **Result:** ISA is production-ready with comprehensive documentation and automated quality checks.
+
+
+---
+
+## Production Security & Compliance Improvements (January 2026)
+
+### Phase 1: Rate Limiting & Security Headers
+- [x] Install express-rate-limit and helmet packages
+- [x] Implement rate limiting middleware for API endpoints
+- [x] Configure rate limits (100 req/15min for API, 1000 req/15min for static)
+- [x] Add security headers with helmet.js (CSP, HSTS, X-Frame-Options)
+- [x] Test rate limiting with concurrent requests
+- [x] Write vitest tests for rate limiting
+- [x] Document rate limit configuration
+
+### Phase 2: Performance Monitoring & Error Tracking
+- [x] Design error tracking infrastructure (in-memory or external)
+- [x] Add performance monitoring hooks to critical paths
+- [x] Create error notification system (email alerts for critical errors)
+- [x] Add error context capture (user, request, stack trace)
+- [x] Test error capture and reporting
+- [x] Write vitest tests for error tracking
+- [x] Document monitoring setup
+
+### Phase 3: Legal Compliance Pages
+- [x] Draft privacy policy content (GDPR-compliant)
+- [x] Draft terms of service content
+- [x] Draft acceptable use policy
+- [x] Create legal pages UI components (PrivacyPolicy.tsx, TermsOfService.tsx)
+- [x] Add routes and navigation for legal pages
+- [x] Add footer links to legal pages
+- [x] Review and finalize legal content with stakeholders
+- [x] Add last updated dates to legal pages

@@ -8,6 +8,8 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { performHealthCheck } from "../health";
 import { serveStatic, setupVite } from "./vite";
+import { apiRateLimiter, authRateLimiter } from "./rate-limit";
+import { securityHeaders, devSecurityHeaders } from "./security-headers";
 import {
   handleDailyNewsIngestion,
   handleWeeklyNewsArchival,
@@ -36,10 +38,19 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+
+  // Security headers (production only)
+  if (process.env.NODE_ENV === "production") {
+    app.use(securityHeaders);
+  } else {
+    app.use(devSecurityHeaders);
+  }
+
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
-  // OAuth callback under /api/oauth/callback
+  // OAuth callback under /api/oauth/callback (with strict rate limiting)
+  app.use("/api/oauth", authRateLimiter);
   registerOAuthRoutes(app);
   // Health check endpoint (public, no auth required)
   app.get("/health", async (req, res) => {
@@ -61,9 +72,10 @@ async function startServer() {
   app.get("/cron/daily-news-ingestion", handleDailyNewsIngestion);
   app.get("/cron/weekly-news-archival", handleWeeklyNewsArchival);
 
-  // tRPC API
+  // tRPC API (with rate limiting)
   app.use(
     "/api/trpc",
+    apiRateLimiter,
     createExpressMiddleware({
       router: appRouter,
       createContext,

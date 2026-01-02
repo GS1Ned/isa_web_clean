@@ -367,6 +367,22 @@ export default function Home() {
                     GS1 Netherlands
                   </a>
                 </li>
+                <li>
+                  <Link
+                    href="/privacy"
+                    className="hover:text-foreground transition"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/terms"
+                    className="hover:text-foreground transition"
+                  >
+                    Terms of Service
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

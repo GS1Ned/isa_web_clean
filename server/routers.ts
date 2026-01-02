@@ -60,6 +60,7 @@ import { governanceDocumentsRouter } from "./routers/governance-documents.js";
 import { stakeholderDashboardRouter } from "./routers/stakeholder-dashboard.js";
 import { dataQualityRouter } from "./routers-data-quality.js";
 import { standardsDirectoryRouter } from "./routers/standards-directory.js";
+import { productionMonitoringRouter } from "./routers/production-monitoring.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -1101,6 +1102,10 @@ export const appRouter = router({
    * Deterministic discovery of standards without interpretation
    */
   standardsDirectory: standardsDirectoryRouter,
+  /**
+   * Production Monitoring - Error tracking and performance metrics
+   */
+  productionMonitoring: productionMonitoringRouter,
 });
 
 export type AppRouter = typeof appRouter;
