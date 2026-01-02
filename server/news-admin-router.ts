@@ -24,8 +24,8 @@ import { z } from "zod";
 // In-memory status tracking for async pipeline execution
 interface PipelineStatus {
   status: "idle" | "running" | "completed" | "failed";
-  startedAt?: Date;
-  completedAt?: Date;
+  startedAt?: string;
+  completedAt?: string;
   result?: {
     success: boolean;
     fetched: number;

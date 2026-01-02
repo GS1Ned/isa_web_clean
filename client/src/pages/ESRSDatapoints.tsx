@@ -273,7 +273,7 @@ export default function ESRSDatapoints() {
                           {dp.code}
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline">{dp.esrsStandard}</Badge>
+                          <Badge variant="outline">{dp.esrs_standard}</Badge>
                         </TableCell>
                         <TableCell className="text-sm">
                           {dp.disclosureRequirement}

@@ -28,7 +28,7 @@ export default function HubEsrsGs1Mappings() {
     : advisory?.mappingResults?.filter((m: any) => m.regulationStandard === selectedStandard) || [];
 
   // Get ESRS standards list
-  const esrsStandards = summary?.coverageByESRS 
+  const esrs_standards = summary?.coverageByESRS 
     ? Object.keys(summary.coverageByESRS).sort()
     : [];
 
@@ -135,7 +135,7 @@ export default function HubEsrsGs1Mappings() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {esrsStandards.map((standard) => {
+                      {esrs_standards.map((standard) => {
                         const coverage = summary?.coverageByESRS?.[standard];
                         const mappingCount = coverage?.mappings || 0;
                         const coverageStatus = coverage?.coverage || "gap";
@@ -224,7 +224,7 @@ export default function HubEsrsGs1Mappings() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Standards</SelectItem>
-                      {esrsStandards.map((std) => (
+                      {esrs_standards.map((std) => (
                         <SelectItem key={std} value={`ESRS ${std}`}>
                           ESRS {std}
                         </SelectItem>

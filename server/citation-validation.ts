@@ -93,7 +93,7 @@ export async function validateCitations(
   }>
 > {
   const db = await getDb();
-  if (!db) return sources.map(s => ({ ...s, isDeprecated: 0, needsVerification: false }));
+  if (!db) return sources.map(s => ({ ...s, isDeprecated: false, needsVerification: false }));
 
   try {
     const { knowledgeEmbeddings } = await import("../drizzle/schema");
@@ -109,7 +109,7 @@ export async function validateCitations(
         if (chunks.length === 0) {
           return {
             ...source,
-            isDeprecated: 0,
+            isDeprecated: false,
             needsVerification: true,
           };
         }
@@ -143,7 +143,7 @@ export async function validateCitations(
     return validatedSources;
   } catch (error) {
     console.error("[Citation] Failed to validate citations:", error);
-    return sources.map(s => ({ ...s, isDeprecated: 0, needsVerification: false }));
+    return sources.map(s => ({ ...s, isDeprecated: false, needsVerification: false }));
   }
 }
 

@@ -104,8 +104,8 @@ export async function generateComplianceRoadmap(
     currentScore: input.currentScore.toString() as any,
     projectedScore: projectedScore.toString() as any,
     status: "draft",
-    startDate,
-    targetCompletionDate,
+    startDate: startDate.toISOString(),
+    targetCompletionDate: targetCompletionDate.toISOString(),
     estimatedEffort: totalEffort,
     estimatedImpact: totalImpact.toString() as any,
     progressPercentage: 0,
@@ -133,8 +133,8 @@ export async function generateComplianceRoadmap(
       sequenceNumber: i + 1,
       estimatedEffort: action.estimatedEffort,
       estimatedImpact: action.estimatedImpact.toString() as any,
-      startDate: actionStartDate,
-      targetDate: actionTargetDate,
+      startDate: actionStartDate.toISOString(),
+      targetDate: actionTargetDate.toISOString(),
       status: "pending",
       successCriteria: action.successCriteria,
       relatedRiskId: action.relatedRiskId,
@@ -152,7 +152,7 @@ export async function generateComplianceRoadmap(
       description:
         milestone.description ||
         `Achieve ${Math.round(milestone.targetScore)}% compliance score`,
-      targetDate: milestone.targetDate,
+      targetDate: milestone.targetDate.toISOString(),
       targetScore: milestone.targetScore.toString() as any,
       status: "pending",
     });

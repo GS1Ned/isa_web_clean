@@ -168,10 +168,10 @@ export async function createAttributeMappings(): Promise<{
       // Flag-based matching
       const conditions = [];
       if (rule.packagingRelated) {
-        conditions.push(eq(gs1Attributes.packagingRelated, true));
+        conditions.push(eq(gs1Attributes.packagingRelated, 1));
       }
       if (rule.sustainabilityRelated) {
-        conditions.push(eq(gs1Attributes.sustainabilityRelated, true));
+        conditions.push(eq(gs1Attributes.sustainabilityRelated, 1));
       }
 
       if (conditions.length > 0) {
@@ -196,7 +196,7 @@ export async function createAttributeMappings(): Promise<{
           regulationId: regulation.id,
           mappingReason: rule.mappingReason,
           relevanceScore: String(rule.relevanceScore) as any,
-          verifiedByAdmin: false,
+          verifiedByAdmin: 0,
         });
 
         success++;

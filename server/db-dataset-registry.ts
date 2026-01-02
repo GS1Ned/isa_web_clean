@@ -29,7 +29,7 @@ export async function getDatasets(filters?: {
   }
   
   if (filters?.isActive !== undefined) {
-    conditions.push(eq(datasetRegistry.isActive, filters.isActive));
+    conditions.push(eq(datasetRegistry.isActive, filters.isActive ? 1 : 0));
   }
   
   if (filters?.needsVerification) {
@@ -131,7 +131,7 @@ export async function getDatasetsNeedingVerification() {
     .from(datasetRegistry)
     .where(
       and(
-        eq(datasetRegistry.isActive, true),
+        eq(datasetRegistry.isActive, 1),
         sql`(${datasetRegistry.lastVerifiedDate} IS NULL OR ${datasetRegistry.lastVerifiedDate} < ${ninetyDaysAgo})`
       )
     )
@@ -154,7 +154,7 @@ export async function getDatasetStats() {
   const activeCount = await db
     .select({ count: sql<number>`count(*)` })
     .from(datasetRegistry)
-    .where(eq(datasetRegistry.isActive, true));
+    .where(eq(datasetRegistry.isActive, 1));
   
   const verifiedCount = await db
     .select({ count: sql<number>`count(*)` })

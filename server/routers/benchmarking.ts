@@ -33,10 +33,10 @@ export const benchmarkingRouter = router({
       if (input.startDate || input.endDate) {
         const conditions = [];
         if (input.startDate) {
-          conditions.push(gte(scoreHistory.createdAt, input.startDate));
+          conditions.push(gte(scoreHistory.createdAt, input.startDate.toISOString()));
         }
         if (input.endDate) {
-          conditions.push(lte(scoreHistory.createdAt, input.endDate));
+          conditions.push(lte(scoreHistory.createdAt, input.endDate.toISOString()));
         }
         if (conditions.length > 0) {
           query = db
@@ -82,7 +82,7 @@ export const benchmarkingRouter = router({
         .where(
           and(
             eq(scoreHistory.userId, ctx.user.id),
-            gte(scoreHistory.createdAt, cutoffDate)
+            gte(scoreHistory.createdAt, cutoffDate.toISOString())
           )
         );
 

@@ -81,7 +81,7 @@ export default function AdminScraperHealth() {
     return `${(ms / 1000).toFixed(1)}s`;
   };
 
-  const formatTimestamp = (date: Date | null) => {
+  const formatTimestamp = (date: string | null) => {
     if (!date) return "Never";
     return new Date(date).toLocaleString();
   };

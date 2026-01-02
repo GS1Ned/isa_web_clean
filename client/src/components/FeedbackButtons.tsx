@@ -65,26 +65,26 @@ export function FeedbackButtons({ mappingId }: FeedbackButtonsProps) {
     <div className="flex items-center gap-2">
       {/* Thumbs Up Button */}
       <Button
-        variant={userVote === true ? "default" : "outline"}
+        variant={userVote === 1 ? "default" : "outline"}
         size="sm"
         onClick={() => handleVote(true)}
         disabled={isSubmitting || !user}
         className="gap-1"
       >
         <ThumbsUp className="h-4 w-4" />
-        {userVote === true && <span className="text-xs">Voted</span>}
+        {userVote === 1 && <span className="text-xs">Voted</span>}
       </Button>
 
       {/* Thumbs Down Button */}
       <Button
-        variant={userVote === false ? "default" : "outline"}
+        variant={userVote === 0 ? "default" : "outline"}
         size="sm"
         onClick={() => handleVote(false)}
         disabled={isSubmitting || !user}
         className="gap-1"
       >
         <ThumbsDown className="h-4 w-4" />
-        {userVote === false && <span className="text-xs">Voted</span>}
+        {userVote === 0 && <span className="text-xs">Voted</span>}
       </Button>
 
       {/* Stats Display */}

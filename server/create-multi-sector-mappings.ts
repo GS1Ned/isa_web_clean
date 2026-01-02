@@ -206,7 +206,7 @@ async function createDIYMappings(): Promise<{
             regulationId: regulation.id,
             mappingReason: rule.mappingReason,
             relevanceScore: rule.relevanceScore.toString(),
-            verifiedByAdmin: false,
+            verifiedByAdmin: 0,
           });
           created++;
         } catch (error) {
@@ -275,7 +275,7 @@ async function createHealthcareMappings(): Promise<{
             regulationId: regulation.id,
             mappingReason: rule.mappingReason,
             relevanceScore: rule.relevanceScore.toString(),
-            verifiedByAdmin: false,
+            verifiedByAdmin: 0,
           });
           created++;
         } catch (error) {

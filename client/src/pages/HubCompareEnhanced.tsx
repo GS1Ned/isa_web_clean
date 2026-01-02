@@ -58,10 +58,10 @@ export default function HubCompareEnhanced() {
     if (!mappings1.length || !mappings2.length) return null;
 
     const standards1 = new Set(
-      mappings1.map(m => m.datapoint?.esrsStandard || "").filter(Boolean)
+      mappings1.map(m => m.datapoint?.esrs_standard || "").filter(Boolean)
     );
     const standards2 = new Set(
-      mappings2.map(m => m.datapoint?.esrsStandard || "").filter(Boolean)
+      mappings2.map(m => m.datapoint?.esrs_standard || "").filter(Boolean)
     );
 
     const overlappingStandards = Array.from(standards1).filter(s =>
@@ -73,10 +73,10 @@ export default function HubCompareEnhanced() {
     // Get mappings for overlapping standards
     const overlappingMappings = {
       reg1: mappings1.filter(m =>
-        overlappingStandards.includes(m.datapoint?.esrsStandard || "")
+        overlappingStandards.includes(m.datapoint?.esrs_standard || "")
       ),
       reg2: mappings2.filter(m =>
-        overlappingStandards.includes(m.datapoint?.esrsStandard || "")
+        overlappingStandards.includes(m.datapoint?.esrs_standard || "")
       ),
     };
 
@@ -273,11 +273,11 @@ export default function HubCompareEnhanced() {
                     {analysis.overlappingStandards.map(standard => {
                       const mappingsReg1 =
                         analysis.overlappingMappings.reg1.filter(
-                          m => m.datapoint?.esrsStandard === standard
+                          m => m.datapoint?.esrs_standard === standard
                         );
                       const mappingsReg2 =
                         analysis.overlappingMappings.reg2.filter(
-                          m => m.datapoint?.esrsStandard === standard
+                          m => m.datapoint?.esrs_standard === standard
                         );
 
                       return (
