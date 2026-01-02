@@ -163,7 +163,7 @@ function extractColumnMap(headerRow: ExcelJS.Row): Record<string, number> {
     if (header === "technical name") map.xbrlTag = colNumber;
     if (header === "abstract") map.abstract = colNumber;
     if (header === "type name short" || header.includes("type"))
-      map.data_type = colNumber;
+      map.dataType = colNumber;
     if (header === "period type") map.periodType = colNumber;
     if (header === "balance") map.balance = colNumber;
     if (header === "substitution group") map.substitutionGroup = colNumber;
@@ -186,7 +186,7 @@ function parseDatapointRow(
   const name = getCellValue(row, columnMap.name);
   const xbrlTag = getCellValue(row, columnMap.xbrlTag);
   const abstract = getCellValue(row, columnMap.abstract);
-  const data_type = getCellValue(row, columnMap.data_type);
+  const data_type = getCellValue(row, columnMap.dataType);
   const references = getCellValue(row, columnMap.references);
 
   // Skip abstract elements (they're just grouping headers, not actual datapoints)

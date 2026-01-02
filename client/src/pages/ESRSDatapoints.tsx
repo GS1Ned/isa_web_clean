@@ -273,10 +273,10 @@ export default function ESRSDatapoints() {
                           {dp.code}
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline">{dp.esrs_standard}</Badge>
+                          <Badge variant="outline">{dp.esrsStandard}</Badge>
                         </TableCell>
                         <TableCell className="text-sm">
-                          {dp.disclosure_requirement}
+                          {dp.disclosureRequirement}
                         </TableCell>
                         <TableCell className="max-w-md">
                           <div
@@ -287,7 +287,7 @@ export default function ESRSDatapoints() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="secondary">{dp.data_type}</Badge>
+                          <Badge variant="secondary">{dp.dataType}</Badge>
                         </TableCell>
                         <TableCell>
                           {dp.voluntary ? (

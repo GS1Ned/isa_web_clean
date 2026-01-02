@@ -43,7 +43,7 @@ describe("ESRS Datapoints Router", () => {
         dp =>
           dp.name?.toLowerCase().includes("emissions") ||
           dp.datapointId?.toLowerCase().includes("emissions") ||
-          dp.disclosure_requirement?.toLowerCase().includes("emissions")
+          dp.disclosureRequirement?.toLowerCase().includes("emissions")
       );
       expect(hasEmissions).toBe(true);
     }
@@ -63,7 +63,7 @@ describe("ESRS Datapoints Router", () => {
     // All results should be from ESRS E1
     if (result.datapoints.length > 0) {
       const allE1 = result.datapoints.every(
-        dp => dp.esrs_standard === "ESRS E1"
+        dp => dp.esrsStandard === "ESRS E1"
       );
       expect(allE1).toBe(true);
     }
@@ -83,7 +83,7 @@ describe("ESRS Datapoints Router", () => {
     // All results should contain "narrative" in data type
     if (result.datapoints.length > 0) {
       const allNarrative = result.datapoints.every(dp =>
-        dp.data_type?.toLowerCase().includes("narrative")
+        dp.dataType?.toLowerCase().includes("narrative")
       );
       expect(allNarrative).toBe(true);
     }
@@ -195,8 +195,8 @@ describe("ESRS Datapoints Router", () => {
     if (result.datapoints.length > 0) {
       const allMatch = result.datapoints.every(
         dp =>
-          dp.esrs_standard === "ESRS E1" &&
-          dp.data_type?.toLowerCase().includes("narrative") &&
+          dp.esrsStandard === "ESRS E1" &&
+          dp.dataType?.toLowerCase().includes("narrative") &&
           dp.voluntary === false
       );
       expect(allMatch).toBe(true);

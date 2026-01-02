@@ -90,7 +90,7 @@ export async function mapESRSToGS1Attributes(
     );
 
     const primaryRule = rules[0];
-    const esrs_standard = primaryRule.esrs_standard || deriveStandardFromId(id);
+    const esrs_standard = primaryRule.esrsStandard || deriveStandardFromId(id);
     const esrsDatapointName = primaryRule.topic || id;
 
     return {

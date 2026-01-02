@@ -167,7 +167,7 @@ export async function upsertRegulation(regulation: {
         .set({
           title: regulation.title,
           description: regulation.description,
-          effectiveDate: regulation.effectiveDate,
+          effectiveDate: regulation.effectiveDate ? regulation.effectiveDate.toISOString() : null,
           sourceUrl: regulation.sourceUrl,
           regulationType: regulation.regulationType as any,
         })
@@ -180,7 +180,7 @@ export async function upsertRegulation(regulation: {
         title: regulation.title,
         celexId: regulation.celexId,
         description: regulation.description,
-        effectiveDate: regulation.effectiveDate,
+        effectiveDate: regulation.effectiveDate ? regulation.effectiveDate.toISOString() : null,
         sourceUrl: regulation.sourceUrl,
         regulationType: regulation.regulationType as any,
       });
@@ -355,7 +355,7 @@ export async function getUserPreferences(userId: number) {
     // Create default preferences
     await db.insert(userPreferences).values({
       userId,
-      notificationsEnabled: true,
+      notificationsEnabled: 1,
     });
 
     const result = await db
@@ -504,9 +504,9 @@ export async function createHubNews(news: {
       regulationTags: news.regulationTags || null,
       impactLevel: news.impactLevel,
       credibilityScore: news.credibilityScore,
-      publishedDate: news.publishedDate || new Date(),
-      retrievedAt: news.retrievedAt || new Date(),
-      isAutomated: news.isAutomated ?? false,
+      publishedDate: news.publishedDate ? news.publishedDate.toISOString() : new Date().toISOString(),
+      retrievedAt: news.retrievedAt ? news.retrievedAt.toISOString() : new Date().toISOString(),
+      isAutomated: news.isAutomated ? 1 : 0,
       summary: news.summary,
 
       // GS1-specific fields
@@ -572,7 +572,7 @@ export async function createUserAlert(alert: {
       userId: alert.userId,
       regulationId: alert.regulationId,
       alertType: alert.alertType,
-      isActive: alert.isActive ?? true,
+      isActive: alert.isActive ? 1 : 0,
       daysBeforeDeadline: alert.daysBeforeDeadline,
     });
     return result;
@@ -619,7 +619,7 @@ export async function getUsersWithActiveAlerts() {
     return await db
       .selectDistinct({ userId: userAlerts.userId })
       .from(userAlerts)
-      .where(eq(userAlerts.isActive, true));
+      .where(eq(userAlerts.isActive, 1));
   } catch (error) {
     console.error("[Database] Failed to get users with active alerts:", error);
     return [];
@@ -656,10 +656,10 @@ export async function getRegulationEsrsMappings(regulationId: number) {
         datapoint: {
           id: esrsDatapoints.id,
           datapointId: esrsDatapoints.code,
-          esrs_standard: esrsDatapoints.esrs_standard,
-          disclosure_requirement: esrsDatapoints.disclosure_requirement,
+          esrs_standard: esrsDatapoints.esrsStandard,
+          disclosure_requirement: esrsDatapoints.disclosureRequirement,
           datapointName: esrsDatapoints.name,
-          data_type: esrsDatapoints.data_type,
+          data_type: esrsDatapoints.dataType,
           mayVoluntary: esrsDatapoints.voluntary,
         },
       })
@@ -804,9 +804,9 @@ export async function submitMappingFeedback(params: {
       // Update existing vote
       await db
         .update(mappingFeedback)
-        .set({ vote: params.vote })
+        .set({ vote: params.vote ? 1 : 0 })
         .where(eq(mappingFeedback.id, existing[0].id));
-      return { ...existing[0], vote: params.vote };
+      return { ...existing[0], vote: params.vote ? 1 : 0 };
     } else {
       // Insert new vote
       const result = await db.insert(mappingFeedback).values(params);
@@ -951,7 +951,7 @@ export async function getLowScoredMappings(minVotes: number = 3) {
         regulationId: regulationEsrsMappings.regulationId,
         datapointId: regulationEsrsMappings.datapointId,
         datapointName: esrsDatapoints.name,
-        esrs_standard: esrsDatapoints.esrs_standard,
+        esrs_standard: esrsDatapoints.esrsStandard,
         relevanceScore: regulationEsrsMappings.relevanceScore,
         reasoning: regulationEsrsMappings.reasoning,
         totalVotes: count(mappingFeedback.id),
@@ -977,7 +977,7 @@ export async function getLowScoredMappings(minVotes: number = 3) {
       regulationId: m.regulationId,
       datapointId: m.datapointId,
       datapointName: m.datapointName,
-      esrs_standard: m.esrs_standard,
+      esrs_standard: m.esrsStandard,
       relevanceScore: m.relevanceScore,
       reasoning: m.reasoning,
       totalVotes: Number(m.totalVotes),
@@ -1009,7 +1009,7 @@ export async function getVoteDistributionByStandard() {
 
     const distribution = await db
       .select({
-        esrs_standard: esrsDatapoints.esrs_standard,
+        esrs_standard: esrsDatapoints.esrsStandard,
         totalMappings: count(regulationEsrsMappings.id),
         totalVotes: count(mappingFeedback.id),
         positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
@@ -1023,10 +1023,10 @@ export async function getVoteDistributionByStandard() {
         mappingFeedback,
         sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`
       )
-      .groupBy(esrsDatapoints.esrs_standard);
+      .groupBy(esrsDatapoints.esrsStandard);
 
     return distribution.map(d => ({
-      esrs_standard: d.esrs_standard,
+      esrs_standard: d.esrsStandard,
       totalMappings: Number(d.totalMappings),
       totalVotes: Number(d.totalVotes),
       positiveVotes: Number(d.positiveVotes || 0),
@@ -1064,7 +1064,7 @@ export async function getMostVotedMappings(limit: number = 10) {
         regulationId: regulationEsrsMappings.regulationId,
         datapointId: regulationEsrsMappings.datapointId,
         datapointName: esrsDatapoints.name,
-        esrs_standard: esrsDatapoints.esrs_standard,
+        esrs_standard: esrsDatapoints.esrsStandard,
         relevanceScore: regulationEsrsMappings.relevanceScore,
         totalVotes: count(mappingFeedback.id),
         positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
@@ -1088,7 +1088,7 @@ export async function getMostVotedMappings(limit: number = 10) {
       regulationId: m.regulationId,
       datapointId: m.datapointId,
       datapointName: m.datapointName,
-      esrs_standard: m.esrs_standard,
+      esrs_standard: m.esrsStandard,
       relevanceScore: m.relevanceScore,
       totalVotes: Number(m.totalVotes),
       positiveVotes: Number(m.positiveVotes || 0),

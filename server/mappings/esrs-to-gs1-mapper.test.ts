@@ -17,7 +17,7 @@ describe("mapESRSToGS1Attributes", () => {
     const mapping: ESRSToGS1Mapping = result[0];
 
     expect(mapping.esrsDatapointId).toBe("E1-1_01");
-    expect(mapping.esrs_standard).toBe("E1");
+    expect(mapping.esrsStandard).toBe("E1");
     expect(mapping.gs1Attributes.length).toBeGreaterThan(0);
     expect(
       mapping.gs1Attributes.every(attr => attr.mappingConfidence >= 0.7)
@@ -81,7 +81,7 @@ describe("mapESRSToGS1Attributes", () => {
     const [mapping] = await mapESRSToGS1Attributes(["UNKNOWN_ID"]);
 
     expect(mapping.esrsDatapointId).toBe("UNKNOWN_ID");
-    expect(mapping.esrs_standard).toBe("Unknown");
+    expect(mapping.esrsStandard).toBe("Unknown");
     expect(mapping.gs1Attributes).toEqual([]);
   });
 

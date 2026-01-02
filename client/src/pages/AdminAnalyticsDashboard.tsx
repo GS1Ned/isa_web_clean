@@ -438,7 +438,7 @@ export default function AdminAnalyticsDashboard() {
                       <ResponsiveContainer width="100%" height={300}>
                         <BarChart
                           data={voteDistributionQuery.data.map(d => ({
-                            standard: d.esrs_standard,
+                            standard: d.esrsStandard,
                             approval: d.approvalPercentage,
                             votes: d.totalVotes,
                           }))}
@@ -493,7 +493,7 @@ export default function AdminAnalyticsDashboard() {
                                 {mapping.datapointName}
                               </p>
                               <p className="text-xs text-muted-foreground">
-                                {mapping.esrs_standard}
+                                {mapping.esrsStandard}
                               </p>
                             </div>
                             <Badge
@@ -537,7 +537,7 @@ export default function AdminAnalyticsDashboard() {
                                 #{idx + 1} - {mapping.datapointName}
                               </p>
                               <p className="text-xs text-muted-foreground">
-                                {mapping.esrs_standard}
+                                {mapping.esrsStandard}
                               </p>
                             </div>
                             <Badge

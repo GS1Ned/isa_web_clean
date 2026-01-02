@@ -259,7 +259,7 @@ export default function AdminPromptOptimization() {
                                   {mapping.datapointId}
                                 </p>
                                 <p className="text-xs text-muted-foreground truncate">
-                                  {mapping.esrs_standard}
+                                  {mapping.esrsStandard}
                                 </p>
                               </div>
                               <Badge
@@ -305,7 +305,7 @@ export default function AdminPromptOptimization() {
                               ESRS Standard
                             </label>
                             <p className="text-foreground">
-                              {selectedMapping.esrs_standard}
+                              {selectedMapping.esrsStandard}
                             </p>
                           </div>
                           <div>
@@ -456,10 +456,10 @@ export default function AdminPromptOptimization() {
                       </p>
                     ) : (
                       voteDistribution.map(item => (
-                        <div key={item.esrs_standard} className="space-y-1">
+                        <div key={item.esrsStandard} className="space-y-1">
                           <div className="flex items-center justify-between">
                             <span className="font-medium">
-                              {item.esrs_standard}
+                              {item.esrsStandard}
                             </span>
                             <span className="text-sm text-muted-foreground">
                               {Math.round(item.approvalPercentage)}%

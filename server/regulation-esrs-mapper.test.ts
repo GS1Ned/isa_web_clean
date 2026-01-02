@@ -118,7 +118,7 @@ describe("Regulation-ESRS Mapping", () => {
     expect(firstMapping.relevanceScore).toBeLessThanOrEqual(10);
 
     console.log(
-      `[Test] Sample mapping: ${firstMapping.datapoint?.datapointId} (${firstMapping.datapoint?.esrs_standard}) - Relevance: ${firstMapping.relevanceScore}/10`
+      `[Test] Sample mapping: ${firstMapping.datapoint?.datapointId} (${firstMapping.datapoint?.esrsStandard}) - Relevance: ${firstMapping.relevanceScore}/10`
     );
   });
 
@@ -131,7 +131,7 @@ describe("Regulation-ESRS Mapping", () => {
 
     const mappingsByStandard = mappings.reduce(
       (acc, mapping) => {
-        const standard = mapping.datapoint?.esrs_standard || "Unknown";
+        const standard = mapping.datapoint?.esrsStandard || "Unknown";
         if (!acc[standard]) {
           acc[standard] = 0;
         }

@@ -126,7 +126,7 @@ export function ESRSDatapointsSection({
   // Group by ESRS standard
   const mappingsByStandard = mappings.reduce(
     (acc, mapping) => {
-      const standard = mapping.datapoint?.esrs_standard || "Unknown";
+      const standard = mapping.datapoint?.esrsStandard || "Unknown";
       if (!acc[standard]) {
         acc[standard] = [];
       }
@@ -236,7 +236,7 @@ export function ESRSDatapointsSection({
                               {mapping.datapoint?.datapointId}
                             </code>
                             <Badge variant="secondary">
-                              {mapping.datapoint?.data_type || "N/A"}
+                              {mapping.datapoint?.dataType || "N/A"}
                             </Badge>
                             {mapping.datapoint?.mayVoluntary ? (
                               <Badge

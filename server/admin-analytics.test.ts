@@ -34,7 +34,7 @@ describe("Admin Analytics", () => {
         expect(mapping.totalVotes).toBeGreaterThanOrEqual(3);
         expect(mapping.mappingId).toBeDefined();
         expect(mapping.datapointName).toBeDefined();
-        expect(mapping.esrs_standard).toBeDefined();
+        expect(mapping.esrsStandard).toBeDefined();
       });
     });
 
@@ -56,7 +56,7 @@ describe("Admin Analytics", () => {
       // Should have data for multiple standards
       if (distribution.length > 0) {
         distribution.forEach(d => {
-          expect(d.esrs_standard).toBeDefined();
+          expect(d.esrsStandard).toBeDefined();
           expect(d.totalMappings).toBeGreaterThan(0);
           expect(d.totalVotes).toBeGreaterThanOrEqual(0);
           expect(d.positiveVotes).toBeGreaterThanOrEqual(0);
@@ -97,7 +97,7 @@ describe("Admin Analytics", () => {
       mostVoted.forEach(mapping => {
         expect(mapping.mappingId).toBeDefined();
         expect(mapping.datapointName).toBeDefined();
-        expect(mapping.esrs_standard).toBeDefined();
+        expect(mapping.esrsStandard).toBeDefined();
         expect(mapping.totalVotes).toBeGreaterThan(0);
         expect(mapping.approvalPercentage).toBeGreaterThanOrEqual(0);
       });

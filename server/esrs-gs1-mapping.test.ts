@@ -35,7 +35,7 @@ describe('ESRS-GS1 Mapping Database Functions', () => {
       
       if (mappings.length > 1) {
         // Verify ordering (ESRS E1 should come before ESRS E5)
-        const esrsStandards = mappings.map((m: any) => m.esrs_standard);
+        const esrsStandards = mappings.map((m: any) => m.esrsStandard);
         const uniqueStandards = [...new Set(esrsStandards)];
         
         expect(uniqueStandards.length).toBeGreaterThan(0);
@@ -51,7 +51,7 @@ describe('ESRS-GS1 Mapping Database Functions', () => {
       
       // All returned mappings should be for ESRS E1
       mappings.forEach((mapping: any) => {
-        expect(mapping.esrs_standard).toBe('ESRS E1');
+        expect(mapping.esrsStandard).toBe('ESRS E1');
       });
     });
 
@@ -62,7 +62,7 @@ describe('ESRS-GS1 Mapping Database Functions', () => {
       
       // All returned mappings should be for ESRS E5
       mappings.forEach((mapping: any) => {
-        expect(mapping.esrs_standard).toBe('ESRS E5');
+        expect(mapping.esrsStandard).toBe('ESRS E5');
       });
     });
 
@@ -95,7 +95,7 @@ describe('ESRS-GS1 Mapping Database Functions', () => {
       const summary = await getComplianceCoverageSummary();
       
       const e5Coverage = summary.find((entry: any) => 
-        entry.esrs_standard === 'ESRS E5'
+        entry.esrsStandard === 'ESRS E5'
       );
       
       expect(e5Coverage).toBeDefined();

@@ -1,0 +1,34 @@
+{
+  "query": "SHOW COLUMNS FROM dutch_initiatives WHERE Field LIKE '%required%' OR Field LIKE '%related%'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SHOW COLUMNS FROM dutch_initiatives WHERE Field LIKE '%required%' OR Field LIKE '%related%'",
+  "rows": [
+    {
+      "Field": "requiredGS1Standards",
+      "Type": "json",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "requiredGDSNAttributes",
+      "Type": "json",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "relatedEURegulations",
+      "Type": "json",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    }
+  ],
+  "messages": [],
+  "stdout": "Field\tType\tNull\tKey\tDefault\tExtra\nrequiredGS1Standards\tjson\tYES\t\tNULL\t\nrequiredGDSNAttributes\tjson\tYES\t\tNULL\t\nrelatedEURegulations\tjson\tYES\t\tNULL\t\n",
+  "stderr": "",
+  "execution_time_ms": 137
+}

@@ -75,7 +75,7 @@ export async function getGs1AttributesForEsrsMapping(esrsMappingId: number) {
       a.mapping_notes,
       a.confidence,
       m.short_name as esrs_short_name,
-      m.esrs_standard,
+      m.esrsStandard,
       m.esrs_topic
     FROM gs1_attribute_esrs_mapping a
     JOIN gs1_esrs_mappings m ON a.esrs_mapping_id = m.mapping_id
@@ -96,7 +96,7 @@ export async function getEsrsRequirementsForGs1Attribute(gs1AttributeId: string)
   const result = await db.execute(sql`
     SELECT 
       m.mapping_id,
-      m.esrs_standard,
+      m.esrsStandard,
       m.esrs_topic,
       m.short_name,
       m.definition,
@@ -106,7 +106,7 @@ export async function getEsrsRequirementsForGs1Attribute(gs1AttributeId: string)
     FROM gs1_attribute_esrs_mapping a
     JOIN gs1_esrs_mappings m ON a.esrs_mapping_id = m.mapping_id
     WHERE a.gs1_attribute_id = ${gs1AttributeId}
-    ORDER BY m.esrs_standard, m.mapping_id
+    ORDER BY m.esrsStandard, m.mapping_id
   `);
   
   return result[0];
@@ -121,7 +121,7 @@ export async function getComplianceCoverageSummary() {
   
   const result = await db.execute(sql`
     SELECT 
-      m.esrs_standard,
+      m.esrsStandard,
       m.esrs_topic,
       COUNT(DISTINCT m.mapping_id) as total_requirements,
       COUNT(DISTINCT a.gs1_attribute_id) as mapped_attributes,
@@ -130,8 +130,8 @@ export async function getComplianceCoverageSummary() {
       SUM(CASE WHEN a.confidence = 'low' THEN 1 ELSE 0 END) as low_confidence_mappings
     FROM gs1_esrs_mappings m
     LEFT JOIN gs1_attribute_esrs_mapping a ON m.mapping_id = a.esrs_mapping_id
-    GROUP BY m.esrs_standard, m.esrs_topic
-    ORDER BY m.esrs_standard
+    GROUP BY m.esrsStandard, m.esrs_topic
+    ORDER BY m.esrsStandard
   `);
   
   return result[0];
@@ -147,7 +147,7 @@ export async function getUnmappedEsrsRequirements() {
   const result = await db.execute(sql`
     SELECT 
       m.mapping_id,
-      m.esrs_standard,
+      m.esrsStandard,
       m.esrs_topic,
       m.short_name,
       m.definition,
@@ -155,7 +155,7 @@ export async function getUnmappedEsrsRequirements() {
     FROM gs1_esrs_mappings m
     LEFT JOIN gs1_attribute_esrs_mapping a ON m.mapping_id = a.esrs_mapping_id
     WHERE a.id IS NULL
-    ORDER BY m.esrs_standard, m.mapping_id
+    ORDER BY m.esrsStandard, m.mapping_id
   `);
   
   return result[0];
@@ -172,7 +172,7 @@ export async function searchEsrsGs1Mappings(keyword: string) {
   const result = await db.execute(sql`
     SELECT 
       m.mapping_id,
-      m.esrs_standard,
+      m.esrsStandard,
       m.esrs_topic,
       m.short_name,
       m.definition,
@@ -186,7 +186,7 @@ export async function searchEsrsGs1Mappings(keyword: string) {
       OR m.esrs_topic LIKE ${searchTerm}
       OR m.gs1_relevance LIKE ${searchTerm}
     GROUP BY m.mapping_id
-    ORDER BY m.esrs_standard, m.mapping_id
+    ORDER BY m.esrsStandard, m.mapping_id
   `);
   
   return result[0];

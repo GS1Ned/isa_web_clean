@@ -235,7 +235,7 @@ export const standardsDirectoryRouter = router({
           // Group by ESRS standard
           const esrsStandardCounts: Record<string, number> = {};
           for (const datapoint of esrsData) {
-            const standard = datapoint.esrs_standard || "Unknown";
+            const standard = datapoint.esrsStandard || "Unknown";
             if (!esrsStandardCounts[standard]) {
               esrsStandardCounts[standard] = 0;
             }

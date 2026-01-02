@@ -50,14 +50,14 @@ export const esrsRoadmapRouter = router({
 
       // Filter mappings relevant to selected ESRS requirements
       const relevantMappings = allMappings.filter((mapping: any) =>
-        esrsRequirements.some((req) => mapping.esrs_standard?.includes(req))
+        esrsRequirements.some((req) => mapping.esrsStandard?.includes(req))
       );
 
       // Build context for LLM
       const mappingsContext = relevantMappings
         .map(
           (m: any) =>
-            `- ${m.esrs_standard} (${m.esrs_topic}): ${m.data_point_name}\n  Relevance: ${m.gs1_relevance}\n  Source: ${m.source_document}`
+            `- ${m.esrsStandard} (${m.esrs_topic}): ${m.data_point_name}\n  Relevance: ${m.gs1_relevance}\n  Source: ${m.source_document}`
         )
         .join("\n\n");
 

@@ -61,7 +61,7 @@ async function loadGS1EsrsMappings() {
         ) VALUES (
           ${mapping.mapping_id},
           ${mapping.level},
-          ${mapping.esrs_standard},
+          ${mapping.esrsStandard},
           ${mapping.esrs_topic},
           ${mapping.data_point_name},
           ${mapping.short_name},

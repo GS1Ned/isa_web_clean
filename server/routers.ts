@@ -376,7 +376,7 @@ export const appRouter = router({
             userId: ctx.user.id,
             regulationId: input.regulationId,
             alertType: input.alertType as any,
-            isActive: true,
+            isActive: 1,
             createdAt: new Date(),
           });
 
@@ -863,18 +863,18 @@ export const appRouter = router({
             sql`(
               ${esrsDatapoints.code} LIKE ${`%${input.search}%`} OR
               ${esrsDatapoints.name} LIKE ${`%${input.search}%`} OR
-              ${esrsDatapoints.disclosure_requirement} LIKE ${`%${input.search}%`}
+              ${esrsDatapoints.disclosureRequirement} LIKE ${`%${input.search}%`}
             )`
           );
         }
         if (input?.standard) {
-          conditions.push(eq(esrsDatapoints.esrs_standard, input.standard));
+          conditions.push(eq(esrsDatapoints.esrsStandard, input.standard));
         }
-        if (input?.data_type) {
-          conditions.push(like(esrsDatapoints.data_type, `%${input.data_type}%`));
+        if (input?.dataType) {
+          conditions.push(like(esrsDatapoints.dataType, `%${input.dataType}%`));
         }
         if (input?.voluntary !== undefined) {
-          conditions.push(eq(esrsDatapoints.voluntary, input.voluntary));
+          conditions.push(eq(esrsDatapoints.voluntary, input.voluntary ? 1 : 0));
         }
 
         // Get total count
@@ -912,10 +912,10 @@ export const appRouter = router({
       const { sql } = await import("drizzle-orm");
 
       const standards = await db
-        .select({ standard: esrsDatapoints.esrs_standard })
+        .select({ standard: esrsDatapoints.esrsStandard })
         .from(esrsDatapoints)
-        .groupBy(esrsDatapoints.esrs_standard)
-        .orderBy(esrsDatapoints.esrs_standard);
+        .groupBy(esrsDatapoints.esrsStandard)
+        .orderBy(esrsDatapoints.esrsStandard);
 
       return standards.map(s => s.standard).filter(Boolean);
     }),
@@ -939,11 +939,11 @@ export const appRouter = router({
       // Count by standard
       const byStandardResult = await db
         .select({
-          standard: esrsDatapoints.esrs_standard,
+          standard: esrsDatapoints.esrsStandard,
           count: sql<number>`count(*)`,
         })
         .from(esrsDatapoints)
-        .groupBy(esrsDatapoints.esrs_standard);
+        .groupBy(esrsDatapoints.esrsStandard);
 
       const byStandard = Object.fromEntries(
         byStandardResult.map(r => [r.standard, Number(r.count)])
@@ -952,14 +952,14 @@ export const appRouter = router({
       // Count by data type
       const byDataTypeResult = await db
         .select({
-          data_type: esrsDatapoints.data_type,
+          data_type: esrsDatapoints.dataType,
           count: sql<number>`count(*)`,
         })
         .from(esrsDatapoints)
-        .groupBy(esrsDatapoints.data_type);
+        .groupBy(esrsDatapoints.dataType);
 
       const byDataType = Object.fromEntries(
-        byDataTypeResult.map(r => [r.data_type || "unknown", Number(r.count)])
+        byDataTypeResult.map(r => [r.dataType || "unknown", Number(r.count)])
       );
 
       return { total, byStandard, byDataType };
