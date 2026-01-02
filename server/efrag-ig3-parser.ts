@@ -133,7 +133,7 @@ export async function ingestIG3Datapoints(
       // Insert datapoint
       await db.insert(esrsDatapoints).values({
         code: dp.datapointId,
-        esrs_standard: dp.esrsStandard,
+        esrs_standard: dp.esrs_standard,
         disclosure_requirement: dp.disclosureRequirement,
         paragraph: dp.paragraph?.toString() || null,
         related_ar: dp.related_ar,

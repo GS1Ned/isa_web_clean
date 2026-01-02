@@ -50,7 +50,7 @@ export const collaborationRouter = router({
         actionId: input.actionId,
         userId: ctx.user.id,
         content: input.content,
-        isApproval: input.isApproval || false,
+        isApproval: input.isApproval ? 1 : 0,
         approvalStatus: input.approvalStatus,
       });
 

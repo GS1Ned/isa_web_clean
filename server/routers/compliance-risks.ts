@@ -37,7 +37,7 @@ export const complianceRisksRouter = router({
       }
 
       if (input.resolved !== undefined) {
-        conditions.push(eq(supplyChainRisks.isResolved, input.resolved));
+        conditions.push(eq(supplyChainRisks.isResolved, input.resolved ? 1 : 0));
       }
 
       const risks = await db
@@ -178,7 +178,7 @@ export const complianceRisksRouter = router({
         and(
           eq(supplyChainRisks.userId, ctx.user.id),
           eq(supplyChainRisks.severity, "critical" as any),
-          eq(supplyChainRisks.isResolved, false)
+          eq(supplyChainRisks.isResolved, 0)
         )
       )
       .orderBy(desc(supplyChainRisks.createdAt))

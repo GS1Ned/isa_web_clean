@@ -50,7 +50,7 @@ export const remediationRouter = router({
         riskId: input.riskId,
         title: input.title,
         description: input.description,
-        targetCompletionDate: input.targetCompletionDate,
+        targetCompletionDate: input.targetCompletionDate?.toISOString(),
         status: "draft",
       });
 
@@ -108,7 +108,7 @@ export const remediationRouter = router({
           ? JSON.stringify(input.requiredEvidence)
           : null,
         assignedTo: input.assignedTo,
-        dueDate: input.dueDate,
+        dueDate: input.dueDate?.toISOString(),
         status: "pending",
       });
 
@@ -169,7 +169,7 @@ export const remediationRouter = router({
         .set({
           status: input.status,
           notes: input.notes,
-          completedAt: input.status === "completed" ? new Date() : null,
+          completedAt: input.status === "completed" ? new Date().toISOString() : null,
         })
         .where(eq(remediationSteps.id, input.stepId));
 

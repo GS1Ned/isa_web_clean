@@ -66,7 +66,7 @@ export const observabilityRouter = router({
       })
     )
     .query(async ({ input }) => {
-      return getSourceReliabilityMetrics(input.days);
+      return getSourceHealthMetrics(input.days);
     }),
 
   /**

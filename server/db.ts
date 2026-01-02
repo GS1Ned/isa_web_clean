@@ -1026,7 +1026,7 @@ export async function getVoteDistributionByStandard() {
       .groupBy(esrsDatapoints.esrsStandard);
 
     return distribution.map(d => ({
-      esrs_standard: d.esrsStandard || d.esrs_standard,
+      esrs_standard: d.esrs_standard,
       totalMappings: Number(d.totalMappings),
       totalVotes: Number(d.totalVotes),
       positiveVotes: Number(d.positiveVotes || 0),

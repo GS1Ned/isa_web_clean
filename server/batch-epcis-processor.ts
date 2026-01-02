@@ -324,7 +324,7 @@ export async function updateSupplyChainAnalytics(
       .where(
         and(
           eq(supplyChainRisks.userId, userId),
-          eq(supplyChainRisks.isResolved, false)
+          eq(supplyChainRisks.isResolved, 0)
         )
       );
     const highRiskNodes = await db

@@ -38,7 +38,7 @@ export async function sendDeadlineAlerts() {
       .from(regulations)
       .where(
         and(
-          lt(regulations.effectiveDate, thirtyDaysFromNow),
+          lt(regulations.effectiveDate, thirtyDaysFromNow.toISOString()),
           eq(regulations.regulationType, "CSRD")
         )
       );
@@ -56,14 +56,14 @@ export async function sendDeadlineAlerts() {
 
       if (relevantAlerts.length > 0) {
         const daysUntilDeadline = Math.ceil(
-          (reg.effectiveDate!.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+          (new Date(reg.effectiveDate!).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
         );
 
         const emailContent = `
 Regulatory Deadline Alert
 
 Regulation: ${reg.title}
-Implementation Date: ${reg.effectiveDate?.toLocaleDateString()}
+Implementation Date: ${reg.effectiveDate ? new Date(reg.effectiveDate).toLocaleDateString() : 'N/A'}
 Days Until Deadline: ${daysUntilDeadline}
 
 Description: ${reg.description}
@@ -110,7 +110,7 @@ export async function sendDailyDigest() {
     const recentNews = await db
       .select()
       .from(hubNews)
-      .where(eq(hubNews.publishedDate, oneDayAgo));
+      .where(eq(hubNews.publishedDate, oneDayAgo.toISOString()));
 
     if (recentNews.length === 0) {
       console.log("[Email Triggers] No new news for digest");
@@ -173,7 +173,7 @@ New Regulation Added to ISA Hub
 
 Regulation: ${reg.title}
 Type: ${reg.regulationType}
-Effective Date: ${reg.effectiveDate?.toLocaleDateString()}
+Effective Date: ${reg.effectiveDate ? new Date(reg.effectiveDate).toLocaleDateString() : 'N/A'}
 
 Description: ${reg.description}
 
@@ -228,7 +228,7 @@ Change Type: ${changeType}
 Details: ${details}
 
 Current Type: ${reg.regulationType}
-Effective Date: ${reg.effectiveDate?.toLocaleDateString()}
+Effective Date: ${reg.effectiveDate ? new Date(reg.effectiveDate).toLocaleDateString() : 'N/A'}
 
 View Details: https://isa.example.com/hub/regulations/${reg.id}
     `;

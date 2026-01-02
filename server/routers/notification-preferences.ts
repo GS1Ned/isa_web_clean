@@ -65,9 +65,21 @@ export const notificationPreferencesRouter = router({
     .mutation(async ({ ctx, input }) => {
       const db = await getDb();
       if (!db) throw new Error("Database connection failed");
+      
+      // Convert boolean to number for tinyint columns
+      const updateData: Record<string, number | undefined> = {};
+      if (input.riskDetected !== undefined) updateData.riskDetected = input.riskDetected ? 1 : 0;
+      if (input.remediationUpdated !== undefined) updateData.remediationUpdated = input.remediationUpdated ? 1 : 0;
+      if (input.commentAdded !== undefined) updateData.commentAdded = input.commentAdded ? 1 : 0;
+      if (input.approvalRequested !== undefined) updateData.approvalRequested = input.approvalRequested ? 1 : 0;
+      if (input.approvalDecision !== undefined) updateData.approvalDecision = input.approvalDecision ? 1 : 0;
+      if (input.templateUpdated !== undefined) updateData.templateUpdated = input.templateUpdated ? 1 : 0;
+      if (input.scoreChanged !== undefined) updateData.scoreChanged = input.scoreChanged ? 1 : 0;
+      if (input.milestoneAchieved !== undefined) updateData.milestoneAchieved = input.milestoneAchieved ? 1 : 0;
+      
       await db
         .update(notificationPreferences)
-        .set(input)
+        .set(updateData)
         .where(eq(notificationPreferences.userId, ctx.user.id));
       return { success: true };
     }),
@@ -104,9 +116,15 @@ export const notificationPreferencesRouter = router({
     .mutation(async ({ ctx, input }) => {
       const db = await getDb();
       if (!db) throw new Error("Database connection failed");
+      
+      // Convert boolean to number for tinyint columns
+      const updateData: Record<string, number | undefined> = {};
+      if (input.inAppNotifications !== undefined) updateData.inAppNotifications = input.inAppNotifications ? 1 : 0;
+      if (input.emailNotifications !== undefined) updateData.emailNotifications = input.emailNotifications ? 1 : 0;
+      
       await db
         .update(notificationPreferences)
-        .set(input)
+        .set(updateData)
         .where(eq(notificationPreferences.userId, ctx.user.id));
       return { success: true };
     }),
@@ -133,7 +151,11 @@ export const notificationPreferencesRouter = router({
       if (!db) throw new Error("Database connection failed");
       await db
         .update(notificationPreferences)
-        .set(input)
+        .set({
+          quietHoursEnabled: input.quietHoursEnabled ? 1 : 0,
+          quietHoursStart: input.quietHoursStart,
+          quietHoursEnd: input.quietHoursEnd,
+        })
         .where(eq(notificationPreferences.userId, ctx.user.id));
       return { success: true };
     }),
@@ -153,7 +175,10 @@ export const notificationPreferencesRouter = router({
       if (!db) throw new Error("Database connection failed");
       await db
         .update(notificationPreferences)
-        .set(input)
+        .set({
+          batchNotifications: input.batchNotifications ? 1 : 0,
+          batchInterval: input.batchInterval,
+        })
         .where(eq(notificationPreferences.userId, ctx.user.id));
       return { success: true };
     }),
@@ -167,21 +192,21 @@ export const notificationPreferencesRouter = router({
     await db
       .update(notificationPreferences)
       .set({
-        riskDetected: true,
-        remediationUpdated: true,
-        commentAdded: true,
-        approvalRequested: true,
-        approvalDecision: true,
-        templateUpdated: true,
-        scoreChanged: true,
-        milestoneAchieved: true,
+        riskDetected: 1,
+        remediationUpdated: 1,
+        commentAdded: 1,
+        approvalRequested: 1,
+        approvalDecision: 1,
+        templateUpdated: 1,
+        scoreChanged: 1,
+        milestoneAchieved: 1,
         minSeverity: "low",
-        inAppNotifications: true,
-        emailNotifications: false,
-        quietHoursEnabled: false,
+        inAppNotifications: 1,
+        emailNotifications: 0,
+        quietHoursEnabled: 0,
         quietHoursStart: null,
         quietHoursEnd: null,
-        batchNotifications: false,
+        batchNotifications: 0,
         batchInterval: 60,
       })
       .where(eq(notificationPreferences.userId, ctx.user.id));

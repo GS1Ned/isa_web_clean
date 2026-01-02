@@ -59,8 +59,8 @@ export const pipelineObservabilityRouter = router({
     )
     .query(async ({ input }) => {
       return await getPipelineExecutionsByDateRange(
-        new Date(input.startDate),
-        new Date(input.endDate),
+        input.startDate,
+        input.endDate,
         input.pipelineType
       );
     }),

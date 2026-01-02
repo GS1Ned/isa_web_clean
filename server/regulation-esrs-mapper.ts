@@ -71,7 +71,7 @@ export async function generateRegulationEsrsMappings(
 
     // 3. Build LLM prompt (filter datapoints with required fields)
     const validDatapoints = allDatapoints.filter(
-      dp => dp.code && dp.esrsStandard && dp.name
+      dp => dp.code && dp.esrs_standard && dp.name
     ) as Array<{
       code: string;
       esrs_standard: string;
@@ -220,10 +220,10 @@ function buildMappingPrompt(
   // Group datapoints by standard for better context
   const datapointsByStandard: Record<string, typeof datapoints> = {};
   for (const dp of datapoints) {
-    if (!datapointsByStandard[dp.esrsStandard]) {
-      datapointsByStandard[dp.esrsStandard] = [];
+    if (!datapointsByStandard[dp.esrs_standard]) {
+      datapointsByStandard[dp.esrs_standard] = [];
     }
-    datapointsByStandard[dp.esrsStandard].push(dp);
+    datapointsByStandard[dp.esrs_standard].push(dp);
   }
 
   const datapointContext = Object.entries(datapointsByStandard)

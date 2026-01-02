@@ -1,5 +1,8 @@
 import { getDb } from "./db";
-import { datasetRegistry, type InsertDatasetRegistry } from "../drizzle/schema";
+import { datasetRegistry } from "../drizzle/schema";
+import type { InferInsertModel } from "drizzle-orm";
+
+type InsertDatasetRegistry = InferInsertModel<typeof datasetRegistry>;
 import { eq, and, desc, sql, isNull, isNotNull } from "drizzle-orm";
 
 /**
@@ -64,7 +67,7 @@ export async function getDatasetById(id: number) {
 /**
  * Create a new dataset entry
  */
-export async function createDataset(data: InsertDatasetRegistry) {
+export async function createDataset(data: typeof datasetRegistry.$inferInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   const [result] = await db.insert(datasetRegistry).values(data);
@@ -99,7 +102,7 @@ export async function updateDatasetVerification(
  */
 export async function updateDataset(
   id: number,
-  updates: Partial<InsertDatasetRegistry>
+  updates: Partial<typeof datasetRegistry.$inferInsert>
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");

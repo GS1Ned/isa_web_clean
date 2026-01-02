@@ -264,8 +264,8 @@ export class PipelineExecutionContext {
       executionId: this.executionId,
       pipelineType: this.pipelineType,
       triggeredBy: this.triggeredBy,
-      startedAt: this.startedAt,
-      completedAt: this.completedAt,
+      startedAt: this.startedAt.toISOString(),
+      completedAt: this.completedAt?.toISOString(),
       durationMs,
       status: this.status,
       

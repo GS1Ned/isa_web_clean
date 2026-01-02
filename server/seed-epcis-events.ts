@@ -342,7 +342,7 @@ export async function seedEPCISEvents(userId: number) {
       await db.insert(epcisEvents).values({
         userId,
         eventType: eventData.eventType,
-        eventTime: eventData.eventTime,
+        eventTime: eventData.eventTime.toISOString(),
         eventTimeZoneOffset: eventData.eventTimeZoneOffset,
         action: eventData.action,
         bizStep: eventData.bizStep,
