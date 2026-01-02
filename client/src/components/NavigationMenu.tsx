@@ -98,6 +98,31 @@ export function NavigationMenu() {
       ],
     },
     {
+      label: "Compliance Tools",
+      children: [
+        {
+          label: "Gap Analyzer",
+          href: "/tools/gap-analyzer",
+          description: "Identify ESRS compliance gaps",
+        },
+        {
+          label: "Impact Simulator",
+          href: "/tools/impact-simulator",
+          description: "Project future regulatory impacts",
+        },
+        {
+          label: "Dual-Core Demo",
+          href: "/tools/dual-core",
+          description: "Combined gap analysis & impact simulation",
+        },
+        {
+          label: "Compliance Roadmap",
+          href: "/tools/compliance-roadmap",
+          description: "Plan your compliance journey",
+        },
+      ],
+    },
+    {
       label: "EPCIS Tools",
       children: [
         {

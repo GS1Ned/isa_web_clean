@@ -2480,3 +2480,11 @@ All production-critical systems are now type-safe. The remaining errors are acce
 - [x] Create demo script for stakeholder presentation (demo walkthrough in UI)
 - [x] Save checkpoint and deliver to userr
 
+
+### Core 1 → Core 2 Data Flow Integration (January 2026)
+- [x] Design data contract: Core 1 gap output → Core 2 scenario input
+- [x] Implement direct data passing (not just navigation links)
+- [x] Add "Continue to Impact Simulation" button in Gap Analyzer results
+- [x] Pre-populate Impact Simulator with Core 1 gap data
+- [x] Add navigation entry for Dual-Core tools in main menu
+- [ ] End-to-end validation of integrated workflow

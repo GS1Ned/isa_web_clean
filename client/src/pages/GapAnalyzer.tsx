@@ -41,7 +41,7 @@ import {
   BookOpen,
   Sparkles,
 } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 // Epistemic status badge component
 function EpistemicBadge({ status, confidence }: { status: string; confidence: string }) {
@@ -128,6 +128,8 @@ function PriorityBadge({ priority }: { priority: string }) {
 }
 
 export default function GapAnalyzer() {
+  const [, navigate] = useLocation();
+  
   // Form state
   const [sector, setSector] = useState<string>("");
   const [companySize, setCompanySize] = useState<string>("");
@@ -173,6 +175,25 @@ export default function GapAnalyzer() {
   };
 
   const result = analyzeMutation.data;
+
+  // Navigate to Impact Simulator with Core 1 data
+  const handleContinueToImpactSimulator = () => {
+    // Store Core 1 results in sessionStorage for Core 2 to consume
+    const core1Data = {
+      sector,
+      companySize,
+      currentGs1Coverage: selectedAttributes,
+      gapSummary: result ? {
+        totalGaps: result.summary.gaps,
+        criticalGaps: result.criticalGaps.length,
+        highGaps: result.highGaps.length,
+        coveragePercentage: result.summary.coveragePercentage,
+      } : null,
+      timestamp: new Date().toISOString(),
+    };
+    sessionStorage.setItem('core1Data', JSON.stringify(core1Data));
+    navigate('/tools/impact-simulator');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
@@ -555,7 +576,7 @@ export default function GapAnalyzer() {
                   </Card>
                 )}
 
-                {/* Link to Core 2 */}
+                {/* Link to Core 2 - Pass data directly */}
                 <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
                   <CardContent className="py-6">
                     <div className="flex items-center justify-between">
@@ -566,13 +587,17 @@ export default function GapAnalyzer() {
                         <p className="text-sm text-indigo-700 mt-1">
                           Use these results to simulate future regulatory impacts (Core 2)
                         </p>
+                        <p className="text-xs text-indigo-600 mt-2">
+                          Your sector ({sector}), company size ({companySize}), and {selectedAttributes.length} GS1 attributes will be pre-loaded
+                        </p>
                       </div>
-                      <Link href="/tools/impact-simulator">
-                        <Button variant="outline" className="border-indigo-300 text-indigo-700 hover:bg-indigo-100">
-                          Core 2: Impact Simulator
-                          <ArrowRight className="h-4 w-4 ml-2" />
-                        </Button>
-                      </Link>
+                      <Button 
+                        onClick={handleContinueToImpactSimulator}
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                      >
+                        Continue with Data
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
