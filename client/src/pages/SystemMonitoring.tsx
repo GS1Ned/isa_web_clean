@@ -23,6 +23,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { WebhookConfiguration } from "@/components/WebhookConfiguration";
 import {
   LineChart,
   Line,
@@ -123,6 +124,7 @@ export default function SystemMonitoring() {
           <TabsTrigger value="errors">Error tracking</TabsTrigger>
           <TabsTrigger value="performance">Performance</TabsTrigger>
           <TabsTrigger value="alerts">Alert History</TabsTrigger>
+          <TabsTrigger value="webhooks">Webhooks</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -453,6 +455,20 @@ export default function SystemMonitoring() {
 
         <TabsContent value="alerts" className="space-y-6">
           <AlertHistoryTab />
+        </TabsContent>
+
+        <TabsContent value="webhooks" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Webhook Integrations</CardTitle>
+              <CardDescription>
+                Configure Slack and Microsoft Teams webhooks to receive real-time alerts in your team channels.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <WebhookConfiguration />
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

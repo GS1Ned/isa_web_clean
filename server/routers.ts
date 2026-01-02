@@ -63,6 +63,7 @@ import { standardsDirectoryRouter } from "./routers/standards-directory.js";
 import { productionMonitoringRouter } from "./routers/production-monitoring.js";
 import { errorTrackingRouter } from "./router-error-tracking.js";
 import { performanceTrackingRouter } from "./router-performance-tracking.js";
+import { webhookConfigRouter, webhookConfigSchemas } from "./routers-webhook-config.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -1110,6 +1111,27 @@ export const appRouter = router({
   productionMonitoring: productionMonitoringRouter,
   errorTracking: errorTrackingRouter,
   performanceTracking: performanceTrackingRouter,
+  /**
+   * Webhook Configuration - Slack/Teams integration
+   */
+  webhookConfig: router({
+    getConfigurations: protectedProcedure.query(() => webhookConfigRouter.getConfigurations()),
+    saveConfiguration: protectedProcedure
+      .input(webhookConfigSchemas.saveConfiguration)
+      .mutation(({ input }) => webhookConfigRouter.saveConfiguration(input)),
+    deleteConfiguration: protectedProcedure
+      .input(webhookConfigSchemas.deleteConfiguration)
+      .mutation(({ input }) => webhookConfigRouter.deleteConfiguration(input)),
+    testWebhook: protectedProcedure
+      .input(webhookConfigSchemas.testWebhook)
+      .mutation(({ input }) => webhookConfigRouter.testWebhook(input)),
+    getDeliveryHistory: protectedProcedure
+      .input(webhookConfigSchemas.getDeliveryHistory)
+      .query(({ input }) => webhookConfigRouter.getDeliveryHistory(input)),
+    getDeliveryStats: protectedProcedure
+      .input(webhookConfigSchemas.getDeliveryStats)
+      .query(({ input }) => webhookConfigRouter.getDeliveryStats(input)),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

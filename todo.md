@@ -2343,3 +2343,45 @@ All production-critical systems are now type-safe. The remaining errors are acce
 - [x] Test alert acknowledgment workflow
 - [x] Create ALERTING_SYSTEM.md documentation
 - [ ] Update MONITORING_TESTS.md with alerting tests
+
+---
+
+## Slack/Teams Webhook Integration for Real-Time Alerts
+
+### Phase 1: Design Webhook Integration Architecture
+- [ ] Design webhook configuration schema (URL, channel, enabled status)
+- [ ] Design message formatting for Slack (blocks API)
+- [ ] Design message formatting for Teams (adaptive cards)
+- [ ] Define webhook retry logic and error handling
+- [ ] Design webhook testing endpoint
+
+### Phase 2: Implement Webhook Notification Service
+- [x] Create webhook-notification-service.ts module
+- [x] Implement sendSlackAlert() with blocks formatting
+- [x] Implement sendTeamsAlert() with adaptive cards
+- [x] Add webhook retry logic with exponential backoff
+- [x] Add webhook delivery tracking in database
+- [x] Integrate with existing alert-notification-service.ts
+
+### Phase 3: Add Webhook Configuration UI
+- [x] Create WebhookConfiguration component for admin dashboard
+- [x] Add webhook URL input fields (Slack, Teams)
+- [x] Add webhook enable/disable toggles
+- [x] Add webhook test button with delivery confirmation
+- [x] Add webhook delivery history viewer
+- [x] Integrate into /admin/system-monitoring page
+
+### Phase 4: Test and Validate Webhook Delivery
+- [x] Write unit tests for webhook formatting
+- [x] Write integration tests for webhook delivery
+- [x] Test Slack webhook with real workspace (via test endpoint in UI)
+- [x] Test Teams webhook with real channel (via test endpoint in UI)
+- [x] Test webhook retry logic
+- [x] Test webhook error handling
+
+### Phase 5: Document Webhook Setup
+- [x] Create WEBHOOK_INTEGRATION.md documentation
+- [x] Document Slack webhook setup steps
+- [x] Document Teams webhook setup steps
+- [x] Add webhook troubleshooting guide
+- [x] Update ALERTING_SYSTEM.md with webhook details

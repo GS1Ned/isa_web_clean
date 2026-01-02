@@ -7,6 +7,7 @@
 import { getDb } from "./db";
 import { alertHistory, alertCooldowns } from "../drizzle/schema";
 import { notifyOwner } from "./_core/notification";
+import { broadcastAlert, AlertPayload } from "./webhook-notification-service";
 import {
   AlertDetectionResult,
   AlertType,
@@ -143,6 +144,23 @@ export async function processAlert(
   try {
     // Send email notification
     const notificationSent = await sendAlertEmail(alert);
+
+    // Send webhook notifications (Slack/Teams)
+    const webhookPayload: AlertPayload = {
+      severity: alert.severity,
+      title: alert.title,
+      message: alert.message,
+      timestamp: new Date(),
+      details: alert.metadata,
+      actionUrl: `${process.env.VITE_APP_URL || "https://isa.manus.space"}/admin/system-monitoring`,
+    };
+    
+    try {
+      await broadcastAlert(webhookPayload);
+    } catch (webhookError) {
+      console.error("[AlertNotification] Webhook broadcast failed:", webhookError);
+      // Continue processing even if webhook fails
+    }
 
     // Save to alert history
     const alertId = await saveAlertHistory(alert, notificationSent);

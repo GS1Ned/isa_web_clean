@@ -1905,3 +1905,44 @@ export type AlertHistory = typeof alertHistory.$inferSelect;
 export type InsertAlertHistory = typeof alertHistory.$inferInsert;
 export type AlertCooldown = typeof alertCooldowns.$inferSelect;
 export type InsertAlertCooldown = typeof alertCooldowns.$inferInsert;
+
+
+// Webhook Configuration Table
+export const webhookConfiguration = mysqlTable("webhook_configuration", {
+	id: int().autoincrement().notNull(),
+	platform: mysqlEnum("platform", ["slack", "teams"]).notNull(),
+	webhookUrl: text("webhook_url").notNull(),
+	channelName: varchar("channel_name", { length: 255 }),
+	enabled: tinyint("enabled").default(1).notNull(), // 0 = false, 1 = true
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("platform_idx").on(table.platform),
+	index("enabled_idx").on(table.enabled),
+]);
+
+// Webhook Delivery History Table
+export const webhookDeliveryHistory = mysqlTable("webhook_delivery_history", {
+	id: int().autoincrement().notNull(),
+	platform: mysqlEnum("platform", ["slack", "teams"]).notNull(),
+	webhookUrl: text("webhook_url").notNull(),
+	severity: mysqlEnum("severity", ["info", "warning", "critical"]).notNull(),
+	title: text("title").notNull(),
+	message: text("message").notNull(),
+	success: tinyint("success").notNull(), // 0 = false, 1 = true
+	statusCode: int("status_code"),
+	attempts: int("attempts").default(1),
+	error: text("error"),
+	deliveredAt: timestamp("delivered_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("platform_idx").on(table.platform),
+	index("delivered_at_idx").on(table.deliveredAt),
+	index("success_idx").on(table.success),
+]);
+
+export type WebhookConfiguration = typeof webhookConfiguration.$inferSelect;
+export type InsertWebhookConfiguration = typeof webhookConfiguration.$inferInsert;
+export type WebhookDeliveryHistory = typeof webhookDeliveryHistory.$inferSelect;
+export type InsertWebhookDeliveryHistory = typeof webhookDeliveryHistory.$inferInsert;
