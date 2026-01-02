@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -223,10 +223,7 @@ export default function GovernanceDocuments() {
           </Card>
         )}
 
-        {documents?.map((doc) => {
-
-
-          return (
+        {documents?.map((doc) => (
           <Card key={doc.id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -236,7 +233,7 @@ export default function GovernanceDocuments() {
                     {doc.title}
                   </CardTitle>
                   {doc.description && (
-                    <CardDescription className="mt-2">{doc.description}</CardDescription>
+                    <CardDescription className="mt-2">{String(doc.description)}</CardDescription>
                   )}
                 </div>
                 <div className="flex flex-col gap-2 items-end">
@@ -247,7 +244,6 @@ export default function GovernanceDocuments() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Metadata */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 {doc.documentCode && (
                   <div>
@@ -274,19 +270,7 @@ export default function GovernanceDocuments() {
                   <Badge variant="outline">{doc.category.replace(/_/g, " ")}</Badge>
                 </div>
               </div>
-
-              {/* Verification Status - Temporarily disabled due to TypeScript issues */}
-
-              {/* Currency Disclaimer */}
-              {doc.currencyDisclaimer && typeof doc.currencyDisclaimer === 'string' && (
-                <Alert>
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription className="text-sm">{doc.currencyDisclaimer}</AlertDescription>
-                </Alert>
-              )}
-
-              {/* Tags */}
-              {doc.tags && (doc.tags as string[]).length > 0 && (
+              {Array.isArray(doc.tags) && doc.tags.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
                   {(doc.tags as string[]).map((tag: string) => (
                     <Badge key={tag} variant="secondary">
@@ -294,7 +278,7 @@ export default function GovernanceDocuments() {
                     </Badge>
                   ))}
                 </div>
-              )}
+              ) : null}
 
               {/* Actions */}
               <div className="flex gap-2">
@@ -326,8 +310,7 @@ export default function GovernanceDocuments() {
               )}
             </CardContent>
           </Card>
-          );
-        })}
+        ))}
       </div>
     </div>
   );

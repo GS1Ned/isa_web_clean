@@ -1,0 +1,50 @@
+{
+  "query": "SELECT mapping_id, level, esrs_standard, esrs_topic, short_name, gs1_relevance FROM gs1_esrs_mappings LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT mapping_id, level, esrs_standard, esrs_topic, short_name, gs1_relevance FROM gs1_esrs_mappings LIMIT 5",
+  "rows": [
+    {
+      "mapping_id": "1",
+      "level": "product",
+      "esrs_standard": "ESRS E1",
+      "esrs_topic": "Climate change",
+      "short_name": "Product carbon footprint",
+      "gs1_relevance": "Product-level carbon footprint tracking using GTIN identification"
+    },
+    {
+      "mapping_id": "2",
+      "level": "product",
+      "esrs_standard": "ESRS E2",
+      "esrs_topic": "Pollution",
+      "short_name": "Microplastics",
+      "gs1_relevance": "Product composition tracking, packaging material identification"
+    },
+    {
+      "mapping_id": "3",
+      "level": "product",
+      "esrs_standard": "ESRS E2",
+      "esrs_topic": "Pollution",
+      "short_name": "Substances of concern",
+      "gs1_relevance": "Product ingredient/component tracking, hazard classification"
+    },
+    {
+      "mapping_id": "4",
+      "level": "product",
+      "esrs_standard": "ESRS E5",
+      "esrs_topic": "Resource use and circular economy",
+      "short_name": "Weight of products and product packaging, differentiating between technical and biological materials",
+      "gs1_relevance": "Product net weight, packaging weight attributes in GS1 WebVoc"
+    },
+    {
+      "mapping_id": "5",
+      "level": "product",
+      "esrs_standard": "ESRS E5",
+      "esrs_topic": "Resource use and circular economy",
+      "short_name": "Weight of transport packaging, differentiating between technical and biological materials",
+      "gs1_relevance": "Transport packaging weight, PackagingMaterialTypeCode from GS1 WebVoc"
+    }
+  ],
+  "messages": [],
+  "stdout": "mapping_id\tlevel\tesrs_standard\tesrs_topic\tshort_name\tgs1_relevance\n1\tproduct\tESRS E1\tClimate change\tProduct carbon footprint\tProduct-level carbon footprint tracking using GTIN identification\n2\tproduct\tESRS E2\tPollution\tMicroplastics\tProduct composition tracking, packaging material identification\n3\tproduct\tESRS E2\tPollution\tSubstances of concern\tProduct ingredient/component tracking, hazard classification\n4\tproduct\tESRS E5\tResource use and circular economy\tWeight of products and product packaging, differentiating between technical and biological materials\tProduct net weight, packaging weight attributes in GS1 WebVoc\n5\tproduct\tESRS E5\tResource use and circular economy\tWeight of transport packaging, differentiating between technical and biological materials\tTransport packaging weight, PackagingMaterialTypeCode from GS1 WebVoc\n",
+  "stderr": "",
+  "execution_time_ms": 179
+}

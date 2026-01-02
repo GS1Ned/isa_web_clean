@@ -2,7 +2,9 @@ import { getDb } from "./db";
 import {
   governanceDocuments,
 } from "../drizzle/schema";
-import { eq, and, desc, sql, like, or } from "drizzle-orm";
+import { eq, and, desc, sql, like, or, InferSelectModel } from "drizzle-orm";
+
+type GovernanceDocument = InferSelectModel<typeof governanceDocuments>;
 
 /**
  * Get all governance documents with optional filtering
@@ -13,7 +15,7 @@ export async function getGovernanceDocuments(filters?: {
   status?: string;
   laneStatus?: string;
   searchTerm?: string;
-}) {
+}): Promise<GovernanceDocument[]> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   

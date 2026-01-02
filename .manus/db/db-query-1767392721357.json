@@ -1,0 +1,90 @@
+{
+  "query": "SELECT a.gs1_attribute_id, a.gs1_attribute_name, a.mapping_type, a.confidence, m.esrs_standard, m.short_name \nFROM gs1_attribute_esrs_mapping a \nJOIN gs1_esrs_mappings m ON a.esrs_mapping_id = m.mapping_id \nLIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT a.gs1_attribute_id, a.gs1_attribute_name, a.mapping_type, a.confidence, m.esrs_standard, m.short_name \nFROM gs1_attribute_esrs_mapping a \nJOIN gs1_esrs_mappings m ON a.esrs_mapping_id = m.mapping_id \nLIMIT 10",
+  "rows": [
+    {
+      "gs1_attribute_id": "gs1:carbonFootprint",
+      "gs1_attribute_name": "Carbon Footprint",
+      "mapping_type": "direct",
+      "confidence": "high",
+      "esrs_standard": "ESRS E1",
+      "short_name": "Product carbon footprint"
+    },
+    {
+      "gs1_attribute_id": "gs1:globalTradeItemNumber",
+      "gs1_attribute_name": "Global Trade Item Number (GTIN)",
+      "mapping_type": "direct",
+      "confidence": "high",
+      "esrs_standard": "ESRS E1",
+      "short_name": "Product carbon footprint"
+    },
+    {
+      "gs1_attribute_id": "gs1:allergenTypeCode",
+      "gs1_attribute_name": "Allergen Type Code",
+      "mapping_type": "aggregated",
+      "confidence": "medium",
+      "esrs_standard": "ESRS E2",
+      "short_name": "Substances of concern"
+    },
+    {
+      "gs1_attribute_id": "gs1:packagingMaterial",
+      "gs1_attribute_name": "Packaging Material",
+      "mapping_type": "direct",
+      "confidence": "high",
+      "esrs_standard": "ESRS E5",
+      "short_name": "Weight of products and product packaging, differentiating between technical and biological materials"
+    },
+    {
+      "gs1_attribute_id": "gs1:grossWeight",
+      "gs1_attribute_name": "Gross Weight",
+      "mapping_type": "calculated",
+      "confidence": "high",
+      "esrs_standard": "ESRS E5",
+      "short_name": "Weight of products and product packaging, differentiating between technical and biological materials"
+    },
+    {
+      "gs1_attribute_id": "gs1:netWeight",
+      "gs1_attribute_name": "Net Weight",
+      "mapping_type": "direct",
+      "confidence": "high",
+      "esrs_standard": "ESRS E5",
+      "short_name": "Weight of products and product packaging, differentiating between technical and biological materials"
+    },
+    {
+      "gs1_attribute_id": "gs1:packagingMaterial",
+      "gs1_attribute_name": "Packaging Material",
+      "mapping_type": "calculated",
+      "confidence": "medium",
+      "esrs_standard": "ESRS E5",
+      "short_name": "Percentage of biological materials used in products and product packaging"
+    },
+    {
+      "gs1_attribute_id": "gs1:packagingRecycledPercentage",
+      "gs1_attribute_name": "Packaging Recycled Percentage",
+      "mapping_type": "direct",
+      "confidence": "high",
+      "esrs_standard": "ESRS E5",
+      "short_name": "Weight of secondary reused or recycled components, products and materials in products and product packaging"
+    },
+    {
+      "gs1_attribute_id": "gs1:productLifespan",
+      "gs1_attribute_name": "Product Lifespan",
+      "mapping_type": "direct",
+      "confidence": "high",
+      "esrs_standard": "ESRS E5",
+      "short_name": "Expected product durability"
+    },
+    {
+      "gs1_attribute_id": "gs1:repairabilityScore",
+      "gs1_attribute_name": "Repairability Score",
+      "mapping_type": "direct",
+      "confidence": "high",
+      "esrs_standard": "ESRS E5",
+      "short_name": "Product repairability"
+    }
+  ],
+  "messages": [],
+  "stdout": "gs1_attribute_id\tgs1_attribute_name\tmapping_type\tconfidence\tesrs_standard\tshort_name\ngs1:carbonFootprint\tCarbon Footprint\tdirect\thigh\tESRS E1\tProduct carbon footprint\ngs1:globalTradeItemNumber\tGlobal Trade Item Number (GTIN)\tdirect\thigh\tESRS E1\tProduct carbon footprint\ngs1:allergenTypeCode\tAllergen Type Code\taggregated\tmedium\tESRS E2\tSubstances of concern\ngs1:packagingMaterial\tPackaging Material\tdirect\thigh\tESRS E5\tWeight of products and product packaging, differentiating between technical and biological materials\ngs1:grossWeight\tGross Weight\tcalculated\thigh\tESRS E5\tWeight of products and product packaging, differentiating between technical and biological materials\ngs1:netWeight\tNet Weight\tdirect\thigh\tESRS E5\tWeight of products and product packaging, differentiating between technical and biological materials\ngs1:packagingMaterial\tPackaging Material\tcalculated\tmedium\tESRS E5\tPercentage of biological materials used in products and product packaging\ngs1:packagingRecycledPercentage\tPackaging Recycled Percentage\tdirect\thigh\tESRS E5\tWeight of secondary reused or recycled components, products and materials in products and product packaging\ngs1:productLifespan\tProduct Lifespan\tdirect\thigh\tESRS E5\tExpected product durability\ngs1:repairabilityScore\tRepairability Score\tdirect\thigh\tESRS E5\tProduct repairability\n",
+  "stderr": "",
+  "execution_time_ms": 52
+}

@@ -3,6 +3,7 @@
  * Displays full news article with AI-powered recommendations
  */
 
+import React from "react";
 import { useRoute, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RecommendedResources } from "@/components/RecommendedResources";
 import { ArrowLeft, Calendar, ExternalLink, TrendingUp, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
+
+// Type guard helpers for JSON fields
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(item => typeof item === 'string');
+}
+
+function isSourceArray(value: unknown): value is Array<{ type?: string; url?: string; name?: string }> {
+  return Array.isArray(value);
+}
+
+function hasGS1ImpactContent(newsItem: {
+  gs1ImpactAnalysis?: unknown;
+  suggestedActions?: unknown;
+  gs1ImpactTags?: unknown;
+  sectorTags?: unknown;
+}): boolean {
+  return Boolean(
+    (typeof newsItem.gs1ImpactAnalysis === 'string' && newsItem.gs1ImpactAnalysis) ||
+    (isStringArray(newsItem.suggestedActions) && newsItem.suggestedActions.length > 0) ||
+    (isStringArray(newsItem.gs1ImpactTags) && newsItem.gs1ImpactTags.length > 0) ||
+    (isStringArray(newsItem.sectorTags) && newsItem.sectorTags.length > 0)
+  );
+}
 
 export default function NewsDetail() {
   const [, params] = useRoute("/news/:id");
@@ -47,9 +71,17 @@ export default function NewsDetail() {
     LOW: "bg-green-500/10 text-green-600 border-green-500/20",
   };
 
+  // Pre-compute type-safe values
+  const regulationTags = isStringArray(newsItem.regulationTags) ? newsItem.regulationTags : [];
+  const gs1ImpactTags = isStringArray(newsItem.gs1ImpactTags) ? newsItem.gs1ImpactTags : [];
+  const sectorTags = isStringArray(newsItem.sectorTags) ? newsItem.sectorTags : [];
+  const suggestedActions = isStringArray(newsItem.suggestedActions) ? newsItem.suggestedActions : [];
+  const sources = isSourceArray(newsItem.sources) ? newsItem.sources : [];
+  const gs1ImpactAnalysis = typeof newsItem.gs1ImpactAnalysis === 'string' ? newsItem.gs1ImpactAnalysis : null;
+  const showGS1Impact = hasGS1ImpactContent(newsItem);
+
   return (
     <div className="container py-8">
-      {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
         <Link href="/" className="hover:text-foreground transition-colors">
           Home
@@ -69,14 +101,12 @@ export default function NewsDetail() {
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardContent className="pt-6">
-              {/* Header */}
               <div className="space-y-4 mb-6">
                 <div className="flex flex-wrap gap-2">
-                  {newsItem.impactLevel && (
+                  {newsItem.impactLevel ? (
                     <Badge
                       className={
                         impactColors[
@@ -87,13 +117,12 @@ export default function NewsDetail() {
                       <TrendingUp className="mr-1 h-3 w-3" />
                       {newsItem.impactLevel} Impact
                     </Badge>
-                  )}
-                  {Array.isArray(newsItem.regulationTags) &&
-                    newsItem.regulationTags.map(tag => (
-                      <Badge key={tag} variant="secondary">
-                        {tag}
-                      </Badge>
-                    ))}
+                  ) : null}
+                  {regulationTags.map(tag => (
+                    <Badge key={tag} variant="secondary">
+                      {tag}
+                    </Badge>
+                  ))}
                 </div>
 
                 <h1 className="text-3xl font-bold">{newsItem.title}</h1>
@@ -106,112 +135,87 @@ export default function NewsDetail() {
                       "MMMM d, yyyy"
                     )}
                   </div>
-                  {newsItem.sourceTitle && (
+                  {newsItem.sourceTitle ? (
                     <div className="flex items-center gap-1">
                       <span>•</span>
                       <span>{newsItem.sourceTitle}</span>
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
 
-              {/* Summary */}
-              {((newsItem.summary && typeof newsItem.summary === 'string' ? (
-                <div className="bg-accent/50 rounded-lg p-4 mb-6">
-                  <p className="text-lg leading-relaxed">{newsItem.summary}</p>
-                </div>
-              ) : null) as React.ReactNode)}
-
-              {/* Content */}
-              {newsItem.content && typeof newsItem.content === 'string' && (
-                <div className="prose prose-sm max-w-none">
-                  <p className="whitespace-pre-wrap">{newsItem.content}</p>
-                </div>
-              )}
-
-              {/* GS1 Insights Section */}
-              {(newsItem.gs1ImpactAnalysis ||
-                newsItem.suggestedActions ||
-                newsItem.gs1ImpactTags ||
-                newsItem.sectorTags) && (
+              {showGS1Impact ? (
                 <div className="mt-6 pt-6 border-t space-y-4">
                   <h3 className="font-semibold text-lg flex items-center gap-2">
                     <TrendingUp className="h-5 w-5 text-primary" />
                     GS1 Impact Intelligence
                   </h3>
 
-                  {/* GS1 Impact Tags & Sector Tags */}
-                  {((Array.isArray(newsItem.gs1ImpactTags) && newsItem.gs1ImpactTags.length > 0) || (Array.isArray(newsItem.sectorTags) && newsItem.sectorTags.length > 0)) && (
+                  {(gs1ImpactTags.length > 0 || sectorTags.length > 0) ? (
                     <div className="flex flex-wrap gap-2">
-                      {Array.isArray(newsItem.gs1ImpactTags) &&
-                        newsItem.gs1ImpactTags.map(tag => (
-                          <Badge
-                            key={tag}
-                            className="bg-purple-500/10 text-purple-700 border-purple-500/20"
-                          >
-                            {tag.replace(/_/g, " ")}
-                          </Badge>
-                        ))}
-                      {Array.isArray(newsItem.sectorTags) &&
-                        newsItem.sectorTags.map(tag => (
-                          <Badge
-                            key={tag}
-                            className="bg-blue-500/10 text-blue-700 border-blue-500/20"
-                          >
-                            {tag}
-                          </Badge>
-                        ))}
+                      {gs1ImpactTags.map(tag => (
+                        <Badge
+                          key={tag}
+                          className="bg-purple-500/10 text-purple-700 border-purple-500/20"
+                        >
+                          {tag.replace(/_/g, " ")}
+                        </Badge>
+                      ))}
+                      {sectorTags.map(tag => (
+                        <Badge
+                          key={tag}
+                          className="bg-blue-500/10 text-blue-700 border-blue-500/20"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
                     </div>
-                  )}
+                  ) : null}
 
-                  {/* GS1 Impact Analysis */}
-                  {newsItem.gs1ImpactAnalysis && (
+                  {gs1ImpactAnalysis ? (
                     <div className="bg-purple-50 dark:bg-purple-950/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
                       <h4 className="font-semibold text-sm text-purple-900 dark:text-purple-100 mb-2">
                         Impact Analysis
                       </h4>
                       <p className="text-sm text-purple-800 dark:text-purple-200 leading-relaxed whitespace-pre-wrap">
-                        {newsItem.gs1ImpactAnalysis}
+                        {gs1ImpactAnalysis}
                       </p>
                     </div>
-                  )}
+                  ) : null}
 
-                  {/* Suggested Actions */}
-                  {Array.isArray(newsItem.suggestedActions) &&
-                    newsItem.suggestedActions.length > 0 && (
-                      <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-                        <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-100 mb-3">
-                          Recommended Actions
-                        </h4>
-                        <ul className="space-y-2">
-                          {newsItem.suggestedActions.map((action, index) => (
-                            <li
-                              key={index}
-                              className="flex items-start gap-2 text-sm text-blue-800 dark:text-blue-200"
-                            >
-                              <span className="text-blue-600 dark:text-blue-400 mt-0.5">
-                                •
-                              </span>
-                              <span>{action}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                  {suggestedActions.length > 0 ? (
+                    <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                      <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-100 mb-3">
+                        Recommended Actions
+                      </h4>
+                      <ul className="space-y-2">
+                        {suggestedActions.map((action, index) => (
+                          <li
+                            key={index}
+                            className="flex items-start gap-2 text-sm text-blue-800 dark:text-blue-200"
+                          >
+                            <span className="text-blue-600 dark:text-blue-400 mt-0.5">
+                              •
+                            </span>
+                            <span>{action}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
                 </div>
-              )}
+              ) : null}
 
-              {/* Multi-Source Display */}
-              {newsItem.sources && (newsItem.sources as any[]).length > 1 ? (
+              {sources.length > 1 ? (
                 <div className="mt-6 pt-6 border-t space-y-4">
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-sm">Multiple Sources</h3>
                     <Badge variant="secondary" className="text-xs">
-                      {(newsItem.sources as any[]).length} sources
+                      {sources.length} sources
                     </Badge>
                   </div>
                   <div className="space-y-3">
-                    {(newsItem.sources as any[]).map((source: any, index: number) => {
+                    {sources.map((source, index) => {
                       const sourceTypeLabels: Record<string, string> = {
                         EU_OFFICIAL: "EU Official",
                         GS1_OFFICIAL: "GS1 Official",
@@ -231,6 +235,7 @@ export default function NewsDetail() {
                         MEDIA:
                           "bg-gray-500/10 text-gray-600 border-gray-500/20",
                       };
+                      const sourceType = source.type || 'MEDIA';
                       return (
                         <div
                           key={index}
@@ -238,19 +243,19 @@ export default function NewsDetail() {
                         >
                           <Badge
                             className={
-                              sourceTypeColors[source.type] ||
+                              sourceTypeColors[sourceType] ||
                               sourceTypeColors.MEDIA
                             }
                           >
-                            {sourceTypeLabels[source.type] || source.type}
+                            {sourceTypeLabels[sourceType] || sourceType}
                           </Badge>
                           <a
-                            href={source.url}
+                            href={source.url || '#'}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex-1 text-sm hover:underline text-primary"
                           >
-                            {source.name}
+                            {source.name || 'Source'}
                           </a>
                           <ExternalLink className="h-4 w-4 text-muted-foreground" />
                         </div>
@@ -275,7 +280,6 @@ export default function NewsDetail() {
           </Card>
         </div>
 
-        {/* Sidebar - Recommendations */}
         <div className="space-y-6">
           {recsLoading ? (
             <Card>

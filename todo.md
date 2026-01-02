@@ -2431,3 +2431,52 @@ All production-critical systems are now type-safe. The remaining errors are acce
 - [x] Document recommendations for production
 
 **Result:** ISA is operationally ready for proof-of-concept use by ≤5 users.
+
+
+---
+
+## Dual-Core Proof-of-Concept (January 2026)
+
+### Core 1: Compliance Gap Analyzer (Present-State Certainty)
+- [x] Fix TypeScript errors in GovernanceDocuments.tsx and NewsDetail.tsx
+- [x] Create shared gap reasoning primitives in server/gap-reasoning.ts
+- [x] Create gap analyzer router in server/routers/gap-analyzer.ts
+- [x] Build Gap Analyzer UI page at /tools/gap-analyzer
+- [x] Implement sector selection input
+- [x] Implement company size input
+- [x] Implement current GS1 attribute coverage input
+- [x] Implement gap identification logic using ESRS-GS1 mappings
+- [x] Implement gap prioritization (critical/high/medium/low)
+- [x] Implement gap explanation generation
+- [x] Implement remediation path recommendations
+- [x] Add epistemic status markers (fact/inference/uncertain)
+- [x] Add confidence scoring
+- [x] Test Core 1 end-to-end (30 unit tests passing)d
+
+### Core 2: Regulatory Change Impact Simulator (Future-State Reasoning)
+- [x] Create curated regulatory scenarios (DPP 2027, CS3D 2026, ESPR 2025, EUDR 2025)
+- [x] Create impact simulator router in server/routers/impact-simulator.ts
+- [x] Build Impact Simulator UI page at /tools/impact-simulator
+- [x] Implement scenario selection input
+- [x] Implement current state input (from Core 1 or manual)
+- [x] Implement future gap projection logic
+- [x] Implement no-regret action identification
+- [x] Implement contingent action identification
+- [x] Add explicit assumption display
+- [x] Add uncertainty markers and disclaimers
+- [x] Test Core 2 end-to-endd
+
+#### Dual-Core Integration
+- [x] Create integrated demo narrative page at /tools/dual-core
+- [x] Connect Core 1 output to Core 2 input (via navigation links)
+- [x] Ensure clear visual distinction between present certainty and future uncertainty
+- [x] Add navigation between cores
+- [x] Create demo walkthrough documentation (embedded in demo page)
+
+### Validation & Documentation
+- [x] Write unit tests for gap reasoning primitives (30 tests passing)
+- [ ] Write integration tests for both cores
+- [x] Create Dual-Core PoC documentation (embedded in demo page)
+- [x] Create demo script for stakeholder presentation (demo walkthrough in UI)
+- [x] Save checkpoint and deliver to userr
+

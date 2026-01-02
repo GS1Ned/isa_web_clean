@@ -64,6 +64,8 @@ import { productionMonitoringRouter } from "./routers/production-monitoring.js";
 import { errorTrackingRouter } from "./router-error-tracking.js";
 import { performanceTrackingRouter } from "./router-performance-tracking.js";
 import { webhookConfigRouter, webhookConfigSchemas } from "./routers-webhook-config.js";
+import { gapAnalyzerRouter } from "./routers/gap-analyzer.js";
+import { impactSimulatorRouter } from "./routers/impact-simulator.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -1114,6 +1116,16 @@ export const appRouter = router({
   /**
    * Webhook Configuration - Slack/Teams integration
    */
+  /**
+   * Gap Analyzer - Core 1 of Dual-Core PoC
+   * Compliance gap analysis with epistemic markers
+   */
+  gapAnalyzer: gapAnalyzerRouter,
+  /**
+   * Impact Simulator - Core 2 of Dual-Core PoC
+   * Regulatory change impact simulation with uncertainty markers
+   */
+  impactSimulator: impactSimulatorRouter,
   webhookConfig: router({
     getConfigurations: protectedProcedure.query(() => webhookConfigRouter.getConfigurations()),
     saveConfiguration: protectedProcedure
