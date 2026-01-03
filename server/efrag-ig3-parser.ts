@@ -158,7 +158,7 @@ export async function ingestIG3Datapoints(
 // Main execution
 if (import.meta.url === `file://${process.argv[1]}`) {
   const filePath =
-    "/home/ubuntu/upload/EFRAGIG3ListofESRSDataPoints(1)(1).xlsx";
+    "/home/ubuntu/isa_web/data/efrag/EFRAGIG3ListofESRSDataPoints.xlsx";
 
   parseIG3Datapoints(filePath)
     .then(async datapoints => {

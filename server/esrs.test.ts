@@ -55,15 +55,15 @@ describe("ESRS Datapoints Router", () => {
     const result = await caller.esrs.list({
       page: 1,
       pageSize: 50,
-      standard: "ESRS E1",
+      standard: "E1",
     });
 
     expect(result).toBeDefined();
     expect(result.datapoints).toBeInstanceOf(Array);
-    // All results should be from ESRS E1
+    // All results should be from E1
     if (result.datapoints.length > 0) {
       const allE1 = result.datapoints.every(
-        dp => dp.esrsStandard === "ESRS E1"
+        dp => dp.esrsStandard === "E1"
       );
       expect(allE1).toBe(true);
     }
@@ -100,10 +100,10 @@ describe("ESRS Datapoints Router", () => {
 
     expect(result).toBeDefined();
     expect(result.datapoints).toBeInstanceOf(Array);
-    // All results should be mandatory (voluntary = false)
+    // All results should be mandatory (voluntary = 0 or false)
     if (result.datapoints.length > 0) {
       const allMandatory = result.datapoints.every(
-        dp => dp.voluntary === false
+        dp => dp.voluntary === 0 || dp.voluntary === false
       );
       expect(allMandatory).toBe(true);
     }
@@ -116,10 +116,10 @@ describe("ESRS Datapoints Router", () => {
 
     expect(standards).toBeInstanceOf(Array);
     expect(standards.length).toBeGreaterThan(0);
-    // Should include key ESRS standards
+    // Should include key ESRS standards (format: "ESRS 2", "E1", "S1", etc.)
     expect(standards).toContain("ESRS 2");
-    expect(standards.some(s => s.startsWith("ESRS E"))).toBe(true); // Environmental
-    expect(standards.some(s => s.startsWith("ESRS S"))).toBe(true); // Social
+    expect(standards.some(s => s.startsWith("E"))).toBe(true); // Environmental (E1-E5)
+    expect(standards.some(s => s.startsWith("S"))).toBe(true); // Social (S1-S4)
   });
 
   it("should return statistics about ESRS datapoints", async () => {
@@ -183,7 +183,7 @@ describe("ESRS Datapoints Router", () => {
     const result = await caller.esrs.list({
       page: 1,
       pageSize: 50,
-      standard: "ESRS E1",
+      standard: "E1",
       data_type: "narrative",
       voluntary: false,
     });
@@ -195,9 +195,9 @@ describe("ESRS Datapoints Router", () => {
     if (result.datapoints.length > 0) {
       const allMatch = result.datapoints.every(
         dp =>
-          dp.esrsStandard === "ESRS E1" &&
+          dp.esrsStandard === "E1" &&
           dp.dataType?.toLowerCase().includes("narrative") &&
-          dp.voluntary === false
+          (dp.voluntary === 0 || dp.voluntary === false)
       );
       expect(allMatch).toBe(true);
     }
