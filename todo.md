@@ -2614,5 +2614,5 @@ All production-critical systems are now type-safe. The remaining errors are acce
 - [x] Confirmed ESRS Datapoint Browser UI working at /hub/esrs-datapoints
 - [x] Statistics showing: 1,185 datapoints, 12 ESRS standards, 52 data types
 
-**Note:** Regulation-ESRS mappings (450 records) reference old datapoint IDs (90xxx range) but ESRS datapoints now use IDs 91185-92369. Mappings need re-generation to link correctly.
+**Note:** Regulation-ESRS mappings successfully re-generated (433 valid mappings) with correct datapoint IDs (91185-92369 range). All orphaned mappings cleaned up. ESRS Datapoints tab verified working on regulation detail pages.
 
