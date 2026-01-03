@@ -2616,3 +2616,12 @@ All production-critical systems are now type-safe. The remaining errors are acce
 
 **Note:** Regulation-ESRS mappings successfully re-generated (433 valid mappings) with correct datapoint IDs (91185-92369 range). All orphaned mappings cleaned up. ESRS Datapoints tab verified working on regulation detail pages.
 
+
+
+---
+
+## Test Suite Consolidation (Jan 2026)
+
+- [x] Fix GS1 multi-sector attribute filtering tests (tinyint vs boolean comparison)
+- [x] Add timeout configuration for slow DIY/Garden/Pet sector tests
+- [x] GS1 multi-sector tests: 11/11 passing

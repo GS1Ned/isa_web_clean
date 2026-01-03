@@ -15,7 +15,7 @@ import { eq, and, inArray } from "drizzle-orm";
 
 describe("Multi-Sector GS1 Attributes Integration", () => {
   describe("DIY/Garden/Pet Sector", () => {
-    it("should have ingested DIY/Garden/Pet attributes", async () => {
+    it("should have ingested DIY/Garden/Pet attributes", { timeout: 15000 }, async () => {
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
@@ -28,7 +28,7 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
       console.log(`DIY/Garden/Pet attributes: ${diyAttributes.length}`);
     });
 
-    it("should have packaging-related DIY attributes", async () => {
+    it("should have packaging-related DIY attributes", { timeout: 15000 }, async () => {
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
@@ -192,10 +192,11 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
       const packagingAttributes = await db
         .select()
         .from(gs1Attributes)
-        .where(eq(gs1Attributes.packagingRelated, true))
+        .where(eq(gs1Attributes.packagingRelated, 1))
         .limit(10);
 
-      expect(packagingAttributes.every(a => a.packagingRelated === true)).toBe(
+      // tinyint returns 0/1, not boolean
+      expect(packagingAttributes.every(a => a.packagingRelated === 1)).toBe(
         true
       );
     });
@@ -207,11 +208,12 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
       const sustainabilityAttributes = await db
         .select()
         .from(gs1Attributes)
-        .where(eq(gs1Attributes.sustainabilityRelated, true))
+        .where(eq(gs1Attributes.sustainabilityRelated, 1))
         .limit(10);
 
+      // tinyint returns 0/1, not boolean
       expect(
-        sustainabilityAttributes.every(a => a.sustainabilityRelated === true)
+        sustainabilityAttributes.every(a => a.sustainabilityRelated === 1)
       ).toBe(true);
     });
   });
