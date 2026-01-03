@@ -30,7 +30,7 @@ export interface MappingOptions {
 export interface ESRSToGS1Mapping {
   esrsDatapointId: string;
   esrsDatapointName: string;
-  esrs_standard: string;
+  esrsStandard: string;
   gs1Attributes: GS1AttributeMapping[];
 }
 
@@ -90,13 +90,13 @@ export async function mapESRSToGS1Attributes(
     );
 
     const primaryRule = rules[0];
-    const esrs_standard = primaryRule.esrs_standard || deriveStandardFromId(id);
+    const esrsStandard = primaryRule.esrs_standard || deriveStandardFromId(id);
     const esrsDatapointName = primaryRule.topic || id;
 
     return {
       esrsDatapointId: id,
       esrsDatapointName,
-      esrs_standard,
+      esrsStandard,
       gs1Attributes: filteredAttributes,
     };
   });
@@ -189,12 +189,12 @@ function deriveStandardFromId(datapointId: string): string {
  */
 function createUnknownMapping(
   datapointId: string,
-  esrs_standard: string
+  esrsStandard: string
 ): ESRSToGS1Mapping {
   return {
     esrsDatapointId: datapointId,
     esrsDatapointName: "Unknown ESRS datapoint",
-    esrs_standard,
+    esrsStandard,
     gs1Attributes: [],
   };
 }

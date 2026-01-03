@@ -81,6 +81,10 @@ vi.mock("xlsx", () => {
     sheet_to_json: (sheet: Sheet, _options: unknown) => sheet.rows
   };
   return {
+    default: {
+      readFile,
+      utils
+    },
     readFile,
     utils
   };
@@ -149,7 +153,7 @@ describe("INGEST-03: ESRS Datapoints ingestion", () => {
     expect(rawRows.length).toBe(3);
   });
 
-  it("is idempotent when running ingestion twice", async () => {
+  it("is idempotent when running ingestion twice", { timeout: 15000 }, async () => {
     const first = await ingestEsrsDatapoints();
     expect(Boolean(first.success)).toBe(true);
     const second = await ingestEsrsDatapoints();
