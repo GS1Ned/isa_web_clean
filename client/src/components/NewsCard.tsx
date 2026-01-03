@@ -5,7 +5,13 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ExternalLink, AlertCircle, Info, TrendingUp } from "lucide-react";
+import { ExternalLink, AlertCircle, Info, TrendingUp, Sparkles } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { formatDistanceToNow } from "date-fns";
 
 interface NewsCardProps {
@@ -27,6 +33,8 @@ interface NewsCardProps {
       | "GUIDANCE"
       | "PROPOSAL";
     sources?: Array<{ name: string; type: string; url: string }> | null;
+    gs1ImpactAnalysis?: string | null;
+    isAutomated?: boolean | number | null;
   };
 }
 
@@ -44,9 +52,12 @@ export function NewsCard({ news }: NewsCardProps) {
     sourceType,
     newsType,
     sources,
+    gs1ImpactAnalysis,
+    isAutomated,
   } = news;
 
   const isMultiSource = sources && sources.length > 1;
+  const hasAIEnrichment = Boolean(isAutomated) || Boolean(gs1ImpactAnalysis);
   const impactConfig = {
     HIGH: {
       icon: AlertCircle,
@@ -114,6 +125,24 @@ export function NewsCard({ news }: NewsCardProps) {
                   </span>
                 ) : (
                   <span>{sourceTypeLabels[sourceType]}</span>
+                )}
+                {hasAIEnrichment && (
+                  <>
+                    <span>•</span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="inline-flex items-center gap-1 text-purple-600 dark:text-purple-400 font-medium cursor-help">
+                            <Sparkles className="h-3 w-3" />
+                            AI-Enriched
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom" className="max-w-xs">
+                          <p className="text-xs">This article includes AI-generated GS1 impact analysis and recommended actions</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </>
                 )}
               </div>
             </div>

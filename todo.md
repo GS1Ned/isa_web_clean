@@ -2511,3 +2511,29 @@ All production-critical systems are now type-safe. The remaining errors are acce
 - [x] Clear statement that absence of gap ≠ compliance
 - [x] Limitations stated for each epistemic status (Fact, Inference, Uncertain)
 - [x] Last-updated timestamps for data and scenarios
+
+
+---
+
+## Quick Wins Implemented (January 2026)
+
+### Surface AI Capabilities ✅ COMPLETE
+
+- [x] Add "AI-Enriched" badge to NewsCard component with sparkle icon
+- [x] Add tooltip explaining AI enrichment on hover
+- [x] Pass gs1ImpactAnalysis and isAutomated fields to NewsCard from NewsHub
+- [x] Add "AI-Enriched" badge to NewsDetail page header badges
+- [x] Update GS1 Impact Intelligence section header with AI branding
+- [x] Add explanatory text for AI-generated analysis section
+
+### Strategic Documentation ✅ COMPLETE
+
+- [x] Create ISA_STRATEGIC_CONTEXT_SYNTHESIS.md document
+- [x] Document architectural overview and technology stack
+- [x] Catalog all data assets (11 canonical tables, 5,600+ records)
+- [x] Document key design decisions with rationale
+- [x] Document news intelligence architecture
+- [x] Document Ask ISA RAG system
+- [x] Document compliance tools and EPCIS suite
+- [x] Include future roadmap sections
+

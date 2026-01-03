@@ -528,6 +528,8 @@ export default function NewsHub() {
                     sourceTitle: item.sourceTitle || "Unknown Source",
                     sourceType: item.sourceType || "EU_OFFICIAL",
                     newsType: item.newsType,
+                    gs1ImpactAnalysis: item.gs1ImpactAnalysis,
+                    isAutomated: item.isAutomated,
                   }}
                 />
               ))}
