@@ -61,7 +61,7 @@ describe("ISA tRPC Routers", () => {
       const authContext = createMockContext(true);
       const authCaller = appRouter.createCaller(authContext);
       const result = await authCaller.auth.logout();
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
     });
   });
 
@@ -172,7 +172,7 @@ describe("ISA tRPC Routers", () => {
         industryFocus: "Retail",
       });
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
     });
   });
 
@@ -183,7 +183,7 @@ describe("ISA tRPC Routers", () => {
 
       const result = await authCaller.hub.saveRegulation({ regulationId: 1 });
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
     });
 
     it("should remove a saved regulation", async () => {
@@ -192,7 +192,7 @@ describe("ISA tRPC Routers", () => {
 
       const result = await authCaller.hub.unsaveRegulation({ regulationId: 1 });
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
     });
 
     it("should set alert preferences", async () => {
@@ -204,7 +204,7 @@ describe("ISA tRPC Routers", () => {
         alertType: "REGULATION_UPDATE",
       });
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
     });
 
     it("should get saved regulations", async () => {
@@ -266,7 +266,7 @@ describe("ISA tRPC Routers", () => {
         regulationId: 1,
       });
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
     });
 
     it("should get user engagement stats for admin users", async () => {

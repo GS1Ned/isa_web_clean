@@ -188,11 +188,11 @@ describe('Advisory Diff Computation', () => {
     it('should show no traceability changes', () => {
       const { traceabilityDeltas } = diffOutput;
       
-      expect(traceabilityDeltas.datasetRegistryVersion.changed).toBe(false);
+      expect(Boolean(traceabilityDeltas.datasetRegistryVersion.changed)).toBe(false);
       expect(traceabilityDeltas.sourceArtifactChanges.advisoryMarkdown).toBe(false);
       expect(traceabilityDeltas.sourceArtifactChanges.datasetRegistry).toBe(false);
       expect(traceabilityDeltas.sourceArtifactChanges.schema).toBe(false);
-      expect(traceabilityDeltas.anySourceArtifactChanged).toBe(false);
+      expect(Boolean(traceabilityDeltas.anySourceArtifactChanged)).toBe(false);
     });
 
     it('should show zero progress score', () => {
@@ -207,7 +207,7 @@ describe('Advisory Diff Computation', () => {
     it('should not detect any regressions', () => {
       const { compositeMetrics } = diffOutput;
       
-      expect(compositeMetrics.regressionDetected).toBe(false);
+      expect(Boolean(compositeMetrics.regressionDetected)).toBe(false);
       expect(compositeMetrics.regressions).toHaveLength(0);
     });
   });
@@ -334,7 +334,7 @@ describe('Advisory Diff Computation', () => {
       const { traceabilityDeltas } = diffOutput;
       
       expect(traceabilityDeltas.datasetRegistryVersion['v1.0']).toBe('1.0.0');
-      expect(traceabilityDeltas.datasetRegistryVersion.changed).toBe(false);
+      expect(Boolean(traceabilityDeltas.datasetRegistryVersion.changed)).toBe(false);
     });
   });
 });

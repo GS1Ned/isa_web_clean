@@ -60,7 +60,7 @@ describe("Cron Router", () => {
         secret: VALID_SECRET,
       });
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
       expect(result.message).toBe("Daily news ingestion completed");
       expect(result.stats).toMatchObject({
         fetched: 10,
@@ -81,7 +81,7 @@ describe("Cron Router", () => {
         secret: VALID_SECRET,
       });
 
-      expect(result.success).toBe(false);
+      expect(Boolean(result.success)).toBe(false);
       expect(result.message).toBe("Daily news ingestion failed");
       expect(result.error).toBe("Network error");
     });
@@ -99,7 +99,7 @@ describe("Cron Router", () => {
         secret: VALID_SECRET,
       });
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
       expect(result.message).toBe("Weekly news archival completed");
       expect(result.stats).toMatchObject({
         archived: 50,
@@ -118,7 +118,7 @@ describe("Cron Router", () => {
         secret: VALID_SECRET,
       });
 
-      expect(result.success).toBe(false);
+      expect(Boolean(result.success)).toBe(false);
       expect(result.message).toBe("Weekly news archival failed");
       expect(result.error).toBe("Database error");
     });

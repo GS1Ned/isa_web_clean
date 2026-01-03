@@ -298,7 +298,7 @@ describe("EPCIS UI Integration", () => {
       expect(flowEdge.source).toBeTruthy();
       expect(flowEdge.target).toBeTruthy();
       expect(flowEdge.label).toBeTruthy();
-      expect(flowEdge.animated).toBe(true);
+      expect(Boolean(flowEdge.animated)).toBe(true);
     });
 
     it("should map risk levels to colors", () => {

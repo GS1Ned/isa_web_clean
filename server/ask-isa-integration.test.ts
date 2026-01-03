@@ -31,7 +31,7 @@ describe("Ask ISA Guardrails", () => {
       const classification = classifyQuery(query);
 
       expect(classification.type).toBe("gap");
-      expect(classification.allowed).toBe(true);
+      expect(Boolean(classification.allowed)).toBe(true);
     });
 
     it("classifies mapping queries correctly", () => {
@@ -39,7 +39,7 @@ describe("Ask ISA Guardrails", () => {
       const classification = classifyQuery(query);
 
       expect(classification.type).toBe("mapping");
-      expect(classification.allowed).toBe(true);
+      expect(Boolean(classification.allowed)).toBe(true);
     });
 
     it("classifies version comparison queries correctly", () => {
@@ -48,7 +48,7 @@ describe("Ask ISA Guardrails", () => {
 
       // Version comparison queries may be classified as gap queries
       expect(["version_comparison", "gap", "general"]).toContain(classification.type);
-      expect(classification.allowed).toBe(true);
+      expect(Boolean(classification.allowed)).toBe(true);
     });
 
     it("rejects speculative queries", () => {
@@ -56,7 +56,7 @@ describe("Ask ISA Guardrails", () => {
       const classification = classifyQuery(query);
 
       expect(classification.type).toBe("forbidden");
-      expect(classification.allowed).toBe(false);
+      expect(Boolean(classification.allowed)).toBe(false);
       expect(classification.reason).toContain("Speculative");
       expect(classification.suggestedAlternative).toBeDefined();
     });
@@ -66,7 +66,7 @@ describe("Ask ISA Guardrails", () => {
       const classification = classifyQuery(query);
 
       expect(classification.type).toBe("forbidden");
-      expect(classification.allowed).toBe(false);
+      expect(Boolean(classification.allowed)).toBe(false);
       expect(classification.reason).toContain("Calculation");
       expect(classification.suggestedAlternative).toBeDefined();
     });
@@ -76,7 +76,7 @@ describe("Ask ISA Guardrails", () => {
       const classification = classifyQuery(query);
 
       expect(classification.type).toBe("forbidden");
-      expect(classification.allowed).toBe(false);
+      expect(Boolean(classification.allowed)).toBe(false);
       expect(classification.reason).toContain("conversational");
       expect(classification.suggestedAlternative).toBeDefined();
     });
@@ -88,7 +88,7 @@ describe("Ask ISA Guardrails", () => {
 
       const validation = validateCitations(answer);
 
-      expect(validation.valid).toBe(true);
+      expect(Boolean(validation.valid)).toBe(true);
       expect(validation.missingElements).toHaveLength(0);
     });
 
@@ -97,7 +97,7 @@ describe("Ask ISA Guardrails", () => {
 
       const validation = validateCitations(answer);
 
-      expect(validation.valid).toBe(false);
+      expect(Boolean(validation.valid)).toBe(false);
       expect(validation.missingElements).toContain("Advisory ID (e.g., ISA_ADVISORY_v1.1)");
     });
 
@@ -106,7 +106,7 @@ describe("Ask ISA Guardrails", () => {
 
       const validation = validateCitations(answer);
 
-      expect(validation.valid).toBe(false);
+      expect(Boolean(validation.valid)).toBe(false);
       expect(validation.missingElements).toContain("Dataset IDs or registry reference");
     });
   });

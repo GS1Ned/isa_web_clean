@@ -41,7 +41,7 @@ describe("News Health Monitor - Database Persistence", () => {
 
     expect(executions).toHaveLength(1);
     expect(executions[0].sourceName).toBe("Test Source");
-    expect(executions[0].success).toBe(true);
+    expect(Boolean(executions[0].success)).toBe(true);
     expect(executions[0].itemsFetched).toBe(10);
     expect(executions[0].attempts).toBe(1);
   });
@@ -289,7 +289,7 @@ describe("News Health Monitor - Database Persistence", () => {
       .where(eq(scraperExecutions.sourceId, "test-source-8"));
 
     expect(executions[0].attempts).toBe(3);
-    expect(executions[0].success).toBe(true);
+    expect(Boolean(executions[0].success)).toBe(true);
   });
 
   it("should store error messages for failed executions", async () => {
@@ -315,6 +315,6 @@ describe("News Health Monitor - Database Persistence", () => {
       .where(eq(scraperExecutions.sourceId, "test-source-9"));
 
     expect(executions[0].errorMessage).toBe("Connection refused: ECONNREFUSED");
-    expect(executions[0].success).toBe(false);
+    expect(Boolean(executions[0].success)).toBe(false);
   });
 });

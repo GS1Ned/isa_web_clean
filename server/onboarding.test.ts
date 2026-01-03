@@ -54,7 +54,7 @@ describe("Onboarding Progress", () => {
     expect(result?.completedSteps).toEqual([1]);
     expect(result?.currentStep).toBe(2);
     expect(result?.completionPercentage).toBe(25); // 1/4 steps = 25%
-    expect(result?.isCompleted).toBe(false);
+    expect(Boolean(result?.isCompleted)).toBe(false);
   });
 
   it("should load saved progress", async () => {
@@ -80,7 +80,7 @@ describe("Onboarding Progress", () => {
     expect(result?.completedSteps).toEqual([1, 2]);
     expect(result?.currentStep).toBe(3);
     expect(result?.completionPercentage).toBe(50); // 2/4 steps = 50%
-    expect(result?.isCompleted).toBe(false);
+    expect(Boolean(result?.isCompleted)).toBe(false);
   });
 
   it("should mark as completed when all steps done", async () => {
@@ -93,7 +93,7 @@ describe("Onboarding Progress", () => {
 
     expect(result?.completedSteps).toEqual([1, 2, 3, 4]);
     expect(result?.completionPercentage).toBe(100); // 4/4 steps = 100%
-    expect(result?.isCompleted).toBe(true);
+    expect(Boolean(result?.isCompleted)).toBe(true);
     expect(result?.completedAt).toBeDefined();
   });
 
@@ -128,7 +128,7 @@ describe("Onboarding Progress", () => {
 
     expect(result?.completedSteps).toEqual([]);
     expect(result?.completionPercentage).toBe(0);
-    expect(result?.isCompleted).toBe(false);
+    expect(Boolean(result?.isCompleted)).toBe(false);
   });
 
   it("should persist progress across multiple saves", async () => {

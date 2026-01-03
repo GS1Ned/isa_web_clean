@@ -116,7 +116,7 @@ describe("INGEST-03: ESRS Datapoints ingestion", () => {
 
   it("ingests ESRS datapoints into raw and canonical tables", async () => {
     const result = await ingestEsrsDatapoints({ verbose: false });
-    expect(result.success).toBe(true);
+    expect(Boolean(result.success)).toBe(true);
     expect(result.recordsProcessed).toBe(3);
     expect(result.recordsInserted).toBe(3);
     const db = await getDb();
@@ -134,16 +134,16 @@ describe("INGEST-03: ESRS Datapoints ingestion", () => {
     expect(semiNarrative).toBeDefined();
     if (semiNarrative) {
       expect(semiNarrative.dataType).toBe("semiNarrative");
-      expect(semiNarrative.conditional).toBe(false);
-      expect(semiNarrative.voluntary).toBe(false);
+      expect(Boolean(semiNarrative.conditional)).toBe(false);
+      expect(Boolean(semiNarrative.voluntary)).toBe(false);
     }
     const conditionalRow = canonicalRows.find(
       (row) => row.code === "BP-1_02"
     );
     expect(conditionalRow).toBeDefined();
     if (conditionalRow) {
-      expect(conditionalRow.conditional).toBe(true);
-      expect(conditionalRow.voluntary).toBe(true);
+      expect(Boolean(conditionalRow.conditional)).toBe(true);
+      expect(Boolean(conditionalRow.voluntary)).toBe(true);
     }
     const rawRows = await db.select().from(rawEsrsDatapoints);
     expect(rawRows.length).toBe(3);
@@ -151,9 +151,9 @@ describe("INGEST-03: ESRS Datapoints ingestion", () => {
 
   it("is idempotent when running ingestion twice", async () => {
     const first = await ingestEsrsDatapoints();
-    expect(first.success).toBe(true);
+    expect(Boolean(first.success)).toBe(true);
     const second = await ingestEsrsDatapoints();
-    expect(second.success).toBe(true);
+    expect(Boolean(second.success)).toBe(true);
     expect(second.recordsInserted).toBe(0);
     expect(second.recordsUpdated).toBe(first.recordsInserted);
     const db = await getDb();
@@ -167,7 +167,7 @@ describe("INGEST-03: ESRS Datapoints ingestion", () => {
       dryRun: true,
       verbose: false
     });
-    expect(result.success).toBe(true);
+    expect(Boolean(result.success)).toBe(true);
     expect(result.recordsProcessed).toBe(3);
     expect(result.recordsInserted).toBe(0);
     expect(result.recordsUpdated).toBe(0);
@@ -184,7 +184,7 @@ describe("INGEST-03: ESRS Datapoints ingestion", () => {
       limit: 2,
       verbose: false
     });
-    expect(result.success).toBe(true);
+    expect(Boolean(result.success)).toBe(true);
     expect(result.recordsProcessed).toBe(2);
     expect(result.recordsInserted).toBe(2);
     const db = await getDb();

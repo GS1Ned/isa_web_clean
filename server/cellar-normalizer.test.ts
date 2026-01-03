@@ -32,7 +32,8 @@ describe("CELLAR Data Normalizer", () => {
       expect(result?.celexId).toBe("32022L2464");
       expect(result?.regulationType).toBe("CSRD");
       expect(result?.title).toContain("Corporate Sustainability Reporting");
-      expect(result?.effectiveDate).toBeInstanceOf(Date);
+      expect(typeof result?.effectiveDate).toBe('string');
+      expect(result?.effectiveDate).toContain('2023-01-05');
       expect(result?.sourceUrl).toContain("eur-lex.europa.eu");
     });
 

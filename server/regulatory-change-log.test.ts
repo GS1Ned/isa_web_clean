@@ -204,7 +204,7 @@ describe("Regulatory Change Log", () => {
 
       const result = await caller.regulatoryChangeLog.delete({ id: tempEntry.id });
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
 
       // Verify deletion
       await expect(

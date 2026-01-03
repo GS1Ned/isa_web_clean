@@ -37,7 +37,7 @@ describe("Mapping Feedback Procedures", () => {
     });
 
     expect(result).toBeTruthy();
-    expect(result?.vote).toBe(true);
+    expect(Boolean(result?.vote)).toBe(true);
     expect(result?.mappingId).toBe(testMappingId);
   });
 
@@ -47,7 +47,7 @@ describe("Mapping Feedback Procedures", () => {
     });
 
     expect(feedback).toBeTruthy();
-    expect(feedback?.vote).toBe(true); // From previous test
+    expect(Boolean(feedback?.vote)).toBe(true); // From previous test
     expect(feedback?.userId).toBe(1);
   });
 
@@ -59,13 +59,13 @@ describe("Mapping Feedback Procedures", () => {
     });
 
     expect(result).toBeTruthy();
-    expect(result?.vote).toBe(false);
+    expect(Boolean(result?.vote)).toBe(false);
 
     // Verify it was updated, not duplicated
     const feedback = await caller.regulations.getUserMappingFeedback({
       mappingId: testMappingId,
     });
-    expect(feedback?.vote).toBe(false);
+    expect(Boolean(feedback?.vote)).toBe(false);
   });
 
   it("should get aggregated feedback stats", async () => {

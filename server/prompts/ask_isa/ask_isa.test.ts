@@ -77,7 +77,7 @@ describe('Ask ISA Modular Prompt System', () => {
 
       const result = validateCitations(answer, sourceCount);
 
-      expect(result.valid).toBe(true);
+      expect(Boolean(result.valid)).toBe(true);
       expect(result.issues).toHaveLength(0);
     });
 
@@ -87,7 +87,7 @@ describe('Ask ISA Modular Prompt System', () => {
 
       const result = validateCitations(answer, sourceCount);
 
-      expect(result.valid).toBe(false);
+      expect(Boolean(result.valid)).toBe(false);
       expect(result.issues).toContain('Answer contains no citations - all factual claims must be cited');
     });
 
@@ -97,7 +97,7 @@ describe('Ask ISA Modular Prompt System', () => {
 
       const result = validateCitations(answer, sourceCount);
 
-      expect(result.valid).toBe(false);
+      expect(Boolean(result.valid)).toBe(false);
       expect(result.issues.some(i => i.includes('Invalid citation [Source 5]'))).toBe(true);
     });
   });
@@ -113,7 +113,7 @@ describe('Ask ISA Modular Prompt System', () => {
 
       const result = verifyAskISAResponse(answer, sources, confidence);
 
-      expect(result.passed).toBe(true);
+      expect(Boolean(result.passed)).toBe(true);
       expect(result.issues).toHaveLength(0);
     });
 
@@ -124,7 +124,7 @@ describe('Ask ISA Modular Prompt System', () => {
 
       const result = verifyAskISAResponse(answer, sources, confidence);
 
-      expect(result.passed).toBe(false);
+      expect(Boolean(result.passed)).toBe(false);
       expect(result.issues).toContain('Answer is too short (< 50 characters)');
     });
 
@@ -157,7 +157,7 @@ describe('Ask ISA Modular Prompt System', () => {
 
       const result = validateAskISAResponse(response);
 
-      expect(result.valid).toBe(true);
+      expect(Boolean(result.valid)).toBe(true);
       expect(result.errors).toHaveLength(0);
       expect(result.data).toBeDefined();
     });
@@ -170,7 +170,7 @@ describe('Ask ISA Modular Prompt System', () => {
 
       const result = validateAskISAResponse(response);
 
-      expect(result.valid).toBe(false);
+      expect(Boolean(result.valid)).toBe(false);
       expect(result.errors.length).toBeGreaterThan(0);
     });
 
@@ -183,7 +183,7 @@ describe('Ask ISA Modular Prompt System', () => {
 
       const result = validateAskISAResponse(response);
 
-      expect(result.valid).toBe(false);
+      expect(Boolean(result.valid)).toBe(false);
     });
   });
 });

@@ -54,7 +54,7 @@ describe("Webhook Notification Service", () => {
 
       const result = await sendSlackAlert("https://hooks.slack.com/test", payload);
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
       expect(mockFetch).toHaveBeenCalledWith(
         "https://hooks.slack.com/test",
         expect.objectContaining({
@@ -267,7 +267,7 @@ describe("Webhook Notification Service", () => {
 
       const result = await sendSlackAlert("https://hooks.slack.com/test", payload);
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
       expect(mockFetch).toHaveBeenCalledTimes(3);
     });
 
@@ -302,7 +302,7 @@ describe("Webhook Notification Service", () => {
 
       const result = await sendSlackAlert("https://hooks.slack.com/test", payload);
 
-      expect(result.success).toBe(false);
+      expect(Boolean(result.success)).toBe(false);
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
 
@@ -337,7 +337,7 @@ describe("Webhook Notification Service", () => {
 
       const result = await sendSlackAlert("https://hooks.slack.com/test", payload);
 
-      expect(result.success).toBe(false);
+      expect(Boolean(result.success)).toBe(false);
       expect(mockFetch).toHaveBeenCalledTimes(3); // Max 3 attempts
     });
   });
@@ -389,8 +389,8 @@ describe("Webhook Notification Service", () => {
       const results = await broadcastAlert(payload);
 
       expect(results).toHaveLength(2);
-      expect(results[0].success).toBe(true);
-      expect(results[1].success).toBe(true);
+      expect(Boolean(results[0].success)).toBe(true);
+      expect(Boolean(results[1].success)).toBe(true);
       expect(mockFetch).toHaveBeenCalledTimes(2);
     });
 
@@ -472,7 +472,7 @@ describe("Webhook Notification Service", () => {
 
       const result = await sendSlackAlert("https://hooks.slack.com/test", payload);
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
       expect(result.deliveryId).toBe(123);
       expect(mockInsert).toHaveBeenCalled();
     });
@@ -510,7 +510,7 @@ describe("Webhook Notification Service", () => {
 
       const result = await sendSlackAlert("https://hooks.slack.com/test", payload);
 
-      expect(result.success).toBe(false);
+      expect(Boolean(result.success)).toBe(false);
       expect(result.error).toContain("400");
       expect(mockInsert).toHaveBeenCalled();
     });

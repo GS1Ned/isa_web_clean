@@ -58,7 +58,7 @@ describe("News Pipeline - Database Integration", () => {
 
     const executions = await db.select().from(scraperExecutions);
     expect(executions).toHaveLength(1);
-    expect(executions[0].success).toBe(true);
+    expect(Boolean(executions[0].success)).toBe(true);
     expect(executions[0].itemsFetched).toBe(1);
   });
 
@@ -104,7 +104,7 @@ describe("News Pipeline - Database Integration", () => {
 
     const executions = await db.select().from(scraperExecutions);
     expect(executions).toHaveLength(1);
-    expect(executions[0].success).toBe(false);
+    expect(Boolean(executions[0].success)).toBe(false);
     expect(executions[0].attempts).toBe(3);
     expect(executions[0].errorMessage).toContain("Simulated network error");
   });

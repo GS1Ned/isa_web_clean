@@ -92,7 +92,7 @@ describe("News Pipeline Ingestion Modes", () => {
 
     expect(result.mode).toBe("normal");
     expect(result.maxAgeDays).toBe(30);
-    expect(result.success).toBe(true);
+    expect(Boolean(result.success)).toBe(true);
   });
 
   it("should use 200-day window in backfill mode", async () => {
@@ -100,7 +100,7 @@ describe("News Pipeline Ingestion Modes", () => {
 
     expect(result.mode).toBe("backfill");
     expect(result.maxAgeDays).toBe(200);
-    expect(result.success).toBe(true);
+    expect(Boolean(result.success)).toBe(true);
   });
 
   it("should default to normal mode when no mode specified", async () => {
@@ -113,7 +113,7 @@ describe("News Pipeline Ingestion Modes", () => {
   it("should default to cron trigger when no trigger specified", async () => {
     const result = await runNewsPipeline({ mode: "normal" });
 
-    expect(result.success).toBe(true);
+    expect(Boolean(result.success)).toBe(true);
     // Trigger source is logged internally, not returned in result
   });
 

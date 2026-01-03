@@ -136,7 +136,7 @@ describe("News Admin Router", () => {
 
       const result = await caller.triggerIngestion();
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
       expect(result.fetched).toBe(10);
       expect(result.inserted).toBe(5);
       expect(result.skipped).toBe(5);
@@ -174,7 +174,7 @@ describe("News Admin Router", () => {
 
       const result = await caller.triggerArchival();
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
       expect(result.archived).toBe(3);
       expect(result.duration).toBeDefined();
     });

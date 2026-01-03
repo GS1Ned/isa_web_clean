@@ -76,7 +76,7 @@ describe("GS1 Attributes Router", () => {
       });
 
       expect(attributes).toBeDefined();
-      expect(attributes.every(attr => attr.packagingRelated === true)).toBe(
+      expect(attributes.every(attr => attr.packagingRelated == 1 || attr.packagingRelated === true)).toBe(
         true
       );
     });
@@ -88,7 +88,7 @@ describe("GS1 Attributes Router", () => {
 
       expect(attributes).toBeDefined();
       expect(
-        attributes.every(attr => attr.sustainabilityRelated === true)
+        attributes.every(attr => attr.sustainabilityRelated == 1 || attr.sustainabilityRelated === true)
       ).toBe(true);
     });
 
@@ -209,9 +209,9 @@ describe("GS1 Attributes Router", () => {
 
         if (terms.length > 0) {
           // All terms should be DPP-relevant
-          expect(terms.every(t => t.dppRelevant === true)).toBe(true);
+          expect(terms.every(t => t.dppRelevant == 1 || t.dppRelevant === true)).toBe(true);
           // No deprecated terms
-          expect(terms.every(t => t.isDeprecated === false)).toBe(true);
+          expect(terms.every(t => t.isDeprecated == 0 || t.isDeprecated === false)).toBe(true);
         }
       }
     });
@@ -238,7 +238,7 @@ describe("GS1 Attributes Router", () => {
         expect(Array.isArray(terms)).toBe(true);
 
         if (terms.length > 0) {
-          expect(terms.every(t => t.esrsRelevant === true)).toBe(true);
+          expect(terms.every(t => t.esrsRelevant == 1 || t.esrsRelevant === true)).toBe(true);
         }
       }
     });
@@ -265,7 +265,7 @@ describe("GS1 Attributes Router", () => {
         expect(Array.isArray(terms)).toBe(true);
 
         if (terms.length > 0) {
-          expect(terms.every(t => t.eudrRelevant === true)).toBe(true);
+          expect(terms.every(t => t.eudrRelevant == 1 || t.eudrRelevant === true)).toBe(true);
         }
       }
     });

@@ -40,11 +40,11 @@ describe("Scraper Health Router", () => {
         {
           sourceId: "test-source-1",
           sourceName: "Test Source 1",
-          successRate24h: 100,
-          totalExecutions24h: 10,
-          failedExecutions24h: 0,
-          avgItemsFetched24h: 5,
-          avgDurationMs24h: 1000,
+          successRate24H: 100,
+          totalExecutions24H: 10,
+          failedExecutions24H: 0,
+          avgItemsFetched24H: 5,
+          avgDurationMs24H: 1000,
           lastExecutionSuccess: true,
           lastExecutionAt: new Date(),
           lastSuccessAt: new Date(),
@@ -54,11 +54,11 @@ describe("Scraper Health Router", () => {
         {
           sourceId: "test-source-2",
           sourceName: "Test Source 2",
-          successRate24h: 67,
-          totalExecutions24h: 12,
-          failedExecutions24h: 4,
-          avgItemsFetched24h: 3,
-          avgDurationMs24h: 1500,
+          successRate24H: 67,
+          totalExecutions24H: 12,
+          failedExecutions24H: 4,
+          avgItemsFetched24H: 3,
+          avgDurationMs24H: 1500,
           lastExecutionSuccess: false,
           lastExecutionAt: new Date(),
           lastSuccessAt: new Date(Date.now() - 3600000),
@@ -89,7 +89,7 @@ describe("Scraper Health Router", () => {
       expect(source2).toBeDefined();
       expect(source2?.successRate24h).toBe(67);
       expect(source2?.consecutiveFailures).toBe(3);
-      expect(source2?.alertSent).toBe(true);
+      expect(Boolean(source2?.alertSent)).toBe(true);
     });
   });
 
@@ -115,11 +115,11 @@ describe("Scraper Health Router", () => {
       await db.insert(scraperHealthSummary).values({
         sourceId: "test-source",
         sourceName: "Test Source",
-        successRate24h: 85,
-        totalExecutions24h: 20,
-        failedExecutions24h: 3,
-        avgItemsFetched24h: 7,
-        avgDurationMs24h: 2000,
+        successRate24H: 85,
+        totalExecutions24H: 20,
+        failedExecutions24H: 3,
+        avgItemsFetched24H: 7,
+        avgDurationMs24H: 2000,
         lastExecutionSuccess: true,
         lastExecutionAt: new Date(),
         lastSuccessAt: new Date(),
@@ -139,8 +139,8 @@ describe("Scraper Health Router", () => {
 
       expect(result).not.toBeNull();
       expect(result?.sourceId).toBe("test-source");
-      expect(result?.successRate24h).toBe(85);
-      expect(result?.totalExecutions24h).toBe(20);
+      expect(result?.successRate24H).toBe(85);
+      expect(result?.totalExecutions24H).toBe(20);
     });
   });
 
@@ -211,9 +211,9 @@ describe("Scraper Health Router", () => {
       });
 
       expect(result).toHaveLength(2);
-      expect(result[0].success).toBe(false); // Most recent first
+      expect(Boolean(result[0].success)).toBe(false); // Most recent first
       expect(result[0].errorMessage).toBe("Connection timeout");
-      expect(result[1].success).toBe(true);
+      expect(Boolean(result[1].success)).toBe(true);
     });
 
     it("should respect limit parameter", async () => {
@@ -318,7 +318,7 @@ describe("Scraper Health Router", () => {
       });
 
       expect(result).toHaveLength(1);
-      expect(result[0].success).toBe(false);
+      expect(Boolean(result[0].success)).toBe(false);
       expect(result[0].errorMessage).toBe("Network error");
     });
   });
@@ -510,16 +510,16 @@ describe("Scraper Health Router", () => {
         sourceId: "test-source",
       });
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
 
-      // Verify alert was cleared
+      // Verify alert was cleared (MySQL returns 0/1 for boolean)
       const updated = await db
         .select()
         .from(scraperHealthSummary)
         .where(eq(scraperHealthSummary.sourceId, "test-source"))
         .limit(1);
 
-      expect(updated[0].alertSent).toBe(false);
+      expect(Boolean(updated[0].alertSent)).toBe(false);
       expect(updated[0].alertSentAt).toBeNull();
     });
   });

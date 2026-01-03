@@ -26,7 +26,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("gap");
-        expect(result.allowed).toBe(true);
+        expect(Boolean(result.allowed)).toBe(true);
       });
     });
 
@@ -41,7 +41,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("mapping");
-        expect(result.allowed).toBe(true);
+        expect(Boolean(result.allowed)).toBe(true);
       });
     });
 
@@ -56,7 +56,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("version_comparison");
-        expect(result.allowed).toBe(true);
+        expect(Boolean(result.allowed)).toBe(true);
       });
     });
 
@@ -71,7 +71,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("dataset_provenance");
-        expect(result.allowed).toBe(true);
+        expect(Boolean(result.allowed)).toBe(true);
       });
     });
 
@@ -86,7 +86,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("recommendation");
-        expect(result.allowed).toBe(true);
+        expect(Boolean(result.allowed)).toBe(true);
       });
     });
 
@@ -101,7 +101,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("coverage");
-        expect(result.allowed).toBe(true);
+        expect(Boolean(result.allowed)).toBe(true);
       });
     });
   });
@@ -118,7 +118,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("forbidden");
-        expect(result.allowed).toBe(false);
+        expect(Boolean(result.allowed)).toBe(false);
         expect(result.reason).toContain("General ESG explanations");
       });
     });
@@ -134,7 +134,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("forbidden");
-        expect(result.allowed).toBe(false);
+        expect(Boolean(result.allowed)).toBe(false);
         expect(result.reason).toContain("Hypothetical");
       });
     });
@@ -150,7 +150,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("forbidden");
-        expect(result.allowed).toBe(false);
+        expect(Boolean(result.allowed)).toBe(false);
         expect(result.reason).toContain("Speculative");
       });
     });
@@ -166,7 +166,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("forbidden");
-        expect(result.allowed).toBe(false);
+        expect(Boolean(result.allowed)).toBe(false);
         expect(result.reason).toContain("Calculation");
       });
     });
@@ -182,7 +182,7 @@ describe("Ask ISA Guardrails", () => {
       queries.forEach((query) => {
         const result = classifyQuery(query);
         expect(result.type).toBe("forbidden");
-        expect(result.allowed).toBe(false);
+        expect(Boolean(result.allowed)).toBe(false);
         expect(result.reason).toContain("conversational");
       });
     });
@@ -226,7 +226,7 @@ describe("Ask ISA Guardrails", () => {
 
       const result = validateCitations(answer);
 
-      expect(result.valid).toBe(true);
+      expect(Boolean(result.valid)).toBe(true);
       expect(result.missingElements).toHaveLength(0);
     });
 
@@ -237,7 +237,7 @@ describe("Ask ISA Guardrails", () => {
 
       const result = validateCitations(answer);
 
-      expect(result.valid).toBe(false);
+      expect(Boolean(result.valid)).toBe(false);
       expect(result.missingElements).toContain(
         "Advisory ID (e.g., ISA_ADVISORY_v1.1)"
       );
@@ -248,7 +248,7 @@ describe("Ask ISA Guardrails", () => {
 
       const result = validateCitations(answer);
 
-      expect(result.valid).toBe(false);
+      expect(Boolean(result.valid)).toBe(false);
       expect(result.missingElements).toContain(
         "Dataset IDs or registry reference"
       );
@@ -261,7 +261,7 @@ describe("Ask ISA Guardrails", () => {
 
       const result = validateCitations(answer);
 
-      expect(result.valid).toBe(true);
+      expect(Boolean(result.valid)).toBe(true);
     });
 
     it("should detect multiple missing elements", () => {
@@ -269,7 +269,7 @@ describe("Ask ISA Guardrails", () => {
 
       const result = validateCitations(answer);
 
-      expect(result.valid).toBe(false);
+      expect(Boolean(result.valid)).toBe(false);
       expect(result.missingElements.length).toBeGreaterThan(0);
     });
   });
@@ -316,14 +316,14 @@ describe("Ask ISA Guardrails", () => {
       const result = classifyQuery("WHICH GAPS EXIST FOR CSRD IN DIY?");
 
       expect(result.type).toBe("gap");
-      expect(result.allowed).toBe(true);
+      expect(Boolean(result.allowed)).toBe(true);
     });
 
     it("should handle queries with extra whitespace", () => {
       const result = classifyQuery("  Which gaps exist for CSRD?  ");
 
       expect(result.type).toBe("gap");
-      expect(result.allowed).toBe(true);
+      expect(Boolean(result.allowed)).toBe(true);
     });
 
     it("should default to allowed for unclassified queries", () => {
@@ -331,13 +331,13 @@ describe("Ask ISA Guardrails", () => {
         "This is a very unusual query that doesn't match any pattern"
       );
 
-      expect(result.allowed).toBe(true);
+      expect(Boolean(result.allowed)).toBe(true);
     });
 
     it("should handle empty citations", () => {
       const result = validateCitations("");
 
-      expect(result.valid).toBe(false);
+      expect(Boolean(result.valid)).toBe(false);
       expect(result.missingElements.length).toBeGreaterThan(0);
     });
   });

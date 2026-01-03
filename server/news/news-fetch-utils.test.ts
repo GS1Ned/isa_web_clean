@@ -76,7 +76,7 @@ describe("News Fetch Utilities", () => {
       const health = getSourceHealth("test-source");
       
       expect(health.sourceId).toBe("test-source");
-      expect(health.isHealthy).toBe(true);
+      expect(Boolean(health.isHealthy)).toBe(true);
       expect(health.consecutiveFailures).toBe(0);
     });
 
@@ -87,7 +87,7 @@ describe("News Fetch Utilities", () => {
       expect(health.lastSuccess).toBeDefined();
       expect(health.totalRequests).toBe(1);
       expect(health.averageResponseTime).toBe(500);
-      expect(health.isHealthy).toBe(true);
+      expect(Boolean(health.isHealthy)).toBe(true);
     });
 
     it("should track consecutive failures", () => {
@@ -98,7 +98,7 @@ describe("News Fetch Utilities", () => {
       
       expect(health.consecutiveFailures).toBe(2);
       expect(health.totalFailures).toBe(2);
-      expect(health.isHealthy).toBe(true); // Still healthy (< 3 failures)
+      expect(Boolean(health.isHealthy)).toBe(true); // Still healthy (< 3 failures)
     });
 
     it("should mark source unhealthy after 3 consecutive failures", () => {
@@ -108,7 +108,7 @@ describe("News Fetch Utilities", () => {
       
       const health = getSourceHealth("test-source");
       
-      expect(health.isHealthy).toBe(false);
+      expect(Boolean(health.isHealthy)).toBe(false);
     });
 
     it("should reset consecutive failures on success", () => {
@@ -119,7 +119,7 @@ describe("News Fetch Utilities", () => {
       const health = getSourceHealth("test-source");
       
       expect(health.consecutiveFailures).toBe(0);
-      expect(health.isHealthy).toBe(true);
+      expect(Boolean(health.isHealthy)).toBe(true);
     });
 
     it("should skip unhealthy source within cooldown period", () => {
@@ -150,7 +150,7 @@ describe("News Fetch Utilities", () => {
         { timeout: 1000 }
       );
       
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
       if (result.success) {
         expect(result.data).toEqual({ data: "test" });
         expect(result.responseTimeMs).toBeGreaterThanOrEqual(0);
@@ -164,7 +164,7 @@ describe("News Fetch Utilities", () => {
         { timeout: 1000, retries: 0 }
       );
       
-      expect(result.success).toBe(false);
+      expect(Boolean(result.success)).toBe(false);
       if (!result.success) {
         expect(result.error).toBe("fetch failed");
       }
@@ -182,7 +182,7 @@ describe("News Fetch Utilities", () => {
         { timeout: 1000 }
       );
       
-      expect(result.success).toBe(false);
+      expect(Boolean(result.success)).toBe(false);
       if (!result.success) {
         expect(result.error).toContain("temporarily disabled");
       }

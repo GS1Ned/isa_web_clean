@@ -15,6 +15,13 @@ import {
   getCacheStats,
   cleanupExpiredCache,
 } from "./export-scheduler";
+import { vi } from "vitest";
+
+// Mock S3 storage to avoid network timeouts in tests
+vi.mock("./storage", () => ({
+  storagePut: vi.fn().mockResolvedValue({ key: "mock-key", url: "https://mock-s3.example.com/file" }),
+  storageGet: vi.fn().mockResolvedValue({ key: "mock-key", url: "https://mock-s3.example.com/file" }),
+}));
 
 // Mock regulation data
 const mockRegulation: RegulationExportData = {

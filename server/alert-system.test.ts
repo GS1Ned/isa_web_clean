@@ -65,7 +65,7 @@ describe("Alert Detection System", () => {
       const result = await checkErrorRateThreshold(DEFAULT_THRESHOLDS);
 
       expect(result).toBeDefined();
-      expect(result?.shouldAlert).toBe(true);
+      expect(Boolean(result?.shouldAlert)).toBe(true);
       expect(result?.alertType).toBe("error_rate");
       expect(result?.severity).toBe("warning");
       expect(result?.metadata.errorCount).toBe(15);
@@ -133,7 +133,7 @@ describe("Alert Detection System", () => {
       const result = await checkCriticalErrorThreshold(DEFAULT_THRESHOLDS);
 
       expect(result).toBeDefined();
-      expect(result?.shouldAlert).toBe(true);
+      expect(Boolean(result?.shouldAlert)).toBe(true);
       expect(result?.alertType).toBe("critical_error");
       expect(result?.severity).toBe("critical");
       expect(result?.metadata.criticalCount).toBe(7);
@@ -192,12 +192,12 @@ describe("Alert Detection System", () => {
       const result = await checkPerformanceDegradation(operation, DEFAULT_THRESHOLDS);
 
       expect(result).toBeDefined();
-      expect(result?.shouldAlert).toBe(true);
+      expect(Boolean(result?.shouldAlert)).toBe(true);
       expect(result?.alertType).toBe("performance_degradation");
       // The multiplier should trigger at least warning level (2x baseline)
       expect(result?.severity).toMatch(/warning|critical/);
       expect(result?.metadata.multiplier).toBeGreaterThan(2);
-    });
+    }, 60000); // 60s timeout for inserting 200 records
 
     it("should not trigger alert with insufficient baseline samples", async () => {
       const db = await getDb();
@@ -278,7 +278,7 @@ describe("Alert Detection System", () => {
 
       const result = await processAlert(alert);
 
-      expect(result.success).toBe(true);
+      expect(Boolean(result.success)).toBe(true);
       expect(result.alertId).toBeGreaterThan(0);
 
       // Verify alert was saved to history

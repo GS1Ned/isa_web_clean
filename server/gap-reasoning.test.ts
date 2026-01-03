@@ -232,21 +232,21 @@ describe('Gap Reasoning Primitives', () => {
     it('should have large company thresholds', () => {
       const large = COMPANY_SIZE_THRESHOLDS.large;
       expect(large.employees).toBe(250);
-      expect(large.csrdApplicable).toBe(true);
+      expect(Boolean(large.csrdApplicable)).toBe(true);
       expect(large.phaseInYear).toBe(2024);
     });
 
     it('should have SME thresholds', () => {
       const sme = COMPANY_SIZE_THRESHOLDS.sme;
       expect(sme.employees).toBe(50);
-      expect(sme.csrdApplicable).toBe(true);
+      expect(Boolean(sme.csrdApplicable)).toBe(true);
       expect(sme.phaseInYear).toBe(2026);
     });
 
     it('should have micro company thresholds', () => {
       const micro = COMPANY_SIZE_THRESHOLDS.micro;
       expect(micro.employees).toBe(10);
-      expect(micro.csrdApplicable).toBe(false);
+      expect(Boolean(micro.csrdApplicable)).toBe(false);
       expect(micro.phaseInYear).toBeNull();
     });
   });

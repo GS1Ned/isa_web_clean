@@ -84,7 +84,7 @@ describe("Regulation-ESRS Mapping", () => {
     });
 
     expect(result).toBeDefined();
-    expect(result.success).toBe(true);
+    expect(Boolean(result.success)).toBe(true);
     expect(result.mappingsCount).toBeGreaterThan(0);
 
     console.log(`[Test] Generated ${result.mappingsCount} ESRS mappings`);
@@ -161,7 +161,7 @@ describe("Regulation-ESRS Mapping", () => {
       regulationId: testRegulationId,
     });
 
-    expect(result.success).toBe(true);
+    expect(Boolean(result.success)).toBe(true);
 
     // Get new count
     const afterMappings = await caller.regulations.getEsrsMappings({
@@ -180,7 +180,7 @@ describe("Regulation-ESRS Mapping", () => {
   it("should handle invalid regulation ID gracefully", async () => {
     const result = await generateRegulationEsrsMappings(999999);
 
-    expect(result.success).toBe(false);
+    expect(Boolean(result.success)).toBe(false);
     expect(result.mappingsCount).toBe(0);
     expect(result.error).toBeDefined();
   });

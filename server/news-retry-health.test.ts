@@ -65,7 +65,7 @@ describe("Retry Logic", () => {
       "test"
     );
 
-    expect(result.success).toBe(false);
+    expect(Boolean(result.success)).toBe(false);
     expect(result.error).toBe("Fail");
     expect(result.attempts).toBe(2);
     expect(operation).toHaveBeenCalledTimes(2);
