@@ -2603,3 +2603,16 @@ All production-critical systems are now type-safe. The remaining errors are acce
 | regulation_standard_mappings | 106 | ✅ 100% valid |
 | hub_news | 29 | ✅ |
 | knowledge_embeddings | 170 | ✅ |
+
+
+---
+
+## ESRS Data Restoration (Jan 3, 2026) ✅ COMPLETE
+
+- [x] Re-ingested ESRS datapoints from EFRAG IG3 Excel file (1,185 records)
+- [x] Verified ESRS tests pass (10/10 tests green)
+- [x] Confirmed ESRS Datapoint Browser UI working at /hub/esrs-datapoints
+- [x] Statistics showing: 1,185 datapoints, 12 ESRS standards, 52 data types
+
+**Note:** Regulation-ESRS mappings (450 records) reference old datapoint IDs (90xxx range) but ESRS datapoints now use IDs 91185-92369. Mappings need re-generation to link correctly.
+
