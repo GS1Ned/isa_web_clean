@@ -27,17 +27,38 @@ export async function createRegulatoryChangeLogEntry(
     throw new Error("Database not available");
   }
 
-  const created = await db
+  const result = await db
     .insert(regulatoryChangeLog)
-    .values(entry)
-    .$returningId() as any;
+    .values(entry);
 
-  // Fetch the complete entry
-  const createdId = Array.isArray(created) ? created[0]?.id : created?.id;
+  // Get the inserted ID from the result
+  // MySQL returns insertId in the result array
+  const insertId = (result as any)?.[0]?.insertId;
+  
+  if (!insertId) {
+    // Fallback: try to get the last inserted entry by matching unique fields
+    const [lastEntry] = await db
+      .select()
+      .from(regulatoryChangeLog)
+      .where(eq(regulatoryChangeLog.url, entry.url))
+      .orderBy(desc(regulatoryChangeLog.id))
+      .limit(1);
+    
+    if (lastEntry) {
+      return lastEntry;
+    }
+    
+    throw new Error("Failed to create regulatory change log entry - no ID returned");
+  }
+  
   const [fullEntry] = await db
     .select()
     .from(regulatoryChangeLog)
-    .where(eq(regulatoryChangeLog.id, createdId));
+    .where(eq(regulatoryChangeLog.id, insertId));
+
+  if (!fullEntry) {
+    throw new Error("Failed to retrieve created regulatory change log entry");
+  }
 
   return fullEntry;
 }

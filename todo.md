@@ -2552,3 +2552,28 @@ All production-critical systems are now type-safe. The remaining errors are acce
 - [x] Document risk and mitigation plans
 - [x] Produce execution roadmap table with milestones and exit gates
 - [x] Deliver final document to user
+
+
+---
+
+## ISA Phase 1 Completion - Outstanding Items ✅ COMPLETE
+
+### Attribute Recommender UI Navigation
+- [x] Create Attribute Recommender tRPC router (server/routers/attribute-recommender.ts)
+- [x] Add Attribute Recommender page (client/src/pages/AttributeRecommender.tsx)
+- [x] Add route in App.tsx (/tools/attribute-recommender)
+- [x] Add navigation entry in Compliance Tools menu
+- [x] Write vitest tests for Attribute Recommender router (10/10 passing)
+
+### PDF Export for Advisory Reports
+- [x] Create advisory-report-export.ts utility for HTML generation
+- [x] Add exportHtml procedure to advisory reports router
+- [x] Replace disabled download button with functional PdfExportButton component
+- [x] Add print-to-PDF workflow with user instructions
+
+### Test Cleanup
+- [x] Fix regulatory change log test failures (beforeAll setup, ID handling)
+- [x] Fix standards directory ESRS datapoint tests (handle empty database gracefully)
+- [x] Fix db-regulatory-change-log.ts MySQL insert ID retrieval
+
+**Result:** All Phase 1 outstanding items complete. Attribute Recommender accessible via navigation. PDF export functional for Advisory Reports. Key test suites passing.

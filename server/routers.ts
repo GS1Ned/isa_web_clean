@@ -66,6 +66,7 @@ import { performanceTrackingRouter } from "./router-performance-tracking.js";
 import { webhookConfigRouter, webhookConfigSchemas } from "./routers-webhook-config.js";
 import { gapAnalyzerRouter } from "./routers/gap-analyzer.js";
 import { impactSimulatorRouter } from "./routers/impact-simulator.js";
+import { attributeRecommenderRouter } from "./routers/attribute-recommender.js";
 // import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
 
 export const appRouter = router({
@@ -1126,6 +1127,11 @@ export const appRouter = router({
    * Regulatory change impact simulation with uncertainty markers
    */
   impactSimulator: impactSimulatorRouter,
+  /**
+   * Attribute Recommender - AI-powered GS1 attribute suggestions
+   * Provides recommendations with confidence scoring and epistemic markers
+   */
+  attributeRecommender: attributeRecommenderRouter,
   webhookConfig: router({
     getConfigurations: protectedProcedure.query(() => webhookConfigRouter.getConfigurations()),
     saveConfiguration: protectedProcedure

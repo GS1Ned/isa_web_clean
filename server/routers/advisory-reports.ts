@@ -13,6 +13,7 @@ import {
   getReportsByRegulationIds,
   getReportsByStandardIds,
 } from "../db-advisory-reports";
+import { generateReportHtmlForPdf } from "../advisory-report-export";
 
 /**
  * Advisory Reports Router
@@ -213,5 +214,33 @@ export const advisoryReportsRouter = router({
         ...input,
         createdBy: ctx.user.name || ctx.user.email || "Unknown",
       });
+    }),
+
+  /**
+   * Export report as HTML (for PDF rendering)
+   */
+  exportHtml: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        includeMetadata: z.boolean().optional(),
+        includeGovernanceNotice: z.boolean().optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      const result = await generateReportHtmlForPdf(input.id, {
+        includeMetadata: input.includeMetadata,
+        includeGovernanceNotice: input.includeGovernanceNotice,
+      });
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to generate export');
+      }
+      
+      return {
+        html: result.html,
+        filename: result.filename,
+        mimeType: result.mimeType,
+      };
     }),
 });

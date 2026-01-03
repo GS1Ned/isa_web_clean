@@ -116,6 +116,7 @@ const StakeholderDashboard = lazy(() => import("./pages/StakeholderDashboard").t
 const StandardsDirectory = lazy(() => import("./pages/StandardsDirectory").then(m => ({ default: m.StandardsDirectory })));
 const StandardDetail = lazy(() => import("./pages/StandardDetail").then(m => ({ default: m.StandardDetail })));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const AttributeRecommender = lazy(() => import("./pages/AttributeRecommender"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 
 // Loading fallback component
@@ -153,6 +154,7 @@ function Router() {
       <Route path="/tools/gap-analyzer" component={GapAnalyzer} />
       <Route path="/tools/impact-simulator" component={ImpactSimulator} />
       <Route path="/tools/dual-core" component={DualCoreDemo} />
+      <Route path="/tools/attribute-recommender" component={AttributeRecommender} />
       <Route path="/hub/resources" component={HubResources} />
       <Route path="/hub/impact-matrix" component={HubImpactMatrix} />
       <Route path="/hub/dashboard" component={HubUserDashboard} />

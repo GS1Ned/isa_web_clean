@@ -116,6 +116,11 @@ export function NavigationMenu() {
           description: "Combined gap analysis & impact simulation",
         },
         {
+          label: "Attribute Recommender",
+          href: "/tools/attribute-recommender",
+          description: "AI-powered GS1 attribute suggestions",
+        },
+        {
           label: "Compliance Roadmap",
           href: "/tools/compliance-roadmap",
           description: "Plan your compliance journey",
