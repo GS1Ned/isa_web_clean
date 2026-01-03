@@ -27,7 +27,7 @@ Transform ISA News Hub into a comprehensive ESG-GS1 intelligence layer that:
 ## Data Ingestion Tasks ✅ COMPLETE
 
 - [x] INGEST-02: GDSN Current v3.1.32 (4,293 records)
-- [x] INGEST-03: ESRS Datapoints (1,175 records)
+- [x] INGEST-03: ESRS Datapoints (1,175 records) - UI verified working
 - [x] INGEST-04: CTEs and KDEs (50 records)
 - [x] INGEST-05: DPP Identification Rules (26 records)
 - [x] INGEST-06: CBV Vocabularies & Digital Link Types (84 records)
