@@ -2822,15 +2822,30 @@ Note: CELLAR tests (27) are intentionally skipped as they require live EU endpoi
 - [ ] Execute Task 7: Unit Test Expansion for Isolated Modules
 - [ ] Execute Task 8: UI Feature Component Scaffolding
 
-### Delegation Task Status
-| Task ID | Name | Status | Assigned To |
-|---------|------|--------|-------------|
-| TASK-01 | Database Test Helper Utilities | Ready | Codex |
-| TASK-02 | External API Mock Generator | Ready | Codex |
-| TASK-03 | CI Test Script Improvements | Ready | Codex |
-| TASK-04 | News Pipeline Mode Logic Enhancement | Ready | Codex |
-| TASK-05 | Documentation Generation | Ready | Codex |
-| TASK-06 | Frontend Navigation Enhancement | Ready | Codex |
-| TASK-07 | Unit Test Expansion | Ready | Codex |
-| TASK-08 | UI Feature Component Scaffolding | Ready | Codex |
+#### Delegation Task Status
+| Task ID | Name | Status | PR | Notes |
+|---------|------|--------|-----|-------|
+| TASK-01 | Database Test Helper Utilities | ⏳ Revision Requested | #8 | insertId extraction bug (NaN) |
+| TASK-02 | External API Mock Generator | ✅ MERGED | #6 | Validated and merged |
+| TASK-03 | CI Test Script Improvements | ✅ MERGED | #7 | ESLint 9 flag note |
+| TASK-04 | News Pipeline Mode Logic Enhancement | Ready | - | Codex |
+| TASK-05 | Documentation Generation | Ready | - | Codex |
+| TASK-06 | Frontend Navigation Enhancement | Ready | - | Codex |
+| TASK-07 | Unit Test Expansion | Ready | - | Codex |
+| TASK-08 | UI Feature Component Scaffolding | Ready | - | Codex ||
 
+#### TASK-03 Revision Requirements ✅ RESOLVED
+- [x] Fix `--runInBand` option (Jest option, not vitest) - removed
+- [x] Fix printf format string issue on line 52 - fixed
+- [x] Add `scripts/test-report.ts` for JSON report generation - added
+- [x] Add optional `--coverage` flag support - added
+
+**PR #7 merged successfully.**
+
+### TASK-01 (PR #8) Revision Requirements
+- [ ] Fix Drizzle mysql2 insertId extraction (returns NaN)
+- [ ] Use `result[0].insertId` instead of `(result as any).insertId`
+- [ ] Affected: seedTestUser, seedTestNewsItem, seedTestEsrsDatapoint, seedTestGs1Attribute
+- [ ] Verify transaction rollback test after fix
+
+**See docs/KNOWN_FAILURE_MODES.md for detailed analysis.**

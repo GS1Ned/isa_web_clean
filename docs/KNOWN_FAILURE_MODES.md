@@ -176,3 +176,39 @@ pnpm test-unit
 # 3. Run integration tests (requires DB)
 RUN_DB_TESTS=true pnpm test-integration
 ```
+
+## Drizzle ORM mysql2 insertId Extraction
+
+**Date Discovered**: 2025-01-04  
+**Affected PR**: #8 (DB Test Helpers)  
+**Severity**: Critical (causes NaN in queries)
+
+### Problem
+When using Drizzle ORM with mysql2 driver, the pattern:
+```typescript
+const result = await db.insert(table).values(values);
+const insertId = Number((result as any).insertId);
+```
+Returns `NaN` because `result.insertId` is not directly accessible.
+
+### Root Cause
+Drizzle's mysql2 driver returns the insert result in a nested structure. The `insertId` is at `result[0].insertId`, not `result.insertId`.
+
+### Correct Patterns
+```typescript
+// Option 1: Access via array index
+const result = await db.insert(table).values(values);
+const insertId = Number(result[0].insertId);
+
+// Option 2: Use $returningId() (if supported)
+const [inserted] = await db.insert(table).values(values).$returningId();
+const insertId = inserted.id;
+```
+
+### Impact
+- Seed helpers fail with "Unknown column 'nan' in 'where clause'"
+- Transaction rollback tests fail due to cascading NaN issues
+- All insert-then-fetch patterns are affected
+
+### Resolution
+PR #8 requires revision to fix insertId extraction in all seed functions.
