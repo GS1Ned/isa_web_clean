@@ -274,7 +274,7 @@ export async function getAllSourcesHealth(): Promise<Map<string, Awaited<ReturnT
   const db = await getDb();
   if (!db) {
     const summary = new Map<string, Awaited<ReturnType<typeof getSourceHealth>>>();
-    for (const sourceId of healthCache.keys()) {
+    for (const sourceId of Array.from(healthCache.keys())) {
       summary.set(sourceId, await getSourceHealth(sourceId));
     }
     return summary;

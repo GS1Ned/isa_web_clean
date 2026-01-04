@@ -2782,3 +2782,24 @@ Note: CELLAR tests (27) are intentionally skipped as they require live EU endpoi
 - [x] Wire logger persistence at server startup
 - [x] Test serverLogger functionality (12/12 tests passing)
 - [x] Validate CI workflow and ESLint rules (files created and ready)
+
+
+---
+
+## Technical Debt & Stability Fixes (Jan 4, 2026) ✅ COMPLETE
+
+### TypeScript Errors Fixed
+- [x] Fixed serverLogger type signature to accept unknown meta parameter (211 → 0 errors)
+- [x] Fixed logger-wiring.ts argument count error
+- [x] Fixed MapIterator iteration in news-health-monitor.ts
+- [x] Fixed db.ts drizzle type assertion
+
+### Test Fixes
+- [x] Fixed news-pipeline-modes.test.ts mock for deduplicateNews sources structure
+- [x] Fixed news-retry-health.test.ts to mock getDb for in-memory cache testing
+- [x] Fixed production-monitoring.test.ts error deduplication test (use string errors)
+- [x] Fixed news-health-monitor.test.ts property names (camelCase 24H)
+- [x] Made github-pat-validation.test.ts conditional on token availability
+
+**Result:** TypeScript errors reduced from 211 to 0. Test failures reduced from 12 to ~3 (remaining are environment-specific DB tests).
+

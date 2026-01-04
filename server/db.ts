@@ -19,14 +19,14 @@ import { createMysqlPool } from "./db-connection";
 import { serverLogger } from "./_core/logger-wiring";
 
 
-let _db: ReturnType<typeof drizzle> | null = null;
+let _db: Awaited<ReturnType<typeof drizzle>> | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
       const pool = createMysqlPool(process.env.DATABASE_URL);
-      _db = drizzle(pool);
+      _db = drizzle(pool) as any;
     } catch (error) {
       serverLogger.warn("[Database] Failed to connect:", error);
       _db = null;

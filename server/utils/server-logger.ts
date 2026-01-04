@@ -43,8 +43,8 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
   const persist = opts?.persist ?? DEFAULT_PERSIST_FN;
   const environment = opts?.environment ?? process.env.NODE_ENV ?? "unknown";
 
-  async function error(err: unknown, meta?: Record<string, unknown>) {
-    const metaObj = meta ?? {};
+  async function error(err: unknown, meta?: unknown) {
+    const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     const traceId = (metaObj as any).traceId ?? crypto.randomUUID();
     const payload =
       err && typeof err === "object" && "message" in (err as any)
@@ -87,8 +87,8 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
     return traceId;
   }
 
-  async function warn(warnMsg: unknown, meta?: Record<string, unknown>) {
-    const metaObj = meta ?? {};
+  async function warn(warnMsg: unknown, meta?: unknown) {
+    const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     const traceId = (metaObj as any).traceId ?? crypto.randomUUID();
     try {
       console.warn(JSON.stringify({ level: "warn", traceId, message: String(warnMsg), meta: metaObj, ts: nowIso() }));
@@ -98,8 +98,8 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
     return traceId;
   }
 
-  function info(msg: unknown, meta?: Record<string, unknown>) {
-    const metaObj = meta ?? {};
+  function info(msg: unknown, meta?: unknown) {
+    const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     if (process.env.NODE_ENV !== "production") {
       console.log("[info]", msg, metaObj);
     } else {

@@ -75,7 +75,11 @@ vi.mock("./db", () => ({
 }));
 
 vi.mock("./news-deduplicator", () => ({
-  deduplicateNews: vi.fn((items) => items),
+  deduplicateNews: vi.fn((items) => items.map((item: any) => ({
+    ...item,
+    sources: [{ name: item.source, type: item.sourceType, url: item.url }],
+    primarySource: item.source,
+  }))),
   logDeduplicationStats: vi.fn(),
 }));
 

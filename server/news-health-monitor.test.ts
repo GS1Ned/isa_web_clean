@@ -72,8 +72,8 @@ describeDb("News Health Monitor - Database Persistence", () => {
 
     expect(summaries).toHaveLength(1);
     expect(summaries[0].sourceName).toBe("Test Source 2");
-    expect(summaries[0].successRate24h).toBe(100);
-    expect(summaries[0].totalExecutions24h).toBe(1);
+    expect(summaries[0].successRate24H).toBe(100);
+    expect(summaries[0].totalExecutions24H).toBe(1);
     expect(summaries[0].consecutiveFailures).toBe(0);
   });
 
@@ -110,9 +110,9 @@ describeDb("News Health Monitor - Database Persistence", () => {
       .where(eq(scraperHealthSummary.sourceId, "test-source-3"));
 
     expect(summaries).toHaveLength(1);
-    expect(summaries[0].totalExecutions24h).toBe(2);
-    expect(summaries[0].failedExecutions24h).toBe(1);
-    expect(summaries[0].successRate24h).toBe(50);
+    expect(summaries[0].totalExecutions24H).toBe(2);
+    expect(summaries[0].failedExecutions24H).toBe(1);
+    expect(summaries[0].successRate24H).toBe(50);
     expect(summaries[0].consecutiveFailures).toBe(1);
     expect(summaries[0].lastErrorMessage).toBe("Network timeout");
   });

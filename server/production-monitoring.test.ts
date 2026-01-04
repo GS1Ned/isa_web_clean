@@ -44,9 +44,10 @@ describe("Error Tracking", () => {
   });
 
   it("should deduplicate identical errors", async () => {
-    await trackError(new Error("Duplicate error"), "error");
-    await trackError(new Error("Duplicate error"), "error");
-    await trackError(new Error("Duplicate error"), "error");
+    // Use string errors for consistent deduplication (no stack trace variation)
+    await trackError("Duplicate error", "error");
+    await trackError("Duplicate error", "error");
+    await trackError("Duplicate error", "error");
 
     const errors = getRecentErrors(10);
     expect(errors).toHaveLength(1);

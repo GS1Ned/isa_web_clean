@@ -50,7 +50,7 @@ async function createPersistFn() {
       ];
       await (db as any).execute(insertSql, params);
     } catch (err) {
-      serverLogger.error("[serverLogger.persist] failed to insert row", String(err), row.trace_id);
+      serverLogger.error("[serverLogger.persist] failed to insert row", { error: String(err), traceId: row.trace_id });
     }
   };
 }

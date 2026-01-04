@@ -11,6 +11,11 @@ import {
   type ScraperHealthMetrics,
 } from "./news-health-monitor";
 
+// Mock database to force using in-memory cache
+vi.mock("./db", () => ({
+  getDb: vi.fn().mockResolvedValue(null),
+}));
+
 describe("Retry Logic", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -92,9 +97,11 @@ describe("Retry Logic", () => {
 });
 
 describe("Health Monitoring", () => {
-  beforeEach(() => {
-    // Clear health history by creating new executions
+  beforeEach(async () => {
+    // Clear health history by resetting mocks
     vi.clearAllMocks();
+    // Re-import to reset the module state (clear healthCache)
+    vi.resetModules();
   });
 
   it("should record successful scraper execution", async () => {

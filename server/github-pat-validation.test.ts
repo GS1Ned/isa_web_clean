@@ -1,7 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { ENV } from './_core/env';
 
-describe('GitHub PAT Validation', () => {
+const hasGithubPat = Boolean(ENV.githubPat && ENV.githubPat.length > 10);
+const describeGithub = hasGithubPat ? describe : describe.skip;
+
+describeGithub('GitHub PAT Validation', () => {
   it('should validate GitHub PAT has correct permissions', async () => {
     const token = ENV.githubPat;
     console.log('Token length:', token?.length);
