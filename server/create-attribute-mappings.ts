@@ -15,6 +15,8 @@ import {
   attributeRegulationMappings,
 } from "../drizzle/schema";
 import { eq, like, or } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 interface MappingRule {
   regulationType: string;
@@ -229,7 +231,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(0);
     })
     .catch(error => {
-      console.error("[Attribute Mapper] Failed:", error);
+      serverLogger.error("[Attribute Mapper] Failed:", error);
       process.exit(1);
     });
 }

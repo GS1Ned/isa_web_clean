@@ -7,6 +7,8 @@
 import { chromium, type Browser, type Page } from "playwright";
 import type { RawNewsItem } from "../news-fetcher";
 import { NEWS_SOURCES } from "../news-sources";
+import { serverLogger } from "../_core/logger-wiring";
+
 
 interface GS1EUArticle {
   title: string;
@@ -181,7 +183,7 @@ export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
 
     return newsItems;
   } catch (error) {
-    console.error("[GS1 EU Scraper] Error:", error);
+    serverLogger.error("[GS1 EU Scraper] Error:", error);
     return [];
   } finally {
     if (browser) {
@@ -251,7 +253,7 @@ export async function scrapeGS1EUArticleDetail(
 
     return content;
   } catch (error) {
-    console.error(`[GS1 EU Scraper] Error fetching article ${url}:`, error);
+    serverLogger.error(`[GS1 EU Scraper] Error fetching article ${url}:`, error);
     return null;
   } finally {
     if (browser) {

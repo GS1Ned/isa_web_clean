@@ -20,6 +20,8 @@ import { scrapeGS1EuropeNews } from "./news/news-scraper-gs1eu";
 import { fetchEURLexNews } from "./news/news-scraper-eurlex";
 import { retryWithBackoff } from "./news-retry-util";
 import { recordScraperExecution, printHealthSummary } from "./news-health-monitor";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 export interface RawNewsItem {
   title: string;
@@ -117,7 +119,7 @@ export async function fetchFromSource(
         items: relevantItems,
       };
     } catch (error) {
-      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      serverLogger.error(`[news-fetcher] Error scraping ${source.name}:`, error);
       return {
         success: false,
         sourceId: source.id,
@@ -145,7 +147,7 @@ export async function fetchFromSource(
         items: articles,
       };
     } catch (error) {
-      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      serverLogger.error(`[news-fetcher] Error scraping ${source.name}:`, error);
       return {
         success: false,
         sourceId: source.id,
@@ -173,7 +175,7 @@ export async function fetchFromSource(
         items: articles,
       };
     } catch (error) {
-      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      serverLogger.error(`[news-fetcher] Error scraping ${source.name}:`, error);
       return {
         success: false,
         sourceId: source.id,
@@ -201,7 +203,7 @@ export async function fetchFromSource(
         items: articles,
       };
     } catch (error) {
-      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      serverLogger.error(`[news-fetcher] Error scraping ${source.name}:`, error);
       return {
         success: false,
         sourceId: source.id,
@@ -229,7 +231,7 @@ export async function fetchFromSource(
         items: articles,
       };
     } catch (error) {
-      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      serverLogger.error(`[news-fetcher] Error scraping ${source.name}:`, error);
       return {
         success: false,
         sourceId: source.id,
@@ -291,7 +293,7 @@ export async function fetchFromSource(
         items: relevantItems,
       };
     } catch (error) {
-      console.error(`[news-fetcher] Error scraping ${source.name}:`, error);
+      serverLogger.error(`[news-fetcher] Error scraping ${source.name}:`, error);
       return {
         success: false,
         sourceId: source.id,
@@ -341,7 +343,7 @@ export async function fetchFromSource(
       items: relevantItems,
     };
   } catch (error) {
-    console.error(`[news-fetcher] Error fetching from ${source.name}:`, error);
+    serverLogger.error(`[news-fetcher] Error fetching from ${source.name}:`, error);
     return {
       success: false,
       sourceId: source.id,

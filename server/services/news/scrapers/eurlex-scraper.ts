@@ -6,6 +6,8 @@
  */
 
 import Parser from "rss-parser";
+import { serverLogger } from "../../../_core/logger-wiring";
+
 
 export interface EURLexArticle {
   title: string;
@@ -91,7 +93,7 @@ export async function scrapeEURLexNews(): Promise<EURLexArticle[]> {
     );
     return articles;
   } catch (error) {
-    console.error("[EUR-Lex Scraper] Error:", error);
+    serverLogger.error(error, { context: "[EUR-Lex Scraper] Error:" });
     return [];
   }
 }

@@ -5,6 +5,8 @@
 
 import { runNewsPipeline, type PipelineOptions } from "./news-pipeline";
 import { archiveOldNews } from "./news-archival";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Daily news ingestion job
@@ -27,12 +29,12 @@ export async function dailyNewsIngestion() {
 
     // Log errors if any
     if (result.errors.length > 0) {
-      console.error("[news-cron] Errors during ingestion:", result.errors);
+      serverLogger.error("[news-cron] Errors during ingestion:", result.errors);
     }
 
     return result;
   } catch (error) {
-    console.error("[news-cron] Daily ingestion failed:", error);
+    serverLogger.error("[news-cron] Daily ingestion failed:", error);
     throw error;
   }
 }
@@ -56,12 +58,12 @@ export async function weeklyNewsArchival() {
 
     // Log errors if any
     if (result.errors.length > 0) {
-      console.error("[news-cron] Errors during archival:", result.errors);
+      serverLogger.error("[news-cron] Errors during archival:", result.errors);
     }
 
     return result;
   } catch (error) {
-    console.error("[news-cron] Weekly archival failed:", error);
+    serverLogger.error("[news-cron] Weekly archival failed:", error);
     throw error;
   }
 }
@@ -92,7 +94,7 @@ export async function manualNewsIngestion(options?: PipelineOptions) {
 
     return result;
   } catch (error) {
-    console.error("[news-cron] Manual ingestion failed:", error);
+    serverLogger.error("[news-cron] Manual ingestion failed:", error);
     throw error;
   }
 }

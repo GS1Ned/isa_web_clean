@@ -6,6 +6,8 @@
 import fs from "fs";
 import path from "path";
 import { notifyOwner } from "./_core/notification";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 const LOG_DIR = path.join(process.cwd(), "logs", "cron");
 const MAX_LOG_FILES = 30; // Keep last 30 days of logs
@@ -49,7 +51,7 @@ export function logCronExecution(log: CronExecutionLog) {
     fs.appendFileSync(logFile, logEntry);
     console.log(`[cron-monitoring] Logged: ${log.jobName} - ${log.status}`);
   } catch (error) {
-    console.error("[cron-monitoring] Failed to write log:", error);
+    serverLogger.error("[cron-monitoring] Failed to write log:", error);
   }
 }
 
@@ -85,10 +87,7 @@ export function getExecutionHistory(
         }
       }
     } catch (error) {
-      console.error(
-        `[cron-monitoring] Failed to read log file ${logFile}:`,
-        error
-      );
+      serverLogger.error(`[cron-monitoring] Failed to read log file ${logFile}:`, error);
     }
   }
 
@@ -142,7 +141,7 @@ export async function checkAndAlertOnFailures(
   const allFailed = recentExecutions.every(log => log.status === "failure");
 
   if (allFailed) {
-    console.error(
+    serverLogger.error(
       `[cron-monitoring] ⚠️  ${jobName} has failed ${threshold} times consecutively!`
     );
 
@@ -184,7 +183,7 @@ ${recentExecutions.map((log, i) => `${i + 1}. ${log.timestamp} - ${log.status} (
       });
       console.log(`[cron-monitoring] Alert sent to owner`);
     } catch (error) {
-      console.error("[cron-monitoring] Failed to send alert:", error);
+      serverLogger.error("[cron-monitoring] Failed to send alert:", error);
     }
   }
 }
@@ -217,7 +216,7 @@ export function cleanupOldLogs() {
       );
     }
   } catch (error) {
-    console.error("[cron-monitoring] Failed to cleanup logs:", error);
+    serverLogger.error("[cron-monitoring] Failed to cleanup logs:", error);
   }
 }
 

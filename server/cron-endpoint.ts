@@ -6,6 +6,8 @@
 import type { Request, Response } from "express";
 import { dailyNewsIngestion, weeklyNewsArchival } from "./news-cron-scheduler";
 import { monitoredCronJob } from "./cron-monitoring-simple";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 const CRON_SECRET = process.env.CRON_SECRET || "change-me-in-production";
 
@@ -57,7 +59,7 @@ export async function handleDailyNewsIngestion(req: Request, res: Response) {
       },
     });
   } catch (error) {
-    console.error("[cron-endpoint] Daily news ingestion failed:", error);
+    serverLogger.error("[cron-endpoint] Daily news ingestion failed:", error);
 
     res.status(500).json({
       success: false,
@@ -101,7 +103,7 @@ export async function handleWeeklyNewsArchival(req: Request, res: Response) {
       },
     });
   } catch (error) {
-    console.error("[cron-endpoint] Weekly news archival failed:", error);
+    serverLogger.error("[cron-endpoint] Weekly news archival failed:", error);
 
     res.status(500).json({
       success: false,

@@ -16,6 +16,8 @@ import {
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 import { createMysqlPool } from "./db-connection";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -26,7 +28,7 @@ export async function getDb() {
       const pool = createMysqlPool(process.env.DATABASE_URL);
       _db = drizzle(pool);
     } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
+      serverLogger.warn("[Database] Failed to connect:", error);
       _db = null;
     }
   }
@@ -40,7 +42,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
 
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot upsert user: database not available");
+    serverLogger.warn("[Database] Cannot upsert user: database not available");
     return;
   }
 
@@ -87,7 +89,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       set: updateSet,
     });
   } catch (error) {
-    console.error("[Database] Failed to upsert user:", error);
+    serverLogger.error("[Database] Failed to upsert user:", error);
     throw error;
   }
 }
@@ -95,7 +97,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
 export async function getUserByOpenId(openId: string) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot get user: database not available");
+    serverLogger.warn("[Database] Cannot get user: database not available");
     return undefined;
   }
 
@@ -131,7 +133,7 @@ export async function getRegulations(type?: string) {
       .from(regulations)
       .orderBy(desc(regulations.createdAt));
   } catch (error) {
-    console.error("[Database] Failed to get regulations:", error);
+    serverLogger.error("[Database] Failed to get regulations:", error);
     return [];
   }
 }
@@ -191,7 +193,7 @@ export async function upsertRegulation(regulation: {
       return { id: Number(insertId), inserted: true, updated: false };
     }
   } catch (error) {
-    console.error("[Database] Failed to upsert regulation:", error);
+    serverLogger.error("[Database] Failed to upsert regulation:", error);
     throw error;
   }
 }
@@ -239,7 +241,7 @@ export async function getRegulationWithStandards(regulationId: number) {
 
     return result;
   } catch (error) {
-    console.error("[Database] Failed to get regulation with standards:", error);
+    serverLogger.error("[Database] Failed to get regulation with standards:", error);
     return null;
   }
 }
@@ -257,7 +259,7 @@ export async function getGS1Standards() {
       .from(gs1Standards)
       .orderBy(gs1Standards.standardCode);
   } catch (error) {
-    console.error("[Database] Failed to get GS1 standards:", error);
+    serverLogger.error("[Database] Failed to get GS1 standards:", error);
     return [];
   }
 }
@@ -276,7 +278,7 @@ export async function getRecentRegulatoryChanges(limit: number = 10) {
       .orderBy(desc(regulatoryChangeAlerts.detectedAt))
       .limit(limit);
   } catch (error) {
-    console.error("[Database] Failed to get regulatory changes:", error);
+    serverLogger.error("[Database] Failed to get regulatory changes:", error);
     return [];
   }
 }
@@ -299,7 +301,7 @@ export async function getUserAnalysisHistory(
       .orderBy(desc(userAnalyses.createdAt))
       .limit(limit);
   } catch (error) {
-    console.error("[Database] Failed to get user analysis history:", error);
+    serverLogger.error("[Database] Failed to get user analysis history:", error);
     return [];
   }
 }
@@ -331,7 +333,7 @@ export async function createUserAnalysis(data: {
     });
     return result;
   } catch (error) {
-    console.error("[Database] Failed to create user analysis:", error);
+    serverLogger.error("[Database] Failed to create user analysis:", error);
     return null;
   }
 }
@@ -367,7 +369,7 @@ export async function getUserPreferences(userId: number) {
       .limit(1);
     return result.length > 0 ? result[0] : null;
   } catch (error) {
-    console.error("[Database] Failed to get user preferences:", error);
+    serverLogger.error("[Database] Failed to get user preferences:", error);
     return null;
   }
 }
@@ -378,7 +380,7 @@ export async function getUserPreferences(userId: number) {
 export async function createContact(contact: InsertContact) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot create contact: database not available");
+    serverLogger.warn("[Database] Cannot create contact: database not available");
     return null;
   }
 
@@ -391,7 +393,7 @@ export async function createContact(contact: InsertContact) {
       .limit(1);
     return newContact.length > 0 ? newContact[0] : null;
   } catch (error) {
-    console.error("[Database] Failed to create contact:", error);
+    serverLogger.error("[Database] Failed to create contact:", error);
     throw error;
   }
 }
@@ -402,7 +404,7 @@ export async function createContact(contact: InsertContact) {
 export async function getContacts(limit: number = 50, offset: number = 0) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot get contacts: database not available");
+    serverLogger.warn("[Database] Cannot get contacts: database not available");
     return [];
   }
 
@@ -414,7 +416,7 @@ export async function getContacts(limit: number = 50, offset: number = 0) {
       .limit(limit)
       .offset(offset);
   } catch (error) {
-    console.error("[Database] Failed to get contacts:", error);
+    serverLogger.error("[Database] Failed to get contacts:", error);
     return [];
   }
 }
@@ -443,7 +445,7 @@ export async function getDashboardStats() {
       recentChanges: recentChanges,
     };
   } catch (error) {
-    console.error("[Database] Failed to get dashboard stats:", error);
+    serverLogger.error("[Database] Failed to get dashboard stats:", error);
     return null;
   }
 }
@@ -488,7 +490,7 @@ export async function createHubNews(news: {
 }) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot create hub news: database not available");
+    serverLogger.warn("[Database] Cannot create hub news: database not available");
     return null;
   }
 
@@ -522,7 +524,7 @@ export async function createHubNews(news: {
     const insertId = (result as any).insertId;
     return { id: Number(insertId) };
   } catch (error) {
-    console.error("[Database] Failed to create hub news:", error);
+    serverLogger.error("[Database] Failed to create hub news:", error);
     return null;
   }
 }
@@ -533,7 +535,7 @@ export async function createHubNews(news: {
 export async function getRecentHubNews(limit: number = 20) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot get hub news: database not available");
+    serverLogger.warn("[Database] Cannot get hub news: database not available");
     return [];
   }
 
@@ -544,7 +546,7 @@ export async function getRecentHubNews(limit: number = 20) {
       .orderBy(desc(hubNews.publishedDate))
       .limit(limit);
   } catch (error) {
-    console.error("[Database] Failed to get hub news:", error);
+    serverLogger.error("[Database] Failed to get hub news:", error);
     return [];
   }
 }
@@ -565,7 +567,7 @@ export async function createUserAlert(alert: {
 }) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot create user alert: database not available");
+    serverLogger.warn("[Database] Cannot create user alert: database not available");
     return null;
   }
 
@@ -579,7 +581,7 @@ export async function createUserAlert(alert: {
     });
     return result;
   } catch (error) {
-    console.error("[Database] Failed to create user alert:", error);
+    serverLogger.error("[Database] Failed to create user alert:", error);
     return null;
   }
 }
@@ -590,7 +592,7 @@ export async function createUserAlert(alert: {
 export async function getUserAlerts(userId: number) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot get user alerts: database not available");
+    serverLogger.warn("[Database] Cannot get user alerts: database not available");
     return [];
   }
 
@@ -600,7 +602,7 @@ export async function getUserAlerts(userId: number) {
       .from(userAlerts)
       .where(eq(userAlerts.userId, userId));
   } catch (error) {
-    console.error("[Database] Failed to get user alerts:", error);
+    serverLogger.error("[Database] Failed to get user alerts:", error);
     return [];
   }
 }
@@ -611,9 +613,7 @@ export async function getUserAlerts(userId: number) {
 export async function getUsersWithActiveAlerts() {
   const db = await getDb();
   if (!db) {
-    console.warn(
-      "[Database] Cannot get users with alerts: database not available"
-    );
+    serverLogger.warn("[Database] Cannot get users with alerts: database not available");
     return [];
   }
 
@@ -623,7 +623,7 @@ export async function getUsersWithActiveAlerts() {
       .from(userAlerts)
       .where(eq(userAlerts.isActive, 1));
   } catch (error) {
-    console.error("[Database] Failed to get users with active alerts:", error);
+    serverLogger.error("[Database] Failed to get users with active alerts:", error);
     return [];
   }
 }
@@ -634,9 +634,7 @@ export async function getUsersWithActiveAlerts() {
 export async function getRegulationEsrsMappings(regulationId: number) {
   const db = await getDb();
   if (!db) {
-    console.warn(
-      "[Database] Cannot get regulation ESRS mappings: database not available"
-    );
+    serverLogger.warn("[Database] Cannot get regulation ESRS mappings: database not available");
     return [];
   }
 
@@ -673,7 +671,7 @@ export async function getRegulationEsrsMappings(regulationId: number) {
       .where(eq(regulationEsrsMappings.regulationId, regulationId))
       .orderBy(regulationEsrsMappings.relevanceScore);
   } catch (error) {
-    console.error("[Database] Failed to get regulation ESRS mappings:", error);
+    serverLogger.error("[Database] Failed to get regulation ESRS mappings:", error);
     return [];
   }
 }
@@ -689,9 +687,7 @@ export async function upsertRegulationEsrsMapping(mapping: {
 }) {
   const db = await getDb();
   if (!db) {
-    console.warn(
-      "[Database] Cannot upsert regulation ESRS mapping: database not available"
-    );
+    serverLogger.warn("[Database] Cannot upsert regulation ESRS mapping: database not available");
     return null;
   }
 
@@ -733,10 +729,7 @@ export async function upsertRegulationEsrsMapping(mapping: {
       return { id: Number((result as any).insertId), ...mapping };
     }
   } catch (error) {
-    console.error(
-      "[Database] Failed to upsert regulation ESRS mapping:",
-      error
-    );
+    serverLogger.error("[Database] Failed to upsert regulation ESRS mapping:", error);
     return null;
   }
 }
@@ -747,7 +740,7 @@ export async function upsertRegulationEsrsMapping(mapping: {
 export async function deleteRegulationEsrsMappings(regulationId: number) {
   const db = await getDb();
   if (!db) {
-    console.warn(
+    serverLogger.warn(
       "[Database] Cannot delete regulation ESRS mappings: database not available"
     );
     return false;
@@ -762,10 +755,7 @@ export async function deleteRegulationEsrsMappings(regulationId: number) {
       .where(eq(regulationEsrsMappings.regulationId, regulationId));
     return true;
   } catch (error) {
-    console.error(
-      "[Database] Failed to delete regulation ESRS mappings:",
-      error
-    );
+    serverLogger.error("[Database] Failed to delete regulation ESRS mappings:", error);
     return false;
   }
 }
@@ -780,9 +770,7 @@ export async function submitMappingFeedback(params: {
 }) {
   const db = await getDb();
   if (!db) {
-    console.warn(
-      "[Database] Cannot submit mapping feedback: database not available"
-    );
+    serverLogger.warn("[Database] Cannot submit mapping feedback: database not available");
     return null;
   }
 
@@ -819,7 +807,7 @@ export async function submitMappingFeedback(params: {
       return { id: Number((result as any).insertId), userId: params.userId, mappingId: params.mappingId, vote: params.vote ? 1 : 0 };
     }
   } catch (error) {
-    console.error("[Database] Failed to submit mapping feedback:", error);
+    serverLogger.error("[Database] Failed to submit mapping feedback:", error);
     return null;
   }
 }
@@ -851,7 +839,7 @@ export async function getUserMappingFeedback(
 
     return result.length > 0 ? result[0] : null;
   } catch (error) {
-    console.error("[Database] Failed to get user mapping feedback:", error);
+    serverLogger.error("[Database] Failed to get user mapping feedback:", error);
     return null;
   }
 }
@@ -885,7 +873,7 @@ export async function getMappingFeedbackStats(mappingId: number) {
 
     return { totalVotes, positiveVotes, positivePercentage };
   } catch (error) {
-    console.error("[Database] Failed to get mapping feedback stats:", error);
+    serverLogger.error("[Database] Failed to get mapping feedback stats:", error);
     return null;
   }
 }
@@ -931,10 +919,7 @@ export async function getBatchMappingFeedbackStats(mappingIds: number[]) {
 
     return statsMap;
   } catch (error) {
-    console.error(
-      "[Database] Failed to get batch mapping feedback stats:",
-      error
-    );
+    serverLogger.error("[Database] Failed to get batch mapping feedback stats:", error);
     return {};
   }
 }
@@ -996,7 +981,7 @@ export async function getLowScoredMappings(minVotes: number = 3) {
           : 0,
     }));
   } catch (error) {
-    console.error("[Database] Failed to get low-scored mappings:", error);
+    serverLogger.error("[Database] Failed to get low-scored mappings:", error);
     return [];
   }
 }
@@ -1044,10 +1029,7 @@ export async function getVoteDistributionByStandard() {
           : 0,
     }));
   } catch (error) {
-    console.error(
-      "[Database] Failed to get vote distribution by standard:",
-      error
-    );
+    serverLogger.error("[Database] Failed to get vote distribution by standard:", error);
     return [];
   }
 }
@@ -1106,7 +1088,7 @@ export async function getMostVotedMappings(limit: number = 10) {
           : 0,
     }));
   } catch (error) {
-    console.error("[Database] Failed to get most-voted mappings:", error);
+    serverLogger.error("[Database] Failed to get most-voted mappings:", error);
     return [];
   }
 }
@@ -1263,7 +1245,7 @@ export async function getDutchInitiatives(filters?: {
 
     return await query;
   } catch (error) {
-    console.error("[Database] Failed to get Dutch initiatives:", error);
+    serverLogger.error("[Database] Failed to get Dutch initiatives:", error);
     return [];
   }
 }
@@ -1329,10 +1311,7 @@ export async function getDutchInitiativeWithMappings(initiativeId: number) {
       standardMappings: stdMappings,
     };
   } catch (error) {
-    console.error(
-      "[Database] Failed to get Dutch initiative with mappings:",
-      error
-    );
+    serverLogger.error("[Database] Failed to get Dutch initiative with mappings:", error);
     return null;
   }
 }
@@ -1354,7 +1333,7 @@ export async function getDutchInitiativeSectors() {
 
     return result.map(r => r.sector);
   } catch (error) {
-    console.error("[Database] Failed to get Dutch initiative sectors:", error);
+    serverLogger.error("[Database] Failed to get Dutch initiative sectors:", error);
     return [];
   }
 }
@@ -1487,7 +1466,7 @@ export async function createQAConversation(userId?: number, title?: string) {
       updatedAt: new Date().toISOString(),
     };
   } catch (error) {
-    console.error("[Database] Failed to create conversation:", error);
+    serverLogger.error("[Database] Failed to create conversation:", error);
     return null;
   }
 }
@@ -1533,7 +1512,7 @@ export async function addQAMessage(data: {
       createdAt: new Date().toISOString(),
     };
   } catch (error) {
-    console.error("[Database] Failed to add message:", error);
+    serverLogger.error("[Database] Failed to add message:", error);
     return null;
   }
 }
@@ -1571,7 +1550,7 @@ export async function getQAConversation(conversationId: number) {
       messages,
     };
   } catch (error) {
-    console.error("[Database] Failed to get conversation:", error);
+    serverLogger.error("[Database] Failed to get conversation:", error);
     return null;
   }
 }
@@ -1596,7 +1575,7 @@ export async function getUserQAConversations(
       .orderBy(desc(qaConversations.updatedAt))
       .limit(limit);
   } catch (error) {
-    console.error("[Database] Failed to get conversations:", error);
+    serverLogger.error("[Database] Failed to get conversations:", error);
     return [];
   }
 }
@@ -1637,7 +1616,7 @@ export async function deleteQAConversation(
 
     return true;
   } catch (error) {
-    console.error("[Database] Failed to delete conversation:", error);
+    serverLogger.error("[Database] Failed to delete conversation:", error);
     return false;
   }
 }

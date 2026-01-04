@@ -6,6 +6,8 @@
 
 import { getDb } from "./db";
 import { eq } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Check if a knowledge chunk is deprecated
@@ -27,7 +29,7 @@ export async function isChunkDeprecated(chunkId: number): Promise<boolean> {
 
     return chunks[0].isDeprecated === 1;
   } catch (error) {
-    console.error("[Citation] Failed to check deprecation status:", error);
+    serverLogger.error("[Citation] Failed to check deprecation status:", error);
     return false;
   }
 }
@@ -63,7 +65,7 @@ export async function needsVerification(chunkId: number): Promise<boolean> {
 
     return daysSinceVerification > 90;
   } catch (error) {
-    console.error("[Citation] Failed to check verification status:", error);
+    serverLogger.error("[Citation] Failed to check verification status:", error);
     return false;
   }
 }
@@ -142,7 +144,7 @@ export async function validateCitations(
 
     return validatedSources;
   } catch (error) {
-    console.error("[Citation] Failed to validate citations:", error);
+    serverLogger.error("[Citation] Failed to validate citations:", error);
     return sources.map(s => ({ ...s, isDeprecated: false, needsVerification: false }));
   }
 }
@@ -171,7 +173,7 @@ export async function markChunkDeprecated(
 
     return true;
   } catch (error) {
-    console.error("[Citation] Failed to mark chunk as deprecated:", error);
+    serverLogger.error("[Citation] Failed to mark chunk as deprecated:", error);
     return false;
   }
 }
@@ -196,7 +198,7 @@ export async function updateVerificationDate(chunkId: number): Promise<boolean> 
 
     return true;
   } catch (error) {
-    console.error("[Citation] Failed to update verification date:", error);
+    serverLogger.error("[Citation] Failed to update verification date:", error);
     return false;
   }
 }

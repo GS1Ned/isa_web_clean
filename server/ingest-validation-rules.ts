@@ -15,6 +15,8 @@ import mysql from 'mysql2/promise';
 import * as schema from '../drizzle/schema';
 import { gs1ValidationRules, gs1LocalCodeLists } from '../drizzle/schema';
 import { createMysqlConnection } from './db-connection';
+import { serverLogger } from "./_core/logger-wiring";
+
 
 // Database connection - lazy initialization
 let connection: mysql.Connection | null = null;
@@ -248,7 +250,7 @@ async function ingestValidationRules() {
     console.log(`  Deleted/deprecated rules: ${deletedRules}`);
     
   } catch (error) {
-    console.error('❌ Ingestion failed:', error);
+    serverLogger.error('❌ Ingestion failed:', error);
     throw error;
   } finally {
     if (connection) await connection.end();
@@ -260,7 +262,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   ingestValidationRules()
     .then(() => process.exit(0))
     .catch((error) => {
-      console.error(error);
+      serverLogger.error(error);
       process.exit(1);
     });
 }

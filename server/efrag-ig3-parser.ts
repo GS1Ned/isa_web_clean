@@ -9,6 +9,8 @@ import XLSX from "xlsx";
 import { getDb } from "./db";
 import { esrsDatapoints } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 interface IG3Datapoint {
   datapointId: string;
@@ -146,7 +148,7 @@ export async function ingestIG3Datapoints(
 
       insertedCount++;
     } catch (error) {
-      console.error(`Error inserting datapoint ${dp.datapointId}:`, error);
+      serverLogger.error(`Error inserting datapoint ${dp.datapointId}:`, error);
     }
   }
 
@@ -167,7 +169,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(0);
     })
     .catch(error => {
-      console.error("❌ Error:", error);
+      serverLogger.error("❌ Error:", error);
       process.exit(1);
     });
 }

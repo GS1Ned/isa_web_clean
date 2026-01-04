@@ -1,6 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
 import { getDb } from "../db";
+import { serverLogger } from "../_core/logger-wiring";
+
 import {
   dppIdentifierComponents,
   rawDppIdentifierComponents,
@@ -150,7 +152,7 @@ export async function ingestDppComponents(
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
     if (verbose) {
-      console.error("DPP components ingestion failed:", errorMessage);
+      serverLogger.error("DPP components ingestion failed:", errorMessage);
     }
   }
 
@@ -248,7 +250,7 @@ export async function ingestDppRules(
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
     if (verbose) {
-      console.error("DPP rules ingestion failed:", errorMessage);
+      serverLogger.error("DPP rules ingestion failed:", errorMessage);
     }
   }
 

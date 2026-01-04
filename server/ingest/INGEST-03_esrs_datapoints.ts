@@ -4,6 +4,8 @@ import XLSX from "xlsx";
 import { eq } from "drizzle-orm";
 import { getDb } from "../db";
 import { esrsDatapoints, rawEsrsDatapoints } from "../../drizzle/schema";
+import { serverLogger } from "../_core/logger-wiring";
+
 
 export interface IngestOptions {
   dryRun?: boolean;
@@ -125,7 +127,7 @@ function parseWorkbook(
     const worksheet = workbook.Sheets[sheetName];
     if (!worksheet) {
       if (verbose) {
-        console.warn(`Sheet ${sheetName} missing in workbook, skipping`);
+        serverLogger.warn(`Sheet ${sheetName} missing in workbook, skipping`);
       }
       continue;
     }
@@ -234,7 +236,7 @@ export async function ingestEsrsDatapoints(
     const parsedRows = parseWorkbook(workbook, verbose);
     if (parsedRows.length === 0) {
       if (verbose) {
-        console.warn("No ESRS datapoints found in workbook");
+        serverLogger.warn("No ESRS datapoints found in workbook");
       }
     }
     for (const row of parsedRows) {
@@ -363,7 +365,7 @@ export async function ingestEsrsDatapoints(
     const message =
       error instanceof Error ? error.message : String(error);
     result.errors = [message];
-    console.error("ESRS ingestion failed", error);
+    serverLogger.error("ESRS ingestion failed", error);
   }
   return result;
 }

@@ -10,6 +10,8 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { getDb } from './db.js';
 import { sql } from 'drizzle-orm';
+import { serverLogger } from "./_core/logger-wiring";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -90,7 +92,7 @@ async function loadGS1AttributeMappings() {
         console.log(`⊘ Skipped duplicate: ${mapping.gs1_attribute_name} → ESRS mapping ${mapping.esrs_mapping_id}`);
         skipped++;
       } else {
-        console.error(`✗ Failed to load ${mapping.gs1_attribute_name}:`, error.message);
+        serverLogger.error(`✗ Failed to load ${mapping.gs1_attribute_name}:`, error.message);
         skipped++;
       }
     }
@@ -125,6 +127,6 @@ async function loadGS1AttributeMappings() {
 }
 
 loadGS1AttributeMappings().catch((error) => {
-  console.error('Fatal error:', error);
+  serverLogger.error('Fatal error:', error);
   process.exit(1);
 });

@@ -20,6 +20,8 @@ import {
 import { getAllSourceHealth, resetSourceHealth } from "./news/news-fetch-utils";
 import { NEWS_SOURCES } from "./news-sources";
 import { z } from "zod";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 // In-memory status tracking for async pipeline execution
 interface PipelineStatus {
@@ -109,7 +111,7 @@ export const newsAdminRouter = router({
           completedAt: new Date().toISOString(),
           error: error instanceof Error ? error.message : "Unknown error",
         };
-        console.error("[news-admin] Pipeline failed:", error);
+        serverLogger.error("[news-admin] Pipeline failed:", error);
       }
     })();
 

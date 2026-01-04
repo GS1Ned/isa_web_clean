@@ -1,5 +1,7 @@
 import { getDb } from "./db.js";
 import { epcisEvents } from "../drizzle/schema.js";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * EPCIS Sample Events Seeder
@@ -361,7 +363,7 @@ export async function seedEPCISEvents(userId: number) {
       console.log(`✓ Inserted ${eventData.eventType} at ${eventData.bizStep}`);
     } catch (error) {
       errors++;
-      console.error(`✗ Failed to insert ${eventData.eventType}:`, error);
+      serverLogger.error(`✗ Failed to insert ${eventData.eventType}:`, error);
     }
   }
 

@@ -13,6 +13,8 @@
 import XLSX from "xlsx";
 import { getDb } from "./db";
 import { gs1Attributes, gs1AttributeCodeLists } from "../drizzle/schema";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 interface ParsedDIYAttribute {
   fieldId: string;
@@ -327,7 +329,7 @@ export async function ingestDIYAttributes(
         console.log(`[DIY Parser] Ingested ${success} attributes...`);
       }
     } catch (error) {
-      console.error(
+      serverLogger.error(
         `[DIY Parser] Failed to ingest attribute ${attr.attributeNameEnglish}:`,
         error
       );
@@ -450,7 +452,7 @@ export async function ingestDIYModel(filePath: string): Promise<void> {
     console.log(`  - Picklists ingested: ${picklistResult.success}`);
     console.log(`  - Picklist errors: ${picklistResult.errors}`);
   } catch (error) {
-    console.error(`[DIY Parser] Ingestion failed:`, error);
+    serverLogger.error(`[DIY Parser] Ingestion failed:`, error);
     throw error;
   }
 }
@@ -467,7 +469,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(0);
     })
     .catch(error => {
-      console.error("[DIY Parser] Ingestion failed:", error);
+      serverLogger.error("[DIY Parser] Ingestion failed:", error);
       process.exit(1);
     });
 }

@@ -10,6 +10,8 @@
 
 import type { RawNewsItem } from '../news-fetcher';
 import { NEWS_SOURCES } from '../news-sources';
+import { serverLogger } from "../_core/logger-wiring";
+
 
 // Dynamic import for Playwright to handle deployment without browser
 async function getPlaywright() {
@@ -142,7 +144,7 @@ export async function scrapeEURLexOfficialJournal(): Promise<EURLexArticle[]> {
     return unique;
     
   } catch (error) {
-    console.error('[EUR-Lex Scraper] Error:', error);
+    serverLogger.error('[EUR-Lex Scraper] Error:', error);
     return [];
   } finally {
     if (browser) {

@@ -1,3 +1,5 @@
+import { serverLogger } from "./_core/logger-wiring";
+
 /**
  * Production Web Scraper using Playwright
  * Handles JavaScript-rendered content from GS1.nl sustainability feed
@@ -20,10 +22,8 @@ async function getPlaywright() {
     const playwright = await import("playwright");
     return playwright;
   } catch (error) {
-    console.warn(
-      "[Playwright Scraper] Playwright not available - scraping disabled"
-    );
-    console.warn(
+    serverLogger.warn("[Playwright Scraper] Playwright not available - scraping disabled");
+    serverLogger.warn(
       "[Playwright Scraper] Install with: pnpm add -D playwright && npx playwright install chromium"
     );
     return null;
@@ -221,7 +221,7 @@ export async function scrapeGS1NetherlandsNewsPlaywright(): Promise<
     );
     return processed.slice(0, 20); // Return top 20 most recent
   } catch (error) {
-    console.error("[Playwright Scraper] Error:", error);
+    serverLogger.error("[Playwright Scraper] Error:", error);
     if (browser) {
       await browser.close();
     }
@@ -274,10 +274,7 @@ export async function scrapeArticleDetailPlaywright(
     await browser.close();
     return content || null;
   } catch (error) {
-    console.error(
-      `[Playwright Scraper] Error fetching detail for ${url}:`,
-      error
-    );
+    serverLogger.error(`[Playwright Scraper] Error fetching detail for ${url}:`, error);
     if (browser) {
       await browser.close();
     }

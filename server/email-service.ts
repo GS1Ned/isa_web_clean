@@ -1,3 +1,5 @@
+import { serverLogger } from "./_core/logger-wiring";
+
 /**
  * Email Service Integration
  * Supports SendGrid, SMTP, and built-in notification system
@@ -34,7 +36,7 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
     // Fall back to built-in notifications
     return await sendViaNotifications(options);
   } catch (error) {
-    console.error("[Email Service] Failed to send email:", error);
+    serverLogger.error("[Email Service] Failed to send email:", error);
     return false;
   }
 }
@@ -83,14 +85,14 @@ async function sendViaSendGrid(options: EmailOptions): Promise<boolean> {
 
     if (!response.ok) {
       const error = await response.json();
-      console.error("[SendGrid] Error:", error);
+      serverLogger.error("[SendGrid] Error:", error);
       return false;
     }
 
     console.log("[SendGrid] Email sent successfully to", recipients);
     return true;
   } catch (error) {
-    console.error("[SendGrid] Failed to send email:", error);
+    serverLogger.error("[SendGrid] Failed to send email:", error);
     return false;
   }
 }
@@ -129,7 +131,7 @@ async function sendViaSMTP(options: EmailOptions): Promise<boolean> {
     console.log("[SMTP] Email sent successfully:", info.messageId);
     return true;
   } catch (error) {
-    console.error("[SMTP] Failed to send email:", error);
+    serverLogger.error("[SMTP] Failed to send email:", error);
     return false;
   }
 }
@@ -153,7 +155,7 @@ async function sendViaNotifications(options: EmailOptions): Promise<boolean> {
     console.log("[Notifications] Email sent via built-in system");
     return true;
   } catch (error) {
-    console.error("[Notifications] Failed to send email:", error);
+    serverLogger.error("[Notifications] Failed to send email:", error);
     return false;
   }
 }

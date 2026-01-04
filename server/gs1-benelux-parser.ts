@@ -15,6 +15,8 @@
 import XLSX from "xlsx";
 import { getDb } from "./db";
 import { gs1Attributes, gs1AttributeCodeLists } from "../drizzle/schema";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 interface ParsedAttribute {
   localName: string;
@@ -323,7 +325,7 @@ export async function ingestAttributes(
         console.log(`[GS1 Benelux Parser] Ingested ${success} attributes...`);
       }
     } catch (error) {
-      console.error(
+      serverLogger.error(
         `[GS1 Benelux Parser] Failed to ingest attribute ${attr.localName}:`,
         error
       );
@@ -384,7 +386,7 @@ export async function ingestGS1BeneluxModel(
     console.log(`  - Code lists ingested: ${codeListResult.success}`);
     console.log(`  - Code list errors: ${codeListResult.errors}`);
   } catch (error) {
-    console.error(`[GS1 Benelux Parser] Ingestion failed:`, error);
+    serverLogger.error(`[GS1 Benelux Parser] Ingestion failed:`, error);
     throw error;
   }
 }
@@ -402,7 +404,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(0);
     })
     .catch(error => {
-      console.error("[GS1 Benelux Parser] Ingestion failed:", error);
+      serverLogger.error("[GS1 Benelux Parser] Ingestion failed:", error);
       process.exit(1);
     });
 }

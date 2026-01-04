@@ -8,6 +8,8 @@ import { notifyOwner } from "./_core/notification";
 import { getDb } from "./db";
 import { scraperExecutions, scraperHealthSummary } from "../drizzle/schema";
 import { eq, desc, and, gte, sql } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 export interface ScraperHealthMetrics {
   sourceId: string;
@@ -59,7 +61,7 @@ export async function recordScraperExecution(metrics: ScraperHealthMetrics): Pro
   try {
     const db = await getDb();
     if (!db) {
-      console.warn("[scraper-health] Database not available, skipping persistence");
+      serverLogger.warn("[scraper-health] Database not available, skipping persistence");
       return;
     }
 
@@ -83,7 +85,7 @@ export async function recordScraperExecution(metrics: ScraperHealthMetrics): Pro
     // Check for persistent failures and alert
     await checkHealthAndAlert(sourceId, sourceName);
   } catch (dbError) {
-    console.error(`[scraper-health] Failed to persist execution to database:`, dbError);
+    serverLogger.error(`[scraper-health] Failed to persist execution to database:`, dbError);
     // Continue execution even if database write fails
   }
 }
@@ -321,7 +323,7 @@ async function checkHealthAndAlert(sourceId: string, sourceName: string): Promis
     
     const lastError = summary[0]?.lastErrorMessage || "Unknown error";
     
-    console.error(
+    serverLogger.error(
       `[scraper-health] 🚨 ALERT: ${sourceName} has ${health.consecutiveFailures} consecutive failures!`
     );
     
@@ -343,10 +345,7 @@ async function checkHealthAndAlert(sourceId: string, sourceName: string): Promis
         })
         .where(eq(scraperHealthSummary.sourceId, sourceId));
     } catch (notifyError) {
-      console.error(
-        `[scraper-health] Failed to send alert notification:`,
-        notifyError
-      );
+      serverLogger.error(`[scraper-health] Failed to send alert notification:`, notifyError);
     }
   }
 }

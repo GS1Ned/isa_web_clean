@@ -16,6 +16,8 @@ import mysql from 'mysql2/promise';
 import * as schema from '../drizzle/schema';
 import { gs1Attributes, gs1AttributeCodeLists } from '../drizzle/schema';
 import { createMysqlConnection } from './db-connection';
+import { serverLogger } from "./_core/logger-wiring";
+
 
 // Database connection - lazy initialization
 let connection: mysql.Connection | null = null;
@@ -377,7 +379,7 @@ async function ingestGS1NLComplete() {
     console.log(`  Sustainability-related: ${sustainabilityCount}`);
     
   } catch (error) {
-    console.error('❌ Ingestion failed:', error);
+    serverLogger.error('❌ Ingestion failed:', error);
     throw error;
   }
 }
@@ -387,7 +389,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   ingestGS1NLComplete()
     .then(() => process.exit(0))
     .catch((error) => {
-      console.error(error);
+      serverLogger.error(error);
       process.exit(1);
     });
 }

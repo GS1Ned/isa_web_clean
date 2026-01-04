@@ -7,6 +7,8 @@
 
 import jsPDF from "jspdf";
 import { autoTable } from "jspdf-autotable";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Branding configuration for white-label exports
@@ -98,7 +100,7 @@ export function exportRegulationToPDFBranded(
         branding.logoHeight || 15
       );
     } catch (error) {
-      console.warn("[Export] Failed to add logo:", error);
+      serverLogger.warn("[Export] Failed to add logo:", error);
     }
   }
 

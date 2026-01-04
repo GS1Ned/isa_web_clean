@@ -6,6 +6,8 @@
  */
 
 import Parser from "rss-parser";
+import { serverLogger } from "../../../_core/logger-wiring";
+
 
 export interface EFRAGArticle {
   title: string;
@@ -80,7 +82,7 @@ export async function scrapeEFRAGNews(): Promise<EFRAGArticle[]> {
     console.log(`[EFRAG Scraper] Filtered to ${articles.length} ESRS articles`);
     return articles;
   } catch (error) {
-    console.error("[EFRAG Scraper] Error:", error);
+    serverLogger.error(error, { context: "[EFRAG Scraper] Error:" });
     return [];
   }
 }

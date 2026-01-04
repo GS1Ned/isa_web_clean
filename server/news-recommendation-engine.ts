@@ -15,6 +15,8 @@ import {
   newsRecommendations,
 } from "../drizzle/schema";
 import { sql, or, like } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 export interface Recommendation {
   resourceType: "REGULATION" | "ESRS_DATAPOINT" | "GS1_STANDARD";
@@ -115,7 +117,7 @@ async function findMatchingRegulations(
       matchedKeywords: analysis.regulationMentions,
     }));
   } catch (error) {
-    console.error("[recommendation-engine] Regulation matching failed:", error);
+    serverLogger.error("[recommendation-engine] Regulation matching failed:", error);
     return [];
   }
 }
@@ -160,7 +162,7 @@ async function findMatchingStandards(
       matchedKeywords: analysis.standardMentions,
     }));
   } catch (error) {
-    console.error("[recommendation-engine] Standard matching failed:", error);
+    serverLogger.error("[recommendation-engine] Standard matching failed:", error);
     return [];
   }
 }
@@ -207,7 +209,7 @@ async function findMatchingDatapoints(
       matchedKeywords: ["CSRD", "ESRS"],
     }));
   } catch (error) {
-    console.error("[recommendation-engine] Datapoint matching failed:", error);
+    serverLogger.error("[recommendation-engine] Datapoint matching failed:", error);
     return [];
   }
 }
@@ -288,9 +290,6 @@ async function saveRecommendations(
       `[recommendation-engine] Saved ${recommendations.length} recommendations for news ${newsId}`
     );
   } catch (error) {
-    console.error(
-      "[recommendation-engine] Failed to save recommendations:",
-      error
-    );
+    serverLogger.error("[recommendation-engine] Failed to save recommendations:", error);
   }
 }

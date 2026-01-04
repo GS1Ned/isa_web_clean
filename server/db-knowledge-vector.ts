@@ -11,6 +11,8 @@ import { getDb } from "./db";
 import { sql } from "drizzle-orm";
 import { generateEmbedding, cosineSimilarity } from "./_core/embedding";
 import { regulations, gs1Standards } from "../drizzle/schema";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Search result with similarity score
@@ -129,7 +131,7 @@ export async function vectorSearchKnowledge(
 
     return sortedResults;
   } catch (error) {
-    console.error("[VectorSearch] Search failed:", error);
+    serverLogger.error("[VectorSearch] Search failed:", error);
     return [];
   }
 }
@@ -167,7 +169,7 @@ export async function getSearchResultContent(
       return `${std.standardName}\n\n${std.description || ""}\n\nStandard Code: ${std.standardCode}\nCategory: ${std.category}\nScope: ${std.scope}`;
     }
   } catch (error) {
-    console.error("[VectorSearch] Failed to get content:", error);
+    serverLogger.error("[VectorSearch] Failed to get content:", error);
     return null;
   }
 }

@@ -11,6 +11,8 @@
 import { drizzle } from "drizzle-orm/mysql2";
 import * as schema from "../drizzle/schema.ts";
 import { createMysqlConnection } from "./db-connection";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * GS1 Standards data extracted from https://www.gs1.org/standards/log
@@ -259,10 +261,7 @@ async function ingestGS1Standards() {
       if (error.code === "ER_DUP_ENTRY") {
         skipped++;
       } else {
-        console.error(
-          `[GS1 Ingestion] ❌ Error inserting ${standard.name}:`,
-          error.message
-        );
+        serverLogger.error(`[GS1 Ingestion] ❌ Error inserting ${standard.name}:`, error.message);
         skipped++;
       }
     }
@@ -278,6 +277,6 @@ async function ingestGS1Standards() {
 
 // Run ingestion
 ingestGS1Standards().catch(error => {
-  console.error("[GS1 Ingestion] ❌ Fatal error:", error);
+  serverLogger.error("[GS1 Ingestion] ❌ Fatal error:", error);
   process.exit(1);
 });

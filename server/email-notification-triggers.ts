@@ -2,6 +2,8 @@ import { notifyOwner } from "./_core/notification";
 import { getDb } from "./db";
 import { eq, and, lt } from "drizzle-orm";
 import { userAlerts, regulations, hubNews } from "../drizzle/schema";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 // Hardcoded recipient list
 const NOTIFICATION_RECIPIENTS = ["frisowempe@gmail.com", "friso.wempe@gs1.nl"];
@@ -13,7 +15,7 @@ const NOTIFICATION_RECIPIENTS = ["frisowempe@gmail.com", "friso.wempe@gs1.nl"];
 export async function sendDeadlineAlerts() {
   const db = await getDb();
   if (!db) {
-    console.warn("[Email Triggers] Database not available");
+    serverLogger.warn("[Email Triggers] Database not available");
     return;
   }
 
@@ -87,7 +89,7 @@ View Details: https://isa.example.com/hub/regulations/${reg.id}
       }
     }
   } catch (error) {
-    console.error("[Email Triggers] Error sending deadline alerts:", error);
+    serverLogger.error("[Email Triggers] Error sending deadline alerts:", error);
   }
 }
 
@@ -98,7 +100,7 @@ View Details: https://isa.example.com/hub/regulations/${reg.id}
 export async function sendDailyDigest() {
   const db = await getDb();
   if (!db) {
-    console.warn("[Email Triggers] Database not available");
+    serverLogger.warn("[Email Triggers] Database not available");
     return;
   }
 
@@ -140,7 +142,7 @@ export async function sendDailyDigest() {
       `[Email Triggers] Sent daily digest with ${recentNews.length} articles to ${NOTIFICATION_RECIPIENTS.length} recipients`
     );
   } catch (error) {
-    console.error("[Email Triggers] Error sending daily digest:", error);
+    serverLogger.error("[Email Triggers] Error sending daily digest:", error);
   }
 }
 
@@ -150,7 +152,7 @@ export async function sendDailyDigest() {
 export async function notifyNewRegulation(regulationId: number) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Email Triggers] Database not available");
+    serverLogger.warn("[Email Triggers] Database not available");
     return;
   }
 
@@ -162,7 +164,7 @@ export async function notifyNewRegulation(regulationId: number) {
       .limit(1);
 
     if (regulation.length === 0) {
-      console.warn("[Email Triggers] Regulation not found");
+      serverLogger.warn("[Email Triggers] Regulation not found");
       return;
     }
 
@@ -189,7 +191,7 @@ View Details: https://isa.example.com/hub/regulations/${reg.id}
       `[Email Triggers] Notified ${NOTIFICATION_RECIPIENTS.length} recipients about new regulation: ${reg.title}`
     );
   } catch (error) {
-    console.error("[Email Triggers] Error notifying new regulation:", error);
+    serverLogger.error("[Email Triggers] Error notifying new regulation:", error);
   }
 }
 
@@ -203,7 +205,7 @@ export async function notifyRegulationChange(
 ) {
   const db = await getDb();
   if (!db) {
-    console.warn("[Email Triggers] Database not available");
+    serverLogger.warn("[Email Triggers] Database not available");
     return;
   }
 
@@ -215,7 +217,7 @@ export async function notifyRegulationChange(
       .limit(1);
 
     if (regulation.length === 0) {
-      console.warn("[Email Triggers] Regulation not found");
+      serverLogger.warn("[Email Triggers] Regulation not found");
       return;
     }
 
@@ -242,6 +244,6 @@ View Details: https://isa.example.com/hub/regulations/${reg.id}
       `[Email Triggers] Notified ${NOTIFICATION_RECIPIENTS.length} recipients about ${changeType} for ${reg.title}`
     );
   } catch (error) {
-    console.error("[Email Triggers] Error notifying regulation change:", error);
+    serverLogger.error("[Email Triggers] Error notifying regulation change:", error);
   }
 }

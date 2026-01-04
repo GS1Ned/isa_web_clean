@@ -1,0 +1,25 @@
+name: Console Check (server)
+
+on:
+  pull_request:
+    paths:
+      - "server/**"
+      - "scripts/**"
+      - "!**/*.test.ts"
+
+jobs:
+  no-console-server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find console.error / console.warn in server code
+        run: |
+          set -e
+          MATCHES=$(git grep -n --line-number --heading --untracked -- "console\.error\|console\.warn" -- "server/*" "scripts/*" || true)
+          if [ -n "$MATCHES" ]; then
+            echo "❌ Found console.error/console.warn in server or scripts:"
+            echo "$MATCHES"
+            echo "Please replace with serverLogger.error/warn or justify in PR."
+            exit 1
+          fi
+          echo "✅ No console.error/console.warn found in server/"

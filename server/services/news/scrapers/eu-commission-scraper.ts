@@ -6,6 +6,8 @@
  */
 
 import Parser from "rss-parser";
+import { serverLogger } from "../../../_core/logger-wiring";
+
 
 export interface EUCommissionArticle {
   title: string;
@@ -125,7 +127,7 @@ export async function scrapeEUCommissionNews(): Promise<EUCommissionArticle[]> {
     );
     return allArticles;
   } catch (error) {
-    console.error("[EU Commission Scraper] Error:", error);
+    serverLogger.error(error, { context: "[EU Commission Scraper] Error:" });
     return [];
   }
 }

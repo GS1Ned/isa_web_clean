@@ -67,6 +67,8 @@ import { webhookConfigRouter, webhookConfigSchemas } from "./routers-webhook-con
 import { gapAnalyzerRouter } from "./routers/gap-analyzer.js";
 import { impactSimulatorRouter } from "./routers/impact-simulator.js";
 import { attributeRecommenderRouter } from "./routers/attribute-recommender.js";
+import { serverLogger } from "./_core/logger-wiring";
+
 import {
   getUserOnboardingProgress,
   resetUserOnboardingProgress,
@@ -346,7 +348,7 @@ export const appRouter = router({
 
           return { success: true };
         } catch (error) {
-          console.error("[tRPC] Save regulation failed:", error);
+          serverLogger.error("[tRPC] Save regulation failed:", error);
           return { success: false };
         }
       }),
@@ -370,7 +372,7 @@ export const appRouter = router({
 
           return { success: true };
         } catch (error) {
-          console.error("[tRPC] Unsave regulation failed:", error);
+          serverLogger.error("[tRPC] Unsave regulation failed:", error);
           return { success: false };
         }
       }),
@@ -393,7 +395,7 @@ export const appRouter = router({
 
           return { success: true };
         } catch (error) {
-          console.error("[tRPC] Set alert failed:", error);
+          serverLogger.error("[tRPC] Set alert failed:", error);
           return { success: false };
         }
       }),
@@ -417,7 +419,7 @@ export const appRouter = router({
 
           return { success: true };
         } catch (error) {
-          console.error("[tRPC] Remove alert failed:", error);
+          serverLogger.error("[tRPC] Remove alert failed:", error);
           return { success: false };
         }
       }),
@@ -440,7 +442,7 @@ export const appRouter = router({
 
         return saved;
       } catch (error) {
-        console.error("[tRPC] Get saved regulations failed:", error);
+        serverLogger.error("[tRPC] Get saved regulations failed:", error);
         return [];
       }
     }),
@@ -458,7 +460,7 @@ export const appRouter = router({
 
         return alerts;
       } catch (error) {
-        console.error("[tRPC] Get user alerts failed:", error);
+        serverLogger.error("[tRPC] Get user alerts failed:", error);
         return [];
       }
     }),
@@ -480,7 +482,7 @@ export const appRouter = router({
 
           return news;
         } catch (error) {
-          console.error("[tRPC] Get recent news failed:", error);
+          serverLogger.error("[tRPC] Get recent news failed:", error);
           return [];
         }
       }),
@@ -498,7 +500,7 @@ export const appRouter = router({
           );
           return recommendations;
         } catch (error) {
-          console.error("[tRPC] Get news recommendations failed:", error);
+          serverLogger.error("[tRPC] Get news recommendations failed:", error);
           return [];
         }
       }),
@@ -600,7 +602,7 @@ export const appRouter = router({
 
           return { success: !!contact, contactId: contact?.id };
         } catch (error) {
-          console.error("[tRPC] Contact submission failed:", error);
+          serverLogger.error("[tRPC] Contact submission failed:", error);
           return { success: false };
         }
       }),
@@ -653,7 +655,7 @@ export const appRouter = router({
             mimeType: "application/pdf",
           };
         } catch (error) {
-          console.error("[Export] PDF generation failed:", error);
+          serverLogger.error("[Export] PDF generation failed:", error);
           return { success: false, error: "Failed to generate PDF" };
         }
       }),
@@ -701,7 +703,7 @@ export const appRouter = router({
             mimeType: "text/csv",
           };
         } catch (error) {
-          console.error("[Export] CSV generation failed:", error);
+          serverLogger.error("[Export] CSV generation failed:", error);
           return { success: false, error: "Failed to generate CSV" };
         }
       }),
@@ -743,7 +745,7 @@ export const appRouter = router({
             mimeType: "text/csv",
           };
         } catch (error) {
-          console.error("[Export] CSV list generation failed:", error);
+          serverLogger.error("[Export] CSV list generation failed:", error);
           return { success: false, error: "Failed to generate CSV" };
         }
       }),

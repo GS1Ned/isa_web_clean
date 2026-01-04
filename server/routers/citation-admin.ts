@@ -13,6 +13,8 @@ import {
 } from "../citation-validation";
 import { getDb } from "../db";
 import { eq } from "drizzle-orm";
+import { serverLogger } from "../_core/logger-wiring";
+
 
 export const citationAdminRouter = router({
   /**
@@ -128,7 +130,7 @@ export const citationAdminRouter = router({
           message: `Updated provenance for all ${input.sourceType} chunks`,
         };
       } catch (error) {
-        console.error("[CitationAdmin] Bulk update failed:", error);
+        serverLogger.error("[CitationAdmin] Bulk update failed:", error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to bulk update provenance",
@@ -187,7 +189,7 @@ export const citationAdminRouter = router({
 
         return needsVerification;
       } catch (error) {
-        console.error("[CitationAdmin] Failed to get chunks:", error);
+        serverLogger.error("[CitationAdmin] Failed to get chunks:", error);
         return [];
       }
     }),

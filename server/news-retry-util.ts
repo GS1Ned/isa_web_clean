@@ -1,3 +1,5 @@
+import { serverLogger } from "./_core/logger-wiring";
+
 /**
  * Retry Utility for News Scrapers
  * Implements exponential backoff with jitter for transient error recovery
@@ -70,7 +72,7 @@ export async function retryWithBackoff<T>(
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
       
-      console.warn(
+      serverLogger.warn(
         `[retry] ${context}: Attempt ${attempt}/${opts.maxAttempts} failed:`,
         lastError.message
       );
@@ -87,7 +89,7 @@ export async function retryWithBackoff<T>(
   }
 
   // All attempts failed
-  console.error(
+  serverLogger.error(
     `[retry] ${context}: All ${opts.maxAttempts} attempts failed. Last error:`,
     lastError
   );
@@ -117,7 +119,7 @@ export async function retryWithResult<T>(
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
       
-      console.warn(
+      serverLogger.warn(
         `[retry] ${context}: Attempt ${attempt}/${opts.maxAttempts} failed:`,
         lastError.message
       );

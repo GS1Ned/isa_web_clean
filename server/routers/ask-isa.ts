@@ -36,6 +36,8 @@ import {
   calculateConfidence,
 } from "../ask-isa-guardrails";
 import { validateCitations } from "../citation-validation";
+import { serverLogger } from "../_core/logger-wiring";
+
 import {
   assembleAskISAPrompt,
   validateAskISAResponse,
@@ -176,10 +178,10 @@ export const askISARouter = router({
         );
 
         if (!verification.passed) {
-          console.warn('[AskISA] Verification failed:', verification.issues);
+          serverLogger.warn('[AskISA] Verification failed:', verification.issues);
         }
         if (verification.warnings.length > 0) {
-          console.warn('[AskISA] Verification warnings:', verification.warnings);
+          serverLogger.warn('[AskISA] Verification warnings:', verification.warnings);
         }
 
         return {
@@ -203,7 +205,7 @@ export const askISARouter = router({
           missingCitations: citationValidation.missingElements,
         };
       } catch (error) {
-        console.error("[AskISA] Failed to answer question:", error);
+        serverLogger.error("[AskISA] Failed to answer question:", error);
         throw new Error("Failed to generate answer. Please try again.");
       }
     }),
@@ -322,7 +324,7 @@ export const askISARouter = router({
 
             successCount++;
           } catch (error) {
-            console.error(
+            serverLogger.error(
               `[AskISA] Failed to store knowledge chunk for ${sourceType} ${source.id}:`,
               error
             );
@@ -337,7 +339,7 @@ export const askISARouter = router({
           errorCount,
         };
       } catch (error) {
-        console.error("[AskISA] Failed to generate knowledge chunks:", error);
+        serverLogger.error("[AskISA] Failed to generate knowledge chunks:", error);
         throw new Error("Failed to generate knowledge chunks");
       }
     }),
@@ -349,7 +351,7 @@ export const askISARouter = router({
     try {
       return await getKnowledgeStats();
     } catch (error) {
-      console.error("[AskISA] Failed to get knowledge stats:", error);
+      serverLogger.error("[AskISA] Failed to get knowledge stats:", error);
       return [];
     }
   }),
@@ -447,7 +449,7 @@ export const askISARouter = router({
 
         return { success: true };
       } catch (error) {
-        console.error("[AskISA] Failed to submit feedback:", error);
+        serverLogger.error("[AskISA] Failed to submit feedback:", error);
         throw new Error("Failed to submit feedback");
       }
     }),

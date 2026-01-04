@@ -21,6 +21,8 @@ import { generateRecommendations } from "./news-recommendation-engine";
 import type { InsertHubNews } from "../drizzle/schema";
 import { PipelineExecutionContext, calculateQualityScore } from "./utils/pipeline-logger";
 import { savePipelineExecutionLog } from "./db-pipeline-observability";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 export interface PipelineOptions {
   /** Ingestion mode: 'normal' (30 days) or 'backfill' (200 days) */
@@ -129,7 +131,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
         await savePipelineExecutionLog(ctx.getSummary());
         console.log(`[news-pipeline] Execution log saved: ${ctx.executionId}`);
       } catch (logError) {
-        console.error('[news-pipeline] Failed to save execution log:', logError);
+        serverLogger.error('[news-pipeline] Failed to save execution log:', logError);
         // Don't fail pipeline if logging fails
       }
       
@@ -257,7 +259,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
               `[news-pipeline] Generated recommendations for news ${createdNews.id}`
             );
           } catch (recError) {
-            console.error(
+            serverLogger.error(
               `[news-pipeline] Failed to generate recommendations for news ${createdNews.id}:`,
               recError
             );
@@ -266,7 +268,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
         }
       } catch (error) {
         const errorMsg = `Failed to insert: ${raw.link} - ${error instanceof Error ? error.message : "Unknown error"}`;
-        console.error(`[news-pipeline] ${errorMsg}`);
+        serverLogger.error(`[news-pipeline] ${errorMsg}`);
         errors.push(errorMsg);
         
         // Record failed item processing
@@ -303,7 +305,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
       await savePipelineExecutionLog(ctx.getSummary());
       console.log(`[news-pipeline] Execution log saved: ${ctx.executionId}`);
     } catch (logError) {
-      console.error('[news-pipeline] Failed to save execution log:', logError);
+      serverLogger.error('[news-pipeline] Failed to save execution log:', logError);
       // Don't fail pipeline if logging fails
     }
 
@@ -320,7 +322,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
     };
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : "Unknown error";
-    console.error("[news-pipeline] Pipeline failed:", error);
+    serverLogger.error("[news-pipeline] Pipeline failed:", error);
     errors.push(errorMsg);
     
     // Log catastrophic failure
@@ -339,7 +341,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
     try {
       await savePipelineExecutionLog(ctx.getSummary());
     } catch (logError) {
-      console.error('[news-pipeline] Failed to save error execution log:', logError);
+      serverLogger.error('[news-pipeline] Failed to save error execution log:', logError);
     }
 
     return {

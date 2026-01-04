@@ -1,6 +1,8 @@
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { getRegulations } from "./db";
+import { serverLogger } from "./_core/logger-wiring";
+
 import {
   exportRegulationToPDF,
   exportRegulationToCSV,
@@ -56,7 +58,7 @@ export const exportRouter = router({
           mimeType: "application/pdf",
         };
       } catch (error) {
-        console.error("[Export] PDF generation failed:", error);
+        serverLogger.error("[Export] PDF generation failed:", error);
         return { success: false, error: "Failed to generate PDF" };
       }
     }),
@@ -105,7 +107,7 @@ export const exportRouter = router({
           mimeType: "text/csv",
         };
       } catch (error) {
-        console.error("[Export] CSV generation failed:", error);
+        serverLogger.error("[Export] CSV generation failed:", error);
         return { success: false, error: "Failed to generate CSV" };
       }
     }),
@@ -147,7 +149,7 @@ export const exportRouter = router({
           mimeType: "text/csv",
         };
       } catch (error) {
-        console.error("[Export] CSV list generation failed:", error);
+        serverLogger.error("[Export] CSV list generation failed:", error);
         return { success: false, error: "Failed to generate CSV" };
       }
     }),
