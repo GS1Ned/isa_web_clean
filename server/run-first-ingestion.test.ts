@@ -17,7 +17,10 @@ import { getDb } from "./db";
 import { regulations } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 
-describe("First CELLAR Ingestion", () => {
+const runCellarTests = process.env.RUN_CELLAR_TESTS === "true";
+const describeCellar = runCellarTests ? describe : describe.skip;
+
+describeCellar("First CELLAR Ingestion", () => {
   it("should fetch and store real EU regulations from CELLAR", async () => {
     console.log("\n=== ISA First CELLAR Ingestion ===\n");
 

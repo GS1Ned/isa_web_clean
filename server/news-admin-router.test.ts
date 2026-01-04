@@ -125,8 +125,10 @@ function createMockContext(role: "admin" | "user" = "admin"): Context {
 }
 
 describe("News Admin Router", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    const caller = newsAdminRouter.createCaller(createMockContext("admin"));
+    await caller.resetPipelineStatus({ force: true });
   });
 
   describe("triggerIngestion", () => {
@@ -137,10 +139,8 @@ describe("News Admin Router", () => {
       const result = await caller.triggerIngestion();
 
       expect(Boolean(result.success)).toBe(true);
-      expect(result.fetched).toBe(10);
-      expect(result.inserted).toBe(5);
-      expect(result.skipped).toBe(5);
-      expect(result.duration).toBeDefined();
+      expect(result.status).toBe("running");
+      expect(result.startedAt).toBeDefined();
     });
 
     it("should reject non-admin users", async () => {
@@ -302,7 +302,12 @@ describe("News Admin Router", () => {
       const ctx = createMockContext("admin");
       const caller = newsAdminRouter.createCaller(ctx);
 
-      await expect(caller.triggerIngestion()).rejects.toThrow("Network error");
+      await caller.triggerIngestion();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      const status = await caller.getPipelineStatus();
+      expect(status.status).toBe("failed");
+      expect(status.error).toBe("Network error");
     });
 
     it("should handle archival failures gracefully", async () => {

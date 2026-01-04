@@ -149,7 +149,9 @@ export const newsAdminRouter = router({
   /**
    * Reset pipeline status (useful after viewing results)
    */
-  resetPipelineStatus: protectedProcedure.mutation(async ({ ctx }) => {
+  resetPipelineStatus: protectedProcedure
+    .input(z.object({ force: z.boolean().optional() }).optional())
+    .mutation(async ({ ctx, input }) => {
     if (ctx.user.role !== "admin") {
       throw new TRPCError({
         code: "FORBIDDEN",
@@ -157,8 +159,8 @@ export const newsAdminRouter = router({
       });
     }
 
-    // Only reset if not running
-    if (pipelineStatus.status !== "running") {
+    // Only reset if not running, unless forced
+    if (pipelineStatus.status !== "running" || input?.force) {
       pipelineStatus = { status: "idle" };
       return { success: true, message: "Status reset" };
     }

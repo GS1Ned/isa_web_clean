@@ -97,7 +97,7 @@ describe("Health Monitoring", () => {
     vi.clearAllMocks();
   });
 
-  it("should record successful scraper execution", () => {
+  it("should record successful scraper execution", async () => {
     const metrics: ScraperHealthMetrics = {
       sourceId: "test-source",
       sourceName: "Test Source",
@@ -108,16 +108,16 @@ describe("Health Monitoring", () => {
       timestamp: new Date(),
     };
 
-    recordScraperExecution(metrics);
+    await recordScraperExecution(metrics);
 
-    const health = getSourceHealth("test-source");
+    const health = await getSourceHealth("test-source");
     expect(health.successRate).toBe(100);
     expect(health.totalExecutions).toBe(1);
     expect(health.consecutiveFailures).toBe(0);
     expect(health.avgItemsFetched).toBe(10);
   });
 
-  it("should record failed scraper execution", () => {
+  it("should record failed scraper execution", async () => {
     const metrics: ScraperHealthMetrics = {
       sourceId: "test-source-2",
       sourceName: "Test Source 2",
@@ -129,21 +129,21 @@ describe("Health Monitoring", () => {
       timestamp: new Date(),
     };
 
-    recordScraperExecution(metrics);
+    await recordScraperExecution(metrics);
 
-    const health = getSourceHealth("test-source-2");
+    const health = await getSourceHealth("test-source-2");
     expect(health.successRate).toBe(0);
     expect(health.totalExecutions).toBe(1);
     expect(health.consecutiveFailures).toBe(1);
     expect(health.lastExecution?.error).toBe("Network timeout");
   });
 
-  it("should calculate success rate correctly", () => {
+  it("should calculate success rate correctly", async () => {
     const sourceId = "test-source-3";
 
     // Record 3 successes and 1 failure
     for (let i = 0; i < 3; i++) {
-      recordScraperExecution({
+      await recordScraperExecution({
         sourceId,
         sourceName: "Test Source 3",
         success: true,
@@ -154,7 +154,7 @@ describe("Health Monitoring", () => {
       });
     }
 
-    recordScraperExecution({
+    await recordScraperExecution({
       sourceId,
       sourceName: "Test Source 3",
       success: false,
@@ -165,18 +165,18 @@ describe("Health Monitoring", () => {
       timestamp: new Date(),
     });
 
-    const health = getSourceHealth(sourceId);
+    const health = await getSourceHealth(sourceId);
     expect(health.successRate).toBe(75); // 3/4 = 75%
     expect(health.totalExecutions).toBe(4);
     expect(health.consecutiveFailures).toBe(1);
   });
 
-  it("should track consecutive failures", () => {
+  it("should track consecutive failures", async () => {
     const sourceId = "test-source-4";
 
     // Record 3 consecutive failures
     for (let i = 0; i < 3; i++) {
-      recordScraperExecution({
+      await recordScraperExecution({
         sourceId,
         sourceName: "Test Source 4",
         success: false,
@@ -188,16 +188,16 @@ describe("Health Monitoring", () => {
       });
     }
 
-    const health = getSourceHealth(sourceId);
+    const health = await getSourceHealth(sourceId);
     expect(health.consecutiveFailures).toBe(3);
     expect(health.successRate).toBe(0);
   });
 
-  it("should reset consecutive failures after success", () => {
+  it("should reset consecutive failures after success", async () => {
     const sourceId = "test-source-5";
 
     // Record 2 failures, then 1 success
-    recordScraperExecution({
+    await recordScraperExecution({
       sourceId,
       sourceName: "Test Source 5",
       success: false,
@@ -208,7 +208,7 @@ describe("Health Monitoring", () => {
       timestamp: new Date(),
     });
 
-    recordScraperExecution({
+    await recordScraperExecution({
       sourceId,
       sourceName: "Test Source 5",
       success: false,
@@ -219,7 +219,7 @@ describe("Health Monitoring", () => {
       timestamp: new Date(),
     });
 
-    recordScraperExecution({
+    await recordScraperExecution({
       sourceId,
       sourceName: "Test Source 5",
       success: true,
@@ -229,13 +229,13 @@ describe("Health Monitoring", () => {
       timestamp: new Date(),
     });
 
-    const health = getSourceHealth(sourceId);
+    const health = await getSourceHealth(sourceId);
     expect(health.consecutiveFailures).toBe(0);
     expect(health.successRate).toBe(33); // 1/3 ≈ 33%
   });
 
-  it("should track all sources in health summary", () => {
-    recordScraperExecution({
+  it("should track all sources in health summary", async () => {
+    await recordScraperExecution({
       sourceId: "source-a",
       sourceName: "Source A",
       success: true,
@@ -245,7 +245,7 @@ describe("Health Monitoring", () => {
       timestamp: new Date(),
     });
 
-    recordScraperExecution({
+    await recordScraperExecution({
       sourceId: "source-b",
       sourceName: "Source B",
       success: false,
@@ -256,7 +256,7 @@ describe("Health Monitoring", () => {
       timestamp: new Date(),
     });
 
-    const allHealth = getAllSourcesHealth();
+    const allHealth = await getAllSourcesHealth();
     expect(allHealth.size).toBeGreaterThanOrEqual(2);
     expect(allHealth.has("source-a")).toBe(true);
     expect(allHealth.has("source-b")).toBe(true);

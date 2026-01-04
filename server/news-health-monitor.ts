@@ -44,13 +44,25 @@ export async function recordScraperExecution(metrics: ScraperHealthMetrics): Pro
     `[scraper-health] ${status} ${sourceName}${attemptsInfo}${itemsInfo}${errorInfo}${durationInfo}`
   );
   
+  // Update cache regardless of DB availability.
+  if (!healthCache.has(sourceId)) {
+    healthCache.set(sourceId, []);
+  }
+
+  const cache = healthCache.get(sourceId)!;
+  cache.push(metrics);
+
+  if (cache.length > CACHE_LIMIT) {
+    cache.shift();
+  }
+
   try {
     const db = await getDb();
     if (!db) {
       console.warn("[scraper-health] Database not available, skipping persistence");
       return;
     }
-    
+
     // Store in database
     await db.insert(scraperExecutions).values({
       sourceId,
@@ -64,23 +76,10 @@ export async function recordScraperExecution(metrics: ScraperHealthMetrics): Pro
       startedAt: timestamp?.toISOString(),
       completedAt: timestamp?.toISOString(),
     });
-    
+
     // Update health summary
     await updateHealthSummary(sourceId, sourceName, success, itemsFetched, durationMs, error);
-    
-    // Update cache
-    if (!healthCache.has(sourceId)) {
-      healthCache.set(sourceId, []);
-    }
-    
-    const cache = healthCache.get(sourceId)!;
-    cache.push(metrics);
-    
-    // Trim cache to limit
-    if (cache.length > CACHE_LIMIT) {
-      cache.shift();
-    }
-    
+
     // Check for persistent failures and alert
     await checkHealthAndAlert(sourceId, sourceName);
   } catch (dbError) {
@@ -202,12 +201,40 @@ export async function getSourceHealth(sourceId: string): Promise<{
 }> {
   const db = await getDb();
   if (!db) {
+    const cached = healthCache.get(sourceId) ?? [];
+    if (cached.length === 0) {
+      return {
+        successRate: 0,
+        totalExecutions: 0,
+        consecutiveFailures: 0,
+        avgItemsFetched: 0,
+        avgDurationMs: 0,
+      };
+    }
+
+    const totalExecutions = cached.length;
+    const totalFailures = cached.filter(entry => !entry.success).length;
+    let consecutiveFailures = 0;
+    for (const entry of [...cached].reverse()) {
+      if (entry.success) break;
+      consecutiveFailures++;
+    }
+    const avgItemsFetched = Math.round(
+      cached.reduce((sum, entry) => sum + entry.itemsFetched, 0) / totalExecutions
+    );
+    const avgDurationMs = Math.round(
+      cached.reduce((sum, entry) => sum + entry.durationMs, 0) / totalExecutions
+    );
     return {
-      successRate: 0,
-      totalExecutions: 0,
-      consecutiveFailures: 0,
-      avgItemsFetched: 0,
-      avgDurationMs: 0,
+      successRate:
+        totalExecutions > 0
+          ? Math.round(((totalExecutions - totalFailures) / totalExecutions) * 100)
+          : 0,
+      totalExecutions,
+      consecutiveFailures,
+      lastExecution: cached[cached.length - 1],
+      avgItemsFetched,
+      avgDurationMs,
     };
   }
   
@@ -243,7 +270,13 @@ export async function getSourceHealth(sourceId: string): Promise<{
  */
 export async function getAllSourcesHealth(): Promise<Map<string, Awaited<ReturnType<typeof getSourceHealth>>>> {
   const db = await getDb();
-  if (!db) return new Map();
+  if (!db) {
+    const summary = new Map<string, Awaited<ReturnType<typeof getSourceHealth>>>();
+    for (const sourceId of healthCache.keys()) {
+      summary.set(sourceId, await getSourceHealth(sourceId));
+    }
+    return summary;
+  }
   
   const allSummaries = await db.select().from(scraperHealthSummary);
   

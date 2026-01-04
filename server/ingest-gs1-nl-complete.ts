@@ -15,6 +15,7 @@ import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import * as schema from '../drizzle/schema';
 import { gs1Attributes, gs1AttributeCodeLists } from '../drizzle/schema';
+import { createMysqlConnection } from './db-connection';
 
 // Database connection - lazy initialization
 let connection: mysql.Connection | null = null;
@@ -23,7 +24,7 @@ let _dbInstance: any = null;
 
 async function getDb() {
   if (!_dbInstance) {
-    connection = await mysql.createConnection(process.env.DATABASE_URL!);
+    connection = await createMysqlConnection(process.env.DATABASE_URL!);
     _dbInstance = drizzle(connection, { schema, mode: 'default' });
   }
   return _dbInstance;

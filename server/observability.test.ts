@@ -12,17 +12,20 @@ import {
   getRecentPipelineExecutions,
   getPipelineSuccessRate,
   getAverageAiQualityScore,
-  getSourceReliabilityMetrics,
+  getSourceHealthMetrics,
   getPipelinePerformanceMetrics,
   getQualityMetricsDistribution,
 } from './db-pipeline-observability';
 import { PipelineExecutionContext, calculateQualityScore } from './utils/pipeline-logger';
 
 describe('Observability System', () => {
+  const hasDb = Boolean(process.env.DATABASE_URL);
+  const describeDb = hasDb ? describe : describe.skip;
   let testExecutionId: string;
 
   beforeAll(async () => {
     // Clean up any existing test data
+    if (!hasDb) return;
     const db = await getDb();
     if (db) {
       await db.delete(pipelineExecutionLog).execute();
@@ -154,7 +157,7 @@ describe('Observability System', () => {
     });
   });
 
-  describe('Database Operations', () => {
+  describeDb('Database Operations', () => {
     it('should save pipeline execution log', async () => {
       const ctx = new PipelineExecutionContext('news_ingestion', 'manual');
       ctx.recordSourceAttempt('test-source', true, 5);
@@ -209,7 +212,7 @@ describe('Observability System', () => {
     });
 
     it('should calculate source reliability metrics', async () => {
-      const metrics = await getSourceReliabilityMetrics(7);
+      const metrics = await getSourceHealthMetrics(7);
       
       expect(metrics).toHaveProperty('totalAttempts');
       expect(metrics).toHaveProperty('totalSucceeded');

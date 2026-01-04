@@ -8,12 +8,13 @@ import {
 import mysql from "mysql2/promise";
 import { drizzle } from "drizzle-orm/mysql2";
 import * as schema from "../drizzle/schema";
+import { createMysqlConnection } from "./db-connection";
 
 let connection: mysql.Connection;
 let db: ReturnType<typeof drizzle>;
 
 beforeAll(async () => {
-  connection = await mysql.createConnection(process.env.DATABASE_URL!);
+  connection = await createMysqlConnection(process.env.DATABASE_URL!);
   db = drizzle(connection, { schema, mode: "default" });
 });
 

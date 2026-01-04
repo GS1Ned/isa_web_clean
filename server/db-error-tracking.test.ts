@@ -13,7 +13,10 @@ import { eq, sql } from 'drizzle-orm';
 // Use unique operation names per test to avoid cross-test pollution
 const generateTestOperation = () => `test_op_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
-describe('Error Tracking Database Helpers', () => {
+const hasDb = Boolean(process.env.DATABASE_URL);
+const describeDb = hasDb ? describe : describe.skip;
+
+describeDb('Error Tracking Database Helpers', () => {
   let testOperation: string;
 
   beforeEach(() => {
