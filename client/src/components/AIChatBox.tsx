@@ -3,7 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Loader2, Send, User, Sparkles } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Streamdown } from "streamdown";
 
 /**
@@ -181,6 +181,29 @@ export function AIChatBox({
     textareaRef.current?.focus();
   };
 
+  const handleSendClick = useCallback(() => {
+    if (!input.trim() || isLoading) return;
+    onSendMessage(input);
+    setInput("");
+    scrollToBottom();
+    textareaRef.current?.focus();
+  }, [input, isLoading, onSendMessage]);
+
+  // Use native DOM event listener to bypass React's synthetic event system
+  useEffect(() => {
+    const button = document.getElementById('chat-send-button');
+    if (!button) return;
+
+    const handleClick = (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      handleSendClick();
+    };
+
+    button.addEventListener('click', handleClick, true);
+    return () => button.removeEventListener('click', handleClick, true);
+  }, [handleSendClick]);
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -319,7 +342,8 @@ export function AIChatBox({
           rows={1}
         />
         <Button
-          type="submit"
+          id="chat-send-button"
+          type="button"
           size="icon"
           disabled={!input.trim() || isLoading}
           className="shrink-0 h-[38px] w-[38px]"

@@ -50,7 +50,15 @@ async function createPersistFn() {
       ];
       await (db as any).execute(insertSql, params);
     } catch (err) {
-      serverLogger.error("[serverLogger.persist] failed to insert row", { error: String(err), traceId: row.trace_id });
+      // CRITICAL: Do NOT use serverLogger.error here - it creates infinite recursion
+      // when persist fails, as serverLogger.error tries to persist again
+      console.error(JSON.stringify({
+        level: "error",
+        message: "[serverLogger.persist] failed to insert row",
+        error: String(err),
+        traceId: row.trace_id,
+        ts: new Date().toISOString()
+      }));
     }
   };
 }

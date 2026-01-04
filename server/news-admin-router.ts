@@ -21,6 +21,7 @@ import { getAllSourceHealth, resetSourceHealth } from "./news/news-fetch-utils";
 import { NEWS_SOURCES } from "./news-sources";
 import { z } from "zod";
 import { serverLogger } from "./_core/logger-wiring";
+import type { PipelineMode } from "./news-pipeline-config";
 
 
 // In-memory status tracking for async pipeline execution
@@ -36,7 +37,7 @@ interface PipelineStatus {
     skipped: number;
     errors: string[];
     duration: number;
-    mode: 'normal' | 'backfill';
+    mode: PipelineMode;
     maxAgeDays: number;
   };
   error?: string;

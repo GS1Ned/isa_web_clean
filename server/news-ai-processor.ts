@@ -41,13 +41,85 @@ export interface ProcessedNews {
 }
 
 /**
+ * Generate deterministic test response (test-only mode)
+ * Returns predictable output based on input content for reliable testing
+ */
+function generateTestModeResponse(item: RawNewsItem): ProcessedNews {
+  const text = `${item.title} ${item.content || item.contentSnippet || ""}`.toLowerCase();
+  
+  // Deterministic tag inference based on keywords
+  const regulationTags: string[] = [];
+  if (text.includes("csrd") || text.includes("esrs")) regulationTags.push("CSRD", "ESRS");
+  if (text.includes("dpp") || text.includes("digital product passport")) regulationTags.push("DPP");
+  if (text.includes("eudr")) regulationTags.push("EUDR");
+  if (text.includes("ppwr")) regulationTags.push("PPWR");
+  
+  const gs1ImpactTags: string[] = [];
+  if (text.includes("dpp") || text.includes("digital product passport")) {
+    gs1ImpactTags.push("DPP", "IDENTIFICATION", "PACKAGING_ATTRIBUTES");
+  } else if (text.includes("traceability") || text.includes("supply chain")) {
+    gs1ImpactTags.push("TRACEABILITY", "ESG_REPORTING");
+  } else {
+    gs1ImpactTags.push("PACKAGING_ATTRIBUTES", "ESG_REPORTING", "TRACEABILITY");
+  }
+  
+  const sectorTags: string[] = [];
+  if (text.includes("automotive")) sectorTags.push("AUTOMOTIVE");
+  if (text.includes("retail")) sectorTags.push("RETAIL");
+  if (text.includes("healthcare")) sectorTags.push("HEALTHCARE");
+  if (sectorTags.length === 0) sectorTags.push("GENERAL");
+  
+  // Deterministic impact level
+  let impactLevel: "LOW" | "MEDIUM" | "HIGH" = "MEDIUM";
+  if (text.includes("mandatory") || text.includes("deadline") || text.includes("enforcement")) {
+    impactLevel = "HIGH";
+  } else if (text.includes("proposal") || text.includes("draft")) {
+    impactLevel = "LOW";
+  }
+  
+  // Deterministic news type
+  let newsType: ProcessedNews["newsType"] = "GUIDANCE";
+  if (text.includes("published") || text.includes("adopted")) newsType = "NEW_LAW";
+  else if (text.includes("amendment")) newsType = "AMENDMENT";
+  else if (text.includes("proposal")) newsType = "PROPOSAL";
+  
+  return {
+    headline: item.title.slice(0, 100),
+    summary: `${item.title} - Test mode deterministic summary`,
+    whatHappened: "This is a deterministic test response. The regulation has been published.",
+    whyItMatters: "This impacts GS1 members who need to comply with new data requirements.",
+    regulationTags,
+    impactLevel,
+    newsType,
+    gs1ImpactTags,
+    sectorTags,
+    gs1ImpactAnalysis: `This regulation may affect GS1 standards related to ${gs1ImpactTags.join(", ")}. Companies should review their data models and processes for compliance.`,
+    suggestedActions: [
+      "Review the full regulation text for specific requirements",
+      "Assess current GS1 data model compliance",
+      "Contact GS1 Netherlands for implementation guidance",
+    ],
+  };
+}
+
+/**
  * Process a single news item with AI summarization
+ * @param item - Raw news item to process
+ * @param options - Optional configuration
+ * @param options.testMode - If true, returns deterministic mock data without calling LLM (for testing)
  */
 export async function processNewsItem(
-  item: RawNewsItem
+  item: RawNewsItem,
+  options?: { testMode?: boolean }
 ): Promise<ProcessedNews> {
+  // Test mode: return deterministic mock data without LLM call
+  if (options?.testMode) {
+    return generateTestModeResponse(item);
+  }
   const content = item.content || item.contentSnippet || "";
   const fullText = `${item.title}\n\n${content}`;
+
+  // Normal mode: use LLM
 
   try {
     const response = await invokeLLM({

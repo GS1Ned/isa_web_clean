@@ -2937,3 +2937,7 @@ Note: CELLAR tests (27) are intentionally skipped as they require live EU endpoi
 - Returning to Integrator/Orchestrator mode
 
 **Bounded execution task completed. Returning to idle integrator state.**
+
+## Bug Fixes
+
+- [x] Fix chat input not working - replaced React onClick with native DOM event listener to bypass React synthetic event system

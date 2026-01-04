@@ -20,7 +20,12 @@ export async function trackError(error: InsertErrorLog): Promise<ErrorLog> {
     throw new Error("Database not available");
   }
 
-  const [created] = await db.insert(errorLog).values(error).$returningId() as any;
+  // Filter out null values to avoid MySQL text() field issues
+  const cleanedError = Object.fromEntries(
+    Object.entries(error).filter(([_, v]) => v !== null)
+  ) as InsertErrorLog;
+
+  const [created] = await db.insert(errorLog).values(cleanedError).$returningId() as any;
   const createdId = Array.isArray(created) ? created[0]?.id : created?.id;
 
   const [fullEntry] = await db

@@ -63,7 +63,7 @@ export function SectorFilter({
     if (!onChange) return;
 
     const nextSelection = nextValue
-      ? [...new Set([...selectedSectors, sector])]
+      ? Array.from(new Set([...selectedSectors, sector]))
       : selectedSectors.filter(item => item !== sector);
 
     onChange(nextSelection);

@@ -416,6 +416,7 @@ export default function AttributeRecommender() {
 
           {/* Generate Button */}
           <Button
+            type="button"
             className="w-full"
             size="lg"
             onClick={handleRecommend}
