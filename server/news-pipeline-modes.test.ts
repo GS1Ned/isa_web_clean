@@ -1,6 +1,6 @@
 /**
  * News Pipeline Ingestion Modes Test
- * Tests normal (30 days) and backfill (200 days) modes
+ * Tests ingestion window sizes for pipeline modes
  */
 
 import { describe, it, expect, vi, beforeAll } from "vitest";
@@ -140,5 +140,33 @@ describe("News Pipeline Ingestion Modes", () => {
     expect(normalResult.maxAgeDays).toBeLessThan(backfillResult.maxAgeDays);
     expect(normalResult.mode).toBe("normal");
     expect(backfillResult.mode).toBe("backfill");
+  });
+
+  it("should use 7-day window in incremental mode", async () => {
+    const result = await runNewsPipeline({ mode: "incremental", triggeredBy: "manual" });
+
+    expect(result.mode).toBe("incremental");
+    expect(result.maxAgeDays).toBe(7);
+    expect(Boolean(result.success)).toBe(true);
+  });
+
+  it("should use 365-day window in full-refresh mode", async () => {
+    const result = await runNewsPipeline({ mode: "full-refresh", triggeredBy: "manual" });
+
+    expect(result.mode).toBe("full-refresh");
+    expect(result.maxAgeDays).toBe(365);
+    expect(Boolean(result.success)).toBe(true);
+  });
+
+  it("should provide a clear error message for invalid mode", async () => {
+    const result = await runNewsPipeline({
+      mode: "invalid-mode" as PipelineOptions["mode"],
+      triggeredBy: "manual",
+    });
+
+    expect(Boolean(result.success)).toBe(false);
+    expect(result.errors[0]).toContain("Invalid pipeline mode");
+    expect(result.errors[0]).toContain("normal");
+    expect(result.errors[0]).toContain("backfill");
   });
 });

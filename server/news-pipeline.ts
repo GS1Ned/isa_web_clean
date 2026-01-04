@@ -22,11 +22,17 @@ import type { InsertHubNews } from "../drizzle/schema";
 import { PipelineExecutionContext, calculateQualityScore } from "./utils/pipeline-logger";
 import { savePipelineExecutionLog } from "./db-pipeline-observability";
 import { serverLogger } from "./_core/logger-wiring";
+import {
+  DEFAULT_PIPELINE_MODE,
+  PIPELINE_MODE_CONFIGS,
+  resolvePipelineModeConfig,
+  type PipelineMode,
+} from "./news-pipeline-config";
 
 
 export interface PipelineOptions {
-  /** Ingestion mode: 'normal' (30 days) or 'backfill' (200 days) */
-  mode?: 'normal' | 'backfill';
+  /** Ingestion mode: normal, backfill, incremental, or full-refresh. */
+  mode?: PipelineMode;
   /** Who triggered the pipeline */
   triggeredBy?: 'cron' | 'manual' | 'api';
 }
@@ -39,21 +45,40 @@ export interface PipelineResult {
   skipped: number;
   errors: string[];
   duration: number;
-  mode: 'normal' | 'backfill';
+  mode: PipelineMode;
   maxAgeDays: number;
 }
 
 /**
  * Run the complete news ingestion pipeline
  * @param options Pipeline execution options
- * @param options.mode Ingestion mode: 'normal' (30 days) or 'backfill' (200 days)
+ * @param options.mode Ingestion mode: normal, backfill, incremental, or full-refresh.
  * @param options.triggeredBy Who triggered the pipeline
  */
 export async function runNewsPipeline(options: PipelineOptions = {}): Promise<PipelineResult> {
-  const { mode = 'normal', triggeredBy = 'cron' } = options;
-  const maxAgeDays = mode === 'backfill' ? 200 : 30;
+  const { mode: requestedMode, triggeredBy = 'cron' } = options;
   const startTime = Date.now();
   const errors: string[] = [];
+  let mode: PipelineMode = DEFAULT_PIPELINE_MODE;
+  let maxAgeDays = PIPELINE_MODE_CONFIGS[DEFAULT_PIPELINE_MODE].maxAgeDays;
+
+  try {
+    ({ mode, maxAgeDays } = resolvePipelineModeConfig(requestedMode));
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : "Unknown error";
+    errors.push(errorMsg);
+    return {
+      success: false,
+      fetched: 0,
+      processed: 0,
+      inserted: 0,
+      skipped: 0,
+      errors,
+      duration: Date.now() - startTime,
+      mode,
+      maxAgeDays,
+    };
+  }
   const ctx = new PipelineExecutionContext('news_ingestion', triggeredBy);
 
   console.log(`[news-pipeline] Starting news ingestion pipeline (execution: ${ctx.executionId})...`);
