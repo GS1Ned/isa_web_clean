@@ -3,9 +3,10 @@
  * Tests normal (30 days) and backfill (200 days) modes
  */
 
-import { describe, it, expect, vi } from "vitest";
-import { runNewsPipeline } from "./news-pipeline";
+import { describe, it, expect, vi, beforeAll } from "vitest";
 import type { PipelineOptions } from "./news-pipeline";
+
+let runNewsPipeline: typeof import("./news-pipeline").runNewsPipeline;
 
 // Mock dependencies
 vi.mock("./news-fetcher", () => ({
@@ -85,6 +86,10 @@ vi.mock("./news-recommendation-engine", () => ({
 vi.mock("./db-pipeline-observability", () => ({
   savePipelineExecutionLog: vi.fn().mockResolvedValue(undefined),
 }));
+
+beforeAll(async () => {
+  ({ runNewsPipeline } = await import("./news-pipeline"));
+});
 
 describe("News Pipeline Ingestion Modes", () => {
   it("should use 30-day window in normal mode", async () => {

@@ -9,7 +9,10 @@ const mockContext: Context = {
   res: {} as any,
 };
 
-describe("ESRS Datapoints Router", () => {
+const hasDb = Boolean(process.env.DATABASE_URL);
+const describeDb = hasDb ? describe : describe.skip;
+
+describeDb("ESRS Datapoints Router", () => {
   it("should list ESRS datapoints with pagination", async () => {
     const caller = appRouter.createCaller(mockContext);
 

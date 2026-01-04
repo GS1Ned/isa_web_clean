@@ -214,6 +214,8 @@ export async function getSourceHealthMetrics(days = 7) {
   };
 }
 
+export const getSourceReliabilityMetrics = getSourceHealthMetrics;
+
 /**
  * Get pipeline performance metrics
  */

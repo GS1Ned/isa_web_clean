@@ -8,7 +8,10 @@ import { getDb } from "./db";
 import { scraperExecutions, scraperHealthSummary } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 
-describe("News Health Monitor - Database Persistence", () => {
+const hasDb = Boolean(process.env.DATABASE_URL);
+const describeDb = hasDb ? describe : describe.skip;
+
+describeDb("News Health Monitor - Database Persistence", () => {
   beforeEach(async () => {
     // Clean up test data before each test
     const db = await getDb();

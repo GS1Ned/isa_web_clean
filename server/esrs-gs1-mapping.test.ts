@@ -11,7 +11,10 @@ import {
   getComplianceCoverageSummary,
 } from './db-esrs-gs1-mapping';
 
-describe('ESRS-GS1 Mapping Database Functions', () => {
+const hasDb = Boolean(process.env.DATABASE_URL);
+const describeDb = hasDb ? describe : describe.skip;
+
+describeDb('ESRS-GS1 Mapping Database Functions', () => {
   describe('getAllEsrsGs1Mappings', () => {
     it('should return all ESRS-GS1 mappings', async () => {
       const mappings = await getAllEsrsGs1Mappings();

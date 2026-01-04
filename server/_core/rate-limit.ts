@@ -18,7 +18,15 @@ import type { Request, Response } from "express";
  * Limits: 100 requests per 15 minutes per IP
  * Response: 429 Too Many Requests with JSON error
  */
-export const apiRateLimiter = rateLimit({
+const createNamedRateLimiter = (options: Parameters<typeof rateLimit>[0]) => {
+  const middleware = rateLimit(options);
+  Object.defineProperty(middleware, "name", {
+    value: "rateLimitMiddleware",
+  });
+  return middleware;
+};
+
+export const apiRateLimiter = createNamedRateLimiter({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
@@ -52,7 +60,7 @@ export const apiRateLimiter = rateLimit({
  * Limits: 1000 requests per 15 minutes per IP
  * More permissive for static content (images, CSS, JS)
  */
-export const staticRateLimiter = rateLimit({
+export const staticRateLimiter = createNamedRateLimiter({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 1000, // Limit each IP to 1000 requests per windowMs
   standardHeaders: true,
@@ -71,7 +79,7 @@ export const staticRateLimiter = rateLimit({
  * Limits: 10 requests per 15 minutes per IP
  * Prevents brute force attacks on login/signup
  */
-export const authRateLimiter = rateLimit({
+export const authRateLimiter = createNamedRateLimiter({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 10, // Very strict limit for auth endpoints
   standardHeaders: true,

@@ -67,7 +67,11 @@ import { webhookConfigRouter, webhookConfigSchemas } from "./routers-webhook-con
 import { gapAnalyzerRouter } from "./routers/gap-analyzer.js";
 import { impactSimulatorRouter } from "./routers/impact-simulator.js";
 import { attributeRecommenderRouter } from "./routers/attribute-recommender.js";
-// import { getUserOnboardingProgress, saveUserOnboardingProgress, resetUserOnboardingProgress } from "./db";
+import {
+  getUserOnboardingProgress,
+  resetUserOnboardingProgress,
+  saveUserOnboardingProgress,
+} from "./onboarding-progress";
 
 export const appRouter = router({
   system: systemRouter,
@@ -805,32 +809,31 @@ export const appRouter = router({
   /**
    * User Onboarding Progress Router
    */
-  // onboarding: router({
-  //   /**
-  //    * Get user's onboarding progress
-  //    * TEMPORARILY DISABLED
-  //    */
-  //   getProgress: protectedProcedure.query(async ({ ctx }) => {
-  //     return await getUserOnboardingProgress(ctx.user.id);
-  //   }),
-  //   saveProgress: protectedProcedure
-  //     .input(
-  //       z.object({
-  //         completedSteps: z.array(z.number()),
-  //         currentStep: z.number(),
-  //       })
-  //     )
-  //     .mutation(async ({ ctx, input }) => {
-  //       return await saveUserOnboardingProgress(
-  //         ctx.user.id,
-  //         input.completedSteps,
-  //         input.currentStep
-  //       );
-  //     }),
-  //   resetProgress: protectedProcedure.mutation(async ({ ctx }) => {
-  //     return await resetUserOnboardingProgress(ctx.user.id);
-  //   }),
-  // }),
+  onboarding: router({
+    /**
+     * Get user's onboarding progress
+     */
+    getProgress: protectedProcedure.query(async ({ ctx }) => {
+      return await getUserOnboardingProgress(ctx.user.id);
+    }),
+    saveProgress: protectedProcedure
+      .input(
+        z.object({
+          completedSteps: z.array(z.number()),
+          currentStep: z.number(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        return await saveUserOnboardingProgress(
+          ctx.user.id,
+          input.completedSteps,
+          input.currentStep
+        );
+      }),
+    resetProgress: protectedProcedure.mutation(async ({ ctx }) => {
+      return await resetUserOnboardingProgress(ctx.user.id);
+    }),
+  }),
 
   /**
    * ESRS Datapoints Router

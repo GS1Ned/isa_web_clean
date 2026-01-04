@@ -8,8 +8,12 @@ import { retryWithBackoff } from "./news-retry-util";
 import { recordScraperExecution, getSourceHealth, getAllSourcesHealth } from "./news-health-monitor";
 import { getDb } from "./db";
 import { scraperExecutions, scraperHealthSummary } from "../drizzle/schema";
+import { eq } from "drizzle-orm";
 
-describe("News Pipeline - Database Integration", () => {
+const hasDb = Boolean(process.env.DATABASE_URL);
+const describeDb = hasDb ? describe : describe.skip;
+
+describeDb("News Pipeline - Database Integration", () => {
   beforeEach(async () => {
     // Clean up test data
     const db = await getDb();
@@ -56,7 +60,10 @@ describe("News Pipeline - Database Integration", () => {
     const db = await getDb();
     if (!db) throw new Error("Database not available");
 
-    const executions = await db.select().from(scraperExecutions);
+    const executions = await db
+      .select()
+      .from(scraperExecutions)
+      .where(eq(scraperExecutions.sourceId, "test-source-integration"));
     expect(executions).toHaveLength(1);
     expect(Boolean(executions[0].success)).toBe(true);
     expect(executions[0].itemsFetched).toBe(1);
@@ -102,7 +109,10 @@ describe("News Pipeline - Database Integration", () => {
     const db = await getDb();
     if (!db) throw new Error("Database not available");
 
-    const executions = await db.select().from(scraperExecutions);
+    const executions = await db
+      .select()
+      .from(scraperExecutions)
+      .where(eq(scraperExecutions.sourceId, "test-source-failure"));
     expect(executions).toHaveLength(1);
     expect(Boolean(executions[0].success)).toBe(false);
     expect(executions[0].attempts).toBe(3);
@@ -162,7 +172,10 @@ describe("News Pipeline - Database Integration", () => {
     const db = await getDb();
     if (!db) throw new Error("Database not available");
 
-    const executions = await db.select().from(scraperExecutions);
+    const executions = await db
+      .select()
+      .from(scraperExecutions)
+      .where(eq(scraperExecutions.sourceId, "multi-run-source"));
     expect(executions).toHaveLength(3);
   });
 
@@ -229,7 +242,10 @@ describe("News Pipeline - Database Integration", () => {
     const db = await getDb();
     if (!db) throw new Error("Database not available");
 
-    const executions = await db.select().from(scraperExecutions);
+    const executions = await db
+      .select()
+      .from(scraperExecutions)
+      .where(eq(scraperExecutions.sourceId, "duration-test"));
     expect(executions).toHaveLength(1);
     expect(executions[0].durationMs).toBeGreaterThan(0);
     expect(executions[0].durationMs).toBeLessThan(10000); // Should complete in reasonable time
