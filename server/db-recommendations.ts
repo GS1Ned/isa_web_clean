@@ -5,6 +5,8 @@
 import { getDb } from "./db";
 import { newsRecommendations } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 export async function getRecommendationsByNewsId(newsId: number) {
   const db = await getDb();
@@ -24,10 +26,7 @@ export async function getRecommendationsByNewsId(newsId: number) {
         : [],
     }));
   } catch (error) {
-    console.error(
-      "[db-recommendations] Failed to fetch recommendations:",
-      error
-    );
+    serverLogger.error("[db-recommendations] Failed to fetch recommendations:", error);
     return [];
   }
 }

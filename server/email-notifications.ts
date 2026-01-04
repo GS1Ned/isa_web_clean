@@ -7,6 +7,8 @@ import { notifyOwner } from "./_core/notification";
 import { getDb } from "./db";
 import { users, userAlerts, regulations, hubNews } from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Email template for deadline alert
@@ -176,7 +178,7 @@ export async function sendDeadlineAlert(
 
     return success;
   } catch (error) {
-    console.error("Error sending deadline alert:", error);
+    serverLogger.error("Error sending deadline alert:", error);
     return false;
   }
 }
@@ -219,7 +221,7 @@ export async function sendNewRegulationNotification(
 
     return success;
   } catch (error) {
-    console.error("Error sending new regulation notification:", error);
+    serverLogger.error("Error sending new regulation notification:", error);
     return false;
   }
 }
@@ -288,7 +290,7 @@ export async function sendDailyDigests(): Promise<number> {
     console.log(`Sent ${sentCount} daily digests`);
     return sentCount;
   } catch (error) {
-    console.error("Error sending daily digests:", error);
+    serverLogger.error("Error sending daily digests:", error);
     return 0;
   }
 }
@@ -336,7 +338,7 @@ export async function processPendingAlerts(
     console.log(`Processed alerts: ${sent} sent, ${failed} failed`);
     return { sent, failed };
   } catch (error) {
-    console.error("Error processing alerts:", error);
+    serverLogger.error("Error processing alerts:", error);
     return { sent: 0, failed: 0 };
   }
 }

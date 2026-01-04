@@ -2,6 +2,8 @@ import { notifyOwner } from "./_core/notification";
 import { getDb } from "./db";
 import { users } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Collaboration Notification Service
@@ -34,7 +36,7 @@ export async function notifyComment(
       content: `${commenterName} commented: "${commentContent.substring(0, 100)}..."`,
     });
   } catch (error) {
-    console.error("Error sending comment notification:", error);
+    serverLogger.error("Error sending comment notification:", error);
     return false;
   }
 }
@@ -65,7 +67,7 @@ export async function notifyApprovalRequested(
       content: `${requesterName} requested your approval (${approverRole}) for roadmap: ${roadmapTitle}`,
     });
   } catch (error) {
-    console.error("Error sending approval request notification:", error);
+    serverLogger.error("Error sending approval request notification:", error);
     return false;
   }
 }
@@ -101,7 +103,7 @@ export async function notifyApprovalDecision(
       content: `${approverName} ${decision} your roadmap${commentText}`,
     });
   } catch (error) {
-    console.error("Error sending approval decision notification:", error);
+    serverLogger.error("Error sending approval decision notification:", error);
     return false;
   }
 }
@@ -132,7 +134,7 @@ export async function notifyTeamAccessGranted(
       content: `${grantedByName} granted you ${accessLevel} access to roadmap: ${roadmapTitle}`,
     });
   } catch (error) {
-    console.error("Error sending team access notification:", error);
+    serverLogger.error("Error sending team access notification:", error);
     return false;
   }
 }
@@ -163,7 +165,7 @@ export async function notifyRoadmapCompleted(
       content: `${completedByName} completed roadmap with projected score of ${projectedScore}%`,
     });
   } catch (error) {
-    console.error("Error sending roadmap completion notification:", error);
+    serverLogger.error("Error sending roadmap completion notification:", error);
     return false;
   }
 }
@@ -194,7 +196,7 @@ export async function notifyActionCompleted(
       content: `${completedByName} completed action in roadmap: ${roadmapTitle}`,
     });
   } catch (error) {
-    console.error("Error sending action completion notification:", error);
+    serverLogger.error("Error sending action completion notification:", error);
     return false;
   }
 }
@@ -225,7 +227,7 @@ export async function notifyMilestoneReached(
       content: `Roadmap "${roadmapTitle}" reached milestone with target score of ${targetScore}%`,
     });
   } catch (error) {
-    console.error("Error sending milestone notification:", error);
+    serverLogger.error("Error sending milestone notification:", error);
     return false;
   }
 }

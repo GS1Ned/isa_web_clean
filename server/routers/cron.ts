@@ -7,6 +7,8 @@
 import { publicProcedure, router } from "../_core/trpc";
 import { z } from "zod";
 import { dailyNewsIngestion, weeklyNewsArchival } from "../news-cron-scheduler";
+import { serverLogger } from "../_core/logger-wiring";
+
 
 /**
  * Simple secret token validation
@@ -49,7 +51,7 @@ export const cronRouter = router({
           },
         };
       } catch (error) {
-        console.error("[cron] Daily news ingestion failed:", error);
+        serverLogger.error("[cron] Daily news ingestion failed:", error);
         return {
           success: false,
           message: "Daily news ingestion failed",
@@ -85,7 +87,7 @@ export const cronRouter = router({
           },
         };
       } catch (error) {
-        console.error("[cron] Weekly news archival failed:", error);
+        serverLogger.error("[cron] Weekly news archival failed:", error);
         return {
           success: false,
           message: "Weekly news archival failed",

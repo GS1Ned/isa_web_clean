@@ -9,6 +9,8 @@
 import { exportRegulationToPDF, generateExportFilename } from "./export-utils";
 import { getRegulations } from "./db";
 import { storagePut, storageGet } from "./storage";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Cache metadata stored in database or memory
@@ -71,7 +73,7 @@ export async function getCachedExport(
     const { url } = await storageGet(cached.s3Key);
     return { url };
   } catch (error) {
-    console.error(`[Export Cache] Failed to retrieve cached export: ${error}`);
+    serverLogger.error(`[Export Cache] Failed to retrieve cached export: ${error}`);
     exportCache.delete(cacheKey);
     return null;
   }
@@ -118,7 +120,7 @@ export async function cacheExport(
 
     return entry;
   } catch (error) {
-    console.error(`[Export Cache] Failed to cache export: ${error}`);
+    serverLogger.error(`[Export Cache] Failed to cache export: ${error}`);
     return null;
   }
 }
@@ -170,7 +172,7 @@ export async function generatePopularExports(): Promise<{
       const regulation = regulations.find(r => String(r.id) === regulationId);
 
       if (!regulation) {
-        console.warn(`[Export Scheduler] Regulation ${regulationId} not found`);
+        serverLogger.warn(`[Export Scheduler] Regulation ${regulationId} not found`);
         results.failed++;
         results.errors.push({
           regulationId,
@@ -231,7 +233,7 @@ export async function generatePopularExports(): Promise<{
         regulationId,
         error: `${error}`,
       });
-      console.error(
+      serverLogger.error(
         `[Export Scheduler] Failed to generate export for regulation ${regulationId}: ${error}`
       );
     }

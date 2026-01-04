@@ -7,6 +7,8 @@
  */
 
 import { mapAllRegulations } from "./gs1-mapping-engine";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 async function runMapping() {
   console.log("🔗 Starting GS1 mapping algorithm...\n");
@@ -31,7 +33,7 @@ async function runMapping() {
       );
     }
   } catch (error) {
-    console.error("\n❌ Mapping failed:", error);
+    serverLogger.error("\n❌ Mapping failed:", error);
     throw error;
   }
 }
@@ -42,6 +44,6 @@ runMapping()
     process.exit(0);
   })
   .catch(error => {
-    console.error("\n💥 Fatal error:", error);
+    serverLogger.error("\n💥 Fatal error:", error);
     process.exit(1);
   });

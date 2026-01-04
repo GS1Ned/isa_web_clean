@@ -11,6 +11,8 @@ import {
 } from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Change detection result
@@ -104,7 +106,7 @@ export async function detectRegulationChanges(
 
     return changes;
   } catch (error) {
-    console.error("Error detecting regulation changes:", error);
+    serverLogger.error("Error detecting regulation changes:", error);
     return [];
   }
 }
@@ -160,7 +162,7 @@ export async function notifyUsersOfChanges(
 
     return usersWithAlerts.length;
   } catch (error) {
-    console.error("Error notifying users of changes:", error);
+    serverLogger.error("Error notifying users of changes:", error);
     return 0;
   }
 }
@@ -219,7 +221,7 @@ export async function scanForRegulationChanges(): Promise<{
     );
     return { scanned, changesFound, usersNotified };
   } catch (error) {
-    console.error("Error scanning for regulation changes:", error);
+    serverLogger.error("Error scanning for regulation changes:", error);
     return { scanned: 0, changesFound: 0, usersNotified: 0 };
   }
 }
@@ -238,7 +240,7 @@ export async function getRegulationChangeHistory(regulationId: number) {
       .where(eq(regulatoryChangeAlerts.regulationId, regulationId))
       .orderBy(regulatoryChangeAlerts.detectedAt);
   } catch (error) {
-    console.error("Error getting change history:", error);
+    serverLogger.error("Error getting change history:", error);
     return [];
   }
 }

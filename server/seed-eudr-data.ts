@@ -1,5 +1,7 @@
 import { getDb } from "./db.js";
 import { eudrGeolocation } from "../drizzle/schema.js";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * EUDR Sample Data Seeder
@@ -309,7 +311,7 @@ export async function seedEUDRData(userId: number) {
       console.log(`✓ Inserted ${data.productName} (${data.productGtin})`);
     } catch (error) {
       errors++;
-      console.error(`✗ Failed to insert ${data.productName}:`, error);
+      serverLogger.error(`✗ Failed to insert ${data.productName}:`, error);
     }
   }
 

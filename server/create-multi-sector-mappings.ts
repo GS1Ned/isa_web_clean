@@ -12,6 +12,8 @@ import {
   attributeRegulationMappings,
 } from "../drizzle/schema";
 import { eq, and, or } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 interface MappingRule {
   regulationType: string;
@@ -322,7 +324,7 @@ async function main() {
       `  - Total mappings created: ${diyResult.created + healthcareResult.created}`
     );
   } catch (error) {
-    console.error("[Mapper] Mapping failed:", error);
+    serverLogger.error("[Mapper] Mapping failed:", error);
     throw error;
   }
 }
@@ -335,7 +337,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(0);
     })
     .catch(error => {
-      console.error("[Mapper] Mapping failed:", error);
+      serverLogger.error("[Mapper] Mapping failed:", error);
       process.exit(1);
     });
 }

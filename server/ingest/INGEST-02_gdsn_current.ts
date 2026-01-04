@@ -1,6 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
 import { getDb } from "../db";
+import { serverLogger } from "../_core/logger-wiring";
+
 import {
   gdsnClasses,
   rawGdsnClasses,
@@ -165,7 +167,7 @@ export async function ingestGdsnClasses(
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
     if (verbose) {
-      console.error("GDSN classes ingestion failed:", errorMessage);
+      serverLogger.error("GDSN classes ingestion failed:", errorMessage);
     }
   }
 
@@ -263,7 +265,7 @@ export async function ingestGdsnClassAttributes(
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
     if (verbose) {
-      console.error("GDSN class attributes ingestion failed:", errorMessage);
+      serverLogger.error("GDSN class attributes ingestion failed:", errorMessage);
     }
   }
 
@@ -366,7 +368,7 @@ export async function ingestGdsnValidationRules(
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
     if (verbose) {
-      console.error("GDSN validation rules ingestion failed:", errorMessage);
+      serverLogger.error("GDSN validation rules ingestion failed:", errorMessage);
     }
   }
 

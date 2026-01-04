@@ -11,6 +11,8 @@
 
 import type { RawNewsItem } from "../news-fetcher";
 import { NEWS_SOURCES } from "../news-sources";
+import { serverLogger } from "../_core/logger-wiring";
+
 
 /**
  * Scrapes ZES news articles
@@ -165,10 +167,7 @@ export async function scrapeZESNews(): Promise<RawNewsItem[]> {
 
         console.log(`[ZES] Scraped: ${article.title}`);
       } catch (error) {
-        console.error(
-          `[ZES] Error scraping detail page ${article.url}:`,
-          error
-        );
+        serverLogger.error(`[ZES] Error scraping detail page ${article.url}:`, error);
       }
     }
 
@@ -185,7 +184,7 @@ export async function scrapeZESNews(): Promise<RawNewsItem[]> {
       );
       return [];
     }
-    console.error("[ZES] Scraping error:", error);
+    serverLogger.error("[ZES] Scraping error:", error);
     return [];
   }
 }

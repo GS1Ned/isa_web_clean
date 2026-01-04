@@ -14,6 +14,8 @@
 import * as fs from "fs";
 import { getDb } from "./db";
 import { gs1WebVocabulary } from "../drizzle/schema";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 interface JsonLdNode {
   "@id": string;
@@ -425,7 +427,7 @@ export async function ingestGS1WebVocabulary(filePath: string): Promise<void> {
     console.log(`  - Terms ingested: ${result.success}`);
     console.log(`  - Errors: ${result.errors}`);
   } catch (error) {
-    console.error(`[GS1 Web Vocab Parser] Ingestion failed:`, error);
+    serverLogger.error(`[GS1 Web Vocab Parser] Ingestion failed:`, error);
     throw error;
   }
 }
@@ -441,7 +443,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(0);
     })
     .catch(error => {
-      console.error("[GS1 Web Vocab Parser] Ingestion failed:", error);
+      serverLogger.error("[GS1 Web Vocab Parser] Ingestion failed:", error);
       process.exit(1);
     });
 }

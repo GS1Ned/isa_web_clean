@@ -7,6 +7,8 @@
 
 import crypto from "crypto";
 import { invokeLLM } from "./_core/llm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Generate content hash for deduplication
@@ -50,7 +52,7 @@ Respond with ONLY a single number between 0 and 10.`,
 
     return isNaN(score) ? 0 : Math.max(0, Math.min(10, score));
   } catch (error) {
-    console.error("[Relevance] Failed to score relevance:", error);
+    serverLogger.error("[Relevance] Failed to score relevance:", error);
     return 0;
   }
 }

@@ -13,6 +13,8 @@
  */
 
 import { notifyOwner } from "./notification";
+import { serverLogger } from "./logger-wiring";
+
 
 export type ErrorSeverity = "info" | "warning" | "error" | "critical";
 
@@ -132,7 +134,7 @@ export async function trackError(
   }
   
   // Log to console
-  console.error(`[${severity.toUpperCase()}] ${message}`, {
+  serverLogger.error(`[${severity.toUpperCase()}] ${message}`, {
     errorId,
     context,
     stack,
@@ -167,7 +169,7 @@ ${error.stack || "No stack trace available"}
     
     await notifyOwner({ title, content });
   } catch (notifyError) {
-    console.error("Failed to send critical error notification:", notifyError);
+    serverLogger.error("Failed to send critical error notification:", notifyError);
   }
 }
 

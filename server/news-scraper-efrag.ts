@@ -1,3 +1,5 @@
+import { serverLogger } from "./_core/logger-wiring";
+
 /**
  * EFRAG News Playwright Scraper
  * Scrapes sustainability reporting news from EFRAG
@@ -143,7 +145,7 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
     );
     return processed.slice(0, 20); // Return top 20 most recent
   } catch (error) {
-    console.error("[EFRAG Scraper] Error:", error);
+    serverLogger.error("[EFRAG Scraper] Error:", error);
     if (browser) {
       await browser.close();
     }
@@ -196,7 +198,7 @@ export async function scrapeEFRAGArticleDetail(
     await browser.close();
     return content;
   } catch (error) {
-    console.error("[EFRAG Scraper] Error scraping detail:", error);
+    serverLogger.error("[EFRAG Scraper] Error scraping detail:", error);
     if (browser) {
       await browser.close();
     }
@@ -219,7 +221,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       });
     })
     .catch(error => {
-      console.error("❌ Scraper failed:", error);
+      serverLogger.error("❌ Scraper failed:", error);
       process.exit(1);
     });
 }

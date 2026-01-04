@@ -2,6 +2,8 @@ import * as fs from "fs";
 import * as path from "path";
 import { eq } from "drizzle-orm";
 import { getDb } from "../db";
+import { serverLogger } from "../_core/logger-wiring";
+
 import {
   ctes,
   kdes,
@@ -208,7 +210,7 @@ export async function ingestCtesKdes(
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
     if (verbose) {
-      console.error("CTEs/KDEs ingestion failed:", errorMessage);
+      serverLogger.error("CTEs/KDEs ingestion failed:", errorMessage);
     }
   }
 

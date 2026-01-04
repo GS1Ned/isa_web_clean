@@ -12,6 +12,8 @@
  */
 
 import axios, { AxiosInstance } from "axios";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 // CELLAR SPARQL endpoint (public, no authentication required)
 const CELLAR_SPARQL_ENDPOINT =
@@ -310,7 +312,7 @@ export class CellarConnector {
       const response = await this.executeSPARQL(query);
       return response.results.bindings.length > 0;
     } catch (error) {
-      console.error("CELLAR connection test failed:", error);
+      serverLogger.error("CELLAR connection test failed:", error);
       return false;
     }
   }

@@ -1,5 +1,7 @@
 import { invokeLLM } from "./_core/llm";
 import { getDb } from "./db";
+import { serverLogger } from "./_core/logger-wiring";
+
 import {
   upsertRegulationEsrsMapping,
   deleteRegulationEsrsMappings,
@@ -165,9 +167,7 @@ export async function generateRegulationEsrsMappings(
         dp => dp.code === match.code
       );
       if (!datapoint) {
-        console.warn(
-          `[Mapper] Datapoint ${match.code} not found, skipping`
-        );
+        serverLogger.warn(`[Mapper] Datapoint ${match.code} not found, skipping`);
         continue;
       }
 
@@ -192,7 +192,7 @@ export async function generateRegulationEsrsMappings(
       mappingsCount: insertedCount,
     };
   } catch (error) {
-    console.error("[Mapper] Failed to generate ESRS mappings:", error);
+    serverLogger.error("[Mapper] Failed to generate ESRS mappings:", error);
     return {
       success: false,
       mappingsCount: 0,

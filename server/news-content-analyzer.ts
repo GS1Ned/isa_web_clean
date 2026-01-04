@@ -4,6 +4,8 @@
  */
 
 import { invokeLLM } from "./_core/llm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 export interface ContentAnalysis {
   mainTopics: string[];
@@ -54,7 +56,7 @@ export async function analyzeNewsContent(
       actionableInsights: analysis.actionableInsights || [],
     };
   } catch (error) {
-    console.error("[news-content-analyzer] LLM failed:", error);
+    serverLogger.error("[news-content-analyzer] LLM failed:", error);
     return fallbackAnalysis(title, summary, content);
   }
 }

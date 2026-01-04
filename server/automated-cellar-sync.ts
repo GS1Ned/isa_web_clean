@@ -20,6 +20,8 @@ import {
 import { generateRegulationEsrsMappings } from "./regulation-esrs-mapper.js";
 import { notifyOwner } from "./_core/notification.js";
 import { upsertRegulation } from "./db.js";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 interface SyncResult {
   success: boolean;
@@ -159,7 +161,7 @@ export async function runAutomatedCellarSync(): Promise<SyncResult> {
     return result;
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error("[AutoSync] Sync failed:", errorMsg);
+    serverLogger.error("[AutoSync] Sync failed:", errorMsg);
 
     result.success = false;
     result.duration = Math.round((Date.now() - startTime) / 1000);
@@ -219,7 +221,7 @@ async function sendSyncNotification(result: SyncResult): Promise<boolean> {
     const sent = await notifyOwner({ title, content });
     return sent;
   } catch (error) {
-    console.error("[AutoSync] Failed to send notification:", error);
+    serverLogger.error("[AutoSync] Failed to send notification:", error);
     return false;
   }
 }
@@ -233,7 +235,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(result.success ? 0 : 1);
     })
     .catch(error => {
-      console.error("Fatal error:", error);
+      serverLogger.error("Fatal error:", error);
       process.exit(1);
     });
 }

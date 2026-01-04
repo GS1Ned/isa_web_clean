@@ -12,6 +12,8 @@
 import { createRegulatoryChangeLogEntry } from "./db-regulatory-change-log";
 import type { HubNews } from "../drizzle/schema";
 import { createHash } from "crypto";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Impact level threshold for auto-creating change log entries
@@ -130,7 +132,7 @@ export async function createChangeLogEntryFromNews(
     };
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : "Unknown error";
-    console.error(
+    serverLogger.error(
       `[news-regulatory-integration] Failed to create change log entry from news ${newsItem.id}:`,
       errorMsg
     );

@@ -2763,3 +2763,22 @@ Note: CELLAR tests (27) are intentionally skipped as they require live EU endpoi
 3. **Test Timeout Strategy:** Database-heavy tests need 15s+ timeouts, especially when running multiple operations
 4. **Idempotency Testing:** Tests that run operations twice need proper cleanup between runs
 
+
+
+---
+
+## ServerLogger Integration (New)
+
+- [x] Create server/utils/server-logger.ts (lightweight logger shim with JSON output)
+- [x] Create codemods/replace-console-with-serverLogger.js (jscodeshift codemod)
+- [x] Create .github/workflows/console-check.yml (CI workflow to prevent console usage)
+- [x] Create .eslintrc.server.json (ESLint rules for server-side console)
+- [x] Create server/db/migrations/0001_add_error_ledger.sql (database migration)
+- [x] Create server/_core/logger-wiring.ts (wire persisted logger with DB)
+- [x] Create scripts/run-repro-harness.js (test harness for trace IDs)
+- [x] Create .github/PULL_REQUEST_TEMPLATE.md (PR template with logger checklist)
+- [x] Apply codemod to replace console.error/warn with serverLogger
+- [x] Run database migration to create error_ledger table
+- [x] Wire logger persistence at server startup
+- [x] Test serverLogger functionality (12/12 tests passing)
+- [x] Validate CI workflow and ESLint rules (files created and ready)

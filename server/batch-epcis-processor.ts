@@ -8,6 +8,8 @@ import {
   supplyChainAnalytics,
 } from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Batch EPCIS Processor
@@ -54,7 +56,7 @@ export function parseEPCISDocument(content: string): EPCISDocument | null {
 
     return null;
   } catch (error) {
-    console.error("Failed to parse EPCIS document:", error);
+    serverLogger.error("Failed to parse EPCIS document:", error);
     return null;
   }
 }
@@ -140,7 +142,7 @@ export async function processEPCISEvents(
 
       processedCount++;
     } catch (error) {
-      console.error("Failed to process event:", error);
+      serverLogger.error("Failed to process event:", error);
       failedCount++;
     }
   }
@@ -376,6 +378,6 @@ export async function updateSupplyChainAnalytics(
         },
       });
   } catch (error) {
-    console.error("Failed to update supply chain analytics:", error);
+    serverLogger.error("Failed to update supply chain analytics:", error);
   }
 }

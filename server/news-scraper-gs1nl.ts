@@ -5,6 +5,8 @@
 
 import axios from "axios";
 import * as cheerio from "cheerio";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 export interface ScrapedArticle {
   title: string;
@@ -163,7 +165,7 @@ export async function scrapeGS1NetherlandsNews(): Promise<ScrapedArticle[]> {
     console.log(`[GS1 NL Scraper] Found ${articles.length} articles`);
     return articles.slice(0, 20); // Return top 20 most recent
   } catch (error) {
-    console.error("[GS1 NL Scraper] Error:", error);
+    serverLogger.error("[GS1 NL Scraper] Error:", error);
     return [];
   }
 }
@@ -195,7 +197,7 @@ export async function scrapeGS1ArticleDetail(
 
     return content || null;
   } catch (error) {
-    console.error(`[GS1 NL Scraper] Error fetching detail for ${url}:`, error);
+    serverLogger.error(`[GS1 NL Scraper] Error fetching detail for ${url}:`, error);
     return null;
   }
 }

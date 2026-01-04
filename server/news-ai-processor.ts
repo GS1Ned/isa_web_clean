@@ -15,6 +15,8 @@ import {
   type SectorTag,
 } from "../shared/news-tags";
 import type { RawNewsItem } from "./news-fetcher";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 export interface ProcessedNews {
   headline: string; // Concise, clear headline (max 100 chars)
@@ -201,7 +203,7 @@ Sector Tags (select 1-3): ${Object.keys(SECTOR_TAGS).join(", ")}`,
       suggestedActions: result.suggestedActions || [],
     };
   } catch (error) {
-    console.error("[news-ai-processor] Error processing news item:", error);
+    serverLogger.error("[news-ai-processor] Error processing news item:", error);
 
     // Fallback to keyword-based extraction
     return fallbackProcessing(item);
@@ -309,10 +311,7 @@ export async function processNewsBatch(
       const processed = await processNewsItem(item);
       results.push(processed);
     } catch (error) {
-      console.error(
-        `[news-ai-processor] Failed to process item "${item.title}":`,
-        error
-      );
+      serverLogger.error(`[news-ai-processor] Failed to process item "${item.title}":`, error);
       // Use fallback processing for failed items
       const fallback = fallbackProcessing(item);
       results.push(fallback);

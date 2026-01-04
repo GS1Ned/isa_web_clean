@@ -8,6 +8,8 @@
 import { getDb } from "./db";
 import { eq, desc, sql } from "drizzle-orm";
 import { generateContentHash, scoreRelevance } from "./embedding";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Store knowledge chunk (without embeddings)
@@ -62,7 +64,7 @@ export async function storeKnowledgeChunk(data: {
 
     return result;
   } catch (error) {
-    console.error("[Database] Failed to store knowledge chunk:", error);
+    serverLogger.error("[Database] Failed to store knowledge chunk:", error);
     return null;
   }
 }
@@ -127,7 +129,7 @@ export async function searchKnowledgeChunks(
       .sort((a, b) => b.similarity - a.similarity)
       .slice(0, limit);
   } catch (error) {
-    console.error("[Database] Failed to search knowledge chunks:", error);
+    serverLogger.error("[Database] Failed to search knowledge chunks:", error);
     return [];
   }
 }
@@ -152,7 +154,7 @@ export async function getKnowledgeStats() {
 
     return stats;
   } catch (error) {
-    console.error("[Database] Failed to get knowledge stats:", error);
+    serverLogger.error("[Database] Failed to get knowledge stats:", error);
     return [];
   }
 }
@@ -184,7 +186,7 @@ export async function createQAConversation(userId?: number, title?: string) {
       updatedAt: new Date().toISOString(),
     };
   } catch (error) {
-    console.error("[Database] Failed to create conversation:", error);
+    serverLogger.error("[Database] Failed to create conversation:", error);
     return null;
   }
 }
@@ -230,7 +232,7 @@ export async function addQAMessage(data: {
       createdAt: new Date().toISOString(),
     };
   } catch (error) {
-    console.error("[Database] Failed to add message:", error);
+    serverLogger.error("[Database] Failed to add message:", error);
     return null;
   }
 }
@@ -268,7 +270,7 @@ export async function getQAConversation(conversationId: number) {
       messages,
     };
   } catch (error) {
-    console.error("[Database] Failed to get conversation:", error);
+    serverLogger.error("[Database] Failed to get conversation:", error);
     return null;
   }
 }
@@ -293,7 +295,7 @@ export async function getUserQAConversations(
       .orderBy(desc(qaConversations.updatedAt))
       .limit(limit);
   } catch (error) {
-    console.error("[Database] Failed to get conversations:", error);
+    serverLogger.error("[Database] Failed to get conversations:", error);
     return [];
   }
 }
@@ -334,7 +336,7 @@ export async function deleteQAConversation(
 
     return true;
   } catch (error) {
-    console.error("[Database] Failed to delete conversation:", error);
+    serverLogger.error("[Database] Failed to delete conversation:", error);
     return false;
   }
 }

@@ -16,6 +16,8 @@ import {
   DEFAULT_THRESHOLDS,
 } from "./alert-detection";
 import { desc, eq, and, isNull } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Alert notification result
@@ -88,7 +90,7 @@ async function sendAlertEmail(alert: AlertDetectionResult): Promise<boolean> {
 
     return success;
   } catch (error) {
-    console.error("[AlertNotification] Failed to send email:", error);
+    serverLogger.error("[AlertNotification] Failed to send email:", error);
     return false;
   }
 }
@@ -158,7 +160,7 @@ export async function processAlert(
     try {
       await broadcastAlert(webhookPayload);
     } catch (webhookError) {
-      console.error("[AlertNotification] Webhook broadcast failed:", webhookError);
+      serverLogger.error("[AlertNotification] Webhook broadcast failed:", webhookError);
       // Continue processing even if webhook fails
     }
 
@@ -176,7 +178,7 @@ export async function processAlert(
       notificationSent,
     };
   } catch (error) {
-    console.error("[AlertNotification] Failed to process alert:", error);
+    serverLogger.error("[AlertNotification] Failed to process alert:", error);
     return {
       success: false,
       alertId: -1,
@@ -271,7 +273,7 @@ export async function acknowledgeAlert(alertId: number, userId: number): Promise
 
     return true;
   } catch (error) {
-    console.error("[AlertNotification] Failed to acknowledge alert:", error);
+    serverLogger.error("[AlertNotification] Failed to acknowledge alert:", error);
     return false;
   }
 }

@@ -9,6 +9,8 @@
 
 import { getDb } from "./db";
 import { gs1Standards, type InsertGS1Standard } from "../drizzle/schema";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 const gs1StandardsData: Omit<
   InsertGS1Standard,
@@ -372,7 +374,7 @@ async function seedGS1Standards() {
       `   - Quality: ${gs1StandardsData.filter(s => s.category === "Quality").length}`
     );
   } catch (error) {
-    console.error("❌ Error seeding GS1 standards:", error);
+    serverLogger.error(error, { context: "❌ Error seeding GS1 standards:" });
     throw error;
   }
 }
@@ -384,6 +386,6 @@ seedGS1Standards()
     process.exit(0);
   })
   .catch(error => {
-    console.error("\n💥 Seed failed:", error);
+    serverLogger.error(error, { context: "\n💥 Seed failed:" });
     process.exit(1);
   });

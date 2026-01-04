@@ -20,6 +20,8 @@ import { regulations } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 import { generateEmbedding } from "./_core/embedding";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 interface IngestionResult {
   fetched: number;
@@ -87,7 +89,7 @@ async function insertRegulation(regulation: any): Promise<void> {
       `[Weekly Ingestion] Generated embedding for ${regulation.celexId}`
     );
   } catch (error) {
-    console.error(
+    serverLogger.error(
       `[Weekly Ingestion] Failed to generate embedding for ${regulation.celexId}:`,
       error
     );
@@ -181,7 +183,7 @@ async function runWeeklyIngestion(): Promise<IngestionResult> {
       } catch (error) {
         const errorMsg = `Failed to process ${regulation.celexId}: ${error}`;
         result.errors.push(errorMsg);
-        console.error(`[Weekly Ingestion] ❌ ${errorMsg}`);
+        serverLogger.error(`[Weekly Ingestion] ❌ ${errorMsg}`);
       }
     }
 
@@ -224,7 +226,7 @@ View new regulations in ISA: https://gs1isa.com/hub/regulations`,
   } catch (error) {
     const errorMsg = `Weekly ingestion failed: ${error}`;
     result.errors.push(errorMsg);
-    console.error(`[Weekly Ingestion] ❌ ${errorMsg}`);
+    serverLogger.error(`[Weekly Ingestion] ❌ ${errorMsg}`);
 
     // Send failure notification
     await notifyOwner({
@@ -251,7 +253,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(result.errors.length > 0 ? 1 : 0);
     })
     .catch(error => {
-      console.error("[Weekly Ingestion] Fatal error:", error);
+      serverLogger.error(error, { context: "[Weekly Ingestion] Fatal error:" });
       process.exit(1);
     });
 }

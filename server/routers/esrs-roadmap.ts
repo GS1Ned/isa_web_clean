@@ -2,6 +2,8 @@ import { z } from "zod";
 import { publicProcedure, router } from "../_core/trpc";
 import { invokeLLM } from "../_core/llm";
 import { getAllEsrsGs1Mappings } from "../db-esrs-gs1-mapping";
+import { serverLogger } from "../_core/logger-wiring";
+
 
 // ESRS-GS1 Roadmap phase types
 const EsrsRoadmapPhaseSchema = z.object({
@@ -190,7 +192,7 @@ Return ONLY a valid JSON object matching this schema:
 
         return EsrsRoadmapSchema.parse(roadmap);
       } catch (error) {
-        console.error("[ESRSRoadmap] Failed to generate roadmap:", error);
+        serverLogger.error("[ESRSRoadmap] Failed to generate roadmap:", error);
 
         // Fallback: Generate basic roadmap from mappings
         const fallbackPhases = [

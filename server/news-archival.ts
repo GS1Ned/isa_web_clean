@@ -6,6 +6,8 @@
 import { getDb } from "./db";
 import { hubNews, hubNewsHistory } from "../drizzle/schema";
 import { lt, sql } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 export interface ArchivalResult {
   success: boolean;
@@ -93,7 +95,7 @@ export async function archiveOldNews(
         archived++;
       } catch (error) {
         const errorMsg = `Failed to archive item ${item.id}: ${error instanceof Error ? error.message : "Unknown error"}`;
-        console.error(`[news-archival] ${errorMsg}`);
+        serverLogger.error(`[news-archival] ${errorMsg}`);
         errors.push(errorMsg);
       }
     }
@@ -111,7 +113,7 @@ export async function archiveOldNews(
     };
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : "Unknown error";
-    console.error("[news-archival] Archival failed:", error);
+    serverLogger.error("[news-archival] Archival failed:", error);
     errors.push(errorMsg);
 
     return {
@@ -153,7 +155,7 @@ export async function getArchivalStats() {
       oldestActiveDate: oldestActive[0]?.publishedDate || null,
     };
   } catch (error) {
-    console.error("[news-archival] Failed to get stats:", error);
+    serverLogger.error("[news-archival] Failed to get stats:", error);
     return null;
   }
 }

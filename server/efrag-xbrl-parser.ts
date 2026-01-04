@@ -10,6 +10,8 @@
 
 import ExcelJS from "exceljs";
 import path from "path";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * ESRS Datapoint extracted from EFRAG XBRL Taxonomy
@@ -141,7 +143,7 @@ export async function parseEFRAGTaxonomy(
 
     return result;
   } catch (error) {
-    console.error(`[EFRAG Parser] Fatal error:`, error);
+    serverLogger.error(`[EFRAG Parser] Fatal error:`, error);
     throw error;
   }
 }

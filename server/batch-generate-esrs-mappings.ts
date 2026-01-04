@@ -1,5 +1,7 @@
 import { generateRegulationEsrsMappings } from "./regulation-esrs-mapper";
 import { getDb } from "./db";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Batch generate ESRS datapoint mappings for all regulations
@@ -11,7 +13,7 @@ async function batchGenerateEsrsMappings() {
 
   const db = await getDb();
   if (!db) {
-    console.error("❌ Database not available");
+    serverLogger.error("❌ Database not available");
     process.exit(1);
   }
 
@@ -141,7 +143,7 @@ async function batchGenerateEsrsMappings() {
 batchGenerateEsrsMappings()
   .then(() => process.exit(0))
   .catch(error => {
-    console.error("Fatal error:", error);
+    serverLogger.error("Fatal error:", error);
     process.exit(1);
   });
 

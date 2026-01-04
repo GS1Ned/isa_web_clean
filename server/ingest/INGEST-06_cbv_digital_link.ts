@@ -1,6 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
 import { getDb } from "../db";
+import { serverLogger } from "../_core/logger-wiring";
+
 import {
   cbvVocabularies,
   rawCbvVocabularies,
@@ -150,7 +152,7 @@ export async function ingestCbvVocabularies(
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
     if (verbose) {
-      console.error("CBV vocabularies ingestion failed:", errorMessage);
+      serverLogger.error("CBV vocabularies ingestion failed:", errorMessage);
     }
   }
 
@@ -246,7 +248,7 @@ export async function ingestDigitalLinkTypes(
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
     if (verbose) {
-      console.error("Digital Link types ingestion failed:", errorMessage);
+      serverLogger.error("Digital Link types ingestion failed:", errorMessage);
     }
   }
 

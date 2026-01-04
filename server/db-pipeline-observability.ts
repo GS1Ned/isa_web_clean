@@ -7,6 +7,8 @@
 import { getDb } from "./db";
 import { pipelineExecutionLog } from "../drizzle/schema";
 import { desc, eq, and, gte, lte, sql } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Save pipeline execution log to database
@@ -56,8 +58,11 @@ export async function savePipelineExecutionLog(data: {
     console.log('[savePipelineExecutionLog] Insert successful:', result);
     return result;
   } catch (error) {
-    console.error('[savePipelineExecutionLog] Insert failed:', error);
-    console.error('[savePipelineExecutionLog] Data that failed to insert:', JSON.stringify(data, null, 2));
+    serverLogger.error('[savePipelineExecutionLog] Insert failed:', error);
+    serverLogger.error(
+      '[savePipelineExecutionLog] Data that failed to insert:',
+      JSON.stringify(data, null, 2)
+    );
     throw error;
   }
 }

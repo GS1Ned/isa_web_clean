@@ -9,6 +9,8 @@ import cron from "node-cron";
 import { scanForRegulationChanges } from "./regulation-change-tracker";
 import { sendDailyDigests, processPendingAlerts } from "./email-notifications";
 import { dailyNewsIngestion } from "./news-cron-scheduler";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Setup all cron jobs
@@ -23,7 +25,7 @@ export function setupCronJobs() {
     try {
       await dailyNewsIngestion();
     } catch (error) {
-      console.error("Error running news ingestion:", error);
+      serverLogger.error("Error running news ingestion:", error);
     }
   });
 
@@ -36,7 +38,7 @@ export function setupCronJobs() {
         `✓ Scan complete: ${result.scanned} regulations scanned, ${result.changesFound} changes found, ${result.usersNotified} users notified`
       );
     } catch (error) {
-      console.error("Error scanning for changes:", error);
+      serverLogger.error("Error scanning for changes:", error);
     }
   });
 
@@ -47,7 +49,7 @@ export function setupCronJobs() {
       const count = await sendDailyDigests();
       console.log(`✓ Sent ${count} daily digests`);
     } catch (error) {
-      console.error("Error sending daily digests:", error);
+      serverLogger.error("Error sending daily digests:", error);
     }
   });
 
@@ -60,7 +62,7 @@ export function setupCronJobs() {
         `✓ Processed alerts: ${result.sent} sent, ${result.failed} failed`
       );
     } catch (error) {
-      console.error("Error processing alerts:", error);
+      serverLogger.error("Error processing alerts:", error);
     }
   });
 
@@ -73,7 +75,7 @@ export function setupCronJobs() {
         `✓ Weekly report: ${result.changesFound} changes detected this week`
       );
     } catch (error) {
-      console.error("Error generating weekly report:", error);
+      serverLogger.error("Error generating weekly report:", error);
     }
   });
 

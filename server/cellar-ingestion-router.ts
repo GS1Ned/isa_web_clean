@@ -19,6 +19,8 @@ import { getDb } from "./db";
 import { regulations, ingestionLogs } from "../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 /**
  * Admin-only procedure (requires admin role)
@@ -225,7 +227,7 @@ export const cellarIngestionRouter = router({
             }
           } catch (error) {
             errors++;
-            console.error(`Failed to process ${regulation.celexId}:`, error);
+            serverLogger.error(`Failed to process ${regulation.celexId}:`, error);
           }
         }
 

@@ -11,6 +11,8 @@
 
 import type { RawNewsItem } from "../news-fetcher";
 import { NEWS_SOURCES } from "../news-sources";
+import { serverLogger } from "../_core/logger-wiring";
+
 
 /**
  * Scrapes Green Deal Zorg news articles
@@ -167,10 +169,7 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
 
         console.log(`[Green Deal Zorg] Scraped: ${article.title}`);
       } catch (error) {
-        console.error(
-          `[Green Deal Zorg] Error scraping detail page ${article.url}:`,
-          error
-        );
+        serverLogger.error(`[Green Deal Zorg] Error scraping detail page ${article.url}:`, error);
       }
     }
 
@@ -189,7 +188,7 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
       );
       return [];
     }
-    console.error("[Green Deal Zorg] Scraping error:", error);
+    serverLogger.error("[Green Deal Zorg] Scraping error:", error);
     return [];
   }
 }

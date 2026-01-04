@@ -11,6 +11,8 @@ import { getDb } from "./db";
 import { regulations, gs1Standards } from "../drizzle/schema";
 import { generateEmbedding, prepareTextForEmbedding } from "./_core/embedding";
 import { eq } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
+
 
 interface GenerationStats {
   regulationsProcessed: number;
@@ -79,7 +81,7 @@ async function generateAllEmbeddings() {
 
   const db = await getDb();
   if (!db) {
-    console.error("[Embeddings] Database not available");
+    serverLogger.error("[Embeddings] Database not available");
     process.exit(1);
   }
 
@@ -123,7 +125,7 @@ async function generateAllEmbeddings() {
       );
     } catch (error) {
       stats.regulationsErrors++;
-      console.error(
+      serverLogger.error(
         `[Embeddings] ❌ Failed to generate embedding for ${regulation.celexId}:`,
         error
       );
@@ -173,7 +175,7 @@ async function generateAllEmbeddings() {
       );
     } catch (error) {
       stats.standardsErrors++;
-      console.error(
+      serverLogger.error(
         `[Embeddings] ❌ Failed to generate embedding for ${standard.standardCode}:`,
         error
       );

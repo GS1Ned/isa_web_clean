@@ -3,6 +3,8 @@ import { z } from "zod";
 import { getDb } from "../db";
 import { epcisBatchJobs, supplyChainAnalytics } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
+import { serverLogger } from "../_core/logger-wiring";
+
 import {
   parseEPCISDocument,
   processEPCISEvents,
@@ -86,7 +88,7 @@ export const batchEpcisRouter = router({
               })
               .where(eq(epcisBatchJobs.id, batchJob.insertId as number));
           } catch (error) {
-            console.error("Batch processing error:", error);
+            serverLogger.error("Batch processing error:", error);
             await db
               .update(epcisBatchJobs)
               .set({
