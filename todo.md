@@ -2849,3 +2849,80 @@ Note: CELLAR tests (27) are intentionally skipped as they require live EU endpoi
 - [ ] Verify transaction rollback test after fix
 
 **See docs/KNOWN_FAILURE_MODES.md for detailed analysis.**
+
+
+---
+
+## MANUS EXECUTOR MODE - BOUNDED TASKS (2025-01-04)
+
+**Context:** Temporarily switching from Integrator to Executor role to complete outstanding delegated work (Tasks 1 and 3) that Codex has not revised in a timely manner.
+
+**Scope:** STRICTLY LIMITED to items below. No new features, refactors, or architectural changes.
+
+### TASK 1 — DB Test Helpers (PR #4 equivalent)
+
+**Objective:** Bring Task 1 into full compliance with docs/CODEX_DELEGATION_SPEC.md
+
+- [x] Create server/test-helpers/db-test-utils.ts with 7 required functions:
+  - [x] setupDbTestIsolation()
+  - [x] createTestDb()
+  - [x] cleanupTestDb()
+  - [x] seedTestUser(db, overrides?)
+  - [x] seedTestNewsItem(db, overrides?)
+  - [x] seedTestEsrsDatapoint(db, overrides?)
+  - [x] seedTestGs1Attribute(db, overrides?)
+
+- [x] Implementation constraints:
+  - [x] Preserve existing transaction-based isolation approach
+  - [x] Seed helpers must work within transaction context
+  - [x] Use realistic defaults matching production schema
+  - [x] Support partial overrides via spread pattern
+  - [x] Fix Drizzle mysql2 insertId handling (use result[0].insertId or $returningId())
+
+- [x] Add unit tests: server/test-helpers/db-test-utils.test.ts
+  - [x] Verify seed helpers create valid records
+  - [x] Verify transaction rollback prevents cross-test pollution
+  - [x] Verify overrides work correctly
+
+- [x] Run targeted unit tests for new helpers (14/14 passing)
+- [ ] Run one full test suite after helpers complete
+
+- [ ] Deliverable: Open PR on branch `manus/complete-task-1-db-test-helpers`
+  - Title: "task: complete Task 1 DB test helpers (Manus executor)"
+
+### TASK 3 — CI Scripts (PR #5 equivalent)
+
+**Objective:** Bring Task 3 into full compliance with docs/CODEX_DELEGATION_SPEC.md
+
+- [ ] Fix scripts/run-ci-tests.sh:
+  - [ ] Remove ALL usage of --runInBand
+  - [ ] Use valid Vitest-compatible execution
+  - [ ] Fix printf format usage (use `printf --` or `%s`)
+  - [ ] Ensure script runs with `set -euo pipefail`
+
+- [ ] Add scripts/test-report.ts:
+  - [ ] Aggregate per-phase results
+  - [ ] Emit JSON summary suitable for CI artifacts
+  - [ ] No runtime coupling to production code
+
+- [ ] Add optional --coverage flag support:
+  - [ ] Opt-in only
+  - [ ] Must not be default
+
+- [ ] Update docs/CI_TESTING.md ONLY if required
+
+- [ ] Deliverable: Open PR on branch `manus/complete-task-3-ci-scripts`
+  - Title: "ci: complete Task 3 CI scripts (Manus executor)"
+
+### POST-EXECUTION
+
+After both PRs are opened:
+
+- [ ] Switch back to Integrator role
+- [ ] Review own PRs against CODEX_DELEGATION_SPEC.md
+- [ ] Run full test suite once
+- [ ] Merge only if green
+- [ ] Update project status to reflect Tasks 1 and 3 as completed
+- [ ] Enter idle integrator state
+
+**This is a bounded execution task. No other work is authorized.**
