@@ -1,6 +1,5 @@
 import { defineConfig } from "vitest/config";
 import path from "path";
-import { createMysqlConnection } from "./server/db-connection";
 
 const templateRoot = path.resolve(import.meta.dirname);
 
@@ -36,24 +35,12 @@ const dbDependentTests = [
   "server/routers.test.ts",
 ];
 
-async function isDatabaseAvailable() {
-  if (!process.env.DATABASE_URL) {
-    return false;
-  }
+export default defineConfig(() => {
+  // Use explicit environment flag instead of async detection
+  const runDbTests = process.env.RUN_DB_TESTS === "true" || process.env.DATABASE_URL;
+  const exclude = runDbTests ? [] : dbDependentTests;
 
-  try {
-    const connection = await createMysqlConnection(process.env.DATABASE_URL);
-    await connection.ping();
-    await connection.end();
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export default defineConfig(async () => {
-  const dbAvailable = await isDatabaseAvailable();
-  const exclude = dbAvailable ? [] : dbDependentTests;
+  console.log(`[vitest.config] RUN_DB_TESTS=${process.env.RUN_DB_TESTS}, DATABASE_URL=${!!process.env.DATABASE_URL}, excluding ${exclude.length} tests`);
 
   return {
     root: templateRoot,
@@ -74,6 +61,8 @@ export default defineConfig(async () => {
       ],
       exclude,
       setupFiles: ["./vitest.setup.ts"],
+      testTimeout: 30000, // 30s timeout for database tests
+      hookTimeout: 10000, // 10s timeout for setup/teardown hooks
     },
   };
 });

@@ -33,12 +33,11 @@ async function createPersistFn() {
     try {
       const insertSql = `
         INSERT INTO error_ledger
-          (trace_id, created_at, error_code, classification, commit_sha, branch, environment, affected_files, error_payload, failing_inputs, remediation_attempts, resolved)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+          (trace_id, error_code, classification, commit_sha, branch, environment, affected_files, error_payload, failing_inputs, remediation_attempts, resolved)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
       `;
       const params = [
         row.trace_id,
-        row.created_at,
         row.error_code ?? null,
         row.classification ?? null,
         row.commit_sha ?? null,
