@@ -1,25 +1,31 @@
-name: Console Check (server)
+name: Console Usage Check
 
 on:
   pull_request:
-    paths:
-      - "server/**"
-      - "scripts/**"
-      - "!**/*.test.ts"
+    branches: [main]
+  push:
+    branches: [main]
 
 jobs:
-  no-console-server:
+  check-console:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Find console.error / console.warn in server code
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          
+      - name: Install dependencies
+        run: npm install -g eslint
+        
+      - name: Check for console usage in server code
         run: |
-          set -e
-          MATCHES=$(git grep -n --line-number --heading --untracked -- "console\.error\|console\.warn" -- "server/*" "scripts/*" || true)
-          if [ -n "$MATCHES" ]; then
-            echo "❌ Found console.error/console.warn in server or scripts:"
-            echo "$MATCHES"
-            echo "Please replace with serverLogger.error/warn or justify in PR."
-            exit 1
-          fi
-          echo "✅ No console.error/console.warn found in server/"
+          npx eslint --no-eslintrc --config .eslintrc.server.json 'server/**/*.ts' 'server/**/*.js' --max-warnings 0
+          
+      - name: Report results
+        if: failure()
+        run: |
+          echo "❌ Console usage detected in server code. Please use serverLogger instead."
+          echo "See docs/SERVERLOGGER_INTEGRATION.md for migration guide."
