@@ -41,6 +41,9 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
+  // Trust proxy for proper IP detection behind reverse proxy
+  app.set('trust proxy', 1);
+
   // Security headers (production only)
   if (process.env.NODE_ENV === "production") {
     app.use(securityHeaders);
