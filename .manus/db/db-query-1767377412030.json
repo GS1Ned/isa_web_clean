@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `webhook_delivery_history` (\n\t`id` int AUTO_INCREMENT NOT NULL PRIMARY KEY,\n\t`platform` enum('slack', 'teams') NOT NULL,\n\t`webhook_url` text NOT NULL,\n\t`severity` enum('info', 'warning', 'critical') NOT NULL,\n\t`title` text NOT NULL,\n\t`message` text NOT NULL,\n\t`success` tinyint NOT NULL,\n\t`status_code` int,\n\t`attempts` int DEFAULT 1,\n\t`error` text,\n\t`delivered_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\tINDEX `platform_idx` (`platform`),\n\tINDEX `delivered_at_idx` (`delivered_at`),\n\tINDEX `success_idx` (`success`)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS `webhook_delivery_history` (\n\t`id` int AUTO_INCREMENT NOT NULL PRIMARY KEY,\n\t`platform` enum('slack', 'teams') NOT NULL,\n\t`webhook_url` text NOT NULL,\n\t`severity` enum('info', 'warning', 'critical') NOT NULL,\n\t`title` text NOT NULL,\n\t`message` text NOT NULL,\n\t`success` tinyint NOT NULL,\n\t`status_code` int,\n\t`attempts` int DEFAULT 1,\n\t`error` text,\n\t`delivered_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\tINDEX `platform_idx` (`platform`),\n\tINDEX `delivered_at_idx` (`delivered_at`),\n\tINDEX `success_idx` (`success`)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 288
-}

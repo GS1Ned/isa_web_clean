@@ -119,3 +119,6 @@ data/gs1_ref_corpus/xlsx
 __MACOSX
 data/external/
 data/external/Archive_2.zip
+
+# Manus cache files
+.manus/db/*.json

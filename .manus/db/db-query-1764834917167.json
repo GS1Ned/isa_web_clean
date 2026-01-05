@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `gs1_web_vocabulary` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `propertyName` varchar(255) NOT NULL UNIQUE,\n  `propertyUri` varchar(500) NOT NULL,\n  `className` varchar(255),\n  `description` text,\n  `datatype` varchar(100),\n  `dppRequirementId` int,\n  `esrsDatapointId` int,\n  `exampleValue` text,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `gs1_web_vocabulary_id` PRIMARY KEY(`id`),\n  INDEX `class_name_idx` (`className`)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS `gs1_web_vocabulary` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `propertyName` varchar(255) NOT NULL UNIQUE,\n  `propertyUri` varchar(500) NOT NULL,\n  `className` varchar(255),\n  `description` text,\n  `datatype` varchar(100),\n  `dppRequirementId` int,\n  `esrsDatapointId` int,\n  `exampleValue` text,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `gs1_web_vocabulary_id` PRIMARY KEY(`id`),\n  INDEX `class_name_idx` (`className`)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 185
-}

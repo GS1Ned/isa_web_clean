@@ -1,9 +1,0 @@
-{
-  "query": "ALTER TABLE hub_news_history ADD COLUMN gs1ImpactTags JSON AFTER credibilityScore;",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute ALTER TABLE hub_news_history ADD COLUMN gs1ImpactTags JSON AFTER credibilityScore;",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 464
-}

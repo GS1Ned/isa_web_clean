@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `attribute_regulation_mappings` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `attributeId` int NOT NULL,\n  `regulationId` int NOT NULL,\n  `esrsDatapointId` int,\n  `mappingReason` text,\n  `relevanceScore` decimal(3,2) DEFAULT 0.00,\n  `verifiedByAdmin` boolean DEFAULT FALSE,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  CONSTRAINT `attribute_regulation_mappings_id` PRIMARY KEY(`id`),\n  INDEX `attribute_id_idx` (`attributeId`),\n  INDEX `regulation_id_idx` (`regulationId`)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS `attribute_regulation_mappings` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `attributeId` int NOT NULL,\n  `regulationId` int NOT NULL,\n  `esrsDatapointId` int,\n  `mappingReason` text,\n  `relevanceScore` decimal(3,2) DEFAULT 0.00,\n  `verifiedByAdmin` boolean DEFAULT FALSE,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  CONSTRAINT `attribute_regulation_mappings_id` PRIMARY KEY(`id`),\n  INDEX `attribute_id_idx` (`attributeId`),\n  INDEX `regulation_id_idx` (`regulationId`)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 179
-}

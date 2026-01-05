@@ -1,8 +1,0 @@
-{
-  "query": "SELECT \n    code,\n    esrsStandard,\n    disclosureRequirement,\n    name,\n    dataType,\n    mandatory,\n    voluntary\nFROM esrs_datapoints\nWHERE name LIKE '%product%' \n   OR name LIKE '%material%' \n   OR name LIKE '%packaging%'\n   OR name LIKE '%supply%'\n   OR name LIKE '%chain%'\n   OR name LIKE '%waste%'\n   OR name LIKE '%recycl%'\n   OR name LIKE '%circular%'\n   OR name LIKE '%emission%'\n   OR name LIKE '%footprint%'\nLIMIT 50",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute SELECT \n    code,\n    esrsStandard,\n    disclosureRequirement,\n    name,\n    dataType,\n    mandatory,\n    voluntary\nFROM esrs_datapoints\nWHERE name LIKE '%product%' \n   OR name LIKE '%material%' \n   OR name LIKE '%packaging%'\n   OR name LIKE '%supply%'\n   OR name LIKE '%chain%'\n   OR name LIKE '%waste%'\n   OR name LIKE '%recycl%'\n   OR name LIKE '%circular%'\n   OR name LIKE '%emission%'\n   OR name LIKE '%footprint%'\nLIMIT 50",
-  "returncode": 1,
-  "logs": [
-    "ERROR 1054 (42S22) at line 1: Unknown column 'esrsstandard' in 'field list'"
-  ]
-}

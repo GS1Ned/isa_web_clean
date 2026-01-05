@@ -1,9 +1,0 @@
-{
-  "query": "ALTER TABLE esrs_datapoints DROP INDEX datapointId;\nALTER TABLE esrs_datapoints MODIFY COLUMN datapointId VARCHAR(255) NOT NULL;\nALTER TABLE esrs_datapoints ADD UNIQUE INDEX datapointId (datapointId);",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute ALTER TABLE esrs_datapoints DROP INDEX datapointId;\nALTER TABLE esrs_datapoints MODIFY COLUMN datapointId VARCHAR(255) NOT NULL;\nALTER TABLE esrs_datapoints ADD UNIQUE INDEX datapointId (datapointId);",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 1510
-}

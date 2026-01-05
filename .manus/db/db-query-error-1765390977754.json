@@ -1,8 +1,0 @@
-{
-  "query": "ALTER TABLE hub_news_history \nADD COLUMN sectorTags JSON AFTER gs1ImpactTags,\nADD COLUMN relatedStandardIds JSON AFTER sectorTags,\nADD COLUMN gs1ImpactAnalysis TEXT AFTER relatedStandardIds,\nADD COLUMN suggestedActions JSON AFTER gs1ImpactAnalysis;",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute ALTER TABLE hub_news_history \nADD COLUMN sectorTags JSON AFTER gs1ImpactTags,\nADD COLUMN relatedStandardIds JSON AFTER sectorTags,\nADD COLUMN gs1ImpactAnalysis TEXT AFTER relatedStandardIds,\nADD COLUMN suggestedActions JSON AFTER gs1ImpactAnalysis;",
-  "returncode": 1,
-  "logs": [
-    "ERROR 1054 (42S22) at line 1: Unknown column 'sectortags' in 'hub_news_history'"
-  ]
-}

@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS gs1_esrs_mappings (\n  mapping_id INT PRIMARY KEY,\n  level ENUM('product', 'company') NOT NULL,\n  esrs_standard VARCHAR(50) NOT NULL,\n  esrs_topic VARCHAR(255) NOT NULL,\n  data_point_name TEXT NOT NULL,\n  short_name VARCHAR(512) NOT NULL,\n  definition TEXT NOT NULL,\n  gs1_relevance TEXT NOT NULL,\n  source_document VARCHAR(255) DEFAULT 'GS1 Europe CSRD White Paper v1.0',\n  source_date VARCHAR(20) DEFAULT '2025-03-21',\n  source_authority VARCHAR(100) DEFAULT 'GS1 in Europe',\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS gs1_esrs_mappings (\n  mapping_id INT PRIMARY KEY,\n  level ENUM('product', 'company') NOT NULL,\n  esrs_standard VARCHAR(50) NOT NULL,\n  esrs_topic VARCHAR(255) NOT NULL,\n  data_point_name TEXT NOT NULL,\n  short_name VARCHAR(512) NOT NULL,\n  definition TEXT NOT NULL,\n  gs1_relevance TEXT NOT NULL,\n  source_document VARCHAR(255) DEFAULT 'GS1 Europe CSRD White Paper v1.0',\n  source_date VARCHAR(20) DEFAULT '2025-03-21',\n  source_authority VARCHAR(100) DEFAULT 'GS1 in Europe',\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 177
-}

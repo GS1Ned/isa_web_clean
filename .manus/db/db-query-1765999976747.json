@@ -1,9 +1,0 @@
-{
-  "query": "\nCREATE TABLE IF NOT EXISTS critical_event_alerts (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  eventId INT NOT NULL,\n  deliveryMethod ENUM('EMAIL', 'DASHBOARD_BANNER', 'DASHBOARD_NOTIFICATION', 'SLACK', 'TEAMS') NOT NULL,\n  userId INT NULL,\n  status ENUM('PENDING', 'SENT', 'DELIVERED', 'FAILED', 'BOUNCED') DEFAULT 'PENDING' NOT NULL,\n  errorMessage TEXT NULL,\n  sentAt TIMESTAMP NULL,\n  deliveredAt TIMESTAMP NULL,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,\n  INDEX eventId_idx (eventId),\n  INDEX userId_idx (userId),\n  INDEX status_idx (status)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci\n",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute \nCREATE TABLE IF NOT EXISTS critical_event_alerts (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  eventId INT NOT NULL,\n  deliveryMethod ENUM('EMAIL', 'DASHBOARD_BANNER', 'DASHBOARD_NOTIFICATION', 'SLACK', 'TEAMS') NOT NULL,\n  userId INT NULL,\n  status ENUM('PENDING', 'SENT', 'DELIVERED', 'FAILED', 'BOUNCED') DEFAULT 'PENDING' NOT NULL,\n  errorMessage TEXT NULL,\n  sentAt TIMESTAMP NULL,\n  deliveredAt TIMESTAMP NULL,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,\n  INDEX eventId_idx (eventId),\n  INDEX userId_idx (userId),\n  INDEX status_idx (status)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci\n",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 180
-}

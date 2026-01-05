@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `webhook_configuration` (\n\t`id` int AUTO_INCREMENT NOT NULL PRIMARY KEY,\n\t`platform` enum('slack', 'teams') NOT NULL,\n\t`webhook_url` text NOT NULL,\n\t`channel_name` varchar(255),\n\t`enabled` tinyint NOT NULL DEFAULT 1,\n\t`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\t`updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n\tINDEX `platform_idx` (`platform`),\n\tINDEX `enabled_idx` (`enabled`)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS `webhook_configuration` (\n\t`id` int AUTO_INCREMENT NOT NULL PRIMARY KEY,\n\t`platform` enum('slack', 'teams') NOT NULL,\n\t`webhook_url` text NOT NULL,\n\t`channel_name` varchar(255),\n\t`enabled` tinyint NOT NULL DEFAULT 1,\n\t`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\t`updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n\tINDEX `platform_idx` (`platform`),\n\tINDEX `enabled_idx` (`enabled`)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 253
-}

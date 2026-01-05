@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `gs1_attribute_code_lists` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `attributeId` int NOT NULL,\n  `code` varchar(50) NOT NULL,\n  `description` text,\n  `sortOrder` int DEFAULT 0,\n  `isActive` boolean DEFAULT TRUE,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  CONSTRAINT `gs1_attribute_code_lists_id` PRIMARY KEY(`id`),\n  INDEX `attribute_id_idx` (`attributeId`)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS `gs1_attribute_code_lists` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `attributeId` int NOT NULL,\n  `code` varchar(50) NOT NULL,\n  `description` text,\n  `sortOrder` int DEFAULT 0,\n  `isActive` boolean DEFAULT TRUE,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  CONSTRAINT `gs1_attribute_code_lists_id` PRIMARY KEY(`id`),\n  INDEX `attribute_id_idx` (`attributeId`)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 191
-}

@@ -1,9 +1,0 @@
-{
-  "query": "ALTER TABLE gs1_attributes MODIFY COLUMN datatype ENUM('text', 'number', 'boolean', 'date', 'code_list', 'url', 'other') NOT NULL;",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute ALTER TABLE gs1_attributes MODIFY COLUMN datatype ENUM('text', 'number', 'boolean', 'date', 'code_list', 'url', 'other') NOT NULL;",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 439
-}

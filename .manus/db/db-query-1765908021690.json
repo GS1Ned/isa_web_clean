@@ -1,9 +1,0 @@
-{
-  "query": "ALTER TABLE knowledge_embeddings MODIFY COLUMN sourceType ENUM('regulation', 'standard', 'esrs_datapoint', 'dutch_initiative', 'esrs_gs1_mapping') NOT NULL",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute ALTER TABLE knowledge_embeddings MODIFY COLUMN sourceType ENUM('regulation', 'standard', 'esrs_datapoint', 'dutch_initiative', 'esrs_gs1_mapping') NOT NULL",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 259
-}

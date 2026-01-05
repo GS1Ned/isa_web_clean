@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `epcis_event_templates` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `templateName` varchar(255) NOT NULL,\n  `eventType` enum('object','aggregation','transformation','transaction','association') NOT NULL,\n  `useCase` varchar(255),\n  `regulationId` int,\n  `esrsDatapointId` int,\n  `eventSchema` json NOT NULL,\n  `cbvVocabulary` json,\n  `description` text,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `epcis_event_templates_id` PRIMARY KEY(`id`),\n  INDEX `use_case_idx` (`useCase`),\n  INDEX `regulation_id_idx` (`regulationId`)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS `epcis_event_templates` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `templateName` varchar(255) NOT NULL,\n  `eventType` enum('object','aggregation','transformation','transaction','association') NOT NULL,\n  `useCase` varchar(255),\n  `regulationId` int,\n  `esrsDatapointId` int,\n  `eventSchema` json NOT NULL,\n  `cbvVocabulary` json,\n  `description` text,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `epcis_event_templates_id` PRIMARY KEY(`id`),\n  INDEX `use_case_idx` (`useCase`),\n  INDEX `regulation_id_idx` (`regulationId`)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 186
-}

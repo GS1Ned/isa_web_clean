@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS news_recommendations (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  news_id INT NOT NULL,\n  resource_type VARCHAR(50) NOT NULL,\n  resource_id INT NOT NULL,\n  resource_title VARCHAR(512),\n  relevance_score DECIMAL(3,2) NOT NULL,\n  reasoning TEXT,\n  matched_keywords TEXT,\n  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  INDEX idx_news_id (news_id),\n  INDEX idx_resource (resource_type, resource_id)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS news_recommendations (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  news_id INT NOT NULL,\n  resource_type VARCHAR(50) NOT NULL,\n  resource_id INT NOT NULL,\n  resource_title VARCHAR(512),\n  relevance_score DECIMAL(3,2) NOT NULL,\n  reasoning TEXT,\n  matched_keywords TEXT,\n  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  INDEX idx_news_id (news_id),\n  INDEX idx_resource (resource_type, resource_id)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 249
-}

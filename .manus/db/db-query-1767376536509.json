@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `alert_history` (\n\t`id` int AUTO_INCREMENT NOT NULL PRIMARY KEY,\n\t`alert_type` varchar(50) NOT NULL,\n\t`severity` varchar(20) NOT NULL,\n\t`title` varchar(255) NOT NULL,\n\t`message` text NOT NULL,\n\t`metadata` json,\n\t`notification_sent` tinyint NOT NULL DEFAULT 0,\n\t`acknowledged_at` timestamp NULL,\n\t`acknowledged_by` int,\n\t`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\tINDEX `alert_type_idx` (`alert_type`),\n\tINDEX `severity_idx` (`severity`),\n\tINDEX `created_at_idx` (`created_at`),\n\tINDEX `acknowledged_at_idx` (`acknowledged_at`)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 31QbGTVHxF7ThTp.root --database cozU6EotfgGjqPV9552owj --execute CREATE TABLE IF NOT EXISTS `alert_history` (\n\t`id` int AUTO_INCREMENT NOT NULL PRIMARY KEY,\n\t`alert_type` varchar(50) NOT NULL,\n\t`severity` varchar(20) NOT NULL,\n\t`title` varchar(255) NOT NULL,\n\t`message` text NOT NULL,\n\t`metadata` json,\n\t`notification_sent` tinyint NOT NULL DEFAULT 0,\n\t`acknowledged_at` timestamp NULL,\n\t`acknowledged_by` int,\n\t`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\tINDEX `alert_type_idx` (`alert_type`),\n\tINDEX `severity_idx` (`severity`),\n\tINDEX `created_at_idx` (`created_at`),\n\tINDEX `acknowledged_at_idx` (`acknowledged_at`)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 212
-}
