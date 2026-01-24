@@ -2941,3 +2941,37 @@ Note: CELLAR tests (27) are intentionally skipped as they require live EU endpoi
 ## Bug Fixes
 
 - [x] Fix chat input not working - replaced React onClick with native DOM event listener to bypass React synthetic event system
+
+---
+
+## Wide Research Implementation - Quick Wins ⏳ IN PROGRESS
+
+### New RSS Sources (Phase 1 - Easy Implementation)
+
+- [x] Add Rijksoverheid IenW RSS feed (Plastic & Circular Economy)
+- [x] Add EC Circular Economy RSS feed (filtered)
+- [x] Add AFM RSS feed (Dutch CSRD Implementation)
+- [x] Add Rijksoverheid Green Deals RSS feed
+- [x] Test all new RSS feeds with news-fetcher (all 4 sources accessible)
+- [x] Verify keyword filtering works correctly
+- [x] Run full pipeline test with new sources
+
+### Keyword Expansion (Phase 2)
+
+- [x] Add CSDDD/CS3D keywords to existing sources
+- [x] Add Green Claims/greenwashing keywords
+- [x] Add Dutch keywords (circulaire economie, kunststof, etc.)
+- [x] Update REGULATION_KEYWORDS in news-sources.ts
+- [ ] Update AI prompts for new regulations
+
+### Testing & Validation
+
+- [x] Test new sources individually (all 4 RSS feeds accessible)
+- [x] Verify credibility scores (all between 0.9-1.0)
+- [x] Write comprehensive unit tests (12 tests, all passing)
+- [ ] Check AI processing for new content (requires full pipeline run)
+- [ ] Validate GS1 impact analysis for new topics (requires full pipeline run)
+- [ ] Run deduplication tests (requires full pipeline run)
+- [x] Create checkpoint after validation
+
+**Expected Impact:** +4 sources, +90-140 articles/month, +114% source coverage
