@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useRoute } from "wouter";
 import { NewsCard } from "@/components/NewsCard";
 import { NewsCardSkeleton } from "@/components/NewsCardSkeleton";
+import { PipelineStatusBanner } from "@/components/PipelineStatusBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -180,8 +181,13 @@ export default function NewsHub() {
         </div>
       </div>
 
+      {/* Pipeline Status Banner */}
+      <div className="container max-w-6xl pt-6">
+        <PipelineStatusBanner />
+      </div>
+
       {/* Filters */}
-      <div className="container max-w-6xl py-8">
+      <div className="container max-w-6xl py-6">
         <div className="bg-card rounded-lg border p-6 mb-6 space-y-4">
           <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground mb-3">
             <Filter className="h-4 w-4" />

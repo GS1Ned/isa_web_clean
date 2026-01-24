@@ -3023,3 +3023,33 @@ Note: CELLAR tests (27) are intentionally skipped as they require live EU endpoi
 - Monitor daily runs for continued content flow
 - Consider adding Phase 3 sources (medium complexity scrapers)
 - Update AI prompts for CSDDD and Green Claims regulations
+
+---
+
+## News Hub UI Improvements ⏳ IN PROGRESS
+
+### Date Display Enhancement
+- [x] Replace relative time ("about 1 month ago") with explicit dates ("23 Dec 2025")
+- [x] Update homepage Latest News component (NewsCardCompact)
+- [x] Update News Hub list component (NewsCard)
+- [x] Ensure date formatting is consistent across all views (format: "d MMM yyyy")
+
+### Sorting Improvements
+- [x] Add "Sort by Impact" option to News Hub (already exists)
+- [x] Implement impact-based sorting (High > Medium > Low) (already exists)
+- [x] Preserve current "Latest First" as default (already exists)
+- [x] Update UI to show active sort option (already exists)
+
+### Pipeline Status Banner
+- [x] Add banner showing last pipeline run timestamp
+- [x] Display on News Hub page
+- [x] Show duration, fetched, processed, saved counts
+- [x] Add visual indicator for pipeline status (success/running/failed)
+- [x] Create tRPC procedure to fetch last pipeline run
+
+### Testing
+- [x] Test date display on homepage (verified - shows "23 Dec 2025" format)
+- [x] Test date display on News Hub (verified - shows "23 Dec 2025" format)
+- [x] Test sorting functionality (already exists - "Highest Impact" works)
+- [x] Test pipeline status banner (verified - shows last run, duration, stats)
+- [x] Verify responsive design (visual check passed)

@@ -12,7 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 
 interface NewsCardProps {
   news: {
@@ -114,9 +114,7 @@ export function NewsCard({ news }: NewsCardProps) {
               </h3>
               <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                 <span>
-                  {formatDistanceToNow(new Date(publishedDate), {
-                    addSuffix: true,
-                  })}
+                  {format(new Date(publishedDate), "d MMM yyyy")}
                 </span>
                 <span>•</span>
                 {isMultiSource ? (

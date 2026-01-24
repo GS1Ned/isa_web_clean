@@ -5,7 +5,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, AlertCircle, Info } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 import { Link } from "wouter";
 
 interface NewsCardCompactProps {
@@ -64,9 +64,7 @@ export function NewsCardCompact({ news }: NewsCardCompactProps) {
             </h4>
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs text-muted-foreground">
-                {formatDistanceToNow(new Date(publishedDate), {
-                  addSuffix: true,
-                })}
+                {format(new Date(publishedDate), "d MMM yyyy")}
               </span>
               {Array.isArray(regulationTags) && regulationTags.length > 0 && (
                 <>

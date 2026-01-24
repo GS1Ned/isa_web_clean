@@ -18,7 +18,7 @@ import {
   
 } from "./db";
 import { getDb } from "./db";
-import { userSavedItems, userAlerts, hubNews } from "../drizzle/schema";
+import { userSavedItems, userAlerts, hubNews, pipelineExecutionLog } from "../drizzle/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 import { TRPCError } from "@trpc/server";
@@ -486,6 +486,26 @@ export const appRouter = router({
           return [];
         }
       }),
+
+    // Get last pipeline run status (public)
+    getLastPipelineRun: publicProcedure.query(async () => {
+      try {
+        const db = await getDb();
+        if (!db) return null;
+
+        const lastRun = await db
+          .select()
+          .from(pipelineExecutionLog)
+          .where(eq(pipelineExecutionLog.pipelineType, "news_ingestion"))
+          .orderBy(desc(pipelineExecutionLog.startedAt))
+          .limit(1);
+
+        return lastRun[0] || null;
+      } catch (error) {
+        serverLogger.error("[tRPC] Get last pipeline run failed:", error);
+        return null;
+      }
+    }),
 
     // Get AI recommendations for a news article
     getNewsRecommendations: publicProcedure
