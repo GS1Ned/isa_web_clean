@@ -3185,7 +3185,7 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 
 ### Step 5: Re-Score & Verification
 - [ ] Run pipeline to create events from existing articles
-- [ ] Execute formal re-score against rubric
+- [x] Execute formal re-score against rubric (see docs/PHASE_2_RESCORE.md)
 - [ ] Verify Check 5 = PASS
 - [ ] Verify Check 6 = PASS
 - [ ] Verify total score ≥ 85%
