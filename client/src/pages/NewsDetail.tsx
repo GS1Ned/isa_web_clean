@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { RecommendedResources } from "@/components/RecommendedResources";
-import { ArrowLeft, Calendar, ExternalLink, TrendingUp, ChevronRight, Sparkles } from "lucide-react";
+import { ArrowLeft, Calendar, ExternalLink, TrendingUp, ChevronRight, Sparkles, AlertTriangle, Shield, FileText, Scale, AlertCircle, Info } from "lucide-react";
 import { format } from "date-fns";
 
 // Type guard helpers for JSON fields
@@ -79,6 +79,38 @@ export default function NewsDetail() {
   const sources = isSourceArray(newsItem.sources) ? newsItem.sources : [];
   const gs1ImpactAnalysis = typeof newsItem.gs1ImpactAnalysis === 'string' ? newsItem.gs1ImpactAnalysis : null;
   const showGS1Impact = hasGS1ImpactContent(newsItem);
+  
+  // New regulatory intelligence fields
+  const regulatoryState = typeof newsItem.regulatoryState === 'string' ? newsItem.regulatoryState : null;
+  const confidenceLevel = typeof newsItem.confidenceLevel === 'string' ? newsItem.confidenceLevel : null;
+  const isNegativeSignal = Boolean(newsItem.isNegativeSignal);
+  const negativeSignalKeywords = isStringArray(newsItem.negativeSignalKeywords) ? newsItem.negativeSignalKeywords : [];
+  
+  // Check if this is a non-final regulation (needs stability warning)
+  const isNonFinalRegulation = regulatoryState && ['PROPOSAL', 'POLITICAL_AGREEMENT', 'DELEGATED_ACT_DRAFT'].includes(regulatoryState);
+  
+  // Regulatory State configuration
+  const regulatoryStateConfig: Record<string, { label: string; color: string; icon: React.ElementType; description: string }> = {
+    PROPOSAL: { label: "Proposal", color: "text-gray-600 bg-gray-100 dark:bg-gray-800", icon: FileText, description: "This is a legislative proposal that has not yet been adopted" },
+    POLITICAL_AGREEMENT: { label: "Political Agreement", color: "text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30", icon: Scale, description: "Political agreement reached, but formal adoption pending" },
+    ADOPTED: { label: "Adopted", color: "text-green-600 bg-green-100 dark:bg-green-900/30", icon: Shield, description: "Formally adopted legislation" },
+    DELEGATED_ACT_DRAFT: { label: "Delegated Act Draft", color: "text-orange-600 bg-orange-100 dark:bg-orange-900/30", icon: FileText, description: "Draft delegated act - subject to change" },
+    DELEGATED_ACT_ADOPTED: { label: "Delegated Act", color: "text-green-600 bg-green-100 dark:bg-green-900/30", icon: Shield, description: "Adopted delegated act" },
+    GUIDANCE: { label: "Guidance", color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30", icon: Info, description: "Official guidance or interpretation" },
+    ENFORCEMENT_SIGNAL: { label: "Enforcement", color: "text-red-600 bg-red-100 dark:bg-red-900/30", icon: AlertCircle, description: "Enforcement action or signal" },
+    POSTPONED_OR_SOFTENED: { label: "Postponed/Softened", color: "text-amber-600 bg-amber-100 dark:bg-amber-900/30", icon: AlertTriangle, description: "Requirements have been postponed or softened" },
+  };
+
+  // Confidence Level configuration
+  const confidenceLevelConfig: Record<string, { label: string; color: string; description: string }> = {
+    CONFIRMED_LAW: { label: "Confirmed Law", color: "text-green-700 bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800", description: "This information is based on confirmed, adopted legislation" },
+    DRAFT_PROPOSAL: { label: "Draft/Proposal", color: "text-yellow-700 bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800", description: "This information is based on draft or proposed legislation - subject to change" },
+    GUIDANCE_INTERPRETATION: { label: "Guidance", color: "text-blue-700 bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800", description: "This is official guidance or interpretation, not binding law" },
+    MARKET_PRACTICE: { label: "Market Practice", color: "text-gray-700 bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700", description: "This reflects market practice or industry interpretation" },
+  };
+
+  const stateConfig = regulatoryState ? regulatoryStateConfig[regulatoryState] : null;
+  const confConfig = confidenceLevel ? confidenceLevelConfig[confidenceLevel] : null;
 
   return (
     <div className="container py-8">
@@ -106,6 +138,29 @@ export default function NewsDetail() {
             <CardContent className="pt-6">
               <div className="space-y-4 mb-6">
                 <div className="flex flex-wrap gap-2">
+                  {/* Negative Signal Warning - Most prominent */}
+                  {isNegativeSignal && (
+                    <Badge variant="destructive" className="gap-1">
+                      <AlertTriangle className="h-3 w-3" />
+                      Weakening Signal
+                    </Badge>
+                  )}
+                  
+                  {/* Regulatory State Badge */}
+                  {stateConfig && (
+                    <Badge className={`gap-1 ${stateConfig.color}`}>
+                      <stateConfig.icon className="h-3 w-3" />
+                      {stateConfig.label}
+                    </Badge>
+                  )}
+                  
+                  {/* Confidence Level Badge */}
+                  {confConfig && (
+                    <Badge variant="outline" className={`border ${confConfig.color}`}>
+                      {confConfig.label}
+                    </Badge>
+                  )}
+                  
                   {newsItem.impactLevel ? (
                     <Badge
                       className={
@@ -130,6 +185,43 @@ export default function NewsDetail() {
                     </Badge>
                   )}
                 </div>
+                
+                {/* Stability Warning for Non-Final Regulations */}
+                {isNonFinalRegulation && (
+                  <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
+                      <div>
+                        <h4 className="font-semibold text-amber-800 dark:text-amber-200 text-sm">Draft/Proposal Status</h4>
+                        <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
+                          {stateConfig?.description || 'This regulatory information is based on draft or proposed legislation and is subject to change. Final requirements may differ significantly.'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Negative Signal Details */}
+                {isNegativeSignal && negativeSignalKeywords.length > 0 && (
+                  <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 shrink-0" />
+                      <div>
+                        <h4 className="font-semibold text-red-800 dark:text-red-200 text-sm">Weakening Signal Detected</h4>
+                        <p className="text-sm text-red-700 dark:text-red-300 mt-1">
+                          This article indicates potential delays, exemptions, or softening of regulatory requirements.
+                        </p>
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          {negativeSignalKeywords.map((keyword, idx) => (
+                            <Badge key={idx} variant="outline" className="text-xs border-red-300 text-red-700 dark:border-red-700 dark:text-red-300">
+                              {keyword}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <h1 className="text-3xl font-bold">{newsItem.title}</h1>
 

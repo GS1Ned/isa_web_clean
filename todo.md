@@ -3099,3 +3099,42 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 
 **Result:** Backend fully implemented with 32 passing tests. New fields (regulatory_state, is_negative_signal, negative_signal_keywords, confidence_level) added to database schema and AI processor. UI enhancements deferred to future iteration.
 
+
+
+---
+
+## Phase 1: Quality Improvement - UI Visibility (Jan 24, 2026)
+
+**Objective:** Surface existing implementations in UI and backfill data
+**Scope:** UI badges, backfill, stability warnings only — NO new intelligence logic
+**Quality Checkpoint:** v1 CONDITIONAL (16/33, 48%)
+
+### UI Badges for NewsCard (Check 3, 8, 11)
+- [x] Add regulatory_state badge to NewsCard component
+- [x] Add confidence_level badge to NewsCard component  
+- [x] Add negative_signal indicator to NewsCard component
+
+### UI Badges for NewsDetail (Check 3, 8, 11)
+- [x] Add regulatory_state badge to NewsDetail page
+- [x] Add confidence_level badge to NewsDetail page
+- [x] Add negative_signal indicator to NewsDetail page
+- [x] Add negative_signal_keywords display with details
+
+### Stability Warning (Check 7)
+- [x] Add stability/draft warning for non-final regulations (PROPOSAL, POLITICAL_AGREEMENT, DELEGATED_ACT_DRAFT states)
+- [x] Display warning on NewsDetail page for non-final articles
+
+### Backfill Existing Articles
+- [x] Run pipeline to backfill existing articles with new fields (35 total now)
+- [x] Verify regulatory_state populated for all articles (35/35 = 100%)
+- [x] Verify confidence_level populated for all articles (35/35 = 100%)
+- [x] Verify is_negative_signal populated for all articles (0 negative signals detected - expected for current content)
+
+### Quality Re-Score
+- [x] Re-score against original rubric (same 11 checks)
+- [x] Document changed scores only (see docs/PHASE_1_RESCORE.md)
+- [x] Confirm hard-gate failures (Check 5, 6) still open
+
+**Phase 1 Result:** 20/33 (61%) — up from 16/33 (48%)
+**Status:** CONDITIONAL (unchanged — hard-gate failures remain)
+**Score Improvement:** +4 points (+13%)

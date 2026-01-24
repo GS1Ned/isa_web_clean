@@ -5,7 +5,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ExternalLink, AlertCircle, Info, TrendingUp, Sparkles } from "lucide-react";
+import { ExternalLink, AlertCircle, Info, TrendingUp, Sparkles, AlertTriangle, Shield, FileText, Scale } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -35,6 +35,10 @@ interface NewsCardProps {
     sources?: Array<{ name: string; type: string; url: string }> | null;
     gs1ImpactAnalysis?: string | null;
     isAutomated?: boolean | number | null;
+    regulatoryState?: string | null;
+    confidenceLevel?: string | null;
+    isNegativeSignal?: boolean | number | null;
+    negativeSignalKeywords?: string[] | null;
   };
 }
 
@@ -54,6 +58,9 @@ export function NewsCard({ news }: NewsCardProps) {
     sources,
     gs1ImpactAnalysis,
     isAutomated,
+    regulatoryState,
+    confidenceLevel,
+    isNegativeSignal,
   } = news;
 
   const isMultiSource = sources && sources.length > 1;
@@ -100,6 +107,30 @@ export function NewsCard({ news }: NewsCardProps) {
     INDUSTRY: "Industry",
     MEDIA: "Media",
   };
+
+  // Regulatory State configuration
+  const regulatoryStateConfig: Record<string, { label: string; color: string; icon: typeof FileText }> = {
+    PROPOSAL: { label: "Proposal", color: "text-gray-600 bg-gray-100 dark:bg-gray-800", icon: FileText },
+    POLITICAL_AGREEMENT: { label: "Political Agreement", color: "text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30", icon: Scale },
+    ADOPTED: { label: "Adopted", color: "text-green-600 bg-green-100 dark:bg-green-900/30", icon: Shield },
+    DELEGATED_ACT_DRAFT: { label: "Delegated Act Draft", color: "text-orange-600 bg-orange-100 dark:bg-orange-900/30", icon: FileText },
+    DELEGATED_ACT_ADOPTED: { label: "Delegated Act", color: "text-green-600 bg-green-100 dark:bg-green-900/30", icon: Shield },
+    GUIDANCE: { label: "Guidance", color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30", icon: Info },
+    ENFORCEMENT_SIGNAL: { label: "Enforcement", color: "text-red-600 bg-red-100 dark:bg-red-900/30", icon: AlertCircle },
+    POSTPONED_OR_SOFTENED: { label: "Postponed/Softened", color: "text-amber-600 bg-amber-100 dark:bg-amber-900/30", icon: AlertTriangle },
+  };
+
+  // Confidence Level configuration
+  const confidenceLevelConfig: Record<string, { label: string; color: string }> = {
+    CONFIRMED_LAW: { label: "Confirmed Law", color: "text-green-700 bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800" },
+    DRAFT_PROPOSAL: { label: "Draft/Proposal", color: "text-yellow-700 bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800" },
+    GUIDANCE_INTERPRETATION: { label: "Guidance", color: "text-blue-700 bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800" },
+    MARKET_PRACTICE: { label: "Market Practice", color: "text-gray-700 bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700" },
+  };
+
+  const stateConfig = regulatoryState ? regulatoryStateConfig[regulatoryState] : null;
+  const confConfig = confidenceLevel ? confidenceLevelConfig[confidenceLevel] : null;
+  const showNegativeSignal = Boolean(isNegativeSignal);
 
   return (
     <Link href={`/news/${id}`}>
@@ -160,6 +191,56 @@ export function NewsCard({ news }: NewsCardProps) {
           </p>
 
           <div className="flex flex-wrap gap-2">
+            {/* Negative Signal Warning */}
+            {showNegativeSignal && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge variant="destructive" className="text-xs gap-1">
+                      <AlertTriangle className="h-3 w-3" />
+                      Weakening Signal
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-xs">This article indicates potential delays, exemptions, or softening of regulatory requirements</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            
+            {/* Regulatory State Badge */}
+            {stateConfig && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge variant="outline" className={`text-xs gap-1 ${stateConfig.color}`}>
+                      <stateConfig.icon className="h-3 w-3" />
+                      {stateConfig.label}
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-xs">Regulatory lifecycle state: {stateConfig.label}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            
+            {/* Confidence Level Badge */}
+            {confConfig && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge variant="outline" className={`text-xs border ${confConfig.color}`}>
+                      {confConfig.label}
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-xs">Confidence level: How certain is this regulatory information</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            
             <Badge variant="secondary" className="text-xs">
               {newsTypeLabels[newsType]}
             </Badge>
