@@ -28,6 +28,7 @@ import {
   resolvePipelineModeConfig,
   type PipelineMode,
 } from "./news-pipeline-config";
+import { detectEventFromArticle, createOrUpdateEvent } from "./news-event-processor";
 
 
 export interface PipelineOptions {
@@ -295,6 +296,36 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
               recError
             );
             // Don't fail the whole pipeline if recommendations fail
+          }
+          
+          // Phase 2: Create/update regulatory event for this article
+          try {
+            const eventDetection = await detectEventFromArticle({
+              id: createdNews.id,
+              title: newsItem.title,
+              content: newsItem.content,
+              summary: newsItem.summary,
+              regulationTags: newsItem.regulationTags,
+              publishedDate: newsItem.publishedDate,
+              sourceType: newsItem.sourceType,
+            });
+            
+            if (eventDetection) {
+              const eventResult = await createOrUpdateEvent(createdNews.id, eventDetection);
+              console.log(
+                `[news-pipeline] ${eventResult.isNew ? 'Created' : 'Updated'} event for news ${createdNews.id} (status: ${eventResult.status})`
+              );
+            } else {
+              console.log(
+                `[news-pipeline] No regulatory event detected for news ${createdNews.id}`
+              );
+            }
+          } catch (eventError) {
+            serverLogger.error(
+              `[news-pipeline] Failed to process event for news ${createdNews.id}:`,
+              eventError
+            );
+            // Don't fail the whole pipeline if event processing fails
           }
         }
       } catch (error) {

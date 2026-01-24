@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { RecommendedResources } from "@/components/RecommendedResources";
+import { EventContext } from "@/components/EventContext";
 import { ArrowLeft, Calendar, ExternalLink, TrendingUp, ChevronRight, Sparkles, AlertTriangle, Shield, FileText, Scale, AlertCircle, Info } from "lucide-react";
 import { format } from "date-fns";
 
@@ -46,6 +47,12 @@ export default function NewsDetail() {
       { newsId },
       { enabled: newsId > 0 }
     );
+
+  // Get event context for this article (Phase 2: Check 5)
+  const { data: eventForArticle } = trpc.hub.getEventForArticle.useQuery(
+    { articleId: newsId },
+    { enabled: newsId > 0 }
+  );
 
   const newsItem = newsItems?.find(item => item.id === newsId);
 
@@ -382,6 +389,11 @@ export default function NewsDetail() {
         </div>
 
         <div className="space-y-6">
+          {/* Event Context Section (Phase 2: Check 5 & 6) */}
+          {eventForArticle && (
+            <EventContext event={eventForArticle} />
+          )}
+
           {recsLoading ? (
             <Card>
               <CardContent className="pt-6">

@@ -57,6 +57,20 @@
       "when": 1769286758284,
       "tag": "0007_fair_fenris",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1769293503169,
+      "tag": "0008_long_tarantula",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1769294579657,
+      "tag": "0009_moaning_human_torch",
+      "breakpoints": true
     }
   ]
 }

@@ -3138,3 +3138,54 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 **Phase 1 Result:** 20/33 (61%) — up from 16/33 (48%)
 **Status:** CONDITIONAL (unchanged — hard-gate failures remain)
 **Score Improvement:** +4 points (+13%)
+
+
+---
+
+## Phase 2: Hard-Gate Closure Implementation (Jan 24, 2026)
+
+**Objective:** Close Check 5 (Event-Based Aggregation) and Check 6 (Delta Analysis)
+**Target Score:** ≥85%
+**Status:** IN PROGRESS
+
+### Step 1: Database Migrations
+- [x] Create `regulatory_events` table with approved schema
+- [x] Add dedup_key field (format: {primary_regulation}_{event_type}_{quarter})
+- [x] Add event_date_earliest / event_date_latest fields
+- [x] Add status enum (COMPLETE | INCOMPLETE | DRAFT)
+- [x] Add completeness_score field
+- [x] Add confidence_source field
+- [x] Add foreign key regulatory_event_id to hub_news table
+- [x] Run database migration (via SQL)
+
+### Step 2: Pipeline & Validation
+- [x] Create event detection logic in news-event-processor.ts
+- [x] Implement quarter-based deduplication (generateDedupKey function)
+- [x] Implement delta validation with minimum character thresholds (DELTA_MIN_CHARS)
+- [x] Implement forbidden placeholder detection (FORBIDDEN_PLACEHOLDERS)
+- [x] Implement completeness scoring algorithm (validateDelta function)
+- [x] Mark events as INCOMPLETE if delta validation fails
+- [x] 25 unit tests passing for event processing logic
+
+### Step 3: Article ↔ Event Linking
+- [x] Update pipeline to link articles to events via regulatory_event_id
+- [x] Handle existing events (add article to source_article_ids)
+- [x] Handle new events (create event, link article)
+- [x] Pipeline integration code added to news-pipeline.ts
+
+### Step 4: Minimal UI
+- [x] Create EventContext component (client/src/components/EventContext.tsx)
+- [x] Create EventDetail page (client/src/pages/EventDetail.tsx)
+- [x] Add tRPC procedures: getEvents, getEventById, getEventStats, getEventForArticle
+- [x] Show COMPLETE/INCOMPLETE status badge
+- [x] Display delta analysis (5 required fields) on event detail page
+- [x] Add event context section to NewsDetail page
+- [x] Add route /events/:id for event detail pages
+- [x] 21 unit tests passing for event procedures
+
+### Step 5: Re-Score & Verification
+- [ ] Run pipeline to create events from existing articles
+- [ ] Execute formal re-score against rubric
+- [ ] Verify Check 5 = PASS
+- [ ] Verify Check 6 = PASS
+- [ ] Verify total score ≥ 85%

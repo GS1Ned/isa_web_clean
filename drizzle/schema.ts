@@ -898,6 +898,8 @@ export const hubNews = mysqlTable("hub_news", {
 	isNegativeSignal: tinyint("is_negative_signal").default(0),
 	confidenceLevel: mysqlEnum("confidence_level", ['CONFIRMED_LAW','DRAFT_PROPOSAL','GUIDANCE_INTERPRETATION','MARKET_PRACTICE']).default('GUIDANCE_INTERPRETATION'),
 	negativeSignalKeywords: json("negative_signal_keywords"),
+	// Phase 2: Link to canonical regulatory event
+	regulatoryEventId: int("regulatory_event_id"),
 });
 
 export const hubNewsHistory = mysqlTable("hub_news_history", {
@@ -1951,3 +1953,98 @@ export type WebhookConfiguration = typeof webhookConfiguration.$inferSelect;
 export type InsertWebhookConfiguration = typeof webhookConfiguration.$inferInsert;
 export type WebhookDeliveryHistory = typeof webhookDeliveryHistory.$inferSelect;
 export type InsertWebhookDeliveryHistory = typeof webhookDeliveryHistory.$inferInsert;
+
+
+// ============================================================================
+// REGULATORY EVENTS TABLE (Phase 2: Hard-Gate Closure)
+// ============================================================================
+// Canonical event model for Check 5 (Event-Based Aggregation) and Check 6 (Delta Analysis)
+// Events are the decision unit; articles link to events, not vice versa.
+
+export const regulatoryEvents = mysqlTable("regulatory_events", {
+	id: int().autoincrement().notNull(),
+	
+	// Event identification
+	dedupKey: varchar("dedup_key", { length: 255 }).notNull(), // Format: {primary_regulation}_{event_type}_{quarter}
+	eventType: mysqlEnum("event_type", [
+		'PROPOSAL',
+		'POLITICAL_AGREEMENT',
+		'ADOPTION',
+		'DELEGATED_ACT_DRAFT',
+		'DELEGATED_ACT_ADOPTION',
+		'IMPLEMENTING_ACT',
+		'GUIDANCE_PUBLICATION',
+		'ENFORCEMENT_START',
+		'DEADLINE_MILESTONE',
+		'POSTPONEMENT',
+		'AMENDMENT'
+	]).notNull(),
+	
+	// Affected regulations
+	primaryRegulation: varchar("primary_regulation", { length: 64 }).notNull(), // e.g., "CSDDD", "CSRD", "ESPR"
+	affectedRegulations: json("affected_regulations").notNull(), // Array of regulation codes
+	
+	// Lifecycle state
+	lifecycleState: mysqlEnum("lifecycle_state", [
+		'PROPOSAL',
+		'POLITICAL_AGREEMENT',
+		'ADOPTED',
+		'DELEGATED_ACT_DRAFT',
+		'DELEGATED_ACT_ADOPTED',
+		'GUIDANCE',
+		'ENFORCEMENT_SIGNAL',
+		'POSTPONED_OR_SOFTENED'
+	]).notNull(),
+	
+	// Event timing
+	eventDateEarliest: timestamp("event_date_earliest", { mode: 'string' }),
+	eventDateLatest: timestamp("event_date_latest", { mode: 'string' }),
+	eventQuarter: varchar("event_quarter", { length: 7 }).notNull(), // Format: "2025-Q1"
+	
+	// Delta Analysis (Check 6) - All 5 required fields
+	previousAssumption: text("previous_assumption"), // What was assumed before this event?
+	newInformation: text("new_information"), // What does this event reveal?
+	whatChanged: text("what_changed"), // What is explicitly different now?
+	whatDidNotChange: text("what_did_not_change"), // What remains stable?
+	decisionImpact: text("decision_impact"), // Why does this matter for decisions?
+	
+	// Event summary
+	eventTitle: varchar("event_title", { length: 512 }).notNull(),
+	eventSummary: text("event_summary"),
+	
+	// Source articles (linked via source_article_ids)
+	sourceArticleIds: json("source_article_ids").notNull(), // Array of hub_news IDs
+	
+	// Confidence and authority
+	confidenceLevel: mysqlEnum("confidence_level", [
+		'CONFIRMED_LAW',
+		'DRAFT_PROPOSAL',
+		'GUIDANCE_INTERPRETATION',
+		'MARKET_PRACTICE'
+	]).default('GUIDANCE_INTERPRETATION'),
+	confidenceSource: varchar("confidence_source", { length: 255 }), // Highest authority source
+	
+	// Status and completeness
+	status: mysqlEnum("status", ['COMPLETE', 'INCOMPLETE', 'DRAFT']).default('DRAFT').notNull(),
+	completenessScore: int("completeness_score").default(0), // 0-100, must be ≥80 for COMPLETE
+	
+	// Validation metadata
+	deltaValidationPassed: tinyint("delta_validation_passed").default(0),
+	missingDeltaFields: json("missing_delta_fields"), // Array of field names that failed validation
+	
+	// Timestamps
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("dedup_key_idx").on(table.dedupKey),
+	index("event_type_idx").on(table.eventType),
+	index("primary_regulation_idx").on(table.primaryRegulation),
+	index("lifecycle_state_idx").on(table.lifecycleState),
+	index("event_quarter_idx").on(table.eventQuarter),
+	index("status_idx").on(table.status),
+	index("completeness_score_idx").on(table.completenessScore),
+]);
+
+export type RegulatoryEvent = typeof regulatoryEvents.$inferSelect;
+export type InsertRegulatoryEvent = typeof regulatoryEvents.$inferInsert;
