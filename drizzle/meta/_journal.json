@@ -50,6 +50,13 @@
       "when": 1767377398667,
       "tag": "0006_glorious_terrax",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1769286758284,
+      "tag": "0007_fair_fenris",
+      "breakpoints": true
     }
   ]
 }

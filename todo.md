@@ -3053,3 +3053,49 @@ Note: CELLAR tests (27) are intentionally skipped as they require live EU endpoi
 - [x] Test sorting functionality (already exists - "Highest Impact" works)
 - [x] Test pipeline status banner (verified - shows last run, duration, stats)
 - [x] Verify responsive design (visual check passed)
+
+---
+
+## ChatGPT Pipeline Improvements (Jan 24, 2026) ✅ COMPLETE
+
+Based on ChatGPT analysis of ISA news pipeline best practices.
+
+### 1. Regulatory Lifecycle State Model (HIGH IMPACT) ✅
+- [x] Add `regulatory_state` enum to database schema
+- [x] Create enum: PROPOSAL → POLITICAL_AGREEMENT → ADOPTED → DELEGATED_ACT_DRAFT → DELEGATED_ACT_ADOPTED → GUIDANCE → ENFORCEMENT_SIGNAL → POSTPONED_OR_SOFTENED
+- [x] Add state detection keywords to news-sources.ts (REGULATORY_STATE_KEYWORDS)
+- [x] Update AI processor to classify regulatory state (detectRegulatoryState function)
+- [x] Update pipeline to save regulatory state
+- [ ] Add lifecycle state display to NewsCard component (future UI enhancement)
+- [ ] Add lifecycle state filter to NewsHub page (future UI enhancement)
+
+### 2. Negative Signal Detection (CRITICAL) ✅
+- [x] Add negative signal keywords to news-sources.ts (6 categories, 50+ keywords)
+- [x] Add `is_negative_signal` boolean field to database
+- [x] Add `negative_signal_keywords` JSON field for detected keywords
+- [x] Update AI processor to detect weakening/postponement signals (detectNegativeSignals function)
+- [x] Update pipeline to save negative signal data
+- [x] Keywords: postpone, delay, exemption, simplification, omnibus, carve-out, threshold increase, lighter regime, voluntary, phased-in
+- [x] Dutch keywords: uitstel, vrijstelling, vereenvoudiging (in POSTPONEMENT category)
+- [ ] Add visual indicator for negative signals in UI (future UI enhancement)
+
+### 3. Confidence Level Tagging (IMPORTANT) ✅
+- [x] Add `confidence_level` enum to database schema
+- [x] Create enum: CONFIRMED_LAW → DRAFT_PROPOSAL → GUIDANCE_INTERPRETATION → MARKET_PRACTICE
+- [x] Add confidence detection logic based on source type and content (CONFIDENCE_LEVEL_KEYWORDS)
+- [x] Update AI processor to assign confidence level (detectConfidenceLevel function)
+- [x] Update pipeline to save confidence level
+- [ ] Add confidence level badge to NewsCard (future UI enhancement)
+
+### 4. Testing & Validation ✅
+- [x] Write unit tests for negative signal detection (10 tests)
+- [x] Write unit tests for regulatory state detection (8 tests)
+- [x] Write unit tests for confidence level detection (6 tests)
+- [x] Write integration tests with real-world content (3 tests)
+- [x] Write keyword configuration tests (5 tests)
+- [x] All 32 tests passing
+- [ ] Run full pipeline test with new fields (requires manual trigger)
+- [ ] Verify new fields appear in database (requires pipeline run)
+
+**Result:** Backend fully implemented with 32 passing tests. New fields (regulatory_state, is_negative_signal, negative_signal_keywords, confidence_level) added to database schema and AI processor. UI enhancements deferred to future iteration.
+

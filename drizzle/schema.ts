@@ -893,6 +893,11 @@ export const hubNews = mysqlTable("hub_news", {
 	retrievedAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP'),
 	isAutomated: tinyint().default(0),
 	sources: json(),
+	// ChatGPT-recommended improvements for regulatory intelligence
+	regulatoryState: mysqlEnum("regulatory_state", ['PROPOSAL','POLITICAL_AGREEMENT','ADOPTED','DELEGATED_ACT_DRAFT','DELEGATED_ACT_ADOPTED','GUIDANCE','ENFORCEMENT_SIGNAL','POSTPONED_OR_SOFTENED']).default('ADOPTED'),
+	isNegativeSignal: tinyint("is_negative_signal").default(0),
+	confidenceLevel: mysqlEnum("confidence_level", ['CONFIRMED_LAW','DRAFT_PROPOSAL','GUIDANCE_INTERPRETATION','MARKET_PRACTICE']).default('GUIDANCE_INTERPRETATION'),
+	negativeSignalKeywords: json("negative_signal_keywords"),
 });
 
 export const hubNewsHistory = mysqlTable("hub_news_history", {

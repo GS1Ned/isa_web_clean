@@ -247,6 +247,12 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
           sectorTags: processed.sectorTags,
           gs1ImpactAnalysis: processed.gs1ImpactAnalysis,
           suggestedActions: processed.suggestedActions,
+
+          // ChatGPT-recommended regulatory intelligence fields
+          regulatoryState: processed.regulatoryState,
+          isNegativeSignal: processed.isNegativeSignal ? 1 : 0,
+          confidenceLevel: processed.confidenceLevel,
+          negativeSignalKeywords: processed.negativeSignalKeywords,
         };
 
         const createdNews = await createHubNews(newsItem);

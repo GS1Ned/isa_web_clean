@@ -371,3 +371,319 @@ export const IMPACT_KEYWORDS = {
     "call for evidence",
   ],
 };
+
+/**
+ * Negative Signal Keywords (ChatGPT recommendation)
+ * Track what disappears, weakens, or gets postponed - often where strategic insight lives
+ */
+export const NEGATIVE_SIGNAL_KEYWORDS = {
+  POSTPONEMENT: [
+    "postpone",
+    "postponed",
+    "postponement",
+    "delay",
+    "delayed",
+    "defer",
+    "deferred",
+    "deferral",
+    "extended deadline",
+    "deadline extension",
+    "pushed back",
+    "later than expected",
+  ],
+  EXEMPTION: [
+    "exemption",
+    "exempt",
+    "exempted",
+    "carve-out",
+    "carve out",
+    "excluded",
+    "exclusion",
+    "waiver",
+    "derogation",
+    "opt-out",
+  ],
+  SIMPLIFICATION: [
+    "simplification",
+    "simplified",
+    "streamlined",
+    "reduced requirements",
+    "lighter regime",
+    "proportionality",
+    "proportionate",
+    "less burdensome",
+    "administrative burden",
+    "omnibus",
+  ],
+  SCOPE_REDUCTION: [
+    "threshold increase",
+    "raised threshold",
+    "higher threshold",
+    "scope reduction",
+    "narrower scope",
+    "limited scope",
+    "fewer companies",
+    "smaller scope",
+    "reduced scope",
+  ],
+  VOLUNTARY: [
+    "voluntary",
+    "non-mandatory",
+    "optional",
+    "encouraged",
+    "recommended",
+    "best practice",
+    "soft law",
+    "guidance only",
+  ],
+  PHASED_IN: [
+    "phased-in",
+    "phased in",
+    "gradual implementation",
+    "transitional period",
+    "transition period",
+    "grace period",
+    "step-by-step",
+    "incremental",
+  ],
+};
+
+/**
+ * Regulatory Lifecycle State Keywords (ChatGPT recommendation)
+ * Map news content to regulatory lifecycle states for better classification
+ */
+export const REGULATORY_STATE_KEYWORDS = {
+  PROPOSAL: [
+    "proposal",
+    "proposed",
+    "draft proposal",
+    "legislative proposal",
+    "Commission proposal",
+    "initial proposal",
+    "first reading",
+  ],
+  POLITICAL_AGREEMENT: [
+    "political agreement",
+    "trilogue agreement",
+    "provisional agreement",
+    "Council agreement",
+    "Parliament agreement",
+    "compromise reached",
+    "deal reached",
+  ],
+  ADOPTED: [
+    "adopted",
+    "final adoption",
+    "formally adopted",
+    "approved",
+    "passed",
+    "enacted",
+    "signed into law",
+    "published in Official Journal",
+  ],
+  DELEGATED_ACT_DRAFT: [
+    "delegated act draft",
+    "draft delegated act",
+    "delegated regulation draft",
+    "implementing act draft",
+    "technical standards draft",
+    "RTS draft",
+    "ITS draft",
+  ],
+  DELEGATED_ACT_ADOPTED: [
+    "delegated act adopted",
+    "delegated regulation adopted",
+    "implementing act adopted",
+    "technical standards adopted",
+    "RTS adopted",
+    "ITS adopted",
+    "delegated act published",
+  ],
+  GUIDANCE: [
+    "guidance",
+    "guidelines",
+    "FAQ",
+    "Q&A",
+    "interpretation",
+    "clarification",
+    "implementation guidance",
+    "supervisory guidance",
+    "staff working document",
+  ],
+  ENFORCEMENT_SIGNAL: [
+    "enforcement",
+    "supervisory action",
+    "thematic review",
+    "inspection",
+    "penalty",
+    "fine",
+    "sanction",
+    "infringement",
+    "Dear CEO letter",
+    "supervisory priorities",
+  ],
+  POSTPONED_OR_SOFTENED: [
+    "postponed",
+    "delayed",
+    "softened",
+    "relaxed",
+    "eased",
+    "simplified",
+    "exemption added",
+    "scope reduced",
+    "threshold raised",
+    "omnibus",
+  ],
+};
+
+/**
+ * Confidence Level Keywords (ChatGPT recommendation)
+ * Determine the authority level of the news source content
+ */
+export const CONFIDENCE_LEVEL_KEYWORDS = {
+  CONFIRMED_LAW: [
+    "Official Journal",
+    "entered into force",
+    "legally binding",
+    "mandatory",
+    "regulation",
+    "directive",
+    "adopted text",
+    "final text",
+    "published law",
+  ],
+  DRAFT_PROPOSAL: [
+    "proposal",
+    "draft",
+    "proposed",
+    "under negotiation",
+    "trilogue",
+    "first reading",
+    "second reading",
+    "not yet adopted",
+    "pending approval",
+  ],
+  GUIDANCE_INTERPRETATION: [
+    "guidance",
+    "guidelines",
+    "FAQ",
+    "Q&A",
+    "interpretation",
+    "clarification",
+    "supervisory expectation",
+    "recommended",
+    "best practice",
+  ],
+  MARKET_PRACTICE: [
+    "industry practice",
+    "market standard",
+    "common approach",
+    "peer practice",
+    "sector initiative",
+    "voluntary standard",
+    "self-regulation",
+    "industry consensus",
+  ],
+};
+
+/**
+ * Helper function to detect negative signals in text
+ */
+export function detectNegativeSignals(text: string): {
+  isNegative: boolean;
+  keywords: string[];
+  categories: string[];
+} {
+  const lowerText = text.toLowerCase();
+  const foundKeywords: string[] = [];
+  const foundCategories: string[] = [];
+
+  for (const [category, keywords] of Object.entries(NEGATIVE_SIGNAL_KEYWORDS)) {
+    for (const keyword of keywords) {
+      if (lowerText.includes(keyword.toLowerCase())) {
+        foundKeywords.push(keyword);
+        if (!foundCategories.includes(category)) {
+          foundCategories.push(category);
+        }
+      }
+    }
+  }
+
+  return {
+    isNegative: foundKeywords.length > 0,
+    keywords: Array.from(new Set(foundKeywords)),
+    categories: foundCategories,
+  };
+}
+
+/**
+ * Helper function to determine regulatory state from text
+ */
+export function detectRegulatoryState(text: string): string {
+  const lowerText = text.toLowerCase();
+  
+  // Check in order of specificity (most specific first)
+  const stateOrder = [
+    'ENFORCEMENT_SIGNAL',
+    'POSTPONED_OR_SOFTENED',
+    'DELEGATED_ACT_ADOPTED',
+    'DELEGATED_ACT_DRAFT',
+    'ADOPTED',
+    'POLITICAL_AGREEMENT',
+    'GUIDANCE',
+    'PROPOSAL',
+  ];
+
+  for (const state of stateOrder) {
+    const keywords = REGULATORY_STATE_KEYWORDS[state as keyof typeof REGULATORY_STATE_KEYWORDS];
+    for (const keyword of keywords) {
+      if (lowerText.includes(keyword.toLowerCase())) {
+        return state;
+      }
+    }
+  }
+
+  return 'ADOPTED'; // Default
+}
+
+/**
+ * Helper function to determine confidence level from text and source
+ */
+export function detectConfidenceLevel(text: string, sourceType: string): string {
+  const lowerText = text.toLowerCase();
+  
+  // EU Official sources get higher confidence by default
+  if (sourceType === 'EU_OFFICIAL') {
+    // Check for specific confidence indicators
+    for (const keyword of CONFIDENCE_LEVEL_KEYWORDS.CONFIRMED_LAW) {
+      if (lowerText.includes(keyword.toLowerCase())) {
+        return 'CONFIRMED_LAW';
+      }
+    }
+    for (const keyword of CONFIDENCE_LEVEL_KEYWORDS.DRAFT_PROPOSAL) {
+      if (lowerText.includes(keyword.toLowerCase())) {
+        return 'DRAFT_PROPOSAL';
+      }
+    }
+    return 'GUIDANCE_INTERPRETATION';
+  }
+
+  // Check all levels for non-EU sources
+  for (const keyword of CONFIDENCE_LEVEL_KEYWORDS.CONFIRMED_LAW) {
+    if (lowerText.includes(keyword.toLowerCase())) {
+      return 'CONFIRMED_LAW';
+    }
+  }
+  for (const keyword of CONFIDENCE_LEVEL_KEYWORDS.DRAFT_PROPOSAL) {
+    if (lowerText.includes(keyword.toLowerCase())) {
+      return 'DRAFT_PROPOSAL';
+    }
+  }
+  for (const keyword of CONFIDENCE_LEVEL_KEYWORDS.GUIDANCE_INTERPRETATION) {
+    if (lowerText.includes(keyword.toLowerCase())) {
+      return 'GUIDANCE_INTERPRETATION';
+    }
+  }
+
+  return 'MARKET_PRACTICE'; // Default for non-official sources
+}

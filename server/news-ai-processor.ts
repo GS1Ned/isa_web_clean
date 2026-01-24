@@ -5,7 +5,13 @@
  */
 
 import { invokeLLM } from "./_core/llm";
-import { REGULATION_KEYWORDS, IMPACT_KEYWORDS } from "./news-sources";
+import { 
+  REGULATION_KEYWORDS, 
+  IMPACT_KEYWORDS,
+  detectNegativeSignals,
+  detectRegulatoryState,
+  detectConfidenceLevel,
+} from "./news-sources";
 import {
   GS1_IMPACT_TAGS,
   SECTOR_TAGS,
@@ -38,6 +44,12 @@ export interface ProcessedNews {
   sectorTags: string[]; // RETAIL, HEALTHCARE, FOOD, LOGISTICS, DIY, CONSTRUCTION, TEXTILES, etc.
   gs1ImpactAnalysis: string; // 2-3 sentences explaining GS1 relevance and impact
   suggestedActions: string[]; // 2-4 actionable next steps for GS1 NL members
+
+  // ChatGPT-recommended regulatory intelligence fields
+  regulatoryState: "PROPOSAL" | "POLITICAL_AGREEMENT" | "ADOPTED" | "DELEGATED_ACT_DRAFT" | "DELEGATED_ACT_ADOPTED" | "GUIDANCE" | "ENFORCEMENT_SIGNAL" | "POSTPONED_OR_SOFTENED";
+  isNegativeSignal: boolean;
+  confidenceLevel: "CONFIRMED_LAW" | "DRAFT_PROPOSAL" | "GUIDANCE_INTERPRETATION" | "MARKET_PRACTICE";
+  negativeSignalKeywords: string[] | null;
 }
 
 /**
@@ -83,6 +95,11 @@ function generateTestModeResponse(item: RawNewsItem): ProcessedNews {
   else if (text.includes("amendment")) newsType = "AMENDMENT";
   else if (text.includes("proposal")) newsType = "PROPOSAL";
   
+  // Detect new ChatGPT-recommended fields
+  const negativeSignals = detectNegativeSignals(text);
+  const regulatoryState = detectRegulatoryState(text) as ProcessedNews["regulatoryState"];
+  const confidenceLevel = detectConfidenceLevel(text, "EU_OFFICIAL") as ProcessedNews["confidenceLevel"];
+
   return {
     headline: item.title.slice(0, 100),
     summary: `${item.title} - Test mode deterministic summary`,
@@ -99,6 +116,11 @@ function generateTestModeResponse(item: RawNewsItem): ProcessedNews {
       "Assess current GS1 data model compliance",
       "Contact GS1 Netherlands for implementation guidance",
     ],
+    // ChatGPT-recommended regulatory intelligence fields
+    regulatoryState,
+    isNegativeSignal: negativeSignals.isNegative,
+    confidenceLevel,
+    negativeSignalKeywords: negativeSignals.keywords.length > 0 ? negativeSignals.keywords : null,
   };
 }
 
@@ -261,6 +283,12 @@ Sector Tags (select 1-3): ${Object.keys(SECTOR_TAGS).join(", ")}`,
     // Combine into summary
     const summary = `${result.whatHappened} ${result.whyItMatters}`;
 
+    // Detect ChatGPT-recommended regulatory intelligence fields from full text
+    const textForAnalysis = `${item.title} ${item.content || item.contentSnippet || ""}`;
+    const negativeSignals = detectNegativeSignals(textForAnalysis);
+    const regulatoryState = detectRegulatoryState(textForAnalysis) as ProcessedNews["regulatoryState"];
+    const confidenceLevel = detectConfidenceLevel(textForAnalysis, "EU_OFFICIAL") as ProcessedNews["confidenceLevel"];
+
     return {
       headline: result.headline || item.title.slice(0, 100),
       summary,
@@ -273,6 +301,11 @@ Sector Tags (select 1-3): ${Object.keys(SECTOR_TAGS).join(", ")}`,
       sectorTags: result.sectorTags || [],
       gs1ImpactAnalysis: result.gs1ImpactAnalysis || "",
       suggestedActions: result.suggestedActions || [],
+      // ChatGPT-recommended regulatory intelligence fields
+      regulatoryState,
+      isNegativeSignal: negativeSignals.isNegative,
+      confidenceLevel,
+      negativeSignalKeywords: negativeSignals.keywords.length > 0 ? negativeSignals.keywords : null,
     };
   } catch (error) {
     serverLogger.error("[news-ai-processor] Error processing news item:", error);
@@ -354,6 +387,11 @@ function fallbackProcessing(item: RawNewsItem): ProcessedNews {
     "Contact GS1 Netherlands for implementation guidance",
   ];
 
+  // Detect ChatGPT-recommended regulatory intelligence fields
+  const negativeSignals = detectNegativeSignals(text);
+  const regulatoryState = detectRegulatoryState(text) as ProcessedNews["regulatoryState"];
+  const confidenceLevel = detectConfidenceLevel(text, "EU_OFFICIAL") as ProcessedNews["confidenceLevel"];
+
   return {
     headline: item.title.slice(0, 100),
     summary: (item.content || item.contentSnippet || "").slice(0, 300),
@@ -367,6 +405,11 @@ function fallbackProcessing(item: RawNewsItem): ProcessedNews {
     sectorTags,
     gs1ImpactAnalysis,
     suggestedActions,
+    // ChatGPT-recommended regulatory intelligence fields
+    regulatoryState,
+    isNegativeSignal: negativeSignals.isNegative,
+    confidenceLevel,
+    negativeSignalKeywords: negativeSignals.keywords.length > 0 ? negativeSignals.keywords : null,
   };
 }
 
