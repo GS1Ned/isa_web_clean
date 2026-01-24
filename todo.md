@@ -3189,3 +3189,39 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [ ] Verify Check 5 = PASS
 - [ ] Verify Check 6 = PASS
 - [ ] Verify total score ≥ 85%
+
+
+---
+
+## Phase 2 Formal Closure (25 January 2026)
+
+**Eindstatus:** CONDITIONAL — NOT ISA-GRADE
+
+**Score:** 24/33 (73%)
+
+**Hard-gates:**
+- [x] Check 5 (Event-Based Aggregation) — GESLOTEN (infrastructure complete)
+- [x] Check 6 (Delta Analysis) — GESLOTEN (infrastructure complete)
+
+**Governance documents:**
+- [x] PHASE_2_RESCORE.md — Formal re-score
+- [x] PHASE_2_ADDENDUM.md — Governance correction
+
+**Phase 2 is formeel afgerond. Alle verdere stappen vallen onder Phase 3.**
+
+---
+
+## Phase 3 (Not Started)
+
+### Operationele Gaps (geen code-wijziging)
+- [ ] Pipeline run om events te creëren uit bestaande artikelen (Check 5 → 3/3)
+- [ ] Pipeline run met AI delta-extractie (Check 6 → 3/3)
+
+### Technische Gaps (code-wijziging)
+- [ ] Decision value type veld toevoegen (Check 1 → 3/3)
+- [ ] Stability risk indicator (Check 7 → 3/3)
+- [ ] Semantic drift control (Check 9 → optioneel)
+
+### Verificatie
+- [ ] Re-score na data-populatie
+- [ ] Bevestig ISA-GRADE ≥85%
