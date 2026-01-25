@@ -67,10 +67,10 @@ function SelectContent({
         )}
         position={position}
         align={align}
-        onInteractOutside={(e) => {
-          // Only prevent closing if clicking the trigger itself
-          const target = e.target as HTMLElement;
-          if (target.closest('[data-slot="select-trigger"]')) {
+        onPointerDownOutside={(e) => {
+          // Prevent closing when clicking on the trigger itself
+          const target = e.target as HTMLElement | null;
+          if (target?.closest('[data-slot="select-trigger"]')) {
             e.preventDefault();
           }
         }}
