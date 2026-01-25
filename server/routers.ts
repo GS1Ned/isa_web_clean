@@ -67,6 +67,7 @@ import { webhookConfigRouter, webhookConfigSchemas } from "./routers-webhook-con
 import { gapAnalyzerRouter } from "./routers/gap-analyzer.js";
 import { impactSimulatorRouter } from "./routers/impact-simulator.js";
 import { attributeRecommenderRouter } from "./routers/attribute-recommender.js";
+import { esgArtefactsRouter } from "./routers/esg-artefacts.js";
 import { evaluationRouter } from "./routers/evaluation.js";
 import { serverLogger } from "./_core/logger-wiring";
 
@@ -1287,6 +1288,13 @@ export const appRouter = router({
    * Provides recommendations with confidence scoring and epistemic markers
    */
   attributeRecommender: attributeRecommenderRouter,
+
+  /**
+   * EU ESG to GS1 Mapping Artefacts
+   * Frozen, audit-defensible baseline from EU_ESG_to_GS1_Mapping_v1.1
+   */
+  esgArtefacts: esgArtefactsRouter,
+
   webhookConfig: router({
     getConfigurations: protectedProcedure.query(() => webhookConfigRouter.getConfigurations()),
     saveConfiguration: protectedProcedure

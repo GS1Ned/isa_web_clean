@@ -2066,3 +2066,139 @@ export const regulatoryEvents = mysqlTable("regulatory_events", {
 
 export type RegulatoryEvent = typeof regulatoryEvents.$inferSelect;
 export type InsertRegulatoryEvent = typeof regulatoryEvents.$inferInsert;
+
+
+// ============================================================================
+// EU ESG to GS1 Mapping Artefact Tables (v1.1)
+// Source: EU_ESG_to_GS1_Mapping_v1.1 (frozen, audit-defensible baseline)
+// Integration Date: 2026-01-25
+// IMMUTABILITY: Content is semantically frozen. Do not alter.
+// ============================================================================
+
+/**
+ * Regulatory corpus - authoritative EU instruments
+ * Source: EU_ESG_to_GS1_Mapping_v1.1/data/corpus.json
+ */
+export const esgCorpus = mysqlTable("esg_corpus", {
+	id: int().autoincrement().notNull(),
+	instrumentId: varchar("instrument_id", { length: 32 }).notNull(),
+	name: varchar({ length: 512 }).notNull(),
+	status: varchar({ length: 32 }).notNull(), // confirmed, draft, etc.
+	scope: text().notNull(),
+	authoritySource: varchar("authority_source", { length: 128 }),
+	authorityReference: varchar("authority_reference", { length: 128 }),
+	eliUrl: varchar("eli_url", { length: 512 }),
+	celex: varchar({ length: 32 }),
+	lastVerified: varchar("last_verified", { length: 16 }),
+	formats: json(), // Array of format strings
+	effectStatus: varchar("effect_status", { length: 64 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("esg_corpus_instrument_id_unique").on(table.instrumentId),
+]);
+
+/**
+ * Legal obligations - article-level obligations from EU instruments
+ * Source: EU_ESG_to_GS1_Mapping_v1.1/data/obligations.json
+ */
+export const esgObligations = mysqlTable("esg_obligations", {
+	id: int().autoincrement().notNull(),
+	obligationId: varchar("obligation_id", { length: 32 }).notNull(),
+	instrumentId: varchar("instrument_id", { length: 32 }).notNull(),
+	article: varchar({ length: 128 }).notNull(),
+	obligationText: text("obligation_text").notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("esg_obligations_obligation_id_unique").on(table.obligationId),
+	index("esg_obligations_instrument_id_idx").on(table.instrumentId),
+]);
+
+/**
+ * Atomic requirements - decomposed obligations into computable requirements
+ * Source: EU_ESG_to_GS1_Mapping_v1.1/data/atomic_requirements.json
+ */
+export const esgAtomicRequirements = mysqlTable("esg_atomic_requirements", {
+	id: int().autoincrement().notNull(),
+	atomicId: varchar("atomic_id", { length: 32 }).notNull(),
+	obligationId: varchar("obligation_id", { length: 32 }).notNull(),
+	obligationRefInstrumentId: varchar("obligation_ref_instrument_id", { length: 32 }),
+	obligationRefArticle: varchar("obligation_ref_article", { length: 128 }),
+	subject: varchar({ length: 255 }).notNull(),
+	action: text().notNull(),
+	object: varchar({ length: 255 }),
+	scope: varchar({ length: 128 }),
+	timing: varchar({ length: 128 }),
+	enforcement: text(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("esg_atomic_requirements_atomic_id_unique").on(table.atomicId),
+	index("esg_atomic_requirements_obligation_id_idx").on(table.obligationId),
+]);
+
+/**
+ * Data requirements - data objects derived from atomic requirements
+ * Source: EU_ESG_to_GS1_Mapping_v1.1/data/data_requirements.json
+ */
+export const esgDataRequirements = mysqlTable("esg_data_requirements", {
+	id: int().autoincrement().notNull(),
+	dataId: varchar("data_id", { length: 32 }).notNull(),
+	atomicId: varchar("atomic_id", { length: 32 }).notNull(),
+	obligationId: varchar("obligation_id", { length: 32 }).notNull(),
+	dataClass: varchar("data_class", { length: 128 }).notNull(),
+	dataElements: json("data_elements").notNull(), // Array of data element strings
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("esg_data_requirements_data_id_unique").on(table.dataId),
+	index("esg_data_requirements_atomic_id_idx").on(table.atomicId),
+	index("esg_data_requirements_obligation_id_idx").on(table.obligationId),
+]);
+
+/**
+ * GS1 mappings with scoring - GS1 capability assessment per data requirement
+ * Source: EU_ESG_to_GS1_Mapping_v1.1/data/gs1_mapping.json + scoring.json
+ */
+export const esgGs1Mappings = mysqlTable("esg_gs1_mappings", {
+	id: int().autoincrement().notNull(),
+	dataId: varchar("data_id", { length: 32 }).notNull(),
+	// From gs1_mapping.json
+	gs1Capability: varchar("gs1_capability", { length: 64 }).notNull(), // none, partial, master data, traceability
+	gs1Standards: json("gs1_standards").notNull(), // Array of standard names
+	mappingStrength: varchar("mapping_strength", { length: 32 }).notNull(), // none, partial, strong
+	justification: text().notNull(),
+	sectorRelevance: varchar("sector_relevance", { length: 255 }),
+	// From scoring.json
+	regulatoryForce: int("regulatory_force"), // 1-5
+	informationInevitability: int("information_inevitability"), // 1-5
+	interoperabilityDependency: int("interoperability_dependency"), // 1-5
+	gs1SolutionFitness: int("gs1_solution_fitness"), // 1-5
+	sectorExposure: int("sector_exposure"), // 1-5
+	timeCriticality: int("time_criticality"), // 1-5
+	totalScore: int("total_score"),
+	scoreRationale: text("score_rationale"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("esg_gs1_mappings_data_id_unique").on(table.dataId),
+	index("esg_gs1_mappings_mapping_strength_idx").on(table.mappingStrength),
+	index("esg_gs1_mappings_total_score_idx").on(table.totalScore),
+]);
+
+// Type exports for EU ESG to GS1 Mapping tables
+export type EsgCorpus = typeof esgCorpus.$inferSelect;
+export type InsertEsgCorpus = typeof esgCorpus.$inferInsert;
+
+export type EsgObligation = typeof esgObligations.$inferSelect;
+export type InsertEsgObligation = typeof esgObligations.$inferInsert;
+
+export type EsgAtomicRequirement = typeof esgAtomicRequirements.$inferSelect;
+export type InsertEsgAtomicRequirement = typeof esgAtomicRequirements.$inferInsert;
+
+export type EsgDataRequirement = typeof esgDataRequirements.$inferSelect;
+export type InsertEsgDataRequirement = typeof esgDataRequirements.$inferInsert;
+
+export type EsgGs1Mapping = typeof esgGs1Mappings.$inferSelect;
+export type InsertEsgGs1Mapping = typeof esgGs1Mappings.$inferInsert;
