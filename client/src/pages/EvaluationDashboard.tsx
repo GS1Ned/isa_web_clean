@@ -54,6 +54,8 @@ import {
   TrendingUp,
   TrendingDown,
   Minus,
+  History,
+  LineChart,
 } from "lucide-react";
 import { AuthorityBadge, AuthorityLegend } from "@/components/AuthorityBadge";
 import type { AuthorityLevel } from "@/components/AuthorityBadge";
@@ -134,6 +136,12 @@ export default function EvaluationDashboard() {
   const [progress, setProgress] = useState(0);
   const [currentReport, setCurrentReport] = useState<EvaluationReport | null>(null);
   const [selectedResult, setSelectedResult] = useState<TestResult | null>(null);
+  const [showHistory, setShowHistory] = useState(false);
+
+  // Query for evaluation history
+  const historyQuery = trpc.evaluation.getHistory.useQuery(undefined, {
+    enabled: user?.role === 'admin',
+  });
 
   // tRPC mutation for running evaluation - MUST be before any early returns
   const evaluationMutation = trpc.evaluation.runEvaluation.useMutation({
@@ -650,6 +658,106 @@ export default function EvaluationDashboard() {
             </div>
           </TabsContent>
         </Tabs>
+      )}
+
+      {/* History Section */}
+      {historyQuery.data && historyQuery.data.length > 0 && (
+        <Card className="mb-6">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <History className="h-5 w-5 text-muted-foreground" />
+                <CardTitle>Evaluation History</CardTitle>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowHistory(!showHistory)}
+              >
+                {showHistory ? 'Hide' : 'Show'} History ({historyQuery.data.length} runs)
+              </Button>
+            </div>
+            <CardDescription>Track Ask ISA quality over time</CardDescription>
+          </CardHeader>
+          {showHistory && (
+            <CardContent>
+              {/* Trend Chart */}
+              <div className="mb-6">
+                <h4 className="font-medium mb-3 flex items-center gap-2">
+                  <LineChart className="h-4 w-4" />
+                  Score Trend
+                </h4>
+                <div className="h-32 flex items-end gap-1">
+                  {historyQuery.data.slice(-10).map((report, idx) => (
+                    <div
+                      key={report.id}
+                      className="flex-1 flex flex-col items-center gap-1"
+                    >
+                      <div
+                        className={`w-full rounded-t transition-all ${
+                          report.averageScore >= 0.8
+                            ? 'bg-green-500'
+                            : report.averageScore >= 0.6
+                            ? 'bg-yellow-500'
+                            : 'bg-red-500'
+                        }`}
+                        style={{ height: `${report.averageScore * 100}%` }}
+                        title={`${new Date(report.timestamp).toLocaleDateString()}: ${Math.round(report.averageScore * 100)}%`}
+                      />
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(report.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* History Table */}
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Tests</TableHead>
+                    <TableHead>Pass Rate</TableHead>
+                    <TableHead>Avg Score</TableHead>
+                    <TableHead>Citation Rate</TableHead>
+                    <TableHead>Run By</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {historyQuery.data.slice().reverse().slice(0, 10).map((report) => (
+                    <TableRow key={report.id}>
+                      <TableCell className="font-medium">
+                        {new Date(report.timestamp).toLocaleString()}
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-green-600">{report.passed}</span>
+                        {' / '}
+                        <span>{report.totalTests}</span>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={report.passed / report.totalTests >= 0.8 ? 'default' : 'secondary'}>
+                          {Math.round((report.passed / report.totalTests) * 100)}%
+                        </Badge>
+                      </TableCell>
+                      <TableCell className={getScoreColor(report.averageScore)}>
+                        {Math.round(report.averageScore * 100)}%
+                      </TableCell>
+                      <TableCell>
+                        {report.averageMetrics?.claimVerificationRate
+                          ? `${Math.round(report.averageMetrics.claimVerificationRate * 100)}%`
+                          : 'N/A'}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {report.runBy || 'Unknown'}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          )}
+        </Card>
       )}
 
       {/* Empty State */}

@@ -3560,3 +3560,23 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [x] Add examples of proper claim-citation pairing
 - [x] Add citation quality standards to system prompt
 - [x] Make inline citations the highest priority in response style
+
+
+---
+
+## Evaluation & Verification Tasks (Jan 25, 2026)
+
+### 1. Run Baseline Evaluation
+- [ ] Navigate to /admin/evaluation
+- [ ] Run the 41 golden set tests
+- [ ] Record baseline metrics
+
+### 2. Evaluation History UI
+- [ ] Add history trend chart to dashboard
+- [ ] Show historical evaluation reports
+- [ ] Display regression/improvement trends
+
+### 3. Test Claim Verification
+- [ ] Ask a question in Ask ISA
+- [ ] Verify inline citations are generated
+- [ ] Check claim verification rate
