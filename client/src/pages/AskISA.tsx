@@ -149,6 +149,16 @@ const SUGGESTED_QUESTIONS = [
   ...QUERY_LIBRARY.coverage.slice(0, 1),
 ];
 
+// Authority filter options
+const AUTHORITY_FILTER_OPTIONS = [
+  { value: 'all', label: 'All Sources' },
+  { value: 'official', label: 'Official Only' },
+  { value: 'verified', label: 'Verified & Above' },
+  { value: 'guidance', label: 'Guidance & Above' },
+] as const;
+
+type AuthorityFilter = typeof AUTHORITY_FILTER_OPTIONS[number]['value'];
+
 export default function AskISA() {
   const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -156,7 +166,25 @@ export default function AskISA() {
   const [conversationId, setConversationId] = useState<number | undefined>();
   const [advisoryVersion, setAdvisoryVersion] = useState("v1.0");
   const [showHistory, setShowHistory] = useState(false);
+  const [authorityFilter, setAuthorityFilter] = useState<AuthorityFilter>('all');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Filter sources based on authority level
+  const filterSourcesByAuthority = (sources: Message['sources']) => {
+    if (!sources || authorityFilter === 'all') return sources;
+    
+    const authorityOrder: AuthorityLevel[] = ['official', 'verified', 'guidance', 'industry', 'community'];
+    const filterIndex = authorityOrder.indexOf(
+      authorityFilter === 'verified' ? 'verified' : 
+      authorityFilter === 'guidance' ? 'guidance' : 'official'
+    );
+    
+    return sources.filter(source => {
+      const sourceLevel = source.authorityLevel || 'community';
+      const sourceIndex = authorityOrder.indexOf(sourceLevel);
+      return sourceIndex <= filterIndex;
+    });
+  };
 
   // Fetch conversation history (only for authenticated users)
   const conversationsQuery = trpc.askISA.getMyConversations.useQuery(
@@ -866,11 +894,25 @@ export default function AskISA() {
                   {/* Sources */}
                   {message.sources && message.sources.length > 0 && (
                     <div className="ml-4 space-y-2">
-                      <p className="text-xs font-medium text-muted-foreground">
-                        Sources:
-                      </p>
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs font-medium text-muted-foreground">
+                          Sources ({filterSourcesByAuthority(message.sources)?.length || 0} of {message.sources.length}):
+                        </p>
+                        <Select value={authorityFilter} onValueChange={(v) => setAuthorityFilter(v as AuthorityFilter)}>
+                          <SelectTrigger className="h-7 w-[140px] text-xs">
+                            <SelectValue placeholder="Filter by authority" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {AUTHORITY_FILTER_OPTIONS.map(opt => (
+                              <SelectItem key={opt.value} value={opt.value} className="text-xs">
+                                {opt.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
                       <div className="grid gap-2">
-                        {message.sources.map((source, sourceIdx) => (
+                        {filterSourcesByAuthority(message.sources)?.map((source, sourceIdx) => (
                           <Card
                             key={sourceIdx}
                             className="hover:bg-accent transition-colors"

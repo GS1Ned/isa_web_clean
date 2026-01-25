@@ -135,138 +135,85 @@ export default function EvaluationDashboard() {
   const [currentReport, setCurrentReport] = useState<EvaluationReport | null>(null);
   const [selectedResult, setSelectedResult] = useState<TestResult | null>(null);
 
-  // Check admin access
-  if (!user || user.role !== 'admin') {
-    return (
-      <div className="container mx-auto py-8 max-w-4xl">
-        <Card>
-          <CardHeader>
-            <CardTitle>Access Denied</CardTitle>
-            <CardDescription>
-              This page is only accessible to administrators.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    );
-  }
+  // tRPC mutation for running evaluation - MUST be before any early returns
+  const evaluationMutation = trpc.evaluation.runEvaluation.useMutation({
+    onSuccess: (data) => {
+      // Transform backend response to frontend format
+      const report: EvaluationReport = {
+        timestamp: data.timestamp,
+        totalTests: data.totalTests,
+        passedTests: data.passed,
+        failedTests: data.failed,
+        overallScore: data.averageScore,
+        averageMetrics: {
+          keywordCoverage: data.results.reduce((sum, r) => sum + r.metrics.keywordCoverage, 0) / data.results.length,
+          citationCount: data.results.reduce((sum, r) => sum + r.metrics.citationCount, 0) / data.results.length,
+          authorityScore: data.results.reduce((sum, r) => sum + r.metrics.authorityScore, 0) / data.results.length,
+          claimVerificationRate: data.results.reduce((sum, r) => sum + r.metrics.claimVerificationRate, 0) / data.results.length,
+          responseTime: data.results.reduce((sum, r) => sum + r.duration, 0) / data.results.length,
+        },
+        categoryBreakdown: Object.fromEntries(
+          Object.entries(data.byCategory).map(([key, val]) => [key, { ...val, score: val.avgScore }])
+        ),
+        difficultyBreakdown: Object.fromEntries(
+          Object.entries(data.byDifficulty).map(([key, val]) => [key, { ...val, score: val.avgScore }])
+        ),
+        results: data.results.map(r => ({
+          testCaseId: r.testCase.id,
+          question: r.testCase.question,
+          category: r.testCase.category,
+          difficulty: r.testCase.difficulty,
+          passed: r.passed,
+          score: r.score,
+          metrics: {
+            keywordCoverage: r.metrics.keywordCoverage,
+            citationCount: r.metrics.citationCount,
+            authorityScore: r.metrics.authorityScore,
+            claimVerificationRate: r.metrics.claimVerificationRate,
+            responseTime: r.duration,
+          },
+          issues: r.issues,
+        })),
+        regressions: data.regressions,
+        improvements: data.improvements,
+      };
+      setCurrentReport(report);
+      setIsRunning(false);
+      setProgress(100);
+    },
+    onError: (error) => {
+      console.error('Evaluation failed:', error);
+      setIsRunning(false);
+      setProgress(0);
+    },
+  });
 
-  // Simulated evaluation run (in production, this would call the backend)
+  // Run evaluation using backend
   const runEvaluation = async () => {
     setIsRunning(true);
     setProgress(0);
     setCurrentReport(null);
 
-    // Simulate progress
-    const totalSteps = 41; // Number of golden set test cases
-    for (let i = 0; i <= totalSteps; i++) {
-      await new Promise(resolve => setTimeout(resolve, 100));
-      setProgress(Math.round((i / totalSteps) * 100));
+    // Start progress animation
+    const progressInterval = setInterval(() => {
+      setProgress(prev => Math.min(prev + 2, 95));
+    }, 500);
+
+    try {
+      // Determine filters
+      const category = selectedCategory !== 'all' ? selectedCategory : undefined;
+      const difficulty = selectedDifficulty !== 'all' 
+        ? selectedDifficulty as 'basic' | 'intermediate' | 'advanced'
+        : undefined;
+
+      await evaluationMutation.mutateAsync({
+        category,
+        difficulty,
+        limit: 10, // Limit to 10 tests per run to avoid timeout
+      });
+    } finally {
+      clearInterval(progressInterval);
     }
-
-    // Generate mock report (in production, this comes from backend)
-    const mockReport: EvaluationReport = {
-      timestamp: new Date().toISOString(),
-      totalTests: 41,
-      passedTests: 35,
-      failedTests: 6,
-      overallScore: 0.85,
-      averageMetrics: {
-        keywordCoverage: 0.78,
-        citationCount: 3.2,
-        authorityScore: 0.72,
-        claimVerificationRate: 0.81,
-        responseTime: 2340,
-      },
-      categoryBreakdown: {
-        csrd_esrs: { total: 8, passed: 7, score: 0.88 },
-        eudr: { total: 7, passed: 6, score: 0.82 },
-        espr_dpp: { total: 6, passed: 5, score: 0.79 },
-        csddd: { total: 6, passed: 5, score: 0.83 },
-        gs1_standards: { total: 7, passed: 6, score: 0.86 },
-        cross_regulation: { total: 7, passed: 6, score: 0.84 },
-      },
-      difficultyBreakdown: {
-        basic: { total: 14, passed: 13, score: 0.92 },
-        intermediate: { total: 15, passed: 13, score: 0.84 },
-        advanced: { total: 12, passed: 9, score: 0.76 },
-      },
-      results: [
-        {
-          testCaseId: 'csrd_1',
-          question: 'What are the key disclosure requirements under CSRD for large companies?',
-          category: 'csrd_esrs',
-          difficulty: 'basic',
-          passed: true,
-          score: 0.92,
-          metrics: {
-            keywordCoverage: 0.85,
-            citationCount: 4,
-            authorityScore: 0.88,
-            claimVerificationRate: 0.95,
-            responseTime: 2100,
-          },
-          issues: [],
-          sources: [
-            { title: 'CSRD Directive 2022/2464', authorityLevel: 'official' },
-            { title: 'EFRAG ESRS Set 1', authorityLevel: 'verified' },
-          ],
-        },
-        {
-          testCaseId: 'eudr_1',
-          question: 'Which commodities are covered by EUDR?',
-          category: 'eudr',
-          difficulty: 'basic',
-          passed: true,
-          score: 0.95,
-          metrics: {
-            keywordCoverage: 0.92,
-            citationCount: 3,
-            authorityScore: 0.91,
-            claimVerificationRate: 1.0,
-            responseTime: 1800,
-          },
-          issues: [],
-          sources: [
-            { title: 'EUDR Regulation 2023/1115', authorityLevel: 'official' },
-          ],
-        },
-        {
-          testCaseId: 'cross_1',
-          question: 'How do CSRD and EUDR requirements overlap for food companies?',
-          category: 'cross_regulation',
-          difficulty: 'advanced',
-          passed: false,
-          score: 0.58,
-          metrics: {
-            keywordCoverage: 0.55,
-            citationCount: 2,
-            authorityScore: 0.65,
-            claimVerificationRate: 0.60,
-            responseTime: 3200,
-          },
-          issues: [
-            'Missing key overlap areas',
-            'Insufficient cross-references',
-            'Low claim verification rate',
-          ],
-          sources: [
-            { title: 'CSRD Directive 2022/2464', authorityLevel: 'official' },
-          ],
-        },
-      ],
-      regressions: [
-        'Cross-regulation queries show 5% decrease in accuracy',
-        'Advanced difficulty questions have higher failure rate',
-      ],
-      improvements: [
-        'Basic queries improved by 8% with hybrid search',
-        'Authority score increased by 12% with new model',
-      ],
-    };
-
-    setCurrentReport(mockReport);
-    setIsRunning(false);
   };
 
   const getScoreColor = (score: number) => {
@@ -286,6 +233,22 @@ export default function EvaluationDashboard() {
     if (selectedDifficulty !== 'all' && r.difficulty !== selectedDifficulty) return false;
     return true;
   }) || [];
+
+  // Check admin access - MUST be after all hooks
+  if (!user || user.role !== 'admin') {
+    return (
+      <div className="container mx-auto py-8 max-w-4xl">
+        <Card>
+          <CardHeader>
+            <CardTitle>Access Denied</CardTitle>
+            <CardDescription>
+              This page is only accessible to administrators.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-8 max-w-7xl">

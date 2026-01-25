@@ -67,6 +67,7 @@ import { webhookConfigRouter, webhookConfigSchemas } from "./routers-webhook-con
 import { gapAnalyzerRouter } from "./routers/gap-analyzer.js";
 import { impactSimulatorRouter } from "./routers/impact-simulator.js";
 import { attributeRecommenderRouter } from "./routers/attribute-recommender.js";
+import { evaluationRouter } from "./routers/evaluation.js";
 import { serverLogger } from "./_core/logger-wiring";
 
 import {
@@ -1126,6 +1127,11 @@ export const appRouter = router({
    * Ask ISA - RAG-powered Q&A Router
    */
   askISA: askISARouter,
+  
+  /**
+   * Evaluation - Golden set testing for Ask ISA
+   */
+  evaluation: evaluationRouter,
 
   /**
    * Citation Administration - Provenance and Deprecation Management

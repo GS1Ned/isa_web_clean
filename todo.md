@@ -3513,3 +3513,25 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [x] Quality metrics assessment (83 tests passing)
 - [x] Document remaining optimization opportunities
 - [x] Created comprehensive analysis report (ASK_ISA_OPTIMIZATION_COMPLETENESS_ANALYSIS.md)
+
+
+---
+
+## Ask ISA Final Improvements (Phase 2)
+
+### 1. Evaluation Dashboard Backend Connection
+- [ ] Create tRPC procedure for running golden set evaluation
+- [ ] Connect frontend "Run Evaluation" button to backend
+- [ ] Return real test results instead of mock data
+- [ ] Add progress indicator during evaluation
+
+### 2. Clickable Clarification Suggestions ✅ ALREADY IMPLEMENTED
+- [x] Make "Did you mean?" suggestions clickable (handleSuggestedQuestion)
+- [x] Auto-fill query input when suggestion clicked
+- [x] Auto-submit query after selection
+
+### 3. Authority Filtering ✅ COMPLETE
+- [x] Add authority filter dropdown to Ask ISA sources
+- [x] Filter sources by authority level (Official, Verified & Above, Guidance & Above)
+- [x] Show filtered count vs total count
+
