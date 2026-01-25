@@ -1,0 +1,261 @@
+[
+  {
+    "cteId": "cte_raw_material_sourcing",
+    "cteName": "Raw Material Sourcing",
+    "description": "Raw material is sourced from origin location and sent to producer/manufacturer",
+    "typicalKDEs": [
+      {
+        "kde": "who",
+        "description": "Physical location handling the raw material (origin facility)",
+        "gs1Standard": "GLN"
+      },
+      {
+        "kde": "what_product",
+        "description": "Raw material identification",
+        "gs1Standard": "GTIN"
+      },
+      {
+        "kde": "what_batch",
+        "description": "Batch/lot numbers for sourced raw materials",
+        "gs1Standard": "AI (10) - Batch/Lot"
+      },
+      {
+        "kde": "what_quantity",
+        "description": "Quantity of sourced raw materials",
+        "gs1Standard": "AI (30) - Count, AI (310n) - Net weight"
+      },
+      {
+        "kde": "when",
+        "description": "Time of sourcing/shipment",
+        "gs1Standard": "AI (11) - Production date, AI (13) - Packaging date"
+      },
+      {
+        "kde": "why",
+        "description": "Activity - sourcing, harvesting, extraction",
+        "gs1Standard": "EPCIS bizStep"
+      }
+    ],
+    "exampleStandards": ["EPCIS", "CBV", "GLN", "GTIN"],
+    "exampleRegulations": ["EUDR", "CSDDD", "ESPR/DPP"]
+  },
+  {
+    "cteId": "cte_production_manufacturing",
+    "cteName": "Production/Manufacturing",
+    "description": "Raw materials are transformed into finished or intermediary products at production facility",
+    "typicalKDEs": [
+      {
+        "kde": "who",
+        "description": "Production facility location",
+        "gs1Standard": "GLN"
+      },
+      {
+        "kde": "what_product",
+        "description": "Manufactured product identification",
+        "gs1Standard": "GTIN"
+      },
+      {
+        "kde": "what_batch",
+        "description": "Production batch/lot numbers for manufactured products",
+        "gs1Standard": "AI (10) - Batch/Lot"
+      },
+      {
+        "kde": "what_serial",
+        "description": "Serial numbers for individual product instances (if required)",
+        "gs1Standard": "AI (21) - Serial number"
+      },
+      {
+        "kde": "what_quantity",
+        "description": "Quantity of manufactured products",
+        "gs1Standard": "AI (30) - Count"
+      },
+      {
+        "kde": "when",
+        "description": "Time of production",
+        "gs1Standard": "AI (11) - Production date"
+      },
+      {
+        "kde": "what_inputs",
+        "description": "Identification of raw materials with corresponding batch numbers",
+        "gs1Standard": "GTIN + AI (10)"
+      },
+      {
+        "kde": "why",
+        "description": "Activity - manufacturing, assembly, transformation",
+        "gs1Standard": "EPCIS bizStep - commissioning"
+      }
+    ],
+    "exampleStandards": ["EPCIS", "CBV", "GLN", "GTIN"],
+    "exampleRegulations": ["ESPR/DPP", "PPWR", "Batteries Regulation", "CPR"]
+  },
+  {
+    "cteId": "cte_distribution_shipping",
+    "cteName": "Distribution/Shipping",
+    "description": "Products are shipped from producer to distributor, retailer, or customer",
+    "typicalKDEs": [
+      {
+        "kde": "who_from",
+        "description": "Shipping location (origin)",
+        "gs1Standard": "GLN"
+      },
+      {
+        "kde": "who_to",
+        "description": "Receiving location (destination)",
+        "gs1Standard": "GLN"
+      },
+      {
+        "kde": "what_product",
+        "description": "Product identification",
+        "gs1Standard": "GTIN"
+      },
+      {
+        "kde": "what_batch",
+        "description": "Batch/lot numbers for shipped products",
+        "gs1Standard": "AI (10) - Batch/Lot"
+      },
+      {
+        "kde": "what_quantity",
+        "description": "Quantity of shipped products",
+        "gs1Standard": "AI (30) - Count"
+      },
+      {
+        "kde": "when",
+        "description": "Time of shipment",
+        "gs1Standard": "AI (11) - Ship date"
+      },
+      {
+        "kde": "why",
+        "description": "Activity - shipping, dispatching",
+        "gs1Standard": "EPCIS bizStep - shipping"
+      }
+    ],
+    "exampleStandards": ["EPCIS", "CBV", "GLN", "GTIN", "SSCC"],
+    "exampleRegulations": ["ESPR/DPP", "EUDR", "PPWR"]
+  },
+  {
+    "cteId": "cte_receiving",
+    "cteName": "Receiving",
+    "description": "Products are received at distribution center, warehouse, or retail location",
+    "typicalKDEs": [
+      {
+        "kde": "who",
+        "description": "Receiving location",
+        "gs1Standard": "GLN"
+      },
+      {
+        "kde": "what_product",
+        "description": "Product identification",
+        "gs1Standard": "GTIN"
+      },
+      {
+        "kde": "what_batch",
+        "description": "Batch/lot numbers for received products",
+        "gs1Standard": "AI (10) - Batch/Lot"
+      },
+      {
+        "kde": "what_quantity",
+        "description": "Quantity of received products",
+        "gs1Standard": "AI (30) - Count"
+      },
+      {
+        "kde": "when",
+        "description": "Time of receipt",
+        "gs1Standard": "Timestamp in EPCIS event"
+      },
+      {
+        "kde": "why",
+        "description": "Activity - receiving, accepting",
+        "gs1Standard": "EPCIS bizStep - receiving"
+      }
+    ],
+    "exampleStandards": ["EPCIS", "CBV", "GLN", "GTIN"],
+    "exampleRegulations": ["ESPR/DPP", "EUDR", "PPWR"]
+  },
+  {
+    "cteId": "cte_retail_sale",
+    "cteName": "Retail Sale",
+    "description": "Product is sold to end consumer at point of sale",
+    "typicalKDEs": [
+      {
+        "kde": "who",
+        "description": "Retail location",
+        "gs1Standard": "GLN"
+      },
+      {
+        "kde": "what_product",
+        "description": "Product identification",
+        "gs1Standard": "GTIN"
+      },
+      {
+        "kde": "what_batch",
+        "description": "Batch/lot numbers for sold products (if tracked)",
+        "gs1Standard": "AI (10) - Batch/Lot"
+      },
+      {
+        "kde": "what_serial",
+        "description": "Serial numbers for individual product instances (if tracked)",
+        "gs1Standard": "AI (21) - Serial number"
+      },
+      {
+        "kde": "what_quantity",
+        "description": "Quantity sold",
+        "gs1Standard": "AI (30) - Count"
+      },
+      {
+        "kde": "when",
+        "description": "Time of sale",
+        "gs1Standard": "Timestamp in EPCIS event"
+      },
+      {
+        "kde": "why",
+        "description": "Activity - retail sale",
+        "gs1Standard": "EPCIS bizStep - retail_selling"
+      }
+    ],
+    "exampleStandards": ["EPCIS", "CBV", "GLN", "GTIN", "GS1 Digital Link"],
+    "exampleRegulations": ["ESPR/DPP", "PPWR"]
+  },
+  {
+    "cteId": "cte_end_of_life",
+    "cteName": "End of Life / Recycling",
+    "description": "Product reaches end of life and is collected for recycling, refurbishment, or disposal",
+    "typicalKDEs": [
+      {
+        "kde": "who",
+        "description": "Collection/recycling facility location",
+        "gs1Standard": "GLN"
+      },
+      {
+        "kde": "what_product",
+        "description": "Product identification",
+        "gs1Standard": "GTIN"
+      },
+      {
+        "kde": "what_batch",
+        "description": "Batch/lot numbers for collected products (if tracked)",
+        "gs1Standard": "AI (10) - Batch/Lot"
+      },
+      {
+        "kde": "what_serial",
+        "description": "Serial numbers for individual product instances (if tracked)",
+        "gs1Standard": "AI (21) - Serial number"
+      },
+      {
+        "kde": "what_quantity",
+        "description": "Quantity collected",
+        "gs1Standard": "AI (30) - Count"
+      },
+      {
+        "kde": "when",
+        "description": "Time of collection",
+        "gs1Standard": "Timestamp in EPCIS event"
+      },
+      {
+        "kde": "why",
+        "description": "Activity - recycling, refurbishing, disposing",
+        "gs1Standard": "EPCIS bizStep - recycling, repairing, destroying"
+      }
+    ],
+    "exampleStandards": ["EPCIS", "CBV", "GLN", "GTIN"],
+    "exampleRegulations": ["ESPR/DPP", "PPWR", "Batteries Regulation"]
+  }
+]

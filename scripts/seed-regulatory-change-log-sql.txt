@@ -1,0 +1,80 @@
+-- Seed script for Regulatory Change Log
+-- 6 initial entries based on ISA Development Roadmap
+
+-- 1. GS1 EU Carbon Footprint Guideline v1.0
+INSERT INTO regulatory_change_log (entryDate, sourceType, sourceOrg, title, description, url, impactAssessment, isaVersionAffected)
+VALUES (
+  '2025-02-15',
+  'GS1_EUROPE',
+  'GS1 in Europe',
+  'GDSN Implementation Guideline for Exchanging Carbon Footprint Data v1.0',
+  'Official GS1 EU standard for Product Carbon Footprint (PCF) data exchange via GDSN. Defines 9 GDSN BMS attributes for exchanging carbon footprint data across the value chain, including total carbon footprint, carbon footprint per unit, calculation method, and verification status.',
+  'https://gs1.eu/wp-content/uploads/2025/02/GDSN-Implementation-Guideline-for-exchanging-Carbon-Footprint-Data-3.pdf',
+  'Addresses ISA Gap #1 (Product Carbon Footprint) with PARTIAL solution. GS1 NL adoption pending in v3.1.34 release (Q2 2025). Provides standardised GDSN attributes for PCF data exchange, enabling supply chain transparency for CSRD and ESRS E1 compliance.',
+  'v1.1'
+);
+
+-- 2. GS1 Provisional DPP Standard
+INSERT INTO regulatory_change_log (entryDate, sourceType, sourceOrg, title, description, url, impactAssessment, isaVersionAffected)
+VALUES (
+  '2025-04-01',
+  'GS1_AISBL',
+  'GS1 AISBL',
+  'GS1 Provisional Digital Product Passport Standard',
+  'Provisional GS1 standard for Digital Product Passport (DPP) implementation, defining data structures, identification schemes, and interoperability requirements for EU DPP Regulation compliance. Covers product identification, circularity data, and supply chain traceability.',
+  'https://www.gs1.org/standards/digital-product-passport',
+  'Addresses ISA Gap #3 (Digital Product Passport) with PARTIAL solution. Provides GS1-compliant DPP data structures for ESPR and sector-specific DPP requirements (batteries, textiles, electronics). Adoption expected in GS1 NL v3.1.35 (Q3 2025).',
+  'v1.2'
+);
+
+-- 3. GS1 Conformant Resolver Standard v1.1.0
+INSERT INTO regulatory_change_log (entryDate, sourceType, sourceOrg, title, description, url, impactAssessment, isaVersionAffected)
+VALUES (
+  '2025-02-01',
+  'GS1_AISBL',
+  'GS1 AISBL',
+  'GS1 Conformant Resolver Standard v1.1.0',
+  'Updated GS1 Digital Link resolver standard defining conformance requirements for resolver implementations. Includes enhanced security requirements, performance benchmarks, and interoperability testing procedures for GS1 Digital Link URIs.',
+  'https://www.gs1.org/standards/gs1-digital-link/1-1',
+  'Addresses ISA Gap #2 (GS1 Digital Link Resolver) with COMPLETE solution. Provides conformance testing framework for resolver implementations, enabling reliable product identification and data access for DPP and traceability use cases.',
+  'v1.1'
+);
+
+-- 4. EFRAG Implementation Guidance 3
+INSERT INTO regulatory_change_log (entryDate, sourceType, sourceOrg, title, description, url, impactAssessment, isaVersionAffected)
+VALUES (
+  '2024-09-15',
+  'EFRAG_IG',
+  'EFRAG',
+  'ESRS Implementation Guidance 3: Value Chain Data Collection',
+  'EFRAG guidance on collecting value chain data for ESRS E1 (Climate), E2 (Pollution), and E4 (Biodiversity) disclosures. Clarifies data collection methodologies, estimation techniques, and materiality assessment for Scope 3 emissions and upstream/downstream impacts.',
+  'https://www.efrag.org/lab6/item/607',
+  'Clarifies ESRS data collection requirements for value chain impacts, reinforcing need for standardised GS1 traceability data (EPCIS, GDSN) to support CSRD compliance. Impacts ISA mapping recommendations for supply chain visibility and Scope 3 emissions tracking.',
+  'v1.0'
+);
+
+-- 5. EU ESPR Regulation
+INSERT INTO regulatory_change_log (entryDate, sourceType, sourceOrg, title, description, url, impactAssessment, isaVersionAffected)
+VALUES (
+  '2024-03-13',
+  'EU_REGULATION',
+  'European Commission',
+  'Regulation (EU) 2024/1781 on Ecodesign for Sustainable Products (ESPR)',
+  'EU Regulation establishing framework for ecodesign requirements for sustainable products, including Digital Product Passport (DPP) obligations. Sets out product-specific requirements for circularity, energy efficiency, and environmental impact across product categories.',
+  'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1781',
+  'Establishes legal basis for Digital Product Passport requirements, driving ISA Gap #3 (DPP) and Gap #5 (Circularity Data). Requires GS1 standards adoption for product identification, data exchange, and supply chain traceability across EU market.',
+  'v1.0'
+);
+
+-- 6. GS1 NL Sector Model v3.1.34 (Expected)
+INSERT INTO regulatory_change_log (entryDate, sourceType, sourceOrg, title, description, url, impactAssessment, isaVersionAffected)
+VALUES (
+  '2025-06-01',
+  'GS1_NL',
+  'GS1 Netherlands',
+  'GS1 NL Sector Model v3.1.34 Release (Expected Q2 2025)',
+  'Expected GS1 NL sector model update incorporating GS1 EU Carbon Footprint Guideline v1.0 attributes for DIY/Garden/Pet (DHZTD), Food/Health/Beauty (FMCG), and Healthcare (ECHO) sectors. Adds 9 PCF attributes to existing 3,667 attributes across three sector models.',
+  'https://www.gs1.nl/sector-models',
+  'If adopted, resolves ISA Gap #1 (Product Carbon Footprint) from PARTIAL to COMPLETE for GS1 NL members. Enables CSRD-compliant PCF data exchange via GDSN for Dutch supply chains. Triggers ISA advisory update to v1.2 with revised Gap #1 status and recommendations.',
+  'v1.2'
+);

@@ -1,0 +1,272 @@
+{
+  "metadata": {
+    "source": "GDSN Implementation Guideline for exchanging Carbon Footprint Data",
+    "publisher": "GS1 in Europe",
+    "version": "1.0",
+    "status": "Ratified",
+    "publicationDate": "2025-02",
+    "effectiveDate": "2025-02",
+    "documentPages": 14,
+    "extractionDate": "2025-01-14",
+    "extractedBy": "ISA Execution Agent"
+  },
+  "classes": [
+    {
+      "className": "CarbonFootPrintHeader",
+      "description": "Attributes not repeated, applicable to CFP attributes of the trade item. Data only required for Consumer Units.",
+      "attributes": [
+        {
+          "bmsId": "8700",
+          "gdsnName": "cfpCountryCode",
+          "attributeName": "CFP Target Market Code",
+          "definition": "The code specifying a target market for which the carbon footprint values have been calculated. Transportation emissions can greatly vary from country to country.",
+          "instruction": "Populate the country code for which the values have been calculated.",
+          "businessUsage": "Used by the seller and the buyer to identify the country for which the carbon footprint data has been calculated.",
+          "dataType": "Code",
+          "codeList": "countryCode",
+          "example": "528 (Netherlands)",
+          "mandatory": false,
+          "repeatable": false
+        },
+        {
+          "bmsId": "8716",
+          "gdsnName": "cfpDate",
+          "attributeName": "CFP Date",
+          "definition": "The date on which the product carbon footprint assessment was conducted.",
+          "instruction": "Enter the date on which the product carbon footprint assessment was conducted.",
+          "businessUsage": "Used by the seller and the buyer to identify the date of the calculated carbon footprint values.",
+          "dataType": "Date",
+          "codeList": null,
+          "example": "2024-05-31T00:00:00",
+          "mandatory": false,
+          "repeatable": false
+        },
+        {
+          "bmsId": "8712",
+          "gdsnName": "cfpValueVerificationCode",
+          "attributeName": "CFP Value Verification Code",
+          "definition": "The code indicating how the calculated carbon footprint value is verified.",
+          "instruction": "Enter the code indicating how the value is verified.",
+          "businessUsage": "Used by the seller and the buyer to identify the verification used to calculate the carbon footprint values.",
+          "dataType": "Code",
+          "codeList": "CfpValueVerificationCode",
+          "example": "EXTERNAL_VERIFICATION",
+          "mandatory": false,
+          "repeatable": false,
+          "codeValues": [
+            {
+              "code": "EXTERNAL_VERIFICATION",
+              "definition": "The values have been verified by an external party."
+            },
+            {
+              "code": "NOT_VERIFIED",
+              "definition": "The values have been calculated according to the reported calculation method, but have not been verified."
+            },
+            {
+              "code": "PEER_REVIEWED",
+              "definition": "The values and methodology have been reviewed internally or by 3rd party."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "CarbonFootprintDetail",
+      "description": "Attributes repeated in case more information is available. Ideally, all results and details from the Life Cycle Analysis (LCA) should be included. Data only required for Consumer Units.",
+      "attributes": [
+        {
+          "bmsId": "8702",
+          "gdsnName": "cfpBoundariesCode",
+          "attributeName": "CFP Boundaries Code",
+          "definition": "The code identifying the life cycle stage that the product carbon footprint value refers to. The boundary setting may vary depending on the purpose of the product carbon footprint assessment.",
+          "instruction": "Enter the code that represents the stage that the carbon footprint value refers to. This value should be repeated in case information for multiple stages is available. Only use the stages that correspond with your Life Cycle Assessment (LCA) report.",
+          "businessUsage": "Used by the seller and the buyer to identify the life cycle stage that the carbon footprint value (specified in the CFP Value attribute) refers to. There may be multiple instances of the CFP Boundaries Code attribute in cases such as: A single CO2 value is provided to cover multiple life cycle stages (for example, transport and manufacturing), where the attribute is repeated. A different CO2 value is provided for each life cycle stage (for example, manufacturing and consumer use), where the entire carbon footprint group (class) of attributes is repeated.",
+          "dataType": "Code",
+          "codeList": "CfpBoundariesCode",
+          "example": "RAW_MATERIALS",
+          "mandatory": false,
+          "repeatable": true,
+          "codeValues": [
+            {
+              "code": "CRADLE_TO_CONSUMPTION",
+              "definition": "Total amount of CO2 emission from a life cycle assessment (LCA) model that assesses a product's environmental footprint from raw materials extraction until it is consumed. (PEF guidance, the European Commission 2021b)"
+            },
+            {
+              "code": "CRADLE_TO_GATE",
+              "definition": "Total amount of CO2 emission from a life cycle assessment (LCA) model that assesses a product's environmental footprint from raw materials extraction until it leaves the factory gate."
+            },
+            {
+              "code": "CRADLE_TO_GRAVE",
+              "definition": "Total amount of CO2 emission from a life cycle assessment (LCA) model that assesses a product's environmental footprint from raw materials extraction until its disposal, including manufacturing, transportation, product use."
+            },
+            {
+              "code": "END_OF_LIFE",
+              "definition": "The emission of the product when it is disposed, recycled, recovered after use."
+            },
+            {
+              "code": "MANUFACTURING",
+              "definition": "The emissions resulting from the manufacturing/production of the product."
+            },
+            {
+              "code": "RAW_MATERIALS",
+              "definition": "The emissions resulting from the production/extraction, packaging, storage, warehousing and transportation of raw materials."
+            },
+            {
+              "code": "TRANSPORT_FINAL_PRODUCT",
+              "definition": "The emissions resulting from the distribution of the product to the retail network or to downstream stakeholders. This stage includes transport of the final product and its packaging, storage and warehousing."
+            },
+            {
+              "code": "USE",
+              "definition": "The emissions of the product when used by the consumer."
+            }
+          ]
+        },
+        {
+          "bmsId": "8704",
+          "gdsnName": "cfpValue",
+          "attributeName": "CFP Value",
+          "definition": "The emissions value, i.e., carbon footprint, for a specific boundary setting.",
+          "instruction": "Enter the value for the carbon footprint that corresponds to the boundaries code used in attribute cfpBoundariesCode.",
+          "businessUsage": "Used by the seller and the buyer to state the emissions value per boundary setting (specified by the CFP Boundaries Code). Used by consumers who are concerned about the environment for search and discovery to assist in the selection of products with lower carbon footprints.",
+          "dataType": "Numeric",
+          "codeList": null,
+          "example": "For a clothes dryer: CFP Boundaries Code = USE, CFP Value and Measurement Unit Code = 1.7 KG_CO2_EQ_PER_FU (Kilogram CO2 equivalent per functional unit). For a plastic bottle: CFP Boundaries Code = MANUFACTURING, CFP Value and Measurement Unit Code = 8.28 KG_CO2_EQ_PER_100G (= Kilogram CO2 equivalent per 100 gram)",
+          "mandatory": false,
+          "repeatable": true
+        },
+        {
+          "bmsId": "8705",
+          "gdsnName": "cfpValue/@measurementUnitCode",
+          "attributeName": "CFP Value Measurement Unit Code",
+          "definition": "Any standardised, reproducible unit that can be used to measure any physical property.",
+          "instruction": "Enter the unit of measurement that corresponds to the used cfpValue.",
+          "businessUsage": "Used by the seller and the buyer to state the emissions value per boundary setting (specified by the CFP Boundaries Code). Used by consumers who are concerned about the environment for search and discovery to assist in the selection of products with lower carbon footprints.",
+          "dataType": "Code",
+          "codeList": "MeasurementUnitCode",
+          "example": "For a plastic bottle: CFP Boundaries Code = MANUFACTURING, CFP Value and Measurement Unit Code = 8.28 KG_CO2_EQ_PER_100G (= Kilogram CO2 equivalent per 100 gram)",
+          "mandatory": false,
+          "repeatable": true,
+          "codeValues": [
+            {
+              "code": "EUR_CO2_EQ_PER_KG",
+              "definition": "Euro CO2 equivalent per kilogram."
+            },
+            {
+              "code": "KG_CO2_EQ_PER_100G",
+              "definition": "Kilogram CO2 equivalent per 100 grams."
+            },
+            {
+              "code": "KG_CO2_EQ_PER_100ML",
+              "definition": "Kilogram CO2 equivalent per 100 milliliters."
+            },
+            {
+              "code": "KG_CO2_EQ_PER_FU",
+              "definition": "Kilogram CO2 equivalent per functional unit."
+            },
+            {
+              "code": "KG_CO2_EQ_PER_KG",
+              "definition": "Kilogram CO2 equivalent per kilogram."
+            }
+          ]
+        },
+        {
+          "bmsId": "8707",
+          "gdsnName": "cfpFunctionalUnit",
+          "attributeName": "CFP Functional Unit",
+          "definition": "The functional unit describes the quantity and/or performance characteristics of a product as it is used by the end-user, which forms the basis for calculating the emissions value (i.e., carbon footprint), and can be used for comparison to other similar products.",
+          "instruction": "Specify the Functional Unit (in text) in case you have selected the cfpValue/@measurementUnitCode 'KG_CO2_EQ_PER_FU'. If you have selected another UoM this attribute shall not be used.",
+          "businessUsage": "Used by the seller and the buyer to understand the basis of use for which the CFP Value attribute is calculated, when the attribute CFP Boundaries Code value is 'USE', indicating emissions related to the use of the item by the consumer.",
+          "dataType": "Text",
+          "codeList": null,
+          "example": "For a washing machine: CFP Functional Unit = 'Washing machine with a capacity to wash 10 kg of laundry at 60 degrees'. For a plastic shopping bag: CFP Functional Unit = 'Shopping bag with a volume of 22 liters, can carry a maximum weight of 12 kilograms'",
+          "mandatory": false,
+          "repeatable": true
+        },
+        {
+          "bmsId": "8710",
+          "gdsnName": "cfpMethodologyCode",
+          "attributeName": "CFP Methodology Code",
+          "definition": "The code specifying the method used to assess and communicate the environmental impact of the product in terms of carbon footprint.",
+          "instruction": "Use the code to specify the calculation method that is used to calculate the CFP values.",
+          "businessUsage": "Used by the seller and the buyer to identify the methodology used to calculate the carbon footprint.",
+          "dataType": "Code",
+          "codeList": "CfpMethodologyCode",
+          "example": "CARBON_FOOTPRINT_STANDARDPEF",
+          "mandatory": false,
+          "repeatable": true,
+          "codeValues": [
+            {
+              "code": "CARBON_FOOTPRINT_STANDARD",
+              "definition": "Product-specific value, based on carbon footprint standard (ISO 14067)."
+            },
+            {
+              "code": "ENVIMAT",
+              "definition": "Value for the product-group from an input-output study, based on ENVIMAT in Finland (Nissinen et al. 2019, SYKEra 15/2019)."
+            },
+            {
+              "code": "EPD",
+              "definition": "Environmental Product Declaration (EPD)."
+            },
+            {
+              "code": "GHG_PROTOCOL",
+              "definition": "The Product Life Cycle Accounting and Reporting Standard can be used to understand the full life cycle emissions of a product and focus efforts on the greatest Greenhouse Gas (GHG) reduction opportunities."
+            },
+            {
+              "code": "ISO_14064",
+              "definition": "ISO 14064 specifies requirements for selecting Greenhouse Gas (GHG) validators/verifiers, establishing the level of assurance, objectives, criteria and scope, determining the validation/verification approach, assessing GHG data, information, information systems and controls, evaluating GHG assertions and preparing validation/verification statements."
+            },
+            {
+              "code": "OTHER",
+              "definition": "A standard calculation method, not classified in the codelist."
+            },
+            {
+              "code": "PCR",
+              "definition": "Product Category Rules."
+            },
+            {
+              "code": "PCR_EDF",
+              "definition": "Product-specific value, based on Product Category Rule (PCR) of an Environmental Product Declaration (EPD) system."
+            },
+            {
+              "code": "PEF",
+              "definition": "The Product Environmental Footprint (PEF) methodology is performed following the PEF guidelines published by the European Commission and, if available, specific category rules (PEFCRs)."
+            },
+            {
+              "code": "RECIPE",
+              "definition": "Based on National Institute for Public Health and the Environment (RIVM), Institute of Environmental Sciences (CML), Product Category Rule (PCR)."
+            }
+          ]
+        },
+        {
+          "bmsId": "8714",
+          "gdsnName": "cfpAccountingCode",
+          "attributeName": "CFP Accounting Code",
+          "definition": "The code indicating which method is used to conduct the lifecycle assessment for carbon footprint calculation.",
+          "instruction": "Use the code that corresponds to the method that is used.",
+          "businessUsage": "Used by the seller and the buyer to identify what activities are represented by the carbon footprint values.",
+          "dataType": "Code",
+          "codeList": "CfpAccountingCode",
+          "example": "CONSEQUENTIAL",
+          "mandatory": false,
+          "repeatable": true,
+          "codeValues": [
+            {
+              "code": "ATTRIBUTIONAL",
+              "definition": "An attributional life cycle assessment (ALCA) is focusing on describing, assessing and quantifying environmentally relevant physical flows of specific life cycle(s) and its subsystems. An ALCA gives an estimate of what part of the global environmental burdens belongs to the study object. An ALCA does not include environmental benefits or other indirect consequences that arise outside the life cycle of the investigated product."
+            },
+            {
+              "code": "CONSEQUENTIAL",
+              "definition": "A consequential life cycle assessment (CLCA) is focusing on describing, assessing and quantifying environmentally relevant flows and how they will change in response to possible decisions. A CLCA gives an estimate of how the production and use of the study object affect the global environmental burdens. For example, an increased use of a material in the studied system can lead to less material being used in other systems."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "totalClasses": 2,
+    "totalAttributes": 9,
+    "totalCodeLists": 5,
+    "totalCodeValues": 28
+  }
+}

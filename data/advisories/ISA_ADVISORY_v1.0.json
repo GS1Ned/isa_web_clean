@@ -1,0 +1,1004 @@
+{
+  "advisoryId": "ISA_ADVISORY_v1.0",
+  "version": "1.0.0",
+  "publicationDate": "2025-12-13",
+  "datasetRegistryVersion": "1.0.0",
+  "author": "ISA Execution Agent",
+  "regulationsCovered": [
+    {
+      "id": "csrd_esrs",
+      "name": "Corporate Sustainability Reporting Directive (CSRD) / ESRS",
+      "legalStatus": "binding",
+      "effectiveDate": "2024-01-01",
+      "datasetIds": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "id": "eudr",
+      "name": "EU Deforestation Regulation (EUDR)",
+      "legalStatus": "binding",
+      "effectiveDate": "2025-12-30",
+      "datasetIds": [
+        "gs1.ctes_kdes",
+        "gdsn.current.v3.1.32"
+      ]
+    },
+    {
+      "id": "dpp",
+      "name": "Digital Product Passport (DPP) Framework",
+      "legalStatus": "binding",
+      "effectiveDate": "2027-02-18",
+      "datasetIds": [
+        "eu.dpp.identification_rules",
+        "gs1.cbv_digital_link"
+      ]
+    }
+  ],
+  "sectorModelsCovered": [
+    {
+      "id": "gs1nl.benelux.diy_garden_pet.v3.1.33",
+      "name": "GS1 NL DIY/Garden/Pets",
+      "version": "3.1.33",
+      "totalAttributes": 3009
+    },
+    {
+      "id": "gs1nl.benelux.fmcg.v3.1.33.5",
+      "name": "GS1 NL FMCG",
+      "version": "3.1.33.5",
+      "totalAttributes": 473
+    },
+    {
+      "id": "gs1nl.benelux.healthcare.v3.1.33",
+      "name": "GS1 NL Healthcare",
+      "version": "3.1.33",
+      "totalAttributes": 185
+    }
+  ],
+  "mappingResults": [
+    {
+      "mappingId": "MAP-DPP-001",
+      "regulationDatapoint": "Unique product identifier",
+      "disclosureRequirement": "DPP-Core",
+      "regulationStandard": "DPP",
+      "gs1Attribute": "GTIN",
+      "gs1AttributeCode": "GTIN",
+      "sectors": [
+        "All"
+      ],
+      "confidence": "direct",
+      "confidenceScore": null,
+      "rationale": "GTIN is the standard product identifier for DPP",
+      "datasetReferences": [
+        "eu.dpp.identification_rules",
+        "gs1.cbv_digital_link"
+      ]
+    },
+    {
+      "mappingId": "MAP-DPP-002",
+      "regulationDatapoint": "Product name",
+      "disclosureRequirement": "DPP-Core",
+      "regulationStandard": "DPP",
+      "gs1Attribute": "Product Description",
+      "gs1AttributeCode": "PRODUCT_DESCRIPTION",
+      "sectors": [
+        "All"
+      ],
+      "confidence": "direct",
+      "confidenceScore": null,
+      "rationale": "Product Description provides direct coverage for DPP product name requirement",
+      "datasetReferences": [
+        "eu.dpp.identification_rules",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-DPP-003",
+      "regulationDatapoint": "Manufacturer identification",
+      "disclosureRequirement": "DPP-Core",
+      "regulationStandard": "DPP",
+      "gs1Attribute": "Brand Owner GLN",
+      "gs1AttributeCode": "BRAND_OWNER_GLN",
+      "sectors": [
+        "All"
+      ],
+      "confidence": "direct",
+      "confidenceScore": null,
+      "rationale": "Brand Owner GLN provides direct manufacturer identification",
+      "datasetReferences": [
+        "eu.dpp.identification_rules",
+        "gdsn.current.v3.1.32"
+      ]
+    },
+    {
+      "mappingId": "MAP-DPP-004",
+      "regulationDatapoint": "Material composition",
+      "disclosureRequirement": "DPP-Extended",
+      "regulationStandard": "DPP",
+      "gs1Attribute": "Material Type",
+      "gs1AttributeCode": "MATERIAL_TYPE",
+      "sectors": [
+        "DIY",
+        "FMCG"
+      ],
+      "confidence": "direct",
+      "confidenceScore": null,
+      "rationale": "Material Type attributes provide direct coverage for DPP material composition",
+      "datasetReferences": [
+        "eu.dpp.identification_rules",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5"
+      ]
+    },
+    {
+      "mappingId": "MAP-DPP-005",
+      "regulationDatapoint": "Repair instructions",
+      "disclosureRequirement": "DPP-Extended",
+      "regulationStandard": "DPP",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "DIY"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute for repair instructions URL",
+      "datasetReferences": [
+        "eu.dpp.identification_rules",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-DPP-006",
+      "regulationDatapoint": "Spare parts availability",
+      "disclosureRequirement": "DPP-Extended",
+      "regulationStandard": "DPP",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "DIY"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute for spare parts availability indicator",
+      "datasetReferences": [
+        "eu.dpp.identification_rules",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-DPP-007",
+      "regulationDatapoint": "Disassembly instructions",
+      "disclosureRequirement": "DPP-Extended",
+      "regulationStandard": "DPP",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "DIY",
+        "Healthcare"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute for disassembly instructions URL",
+      "datasetReferences": [
+        "eu.dpp.identification_rules",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-DPP-008",
+      "regulationDatapoint": "Battery information",
+      "disclosureRequirement": "DPP-Batteries",
+      "regulationStandard": "DPP",
+      "gs1Attribute": "Battery Type, Battery Capacity",
+      "gs1AttributeCode": "BATTERY_TYPE",
+      "sectors": [
+        "DIY",
+        "Healthcare"
+      ],
+      "confidence": "direct",
+      "confidenceScore": null,
+      "rationale": "Battery Type and Battery Capacity attributes provide direct coverage for DPP battery requirements",
+      "datasetReferences": [
+        "eu.dpp.identification_rules",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-E1-001",
+      "regulationDatapoint": "Gross Scope 3 GHG emissions",
+      "disclosureRequirement": "E1-6",
+      "regulationStandard": "ESRS E1",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute exists for Scope 3 emissions across all three sector models",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-E1-002",
+      "regulationDatapoint": "Product carbon footprint",
+      "disclosureRequirement": "E1-6",
+      "regulationStandard": "ESRS E1",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute exists for product-level carbon footprint across all three sector models",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-E1-003",
+      "regulationDatapoint": "Energy consumption (product)",
+      "disclosureRequirement": "E1-5",
+      "regulationStandard": "ESRS E1",
+      "gs1Attribute": "Energy Efficiency Class",
+      "gs1AttributeCode": "ENERGY_EFFICIENCY_CLASS",
+      "sectors": [
+        "DIY",
+        "FMCG"
+      ],
+      "confidence": "partial",
+      "confidenceScore": null,
+      "rationale": "Energy Efficiency Class (EU energy label) covers energy consumption but not full lifecycle carbon footprint",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5"
+      ]
+    },
+    {
+      "mappingId": "MAP-E1-004",
+      "regulationDatapoint": "Renewable energy use",
+      "disclosureRequirement": "E1-5",
+      "regulationStandard": "ESRS E1",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute exists for renewable energy use in production",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-E1-005",
+      "regulationDatapoint": "Climate-related physical risks",
+      "disclosureRequirement": "E1-1",
+      "regulationStandard": "ESRS E1",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "Corporate-level disclosure, not product-level. No product attribute required.",
+      "datasetReferences": [
+        "esrs.datapoints.ig3"
+      ]
+    },
+    {
+      "mappingId": "MAP-E2-001",
+      "regulationDatapoint": "Substances of concern",
+      "disclosureRequirement": "E2-4",
+      "regulationStandard": "ESRS E2",
+      "gs1Attribute": "Hazardous Material Indicator",
+      "gs1AttributeCode": "HAZARDOUS_MATERIAL_INDICATOR",
+      "sectors": [
+        "DIY",
+        "Healthcare"
+      ],
+      "confidence": "partial",
+      "confidenceScore": null,
+      "rationale": "Hazardous Material Indicator is boolean flag. ESRS E2-4 requires substance-level detail (CAS numbers, concentration, risk classification).",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-E2-002",
+      "regulationDatapoint": "Microplastics emissions",
+      "disclosureRequirement": "E2-4",
+      "regulationStandard": "ESRS E2",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "FMCG"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "FMCG sector lacks any microplastics-related attributes despite ESRS E2-4 requirement for cosmetics and detergents",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.fmcg.v3.1.33.5"
+      ]
+    },
+    {
+      "mappingId": "MAP-E2-003",
+      "regulationDatapoint": "Pollution incidents",
+      "disclosureRequirement": "E2-3",
+      "regulationStandard": "ESRS E2",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "Corporate-level disclosure, not product-level",
+      "datasetReferences": [
+        "esrs.datapoints.ig3"
+      ]
+    },
+    {
+      "mappingId": "MAP-E2-004",
+      "regulationDatapoint": "Air pollutant emissions",
+      "disclosureRequirement": "E2-4",
+      "regulationStandard": "ESRS E2",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "DIY"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute for air pollutant emissions from product manufacturing",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-E5-001",
+      "regulationDatapoint": "Packaging material composition",
+      "disclosureRequirement": "E5-5",
+      "regulationStandard": "ESRS E5",
+      "gs1Attribute": "Packaging Material Type",
+      "gs1AttributeCode": "PACKAGING_MATERIAL_TYPE",
+      "sectors": [
+        "DIY",
+        "FMCG"
+      ],
+      "confidence": "direct",
+      "confidenceScore": null,
+      "rationale": "GS1 NL sector models have 107 packaging-related attributes providing direct coverage for material composition",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5"
+      ]
+    },
+    {
+      "mappingId": "MAP-E5-002",
+      "regulationDatapoint": "Recycled content (%)",
+      "disclosureRequirement": "E5-5",
+      "regulationStandard": "ESRS E5",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute exists for recycled content percentage despite ESRS E5-5 and PPWR mandate",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-E5-003",
+      "regulationDatapoint": "Recyclability rate",
+      "disclosureRequirement": "E5-5",
+      "regulationStandard": "ESRS E5",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute exists for recyclability rate percentage",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-E5-004",
+      "regulationDatapoint": "Product durability",
+      "disclosureRequirement": "E5-5",
+      "regulationStandard": "ESRS E5",
+      "gs1Attribute": "Warranty Period",
+      "gs1AttributeCode": "WARRANTY_PERIOD",
+      "sectors": [
+        "DIY"
+      ],
+      "confidence": "partial",
+      "confidenceScore": null,
+      "rationale": "Warranty Period is proxy for durability but not direct durability metric (e.g., expected product lifespan)",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-E5-005",
+      "regulationDatapoint": "Repair and maintenance info",
+      "disclosureRequirement": "E5-5",
+      "regulationStandard": "ESRS E5",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "DIY",
+        "Healthcare"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute for repair instructions or maintenance information",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-E5-006",
+      "regulationDatapoint": "End-of-life instructions",
+      "disclosureRequirement": "E5-5",
+      "regulationStandard": "ESRS E5",
+      "gs1Attribute": "Disposal Instructions",
+      "gs1AttributeCode": "DISPOSAL_INSTRUCTIONS",
+      "sectors": [
+        "DIY",
+        "FMCG"
+      ],
+      "confidence": "partial",
+      "confidenceScore": null,
+      "rationale": "Disposal Instructions exist but may not cover full end-of-life circularity requirements (e.g., disassembly, material recovery)",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5"
+      ]
+    },
+    {
+      "mappingId": "MAP-EUDR-001",
+      "regulationDatapoint": "Geolocation of production",
+      "disclosureRequirement": "EUDR-Art4",
+      "regulationStandard": "EUDR",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute for geolocation (latitude/longitude) of production. GS1 CTEs/KDEs provide event framework but not product-level attributes.",
+      "datasetReferences": [
+        "gs1.ctes_kdes",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-EUDR-002",
+      "regulationDatapoint": "Deforestation risk zone",
+      "disclosureRequirement": "EUDR-Art4",
+      "regulationStandard": "EUDR",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute for deforestation risk assessment",
+      "datasetReferences": [
+        "gs1.ctes_kdes",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-EUDR-003",
+      "regulationDatapoint": "Due diligence statement",
+      "disclosureRequirement": "EUDR-Art4",
+      "regulationStandard": "EUDR",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute for EUDR due diligence statement URL",
+      "datasetReferences": [
+        "gs1.ctes_kdes",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-EUDR-004",
+      "regulationDatapoint": "Commodity type (EUDR scope)",
+      "disclosureRequirement": "EUDR-Art2",
+      "regulationStandard": "EUDR",
+      "gs1Attribute": "Product Category",
+      "gs1AttributeCode": "PRODUCT_CATEGORY",
+      "sectors": [
+        "All"
+      ],
+      "confidence": "partial",
+      "confidenceScore": null,
+      "rationale": "Product Category can identify EUDR-scope commodities (cattle, cocoa, coffee, palm oil, rubber, soy, wood) but not structured for EUDR compliance",
+      "datasetReferences": [
+        "gs1.ctes_kdes",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-EUDR-005",
+      "regulationDatapoint": "Supplier identification",
+      "disclosureRequirement": "EUDR-Art4",
+      "regulationStandard": "EUDR",
+      "gs1Attribute": "Supplier GTIN/GLN",
+      "gs1AttributeCode": "SUPPLIER_GLN",
+      "sectors": [
+        "All"
+      ],
+      "confidence": "direct",
+      "confidenceScore": null,
+      "rationale": "GS1 GLN (Global Location Number) provides direct supplier identification",
+      "datasetReferences": [
+        "gs1.ctes_kdes",
+        "gdsn.current.v3.1.32"
+      ]
+    },
+    {
+      "mappingId": "MAP-S-001",
+      "regulationDatapoint": "Country of origin",
+      "disclosureRequirement": "S2-4",
+      "regulationStandard": "ESRS S2",
+      "gs1Attribute": "Country of Origin",
+      "gs1AttributeCode": "COUNTRY_OF_ORIGIN",
+      "sectors": [
+        "FMCG"
+      ],
+      "confidence": "direct",
+      "confidenceScore": null,
+      "rationale": "FMCG sector includes Country of Origin attribute providing direct coverage",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.fmcg.v3.1.33.5"
+      ]
+    },
+    {
+      "mappingId": "MAP-S-002",
+      "regulationDatapoint": "Supplier sustainability certification",
+      "disclosureRequirement": "S2-4",
+      "regulationStandard": "ESRS S2",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No structured supplier certification data (ISO 14001, SA8000, etc.) in GS1 NL sector models",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    },
+    {
+      "mappingId": "MAP-S-003",
+      "regulationDatapoint": "Fair trade certification",
+      "disclosureRequirement": "S2-4",
+      "regulationStandard": "ESRS S2",
+      "gs1Attribute": "Fair Trade Indicator",
+      "gs1AttributeCode": "FAIR_TRADE_INDICATOR",
+      "sectors": [
+        "FMCG"
+      ],
+      "confidence": "direct",
+      "confidenceScore": null,
+      "rationale": "FMCG sector includes Fair Trade Indicator providing direct coverage",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.fmcg.v3.1.33.5"
+      ]
+    },
+    {
+      "mappingId": "MAP-S-004",
+      "regulationDatapoint": "Child labor risk assessment",
+      "disclosureRequirement": "S2-1",
+      "regulationStandard": "ESRS S2",
+      "gs1Attribute": null,
+      "gs1AttributeCode": null,
+      "sectors": [
+        "All"
+      ],
+      "confidence": "missing",
+      "confidenceScore": 0,
+      "rationale": "No GS1 NL attribute for child labor risk assessment or due diligence data",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "gapId": "GAP-001",
+      "title": "Product Carbon Footprint (PCF)",
+      "category": "critical",
+      "impact": "high",
+      "urgency": "high",
+      "affectedRegulations": [
+        "ESRS E1-6"
+      ],
+      "affectedSectors": [
+        "All"
+      ],
+      "description": "No GS1 NL attribute exists for product-level carbon footprint (kg CO2e) across all three sector models. ESRS E1-6 requires PCF disclosure for large companies from 2025. Dutch retailers (Albert Heijn, Jumbo, Action) are requesting PCF data from suppliers.",
+      "recommendedAction": "Add 'Product Carbon Footprint (kg CO2e)' and 'PCF Calculation Method' attributes to all three sector models in v3.1.34 release",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.healthcare.v3.1.33"
+      ],
+      "relatedMappings": [
+        "MAP-E1-002"
+      ]
+    },
+    {
+      "gapId": "GAP-002",
+      "title": "Recycled Content and Recyclability Metrics",
+      "category": "critical",
+      "impact": "high",
+      "urgency": "high",
+      "affectedRegulations": [
+        "ESRS E5-5",
+        "PPWR"
+      ],
+      "affectedSectors": [
+        "All"
+      ],
+      "description": "GS1 NL sector models have 107 packaging-related attributes but zero coverage for circularity metrics (recycled content %, recyclability rate). ESRS E5-5 and PPWR both mandate these metrics from 2025.",
+      "recommendedAction": "Extend packaging attributes with 'Recycled Content (%)', 'Recyclability Rate (%)', 'Reusability Indicator'",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33",
+        "gs1nl.benelux.fmcg.v3.1.33.5"
+      ],
+      "relatedMappings": [
+        "MAP-E5-002",
+        "MAP-E5-003"
+      ]
+    },
+    {
+      "gapId": "GAP-003",
+      "title": "EUDR Traceability Attributes",
+      "category": "critical",
+      "impact": "high",
+      "urgency": "high",
+      "affectedRegulations": [
+        "EUDR Article 4"
+      ],
+      "affectedSectors": [
+        "DIY",
+        "FMCG"
+      ],
+      "description": "No GS1 NL attribute exists for EUDR-specific data requirements: geolocation (lat/long) of production, deforestation risk zone, due diligence statement. EUDR applies to all companies placing EUDR-scope products on EU market from December 2025.",
+      "recommendedAction": "Add 'Production Geolocation (lat/long)', 'Deforestation Risk Zone (boolean)', 'EUDR Due Diligence Statement (URL)' to FMCG and DIY sectors",
+      "datasetReferences": [
+        "gs1.ctes_kdes",
+        "gs1nl.benelux.fmcg.v3.1.33.5",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33"
+      ],
+      "relatedMappings": [
+        "MAP-EUDR-001",
+        "MAP-EUDR-002",
+        "MAP-EUDR-003"
+      ]
+    },
+    {
+      "gapId": "GAP-004",
+      "title": "Supplier Sustainability Certifications",
+      "category": "moderate",
+      "impact": "medium",
+      "urgency": "medium",
+      "affectedRegulations": [
+        "ESRS S2-4"
+      ],
+      "affectedSectors": [
+        "All"
+      ],
+      "description": "Fair Trade Indicator exists in FMCG sector, but no structured certification data for ISO 14001, SA8000, or other supplier sustainability certifications. ESRS S2-4 requires supplier due diligence data for materiality assessment.",
+      "recommendedAction": "Add 'Supplier Certification Type' (enum: ISO 14001, SA8000, Fair Trade, etc.) and 'Certification Expiry Date' attributes",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.fmcg.v3.1.33.5"
+      ],
+      "relatedMappings": [
+        "MAP-S-002"
+      ]
+    },
+    {
+      "gapId": "GAP-005",
+      "title": "DPP Circularity Attributes",
+      "category": "moderate",
+      "impact": "medium",
+      "urgency": "medium",
+      "affectedRegulations": [
+        "DPP Framework"
+      ],
+      "affectedSectors": [
+        "DIY"
+      ],
+      "description": "No GS1 NL attribute exists for DPP-specific circularity requirements: repair instructions, spare parts availability, disassembly instructions. DPP delegated acts will mandate these attributes for durable goods from 2027.",
+      "recommendedAction": "Add 'Repair Instructions (URL)', 'Spare Parts Availability (boolean)', 'Disassembly Instructions (URL)' to DIY sector model",
+      "datasetReferences": [
+        "eu.dpp.identification_rules",
+        "gs1nl.benelux.diy_garden_pet.v3.1.33"
+      ],
+      "relatedMappings": [
+        "MAP-DPP-005",
+        "MAP-DPP-006",
+        "MAP-DPP-007"
+      ]
+    },
+    {
+      "gapId": "GAP-006",
+      "title": "Microplastics Disclosure",
+      "category": "low-priority",
+      "impact": "low",
+      "urgency": "low",
+      "affectedRegulations": [
+        "ESRS E2-4"
+      ],
+      "affectedSectors": [
+        "FMCG"
+      ],
+      "description": "No GS1 NL attribute for microplastics content. ESRS E2-4 requires disclosure for cosmetics and detergents, but requirement is conditional (materiality-based).",
+      "recommendedAction": "Monitor regulatory developments, add 'Microplastics Content (boolean)' to FMCG sector if ESRS E2-4 becomes mandatory",
+      "datasetReferences": [
+        "esrs.datapoints.ig3",
+        "gs1nl.benelux.fmcg.v3.1.33.5"
+      ],
+      "relatedMappings": [
+        "MAP-E2-002"
+      ]
+    },
+    {
+      "gapId": "GAP-007",
+      "title": "Climate Physical Risk Indicators",
+      "category": "low-priority",
+      "impact": "low",
+      "urgency": "low",
+      "affectedRegulations": [
+        "ESRS E1-1"
+      ],
+      "affectedSectors": [
+        "All"
+      ],
+      "description": "No GS1 NL attribute for climate physical risk indicators. ESRS E1-1 requires corporate-level disclosure, not product-level.",
+      "recommendedAction": "No action required at product data level",
+      "datasetReferences": [
+        "esrs.datapoints.ig3"
+      ],
+      "relatedMappings": [
+        "MAP-E1-005"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "recommendationId": "REC-001",
+      "timeframe": "short-term",
+      "category": "documentation",
+      "title": "Publish ESG Mapping Guide",
+      "description": "Create official GS1 NL guidance document mapping existing attributes to ESRS datapoints. Example: 'Energy Efficiency Class' (DIY sector) maps to ESRS E1-5 'Energy consumption.' This helps Dutch businesses understand current coverage without waiting for model updates.",
+      "relatedGaps": [],
+      "estimatedEffort": "low",
+      "implementationStatus": "proposed",
+      "implementedInVersion": null
+    },
+    {
+      "recommendationId": "REC-002",
+      "timeframe": "short-term",
+      "category": "documentation",
+      "title": "Flag DPP-Mandatory Attributes",
+      "description": "Update GS1 NL Data Source documentation to indicate which attributes are 'DPP-core' (required for all products) vs. 'DPP-extended' (product-category-specific). This clarifies implementation priorities for businesses preparing for DPP compliance.",
+      "relatedGaps": [
+        "GAP-005"
+      ],
+      "estimatedEffort": "low",
+      "implementationStatus": "proposed",
+      "implementedInVersion": null
+    },
+    {
+      "recommendationId": "REC-003",
+      "timeframe": "short-term",
+      "category": "documentation",
+      "title": "EUDR Traceability Playbook",
+      "description": "Publish guidance on using GS1 CTEs/KDEs for EUDR compliance. Explain how to capture geolocation and deforestation risk data in EPCIS events, even though GS1 NL sector models don't yet have product-level attributes.",
+      "relatedGaps": [
+        "GAP-003"
+      ],
+      "estimatedEffort": "low",
+      "implementationStatus": "proposed",
+      "implementedInVersion": null
+    },
+    {
+      "recommendationId": "REC-004",
+      "timeframe": "medium-term",
+      "category": "data_model",
+      "title": "Add PCF Attributes",
+      "description": "Extend all three sector models with 'Product Carbon Footprint (kg CO2e)' and 'PCF Calculation Method' (enum: ISO 14067, GHG Protocol, PEF, other). Make these attributes optional initially, with guidance to make them recommended for products sold to sustainability-focused retailers.",
+      "relatedGaps": [
+        "GAP-001"
+      ],
+      "estimatedEffort": "medium",
+      "implementationStatus": "proposed",
+      "implementedInVersion": null
+    },
+    {
+      "recommendationId": "REC-005",
+      "timeframe": "medium-term",
+      "category": "data_model",
+      "title": "Add Circularity Metrics",
+      "description": "Extend packaging attribute groups with 'Recycled Content (%)', 'Recyclability Rate (%)', 'Reusability Indicator' (boolean). Align with PPWR definitions to ensure regulatory compliance.",
+      "relatedGaps": [
+        "GAP-002"
+      ],
+      "estimatedEffort": "medium",
+      "implementationStatus": "proposed",
+      "implementedInVersion": null
+    },
+    {
+      "recommendationId": "REC-006",
+      "timeframe": "medium-term",
+      "category": "data_model",
+      "title": "Add EUDR Traceability Attributes",
+      "description": "Extend FMCG and DIY sector models with 'Production Geolocation (lat/long)', 'Deforestation Risk Zone' (boolean), 'EUDR Due Diligence Statement (URL)'. Make these attributes conditional (mandatory only for EUDR-scope products).",
+      "relatedGaps": [
+        "GAP-003"
+      ],
+      "estimatedEffort": "medium",
+      "implementationStatus": "proposed",
+      "implementedInVersion": null
+    },
+    {
+      "recommendationId": "REC-007",
+      "timeframe": "medium-term",
+      "category": "data_model",
+      "title": "Update Validation Rules",
+      "description": "Align GS1 NL validation rules with ESRS mandatory/conditional logic. Example: If 'Product Category' = 'Coffee', then 'Production Geolocation' is mandatory (EUDR requirement).",
+      "relatedGaps": [
+        "GAP-003"
+      ],
+      "estimatedEffort": "medium",
+      "implementationStatus": "proposed",
+      "implementedInVersion": null
+    },
+    {
+      "recommendationId": "REC-008",
+      "timeframe": "long-term",
+      "category": "strategic",
+      "title": "Position GS1 NL as ESG Data Backbone",
+      "description": "By proactively extending sector models with ESG attributes, GS1 NL can position itself as the authoritative ESG data standard for Dutch businesses. This creates a competitive moat vs. international standards that lack Dutch market specificity.",
+      "relatedGaps": [
+        "GAP-001",
+        "GAP-002",
+        "GAP-003"
+      ],
+      "estimatedEffort": "high",
+      "implementationStatus": "proposed",
+      "implementedInVersion": null
+    },
+    {
+      "recommendationId": "REC-009",
+      "timeframe": "long-term",
+      "category": "strategic",
+      "title": "Validation-as-a-Service",
+      "description": "GS1 NL's 847 validation rules are a strategic asset. By aligning these rules with ESRS and DPP requirements, GS1 NL can offer regulatory compliance validation as a value-added service. Example: 'Your product data is 87% ESRS-compliant. Fix these 5 attributes to reach 100%.'",
+      "relatedGaps": [],
+      "estimatedEffort": "high",
+      "implementationStatus": "proposed",
+      "implementedInVersion": null
+    },
+    {
+      "recommendationId": "REC-010",
+      "timeframe": "long-term",
+      "category": "strategic",
+      "title": "DPP Implementation Leadership",
+      "description": "GS1 Digital Link is the technical foundation for DPP, but implementation guidance is fragmented. GS1 NL can lead by publishing sector-specific DPP implementation guides (e.g., 'DPP for DIY Products: A GS1 NL Playbook'). This positions GS1 NL as the go-to authority for DPP compliance in the Netherlands.",
+      "relatedGaps": [
+        "GAP-005"
+      ],
+      "estimatedEffort": "high",
+      "implementationStatus": "proposed",
+      "implementedInVersion": null
+    }
+  ],
+  "metadata": {
+    "totalDatapointsAnalyzed": 1186,
+    "totalAttributesEvaluated": 3667,
+    "totalRecordsUsed": 11197,
+    "totalMappings": 32,
+    "directMappings": 9,
+    "partialMappings": 5,
+    "missingMappings": 18,
+    "totalGaps": 7,
+    "criticalGaps": 3,
+    "moderateGaps": 2,
+    "lowPriorityGaps": 2,
+    "totalRecommendations": 10
+  },
+  "generatedAt": "2025-12-14T21:55:03.261085+00:00",
+  "sourceArtifacts": {
+    "advisoryMarkdown": {
+      "path": "docs/ISA_First_Advisory_Report_GS1NL.md",
+      "sha256": "c0a27b2f558a64ee526f6d79d1a066a72b66688fdcd8509cce64031e911b8d52"
+    },
+    "datasetRegistry": {
+      "path": "data/metadata/dataset_registry_v1.0_FROZEN.json",
+      "version": "1.0.0",
+      "sha256": "e2f655a9095ef4fa089d360b19189d73f9f6415762cd03baed0b7e97b6dcbc14"
+    },
+    "schema": {
+      "id": "https://isa.manus.space/schemas/advisory-output.schema.json",
+      "version": "1.0",
+      "sha256": "aef56bd7f4a660d670a35cc0a06b4f5904cc4ed1b238cfafc8495dc1119d91f0"
+    }
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "productIdentifiers": [
+    {
+      "key": "GTIN",
+      "fullName": "Global Trade Item Number",
+      "description": "ISO/IEC 15459 compliant unique product identifier in GS1 system",
+      "formats": ["GTIN-8", "GTIN-12", "GTIN-13", "GTIN-14"],
+      "applicationIdentifiers": {
+        "madeToStock": "AI (01)",
+        "madeToOrder": "AI (03)"
+      },
+      "notes": [
+        "GTIN-14 not permitted for retail point-of-sale",
+        "AI (03) not approved for retail channel including online marketplaces",
+        "Once assigned under ESPR, SHALL not be reused per GS1 standards"
+      ]
+    }
+  ],
+  "qualifiers": [
+    {
+      "key": "batch_lot",
+      "fullName": "Batch/Lot Number",
+      "description": "A subset of a specific trade item associated with a production run, e.g. a specific manufacturing plant, specific date(s) and time(s)",
+      "applicationIdentifier": "AI (10)",
+      "useCases": [
+        "Production batch tracking",
+        "Quality control",
+        "Recall management",
+        "Traceability for safety-critical products"
+      ]
+    },
+    {
+      "key": "serial_number",
+      "fullName": "Serial Number",
+      "description": "Unique identifier for individual product instance",
+      "applicationIdentifier": "AI (21)",
+      "useCases": [
+        "Individual product tracking",
+        "Warranty management",
+        "Repair and refurbishment tracking",
+        "High-value item traceability",
+        "Battery passport compliance"
+      ]
+    },
+    {
+      "key": "version_number",
+      "fullName": "GTIN Version Number",
+      "description": "An alphanumeric attribute of a GTIN assigned to a retail consumer trade item variant version for its lifetime",
+      "applicationIdentifier": "AI (22)",
+      "useCases": [
+        "Product version tracking without GTIN change",
+        "Minor product changes communication",
+        "Configuration variant identification"
+      ],
+      "notes": [
+        "Pending rename from 'GTIN Version Number' to remove confusion with configuration variants",
+        "Proposed to allow AI (22) for party change notifications"
+      ]
+    },
+    {
+      "key": "made_to_order_variation",
+      "fullName": "Made-to-Order Variation Number",
+      "description": "Variation number for configurable products with Made-to-Order GTIN",
+      "applicationIdentifier": "AI (242)",
+      "useCases": [
+        "Custom product configurations",
+        "Made-to-order product variants",
+        "Configurable product identification (e.g., window with specific instance)"
+      ],
+      "notes": [
+        "Requires AI (03) compound GTIN",
+        "Pending deprecation of Indicator digit 9 for Custom Trade Items",
+        "Technical industries to define GTIN rules for compound GTIN within custom trade item application standard"
+      ]
+    }
+  ],
+  "operatorIdentifiers": [
+    {
+      "key": "GLN_party",
+      "fullName": "Party GLN (Global Location Number)",
+      "description": "ISO/IEC 15459 compliant unique operator identifier for economic operators",
+      "applicationIdentifier": "AI (417)",
+      "useCases": [
+        "Manufacturer/brand owner identification",
+        "Authorised representative identification",
+        "Importer identification",
+        "Distributor identification",
+        "Dealer identification",
+        "Fulfilment service provider identification"
+      ],
+      "notes": [
+        "Required for economic operator responsible for DPP",
+        "AI (417) used if required by delegated act within AIDC carrier"
+      ]
+    }
+  ],
+  "facilityIdentifiers": [
+    {
+      "key": "GLN_facility",
+      "fullName": "Facility GLN (Global Location Number)",
+      "description": "ISO/IEC 15459 compliant unique facility identifier for physical locations",
+      "applicationIdentifier": "GLN (no specific AI for facility in data carrier)",
+      "useCases": [
+        "Production facility identification",
+        "Manufacturing plant identification",
+        "Value chain location tracking",
+        "Country of production verification"
+      ],
+      "notes": [
+        "Required for facility where product was produced",
+        "Locations (e.g., building, kiosk) involved in value chain or used by actors in value chain"
+      ]
+    }
+  ],
+  "dataCarriers": [
+    {
+      "carrierType": "QR Code",
+      "syntax": "GS1 Digital Link URI",
+      "description": "2D barcode encoding GS1 Digital Link URI in uncompressed form",
+      "useCases": [
+        "Retail point-of-sale scanning",
+        "General distribution scanning",
+        "Consumer engagement via smartphone",
+        "DPP information access"
+      ],
+      "technicalSpecs": {
+        "symbolXDimension": "0.380mm - 0.990mm (depending on application)",
+        "minimumQuality": "1.5/08/660 to 1.5/20/660",
+        "quietZone": "4X on all four sides",
+        "uriFormat": "Uncompressed GS1 Digital Link URI"
+      },
+      "advantages": [
+        "Wide smartphone compatibility",
+        "Direct web content access without additional software",
+        "Supports both public and private DPP data access"
+      ]
+    },
+    {
+      "carrierType": "Data Matrix",
+      "syntax": "GS1 Digital Link URI",
+      "description": "2D barcode encoding GS1 Digital Link URI in uncompressed form",
+      "useCases": [
+        "Small product marking",
+        "Direct part marking",
+        "Industrial applications",
+        "DPP information access"
+      ],
+      "technicalSpecs": {
+        "symbolXDimension": "0.380mm - 0.990mm (depending on application)",
+        "minimumQuality": "1.5/08/660 to 1.5/20/660",
+        "quietZone": "1X on all four sides",
+        "uriFormat": "Uncompressed GS1 Digital Link URI",
+        "aperture": "80% of smallest X-dimension for quality measurements"
+      },
+      "advantages": [
+        "Smaller footprint than QR Code",
+        "Better for small products",
+        "Suitable for direct part marking"
+      ]
+    },
+    {
+      "carrierType": "EPC/RFID",
+      "syntax": "SGTIN EPC",
+      "description": "Radio-frequency identification tag encoding SGTIN EPC",
+      "useCases": [
+        "Supply chain automation",
+        "Inventory management",
+        "Anti-counterfeiting",
+        "Complementary to 2D barcodes"
+      ],
+      "technicalSpecs": {
+        "encoding": "SGTIN EPC corresponding to compound key of AI (01) and AI (21)",
+        "serialNumber": "Must match Serial Number in associated barcode AI (21)"
+      },
+      "notes": [
+        "SHALL be in addition to QR Code or Data Matrix, not as replacement",
+        "When associated barcode carries AI (21), RFID SHALL encode same Serial Number"
+      ]
+    }
+  ],
+  "digitalLinkFunctions": [
+    {
+      "function": "Public DPP Access",
+      "description": "Full URI with brand owner domain preceding GS1 identifier enables link to public DPP information",
+      "example": "https://example.com/01/09506000134352/21/12345",
+      "useCases": [
+        "Consumer access to product information",
+        "Regulatory authority verification",
+        "Public transparency"
+      ],
+      "notes": [
+        "No additional software needed for consumers",
+        "Direct web content access via smartphone camera"
+      ]
+    },
+    {
+      "function": "Private DPP Data Access",
+      "description": "Structured URI allows identifier to be parsed, providing unique, persistent, granular identifier for private DPP data",
+      "example": "Identifier parsed from URI structure for database lookup",
+      "useCases": [
+        "B2B data exchange",
+        "Supply chain partner access",
+        "Back-up DPP data access",
+        "Authorized party data retrieval"
+      ],
+      "notes": [
+        "Requires authentication/authorization",
+        "Supports granular access control"
+      ]
+    }
+  ],
+  "symbolPlacement": {
+    "primaryRule": "Data carrier shall be placed on the product itself",
+    "fallbackOptions": [
+      "On packaging if not possible on product",
+      "On documentation accompanying product"
+    ],
+    "lifespanConsideration": "Placement should accommodate lifespan of product as specified by delegated act",
+    "multipleBarcodesRule": "For multiple barcodes needed for different applications, see section 4.15.1 non-adjacent placement rule"
+  }
+}

@@ -1,0 +1,468 @@
+{
+  "catalogVersion": "1.0.0",
+  "generatedAt": "2025-12-12T22:47:19.749826Z",
+  "generatedBy": {
+    "agent": "Manus/ISA-Reset",
+    "runId": "day1-20251212-224719",
+    "sourceRepo": "isa_web",
+    "sourceCommit": "ISA_RESET_DAY1_BASELINE"
+  },
+  "defaults": {
+    "assumedLicense": "Proprietary/Restricted - Check individual dataset terms",
+    "assumedAccess": "restricted",
+    "assumedUpdateCadence": "quarterly"
+  },
+  "datasets": [
+    {
+      "datasetId": "esrs.datapoints.ig3",
+      "name": "ESRS Datapoints (EFRAG IG3)",
+      "description": "European Sustainability Reporting Standards datapoints from EFRAG Implementation Guidance 3",
+      "publisher": {
+        "name": "EFRAG",
+        "type": "EU_body",
+        "website": "https://www.efrag.org"
+      },
+      "jurisdiction": [
+        "EU"
+      ],
+      "standards": [],
+      "regulations": [
+        {
+          "id": "csrd",
+          "name": "Corporate Sustainability Reporting Directive",
+          "celex": "32022L2464",
+          "status": "in_force"
+        }
+      ],
+      "canonicalDomains": [
+        "regulatory_landscape",
+        "governance_and_reporting",
+        "environmental_footprints_and_impacts"
+      ],
+      "intendedUse": [
+        "advisory_evidence",
+        "mapping_reference",
+        "regulation_text_reference"
+      ],
+      "relevance": {
+        "mvp": true,
+        "priority": "high",
+        "notes": "Core dataset for ESRS-to-GS1 mapping"
+      },
+      "status": "current",
+      "access": {
+        "type": "open",
+        "licenseName": "CC BY 4.0 (assumed)",
+        "requiresAuth": false
+      },
+      "formats": [
+        {
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "fileExtension": ".xlsx"
+        }
+      ],
+      "versions": [
+        {
+          "version": "IG3-2024",
+          "publicationDate": "2024-11-01",
+          "status": "current",
+          "contentFingerprint": {
+            "sha256": "aac16298589807a2a0ee94b62d2d8a90c6b6edd7633967d5a45b98983a4377e5",
+            "bytes": 1638137
+          }
+        }
+      ],
+      "locations": [
+        {
+          "type": "repo_path",
+          "pathOrUrl": "data/efrag/EFRAGIG3ListofESRSDataPoints(1)(1).xlsx",
+          "isPrimary": true
+        }
+      ],
+      "updateCadence": "semiannual",
+      "lineage": {
+        "sourceType": "official",
+        "sourceUrl": "https://www.efrag.org/en/publications",
+        "retrievedAt": "2024-12-11T00:00:00Z",
+        "retrievedBy": "Manus",
+        "method": "manual download"
+      },
+      "quality": {
+        "coverageNotes": "1,186 datapoints ingested successfully",
+        "knownIssues": []
+      },
+      "refreshPlan": {
+        "nextReviewDate": "2025-06-01",
+        "watchUrls": [
+          "https://www.efrag.org/en/news-and-calendar"
+        ],
+        "notes": "Check for IG4 or updated ESRS releases"
+      },
+      "tags": [
+        "esrs",
+        "sustainability",
+        "reporting",
+        "eu",
+        "csrd"
+      ]
+    },
+    {
+      "datasetId": "gdsn.current.v3.1.32",
+      "name": "GDSN Current v3.1.32",
+      "description": "GS1 Global Data Synchronisation Network data model - current production version",
+      "publisher": {
+        "name": "GS1 Global",
+        "type": "GS1",
+        "website": "https://www.gs1.org"
+      },
+      "jurisdiction": [
+        "GLOBAL"
+      ],
+      "standards": [
+        {
+          "id": "gdsn",
+          "name": "GS1 Global Data Synchronisation Network",
+          "version": "3.1.32"
+        }
+      ],
+      "regulations": [],
+      "canonicalDomains": [
+        "gs1_standards_models",
+        "product_identity_and_master_data"
+      ],
+      "intendedUse": [
+        "mapping_reference",
+        "standard_model_reference",
+        "terminology_vocab"
+      ],
+      "relevance": {
+        "mvp": true,
+        "priority": "high",
+        "notes": "Primary GS1 standard for product master data mapping"
+      },
+      "status": "current",
+      "access": {
+        "type": "licensed",
+        "licenseName": "GS1 Standards License",
+        "requiresAuth": true,
+        "authNotes": "Requires GS1 membership or license agreement"
+      },
+      "formats": [
+        {
+          "mediaType": "application/json",
+          "fileExtension": ".json"
+        }
+      ],
+      "versions": [
+        {
+          "version": "3.1.32",
+          "publicationDate": "2024-01-01",
+          "status": "current",
+          "effectiveFrom": "2024-01-01"
+        }
+      ],
+      "locations": [
+        {
+          "type": "repo_path",
+          "pathOrUrl": "data/gs1/gdsn/",
+          "isPrimary": true,
+          "notes": "Contains classes, attributes, and validation rules"
+        }
+      ],
+      "updateCadence": "quarterly",
+      "lineage": {
+        "sourceType": "official",
+        "sourceUrl": "https://www.gs1.org/standards/gdsn",
+        "retrievedAt": "2024-12-12T00:00:00Z",
+        "retrievedBy": "Manus",
+        "method": "manual download from GS1 portal"
+      },
+      "quality": {
+        "coverageNotes": "4,293 records (1,194 classes + 2,049 attributes + 1,050 validation rules)",
+        "knownIssues": []
+      },
+      "refreshPlan": {
+        "nextReviewDate": "2025-03-01",
+        "watchUrls": [
+          "https://www.gs1.org/standards/gdsn/release-notes"
+        ],
+        "notes": "Monitor for v3.1.33 or v3.1.35 releases"
+      },
+      "tags": [
+        "gdsn",
+        "gs1",
+        "product-data",
+        "master-data"
+      ]
+    },
+    {
+      "datasetId": "gs1.ctes_kdes",
+      "name": "GS1 Critical Tracking Events and Key Data Elements",
+      "description": "GS1 traceability framework: Critical Tracking Events (CTEs) and Key Data Elements (KDEs) for supply chain transparency",
+      "publisher": {
+        "name": "GS1 Global",
+        "type": "GS1",
+        "website": "https://www.gs1.org"
+      },
+      "jurisdiction": [
+        "GLOBAL"
+      ],
+      "standards": [
+        {
+          "id": "epcis",
+          "name": "GS1 EPCIS",
+          "version": "2.0"
+        }
+      ],
+      "regulations": [
+        {
+          "id": "eudr",
+          "name": "EU Deforestation Regulation",
+          "status": "in_force"
+        }
+      ],
+      "canonicalDomains": [
+        "traceability_and_events",
+        "social_and_due_diligence"
+      ],
+      "intendedUse": [
+        "mapping_reference",
+        "terminology_vocab",
+        "advisory_evidence"
+      ],
+      "relevance": {
+        "mvp": true,
+        "priority": "high",
+        "notes": "Essential for EUDR and supply chain traceability requirements"
+      },
+      "status": "current",
+      "access": {
+        "type": "open",
+        "licenseName": "GS1 Standards License"
+      },
+      "formats": [
+        {
+          "mediaType": "application/json",
+          "fileExtension": ".json"
+        }
+      ],
+      "versions": [
+        {
+          "version": "2024",
+          "publicationDate": "2024-01-01",
+          "status": "current"
+        }
+      ],
+      "locations": [
+        {
+          "type": "repo_path",
+          "pathOrUrl": "data/esg/CTEs_and_KDEs.json",
+          "isPrimary": true
+        }
+      ],
+      "updateCadence": "annual",
+      "lineage": {
+        "sourceType": "official",
+        "sourceUrl": "https://www.gs1.org/standards/epcis",
+        "retrievedAt": "2024-12-12T00:00:00Z",
+        "retrievedBy": "Manus",
+        "method": "manual download"
+      },
+      "quality": {
+        "coverageNotes": "50 records (6 CTEs + 9 KDEs + 35 mappings)",
+        "knownIssues": []
+      },
+      "refreshPlan": {
+        "nextReviewDate": "2025-06-01",
+        "watchUrls": [
+          "https://www.gs1.org/standards/epcis"
+        ],
+        "notes": "Monitor for EPCIS 2.1 updates"
+      },
+      "tags": [
+        "epcis",
+        "traceability",
+        "eudr",
+        "supply-chain"
+      ]
+    },
+    {
+      "datasetId": "eu.dpp.identification_rules",
+      "name": "Digital Product Passport Identification Rules",
+      "description": "EU Digital Product Passport identification requirements and product category rules",
+      "publisher": {
+        "name": "European Commission",
+        "type": "EU_body",
+        "website": "https://ec.europa.eu"
+      },
+      "jurisdiction": [
+        "EU"
+      ],
+      "standards": [],
+      "regulations": [
+        {
+          "id": "espr",
+          "name": "Ecodesign for Sustainable Products Regulation",
+          "status": "in_force"
+        }
+      ],
+      "canonicalDomains": [
+        "regulatory_landscape",
+        "product_identity_and_master_data",
+        "circularity_and_packaging"
+      ],
+      "intendedUse": [
+        "regulation_text_reference",
+        "mapping_reference",
+        "advisory_evidence"
+      ],
+      "relevance": {
+        "mvp": true,
+        "priority": "high",
+        "notes": "Critical for DPP compliance mapping to GS1 identifiers"
+      },
+      "status": "current",
+      "access": {
+        "type": "open",
+        "licenseName": "EU Open Data License"
+      },
+      "formats": [
+        {
+          "mediaType": "application/json",
+          "fileExtension": ".json"
+        }
+      ],
+      "versions": [
+        {
+          "version": "2024",
+          "publicationDate": "2024-01-01",
+          "status": "current"
+        }
+      ],
+      "locations": [
+        {
+          "type": "repo_path",
+          "pathOrUrl": "data/esg/DPP_*.json",
+          "isPrimary": true,
+          "notes": "Contains components and rules files"
+        }
+      ],
+      "updateCadence": "ad-hoc",
+      "lineage": {
+        "sourceType": "derived",
+        "sourceUrl": "https://ec.europa.eu/environment/ecodesign",
+        "retrievedAt": "2024-12-12T00:00:00Z",
+        "retrievedBy": "Manus",
+        "method": "manual extraction from EU documentation"
+      },
+      "quality": {
+        "coverageNotes": "26 records (8 component categories + 18 product rules)",
+        "knownIssues": []
+      },
+      "refreshPlan": {
+        "nextReviewDate": "2025-03-01",
+        "watchUrls": [
+          "https://ec.europa.eu/environment/ecodesign"
+        ],
+        "notes": "Monitor for delegated acts and implementing regulations"
+      },
+      "tags": [
+        "dpp",
+        "espr",
+        "ecodesign",
+        "circularity"
+      ]
+    },
+    {
+      "datasetId": "gs1.cbv_digital_link",
+      "name": "GS1 CBV Vocabularies and Digital Link Types",
+      "description": "GS1 Core Business Vocabulary (CBV) terms and Digital Link link types for product identification and traceability",
+      "publisher": {
+        "name": "GS1 Global",
+        "type": "GS1",
+        "website": "https://www.gs1.org"
+      },
+      "jurisdiction": [
+        "GLOBAL"
+      ],
+      "standards": [
+        {
+          "id": "cbv",
+          "name": "GS1 Core Business Vocabulary",
+          "version": "2.0"
+        },
+        {
+          "id": "digital_link",
+          "name": "GS1 Digital Link",
+          "version": "1.2"
+        }
+      ],
+      "regulations": [],
+      "canonicalDomains": [
+        "gs1_standards_models",
+        "terminology_and_taxonomies",
+        "product_identity_and_master_data"
+      ],
+      "intendedUse": [
+        "terminology_vocab",
+        "identifier_reference",
+        "mapping_reference"
+      ],
+      "relevance": {
+        "mvp": true,
+        "priority": "medium",
+        "notes": "Supporting vocabulary for traceability and identification mapping"
+      },
+      "status": "current",
+      "access": {
+        "type": "open",
+        "licenseName": "GS1 Standards License"
+      },
+      "formats": [
+        {
+          "mediaType": "application/json",
+          "fileExtension": ".json"
+        }
+      ],
+      "versions": [
+        {
+          "version": "2024",
+          "publicationDate": "2024-01-01",
+          "status": "current"
+        }
+      ],
+      "locations": [
+        {
+          "type": "repo_path",
+          "pathOrUrl": "data/cbv/ and data/digital_link/",
+          "isPrimary": true
+        }
+      ],
+      "updateCadence": "annual",
+      "lineage": {
+        "sourceType": "official",
+        "sourceUrl": "https://www.gs1.org/standards/gs1-digital-link",
+        "retrievedAt": "2024-12-12T00:00:00Z",
+        "retrievedBy": "Manus",
+        "method": "manual download"
+      },
+      "quality": {
+        "coverageNotes": "84 records (24 CBV vocabularies + 60 Digital Link types)",
+        "knownIssues": []
+      },
+      "refreshPlan": {
+        "nextReviewDate": "2025-06-01",
+        "watchUrls": [
+          "https://www.gs1.org/standards/cbv"
+        ],
+        "notes": "Monitor for CBV 2.1 and Digital Link 1.3 releases"
+      },
+      "tags": [
+        "cbv",
+        "digital-link",
+        "vocabulary",
+        "identifiers"
+      ]
+    }
+  ]
+}

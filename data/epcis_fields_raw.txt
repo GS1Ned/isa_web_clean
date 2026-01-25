@@ -1,0 +1,260 @@
+EPCIS Fields (Properties) from ref.gs1.org/epcis/
+Source: https://ref.gs1.org/epcis/?show=fields
+Date: December 10, 2025
+
+KEY EPCIS PROPERTIES FOR ESG TRACEABILITY:
+
+CORE EVENT PROPERTIES (What, When, Where, Why):
+
+1. eventTime
+   Range: xsd:dateTimeStamp
+   Description: The date and time at which the EPCIS Capturing Applications asserts the event occurred.
+   ESG Relevance: CRITICAL - Temporal traceability for all regulations
+
+2. eventTimeZoneOffset
+   Range: xsd:string
+   Description: The time zone offset in effect at the time and place the event occurred, expressed as an offset from UTC.
+   ESG Relevance: HIGH - Accurate temporal context
+
+3. recordTime
+   Range: xsd:dateTimeStamp
+   Description: (Implied from EPCIS spec) The date and time at which this event was recorded in the system.
+
+4. epcList
+   Range: gs1:IndividualObject
+   Description: (Optional) An unordered list of one or more EPCs naming specific objects to which the event pertained.
+   ESG Relevance: CRITICAL - Instance-level traceability (EUDR, CSRD, PPWR)
+
+5. epcClass
+   Range: (Class-level identifier)
+   Description: A class-level identifier for the class to which the specified quantity of objects belongs.
+   ESG Relevance: HIGH - Batch/lot-level traceability
+
+6. action
+   Range: xsd:string
+   Description: How this event relates to the lifecycle of the EPCs named in this event.
+   Values: ADD, OBSERVE, DELETE
+   ESG Relevance: HIGH - Lifecycle tracking (production, observation, destruction/recycling)
+
+BUSINESS CONTEXT (Why):
+
+7. bizStep
+   Range: cbv:BizStep
+   Description: (Optional) The business step of which this event was a part.
+   CBV Code List: YES - https://ref.gs1.org/cbv/BizStep-*
+   ESG Relevance: CRITICAL - Process step identification (harvesting, shipping, receiving, etc.) for EUDR, CSRD
+
+8. disposition
+   Range: cbv:Disp
+   Description: (Optional) The business condition of the objects associated with the EPCs, presumed to hold true until contradicted by a subsequent event.
+   CBV Code List: YES - https://ref.gs1.org/cbv/Disp-*
+   ESG Relevance: CRITICAL - Product status (in_transit, destroyed, recalled, expired, recycled) for PPWR, CSRD
+
+9. persistentDisposition
+   Range: cbv:Disp (via PersistentDisposition)
+   Description: Business conditions that persist until explicitly unset.
+   ESG Relevance: HIGH - Long-term product status tracking
+
+LOCATION CONTEXT (Where):
+
+10. bizLocation
+    Range: gs1:Place
+    Description: (Optional) The business location where the objects associated with the EPCs may be found, until contradicted by a subsequent event.
+    ESG Relevance: CRITICAL - Geographic traceability for EUDR (origin), CSRD Scope 3
+
+11. readPoint
+    Range: gs1:Place
+    Description: (Optional) The specific location where the event took place.
+    ESG Relevance: HIGH - Precise location tracking
+
+SOURCE/DESTINATION (Business Transfer):
+
+12. sourceList
+    Range: SourceOrDestination
+    Description: (Optional) An unordered list of Source elements that provide context about the originating endpoint of a business transfer of which this event is a part.
+    ESG Relevance: CRITICAL - Custody chain for EUDR, CSRD Scope 3
+
+13. destinationList
+    Range: SourceOrDestination
+    Description: (Optional) An unordered list of Destination elements that provide context about the terminating endpoint of a business transfer of which this event is a part.
+    ESG Relevance: CRITICAL - Custody chain continuation
+
+BUSINESS TRANSACTIONS:
+
+14. bizTransactionList
+    Range: BizTransaction
+    Description: (Optional) An unordered list of business transactions that define the context of this event.
+    ESG Relevance: MEDIUM - Business document linkage (PO, invoice, etc.)
+
+15. type (for BizTransaction)
+    Range: cbv:BTT
+    Description: An identifier that indicates the type of BizTransaction document (e.g. Purchase Order, Despatch Advice).
+    CBV Code List: YES - https://ref.gs1.org/cbv/BTT-*
+    ESG Relevance: MEDIUM - Transaction type classification
+
+AGGREGATION/ASSOCIATION SPECIFIC:
+
+16. childEPCs
+    Range: gs1:IndividualObject
+    Description: (Optional) An unordered list of the EPCs of contained objects identified by instance-level identifiers.
+    ESG Relevance: HIGH - Packaging hierarchy for PPWR
+
+17. childQuantityList
+    Range: QuantityElement
+    Description: (Optional) An unordered list of one or more QuantityElements identifying (at the class level) contained objects.
+    ESG Relevance: HIGH - Batch aggregation
+
+18. parentID
+    Range: gs1:IndividualObject
+    Description: (Implied) The EPC of the parent object in aggregation/association.
+    ESG Relevance: HIGH - Container tracking
+
+TRANSFORMATION SPECIFIC:
+
+19. inputEPCList
+    Range: gs1:IndividualObject
+    Description: (Implied) List of input EPCs consumed in transformation.
+    ESG Relevance: CRITICAL - Raw material traceability for EUDR
+
+20. inputQuantityList
+    Range: QuantityElement
+    Description: (Implied) List of input quantities consumed in transformation.
+    ESG Relevance: CRITICAL - Batch-level input tracking
+
+21. outputEPCList
+    Range: gs1:IndividualObject
+    Description: (Implied) List of output EPCs produced in transformation.
+    ESG Relevance: CRITICAL - Product output tracking
+
+22. outputQuantityList
+    Range: QuantityElement
+    Description: (Implied) List of output quantities produced in transformation.
+    ESG Relevance: CRITICAL - Batch-level output tracking
+
+23. transformationID
+    Range: Transformation
+    Description: (Optional) Associates several TransformationEvents with a longer-running Transformation process, therefore linking them together.
+    ESG Relevance: HIGH - Multi-step manufacturing processes
+
+INSTANCE/LOT MASTER DATA (ILMD):
+
+24. ilmd
+    Range: ILMD
+    Description: Instance/Lot Master Data - descriptive attributes for specific instances or batches.
+    ESG Relevance: CRITICAL - Batch-level ESG attributes (origin, certifications, sustainability metrics)
+
+SENSOR DATA (Environmental Monitoring):
+
+25. sensorElementList
+    Range: SensorElement
+    Description: (Optional) List of sensor elements containing sensor metadata and reports.
+    ESG Relevance: CRITICAL - Environmental monitoring for cold chain, CSRD Scope 3
+
+26. sensorMetadata (within SensorElement)
+    Range: SensorMetadata
+    Description: Metadata applicable to all sensor reports in the same sensor element.
+    ESG Relevance: HIGH - Sensor context (device, time range, etc.)
+
+27. sensorReport (within SensorElement)
+    Range: SensorReport
+    Description: Specific sensor observation data.
+    ESG Relevance: CRITICAL - Actual sensor readings (temperature, humidity, CO2)
+
+28. deviceID (in SensorMetadata)
+    Range: gs1:SensorDevice
+    Description: (Optional) Device from which the sensor data originates.
+    ESG Relevance: MEDIUM - Sensor device identification
+
+29. type (in SensorReport)
+    Range: gs1:MeasurementType
+    Description: Type of measurement (e.g. Temperature, Humidity, Pressure).
+    CBV Code List: YES - https://ref.gs1.org/cbv/MeasurementType-*
+    ESG Relevance: CRITICAL - Measurement type classification
+
+30. value (in SensorReport)
+    Range: xsd:double
+    Description: Measured value.
+    ESG Relevance: CRITICAL - Actual measurement reading
+
+31. uom (in SensorReport)
+    Range: xsd:string
+    Description: Unit of measure (e.g. CEL for Celsius, KGM for kilograms).
+    ESG Relevance: CRITICAL - Measurement unit
+
+32. startTime / endTime (in SensorMetadata)
+    Range: xsd:dateTimeStamp
+    Description: Time range for sensor observations.
+    ESG Relevance: HIGH - Temporal context for environmental monitoring
+
+ERROR HANDLING:
+
+33. errorDeclaration
+    Range: ErrorDeclaration
+    Description: (Optional) If present, indicates that this event serves to assert that the assertions made by a prior event are in error.
+    ESG Relevance: MEDIUM - Data quality and error correction
+
+34. declarationTime (in ErrorDeclaration)
+    Range: xsd:dateTimeStamp
+    Description: The date and time at which the declaration of error is made.
+    ESG Relevance: MEDIUM - Error timestamp
+
+35. reason (in ErrorDeclaration)
+    Range: cbv:ErrorReason
+    Description: Reason for the error.
+    CBV Code List: YES - https://ref.gs1.org/cbv/ER-*
+    ESG Relevance: MEDIUM - Error classification
+
+36. correctiveEventIDs (in ErrorDeclaration)
+    Range: EPCISEvent
+    Description: (Optional) Events that are corrections to the erroneous event.
+    ESG Relevance: MEDIUM - Corrective action linkage
+
+CERTIFICATION & COMPLIANCE:
+
+37. certificationInfo
+    Range: gs1:CertificationDetails
+    Description: CertificationDetails relevant for Objects, Places and/or Organizations mentioned in this Event.
+    ESG Relevance: CRITICAL - Certification tracking (FSC, organic, fair trade, etc.) for EUDR, CSRD
+
+BUSINESS RULES & DATA PROCESSING:
+
+38. bizRules
+    Range: URI
+    Description: (Optional) Storage location of an electronic document accommodating product- or application-specific business rules on which basis the EPCIS event was triggered.
+    ESG Relevance: LOW - Business logic reference
+
+39. dataProcessingMethod
+    Range: URI
+    Description: (Optional) Storage location of an electronic document accommodating the data processing method of the contained sensor data.
+    ESG Relevance: MEDIUM - Data processing transparency
+
+QUANTITY ELEMENT PROPERTIES:
+
+40. quantity (in QuantityElement)
+    Range: xsd:double
+    Description: Quantity of objects.
+    ESG Relevance: HIGH - Volume tracking
+
+41. uom (in QuantityElement)
+    Range: xsd:string
+    Description: Unit of measure for quantity.
+    ESG Relevance: HIGH - Quantity unit
+
+---
+
+PROPERTIES THAT REFERENCE CBV CODE LISTS:
+
+1. bizStep → cbv:BizStep
+2. disposition → cbv:Disp
+3. type (BizTransaction) → cbv:BTT
+4. type (SourceOrDestination) → cbv:SDT
+5. reason (ErrorDeclaration) → cbv:ER
+6. type (SensorReport) → gs1:MeasurementType
+7. component (SensorReport) → cbv:Comp
+
+---
+
+NEXT STEPS:
+1. Click "CBV Code lists" to explore business vocabularies
+2. Extract bizStep, disposition, BTT, SDT, ER code lists
+3. Create curated JSON datasets for each vocabulary

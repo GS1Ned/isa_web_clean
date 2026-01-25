@@ -1,0 +1,62 @@
+# GS1 Terms Dictionary
+# GS1 standards, products, and terminology
+
+# GS1 Standards
+GDSN
+EPCIS
+DataBar
+EANCOM
+EPCglobal
+GTIN
+GLN
+SSCC
+SGTIN
+GRAI
+GIAI
+GSRN
+GDTI
+GS1-128
+UPC
+
+# GS1 Organizations
+AISBL
+Benelux
+
+# GS1 Concepts
+barcode
+barcodes
+traceability
+interoperability
+serialisation
+serialization
+datapool
+datapools
+
+# GS1 Attributes
+recyclability
+circularity
+deforestation
+geolocation
+
+# GS1 Acronyms
+CTEs
+KDEs
+CBV
+BMS
+PCF
+DPP
+PPWR
+EUDR
+CSRD
+ESRS
+EFRAG
+SFDR
+FMCG
+DIY
+DHZTD
+ECHO
+
+# GS1 Technical Terms
+JSON-LD
+XBRL
+CELEX

@@ -1,0 +1,305 @@
+[
+  {
+    "productCategory": "LMT batteries, industrial batteries >2kWh, electric vehicle batteries",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["serial_number"],
+      "qualifierAIs": {
+        "serial_number": "AI (21)"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI"],
+    "regulation": "EU 2023/1542",
+    "delegatedActStatus": "finalized",
+    "notes": "Serial number mandatory for battery traceability. EPC/RFID may be used in addition to QR Code or Data Matrix."
+  },
+  {
+    "productCategory": "Construction products",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "TBD",
+      "qualifiersRequired": [],
+      "qualifierAIs": {},
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["TBD"],
+    "regulation": "EU 2024/3110",
+    "delegatedActStatus": "pending",
+    "notes": "Awaiting delegated act to specify granularity level and data carrier requirements."
+  },
+  {
+    "productCategory": "Apparel, textiles, and footwear",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["batch_lot"],
+      "qualifierAIs": {
+        "batch_lot": "AI (10)",
+        "serial_number": "AI (21) - optional"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Likely to require batch/lot for traceability. Serial number may be optional or required for high-value items. Awaiting delegated act."
+  },
+  {
+    "productCategory": "Furniture",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["batch_lot"],
+      "qualifierAIs": {
+        "batch_lot": "AI (10)",
+        "serial_number": "AI (21) - optional"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Awaiting delegated act to specify exact granularity requirements."
+  },
+  {
+    "productCategory": "Tyres",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["serial_number"],
+      "qualifierAIs": {
+        "serial_number": "AI (21)"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Likely to require serial number for safety and recall traceability. Awaiting delegated act."
+  },
+  {
+    "productCategory": "Bed mattresses",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["batch_lot"],
+      "qualifierAIs": {
+        "batch_lot": "AI (10)",
+        "serial_number": "AI (21) - optional"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Awaiting delegated act to specify exact granularity requirements."
+  },
+  {
+    "productCategory": "Detergents",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["batch_lot"],
+      "qualifierAIs": {
+        "batch_lot": "AI (10)"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Batch/lot likely required for safety and recall purposes. Awaiting delegated act."
+  },
+  {
+    "productCategory": "Paints",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["batch_lot"],
+      "qualifierAIs": {
+        "batch_lot": "AI (10)"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Batch/lot likely required for hazardous substance tracking. Awaiting delegated act."
+  },
+  {
+    "productCategory": "Lubricants",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["batch_lot"],
+      "qualifierAIs": {
+        "batch_lot": "AI (10)"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Batch/lot likely required for safety and environmental tracking. Awaiting delegated act."
+  },
+  {
+    "productCategory": "Toys",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["batch_lot"],
+      "qualifierAIs": {
+        "batch_lot": "AI (10)"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Batch/lot likely required for safety and recall purposes. Awaiting delegated act."
+  },
+  {
+    "productCategory": "Energy-related products",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["serial_number"],
+      "qualifierAIs": {
+        "serial_number": "AI (21)"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Serial number likely required for energy efficiency tracking and warranty. Awaiting delegated act."
+  },
+  {
+    "productCategory": "Information and communication technology products",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["serial_number"],
+      "qualifierAIs": {
+        "serial_number": "AI (21)"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Serial number likely required for warranty, repair, and recycling tracking. Awaiting delegated act."
+  },
+  {
+    "productCategory": "Other electronics",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["serial_number"],
+      "qualifierAIs": {
+        "serial_number": "AI (21)"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Serial number likely required for warranty, repair, and recycling tracking. Awaiting delegated act."
+  },
+  {
+    "productCategory": "Intermediary products (iron, steel, chemicals, aluminium)",
+    "inScope": true,
+    "identifierModel": {
+      "gtinLevel": "GTIN-8, GTIN-12, GTIN-13, or GTIN-14",
+      "qualifiersRequired": ["batch_lot"],
+      "qualifierAIs": {
+        "batch_lot": "AI (10)"
+      },
+      "glnPartyRequired": true,
+      "glnFacilityRequired": true,
+      "madeToStockAI": "AI (01)",
+      "madeToOrderAI": "AI (03)"
+    },
+    "recommendedCarriers": ["QR Code with GS1 Digital Link URI", "Data Matrix with GS1 Digital Link URI"],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "pending",
+    "notes": "Batch/lot required for B2B traceability and material composition tracking. Awaiting delegated act."
+  },
+  {
+    "productCategory": "Food",
+    "inScope": false,
+    "identifierModel": null,
+    "recommendedCarriers": [],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "excluded",
+    "notes": "Explicitly excluded from ESPR/DPP scope."
+  },
+  {
+    "productCategory": "Feed",
+    "inScope": false,
+    "identifierModel": null,
+    "recommendedCarriers": [],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "excluded",
+    "notes": "Explicitly excluded from ESPR/DPP scope."
+  },
+  {
+    "productCategory": "Medicinal products",
+    "inScope": false,
+    "identifierModel": null,
+    "recommendedCarriers": [],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "excluded",
+    "notes": "Explicitly excluded from ESPR/DPP scope."
+  },
+  {
+    "productCategory": "Motor vehicles",
+    "inScope": false,
+    "identifierModel": null,
+    "recommendedCarriers": [],
+    "regulation": "ESPR (general)",
+    "delegatedActStatus": "excluded",
+    "notes": "Explicitly excluded from ESPR/DPP scope."
+  }
+]

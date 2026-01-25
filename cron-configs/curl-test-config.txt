@@ -1,0 +1,25 @@
+#!/bin/bash
+# Test commands for ISA News Cron Endpoints
+
+echo "Testing ISA News Cron Endpoints..."
+echo "=================================="
+echo ""
+
+# Test health endpoint
+echo "1. Testing health endpoint (no auth required)..."
+curl -s https://your-domain.manus.space/cron/health | jq
+echo ""
+
+# Test with invalid auth
+echo "2. Testing with invalid authorization (should fail)..."
+curl -s -X GET https://your-domain.manus.space/cron/daily-news-ingestion \
+  -H "Authorization: Bearer wrong-secret" | jq
+echo ""
+
+# Test daily news ingestion
+echo "3. Testing daily news ingestion (with valid auth)..."
+curl -s -X GET https://your-domain.manus.space/cron/daily-news-ingestion \
+  -H "Authorization: Bearer c11f32585dcc3641dd108e4b6d9c3d4c9a718a41eeab7869775bb8ee97ca3f9b" | jq
+echo ""
+
+echo "✅ All tests completed!"

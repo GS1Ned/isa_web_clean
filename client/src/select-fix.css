@@ -1,0 +1,31 @@
+/**
+ * Fix for Radix UI Select dropdown closing on desktop browsers
+ * 
+ * Problem: On desktop (Chrome, Safari), the dropdown closes immediately when
+ * moving mouse from trigger to menu items because Radix UI loses focus.
+ * 
+ * Solution: Add a small invisible bridge between trigger and content to maintain
+ * hover state, and prevent pointer events from closing the dropdown prematurely.
+ */
+
+/* Add invisible bridge between trigger and content */
+[data-slot="select-trigger"][data-state="open"]::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 8px;
+  pointer-events: auto;
+  z-index: 49; /* Just below the content (z-50) */
+}
+
+/* Ensure content stays open when hovering */
+[data-slot="select-content"] {
+  pointer-events: auto !important;
+}
+
+/* Prevent content from closing on pointer down inside */
+[data-slot="select-content"] * {
+  pointer-events: auto !important;
+}

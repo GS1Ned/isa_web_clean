@@ -1,0 +1,45 @@
+{
+  "advisoryId": "ISA_ADVISORY_v1.0",
+  "version": "1.0.0",
+  "publicationDate": "2025-12-13",
+  "generatedAt": "2025-12-14T21:55:03.261085+00:00",
+  "datasetRegistryVersion": "1.0.0",
+  "mappingResults": {
+    "total": 32,
+    "byConfidence": {
+      "direct": 9,
+      "partial": 5,
+      "missing": 18
+    }
+  },
+  "gaps": {
+    "total": 7,
+    "bySeverity": {
+      "critical": 3,
+      "moderate": 2,
+      "low-priority": 2
+    }
+  },
+  "recommendations": {
+    "total": 10,
+    "byTimeframe": {
+      "short-term": 3,
+      "medium-term": 4,
+      "long-term": 3
+    }
+  },
+  "statistics": {
+    "totalDatapointsAnalyzed": 1186,
+    "totalAttributesEvaluated": 3667,
+    "totalRecordsUsed": 11197,
+    "totalMappings": 32,
+    "directMappings": 9,
+    "partialMappings": 5,
+    "missingMappings": 18,
+    "totalGaps": 7,
+    "criticalGaps": 3,
+    "moderateGaps": 2,
+    "lowPriorityGaps": 2,
+    "totalRecommendations": 10
+  }
+}

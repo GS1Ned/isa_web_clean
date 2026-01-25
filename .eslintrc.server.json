@@ -1,0 +1,19 @@
+{
+  "rules": {
+    "no-console": ["error", { "allow": ["log"] }]
+  },
+  "overrides": [
+    {
+      "files": ["server/**/*.ts", "server/**/*.js"],
+      "rules": {
+        "no-console": ["error", { "allow": ["log"] }]
+      }
+    },
+    {
+      "files": ["scripts/**", "scripts/**/*.js", "scripts/**/*.ts"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+}

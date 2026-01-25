@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1764665383317,
+      "tag": "0000_reflective_justin_hammer",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1764832895374,
+      "tag": "0001_overrated_zarda",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1764834891797,
+      "tag": "0002_cloudy_starhawk",
+      "breakpoints": true
+    }
+  ]
+}

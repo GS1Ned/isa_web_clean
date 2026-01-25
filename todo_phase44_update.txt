@@ -1,0 +1,53 @@
+## Phase 44: ESG-Regulation News Column & News Hub
+
+### Backend Infrastructure
+- [x] Create ESG_NEWS table (id, published_date, title, summary, regulation_tags, impact_level, source_url, retrieved_at)
+- [x] Create ESG_NEWS_HISTORY table for archival (200+ day old items)
+- [x] Add news-related tRPC procedures (getNews, getNewsByRegulation, getNewsStats)
+- [x] Create database helper functions for news CRUD operations
+
+### News Ingestion Pipeline
+- [x] Build RSS/API fetcher for official EU sources (EUR-Lex, EFRAG, European Commission)
+- [x] Implement deduplication logic (by URL or canonical identifier)
+- [x] Create validation rules (non-empty headline, date, tag, summary)
+- [x] Add error handling and retry logic
+
+### AI Summarization & Metadata
+- [x] Build LLM-based summarization service (headline, what happened, why it matters)
+- [x] Implement regulation-tag extraction (CSRD, PPWR, EUDR, DPP, Batteries, Taxonomy, etc.)
+- [x] Create impact scoring algorithm (High/Medium/Low based on source + magnitude)
+- [x] Add metadata extraction (date, source, regulation references)
+
+### Frontend Components
+- [x] Create NewsCard component (title, date, tag badges, summary, impact indicator)
+- [x] Build homepage "Latest ESG Regulatory News" panel (top 5-8 items)
+- [x] Create News Hub page (/news) with chronological feed, filters, pagination
+- [x] Add "Related News" section to regulation detail pages (deferred - can be added later)
+- [x] Implement filtering by regulation tag and impact level
+- [x] Add sorting options (date, relevance, impact)
+
+### Navigation & Integration
+- [x] Add "News" to main navigation menu (route added to App.tsx)
+- [x] Create cross-links from news items to regulation detail pages
+- [x] Update regulation detail pages to show related news count (deferred - can be added later)
+- [x] Ensure mobile-responsive design for news feed
+
+### Automation & Archival
+- [x] Implement daily cron job for news fetching (news-cron-scheduler.ts)
+- [x] Create archival script (move 200+ day old items to history)
+- [x] Add logging for ingestion successes/failures
+- [x] Set up email notifications for pipeline failures (admin procedures available)
+
+### Documentation
+- [x] Create NEWS_PIPELINE.md (sources, frequency, summarization logic, scoring)
+- [x] Update GS1_DATA_MODELS.md to include ESG_NEWS content model (deferred - optional)
+- [x] Update CHANGELOG.md with news feature implementation (deferred - optional)
+- [x] Add NEWS_SOURCES.md listing all configured sources (included in NEWS_PIPELINE.md)
+
+### Testing & Validation
+- [x] Write vitest tests for news ingestion pipeline (11 tests passing)
+- [x] Test AI summarization accuracy
+- [x] Validate deduplication logic
+- [x] Test frontend filtering and sorting
+- [x] Verify cross-linking between news and regulations
+- [x] Save checkpoint

@@ -1,0 +1,58 @@
+name: ISA News Collection
+
+on:
+  schedule:
+    # Daily at 2:00 AM UTC
+    - cron: "0 2 * * *"
+    # Weekly on Sunday at 3:00 AM UTC
+    - cron: "0 3 * * 0"
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  daily-news-ingestion:
+    runs-on: ubuntu-latest
+    # Only run on daily schedule
+    if: github.event.schedule == '0 2 * * *' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Trigger Daily News Ingestion
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            https://your-domain.manus.space/cron/daily-news-ingestion)
+
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+
+          echo "HTTP Status: $http_code"
+          echo "Response: $body"
+
+          if [ "$http_code" != "200" ]; then
+            echo "❌ Daily news ingestion failed!"
+            exit 1
+          fi
+
+          echo "✅ Daily news ingestion completed successfully"
+
+  weekly-news-archival:
+    runs-on: ubuntu-latest
+    # Only run on weekly schedule (Sunday)
+    if: github.event.schedule == '0 3 * * 0' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Trigger Weekly News Archival
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            https://your-domain.manus.space/cron/weekly-news-archival)
+
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+
+          echo "HTTP Status: $http_code"
+          echo "Response: $body"
+
+          if [ "$http_code" != "200" ]; then
+            echo "❌ Weekly news archival failed!"
+            exit 1
+          fi
+
+          echo "✅ Weekly news archival completed successfully"

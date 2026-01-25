@@ -1,0 +1,1 @@
+ALTER TABLE `hub_news` ADD `regulatory_event_id` int;

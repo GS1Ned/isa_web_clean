@@ -1,0 +1,173 @@
+[
+  {
+    "id": "contact_information",
+    "name": "Contact Information",
+    "description": "Names, postal addresses, email addresses of businesses, individuals, operators, or traders involved in product creation",
+    "exampleRegulations": ["ESPR/DPP", "EUDR", "PPWR", "CSRD", "CSDDD"],
+    "likelyGS1Standards": ["GLN", "Party GLN", "GS1 Web Vocabulary"],
+    "likelyESGUseCases": [
+      "Economic operator identification for DPP",
+      "Facility identification for production locations",
+      "Supply chain transparency for due diligence"
+    ],
+    "regulationLevel": "both"
+  },
+  {
+    "id": "country_of_production",
+    "name": "Country of Production",
+    "description": "Country, trade register number or equivalent, of where product has been produced",
+    "exampleRegulations": ["ESPR/DPP", "EUDR", "PPWR"],
+    "likelyGS1Standards": ["GLN", "EPCIS", "CBV", "GS1 Web Vocabulary"],
+    "likelyESGUseCases": [
+      "Origin verification for deforestation-free products",
+      "Country-of-origin labeling for DPP",
+      "Supply chain mapping for transparency"
+    ],
+    "regulationLevel": "product"
+  },
+  {
+    "id": "product_description_information",
+    "name": "Product Description & Information",
+    "description": "Product name, information about the product's material composition including coding the origin of raw materials, intended use, life span and recyclability",
+    "exampleRegulations": ["ESPR/DPP", "PPWR", "Batteries Regulation", "CPR"],
+    "likelyGS1Standards": ["GTIN", "GDM", "GDSN", "GS1 Web Vocabulary"],
+    "likelyESGUseCases": [
+      "Material composition for circularity assessment",
+      "Recyclability information for end-of-life processing",
+      "Product lifespan for durability reporting",
+      "Hazardous substance disclosure"
+    ],
+    "regulationLevel": "product"
+  },
+  {
+    "id": "quantity",
+    "name": "Quantity",
+    "description": "Quantity of the relevant product",
+    "exampleRegulations": ["ESPR/DPP", "EUDR", "PPWR", "CSRD"],
+    "likelyGS1Standards": [
+      "EPCIS",
+      "CBV",
+      "GS1 Web Vocabulary",
+      "AI (30) - Count of items"
+    ],
+    "likelyESGUseCases": [
+      "Volume tracking for regulatory reporting",
+      "Batch/lot quantity for traceability",
+      "Packaging quantity for waste calculations"
+    ],
+    "regulationLevel": "both"
+  },
+  {
+    "id": "ghg_emissions",
+    "name": "GHG Emissions",
+    "description": "Greenhouse gas emissions data across scopes 1, 2, and 3",
+    "exampleRegulations": ["CSRD", "CSDDD", "TCFD"],
+    "likelyGS1Standards": [
+      "EPCIS",
+      "GS1 Web Vocabulary",
+      "Product Carbon Footprint attributes"
+    ],
+    "likelyESGUseCases": [
+      "Corporate carbon footprint reporting",
+      "Product-level carbon footprint for DPP",
+      "Supply chain emissions for scope 3 calculation"
+    ],
+    "regulationLevel": "company"
+  },
+  {
+    "id": "energy_consumption",
+    "name": "Energy Consumption",
+    "description": "Energy usage data across operations and products",
+    "exampleRegulations": ["CSRD", "ESPR/DPP"],
+    "likelyGS1Standards": ["GS1 Web Vocabulary", "EPCIS"],
+    "likelyESGUseCases": [
+      "Energy efficiency reporting for products",
+      "Facility energy consumption for corporate reporting",
+      "Renewable energy usage disclosure"
+    ],
+    "regulationLevel": "both"
+  },
+  {
+    "id": "water_usage",
+    "name": "Water Usage",
+    "description": "Water consumption and withdrawal data",
+    "exampleRegulations": ["CSRD", "EUDR"],
+    "likelyGS1Standards": ["EPCIS", "GS1 Web Vocabulary"],
+    "likelyESGUseCases": [
+      "Water footprint for products",
+      "Facility water consumption reporting",
+      "Water stress area identification"
+    ],
+    "regulationLevel": "both"
+  },
+  {
+    "id": "origin_sourcing",
+    "name": "Origin and Sourcing",
+    "description": "Information about raw material origin, sourcing practices, and supply chain locations",
+    "exampleRegulations": ["EUDR", "CSDDD", "ESPR/DPP"],
+    "likelyGS1Standards": ["EPCIS", "CBV", "GLN", "GTIN", "GS1 Web Vocabulary"],
+    "likelyESGUseCases": [
+      "Deforestation-free sourcing verification",
+      "Conflict mineral tracking",
+      "Ethical sourcing disclosure",
+      "Raw material traceability"
+    ],
+    "regulationLevel": "product"
+  },
+  {
+    "id": "recyclability_circular_economy",
+    "name": "Recyclability & Circular Economy",
+    "description": "Information about product recyclability, repair options, refurbishment, and circular economy attributes",
+    "exampleRegulations": ["ESPR/DPP", "PPWR", "Batteries Regulation"],
+    "likelyGS1Standards": ["GTIN", "GS1 Web Vocabulary", "EPCIS"],
+    "likelyESGUseCases": [
+      "Recycling instructions for consumers",
+      "Material recovery information",
+      "Repairability scoring",
+      "Second-hand product identification"
+    ],
+    "regulationLevel": "product"
+  },
+  {
+    "id": "hazardous_substances",
+    "name": "Hazardous Substances",
+    "description": "Information about presence of substances of concern, chemicals, and hazardous materials",
+    "exampleRegulations": ["ESPR/DPP", "CPR", "Batteries Regulation"],
+    "likelyGS1Standards": ["GDM", "GDSN", "GS1 Web Vocabulary"],
+    "likelyESGUseCases": [
+      "Chemical substance disclosure",
+      "REACH compliance reporting",
+      "Safety data for recycling facilities",
+      "Consumer safety information"
+    ],
+    "regulationLevel": "product"
+  },
+  {
+    "id": "human_rights_social",
+    "name": "Human Rights & Social",
+    "description": "Information about labor practices, human rights, employee matters, and social impact",
+    "exampleRegulations": ["CSRD", "CSDDD"],
+    "likelyGS1Standards": ["GLN", "EPCIS", "GS1 Web Vocabulary"],
+    "likelyESGUseCases": [
+      "Supply chain labor practice verification",
+      "Human rights due diligence",
+      "Fair trade certification tracking",
+      "Worker safety reporting"
+    ],
+    "regulationLevel": "company"
+  },
+  {
+    "id": "governance_business_conduct",
+    "name": "Governance & Business Conduct",
+    "description": "Information about corporate governance, ethics, anti-corruption, and business conduct",
+    "exampleRegulations": ["CSRD", "CSDDD"],
+    "likelyGS1Standards": ["GLN", "GS1 Web Vocabulary"],
+    "likelyESGUseCases": [
+      "Corporate governance structure disclosure",
+      "Anti-corruption policy reporting",
+      "Business ethics verification",
+      "Board composition transparency"
+    ],
+    "regulationLevel": "company"
+  }
+]

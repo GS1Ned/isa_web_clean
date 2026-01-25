@@ -1,0 +1,450 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.manus.space/schemas/advisory-output.schema.json",
+  "title": "ISA Advisory Output Schema",
+  "description": "Canonical schema for ISA (Intelligent Standards Architect) advisory outputs. Defines structure for machine-readable advisory reports mapping EU ESG regulations to GS1 standards.",
+  "type": "object",
+  "required": [
+    "advisoryId",
+    "version",
+    "publicationDate",
+    "generatedAt",
+    "datasetRegistryVersion",
+    "author",
+    "sourceArtifacts",
+    "regulationsCovered",
+    "sectorModelsCovered",
+    "mappingResults",
+    "gaps",
+    "recommendations",
+    "metadata"
+  ],
+  "properties": {
+    "advisoryId": {
+      "type": "string",
+      "description": "Unique identifier for this advisory (e.g., ISA_ADVISORY_v1.0)",
+      "pattern": "^ISA_ADVISORY_v[0-9]+\\.[0-9]+$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this advisory (e.g., 1.0.0)",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "publicationDate": {
+      "type": "string",
+      "description": "Publication date in ISO 8601 format",
+      "format": "date"
+    },
+    "generatedAt": {
+      "type": "string",
+      "description": "RFC3339 datetime with timezone when this JSON advisory was generated",
+      "format": "date-time"
+    },
+    "datasetRegistryVersion": {
+      "type": "string",
+      "description": "Version of dataset registry used for this advisory (e.g., 1.0.0)",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "author": {
+      "type": "string",
+      "description": "Author of this advisory (e.g., ISA Execution Agent)"
+    },
+    "sourceArtifacts": {
+      "type": "object",
+      "description": "Provenance metadata for source artifacts used to generate this advisory",
+      "required": ["advisoryMarkdown", "datasetRegistry", "schema"],
+      "properties": {
+        "advisoryMarkdown": {
+          "type": "object",
+          "required": ["path", "sha256"],
+          "properties": {
+            "path": {"type": "string", "description": "Repository path to Markdown advisory source"},
+            "sha256": {"type": "string", "description": "SHA256 hash of Markdown source file", "pattern": "^[a-f0-9]{64}$"}
+          }
+        },
+        "datasetRegistry": {
+          "type": "object",
+          "required": ["path", "version", "sha256"],
+          "properties": {
+            "path": {"type": "string", "description": "Repository path to frozen dataset registry"},
+            "version": {"type": "string", "description": "Dataset registry version", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+            "sha256": {"type": "string", "description": "SHA256 hash of dataset registry file", "pattern": "^[a-f0-9]{64}$"}
+          }
+        },
+        "schema": {
+          "type": "object",
+          "required": ["id", "version", "sha256"],
+          "properties": {
+            "id": {"type": "string", "description": "Schema $id URI"},
+            "version": {"type": "string", "description": "Schema version"},
+            "sha256": {"type": "string", "description": "SHA256 hash of schema file", "pattern": "^[a-f0-9]{64}$"}
+          }
+        }
+      }
+    },
+    "regulationsCovered": {
+      "type": "array",
+      "description": "List of regulations covered in this advisory",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/Regulation"
+      }
+    },
+    "sectorModelsCovered": {
+      "type": "array",
+      "description": "List of GS1 sector models analyzed in this advisory",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/SectorModel"
+      }
+    },
+    "mappingResults": {
+      "type": "array",
+      "description": "Regulation-to-standard mapping results",
+      "items": {
+        "$ref": "#/definitions/MappingResult"
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "description": "Identified gaps in standards coverage",
+      "items": {
+        "$ref": "#/definitions/Gap"
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "description": "Standards evolution recommendations",
+      "items": {
+        "$ref": "#/definitions/Recommendation"
+      }
+    },
+    "metadata": {
+      "$ref": "#/definitions/AdvisoryMetadata"
+    }
+  },
+  "definitions": {
+    "Regulation": {
+      "type": "object",
+      "required": ["id", "name", "legalStatus", "datasetIds"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Regulation identifier (e.g., csrd_esrs, eudr, dpp)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full regulation name"
+        },
+        "legalStatus": {
+          "type": "string",
+          "enum": ["binding", "proposed", "voluntary"],
+          "description": "Legal status of regulation"
+        },
+        "effectiveDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Effective date (or earliest phase date for phased rollouts)"
+        },
+        "datasetIds": {
+          "type": "array",
+          "description": "Dataset IDs from dataset registry used for this regulation",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SectorModel": {
+      "type": "object",
+      "required": ["id", "name", "version", "totalAttributes"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Dataset ID from dataset registry (e.g., gs1nl.benelux.diy_garden_pet.v3.1.33)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable sector model name"
+        },
+        "version": {
+          "type": "string",
+          "description": "Sector model version"
+        },
+        "totalAttributes": {
+          "type": "integer",
+          "description": "Total number of attributes in this sector model"
+        }
+      }
+    },
+    "MappingResult": {
+      "type": "object",
+      "required": [
+        "mappingId",
+        "regulationDatapoint",
+        "disclosureRequirement",
+        "regulationStandard",
+        "gs1Attribute",
+        "sectors",
+        "confidence",
+        "rationale",
+        "datasetReferences"
+      ],
+      "properties": {
+        "mappingId": {
+          "type": "string",
+          "description": "Unique mapping identifier (e.g., MAP-E1-001)",
+          "pattern": "^MAP-[A-Z0-9]+-[0-9]+$"
+        },
+        "regulationDatapoint": {
+          "type": "string",
+          "description": "Regulation datapoint or requirement name"
+        },
+        "disclosureRequirement": {
+          "type": "string",
+          "description": "Disclosure requirement code (e.g., E1-6, EUDR-Art4)"
+        },
+        "regulationStandard": {
+          "type": "string",
+          "description": "Regulation standard (e.g., ESRS E1, EUDR, DPP)"
+        },
+        "gs1Attribute": {
+          "type": ["string", "null"],
+          "description": "GS1 attribute name (null if missing)"
+        },
+        "gs1AttributeCode": {
+          "type": ["string", "null"],
+          "description": "GS1 attribute code (null if missing)"
+        },
+        "sectors": {
+          "type": "array",
+          "description": "Affected sectors (DIY, FMCG, Healthcare, or All)",
+          "items": {
+            "type": "string",
+            "enum": ["DIY", "FMCG", "Healthcare", "All"]
+          }
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["direct", "partial", "missing"],
+          "description": "Mapping confidence level"
+        },
+        "confidenceScore": {
+          "type": ["number", "null"],
+          "description": "Quantitative confidence score (0-1 scale). Required for direct/partial mappings, must be 0 or null for missing mappings.",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Explanation of mapping confidence"
+        },
+        "datasetReferences": {
+          "type": "array",
+          "description": "Dataset IDs used for this mapping",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Gap": {
+      "type": "object",
+      "required": [
+        "gapId",
+        "title",
+        "category",
+        "impact",
+        "urgency",
+        "affectedRegulations",
+        "affectedSectors",
+        "description",
+        "recommendedAction",
+        "datasetReferences"
+      ],
+      "properties": {
+        "gapId": {
+          "type": "string",
+          "description": "Unique gap identifier (e.g., GAP-001)",
+          "pattern": "^GAP-[0-9]+$"
+        },
+        "title": {
+          "type": "string",
+          "description": "Gap title"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["critical", "moderate", "low-priority"],
+          "description": "Gap priority category"
+        },
+        "impact": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Business impact level"
+        },
+        "urgency": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Implementation urgency"
+        },
+        "affectedRegulations": {
+          "type": "array",
+          "description": "Regulation requirements affected by this gap",
+          "items": {
+            "type": "string"
+          }
+        },
+        "affectedSectors": {
+          "type": "array",
+          "description": "Sector models affected by this gap",
+          "items": {
+            "type": "string",
+            "enum": ["DIY", "FMCG", "Healthcare", "All"]
+          }
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed gap description"
+        },
+        "recommendedAction": {
+          "type": "string",
+          "description": "Recommended action to address gap"
+        },
+        "datasetReferences": {
+          "type": "array",
+          "description": "Dataset IDs related to this gap",
+          "items": {
+            "type": "string"
+          }
+        },
+        "relatedMappings": {
+          "type": "array",
+          "description": "Mapping IDs related to this gap",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Recommendation": {
+      "type": "object",
+      "required": [
+        "recommendationId",
+        "timeframe",
+        "category",
+        "title",
+        "description",
+        "relatedGaps",
+        "estimatedEffort"
+      ],
+      "properties": {
+        "recommendationId": {
+          "type": "string",
+          "description": "Unique recommendation identifier (e.g., REC-001)",
+          "pattern": "^REC-[0-9]+$"
+        },
+        "timeframe": {
+          "type": "string",
+          "enum": ["short-term", "medium-term", "long-term"],
+          "description": "Implementation timeframe"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["documentation", "data_model", "strategic"],
+          "description": "Recommendation category"
+        },
+        "title": {
+          "type": "string",
+          "description": "Recommendation title"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed recommendation description"
+        },
+        "relatedGaps": {
+          "type": "array",
+          "description": "Gap IDs addressed by this recommendation",
+          "items": {
+            "type": "string"
+          }
+        },
+        "estimatedEffort": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "Estimated implementation effort"
+        },
+        "implementationStatus": {
+          "type": "string",
+          "enum": ["proposed", "in_progress", "completed", "deferred"],
+          "description": "Current implementation status"
+        },
+        "implementedInVersion": {
+          "type": ["string", "null"],
+          "description": "GS1 NL version where implemented (null if not yet implemented)"
+        }
+      }
+    },
+    "AdvisoryMetadata": {
+      "type": "object",
+      "required": [
+        "totalDatapointsAnalyzed",
+        "totalAttributesEvaluated",
+        "totalRecordsUsed",
+        "totalMappings",
+        "directMappings",
+        "partialMappings",
+        "missingMappings"
+      ],
+      "properties": {
+        "totalDatapointsAnalyzed": {
+          "type": "integer",
+          "description": "Total regulation datapoints analyzed"
+        },
+        "totalAttributesEvaluated": {
+          "type": "integer",
+          "description": "Total GS1 attributes evaluated"
+        },
+        "totalRecordsUsed": {
+          "type": "integer",
+          "description": "Total records from dataset registry"
+        },
+        "totalMappings": {
+          "type": "integer",
+          "description": "Total mapping results"
+        },
+        "directMappings": {
+          "type": "integer",
+          "description": "Number of direct mappings"
+        },
+        "partialMappings": {
+          "type": "integer",
+          "description": "Number of partial mappings"
+        },
+        "missingMappings": {
+          "type": "integer",
+          "description": "Number of missing mappings"
+        },
+        "totalGaps": {
+          "type": "integer",
+          "description": "Total gaps identified"
+        },
+        "criticalGaps": {
+          "type": "integer",
+          "description": "Number of critical gaps"
+        },
+        "moderateGaps": {
+          "type": "integer",
+          "description": "Number of moderate gaps"
+        },
+        "lowPriorityGaps": {
+          "type": "integer",
+          "description": "Number of low-priority gaps"
+        },
+        "totalRecommendations": {
+          "type": "integer",
+          "description": "Total recommendations"
+        }
+      }
+    }
+  }
+}
