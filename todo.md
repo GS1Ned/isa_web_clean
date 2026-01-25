@@ -3580,3 +3580,24 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [ ] Ask a question in Ask ISA
 - [ ] Verify inline citations are generated
 - [ ] Check claim verification rate
+
+
+---
+
+## Claim Verification Rate Improvement
+
+### Goal
+Increase claim verification rate from 8% to 50%+ by improving inline citation generation
+
+### Tasks
+- [x] Analyze current system prompt citation instructions
+- [x] Analyze claim-citation-verifier.ts logic to understand verification criteria
+- [x] Refine system prompt with stricter per-claim citation requirements (v2.1)
+- [x] Add examples of proper citation format in system prompt (CORRECT vs INCORRECT)
+- [x] Test improved verification rate with sample query
+- [x] Document before/after comparison (ASK_ISA_IMPROVED_VERIFICATION_TEST.md)
+
+### Results
+- Verification rate improved from 8% to 14% (+75% relative)
+- Claims detected increased from 12 to 22 (+83%)
+- More inline citations placed immediately after claims
