@@ -3354,3 +3354,10 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [ ] Test fix on News Hub page
 - [ ] Test fix on Events Overview page
 - [ ] Verify all dropdown menus work correctly
+
+
+## Dropdown Enhancements
+
+- [ ] Add keyboard navigation improvements (Arrow keys, Enter, Escape)
+- [ ] Add visual feedback for dropdown open state
+- [ ] Document mobile testing approach for touch interactions
