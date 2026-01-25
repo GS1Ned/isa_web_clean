@@ -12,6 +12,7 @@ export type QueryType =
   | "dataset_provenance"
   | "recommendation"
   | "coverage"
+  | "esg_traceability"
   | "forbidden";
 
 export interface QueryClassification {
@@ -229,6 +230,24 @@ export function classifyQuery(question: string): QueryClassification {
     }
   }
 
+  // Allowed patterns - ESG traceability queries (EU_ESG_to_GS1_Mapping artefact)
+  const esgTraceabilityPatterns = [
+    /traceability (chain|from|to)/i,
+    /which (obligations|requirements) (for|from|under)/i,
+    /gs1 (relevance|support|capability) (for|under)/i,
+    /(csrd|esrs|eudr|csddd|batteries|ppwr|sfdr|cbam|taxonomy).*(gs1|mapping|obligation)/i,
+    /eu (esg|regulation).*(gs1|mapping)/i,
+  ];
+
+  for (const pattern of esgTraceabilityPatterns) {
+    if (pattern.test(question)) {
+      return {
+        type: "esg_traceability",
+        allowed: true,
+      };
+    }
+  }
+
   // Default: Allow but mark as unclassified
   // The LLM will attempt to answer, but may refuse if truly out of scope
   return {
@@ -299,4 +318,83 @@ export function calculateConfidence(sourceCount: number): {
   } else {
     return { level: "low", score: sourceCount };
   }
+}
+
+/**
+ * GS1 Over-Claim Blocking
+ * 
+ * GOVERNANCE: GS1 is never legally required.
+ * Block phrases that imply GS1 is mandatory or ensures compliance.
+ */
+const GS1_OVERCLAIM_PATTERNS = [
+  /gs1 (is|are) (required|mandatory|obligatory)/i,
+  /gs1 ensures compliance/i,
+  /required by law.*(gs1|gtin|gln|epcis)/i,
+  /must use gs1/i,
+  /legally required.*(gs1|gtin|gln|epcis)/i,
+  /gs1 (guarantees|certifies|proves) compliance/i,
+  /compliance (requires|demands|mandates) gs1/i,
+];
+
+/**
+ * Check if response contains GS1 over-claims
+ */
+export function detectGS1OverClaim(response: string): {
+  hasOverClaim: boolean;
+  violations: string[];
+} {
+  const violations: string[] = [];
+  
+  for (const pattern of GS1_OVERCLAIM_PATTERNS) {
+    const match = response.match(pattern);
+    if (match) {
+      violations.push(match[0]);
+    }
+  }
+  
+  return {
+    hasOverClaim: violations.length > 0,
+    violations,
+  };
+}
+
+/**
+ * Sanitize response to remove GS1 over-claims
+ */
+export function sanitizeGS1Claims(response: string): string {
+  let sanitized = response;
+  
+  // Replace over-claim phrases with governance-compliant alternatives
+  sanitized = sanitized.replace(
+    /gs1 (is|are) (required|mandatory|obligatory)/gi,
+    "GS1 may support"
+  );
+  sanitized = sanitized.replace(
+    /gs1 ensures compliance/gi,
+    "GS1 may support compliance activities"
+  );
+  sanitized = sanitized.replace(
+    /must use gs1/gi,
+    "may consider using GS1"
+  );
+  sanitized = sanitized.replace(
+    /legally required.*(gs1|gtin|gln|epcis)/gi,
+    "GS1 standards (which are not legally required)"
+  );
+  
+  return sanitized;
+}
+
+/**
+ * GS1 Governance Disclaimer
+ * Must be appended to any response mentioning GS1 in ESG context
+ */
+export const GS1_GOVERNANCE_DISCLAIMER = 
+  "Note: GS1 is never legally required. GS1 standards may support compliance activities but are not mandated by any EU regulation.";
+
+/**
+ * Check if response mentions GS1 and needs disclaimer
+ */
+export function needsGS1Disclaimer(response: string): boolean {
+  return /gs1|gtin|gln|epcis|sgtin/i.test(response);
 }

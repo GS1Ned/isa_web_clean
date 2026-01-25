@@ -121,6 +121,8 @@ const StandardDetail = lazy(() => import("./pages/StandardDetail").then(m => ({ 
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const AttributeRecommender = lazy(() => import("./pages/AttributeRecommender"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const EsgTraceability = lazy(() => import("./pages/EsgTraceability"));
+const EsgPriorities = lazy(() => import("./pages/EsgPriorities"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -155,6 +157,8 @@ function Router() {
       <Route path="/hub/calendar" component={HubCalendar} />
       <Route path="/hub/standards-mapping" component={HubStandardsMapping} />
       <Route path="/hub/esrs-gs1-mappings" component={HubEsrsGs1Mappings} />
+      <Route path="/hub/esg-traceability" component={EsgTraceability} />
+      <Route path="/hub/esg-priorities" component={EsgPriorities} />
       <Route path="/tools/compliance-roadmap" component={ToolsComplianceRoadmap} />
       <Route path="/tools/gap-analyzer" component={GapAnalyzer} />
       <Route path="/tools/impact-simulator" component={ImpactSimulator} />

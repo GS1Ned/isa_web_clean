@@ -400,3 +400,67 @@ By continuing to operate ISA development, Manus acknowledges:
 **END OF GOVERNANCE FRAMEWORK**
 
 This document is authoritative and binding. All ISA development activities are subject to this governance framework effective 2025-12-17.
+
+
+---
+
+## 11. EU_ESG_to_GS1_Mapping — Frozen Baseline
+
+**Artefact:** EU_ESG_to_GS1_Mapping_v1.1  
+**Status:** FROZEN BASELINE  
+**Effective Date:** 2026-01-25  
+**Validation:** ALL GATES PASSED  
+**Audit Status:** DEFENSIBLE
+
+This artefact set is immutable. No modifications, extensions, or reinterpretations are permitted without a versioned release process.
+
+### 11.1 Usage Contract
+
+#### PERMITTED
+
+- Query artefact data via `trpc.esgArtefacts.*` procedures (read-only)
+- Display traceability chains in UI with full citation
+- Use scoring data for prioritisation recommendations
+- Reference artefact in Ask ISA context (read-only enrichment)
+- Detect changes in EUR-Lex sources (alert-only, no auto-update)
+
+#### PROHIBITED
+
+- Modify artefact content without versioned release process
+- Add new obligations, requirements, or mappings inline
+- Assert GS1 as legally required in any UI or API output
+- Embed artefact content for semantic search (RAG)
+- Remove or weaken explicit exclusions or limitations
+- Use artefact to generate legal advice or compliance certificates
+- Auto-update from EUR-Lex without human review
+
+### 11.2 GS1 Constraint
+
+> **GS1 is never legally required.**
+
+GS1 standards may support compliance activities but are not mandated by any EU regulation. All ISA outputs must reflect this constraint.
+
+### 11.3 What ISA Must NOT Do
+
+| Prohibited Action | Rationale |
+|-------------------|-----------|
+| Extend the mapping | New obligations require adversarial audit; ad-hoc additions break defensibility |
+| Reinterpret legal meaning | Artefact captures what law says, not what it might mean |
+| Assert GS1 as legally required | GS1 is infrastructure, never a legal requirement |
+| Auto-update from EUR-Lex | Changes require human review |
+| Provide legal advice | ISA is guidance tool, not legal service |
+| Embed for RAG | Destroys traceability chain |
+| Use over-claim phrases | "ensures compliance", "required by law" are prohibited |
+
+### 11.4 Extension Process
+
+1. Create new version directory (e.g., `EU_ESG_to_GS1_Mapping_v1.2`)
+2. Document all changes in `CHANGELOG.md`
+3. Run full validation suite (`validate-esg-artefacts.mjs`)
+4. Update `VALIDATION_REPORT.md` with results
+5. Require code review approval before merge
+6. Update `MANIFEST.json` with new version metadata
+
+### 11.5 Governance Anchor
+
+This artefact set is the single source of truth for GS1 relevance claims. Any ISA feature that references GS1's role in EU ESG compliance MUST trace its claim to this artefact set or explicitly disclaim the connection.
