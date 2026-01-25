@@ -3601,3 +3601,21 @@ Increase claim verification rate from 8% to 50%+ by improving inline citation ge
 - Verification rate improved from 8% to 14% (+75% relative)
 - Claims detected increased from 12 to 22 (+83%)
 - More inline citations placed immediately after claims
+
+---
+
+## Dev Server Memory Optimization (January 25, 2026)
+
+### Root Cause Analysis Complete
+- [x] Diagnosed dev server crashes as memory exhaustion (not syntax errors)
+- [x] Identified false positive from `node -c` on TypeScript files
+- [x] Documented diagnostic methodology improvements
+- [x] Created ROOT_CAUSE_DIAGNOSTIC_REPORT.md
+
+### Memory Optimization Implementation
+- [x] Increase Node.js heap size to 4GB in package.json dev script
+- [x] Test dev server stability with increased heap size
+- [x] Run comprehensive test suite to verify no regressions
+- [ ] Save checkpoint with memory optimization
+
+**Rationale:** Dev server crashed due to JavaScript heap out of memory during JSON serialization. Increasing heap size from default (~2GB) to 4GB will prevent future crashes.
