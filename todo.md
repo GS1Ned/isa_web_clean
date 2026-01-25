@@ -3358,8 +3358,8 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 
 ## Desktop Dropdown Fix
 
-- [ ] Implement desktop-specific fix for dropdown menus (Chrome, Safari)
-- [ ] Remove onPointerDownOutside approach (works on mobile but not desktop)
-- [ ] Use alternative approach that works for both mouse and touch events
-- [ ] Test on desktop browsers (Chrome, Safari)
+- [x] Implement desktop-specific fix for dropdown menus (Chrome, Safari)
+- [x] Remove onPointerDownOutside approach (works on mobile but not desktop)
+- [x] Use CSS fix with invisible bridge between trigger and content
+- [ ] Test on desktop browsers (Chrome, Safari) - USER TESTING REQUIRED
 - [ ] Verify mobile functionality still works
