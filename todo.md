@@ -3354,3 +3354,12 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [ ] Test fix on News Hub page
 - [ ] Test fix on Events Overview page
 - [ ] Verify all dropdown menus work correctly
+
+
+## Desktop Dropdown Fix
+
+- [ ] Implement desktop-specific fix for dropdown menus (Chrome, Safari)
+- [ ] Remove onPointerDownOutside approach (works on mobile but not desktop)
+- [ ] Use alternative approach that works for both mouse and touch events
+- [ ] Test on desktop browsers (Chrome, Safari)
+- [ ] Verify mobile functionality still works
