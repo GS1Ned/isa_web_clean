@@ -1,0 +1,2 @@
+ALTER TABLE `regulatory_events` ADD `decision_value_type` enum('OBLIGATION_CHANGE','SCOPE_CHANGE','TIMING_CHANGE','INTERPRETATION_CLARIFICATION','DATA_REQUIREMENT','ASSUMPTION_INVALIDATED');--> statement-breakpoint
+ALTER TABLE `regulatory_events` ADD `stability_risk` enum('LOW','MEDIUM','HIGH');

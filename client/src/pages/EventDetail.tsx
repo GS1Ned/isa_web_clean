@@ -71,6 +71,23 @@ const CONFIDENCE_CONFIG: Record<string, { label: string; color: string }> = {
   MARKET_PRACTICE: { label: "Market Practice", color: "text-gray-700 bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700" },
 };
 
+// Decision Value Type configuration (Check 1)
+const DECISION_VALUE_CONFIG: Record<string, { label: string; color: string; description: string }> = {
+  OBLIGATION_CHANGE: { label: "Obligation Change", color: "text-red-700 bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800", description: "Changes to mandatory requirements" },
+  SCOPE_CHANGE: { label: "Scope Change", color: "text-purple-700 bg-purple-50 border-purple-200 dark:bg-purple-900/20 dark:border-purple-800", description: "Changes to who/what is covered" },
+  TIMING_CHANGE: { label: "Timing Change", color: "text-orange-700 bg-orange-50 border-orange-200 dark:bg-orange-900/20 dark:border-orange-800", description: "Changes to deadlines or timelines" },
+  INTERPRETATION_CLARIFICATION: { label: "Interpretation", color: "text-blue-700 bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800", description: "Clarification of existing requirements" },
+  DATA_REQUIREMENT: { label: "Data Requirement", color: "text-indigo-700 bg-indigo-50 border-indigo-200 dark:bg-indigo-900/20 dark:border-indigo-800", description: "Changes to data or reporting requirements" },
+  ASSUMPTION_INVALIDATED: { label: "Assumption Invalidated", color: "text-amber-700 bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800", description: "Previous assumptions no longer valid" },
+};
+
+// Stability Risk configuration (Check 7)
+const STABILITY_RISK_CONFIG: Record<string, { label: string; color: string; icon: React.ElementType; description: string }> = {
+  HIGH: { label: "High Risk", color: "text-red-700 bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800", icon: AlertTriangle, description: "Regulatory position may still change significantly" },
+  MEDIUM: { label: "Medium Risk", color: "text-yellow-700 bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800", icon: AlertCircle, description: "Some interpretation uncertainty remains" },
+  LOW: { label: "Low Risk", color: "text-green-700 bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800", icon: CheckCircle2, description: "Regulatory position is stable and adopted" },
+};
+
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every(item => typeof item === 'string');
 }
@@ -118,6 +135,9 @@ export default function EventDetail() {
   const lifecycleConfig = LIFECYCLE_CONFIG[event.lifecycleState] || LIFECYCLE_CONFIG.PROPOSAL;
   const statusConfig = STATUS_CONFIG[event.status] || STATUS_CONFIG.DRAFT;
   const confidenceConfig = event.confidenceLevel ? CONFIDENCE_CONFIG[event.confidenceLevel] : null;
+  const decisionValueConfig = event.decisionValueType ? DECISION_VALUE_CONFIG[event.decisionValueType] : null;
+  const stabilityRiskConfig = event.stabilityRisk ? STABILITY_RISK_CONFIG[event.stabilityRisk] : null;
+  const StabilityRiskIcon = stabilityRiskConfig?.icon;
   const affectedRegs = isStringArray(event.affectedRegulations) ? event.affectedRegulations : [];
   const EventIcon = eventTypeConfig.icon;
   const StatusIcon = statusConfig.icon;
@@ -175,6 +195,17 @@ export default function EventDetail() {
                   {confidenceConfig && (
                     <Badge variant="outline" className={`border ${confidenceConfig.color}`}>
                       {confidenceConfig.label}
+                    </Badge>
+                  )}
+                  {decisionValueConfig && (
+                    <Badge variant="outline" className={`border ${decisionValueConfig.color}`} title={decisionValueConfig.description}>
+                      {decisionValueConfig.label}
+                    </Badge>
+                  )}
+                  {stabilityRiskConfig && StabilityRiskIcon && (
+                    <Badge variant="outline" className={`border ${stabilityRiskConfig.color}`} title={stabilityRiskConfig.description}>
+                      <StabilityRiskIcon className="h-3 w-3 mr-1" />
+                      {stabilityRiskConfig.label}
                     </Badge>
                   )}
                 </div>

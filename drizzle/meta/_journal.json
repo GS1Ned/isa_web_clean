@@ -71,6 +71,13 @@
       "when": 1769294579657,
       "tag": "0009_moaning_human_torch",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1769299297714,
+      "tag": "0010_light_wolfpack",
+      "breakpoints": true
     }
   ]
 }

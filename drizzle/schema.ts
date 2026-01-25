@@ -2015,6 +2015,23 @@ export const regulatoryEvents = mysqlTable("regulatory_events", {
 	// Source articles (linked via source_article_ids)
 	sourceArticleIds: json("source_article_ids").notNull(), // Array of hub_news IDs
 	
+	// Decision Value Definition (Check 1)
+	decisionValueType: mysqlEnum("decision_value_type", [
+		'OBLIGATION_CHANGE',
+		'SCOPE_CHANGE',
+		'TIMING_CHANGE',
+		'INTERPRETATION_CLARIFICATION',
+		'DATA_REQUIREMENT',
+		'ASSUMPTION_INVALIDATED'
+	]),
+	
+	// Stability Risk Indicator (Check 7)
+	stabilityRisk: mysqlEnum("stability_risk", [
+		'LOW',
+		'MEDIUM',
+		'HIGH'
+	]),
+	
 	// Confidence and authority
 	confidenceLevel: mysqlEnum("confidence_level", [
 		'CONFIRMED_LAW',

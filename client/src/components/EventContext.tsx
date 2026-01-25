@@ -57,6 +57,13 @@ const STATUS_CONFIG: Record<string, { label: string; icon: React.ElementType; co
   DRAFT: { label: "Draft", icon: FileText, color: "text-gray-600 bg-gray-100 dark:bg-gray-800" },
 };
 
+// Stability Risk configuration (Check 7)
+const STABILITY_RISK_CONFIG: Record<string, { label: string; color: string; icon: React.ElementType; description: string }> = {
+  HIGH: { label: "High Risk", color: "text-red-700 bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800", icon: AlertTriangle, description: "Regulatory position may still change" },
+  MEDIUM: { label: "Medium Risk", color: "text-yellow-700 bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800", icon: AlertCircle, description: "Some uncertainty remains" },
+  LOW: { label: "Low Risk", color: "text-green-700 bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800", icon: CheckCircle2, description: "Regulatory position is stable" },
+};
+
 interface RegulatoryEvent {
   id: number;
   dedupKey: string;
@@ -78,6 +85,8 @@ interface RegulatoryEvent {
   confidenceLevel: string | null;
   confidenceSource: string | null;
   status: string;
+  decisionValueType: string | null;
+  stabilityRisk: string | null;
   completenessScore: number | null;
   deltaValidationPassed: number | null;
   missingDeltaFields: unknown;
@@ -98,9 +107,11 @@ export function EventContext({ event, compact = false }: EventContextProps) {
   const eventTypeConfig = EVENT_TYPE_CONFIG[event.eventType] || EVENT_TYPE_CONFIG.PROPOSAL;
   const lifecycleConfig = LIFECYCLE_CONFIG[event.lifecycleState] || LIFECYCLE_CONFIG.PROPOSAL;
   const statusConfig = STATUS_CONFIG[event.status] || STATUS_CONFIG.DRAFT;
+  const stabilityRiskConfig = event.stabilityRisk ? STABILITY_RISK_CONFIG[event.stabilityRisk] : null;
   const affectedRegs = isStringArray(event.affectedRegulations) ? event.affectedRegulations : [];
   const EventIcon = eventTypeConfig.icon;
   const StatusIcon = statusConfig.icon;
+  const StabilityRiskIcon = stabilityRiskConfig?.icon;
 
   // Check if delta analysis is complete
   const hasDelta = Boolean(
@@ -190,6 +201,12 @@ export function EventContext({ event, compact = false }: EventContextProps) {
           <Badge className={lifecycleConfig.color}>
             {lifecycleConfig.label}
           </Badge>
+          {stabilityRiskConfig && StabilityRiskIcon && (
+            <Badge variant="outline" className={`border ${stabilityRiskConfig.color}`} title={stabilityRiskConfig.description}>
+              <StabilityRiskIcon className="h-3 w-3 mr-1" />
+              {stabilityRiskConfig.label}
+            </Badge>
+          )}
           <Badge variant="outline">
             <Calendar className="h-3 w-3 mr-1" />
             {event.eventQuarter}
