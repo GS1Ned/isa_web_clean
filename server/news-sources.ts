@@ -4,7 +4,10 @@
  *
  * Primary Sources: EU official regulatory bodies
  * Secondary Sources: GS1 organizations (high relevance to target audience)
+ * Phase 3 Sources: CSDDD, Green Claims, ESPR, NL-specific
  */
+
+import { PHASE3_SOURCES } from "./news-sources-phase3";
 
 export interface NewsSource {
   id: string;
@@ -22,7 +25,8 @@ export interface NewsSource {
   enabled: boolean;
 }
 
-export const NEWS_SOURCES: NewsSource[] = [
+// Baseline sources (Phase 1-2)
+const BASELINE_SOURCES: NewsSource[] = [
   // EU Official Sources (Authoritative Regulatory News)
   {
     id: "eurlex-oj",
@@ -283,6 +287,15 @@ export const NEWS_SOURCES: NewsSource[] = [
     ],
     enabled: true,
   },
+];
+
+/**
+ * Combined NEWS_SOURCES array
+ * Includes baseline sources + Phase 3 expansion sources
+ */
+export const NEWS_SOURCES: NewsSource[] = [
+  ...BASELINE_SOURCES,
+  ...PHASE3_SOURCES,
 ];
 
 /**

@@ -3314,3 +3314,11 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [x] Decision-grade kwaliteit behouden (ISA-GRADE status intact)
 - [x] Regressie-tests (980 passed, 1 pre-existing flaky test)
 - [x] Phase 3 afsluiting checkpoint
+
+
+## Phase 3 Source Integration
+
+- [x] Merge Phase 3 sources into NEWS_SOURCES array (27 total sources)
+- [x] Update pipeline to use extended keyword detection
+- [x] Test pipeline with new sources (integration test passed)
+- [x] Verify article fetching from new sources (12 fetched, 1 inserted)

@@ -11,7 +11,19 @@
  * - Tier 3: Industry associations, specialized media (credibilityScore: 0.8)
  */
 
-import { NewsSource } from "./news-sources";
+/**
+ * NewsSource interface (duplicated to avoid circular dependency)
+ */
+export interface NewsSource {
+  id: string;
+  name: string;
+  type: "EU_OFFICIAL" | "GS1_OFFICIAL" | "DUTCH_NATIONAL" | "INDUSTRY" | "MEDIA";
+  rssUrl?: string;
+  apiUrl?: string;
+  credibilityScore: number;
+  keywords: string[];
+  enabled: boolean;
+}
 
 /**
  * Authority Tier Classification
