@@ -27,7 +27,7 @@ export async function sendDeadlineAlerts() {
       .where(eq(userAlerts.alertType, "REGULATION_UPDATE"));
 
     if (activeAlerts.length === 0) {
-      console.log("[Email Triggers] No active alerts found");
+      serverLogger.info("[Email Triggers] No active alerts found");
       return;
     }
 
@@ -46,7 +46,7 @@ export async function sendDeadlineAlerts() {
       );
 
     if (upcomingRegulations.length === 0) {
-      console.log("[Email Triggers] No upcoming deadlines found");
+      serverLogger.info("[Email Triggers] No upcoming deadlines found");
       return;
     }
 
@@ -83,7 +83,7 @@ View Details: https://isa.example.com/hub/regulations/${reg.id}
           content: `Email recipients: ${NOTIFICATION_RECIPIENTS.join(", ")}\n\n${emailContent}`,
         });
 
-        console.log(
+        serverLogger.info(
           `[Email Triggers] Sent deadline alert for ${reg.title} to ${NOTIFICATION_RECIPIENTS.length} recipients`
         );
       }
@@ -115,7 +115,7 @@ export async function sendDailyDigest() {
       .where(eq(hubNews.publishedDate, oneDayAgo.toISOString()));
 
     if (recentNews.length === 0) {
-      console.log("[Email Triggers] No new news for digest");
+      serverLogger.info("[Email Triggers] No new news for digest");
       return;
     }
 
@@ -138,7 +138,7 @@ export async function sendDailyDigest() {
       content: `Email recipients: ${NOTIFICATION_RECIPIENTS.join(", ")}\n\n${digestContent}`,
     });
 
-    console.log(
+    serverLogger.info(
       `[Email Triggers] Sent daily digest with ${recentNews.length} articles to ${NOTIFICATION_RECIPIENTS.length} recipients`
     );
   } catch (error) {
@@ -187,7 +187,7 @@ View Details: https://isa.example.com/hub/regulations/${reg.id}
       content: `Email recipients: ${NOTIFICATION_RECIPIENTS.join(", ")}\n\n${emailContent}`,
     });
 
-    console.log(
+    serverLogger.info(
       `[Email Triggers] Notified ${NOTIFICATION_RECIPIENTS.length} recipients about new regulation: ${reg.title}`
     );
   } catch (error) {
@@ -240,7 +240,7 @@ View Details: https://isa.example.com/hub/regulations/${reg.id}
       content: `Email recipients: ${NOTIFICATION_RECIPIENTS.join(", ")}\n\n${emailContent}`,
     });
 
-    console.log(
+    serverLogger.info(
       `[Email Triggers] Notified ${NOTIFICATION_RECIPIENTS.length} recipients about ${changeType} for ${reg.title}`
     );
   } catch (error) {

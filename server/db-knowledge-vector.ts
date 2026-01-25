@@ -44,7 +44,7 @@ export async function vectorSearchKnowledge(
     // Step 1: Generate embedding for query (~500ms)
     const startTime = Date.now();
     const queryEmbedding = await generateEmbedding(query);
-    console.log(
+    serverLogger.info(
       `[VectorSearch] Query embedding generated in ${Date.now() - startTime}ms`
     );
 
@@ -74,7 +74,7 @@ export async function vectorSearchKnowledge(
       .from(gs1Standards)
       .where(sql`${gs1Standards.embedding} IS NOT NULL`);
 
-    console.log(
+    serverLogger.info(
       `[VectorSearch] Fetched ${allRegulations.length} regulations, ${allStandards.length} standards`
     );
 
@@ -125,7 +125,7 @@ export async function vectorSearchKnowledge(
       .slice(0, limit);
 
     const totalTime = Date.now() - startTime;
-    console.log(
+    serverLogger.info(
       `[VectorSearch] Found ${sortedResults.length} results in ${totalTime}ms`
     );
 

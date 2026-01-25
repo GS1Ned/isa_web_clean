@@ -102,7 +102,7 @@ export async function getAllEvaluationReports(): Promise<EvaluationReport[]> {
     
     return reports;
   } catch (error) {
-    console.error('Error loading evaluation reports:', error);
+    serverLogger.error('Error loading evaluation reports:', error);
     return [];
   }
 }
@@ -118,7 +118,7 @@ export async function getEvaluationReport(id: string): Promise<EvaluationReport 
     const content = await fs.readFile(filepath, 'utf-8');
     return JSON.parse(content);
   } catch (error) {
-    console.error(`Error loading evaluation report ${id}:`, error);
+    serverLogger.error(`Error loading evaluation report ${id}:`, error);
     return null;
   }
 }

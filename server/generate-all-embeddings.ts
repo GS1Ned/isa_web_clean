@@ -77,7 +77,7 @@ async function generateAllEmbeddings() {
   };
 
   const startTime = Date.now();
-  console.log("[Embeddings] Starting batch embedding generation...\n");
+  serverLogger.info("[Embeddings] Starting batch embedding generation...\n");
 
   const db = await getDb();
   if (!db) {
@@ -86,9 +86,9 @@ async function generateAllEmbeddings() {
   }
 
   // ========== Process Regulations ==========
-  console.log("[Embeddings] Processing regulations...");
+  serverLogger.info("[Embeddings] Processing regulations...");
   const allRegulations = await db.select().from(regulations);
-  console.log(`[Embeddings] Found ${allRegulations.length} regulations\n`);
+  serverLogger.info(`[Embeddings] Found ${allRegulations.length} regulations\n`);
 
   for (const regulation of allRegulations) {
     try {
@@ -98,14 +98,14 @@ async function generateAllEmbeddings() {
         Array.isArray(regulation.embedding) &&
         regulation.embedding.length > 0
       ) {
-        console.log(
+        serverLogger.info(
           `[Embeddings] ⏭️  Skipping ${regulation.celexId} (embedding exists)`
         );
         stats.regulationsSkipped++;
         continue;
       }
 
-      console.log(
+      serverLogger.info(
         `[Embeddings] 🔄 Generating embedding for ${regulation.celexId}: ${regulation.title?.substring(0, 50)}...`
       );
 
@@ -120,7 +120,7 @@ async function generateAllEmbeddings() {
         .where(eq(regulations.id, regulation.id));
 
       stats.regulationsProcessed++;
-      console.log(
+      serverLogger.info(
         `[Embeddings] ✅ Generated embedding for ${regulation.celexId} (${tokens} tokens)`
       );
     } catch (error) {
@@ -132,14 +132,14 @@ async function generateAllEmbeddings() {
     }
   }
 
-  console.log(
+  serverLogger.info(
     `\n[Embeddings] Regulations complete: ${stats.regulationsProcessed} processed, ${stats.regulationsSkipped} skipped, ${stats.regulationsErrors} errors\n`
   );
 
   // ========== Process GS1 Standards ==========
-  console.log("[Embeddings] Processing GS1 standards...");
+  serverLogger.info("[Embeddings] Processing GS1 standards...");
   const allStandards = await db.select().from(gs1Standards);
-  console.log(`[Embeddings] Found ${allStandards.length} standards\n`);
+  serverLogger.info(`[Embeddings] Found ${allStandards.length} standards\n`);
 
   for (const standard of allStandards) {
     try {
@@ -149,14 +149,14 @@ async function generateAllEmbeddings() {
         Array.isArray(standard.embedding) &&
         standard.embedding.length > 0
       ) {
-        console.log(
+        serverLogger.info(
           `[Embeddings] ⏭️  Skipping ${standard.standardCode} (embedding exists)`
         );
         stats.standardsSkipped++;
         continue;
       }
 
-      console.log(
+      serverLogger.info(
         `[Embeddings] 🔄 Generating embedding for ${standard.standardCode}: ${standard.standardName?.substring(0, 50)}...`
       );
 
@@ -170,7 +170,7 @@ async function generateAllEmbeddings() {
         .where(eq(gs1Standards.id, standard.id));
 
       stats.standardsProcessed++;
-      console.log(
+      serverLogger.info(
         `[Embeddings] ✅ Generated embedding for ${standard.standardCode} (${tokens} tokens)`
       );
     } catch (error) {
@@ -182,7 +182,7 @@ async function generateAllEmbeddings() {
     }
   }
 
-  console.log(
+  serverLogger.info(
     `\n[Embeddings] Standards complete: ${stats.standardsProcessed} processed, ${stats.standardsSkipped} skipped, ${stats.standardsErrors} errors\n`
   );
 
@@ -190,22 +190,22 @@ async function generateAllEmbeddings() {
   const duration = Math.round((Date.now() - startTime) / 1000);
   stats.estimatedCost = (stats.totalTokens / 1_000_000) * 0.02; // $0.02 per 1M tokens
 
-  console.log("=".repeat(60));
-  console.log("EMBEDDING GENERATION COMPLETE");
-  console.log("=".repeat(60));
-  console.log(`Duration: ${duration}s`);
-  console.log(`\nRegulations:`);
-  console.log(`  - Processed: ${stats.regulationsProcessed}`);
-  console.log(`  - Skipped: ${stats.regulationsSkipped}`);
-  console.log(`  - Errors: ${stats.regulationsErrors}`);
-  console.log(`\nGS1 Standards:`);
-  console.log(`  - Processed: ${stats.standardsProcessed}`);
-  console.log(`  - Skipped: ${stats.standardsSkipped}`);
-  console.log(`  - Errors: ${stats.standardsErrors}`);
-  console.log(`\nAPI Usage:`);
-  console.log(`  - Total tokens: ${stats.totalTokens.toLocaleString()}`);
-  console.log(`  - Estimated cost: $${stats.estimatedCost.toFixed(4)}`);
-  console.log("=".repeat(60));
+  serverLogger.info("=".repeat(60));
+  serverLogger.info("EMBEDDING GENERATION COMPLETE");
+  serverLogger.info("=".repeat(60));
+  serverLogger.info(`Duration: ${duration}s`);
+  serverLogger.info(`\nRegulations:`);
+  serverLogger.info(`  - Processed: ${stats.regulationsProcessed}`);
+  serverLogger.info(`  - Skipped: ${stats.regulationsSkipped}`);
+  serverLogger.info(`  - Errors: ${stats.regulationsErrors}`);
+  serverLogger.info(`\nGS1 Standards:`);
+  serverLogger.info(`  - Processed: ${stats.standardsProcessed}`);
+  serverLogger.info(`  - Skipped: ${stats.standardsSkipped}`);
+  serverLogger.info(`  - Errors: ${stats.standardsErrors}`);
+  serverLogger.info(`\nAPI Usage:`);
+  serverLogger.info(`  - Total tokens: ${stats.totalTokens.toLocaleString()}`);
+  serverLogger.info(`  - Estimated cost: $${stats.estimatedCost.toFixed(4)}`);
+  serverLogger.info("=".repeat(60));
 
   const totalErrors = stats.regulationsErrors + stats.standardsErrors;
   process.exit(totalErrors > 0 ? 1 : 0);

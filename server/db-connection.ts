@@ -47,7 +47,7 @@ function normalizeSslValue(value: string | null): mysql.SslOptions | undefined {
   }
 
   // Default: if we got a value but don't recognize it, enable SSL without verification
-  console.warn(`[db-connection] Unknown SSL value "${value}", defaulting to SSL with rejectUnauthorized=false`);
+  serverLogger.warn(`[db-connection] Unknown SSL value "${value}", defaulting to SSL with rejectUnauthorized=false`);
   return { rejectUnauthorized: false };
 }
 

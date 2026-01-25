@@ -30,8 +30,8 @@ interface IG3Datapoint {
 export async function parseIG3Datapoints(
   filePath: string
 ): Promise<IG3Datapoint[]> {
-  console.log(`\n=== Parsing EFRAG IG3 Datapoints ===`);
-  console.log(`File: ${filePath}`);
+  serverLogger.info(`\n=== Parsing EFRAG IG3 Datapoints ===`);
+  serverLogger.info(`File: ${filePath}`);
 
   const wb = XLSX.readFile(filePath);
   const allDatapoints: IG3Datapoint[] = [];
@@ -40,7 +40,7 @@ export async function parseIG3Datapoints(
   const esrsSheets = wb.SheetNames.filter(name => name !== "Index");
 
   for (const sheetName of esrsSheets) {
-    console.log(`\nParsing sheet: ${sheetName}...`);
+    serverLogger.info(`\nParsing sheet: ${sheetName}...`);
 
     const sheet = wb.Sheets[sheetName];
     const data = XLSX.utils.sheet_to_json(sheet, { header: 1 }) as any[][];
@@ -61,12 +61,12 @@ export async function parseIG3Datapoints(
     }
 
     if (headerRowIndex === -1) {
-      console.log(`  ⚠️  No header row found, skipping sheet`);
+      serverLogger.info(`  ⚠️  No header row found, skipping sheet`);
       continue;
     }
 
     const _headers = data[headerRowIndex];
-    console.log(`  Found header at row ${headerRowIndex}`);
+    serverLogger.info(`  Found header at row ${headerRowIndex}`);
 
     // Parse datapoints
     let datapointCount = 0;
@@ -96,12 +96,12 @@ export async function parseIG3Datapoints(
       datapointCount++;
     }
 
-    console.log(`  ✅ Parsed ${datapointCount} datapoints`);
+    serverLogger.info(`  ✅ Parsed ${datapointCount} datapoints`);
   }
 
-  console.log(`\n=== Parsing Complete ===`);
-  console.log(`Total datapoints: ${allDatapoints.length}`);
-  console.log(`Total standards: ${esrsSheets.length}`);
+  serverLogger.info(`\n=== Parsing Complete ===`);
+  serverLogger.info(`Total datapoints: ${allDatapoints.length}`);
+  serverLogger.info(`Total standards: ${esrsSheets.length}`);
 
   return allDatapoints;
 }
@@ -109,7 +109,7 @@ export async function parseIG3Datapoints(
 export async function ingestIG3Datapoints(
   datapoints: IG3Datapoint[]
 ): Promise<void> {
-  console.log(`\n=== Ingesting IG3 Datapoints to Database ===`);
+  serverLogger.info(`\n=== Ingesting IG3 Datapoints to Database ===`);
 
   const db = await getDb();
   if (!db) {
@@ -152,9 +152,9 @@ export async function ingestIG3Datapoints(
     }
   }
 
-  console.log(`\n=== Ingestion Complete ===`);
-  console.log(`Inserted: ${insertedCount}`);
-  console.log(`Skipped (duplicates): ${skippedCount}`);
+  serverLogger.info(`\n=== Ingestion Complete ===`);
+  serverLogger.info(`Inserted: ${insertedCount}`);
+  serverLogger.info(`Skipped (duplicates): ${skippedCount}`);
 }
 
 // Main execution
@@ -165,7 +165,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   parseIG3Datapoints(filePath)
     .then(async datapoints => {
       await ingestIG3Datapoints(datapoints);
-      console.log("\n✅ IG3 datapoints ingestion complete!");
+      serverLogger.info("\n✅ IG3 datapoints ingestion complete!");
       process.exit(0);
     })
     .catch(error => {

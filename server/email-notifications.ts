@@ -287,7 +287,7 @@ export async function sendDailyDigests(): Promise<number> {
       if (success) sentCount++;
     }
 
-    console.log(`Sent ${sentCount} daily digests`);
+    serverLogger.info(`Sent ${sentCount} daily digests`);
     return sentCount;
   } catch (error) {
     serverLogger.error("Error sending daily digests:", error);
@@ -335,7 +335,7 @@ export async function processPendingAlerts(
       }
     }
 
-    console.log(`Processed alerts: ${sent} sent, ${failed} failed`);
+    serverLogger.info(`Processed alerts: ${sent} sent, ${failed} failed`);
     return { sent, failed };
   } catch (error) {
     serverLogger.error("Error processing alerts:", error);

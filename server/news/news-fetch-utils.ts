@@ -193,7 +193,7 @@ export async function fetchWithErrorHandling<T>(
     const data = await withRetry(fetchFn, {
       ...options,
       onRetry: (attempt, error) => {
-        console.log(`[news-fetch] Retry ${attempt} for ${sourceId}: ${error.message}`);
+        serverLogger.info(`[news-fetch] Retry ${attempt} for ${sourceId}: ${error.message}`);
       }
     });
     

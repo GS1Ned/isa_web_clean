@@ -390,7 +390,7 @@ Provide your analysis in JSON format:
       confidenceLevel: parsed.confidence_level || 'GUIDANCE_INTERPRETATION'
     };
   } catch (error) {
-    console.error('[EventProcessor] LLM error:', error);
+    serverLogger.error('[EventProcessor] LLM error:', error);
     return createFallbackEvent(article, eventType, primaryRegulation, affectedRegulations, lifecycleState);
   }
 }
@@ -621,7 +621,7 @@ export async function processUnlinkedArticles(): Promise<{
         incomplete++;
       }
     } catch (error) {
-      console.error(`[EventProcessor] Error processing article ${article.id}:`, error);
+      serverLogger.error(`[EventProcessor] Error processing article ${article.id}:`, error);
       skipped++;
     }
   }

@@ -80,7 +80,7 @@ function checkThresholds(metric: PerformanceMetric): void {
         metadata: metric.metadata,
         timestamp: metric.timestamp,
       }
-    ).catch(console.error);
+    ).catch((err) => serverLogger.error("Error:", err));
   }
 }
 

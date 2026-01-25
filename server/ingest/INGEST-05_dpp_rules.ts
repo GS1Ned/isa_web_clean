@@ -72,7 +72,7 @@ export async function ingestDppComponents(
     }
 
     if (verbose) {
-      console.log("Starting DPP identifier components ingestion");
+      serverLogger.info("Starting DPP identifier components ingestion");
     }
 
     const filePath = path.join(
@@ -96,13 +96,13 @@ export async function ingestDppComponents(
     }
 
     if (verbose) {
-      console.log(`Loaded ${components.length} DPP identifier components`);
+      serverLogger.info(`Loaded ${components.length} DPP identifier components`);
     }
 
     for (const component of components) {
       if (limit !== undefined && result.recordsProcessed >= limit) {
         if (verbose) {
-          console.log(`Limit reached (${limit}), stopping`);
+          serverLogger.info(`Limit reached (${limit}), stopping`);
         }
         break;
       }
@@ -137,13 +137,13 @@ export async function ingestDppComponents(
       }
 
       if (verbose && result.recordsProcessed % 10 === 0) {
-        console.log(`Processed ${result.recordsProcessed} components`);
+        serverLogger.info(`Processed ${result.recordsProcessed} components`);
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
-      console.log(
+      serverLogger.info(
         `DPP components ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
       );
     }
@@ -180,7 +180,7 @@ export async function ingestDppRules(
     }
 
     if (verbose) {
-      console.log("Starting DPP identification rules ingestion");
+      serverLogger.info("Starting DPP identification rules ingestion");
     }
 
     const filePath = path.join(
@@ -192,13 +192,13 @@ export async function ingestDppRules(
     const rules = loadJsonFile<DppRuleRaw[]>(filePath);
 
     if (verbose) {
-      console.log(`Loaded ${rules.length} DPP identification rules`);
+      serverLogger.info(`Loaded ${rules.length} DPP identification rules`);
     }
 
     for (const rule of rules) {
       if (limit !== undefined && result.recordsProcessed >= limit) {
         if (verbose) {
-          console.log(`Limit reached (${limit}), stopping`);
+          serverLogger.info(`Limit reached (${limit}), stopping`);
         }
         break;
       }
@@ -235,13 +235,13 @@ export async function ingestDppRules(
       }
 
       if (verbose && result.recordsProcessed % 5 === 0) {
-        console.log(`Processed ${result.recordsProcessed} rules`);
+        serverLogger.info(`Processed ${result.recordsProcessed} rules`);
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
-      console.log(
+      serverLogger.info(
         `DPP rules ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
       );
     }
@@ -264,7 +264,7 @@ export async function ingestDppIdentificationRules(
   const startTime = Date.now();
 
   if (verbose) {
-    console.log("=== INGEST-05: DPP Identification Rules ===");
+    serverLogger.info("=== INGEST-05: DPP Identification Rules ===");
   }
 
   const componentsResult = await ingestDppComponents(options);
@@ -288,11 +288,11 @@ export async function ingestDppIdentificationRules(
   };
 
   if (verbose) {
-    console.log("\n=== INGEST-05 Summary ===");
-    console.log(`Components: ${componentsResult.recordsInserted}`);
-    console.log(`Rules: ${rulesResult.recordsInserted}`);
-    console.log(`Total: ${combinedResult.recordsInserted} records`);
-    console.log(`Duration: ${combinedResult.duration}ms`);
+    serverLogger.info("\n=== INGEST-05 Summary ===");
+    serverLogger.info(`Components: ${componentsResult.recordsInserted}`);
+    serverLogger.info(`Rules: ${rulesResult.recordsInserted}`);
+    serverLogger.info(`Total: ${combinedResult.recordsInserted} records`);
+    serverLogger.info(`Duration: ${combinedResult.duration}ms`);
   }
 
   return combinedResult;

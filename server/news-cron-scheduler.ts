@@ -13,12 +13,12 @@ import { serverLogger } from "./_core/logger-wiring";
  * Runs every day at 2 AM
  */
 export async function dailyNewsIngestion() {
-  console.log("[news-cron] Starting daily news ingestion...");
+  serverLogger.info("[news-cron] Starting daily news ingestion...");
 
   try {
     const result = await runNewsPipeline({ mode: 'normal', triggeredBy: 'cron' });
 
-    console.log("[news-cron] Daily ingestion complete:", {
+    serverLogger.info("[news-cron] Daily ingestion complete:", {
       success: result.success,
       fetched: result.fetched,
       inserted: result.inserted,
@@ -44,12 +44,12 @@ export async function dailyNewsIngestion() {
  * Runs every Sunday at 3 AM
  */
 export async function weeklyNewsArchival() {
-  console.log("[news-cron] Starting weekly news archival...");
+  serverLogger.info("[news-cron] Starting weekly news archival...");
 
   try {
     const result = await archiveOldNews(200);
 
-    console.log("[news-cron] Weekly archival complete:", {
+    serverLogger.info("[news-cron] Weekly archival complete:", {
       success: result.success,
       archived: result.archived,
       errors: result.errors.length,
@@ -73,7 +73,7 @@ export async function weeklyNewsArchival() {
  * @param options Pipeline execution options
  */
 export async function manualNewsIngestion(options?: PipelineOptions) {
-  console.log("[news-cron] Manual news ingestion triggered", options);
+  serverLogger.info("[news-cron] Manual news ingestion triggered", options);
   
   try {
     const result = await runNewsPipeline({
@@ -81,7 +81,7 @@ export async function manualNewsIngestion(options?: PipelineOptions) {
       triggeredBy: 'manual',
     });
 
-    console.log("[news-cron] Manual ingestion complete:", {
+    serverLogger.info("[news-cron] Manual ingestion complete:", {
       success: result.success,
       fetched: result.fetched,
       inserted: result.inserted,
@@ -103,6 +103,6 @@ export async function manualNewsIngestion(options?: PipelineOptions) {
  * Manual trigger for archival testing
  */
 export async function manualNewsArchival() {
-  console.log("[news-cron] Manual news archival triggered");
+  serverLogger.info("[news-cron] Manual news archival triggered");
   return await weeklyNewsArchival();
 }

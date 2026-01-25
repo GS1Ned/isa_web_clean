@@ -40,7 +40,7 @@ export async function scrapeGS1NetherlandsNewsPlaywright(): Promise<
   // Check if Playwright is available
   const playwright = await getPlaywright();
   if (!playwright) {
-    console.log(
+    serverLogger.info(
       "[Playwright Scraper] Skipping scrape - Playwright not installed"
     );
     return [];
@@ -49,7 +49,7 @@ export async function scrapeGS1NetherlandsNewsPlaywright(): Promise<
   let browser: any = null;
 
   try {
-    console.log("[Playwright Scraper] Launching browser...");
+    serverLogger.info("[Playwright Scraper] Launching browser...");
 
     // Launch headless browser
     browser = await playwright.chromium.launch({
@@ -64,7 +64,7 @@ export async function scrapeGS1NetherlandsNewsPlaywright(): Promise<
 
     const page = await context.newPage();
 
-    console.log(
+    serverLogger.info(
       "[Playwright Scraper] Navigating to GS1.nl sustainability news..."
     );
 
@@ -81,7 +81,7 @@ export async function scrapeGS1NetherlandsNewsPlaywright(): Promise<
     await page.waitForLoadState("domcontentloaded");
     await page.waitForTimeout(3000); // Give time for dynamic content
 
-    console.log("[Playwright Scraper] Extracting articles...");
+    serverLogger.info("[Playwright Scraper] Extracting articles...");
 
     // Extract all article data
     const articles = await page.evaluate(() => {
@@ -172,7 +172,7 @@ export async function scrapeGS1NetherlandsNewsPlaywright(): Promise<
       return results;
     });
 
-    console.log(`[Playwright Scraper] Found ${articles.length} raw articles`);
+    serverLogger.info(`[Playwright Scraper] Found ${articles.length} raw articles`);
 
     // Process and deduplicate
     const seen = new Set<string>();
@@ -216,7 +216,7 @@ export async function scrapeGS1NetherlandsNewsPlaywright(): Promise<
 
     await browser.close();
 
-    console.log(
+    serverLogger.info(
       `[Playwright Scraper] Returning ${processed.length} unique articles`
     );
     return processed.slice(0, 20); // Return top 20 most recent
@@ -238,7 +238,7 @@ export async function scrapeArticleDetailPlaywright(
   // Check if Playwright is available
   const playwright = await getPlaywright();
   if (!playwright) {
-    console.log(
+    serverLogger.info(
       "[Playwright Scraper] Skipping detail scrape - Playwright not installed"
     );
     return null;
@@ -286,15 +286,15 @@ export async function scrapeArticleDetailPlaywright(
 if (import.meta.url === `file://${process.argv[1]}`) {
   scrapeGS1NetherlandsNewsPlaywright()
     .then(articles => {
-      console.log("\n=== Scraping Results ===");
-      console.log(`Total articles: ${articles.length}\n`);
+      serverLogger.info("\n=== Scraping Results ===");
+      serverLogger.info(`Total articles: ${articles.length}\n`);
 
       articles.forEach((article, index) => {
-        console.log(`${index + 1}. ${article.title}`);
-        console.log(`   URL: ${article.url}`);
-        console.log(`   Date: ${article.publishedAt.toISOString()}`);
-        console.log("");
+        serverLogger.info(`${index + 1}. ${article.title}`);
+        serverLogger.info(`   URL: ${article.url}`);
+        serverLogger.info(`   Date: ${article.publishedAt.toISOString()}`);
+        serverLogger.info("");
       });
     })
-    .catch(console.error);
+    .catch((err) => serverLogger.error("Playwright error:", err));
 }

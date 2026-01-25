@@ -84,7 +84,7 @@ export function setupDbTestIsolation() {
         await testConnection.rollback();
         await testConnection.end();
       } catch (error) {
-        console.error("[db-test-utils] Failed to rollback transaction:", error);
+        serverLogger.error("[db-test-utils] Failed to rollback transaction:", error);
       } finally {
         testConnection = null;
         testDb = null;

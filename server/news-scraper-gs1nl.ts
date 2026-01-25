@@ -162,7 +162,7 @@ export async function scrapeGS1NetherlandsNews(): Promise<ScrapedArticle[]> {
       );
     }
 
-    console.log(`[GS1 NL Scraper] Found ${articles.length} articles`);
+    serverLogger.info(`[GS1 NL Scraper] Found ${articles.length} articles`);
     return articles.slice(0, 20); // Return top 20 most recent
   } catch (error) {
     serverLogger.error("[GS1 NL Scraper] Error:", error);

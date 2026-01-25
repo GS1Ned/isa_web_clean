@@ -78,7 +78,7 @@ export async function fetchFromSource(
       );
 
       // Fetch full content for each article (parallel)
-      console.log(
+      serverLogger.info(
         `[news-fetcher] Fetching full content for ${articles.length} GS1.nl articles...`
       );
       const articlesWithContent = await Promise.all(
@@ -253,7 +253,7 @@ export async function fetchFromSource(
       );
 
       // Fetch full content for each article (parallel)
-      console.log(
+      serverLogger.info(
         `[news-fetcher] Fetching full content for ${articles.length} EFRAG articles...`
       );
       const articlesWithContent = await Promise.all(
@@ -361,7 +361,7 @@ export async function fetchFromSource(
 export async function fetchAllNews(): Promise<FetchResult[]> {
   const enabledSources = NEWS_SOURCES.filter(s => s.enabled);
 
-  console.log(
+  serverLogger.info(
     `[news-fetcher] Fetching from ${enabledSources.length} sources...`
   );
 
@@ -419,7 +419,7 @@ export async function fetchAllNews(): Promise<FetchResult[]> {
   const totalItems = results.reduce((sum, r) => sum + r.itemsFetched, 0);
   const successCount = results.filter(r => r.success).length;
 
-  console.log(
+  serverLogger.info(
     `[news-fetcher] Completed: ${successCount}/${enabledSources.length} sources, ${totalItems} items`
   );
   
@@ -461,7 +461,7 @@ export function deduplicateByUrl(items: RawNewsItem[]): RawNewsItem[] {
     }
   }
 
-  console.log(
+  serverLogger.info(
     `[news-fetcher] Deduplication: ${items.length} → ${unique.length} items`
   );
   return unique;

@@ -36,13 +36,13 @@ export async function generateRecommendations(
   summary: string,
   content: string
 ): Promise<Recommendation[]> {
-  console.log(
+  serverLogger.info(
     `[recommendation-engine] Generating recommendations for news ${newsId}`
   );
 
   // Step 1: Analyze content
   const analysis = await analyzeNewsContent(title, summary, content);
-  console.log(`[recommendation-engine] Content analysis complete:`, {
+  serverLogger.info(`[recommendation-engine] Content analysis complete:`, {
     regulations: analysis.regulationMentions.length,
     standards: analysis.standardMentions.length,
     themes: analysis.themes.length,
@@ -67,7 +67,7 @@ export async function generateRecommendations(
   const scored = scoreRecommendations(recommendations, analysis);
   const topRecommendations = scored.slice(0, 10); // Top 10
 
-  console.log(
+  serverLogger.info(
     `[recommendation-engine] Generated ${topRecommendations.length} recommendations`
   );
 
@@ -286,7 +286,7 @@ async function saveRecommendations(
       );
     }
 
-    console.log(
+    serverLogger.info(
       `[recommendation-engine] Saved ${recommendations.length} recommendations for news ${newsId}`
     );
   } catch (error) {

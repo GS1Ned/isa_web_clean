@@ -42,7 +42,7 @@ export async function recordScraperExecution(metrics: ScraperHealthMetrics): Pro
   const errorInfo = error ? ` - Error: ${error}` : "";
   const durationInfo = ` - ${durationMs}ms`;
   
-  console.log(
+  serverLogger.info(
     `[scraper-health] ${status} ${sourceName}${attemptsInfo}${itemsInfo}${errorInfo}${durationInfo}`
   );
   
@@ -334,7 +334,7 @@ async function checkHealthAndAlert(sourceId: string, sourceName: string): Promis
         content: `The ${sourceName} news scraper has failed ${health.consecutiveFailures} times in a row.\n\nLast error: ${lastError}\n\nSuccess rate: ${health.successRate}%\nTotal executions: ${health.totalExecutions}\n\nPlease investigate the scraper configuration and source availability.`,
       });
       
-      console.log(`[scraper-health] Alert notification sent for ${sourceName}`);
+      serverLogger.info(`[scraper-health] Alert notification sent for ${sourceName}`);
       
       // Mark alert as sent
       await db
@@ -354,21 +354,21 @@ async function checkHealthAndAlert(sourceId: string, sourceName: string): Promis
  * Print health summary to console (useful for debugging)
  */
 export async function printHealthSummary(): Promise<void> {
-  console.log("\n=== News Scraper Health Summary ===");
+  serverLogger.info("\n=== News Scraper Health Summary ===");
   
   const allHealth = await getAllSourcesHealth();
   
   if (allHealth.size === 0) {
-    console.log("No scraper executions recorded yet.");
+    serverLogger.info("No scraper executions recorded yet.");
     return;
   }
   
   for (const [sourceId, health] of Array.from(allHealth.entries())) {
     const status = health.consecutiveFailures > 0 ? "⚠️" : "✅";
-    console.log(
+    serverLogger.info(
       `${status} ${sourceId}: ${health.successRate}% success (${health.totalExecutions} runs, ${health.consecutiveFailures} consecutive failures)`
     );
   }
   
-  console.log("===================================\n");
+  serverLogger.info("===================================\n");
 }

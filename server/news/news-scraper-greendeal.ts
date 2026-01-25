@@ -26,7 +26,7 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    console.log(
+    serverLogger.info(
       "[Green Deal Zorg] Fetching news from https://www.greendealduurzamezorg.nl/service/nieuws/"
     );
     await page.goto("https://www.greendealduurzamezorg.nl/service/nieuws/", {
@@ -38,7 +38,7 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
     await page
       .waitForSelector("article, .news-item, .article-card", { timeout: 10000 })
       .catch(() => {
-        console.log(
+        serverLogger.info(
           "[Green Deal Zorg] No article selector found, trying alternative approach"
         );
       });
@@ -116,7 +116,7 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
       return items;
     });
 
-    console.log(
+    serverLogger.info(
       `[Green Deal Zorg] Found ${articles.length} articles on listing page`
     );
 
@@ -167,14 +167,14 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
           source: sourceObj,
         });
 
-        console.log(`[Green Deal Zorg] Scraped: ${article.title}`);
+        serverLogger.info(`[Green Deal Zorg] Scraped: ${article.title}`);
       } catch (error) {
         serverLogger.error(`[Green Deal Zorg] Error scraping detail page ${article.url}:`, error);
       }
     }
 
     await browser.close();
-    console.log(
+    serverLogger.info(
       `[Green Deal Zorg] Successfully scraped ${fullArticles.length} articles`
     );
     return fullArticles;
@@ -183,7 +183,7 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
       error.code === "MODULE_NOT_FOUND" ||
       error.message?.includes("playwright")
     ) {
-      console.log(
+      serverLogger.info(
         "[Green Deal Zorg] Playwright not available (deployment mode), returning empty array"
       );
       return [];

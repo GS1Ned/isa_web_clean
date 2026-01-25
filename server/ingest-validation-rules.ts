@@ -66,7 +66,7 @@ async function parseBeNeLuxValidations(workbook: ExcelJS.Workbook): Promise<Vali
   const sheet = workbook.getWorksheet('BeNeLux Validations');
   if (!sheet) throw new Error('BeNeLux Validations sheet not found');
   
-  console.log('[BeNeLux] Processing validation rules...');
+  serverLogger.info('[BeNeLux] Processing validation rules...');
   
   const rules: ValidationRuleRecord[] = [];
   
@@ -77,7 +77,7 @@ async function parseBeNeLuxValidations(workbook: ExcelJS.Workbook): Promise<Vali
     headers.push(String(cell.value || '').trim().toLowerCase());
   });
   
-  console.log(`[BeNeLux] Headers: ${headers.slice(0, 10).join(', ')}`);
+  serverLogger.info(`[BeNeLux] Headers: ${headers.slice(0, 10).join(', ')}`);
   
   // Find column indices
   const changeTypeIdx = headers.findIndex(h => h.includes('add') && h.includes('change'));
@@ -87,7 +87,7 @@ async function parseBeNeLuxValidations(workbook: ExcelJS.Workbook): Promise<Vali
   const errorDutchIdx = headers.findIndex(h => h.includes('error') && h.includes('dutch'));
   const errorEnglishIdx = headers.findIndex(h => h.includes('error') && h.includes('english'));
   
-  console.log(`[BeNeLux] Column indices: changeType=${changeTypeIdx}, version=${versionIdx}, ruleIdNl=${ruleIdNlIdx}, ruleIdBelu=${ruleIdBeluIdx}, errorDutch=${errorDutchIdx}, errorEnglish=${errorEnglishIdx}`);
+  serverLogger.info(`[BeNeLux] Column indices: changeType=${changeTypeIdx}, version=${versionIdx}, ruleIdNl=${ruleIdNlIdx}, ruleIdBelu=${ruleIdBeluIdx}, errorDutch=${errorDutchIdx}, errorEnglish=${errorEnglishIdx}`);
   
   // Process data rows (starting from row 6)
   for (let i = 6; i <= sheet.rowCount; i++) {
@@ -130,7 +130,7 @@ async function parseBeNeLuxValidations(workbook: ExcelJS.Workbook): Promise<Vali
     });
   }
   
-  console.log(`[BeNeLux] Parsed ${rules.length} validation rules`);
+  serverLogger.info(`[BeNeLux] Parsed ${rules.length} validation rules`);
   return rules;
 }
 
@@ -143,7 +143,7 @@ async function parseLCLCodeLists(workbook: ExcelJS.Workbook): Promise<CodeListRe
   const sheet = workbook.getWorksheet('LCL Code Lists');
   if (!sheet) throw new Error('LCL Code Lists sheet not found');
   
-  console.log('[LCL] Processing local code lists...');
+  serverLogger.info('[LCL] Processing local code lists...');
   
   const codeLists: CodeListRecord[] = [];
   
@@ -154,7 +154,7 @@ async function parseLCLCodeLists(workbook: ExcelJS.Workbook): Promise<CodeListRe
     headers.push(String(cell.value || '').trim().toLowerCase());
   });
   
-  console.log(`[LCL] Headers: ${headers.join(', ')}`);
+  serverLogger.info(`[LCL] Headers: ${headers.join(', ')}`);
   
   // Find column indices
   const ruleIdx = headers.findIndex(h => h.includes('validation') && h.includes('rule'));
@@ -162,7 +162,7 @@ async function parseLCLCodeLists(workbook: ExcelJS.Workbook): Promise<CodeListRe
   const valueIdx = headers.findIndex(h => h.includes('code') && h.includes('value'));
   const changedIdx = headers.findIndex(h => h.includes('changed'));
   
-  console.log(`[LCL] Column indices: rule=${ruleIdx}, name=${nameIdx}, value=${valueIdx}, changed=${changedIdx}`);
+  serverLogger.info(`[LCL] Column indices: rule=${ruleIdx}, name=${nameIdx}, value=${valueIdx}, changed=${changedIdx}`);
   
   // Process data rows (starting from row 4)
   for (let i = 4; i <= sheet.rowCount; i++) {
@@ -186,7 +186,7 @@ async function parseLCLCodeLists(workbook: ExcelJS.Workbook): Promise<CodeListRe
     });
   }
   
-  console.log(`[LCL] Parsed ${codeLists.length} code list entries`);
+  serverLogger.info(`[LCL] Parsed ${codeLists.length} code list entries`);
   return codeLists;
 }
 
@@ -194,7 +194,7 @@ async function parseLCLCodeLists(workbook: ExcelJS.Workbook): Promise<CodeListRe
  * Main ingestion function
  */
 async function ingestValidationRules() {
-  console.log('\n=== GS1 NL/Benelux Validation Rules Ingestion ===\n');
+  serverLogger.info('\n=== GS1 NL/Benelux Validation Rules Ingestion ===\n');
   
   // Get database connection
   const dbInstance = await getDb();
@@ -203,51 +203,51 @@ async function ingestValidationRules() {
     const workbook = new ExcelJS.Workbook();
     const filePath = '/home/ubuntu/isa_web/data/standards/gs1-nl/benelux-datasource/v3.1.33/overview_of_validation_rules_for_the_benelux-31334.xlsx';
     
-    console.log('Loading validation rules workbook...');
+    serverLogger.info('Loading validation rules workbook...');
     await workbook.xlsx.readFile(filePath);
     
     // Parse both sheets
     const rules = await parseBeNeLuxValidations(workbook);
     const codeLists = await parseLCLCodeLists(workbook);
     
-    console.log(`\n=== Summary ===`);
-    console.log(`Validation rules: ${rules.length}`);
-    console.log(`Code list entries: ${codeLists.length}`);
+    serverLogger.info(`\n=== Summary ===`);
+    serverLogger.info(`Validation rules: ${rules.length}`);
+    serverLogger.info(`Code list entries: ${codeLists.length}`);
     
     // Clear existing data
-    console.log('\nClearing existing validation data...');
+    serverLogger.info('\nClearing existing validation data...');
     await dbInstance.delete(gs1ValidationRules);
     await dbInstance.delete(gs1LocalCodeLists);
     
     // Insert validation rules in batches
-    console.log('\nInserting validation rules...');
+    serverLogger.info('\nInserting validation rules...');
     const ruleBatchSize = 500;
     for (let i = 0; i < rules.length; i += ruleBatchSize) {
       const batch = rules.slice(i, i + ruleBatchSize);
       await dbInstance.insert(gs1ValidationRules).values(batch);
-      console.log(`  Inserted batch ${Math.floor(i / ruleBatchSize) + 1}/${Math.ceil(rules.length / ruleBatchSize)}`);
+      serverLogger.info(`  Inserted batch ${Math.floor(i / ruleBatchSize) + 1}/${Math.ceil(rules.length / ruleBatchSize)}`);
     }
     
     // Insert code lists in batches
-    console.log('\nInserting code lists...');
+    serverLogger.info('\nInserting code lists...');
     const codeListBatchSize = 500;
     for (let i = 0; i < codeLists.length; i += codeListBatchSize) {
       const batch = codeLists.slice(i, i + codeListBatchSize);
       await dbInstance.insert(gs1LocalCodeLists).values(batch);
-      console.log(`  Inserted batch ${Math.floor(i / codeListBatchSize) + 1}/${Math.ceil(codeLists.length / codeListBatchSize)}`);
+      serverLogger.info(`  Inserted batch ${Math.floor(i / codeListBatchSize) + 1}/${Math.ceil(codeLists.length / codeListBatchSize)}`);
     }
     
-    console.log('\n✅ Ingestion complete!');
-    console.log(`Total validation rules inserted: ${rules.length}`);
-    console.log(`Total code list entries inserted: ${codeLists.length}`);
+    serverLogger.info('\n✅ Ingestion complete!');
+    serverLogger.info(`Total validation rules inserted: ${rules.length}`);
+    serverLogger.info(`Total code list entries inserted: ${codeLists.length}`);
     
     // Summary by type
     const activeRules = rules.filter(r => r.isActive).length;
     const deletedRules = rules.filter(r => !r.isActive).length;
     
-    console.log(`\nBreakdown:`);
-    console.log(`  Active rules: ${activeRules}`);
-    console.log(`  Deleted/deprecated rules: ${deletedRules}`);
+    serverLogger.info(`\nBreakdown:`);
+    serverLogger.info(`  Active rules: ${activeRules}`);
+    serverLogger.info(`  Deleted/deprecated rules: ${deletedRules}`);
     
   } catch (error) {
     serverLogger.error('❌ Ingestion failed:', error);

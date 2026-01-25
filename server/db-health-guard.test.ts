@@ -24,7 +24,7 @@ describe("Database Health Guard", () => {
     
     // SSL should be configured for TiDB Cloud
     expect(config.ssl).toBeDefined();
-    console.log("[DB Health Guard] SSL config:", config.ssl);
+    serverLogger.info("[DB Health Guard] SSL config:", config.ssl);
   });
 
   it("should connect to database with SSL", async () => {
@@ -32,10 +32,10 @@ describe("Database Health Guard", () => {
     try {
       connection = await createMysqlConnection(process.env.DATABASE_URL!);
       await connection.ping();
-      console.log("[DB Health Guard] ✅ Database connection successful");
+      serverLogger.info("[DB Health Guard] ✅ Database connection successful");
     } catch (error) {
       const err = error as Error;
-      console.error("[DB Health Guard] ❌ Database connection failed:", err.message);
+      serverLogger.error("[DB Health Guard] ❌ Database connection failed:", err.message);
       
       if (err.message.includes("insecure transport")) {
         throw new Error(
@@ -59,7 +59,7 @@ describe("Database Health Guard", () => {
       const [rows] = await connection.query<any[]>("SELECT 1 as test");
       expect(rows).toHaveLength(1);
       expect(rows[0].test).toBe(1);
-      console.log("[DB Health Guard] ✅ Query execution successful");
+      serverLogger.info("[DB Health Guard] ✅ Query execution successful");
     } finally {
       await connection.end();
     }

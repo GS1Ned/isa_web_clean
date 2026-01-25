@@ -30,8 +30,8 @@ describe.skip("CELLAR Diagnostic", () => {
       LIMIT 1
     `;
 
-    console.log("\n=== Testing Basic CELLAR Query ===");
-    console.log("Query:", query);
+    serverLogger.info("\n=== Testing Basic CELLAR Query ===");
+    serverLogger.info("Query:", query);
 
     try {
       const response = await axios.post(
@@ -46,12 +46,12 @@ describe.skip("CELLAR Diagnostic", () => {
         }
       );
 
-      console.log("Status:", response.status);
-      console.log("Response:", JSON.stringify(response.data, null, 2));
+      serverLogger.info("Status:", response.status);
+      serverLogger.info("Response:", JSON.stringify(response.data, null, 2));
 
       expect(response.status).toBe(200);
     } catch (error) {
-      console.error("Error:", error);
+      serverLogger.error("Error:", error);
       throw error;
     }
   }, 60000);
@@ -70,7 +70,7 @@ describe.skip("CELLAR Diagnostic", () => {
       LIMIT 10
     `;
 
-    console.log("\n=== Testing Recent Regulations Query ===");
+    serverLogger.info("\n=== Testing Recent Regulations Query ===");
 
     try {
       const response = await axios.post(
@@ -85,14 +85,14 @@ describe.skip("CELLAR Diagnostic", () => {
         }
       );
 
-      console.log("Status:", response.status);
-      console.log(
+      serverLogger.info("Status:", response.status);
+      serverLogger.info(
         "Results count:",
         response.data.results?.bindings?.length || 0
       );
 
       if (response.data.results?.bindings?.length > 0) {
-        console.log(
+        serverLogger.info(
           "Sample result:",
           JSON.stringify(response.data.results.bindings[0], null, 2)
         );
@@ -100,7 +100,7 @@ describe.skip("CELLAR Diagnostic", () => {
 
       expect(response.status).toBe(200);
     } catch (error) {
-      console.error("Error:", error);
+      serverLogger.error("Error:", error);
       throw error;
     }
   }, 60000);
@@ -121,7 +121,7 @@ describe.skip("CELLAR Diagnostic", () => {
       }
     `;
 
-    console.log("\n=== Testing Known CELEX ID Query (CSRD) ===");
+    serverLogger.info("\n=== Testing Known CELEX ID Query (CSRD) ===");
 
     try {
       const response = await axios.post(
@@ -136,12 +136,12 @@ describe.skip("CELLAR Diagnostic", () => {
         }
       );
 
-      console.log("Status:", response.status);
-      console.log("Results:", JSON.stringify(response.data, null, 2));
+      serverLogger.info("Status:", response.status);
+      serverLogger.info("Results:", JSON.stringify(response.data, null, 2));
 
       expect(response.status).toBe(200);
     } catch (error) {
-      console.error("Error:", error);
+      serverLogger.error("Error:", error);
       throw error;
     }
   }, 60000);
