@@ -1,5 +1,6 @@
 import ExcelJS from "exceljs";
 import path from "path";
+import { serverLogger } from "./_core/logger-wiring";
 
 async function inspectExcel() {
   const filePath = path.join(

@@ -11,6 +11,7 @@
  */
 
 import { trackError } from "./error-tracking";
+import { serverLogger } from "./logger-wiring";
 
 export interface PerformanceMetric {
   operation: string;

@@ -3,6 +3,8 @@
  * Provides timeout handling, retry logic, and error recovery for news fetching
  */
 
+import { serverLogger } from '../_core/logger-wiring';
+
 export interface FetchWithTimeoutOptions {
   timeout?: number;
   retries?: number;

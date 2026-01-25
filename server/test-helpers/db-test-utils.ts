@@ -21,6 +21,7 @@ import {
   type InsertUser,
 } from "../../drizzle/schema";
 import { beforeEach, afterEach } from "vitest";
+import { serverLogger } from "../_core/logger-wiring";
 
 // Type for database instance with transaction support
 export type TestDb = MySql2Database<Record<string, never>>;

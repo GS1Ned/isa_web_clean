@@ -1,6 +1,7 @@
 import { getDb } from "./db";
 import { regulations } from "../drizzle/schema";
 import { sql } from "drizzle-orm";
+import { serverLogger } from "./_core/logger-wiring";
 
 async function checkRegulations() {
   const db = await getDb();

@@ -4,6 +4,8 @@
  * Uses title similarity and content overlap to identify duplicates
  */
 
+import { serverLogger } from './_core/logger-wiring';
+
 export interface NewsItem {
   title: string;
   url: string;

@@ -16,6 +16,7 @@ import { getDb } from './db';
 import { regulatoryEvents, hubNews, type RegulatoryEvent, type InsertRegulatoryEvent } from '../drizzle/schema';
 import { eq, and, desc, sql } from 'drizzle-orm';
 import { invokeLLM } from './_core/llm';
+import { serverLogger } from './_core/logger-wiring';
 
 // ============================================================================
 // TYPES

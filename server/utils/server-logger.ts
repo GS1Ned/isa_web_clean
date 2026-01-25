@@ -101,7 +101,7 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
   function info(msg: unknown, meta?: unknown) {
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     if (process.env.NODE_ENV !== "production") {
-      serverLogger.info("[info]", msg, metaObj);
+      serverLogger.info(`[info] ${String(msg)}`, metaObj);
     } else {
       serverLogger.info(JSON.stringify({ level: "info", message: String(msg), meta: metaObj, ts: nowIso() }));
     }

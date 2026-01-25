@@ -7,6 +7,7 @@
 
 import fs from 'fs/promises';
 import path from 'path';
+import { serverLogger } from './_core/logger-wiring';
 
 const HISTORY_DIR = path.join(process.cwd(), 'evaluation-history');
 

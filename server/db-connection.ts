@@ -1,4 +1,5 @@
 import mysql from "mysql2/promise";
+import { serverLogger } from "./_core/logger-wiring";
 
 type MysqlOptions = mysql.PoolOptions;
 
