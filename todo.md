@@ -3322,3 +3322,26 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [x] Update pipeline to use extended keyword detection
 - [x] Test pipeline with new sources (integration test passed)
 - [x] Verify article fetching from new sources (12 fetched, 1 inserted)
+
+
+## Recommended Next Steps Implementation
+
+### Step 1: Events Section on News Hub
+- [x] Add Events section to News Hub page
+- [x] Add navigation link to /events (View Events button in header)
+- [x] Show event count and latest events preview
+
+### Step 2: Scrapers for Non-RSS Sources
+- [DEFERRED] Implement scraper for Shift Project (CSDDD)
+- [DEFERRED] Implement scraper for ECOS (Green Claims)
+- [DEFERRED] Implement scraper for Ecodesign Forum (ESPR)
+- [DEFERRED] Implement scraper for IMVO Convenanten (NL)
+- **Decision:** Out of scope for Phase 3 (high maintenance risk, low direct value)
+- **Status:** Deferred until concrete use case emerges
+
+### Step 3: Source Health Dashboard
+- [x] Create source health monitoring UI (already exists: AdminScraperHealth)
+- [x] Show success rates per source (implemented)
+- [x] Show consecutive failure counts (implemented)
+- [x] Add filtering and sorting (implemented)
+- **Status:** Complete - dashboard exists at /admin/scraper-health with full monitoring

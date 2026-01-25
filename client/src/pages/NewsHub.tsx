@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Newspaper, Search, Filter, X, Link2, Check } from "lucide-react";
+import { Newspaper, Search, Filter, X, Link2, Check, Calendar } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import {
   GS1_IMPACT_TAG_LABELS,
@@ -169,9 +169,20 @@ export default function NewsHub() {
       {/* Header */}
       <div className="bg-primary text-primary-foreground py-12">
         <div className="container max-w-6xl">
-          <div className="flex items-center gap-3 mb-4">
-            <Newspaper className="h-10 w-10" />
-            <h1 className="text-4xl font-bold">ESG Regulatory News</h1>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <Newspaper className="h-10 w-10" />
+              <h1 className="text-4xl font-bold">ESG Regulatory News</h1>
+            </div>
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={() => setLocation('/events')}
+              className="gap-2"
+            >
+              <Calendar className="h-5 w-5" />
+              View Events
+            </Button>
           </div>
           <p className="text-lg text-primary-foreground/90 max-w-3xl">
             Stay informed with the latest updates on EU sustainability
