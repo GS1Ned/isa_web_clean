@@ -64,7 +64,7 @@ describe("Recommendation Engine", () => {
         expect(recommendations[0]).toHaveProperty("reasoning");
       }
     } catch (error) {
-      serverLogger.warn(
+      console.warn(
         "Recommendation generation test skipped (database not available):",
         error
       );
@@ -82,7 +82,7 @@ describe("Recommendation Engine", () => {
 
       expect(recommendations).toBeInstanceOf(Array);
     } catch (error) {
-      serverLogger.warn("Test skipped (database not available)");
+      console.warn("Test skipped (database not available)");
     }
   }, 60000);
 });
@@ -102,7 +102,7 @@ describe("Recommendation Scoring", () => {
         expect(rec.relevanceScore).toBeLessThanOrEqual(1);
       });
     } catch (error) {
-      serverLogger.warn("Test skipped (database not available)");
+      console.warn("Test skipped (database not available)");
     }
   }, 60000);
 });

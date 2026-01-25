@@ -24,7 +24,7 @@ const parser = new Parser({
 
 export async function scrapeEUCommissionNews(): Promise<EUCommissionArticle[]> {
   try {
-    serverLogger.info("[EU Commission Scraper] Fetching press releases...");
+    console.log("[EU Commission Scraper] Fetching press releases...");
 
     // Try multiple EU Commission RSS feeds
     const feeds = [
@@ -37,9 +37,9 @@ export async function scrapeEUCommissionNews(): Promise<EUCommissionArticle[]> {
 
     for (const feedUrl of feeds) {
       try {
-        serverLogger.info(`[EU Commission Scraper] Trying feed: ${feedUrl}`);
+        console.log(`[EU Commission Scraper] Trying feed: ${feedUrl}`);
         const feed = await parser.parseURL(feedUrl);
-        serverLogger.info(
+        console.log(
           `[EU Commission Scraper] Found ${feed.items.length} items in feed`
         );
 
@@ -109,20 +109,20 @@ export async function scrapeEUCommissionNews(): Promise<EUCommissionArticle[]> {
 
         // If we got results from this feed, we can stop trying others
         if (allArticles.length > 0) {
-          serverLogger.info(
+          console.log(
             `[EU Commission Scraper] Successfully fetched ${allArticles.length} articles from ${feedUrl}`
           );
           break;
         }
       } catch (feedError) {
-        serverLogger.info(
+        console.log(
           `[EU Commission Scraper] Feed ${feedUrl} failed, trying next...`
         );
         continue;
       }
     }
 
-    serverLogger.info(
+    console.log(
       `[EU Commission Scraper] Total filtered articles: ${allArticles.length}`
     );
     return allArticles;
@@ -136,16 +136,16 @@ export async function scrapeEUCommissionNews(): Promise<EUCommissionArticle[]> {
 if (import.meta.url === `file://${process.argv[1]}`) {
   scrapeEUCommissionNews()
     .then(articles => {
-      serverLogger.info("\n=== EU Commission Scraping Results ===");
-      serverLogger.info(`Total articles: ${articles.length}\n`);
+      console.log("\n=== EU Commission Scraping Results ===");
+      console.log(`Total articles: ${articles.length}\n`);
 
       articles.slice(0, 10).forEach((article, index) => {
-        serverLogger.info(`${index + 1}. ${article.title}`);
-        serverLogger.info(`   URL: ${article.url}`);
-        serverLogger.info(`   Date: ${article.publishedAt.toISOString()}`);
-        serverLogger.info(`   Summary: ${article.summary.substring(0, 150)}...`);
-        serverLogger.info("");
+        console.log(`${index + 1}. ${article.title}`);
+        console.log(`   URL: ${article.url}`);
+        console.log(`   Date: ${article.publishedAt.toISOString()}`);
+        console.log(`   Summary: ${article.summary.substring(0, 150)}...`);
+        console.log("");
       });
     })
-    .catch((err) => serverLogger.error("Scraper error:", err));
+    .catch(console.error);
 }

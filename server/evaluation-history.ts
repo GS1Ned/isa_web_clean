@@ -7,7 +7,6 @@
 
 import fs from 'fs/promises';
 import path from 'path';
-import { serverLogger } from './_core/logger-wiring';
 
 const HISTORY_DIR = path.join(process.cwd(), 'evaluation-history');
 
@@ -103,7 +102,7 @@ export async function getAllEvaluationReports(): Promise<EvaluationReport[]> {
     
     return reports;
   } catch (error) {
-    serverLogger.error('Error loading evaluation reports:', error);
+    console.error('Error loading evaluation reports:', error);
     return [];
   }
 }
@@ -119,7 +118,7 @@ export async function getEvaluationReport(id: string): Promise<EvaluationReport 
     const content = await fs.readFile(filepath, 'utf-8');
     return JSON.parse(content);
   } catch (error) {
-    serverLogger.error(`Error loading evaluation report ${id}:`, error);
+    console.error(`Error loading evaluation report ${id}:`, error);
     return null;
   }
 }

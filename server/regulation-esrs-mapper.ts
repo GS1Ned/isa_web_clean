@@ -183,7 +183,7 @@ export async function generateRegulationEsrsMappings(
       }
     }
 
-    serverLogger.info(
+    console.log(
       `[Mapper] Generated ${insertedCount} ESRS mappings for regulation ${regulationId}`
     );
 

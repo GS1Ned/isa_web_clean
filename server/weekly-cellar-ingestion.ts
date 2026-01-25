@@ -85,7 +85,7 @@ async function insertRegulation(regulation: any): Promise<void> {
     const embeddingText = `${regulation.title} ${regulation.description || ""}`;
     const result = await generateEmbedding(embeddingText);
     embedding = result.embedding;
-    serverLogger.info(
+    console.log(
       `[Weekly Ingestion] Generated embedding for ${regulation.celexId}`
     );
   } catch (error) {
@@ -125,18 +125,18 @@ async function runWeeklyIngestion(): Promise<IngestionResult> {
   const startTime = Date.now();
 
   try {
-    serverLogger.info("[Weekly Ingestion] Starting CELLAR query...");
+    console.log("[Weekly Ingestion] Starting CELLAR query...");
 
     // Step 1: Fetch recent legal acts from CELLAR (last 2 years)
     const connector = new CellarConnector();
     const acts = await connector.getAllRecentRegulations(2, 200); // Last 2 years, max 200 acts
     result.fetched = acts.length;
-    serverLogger.info(
+    console.log(
       `[Weekly Ingestion] Fetched ${acts.length} legal acts from CELLAR`
     );
 
     if (acts.length === 0) {
-      serverLogger.info("[Weekly Ingestion] No legal acts found");
+      console.log("[Weekly Ingestion] No legal acts found");
       return result;
     }
 
@@ -145,7 +145,7 @@ async function runWeeklyIngestion(): Promise<IngestionResult> {
       .map(act => normalizeEULegalAct(act))
       .filter((reg): reg is NonNullable<typeof reg> => reg !== null);
     result.normalized = normalized.length;
-    serverLogger.info(
+    console.log(
       `[Weekly Ingestion] Normalized ${normalized.length} regulations`
     );
 
@@ -156,7 +156,7 @@ async function runWeeklyIngestion(): Promise<IngestionResult> {
         // Skip if missing required fields
         if (!regulation.celexId || !regulation.title) {
           result.skipped++;
-          serverLogger.info(
+          console.log(
             `[Weekly Ingestion] Skipping regulation with missing celexId or title`
           );
           continue;
@@ -166,7 +166,7 @@ async function runWeeklyIngestion(): Promise<IngestionResult> {
 
         if (exists) {
           result.skipped++;
-          serverLogger.info(
+          console.log(
             `[Weekly Ingestion] Skipping existing regulation: ${regulation.celexId}`
           );
         } else {
@@ -176,7 +176,7 @@ async function runWeeklyIngestion(): Promise<IngestionResult> {
             celexId: regulation.celexId!,
             title: regulation.title!,
           });
-          serverLogger.info(
+          console.log(
             `[Weekly Ingestion] ✅ Inserted new regulation: ${regulation.celexId} - ${regulation.title}`
           );
         }
@@ -188,8 +188,8 @@ async function runWeeklyIngestion(): Promise<IngestionResult> {
     }
 
     const duration = Math.round((Date.now() - startTime) / 1000);
-    serverLogger.info(`[Weekly Ingestion] Completed in ${duration}s`);
-    serverLogger.info(
+    console.log(`[Weekly Ingestion] Completed in ${duration}s`);
+    console.log(
       `[Weekly Ingestion] Summary: ${result.new} new, ${result.skipped} skipped, ${result.errors.length} errors`
     );
 
@@ -215,9 +215,9 @@ ${regulationList}
 
 View new regulations in ISA: https://gs1isa.com/hub/regulations`,
       });
-      serverLogger.info("[Weekly Ingestion] Email notification sent");
+      console.log("[Weekly Ingestion] Email notification sent");
     } else {
-      serverLogger.info(
+      console.log(
         "[Weekly Ingestion] No new regulations found, skipping email notification"
       );
     }
@@ -246,7 +246,7 @@ Please check logs and investigate the issue.`,
 if (import.meta.url === `file://${process.argv[1]}`) {
   runWeeklyIngestion()
     .then(result => {
-      serverLogger.info(
+      console.log(
         "\n[Weekly Ingestion] Final Result:",
         JSON.stringify(result, null, 2)
       );

@@ -19,7 +19,7 @@ async function getPlaywright() {
     const playwright = await import('playwright');
     return playwright;
   } catch (error) {
-    serverLogger.info('[EUR-Lex Scraper] Playwright not available, returning empty results');
+    console.log('[EUR-Lex Scraper] Playwright not available, returning empty results');
     return null;
   }
 }
@@ -45,14 +45,14 @@ export async function scrapeEURLexOfficialJournal(): Promise<EURLexArticle[]> {
   let browser;
   
   try {
-    serverLogger.info('[EUR-Lex Scraper] Launching browser...');
+    console.log('[EUR-Lex Scraper] Launching browser...');
     browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     });
     const page = await context.newPage();
     
-    serverLogger.info('[EUR-Lex Scraper] Navigating to Official Journal L series...');
+    console.log('[EUR-Lex Scraper] Navigating to Official Journal L series...');
     await page.goto('https://eur-lex.europa.eu/oj/daily-view/L-series/default.html', {
       waitUntil: 'domcontentloaded',
       timeout: 45000
@@ -60,7 +60,7 @@ export async function scrapeEURLexOfficialJournal(): Promise<EURLexArticle[]> {
     
     // Wait for content to load
     await page.waitForSelector('.EurlexContent', { timeout: 15000 }).catch(() => {
-      serverLogger.info('[EUR-Lex Scraper] Content selector not found, trying alternative...');
+      console.log('[EUR-Lex Scraper] Content selector not found, trying alternative...');
     });
     
     // Extract legislation items
@@ -124,7 +124,7 @@ export async function scrapeEURLexOfficialJournal(): Promise<EURLexArticle[]> {
       }
     }
     
-    serverLogger.info(`[EUR-Lex Scraper] Found ${articles.length} legislation items`);
+    console.log(`[EUR-Lex Scraper] Found ${articles.length} legislation items`);
     
     // Convert to EURLexArticle format
     const result: EURLexArticle[] = articles.map(article => ({
@@ -140,7 +140,7 @@ export async function scrapeEURLexOfficialJournal(): Promise<EURLexArticle[]> {
       return true;
     });
     
-    serverLogger.info(`[EUR-Lex Scraper] Returning ${unique.length} unique items`);
+    console.log(`[EUR-Lex Scraper] Returning ${unique.length} unique items`);
     return unique;
     
   } catch (error) {

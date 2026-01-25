@@ -24,13 +24,13 @@ const parser = new Parser({
 
 export async function scrapeEFRAGNews(): Promise<EFRAGArticle[]> {
   try {
-    serverLogger.info("[EFRAG Scraper] Fetching RSS feed...");
+    console.log("[EFRAG Scraper] Fetching RSS feed...");
 
     // EFRAG RSS feed for news and updates
     const feedUrl = "https://www.efrag.org/Assets/RSS/News.xml";
 
     const feed = await parser.parseURL(feedUrl);
-    serverLogger.info(`[EFRAG Scraper] Found ${feed.items.length} news items`);
+    console.log(`[EFRAG Scraper] Found ${feed.items.length} news items`);
 
     const articles: EFRAGArticle[] = [];
 
@@ -79,7 +79,7 @@ export async function scrapeEFRAGNews(): Promise<EFRAGArticle[]> {
       });
     }
 
-    serverLogger.info(`[EFRAG Scraper] Filtered to ${articles.length} ESRS articles`);
+    console.log(`[EFRAG Scraper] Filtered to ${articles.length} ESRS articles`);
     return articles;
   } catch (error) {
     serverLogger.error(error, { context: "[EFRAG Scraper] Error:" });
@@ -91,16 +91,16 @@ export async function scrapeEFRAGNews(): Promise<EFRAGArticle[]> {
 if (import.meta.url === `file://${process.argv[1]}`) {
   scrapeEFRAGNews()
     .then(articles => {
-      serverLogger.info("\n=== EFRAG Scraping Results ===");
-      serverLogger.info(`Total articles: ${articles.length}\n`);
+      console.log("\n=== EFRAG Scraping Results ===");
+      console.log(`Total articles: ${articles.length}\n`);
 
       articles.forEach((article, index) => {
-        serverLogger.info(`${index + 1}. ${article.title}`);
-        serverLogger.info(`   URL: ${article.url}`);
-        serverLogger.info(`   Date: ${article.publishedAt.toISOString()}`);
-        serverLogger.info(`   Summary: ${article.summary.substring(0, 150)}...`);
-        serverLogger.info("");
+        console.log(`${index + 1}. ${article.title}`);
+        console.log(`   URL: ${article.url}`);
+        console.log(`   Date: ${article.publishedAt.toISOString()}`);
+        console.log(`   Summary: ${article.summary.substring(0, 150)}...`);
+        console.log("");
       });
     })
-    .catch((err) => serverLogger.error("Scraper error:", err));
+    .catch(console.error);
 }

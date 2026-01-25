@@ -82,7 +82,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
   }
   const ctx = new PipelineExecutionContext('news_ingestion', triggeredBy);
 
-  serverLogger.info(`[news-pipeline] Starting news ingestion pipeline (execution: ${ctx.executionId})...`);
+  console.log(`[news-pipeline] Starting news ingestion pipeline (execution: ${ctx.executionId})...`);
   ctx.log({
     eventType: 'pipeline_start',
     level: 'info',
@@ -94,7 +94,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
     // Step 1: Fetch from all sources
     const fetchResults = await fetchAllNews();
     const allItems = fetchResults.flatMap(r => r.items);
-    serverLogger.info(
+    console.log(
       `[news-pipeline] Fetched ${allItems.length} items from ${fetchResults.length} sources`
     );
     
@@ -116,7 +116,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
 
     // Step 3: Filter by age
     const recentItems = filterByAge(uniqueItems, maxAgeDays);
-    serverLogger.info(
+    console.log(
       `[news-pipeline] Filtered to ${recentItems.length} recent items (last ${maxAgeDays} days, mode: ${mode})`
     );
     ctx.log({
@@ -128,7 +128,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
 
     // Step 4: Validate items
     const validItems = recentItems.filter(validateNewsItem);
-    serverLogger.info(
+    console.log(
       `[news-pipeline] ${validItems.length} valid items after validation`
     );
 
@@ -140,13 +140,13 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
         newItems.push(item);
       }
     }
-    serverLogger.info(
+    console.log(
       `[news-pipeline] ${newItems.length} new items (${validItems.length - newItems.length} already in database)`
     );
 
     if (newItems.length === 0) {
       const duration = Date.now() - startTime;
-      serverLogger.info(
+      console.log(
         `[news-pipeline] Pipeline complete: 0 inserted, ${validItems.length} skipped (already in database), 0 errors, ${duration}ms`
       );
       
@@ -155,7 +155,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
       
       try {
         await savePipelineExecutionLog(ctx.getSummary());
-        serverLogger.info(`[news-pipeline] Execution log saved: ${ctx.executionId}`);
+        console.log(`[news-pipeline] Execution log saved: ${ctx.executionId}`);
       } catch (logError) {
         serverLogger.error('[news-pipeline] Failed to save execution log:', logError);
         // Don't fail pipeline if logging fails
@@ -216,7 +216,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
         processed.summary.length > 50; // Must have substantial summary
 
       if (!isESGRelevant) {
-        serverLogger.info(
+        console.log(
           `[news-pipeline] Skipping non-ESG article: ${processed.headline}`
         );
         skippedNonESG++;
@@ -287,7 +287,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
               newsItem.summary,
               newsItem.content
             );
-            serverLogger.info(
+            console.log(
               `[news-pipeline] Generated recommendations for news ${createdNews.id}`
             );
           } catch (recError) {
@@ -312,11 +312,11 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
             
             if (eventDetection) {
               const eventResult = await createOrUpdateEvent(createdNews.id, eventDetection);
-              serverLogger.info(
+              console.log(
                 `[news-pipeline] ${eventResult.isNew ? 'Created' : 'Updated'} event for news ${createdNews.id} (status: ${eventResult.status})`
               );
             } else {
-              serverLogger.info(
+              console.log(
                 `[news-pipeline] No regulatory event detected for news ${createdNews.id}`
               );
             }
@@ -355,7 +355,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
     }
 
     const duration = Date.now() - startTime;
-    serverLogger.info(
+    console.log(
       `[news-pipeline] Pipeline complete: ${inserted} inserted, ${skippedNonESG} non-ESG filtered, ${errors.length} errors, ${duration}ms`
     );
     
@@ -365,7 +365,7 @@ export async function runNewsPipeline(options: PipelineOptions = {}): Promise<Pi
     
     try {
       await savePipelineExecutionLog(ctx.getSummary());
-      serverLogger.info(`[news-pipeline] Execution log saved: ${ctx.executionId}`);
+      console.log(`[news-pipeline] Execution log saved: ${ctx.executionId}`);
     } catch (logError) {
       serverLogger.error('[news-pipeline] Failed to save execution log:', logError);
       // Don't fail pipeline if logging fails

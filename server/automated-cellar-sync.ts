@@ -38,7 +38,7 @@ interface SyncResult {
 
 export async function runAutomatedCellarSync(): Promise<SyncResult> {
   const startTime = Date.now();
-  serverLogger.info("[AutoSync] Starting automated CELLAR sync...");
+  console.log("[AutoSync] Starting automated CELLAR sync...");
 
   const result: SyncResult = {
     success: false,
@@ -55,27 +55,27 @@ export async function runAutomatedCellarSync(): Promise<SyncResult> {
 
   try {
     // Step 1: Fetch regulations from CELLAR
-    serverLogger.info("[AutoSync] Step 1/5: Fetching regulations from CELLAR...");
+    console.log("[AutoSync] Step 1/5: Fetching regulations from CELLAR...");
     const legalActs = await cellarConnector.getAllRecentRegulations(5, 500);
     result.fetched = legalActs.length;
-    serverLogger.info(`[AutoSync] Retrieved ${result.fetched} legal acts`);
+    console.log(`[AutoSync] Retrieved ${result.fetched} legal acts`);
 
     // Step 2: Normalize to ISA schema
-    serverLogger.info("[AutoSync] Step 2/5: Normalizing to ISA schema...");
+    console.log("[AutoSync] Step 2/5: Normalizing to ISA schema...");
     let normalized = normalizeEULegalActsBatch(legalActs);
     result.normalized = normalized.length;
-    serverLogger.info(
+    console.log(
       `[AutoSync] Normalized ${result.normalized} regulations (filtered ${legalActs.length - normalized.length} non-ESG)`
     );
 
     // Step 3: Deduplicate and validate
-    serverLogger.info("[AutoSync] Step 3/5: Deduplicating and validating...");
+    console.log("[AutoSync] Step 3/5: Deduplicating and validating...");
     normalized = deduplicateRegulations(normalized);
     const valid = normalized.filter(validateRegulation);
-    serverLogger.info(`[AutoSync] ${valid.length} valid regulations`);
+    console.log(`[AutoSync] ${valid.length} valid regulations`);
 
     if (valid.length === 0) {
-      serverLogger.info("[AutoSync] No valid regulations to process");
+      console.log("[AutoSync] No valid regulations to process");
       result.success = true;
       result.duration = Math.round((Date.now() - startTime) / 1000);
       await sendSyncNotification(result);
@@ -83,7 +83,7 @@ export async function runAutomatedCellarSync(): Promise<SyncResult> {
     }
 
     // Step 4: Insert/update database
-    serverLogger.info("[AutoSync] Step 4/5: Upserting regulations to database...");
+    console.log("[AutoSync] Step 4/5: Upserting regulations to database...");
     const newRegIds: number[] = [];
 
     for (const reg of valid) {
@@ -104,13 +104,13 @@ export async function runAutomatedCellarSync(): Promise<SyncResult> {
       }
     }
 
-    serverLogger.info(
+    console.log(
       `[AutoSync] Database upsert complete: ${result.newRegulations} new, ${result.updatedRegulations} updated, ${result.errors} errors`
     );
 
     // Step 5: Generate ESRS mappings for new regulations
     if (newRegIds.length > 0) {
-      serverLogger.info(
+      console.log(
         `[AutoSync] Step 5/5: Generating ESRS mappings for ${newRegIds.length} new regulations...`
       );
 
@@ -120,7 +120,7 @@ export async function runAutomatedCellarSync(): Promise<SyncResult> {
 
           if (mappingResult.success) {
             result.esrsMappingsGenerated += mappingResult.mappingsCount || 0;
-            serverLogger.info(
+            console.log(
               `[AutoSync] Generated ${mappingResult.mappingsCount} mappings for regulation ${regId}`
             );
           } else {
@@ -137,17 +137,17 @@ export async function runAutomatedCellarSync(): Promise<SyncResult> {
         }
       }
 
-      serverLogger.info(
+      console.log(
         `[AutoSync] Total ESRS mappings generated: ${result.esrsMappingsGenerated}`
       );
     } else {
-      serverLogger.info(
+      console.log(
         "[AutoSync] No new regulations, skipping ESRS mapping generation"
       );
     }
 
     // Step 6: Send email notification
-    serverLogger.info("[AutoSync] Sending email notification...");
+    console.log("[AutoSync] Sending email notification...");
     const emailSent = await sendSyncNotification(result);
 
     if (!emailSent) {
@@ -157,7 +157,7 @@ export async function runAutomatedCellarSync(): Promise<SyncResult> {
     result.success = true;
     result.duration = Math.round((Date.now() - startTime) / 1000);
 
-    serverLogger.info(`[AutoSync] Sync complete in ${result.duration}s`);
+    console.log(`[AutoSync] Sync complete in ${result.duration}s`);
     return result;
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
@@ -230,8 +230,8 @@ async function sendSyncNotification(result: SyncResult): Promise<boolean> {
 if (import.meta.url === `file://${process.argv[1]}`) {
   runAutomatedCellarSync()
     .then(result => {
-      serverLogger.info("\n=== Sync Result ===");
-      serverLogger.info(JSON.stringify(result, null, 2));
+      console.log("\n=== Sync Result ===");
+      console.log(JSON.stringify(result, null, 2));
       process.exit(result.success ? 0 : 1);
     })
     .catch(error => {

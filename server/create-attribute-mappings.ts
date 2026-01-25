@@ -128,13 +128,13 @@ export async function createAttributeMappings(): Promise<{
     throw new Error("Database not available");
   }
 
-  serverLogger.info("[Attribute Mapper] Starting intelligent mapping creation...");
+  console.log("[Attribute Mapper] Starting intelligent mapping creation...");
 
   let success = 0;
   let skipped = 0;
 
   for (const rule of MAPPING_RULES) {
-    serverLogger.info(
+    console.log(
       `\\n[Attribute Mapper] Processing rule: ${rule.regulationType} - ${rule.mappingReason.substring(0, 60)}...`
     );
 
@@ -146,7 +146,7 @@ export async function createAttributeMappings(): Promise<{
       .limit(1);
 
     if (!regulation) {
-      serverLogger.info(
+      console.log(
         `[Attribute Mapper] ⚠️  Regulation not found: ${rule.regulationType}`
       );
       continue;
@@ -186,7 +186,7 @@ export async function createAttributeMappings(): Promise<{
       }
     }
 
-    serverLogger.info(
+    console.log(
       `[Attribute Mapper] Found ${matchingAttributes.length} matching attributes`
     );
 
@@ -204,7 +204,7 @@ export async function createAttributeMappings(): Promise<{
         success++;
 
         if (success % 20 === 0) {
-          serverLogger.info(`[Attribute Mapper] Created ${success} mappings...`);
+          console.log(`[Attribute Mapper] Created ${success} mappings...`);
         }
       } catch (error) {
         // Skip duplicates
@@ -213,9 +213,9 @@ export async function createAttributeMappings(): Promise<{
     }
   }
 
-  serverLogger.info(`\\n[Attribute Mapper] Mapping creation complete:`);
-  serverLogger.info(`  - Mappings created: ${success}`);
-  serverLogger.info(`  - Skipped (duplicates): ${skipped}`);
+  console.log(`\\n[Attribute Mapper] Mapping creation complete:`);
+  console.log(`  - Mappings created: ${success}`);
+  console.log(`  - Skipped (duplicates): ${skipped}`);
 
   return { success, skipped };
 }
@@ -224,8 +224,8 @@ export async function createAttributeMappings(): Promise<{
 if (import.meta.url === `file://${process.argv[1]}`) {
   createAttributeMappings()
     .then(result => {
-      serverLogger.info("[Attribute Mapper] Success!");
-      serverLogger.info(
+      console.log("[Attribute Mapper] Success!");
+      console.log(
         `Created ${result.success} mappings, skipped ${result.skipped} duplicates`
       );
       process.exit(0);

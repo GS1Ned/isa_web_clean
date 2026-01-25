@@ -22,51 +22,51 @@ const describeCellar = runCellarTests ? describe : describe.skip;
 
 describeCellar("First CELLAR Ingestion", () => {
   it("should fetch and store real EU regulations from CELLAR", async () => {
-    serverLogger.info("\n=== ISA First CELLAR Ingestion ===\n");
+    console.log("\n=== ISA First CELLAR Ingestion ===\n");
 
     const startTime = Date.now();
 
     // Step 1: Test connection
-    serverLogger.info("[1/6] Testing CELLAR connection...");
+    console.log("[1/6] Testing CELLAR connection...");
     const isConnected = await cellarConnector.testConnection();
     expect(isConnected).toBe(true);
-    serverLogger.info("✓ CELLAR connected\n");
+    console.log("✓ CELLAR connected\n");
 
     // Step 2: Fetch regulations
-    serverLogger.info("[2/6] Fetching ALL recent regulations (last 5 years)...");
+    console.log("[2/6] Fetching ALL recent regulations (last 5 years)...");
     const acts = await cellarConnector.getAllRecentRegulations(5, 500);
-    serverLogger.info(`✓ Retrieved ${acts.length} legal acts\n`);
+    console.log(`✓ Retrieved ${acts.length} legal acts\n`);
 
     // Step 3: Normalize
-    serverLogger.info("[3/6] Normalizing to ISA schema...");
+    console.log("[3/6] Normalizing to ISA schema...");
     let normalized = normalizeEULegalActsBatch(acts);
-    serverLogger.info(`✓ Normalized ${normalized.length} regulations`);
-    serverLogger.info(`  (filtered ${acts.length - normalized.length} non-ESG)\n`);
+    console.log(`✓ Normalized ${normalized.length} regulations`);
+    console.log(`  (filtered ${acts.length - normalized.length} non-ESG)\n`);
 
     // Step 4: Deduplicate and validate
-    serverLogger.info("[4/6] Deduplicating and validating...");
+    console.log("[4/6] Deduplicating and validating...");
     normalized = deduplicateRegulations(normalized);
     const valid = normalized.filter(validateRegulation);
-    serverLogger.info(`✓ ${valid.length} valid regulations\n`);
+    console.log(`✓ ${valid.length} valid regulations\n`);
 
     // Step 5: Statistics
     const stats = calculateRegulationStats(valid);
-    serverLogger.info("[5/6] Statistics:");
-    serverLogger.info(`  Total: ${stats.total}`);
-    serverLogger.info(`  With CELEX: ${stats.withCelex}`);
-    serverLogger.info(`  Types:`);
+    console.log("[5/6] Statistics:");
+    console.log(`  Total: ${stats.total}`);
+    console.log(`  With CELEX: ${stats.withCelex}`);
+    console.log(`  Types:`);
     Object.entries(stats.byType).forEach(([type, count]) => {
-      serverLogger.info(`    - ${type}: ${count}`);
+      console.log(`    - ${type}: ${count}`);
     });
-    serverLogger.info("");
+    console.log("");
 
     // Step 6: Insert into database
-    serverLogger.info("[6/6] Inserting into database...");
+    console.log("[6/6] Inserting into database...");
     const db = await getDb();
     expect(db).toBeDefined();
 
     if (!db) {
-      serverLogger.warn("⚠️  Database not available, skipping insertion");
+      console.warn("⚠️  Database not available, skipping insertion");
       return;
     }
 
@@ -100,24 +100,24 @@ describeCellar("First CELLAR Ingestion", () => {
         }
       } catch (error) {
         errors++;
-        serverLogger.error(`\n  Error: ${regulation.celexId}`, error);
+        console.error(`\n  Error: ${regulation.celexId}`, error);
       }
     }
 
-    serverLogger.info(`\n✓ Database insertion complete\n`);
+    console.log(`\n✓ Database insertion complete\n`);
 
     const duration = Date.now() - startTime;
-    serverLogger.info("=== Ingestion Complete ===");
-    serverLogger.info(`Duration: ${(duration / 1000).toFixed(2)}s`);
-    serverLogger.info(`Inserted: ${inserted}`);
-    serverLogger.info(`Updated: ${updated}`);
-    serverLogger.info(`Errors: ${errors}`);
-    serverLogger.info(`Total: ${inserted + updated}\n`);
+    console.log("=== Ingestion Complete ===");
+    console.log(`Duration: ${(duration / 1000).toFixed(2)}s`);
+    console.log(`Inserted: ${inserted}`);
+    console.log(`Updated: ${updated}`);
+    console.log(`Errors: ${errors}`);
+    console.log(`Total: ${inserted + updated}\n`);
 
     if (errors === 0) {
-      serverLogger.info("✅ All regulations processed successfully!\n");
+      console.log("✅ All regulations processed successfully!\n");
     } else {
-      serverLogger.info(`⚠️  ${errors} regulations failed\n`);
+      console.log(`⚠️  ${errors} regulations failed\n`);
     }
 
     // Assertions

@@ -53,7 +53,7 @@ describe("News AI Processor - GS1 Enhancement", () => {
     expect(result.suggestedActions.length).toBeGreaterThanOrEqual(2);
     expect(result.suggestedActions.length).toBeLessThanOrEqual(4);
 
-    serverLogger.info("✅ Processed CSRD news:", {
+    console.log("✅ Processed CSRD news:", {
       headline: result.headline,
       gs1ImpactTags: result.gs1ImpactTags,
       sectorTags: result.sectorTags,
@@ -88,7 +88,7 @@ describe("News AI Processor - GS1 Enhancement", () => {
     expect(result.gs1ImpactAnalysis).toContain("DPP");
     expect(result.suggestedActions.length).toBeGreaterThanOrEqual(3);
 
-    serverLogger.info("✅ Processed DPP news:", {
+    console.log("✅ Processed DPP news:", {
       gs1ImpactTags: result.gs1ImpactTags,
       suggestedActions: result.suggestedActions,
     });

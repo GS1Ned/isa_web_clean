@@ -25,7 +25,7 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
         .where(eq(gs1Attributes.sector, "diy_garden_pet"));
 
       expect(diyAttributes.length).toBeGreaterThan(3000);
-      serverLogger.info(`DIY/Garden/Pet attributes: ${diyAttributes.length}`);
+      console.log(`DIY/Garden/Pet attributes: ${diyAttributes.length}`);
     });
 
     it("should have packaging-related DIY attributes", { timeout: 15000 }, async () => {
@@ -43,7 +43,7 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
         );
 
       expect(packagingAttributes.length).toBeGreaterThan(50);
-      serverLogger.info(`DIY packaging attributes: ${packagingAttributes.length}`);
+      console.log(`DIY packaging attributes: ${packagingAttributes.length}`);
     });
 
     it("should have sustainability-related DIY attributes", async () => {
@@ -61,7 +61,7 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
         );
 
       expect(sustainabilityAttributes.length).toBeGreaterThan(30);
-      serverLogger.info(
+      console.log(
         `DIY sustainability attributes: ${sustainabilityAttributes.length}`
       );
     });
@@ -89,7 +89,7 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
       // Note: DIY mappings are created separately via mapping ingestion scripts
       // This test validates the query structure, not the data completeness
       expect(mappings.length).toBeGreaterThanOrEqual(0);
-      serverLogger.info(`DIY attribute mappings: ${mappings.length}`);
+      console.log(`DIY attribute mappings: ${mappings.length}`);
     });
   });
 
@@ -104,7 +104,7 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
         .where(eq(gs1Attributes.sector, "healthcare"));
 
       expect(healthcareAttributes.length).toBeGreaterThan(180);
-      serverLogger.info(`Healthcare attributes: ${healthcareAttributes.length}`);
+      console.log(`Healthcare attributes: ${healthcareAttributes.length}`);
     });
 
     it("should have medical device-related attributes", async () => {
@@ -125,7 +125,7 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
       );
 
       expect(medicalDeviceAttributes.length).toBeGreaterThan(10);
-      serverLogger.info(
+      console.log(
         `Medical device attributes: ${medicalDeviceAttributes.length}`
       );
     });
@@ -152,10 +152,10 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
       expect(diyCount).toBeGreaterThan(3000);
       expect(healthcareCount).toBeGreaterThan(180);
 
-      serverLogger.info(`Total attributes: ${allAttributes.length}`);
-      serverLogger.info(`  - Food/H&B: ${foodHbCount}`);
-      serverLogger.info(`  - DIY/Garden/Pet: ${diyCount}`);
-      serverLogger.info(`  - Healthcare: ${healthcareCount}`);
+      console.log(`Total attributes: ${allAttributes.length}`);
+      console.log(`  - Food/H&B: ${foodHbCount}`);
+      console.log(`  - DIY/Garden/Pet: ${diyCount}`);
+      console.log(`  - Healthcare: ${healthcareCount}`);
     });
 
     it("should have total mappings > 600", async () => {
@@ -165,7 +165,7 @@ describe("Multi-Sector GS1 Attributes Integration", () => {
       const allMappings = await db.select().from(attributeRegulationMappings);
 
       expect(allMappings.length).toBeGreaterThan(600);
-      serverLogger.info(`Total attribute-regulation mappings: ${allMappings.length}`);
+      console.log(`Total attribute-regulation mappings: ${allMappings.length}`);
     });
   });
 

@@ -81,7 +81,7 @@ export const newsAdminRouter = router({
     (async () => {
       try {
         const mode = input?.mode || 'normal';
-        serverLogger.info(`[news-admin] Starting async pipeline execution (mode: ${mode})...`);
+        console.log(`[news-admin] Starting async pipeline execution (mode: ${mode})...`);
         const result = await monitoredCronJob(
           "manual-news-ingestion",
           () => manualNewsIngestion({ mode }),
@@ -104,7 +104,7 @@ export const newsAdminRouter = router({
             maxAgeDays: result.maxAgeDays,
           },
         };
-        serverLogger.info("[news-admin] Pipeline completed successfully:", result);
+        console.log("[news-admin] Pipeline completed successfully:", result);
       } catch (error) {
         pipelineStatus = {
           status: "failed",

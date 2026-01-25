@@ -16,12 +16,12 @@ import { serverLogger } from "./_core/logger-wiring";
  * Setup all cron jobs
  */
 export function setupCronJobs() {
-  serverLogger.info("🕐 Setting up cron jobs for ESG Hub...");
+  console.log("🕐 Setting up cron jobs for ESG Hub...");
 
   // Daily news ingestion at 2 AM (Playwright + RSS)
   // Format: minute hour day month dayOfWeek
   cron.schedule("0 2 * * *", async () => {
-    serverLogger.info("📰 Running daily news ingestion (Playwright + RSS)...");
+    console.log("📰 Running daily news ingestion (Playwright + RSS)...");
     try {
       await dailyNewsIngestion();
     } catch (error) {
@@ -31,10 +31,10 @@ export function setupCronJobs() {
 
   // Regulation change scanning at 3 AM (after RSS aggregation)
   cron.schedule("0 3 * * *", async () => {
-    serverLogger.info("🔍 Scanning for regulation changes...");
+    console.log("🔍 Scanning for regulation changes...");
     try {
       const result = await scanForRegulationChanges();
-      serverLogger.info(
+      console.log(
         `✓ Scan complete: ${result.scanned} regulations scanned, ${result.changesFound} changes found, ${result.usersNotified} users notified`
       );
     } catch (error) {
@@ -44,10 +44,10 @@ export function setupCronJobs() {
 
   // Daily digest emails at 8 AM
   cron.schedule("0 8 * * *", async () => {
-    serverLogger.info("📧 Sending daily digest emails...");
+    console.log("📧 Sending daily digest emails...");
     try {
       const count = await sendDailyDigests();
-      serverLogger.info(`✓ Sent ${count} daily digests`);
+      console.log(`✓ Sent ${count} daily digests`);
     } catch (error) {
       serverLogger.error("Error sending daily digests:", error);
     }
@@ -55,10 +55,10 @@ export function setupCronJobs() {
 
   // Process pending alerts at 9 AM
   cron.schedule("0 9 * * *", async () => {
-    serverLogger.info("⏰ Processing pending alerts...");
+    console.log("⏰ Processing pending alerts...");
     try {
       const result = await processPendingAlerts(7);
-      serverLogger.info(
+      console.log(
         `✓ Processed alerts: ${result.sent} sent, ${result.failed} failed`
       );
     } catch (error) {
@@ -68,10 +68,10 @@ export function setupCronJobs() {
 
   // Weekly summary report on Monday at 10 AM
   cron.schedule("0 10 * * 1", async () => {
-    serverLogger.info("📊 Generating weekly summary report...");
+    console.log("📊 Generating weekly summary report...");
     try {
       const result = await scanForRegulationChanges();
-      serverLogger.info(
+      console.log(
         `✓ Weekly report: ${result.changesFound} changes detected this week`
       );
     } catch (error) {
@@ -79,19 +79,19 @@ export function setupCronJobs() {
     }
   });
 
-  serverLogger.info("✅ Cron jobs configured:");
-  serverLogger.info("  - 2:00 AM: Daily news ingestion (Playwright + RSS)");
-  serverLogger.info("  - 3:00 AM: Regulation change scanning");
-  serverLogger.info("  - 8:00 AM: Daily digest emails");
-  serverLogger.info("  - 9:00 AM: Process pending alerts");
-  serverLogger.info("  - 10:00 AM (Mon): Weekly summary report");
+  console.log("✅ Cron jobs configured:");
+  console.log("  - 2:00 AM: Daily news ingestion (Playwright + RSS)");
+  console.log("  - 3:00 AM: Regulation change scanning");
+  console.log("  - 8:00 AM: Daily digest emails");
+  console.log("  - 9:00 AM: Process pending alerts");
+  console.log("  - 10:00 AM (Mon): Weekly summary report");
 }
 
 /**
  * Stop all cron jobs (for graceful shutdown)
  */
 export function stopCronJobs() {
-  serverLogger.info("🛑 Stopping all cron jobs...");
+  console.log("🛑 Stopping all cron jobs...");
   cron.getTasks().forEach((task: any) => {
     if (task && typeof task.stop === "function") {
       task.stop();

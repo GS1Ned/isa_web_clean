@@ -247,7 +247,7 @@ function isSustainabilityRelated(
 export async function parseGS1WebVocabulary(
   filePath: string
 ): Promise<ParsedVocabTerm[]> {
-  serverLogger.info(`[GS1 Web Vocab Parser] Reading file: ${filePath}`);
+  console.log(`[GS1 Web Vocab Parser] Reading file: ${filePath}`);
 
   const fileContent = fs.readFileSync(filePath, "utf-8");
   // Remove BOM if present
@@ -332,20 +332,20 @@ export async function parseGS1WebVocabulary(
     });
   }
 
-  serverLogger.info(`[GS1 Web Vocab Parser] Parsed ${terms.length} terms`);
-  serverLogger.info(
+  console.log(`[GS1 Web Vocab Parser] Parsed ${terms.length} terms`);
+  console.log(
     `[GS1 Web Vocab Parser] DPP-relevant: ${terms.filter(t => t.dppRelevant).length}`
   );
-  serverLogger.info(
+  console.log(
     `[GS1 Web Vocab Parser] ESRS-relevant: ${terms.filter(t => t.esrsRelevant).length}`
   );
-  serverLogger.info(
+  console.log(
     `[GS1 Web Vocab Parser] EUDR-relevant: ${terms.filter(t => t.eudrRelevant).length}`
   );
-  serverLogger.info(
+  console.log(
     `[GS1 Web Vocab Parser] Packaging-related: ${terms.filter(t => t.packagingRelated).length}`
   );
-  serverLogger.info(
+  console.log(
     `[GS1 Web Vocab Parser] Sustainability-related: ${terms.filter(t => t.sustainabilityRelated).length}`
   );
 
@@ -387,14 +387,14 @@ export async function ingestWebVocabulary(
       success++;
 
       if (success % 100 === 0) {
-        serverLogger.info(`[GS1 Web Vocab Parser] Ingested ${success} terms...`);
+        console.log(`[GS1 Web Vocab Parser] Ingested ${success} terms...`);
       }
     } catch (error) {
       errors++;
     }
   }
 
-  serverLogger.info(
+  console.log(
     `[GS1 Web Vocab Parser] Ingestion complete: ${success} success, ${errors} errors`
   );
 
@@ -408,10 +408,10 @@ export async function ingestGS1WebVocabulary(filePath: string): Promise<void> {
   const startTime = Date.now();
 
   try {
-    serverLogger.info(
+    console.log(
       "[GS1 Web Vocab Parser] Starting GS1 Web Vocabulary ingestion..."
     );
-    serverLogger.info(`[GS1 Web Vocab Parser] File: ${filePath}`);
+    console.log(`[GS1 Web Vocab Parser] File: ${filePath}`);
 
     // Step 1: Parse JSON-LD
     const terms = await parseGS1WebVocabulary(filePath);
@@ -421,11 +421,11 @@ export async function ingestGS1WebVocabulary(filePath: string): Promise<void> {
 
     const duration = Math.round((Date.now() - startTime) / 1000);
 
-    serverLogger.info(`[GS1 Web Vocab Parser] Completed in ${duration}s`);
-    serverLogger.info(`[GS1 Web Vocab Parser] Summary:`);
-    serverLogger.info(`  - Terms parsed: ${terms.length}`);
-    serverLogger.info(`  - Terms ingested: ${result.success}`);
-    serverLogger.info(`  - Errors: ${result.errors}`);
+    console.log(`[GS1 Web Vocab Parser] Completed in ${duration}s`);
+    console.log(`[GS1 Web Vocab Parser] Summary:`);
+    console.log(`  - Terms parsed: ${terms.length}`);
+    console.log(`  - Terms ingested: ${result.success}`);
+    console.log(`  - Errors: ${result.errors}`);
   } catch (error) {
     serverLogger.error(`[GS1 Web Vocab Parser] Ingestion failed:`, error);
     throw error;
@@ -439,7 +439,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
   ingestGS1WebVocabulary(filePath)
     .then(() => {
-      serverLogger.info("[GS1 Web Vocab Parser] Ingestion successful");
+      console.log("[GS1 Web Vocab Parser] Ingestion successful");
       process.exit(0);
     })
     .catch(error => {

@@ -52,7 +52,7 @@ async function createPersistFn() {
     } catch (err) {
       // CRITICAL: Do NOT use serverLogger.error here - it creates infinite recursion
       // when persist fails, as serverLogger.error tries to persist again
-      serverLogger.error(JSON.stringify({
+      console.error(JSON.stringify({
         level: "error",
         message: "[serverLogger.persist] failed to insert row",
         error: String(err),
@@ -69,7 +69,7 @@ let serverLogger = serverLoggerFactory(); // fallback
   try {
     const persist = await createPersistFn();
     serverLogger = serverLoggerFactory({ persist, environment: process.env.NODE_ENV });
-    serverLogger.info("[logger-wiring] persisted serverLogger wired");
+    console.log("[logger-wiring] persisted serverLogger wired");
   } catch (e) {
     serverLogger.error("[logger-wiring] failed to wire persisted serverLogger", String(e));
   }

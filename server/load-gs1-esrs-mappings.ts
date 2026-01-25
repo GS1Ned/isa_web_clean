@@ -28,7 +28,7 @@ interface GS1EsrsMapping {
 }
 
 async function loadGS1EsrsMappings() {
-  serverLogger.info('Loading GS1-ESRS mappings from white paper...');
+  console.log('Loading GS1-ESRS mappings from white paper...');
   
   const db = await getDb();
   if (!db) {
@@ -40,7 +40,7 @@ async function loadGS1EsrsMappings() {
   const mappingsJson = readFileSync(mappingsPath, 'utf-8');
   const mappings: GS1EsrsMapping[] = JSON.parse(mappingsJson);
   
-  serverLogger.info(`Found ${mappings.length} GS1-ESRS mappings to load`);
+  console.log(`Found ${mappings.length} GS1-ESRS mappings to load`);
   
   let loaded = 0;
   let skipped = 0;
@@ -85,21 +85,21 @@ async function loadGS1EsrsMappings() {
       `);
       
       loaded++;
-      serverLogger.info(`✓ Loaded mapping ${mapping.mapping_id}: ${mapping.short_name}`);
+      console.log(`✓ Loaded mapping ${mapping.mapping_id}: ${mapping.short_name}`);
     } catch (error) {
       serverLogger.error(`✗ Failed to load mapping ${mapping.mapping_id}:`, error);
       skipped++;
     }
   }
   
-  serverLogger.info(`\nLoading complete:`);
-  serverLogger.info(`  Loaded: ${loaded}/${mappings.length}`);
-  serverLogger.info(`  Skipped: ${skipped}/${mappings.length}`);
+  console.log(`\nLoading complete:`);
+  console.log(`  Loaded: ${loaded}/${mappings.length}`);
+  console.log(`  Skipped: ${skipped}/${mappings.length}`);
   
   // Verify count
   const result = await db.execute(sql`SELECT COUNT(*) as count FROM gs1_esrs_mappings`);
   const count = (result[0] as any)[0].count;
-  serverLogger.info(`\nTotal mappings in database: ${count}`);
+  console.log(`\nTotal mappings in database: ${count}`);
   
   process.exit(0);
 }

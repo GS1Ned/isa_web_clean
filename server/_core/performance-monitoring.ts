@@ -11,7 +11,6 @@
  */
 
 import { trackError } from "./error-tracking";
-import { serverLogger } from "./logger-wiring";
 
 export interface PerformanceMetric {
   operation: string;
@@ -81,7 +80,7 @@ function checkThresholds(metric: PerformanceMetric): void {
         metadata: metric.metadata,
         timestamp: metric.timestamp,
       }
-    ).catch((err) => serverLogger.error("Error:", err));
+    ).catch(console.error);
   }
 }
 

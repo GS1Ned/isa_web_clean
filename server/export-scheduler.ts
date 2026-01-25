@@ -114,7 +114,7 @@ export async function cacheExport(
     };
 
     exportCache.set(cacheKey, entry);
-    serverLogger.info(
+    console.log(
       `[Export Cache] Cached ${format.toUpperCase()} for regulation ${regulationId}`
     );
 
@@ -135,7 +135,7 @@ export function invalidateCache(regulationId: string): void {
   exportCache.delete(pdfKey);
   exportCache.delete(csvKey);
 
-  serverLogger.info(
+  console.log(
     `[Export Cache] Invalidated cache for regulation ${regulationId}`
   );
 }
@@ -145,7 +145,7 @@ export function invalidateCache(regulationId: string): void {
  */
 export function invalidateAllCaches(): void {
   exportCache.clear();
-  serverLogger.info("[Export Cache] Invalidated all caches");
+  console.log("[Export Cache] Invalidated all caches");
 }
 
 /**
@@ -163,7 +163,7 @@ export async function generatePopularExports(): Promise<{
     errors: [] as Array<{ regulationId: string; error: string }>,
   };
 
-  serverLogger.info("[Export Scheduler] Starting popular exports generation...");
+  console.log("[Export Scheduler] Starting popular exports generation...");
 
   const regulations = await getRegulations();
 
@@ -184,7 +184,7 @@ export async function generatePopularExports(): Promise<{
       // Check if cache is still valid
       const cached = exportCache.get(getCacheKey(regulationId, "pdf"));
       if (cached && isCacheValid(cached)) {
-        serverLogger.info(
+        console.log(
           `[Export Scheduler] PDF for regulation ${regulationId} already cached`
         );
         results.successful++;
@@ -224,7 +224,7 @@ export async function generatePopularExports(): Promise<{
       }
 
       results.successful++;
-      serverLogger.info(
+      console.log(
         `[Export Scheduler] Successfully generated PDF for regulation ${regulationId}`
       );
     } catch (error) {
@@ -239,7 +239,7 @@ export async function generatePopularExports(): Promise<{
     }
   }
 
-  serverLogger.info(
+  console.log(
     `[Export Scheduler] Completed: ${results.successful} successful, ${results.failed} failed`
   );
 
@@ -307,7 +307,7 @@ export function cleanupExpiredCache(): number {
   });
 
   if (cleaned > 0) {
-    serverLogger.info(`[Export Cache] Cleaned up ${cleaned} expired entries`);
+    console.log(`[Export Cache] Cleaned up ${cleaned} expired entries`);
   }
 
   return cleaned;
@@ -326,5 +326,5 @@ export function initializeScheduler(): void {
     60 * 60 * 1000
   );
 
-  serverLogger.info("[Export Scheduler] Initialized with hourly cleanup");
+  console.log("[Export Scheduler] Initialized with hourly cleanup");
 }

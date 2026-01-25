@@ -61,11 +61,11 @@ export async function retryWithBackoff<T>(
 
   for (let attempt = 1; attempt <= opts.maxAttempts; attempt++) {
     try {
-      serverLogger.info(`[retry] ${context}: Attempt ${attempt}/${opts.maxAttempts}`);
+      console.log(`[retry] ${context}: Attempt ${attempt}/${opts.maxAttempts}`);
       const result = await operation();
       
       if (attempt > 1) {
-        serverLogger.info(`[retry] ${context}: Succeeded on attempt ${attempt}`);
+        console.log(`[retry] ${context}: Succeeded on attempt ${attempt}`);
       }
       
       return result;
@@ -80,7 +80,7 @@ export async function retryWithBackoff<T>(
       // Don't sleep after the last attempt
       if (attempt < opts.maxAttempts) {
         const delayMs = calculateDelay(attempt, opts);
-        serverLogger.info(
+        console.log(
           `[retry] ${context}: Waiting ${Math.round(delayMs)}ms before retry...`
         );
         await sleep(delayMs);

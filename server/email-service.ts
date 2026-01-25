@@ -89,7 +89,7 @@ async function sendViaSendGrid(options: EmailOptions): Promise<boolean> {
       return false;
     }
 
-    serverLogger.info("[SendGrid] Email sent successfully to", recipients);
+    console.log("[SendGrid] Email sent successfully to", recipients);
     return true;
   } catch (error) {
     serverLogger.error("[SendGrid] Failed to send email:", error);
@@ -128,7 +128,7 @@ async function sendViaSMTP(options: EmailOptions): Promise<boolean> {
       text: options.textContent,
     });
 
-    serverLogger.info("[SMTP] Email sent successfully:", info.messageId);
+    console.log("[SMTP] Email sent successfully:", info.messageId);
     return true;
   } catch (error) {
     serverLogger.error("[SMTP] Failed to send email:", error);
@@ -152,7 +152,7 @@ async function sendViaNotifications(options: EmailOptions): Promise<boolean> {
       content: `To: ${recipients}\n\n${options.textContent || options.htmlContent}`,
     });
 
-    serverLogger.info("[Notifications] Email sent via built-in system");
+    console.log("[Notifications] Email sent via built-in system");
     return true;
   } catch (error) {
     serverLogger.error("[Notifications] Failed to send email:", error);

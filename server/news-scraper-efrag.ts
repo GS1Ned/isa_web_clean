@@ -20,7 +20,7 @@ async function getPlaywright() {
   try {
     return await import("playwright");
   } catch (error) {
-    serverLogger.info(
+    console.log(
       "[EFRAG Scraper] Playwright not available - install with: pnpm add -D playwright && npx playwright install chromium"
     );
     return null;
@@ -34,14 +34,14 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
   // Check if Playwright is available
   const playwright = await getPlaywright();
   if (!playwright) {
-    serverLogger.info("[EFRAG Scraper] Skipping - Playwright not installed");
+    console.log("[EFRAG Scraper] Skipping - Playwright not installed");
     return [];
   }
 
   let browser: any = null;
 
   try {
-    serverLogger.info("[EFRAG Scraper] Launching browser...");
+    console.log("[EFRAG Scraper] Launching browser...");
     browser = await playwright.chromium.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -51,7 +51,7 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
     const page = await context.newPage();
 
     // Navigate to EFRAG sustainability reporting news
-    serverLogger.info("[EFRAG Scraper] Navigating to EFRAG news page...");
+    console.log("[EFRAG Scraper] Navigating to EFRAG news page...");
     await page.goto("https://www.efrag.org/en/sustainability-reporting/news", {
       waitUntil: "networkidle",
       timeout: 30000,
@@ -98,7 +98,7 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
       return results;
     });
 
-    serverLogger.info(`[EFRAG Scraper] Found ${articles.length} raw articles`);
+    console.log(`[EFRAG Scraper] Found ${articles.length} raw articles`);
 
     // Process and deduplicate
     const seen = new Set<string>();
@@ -140,7 +140,7 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
 
     await browser.close();
 
-    serverLogger.info(
+    console.log(
       `[EFRAG Scraper] Returning ${processed.length} unique articles`
     );
     return processed.slice(0, 20); // Return top 20 most recent
@@ -162,7 +162,7 @@ export async function scrapeEFRAGArticleDetail(
   // Check if Playwright is available
   const playwright = await getPlaywright();
   if (!playwright) {
-    serverLogger.info(
+    console.log(
       "[EFRAG Scraper] Skipping detail scrape - Playwright not installed"
     );
     return null;
@@ -208,14 +208,14 @@ export async function scrapeEFRAGArticleDetail(
 
 // CLI test execution
 if (import.meta.url === `file://${process.argv[1]}`) {
-  serverLogger.info("Testing EFRAG scraper...");
+  console.log("Testing EFRAG scraper...");
   scrapeEFRAGNewsPlaywright()
     .then(articles => {
-      serverLogger.info(`\n✅ Scraped ${articles.length} articles:`);
+      console.log(`\n✅ Scraped ${articles.length} articles:`);
       articles.forEach((article, i) => {
-        serverLogger.info(`\n${i + 1}. ${article.title}`);
-        serverLogger.info(`   URL: ${article.url}`);
-        serverLogger.info(
+        console.log(`\n${i + 1}. ${article.title}`);
+        console.log(`   URL: ${article.url}`);
+        console.log(
           `   Date: ${article.publishedAt.toISOString().split("T")[0]}`
         );
       });

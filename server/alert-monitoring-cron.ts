@@ -14,29 +14,29 @@ import { serverLogger } from "./_core/logger-wiring";
  * Run alert detection and send notifications
  */
 export async function runAlertMonitoring(): Promise<void> {
-  serverLogger.info("[AlertMonitoring] Starting alert detection...");
+  console.log("[AlertMonitoring] Starting alert detection...");
 
   try {
     // Detect all alerts
     const alerts = await detectAllAlerts(DEFAULT_THRESHOLDS);
 
     if (alerts.length === 0) {
-      serverLogger.info("[AlertMonitoring] No alerts detected");
+      console.log("[AlertMonitoring] No alerts detected");
       return;
     }
 
-    serverLogger.info(`[AlertMonitoring] Detected ${alerts.length} alert(s)`);
+    console.log(`[AlertMonitoring] Detected ${alerts.length} alert(s)`);
 
     // Process each alert
     for (const alert of alerts) {
-      serverLogger.info(
+      console.log(
         `[AlertMonitoring] Processing ${alert.alertType} alert (${alert.severity}): ${alert.title}`
       );
 
       const result = await processAlert(alert);
 
       if (result.success) {
-        serverLogger.info(
+        console.log(
           `[AlertMonitoring] Alert processed successfully (ID: ${result.alertId}, Notification sent: ${result.notificationSent})`
         );
       } else {
@@ -44,7 +44,7 @@ export async function runAlertMonitoring(): Promise<void> {
       }
     }
 
-    serverLogger.info("[AlertMonitoring] Alert detection complete");
+    console.log("[AlertMonitoring] Alert detection complete");
   } catch (error) {
     serverLogger.error("[AlertMonitoring] Error during alert detection:", error);
   }
@@ -69,5 +69,5 @@ export function scheduleAlertMonitoring(): void {
     });
   }, FIVE_MINUTES);
 
-  serverLogger.info("[AlertMonitoring] Scheduled to run every 5 minutes");
+  console.log("[AlertMonitoring] Scheduled to run every 5 minutes");
 }

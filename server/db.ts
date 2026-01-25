@@ -1114,7 +1114,7 @@ export async function getMostVotedMappings(limit: number = 10) {
 
     return result.length > 0 ? result[0] : null;
   } catch (error) {
-    serverLogger.error("[Database] Failed to get onboarding progress:", error);
+    console.error("[Database] Failed to get onboarding progress:", error);
     return null;
   }
 } */
@@ -1187,7 +1187,7 @@ export async function getMostVotedMappings(limit: number = 10) {
       };
     }
   } catch (error) {
-    serverLogger.error("[Database] Failed to save onboarding progress:", error);
+    console.error("[Database] Failed to save onboarding progress:", error);
     return null;
   }
 } */
@@ -1206,7 +1206,7 @@ export async function getMostVotedMappings(limit: number = 10) {
 
     return true;
   } catch (error) {
-    serverLogger.error("[Database] Failed to reset onboarding progress:", error);
+    console.error("[Database] Failed to reset onboarding progress:", error);
     return false;
   }
 } */
@@ -1391,7 +1391,7 @@ export async function getDutchInitiativeSectors() {
 
     return result;
   } catch (error) {
-    serverLogger.error('[Database] Failed to store embedding:', error);
+    console.error('[Database] Failed to store embedding:', error);
     return null;
   }
 }
@@ -1434,7 +1434,7 @@ export async function getDutchInitiativeSectors() {
       .sort((a, b) => b.similarity - a.similarity)
       .slice(0, limit);
   } catch (error) {
-    serverLogger.error('[Database] Failed to search embeddings:', error);
+    console.error('[Database] Failed to search embeddings:', error);
     return [];
   }
 } */

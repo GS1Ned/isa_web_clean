@@ -65,10 +65,10 @@ describe("Regulatory Change Log", () => {
         isaVersionAffected: "v1.1",
       });
       testEntryId = entry?.id;
-      serverLogger.info(`[Test Setup] Created test entry ID: ${testEntryId}`);
+      console.log(`[Test Setup] Created test entry ID: ${testEntryId}`);
     } catch (error) {
       setupError = error as Error;
-      serverLogger.error(`[Test Setup] Failed to create test entry: ${setupError.message}`);
+      console.error(`[Test Setup] Failed to create test entry: ${setupError.message}`);
     }
   });
 
@@ -76,7 +76,7 @@ describe("Regulatory Change Log", () => {
     it("should allow admin to create entries", async () => {
       // Skip if setup failed
       if (setupError) {
-        serverLogger.info(`[Test] Skipping - setup failed: ${setupError.message}`);
+        console.log(`[Test] Skipping - setup failed: ${setupError.message}`);
         return;
       }
       
@@ -114,7 +114,7 @@ describe("Regulatory Change Log", () => {
 
     it("should allow public access to get entry by ID", async () => {
       if (!testEntryId) {
-        serverLogger.info("[Test] Skipping - no test entry created");
+        console.log("[Test] Skipping - no test entry created");
         return;
       }
       
@@ -169,7 +169,7 @@ describe("Regulatory Change Log", () => {
 
     it("should retrieve entry by ID", async () => {
       if (!testEntryId) {
-        serverLogger.info("[Test] Skipping - no test entry created");
+        console.log("[Test] Skipping - no test entry created");
         return;
       }
       
@@ -214,7 +214,7 @@ describe("Regulatory Change Log", () => {
 
     it("should prevent non-admin from deleting entries", async () => {
       if (!testEntryId) {
-        serverLogger.info("[Test] Skipping - no test entry created");
+        console.log("[Test] Skipping - no test entry created");
         return;
       }
       

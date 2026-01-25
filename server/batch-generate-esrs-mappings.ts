@@ -9,7 +9,7 @@ import { serverLogger } from "./_core/logger-wiring";
  */
 
 async function batchGenerateEsrsMappings() {
-  serverLogger.info("=== Batch ESRS Mapping Generation ===\n");
+  console.log("=== Batch ESRS Mapping Generation ===\n");
 
   const db = await getDb();
   if (!db) {
@@ -21,10 +21,10 @@ async function batchGenerateEsrsMappings() {
   const { regulations } = await import("../drizzle/schema");
   const allRegulations = await db.select().from(regulations);
 
-  serverLogger.info(`Found ${allRegulations.length} regulations\n`);
+  console.log(`Found ${allRegulations.length} regulations\n`);
 
   if (allRegulations.length === 0) {
-    serverLogger.info("No regulations found. Run CELLAR sync first.");
+    console.log("No regulations found. Run CELLAR sync first.");
     process.exit(0);
   }
 
@@ -45,7 +45,7 @@ async function batchGenerateEsrsMappings() {
     const regulation = allRegulations[i];
     const progress = `[${i + 1}/${allRegulations.length}]`;
 
-    serverLogger.info(`${progress} Processing: ${regulation.title}`);
+    console.log(`${progress} Processing: ${regulation.title}`);
 
     try {
       const result = await generateRegulationEsrsMappings(regulation.id);
@@ -53,7 +53,7 @@ async function batchGenerateEsrsMappings() {
       if (result.success) {
         successCount++;
         totalMappings += result.mappingsCount;
-        serverLogger.info(`  ✅ Generated ${result.mappingsCount} mappings`);
+        console.log(`  ✅ Generated ${result.mappingsCount} mappings`);
 
         results.push({
           id: regulation.id,
@@ -63,7 +63,7 @@ async function batchGenerateEsrsMappings() {
         });
       } else {
         failureCount++;
-        serverLogger.info(`  ❌ Failed: ${result.error}`);
+        console.log(`  ❌ Failed: ${result.error}`);
 
         results.push({
           id: regulation.id,
@@ -77,7 +77,7 @@ async function batchGenerateEsrsMappings() {
       failureCount++;
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
-      serverLogger.info(`  ❌ Error: ${errorMessage}`);
+      console.log(`  ❌ Error: ${errorMessage}`);
 
       results.push({
         id: regulation.id,
@@ -93,21 +93,21 @@ async function batchGenerateEsrsMappings() {
       await new Promise(resolve => setTimeout(resolve, 500));
     }
 
-    serverLogger.info("");
+    console.log("");
   }
 
   // Print summary
-  serverLogger.info("=== Batch Generation Complete ===\n");
-  serverLogger.info(`Total Regulations: ${allRegulations.length}`);
-  serverLogger.info(`✅ Success: ${successCount}`);
-  serverLogger.info(`❌ Failures: ${failureCount}`);
-  serverLogger.info(`📊 Total Mappings: ${totalMappings}`);
-  serverLogger.info(
+  console.log("=== Batch Generation Complete ===\n");
+  console.log(`Total Regulations: ${allRegulations.length}`);
+  console.log(`✅ Success: ${successCount}`);
+  console.log(`❌ Failures: ${failureCount}`);
+  console.log(`📊 Total Mappings: ${totalMappings}`);
+  console.log(
     `📈 Average per Regulation: ${(totalMappings / successCount).toFixed(1)}`
   );
 
   // Print distribution
-  serverLogger.info("\n=== Mapping Distribution ===\n");
+  console.log("\n=== Mapping Distribution ===\n");
   const distribution = results
     .filter(r => r.success)
     .reduce(
@@ -123,20 +123,20 @@ async function batchGenerateEsrsMappings() {
   Object.entries(distribution)
     .sort(([a], [b]) => parseInt(a) - parseInt(b))
     .forEach(([range, count]) => {
-      serverLogger.info(`  ${range} mappings: ${count} regulations`);
+      console.log(`  ${range} mappings: ${count} regulations`);
     });
 
   // Print failures if any
   if (failureCount > 0) {
-    serverLogger.info("\n=== Failures ===\n");
+    console.log("\n=== Failures ===\n");
     results
       .filter(r => !r.success)
       .forEach(r => {
-        serverLogger.info(`  - ${r.title}: ${r.error}`);
+        console.log(`  - ${r.title}: ${r.error}`);
       });
   }
 
-  serverLogger.info("\n✅ Batch generation complete!");
+  console.log("\n✅ Batch generation complete!");
 }
 
 // Run if executed directly

@@ -69,18 +69,18 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
     };
 
     try {
-      serverLogger.error(JSON.stringify({ level: "error", traceId, payload, meta: metaObj, ts: row.created_at }));
+      console.error(JSON.stringify({ level: "error", traceId, payload, meta: metaObj, ts: row.created_at }));
     } catch {
-      serverLogger.error("[error]", payload.message ?? JSON.stringify(payload));
+      console.error("[error]", payload.message ?? JSON.stringify(payload));
     }
 
     try {
       await persist(row);
     } catch (e) {
       try {
-        serverLogger.error(JSON.stringify({ level: "error", msg: "persist failed", err: String(e), traceId }));
+        console.error(JSON.stringify({ level: "error", msg: "persist failed", err: String(e), traceId }));
       } catch {
-        serverLogger.error("[error] persist failed", e);
+        console.error("[error] persist failed", e);
       }
     }
 
@@ -91,9 +91,9 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     const traceId = (metaObj as any).traceId ?? crypto.randomUUID();
     try {
-      serverLogger.warn(JSON.stringify({ level: "warn", traceId, message: String(warnMsg), meta: metaObj, ts: nowIso() }));
+      console.warn(JSON.stringify({ level: "warn", traceId, message: String(warnMsg), meta: metaObj, ts: nowIso() }));
     } catch {
-      serverLogger.warn("[warn]", warnMsg);
+      console.warn("[warn]", warnMsg);
     }
     return traceId;
   }
@@ -101,9 +101,9 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
   function info(msg: unknown, meta?: unknown) {
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     if (process.env.NODE_ENV !== "production") {
-      serverLogger.info(`[info] ${String(msg)}`, metaObj);
+      console.log("[info]", msg, metaObj);
     } else {
-      serverLogger.info(JSON.stringify({ level: "info", message: String(msg), meta: metaObj, ts: nowIso() }));
+      console.log(JSON.stringify({ level: "info", message: String(msg), meta: metaObj, ts: nowIso() }));
     }
   }
 

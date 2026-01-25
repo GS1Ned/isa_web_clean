@@ -178,7 +178,7 @@ describe("Database Integration", () => {
   it("should query recent news from database", async () => {
     const db = await getDb();
     if (!db) {
-      serverLogger.warn("Database not available, skipping test");
+      console.warn("Database not available, skipping test");
       return;
     }
 

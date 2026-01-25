@@ -16,7 +16,6 @@ import { getDb } from './db';
 import { regulatoryEvents, hubNews, type RegulatoryEvent, type InsertRegulatoryEvent } from '../drizzle/schema';
 import { eq, and, desc, sql } from 'drizzle-orm';
 import { invokeLLM } from './_core/llm';
-import { serverLogger } from './_core/logger-wiring';
 
 // ============================================================================
 // TYPES
@@ -391,7 +390,7 @@ Provide your analysis in JSON format:
       confidenceLevel: parsed.confidence_level || 'GUIDANCE_INTERPRETATION'
     };
   } catch (error) {
-    serverLogger.error('[EventProcessor] LLM error:', error);
+    console.error('[EventProcessor] LLM error:', error);
     return createFallbackEvent(article, eventType, primaryRegulation, affectedRegulations, lifecycleState);
   }
 }
@@ -622,7 +621,7 @@ export async function processUnlinkedArticles(): Promise<{
         incomplete++;
       }
     } catch (error) {
-      serverLogger.error(`[EventProcessor] Error processing article ${article.id}:`, error);
+      console.error(`[EventProcessor] Error processing article ${article.id}:`, error);
       skipped++;
     }
   }

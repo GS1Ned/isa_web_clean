@@ -6,7 +6,6 @@
  */
 
 import { randomBytes } from 'crypto';
-import { serverLogger } from './server-logger';
 
 export type PipelineType = 'news_ingestion' | 'news_archival';
 export type TriggerSource = 'cron' | 'manual' | 'api';
@@ -108,15 +107,9 @@ export class PipelineExecutionContext {
       ...event,
     };
     
-    // Output to logger with structured format
-    const message = `[Pipeline ${this.executionId}] ${event.eventType}: ${event.message}`;
-    if (event.level === 'error') {
-      serverLogger.error(message, event.data || {});
-    } else if (event.level === 'warn') {
-      serverLogger.warn(message, event.data || {});
-    } else {
-      serverLogger.info(message, event.data || {});
-    }
+    // Output to console with structured format
+    const logMethod = event.level === 'error' ? console.error : event.level === 'warn' ? console.warn : console.log;
+    logMethod(`[Pipeline ${this.executionId}] ${event.eventType}: ${event.message}`, event.data || '');
     
     // Track errors and warnings
     if (event.level === 'error' && event.error) {

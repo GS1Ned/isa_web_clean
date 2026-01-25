@@ -26,7 +26,7 @@ export async function scrapeZESNews(): Promise<RawNewsItem[]> {
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    serverLogger.info(
+    console.log(
       "[ZES] Fetching news from https://opwegnaarzes.nl/actueel/nieuws"
     );
     await page.goto("https://opwegnaarzes.nl/actueel/nieuws", {
@@ -38,7 +38,7 @@ export async function scrapeZESNews(): Promise<RawNewsItem[]> {
     await page
       .waitForSelector("article, .news-item, .post", { timeout: 10000 })
       .catch(() => {
-        serverLogger.info(
+        console.log(
           "[ZES] No article selector found, trying alternative approach"
         );
       });
@@ -118,7 +118,7 @@ export async function scrapeZESNews(): Promise<RawNewsItem[]> {
       return items;
     });
 
-    serverLogger.info(`[ZES] Found ${articles.length} articles on listing page`);
+    console.log(`[ZES] Found ${articles.length} articles on listing page`);
 
     // Fetch full content for each article
     const fullArticles: RawNewsItem[] = [];
@@ -165,21 +165,21 @@ export async function scrapeZESNews(): Promise<RawNewsItem[]> {
           source: sourceObj,
         });
 
-        serverLogger.info(`[ZES] Scraped: ${article.title}`);
+        console.log(`[ZES] Scraped: ${article.title}`);
       } catch (error) {
         serverLogger.error(`[ZES] Error scraping detail page ${article.url}:`, error);
       }
     }
 
     await browser.close();
-    serverLogger.info(`[ZES] Successfully scraped ${fullArticles.length} articles`);
+    console.log(`[ZES] Successfully scraped ${fullArticles.length} articles`);
     return fullArticles;
   } catch (error: any) {
     if (
       error.code === "MODULE_NOT_FOUND" ||
       error.message?.includes("playwright")
     ) {
-      serverLogger.info(
+      console.log(
         "[ZES] Playwright not available (deployment mode), returning empty array"
       );
       return [];

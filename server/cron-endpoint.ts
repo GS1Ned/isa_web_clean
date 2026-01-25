@@ -38,7 +38,7 @@ export async function handleDailyNewsIngestion(req: Request, res: Response) {
     return;
   }
 
-  serverLogger.info("[cron-endpoint] Daily news ingestion triggered");
+  console.log("[cron-endpoint] Daily news ingestion triggered");
 
   try {
     const result = await monitoredCronJob(
@@ -84,7 +84,7 @@ export async function handleWeeklyNewsArchival(req: Request, res: Response) {
     return;
   }
 
-  serverLogger.info("[cron-endpoint] Weekly news archival triggered");
+  console.log("[cron-endpoint] Weekly news archival triggered");
 
   try {
     const result = await monitoredCronJob(

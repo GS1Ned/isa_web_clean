@@ -360,7 +360,7 @@ export async function seedEPCISEvents(userId: number) {
         rawEvent: eventData,
       });
       inserted++;
-      serverLogger.info(`✓ Inserted ${eventData.eventType} at ${eventData.bizStep}`);
+      console.log(`✓ Inserted ${eventData.eventType} at ${eventData.bizStep}`);
     } catch (error) {
       errors++;
       serverLogger.error(`✗ Failed to insert ${eventData.eventType}:`, error);
@@ -380,19 +380,19 @@ export async function seedEPCISEvents(userId: number) {
 // Seeding should only happen via admin UI at /admin/eudr-seeder
 /*
 if (import.meta.url === `file://${process.argv[1]}`) {
-  serverLogger.info("Seeding EPCIS sample events...");
+  console.log("Seeding EPCIS sample events...");
   
   // Use a default user ID for CLI execution (admin user)
   const defaultUserId = 1;
   
   seedEPCISEvents(defaultUserId)
     .then((result) => {
-      serverLogger.info("\n" + result.message);
-      serverLogger.info(`Total: ${result.total}, Inserted: ${result.inserted}, Errors: ${result.errors}`);
+      console.log("\n" + result.message);
+      console.log(`Total: ${result.total}, Inserted: ${result.inserted}, Errors: ${result.errors}`);
       process.exit(0);
     })
     .catch((error) => {
-      serverLogger.error("Seeding failed:", error);
+      console.error("Seeding failed:", error);
       process.exit(1);
     });
 }

@@ -327,7 +327,7 @@ const gs1StandardsData: Omit<
 ];
 
 async function seedGS1Standards() {
-  serverLogger.info("🌱 Starting GS1 Standards seed...");
+  console.log("🌱 Starting GS1 Standards seed...");
 
   const db = await getDb();
   if (!db) {
@@ -339,38 +339,38 @@ async function seedGS1Standards() {
     const existingStandards = await db.select().from(gs1Standards);
 
     if (existingStandards.length > 0) {
-      serverLogger.info(
+      console.log(
         `⚠️  Found ${existingStandards.length} existing standards. Skipping seed to avoid duplicates.`
       );
-      serverLogger.info("   To re-seed, manually delete existing records first.");
+      console.log("   To re-seed, manually delete existing records first.");
       return;
     }
 
     // Insert all standards
-    serverLogger.info(`📦 Inserting ${gs1StandardsData.length} GS1 standards...`);
+    console.log(`📦 Inserting ${gs1StandardsData.length} GS1 standards...`);
 
     for (const standard of gs1StandardsData) {
       await db.insert(gs1Standards).values(standard);
-      serverLogger.info(`   ✓ ${standard.standardCode} - ${standard.standardName}`);
+      console.log(`   ✓ ${standard.standardCode} - ${standard.standardName}`);
     }
 
-    serverLogger.info(
+    console.log(
       `\n✅ Successfully seeded ${gs1StandardsData.length} GS1 standards!`
     );
-    serverLogger.info("\nStandards by category:");
-    serverLogger.info(
+    console.log("\nStandards by category:");
+    console.log(
       `   - Identification: ${gs1StandardsData.filter(s => s.category === "Identification").length}`
     );
-    serverLogger.info(
+    console.log(
       `   - Traceability: ${gs1StandardsData.filter(s => s.category === "Traceability").length}`
     );
-    serverLogger.info(
+    console.log(
       `   - Packaging: ${gs1StandardsData.filter(s => s.category === "Packaging").length}`
     );
-    serverLogger.info(
+    console.log(
       `   - Data_Exchange: ${gs1StandardsData.filter(s => s.category === "Data_Exchange").length}`
     );
-    serverLogger.info(
+    console.log(
       `   - Quality: ${gs1StandardsData.filter(s => s.category === "Quality").length}`
     );
   } catch (error) {
@@ -382,7 +382,7 @@ async function seedGS1Standards() {
 // Run the seed
 seedGS1Standards()
   .then(() => {
-    serverLogger.info("\n🎉 Seed completed successfully!");
+    console.log("\n🎉 Seed completed successfully!");
     process.exit(0);
   })
   .catch(error => {
