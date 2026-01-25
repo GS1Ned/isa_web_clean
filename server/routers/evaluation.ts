@@ -26,6 +26,7 @@ import { invokeLLM } from "../_core/llm";
 import { assembleAskISAPrompt } from "../prompts/ask_isa";
 import { verifyResponseClaims } from "../claim-citation-verifier";
 import { calculateAuthorityScore } from "../authority-model";
+import { saveEvaluationReport, getAllEvaluationReports, getLatestEvaluationReport, compareReports } from "../evaluation-history";
 
 /**
  * Run a single test case against Ask ISA
@@ -220,7 +221,76 @@ export const evaluationRouter = router({
       }
       
       // Generate report
-      const report = generateReport(results);
+      const baseReport = generateReport(results);
+      
+      // Calculate average metrics from results
+      const avgKeywordCoverage = results.reduce((sum, r) => sum + r.metrics.keywordCoverage, 0) / results.length;
+      const avgCitationCount = results.reduce((sum, r) => sum + r.metrics.citationCount, 0) / results.length;
+      const avgAuthorityScore = results.reduce((sum, r) => sum + r.metrics.authorityScore, 0) / results.length;
+      const avgClaimVerificationRate = results.reduce((sum, r) => sum + r.metrics.claimVerificationRate, 0) / results.length;
+      const avgResponseTime = results.reduce((sum, r) => sum + r.duration, 0) / results.length;
+      
+      // Compare with previous report for regressions
+      const previousReport = await getLatestEvaluationReport();
+      let regressions: string[] = [];
+      let improvements: string[] = [];
+      
+      if (previousReport) {
+        const comparison = compareReports({
+          id: Date.now().toString(),
+          timestamp: new Date().toISOString(),
+          totalTests: baseReport.totalTests,
+          passed: baseReport.passed,
+          failed: baseReport.failed,
+          averageScore: baseReport.averageScore,
+          averageMetrics: {
+            keywordCoverage: avgKeywordCoverage,
+            citationCount: avgCitationCount,
+            authorityScore: avgAuthorityScore,
+            claimVerificationRate: avgClaimVerificationRate,
+            responseTime: avgResponseTime,
+          },
+          byCategory: baseReport.byCategory,
+          byDifficulty: baseReport.byDifficulty,
+          results: baseReport.results,
+          regressions: [],
+          improvements: [],
+          runBy: ctx.user.name || ctx.user.email || 'Unknown',
+        }, previousReport);
+        
+        regressions = comparison.regressions;
+        improvements = comparison.improvements;
+      }
+      
+      // Create full report with history comparison
+      const report = {
+        ...baseReport,
+        regressions,
+        improvements,
+      };
+      
+      // Save to file-based history
+      await saveEvaluationReport({
+        id: Date.now().toString(),
+        timestamp: new Date().toISOString(),
+        totalTests: report.totalTests,
+        passed: report.passed,
+        failed: report.failed,
+        averageScore: report.averageScore,
+        averageMetrics: {
+          keywordCoverage: avgKeywordCoverage,
+          citationCount: avgCitationCount,
+          authorityScore: avgAuthorityScore,
+          claimVerificationRate: avgClaimVerificationRate,
+          responseTime: avgResponseTime,
+        },
+        byCategory: report.byCategory,
+        byDifficulty: report.byDifficulty,
+        results: report.results,
+        regressions,
+        improvements,
+        runBy: ctx.user.name || ctx.user.email || 'Unknown',
+      });
       
       serverLogger.info("Evaluation complete", {
         totalTests: report.totalTests,
@@ -231,6 +301,34 @@ export const evaluationRouter = router({
       
       return report;
     }),
+  
+  /**
+   * Get evaluation history
+   */
+  getHistory: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user?.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Only admins can view evaluation history",
+      });
+    }
+    
+    return getAllEvaluationReports();
+  }),
+  
+  /**
+   * Get latest evaluation report
+   */
+  getLatest: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user?.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Only admins can view evaluation history",
+      });
+    }
+    
+    return getLatestEvaluationReport();
+  }),
   
   /**
    * Run a single test case

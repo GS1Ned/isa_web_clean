@@ -73,6 +73,7 @@ export const askIsaFeedback = mysqlTable("ask_isa_feedback", {
 	index("idx_timestamp").on(table.timestamp),
 ]);
 
+
 export const attributeRegulationMappings = mysqlTable("attribute_regulation_mappings", {
 	id: int().autoincrement().notNull(),
 	attributeId: int().notNull(),
@@ -2050,8 +2051,8 @@ export const regulatoryEvents = mysqlTable("regulatory_events", {
 	missingDeltaFields: json("missing_delta_fields"), // Array of field names that failed validation
 	
 	// Timestamps
-	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
-	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).onUpdateNow().notNull(),
 },
 (table) => [
 	index("dedup_key_idx").on(table.dedupKey),

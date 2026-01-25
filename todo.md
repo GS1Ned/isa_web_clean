@@ -3535,3 +3535,28 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [x] Filter sources by authority level (Official, Verified & Above, Guidance & Above)
 - [x] Show filtered count vs total count
 
+
+
+---
+
+## Ask ISA Advanced Improvements
+
+### 1. Baseline Evaluation
+- [ ] Run evaluation against all 41 golden set tests
+- [ ] Measure baseline scores for all metrics
+- [ ] Document current performance levels
+- [ ] Identify weakest areas for improvement
+
+### 2. Evaluation History
+- [ ] Add evaluationReports table to schema
+- [ ] Store evaluation results with timestamp
+- [ ] Add API to retrieve evaluation history
+- [ ] Show history trend in dashboard
+- [ ] Add regression detection alerts
+
+### 3. Claim Verification Improvement ✅ COMPLETE
+- [x] Analyze current claim verification failures
+- [x] Refine system prompt to emphasize inline citations
+- [x] Add examples of proper claim-citation pairing
+- [x] Add citation quality standards to system prompt
+- [x] Make inline citations the highest priority in response style
