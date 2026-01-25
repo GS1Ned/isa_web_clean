@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { useState } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 
@@ -13,158 +13,57 @@ interface NavItem {
 export function NavigationMenu() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { user } = useAuth();
 
+  // Restructured navigation: 5 main items
   const navItems: NavItem[] = [
     {
-      label: "Getting Started",
-      href: "/getting-started",
+      label: "Explore",
+      children: [
+        { label: "ESG Hub", href: "/hub", description: "Overview and key statistics" },
+        { label: "Regulations", href: "/hub/regulations", description: "Explore EU ESG regulations" },
+        { label: "Standards Directory", href: "/standards-directory", description: "GS1 and other standards" },
+        { label: "ESRS Datapoints", href: "/hub/esrs-datapoints", description: "1,184 EFRAG disclosure requirements" },
+        { label: "Dutch Initiatives", href: "/hub/dutch-initiatives", description: "🇳🇱 National programs" },
+        { label: "Calendar", href: "/hub/calendar", description: "Compliance deadlines" },
+        { label: "Impact Matrix", href: "/hub/impact-matrix", description: "Regulation overlap analysis" },
+      ],
+    },
+    {
+      label: "News & Events",
+      children: [
+        { label: "News Hub", href: "/news", description: "Latest regulatory updates" },
+        { label: "Regulatory Events", href: "/events", description: "Timeline of regulatory changes" },
+        { label: "Regulatory Changes", href: "/regulatory-changes", description: "Track regulation updates" },
+      ],
     },
     {
       label: "Ask ISA",
       href: "/ask",
     },
     {
-      label: "Features",
-      href: "/features",
-    },
-    {
-      label: "News",
-      href: "/news",
-    },
-    {
-      label: "ESG Hub",
+      label: "Tools",
       children: [
-        {
-          label: "Hub Home",
-          href: "/hub",
-          description: "Overview and key statistics",
-        },
-        {
-          label: "About ESG Hub",
-          href: "/hub/about",
-          description: "AI methodology and value proposition",
-        },
-        {
-          label: "Regulations",
-          href: "/hub/regulations",
-          description: "Explore EU ESG regulations",
-        },
-        {
-          label: "News Feed",
-          href: "/hub/news",
-          description: "Latest regulatory updates",
-        },
-        {
-          label: "Calendar",
-          href: "/hub/calendar",
-          description: "Compliance deadlines",
-        },
-        {
-          label: "Standards Mapping",
-          href: "/hub/standards-mapping",
-          description: "GS1 standards by regulation",
-        },
-        {
-          label: "Standards Directory",
-          href: "/standards-directory",
-          description: "Discover standards by organization and jurisdiction",
-        },
-        {
-          label: "ESRS Datapoints",
-          href: "/hub/esrs-datapoints",
-          description: "Browse 1,184 EFRAG disclosure requirements",
-        },
-        {
-          label: "Dutch Initiatives",
-          href: "/hub/dutch-initiatives",
-          description: "🇳🇱 National compliance programs",
-        },
-        {
-          label: "Resources",
-          href: "/hub/resources",
-          description: "Guides and templates",
-        },
-        {
-          label: "Impact Matrix",
-          href: "/hub/impact-matrix",
-          description: "Regulation overlap analysis",
-        },
-        {
-          label: "Compare Regulations",
-          href: "/hub/compare-regulations",
-          description: "Side-by-side regulation comparison",
-        },
-      ],
-    },
-    {
-      label: "Compliance Tools",
-      children: [
-        {
-          label: "Gap Analyzer",
-          href: "/tools/gap-analyzer",
-          description: "Identify ESRS compliance gaps",
-        },
-        {
-          label: "Impact Simulator",
-          href: "/tools/impact-simulator",
-          description: "Project future regulatory impacts",
-        },
-        {
-          label: "Dual-Core Demo",
-          href: "/tools/dual-core",
-          description: "Combined gap analysis & impact simulation",
-        },
-        {
-          label: "Attribute Recommender",
-          href: "/tools/attribute-recommender",
-          description: "AI-powered GS1 attribute suggestions",
-        },
-        {
-          label: "Compliance Roadmap",
-          href: "/tools/compliance-roadmap",
-          description: "Plan your compliance journey",
-        },
-      ],
-    },
-    {
-      label: "EPCIS Tools",
-      children: [
-        {
-          label: "Upload Events",
-          href: "/epcis/upload",
-          description: "Upload EPCIS documents",
-        },
-        {
-          label: "Supply Chain Map",
-          href: "/epcis/supply-chain",
-          description: "Visualize supply chain",
-        },
-        {
-          label: "EUDR Map",
-          href: "/epcis/eudr-map",
-          description: "Geolocation compliance",
-        },
-        {
-          label: "Barcode Scanner",
-          href: "/tools/scanner",
-          description: "Scan products for traceability",
-        },
-        {
-          label: "Compliance Report",
-          href: "/tools/compliance-report",
-          description: "Generate EUDR compliance reports",
-        },
+        { label: "Gap Analyzer", href: "/tools/gap-analyzer", description: "Identify ESRS compliance gaps" },
+        { label: "Impact Simulator", href: "/tools/impact-simulator", description: "Project regulatory impacts" },
+        { label: "Dual-Core Demo", href: "/tools/dual-core", description: "Combined analysis" },
+        { label: "Attribute Recommender", href: "/tools/attribute-recommender", description: "AI-powered GS1 suggestions" },
+        { label: "Compliance Roadmap", href: "/tools/compliance-roadmap", description: "Plan your journey" },
+        { label: "EPCIS Upload", href: "/epcis/upload", description: "Upload EPCIS documents" },
+        { label: "Supply Chain Map", href: "/epcis/supply-chain", description: "Visualize supply chain" },
+        { label: "EUDR Map", href: "/epcis/eudr-map", description: "Geolocation compliance" },
+        { label: "Barcode Scanner", href: "/tools/scanner", description: "Product traceability" },
       ],
     },
     {
       label: "About",
       children: [
-        { label: "How It Works", href: "/how-it-works" },
-        { label: "Features", href: "/features" },
-        { label: "Use Cases", href: "/use-cases" },
-        { label: "FAQ", href: "/faq" },
-        { label: "Contact", href: "/contact" },
+        { label: "How It Works", href: "/how-it-works", description: "ISA methodology" },
+        { label: "Features", href: "/features", description: "Platform capabilities" },
+        { label: "Use Cases", href: "/use-cases", description: "Industry applications" },
+        { label: "Getting Started", href: "/getting-started", description: "Quick start guide" },
+        { label: "Contact", href: "/contact", description: "Get in touch" },
       ],
     },
   ];
@@ -174,71 +73,17 @@ export function NavigationMenu() {
     navItems.push({
       label: "Admin",
       children: [
-        {
-          label: "Knowledge Base",
-          href: "/admin/knowledge-base",
-          description: "Generate embeddings for Ask ISA",
-        },
-        {
-          label: "News Pipeline",
-          href: "/admin/news-pipeline",
-          description: "Trigger news ingestion",
-        },
-        {
-          label: "News Management",
-          href: "/admin/news",
-          description: "Manage news articles",
-        },
-        {
-          label: "Analytics",
-          href: "/admin/analytics",
-          description: "Hub engagement metrics",
-        },
-        {
-          label: "CELLAR Ingestion",
-          href: "/admin/cellar",
-          description: "EU regulation sync",
-        },
-        {
-          label: "Sync Monitor",
-          href: "/admin/cellar-sync",
-          description: "Monitor sync history",
-        },
-        {
-          label: "EUDR Data Seeder",
-          href: "/admin/eudr-seeder",
-          description: "Populate sample data",
-        },
-        {
-          label: "Advisory Diff",
-          href: "/advisory/diff",
-          description: "Compare advisory versions",
-        },
-        {
-          label: "Regulatory Change Log",
-          href: "/regulatory-changes",
-          description: "View regulatory updates",
-        },
-        {
-          label: "Scraper Health",
-          href: "/admin/scraper-health",
-          description: "Monitor news scraper reliability",
-        },
-        {
-          label: "Coverage Analytics",
-          href: "/admin/coverage-analytics",
-          description: "News coverage by regulation and sector",
-        },
-        {
-          label: "Pipeline Observability",
-          href: "/admin/observability",
-          description: "Monitor news pipeline execution quality",
-        },
-        {
-          label: "System Monitoring",
-          href: "/admin/system-monitoring",
-          description: "Error tracking and performance metrics",
-        },
+        { label: "Knowledge Base", href: "/admin/knowledge-base", description: "Generate embeddings" },
+        { label: "News Pipeline", href: "/admin/news-pipeline", description: "Trigger news ingestion" },
+        { label: "News Management", href: "/admin/news", description: "Manage articles" },
+        { label: "Analytics", href: "/admin/analytics", description: "Hub metrics" },
+        { label: "CELLAR Ingestion", href: "/admin/cellar", description: "EU regulation sync" },
+        { label: "Sync Monitor", href: "/admin/cellar-sync", description: "Monitor sync history" },
+        { label: "EUDR Data Seeder", href: "/admin/eudr-seeder", description: "Populate sample data" },
+        { label: "Scraper Health", href: "/admin/scraper-health", description: "Monitor scrapers" },
+        { label: "Coverage Analytics", href: "/admin/coverage-analytics", description: "News coverage" },
+        { label: "Pipeline Observability", href: "/admin/observability", description: "Pipeline quality" },
+        { label: "System Monitoring", href: "/admin/system-monitoring", description: "Error tracking" },
       ],
     });
   }
@@ -263,26 +108,24 @@ export function NavigationMenu() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-1">
             {navItems.map(item => (
               <div
                 key={item.label}
                 className="relative"
-                onMouseEnter={() =>
-                  item.children && setOpenDropdown(item.label)
-                }
+                onMouseEnter={() => item.children && setOpenDropdown(item.label)}
                 onMouseLeave={() => setOpenDropdown(null)}
               >
                 {item.href ? (
                   <Link
                     href={item.href}
-                    className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+                    className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors rounded-md hover:bg-accent"
                   >
                     {item.label}
                   </Link>
                 ) : (
                   <button
-                    className="flex items-center gap-1 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors rounded-md hover:bg-accent"
                     onClick={() => toggleDropdown(item.label)}
                   >
                     {item.label}
@@ -290,40 +133,55 @@ export function NavigationMenu() {
                   </button>
                 )}
 
-                {/* Dropdown Menu */}
+                {/* Dropdown Menu with bridge */}
                 {item.children && openDropdown === item.label && (
-                  <div className="absolute top-full left-0 mt-2 w-64 bg-popover border rounded-lg shadow-lg z-50">
-                    <div className="p-2">
-                      {item.children.map(child => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className="block px-3 py-2 rounded-md hover:bg-accent transition-colors"
-                        >
-                          <div className="font-medium text-sm text-foreground">
-                            {child.label}
-                          </div>
-                          {child.description && (
-                            <div className="text-xs text-muted-foreground mt-0.5">
-                              {child.description}
+                  <>
+                    {/* Invisible bridge to prevent gap */}
+                    <div className="absolute top-full left-0 w-full h-2" />
+                    <div className="absolute top-[calc(100%+0.5rem)] left-0 w-72 bg-popover border rounded-lg shadow-lg z-50">
+                      <div className="p-2 max-h-[70vh] overflow-y-auto">
+                        {item.children.map(child => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className="block px-3 py-2 rounded-md hover:bg-accent transition-colors"
+                          >
+                            <div className="font-medium text-sm text-foreground">
+                              {child.label}
                             </div>
-                          )}
-                        </Link>
-                      ))}
+                            {child.description && (
+                              <div className="text-xs text-muted-foreground mt-0.5">
+                                {child.description}
+                              </div>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  </>
                 )}
               </div>
             ))}
+          </div>
 
-            {/* Dashboard/Login */}
+          {/* Right side: Search + Dashboard */}
+          <div className="hidden md:flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2"
+              onClick={() => setSearchOpen(!searchOpen)}
+            >
+              <Search className="w-4 h-4" />
+              Search
+            </Button>
             {user ? (
               <Link href="/hub/dashboard">
                 <Button size="sm">Dashboard</Button>
               </Link>
             ) : (
               <Link href="/dashboard">
-                <Button size="sm">Sign In</Button>
+                <Button size="sm">Dashboard</Button>
               </Link>
             )}
           </div>
@@ -341,11 +199,35 @@ export function NavigationMenu() {
           </button>
         </div>
 
+        {/* Search Bar (when open) */}
+        {searchOpen && (
+          <div className="hidden md:block pb-4">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const input = e.currentTarget.querySelector('input');
+                if (input?.value) {
+                  window.location.href = `/hub/regulations?search=${encodeURIComponent(input.value)}`;
+                }
+              }}
+              className="flex gap-2 max-w-xl mx-auto"
+            >
+              <input
+                type="text"
+                placeholder="Search regulations, standards, or topics..."
+                className="flex-1 px-4 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                autoFocus
+              />
+              <Button type="submit">Search</Button>
+            </form>
+          </div>
+        )}
+
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t py-4">
             {navItems.map(item => (
-              <div key={item.label} className="mb-4">
+              <div key={item.label} className="mb-2">
                 {item.href ? (
                   <Link
                     href={item.href}
@@ -368,7 +250,7 @@ export function NavigationMenu() {
                       />
                     </button>
                     {item.children && openDropdown === item.label && (
-                      <div className="mt-2 ml-4 space-y-1">
+                      <div className="mt-1 ml-4 space-y-1">
                         {item.children.map(child => (
                           <Link
                             key={child.href}
