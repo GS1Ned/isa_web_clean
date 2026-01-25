@@ -102,6 +102,7 @@ const HubDutchInitiativeDetail = lazy(
   () => import("./pages/HubDutchInitiativeDetail")
 );
 const AskISA = lazy(() => import("./pages/AskISA"));
+const EvaluationDashboard = lazy(() => import("./pages/EvaluationDashboard"));
 const AdminKnowledgeBase = lazy(() => import("./pages/AdminKnowledgeBase"));
 const DataQuality = lazy(() => import("./pages/DataQuality"));
 const CompareRegulations = lazy(() => import("./pages/CompareRegulations"));
@@ -177,6 +178,7 @@ function Router() {
       <Route path="/advisory/explorer" component={AdvisoryExplorer} />
       <Route path="/advisory/traceability" component={AdvisoryTraceability} />
       <Route path="/admin/knowledge-base" component={AdminKnowledgeBase} />
+      <Route path="/admin/evaluation" component={EvaluationDashboard} />
       <Route path="/admin/data-quality" component={DataQuality} />
       <Route path="/standards-directory/:id" component={StandardDetail} />
       <Route path="/standards-directory" component={StandardsDirectory} />

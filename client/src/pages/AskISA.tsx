@@ -29,7 +29,8 @@ import {
 import { Streamdown } from "streamdown";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle2, Library } from "lucide-react";
+import { CheckCircle2, Library, AlertTriangle, Info } from "lucide-react";
+import { AuthorityBadge, AuthorityScore, AuthorityLegend } from "@/components/AuthorityBadge";
 
 /**
  * Ask ISA - RAG-Powered Q&A Interface
@@ -37,6 +38,15 @@ import { CheckCircle2, Library } from "lucide-react";
  * Natural language interface for querying EU regulations and GS1 standards.
  * Uses semantic search and AI to provide accurate answers with source citations.
  */
+
+type AuthorityLevel = 'official' | 'verified' | 'guidance' | 'industry' | 'community';
+
+interface ClarificationSuggestion {
+  type: string;
+  message: string;
+  suggestions: string[];
+  confidence: number;
+}
 
 interface Message {
   role: "user" | "assistant";
@@ -53,6 +63,8 @@ interface Message {
     isDeprecated?: boolean;
     needsVerification?: boolean;
     deprecationReason?: string;
+    authorityLevel?: AuthorityLevel;
+    authorityScore?: number;
   }>;
   queryType?: string;
   confidence?: {
@@ -61,6 +73,27 @@ interface Message {
   };
   citationValid?: boolean;
   missingCitations?: string[];
+  // New fields for authority and clarification
+  authority?: {
+    score: number;
+    level: AuthorityLevel;
+    breakdown?: Record<AuthorityLevel, number>;
+  };
+  needsClarification?: boolean;
+  clarifications?: ClarificationSuggestion[];
+  relatedTopics?: string[];
+  responseMode?: {
+    mode: 'full' | 'partial' | 'insufficient';
+    reason: string;
+    recommendations: string[];
+  };
+  claimVerification?: {
+    verificationRate: number;
+    totalClaims: number;
+    verifiedClaims: number;
+    unverifiedClaims: number;
+    warnings: string[];
+  };
 }
 
 // Query library organized by category (30 pre-approved questions from ASK_ISA_QUERY_LIBRARY.md)
@@ -139,6 +172,22 @@ export default function AskISA() {
 
   const askMutation = trpc.askISA.ask.useMutation({
     onSuccess: data => {
+      // Handle clarification request
+      if (data.needsClarification && data.clarifications) {
+        setMessages(prev => [
+          ...prev,
+          {
+            role: "assistant",
+            content: '',
+            needsClarification: true,
+            clarifications: data.clarifications,
+            relatedTopics: data.relatedTopics,
+            confidence: data.confidence,
+          },
+        ]);
+        return;
+      }
+      
       setMessages(prev => [
         ...prev,
         {
@@ -149,6 +198,11 @@ export default function AskISA() {
           confidence: data.confidence,
           citationValid: data.citationValid,
           missingCitations: data.missingCitations,
+          // New fields
+          authority: data.authority,
+          responseMode: data.responseMode,
+          claimVerification: data.claimVerification,
+          relatedTopics: data.queryAnalysis?.relatedTopics,
         },
       ]);
 
@@ -661,7 +715,52 @@ export default function AskISA() {
                     >
                       {message.role === "assistant" ? (
                         <>
-                          {isRefusalMessage(message) ? (
+                          {message.needsClarification && message.clarifications ? (
+                            // Clarification request UI
+                            <div className="space-y-4">
+                              <div className="flex items-start gap-2">
+                                <Info className="h-5 w-5 text-blue-500 mt-0.5" />
+                                <div>
+                                  <p className="font-medium text-sm">I need a bit more information</p>
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    Your question is a bit broad. Here are some more specific questions you might want to ask:
+                                  </p>
+                                </div>
+                              </div>
+                              
+                              {message.clarifications.map((clarification, cIdx) => (
+                                <div key={cIdx} className="space-y-2">
+                                  <p className="text-sm text-muted-foreground">{clarification.message}</p>
+                                  <div className="flex flex-wrap gap-2">
+                                    {clarification.suggestions.map((suggestion, sIdx) => (
+                                      <Button
+                                        key={sIdx}
+                                        variant="outline"
+                                        size="sm"
+                                        className="text-left h-auto py-2 px-3 whitespace-normal"
+                                        onClick={() => handleSuggestedQuestion(suggestion)}
+                                      >
+                                        <span className="text-xs">{suggestion}</span>
+                                      </Button>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                              
+                              {message.relatedTopics && message.relatedTopics.length > 0 && (
+                                <div className="pt-2 border-t border-border/50">
+                                  <p className="text-xs text-muted-foreground mb-2">Related topics:</p>
+                                  <div className="flex flex-wrap gap-1">
+                                    {message.relatedTopics.map((topic, tIdx) => (
+                                      <Badge key={tIdx} variant="secondary" className="text-xs">
+                                        {topic}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ) : isRefusalMessage(message) ? (
                             // Refusal message with suggested alternative
                             <div className="space-y-3">
                               <div className="prose prose-sm dark:prose-invert max-w-none">
@@ -687,15 +786,74 @@ export default function AskISA() {
                             </div>
                           )}
                           {/* Metadata badges */}
-                          {(message.confidence || message.queryType) && (
-                            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/50">
+                          {(message.confidence || message.queryType || message.authority) && (
+                            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/50 flex-wrap">
                               {getQueryTypeBadge(message.queryType)}
                               {getConfidenceBadge(message.confidence)}
+                              {/* Authority Score */}
+                              {message.authority && (
+                                <AuthorityScore
+                                  score={message.authority.score}
+                                  level={message.authority.level}
+                                  breakdown={message.authority.breakdown}
+                                />
+                              )}
+                              {/* Claim Verification */}
+                              {message.claimVerification && (
+                                <Badge
+                                  variant="outline"
+                                  className={`text-xs ${
+                                    message.claimVerification.verificationRate >= 0.8
+                                      ? 'text-green-700 dark:text-green-400'
+                                      : message.claimVerification.verificationRate >= 0.5
+                                      ? 'text-yellow-700 dark:text-yellow-400'
+                                      : 'text-red-700 dark:text-red-400'
+                                  }`}
+                                >
+                                  {Math.round(message.claimVerification.verificationRate * 100)}% verified
+                                  ({message.claimVerification.verifiedClaims}/{message.claimVerification.totalClaims} claims)
+                                </Badge>
+                              )}
                               {message.citationValid === false && message.missingCitations && message.missingCitations.length > 0 && (
                                 <Badge variant="outline" className="text-xs text-orange-700 dark:text-orange-400">
                                   Missing: {message.missingCitations.join(", ")}
                                 </Badge>
                               )}
+                            </div>
+                          )}
+                          {/* Response Mode Warning */}
+                          {message.responseMode && message.responseMode.mode !== 'full' && (
+                            <div className={`mt-3 p-3 rounded-md border ${
+                              message.responseMode.mode === 'partial'
+                                ? 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950 dark:border-yellow-800'
+                                : 'bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800'
+                            }`}>
+                              <div className="flex items-start gap-2">
+                                <AlertTriangle className={`h-4 w-4 mt-0.5 ${
+                                  message.responseMode.mode === 'partial'
+                                    ? 'text-yellow-600'
+                                    : 'text-red-600'
+                                }`} />
+                                <div>
+                                  <p className={`text-sm font-medium ${
+                                    message.responseMode.mode === 'partial'
+                                      ? 'text-yellow-800 dark:text-yellow-200'
+                                      : 'text-red-800 dark:text-red-200'
+                                  }`}>
+                                    {message.responseMode.mode === 'partial' ? 'Partial Evidence' : 'Limited Evidence'}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    {message.responseMode.reason}
+                                  </p>
+                                  {message.responseMode.recommendations.length > 0 && (
+                                    <ul className="text-xs text-muted-foreground mt-2 list-disc list-inside">
+                                      {message.responseMode.recommendations.map((rec, i) => (
+                                        <li key={i}>{rec}</li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                </div>
+                              </div>
                             </div>
                           )}
                         </>
@@ -734,6 +892,13 @@ export default function AskISA() {
                                       >
                                         {getSourceTypeLabel(source.type)}
                                       </Badge>
+                                      {/* Authority Badge */}
+                                      {source.authorityLevel && (
+                                        <AuthorityBadge
+                                          level={source.authorityLevel}
+                                          size="sm"
+                                        />
+                                      )}
                                       <Badge
                                         variant="outline"
                                         className="text-xs"

@@ -3467,3 +3467,49 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [x] Integrate query clarification into Ask ISA router
 - [x] Test query clarification (23 tests passing)
 
+
+
+---
+
+## Ask ISA Frontend Improvements (Phase 2)
+
+### 1. AuthorityBadge Integration ✅ COMPLETE
+- [x] Update AskISA.tsx to display AuthorityBadge for each source
+- [x] Show authority level in source cards
+- [x] Add tooltip explaining authority levels (via AuthorityBadge component)
+- [x] Add AuthorityScore display in metadata badges
+- [x] Add claim verification rate display
+- [x] Add response mode warnings (partial/insufficient evidence)
+
+### 2. Clarification UI ✅ COMPLETE
+- [x] Create ClarificationSuggestions UI inline in AskISA.tsx
+- [x] Display when needsClarification is true in response
+- [x] Make suggestions clickable to auto-fill query
+- [x] Show related topics as secondary suggestions
+- [x] Integrated with existing message flow
+
+### 3. Evaluation Dashboard (Admin) ✅ COMPLETE
+- [x] Create EvaluationDashboard page with full UI
+- [x] Add route to App.tsx (/admin/evaluation)
+- [x] Display golden set statistics (41 test cases, 6 categories)
+- [x] Add "Run Evaluation" button with progress indicator
+- [x] Show results with pass/fail indicators and scores
+- [x] Display regression warnings and improvements
+- [x] Category and difficulty breakdown tabs
+- [x] Detailed metrics view with authority legend
+
+### 4. Testing Phase ✅ COMPLETE
+- [x] Test AuthorityBadge display in Ask ISA responses
+- [x] Test Clarification UI (integrated in response flow)
+- [x] Test Evaluation Dashboard - all tabs working:
+  - Test Results with pass/fail indicators
+  - Category Breakdown with progress bars
+  - Detailed Metrics view
+  - Insights with regressions and improvements
+
+### 5. Final Optimization Analysis ✅ COMPLETE
+- [x] Review all Ask ISA components for completeness
+- [x] Gap analysis: ChatGPT suggestions vs implementation
+- [x] Quality metrics assessment (83 tests passing)
+- [x] Document remaining optimization opportunities
+- [x] Created comprehensive analysis report (ASK_ISA_OPTIMIZATION_COMPLETENESS_ANALYSIS.md)
