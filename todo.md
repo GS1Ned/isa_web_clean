@@ -3419,3 +3419,51 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [x] Comprehensive analysis report (ASK_ISA_ANALYSIS_REPORT.md)
 - [x] Prioritized recommendations (10 items ranked)
 - [x] Implementation roadmap (5 phases, 16 weeks)
+
+
+---
+
+## Ask ISA Autonomous Optimization Plan (January 2026)
+
+### Phase 1: Hybrid Search Implementation ✅ COMPLETE
+- [x] Analyze current vector search implementation in db-knowledge-vector.ts
+- [x] Research and select BM25 implementation approach (in-memory with wink-bm25-text-search)
+- [x] Implement BM25 keyword search function (server/bm25-search.ts)
+- [x] Create hybrid search merger with RRF algorithm (server/hybrid-search.ts)
+- [x] Add fallback logic when BM25 not ready
+- [x] Test hybrid search (11 tests passing)
+- [x] Initialize BM25 index on server startup
+
+### Phase 2: Authority Model & Visual Indicators ✅ COMPLETE
+- [x] Define authority levels schema (Official, Verified, Guidance, Industry, Community)
+- [x] Create authority classification logic (server/authority-model.ts)
+- [x] Add authority to hybrid search results
+- [x] Implement AuthorityBadge component (client/src/components/AuthorityBadge.tsx)
+- [x] Integrate authority into Ask ISA response
+- [x] Test authority model (19 tests passing)
+
+### Phase 3: Claim-Citation Verification ✅ COMPLETE
+- [x] Design claim extraction algorithm (5 claim types: factual, procedural, definitional, numerical, temporal)
+- [x] Implement claim-to-citation mapping in response processing
+- [x] Add verification step to check all claims have citations
+- [x] Create "unverified claim" warning system (warnings array in VerificationSummary)
+- [x] Integrate verification into Ask ISA response
+- [x] Add confidence scoring based on citation coverage (verificationScore)
+- [x] Test claim-citation verifier (16 tests passing)
+
+### Phase 4: Evaluation Harness ✅ COMPLETE
+- [x] Create golden set with 41 curated test questions (6 categories, 3 difficulty levels)
+- [x] Define expected citations and authority constraints per question
+- [x] Implement automated evaluation metrics (keyword coverage, citation count, authority score, claim verification)
+- [x] Create evaluation harness with report generation
+- [x] Add regression detection with threshold alerts
+- [x] Test evaluation harness (14 tests passing)
+
+### Phase 5: Query Clarification & UX ✅ COMPLETE
+- [x] Implement ambiguous query detection (6 ambiguity types)
+- [x] Create clarification prompt suggestions
+- [x] Add "Did you mean?" functionality (generateDidYouMean)
+- [x] Implement graduated response modes (Full/Partial/Insufficient)
+- [x] Integrate query clarification into Ask ISA router
+- [x] Test query clarification (23 tests passing)
+

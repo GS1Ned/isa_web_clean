@@ -17,6 +17,7 @@ import {
   handleCronHealth,
 } from "../cron-endpoint";
 import { scheduleAlertMonitoring } from "../alert-monitoring-cron";
+import { initializeBM25Index } from "../bm25-search";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -100,11 +101,16 @@ async function startServer() {
     console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
   }
 
-  server.listen(port, () => {
+  server.listen(port, async () => {
     console.log(`Server running on http://localhost:${port}/`);
     
     // Start alert monitoring (runs every 5 minutes)
     scheduleAlertMonitoring();
+    
+    // Initialize BM25 search index in background (non-blocking)
+    initializeBM25Index().catch(err => {
+      console.error('[BM25] Failed to initialize search index:', err);
+    });
   });
 }
 

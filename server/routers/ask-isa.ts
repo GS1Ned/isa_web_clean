@@ -30,6 +30,25 @@ import {
   buildContextFromVectorResults,
 } from "../db-knowledge-vector";
 import {
+  hybridSearch,
+  buildContextFromHybridResults,
+  type HybridSearchResult,
+} from "../hybrid-search";
+import {
+  calculateAuthorityScore,
+  type AuthorityLevel,
+} from "../authority-model";
+import {
+  verifyResponseClaims,
+  type VerificationSummary,
+} from "../claim-citation-verifier";
+import {
+  analyzeQuery,
+  determineResponseMode,
+  type QueryAnalysis,
+  type ResponseModeAnalysis,
+} from "../query-clarification";
+import {
   classifyQuery,
   generateRefusalMessage,
   validateCitations as validateCitationFormat,
@@ -67,9 +86,24 @@ export const askISARouter = router({
       const { question, conversationId, userId } = input;
 
       try {
-        // Step 0: Apply guardrails - classify query type
+        // Step 0: Analyze query for ambiguity
+        const queryAnalysis = analyzeQuery(question);
+        
+        // If query is highly ambiguous, return clarification suggestions
+        if (queryAnalysis.isAmbiguous && queryAnalysis.ambiguityScore >= 0.5) {
+          serverLogger.info(`[AskISA] Query is ambiguous (score: ${queryAnalysis.ambiguityScore}), returning clarifications`);
+          return {
+            answer: '',
+            sources: [],
+            confidence: { score: 0, level: 'low' as const },
+            needsClarification: true,
+            clarifications: queryAnalysis.clarifications,
+            relatedTopics: queryAnalysis.relatedTopics,
+          };
+        }
+        
+        // Step 1: Classify the query
         const classification = classifyQuery(question);
-
         if (!classification.allowed) {
           const refusalMessage = generateRefusalMessage(classification);
           return {
@@ -80,8 +114,23 @@ export const askISARouter = router({
             confidence: { level: "low" as const, score: 0 },
           };
         }
-        // Step 1: Search for relevant content using vector similarity (FAST!)
-        const relevantResults = await vectorSearchKnowledge(question, 5);
+        // Step 1: Search for relevant content using HYBRID search (vector + BM25)
+        // This combines semantic understanding with keyword matching for better retrieval
+        const hybridResults = await hybridSearch(question, {
+          vectorWeight: 0.7,
+          bm25Weight: 0.3,
+          limit: 5,
+        });
+
+        // Convert hybrid results to the format expected by the rest of the pipeline
+        const relevantResults = hybridResults.map(r => ({
+          id: r.id,
+          type: r.type,
+          title: r.title,
+          description: r.description,
+          similarity: r.hybridScore,
+          url: r.url,
+        }));
 
         if (relevantResults.length === 0) {
           return {
@@ -184,25 +233,72 @@ export const askISARouter = router({
           serverLogger.warn('[AskISA] Verification warnings:', verification.warnings);
         }
 
+        // Step 8: Calculate authority score from hybrid results
+        const authorityScore = calculateAuthorityScore(
+          hybridResults.map(r => ({
+            authorityLevel: r.authorityLevel,
+            similarity: r.hybridScore,
+          }))
+        );
+
         return {
           answer,
-          sources: validatedSources.map(source => ({
-            id: source.id,
-            title: source.title,
-            url: source.url,
-            similarity: Math.round(source.similarity * 100),
-            datasetId: source.datasetId,
-            datasetVersion: source.datasetVersion,
-            lastVerifiedDate: source.lastVerifiedDate,
-            isDeprecated: source.isDeprecated,
-            needsVerification: source.needsVerification,
-            deprecationReason: source.deprecationReason,
-          })),
+          sources: validatedSources.map((source, index) => {
+            const hybridResult = hybridResults[index];
+            return {
+              id: source.id,
+              title: source.title,
+              url: source.url,
+              similarity: Math.round(source.similarity * 100),
+              datasetId: source.datasetId,
+              datasetVersion: source.datasetVersion,
+              lastVerifiedDate: source.lastVerifiedDate,
+              isDeprecated: source.isDeprecated,
+              needsVerification: source.needsVerification,
+              deprecationReason: source.deprecationReason,
+              // Authority information
+              authorityLevel: hybridResult?.authorityLevel || 'industry' as AuthorityLevel,
+              authorityScore: hybridResult?.authorityScore || 0.5,
+            };
+          }),
           conversationId: finalConversationId,
           queryType: classification.type,
           confidence,
           citationValid: citationValidation.valid,
           missingCitations: citationValidation.missingElements,
+          // Overall authority assessment
+          authority: authorityScore,
+          // Claim-citation verification
+          claimVerification: verifyResponseClaims(
+            answer,
+            hybridResults.map((r, i) => ({
+              id: r.id,
+              title: r.title,
+              url: r.url,
+              authorityLevel: r.authorityLevel,
+            }))
+          ),
+          // Response mode based on evidence quality
+          responseMode: determineResponseMode(
+            hybridResults.map(r => ({
+              score: r.hybridScore,
+              authorityLevel: r.authorityLevel,
+            })),
+            verifyResponseClaims(
+              answer,
+              hybridResults.map(r => ({
+                id: r.id,
+                title: r.title,
+                url: r.url,
+                authorityLevel: r.authorityLevel,
+              }))
+            ).verificationRate
+          ),
+          // Query analysis info
+          queryAnalysis: {
+            isAmbiguous: queryAnalysis.isAmbiguous,
+            relatedTopics: queryAnalysis.relatedTopics,
+          },
         };
       } catch (error) {
         serverLogger.error("[AskISA] Failed to answer question:", error);
