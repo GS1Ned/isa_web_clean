@@ -1,0 +1,20 @@
+CONSISTENCY REPORT — 2026-01-25
+
+Schema validation: PASS
+
+Reference integrity:
+- Dangling data_requirements.atomic_id: 0
+- Dangling gs1_mapping.data_id: 0
+- Dangling scoring.data_id: 0
+- Missing mapping rows (data_ids): 0
+- Missing scoring rows (data_ids): 0
+
+Counts:
+- corpus: 11
+- obligations: 24
+- atomic_requirements: 24
+- data_requirements: 24
+- gs1_mapping: 24
+- scoring: 24
+
+Overall: PASS

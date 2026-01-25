@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "gs1_mapping"
+  ],
+  "properties": {
+    "gs1_mapping": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "data_id",
+          "gs1_capability",
+          "gs1_standards",
+          "mapping_strength",
+          "justification",
+          "sector_relevance"
+        ],
+        "properties": {
+          "data_id": {
+            "type": "string"
+          },
+          "gs1_capability": {
+            "type": "string"
+          },
+          "gs1_standards": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mapping_strength": {
+            "type": "string",
+            "enum": [
+              "strong",
+              "partial",
+              "none"
+            ]
+          },
+          "justification": {
+            "type": "string"
+          },
+          "sector_relevance": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

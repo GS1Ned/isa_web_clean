@@ -1,0 +1,235 @@
+{
+  "gs1_mapping": [
+    {
+      "data_id": "DR-CSRD-1",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "Organisational sustainability disclosures are narrative/metric assertions; GS1 standards do not define ESG reporting content or assurance criteria.",
+      "sector_relevance": "Cross-sector"
+    },
+    {
+      "data_id": "DR-CSRD-2",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "Organisational sustainability disclosures are narrative/metric assertions; GS1 standards do not define ESG reporting content or assurance criteria.",
+      "sector_relevance": "Cross-sector"
+    },
+    {
+      "data_id": "DR-CSRD-3",
+      "gs1_capability": "partial",
+      "gs1_standards": [
+        "GLN"
+      ],
+      "mapping_strength": "partial",
+      "justification": "If disclosures must be attributable to specific legal entities/sites, a standard organisational/location identifier can support unambiguous referencing; GS1 does not define ESG attributes themselves.",
+      "sector_relevance": "Cross-sector"
+    },
+    {
+      "data_id": "DR-CSRD-4",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "Assurance engagement evidence is audit-process specific; GS1 provides no standard for audit engagement records.",
+      "sector_relevance": "Cross-sector"
+    },
+    {
+      "data_id": "DR-ESRS-1",
+      "gs1_capability": "partial",
+      "gs1_standards": [
+        "GLN"
+      ],
+      "mapping_strength": "partial",
+      "justification": "Organisational/site identification may help reference the reporting entity boundary; ESRS disclosure semantics are outside GS1 scope.",
+      "sector_relevance": "Cross-sector"
+    },
+    {
+      "data_id": "DR-TAX-1",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "Taxonomy alignment KPIs are financial/sustainability reporting constructs; GS1 identifiers may label entities but do not address KPI computation/reporting requirements.",
+      "sector_relevance": "Cross-sector"
+    },
+    {
+      "data_id": "DR-TAX-2",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "Financial product disclosures are outside GS1 system scope; GS1 does not standardise financial instrument identifiers/disclosure templates.",
+      "sector_relevance": "Not sector-specific"
+    },
+    {
+      "data_id": "DR-CSDDD-1",
+      "gs1_capability": "partial",
+      "gs1_standards": [
+        "GLN"
+      ],
+      "mapping_strength": "partial",
+      "justification": "Value-chain relationship datasets can benefit from standard party/location identification to reduce ambiguity across counterparties; due diligence content, risk assessment, and governance are outside GS1 scope.",
+      "sector_relevance": "Cross-sector"
+    },
+    {
+      "data_id": "DR-CSDDD-2",
+      "gs1_capability": "partial",
+      "gs1_standards": [
+        "EPCIS/CBV",
+        "GLN"
+      ],
+      "mapping_strength": "partial",
+      "justification": "Where impacts relate to supply-chain activities, an event model can structure “who/what/where/when” operational events; it does not evidence human-rights/environmental impacts by itself.",
+      "sector_relevance": "Cross-sector"
+    },
+    {
+      "data_id": "DR-CSDDD-3",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "Mitigation/remediation actions are management measures not inherently supply-chain traceability events; GS1 event standards may record operational changes but are not designed as due-diligence action registries.",
+      "sector_relevance": "Cross-sector"
+    },
+    {
+      "data_id": "DR-BATT-1",
+      "gs1_capability": "master data",
+      "gs1_standards": [
+        "GTIN",
+        "GDSN",
+        "Digital Link"
+      ],
+      "mapping_strength": "strong",
+      "justification": "Product/batch attributes and compliance-related characteristics can be associated to product identifiers and shared as structured master data; linking can route to authoritative declarations.",
+      "sector_relevance": "Cross-sector (with strong battery/manufacturing emphasis)"
+    },
+    {
+      "data_id": "DR-BATT-2",
+      "gs1_capability": "traceability",
+      "gs1_standards": [
+        "EPCIS/CBV",
+        "GLN",
+        "GTIN",
+        "SSCC"
+      ],
+      "mapping_strength": "strong",
+      "justification": "Collection/return/recycling flows are event- and logistics-heavy; traceability/event capture with party/location identifiers supports chain-of-custody evidence.",
+      "sector_relevance": "Logistics / Transport; FMCG; DIY / Retail"
+    },
+    {
+      "data_id": "DR-PPWR-1",
+      "gs1_capability": "master data",
+      "gs1_standards": [
+        "GTIN",
+        "GDSN",
+        "Digital Link"
+      ],
+      "mapping_strength": "strong",
+      "justification": "Packaging characteristics can be expressed/transported as product master data tied to product identifiers; linking supports access to packaging compliance info.",
+      "sector_relevance": "FMCG; DIY / Retail; Cross-sector"
+    },
+    {
+      "data_id": "DR-PPWR-2",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "Member State system performance data is governance/system reporting, not product-level supply chain identification/traceability domain.",
+      "sector_relevance": "Not sector-specific"
+    },
+    {
+      "data_id": "DR-SFDR-1",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "SFDR disclosures are financial regulatory reporting; GS1 is not a disclosure standard for financial entities/products.",
+      "sector_relevance": "Not sector-specific"
+    },
+    {
+      "data_id": "DR-SFDR-2",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "Advisory disclosure content is regulatory/financial; outside GS1 scope.",
+      "sector_relevance": "Not sector-specific"
+    },
+    {
+      "data_id": "DR-EUDR-1",
+      "gs1_capability": "partial",
+      "gs1_standards": [
+        "GTIN",
+        "GLN",
+        "SSCC",
+        "EPCIS/CBV",
+        "Digital Link"
+      ],
+      "mapping_strength": "partial",
+      "justification": "A due-diligence assertion is not created by GS1; product/party/shipment identification and event traceability can support evidence chaining. Core deforestation/legal proof needs additional geolocation/legal datasets beyond GS1.",
+      "sector_relevance": "FMCG; DIY / Retail; Logistics / Transport; Cross-sector"
+    },
+    {
+      "data_id": "DR-EUDR-2",
+      "gs1_capability": "partial",
+      "gs1_standards": [
+        "Digital Link",
+        "GLN"
+      ],
+      "mapping_strength": "partial",
+      "justification": "Transactional statements can be referenced via links and tied to parties; GS1 does not standardise the due-diligence statement content/schema or authority submission.",
+      "sector_relevance": "FMCG; DIY / Retail; Logistics / Transport"
+    },
+    {
+      "data_id": "DR-CBAM-1",
+      "gs1_capability": "partial",
+      "gs1_standards": [
+        "SSCC",
+        "GLN",
+        "EPCIS/CBV"
+      ],
+      "mapping_strength": "partial",
+      "justification": "Shipment identity and event trails can support linking emissions calculations to specific consignments; emissions accounting inputs/calculations are outside GS1.",
+      "sector_relevance": "Logistics / Transport; Cross-sector"
+    },
+    {
+      "data_id": "DR-CBAM-2",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "Regulatory certificate surrender is a customs/regulator transaction not addressed by GS1 supply chain standards.",
+      "sector_relevance": "Not sector-specific"
+    },
+    {
+      "data_id": "DR-PAY-1",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "HR/pay datasets are internal workforce data; GS1 is not designed for HR reporting.",
+      "sector_relevance": "Not sector-specific"
+    },
+    {
+      "data_id": "DR-PAY-2",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "HR/pay datasets are internal workforce data; GS1 is not designed for HR reporting.",
+      "sector_relevance": "Not sector-specific"
+    },
+    {
+      "data_id": "DR-FL-1",
+      "gs1_capability": "partial",
+      "gs1_standards": [
+        "GTIN",
+        "GLN",
+        "Digital Link"
+      ],
+      "mapping_strength": "partial",
+      "justification": "The prohibition is a compliance assertion; GS1 can support identifying products and linking to due-diligence/attestation info, but does not prove forced-labour absence.",
+      "sector_relevance": "Cross-sector; FMCG; DIY / Retail"
+    },
+    {
+      "data_id": "DR-FL-2",
+      "gs1_capability": "none",
+      "gs1_standards": [],
+      "mapping_strength": "none",
+      "justification": "Investigation cooperation records are legal/enforcement process data; outside GS1’s standard scope.",
+      "sector_relevance": "Not sector-specific"
+    }
+  ]
+}

@@ -1,0 +1,340 @@
+{
+  "atomic_requirements": [
+    {
+      "atomic_id": "AR-CSRD-1",
+      "obligation_ref": {
+        "instrument_id": "CSRD",
+        "article": "Art. 19a"
+      },
+      "subject": "Large undertakings",
+      "action": "Include sustainability information in the management report",
+      "object": "Management report (sustainability section)",
+      "scope": "Own operations",
+      "timing": "Periodic (annual reporting)",
+      "enforcement": "National penalties for breaches of reporting obligations (per transposition)",
+      "obligation_id": "CSRD-O1"
+    },
+    {
+      "atomic_id": "AR-CSRD-2",
+      "obligation_ref": {
+        "instrument_id": "CSRD",
+        "article": "Art. 29a"
+      },
+      "subject": "Listed SMEs",
+      "action": "Include sustainability information in the management report",
+      "object": "Management report (sustainability section)",
+      "scope": "Own operations",
+      "timing": "Periodic (annual; phased)",
+      "enforcement": "National penalties (per transposition)",
+      "obligation_id": "CSRD-O2"
+    },
+    {
+      "atomic_id": "AR-CSRD-3",
+      "obligation_ref": {
+        "instrument_id": "CSRD",
+        "article": "Art. 29b"
+      },
+      "subject": "Undertakings in scope",
+      "action": "Report sustainability information in accordance with ESRS",
+      "object": "Sustainability disclosures",
+      "scope": "Own operations",
+      "timing": "Periodic (annual)",
+      "enforcement": "National penalties (per transposition)",
+      "obligation_id": "CSRD-O3"
+    },
+    {
+      "atomic_id": "AR-CSRD-4",
+      "obligation_ref": {
+        "instrument_id": "CSRD",
+        "article": "Art. 34"
+      },
+      "subject": "Statutory auditors/audit firms",
+      "action": "Carry out assurance of reported sustainability information",
+      "object": "Sustainability information",
+      "scope": "Own operations",
+      "timing": "Periodic (annual)",
+      "enforcement": "Sanctions under audit law (per transposition)",
+      "obligation_id": "CSRD-O4"
+    },
+    {
+      "atomic_id": "AR-ESRS-1",
+      "obligation_ref": {
+        "instrument_id": "ESRS",
+        "article": "Art. 1 + Annexes"
+      },
+      "subject": "Undertakings under CSRD",
+      "action": "Disclose sustainability information as specified by ESRS",
+      "object": "ESRS disclosure items",
+      "scope": "Own operations",
+      "timing": "Periodic (annual)",
+      "enforcement": "As per CSRD enforcement via national law",
+      "obligation_id": "ESRS-O1"
+    },
+    {
+      "atomic_id": "AR-TAX-1",
+      "obligation_ref": {
+        "instrument_id": "TAX",
+        "article": "Art. 8"
+      },
+      "subject": "Undertakings subject to sustainability reporting",
+      "action": "Disclose proportion of environmentally sustainable activities",
+      "object": "Turnover, CapEx, OpEx alignment",
+      "scope": "Own operations",
+      "timing": "Periodic (annual)",
+      "enforcement": "Administrative sanctions per national law",
+      "obligation_id": "TAX-O1"
+    },
+    {
+      "atomic_id": "AR-TAX-2",
+      "obligation_ref": {
+        "instrument_id": "TAX",
+        "article": "Arts. 5–6"
+      },
+      "subject": "Financial market participants",
+      "action": "Disclose taxonomy alignment of financial products",
+      "object": "Product disclosures",
+      "scope": "Market placement",
+      "timing": "Periodic",
+      "enforcement": "Sanctions per sectoral financial supervision",
+      "obligation_id": "TAX-O2"
+    },
+    {
+      "atomic_id": "AR-CSDDD-1",
+      "obligation_ref": {
+        "instrument_id": "CSDDD",
+        "article": "Art. 5"
+      },
+      "subject": "Companies in scope",
+      "action": "Conduct human rights and environmental due diligence",
+      "object": "Due-diligence system/process",
+      "scope": "Own operations & value chain",
+      "timing": "Continuous/ongoing",
+      "enforcement": "Civil liability; administrative sanctions",
+      "obligation_id": "CSDDD-O1"
+    },
+    {
+      "atomic_id": "AR-CSDDD-2",
+      "obligation_ref": {
+        "instrument_id": "CSDDD",
+        "article": "Art. 6"
+      },
+      "subject": "Companies in scope",
+      "action": "Identify and assess actual and potential adverse impacts",
+      "object": "Operations and value chain activities",
+      "scope": "Upstream & downstream",
+      "timing": "Continuous",
+      "enforcement": "Sanctions per national law",
+      "obligation_id": "CSDDD-O2"
+    },
+    {
+      "atomic_id": "AR-CSDDD-3",
+      "obligation_ref": {
+        "instrument_id": "CSDDD",
+        "article": "Arts. 7–8"
+      },
+      "subject": "Companies in scope",
+      "action": "Prevent, mitigate, end, or minimise adverse impacts",
+      "object": "Identified adverse impacts",
+      "scope": "Upstream & downstream",
+      "timing": "Conditional/event-based",
+      "enforcement": "Sanctions; civil liability",
+      "obligation_id": "CSDDD-O3"
+    },
+    {
+      "atomic_id": "AR-BATT-1",
+      "obligation_ref": {
+        "instrument_id": "BATT",
+        "article": "Arts. 6–13"
+      },
+      "subject": "Economic operators",
+      "action": "Ensure batteries comply with sustainability, safety, labelling rules",
+      "object": "Batteries placed on market",
+      "scope": "Market placement",
+      "timing": "Event-based (before placing on market)",
+      "enforcement": "Market surveillance measures; penalties",
+      "obligation_id": "BATT-O1"
+    },
+    {
+      "atomic_id": "AR-BATT-2",
+      "obligation_ref": {
+        "instrument_id": "BATT",
+        "article": "Arts. 47–57"
+      },
+      "subject": "Producers",
+      "action": "Collect and manage waste batteries",
+      "object": "Waste batteries",
+      "scope": "Downstream",
+      "timing": "Periodic & ongoing",
+      "enforcement": "Penalties; extended producer responsibility enforcement",
+      "obligation_id": "BATT-O2"
+    },
+    {
+      "atomic_id": "AR-PPWR-1",
+      "obligation_ref": {
+        "instrument_id": "PPWR",
+        "article": "operative articles"
+      },
+      "subject": "Economic operators",
+      "action": "Place only compliant packaging on the market",
+      "object": "Packaging",
+      "scope": "Market placement",
+      "timing": "Event-based",
+      "enforcement": "Market surveillance; penalties",
+      "obligation_id": "PPWR-O1"
+    },
+    {
+      "atomic_id": "AR-PPWR-2",
+      "obligation_ref": {
+        "instrument_id": "PPWR",
+        "article": "operative articles"
+      },
+      "subject": "Member States",
+      "action": "Ensure packaging waste collection and treatment systems",
+      "object": "Packaging waste systems",
+      "scope": "Downstream (public systems)",
+      "timing": "Continuous",
+      "enforcement": "Infringement procedures",
+      "obligation_id": "PPWR-O2"
+    },
+    {
+      "atomic_id": "AR-SFDR-1",
+      "obligation_ref": {
+        "instrument_id": "SFDR",
+        "article": "Arts. 3–7"
+      },
+      "subject": "Financial market participants",
+      "action": "Disclose sustainability risks and impacts",
+      "object": "Entity- and product-level disclosures",
+      "scope": "Market placement",
+      "timing": "Periodic",
+      "enforcement": "Supervisory sanctions",
+      "obligation_id": "SFDR-O1"
+    },
+    {
+      "atomic_id": "AR-SFDR-2",
+      "obligation_ref": {
+        "instrument_id": "SFDR",
+        "article": "Art. 6"
+      },
+      "subject": "Financial advisers",
+      "action": "Disclose integration of sustainability risks in advice",
+      "object": "Advisory disclosures",
+      "scope": "Market placement",
+      "timing": "Periodic",
+      "enforcement": "Supervisory sanctions",
+      "obligation_id": "SFDR-O2"
+    },
+    {
+      "atomic_id": "AR-EUDR-1",
+      "obligation_ref": {
+        "instrument_id": "EUDR",
+        "article": "Art. 4"
+      },
+      "subject": "Operators",
+      "action": "Exercise due diligence before placing/exporting products",
+      "object": "Covered commodities/products",
+      "scope": "Market placement & export",
+      "timing": "Event-based",
+      "enforcement": "Prohibition; penalties",
+      "obligation_id": "EUDR-O1"
+    },
+    {
+      "atomic_id": "AR-EUDR-2",
+      "obligation_ref": {
+        "instrument_id": "EUDR",
+        "article": "Art. 5"
+      },
+      "subject": "Operators",
+      "action": "Submit due-diligence statements",
+      "object": "Due-diligence statements",
+      "scope": "Market placement & export",
+      "timing": "Event-based",
+      "enforcement": "Prohibition; penalties",
+      "obligation_id": "EUDR-O2"
+    },
+    {
+      "atomic_id": "AR-CBAM-1",
+      "obligation_ref": {
+        "instrument_id": "CBAM",
+        "article": "Art. 35"
+      },
+      "subject": "Importers",
+      "action": "Report embedded GHG emissions",
+      "object": "Imported goods",
+      "scope": "Market placement (imports)",
+      "timing": "Periodic (quarterly/annual)",
+      "enforcement": "Penalties",
+      "obligation_id": "CBAM-O1"
+    },
+    {
+      "atomic_id": "AR-CBAM-2",
+      "obligation_ref": {
+        "instrument_id": "CBAM",
+        "article": "Art. 22"
+      },
+      "subject": "Authorised declarants",
+      "action": "Surrender CBAM certificates",
+      "object": "Certificates vs emissions",
+      "scope": "Market placement (imports)",
+      "timing": "Periodic",
+      "enforcement": "Financial penalties",
+      "obligation_id": "CBAM-O2"
+    },
+    {
+      "atomic_id": "AR-PAY-1",
+      "obligation_ref": {
+        "instrument_id": "PAY",
+        "article": "Arts. 5–9"
+      },
+      "subject": "Employers",
+      "action": "Provide information on pay levels and pay gaps",
+      "object": "Pay information",
+      "scope": "Own operations",
+      "timing": "Periodic/conditional",
+      "enforcement": "Penalties per national law",
+      "obligation_id": "PAY-O1"
+    },
+    {
+      "atomic_id": "AR-PAY-2",
+      "obligation_ref": {
+        "instrument_id": "PAY",
+        "article": "Art. 9"
+      },
+      "subject": "Employers meeting thresholds",
+      "action": "Report gender pay gap information",
+      "object": "Pay gap reports",
+      "scope": "Own operations",
+      "timing": "Periodic",
+      "enforcement": "Penalties",
+      "obligation_id": "PAY-O2"
+    },
+    {
+      "atomic_id": "AR-FL-1",
+      "obligation_ref": {
+        "instrument_id": "FL",
+        "article": "operative prohibition"
+      },
+      "subject": "Economic operators",
+      "action": "Not place or make available forced-labour products",
+      "object": "Products made with forced labour",
+      "scope": "Market placement & export",
+      "timing": "Event-based",
+      "enforcement": "Prohibition; penalties",
+      "obligation_id": "FL-O1"
+    },
+    {
+      "atomic_id": "AR-FL-2",
+      "obligation_ref": {
+        "instrument_id": "FL",
+        "article": "investigation provisions"
+      },
+      "subject": "Economic operators",
+      "action": "Cooperate with investigations and provide information",
+      "object": "Investigation-related information",
+      "scope": "Own operations & supply chain",
+      "timing": "Conditional",
+      "enforcement": "Sanctions",
+      "obligation_id": "FL-O2"
+    }
+  ]
+}

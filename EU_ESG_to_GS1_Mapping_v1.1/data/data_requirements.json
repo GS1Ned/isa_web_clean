@@ -1,0 +1,244 @@
+{
+  "data_requirements": [
+    {
+      "data_id": "DR-CSRD-1",
+      "atomic_id": "AR-CSRD-1",
+      "data_category": "Assertion",
+      "level": "Organisation",
+      "persistence": "Retained (reporting cycles)",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "CSRD-O1"
+    },
+    {
+      "data_id": "DR-CSRD-2",
+      "atomic_id": "AR-CSRD-2",
+      "data_category": "Assertion",
+      "level": "Organisation",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "CSRD-O2"
+    },
+    {
+      "data_id": "DR-CSRD-3",
+      "atomic_id": "AR-CSRD-3",
+      "data_category": "Attribute",
+      "level": "Organisation",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "CSRD-O3"
+    },
+    {
+      "data_id": "DR-CSRD-4",
+      "atomic_id": "AR-CSRD-4",
+      "data_category": "Event",
+      "level": "Organisation",
+      "persistence": "Retained",
+      "interoperability_need": "Bilateral (auditor–entity)",
+      "verification_sensitivity": "High",
+      "obligation_id": "CSRD-O4"
+    },
+    {
+      "data_id": "DR-ESRS-1",
+      "atomic_id": "AR-ESRS-1",
+      "data_category": "Attribute",
+      "level": "Organisation",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "ESRS-O1"
+    },
+    {
+      "data_id": "DR-TAX-1",
+      "atomic_id": "AR-TAX-1",
+      "data_category": "Attribute",
+      "level": "Organisation",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "TAX-O1"
+    },
+    {
+      "data_id": "DR-TAX-2",
+      "atomic_id": "AR-TAX-2",
+      "data_category": "Assertion",
+      "level": "Financial product",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "TAX-O2"
+    },
+    {
+      "data_id": "DR-CSDDD-1",
+      "atomic_id": "AR-CSDDD-1",
+      "data_category": "Relationship",
+      "level": "Organisation",
+      "persistence": "Continuously updated",
+      "interoperability_need": "Multi-party",
+      "verification_sensitivity": "High",
+      "obligation_id": "CSDDD-O1"
+    },
+    {
+      "data_id": "DR-CSDDD-2",
+      "atomic_id": "AR-CSDDD-2",
+      "data_category": "Event",
+      "level": "Activity/value chain",
+      "persistence": "Continuously updated",
+      "interoperability_need": "Multi-party",
+      "verification_sensitivity": "High",
+      "obligation_id": "CSDDD-O2"
+    },
+    {
+      "data_id": "DR-CSDDD-3",
+      "atomic_id": "AR-CSDDD-3",
+      "data_category": "Event",
+      "level": "Activity/value chain",
+      "persistence": "Continuously updated",
+      "interoperability_need": "Multi-party",
+      "verification_sensitivity": "High",
+      "obligation_id": "CSDDD-O3"
+    },
+    {
+      "data_id": "DR-BATT-1",
+      "atomic_id": "AR-BATT-1",
+      "data_category": "Attribute",
+      "level": "Product/batch",
+      "persistence": "Retained",
+      "interoperability_need": "Multi-party",
+      "verification_sensitivity": "Medium",
+      "obligation_id": "BATT-O1"
+    },
+    {
+      "data_id": "DR-BATT-2",
+      "atomic_id": "AR-BATT-2",
+      "data_category": "Event",
+      "level": "Product/batch",
+      "persistence": "Continuously updated",
+      "interoperability_need": "Multi-party",
+      "verification_sensitivity": "Medium",
+      "obligation_id": "BATT-O2"
+    },
+    {
+      "data_id": "DR-PPWR-1",
+      "atomic_id": "AR-PPWR-1",
+      "data_category": "Attribute",
+      "level": "Product/packaging",
+      "persistence": "Retained",
+      "interoperability_need": "Multi-party",
+      "verification_sensitivity": "Medium",
+      "obligation_id": "PPWR-O1"
+    },
+    {
+      "data_id": "DR-PPWR-2",
+      "atomic_id": "AR-PPWR-2",
+      "data_category": "Event",
+      "level": "System",
+      "persistence": "Continuously updated",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "Medium",
+      "obligation_id": "PPWR-O2"
+    },
+    {
+      "data_id": "DR-SFDR-1",
+      "atomic_id": "AR-SFDR-1",
+      "data_category": "Assertion",
+      "level": "Organisation/product",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "SFDR-O1"
+    },
+    {
+      "data_id": "DR-SFDR-2",
+      "atomic_id": "AR-SFDR-2",
+      "data_category": "Assertion",
+      "level": "Organisation",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "Medium",
+      "obligation_id": "SFDR-O2"
+    },
+    {
+      "data_id": "DR-EUDR-1",
+      "atomic_id": "AR-EUDR-1",
+      "data_category": "Assertion",
+      "level": "Product/shipment",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "EUDR-O1"
+    },
+    {
+      "data_id": "DR-EUDR-2",
+      "atomic_id": "AR-EUDR-2",
+      "data_category": "Assertion",
+      "level": "Transaction",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "EUDR-O2"
+    },
+    {
+      "data_id": "DR-CBAM-1",
+      "atomic_id": "AR-CBAM-1",
+      "data_category": "Attribute",
+      "level": "Shipment",
+      "persistence": "Periodic retained",
+      "interoperability_need": "Bilateral (importer–authority)",
+      "verification_sensitivity": "High",
+      "obligation_id": "CBAM-O1"
+    },
+    {
+      "data_id": "DR-CBAM-2",
+      "atomic_id": "AR-CBAM-2",
+      "data_category": "Event",
+      "level": "Transaction",
+      "persistence": "Periodic retained",
+      "interoperability_need": "Bilateral",
+      "verification_sensitivity": "High",
+      "obligation_id": "CBAM-O2"
+    },
+    {
+      "data_id": "DR-PAY-1",
+      "atomic_id": "AR-PAY-1",
+      "data_category": "Attribute",
+      "level": "Organisation",
+      "persistence": "Retained",
+      "interoperability_need": "Bilateral (employer–authority)",
+      "verification_sensitivity": "Medium",
+      "obligation_id": "PAY-O1"
+    },
+    {
+      "data_id": "DR-PAY-2",
+      "atomic_id": "AR-PAY-2",
+      "data_category": "Assertion",
+      "level": "Organisation",
+      "persistence": "Retained",
+      "interoperability_need": "Bilateral",
+      "verification_sensitivity": "Medium",
+      "obligation_id": "PAY-O2"
+    },
+    {
+      "data_id": "DR-FL-1",
+      "atomic_id": "AR-FL-1",
+      "data_category": "Assertion",
+      "level": "Product",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "FL-O1"
+    },
+    {
+      "data_id": "DR-FL-2",
+      "atomic_id": "AR-FL-2",
+      "data_category": "Event",
+      "level": "Organisation/supply chain",
+      "persistence": "Retained",
+      "interoperability_need": "Bilateral/multi-party",
+      "verification_sensitivity": "High",
+      "obligation_id": "FL-O2"
+    }
+  ]
+}

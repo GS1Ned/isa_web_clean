@@ -1,0 +1,191 @@
+{
+  "corpus": [
+    {
+      "instrument_id": "CSRD",
+      "name": "Directive (EU) 2022/2464 — Corporate Sustainability Reporting Directive (CSRD)",
+      "status": "confirmed",
+      "scope": "Amends EU accounting, transparency, and audit directives to require sustainability reporting by in-scope undertakings, based on ESRS, with phased application.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32022L2464"
+      },
+      "eli_url": "https://eur-lex.europa.eu/eli/dir/2022/2464/oj/eng",
+      "celex": "32022L2464",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "requires_transposition"
+    },
+    {
+      "instrument_id": "ESRS",
+      "name": "Commission Delegated Regulation (EU) 2023/2772 — ESRS (Set 1)",
+      "status": "confirmed",
+      "scope": "Establishes binding European Sustainability Reporting Standards specifying sustainability disclosures required under CSRD.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32023R2772"
+      },
+      "eli_url": "https://data.europa.eu/eli/reg_del/2023/2772/oj",
+      "celex": "32023R2772",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "in_force"
+    },
+    {
+      "instrument_id": "TAX",
+      "name": "Regulation (EU) 2020/852 — EU Taxonomy Regulation",
+      "status": "confirmed",
+      "scope": "Creates an EU classification system for environmentally sustainable economic activities and related disclosure obligations.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32020R0852"
+      },
+      "eli_url": "https://eur-lex.europa.eu/eli/reg/2020/852/oj/eng",
+      "celex": "32020R0852",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "in_force"
+    },
+    {
+      "instrument_id": "CSDDD",
+      "name": "Directive (EU) 2024/1760 — Corporate Sustainability Due Diligence Directive (CSDDD)",
+      "status": "confirmed",
+      "scope": "Imposes corporate due-diligence duties to identify, prevent, mitigate, and remedy adverse human rights and environmental impacts across operations and value chains.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32024L1760"
+      },
+      "eli_url": "https://eur-lex.europa.eu/eli/dir/2024/1760/oj/eng",
+      "celex": "32024L1760",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "requires_transposition"
+    },
+    {
+      "instrument_id": "BATT",
+      "name": "Regulation (EU) 2023/1542 — Batteries Regulation",
+      "status": "confirmed",
+      "scope": "Lays down sustainability, safety, labelling, and end-of-life requirements for batteries and waste batteries placed on the EU market.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32023R1542"
+      },
+      "eli_url": "https://eur-lex.europa.eu/eli/reg/2023/1542/oj/eng",
+      "celex": "32023R1542",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "in_force"
+    },
+    {
+      "instrument_id": "PPWR",
+      "name": "Regulation (EU) 2025/40 — Packaging and Packaging Waste Regulation (PPWR)",
+      "status": "confirmed",
+      "scope": "Sets requirements to prevent and reduce packaging waste, improve packaging sustainability, and ensure waste management across the EU.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "Regulation (EU) 2025/40"
+      },
+      "eli_url": "https://data.europa.eu/eli/reg/2025/40/oj",
+      "celex": "32025R0040",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "adopted_in_force"
+    },
+    {
+      "instrument_id": "SFDR",
+      "name": "Regulation (EU) 2019/2088 — Sustainable Finance Disclosure Regulation (SFDR)",
+      "status": "confirmed",
+      "scope": "Establishes sustainability-related disclosure obligations for financial market participants and advisers.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32019R2088"
+      },
+      "eli_url": "https://eur-lex.europa.eu/eli/reg/2019/2088/oj/eng",
+      "celex": "32019R2088",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "in_force"
+    },
+    {
+      "instrument_id": "EUDR",
+      "name": "Regulation (EU) 2023/1115 — Deforestation-free Products Regulation (EUDR)",
+      "status": "confirmed",
+      "scope": "Requires due diligence to ensure certain commodities and derived products placed on or exported from the EU are deforestation-free and legally produced.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32023R1115"
+      },
+      "eli_url": "https://eur-lex.europa.eu/eli/reg/2023/1115/oj/eng",
+      "celex": "32023R1115",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "in_force"
+    },
+    {
+      "instrument_id": "CBAM",
+      "name": "Regulation (EU) 2023/956 — Carbon Border Adjustment Mechanism (CBAM)",
+      "status": "confirmed",
+      "scope": "Introduces a mechanism addressing embedded greenhouse-gas emissions in certain imported goods through reporting and adjustment obligations.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32023R0956"
+      },
+      "eli_url": "https://eur-lex.europa.eu/eli/reg/2023/956/oj/eng",
+      "celex": "32023R0956",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "in_force"
+    },
+    {
+      "instrument_id": "PAY",
+      "name": "Directive (EU) 2023/970 — Pay Transparency Directive",
+      "status": "confirmed",
+      "scope": "Strengthens enforcement of equal pay by introducing pay-transparency and reporting obligations, subject to national transposition.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32023L0970"
+      },
+      "eli_url": "https://eur-lex.europa.eu/eli/dir/2023/970/oj/eng",
+      "celex": "32023L0970",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "requires_transposition"
+    },
+    {
+      "instrument_id": "FL",
+      "name": "Regulation (EU) 2024/3015 — Forced Labour Products Regulation",
+      "status": "confirmed",
+      "scope": "Prohibits products made with forced labour from being placed on or exported from the EU market, with investigation and enforcement mechanisms.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32024R3015"
+      },
+      "eli_url": "https://eur-lex.europa.eu/eli/reg/2024/3015/oj/eng",
+      "celex": "32024R3015",
+      "last_verified": "2026-01-25",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "in_force"
+    }
+  ]
+}

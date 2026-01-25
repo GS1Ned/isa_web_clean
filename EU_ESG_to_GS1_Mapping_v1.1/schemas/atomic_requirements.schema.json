@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "atomic_requirements"
+  ],
+  "properties": {
+    "atomic_requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "atomic_id",
+          "obligation_ref",
+          "subject",
+          "action",
+          "object",
+          "scope",
+          "timing"
+        ],
+        "properties": {
+          "atomic_id": {
+            "type": "string"
+          },
+          "obligation_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "obligation_ref": {
+            "type": "object",
+            "required": [
+              "instrument_id",
+              "article"
+            ],
+            "properties": {
+              "instrument_id": {
+                "type": "string"
+              },
+              "article": {
+                "type": "string"
+              }
+            }
+          },
+          "subject": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "timing": {
+            "type": "string"
+          },
+          "enforcement": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

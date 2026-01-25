@@ -1,0 +1,148 @@
+{
+  "obligations": [
+    {
+      "obligation_id": "CSRD-O1",
+      "instrument_id": "CSRD",
+      "article": "Article 19a",
+      "text": "The directive obliges large undertakings and listed SMEs to include sustainability information in their management report."
+    },
+    {
+      "obligation_id": "CSRD-O2",
+      "instrument_id": "CSRD",
+      "article": "Article 29a",
+      "text": "The directive obliges undertakings to report sustainability information in accordance with European Sustainability Reporting Standards."
+    },
+    {
+      "obligation_id": "CSRD-O3",
+      "instrument_id": "CSRD",
+      "article": "Article 29b",
+      "text": "The directive obliges undertakings to report sustainability information in accordance with European Sustainability Reporting Standards."
+    },
+    {
+      "obligation_id": "CSRD-O4",
+      "instrument_id": "CSRD",
+      "article": "Article 34",
+      "text": "The directive obliges statutory auditors or audit firms to carry out assurance of reported sustainability information."
+    },
+    {
+      "obligation_id": "ESRS-O1",
+      "instrument_id": "ESRS",
+      "article": "Article 1 and Annexes",
+      "text": "The regulation obliges undertakings within CSRD scope to disclose sustainability information as specified in the ESRS standards."
+    },
+    {
+      "obligation_id": "TAX-O1",
+      "instrument_id": "TAX",
+      "article": "Article 8",
+      "text": "The regulation obliges undertakings subject to sustainability reporting to disclose information on how and to what extent their activities are environmentally sustainable."
+    },
+    {
+      "obligation_id": "TAX-O2",
+      "instrument_id": "TAX",
+      "article": "Articles 5–6",
+      "text": "The regulation obliges financial market participants to disclose taxonomy-related information for financial products."
+    },
+    {
+      "obligation_id": "CSDDD-O1",
+      "instrument_id": "CSDDD",
+      "article": "Article 5",
+      "text": "The directive obliges companies within scope to conduct human rights and environmental due diligence."
+    },
+    {
+      "obligation_id": "CSDDD-O2",
+      "instrument_id": "CSDDD",
+      "article": "Article 6",
+      "text": "The directive obliges companies to identify and assess actual and potential adverse impacts in their operations and value chains."
+    },
+    {
+      "obligation_id": "CSDDD-O3",
+      "instrument_id": "CSDDD",
+      "article": "Articles 7–8",
+      "text": "The directive obliges companies to prevent, mitigate, bring to an end, or minimise adverse impacts."
+    },
+    {
+      "obligation_id": "BATT-O1",
+      "instrument_id": "BATT",
+      "article": "Articles 6–13",
+      "text": "The regulation obliges economic operators to ensure batteries placed on the market comply with sustainability, safety, and labelling requirements."
+    },
+    {
+      "obligation_id": "BATT-O2",
+      "instrument_id": "BATT",
+      "article": "Articles 47–57",
+      "text": "The regulation obliges producers to collect and manage waste batteries in accordance with specified targets."
+    },
+    {
+      "obligation_id": "PPWR-O1",
+      "instrument_id": "PPWR",
+      "article": "Operative articles (placing on the market and prevention)",
+      "text": "The regulation obliges economic operators to place on the market only packaging that complies with essential sustainability and waste-reduction requirements."
+    },
+    {
+      "obligation_id": "PPWR-O2",
+      "instrument_id": "PPWR",
+      "article": "Relevant operative articles",
+      "text": "The regulation obliges Member States to ensure systems for packaging waste collection and treatment."
+    },
+    {
+      "obligation_id": "SFDR-O1",
+      "instrument_id": "SFDR",
+      "article": "Articles 3–7",
+      "text": "The regulation obliges financial market participants to disclose sustainability risks and impacts at entity and product level."
+    },
+    {
+      "obligation_id": "SFDR-O2",
+      "instrument_id": "SFDR",
+      "article": "Article 6",
+      "text": "The regulation obliges financial advisers to disclose how sustainability risks are integrated into investment advice."
+    },
+    {
+      "obligation_id": "EUDR-O1",
+      "instrument_id": "EUDR",
+      "article": "Article 4",
+      "text": "The regulation obliges operators to exercise due diligence before placing relevant commodities and products on the EU market or exporting them."
+    },
+    {
+      "obligation_id": "EUDR-O2",
+      "instrument_id": "EUDR",
+      "article": "Article 5",
+      "text": "The regulation obliges operators to submit due-diligence statements demonstrating deforestation-free and legal production."
+    },
+    {
+      "obligation_id": "CBAM-O1",
+      "instrument_id": "CBAM",
+      "article": "Article 35",
+      "text": "The regulation obliges importers to report embedded greenhouse-gas emissions for covered goods."
+    },
+    {
+      "obligation_id": "CBAM-O2",
+      "instrument_id": "CBAM",
+      "article": "Article 22",
+      "text": "The regulation obliges authorised declarants to surrender CBAM certificates corresponding to embedded emissions."
+    },
+    {
+      "obligation_id": "PAY-O1",
+      "instrument_id": "PAY",
+      "article": "Articles 5–9",
+      "text": "The directive obliges employers to provide information on pay levels and pay gaps."
+    },
+    {
+      "obligation_id": "PAY-O2",
+      "instrument_id": "PAY",
+      "article": "Article 9",
+      "text": "The directive obliges employers to report gender pay gap information where thresholds are met."
+    },
+    {
+      "obligation_id": "FL-O1",
+      "instrument_id": "FL",
+      "article": "Operative prohibition article",
+      "text": "The regulation obliges economic operators not to place or make available products made with forced labour on the EU market."
+    },
+    {
+      "obligation_id": "FL-O2",
+      "instrument_id": "FL",
+      "article": "Investigation and enforcement provisions",
+      "text": "The regulation obliges operators to cooperate with investigations and provide information to competent authorities."
+    }
+  ]
+}

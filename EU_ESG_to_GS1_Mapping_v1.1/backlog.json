@@ -1,0 +1,82 @@
+{
+  "last_verified": "2026-01-25",
+  "items": [
+    {
+      "id": "BL-001",
+      "priority": "P0",
+      "title": "Replace placeholder article references (PPWR, Forced Labour)",
+      "inputs": [
+        "data/corpus.json",
+        "data/obligations.json"
+      ],
+      "output": [
+        "data/obligations.json",
+        "data/atomic_requirements.json",
+        "VALIDATION_REPORT.md",
+        "CHANGELOG.md"
+      ],
+      "definition_of_done": [
+        "PPWR-O1, PPWR-O2, FL-O1 have exact article numbers",
+        "No placeholders remain in obligations.article",
+        "Validation report shows 0 placeholders"
+      ],
+      "evidence_required": [
+        "EUR-Lex ELI page for each instrument"
+      ]
+    },
+    {
+      "id": "BL-002",
+      "priority": "P0",
+      "title": "Add explicit obligation_id link into atomic + data requirements (already done in v1.1)",
+      "inputs": [
+        "data/atomic_requirements.json",
+        "data/data_requirements.json"
+      ],
+      "output": [
+        "data/atomic_requirements.json",
+        "data/data_requirements.json"
+      ],
+      "definition_of_done": [
+        "Every atomic requirement has obligation_id",
+        "Every data requirement has obligation_id"
+      ],
+      "evidence_required": []
+    },
+    {
+      "id": "BL-010",
+      "priority": "P1",
+      "title": "Expand corpus with ESPR/DPP instruments and delegated acts",
+      "inputs": [
+        "EUR-Lex ELI sources"
+      ],
+      "output": [
+        "corpus+obligations+atomic+data+mapping+scoring"
+      ],
+      "definition_of_done": [
+        "Each added instrument is confirmed via ELI",
+        "Obligations are article-cited",
+        "Mappings scored and adversarially audited"
+      ],
+      "evidence_required": [
+        "ELI URLs + CELEX"
+      ]
+    },
+    {
+      "id": "BL-020",
+      "priority": "P1",
+      "title": "Attach authoritative GS1 source metadata per referenced standard",
+      "inputs": [
+        "GS1 global standard pages"
+      ],
+      "output": [
+        "gs1_sources.json"
+      ],
+      "definition_of_done": [
+        "Each standard (GTIN, GLN, GDSN, EPCIS/CBV, Digital Link, SSCC) has canonical URL + version/date + scope"
+      ],
+      "evidence_required": [
+        "GS1.org sources"
+      ]
+    }
+  ]
+}
