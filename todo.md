@@ -3385,3 +3385,37 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [x] Add "/" shortcut to focus search
 - [x] Add "Escape" to close search/dropdowns
 - [x] Add keyboard hints in UI (shows "/" badge on search button)
+
+
+---
+
+## Ask ISA Feature Analysis & Optimization (January 2026)
+
+### Phase 1: Study ChatGPT Prompt
+- [x] Understand all 7 goal qualities proposed
+- [x] Analyze the "Authoritative Evidence Layer" strategy
+- [x] Review the 8+ failure modes identified
+- [x] Understand the Evidence Contract schema proposal
+- [x] Review the Authority Model concept
+- [x] Understand the Evaluation Harness proposal
+
+### Phase 2: Verify Current Implementation
+- [x] Map current Ask ISA architecture
+- [x] Review ask-isa.ts router
+- [x] Review guardrails implementation
+- [x] Review vector search and retrieval
+- [x] Review prompt assembly
+- [x] Review citation validation
+- [x] Review frontend UI components
+
+### Phase 3: Research & Evaluation
+- [x] Research RAG best practices (2024-2025)
+- [x] Evaluate each ChatGPT suggestion
+- [x] Identify areas of agreement/disagreement
+- [x] Propose optimizations to suggestions
+- [x] Identify additional improvement areas
+
+### Phase 4: Deliverables
+- [x] Comprehensive analysis report (ASK_ISA_ANALYSIS_REPORT.md)
+- [x] Prioritized recommendations (10 items ranked)
+- [x] Implementation roadmap (5 phases, 16 weeks)
