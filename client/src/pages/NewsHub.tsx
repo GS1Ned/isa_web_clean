@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { useLocation, useRoute } from "wouter";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { NewsCard } from "@/components/NewsCard";
 import { NewsCardSkeleton } from "@/components/NewsCardSkeleton";
 import { PipelineStatusBanner } from "@/components/PipelineStatusBanner";
@@ -166,6 +167,9 @@ export default function NewsHub() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      {/* Breadcrumbs */}
+      <Breadcrumbs />
+
       {/* Header */}
       <div className="bg-primary text-primary-foreground py-12">
         <div className="container max-w-6xl">

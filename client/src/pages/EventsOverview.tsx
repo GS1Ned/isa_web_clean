@@ -6,6 +6,7 @@
 
 import React, { useState, useMemo } from "react";
 import { Link } from "wouter";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -234,23 +235,9 @@ export default function EventsOverview() {
   }
 
   return (
-    <div className="container py-8">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-        <Link href="/" className="hover:text-foreground transition-colors">
-          Home
-        </Link>
-        <ChevronRight className="h-4 w-4" />
-        <Link href="/hub" className="hover:text-foreground transition-colors">
-          ESG Hub
-        </Link>
-        <ChevronRight className="h-4 w-4" />
-        <Link href="/news" className="hover:text-foreground transition-colors">
-          News
-        </Link>
-        <ChevronRight className="h-4 w-4" />
-        <span className="text-foreground font-medium">Events</span>
-      </nav>
+    <>
+      <Breadcrumbs />
+      <div className="container py-8">
 
       {/* Page Header */}
       <div className="mb-8">
@@ -593,6 +580,7 @@ export default function EventsOverview() {
           })}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

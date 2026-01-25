@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Menu, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
@@ -15,6 +15,38 @@ export function NavigationMenu() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const { user } = useAuth();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // "/" to focus search (when not in an input)
+      if (e.key === "/" && !isInputFocused()) {
+        e.preventDefault();
+        setSearchOpen(true);
+        // Focus will be handled by autoFocus on the input
+        setTimeout(() => searchInputRef.current?.focus(), 100);
+      }
+      // Escape to close search/dropdowns
+      if (e.key === "Escape") {
+        setSearchOpen(false);
+        setOpenDropdown(null);
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const isInputFocused = () => {
+      const activeElement = document.activeElement;
+      return (
+        activeElement instanceof HTMLInputElement ||
+        activeElement instanceof HTMLTextAreaElement ||
+        activeElement?.getAttribute("contenteditable") === "true"
+      );
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Restructured navigation: 5 main items
   const navItems: NavItem[] = [
@@ -171,9 +203,11 @@ export function NavigationMenu() {
               size="sm"
               className="gap-2"
               onClick={() => setSearchOpen(!searchOpen)}
+              title="Press / to search"
             >
               <Search className="w-4 h-4" />
-              Search
+              <span>Search</span>
+              <kbd className="hidden lg:inline-flex h-5 items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">/</kbd>
             </Button>
             {user ? (
               <Link href="/hub/dashboard">
@@ -213,8 +247,9 @@ export function NavigationMenu() {
               className="flex gap-2 max-w-xl mx-auto"
             >
               <input
+                ref={searchInputRef}
                 type="text"
-                placeholder="Search regulations, standards, or topics..."
+                placeholder="Search regulations, standards, or topics... (Press Esc to close)"
                 className="flex-1 px-4 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                 autoFocus
               />

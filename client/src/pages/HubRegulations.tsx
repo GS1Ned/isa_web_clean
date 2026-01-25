@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
-import { Link } from "wouter";
+import { useState, useMemo, useEffect } from "react";
+import { Link, useLocation } from "wouter";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import {
   Search,
   ChevronRight,
@@ -13,6 +14,12 @@ import {
   Users,
   Building2,
   GitCompare,
+  ShoppingCart,
+  Truck,
+  Wheat,
+  Briefcase,
+  Factory,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +34,45 @@ import {
 import { trpc } from "@/lib/trpc";
 
 const FEATURED_REGULATION_CODES = ["CSRD", "EUDR", "ESRS", "DPP", "PPWR"];
+
+// Industry filters with regulation mappings
+const INDUSTRY_FILTERS = [
+  {
+    id: "retail",
+    label: "Retail & Consumer Goods",
+    icon: ShoppingCart,
+    regulations: ["CSRD", "ESRS", "DPP", "PPWR", "ESPR", "CSDDD", "EUDR"],
+    description: "Product labeling, packaging, sustainability reporting",
+  },
+  {
+    id: "manufacturing",
+    label: "Manufacturing",
+    icon: Factory,
+    regulations: ["CSRD", "ESRS", "DPP", "ESPR", "BATTERIES", "CSDDD"],
+    description: "Product design, supply chain, emissions reporting",
+  },
+  {
+    id: "logistics",
+    label: "Logistics & Transport",
+    icon: Truck,
+    regulations: ["CSRD", "ESRS", "EUDR", "CSDDD"],
+    description: "Supply chain traceability, emissions, due diligence",
+  },
+  {
+    id: "food",
+    label: "Food & Agriculture",
+    icon: Wheat,
+    regulations: ["CSRD", "ESRS", "EUDR", "PPWR", "CSDDD"],
+    description: "Deforestation-free, packaging, sustainability",
+  },
+  {
+    id: "services",
+    label: "Corporate Services",
+    icon: Briefcase,
+    regulations: ["CSRD", "ESRS", "CSDDD", "TAXONOMY"],
+    description: "Sustainability reporting, due diligence",
+  },
+];
 
 const QUICK_FILTERS = [
   {
@@ -95,11 +141,27 @@ const CATEGORY_FILTERS = [
 ];
 
 export default function HubRegulations() {
+  const [location] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedQuickFilter, setSelectedQuickFilter] = useState<number | null>(
     null
   );
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
+
+  // Parse URL parameters for industry filter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const industryParam = params.get("industry");
+    const searchParam = params.get("search");
+    
+    if (industryParam && INDUSTRY_FILTERS.some(i => i.id === industryParam)) {
+      setSelectedIndustry(industryParam);
+    }
+    if (searchParam) {
+      setSearchTerm(searchParam);
+    }
+  }, [location]);
 
   const { data: regulations, isLoading } = trpc.regulations.list.useQuery();
 
@@ -135,9 +197,19 @@ export default function HubRegulations() {
         selectedCategory === null ||
         CATEGORY_FILTERS[selectedCategory].filter(reg);
 
-      return matchesSearch && matchesQuickFilter && matchesCategory;
+      // Industry filter
+      const matchesIndustry = (() => {
+        if (!selectedIndustry) return true;
+        const industry = INDUSTRY_FILTERS.find(i => i.id === selectedIndustry);
+        if (!industry) return true;
+        return industry.regulations.some(code =>
+          reg.title.toUpperCase().includes(code)
+        );
+      })();
+
+      return matchesSearch && matchesQuickFilter && matchesCategory && matchesIndustry;
     });
-  }, [regulations, searchTerm, selectedQuickFilter, selectedCategory]);
+  }, [regulations, searchTerm, selectedQuickFilter, selectedCategory, selectedIndustry]);
 
   // Calculate recently updated (last 30 days)
   const recentlyUpdatedIds = useMemo(() => {
@@ -167,21 +239,8 @@ export default function HubRegulations() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur">
-        <div className="container flex items-center justify-between h-16">
-          <Link
-            href="/hub"
-            className="text-blue-600 hover:text-blue-700 transition font-medium"
-          >
-            ← Back to Hub
-          </Link>
-          <h1 className="text-lg font-bold text-foreground">
-            Regulation Explorer
-          </h1>
-          <div className="w-24" />
-        </div>
-      </nav>
+      {/* Breadcrumbs */}
+      <Breadcrumbs />
 
       {/* Main Content */}
       <div className="flex-1">
@@ -256,6 +315,93 @@ export default function HubRegulations() {
             </div>
           </div>
 
+          {/* Industry Filter */}
+          {selectedIndustry && (
+            <div className="mb-6 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {(() => {
+                    const industry = INDUSTRY_FILTERS.find(i => i.id === selectedIndustry);
+                    if (!industry) return null;
+                    const Icon = industry.icon;
+                    return (
+                      <>
+                        <div className="p-2 bg-primary/10 rounded-lg">
+                          <Icon className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground">
+                            Showing regulations for {industry.label}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {industry.description}
+                          </p>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setSelectedIndustry(null);
+                    // Clear URL param
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete("industry");
+                    window.history.replaceState({}, "", url.toString());
+                  }}
+                  className="gap-1"
+                >
+                  <X className="h-4 w-4" />
+                  Clear
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Industry Filter Chips */}
+          <div className="mb-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Building2 className="w-4 h-4 text-muted-foreground" />
+              <span className="text-sm font-medium text-muted-foreground">
+                Filter by Industry:
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {INDUSTRY_FILTERS.map(industry => {
+                const Icon = industry.icon;
+                return (
+                  <Button
+                    key={industry.id}
+                    variant={selectedIndustry === industry.id ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => {
+                      const newValue = selectedIndustry === industry.id ? null : industry.id;
+                      setSelectedIndustry(newValue);
+                      // Update URL param
+                      const url = new URL(window.location.href);
+                      if (newValue) {
+                        url.searchParams.set("industry", newValue);
+                      } else {
+                        url.searchParams.delete("industry");
+                      }
+                      window.history.replaceState({}, "", url.toString());
+                    }}
+                    className={`gap-2 ${
+                      selectedIndustry === industry.id
+                        ? "bg-primary hover:bg-primary/90"
+                        : ""
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {industry.label}
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Quick Filter Chips */}
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-2">
@@ -284,17 +430,22 @@ export default function HubRegulations() {
                   {qf.label}
                 </Button>
               ))}
-              {(selectedQuickFilter !== null || selectedCategory !== null) && (
+              {(selectedQuickFilter !== null || selectedCategory !== null || selectedIndustry !== null) && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => {
                     setSelectedQuickFilter(null);
                     setSelectedCategory(null);
+                    setSelectedIndustry(null);
+                    // Clear URL params
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete("industry");
+                    window.history.replaceState({}, "", url.toString());
                   }}
                   className="text-muted-foreground"
                 >
-                  Clear Filters
+                  Clear All Filters
                 </Button>
               )}
             </div>

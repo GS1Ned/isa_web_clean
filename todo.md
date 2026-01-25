@@ -3363,3 +3363,25 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [x] Use CSS fix with invisible bridge between trigger and content
 - [ ] Test on desktop browsers (Chrome, Safari) - USER TESTING REQUIRED
 - [ ] Verify mobile functionality still works
+
+
+---
+
+## UX Improvements - Phase 2 (January 2026)
+
+### 1. Breadcrumbs Integration
+- [x] Add Breadcrumbs to HubRegulations page
+- [x] Add Breadcrumbs to NewsHub page
+- [x] Add Breadcrumbs to EventsOverview page
+- [x] Breadcrumbs component already exists and works
+
+### 2. Industry Filtering
+- [x] Add industry parameter support to HubRegulations
+- [x] Create industry-regulation mapping data (5 industries with regulation codes)
+- [x] Implement filter UI on regulations page
+- [x] Connect homepage industry selector to regulations filter (already linked)
+
+### 3. Keyboard Navigation
+- [x] Add "/" shortcut to focus search
+- [x] Add "Escape" to close search/dropdowns
+- [x] Add keyboard hints in UI (shows "/" badge on search button)
