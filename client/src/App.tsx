@@ -30,6 +30,7 @@ const HubNews = lazy(() => import("./pages/HubNews"));
 const NewsHub = lazy(() => import("./pages/NewsHub"));
 const NewsDetail = lazy(() => import("./pages/NewsDetail"));
 const EventDetail = lazy(() => import("./pages/EventDetail"));
+const EventsOverview = lazy(() => import("./pages/EventsOverview"));
 const HubCalendar = lazy(() => import("./pages/HubCalendar"));
 const HubStandardsMapping = lazy(() => import("./pages/HubStandardsMapping"));
 const HubEsrsGs1Mappings = lazy(() => import("./pages/HubEsrsGs1Mappings"));
@@ -148,6 +149,7 @@ function Router() {
       <Route path="/hub/news" component={HubNews} />
       <Route path="/news/:id" component={NewsDetail} />
       <Route path="/events/:id" component={EventDetail} />
+      <Route path="/events" component={EventsOverview} />
       <Route path="/news" component={NewsHub} />
       <Route path="/hub/calendar" component={HubCalendar} />
       <Route path="/hub/standards-mapping" component={HubStandardsMapping} />

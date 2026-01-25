@@ -3278,3 +3278,39 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 **Governance Document:** docs/BASELINE_V2_DECISION_GRADE.md
 
 ---
+
+
+## Phase 3 — Coverage & Intelligence Expansion
+
+**Status:** APPROVED — IMPLEMENTATION STARTED (25 Jan 2026)  
+**Startdocument:** docs/PHASE_3_STARTDOCUMENT.md  
+**Baseline:** ISA News Hub v2 — decision-grade (c4e7e2fb)
+
+### Governance
+- [x] Create Phase 3 Startdocument
+- [x] Obtain approval for scope and approach (25 Jan 2026)
+- [x] Begin implementation
+
+### Lijn 1: Coverage-Uitbreiding
+- [x] CSDDD bronnen configuratie (4 sources: 2 Tier 1, 2 Tier 2)
+- [x] Green Claims bronnen configuratie (3 sources: 1 Tier 1, 2 Tier 2)
+- [x] ESPR bronnen configuratie (3 sources: 1 Tier 1, 1 Tier 2, 1 Tier 3)
+- [x] NL-specifieke bronnen toevoegen (4 sources: 2 Tier 1, 2 Tier 2)
+- [x] Authority tier documentatie per bron (news-sources-phase3.ts)
+
+### Lijn 2: Intelligence-Verdieping
+- [x] Obligation keyword uitbreiding (35+ nieuwe keywords in EXTENDED_OBLIGATION_KEYWORDS)
+- [x] Negative signal keyword uitbreiding (48+ nieuwe keywords in 5 categories)
+- [x] Context-aware matching implementatie (detectObligations, detectExtendedNegativeSignals)
+- [x] Unit tests voor nieuwe logica (41 tests passing)
+
+### Lijn 3: Gebruikersoriëntatie
+- [x] Events Overview pagina (/events)
+- [x] Filter-functionaliteit (regulation, lifecycle, risk)
+- [x] Sorteer-functionaliteit (date, completeness, risk)
+
+### Validatie
+- [x] Baseline-integriteit verificatie (geen wijzigingen aan Phase 2 code)
+- [x] Decision-grade kwaliteit behouden (ISA-GRADE status intact)
+- [x] Regressie-tests (980 passed, 1 pre-existing flaky test)
+- [x] Phase 3 afsluiting checkpoint
