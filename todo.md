@@ -3345,3 +3345,12 @@ Based on ChatGPT analysis of ISA news pipeline best practices.
 - [x] Show consecutive failure counts (implemented)
 - [x] Add filtering and sorting (implemented)
 - **Status:** Complete - dashboard exists at /admin/scraper-health with full monitoring
+
+
+## Dropdown Menu Fix
+
+- [x] Identify Select components with closing issue
+- [x] Fix dropdown menu closing immediately on mouse move (added onCloseAutoFocus handler)
+- [ ] Test fix on News Hub page
+- [ ] Test fix on Events Overview page
+- [ ] Verify all dropdown menus work correctly
