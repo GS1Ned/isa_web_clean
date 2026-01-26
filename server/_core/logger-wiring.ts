@@ -24,9 +24,9 @@ type PersistRow = {
 async function createPersistFn() {
   const db = await getDb();
   if (!db) {
-    return async (_row: PersistRow) => {
-      serverLogger.error("[serverLogger.persist] DB not available; skipping persist");
-    };
+    // Return a silent no-op when DB is unavailable
+    // CRITICAL: Do NOT log here - it creates infinite recursion
+    return async (_row: PersistRow) => {};
   }
 
   return async (row: PersistRow) => {
