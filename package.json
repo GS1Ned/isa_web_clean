@@ -16,6 +16,7 @@
     "test-ci": "bash scripts/run-ci-tests.sh",
     "test-ci:unit": "bash scripts/run-unit-tests.sh",
     "test-ci:integration": "bash scripts/run-integration-tests.sh",
+    "test:nav": "node scripts/test-nav-dropdown.mjs",
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
     "verify:data": "tsx scripts/verify-data-files.ts",
     "integrate": "tsx scripts/integrate-chatgpt-deliverables.ts",

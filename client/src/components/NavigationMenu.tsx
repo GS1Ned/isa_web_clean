@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { useState, useEffect, useRef } from "react";
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { ChevronDown, Menu, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
@@ -16,6 +17,8 @@ export function NavigationMenu() {
   const [searchOpen, setSearchOpen] = useState(false);
   const { user } = useAuth();
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const closeTimeoutRef = useRef<number | null>(null);
+  const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -47,6 +50,28 @@ export function NavigationMenu() {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        window.clearTimeout(closeTimeoutRef.current);
+        closeTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!openDropdown || mobileMenuOpen) return;
+      const dropdownRoot = dropdownRefs.current[openDropdown];
+      if (dropdownRoot && !dropdownRoot.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown, true);
+    return () => document.removeEventListener("pointerdown", handlePointerDown, true);
+  }, [openDropdown, mobileMenuOpen]);
 
   // Restructured navigation: 5 main items
   const navItems: NavItem[] = [
@@ -124,6 +149,28 @@ export function NavigationMenu() {
     setOpenDropdown(openDropdown === label ? null : label);
   };
 
+  const clearCloseTimeout = () => {
+    if (closeTimeoutRef.current) {
+      window.clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+
+  const scheduleClose = () => {
+    clearCloseTimeout();
+    closeTimeoutRef.current = window.setTimeout(() => {
+      setOpenDropdown(null);
+    }, 120);
+  };
+
+  const handleTriggerKeyDown = (label: string) => (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === "Enter" || event.key === " " || event.key === "Spacebar" || event.key === "ArrowDown") {
+      event.preventDefault();
+      clearCloseTimeout();
+      setOpenDropdown(label);
+    }
+  };
+
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
@@ -145,8 +192,20 @@ export function NavigationMenu() {
               <div
                 key={item.label}
                 className="relative"
-                onMouseEnter={() => item.children && setOpenDropdown(item.label)}
-                onMouseLeave={() => setOpenDropdown(null)}
+                ref={node => {
+                  if (item.children) {
+                    dropdownRefs.current[item.label] = node;
+                  }
+                }}
+                onPointerEnter={() => {
+                  if (!item.children) return;
+                  clearCloseTimeout();
+                  setOpenDropdown(item.label);
+                }}
+                onPointerLeave={() => {
+                  if (!item.children) return;
+                  scheduleClose();
+                }}
               >
                 {item.href ? (
                   <Link
@@ -159,38 +218,38 @@ export function NavigationMenu() {
                   <button
                     className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors rounded-md hover:bg-accent"
                     onClick={() => toggleDropdown(item.label)}
+                    onKeyDown={handleTriggerKeyDown(item.label)}
+                    aria-haspopup="menu"
+                    aria-expanded={openDropdown === item.label}
                   >
                     {item.label}
                     <ChevronDown className="w-4 h-4" />
                   </button>
                 )}
 
-                {/* Dropdown Menu with bridge */}
+                {/* Dropdown Menu */}
                 {item.children && openDropdown === item.label && (
-                  <>
-                    {/* Invisible bridge to prevent gap */}
-                    <div className="absolute top-full left-0 w-full h-2" />
-                    <div className="absolute top-[calc(100%+0.5rem)] left-0 w-72 bg-popover border rounded-lg shadow-lg z-50">
-                      <div className="p-2 max-h-[70vh] overflow-y-auto">
-                        {item.children.map(child => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className="block px-3 py-2 rounded-md hover:bg-accent transition-colors"
-                          >
-                            <div className="font-medium text-sm text-foreground">
-                              {child.label}
+                  <div className="absolute top-full left-0 w-72 bg-popover border rounded-lg shadow-lg z-50">
+                    <div className="p-2 max-h-[70vh] overflow-y-auto">
+                      {item.children.map(child => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className="block px-3 py-2 rounded-md hover:bg-accent transition-colors"
+                          onClick={() => setOpenDropdown(null)}
+                        >
+                          <div className="font-medium text-sm text-foreground">
+                            {child.label}
+                          </div>
+                          {child.description && (
+                            <div className="text-xs text-muted-foreground mt-0.5">
+                              {child.description}
                             </div>
-                            {child.description && (
-                              <div className="text-xs text-muted-foreground mt-0.5">
-                                {child.description}
-                              </div>
-                            )}
-                          </Link>
-                        ))}
-                      </div>
+                          )}
+                        </Link>
+                      ))}
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             ))}
