@@ -4,92 +4,123 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   iron-gate:
     name: IRON Protocol Compliance
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Get main branch commit hash
-        id: main-hash
+      - name: Fetch main and determine hashes
+        id: hashes
+        shell: bash
         run: |
-          git fetch origin main
-          MAIN_HASH=$(git rev-parse origin/main )
-          echo "hash=$MAIN_HASH" >> $GITHUB_OUTPUT
+          set -euo pipefail
+          git fetch --no-tags --prune --depth=0 origin main
+
+          MAIN_HASH="$(git rev-parse origin/main)"
+          echo "main_hash=$MAIN_HASH" >> "$GITHUB_OUTPUT"
           echo "Main branch commit: $MAIN_HASH"
+
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "PR head sha:        $HEAD_SHA"
 
       - name: Check Context Acknowledgement
         id: context-check
+        shell: bash
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
+          set -euo pipefail
           echo "Checking PR description for Context-Commit-Hash..."
-          
-          PR_BODY=$(cat <<'EOF'
-          ${{ github.event.pull_request.body }}
-          EOF
-          )
-          
-          if [[ -z "$PR_BODY" ]]; then
+
+          if [[ -z "${PR_BODY:-}" ]]; then
             echo "::error::PR description is empty. IRON Protocol requires a Context Acknowledgement block."
             echo "::error::Please run ./scripts/iron-context.sh and copy the acknowledgement to your PR description."
             exit 1
           fi
-          
-          if echo "$PR_BODY" | grep -q "Context-Commit-Hash:"; then
-            CONTEXT_HASH=$(echo "$PR_BODY" | grep -oP "Context-Commit-Hash:\s*\K[a-f0-9]+")
-            echo "Found Context-Commit-Hash: $CONTEXT_HASH"
-            echo "context_hash=$CONTEXT_HASH" >> $GITHUB_OUTPUT
-          else
-            echo "::error::Missing Context-Commit-Hash in PR description."
+
+          CONTEXT_HASH="$(
+            printf '%s\n' "$PR_BODY" \
+              | sed -nE 's/.*Context-Commit-Hash:[[:space:]]*([a-f0-9]{7,40}).*/\1/p' \
+              | head -n 1
+          )"
+
+          if [[ -z "$CONTEXT_HASH" ]]; then
+            echo "::error::Missing or invalid Context-Commit-Hash in PR description."
             echo "::error::IRON Protocol requires explicit context acknowledgement."
             echo "::error::Please run ./scripts/iron-context.sh and copy the acknowledgement to your PR description."
             exit 1
           fi
 
-      - name: Validate Context Freshness
+          echo "Found Context-Commit-Hash: $CONTEXT_HASH"
+          echo "context_hash=$CONTEXT_HASH" >> "$GITHUB_OUTPUT"
+
+      - name: Validate Context Freshness (non-blocking)
+        shell: bash
         run: |
-          MAIN_HASH="${{ steps.main-hash.outputs.hash }}"
+          set -euo pipefail
+          MAIN_HASH="${{ steps.hashes.outputs.main_hash }}"
           CONTEXT_HASH="${{ steps.context-check.outputs.context_hash }}"
-          
+
           echo "Main branch hash:    $MAIN_HASH"
           echo "Context hash in PR:  $CONTEXT_HASH"
-          
+
+          if git cat-file -e "${CONTEXT_HASH}^{commit}" 2>/dev/null; then
+            :
+          else
+            git fetch --no-tags --prune --depth=0 origin || true
+          fi
+
           if git merge-base --is-ancestor "$CONTEXT_HASH" "$MAIN_HASH" 2>/dev/null; then
-            echo "✅ Context hash is valid (is ancestor of or equal to main)"
+            echo "✅ Context hash is valid (ancestor of or equal to main)"
           else
             echo "::warning::Context hash is not an ancestor of main. This may indicate stale context."
             echo "::warning::Consider re-running ./scripts/iron-context.sh to update your context."
           fi
-          
-          echo "✅ Context validation passed"
 
-      - name: Check Inventory File Not Modified
+          echo "✅ Context validation completed"
+
+      - name: Check Inventory File Not Modified (blocking)
+        shell: bash
         run: |
+          set -euo pipefail
           echo "Checking if isa.inventory.json was modified in this PR..."
-          
-          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
-          
-          if echo "$CHANGED_FILES" | grep -q "^isa.inventory.json$"; then
+
+          git fetch --no-tags --prune --depth=0 origin main
+          MAIN_REF="origin/main"
+          HEAD_SHA="${{ steps.hashes.outputs.head_sha }}"
+
+          CHANGED_FILES="$(git diff --name-only "$MAIN_REF...$HEAD_SHA")"
+
+          if printf '%s\n' "$CHANGED_FILES" | grep -qx "isa.inventory.json"; then
             echo "::error::isa.inventory.json was modified in this PR."
-            echo "::error::This file is auto-generated and should not be committed."
+            echo "::error::This file is auto-generated and must not be committed or edited in PRs."
             echo "::error::Please remove isa.inventory.json from your commit."
             exit 1
           fi
-          
+
           echo "✅ Inventory file check passed"
 
       - name: IRON Gate Summary
+        shell: bash
         run: |
+          set -euo pipefail
           echo "=============================================="
           echo "IRON Gate: All checks passed"
           echo "=============================================="
           echo ""
           echo "✅ Context Acknowledgement: Present"
-          echo "✅ Context Freshness: Valid"
+          echo "✅ Context Freshness: Checked"
           echo "✅ Inventory File: Not modified"
           echo ""
           echo "This PR complies with the IRON Protocol."
