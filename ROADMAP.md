@@ -1,7 +1,7 @@
 # ISA Development Roadmap
 
-**Last Updated:** December 10, 2025  
-**Current Version:** c8b3a6a2  
+**Last Updated:** January 27, 2026  
+**Current Version:** c0000d3 (BL-010 ESPR expansion)  
 **Status:** Active Development
 
 ---
@@ -105,13 +105,25 @@ Q3 2025 (Completed)
 ├─ GS1 insights UI
 └─ Bidirectional news-regulation links
 
-Q4 2025 (In Progress - December)
+Q4 2025 (Completed)
 ├─ Timeline visualization ✅
 ├─ Multi-regulation comparison ✅
-├─ Documentation alignment ⏳
-└─ Production readiness improvements
+├─ Documentation alignment ✅
+└─ Production readiness improvements ✅
 
-Q1 2026 (Planned)
+Q1 2026 (In Progress - January)
+├─ EU_ESG_to_GS1_Mapping v1.1 artefact completion ✅
+├─ BL-001: Article reference citations ✅
+├─ BL-010: ESPR/DPP corpus expansion ✅
+├─ BL-020: GS1 source metadata ✅
+├─ /hub/standards and /hub/esrs route fixes ✅
+├─ Development playbook documentation ✅
+└─ Data ingestion pipeline (partial)
+
+Q1 2026 (Remaining)
+├─ Full data ingestion to local database
+├─ Pre-compute embeddings for vector search
+├─ Query caching for Ask ISA performance
 ├─ Automated data pipeline monitoring
 ├─ Change detection and alerts
 ├─ Conversation history sidebar
@@ -145,7 +157,7 @@ Q3 2026 (Planned)
 - [x] Create roadmap and maintenance plan
 - [ ] Write unit tests for critical paths
 - [ ] Set up error monitoring and logging
-- [ ] Implement health check endpoints
+- [x] Implement health check endpoints (/health and /ready)
 
 **Priority:** 🔴 Critical  
 **ETA:** December 15, 2024
