@@ -23,8 +23,8 @@ jobs:
         id: hashes
         shell: bash
         run: |
-         set -euo pipefail
-         git fetch --no-tags --prune --depth=0 origin main
+          set -euo pipefail
+          git fetch --no-tags --prune origin main
 
           MAIN_HASH="$(git rev-parse origin/main)"
           echo "main_hash=$MAIN_HASH" >> "$GITHUB_OUTPUT"
@@ -78,7 +78,7 @@ jobs:
           if git cat-file -e "${CONTEXT_HASH}^{commit}" 2>/dev/null; then
             :
           else
-           git fetch --no-tags --prune --depth=0 origin || true
+            git fetch --no-tags --prune origin || true
           fi
 
           if git merge-base --is-ancestor "$CONTEXT_HASH" "$MAIN_HASH" 2>/dev/null; then
@@ -96,7 +96,7 @@ jobs:
           set -euo pipefail
           echo "Checking if isa.inventory.json was modified in this PR..."
 
-          git fetch --no-tags --prune --depth=0 origin main
+          git fetch --no-tags --prune origin main
           MAIN_REF="origin/main"
           HEAD_SHA="${{ steps.hashes.outputs.head_sha }}"
 
