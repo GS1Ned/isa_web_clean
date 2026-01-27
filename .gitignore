@@ -122,3 +122,4 @@ data/external/Archive_2.zip
 
 # Manus cache files
 .manus/db/*.json
+isa.inventory.json
