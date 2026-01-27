@@ -2,6 +2,20 @@
 
 <!-- Short description of what this PR does -->
 
+## IRON Protocol Context Acknowledgement
+
+<!-- 
+REQUIRED: Run ./scripts/iron-context.sh and paste the output below.
+PRs without this block will fail the IRON Gate check.
+-->
+
+Context-Commit-Hash: <!-- paste commit hash here -->
+
+**Context Acknowledgement:**
+- **Inventory:** Reviewed `isa.inventory.json` (commit: `<!-- paste hash -->`)
+- **Roadmap:** <!-- current priority from ROADMAP.md -->
+- **Protocol:** This task adheres to the IRON Protocol.
+
 ## Trace ID(s)
 - trace_id: <!-- e.g. 123e4567-e89b-12d3-a456-426614174000 -->
 
