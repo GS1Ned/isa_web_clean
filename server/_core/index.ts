@@ -7,7 +7,7 @@ import "./logger-wiring"; // Initialize persisted serverLogger
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
-import { performHealthCheck } from "../health";
+import { performHealthCheck, performReadinessCheck } from "../health";
 import { serveStatic, setupVite } from "./vite";
 import { apiRateLimiter, authRateLimiter } from "./rate-limit";
 import { securityHeaders, devSecurityHeaders } from "./security-headers";
@@ -70,6 +70,20 @@ async function startServer() {
         status: 'unhealthy',
         timestamp: new Date().toISOString(),
         error: error instanceof Error ? error.message : 'Health check failed',
+      });
+    }
+  });
+
+  // Readiness check endpoint (public, no auth required)
+  app.get("/ready", async (req, res) => {
+    try {
+      const readiness = await performReadinessCheck();
+      const statusCode = readiness.ready ? 200 : 503;
+      res.status(statusCode).json(readiness);
+    } catch (error) {
+      res.status(503).json({
+        ready: false,
+        error: error instanceof Error ? error.message : 'Readiness check failed',
       });
     }
   });
