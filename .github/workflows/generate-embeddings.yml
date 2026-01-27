@@ -60,9 +60,6 @@ jobs:
         run: pnpm install --frozen-lockfile
 
           
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: Validate environment
         run: |
           if [ -z "${{ secrets.DATABASE_URL }}" ]; then
