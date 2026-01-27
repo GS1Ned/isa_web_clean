@@ -41,7 +41,7 @@ jobs:
   generate-embeddings:
     runs-on: ubuntu-latest
     timeout-minutes: 60  # Allow up to 60 minutes for large datasets
-       steps:
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
