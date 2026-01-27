@@ -65,23 +65,23 @@ function validateEnv(): void {
       throw new Error("[ENV] Configuration error:\n" + errorLines.join("\n"));
     } else {
       // Development: log warning
-      console.warn("[ENV] ⚠️  Configuration warning:");
-      errorLines.forEach(line => console.warn("  - " + line));
+      process.stderr.write("[ENV] ⚠️  Configuration warning:\n");
+      errorLines.forEach(line => process.stderr.write("  - " + line + "\n"));
 
       // Exit if critical variables are missing
       const criticalMissing = missing.filter(v => 
         (CRITICAL_VARS as readonly string[]).includes(v)
       );
       if (criticalMissing.length > 0) {
-        console.error("[ENV] ❌ Critical variables missing: " + criticalMissing.join(", "));
-        console.error("[ENV] Server cannot start without these. Exiting.");
+        process.stderr.write("[ENV] ❌ Critical variables missing: " + criticalMissing.join(", ") + "\n");
+        process.stderr.write("[ENV] Server cannot start without these. Exiting.\n");
         process.exit(1);
       }
     }
   } else {
     // All validations passed
     if (!isProduction) {
-      console.log("[ENV] ✓ All required environment variables present and valid");
+      process.stdout.write("[ENV] ✓ All required environment variables present and valid\n");
     }
   }
 }
