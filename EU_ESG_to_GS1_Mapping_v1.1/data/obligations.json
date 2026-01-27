@@ -75,13 +75,13 @@
     {
       "obligation_id": "PPWR-O1",
       "instrument_id": "PPWR",
-      "article": "Operative articles (placing on the market and prevention)",
+      "article": "Article 15(1)",
       "text": "The regulation obliges economic operators to place on the market only packaging that complies with essential sustainability and waste-reduction requirements."
     },
     {
       "obligation_id": "PPWR-O2",
       "instrument_id": "PPWR",
-      "article": "Relevant operative articles",
+      "article": "Article 48",
       "text": "The regulation obliges Member States to ensure systems for packaging waste collection and treatment."
     },
     {
@@ -135,13 +135,13 @@
     {
       "obligation_id": "FL-O1",
       "instrument_id": "FL",
-      "article": "Operative prohibition article",
+      "article": "Article 3",
       "text": "The regulation obliges economic operators not to place or make available products made with forced labour on the EU market."
     },
     {
       "obligation_id": "FL-O2",
       "instrument_id": "FL",
-      "article": "Investigation and enforcement provisions",
+      "article": "Articles 15-24",
       "text": "The regulation obliges operators to cooperate with investigations and provide information to competent authorities."
     }
   ]

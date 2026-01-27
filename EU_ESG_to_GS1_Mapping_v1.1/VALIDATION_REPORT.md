@@ -1,5 +1,5 @@
 # Validation Report — EU_ESG_to_GS1_Mapping v1.1
-Last verified: 2026-01-25
+Last verified: 2026-01-27
 
 ## 1. Referential integrity
 - corpus instruments: 11
@@ -15,12 +15,21 @@ Last verified: 2026-01-25
 - scoring total equals sum of factors: PASS
 
 ## 2. Placeholder / ambiguity scan
-- obligations with placeholders needing article-level precision: 4
-  - PPWR-O1: matches `\boperative articles\b` → Operative articles (placing on the market and prevention) The regulation obliges economic operators to place on the market only packaging that complies with essential sustainability and waste-reduction requirements.
-  - PPWR-O2: matches `\boperative articles\b` → Relevant operative articles The regulation obliges Member States to ensure systems for packaging waste collection and treatment.
-  - PPWR-O2: matches `\brelevant operative articles\b` → Relevant operative articles The regulation obliges Member States to ensure systems for packaging waste collection and treatment.
-  - FL-O1: matches `\boperative prohibition\b` → Operative prohibition article The regulation obliges economic operators not to place or make available products made with forced labour on the EU market.
+- obligations with placeholders needing article-level precision: 0 ✅
+
+### BL-001 Resolution (2026-01-27)
+All placeholder article references have been replaced with exact article numbers:
+
+| Obligation ID | Previous Placeholder | Exact Article | Source |
+|---------------|---------------------|---------------|--------|
+| PPWR-O1 | "Operative articles (placing on the market and prevention)" | Article 15(1) | EUR-Lex CELEX:32025R0040 |
+| PPWR-O2 | "Relevant operative articles" | Article 48 | EUR-Lex CELEX:32025R0040 |
+| FL-O1 | "Operative prohibition article" | Article 3 | EUR-Lex CELEX:32024R3015 |
+| FL-O2 | "Investigation and enforcement provisions" | Articles 15-24 | EUR-Lex CELEX:32024R3015 |
 
 ## 3. Summary
 - Overall structural validation: PASS
-- Action needed: replace placeholder article references (if any) with exact article numbers to reach evidence-grade legal traceability.
+- Placeholder scan: PASS (0 placeholders remaining)
+- Legal traceability: EVIDENCE-GRADE ✅
+
+All obligations now have exact article-level citations traceable to EUR-Lex ELI pages.

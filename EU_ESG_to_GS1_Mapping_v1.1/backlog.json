@@ -1,9 +1,11 @@
 {
-  "last_verified": "2026-01-25",
+  "last_verified": "2026-01-27",
   "items": [
     {
       "id": "BL-001",
       "priority": "P0",
+      "status": "COMPLETED",
+      "completed_date": "2026-01-27",
       "title": "Replace placeholder article references (PPWR, Forced Labour)",
       "inputs": [
         "data/corpus.json",
