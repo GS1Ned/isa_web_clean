@@ -66,6 +66,8 @@
     {
       "id": "BL-020",
       "priority": "P1",
+      "status": "COMPLETED",
+      "completed_date": "2026-01-27",
       "title": "Attach authoritative GS1 source metadata per referenced standard",
       "inputs": [
         "GS1 global standard pages"

@@ -2,6 +2,23 @@
 
 All notable changes to this artefact set are documented in this file.
 
+## [1.1.2] - 2026-01-27
+
+### Added
+- **BL-020:** Created `gs1_sources.json` with authoritative GS1 standard metadata
+  - GTIN: Global Trade Item Number (canonical URL, specification, version)
+  - GLN: Global Location Number (canonical URL, specification, version)
+  - GDSN: Global Data Synchronisation Network (canonical URL, specification, version)
+  - EPCIS/CBV: Electronic Product Code Information Services / Core Business Vocabulary (canonical URL, ISO standards)
+  - Digital Link: GS1 Digital Link (canonical URL, specification, version)
+  - SSCC: Serial Shipping Container Code (canonical URL, specification, version)
+
+### Evidence
+- All canonical URLs verified against GS1.org official documentation
+- Each standard includes: full name, description, canonical URL, specification URL, current version, scope, key attributes
+
+---
+
 ## [1.1.1] - 2026-01-27
 
 ### Fixed
