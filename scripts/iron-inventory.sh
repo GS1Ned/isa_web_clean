@@ -207,7 +207,7 @@ if [[ ${#UNKNOWN_SCOPE[@]} -gt 0 ]]; then
     log_warn "  - $item"
   done
   log_warn ""
-  log_warn "You must explicitly classify these items."
+  log_warn "You must explicitly classify these items in SCOPE_DECISIONS.md and then update this script."
 fi
 
 # =============================================================================
@@ -303,6 +303,7 @@ log_info "Inventory written to: $OUTPUT_FILE"
 
 if ! python3 -c "import json; json.load(open('$OUTPUT_FILE'))" 2>/dev/null; then
   log_error "Generated JSON is invalid! Manual review required."
+  log_error "Exiting with code 1 due to ${#UNKNOWN_SCOPE[@]} unknown scope items."
   exit 1
 fi
 
@@ -317,6 +318,7 @@ log_info "  - Unknown scope: ${#UNKNOWN_SCOPE[@]}"
 # Report unknown scope as exit code for CI integration
 if [[ ${#UNKNOWN_SCOPE[@]} -gt 0 ]]; then
   log_warn "Exiting with code 1 due to ${#UNKNOWN_SCOPE[@]} unknown scope items."
+  log_error "Exiting with code 1 due to ${#UNKNOWN_SCOPE[@]} unknown scope items."
   exit 1
 fi
 

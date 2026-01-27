@@ -1,12 +1,12 @@
 # The IRON Protocol
 
-**Version:** 1.0.0  
+**Version:** 2.0.0  
 **Status:** ✅ Active and Binding  
 **Last Updated:** 2026-01-27
 
 ---
 
-## Purpose
+## 1. Purpose
 
 The IRON Protocol is the canonical governance system for ISA development. It exists to:
 
@@ -17,7 +17,7 @@ The IRON Protocol is the canonical governance system for ISA development. It exi
 
 ---
 
-## Core Principles
+## 2. Core Principles
 
 | Principle | Meaning |
 |---|---|
@@ -28,30 +28,25 @@ The IRON Protocol is the canonical governance system for ISA development. It exi
 
 ---
 
-## Canonical Artefacts
+## 3. Canonical Artefacts & Value Hierarchy
 
-The protocol is built on three canonical artefacts:
+The protocol is built on a strict hierarchy of authority:
 
-| Artefact | File | Owner | Purpose |
+| Level | Artefact(s) | Owner | Purpose |
 |---|---|---|---|
-| **Inventory** | `isa.inventory.json` | Machine (CI script) | Ground truth of what exists in the repository. |
-| **Roadmap** | `ROADMAP.md` | Human (Lead Architect) | Ground truth of what we are building. |
-| **Protocol** | `IRON_PROTOCOL.md` | Human (Lead Architect) | Ground truth of how we work. |
+| **L1: System State** | Live system (runtime reality) | Machine | The ultimate ground truth. |
+| **L2: Governance Intent** | `ROADMAP.md`, `IRON_PROTOCOL.md` | Human | The strategic direction and rules of work. |
+| **L3: System Inventory** | `isa.inventory.json`, `SCOPE_DECISIONS.md` | Machine | The ground truth of what exists in the repository. |
+| **L4: Explanatory Docs** | All other `.md` files | Human | Supporting context and documentation. |
+| **L5: Ephemeral Context** | Chat history, notes, etc. | N/A | Transient, non-authoritative information. |
 
-### Value Hierarchy
-
-When sources conflict, higher-value data wins:
-
-1. **Authoritative system data** (schema, config, runtime reality)
-2. **Governance intent** (IRON Protocol, ROADMAP)
-3. **Explanatory documentation**
-4. **Ephemeral context** (comments, notes, task history)
+**When sources conflict, higher-level data wins.**
 
 ---
 
-## Execution Loop
+## 4. Execution Loop & Conflict Handling
 
-### Before Starting Any Task
+### 4.1. Before Starting Any Task
 
 Run the context ingestion script:
 
@@ -59,29 +54,37 @@ Run the context ingestion script:
 ./scripts/iron-context.sh
 ```
 
-This script:
-1. Pulls the latest code from `origin/main`
-2. Generates a fresh `isa.inventory.json`
-3. Displays current ROADMAP priorities
-4. Outputs a Context Acknowledgement block for your PR
+This script is the **single entry point** for all development work.
 
-### During Development
+### 4.2. During Development
 
-- Work on the current ROADMAP priority
-- If the task diverges from the roadmap, pause and escalate
-- If unknown scope is detected, classify it explicitly (IN/OUT/IGNORE)
+- Work on the current ROADMAP priority.
+- If the task diverges from the roadmap, **pause and escalate**.
 
-### Before Submitting a PR
+### 4.3. IRON CONFLICT: The Stop Condition
 
-1. Copy the Context Acknowledgement block from `iron-context.sh` output
-2. Paste it into your PR description
-3. The `iron-gate` CI check will validate compliance
+Execution **must halt** if an **IRON CONFLICT** is detected. An IRON CONFLICT occurs when:
+
+1.  **L1 (System State) conflicts with L2 (Governance Intent):** The live system behaves in a way that contradicts the roadmap.
+2.  **L2 (Governance Intent) conflicts with L3 (System Inventory):** The roadmap assumes a state that the inventory proves false.
+3.  **L3 (System Inventory) detects unknown scope:** The `iron-inventory.sh` script finds files/directories not in `SCOPE_DECISIONS.md`.
+
+When an IRON CONFLICT occurs, the agent must:
+1.  Declare `IRON CONFLICT`.
+2.  State the conflicting sources and their levels in the value hierarchy.
+3.  Pause all work until the conflict is resolved by the Lead Architect.
+
+### 4.4. Before Submitting a PR
+
+1.  Copy the Context Acknowledgement block from `iron-context.sh` output.
+2.  Paste it into your PR description.
+3.  The `iron-gate` CI check will validate compliance.
 
 ---
 
-## Enforcement
+## 5. Enforcement & Self-Correction
 
-### The `iron-gate` CI Check
+### 5.1. The `iron-gate` CI Check
 
 Every PR must pass the IRON Gate:
 
@@ -91,39 +94,13 @@ Every PR must pass the IRON Gate:
 | **Context Freshness** | The hash must be a valid ancestor of `main` |
 | **Inventory Integrity** | `isa.inventory.json` must not be modified in the PR |
 
-PRs that fail the IRON Gate cannot be merged.
+### 5.2. Scope Drift Handling
 
-### Drift Detection
+1.  `iron-inventory.sh` detects unknown scope and exits with an error.
+2.  Developer/agent must record a decision (IN/OUT/IGNORE) in `SCOPE_DECISIONS.md`.
+3.  `iron-inventory.sh` is updated to reflect the decision.
 
-The `iron-inventory.sh` script detects unknown scope:
-
-- New files or directories not in the defined scope will be flagged
-- You must explicitly classify them as IN SCOPE, OUT OF SCOPE, or IGNORE
-- Silent omission is not allowed
-
----
-
-## Delegation Policy
-
-### What Requires High-Cost Reasoning
-
-- Strategic planning and roadmap updates
-- Architectural design and refactoring
-- Complex, multi-component feature implementation
-- Root cause analysis of non-trivial bugs
-
-### What Must Be Delegated
-
-- Repository scanning and inventory generation → `iron-inventory.sh`
-- Bulk document analysis → `map` tool or cheaper models
-- Boilerplate code generation → Templates
-- Tests and linting → CI/CD pipeline
-
----
-
-## Self-Correction
-
-### Failure Detection
+### 5.3. Self-Correction Loop
 
 | Signal | Meaning | Action |
 |---|---|---|
@@ -131,13 +108,15 @@ The `iron-inventory.sh` script detects unknown scope:
 | **Stale Roadmap Indicator** | Planning is not keeping up with execution | Escalate to Lead Architect |
 | **Manual Override Frequency > 1/month** | Protocol has a design flaw | Review and fix the protocol |
 
-### Evolution
+---
 
-The protocol must adapt or be replaced. If it becomes a bottleneck, simplify it. The ultimate goal is to make governance **disappear** into automated, frictionless execution.
+## 6. Bootstrap Exceptions
+
+- **CI Workflow Creation:** The `iron-gate.yml` workflow was created manually via the GitHub UI due to GitHub App permission limitations. This is a **one-time bootstrap condition** and is documented here for posterity.
 
 ---
 
-## Quick Reference
+## 7. Quick Reference
 
 ```bash
 # Start any task
@@ -148,6 +127,9 @@ The protocol must adapt or be replaced. If it becomes a bottleneck, simplify it.
 
 # Check current roadmap
 cat ROADMAP.md
+
+# Check scope decisions
+cat SCOPE_DECISIONS.md
 
 # Check this protocol
 cat IRON_PROTOCOL.md
