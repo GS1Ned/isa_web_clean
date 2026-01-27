@@ -239,6 +239,46 @@
       "interoperability_need": "Bilateral/multi-party",
       "verification_sensitivity": "High",
       "obligation_id": "FL-O2"
+    },
+    {
+      "data_id": "DR-ESPR-1",
+      "atomic_id": "AR-ESPR-1",
+      "data_category": "Assertion",
+      "level": "Product/batch",
+      "persistence": "Retained (product lifecycle)",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "ESPR-O1"
+    },
+    {
+      "data_id": "DR-ESPR-2",
+      "atomic_id": "AR-ESPR-2",
+      "data_category": "Attribute",
+      "level": "Product/batch",
+      "persistence": "Retained (product lifecycle)",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "ESPR-O2"
+    },
+    {
+      "data_id": "DR-ESPR-3",
+      "atomic_id": "AR-ESPR-3",
+      "data_category": "Identifier",
+      "level": "Product/batch",
+      "persistence": "Retained (product lifecycle)",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "ESPR-O3"
+    },
+    {
+      "data_id": "DR-ESPR-4",
+      "atomic_id": "AR-ESPR-4",
+      "data_category": "Assertion",
+      "level": "Product/batch",
+      "persistence": "Retained",
+      "interoperability_need": "Ecosystem-wide",
+      "verification_sensitivity": "High",
+      "obligation_id": "ESPR-O4"
     }
   ]
 }

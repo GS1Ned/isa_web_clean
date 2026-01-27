@@ -335,6 +335,62 @@
       "timing": "Conditional",
       "enforcement": "Sanctions",
       "obligation_id": "FL-O2"
+    },
+    {
+      "atomic_id": "AR-ESPR-1",
+      "obligation_ref": {
+        "instrument_id": "ESPR",
+        "article": "Art. 9(1)"
+      },
+      "subject": "Economic operators",
+      "action": "Ensure digital product passport is available before market placement",
+      "object": "Digital Product Passport",
+      "scope": "Market placement",
+      "timing": "Event-based (before placing on market)",
+      "enforcement": "Market surveillance; prohibition; penalties",
+      "obligation_id": "ESPR-O1"
+    },
+    {
+      "atomic_id": "AR-ESPR-2",
+      "obligation_ref": {
+        "instrument_id": "ESPR",
+        "article": "Art. 9(2)"
+      },
+      "subject": "Manufacturers",
+      "action": "Include product identification and sustainability information in DPP accessible via data carrier",
+      "object": "DPP content and data carrier",
+      "scope": "Product-level",
+      "timing": "Event-based (before placing on market)",
+      "enforcement": "Market surveillance; penalties",
+      "obligation_id": "ESPR-O2"
+    },
+    {
+      "atomic_id": "AR-ESPR-3",
+      "obligation_ref": {
+        "instrument_id": "ESPR",
+        "article": "Art. 11"
+      },
+      "subject": "Manufacturers",
+      "action": "Assign unique product identifier linked to digital product passport",
+      "object": "Unique product identifier",
+      "scope": "Product-level (unit or batch)",
+      "timing": "Event-based (before placing on market)",
+      "enforcement": "Market surveillance; penalties",
+      "obligation_id": "ESPR-O3"
+    },
+    {
+      "atomic_id": "AR-ESPR-4",
+      "obligation_ref": {
+        "instrument_id": "ESPR",
+        "article": "Art. 27"
+      },
+      "subject": "Manufacturers",
+      "action": "Ensure product compliance with ecodesign requirements and prepare technical documentation",
+      "object": "Products and technical documentation",
+      "scope": "Market placement",
+      "timing": "Event-based (before placing on market)",
+      "enforcement": "Market surveillance; penalties",
+      "obligation_id": "ESPR-O4"
     }
   ]
 }

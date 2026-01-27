@@ -287,6 +287,54 @@
       "time_criticality": 4,
       "total": 17,
       "rationale": "Investigation cooperation is legal-process data; GS1 not fit."
+    },
+    {
+      "data_id": "DR-ESPR-1",
+      "mapping_strength": "strong",
+      "regulatory_force": 5,
+      "information_inevitability": 5,
+      "interoperability_dependency": 5,
+      "gs1_solution_fitness": 5,
+      "sector_exposure": 5,
+      "time_criticality": 5,
+      "total": 30,
+      "rationale": "DPP is a flagship use case for GS1 Digital Link; cross-sector mandate with high interoperability need."
+    },
+    {
+      "data_id": "DR-ESPR-2",
+      "mapping_strength": "strong",
+      "regulatory_force": 5,
+      "information_inevitability": 5,
+      "interoperability_dependency": 5,
+      "gs1_solution_fitness": 5,
+      "sector_exposure": 5,
+      "time_criticality": 5,
+      "total": 30,
+      "rationale": "DPP content and data carrier requirements directly align with GS1 master data and Digital Link standards."
+    },
+    {
+      "data_id": "DR-ESPR-3",
+      "mapping_strength": "strong",
+      "regulatory_force": 5,
+      "information_inevitability": 5,
+      "interoperability_dependency": 5,
+      "gs1_solution_fitness": 5,
+      "sector_exposure": 5,
+      "time_criticality": 5,
+      "total": 30,
+      "rationale": "Unique product identifier requirement is precisely what GTIN was designed for; GS1 is the global standard."
+    },
+    {
+      "data_id": "DR-ESPR-4",
+      "mapping_strength": "partial",
+      "regulatory_force": 5,
+      "information_inevitability": 5,
+      "interoperability_dependency": 4,
+      "gs1_solution_fitness": 3,
+      "sector_exposure": 5,
+      "time_criticality": 4,
+      "total": 26,
+      "rationale": "Compliance and technical documentation can be linked via GS1 identifiers; ecodesign content itself is outside GS1 scope."
     }
   ]
 }

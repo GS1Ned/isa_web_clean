@@ -143,6 +143,30 @@
       "instrument_id": "FL",
       "article": "Articles 15-24",
       "text": "The regulation obliges operators to cooperate with investigations and provide information to competent authorities."
+    },
+    {
+      "obligation_id": "ESPR-O1",
+      "instrument_id": "ESPR",
+      "article": "Article 9(1)",
+      "text": "The regulation obliges economic operators to ensure products can only be placed on the market or put into service if a digital product passport is available in accordance with applicable delegated acts."
+    },
+    {
+      "obligation_id": "ESPR-O2",
+      "instrument_id": "ESPR",
+      "article": "Article 9(2)",
+      "text": "The regulation obliges manufacturers to ensure the digital product passport includes product identification, sustainability information, and is accessible via a data carrier affixed to the product."
+    },
+    {
+      "obligation_id": "ESPR-O3",
+      "instrument_id": "ESPR",
+      "article": "Article 11",
+      "text": "The regulation obliges manufacturers to assign a unique product identifier to each product unit or batch, linked to the digital product passport."
+    },
+    {
+      "obligation_id": "ESPR-O4",
+      "instrument_id": "ESPR",
+      "article": "Article 27",
+      "text": "The regulation obliges manufacturers to ensure products comply with ecodesign requirements, prepare technical documentation, and ensure the digital product passport is available before placing products on the market."
     }
   ]
 }

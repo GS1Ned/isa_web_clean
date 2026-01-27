@@ -186,6 +186,23 @@
         "text/html"
       ],
       "effect_status": "in_force"
+    },
+    {
+      "instrument_id": "ESPR",
+      "name": "Regulation (EU) 2024/1781 — Ecodesign for Sustainable Products Regulation (ESPR)",
+      "status": "confirmed",
+      "scope": "Establishes a framework for ecodesign requirements for sustainable products, including Digital Product Passport (DPP) requirements, to improve circularity, energy performance, and environmental sustainability.",
+      "authority": {
+        "source": "EUR-Lex",
+        "reference": "CELEX:32024R1781"
+      },
+      "eli_url": "https://data.europa.eu/eli/reg/2024/1781/oj",
+      "celex": "32024R1781",
+      "last_verified": "2026-01-27",
+      "formats": [
+        "text/html"
+      ],
+      "effect_status": "in_force"
     }
   ]
 }

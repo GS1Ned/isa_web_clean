@@ -47,6 +47,8 @@
     {
       "id": "BL-010",
       "priority": "P1",
+      "status": "COMPLETED",
+      "completed_date": "2026-01-27",
       "title": "Expand corpus with ESPR/DPP instruments and delegated acts",
       "inputs": [
         "EUR-Lex ELI sources"

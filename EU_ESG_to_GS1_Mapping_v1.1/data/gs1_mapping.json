@@ -228,8 +228,57 @@
       "gs1_capability": "none",
       "gs1_standards": [],
       "mapping_strength": "none",
-      "justification": "Investigation cooperation records are legal/enforcement process data; outside GS1’s standard scope.",
+      "justification": "Investigation cooperation records are legal/enforcement process data; outside GS1's standard scope.",
       "sector_relevance": "Not sector-specific"
+    },
+    {
+      "data_id": "DR-ESPR-1",
+      "gs1_capability": "master data + linking",
+      "gs1_standards": [
+        "GTIN",
+        "Digital Link",
+        "GDSN"
+      ],
+      "mapping_strength": "strong",
+      "justification": "Digital Product Passport availability can be enabled via GS1 Digital Link resolving to DPP data; GTIN provides the unique product identifier; GDSN can synchronise DPP attributes across trading partners.",
+      "sector_relevance": "Cross-sector; FMCG; DIY / Retail; Manufacturing"
+    },
+    {
+      "data_id": "DR-ESPR-2",
+      "gs1_capability": "master data + linking",
+      "gs1_standards": [
+        "GTIN",
+        "Digital Link",
+        "GDSN"
+      ],
+      "mapping_strength": "strong",
+      "justification": "DPP content (product identification, sustainability info) can be structured as GDSN master data attributes and accessed via Digital Link data carrier; GS1 standards directly address the data carrier and accessibility requirements.",
+      "sector_relevance": "Cross-sector; FMCG; DIY / Retail; Manufacturing"
+    },
+    {
+      "data_id": "DR-ESPR-3",
+      "gs1_capability": "identification",
+      "gs1_standards": [
+        "GTIN",
+        "SSCC",
+        "Digital Link"
+      ],
+      "mapping_strength": "strong",
+      "justification": "GTIN is the global standard for unique product identification at unit/batch level; SSCC for logistics units; Digital Link provides the URI structure linking identifier to DPP. GS1 directly fulfils the unique identifier requirement.",
+      "sector_relevance": "Cross-sector; FMCG; DIY / Retail; Logistics / Transport"
+    },
+    {
+      "data_id": "DR-ESPR-4",
+      "gs1_capability": "master data + traceability",
+      "gs1_standards": [
+        "GTIN",
+        "GLN",
+        "GDSN",
+        "EPCIS/CBV"
+      ],
+      "mapping_strength": "partial",
+      "justification": "Manufacturer compliance and technical documentation can be linked via GLN (manufacturer ID) and GTIN (product ID); GDSN can share compliance attributes; EPCIS can record production events. Ecodesign requirement content itself is outside GS1 scope.",
+      "sector_relevance": "Cross-sector; Manufacturing"
     }
   ]
 }
