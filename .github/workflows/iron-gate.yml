@@ -28,7 +28,10 @@ jobs:
         run: |
           echo "Checking PR description for Context-Commit-Hash..."
           
-          PR_BODY="${{ github.event.pull_request.body }}"
+          PR_BODY=$(cat <<'EOF'
+          ${{ github.event.pull_request.body }}
+          EOF
+          )
           
           if [[ -z "$PR_BODY" ]]; then
             echo "::error::PR description is empty. IRON Protocol requires a Context Acknowledgement block."
