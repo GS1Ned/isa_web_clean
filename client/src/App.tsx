@@ -155,6 +155,7 @@ function Router() {
       <Route path="/events" component={EventsOverview} />
       <Route path="/news" component={NewsHub} />
       <Route path="/hub/calendar" component={HubCalendar} />
+      <Route path="/hub/standards" component={StandardsDirectory} />
       <Route path="/hub/standards-mapping" component={HubStandardsMapping} />
       <Route path="/hub/esrs-gs1-mappings" component={HubEsrsGs1Mappings} />
       <Route path="/hub/esg-traceability" component={EsgTraceability} />
@@ -170,6 +171,7 @@ function Router() {
       <Route path="/hub/regulations/compare" component={CompareRegulations} />
       <Route path="/hub/compare" component={HubCompareEnhanced} />
       <Route path="/hub/compare-legacy" component={HubCompare} />
+      <Route path="/hub/esrs" component={ESRSDatapoints} />
       <Route path="/hub/esrs-datapoints" component={ESRSDatapoints} />
       <Route
         path="/hub/dutch-initiatives/:id"
