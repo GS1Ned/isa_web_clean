@@ -37,11 +37,16 @@ jobs:
       - name: Check Context Acknowledgement
         id: context-check
         shell: bash
-        env:
-          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           set -euo pipefail
           echo "Checking PR description for Context-Commit-Hash..."
+
+          # Write PR body to a temp file to avoid YAML injection
+          cat > /tmp/pr_body.txt <<'GH_EOF'
+          ${{ github.event.pull_request.body }}
+          GH_EOF
+
+          PR_BODY="$(cat /tmp/pr_body.txt)"
 
           if [[ -z "${PR_BODY:-}" ]]; then
             echo "::error::PR description is empty. IRON Protocol requires a Context Acknowledgement block."
