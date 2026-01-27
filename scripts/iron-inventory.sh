@@ -85,6 +85,7 @@ OUT_OF_SCOPE_PATTERNS=(
   ".zip"
   "Archive"
   ".DS_Store"
+  "iron-gate-FIXED.yml"
 )
 
 # =============================================================================

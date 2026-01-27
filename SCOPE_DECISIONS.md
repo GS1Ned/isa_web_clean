@@ -41,3 +41,4 @@ Once a decision is recorded here, it is considered **final** unless explicitly r
 | `*.zip` | **OUT** | Binary data, not source code. | 2026-01-27 |
 | `Archive/` | **OUT** | Deprecated or historical content. | 2026-01-27 |
 | `.DS_Store` | **OUT** | macOS specific metadata. | 2026-01-27 |
+| `iron-gate-FIXED.yml` | **OUT** | Temporary fix file, superseded by workflow in .github/workflows/. | 2026-01-27 |
