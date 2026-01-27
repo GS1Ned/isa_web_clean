@@ -1,0 +1,98 @@
+name: Generate Embeddings
+
+# This workflow generates vector embeddings for all database records.
+# It can be triggered manually or scheduled to run periodically.
+#
+# The workflow:
+#   1. Connects to the production TiDB database
+#   2. Generates embeddings for regulations and GS1 standards without embeddings
+#   3. Writes embeddings to both source tables AND knowledge_embeddings table
+#
+# Required Secrets:
+#   - DATABASE_URL: MySQL connection string for TiDB Cloud
+#   - OPENAI_API_KEY: OpenAI API key for embedding generation
+
+on:
+  # Manual trigger with optional parameters
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (skip database writes )'
+        required: false
+        default: 'false'
+        type: boolean
+      force_regenerate:
+        description: 'Force regenerate all embeddings (ignore existing)'
+        required: false
+        default: 'false'
+        type: boolean
+
+  # Scheduled run: Every Sunday at 2:00 AM UTC
+  schedule:
+    - cron: '0 2 * * 0'
+
+  # Run after successful deployment (optional - uncomment if needed)
+  # workflow_run:
+  #   workflows: ["Deploy"]
+  #   types:
+  #     - completed
+
+jobs:
+  generate-embeddings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60  # Allow up to 60 minutes for large datasets
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate environment
+        run: |
+          if [ -z "${{ secrets.DATABASE_URL }}" ]; then
+            echo "❌ DATABASE_URL secret is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.OPENAI_API_KEY }}" ]; then
+            echo "❌ OPENAI_API_KEY secret is not set"
+            exit 1
+          fi
+          echo "✅ All required secrets are configured"
+
+      - name: Generate embeddings
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          NODE_ENV: production
+          # Pass workflow inputs as environment variables
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          FORCE_REGENERATE: ${{ github.event.inputs.force_regenerate || 'false' }}
+        run: |
+          echo "🚀 Starting embedding generation..."
+          echo "   Dry Run: $DRY_RUN"
+          echo "   Force Regenerate: $FORCE_REGENERATE"
+          echo ""
+          pnpm exec tsx server/generate-all-embeddings.ts
+
+      - name: Report results
+        if: always()
+        run: |
+          echo "📊 Embedding generation workflow completed"
+          echo "   Status: ${{ job.status }}"
+          echo "   Triggered by: ${{ github.event_name }}"
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "   Triggered by user: ${{ github.actor }}"
+          fi
