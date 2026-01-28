@@ -116,6 +116,41 @@ jobs:
 
           echo "✅ Inventory file check passed"
 
+      - name: Check Evidence Canon Presence
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Checking for required evidence canon files..."
+
+          REQUIRED_FILES=(
+            "docs/evidence/EVIDENCE_INDEX.md"
+            "docs/evidence/ISA_ACCEPTANCE_CRITERIA_v1.md"
+            "docs/evidence/ISA_JOURNEY_TRACES_v1.md"
+          )
+
+          MISSING_FILES=()
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [[ ! -f "$file" ]]; then
+              MISSING_FILES+=("$file")
+            fi
+          done
+
+          if [[ ${#MISSING_FILES[@]} -gt 0 ]]; then
+            echo "::error::Required evidence canon files are missing:"
+            for file in "${MISSING_FILES[@]}"; do
+              echo "::error::  - $file"
+            done
+            echo "::error::These files are required by the IRON Protocol."
+            exit 1
+          fi
+
+          # Optional: Check for CENSUS.json (warning only)
+          if [[ ! -f "docs/evidence/_generated/CENSUS.json" ]]; then
+            echo "::warning::docs/evidence/_generated/CENSUS.json is missing (optional but recommended)."
+          fi
+
+          echo "✅ Evidence canon presence check passed"
+
       - name: IRON Gate Summary
         shell: bash
         run: |
@@ -127,5 +162,6 @@ jobs:
           echo "✅ Context Acknowledgement: Present"
           echo "✅ Context Freshness: Checked"
           echo "✅ Inventory File: Not modified"
+          echo "✅ Evidence Canon: Present"
           echo ""
           echo "This PR complies with the IRON Protocol."
