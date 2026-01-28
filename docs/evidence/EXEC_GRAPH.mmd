@@ -1,0 +1,24 @@
+flowchart LR
+  subgraph Client
+    A[Ask ISA UI\nclient/src/pages/AskISA.tsx] -->|tRPC| T[/api/trpc/]
+    N[News Hub UI\nclient/src/pages/NewsHub.tsx] -->|tRPC| T
+    E[ESRS Admin UI\nclient/src/components/ESRSDatapointsSection.tsx] -->|tRPC| T
+  end
+
+  subgraph Server
+    T --> R[appRouter\nserver/routers.ts]
+    R --> ASK[askISA router\nserver/routers/ask-isa.ts]
+    R --> HUB[hub router\nserver/routers.ts]
+    R --> REG[regulations router\nserver/routers.ts]
+    REG --> MAP[generateRegulationEsrsMappings\nserver/regulation-esrs-mapper.ts]
+    MAP -->|upsert| DB[(MySQL via Drizzle\ndrizzle/schema.ts)]
+    ASK -->|search/store| DB
+    HUB -->|read| DB
+  end
+
+  subgraph Cron
+    C1[/cron/daily-news-ingestion/] --> CE[cron-endpoint\nserver/cron-endpoint.ts]
+    CE --> SCH[news-cron-scheduler\nserver/news-cron-scheduler.ts]
+    SCH --> PIPE[runNewsPipeline\nserver/news-pipeline.ts]
+    PIPE --> DB
+  end
