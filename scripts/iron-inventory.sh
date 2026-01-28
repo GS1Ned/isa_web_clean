@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # =============================================================================
 # IRON Protocol: Inventory Generator
 # =============================================================================
@@ -8,6 +8,18 @@
 # Usage: ./scripts/iron-inventory.sh
 # Output: isa.inventory.json (root of repository)
 # =============================================================================
+
+# Bash version check (requires bash 4+ for associative arrays)
+BASH_MAJOR_VERSION="${BASH_VERSINFO[0]}"
+if [[ "$BASH_MAJOR_VERSION" -lt 4 ]]; then
+  echo "ERROR: This script requires bash 4 or higher (current: bash $BASH_MAJOR_VERSION)." >&2
+  echo "" >&2
+  echo "macOS default bash is version 3.2. To fix:" >&2
+  echo "  1. Install Homebrew bash: brew install bash" >&2
+  echo "  2. Rerun with: /opt/homebrew/bin/bash ./scripts/iron-inventory.sh" >&2
+  echo "" >&2
+  exit 1
+fi
 
 set -euo pipefail
 
@@ -85,7 +97,7 @@ OUT_OF_SCOPE_PATTERNS=(
   ".zip"
   "Archive"
   ".DS_Store"
-  "iron-gate-FIXED.yml"
+  "DOCSET_MAP.csv"
 )
 
 # =============================================================================

@@ -1,0 +1,711 @@
+{
+  "meta": {
+    "generated_at": "2026-01-28T10:00:11.854831+00:00",
+    "source_zip": "isa_web_clean-main (9).zip",
+    "repo_root_in_zip": "isa_web_clean-main"
+  },
+  "totals": {
+    "file_count": 1094,
+    "bytes": 108562194
+  },
+  "top_level": {
+    "directories": {
+      ".github": {
+        "file_count": 4,
+        "bytes": 9838,
+        "filetypes": {
+          ".yml": 3,
+          ".md": 1
+        }
+      },
+      "EU_ESG_to_GS1_Mapping_v1.1": {
+        "file_count": 26,
+        "bytes": 93146,
+        "filetypes": {
+          ".json": 15,
+          ".md": 7,
+          ".txt": 3,
+          ".csv": 1
+        }
+      },
+      "client": {
+        "file_count": 204,
+        "bytes": 2063375,
+        "filetypes": {
+          ".tsx": 189,
+          ".ts": 9,
+          ".css": 2,
+          ".html": 1,
+          "<noext>": 1,
+          ".png": 1,
+          ".disabled": 1
+        }
+      },
+      "codemods": {
+        "file_count": 1,
+        "bytes": 1143,
+        "filetypes": {
+          ".js": 1
+        }
+      },
+      "cron-configs": {
+        "file_count": 8,
+        "bytes": 10289,
+        "filetypes": {
+          ".md": 6,
+          ".txt": 1,
+          ".yml": 1
+        }
+      },
+      "data": {
+        "file_count": 58,
+        "bytes": 58612638,
+        "filetypes": {
+          ".json": 30,
+          ".xlsx": 10,
+          ".md": 6,
+          ".txt": 5,
+          ".csv": 3,
+          ".jsonl": 1,
+          ".jsonld": 1,
+          ".pdf": 1,
+          ".zip": 1
+        }
+      },
+      "docs": {
+        "file_count": 217,
+        "bytes": 11289769,
+        "filetypes": {
+          ".md": 196,
+          ".pdf": 7,
+          ".txt": 4,
+          ".png": 4,
+          ".csv": 3,
+          ".json": 2,
+          ".zip": 1
+        }
+      },
+      "drizzle": {
+        "file_count": 47,
+        "bytes": 3982034,
+        "filetypes": {
+          ".json": 16,
+          ".sql": 15,
+          ".ts": 15,
+          "<noext>": 1
+        }
+      },
+      "migrations": {
+        "file_count": 1,
+        "bytes": 9658,
+        "filetypes": {
+          ".sql": 1
+        }
+      },
+      "patches": {
+        "file_count": 1,
+        "bytes": 918,
+        "filetypes": {
+          ".patch": 1
+        }
+      },
+      "research": {
+        "file_count": 8,
+        "bytes": 51946,
+        "filetypes": {
+          ".md": 8
+        }
+      },
+      "scripts": {
+        "file_count": 75,
+        "bytes": 360947,
+        "filetypes": {
+          ".mjs": 27,
+          ".ts": 22,
+          ".py": 10,
+          ".sh": 6,
+          ".sql": 5,
+          ".cjs": 3,
+          ".js": 1,
+          ".txt": 1
+        }
+      },
+      "server": {
+        "file_count": 294,
+        "bytes": 2350629,
+        "filetypes": {
+          ".ts": 282,
+          ".mjs": 7,
+          ".md": 2,
+          ".disabled": 1,
+          ".json": 1,
+          ".sql": 1
+        }
+      },
+      "shared": {
+        "file_count": 7,
+        "bytes": 41289,
+        "filetypes": {
+          ".ts": 6,
+          ".json": 1
+        }
+      },
+      "tasks": {
+        "file_count": 19,
+        "bytes": 166526,
+        "filetypes": {
+          ".md": 19
+        }
+      },
+      "test-results": {
+        "file_count": 3,
+        "bytes": 20775,
+        "filetypes": {
+          ".md": 3
+        }
+      }
+    },
+    "root_files": {
+      ".eslintrc.server.json": {
+        "bytes": 372,
+        "ext": ".json"
+      },
+      ".gitignore": {
+        "bytes": 1621,
+        "ext": "<noext>"
+      },
+      ".gitkeep": {
+        "bytes": 0,
+        "ext": "<noext>"
+      },
+      ".markdownlint.json": {
+        "bytes": 685,
+        "ext": ".json"
+      },
+      ".prettierignore": {
+        "bytes": 310,
+        "ext": "<noext>"
+      },
+      ".prettierrc": {
+        "bytes": 310,
+        "ext": "<noext>"
+      },
+      "ARCHITECTURE.md": {
+        "bytes": 16748,
+        "ext": ".md"
+      },
+      "AUDIT_FINDINGS.md": {
+        "bytes": 20423,
+        "ext": ".md"
+      },
+      "AUTONOMOUS_DEVELOPMENT_SUMMARY.md": {
+        "bytes": 11009,
+        "ext": ".md"
+      },
+      "Archive.zip": {
+        "bytes": 7133713,
+        "ext": ".zip"
+      },
+      "CHATGPT_DELEGATION_PHASE1.md": {
+        "bytes": 6133,
+        "ext": ".md"
+      },
+      "CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md": {
+        "bytes": 17897,
+        "ext": ".md"
+      },
+      "CHATGPT_PROMPT_INGEST-03.md": {
+        "bytes": 15859,
+        "ext": ".md"
+      },
+      "CHATGPT_UPDATE_PROMPT.md": {
+        "bytes": 10863,
+        "ext": ".md"
+      },
+      "CHROMIUM_INSTALLATION_GUIDE.md": {
+        "bytes": 6712,
+        "ext": ".md"
+      },
+      "CRON_DEPLOYMENT.md": {
+        "bytes": 5279,
+        "ext": ".md"
+      },
+      "CURRENCY_DISCLOSURE.md": {
+        "bytes": 11021,
+        "ext": ".md"
+      },
+      "DATASET_INVENTORY.md": {
+        "bytes": 12817,
+        "ext": ".md"
+      },
+      "DATA_FILE_VERIFICATION_REPORT.md": {
+        "bytes": 7231,
+        "ext": ".md"
+      },
+      "DATA_MODEL.md": {
+        "bytes": 24232,
+        "ext": ".md"
+      },
+      "DELEGATION_PACKAGE_INGEST-03.md": {
+        "bytes": 7916,
+        "ext": ".md"
+      },
+      "DIAGNOSTIC_REPORT.md": {
+        "bytes": 7648,
+        "ext": ".md"
+      },
+      "DOCUMENTATION_INVENTORY.md": {
+        "bytes": 8387,
+        "ext": ".md"
+      },
+      "EFRAGIG3ListofESRSDataPoints(1)(1).xlsx": {
+        "bytes": 254557,
+        "ext": ".xlsx"
+      },
+      "EPCIS_CBV_INTEGRATION_SUMMARY.md": {
+        "bytes": 8135,
+        "ext": ".md"
+      },
+      "EURLEX_SCRAPER_FIX.md": {
+        "bytes": 7316,
+        "ext": ".md"
+      },
+      "EXTERNAL_REFERENCES.md": {
+        "bytes": 10462,
+        "ext": ".md"
+      },
+      "GOVERNANCE.md": {
+        "bytes": 6322,
+        "ext": ".md"
+      },
+      "GS1_ARTEFACT_PROCESSING.md": {
+        "bytes": 10096,
+        "ext": ".md"
+      },
+      "HEALTH_MONITORING_ENHANCEMENTS.md": {
+        "bytes": 5752,
+        "ext": ".md"
+      },
+      "INGESTION.md": {
+        "bytes": 11549,
+        "ext": ".md"
+      },
+      "INGESTION_DELIVERABLES_INDEX.md": {
+        "bytes": 7624,
+        "ext": ".md"
+      },
+      "INGESTION_SUMMARY_REPORT.md": {
+        "bytes": 10429,
+        "ext": ".md"
+      },
+      "IRON_KNOWLEDGE_MAP.md": {
+        "bytes": 5071,
+        "ext": ".md"
+      },
+      "IRON_PROTOCOL.md": {
+        "bytes": 4640,
+        "ext": ".md"
+      },
+      "IRON_VALIDATION_PLAN.md": {
+        "bytes": 3884,
+        "ext": ".md"
+      },
+      "ISA_CAPABILITY_MAP.md": {
+        "bytes": 80897,
+        "ext": ".md"
+      },
+      "ISA_DEVELOPMENT_PLAYBOOK.md": {
+        "bytes": 5404,
+        "ext": ".md"
+      },
+      "ISA_GATING_QUESTIONS.md": {
+        "bytes": 4164,
+        "ext": ".md"
+      },
+      "ISA_GOVERNANCE.md": {
+        "bytes": 15483,
+        "ext": ".md"
+      },
+      "ISA_GS1_ARTIFACT_INVENTORY.md": {
+        "bytes": 15476,
+        "ext": ".md"
+      },
+      "ISA_NEWSHUB_AUDIT_UPDATED.md": {
+        "bytes": 15853,
+        "ext": ".md"
+      },
+      "ISA_NEWSHUB_TARGET_DESIGN.md": {
+        "bytes": 32963,
+        "ext": ".md"
+      },
+      "ISA_NEWS_OVERVIEW.md": {
+        "bytes": 15200,
+        "ext": ".md"
+      },
+      "ISA_STATUS_REPORT_2025-01-11.md": {
+        "bytes": 18197,
+        "ext": ".md"
+      },
+      "ISA_TODO_MANUAL_COMPLETION.md": {
+        "bytes": 4667,
+        "ext": ".md"
+      },
+      "ISA_V1_FROZEN.md": {
+        "bytes": 1345,
+        "ext": ".md"
+      },
+      "KNOWN_FAILURE_MODES.md": {
+        "bytes": 2780,
+        "ext": ".md"
+      },
+      "MONITORING_TESTS.md": {
+        "bytes": 5076,
+        "ext": ".md"
+      },
+      "MULTI_REGULATION_COMPARISON_SUMMARY.md": {
+        "bytes": 20694,
+        "ext": ".md"
+      },
+      "NEEDS_USER_UPLOAD.md": {
+        "bytes": 11051,
+        "ext": ".md"
+      },
+      "NEWS_HUB_PHASE4-6_SUMMARY.md": {
+        "bytes": 16447,
+        "ext": ".md"
+      },
+      "ORCHESTRATION_PROMPT.md": {
+        "bytes": 8188,
+        "ext": ".md"
+      },
+      "PHASE_9_CLAIMS_SANITIZATION_REPORT.md": {
+        "bytes": 9458,
+        "ext": ".md"
+      },
+      "PHASE_9_COMPLETION_REPORT.md": {
+        "bytes": 18347,
+        "ext": ".md"
+      },
+      "PHASE_9_DOCUMENTATION_INVENTORY.md": {
+        "bytes": 8249,
+        "ext": ".md"
+      },
+      "POC_EXPLORATION_TODO.md": {
+        "bytes": 1058,
+        "ext": ".md"
+      },
+      "PRODUCTION_READINESS.md": {
+        "bytes": 2472,
+        "ext": ".md"
+      },
+      "PROJECT_INVENTORY.md": {
+        "bytes": 9535,
+        "ext": ".md"
+      },
+      "PROJECT_SIZE_CLEANUP.md": {
+        "bytes": 12901,
+        "ext": ".md"
+      },
+      "QUICK_START_INGESTION.md": {
+        "bytes": 5741,
+        "ext": ".md"
+      },
+      "README.md": {
+        "bytes": 12662,
+        "ext": ".md"
+      },
+      "RESEARCH_FINDINGS_NEWS_SOURCES.md": {
+        "bytes": 21625,
+        "ext": ".md"
+      },
+      "ROADMAP.md": {
+        "bytes": 17028,
+        "ext": ".md"
+      },
+      "ROADMAP_GITHUB_INTEGRATION.md": {
+        "bytes": 13730,
+        "ext": ".md"
+      },
+      "ROOT_CAUSE_DIAGNOSTIC_REPORT.md": {
+        "bytes": 12154,
+        "ext": ".md"
+      },
+      "SCOPE_DECISIONS.md": {
+        "bytes": 1654,
+        "ext": ".md"
+      },
+      "STABILIZATION_REPORT_2026-01-04.md": {
+        "bytes": 4001,
+        "ext": ".md"
+      },
+      "TIMELINE_VISUALIZATION_SUMMARY.md": {
+        "bytes": 15446,
+        "ext": ".md"
+      },
+      "TYPESCRIPT_FIX_SUMMARY.md": {
+        "bytes": 5664,
+        "ext": ".md"
+      },
+      "TYPESCRIPT_NOTES.md": {
+        "bytes": 1560,
+        "ext": ".md"
+      },
+      "UX_IA_REDESIGN_COMPLETE.md": {
+        "bytes": 2742,
+        "ext": ".md"
+      },
+      "WEBHOOK_INTEGRATION.md": {
+        "bytes": 10594,
+        "ext": ".md"
+      },
+      "WORK_PRIORITIZATION.md": {
+        "bytes": 15103,
+        "ext": ".md"
+      },
+      "check-columns.ts": {
+        "bytes": 461,
+        "ext": ".ts"
+      },
+      "check-error-ledger.ts": {
+        "bytes": 609,
+        "ext": ".ts"
+      },
+      "check-news-dates.mjs": {
+        "bytes": 827,
+        "ext": ".mjs"
+      },
+      "check-pipeline-log.ts": {
+        "bytes": 707,
+        "ext": ".ts"
+      },
+      "check-pipeline-table.ts": {
+        "bytes": 599,
+        "ext": ".ts"
+      },
+      "check-table.ts": {
+        "bytes": 448,
+        "ext": ".ts"
+      },
+      "check_esrs_count.sql": {
+        "bytes": 99,
+        "ext": ".sql"
+      },
+      "components.json": {
+        "bytes": 388,
+        "ext": ".json"
+      },
+      "cspell-gs1-terms.txt": {
+        "bytes": 521,
+        "ext": ".txt"
+      },
+      "cspell-isa-terms.txt": {
+        "bytes": 352,
+        "ext": ".txt"
+      },
+      "cspell.json": {
+        "bytes": 1089,
+        "ext": ".json"
+      },
+      "debug-scraper.mjs": {
+        "bytes": 1500,
+        "ext": ".mjs"
+      },
+      "drizzle.config.ts": {
+        "bytes": 353,
+        "ext": ".ts"
+      },
+      "dual-core-poc-evaluation.md": {
+        "bytes": 5026,
+        "ext": ".md"
+      },
+      "get-scope-stats.mjs": {
+        "bytes": 1309,
+        "ext": ".mjs"
+      },
+      "package.json": {
+        "bytes": 5859,
+        "ext": ".json"
+      },
+      "pnpm-lock.yaml": {
+        "bytes": 443609,
+        "ext": ".yaml"
+      },
+      "populate-live-news.mjs": {
+        "bytes": 2595,
+        "ext": ".mjs"
+      },
+      "populate-simple.mjs": {
+        "bytes": 2042,
+        "ext": ".mjs"
+      },
+      "research-dutch-sources.md": {
+        "bytes": 8328,
+        "ext": ".md"
+      },
+      "run-pipeline-verbose.mjs": {
+        "bytes": 646,
+        "ext": ".mjs"
+      },
+      "seed-news.mjs": {
+        "bytes": 6097,
+        "ext": ".mjs"
+      },
+      "task1_review.md": {
+        "bytes": 2735,
+        "ext": ".md"
+      },
+      "task3_review.md": {
+        "bytes": 3215,
+        "ext": ".md"
+      },
+      "test-db-ssl.mjs": {
+        "bytes": 793,
+        "ext": ".mjs"
+      },
+      "test-efrag-detail.mjs": {
+        "bytes": 602,
+        "ext": ".mjs"
+      },
+      "test-efrag-pipeline.mjs": {
+        "bytes": 1495,
+        "ext": ".mjs"
+      },
+      "test-failure-analysis.md": {
+        "bytes": 4825,
+        "ext": ".md"
+      },
+      "test-final-run.txt": {
+        "bytes": 730592,
+        "ext": ".txt"
+      },
+      "test-final.txt": {
+        "bytes": 620193,
+        "ext": ".txt"
+      },
+      "test-json-output.txt": {
+        "bytes": 3717036,
+        "ext": ".txt"
+      },
+      "test-news-pipeline.mjs": {
+        "bytes": 242,
+        "ext": ".mjs"
+      },
+      "test-null-stacktrace-fix.txt": {
+        "bytes": 711118,
+        "ext": ".txt"
+      },
+      "test-output.txt": {
+        "bytes": 10785625,
+        "ext": ".txt"
+      },
+      "test-pipeline-run.ts": {
+        "bytes": 348,
+        "ext": ".ts"
+      },
+      "test-playwright-scraper.mjs": {
+        "bytes": 759,
+        "ext": ".mjs"
+      },
+      "test-scraper.mjs": {
+        "bytes": 518,
+        "ext": ".mjs"
+      },
+      "test-simple.txt": {
+        "bytes": 4117445,
+        "ext": ".txt"
+      },
+      "test-xml-parser.mjs": {
+        "bytes": 841,
+        "ext": ".mjs"
+      },
+      "timeline-test-results.md": {
+        "bytes": 4667,
+        "ext": ".md"
+      },
+      "todo.md": {
+        "bytes": 149830,
+        "ext": ".md"
+      },
+      "todo_development.md": {
+        "bytes": 4590,
+        "ext": ".md"
+      },
+      "todo_phase44_update.txt": {
+        "bytes": 2811,
+        "ext": ".txt"
+      },
+      "tsconfig.json": {
+        "bytes": 1272,
+        "ext": ".json"
+      },
+      "vite.config.ts": {
+        "bytes": 1219,
+        "ext": ".ts"
+      },
+      "vitest.config.ts": {
+        "bytes": 2364,
+        "ext": ".ts"
+      },
+      "vitest.setup.ts": {
+        "bytes": 43,
+        "ext": ".ts"
+      }
+    }
+  },
+  "filetypes": {
+    "counts": {
+      ".ts": 344,
+      ".md": 322,
+      ".tsx": 189,
+      ".json": 71,
+      ".mjs": 48,
+      ".sql": 23,
+      ".txt": 23,
+      ".xlsx": 11,
+      ".py": 10,
+      ".pdf": 8,
+      ".csv": 7,
+      "<noext>": 6,
+      ".sh": 6,
+      ".png": 5,
+      ".yml": 4,
+      ".zip": 3,
+      ".cjs": 3,
+      ".css": 2,
+      ".disabled": 2,
+      ".js": 2,
+      ".yaml": 1,
+      ".html": 1,
+      ".jsonl": 1,
+      ".jsonld": 1,
+      ".patch": 1
+    },
+    "bytes": {
+      ".json": 7516913,
+      "<noext>": 2241,
+      ".md": 4522858,
+      ".zip": 29225474,
+      ".xlsx": 29712787,
+      ".ts": 2468300,
+      ".mjs": 222502,
+      ".sql": 87201,
+      ".txt": 21018452,
+      ".yaml": 443609,
+      ".yml": 10346,
+      ".csv": 1419063,
+      ".html": 2935,
+      ".png": 1352041,
+      ".tsx": 2010389,
+      ".css": 7319,
+      ".disabled": 10815,
+      ".js": 2172,
+      ".jsonl": 151424,
+      ".jsonld": 2367104,
+      ".pdf": 5871888,
+      ".patch": 918,
+      ".cjs": 20213,
+      ".py": 98049,
+      ".sh": 17181
+    }
+  }
+}
