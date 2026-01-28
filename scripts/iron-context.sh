@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # =============================================================================
 # IRON Protocol: Context Ingestion
 # =============================================================================
@@ -7,6 +7,11 @@
 #
 # Usage: ./scripts/iron-context.sh
 # =============================================================================
+
+# Prefer Homebrew bash on macOS if available (for bash 4+ compatibility)
+if [[ -x /opt/homebrew/bin/bash ]] && [[ "$BASH" != "/opt/homebrew/bin/bash" ]]; then
+  exec /opt/homebrew/bin/bash "$0" "$@"
+fi
 
 set -euo pipefail
 
