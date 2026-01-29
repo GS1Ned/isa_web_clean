@@ -10,20 +10,10 @@
   "bodies": {
     "GS1_GLOBAL": {
       "seeds": [
-        {
-          "url": "https://www.gs1.org/standards/log",
-          "kind": "publication_log",
-          "formats": [
-            "html"
-          ]
-        },
-        {
-          "url": "https://www.gs1.org/standards",
-          "kind": "standards_hub",
-          "formats": [
-            "html"
-          ]
-        }
+        "https://www.gs1.org/standards/log",
+        "https://www.gs1.org/standards",
+        "https://ref.gs1.org/standards/",
+        "https://www.gs1.org/standards/barcodes-epcrfid-id-keys/gs1-general-specifications"
       ],
       "allow_patterns": [
         "gs1\\.org"
@@ -32,25 +22,10 @@
     },
     "GS1_NL": {
       "seeds": [
-        {
-          "url": "https://www.gs1.nl/kennisbank/",
-          "kind": "knowledge_base_hub",
-          "formats": [
-            "html"
-          ]
-        },
-        {
-          "url": "https://www.gs1.nl/media/",
-          "kind": "document_media_root",
-          "formats": [
-            "pdf",
-            "docx",
-            "xlsx",
-            "pptx",
-            "zip",
-            "html"
-          ]
-        }
+        "https://www.gs1.nl/kennisbank/",
+        "https://www.gs1.nl/media/",
+        "https://www.gs1.nl/kennisbank/gs1-edi/",
+        "https://www.gs1.nl/kennisbank/gs1-data-source/"
       ],
       "allow_patterns": [
         "gs1\\.nl"
@@ -59,15 +34,7 @@
     },
     "GS1_EUROPE": {
       "seeds": [
-        {
-          "url": "https://gs1.eu/publications/",
-          "kind": "publications_index",
-          "formats": [
-            "html",
-            "pdf",
-            "xlsx"
-          ]
-        }
+        "https://gs1.eu/publications/"
       ],
       "allow_patterns": [
         "gs1\\.eu",
@@ -77,24 +44,10 @@
     },
     "EFRAG": {
       "seeds": [
-        {
-          "url": "https://www.efrag.org/en/sustainability-reporting-publications",
-          "kind": "publications_index",
-          "formats": [
-            "html",
-            "pdf",
-            "zip",
-            "xlsx"
-          ]
-        },
-        {
-          "url": "https://www.efrag.org/en/news-and-calendar/news",
-          "kind": "news_index",
-          "formats": [
-            "html",
-            "pdf"
-          ]
-        }
+        "https://www.efrag.org/en/sustainability-reporting-publications",
+        "https://www.efrag.org/en/news-and-calendar/news",
+        "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
+        "https://efrag-website.azurewebsites.net/Activities/2304270816111835/Article-8-XBRL-Taxonomy"
       ],
       "allow_patterns": [
         "efrag\\.org",
@@ -102,5 +55,6 @@
       ],
       "deny_patterns": []
     }
-  }
+  },
+  "entrypoints_last_verified_at": "2026-01-29"
 }
