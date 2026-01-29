@@ -1,3 +1,5 @@
+#!/opt/homebrew/bin/bash
+IRON_BASH="${IRON_BASH:-bash}"
 #!/usr/bin/env bash
 # =============================================================================
 # IRON Protocol: Context Ingestion
@@ -37,7 +39,7 @@ echo ""
 # STEP 2: Generate fresh inventory
 # =============================================================================
 echo "[2/4] Generating fresh inventory..."
-if ./scripts/iron-inventory.sh; then
+if "${IRON_BASH}" ./scripts/iron-inventory.sh; then
   echo "      Inventory generated successfully."
 else
   echo ""

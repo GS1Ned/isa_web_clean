@@ -40,6 +40,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "Checking PR description for Context-Commit-Hash..."
+
           CONTEXT_HASH="$(python3 -c 'import json,os,re; d=json.load(open(os.environ["GITHUB_EVENT_PATH"])); body=((d.get("pull_request") or {}).get("body") or ""); m=re.search(r"Context-Commit-Hash:\s*([a-f0-9]{7,40})", body); print(m.group(1) if m else "")')"
 
           if [[ -z "$CONTEXT_HASH" ]]; then
@@ -51,6 +52,7 @@ jobs:
 
           echo "Found Context-Commit-Hash: $CONTEXT_HASH"
           echo "context_hash=$CONTEXT_HASH" >> "$GITHUB_OUTPUT"
+
 
 
       - name: Validate Context Freshness (non-blocking)
