@@ -40,26 +40,8 @@ jobs:
         run: |
           set -euo pipefail
           echo "Checking PR description for Context-Commit-Hash..."
-<<<<<<< HEAD
+
           CONTEXT_HASH="$(python3 -c 'import json,os,re; d=json.load(open(os.environ["GITHUB_EVENT_PATH"])); body=((d.get("pull_request") or {}).get("body") or ""); m=re.search(r"Context-Commit-Hash:\s*([a-f0-9]{7,40})", body); print(m.group(1) if m else "")')"
-=======
-
-          # Write PR body to a temp file to avoid YAML injection
-  # Fetch PR body from GitHub (source of truth)
-  PR_NUMBER="${{ github.event.pull_request.number }}"
-  PR_BODY="$(gh pr view "$PR_NUMBER" --repo "${{ github.repository }}" --json body --jq .body)"
-          if [[ -z "${PR_BODY:-}" ]]; then
-            echo "::error::PR description is empty. IRON Protocol requires a Context Acknowledgement block."
-            echo "::error::Please run ./scripts/iron-context.sh and copy the acknowledgement to your PR description."
-            exit 1
-          fi
-
-          CONTEXT_HASH="$(
-            printf '%s\n' "$PR_BODY" \
-              | sed -nE 's/.*Context-Commit-Hash:[[:space:]]*([a-f0-9]{7,40}).*/\1/p' \
-              | head -n 1
-          )"
->>>>>>> 2d3c5eb (fix(iron): read real PR body for Context-Commit-Hash check)
 
           if [[ -z "$CONTEXT_HASH" ]]; then
             echo "::error::Missing or invalid Context-Commit-Hash in PR description."
@@ -70,6 +52,7 @@ jobs:
 
           echo "Found Context-Commit-Hash: $CONTEXT_HASH"
           echo "context_hash=$CONTEXT_HASH" >> "$GITHUB_OUTPUT"
+
 
 
       - name: Validate Context Freshness (non-blocking)
