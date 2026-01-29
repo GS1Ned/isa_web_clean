@@ -1,11 +1,11 @@
 # GS1/EFRAG Catalogue (Prototype)
 
-- Generated at: 2026-01-29T11:58:28+00:00
+- Generated at: 2026-01-29T12:12:59+00:00
 - Last verified date: 2026-01-29
 
 ## Coverage
-- GS1_GLOBAL: 0
-- GS1_NL: 110
+- GS1_GLOBAL: 2
+- GS1_NL: 111
 - GS1_EUROPE: 74
 - EFRAG: 102
 

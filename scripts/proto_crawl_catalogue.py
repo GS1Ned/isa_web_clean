@@ -102,6 +102,27 @@ def main():
     sources[body]={"seed_count":len(seeds),"seeds":seeds,"runs":[]}
     for seed in seeds:
       u = seed["url"] if isinstance(seed, dict) else seed
+      rid=stable_id(body,u,"ENTRYPOINT")
+      items.append({
+        "record_id":rid,
+        "issuing_body":body,
+        "title":(seed.get("kind","ENTRYPOINT") if isinstance(seed,dict) else "ENTRYPOINT"),
+        "publication_date":"",
+        "version":"",
+        "status":"ENTRYPOINT",
+        "document_type":"ENTRYPOINT",
+        "canonical_url":u,
+        "landing_page_url":u,
+        "download_urls":[],
+        "formats":[],
+        "discovery_method":"ENTRYPOINT",
+        "source_collection_url":u,
+        "first_seen_at":now,
+        "last_seen_at":now,
+        "last_verified_at":today,
+        "verification_result":{"ok":True}
+      })
+      u = seed["url"] if isinstance(seed, dict) else seed
       try:
         b, ct = http_get(u)
       except Exception as e:

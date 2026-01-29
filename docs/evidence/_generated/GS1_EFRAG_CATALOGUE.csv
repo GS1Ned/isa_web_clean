@@ -1,6 +1,8 @@
 record_id,issuing_body,title,publication_date,canonical_url,landing_page_url,download_url,format_label,mime_type,http_status,last_verified_at
+5ef32b6ed64e0e89d82d7bf5176798b9f342f501a77ce78113d112491281f890,GS1_GLOBAL,publication_log,,https://www.gs1.org/standards/log,https://www.gs1.org/standards/log,,,,,2026-01-29
+620477b1262f5d09931ce23db5b54d3e88c361bb65d5a6508a8b107022c75f33,GS1_GLOBAL,standards_hub,,https://www.gs1.org/standards,https://www.gs1.org/standards,,,,,2026-01-29
+1526e26225ae66737835a83a4e3ad628284fcda9610bb5dd9dea12bd26cb658d,GS1_NL,knowledge_base_hub,,https://www.gs1.nl/kennisbank/,https://www.gs1.nl/kennisbank/,,,,,2026-01-29
 a923af303691a2e5d1ad3bdaaa6e25ee3189e9ffbe32f2c9a98e0e52d154f768,GS1_NL,Nederland,,https://www.gs1.nl/,https://www.gs1.nl/kennisbank/,,,,,2026-01-29
-1b176999f732af080c41022262685b0363114d4d96053f926da60bd2ba885d56,GS1_NL,NL,,https://www.gs1.nl/kennisbank/,https://www.gs1.nl/kennisbank/,,,,,2026-01-29
 0c7d596945a19abc8035c906a29d339441ec72190fe4c35053c0a30860f73180,GS1_NL,EN,,https://www.gs1.nl/en/,https://www.gs1.nl/kennisbank/,,,,,2026-01-29
 68de03243d94e49141e4a648a7da99855f4a326b4012b064adccaa49f6768bb9,GS1_NL,Storingen en onderhoud,,https://www.gs1.nl/over-gs1/support/onderhoud-storingen/,https://www.gs1.nl/kennisbank/,,,,,2026-01-29
 eef9f991546fed9601e75d3e459de4534b3a2337c343b34a00ae10b25cad5d6d,GS1_NL,Support,,https://www.gs1.nl/over-gs1/support/,https://www.gs1.nl/kennisbank/,,,,,2026-01-29
@@ -109,6 +111,8 @@ e548182b7e9f508254c5c2f64da320cda2fd5a9b4d1e59723614e659480f3a5e,GS1_NL,Data Ser
 bda1c8248db0376893f6238cd61f4c27a1397fa92dbdc5c33e882c628fb15f94,GS1_NL,Aanmelden nieuwsbrief,,https://www.gs1.nl/gs1-in-actie/nieuws-en-events/aanmelden-nieuwsbrief/,https://www.gs1.nl/kennisbank/,,,,,2026-01-29
 2238aca53f774448b41a9e4b15b54363bee02aad2d6a306b7ac39665c10bf980,GS1_NL,Algemene voorwaarden,,https://www.gs1.nl/algemene-voorwaarden/,https://www.gs1.nl/kennisbank/,,,,,2026-01-29
 2b6049ed499fbb117fba56fed95d41f90016fa581438b658beaa4813d8e3dd13,GS1_NL,Privacy,,https://www.gs1.nl/kennisbank/privacyverklaring/,https://www.gs1.nl/kennisbank/,,,,,2026-01-29
+fe037fa95f9d91d734da4437b90bd1d19fc60342a09eee4756696bf82c7cc5f5,GS1_NL,document_media_root,,https://www.gs1.nl/media/,https://www.gs1.nl/media/,,,,,2026-01-29
+3c54de24d63396ef06faab6b26a5d815afcf97463d9716787afa3ec2ea20d72a,GS1_EUROPE,publications_index,,https://gs1.eu/publications/,https://gs1.eu/publications/,,,,,2026-01-29
 946d21af1568e553772db9f97a47f050f75c657d248b2919a5e255ba020cb917,GS1_EUROPE,,,https://gs1.eu/,https://gs1.eu/publications/,,,,,2026-01-29
 7e49d00a06cf301019e60c2db9030f2de89b3c27d3f8ba20d796a3c4de4102ba,GS1_EUROPE,Contact Us,,https://gs1.eu/contact-us/,https://gs1.eu/publications/,,,,,2026-01-29
 f9ff6dcb4e0f096946e99d7f41dd19553705fc97a94fdeb263193f3940000c95,GS1_EUROPE,Get a Barcode,,https://gs1.eu/gs1-in-europe-member-organisations/,https://gs1.eu/publications/,,,,,2026-01-29
@@ -164,7 +168,6 @@ bb7c1d74f07a3ccb6aac7044156bfe319d15c4cfd7d93e5a287ab71163800d69,GS1_EUROPE,Abou
 45dbdfc14e15569210f494a34e6588af03491ef46dbd5572088de48a5d120433,GS1_EUROPE,Board Members,,https://gs1.eu/about-us/board-members/,https://gs1.eu/publications/,,,,,2026-01-29
 050fd1c113da649c045eb06b7daa9ad4ce0f3ab2da9e6bf90b2edcdf511a1ae5,GS1_EUROPE,Regional Executive Committee,,https://gs1.eu/about-us/regional-executive-committee/,https://gs1.eu/publications/,,,,,2026-01-29
 a2b432d6d45458417260cd030b26714450c860388b563acd0934c55cafb4b4e4,GS1_EUROPE,Team,,https://gs1.eu/about-us/team/,https://gs1.eu/publications/,,,,,2026-01-29
-ea110f0d55da3a75ea680f1dddc87e3d31aed5c6b95e1d85b58c42706df93939,GS1_EUROPE,Publications,,https://gs1.eu/publications/,https://gs1.eu/publications/,,,,,2026-01-29
 4d166f3576f463fbfd1ad782a4a644e2b61cc4c71b8112ce6ddb1a684da129a3,GS1_EUROPE,Events,,https://gs1.eu/events/,https://gs1.eu/publications/,,,,,2026-01-29
 c2d4ec6428c1d14667a5a5406a878010b137c89e15c3523a139c1dfdfdacf2fc,GS1_EUROPE,XLSX - 1.4 Mb,2025,https://gs1.eu/wp-content/uploads/2025/10/GS1_in_Europe_EUDR_Questionnaire_V1.0_EN.xlsx,https://gs1.eu/publications/,https://gs1.eu/wp-content/uploads/2025/10/GS1_in_Europe_EUDR_Questionnaire_V1.0_EN.xlsx,XLSX,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,200,2026-01-29
 a552fc76b8936b2c56bebd4c824a78eb8b44fcf53fec7c2882a52528af29c7a3,GS1_EUROPE,PDF - 2.5 Mb,2025,https://gs1.eu/wp-content/uploads/2025/07/GS1-in-Europe-Security-Seal-Factsheet.pdf,https://gs1.eu/publications/,https://gs1.eu/wp-content/uploads/2025/07/GS1-in-Europe-Security-Seal-Factsheet.pdf,PDF,application/pdf,200,2026-01-29
@@ -183,7 +186,7 @@ f7fd465e5fb1afaac4f24b7a76b4772fa2e6c72f4efd7b10859129c0a5733cd0,GS1_EUROPE,PDF 
 a9eb1bd53e9ddc8a3860f20556adc5cff6133c3d8ff79778aa47c1c65819eb62,GS1_EUROPE,Cookie Policy,,https://gs1.eu/cookie-policy/,https://gs1.eu/publications/,,,,,2026-01-29
 ba6294ea82d9d3ed983932b7b63e12d2c40b8c7d8497e60252b0a44da8f78529,GS1_EUROPE,Internal Activities,,https://gs1.eu/sectors-and-industries/internal-activities/,https://gs1.eu/publications/,,,,,2026-01-29
 ce6eb61dbfc896b2a257b50de45851c90acf1ad12946f21645b55512cf424336,GS1_EUROPE,2D barcodes,,https://gs1.eu/tools-and-services/2d-barcodes/,https://gs1.eu/publications/,,,,,2026-01-29
-3871f05abe1e370418b9d665b5cf92c54597182a06e7ac3a1fc3194cd0c08f3a,EFRAG,Skip to main content,,https://www.efrag.org/en/sustainability-reporting-publications,https://www.efrag.org/en/sustainability-reporting-publications,,,,,2026-01-29
+7ed48d203c0e2a72e668b06bebbde7c31d466f1e69613a0c05936caffbe0836d,EFRAG,publications_index,,https://www.efrag.org/en/sustainability-reporting-publications,https://www.efrag.org/en/sustainability-reporting-publications,,,,,2026-01-29
 ad42073e2add5c52cea2231dfc28c844b89dbbde1270defd394370232ebc4ec6,EFRAG,,,https://www.efrag.org/en,https://www.efrag.org/en/sustainability-reporting-publications,,,,,2026-01-29
 d1dd43511aec7808d38ac1dfdf6a73a5aab40e21349b6ef39c3d6c4d50b05a20,EFRAG,Log in,,https://www.efrag.org/en/user/login,https://www.efrag.org/en/sustainability-reporting-publications,,,,,2026-01-29
 6d8b5fa236145c05a0f818704ab7988d3ef8a2e225d5ea91dc8d1a114facefc7,EFRAG,Contact us,,https://www.efrag.org/en/contact,https://www.efrag.org/en/sustainability-reporting-publications,,,,,2026-01-29
