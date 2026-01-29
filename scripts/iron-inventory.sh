@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # =============================================================================
 # IRON Protocol: Inventory Generator
 # =============================================================================
@@ -8,18 +8,6 @@
 # Usage: ./scripts/iron-inventory.sh
 # Output: isa.inventory.json (root of repository)
 # =============================================================================
-
-# Bash version check (requires bash 4+ for associative arrays)
-BASH_MAJOR_VERSION="${BASH_VERSINFO[0]}"
-if [[ "$BASH_MAJOR_VERSION" -lt 4 ]]; then
-  echo "ERROR: This script requires bash 4 or higher (current: bash $BASH_MAJOR_VERSION)." >&2
-  echo "" >&2
-  echo "macOS default bash is version 3.2. To fix:" >&2
-  echo "  1. Install Homebrew bash: brew install bash" >&2
-  echo "  2. Rerun with: /opt/homebrew/bin/bash ./scripts/iron-inventory.sh" >&2
-  echo "" >&2
-  exit 1
-fi
 
 set -euo pipefail
 
@@ -34,6 +22,7 @@ GIT_HASH=$(git -C "$REPO_ROOT" rev-parse HEAD 2>/dev/null || echo "unknown")
 
 # Core application directories
 IN_SCOPE_DIRS=(
+  "config"
   "client"
   "server"
   "drizzle"
@@ -88,6 +77,7 @@ IN_SCOPE_SCRIPT_PATTERNS=(
 
 # Patterns that are explicitly OUT OF SCOPE (ignored entirely)
 OUT_OF_SCOPE_PATTERNS=(
+  ".pat_test"
   "node_modules"
   ".git"
   "dist"
@@ -97,7 +87,7 @@ OUT_OF_SCOPE_PATTERNS=(
   ".zip"
   "Archive"
   ".DS_Store"
-  "DOCSET_MAP.csv"
+  "iron-gate-FIXED.yml"
 )
 
 # =============================================================================

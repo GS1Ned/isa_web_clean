@@ -40,25 +40,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "Checking PR description for Context-Commit-Hash..."
-
-          # Write PR body to a temp file to avoid YAML injection
-          cat > /tmp/pr_body.txt <<'GH_EOF'
-          ${{ github.event.pull_request.body }}
-          GH_EOF
-
-          PR_BODY="$(cat /tmp/pr_body.txt)"
-
-          if [[ -z "${PR_BODY:-}" ]]; then
-            echo "::error::PR description is empty. IRON Protocol requires a Context Acknowledgement block."
-            echo "::error::Please run ./scripts/iron-context.sh and copy the acknowledgement to your PR description."
-            exit 1
-          fi
-
-          CONTEXT_HASH="$(
-            printf '%s\n' "$PR_BODY" \
-              | sed -nE 's/.*Context-Commit-Hash:[[:space:]]*([a-f0-9]{7,40}).*/\1/p' \
-              | head -n 1
-          )"
+          CONTEXT_HASH="$(python3 -c 'import json,os,re; d=json.load(open(os.environ["GITHUB_EVENT_PATH"])); body=((d.get("pull_request") or {}).get("body") or ""); m=re.search(r"Context-Commit-Hash:\s*([a-f0-9]{7,40})", body); print(m.group(1) if m else "")')"
 
           if [[ -z "$CONTEXT_HASH" ]]; then
             echo "::error::Missing or invalid Context-Commit-Hash in PR description."
@@ -69,6 +51,7 @@ jobs:
 
           echo "Found Context-Commit-Hash: $CONTEXT_HASH"
           echo "context_hash=$CONTEXT_HASH" >> "$GITHUB_OUTPUT"
+
 
       - name: Validate Context Freshness (non-blocking)
         shell: bash
@@ -115,6 +98,9 @@ jobs:
           fi
 
           echo "✅ Inventory file check passed"
+      - name: Check GS1/EFRAG catalogue freshness
+        run: python3 scripts/validate_gs1_efrag_catalogue.py
+
 
       - name: IRON Gate Summary
         shell: bash

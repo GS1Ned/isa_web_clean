@@ -123,3 +123,7 @@ data/external/Archive_2.zip
 # Manus cache files
 .manus/db/*.json
 isa.inventory.json
+docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.md
+docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.json
+data.zip
+EU_ESG_to_GS1_Mapping_v1.1.zip
