@@ -1,6 +1,6 @@
 {
   "catalogue_version": "1.0.0",
-  "generated_at": "2026-01-29T14:26:42+00:00",
+  "generated_at": "2026-01-29T14:40:11+00:00",
   "last_verified_at": "2026-01-29",
   "required_bodies": [
     "GS1_GLOBAL",
@@ -131,8 +131,8 @@
       "formats": [],
       "discovery_method": "ENTRYPOINT",
       "source_collection_url": "https://www.gs1.org/standards/log",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -152,8 +152,8 @@
       "formats": [],
       "discovery_method": "ENTRYPOINT",
       "source_collection_url": "https://www.gs1.org/standards",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -173,8 +173,8 @@
       "formats": [],
       "discovery_method": "ENTRYPOINT",
       "source_collection_url": "https://ref.gs1.org/standards/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -194,8 +194,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://ref.gs1.org/standards/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -215,8 +215,8 @@
       "formats": [],
       "discovery_method": "ENTRYPOINT",
       "source_collection_url": "https://www.gs1.org/standards/barcodes-epcrfid-id-keys/gs1-general-specifications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -236,8 +236,8 @@
       "formats": [],
       "discovery_method": "ENTRYPOINT",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -257,8 +257,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -278,8 +278,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -299,8 +299,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -320,8 +320,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -341,8 +341,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -362,8 +362,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -383,8 +383,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -404,8 +404,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -425,8 +425,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -446,8 +446,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -467,8 +467,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -488,8 +488,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -509,8 +509,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -530,8 +530,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -551,8 +551,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -572,8 +572,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -593,8 +593,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -614,8 +614,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -635,8 +635,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -656,8 +656,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -677,8 +677,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -698,8 +698,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -719,8 +719,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -740,8 +740,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -761,8 +761,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -782,8 +782,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -803,8 +803,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -824,8 +824,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -845,8 +845,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -866,8 +866,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -887,8 +887,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -908,8 +908,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -929,8 +929,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -950,8 +950,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -971,8 +971,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -992,8 +992,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1013,8 +1013,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1034,8 +1034,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1055,8 +1055,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1076,8 +1076,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1097,8 +1097,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1118,8 +1118,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1139,8 +1139,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1160,8 +1160,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1181,8 +1181,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1202,8 +1202,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1223,8 +1223,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1244,8 +1244,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1265,8 +1265,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1286,8 +1286,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1307,8 +1307,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1328,8 +1328,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1349,8 +1349,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1370,8 +1370,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1391,8 +1391,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1412,8 +1412,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1433,8 +1433,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1454,8 +1454,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1475,8 +1475,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1496,8 +1496,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1517,8 +1517,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1538,8 +1538,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1559,8 +1559,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1580,8 +1580,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1601,8 +1601,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1622,8 +1622,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1643,8 +1643,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1664,8 +1664,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1685,8 +1685,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1706,8 +1706,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1727,8 +1727,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1748,8 +1748,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1769,8 +1769,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1790,8 +1790,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1811,8 +1811,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1832,8 +1832,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1853,8 +1853,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1874,8 +1874,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1895,8 +1895,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1916,8 +1916,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1937,8 +1937,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1958,8 +1958,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -1979,8 +1979,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2000,8 +2000,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2021,8 +2021,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2042,8 +2042,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2063,8 +2063,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2084,8 +2084,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2105,8 +2105,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2126,8 +2126,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2147,8 +2147,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2168,8 +2168,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2189,8 +2189,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2210,8 +2210,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2231,8 +2231,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2252,8 +2252,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2273,8 +2273,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2294,8 +2294,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2315,8 +2315,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2336,8 +2336,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2357,8 +2357,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2378,8 +2378,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2399,8 +2399,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2420,8 +2420,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2441,8 +2441,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2462,8 +2462,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2483,8 +2483,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2504,8 +2504,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2525,8 +2525,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2546,8 +2546,8 @@
       "formats": [],
       "discovery_method": "ENTRYPOINT",
       "source_collection_url": "https://www.gs1.nl/media/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2567,8 +2567,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2588,8 +2588,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2609,8 +2609,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2630,8 +2630,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2651,8 +2651,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2672,8 +2672,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2693,8 +2693,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2714,8 +2714,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2735,8 +2735,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2756,8 +2756,8 @@
       "formats": [],
       "discovery_method": "ENTRYPOINT",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2777,8 +2777,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2798,8 +2798,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2819,8 +2819,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2840,8 +2840,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2861,8 +2861,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2882,8 +2882,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2903,8 +2903,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2924,8 +2924,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2945,8 +2945,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2966,8 +2966,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -2987,8 +2987,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3008,8 +3008,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3029,8 +3029,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3050,8 +3050,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3071,8 +3071,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3092,8 +3092,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3113,8 +3113,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3134,8 +3134,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3155,8 +3155,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3176,8 +3176,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3197,8 +3197,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3218,8 +3218,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3239,8 +3239,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3260,8 +3260,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3281,8 +3281,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3302,8 +3302,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3323,8 +3323,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3344,8 +3344,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3365,8 +3365,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3386,8 +3386,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3407,8 +3407,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3428,8 +3428,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3449,8 +3449,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3470,8 +3470,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3491,8 +3491,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3512,8 +3512,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3533,8 +3533,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3554,8 +3554,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3575,8 +3575,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3596,8 +3596,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3617,8 +3617,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3638,8 +3638,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3659,8 +3659,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3680,8 +3680,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3701,8 +3701,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3722,8 +3722,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3743,8 +3743,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3764,8 +3764,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3785,8 +3785,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3806,8 +3806,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3827,8 +3827,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3848,8 +3848,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3869,8 +3869,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3890,8 +3890,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3911,8 +3911,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3932,8 +3932,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3965,8 +3965,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -3998,8 +3998,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4031,8 +4031,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4064,8 +4064,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4097,8 +4097,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4130,8 +4130,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4163,8 +4163,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4196,8 +4196,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4229,8 +4229,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4262,8 +4262,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4283,8 +4283,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4304,8 +4304,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4325,8 +4325,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4346,8 +4346,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4367,8 +4367,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4388,8 +4388,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4409,8 +4409,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://gs1.eu/publications/",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4430,8 +4430,8 @@
       "formats": [],
       "discovery_method": "ENTRYPOINT",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4451,8 +4451,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4472,8 +4472,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4493,8 +4493,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4514,8 +4514,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4535,8 +4535,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4556,8 +4556,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4577,8 +4577,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4598,8 +4598,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4619,8 +4619,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4640,8 +4640,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4661,8 +4661,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4682,8 +4682,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4703,8 +4703,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4724,8 +4724,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4745,8 +4745,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4766,8 +4766,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4787,8 +4787,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4808,8 +4808,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4829,8 +4829,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4850,8 +4850,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4871,8 +4871,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4892,8 +4892,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4913,8 +4913,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4934,8 +4934,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4955,8 +4955,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4976,8 +4976,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -4997,8 +4997,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5018,8 +5018,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5039,8 +5039,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5060,8 +5060,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5081,8 +5081,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5102,8 +5102,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5123,8 +5123,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5144,8 +5144,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5165,8 +5165,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5186,8 +5186,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5207,8 +5207,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5228,8 +5228,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5249,8 +5249,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5270,8 +5270,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5291,8 +5291,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5312,8 +5312,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5333,8 +5333,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5354,8 +5354,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5375,8 +5375,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5396,8 +5396,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5417,8 +5417,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5438,8 +5438,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5459,8 +5459,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5480,8 +5480,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5501,8 +5501,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5522,8 +5522,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5543,8 +5543,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5564,8 +5564,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5585,8 +5585,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5606,8 +5606,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5627,8 +5627,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5648,8 +5648,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5681,8 +5681,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5702,8 +5702,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5723,8 +5723,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5756,8 +5756,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5777,8 +5777,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5810,8 +5810,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5831,8 +5831,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5864,8 +5864,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5885,8 +5885,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5918,8 +5918,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5939,8 +5939,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5972,8 +5972,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -5993,8 +5993,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6026,8 +6026,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6047,8 +6047,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6068,8 +6068,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6089,8 +6089,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6110,8 +6110,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6131,8 +6131,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6152,8 +6152,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6173,8 +6173,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6194,8 +6194,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6215,8 +6215,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6236,8 +6236,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6257,8 +6257,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6278,8 +6278,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6299,8 +6299,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6320,8 +6320,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6341,8 +6341,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6362,8 +6362,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6383,8 +6383,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6404,8 +6404,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6425,8 +6425,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6446,8 +6446,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6467,8 +6467,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6488,8 +6488,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6509,8 +6509,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6530,8 +6530,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6551,8 +6551,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6572,8 +6572,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6593,8 +6593,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6614,8 +6614,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6635,8 +6635,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6656,8 +6656,8 @@
       "formats": [],
       "discovery_method": "ENTRYPOINT",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6677,8 +6677,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6698,8 +6698,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6719,8 +6719,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6740,8 +6740,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6761,8 +6761,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6782,8 +6782,8 @@
       "formats": [],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6815,8 +6815,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6848,8 +6848,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6881,8 +6881,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6914,8 +6914,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6947,8 +6947,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -6980,8 +6980,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -7013,8 +7013,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -7046,8 +7046,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -7079,8 +7079,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -7112,8 +7112,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -7145,8 +7145,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -7178,8 +7178,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -7211,8 +7211,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -7244,8 +7244,8 @@
       ],
       "discovery_method": "HTML_CRAWL",
       "source_collection_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
@@ -7265,8 +7265,8 @@
       "formats": [],
       "discovery_method": "ENTRYPOINT",
       "source_collection_url": "https://efrag-website.azurewebsites.net/Activities/2304270816111835/Article-8-XBRL-Taxonomy",
-      "first_seen_at": "2026-01-29T14:26:42+00:00",
-      "last_seen_at": "2026-01-29T14:26:42+00:00",
+      "first_seen_at": "2026-01-29T14:40:11+00:00",
+      "last_seen_at": "2026-01-29T14:40:11+00:00",
       "last_verified_at": "2026-01-29",
       "verification_result": {
         "ok": true
