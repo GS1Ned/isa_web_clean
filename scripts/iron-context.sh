@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/bash
 IRON_BASH="${IRON_BASH:-bash}"
 #!/usr/bin/env bash
 # =============================================================================
