@@ -34,3 +34,22 @@ Generated: 2026-01-28
 ## Frontend entrypoint
 
 - Vite root is `client/` and loads `client/index.html` → `client/src/main.tsx` → `client/src/App.tsx`.
+
+## Verified catalogue entrypoints
+
+- Last verified: `2026-01-29`
+
+### GS1 Global
+- https://www.gs1.org/standards/log
+- https://www.gs1.org/standards
+
+### GS1 Netherlands
+- https://www.gs1.nl/kennisbank/
+- https://www.gs1.nl/media/
+
+### GS1 in Europe
+- https://gs1.eu/publications/
+
+### EFRAG
+- https://www.efrag.org/en/sustainability-reporting-publications
+- https://www.efrag.org/en/news-and-calendar/news

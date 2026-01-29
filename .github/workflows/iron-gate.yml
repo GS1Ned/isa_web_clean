@@ -115,6 +115,9 @@ jobs:
           fi
 
           echo "✅ Inventory file check passed"
+      - name: Check GS1/EFRAG catalogue freshness
+        run: python3 scripts/validate_gs1_efrag_catalogue.py
+
 
       - name: IRON Gate Summary
         shell: bash

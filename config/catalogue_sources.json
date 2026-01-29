@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0.0",
+  "last_verified": "2026-01-29",
+  "required_bodies": [
+    "GS1_GLOBAL",
+    "GS1_NL",
+    "GS1_EUROPE",
+    "EFRAG"
+  ],
+  "bodies": {
+    "GS1_GLOBAL": {
+      "seeds": [
+        {
+          "url": "https://www.gs1.org/standards/log",
+          "kind": "publication_log",
+          "formats": [
+            "html"
+          ]
+        },
+        {
+          "url": "https://www.gs1.org/standards",
+          "kind": "standards_hub",
+          "formats": [
+            "html"
+          ]
+        }
+      ],
+      "allow_patterns": [
+        "gs1\\.org"
+      ],
+      "deny_patterns": []
+    },
+    "GS1_NL": {
+      "seeds": [
+        {
+          "url": "https://www.gs1.nl/kennisbank/",
+          "kind": "knowledge_base_hub",
+          "formats": [
+            "html"
+          ]
+        },
+        {
+          "url": "https://www.gs1.nl/media/",
+          "kind": "document_media_root",
+          "formats": [
+            "pdf",
+            "docx",
+            "xlsx",
+            "pptx",
+            "zip",
+            "html"
+          ]
+        }
+      ],
+      "allow_patterns": [
+        "gs1\\.nl"
+      ],
+      "deny_patterns": []
+    },
+    "GS1_EUROPE": {
+      "seeds": [
+        {
+          "url": "https://gs1.eu/publications/",
+          "kind": "publications_index",
+          "formats": [
+            "html",
+            "pdf",
+            "xlsx"
+          ]
+        }
+      ],
+      "allow_patterns": [
+        "gs1\\.eu",
+        "gs1europe"
+      ],
+      "deny_patterns": []
+    },
+    "EFRAG": {
+      "seeds": [
+        {
+          "url": "https://www.efrag.org/en/sustainability-reporting-publications",
+          "kind": "publications_index",
+          "formats": [
+            "html",
+            "pdf",
+            "zip",
+            "xlsx"
+          ]
+        },
+        {
+          "url": "https://www.efrag.org/en/news-and-calendar/news",
+          "kind": "news_index",
+          "formats": [
+            "html",
+            "pdf"
+          ]
+        }
+      ],
+      "allow_patterns": [
+        "efrag\\.org",
+        "xbrl\\.efrag\\.org"
+      ],
+      "deny_patterns": []
+    }
+  }
+}

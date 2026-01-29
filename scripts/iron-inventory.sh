@@ -22,6 +22,7 @@ GIT_HASH=$(git -C "$REPO_ROOT" rev-parse HEAD 2>/dev/null || echo "unknown")
 
 # Core application directories
 IN_SCOPE_DIRS=(
+  "config"
   "client"
   "server"
   "drizzle"
@@ -76,6 +77,7 @@ IN_SCOPE_SCRIPT_PATTERNS=(
 
 # Patterns that are explicitly OUT OF SCOPE (ignored entirely)
 OUT_OF_SCOPE_PATTERNS=(
+  ".pat_test"
   "node_modules"
   ".git"
   "dist"
