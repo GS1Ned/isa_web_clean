@@ -93,6 +93,14 @@ def main():
   required=cfg.get("required_bodies",[])
   bodies=cfg.get("bodies",{})
   items=[]
+  try:
+    import subprocess
+    extra = json.loads(subprocess.check_output(["python3","scripts/extract_ref_gs1_standards.py"], text=True))
+    if isinstance(extra, list):
+      items.extend(extra)
+  except Exception:
+    pass
+
   sources={}
 
   for body, spec in bodies.items():

@@ -47,7 +47,8 @@
         "https://www.efrag.org/en/sustainability-reporting-publications",
         "https://www.efrag.org/en/news-and-calendar/news",
         "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-        "https://efrag-website.azurewebsites.net/Activities/2304270816111835/Article-8-XBRL-Taxonomy"
+        "https://efrag-website.azurewebsites.net/Activities/2304270816111835/Article-8-XBRL-Taxonomy",
+        "https://knowledgehub.efrag.org/eng"
       ],
       "allow_patterns": [
         "efrag\\.org",
@@ -56,5 +57,5 @@
       "deny_patterns": []
     }
   },
-  "entrypoints_last_verified_at": "2026-01-29"
+  "entrypoints_last_verified_at": "2026-01-30"
 }

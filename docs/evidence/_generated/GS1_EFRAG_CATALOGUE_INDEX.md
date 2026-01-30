@@ -1,13 +1,13 @@
 # GS1/EFRAG Catalogue (Prototype)
 
-- Generated at: 2026-01-30T04:52:09+00:00
+- Generated at: 2026-01-30T15:32:43+00:00
 - Last verified date: 2026-01-30
 
 ## Coverage
 - GS1_GLOBAL: 5
 - GS1_NL: 120
 - GS1_EUROPE: 74
-- EFRAG: 124
+- EFRAG: 163
 
 ## Seeds
 ### GS1_GLOBAL
@@ -30,3 +30,4 @@
 - https://www.efrag.org/en/news-and-calendar/news
 - https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded
 - https://efrag-website.azurewebsites.net/Activities/2304270816111835/Article-8-XBRL-Taxonomy
+- https://knowledgehub.efrag.org/eng
