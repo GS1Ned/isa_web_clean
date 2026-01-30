@@ -107,7 +107,7 @@ def main():
     if "/archive" in u or "/artefacts" in u: continue
     path=urllib.parse.urlparse(u).path.strip("/").split("/")
     if len(path)==2 and path[0]=="standards":
-      cands.add(norm(u+) if not u.endswith("/") else norm(u))
+      cands.add(norm(u + "/") if not u.endswith("/") else norm(u))
   items=[]
   today=str(date.today())
   for u in sorted(cands):
