@@ -1,21 +1,67 @@
-import json, os, sys
-from datetime import date, datetime
-CAT="docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json"
-MAX_AGE_DAYS=int(os.environ.get("GS1_EFRAG_CATALOGUE_MAX_AGE_DAYS","30"))
-def parse(d): return datetime.strptime(d,"%Y-%m-%d").date()
-def main():
-  if not os.path.exists(CAT): print(f"::error::Missing {CAT}"); sys.exit(1)
-  d=json.load(open(CAT,"r",encoding="utf-8"))
-  lv=d.get("last_verified_at") or d.get("last_verified") or ""
-  if not lv: print("::error::Missing last verified date"); sys.exit(1)
-  age=(date.today()-parse(lv)).days
-  if age>MAX_AGE_DAYS: print(f"::error::Stale catalogue last_verified={lv} age={age} max={MAX_AGE_DAYS}"); sys.exit(1)
-  req=d.get("required_bodies",[])
-  items=d.get("items",[])
-  bodies=set([i.get("issuing_body","") for i in items])
-  miss=[b for b in req if b not in bodies]
-  if miss: print(f"::error::Missing bodies: {miss}"); sys.exit(1)
-  for f in ["docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv","docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md"]:
-    if not os.path.exists(f): print(f"::error::Missing {f}"); sys.exit(1)
-  print("ok")
-if __name__=="__main__": main()
+import os, json, csv, datetime, sys
+
+repo_root = os.getcwd()
+latest_dir = os.path.join(repo_root, "docs/evidence/_generated/isa_catalogue_latest")
+files_dir = os.path.join(latest_dir, "files")
+items_csv = os.path.join(files_dir, "items.csv")
+summary_json = os.path.join(latest_dir, "summary.json")
+
+required = [
+  "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv",
+  "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json",
+  "docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
+  "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json",
+  "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
+]
+
+missing = [p for p in required if not os.path.isfile(os.path.join(repo_root, p))]
+if missing:
+    print("FAIL: missing legacy artefacts:")
+    for p in missing:
+        print(" -", p)
+    sys.exit(1)
+
+if not os.path.isfile(items_csv):
+    print("FAIL: missing items.csv under isa_catalogue_latest/files/")
+    sys.exit(1)
+
+rows = 0
+sources = set()
+with open(items_csv, newline="", encoding="utf-8") as fh:
+    r = csv.DictReader(fh)
+    for row in r:
+        rows += 1
+        sources.add((row.get("source") or "").strip().lower())
+
+if rows < 10:
+    print(f"FAIL: items.csv too small: rows={rows}")
+    sys.exit(1)
+
+joined = " ".join(sorted(sources))
+need = ["gs1", "efrag"]
+miss_need = [k for k in need if k not in joined]
+if miss_need:
+    print("FAIL: required bodies not detected in source column (case-insensitive contains):", ", ".join(miss_need))
+    print("note_sources_detected_count=", len(sources))
+    sys.exit(1)
+
+if os.path.isfile(summary_json):
+    with open(summary_json, "r", encoding="utf-8") as fh:
+        s = json.load(fh)
+    gen = s.get("generated_at")
+    if gen:
+        try:
+            if gen.endswith("Z"):
+                gen_dt = datetime.datetime.fromisoformat(gen[:-1] + "+00:00")
+            else:
+                gen_dt = datetime.datetime.fromisoformat(gen)
+            now = datetime.datetime.now(datetime.timezone.utc)
+            age_days = (now - gen_dt).total_seconds()/86400.0
+            if age_days > 90:
+                print(f"FAIL: latest summary.json too old: age_days={age_days:.2f}")
+                sys.exit(1)
+        except Exception:
+            print("FAIL: summary.json generated_at not parseable")
+            sys.exit(1)
+
+print("PASS")

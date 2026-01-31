@@ -130,3 +130,6 @@ EU_ESG_to_GS1_Mapping_v1.1.zip
 
 __pycache__/
 *.pyc
+
+# ISA catalogue snapshots (auto-generated)
+docs/evidence/_generated/isa_catalogue_runs/
