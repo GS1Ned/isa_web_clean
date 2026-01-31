@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
-  "last_verified_at": "2026-01-29",
-  "verified_at": "2026-01-29T15:54:01Z",
+  "last_verified_at": "2026-01-31",
+  "verified_at": "2026-01-31T04:44:26Z",
   "source_config": "config/catalogue_sources.json",
   "required_bodies": [
     "GS1_GLOBAL",
@@ -10,8 +10,8 @@
     "EFRAG"
   ],
   "counts": {
-    "total": 13,
-    "ok": 9,
+    "total": 14,
+    "ok": 10,
     "fail": 4
   },
   "items": [
@@ -23,7 +23,7 @@
       "content_type": "text/html",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": false
     },
     {
@@ -34,7 +34,7 @@
       "content_type": "text/html",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": false
     },
     {
@@ -45,7 +45,7 @@
       "content_type": "text/html; charset=UTF-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": true
     },
     {
@@ -56,7 +56,7 @@
       "content_type": "text/html",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": false
     },
     {
@@ -67,7 +67,7 @@
       "content_type": "text/html; charset=utf-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": true
     },
     {
@@ -78,7 +78,7 @@
       "content_type": "text/html; charset=utf-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": false
     },
     {
@@ -89,7 +89,7 @@
       "content_type": "text/html; charset=utf-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": true
     },
     {
@@ -100,7 +100,7 @@
       "content_type": "text/html; charset=utf-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": true
     },
     {
@@ -111,7 +111,7 @@
       "content_type": "text/html; charset=UTF-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": true
     },
     {
@@ -120,9 +120,9 @@
       "final_url": "https://www.efrag.org/en/sustainability-reporting-publications",
       "http_status": 200,
       "content_type": "text/html; charset=UTF-8",
-      "etag": "W/\"1769698415-gzip\"",
-      "last_modified": "Thu, 29 Jan 2026 14:53:35 GMT",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "etag": "W/\"1769768328-gzip\"",
+      "last_modified": "Fri, 30 Jan 2026 10:18:48 GMT",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": true
     },
     {
@@ -131,9 +131,9 @@
       "final_url": "https://www.efrag.org/en/news-and-calendar/news",
       "http_status": 200,
       "content_type": "text/html; charset=UTF-8",
-      "etag": "W/\"1769697229-gzip\"",
-      "last_modified": "Thu, 29 Jan 2026 14:33:49 GMT",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "etag": "W/\"1769770401-gzip\"",
+      "last_modified": "Fri, 30 Jan 2026 10:53:21 GMT",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": true
     },
     {
@@ -142,9 +142,9 @@
       "final_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
       "http_status": 200,
       "content_type": "text/html; charset=UTF-8",
-      "etag": "W/\"1769697660-gzip\"",
-      "last_modified": "Thu, 29 Jan 2026 14:41:00 GMT",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "etag": "W/\"1769769488-gzip\"",
+      "last_modified": "Fri, 30 Jan 2026 10:38:08 GMT",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": true
     },
     {
@@ -155,7 +155,18 @@
       "content_type": "text/html; charset=utf-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
+      "verified_at": "2026-01-31T04:44:26Z",
+      "ok": true
+    },
+    {
+      "issuing_body": "EFRAG",
+      "entrypoint_url": "https://knowledgehub.efrag.org/eng",
+      "final_url": "https://knowledgehub.efrag.org/eng",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "etag": "W/\"7f056-Gv1rnnNbpdGRIYc55Kt8nTjyarM\"",
+      "last_modified": "",
+      "verified_at": "2026-01-31T04:44:26Z",
       "ok": true
     }
   ]
