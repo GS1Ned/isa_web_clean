@@ -3,6 +3,7 @@ set -euo pipefail
 set +H 2>/dev/null || true
 
 REPO_ROOT="${REPO_ROOT:-$(git rev-parse --show-toplevel)}"
+export REPO_ROOT
 POLICY="$REPO_ROOT/configs/isa-catalogue/policy.json"
 LATEST="$REPO_ROOT/docs/evidence/_generated/isa_catalogue_latest"
 
