@@ -1,162 +1,53 @@
 {
-  "schema_version": "1.0.0",
-  "last_verified_at": "2026-01-29",
-  "verified_at": "2026-01-29T15:54:01Z",
-  "source_config": "config/catalogue_sources.json",
-  "required_bodies": [
-    "GS1_GLOBAL",
-    "GS1_NL",
-    "GS1_EUROPE",
-    "EFRAG"
-  ],
-  "counts": {
-    "total": 13,
-    "ok": 9,
-    "fail": 4
+  "generated_at": "2026-01-31T08:51:46.428955Z",
+  "source_of_truth": {
+    "items_csv": "docs/evidence/_generated/isa_catalogue_latest/files/items.csv",
+    "items_csv_sha256": "c65cba03d5c7b6dc585a15ee79716ee8132ba6754c33dccbe00a1a76195b7704",
+    "rows": 1677
   },
-  "items": [
-    {
-      "issuing_body": "GS1_GLOBAL",
-      "entrypoint_url": "https://www.gs1.org/standards/log",
-      "final_url": "https://www.gs1.org/standards/log",
-      "http_status": 403,
-      "content_type": "text/html",
-      "etag": "",
-      "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": false
-    },
-    {
-      "issuing_body": "GS1_GLOBAL",
-      "entrypoint_url": "https://www.gs1.org/standards",
-      "final_url": "https://www.gs1.org/standards",
-      "http_status": 403,
-      "content_type": "text/html",
-      "etag": "",
-      "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": false
-    },
-    {
-      "issuing_body": "GS1_GLOBAL",
-      "entrypoint_url": "https://ref.gs1.org/standards/",
-      "final_url": "https://ref.gs1.org/standards/",
-      "http_status": 200,
-      "content_type": "text/html; charset=UTF-8",
-      "etag": "",
-      "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": true
-    },
-    {
-      "issuing_body": "GS1_GLOBAL",
-      "entrypoint_url": "https://www.gs1.org/standards/barcodes-epcrfid-id-keys/gs1-general-specifications",
-      "final_url": "https://www.gs1.org/standards/barcodes-epcrfid-id-keys/gs1-general-specifications",
-      "http_status": 403,
-      "content_type": "text/html",
-      "etag": "",
-      "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": false
-    },
-    {
-      "issuing_body": "GS1_NL",
-      "entrypoint_url": "https://www.gs1.nl/kennisbank/",
-      "final_url": "https://www.gs1.nl/kennisbank/",
-      "http_status": 200,
-      "content_type": "text/html; charset=utf-8",
-      "etag": "",
-      "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": true
-    },
-    {
-      "issuing_body": "GS1_NL",
-      "entrypoint_url": "https://www.gs1.nl/media/",
-      "final_url": "https://www.gs1.nl/media/",
-      "http_status": 404,
-      "content_type": "text/html; charset=utf-8",
-      "etag": "",
-      "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": false
-    },
-    {
-      "issuing_body": "GS1_NL",
-      "entrypoint_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "final_url": "https://www.gs1.nl/kennisbank/gs1-edi/",
-      "http_status": 200,
-      "content_type": "text/html; charset=utf-8",
-      "etag": "",
-      "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": true
-    },
-    {
-      "issuing_body": "GS1_NL",
-      "entrypoint_url": "https://www.gs1.nl/kennisbank/gs1-data-source/",
-      "final_url": "https://www.gs1.nl/kennisbank/gs1-data-source/",
-      "http_status": 200,
-      "content_type": "text/html; charset=utf-8",
-      "etag": "",
-      "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": true
-    },
-    {
-      "issuing_body": "GS1_EUROPE",
-      "entrypoint_url": "https://gs1.eu/publications/",
-      "final_url": "https://gs1.eu/publications/",
-      "http_status": 200,
-      "content_type": "text/html; charset=UTF-8",
-      "etag": "",
-      "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": true
-    },
-    {
-      "issuing_body": "EFRAG",
-      "entrypoint_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "final_url": "https://www.efrag.org/en/sustainability-reporting-publications",
-      "http_status": 200,
-      "content_type": "text/html; charset=UTF-8",
-      "etag": "W/\"1769698415-gzip\"",
-      "last_modified": "Thu, 29 Jan 2026 14:53:35 GMT",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": true
-    },
-    {
-      "issuing_body": "EFRAG",
-      "entrypoint_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "final_url": "https://www.efrag.org/en/news-and-calendar/news",
-      "http_status": 200,
-      "content_type": "text/html; charset=UTF-8",
-      "etag": "W/\"1769697229-gzip\"",
-      "last_modified": "Thu, 29 Jan 2026 14:33:49 GMT",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": true
-    },
-    {
-      "issuing_body": "EFRAG",
-      "entrypoint_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "final_url": "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
-      "http_status": 200,
-      "content_type": "text/html; charset=UTF-8",
-      "etag": "W/\"1769697660-gzip\"",
-      "last_modified": "Thu, 29 Jan 2026 14:41:00 GMT",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": true
-    },
-    {
-      "issuing_body": "EFRAG",
-      "entrypoint_url": "https://efrag-website.azurewebsites.net/Activities/2304270816111835/Article-8-XBRL-Taxonomy",
-      "final_url": "https://efrag-website.azurewebsites.net/Activities/2304270816111835/Article-8-XBRL-Taxonomy?AspxAutoDetectCookieSupport=1",
-      "http_status": 302,
-      "content_type": "text/html; charset=utf-8",
-      "etag": "",
-      "last_modified": "",
-      "verified_at": "2026-01-29T15:54:01Z",
-      "ok": true
-    }
-  ]
+  "max_last_verified_date": "2026-01-30T00:00:00Z",
+  "note_bad_last_verified_date_rows": 0,
+  "by_source": {
+    "GS1 Global": 884,
+    "entrypoints": 406,
+    "EFRAG": 190,
+    "GS1 Netherlands": 174,
+    "GS1 Europe": 23
+  },
+  "by_source_url": {
+    "https://www.gs1.org/": 884,
+    "https://www.efrag.org/News": 404,
+    "https://www.efrag.org/": 190,
+    "https://www.gs1.nl/": 174,
+    "https://www.gs1.eu/": 23,
+    "https://www.efrag.org/News/Publications-and-Submissions": 1,
+    "https://www.gs1.org/standards": 1
+  },
+  "by_http_status": {
+    "200": 1574,
+    "405": 48,
+    "404": 42,
+    "403": 12,
+    "": 1
+  },
+  "by_content_type": {
+    "application/pdf": 1021,
+    "text/html; charset=UTF-8": 437,
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": 64,
+    "": 49,
+    "text/html; charset=utf-8": 27,
+    "application/zip": 24,
+    "text/xml; charset=utf-8": 17,
+    "text/html": 16,
+    "application/xml; charset=utf-8": 4,
+    "text/css": 4,
+    "text/html;charset=UTF-8": 4,
+    "text/html;charset=utf-8": 4,
+    "application/x-zip-compressed": 2,
+    "application/json": 1,
+    "image/x-icon": 1,
+    "text/html; charset=iso-8859-1": 1,
+    "video/x-ms-wmv": 1
+  },
+  "latest_summary_json_present": true
 }
