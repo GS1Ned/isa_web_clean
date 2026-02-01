@@ -275,15 +275,14 @@ export function verifyClaims(
     const supportingCitations: CitationReference[] = [];
     const issues: string[] = [];
     
-    // Find citations near this claim (within 200 characters)
-    const nearbyCitations = citations.filter(c => 
-      Math.abs(c.position - claim.startIndex) < 200 ||
-      Math.abs(c.position - claim.endIndex) < 200
+    // Check if any citation is directly in the claim text or immediately after
+    const inlineCitations = citations.filter(c =>
+      c.position >= claim.startIndex && c.position <= claim.endIndex + 50
     );
     
-    // Check if any citation is directly in the claim text
-    const inlineCitations = citations.filter(c =>
-      c.position >= claim.startIndex && c.position <= claim.endIndex
+    // Find citations near this claim (within 300 characters after the claim)
+    const nearbyCitations = citations.filter(c => 
+      c.position >= claim.startIndex && c.position <= claim.endIndex + 300
     );
     
     supportingCitations.push(...inlineCitations, ...nearbyCitations);
@@ -330,7 +329,7 @@ export function verifyClaims(
     
     results.push({
       claim,
-      verified: uniqueCitations.length > 0 && verificationScore >= 0.4,
+      verified: uniqueCitations.length > 0 && verificationScore >= 0.2,
       supportingCitations: uniqueCitations,
       verificationScore: Math.max(0, Math.min(1, verificationScore)),
       issues,
