@@ -6,6 +6,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
+import { I18nProvider } from "./lib/i18n";
 
 // Critical pages - loaded immediately
 import Home from "./pages/Home";
@@ -279,18 +280,20 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
-        <TooltipProvider>
-          <DisclaimerBanner />
-          <Toaster />
-          <Suspense fallback={<PageLoader />}>
-            <Router />
-          </Suspense>
-        </TooltipProvider>
-      </ThemeProvider>
+      <I18nProvider>
+        <ThemeProvider
+          defaultTheme="light"
+          // switchable
+        >
+          <TooltipProvider>
+            <DisclaimerBanner />
+            <Toaster />
+            <Suspense fallback={<PageLoader />}>
+              <Router />
+            </Suspense>
+          </TooltipProvider>
+        </ThemeProvider>
+      </I18nProvider>
     </ErrorBoundary>
   );
 }
