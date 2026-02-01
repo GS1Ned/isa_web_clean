@@ -51,6 +51,8 @@ export interface HybridSearchConfig {
   vectorThreshold: number;
   /** Minimum score threshold for BM25 results */
   bm25Threshold: number;
+  /** Optional sector filter to boost sector-specific content */
+  sectorFilter?: string;
 }
 
 const DEFAULT_CONFIG: HybridSearchConfig = {
@@ -72,6 +74,23 @@ const DEFAULT_CONFIG: HybridSearchConfig = {
  */
 function calculateRRFScore(ranks: number[], k: number = 60): number {
   return ranks.reduce((sum, rank) => sum + 1 / (k + rank), 0);
+}
+
+/**
+ * Get sector-specific keywords for boosting search results
+ */
+function getSectorKeywords(sector: string): string[] {
+  const sectorKeywordMap: Record<string, string[]> = {
+    fmcg: ['fmcg', 'food', 'beverage', 'levensmiddelen', 'drogisterij', 'nutrition', 'voeding', 'grocery'],
+    diy: ['diy', 'doe-het-zelf', 'garden', 'tuin', 'pet', 'dier', 'bouwmarkt', 'hardware'],
+    healthcare: ['healthcare', 'gezondheidszorg', 'medical', 'medisch', 'pharma', 'zorg', 'hospital'],
+    fashion: ['fashion', 'mode', 'textile', 'textiel', 'apparel', 'kleding', 'footwear', 'schoenen'],
+    sustainability: ['sustainability', 'duurzaamheid', 'eco', 'carbon', 'co2', 'dpp', 'circular', 'environment'],
+    retail: ['retail', 'store', 'winkel', 'pos', 'checkout', 'inventory', 'voorraad'],
+    agriculture: ['agriculture', 'agri', 'farm', 'landbouw', 'crop', 'livestock', 'fresh', 'vers'],
+    construction: ['construction', 'bouw', 'building', 'material', 'cement', 'steel', 'installatie'],
+  };
+  return sectorKeywordMap[sector] || [];
 }
 
 /**
@@ -193,6 +212,20 @@ export async function hybridSearch(
       authorityLevel: authorityInfo.level,
       authorityScore: authorityInfo.score,
     });
+  }
+
+  // Apply sector boost if filter is specified
+  if (cfg.sectorFilter) {
+    const sectorKeywords = getSectorKeywords(cfg.sectorFilter);
+    for (const result of mergedResults) {
+      const content = `${result.title} ${result.description || ''}`.toLowerCase();
+      const matchesCount = sectorKeywords.filter(kw => content.includes(kw)).length;
+      if (matchesCount > 0) {
+        // Boost score by 20% per matching keyword (max 60% boost)
+        const boost = Math.min(0.6, matchesCount * 0.2);
+        result.hybridScore *= (1 + boost);
+      }
+    }
   }
 
   // Sort by hybrid score (descending) and limit results

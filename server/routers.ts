@@ -70,6 +70,7 @@ import { impactSimulatorRouter } from "./routers/impact-simulator.js";
 import { attributeRecommenderRouter } from "./routers/attribute-recommender.js";
 import { esgArtefactsRouter } from "./routers/esg-artefacts.js";
 import { evaluationRouter } from "./routers/evaluation.js";
+import { gs1nlAttributesRouter } from "./routers/gs1nl-attributes.js";
 import { serverLogger } from "./_core/logger-wiring";
 
 import {
@@ -1149,6 +1150,11 @@ export const appRouter = router({
    * GS1 Attributes Router - Benelux attributes and Web Vocabulary
    */
   gs1Attributes: gs1AttributesRouter,
+
+  /**
+   * GS1 NL Attributes Router - GS1 Nederland datamodel browser
+   */
+  gs1nlAttributes: gs1nlAttributesRouter,
 
   /**
    * News Admin Router - Manual pipeline triggers and stats

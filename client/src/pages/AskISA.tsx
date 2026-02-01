@@ -184,6 +184,7 @@ export default function AskISA() {
   const [advisoryVersion, setAdvisoryVersion] = useState("v1.0");
   const [showHistory, setShowHistory] = useState(false);
   const [authorityFilter, setAuthorityFilter] = useState<AuthorityFilter>('all');
+  const [sectorFilter, setSectorFilter] = useState<string>('all');
   const [previewSource, setPreviewSource] = useState<Message['sources'][0] | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -433,10 +434,11 @@ export default function AskISA() {
     // Add user message immediately
     setMessages(prev => [...prev, { role: "user", content: question }]);
 
-    // Send to API
+    // Send to API with sector filter
     askMutation.mutate({
       question,
       conversationId,
+      sector: sectorFilter as any,
     });
   };
 
@@ -448,10 +450,11 @@ export default function AskISA() {
     // Add user message immediately
     setMessages(prev => [...prev, { role: "user", content: question }]);
 
-    // Send to API
+    // Send to API with sector filter
     askMutation.mutate({
       question,
       conversationId,
+      sector: sectorFilter as any,
     });
   };
 
@@ -1251,6 +1254,26 @@ export default function AskISA() {
 
         {/* Input Area */}
         <div className="p-4">
+          {/* Sector Filter */}
+          <div className="mb-3 flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">{t('askIsa.sectorFilter') || 'Sector:'}</span>
+            <Select value={sectorFilter} onValueChange={setSectorFilter}>
+              <SelectTrigger className="w-[180px] h-8">
+                <SelectValue placeholder="All sectors" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('askIsa.sectors.all') || 'All Sectors'}</SelectItem>
+                <SelectItem value="fmcg">{t('askIsa.sectors.fmcg') || 'FMCG / Food & Beverage'}</SelectItem>
+                <SelectItem value="diy">{t('askIsa.sectors.diy') || 'DIY / Garden / Pet'}</SelectItem>
+                <SelectItem value="healthcare">{t('askIsa.sectors.healthcare') || 'Healthcare'}</SelectItem>
+                <SelectItem value="fashion">{t('askIsa.sectors.fashion') || 'Fashion & Textiles'}</SelectItem>
+                <SelectItem value="sustainability">{t('askIsa.sectors.sustainability') || 'Sustainability'}</SelectItem>
+                <SelectItem value="retail">{t('askIsa.sectors.retail') || 'Retail'}</SelectItem>
+                <SelectItem value="agriculture">{t('askIsa.sectors.agriculture') || 'Agriculture'}</SelectItem>
+                <SelectItem value="construction">{t('askIsa.sectors.construction') || 'Construction'}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <form onSubmit={handleSubmit} className="flex gap-2">
             <Input
               value={input}
