@@ -65,6 +65,9 @@ const GovernanceDocuments = lazy(() => import("./pages/GovernanceDocuments"));
 const AdminAnalyticsDashboard = lazy(
   () => import("./pages/AdminAnalyticsDashboard")
 );
+const AdminFeedbackDashboard = lazy(
+  () => import("./pages/AdminFeedbackDashboard")
+);
 const AdminPromptOptimization = lazy(
   () => import("./pages/AdminPromptOptimization")
 );
@@ -217,6 +220,7 @@ function Router() {
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path="/admin/analytics" component={AdminAnalyticsDashboard} />
+      <Route path="/admin/feedback" component={AdminFeedbackDashboard} />
       <Route
         path="/admin/prompt-optimization"
         component={AdminPromptOptimization}

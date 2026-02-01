@@ -550,4 +550,130 @@ export const askISARouter = router({
         throw new Error("Failed to submit feedback");
       }
     }),
+
+  // Get feedback statistics for admin dashboard
+  getFeedbackStats: protectedProcedure
+    .input(
+      z.object({
+        timeRange: z.enum(["7d", "30d", "90d", "all"]).default("30d"),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Admin access required");
+      }
+
+      const { getDb } = await import("../db");
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      const { askIsaFeedback } = await import("../../drizzle/schema");
+      const { sql, count, avg, and, gte } = await import("drizzle-orm");
+
+      // Calculate date filter
+      let dateFilter = undefined;
+      if (input.timeRange !== "all") {
+        const days = input.timeRange === "7d" ? 7 : input.timeRange === "30d" ? 30 : 90;
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        dateFilter = gte(askIsaFeedback.timestamp, cutoffDate.toISOString());
+      }
+
+      try {
+        // Get positive count
+        const positiveResult = await db
+          .select({ count: count() })
+          .from(askIsaFeedback)
+          .where(
+            dateFilter
+              ? and(sql`${askIsaFeedback.feedbackType} = 'positive'`, dateFilter)
+              : sql`${askIsaFeedback.feedbackType} = 'positive'`
+          );
+
+        // Get negative count
+        const negativeResult = await db
+          .select({ count: count() })
+          .from(askIsaFeedback)
+          .where(
+            dateFilter
+              ? and(sql`${askIsaFeedback.feedbackType} = 'negative'`, dateFilter)
+              : sql`${askIsaFeedback.feedbackType} = 'negative'`
+          );
+
+        // Get average confidence score
+        const avgConfidenceResult = await db
+          .select({ avg: avg(askIsaFeedback.confidenceScore) })
+          .from(askIsaFeedback)
+          .where(dateFilter || undefined);
+
+        // Get daily trend (last 14 days)
+        const trendResult = await db
+          .select({
+            date: sql<string>`DATE(${askIsaFeedback.timestamp})`,
+            positive: sql<number>`SUM(CASE WHEN ${askIsaFeedback.feedbackType} = 'positive' THEN 1 ELSE 0 END)`,
+            negative: sql<number>`SUM(CASE WHEN ${askIsaFeedback.feedbackType} = 'negative' THEN 1 ELSE 0 END)`,
+          })
+          .from(askIsaFeedback)
+          .where(gte(askIsaFeedback.timestamp, sql`DATE_SUB(NOW(), INTERVAL 14 DAY)`))
+          .groupBy(sql`DATE(${askIsaFeedback.timestamp})`)
+          .orderBy(sql`DATE(${askIsaFeedback.timestamp})`);
+
+        return {
+          positive: positiveResult[0]?.count || 0,
+          negative: negativeResult[0]?.count || 0,
+          avgConfidence: avgConfidenceResult[0]?.avg ? Number(avgConfidenceResult[0].avg) : null,
+          dailyTrend: trendResult.map(row => ({
+            date: row.date,
+            positive: Number(row.positive) || 0,
+            negative: Number(row.negative) || 0,
+          })),
+        };
+      } catch (error) {
+        serverLogger.error("[AskISA] Failed to get feedback stats:", error);
+        throw new Error("Failed to get feedback statistics");
+      }
+    }),
+
+  // Get recent feedback entries for admin review
+  getRecentFeedback: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).default(20),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Admin access required");
+      }
+
+      const { getDb } = await import("../db");
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      const { askIsaFeedback } = await import("../../drizzle/schema");
+      const { desc } = await import("drizzle-orm");
+
+      try {
+        const feedback = await db
+          .select()
+          .from(askIsaFeedback)
+          .orderBy(desc(askIsaFeedback.timestamp))
+          .limit(input.limit);
+
+        return feedback.map(f => ({
+          id: String(f.id),
+          questionId: f.questionId,
+          questionText: f.questionText,
+          answerText: f.answerText,
+          feedbackType: f.feedbackType,
+          feedbackComment: f.feedbackComment,
+          confidenceScore: f.confidenceScore,
+          sourcesCount: f.sourcesCount,
+          timestamp: f.timestamp,
+        }));
+      } catch (error) {
+        serverLogger.error("[AskISA] Failed to get recent feedback:", error);
+        throw new Error("Failed to get recent feedback");
+      }
+    }),
 });
