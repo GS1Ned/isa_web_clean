@@ -68,6 +68,9 @@ const AdminAnalyticsDashboard = lazy(
 const AdminFeedbackDashboard = lazy(
   () => import("./pages/AdminFeedbackDashboard")
 );
+const ComplianceChecklistGenerator = lazy(
+  () => import("./pages/ComplianceChecklistGenerator").then(m => ({ default: m.ComplianceChecklistGenerator }))
+);
 const AdminPromptOptimization = lazy(
   () => import("./pages/AdminPromptOptimization")
 );
@@ -221,6 +224,7 @@ function Router() {
       <Route path={"/admin"} component={AdminPanel} />
       <Route path="/admin/analytics" component={AdminAnalyticsDashboard} />
       <Route path="/admin/feedback" component={AdminFeedbackDashboard} />
+      <Route path="/tools/compliance-checklist" component={ComplianceChecklistGenerator} />
       <Route
         path="/admin/prompt-optimization"
         component={AdminPromptOptimization}
