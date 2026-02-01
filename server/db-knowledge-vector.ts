@@ -53,9 +53,7 @@ export async function vectorSearchKnowledge(
     // Step 1: Generate embedding for query (~500ms)
     const startTime = Date.now();
     const queryEmbedding = await generateEmbedding(query);
-    console.log(
-      `[VectorSearch] Query embedding generated in ${Date.now() - startTime}ms`
-    );
+    serverLogger.info(`[VectorSearch] Query embedding generated in ${Date.now() - startTime}ms`);
 
     // Step 2: Fetch all regulations with embeddings
     const allRegulations = await db
@@ -109,9 +107,7 @@ export async function vectorSearchKnowledge(
       .from(knowledgeEmbeddings)
       .where(sql`${knowledgeEmbeddings.isDeprecated} = 0`);
 
-    console.log(
-      `[VectorSearch] Fetched ${allRegulations.length} regulations, ${allStandards.length} standards, ${allEsrsDatapoints.length} ESRS datapoints, ${allKnowledgeEmbeddings.length} knowledge chunks`
-    );
+    serverLogger.info(`[VectorSearch] Fetched ${allRegulations.length} regulations, ${allStandards.length} standards, ${allEsrsDatapoints.length} ESRS datapoints, ${allKnowledgeEmbeddings.length} knowledge chunks`);
 
     // Step 6: Calculate cosine similarity for all items
     const results: VectorSearchResult[] = [];
@@ -224,9 +220,7 @@ export async function vectorSearchKnowledge(
       .slice(0, limit);
 
     const totalTime = Date.now() - startTime;
-    console.log(
-      `[VectorSearch] Found ${sortedResults.length} results in ${totalTime}ms`
-    );
+    serverLogger.info(`[VectorSearch] Found ${sortedResults.length} results in ${totalTime}ms`);
 
     return sortedResults;
   } catch (error) {
