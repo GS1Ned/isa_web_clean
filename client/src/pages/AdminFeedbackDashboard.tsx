@@ -12,6 +12,10 @@ import {
   ChevronDown,
   ChevronUp,
   AlertCircle,
+  Database,
+  Zap,
+  Trash2,
+  HardDrive,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
@@ -61,6 +65,21 @@ export default function AdminFeedbackDashboard() {
     { limit: 20 },
     { enabled: !!user && user.role === "admin" }
   );
+
+  // Fetch cache statistics
+  const cacheStatsQuery = trpc.askISA.getCacheStats.useQuery(
+    undefined,
+    { enabled: !!user && user.role === "admin", refetchInterval: 30000 }
+  );
+
+  // Cache management mutations
+  const invalidateCacheMutation = trpc.askISA.invalidateCache.useMutation({
+    onSuccess: () => cacheStatsQuery.refetch(),
+  });
+
+  const cleanupCacheMutation = trpc.askISA.cleanupCache.useMutation({
+    onSuccess: () => cacheStatsQuery.refetch(),
+  });
 
   if (loading) {
     return (
@@ -372,6 +391,103 @@ export default function AdminFeedbackDashboard() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+        {/* Cache Statistics Section */}
+        <Card className="mt-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Database className="h-5 w-5" />
+                  Query Cache Statistics
+                </CardTitle>
+                <CardDescription>Performance metrics for Ask ISA query caching</CardDescription>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => cleanupCacheMutation.mutate()}
+                  disabled={cleanupCacheMutation.isPending}
+                >
+                  <Trash2 className="h-4 w-4 mr-1" />
+                  Cleanup Expired
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => invalidateCacheMutation.mutate()}
+                  disabled={invalidateCacheMutation.isPending}
+                >
+                  <RefreshCw className="h-4 w-4 mr-1" />
+                  Clear All Cache
+                </Button>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {cacheStatsQuery.isLoading ? (
+              <div className="text-center py-8 text-muted-foreground">
+                Loading cache statistics...
+              </div>
+            ) : cacheStatsQuery.data ? (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="p-4 bg-accent/50 rounded-lg">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+                    <HardDrive className="h-4 w-4" />
+                    Cache Size
+                  </div>
+                  <div className="text-2xl font-bold">
+                    {cacheStatsQuery.data.size}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    of {cacheStatsQuery.data.maxSize} max entries
+                  </div>
+                </div>
+                <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+                    <Zap className="h-4 w-4 text-green-600" />
+                    Cache Hits
+                  </div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {cacheStatsQuery.data.hits}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Fast responses from cache
+                  </div>
+                </div>
+                <div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+                    <Database className="h-4 w-4 text-orange-600" />
+                    Cache Misses
+                  </div>
+                  <div className="text-2xl font-bold text-orange-600">
+                    {cacheStatsQuery.data.misses}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Required full processing
+                  </div>
+                </div>
+                <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+                    <TrendingUp className="h-4 w-4 text-blue-600" />
+                    Hit Rate
+                  </div>
+                  <div className="text-2xl font-bold text-blue-600">
+                    {cacheStatsQuery.data.hitRate.toFixed(1)}%
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Cache efficiency
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <AlertCircle className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                Unable to load cache statistics
               </div>
             )}
           </CardContent>
