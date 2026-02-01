@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
-  "last_verified_at": "2026-01-31",
-  "verified_at": "2026-01-31T04:44:26Z",
+  "last_verified_at": "2026-02-01",
+  "verified_at": "2026-02-01T05:10:25Z",
   "source_config": "config/catalogue_sources.json",
   "required_bodies": [
     "GS1_GLOBAL",
@@ -23,7 +23,7 @@
       "content_type": "text/html",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": false
     },
     {
@@ -34,7 +34,7 @@
       "content_type": "text/html",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": false
     },
     {
@@ -45,7 +45,7 @@
       "content_type": "text/html; charset=UTF-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": true
     },
     {
@@ -56,7 +56,7 @@
       "content_type": "text/html",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": false
     },
     {
@@ -67,7 +67,7 @@
       "content_type": "text/html; charset=utf-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": true
     },
     {
@@ -78,7 +78,7 @@
       "content_type": "text/html; charset=utf-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": false
     },
     {
@@ -89,7 +89,7 @@
       "content_type": "text/html; charset=utf-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": true
     },
     {
@@ -100,7 +100,7 @@
       "content_type": "text/html; charset=utf-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": true
     },
     {
@@ -111,7 +111,7 @@
       "content_type": "text/html; charset=UTF-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": true
     },
     {
@@ -122,7 +122,7 @@
       "content_type": "text/html; charset=UTF-8",
       "etag": "W/\"1769768328-gzip\"",
       "last_modified": "Fri, 30 Jan 2026 10:18:48 GMT",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": true
     },
     {
@@ -133,7 +133,7 @@
       "content_type": "text/html; charset=UTF-8",
       "etag": "W/\"1769770401-gzip\"",
       "last_modified": "Fri, 30 Jan 2026 10:53:21 GMT",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": true
     },
     {
@@ -144,7 +144,7 @@
       "content_type": "text/html; charset=UTF-8",
       "etag": "W/\"1769769488-gzip\"",
       "last_modified": "Fri, 30 Jan 2026 10:38:08 GMT",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": true
     },
     {
@@ -155,7 +155,7 @@
       "content_type": "text/html; charset=utf-8",
       "etag": "",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": true
     },
     {
@@ -164,62 +164,10 @@
       "final_url": "https://knowledgehub.efrag.org/eng",
       "http_status": 200,
       "content_type": "text/html; charset=utf-8",
-      "etag": "W/\"7f056-Gv1rnnNbpdGRIYc55Kt8nTjyarM\"",
+      "etag": "W/\"7f052-O/5AsTYae47eV858aFt3c1kx5hM\"",
       "last_modified": "",
-      "verified_at": "2026-01-31T04:44:26Z",
+      "verified_at": "2026-02-01T05:10:25Z",
       "ok": true
     }
   ]
-}
-  "generated_at": "2026-01-31T08:51:46.428955Z",
-  "source_of_truth": {
-    "items_csv": "docs/evidence/_generated/isa_catalogue_latest/files/items.csv",
-    "items_csv_sha256": "c65cba03d5c7b6dc585a15ee79716ee8132ba6754c33dccbe00a1a76195b7704",
-    "rows": 1677
-  },
-  "max_last_verified_date": "2026-01-30T00:00:00Z",
-  "note_bad_last_verified_date_rows": 0,
-  "by_source": {
-    "GS1 Global": 884,
-    "entrypoints": 406,
-    "EFRAG": 190,
-    "GS1 Netherlands": 174,
-    "GS1 Europe": 23
-  },
-  "by_source_url": {
-    "https://www.gs1.org/": 884,
-    "https://www.efrag.org/News": 404,
-    "https://www.efrag.org/": 190,
-    "https://www.gs1.nl/": 174,
-    "https://www.gs1.eu/": 23,
-    "https://www.efrag.org/News/Publications-and-Submissions": 1,
-    "https://www.gs1.org/standards": 1
-  },
-  "by_http_status": {
-    "200": 1574,
-    "405": 48,
-    "404": 42,
-    "403": 12,
-    "": 1
-  },
-  "by_content_type": {
-    "application/pdf": 1021,
-    "text/html; charset=UTF-8": 437,
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": 64,
-    "": 49,
-    "text/html; charset=utf-8": 27,
-    "application/zip": 24,
-    "text/xml; charset=utf-8": 17,
-    "text/html": 16,
-    "application/xml; charset=utf-8": 4,
-    "text/css": 4,
-    "text/html;charset=UTF-8": 4,
-    "text/html;charset=utf-8": 4,
-    "application/x-zip-compressed": 2,
-    "application/json": 1,
-    "image/x-icon": 1,
-    "text/html; charset=iso-8859-1": 1,
-    "video/x-ms-wmv": 1
-  },
-  "latest_summary_json_present": true
 }

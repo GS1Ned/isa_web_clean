@@ -1,7 +1,7 @@
 # Catalogue entrypoints status
 
-- last_verified_at: `2026-01-31`
-- verified_at: `2026-01-31T04:44:26Z`
+- last_verified_at: `2026-02-01`
+- verified_at: `2026-02-01T05:10:25Z`
 - total: `14`, ok: `10`, fail: `4`
 
 ## EFRAG
@@ -23,7 +23,7 @@
   - content_type: `text/html; charset=utf-8`
 - 200 ok=true `https://knowledgehub.efrag.org/eng`
   - content_type: `text/html; charset=utf-8`
-  - etag: `W/"7f056-Gv1rnnNbpdGRIYc55Kt8nTjyarM"`
+  - etag: `W/"7f052-O/5AsTYae47eV858aFt3c1kx5hM"`
 
 ## GS1_EUROPE
 
@@ -51,33 +51,3 @@
   - content_type: `text/html; charset=utf-8`
 - 200 ok=true `https://www.gs1.nl/kennisbank/gs1-data-source/`
   - content_type: `text/html; charset=utf-8`
-=======
-# Catalogue Entrypoints Status
-
-- generated_at: `2026-01-31T08:51:46.428955Z`
-- rows: `1677`
-- items_csv_sha256: `c65cba03d5c7b6dc585a15ee79716ee8132ba6754c33dccbe00a1a76195b7704`
-- max_last_verified_date: `2026-01-30T00:00:00Z`
-
-## By source
-- `GS1 Global`: `884`
-- `entrypoints`: `406`
-- `EFRAG`: `190`
-- `GS1 Netherlands`: `174`
-- `GS1 Europe`: `23`
-
-## By entrypoint (source_url)
-- `https://www.gs1.org/`: `884`
-- `https://www.efrag.org/News`: `404`
-- `https://www.efrag.org/`: `190`
-- `https://www.gs1.nl/`: `174`
-- `https://www.gs1.eu/`: `23`
-- `https://www.efrag.org/News/Publications-and-Submissions`: `1`
-- `https://www.gs1.org/standards`: `1`
-
-## By http_status
-- `200`: `1574`
-- `405`: `48`
-- `404`: `42`
-- `403`: `12`
-- ``: `1`
