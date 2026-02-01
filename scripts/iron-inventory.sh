@@ -40,6 +40,7 @@ IN_SCOPE_DIRS=(
   "research"
   "tasks"
   "test-results"
+  "configs"
 )
 
 # Configuration and build files
