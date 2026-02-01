@@ -5,12 +5,17 @@
  * Replaces slow LLM-based scoring with pre-computed vector embeddings.
  *
  * Performance: <5s per query (vs 60s with LLM scoring)
+ * 
+ * v2.0 Changes:
+ * - Added ESRS datapoints search for CSRD/ESRS queries
+ * - Added knowledge embeddings search for pre-computed chunks
+ * - Improved relevance for ESG compliance queries
  */
 
 import { getDb } from "./db";
 import { sql } from "drizzle-orm";
 import { generateEmbedding, cosineSimilarity } from "./_core/embedding";
-import { regulations, gs1Standards } from "../drizzle/schema";
+import { regulations, gs1Standards, esrsDatapoints, knowledgeEmbeddings } from "../drizzle/schema";
 import { serverLogger } from "./_core/logger-wiring";
 
 
@@ -19,11 +24,15 @@ import { serverLogger } from "./_core/logger-wiring";
  */
 export interface VectorSearchResult {
   id: number;
-  type: "regulation" | "standard";
+  type: "regulation" | "standard" | "esrs_datapoint" | "knowledge";
   title: string;
   description?: string | null;
   similarity: number;
   url?: string;
+  // Additional metadata for ESRS datapoints
+  esrsStandard?: string;
+  disclosureRequirement?: string;
+  dataType?: string;
 }
 
 /**
@@ -44,9 +53,7 @@ export async function vectorSearchKnowledge(
     // Step 1: Generate embedding for query (~500ms)
     const startTime = Date.now();
     const queryEmbedding = await generateEmbedding(query);
-    console.log(
-      `[VectorSearch] Query embedding generated in ${Date.now() - startTime}ms`
-    );
+    serverLogger.info(`[VectorSearch] Query embedding generated in ${Date.now() - startTime}ms`);
 
     // Step 2: Fetch all regulations with embeddings
     const allRegulations = await db
@@ -74,11 +81,35 @@ export async function vectorSearchKnowledge(
       .from(gs1Standards)
       .where(sql`${gs1Standards.embedding} IS NOT NULL`);
 
-    console.log(
-      `[VectorSearch] Fetched ${allRegulations.length} regulations, ${allStandards.length} standards`
-    );
+    // Step 4: Fetch ESRS datapoints (for CSRD/ESRS queries)
+    const allEsrsDatapoints = await db
+      .select({
+        id: esrsDatapoints.id,
+        code: esrsDatapoints.code,
+        name: esrsDatapoints.name,
+        esrsStandard: esrsDatapoints.esrsStandard,
+        disclosureRequirement: esrsDatapoints.disclosureRequirement,
+        dataType: esrsDatapoints.dataType,
+      })
+      .from(esrsDatapoints);
 
-    // Step 4: Calculate cosine similarity for all items
+    // Step 5: Fetch knowledge embeddings (pre-computed embeddings)
+    const allKnowledgeEmbeddings = await db
+      .select({
+        id: knowledgeEmbeddings.id,
+        sourceType: knowledgeEmbeddings.sourceType,
+        sourceId: knowledgeEmbeddings.sourceId,
+        title: knowledgeEmbeddings.title,
+        content: knowledgeEmbeddings.content,
+        embedding: knowledgeEmbeddings.embedding,
+        url: knowledgeEmbeddings.url,
+      })
+      .from(knowledgeEmbeddings)
+      .where(sql`${knowledgeEmbeddings.isDeprecated} = 0`);
+
+    serverLogger.info(`[VectorSearch] Fetched ${allRegulations.length} regulations, ${allStandards.length} standards, ${allEsrsDatapoints.length} ESRS datapoints, ${allKnowledgeEmbeddings.length} knowledge chunks`);
+
+    // Step 6: Calculate cosine similarity for all items
     const results: VectorSearchResult[] = [];
 
     // Process regulations
@@ -119,15 +150,77 @@ export async function vectorSearchKnowledge(
       });
     }
 
-    // Step 5: Sort by similarity (descending) and return top N
+    // Process ESRS datapoints (text-based similarity using name field)
+    // For ESRS datapoints without embeddings, use keyword matching boost
+    const queryLower = query.toLowerCase();
+    const esrsKeywords = ['esrs', 'csrd', 'disclosure', 'datapoint', 'e1', 'e2', 'e3', 'e4', 'e5', 's1', 's2', 's3', 's4', 'g1', 'governance', 'climate', 'pollution', 'biodiversity', 'workforce', 'supply chain', 'emission', 'carbon', 'ghg', 'scope 1', 'scope 2', 'scope 3'];
+    const isEsrsQuery = esrsKeywords.some(kw => queryLower.includes(kw));
+    
+    if (isEsrsQuery) {
+      for (const dp of allEsrsDatapoints) {
+        // Simple text-based relevance scoring for ESRS datapoints
+        const nameLower = dp.name.toLowerCase();
+        const codeLower = dp.code.toLowerCase();
+        const standardLower = (dp.esrsStandard || '').toLowerCase();
+        
+        let textSimilarity = 0;
+        
+        // Check for exact code match
+        if (queryLower.includes(codeLower) || codeLower.includes(queryLower.replace(/[^a-z0-9]/g, ''))) {
+          textSimilarity = 0.9;
+        }
+        // Check for standard match (e.g., "E1", "S1")
+        else if (standardLower && queryLower.includes(standardLower.toLowerCase())) {
+          textSimilarity = 0.7;
+        }
+        // Check for keyword overlap in name
+        else {
+          const queryWords = queryLower.split(/\s+/).filter(w => w.length > 2);
+          const matchingWords = queryWords.filter(w => nameLower.includes(w));
+          textSimilarity = matchingWords.length > 0 ? 0.4 + (matchingWords.length / queryWords.length) * 0.4 : 0;
+        }
+        
+        if (textSimilarity > 0.3) {
+          results.push({
+            id: dp.id,
+            type: "esrs_datapoint",
+            title: `${dp.code}: ${dp.name}`,
+            description: `ESRS ${dp.esrsStandard} - ${dp.disclosureRequirement}`,
+            similarity: textSimilarity,
+            esrsStandard: dp.esrsStandard || undefined,
+            disclosureRequirement: dp.disclosureRequirement || undefined,
+            dataType: dp.dataType || undefined,
+          });
+        }
+      }
+    }
+
+    // Process knowledge embeddings (pre-computed)
+    for (const ke of allKnowledgeEmbeddings) {
+      if (!ke.embedding || !Array.isArray(ke.embedding)) continue;
+
+      const similarity = cosineSimilarity(
+        queryEmbedding.embedding,
+        ke.embedding as number[]
+      );
+
+      results.push({
+        id: ke.id,
+        type: "knowledge",
+        title: ke.title,
+        description: ke.content.slice(0, 200) + (ke.content.length > 200 ? '...' : ''),
+        similarity,
+        url: ke.url || undefined,
+      });
+    }
+
+    // Step 7: Sort by similarity (descending) and return top N
     const sortedResults = results
       .sort((a, b) => b.similarity - a.similarity)
       .slice(0, limit);
 
     const totalTime = Date.now() - startTime;
-    console.log(
-      `[VectorSearch] Found ${sortedResults.length} results in ${totalTime}ms`
-    );
+    serverLogger.info(`[VectorSearch] Found ${sortedResults.length} results in ${totalTime}ms`);
 
     return sortedResults;
   } catch (error) {
@@ -140,7 +233,7 @@ export async function vectorSearchKnowledge(
  * Get detailed content for a search result
  */
 export async function getSearchResultContent(
-  type: "regulation" | "standard",
+  type: "regulation" | "standard" | "esrs_datapoint" | "knowledge",
   id: number
 ): Promise<string | null> {
   const db = await getDb();
@@ -157,7 +250,7 @@ export async function getSearchResultContent(
       if (!reg) return null;
 
       return `${reg.title}\n\n${reg.description || ""}\n\nCELEX ID: ${reg.celexId}\nType: ${reg.regulationType}\nEffective Date: ${reg.effectiveDate}`;
-    } else {
+    } else if (type === "standard") {
       const [std] = await db
         .select()
         .from(gs1Standards)
@@ -167,7 +260,29 @@ export async function getSearchResultContent(
       if (!std) return null;
 
       return `${std.standardName}\n\n${std.description || ""}\n\nStandard Code: ${std.standardCode}\nCategory: ${std.category}\nScope: ${std.scope}`;
+    } else if (type === "esrs_datapoint") {
+      const [dp] = await db
+        .select()
+        .from(esrsDatapoints)
+        .where(sql`${esrsDatapoints.id} = ${id}`)
+        .limit(1);
+
+      if (!dp) return null;
+
+      return `ESRS Datapoint: ${dp.code}\n\nName: ${dp.name}\n\nStandard: ESRS ${dp.esrsStandard}\nDisclosure Requirement: ${dp.disclosureRequirement}\nData Type: ${dp.dataType}\nVoluntary: ${dp.voluntary ? 'Yes' : 'No'}`;
+    } else if (type === "knowledge") {
+      const [ke] = await db
+        .select()
+        .from(knowledgeEmbeddings)
+        .where(sql`${knowledgeEmbeddings.id} = ${id}`)
+        .limit(1);
+
+      if (!ke) return null;
+
+      return `${ke.title}\n\n${ke.content}\n\nSource Type: ${ke.sourceType}\nURL: ${ke.url || 'N/A'}`;
     }
+    
+    return null;
   } catch (error) {
     serverLogger.error("[VectorSearch] Failed to get content:", error);
     return null;
@@ -187,8 +302,11 @@ export async function buildContextFromVectorResults(
     const content = await getSearchResultContent(result.type, result.id);
 
     if (content) {
+      const typeLabel = result.type === 'esrs_datapoint' ? 'ESRS Datapoint' : 
+                       result.type === 'knowledge' ? 'Knowledge Base' :
+                       result.type.charAt(0).toUpperCase() + result.type.slice(1);
       contextParts.push(
-        `[Source ${i + 1}: ${result.title} (${Math.round(result.similarity * 100)}% relevant)]\n${content}`
+        `[Source ${i + 1}: ${result.title} (${typeLabel}, ${Math.round(result.similarity * 100)}% relevant)]\n${content}`
       );
     }
   }

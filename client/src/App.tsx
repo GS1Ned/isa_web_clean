@@ -6,6 +6,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
+import { I18nProvider } from "./lib/i18n";
 
 // Critical pages - loaded immediately
 import Home from "./pages/Home";
@@ -64,6 +65,24 @@ const AdvisoryReports = lazy(() => import("./pages/AdvisoryReports"));
 const GovernanceDocuments = lazy(() => import("./pages/GovernanceDocuments"));
 const AdminAnalyticsDashboard = lazy(
   () => import("./pages/AdminAnalyticsDashboard")
+);
+const AdminFeedbackDashboard = lazy(
+  () => import("./pages/AdminFeedbackDashboard")
+);
+const ComplianceChecklistGenerator = lazy(
+  () => import("./pages/ComplianceChecklistGenerator").then(m => ({ default: m.ComplianceChecklistGenerator }))
+);
+const AIGapAnalysisWizard = lazy(
+  () => import("./pages/AIGapAnalysisWizard")
+);
+const ComplianceMonitoringDashboard = lazy(
+  () => import("./pages/ComplianceMonitoringDashboard")
+);
+const IndustryTemplates = lazy(
+  () => import("./pages/IndustryTemplates")
+);
+const ExternalAPIIntegration = lazy(
+  () => import("./pages/ExternalAPIIntegration")
 );
 const AdminPromptOptimization = lazy(
   () => import("./pages/AdminPromptOptimization")
@@ -217,6 +236,12 @@ function Router() {
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path="/admin/analytics" component={AdminAnalyticsDashboard} />
+      <Route path="/admin/feedback" component={AdminFeedbackDashboard} />
+      <Route path="/tools/compliance-checklist" component={ComplianceChecklistGenerator} />
+      <Route path="/tools/ai-gap-analysis" component={AIGapAnalysisWizard} />
+      <Route path="/compliance/monitoring" component={ComplianceMonitoringDashboard} />
+      <Route path="/templates/industry" component={IndustryTemplates} />
+      <Route path="/api-integration" component={ExternalAPIIntegration} />
       <Route
         path="/admin/prompt-optimization"
         component={AdminPromptOptimization}
@@ -255,18 +280,20 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
-        <TooltipProvider>
-          <DisclaimerBanner />
-          <Toaster />
-          <Suspense fallback={<PageLoader />}>
-            <Router />
-          </Suspense>
-        </TooltipProvider>
-      </ThemeProvider>
+      <I18nProvider>
+        <ThemeProvider
+          defaultTheme="light"
+          // switchable
+        >
+          <TooltipProvider>
+            <DisclaimerBanner />
+            <Toaster />
+            <Suspense fallback={<PageLoader />}>
+              <Router />
+            </Suspense>
+          </TooltipProvider>
+        </ThemeProvider>
+      </I18nProvider>
     </ErrorBoundary>
   );
 }
