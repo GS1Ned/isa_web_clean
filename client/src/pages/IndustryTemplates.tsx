@@ -10,7 +10,7 @@ import {
   Utensils,
   Shirt,
   Cpu,
-  Car,
+  Heart,
   Building2,
   Leaf,
   FileText,
@@ -383,71 +383,71 @@ const industryTemplates: IndustryTemplate[] = [
     ]
   },
   {
-    id: "automotive",
-    name: "Automotive",
-    icon: <Car className="h-8 w-8" />,
-    description: "Comprehensive compliance framework for automotive companies covering EV batteries, supply chain emissions, and end-of-life vehicles.",
-    regulations: ["CSRD", "ESRS", "Battery Regulation", "ELV Directive", "CO2 Standards for Vehicles"],
+    id: "healthcare",
+    name: "Healthcare & Medical Devices",
+    icon: <Heart className="h-8 w-8" />,
+    description: "Comprehensive compliance framework for healthcare organizations and medical device manufacturers covering MDR, sustainability reporting, and supply chain transparency.",
+    regulations: ["CSRD", "ESRS", "MDR (Medical Device Regulation)", "IVDR", "EU Taxonomy for Healthcare"],
     keyRequirements: [
-      "Vehicle lifecycle emissions",
-      "Battery passport for EVs",
-      "Recycled content requirements",
-      "End-of-life vehicle recovery",
-      "Supply chain due diligence"
+      "Healthcare-specific ESRS disclosures",
+      "Medical device lifecycle assessment",
+      "Clinical waste management reporting",
+      "Supply chain due diligence for medical products",
+      "Patient safety and social impact metrics"
     ],
-    timeline: "18-24 months",
+    timeline: "15-21 months",
     complexity: "High",
     phases: [
       {
-        name: "Emissions Baseline",
+        name: "Regulatory Mapping",
         duration: "3 months",
         tasks: [
-          "Calculate manufacturing emissions",
-          "Assess supply chain carbon footprint",
-          "Model use-phase emissions",
-          "Evaluate end-of-life impacts"
+          "Map MDR/IVDR requirements to sustainability",
+          "Identify CSRD-relevant healthcare activities",
+          "Assess EU Taxonomy eligibility",
+          "Evaluate current ESG maturity"
         ]
       },
       {
-        name: "Battery Compliance",
-        duration: "5 months",
-        tasks: [
-          "Implement battery passport system",
-          "Track battery state of health",
-          "Verify recycled content in batteries",
-          "Establish second-life partnerships"
-        ]
-      },
-      {
-        name: "Circular Economy",
-        duration: "5 months",
-        tasks: [
-          "Design for recyclability",
-          "Increase recycled material usage",
-          "Optimize end-of-life recovery",
-          "Partner with recycling networks"
-        ]
-      },
-      {
-        name: "Reporting & Verification",
+        name: "Data Collection & Systems",
         duration: "4 months",
         tasks: [
-          "Generate ESRS disclosures",
-          "Submit CO2 fleet reports",
-          "File battery passport data",
-          "Obtain third-party assurance"
+          "Implement energy monitoring in facilities",
+          "Track clinical waste streams",
+          "Collect supply chain sustainability data",
+          "Set up patient outcome tracking for social metrics"
+        ]
+      },
+      {
+        name: "Sustainability Integration",
+        duration: "5 months",
+        tasks: [
+          "Integrate sustainability into product design",
+          "Reduce single-use medical device waste",
+          "Implement green procurement policies",
+          "Develop circular economy initiatives for devices"
+        ]
+      },
+      {
+        name: "Reporting & Assurance",
+        duration: "4 months",
+        tasks: [
+          "Prepare ESRS S1-S4 social disclosures",
+          "Generate environmental impact reports",
+          "Obtain third-party assurance",
+          "Align with healthcare industry benchmarks"
         ]
       }
     ],
     quickWins: [
-      "Start with EV models for battery passport",
-      "Use existing LCA data for emissions",
-      "Leverage OEM sustainability programs"
+      "Start with energy efficiency in healthcare facilities",
+      "Leverage existing quality management systems for ESG data",
+      "Focus on high-impact medical device categories first"
     ],
     criticalDeadlines: [
-      { date: "2025-01-01", requirement: "CSRD reporting for large OEMs" },
-      { date: "2027-02-18", requirement: "Battery Passport for EV batteries" },
-      { date: "2030-01-01", requirement: "CO2 fleet emission targets" }
+      { date: "2025-01-01", requirement: "CSRD reporting for large healthcare organizations" },
+      { date: "2026-05-26", requirement: "MDR full implementation deadline" },
+      { date: "2027-01-01", requirement: "EU Taxonomy reporting for healthcare" }
     ]
   }
 ];
