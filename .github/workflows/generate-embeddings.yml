@@ -75,6 +75,8 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          VITE_APP_ID: ${{ vars.VITE_APP_ID }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
           NODE_ENV: production
           # Pass workflow inputs as environment variables
           DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
