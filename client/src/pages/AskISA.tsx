@@ -43,6 +43,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle2, Library, AlertTriangle, Info } from "lucide-react";
 import { AuthorityBadge, AuthorityScore, AuthorityLegend } from "@/components/AuthorityBadge";
 import { jsPDF } from "jspdf";
+import { useI18n, LanguageSwitcher } from "@/lib/i18n";
 
 /**
  * Ask ISA - RAG-Powered Q&A Interface
@@ -176,6 +177,7 @@ type AuthorityFilter = typeof AUTHORITY_FILTER_OPTIONS[number]['value'];
 
 export default function AskISA() {
   const { user } = useAuth();
+  const { t, language } = useI18n();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [conversationId, setConversationId] = useState<number | undefined>();
@@ -587,9 +589,9 @@ export default function AskISA() {
               <Sparkles className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold">Ask ISA</h1>
+              <h1 className="text-4xl font-bold">{t('askIsa.title')}</h1>
               <p className="text-muted-foreground mt-1">
-                AI-powered assistant for EU regulations and GS1 standards
+                {t('askIsa.subtitle')}
               </p>
             </div>
           </div>
@@ -1234,7 +1236,7 @@ export default function AskISA() {
                   <div className="bg-muted rounded-lg px-4 py-3 flex items-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" />
                     <span className="text-sm text-muted-foreground">
-                      Thinking...
+                      {t('askIsa.thinking')}
                     </span>
                   </div>
                 </div>
@@ -1253,7 +1255,7 @@ export default function AskISA() {
             <Input
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder="Ask about regulations, standards, or compliance requirements..."
+              placeholder={t('askIsa.placeholder')}
               disabled={askMutation.isPending}
               className="flex-1"
             />
