@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Bell, Clock, Mail, RotateCcw, Save } from "lucide-react";
+import { Bell, Clock, Mail, RotateCcw, Save, FileText, AlertTriangle, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,6 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { trpc } from "@/lib/trpc";
 
 export function NotificationPreferences() {
@@ -16,6 +18,10 @@ export function NotificationPreferences() {
     trpc.notificationPreferences.getPreferences.useQuery();
   const [localPrefs, setLocalPrefs] = useState<any>(null);
   const [saved, setSaved] = useState(false);
+  const [subscribedRegulations, setSubscribedRegulations] = useState<Set<number>>(new Set());
+  
+  // Fetch regulations for subscription options
+  const { data: regulations } = trpc.regulations.list.useQuery({ limit: 50 });
 
   useEffect(() => {
     if (preferences) {
@@ -298,6 +304,88 @@ export function NotificationPreferences() {
               <Button onClick={handleBatchSettingsSave} className="w-full mt-2">
                 <Save className="w-4 h-4 mr-2" />
                 Save Batch Settings
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Regulatory Change Alerts */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="w-5 h-5" />
+            Regulatory Change Alerts
+          </CardTitle>
+          <CardDescription>
+            Get notified when regulations you follow are updated
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between mb-4">
+            <label className="text-sm font-medium">Enable Regulatory Alerts</label>
+            <Switch
+              checked={localPrefs?.regulatoryAlertsEnabled || false}
+              onCheckedChange={value => {
+                setLocalPrefs({ ...localPrefs, regulatoryAlertsEnabled: value });
+                handleNotificationTypeChange('regulatoryAlertsEnabled', value);
+              }}
+            />
+          </div>
+          
+          {localPrefs?.regulatoryAlertsEnabled && (
+            <div className="space-y-3">
+              <p className="text-sm text-gray-600">Select regulations to follow:</p>
+              <div className="max-h-64 overflow-y-auto border rounded-lg p-3 space-y-2">
+                {regulations?.regulations?.map((reg: any) => (
+                  <div key={reg.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded">
+                    <Checkbox
+                      checked={subscribedRegulations.has(reg.id)}
+                      onCheckedChange={(checked) => {
+                        const newSet = new Set(subscribedRegulations);
+                        if (checked) {
+                          newSet.add(reg.id);
+                        } else {
+                          newSet.delete(reg.id);
+                        }
+                        setSubscribedRegulations(newSet);
+                      }}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{reg.title}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Badge variant="outline" className="text-xs">
+                          {reg.regulationType || 'Regulation'}
+                        </Badge>
+                        {reg.celexId && (
+                          <span className="text-xs text-gray-500">{reg.celexId}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {(!regulations?.regulations || regulations.regulations.length === 0) && (
+                  <p className="text-sm text-gray-500 text-center py-4">No regulations available</p>
+                )}
+              </div>
+              
+              <div className="flex items-center gap-2 mt-4 p-3 bg-blue-50 rounded-lg">
+                <AlertTriangle className="w-4 h-4 text-blue-600" />
+                <p className="text-sm text-blue-800">
+                  You'll receive alerts when selected regulations are updated, amended, or when new guidance is published.
+                </p>
+              </div>
+              
+              <Button 
+                onClick={() => {
+                  setSaved(true);
+                  setTimeout(() => setSaved(false), 3000);
+                }}
+                className="w-full"
+                disabled={subscribedRegulations.size === 0}
+              >
+                <Check className="w-4 h-4 mr-2" />
+                Save Subscriptions ({subscribedRegulations.size} selected)
               </Button>
             </div>
           )}

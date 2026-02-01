@@ -1,0 +1,74 @@
+[
+  {
+    "title": "Digital Product Passport (DPP) for Fashion & Textiles - Overview",
+    "category": "Fashion/Textiles",
+    "sector": "Mode & textiel",
+    "description": "The Digital Product Passport (DPP) is a mandatory electronic record required under the EU Ecodesign for Sustainable Products Regulation (ESPR). For fashion and textile products, the DPP will contain comprehensive information about the product's environmental sustainability, enabling consumers, businesses, and regulators to make informed decisions.",
+    "content": "The DPP for textiles aims to:\n\n1. **Improve circularity** - Enable better recycling and reuse by providing material composition data\n2. **Enhance transparency** - Give consumers access to sustainability information\n3. **Support compliance** - Help businesses meet ESPR and CSRD requirements\n4. **Combat greenwashing** - Provide verified, standardized sustainability claims\n\nKey timeline:\n- June 2026: EU DPP Registry launch\n- 2027: Green Claims Directive compliance\n- 2030: Full DPP requirements for textiles\n\nGS1 standards (GTIN, GLN, QR Code powered by GS1) are recognized as the foundation for DPP implementation.",
+    "source": "GS1 Nederland / EU ESPR",
+    "datasetId": "gs1_nl_fashion_dpp_guidance"
+  },
+  {
+    "title": "DPP Data Attributes for Textiles - Manufacturing & Supply Chain",
+    "category": "Fashion/Textiles",
+    "sector": "Mode & textiel",
+    "description": "Required and recommended data attributes for the Digital Product Passport related to manufacturing locations and supply chain traceability for textile and footwear products.",
+    "content": "**Manufacturing Location Details**\nThe DPP must include information about where the product was manufactured. This includes:\n- Factory name and address\n- GLN (Global Location Number) for facility identification\n- Country of origin\n- Manufacturing date/period\n\n**Supply Chain Traceability**\nRecords of the product's journey through the supply chain:\n- Border crossings during transportation\n- Import and export data\n- Tier 1-3 supplier identification\n- Raw material sourcing locations\n\n**GS1 Implementation**\nUse EPCIS (Electronic Product Code Information Services) to capture supply chain events and share data with authorized parties. Each location should be identified with a GLN for interoperability.",
+    "source": "GS1 GO / EU ESPR",
+    "datasetId": "gs1_nl_fashion_dpp_guidance"
+  },
+  {
+    "title": "DPP Data Attributes for Textiles - Materials & Composition",
+    "category": "Fashion/Textiles",
+    "sector": "Mode & textiel",
+    "description": "Required data attributes for the Digital Product Passport related to raw materials and material composition for textile products.",
+    "content": "**Raw Material Information**\nThe DPP must disclose all raw materials incorporated in the product:\n- Fiber composition (cotton, polyester, wool, etc.)\n- Percentage of each material\n- Origin of raw materials\n- Recycled content percentage\n- Organic or certified materials\n\n**Material Traceability**\nFor EUDR-relevant materials (leather, cotton from deforestation-risk areas):\n- Geolocation of raw material origin\n- Certification status\n- Due diligence documentation\n\n**GS1 Implementation**\nUse GS1 Application Identifiers (AIs) to encode material information:\n- AI 7230-7239: Certification references\n- AI 710-714: Country of origin\n- AI 423: Country of initial processing",
+    "source": "GS1 GO / EU ESPR",
+    "datasetId": "gs1_nl_fashion_dpp_guidance"
+  },
+  {
+    "title": "DPP Data Attributes for Textiles - Environmental Impact",
+    "category": "Fashion/Textiles",
+    "sector": "Mode & textiel",
+    "description": "Required data attributes for the Digital Product Passport related to environmental impact metrics for textile and footwear products.",
+    "content": "**Carbon Footprint**\nEnvironmental impact metrics must include:\n- Product Carbon Footprint (PCF) in kg CO2e\n- Scope 1, 2, and 3 emissions breakdown\n- Carbon intensity per unit\n- Methodology used for calculation\n\n**Water Consumption**\n- Total water usage in production (liters)\n- Water stress impact assessment\n- Wastewater treatment methods\n\n**Chemical Usage**\nTransparency on chemicals used in manufacturing and dyeing:\n- List of substances used\n- REACH compliance status\n- Restricted Substances List (RSL) compliance\n- ZDHC MRSL compliance (if applicable)\n\n**GS1 Implementation**\nEnvironmental data can be shared via GS1 Digital Link, allowing consumers to scan a QR code and access detailed sustainability information.",
+    "source": "GS1 GO / EU ESPR",
+    "datasetId": "gs1_nl_fashion_dpp_guidance"
+  },
+  {
+    "title": "DPP Data Attributes for Textiles - Circularity & End-of-Life",
+    "category": "Fashion/Textiles",
+    "sector": "Mode & textiel",
+    "description": "Required data attributes for the Digital Product Passport related to recyclability, durability, and end-of-life processing for textile products.",
+    "content": "**Recyclability Information**\n- Recyclability score/rating\n- Recommended recycling method\n- Disassembly instructions (if applicable)\n- Materials that can be recovered\n- Take-back program availability\n\n**Product Durability**\n- Expected product lifespan\n- Durability test results\n- Quality certifications\n\n**Repair Possibilities**\n- Repairability score\n- Available spare parts\n- Repair service locations\n- DIY repair instructions\n\n**Care Instructions**\nGuidelines for proper care to preserve product quality:\n- Washing instructions\n- Drying recommendations\n- Storage guidelines\n- Tips for extending product life\n\n**GS1 Implementation**\nUse GS1 Digital Link to provide dynamic, updatable end-of-life information that can change as recycling infrastructure evolves.",
+    "source": "GS1 GO / EU ESPR",
+    "datasetId": "gs1_nl_fashion_dpp_guidance"
+  },
+  {
+    "title": "GS1 Standards for Fashion DPP Implementation",
+    "category": "Fashion/Textiles",
+    "sector": "Mode & textiel",
+    "description": "Overview of GS1 standards that support Digital Product Passport implementation for fashion and textile companies.",
+    "content": "**GTIN (Global Trade Item Number)**\nUnique product identification for each textile item:\n- GTIN-13 for consumer products\n- GTIN-14 for cases/pallets\n- Serialized GTIN (SGTIN) for item-level tracking\n\n**GLN (Global Location Number)**\nIdentification for all locations in the supply chain:\n- Manufacturing facilities\n- Warehouses and distribution centers\n- Retail locations\n- Supplier locations\n\n**QR Code powered by GS1 (GS1 Digital Link)**\nThe recommended data carrier for DPP:\n- Encodes GTIN and links to product information\n- Consumer-scannable with smartphone\n- Connects to multiple data sources\n- Supports dynamic content updates\n\n**EPCIS (Electronic Product Code Information Services)**\nSupply chain event tracking:\n- Capture what, when, where, why of product movements\n- Share data with authorized supply chain partners\n- Support traceability requirements\n\n**GS1 Data Source**\nCentral product data repository:\n- Share product master data\n- Ensure data quality and consistency\n- Connect with retailers and marketplaces",
+    "source": "GS1 Nederland",
+    "datasetId": "gs1_nl_fashion_dpp_guidance"
+  },
+  {
+    "title": "Green Claims Directive - Implications for Fashion",
+    "category": "Fashion/Textiles",
+    "sector": "Mode & textiel",
+    "description": "Overview of the EU Green Claims Directive and its implications for fashion and textile companies making environmental claims.",
+    "content": "**What is the Green Claims Directive?**\nThe EU Directive on Green Claims (Directive 2024/825) aims to protect consumers from misleading environmental claims and greenwashing. It requires businesses to substantiate any environmental claims with robust evidence.\n\n**Key Requirements for Fashion Companies**\n1. **Substantiation**: All environmental claims must be backed by scientific evidence\n2. **Verification**: Claims must be verified by independent third parties\n3. **Transparency**: Methodology and data must be accessible\n4. **Specificity**: Vague claims like 'eco-friendly' or 'sustainable' are prohibited\n\n**Examples of Claims Requiring Substantiation**\n- 'Made from recycled materials'\n- 'Carbon neutral'\n- 'Biodegradable'\n- 'Organic'\n- 'Sustainable cotton'\n\n**Timeline**\n- 2027: Full compliance required\n\n**GS1 Role**\nGS1 standards provide the data infrastructure to support verified claims through traceable, standardized product information.",
+    "source": "EU Green Claims Directive / GS1 Nederland",
+    "datasetId": "gs1_nl_fashion_dpp_guidance"
+  },
+  {
+    "title": "CSRD Reporting for Fashion & Textiles",
+    "category": "Fashion/Textiles",
+    "sector": "Mode & textiel",
+    "description": "Overview of Corporate Sustainability Reporting Directive (CSRD) requirements specific to fashion and textile companies.",
+    "content": "**CSRD Overview**\nThe Corporate Sustainability Reporting Directive requires large companies to report on sustainability according to European Sustainability Reporting Standards (ESRS).\n\n**Fashion-Specific Reporting Areas**\n\n**Environmental (ESRS E)**\n- E1: Climate change (carbon footprint, emissions reduction)\n- E2: Pollution (chemical usage, wastewater)\n- E3: Water and marine resources (water consumption)\n- E4: Biodiversity (raw material sourcing impact)\n- E5: Resource use and circular economy (recycled content, waste)\n\n**Social (ESRS S)**\n- S1: Own workforce (working conditions in own operations)\n- S2: Workers in value chain (supplier labor conditions)\n- S3: Affected communities (impact on local communities)\n- S4: Consumers and end-users (product safety, information)\n\n**Governance (ESRS G)**\n- G1: Business conduct (anti-corruption, supply chain due diligence)\n\n**Timeline**\n- 2025: Large companies (>500 employees)\n- 2026: Large companies (>250 employees)\n- 2027: Listed SMEs\n\n**GS1 Data Support**\nGS1 product and supply chain data can support CSRD reporting by providing traceable, verifiable information on materials, suppliers, and environmental impact.",
+    "source": "EU CSRD / EFRAG / GS1 Nederland",
+    "datasetId": "gs1_nl_fashion_dpp_guidance"
+  }
+]

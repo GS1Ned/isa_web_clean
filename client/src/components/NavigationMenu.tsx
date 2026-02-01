@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Menu, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { LanguageSwitcher } from "@/lib/i18n";
 
 interface NavItem {
   label: string;
@@ -218,6 +219,7 @@ export function NavigationMenu() {
                 <Button size="sm">Dashboard</Button>
               </Link>
             )}
+            <LanguageSwitcher />
           </div>
 
           {/* Mobile Menu Button */}
