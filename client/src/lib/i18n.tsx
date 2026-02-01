@@ -53,6 +53,16 @@ export const translations: Translations = {
   'askIsa.sources': { en: 'Sources', nl: 'Bronnen' },
   'askIsa.relatedTopics': { en: 'Related Topics', nl: 'Gerelateerde onderwerpen' },
   'askIsa.suggestedQuestions': { en: 'Suggested Questions', nl: 'Voorgestelde vragen' },
+  'askIsa.sectorFilter': { en: 'Sector:', nl: 'Sector:' },
+  'askIsa.sectors.all': { en: 'All Sectors', nl: 'Alle sectoren' },
+  'askIsa.sectors.fmcg': { en: 'FMCG / Food & Beverage', nl: 'Levensmiddelen & drogisterij' },
+  'askIsa.sectors.diy': { en: 'DIY / Garden / Pet', nl: 'Doe-het-zelf, tuin & dier' },
+  'askIsa.sectors.healthcare': { en: 'Healthcare', nl: 'Gezondheidszorg' },
+  'askIsa.sectors.fashion': { en: 'Fashion & Textiles', nl: 'Mode & textiel' },
+  'askIsa.sectors.sustainability': { en: 'Sustainability', nl: 'Duurzaamheid' },
+  'askIsa.sectors.retail': { en: 'Retail', nl: 'Retail' },
+  'askIsa.sectors.agriculture': { en: 'Agriculture', nl: 'Agrarisch & vers' },
+  'askIsa.sectors.construction': { en: 'Construction', nl: 'Bouw & installatie' },
   
   // Regulations Hub
   'hub.title': { en: 'Regulatory Hub', nl: 'Regelgeving Hub' },

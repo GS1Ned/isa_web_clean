@@ -81,6 +81,9 @@ const ComplianceMonitoringDashboard = lazy(
 const IndustryTemplates = lazy(
   () => import("./pages/IndustryTemplates")
 );
+const GS1NLAttributeBrowser = lazy(
+  () => import("./pages/GS1NLAttributeBrowser")
+);
 const ExternalAPIIntegration = lazy(
   () => import("./pages/ExternalAPIIntegration")
 );
@@ -184,6 +187,7 @@ function Router() {
       <Route path="/tools/impact-simulator" component={ImpactSimulator} />
       <Route path="/tools/dual-core" component={DualCoreDemo} />
       <Route path="/tools/attribute-recommender" component={AttributeRecommender} />
+      <Route path="/tools/gs1nl-attributes" component={GS1NLAttributeBrowser} />
       <Route path="/hub/resources" component={HubResources} />
       <Route path="/hub/impact-matrix" component={HubImpactMatrix} />
       <Route path="/hub/dashboard" component={HubUserDashboard} />

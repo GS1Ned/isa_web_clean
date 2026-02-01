@@ -87,10 +87,11 @@ export const askISARouter = router({
         question: z.string().min(3).max(1000),
         conversationId: z.number().optional(),
         userId: z.number().optional(),
+        sector: z.enum(["all", "fmcg", "diy", "healthcare", "fashion", "sustainability", "retail", "agriculture", "construction"]).optional().default("all"),
       })
     )
     .mutation(async ({ input }) => {
-      const { question, conversationId, userId } = input;
+      const { question, conversationId, userId, sector } = input;
 
       try {
         // Step 0: Check cache for existing response
@@ -137,10 +138,12 @@ export const askISARouter = router({
         }
         // Step 1: Search for relevant content using HYBRID search (vector + BM25)
         // This combines semantic understanding with keyword matching for better retrieval
+        // Sector filter boosts relevance of sector-specific content
         const hybridResults = await hybridSearch(question, {
           vectorWeight: 0.7,
           bm25Weight: 0.3,
-          limit: 5,
+          limit: sector === "all" ? 5 : 8, // Fetch more results when filtering by sector
+          sectorFilter: sector !== "all" ? sector : undefined,
         });
 
         // Convert hybrid results to the format expected by the rest of the pipeline
