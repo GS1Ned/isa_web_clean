@@ -28,9 +28,17 @@ import {
   ThumbsUp,
   ThumbsDown,
   Download,
+  Eye,
 } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle2, Library, AlertTriangle, Info } from "lucide-react";
 import { AuthorityBadge, AuthorityScore, AuthorityLegend } from "@/components/AuthorityBadge";
@@ -173,6 +181,7 @@ export default function AskISA() {
   const [advisoryVersion, setAdvisoryVersion] = useState("v1.0");
   const [showHistory, setShowHistory] = useState(false);
   const [authorityFilter, setAuthorityFilter] = useState<AuthorityFilter>('all');
+  const [previewSource, setPreviewSource] = useState<Message['sources'][0] | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Filter sources based on authority level
@@ -1155,22 +1164,33 @@ export default function AskISA() {
                                     </div>
                                   </div>
                                 </div>
-                                {source.url && (
+                                <div className="flex gap-1">
                                   <Button
                                     variant="ghost"
                                     size="sm"
                                     className="h-8 w-8 p-0"
-                                    asChild
+                                    onClick={() => setPreviewSource(source)}
+                                    title="Preview source"
                                   >
-                                    <a
-                                      href={source.url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                    >
-                                      <ExternalLink className="h-4 w-4" />
-                                    </a>
+                                    <Eye className="h-4 w-4" />
                                   </Button>
-                                )}
+                                  {source.url && (
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-8 w-8 p-0"
+                                      asChild
+                                    >
+                                      <a
+                                        href={source.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        <ExternalLink className="h-4 w-4" />
+                                      </a>
+                                    </Button>
+                                  )}
+                                </div>
                               </div>
                             </CardHeader>
                           </Card>
@@ -1228,6 +1248,107 @@ export default function AskISA() {
         </div>
       </Card>
       </div>
+
+      {/* Source Preview Modal */}
+      <Dialog open={!!previewSource} onOpenChange={(open) => !open && setPreviewSource(null)}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {previewSource && getSourceIcon(previewSource.type)}
+              {previewSource?.title}
+            </DialogTitle>
+            <DialogDescription className="flex items-center gap-2 flex-wrap">
+              {previewSource?.type && (
+                <Badge variant="secondary">{getSourceTypeLabel(previewSource.type)}</Badge>
+              )}
+              {previewSource?.authorityLevel && (
+                <AuthorityBadge level={previewSource.authorityLevel} size="sm" />
+              )}
+              <Badge variant="outline">{previewSource?.similarity}% match</Badge>
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 mt-4">
+            {/* Source Metadata */}
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-muted-foreground">Source Type</p>
+                <p className="font-medium">{previewSource?.type ? getSourceTypeLabel(previewSource.type) : 'Unknown'}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Relevance Score</p>
+                <p className="font-medium">{previewSource?.similarity}%</p>
+              </div>
+              {previewSource?.datasetVersion && (
+                <div>
+                  <p className="text-muted-foreground">Dataset Version</p>
+                  <p className="font-medium font-mono">{previewSource.datasetVersion}</p>
+                </div>
+              )}
+              {previewSource?.lastVerifiedDate && (
+                <div>
+                  <p className="text-muted-foreground">Last Verified</p>
+                  <p className="font-medium">{new Date(previewSource.lastVerifiedDate).toLocaleDateString()}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Warnings */}
+            {(previewSource?.isDeprecated || previewSource?.needsVerification) && (
+              <div className="space-y-2">
+                {previewSource.isDeprecated && (
+                  <div className="flex items-center gap-2 p-3 bg-destructive/10 rounded-lg">
+                    <AlertTriangle className="h-4 w-4 text-destructive" />
+                    <div>
+                      <p className="font-medium text-destructive">Deprecated Source</p>
+                      <p className="text-sm text-muted-foreground">{previewSource.deprecationReason || 'This source has been marked as deprecated.'}</p>
+                    </div>
+                  </div>
+                )}
+                {previewSource.needsVerification && !previewSource.isDeprecated && (
+                  <div className="flex items-center gap-2 p-3 bg-yellow-500/10 rounded-lg">
+                    <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                    <div>
+                      <p className="font-medium text-yellow-600">Needs Verification</p>
+                      <p className="text-sm text-muted-foreground">This source should be verified before relying on it for compliance decisions.</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Authority Information */}
+            {previewSource?.authorityLevel && (
+              <div className="p-3 bg-muted rounded-lg">
+                <p className="text-sm font-medium mb-2">Authority Level</p>
+                <div className="flex items-center gap-2">
+                  <AuthorityBadge level={previewSource.authorityLevel} size="md" />
+                  {previewSource.authorityScore && (
+                    <span className="text-sm text-muted-foreground">
+                      Score: {(previewSource.authorityScore * 100).toFixed(0)}%
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              {previewSource?.url && (
+                <Button asChild>
+                  <a href={previewSource.url} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Open Source
+                  </a>
+                </Button>
+              )}
+              <Button variant="outline" onClick={() => setPreviewSource(null)}>
+                Close
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
