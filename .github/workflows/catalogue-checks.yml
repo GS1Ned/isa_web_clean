@@ -35,7 +35,7 @@ jobs:
           fi
           echo "ok"
 
-      - name: IRON gate: catalogue present + fresh
+      - name: IRON gate: "catalogue present + fresh"
         run: bash scripts/isa-catalogue/iron_gate_catalogue.sh
 
       - name: Validate GS1/EFRAG catalogue legacy artefacts + required bodies
