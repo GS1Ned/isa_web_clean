@@ -21,6 +21,9 @@ import {
   Target,
   Download,
   Play,
+  Tractor,
+  Store,
+  Hammer,
 } from "lucide-react";
 
 interface IndustryTemplate {
@@ -44,16 +47,17 @@ interface IndustryTemplate {
 const industryTemplates: IndustryTemplate[] = [
   {
     id: "retail",
-    name: "Retail & Consumer Goods",
+    name: "Retail & Consumer Goods (Doe-het-zelf, tuin & dier)",
     icon: <ShoppingCart className="h-8 w-8" />,
-    description: "Compliance roadmap for retail chains and consumer goods companies focusing on product sustainability and supply chain transparency.",
-    regulations: ["CSRD", "ESRS", "EUDR", "Digital Product Passport", "Packaging Regulation"],
+    description: "Compliance roadmap for retail chains and consumer goods companies focusing on product sustainability and supply chain transparency. Aligned with GS1 Benelux DIY Datamodel.",
+    regulations: ["CSRD", "ESRS", "EUDR", "Digital Product Passport", "Packaging Regulation", "SUP Directive"],
     keyRequirements: [
-      "Supply chain due diligence",
+      "GS1 Benelux DIY Datamodel compliance",
+      "Supply chain due diligence via EPCIS",
       "Product carbon footprint disclosure",
-      "Packaging sustainability reporting",
+      "Packaging sustainability reporting (SUP)",
       "Deforestation-free sourcing verification",
-      "Digital product information sharing"
+      "Digital product information via GS1 Digital Link"
     ],
     timeline: "18-24 months",
     complexity: "High",
@@ -180,20 +184,32 @@ const industryTemplates: IndustryTemplate[] = [
   },
   {
     id: "food",
-    name: "Food & Beverage",
+    name: "Food & Beverage (Levensmiddelen & drogisterij)",
     icon: <Utensils className="h-8 w-8" />,
-    description: "Tailored compliance roadmap for food and beverage companies addressing traceability, sustainability, and agricultural supply chains.",
-    regulations: ["CSRD", "ESRS", "EUDR", "Farm to Fork Strategy", "Food Information Regulation"],
+    description: "Tailored compliance roadmap for food and beverage companies addressing traceability, sustainability, and agricultural supply chains. Aligned with GS1 Benelux FMCG Datamodel.",
+    regulations: ["CSRD", "ESRS", "EUDR", "Farm to Fork Strategy", "Food Information Regulation", "Eco-score"],
     keyRequirements: [
-      "Agricultural supply chain traceability",
+      "GS1 Benelux FMCG Datamodel compliance (476 attributes)",
+      "Agricultural supply chain traceability via GTIN+AI",
       "Deforestation-free ingredient sourcing",
       "Food waste reduction reporting",
-      "Sustainable packaging disclosure",
-      "Water usage and biodiversity impact"
+      "Sustainable packaging disclosure (SUP compliance)",
+      "Water usage and biodiversity impact",
+      "Nutritional information per GS1 Data Source"
     ],
     timeline: "15-20 months",
     complexity: "High",
     phases: [
+      {
+        name: "GS1 Data Source Onboarding",
+        duration: "3 months",
+        tasks: [
+          "Register products in GS1 Data Source",
+          "Map product data to Benelux FMCG Datamodel",
+          "Implement GTIN for all SKUs",
+          "Set up data quality monitoring"
+        ]
+      },
       {
         name: "Supply Chain Mapping",
         duration: "4 months",
@@ -201,17 +217,17 @@ const industryTemplates: IndustryTemplate[] = [
           "Map ingredient origins to farm level",
           "Identify EUDR-relevant commodities",
           "Assess deforestation risk by origin",
-          "Establish traceability systems"
+          "Implement EPCIS for traceability events"
         ]
       },
       {
-        name: "Sustainability Data",
+        name: "Sustainability Data Collection",
         duration: "4 months",
         tasks: [
           "Collect water usage data",
-          "Calculate agricultural emissions",
+          "Calculate carbon footprint per product",
           "Track food waste across value chain",
-          "Assess biodiversity impacts"
+          "Document SUP (Single Use Plastic) content"
         ]
       },
       {
@@ -220,7 +236,7 @@ const industryTemplates: IndustryTemplate[] = [
         tasks: [
           "Obtain deforestation-free certifications",
           "Verify sustainable sourcing claims",
-          "Implement due diligence procedures",
+          "Prepare Eco-score data",
           "Prepare geolocation data for EUDR"
         ]
       },
@@ -229,16 +245,16 @@ const industryTemplates: IndustryTemplate[] = [
         duration: "3 months",
         tasks: [
           "Generate ESRS-compliant disclosures",
-          "Update product labels and information",
+          "Update product labels via GS1 Digital Link",
           "Publish sustainability report",
-          "Engage stakeholders on progress"
+          "Share data with retail partners via GDSN"
         ]
       }
     ],
     quickWins: [
-      "Start with high-risk commodities (palm oil, soy, cocoa)",
-      "Leverage existing food safety traceability",
-      "Use certified sustainable suppliers"
+      "Start with GS1 Data Source for immediate retailer compliance",
+      "Leverage existing food safety traceability systems",
+      "Use Benelux FMCG Datamodel for data standardization"
     ],
     criticalDeadlines: [
       { date: "2025-01-01", requirement: "CSRD reporting begins" },
@@ -448,6 +464,214 @@ const industryTemplates: IndustryTemplate[] = [
       { date: "2025-01-01", requirement: "CSRD reporting for large healthcare organizations" },
       { date: "2026-05-26", requirement: "MDR full implementation deadline" },
       { date: "2027-01-01", requirement: "EU Taxonomy reporting for healthcare" }
+    ]
+  },
+  // GS1 Nederland-Aligned Sector Templates
+  {
+    id: "agricultural",
+    name: "Agricultural & Fresh (Agrarisch & vers)",
+    icon: <Tractor className="h-8 w-8" />,
+    description: "Compliance roadmap for agricultural producers and fresh produce companies focusing on traceability, sustainability, and farm-to-fork transparency. Aligned with GS1 Nederland sector guidelines.",
+    regulations: ["CSRD", "ESRS", "EUDR", "Farm to Fork Strategy", "EU Organic Regulation"],
+    keyRequirements: [
+      "Farm-level traceability (geolocation data)",
+      "Deforestation-free sourcing verification",
+      "Pesticide and fertilizer usage reporting",
+      "Water usage and biodiversity impact",
+      "Organic certification verification",
+      "Cold chain monitoring and documentation"
+    ],
+    timeline: "12-18 months",
+    complexity: "High",
+    phases: [
+      {
+        name: "Farm Registration",
+        duration: "3 months",
+        tasks: [
+          "Register all farm locations with GLN",
+          "Implement plot-level geolocation tracking",
+          "Set up GS1 Digital Link for product identification",
+          "Establish baseline sustainability metrics"
+        ]
+      },
+      {
+        name: "Traceability Implementation",
+        duration: "4 months",
+        tasks: [
+          "Deploy EPCIS for supply chain events",
+          "Implement batch/lot tracking with GTIN+AI",
+          "Connect to GS1 Data Source for data sharing",
+          "Set up cold chain monitoring integration"
+        ]
+      },
+      {
+        name: "Sustainability Data Collection",
+        duration: "4 months",
+        tasks: [
+          "Track water usage per crop/product",
+          "Document pesticide and fertilizer applications",
+          "Calculate carbon footprint per product",
+          "Assess biodiversity impact on farm"
+        ]
+      },
+      {
+        name: "Compliance & Certification",
+        duration: "3 months",
+        tasks: [
+          "Prepare EUDR due diligence statements",
+          "Generate ESRS-compliant disclosures",
+          "Obtain/maintain organic certifications",
+          "Submit regulatory filings"
+        ]
+      }
+    ],
+    quickWins: [
+      "Start with high-value export products",
+      "Leverage existing farm management systems",
+      "Use GS1 standards for immediate interoperability with retailers"
+    ],
+    criticalDeadlines: [
+      { date: "2025-01-01", requirement: "CSRD reporting for large companies" },
+      { date: "2025-12-30", requirement: "EUDR compliance for operators" },
+      { date: "2026-06-30", requirement: "EUDR compliance for SMEs" }
+    ]
+  },
+  {
+    id: "marketplaces",
+    name: "Marketplaces & E-commerce",
+    icon: <Store className="h-8 w-8" />,
+    description: "Compliance framework for online marketplaces and e-commerce platforms focusing on product data quality, fraud prevention, and sustainable commerce. Aligned with GS1 Nederland sector guidelines.",
+    regulations: ["CSRD", "ESRS", "Digital Services Act", "Digital Product Passport", "GPSR"],
+    keyRequirements: [
+      "Product authenticity verification (Verified by GS1)",
+      "Accurate product data and images",
+      "Seller identity verification via GLN",
+      "Return and waste reduction tracking",
+      "Carbon footprint of logistics",
+      "Digital Product Passport integration"
+    ],
+    timeline: "12-15 months",
+    complexity: "Medium",
+    phases: [
+      {
+        name: "Data Quality Foundation",
+        duration: "3 months",
+        tasks: [
+          "Implement GTIN validation for all listings",
+          "Set up Verified by GS1 integration",
+          "Establish product image standards",
+          "Create seller onboarding requirements"
+        ]
+      },
+      {
+        name: "Fraud Prevention",
+        duration: "3 months",
+        tasks: [
+          "Deploy GS1 Digital Link verification",
+          "Implement seller identity checks via GLN",
+          "Set up counterfeit detection systems",
+          "Create consumer reporting mechanisms"
+        ]
+      },
+      {
+        name: "Sustainability Integration",
+        duration: "4 months",
+        tasks: [
+          "Track return rates and reasons",
+          "Calculate logistics carbon footprint",
+          "Implement sustainable packaging requirements",
+          "Prepare for DPP data display"
+        ]
+      },
+      {
+        name: "Compliance & Reporting",
+        duration: "3 months",
+        tasks: [
+          "Generate CSRD-compliant reports",
+          "Implement DSA transparency requirements",
+          "Prepare GPSR compliance documentation",
+          "Set up continuous monitoring"
+        ]
+      }
+    ],
+    quickWins: [
+      "Start with GTIN validation for new listings",
+      "Use GS1 Data Source for product enrichment",
+      "Implement basic seller verification via GLN"
+    ],
+    criticalDeadlines: [
+      { date: "2025-01-01", requirement: "CSRD reporting begins" },
+      { date: "2025-02-17", requirement: "DSA full compliance" },
+      { date: "2027-01-01", requirement: "Digital Product Passport pilot" }
+    ]
+  },
+  {
+    id: "construction",
+    name: "Construction & Installation (Bouw & installatie)",
+    icon: <Hammer className="h-8 w-8" />,
+    description: "Compliance roadmap for construction and installation companies focusing on building material traceability, circular construction, and energy efficiency. Aligned with GS1 Nederland sector guidelines.",
+    regulations: ["CSRD", "ESRS", "Construction Products Regulation", "EPBD", "Digital Building Logbook"],
+    keyRequirements: [
+      "Building material composition disclosure",
+      "Embodied carbon calculation",
+      "Circular material passports",
+      "Installation product traceability (GIAI)",
+      "Energy performance documentation",
+      "Waste and recycling tracking"
+    ],
+    timeline: "15-20 months",
+    complexity: "Medium",
+    phases: [
+      {
+        name: "Product Identification",
+        duration: "3 months",
+        tasks: [
+          "Implement GTIN for all building products",
+          "Register installation locations with GLN",
+          "Set up asset tracking with GIAI",
+          "Create product data templates"
+        ]
+      },
+      {
+        name: "Material Passport Development",
+        duration: "4 months",
+        tasks: [
+          "Document material compositions",
+          "Calculate embodied carbon per product",
+          "Implement GS1 Digital Link for products",
+          "Connect to material databases"
+        ]
+      },
+      {
+        name: "Circular Economy Integration",
+        duration: "5 months",
+        tasks: [
+          "Track material reuse and recycling",
+          "Implement deconstruction planning",
+          "Set up material marketplace connections",
+          "Document end-of-life scenarios"
+        ]
+      },
+      {
+        name: "Compliance & Digital Logbook",
+        duration: "4 months",
+        tasks: [
+          "Prepare CSRD disclosures",
+          "Implement Digital Building Logbook",
+          "Generate CPR documentation",
+          "Set up energy performance tracking"
+        ]
+      }
+    ],
+    quickWins: [
+      "Start with high-impact materials (concrete, steel, insulation)",
+      "Leverage existing BIM data for material tracking",
+      "Use GS1 standards for supply chain integration"
+    ],
+    criticalDeadlines: [
+      { date: "2025-01-01", requirement: "CSRD reporting for large companies" },
+      { date: "2026-01-01", requirement: "CPR revision implementation" },
+      { date: "2028-01-01", requirement: "Digital Building Logbook requirements" }
     ]
   }
 ];
