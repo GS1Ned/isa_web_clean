@@ -40,6 +40,7 @@ import { realtimeRouter } from "./routers/realtime.js";
 import { notificationPreferencesRouter } from "./routers/notification-preferences.js";
 import { executiveAnalyticsRouter } from "./routers/executive-analytics.js";
 import { askISARouter } from "./routers/ask-isa.js";
+import { askISAV2Router } from "./routers/ask-isa-v2.js";
 import { citationAdminRouter } from "./routers/citation-admin.js";
 import { gs1AttributesRouter } from "./routers/gs1-attributes.js";
 import { newsAdminRouter } from "./news-admin-router.js";
@@ -1128,6 +1129,11 @@ export const appRouter = router({
    * Ask ISA - RAG-powered Q&A Router
    */
   askISA: askISARouter,
+  
+  /**
+   * Ask ISA v2 - Enhanced with Knowledge Embeddings and Reasoning
+   */
+  askISAV2: askISAV2Router,
   
   /**
    * Evaluation - Golden set testing for Ask ISA
