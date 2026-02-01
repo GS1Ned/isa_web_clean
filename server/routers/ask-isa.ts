@@ -69,6 +69,13 @@ import {
   getQueriesBySector,
   searchProductionQueries,
 } from "../ask-isa-query-library";
+import {
+  getCachedResponse,
+  cacheResponse,
+  getCacheStats,
+  invalidateCache,
+  cleanupExpiredEntries,
+} from "../ask-isa-cache";
 
 export const askISARouter = router({
   /**
@@ -86,7 +93,21 @@ export const askISARouter = router({
       const { question, conversationId, userId } = input;
 
       try {
-        // Step 0: Analyze query for ambiguity
+        // Step 0: Check cache for existing response
+        const cachedResponse = getCachedResponse(question);
+        if (cachedResponse) {
+          serverLogger.info(`[AskISA] Returning cached response for query`);
+          return {
+            answer: cachedResponse.answer,
+            sources: cachedResponse.sources,
+            confidence: cachedResponse.confidence,
+            claimVerification: cachedResponse.claimVerification,
+            conversationId: conversationId || null,
+            fromCache: true,
+          };
+        }
+
+        // Step 1: Analyze query for ambiguity
         const queryAnalysis = analyzeQuery(question);
         
         // If query is highly ambiguous, return clarification suggestions
@@ -241,12 +262,24 @@ export const askISARouter = router({
           }))
         );
 
-        return {
+        // Calculate claim verification once
+        const claimVerificationResult = verifyResponseClaims(
+          answer,
+          hybridResults.map(r => ({
+            id: r.id,
+            title: r.title,
+            url: r.url,
+            authorityLevel: r.authorityLevel,
+          }))
+        );
+
+        const response = {
           answer,
           sources: validatedSources.map((source, index) => {
             const hybridResult = hybridResults[index];
             return {
               id: source.id,
+              type: hybridResult?.type || 'regulation',
               title: source.title,
               url: source.url,
               similarity: Math.round(source.similarity * 100),
@@ -269,30 +302,14 @@ export const askISARouter = router({
           // Overall authority assessment
           authority: authorityScore,
           // Claim-citation verification
-          claimVerification: verifyResponseClaims(
-            answer,
-            hybridResults.map((r, i) => ({
-              id: r.id,
-              title: r.title,
-              url: r.url,
-              authorityLevel: r.authorityLevel,
-            }))
-          ),
+          claimVerification: claimVerificationResult,
           // Response mode based on evidence quality
           responseMode: determineResponseMode(
             hybridResults.map(r => ({
               score: r.hybridScore,
               authorityLevel: r.authorityLevel,
             })),
-            verifyResponseClaims(
-              answer,
-              hybridResults.map(r => ({
-                id: r.id,
-                title: r.title,
-                url: r.url,
-                authorityLevel: r.authorityLevel,
-              }))
-            ).verificationRate
+            claimVerificationResult.verificationRate
           ),
           // Query analysis info
           queryAnalysis: {
@@ -300,6 +317,30 @@ export const askISARouter = router({
             relatedTopics: queryAnalysis.relatedTopics,
           },
         };
+
+        // Cache the response for future queries
+        cacheResponse(question, {
+          answer,
+          sources: response.sources.map(s => ({
+            id: s.id,
+            type: s.type,
+            title: s.title,
+            url: s.url,
+            similarity: s.similarity,
+            authorityLevel: s.authorityLevel,
+            authorityScore: s.authorityScore,
+          })),
+          confidence,
+          claimVerification: {
+            verificationRate: claimVerificationResult.verificationRate,
+            totalClaims: claimVerificationResult.totalClaims,
+            verifiedClaims: claimVerificationResult.verifiedClaims,
+            unverifiedClaims: claimVerificationResult.unverifiedClaims,
+            warnings: claimVerificationResult.warnings,
+          },
+        });
+
+        return response;
       } catch (error) {
         serverLogger.error("[AskISA] Failed to answer question:", error);
         serverLogger.error("[AskISA] Full error details:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
@@ -676,4 +717,30 @@ export const askISARouter = router({
         throw new Error("Failed to get recent feedback");
       }
     }),
+
+  // Get cache statistics
+  getCacheStats: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Admin access required");
+    }
+    return getCacheStats();
+  }),
+
+  // Invalidate cache (admin only)
+  invalidateCache: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Admin access required");
+    }
+    invalidateCache();
+    return { success: true, message: "Cache invalidated successfully" };
+  }),
+
+  // Cleanup expired cache entries (admin only)
+  cleanupCache: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Admin access required");
+    }
+    const cleaned = cleanupExpiredEntries();
+    return { success: true, cleanedEntries: cleaned };
+  }),
 });
