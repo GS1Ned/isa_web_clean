@@ -162,7 +162,28 @@ export const askISARouter = router({
           };
         }
 
-        // Step 2: Build modular prompt using v2.0 system
+        // Step 2: Load conversation history if conversationId is provided
+        let conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }> = [];
+        
+        if (conversationId) {
+          try {
+            const existingConversation = await getQAConversation(conversationId);
+            if (existingConversation && existingConversation.messages) {
+              // Get last 6 messages (3 turns) for context
+              const recentMessages = existingConversation.messages.slice(-6);
+              conversationHistory = recentMessages.map(msg => ({
+                role: msg.role as 'user' | 'assistant',
+                content: msg.content,
+              }));
+              serverLogger.info(`[AskISA] Loaded ${conversationHistory.length} messages from conversation ${conversationId}`);
+            }
+          } catch (error) {
+            serverLogger.warn(`[AskISA] Failed to load conversation history:`, error);
+            // Continue without history
+          }
+        }
+
+        // Step 3: Build modular prompt using v2.0 system with conversation context
         const contextParams: AskISAContextParams = {
           question,
           relevantChunks: relevantResults.map(r => ({
@@ -173,19 +194,20 @@ export const askISARouter = router({
             url: r.url,
             similarity: Math.round(r.similarity * 100),
           })),
+          conversationHistory: conversationHistory.length > 0 ? conversationHistory : undefined,
         };
 
         const fullPrompt = assembleAskISAPrompt(contextParams, 'v2_modular');
 
-        // Step 3: Generate AI answer using LLM with modular prompt
+        // Step 4: Generate AI answer using LLM with modular prompt
 
-        const response = await invokeLLM({
+        const llmResponse = await invokeLLM({
           messages: [
             { role: "user", content: fullPrompt },
           ],
         });
 
-        const answerContent = response.choices[0]?.message?.content;
+        const answerContent = llmResponse.choices[0]?.message?.content;
         const answer =
           typeof answerContent === "string"
             ? answerContent
