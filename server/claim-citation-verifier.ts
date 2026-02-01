@@ -99,6 +99,7 @@ const CLAIM_PATTERNS = {
  * Citation patterns in text (e.g., [1], [2], (Source: X))
  */
 const CITATION_PATTERNS = [
+  /\[Source\s*(\d+)\]/gi,                  // [Source 1], [Source 2], etc.
   /\[(\d+)\]/g,                           // [1], [2], etc.
   /\((?:Source|Ref|Citation):\s*(\d+)\)/gi, // (Source: 1)
   /\(see\s+(?:source\s+)?(\d+)\)/gi,      // (see source 1)
