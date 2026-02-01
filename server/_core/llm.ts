@@ -219,10 +219,19 @@ const resolveApiUrl = () =>
     ? `${ENV.forgeApiUrl.replace(/\/$/, "")}/v1/chat/completions`
     : "https://api.openai.com/v1/chat/completions";
 
-const assertApiKey = () => {
-  if (!ENV.forgeApiKey) {
+const getApiKey = () => {
+  // Use forgeApiKey if forgeApiUrl is configured, otherwise use openaiApiKey
+  if (ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0) {
+    if (!ENV.forgeApiKey) {
+      throw new Error("BUILT_IN_FORGE_API_KEY is not configured but FORGE_API_URL is set");
+    }
+    return ENV.forgeApiKey;
+  }
+  // Default to OpenAI API
+  if (!ENV.openaiApiKey) {
     throw new Error("OPENAI_API_KEY is not configured");
   }
+  return ENV.openaiApiKey;
 };
 
 const normalizeResponseFormat = ({
@@ -271,7 +280,7 @@ const normalizeResponseFormat = ({
 };
 
 export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
-  assertApiKey();
+  // API key validation is handled by getApiKey() when making the request
 
   const {
     messages,
@@ -319,7 +328,7 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      authorization: `Bearer ${ENV.forgeApiKey}`,
+      authorization: `Bearer ${getApiKey()}`,
     },
     body: JSON.stringify(payload),
   });
