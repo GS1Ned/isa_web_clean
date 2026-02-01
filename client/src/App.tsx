@@ -74,6 +74,9 @@ const ComplianceChecklistGenerator = lazy(
 const AIGapAnalysisWizard = lazy(
   () => import("./pages/AIGapAnalysisWizard")
 );
+const ComplianceMonitoringDashboard = lazy(
+  () => import("./pages/ComplianceMonitoringDashboard")
+);
 const AdminPromptOptimization = lazy(
   () => import("./pages/AdminPromptOptimization")
 );
@@ -229,6 +232,7 @@ function Router() {
       <Route path="/admin/feedback" component={AdminFeedbackDashboard} />
       <Route path="/tools/compliance-checklist" component={ComplianceChecklistGenerator} />
       <Route path="/tools/ai-gap-analysis" component={AIGapAnalysisWizard} />
+      <Route path="/compliance/monitoring" component={ComplianceMonitoringDashboard} />
       <Route
         path="/admin/prompt-optimization"
         component={AdminPromptOptimization}
