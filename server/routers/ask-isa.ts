@@ -302,7 +302,7 @@ export const askISARouter = router({
         };
       } catch (error) {
         serverLogger.error("[AskISA] Failed to answer question:", error);
-        console.error("[AskISA] Full error details:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        serverLogger.error("[AskISA] Full error details:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
         throw new Error("Failed to generate answer. Please try again.");
       }
     }),
