@@ -11,6 +11,9 @@ name: Generate Embeddings
 # Required Secrets:
 #   - DATABASE_URL: MySQL connection string for TiDB Cloud
 #   - OPENAI_API_KEY: OpenAI API key for embedding generation
+#   - VITE_APP_ID: ${{ vars.VITE_APP_ID }}
+#   - JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
 
 on:
   # Manual trigger with optional parameters
