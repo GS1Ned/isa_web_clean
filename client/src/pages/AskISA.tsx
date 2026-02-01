@@ -25,6 +25,8 @@ import {
   History,
   Plus,
   Trash2,
+  ThumbsUp,
+  ThumbsDown,
 } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -94,6 +96,9 @@ interface Message {
     unverifiedClaims: number;
     warnings: string[];
   };
+  // Feedback tracking
+  messageId?: string;
+  feedbackGiven?: 'positive' | 'negative' | null;
 }
 
 // Query library organized by category (30 pre-approved questions from ASK_ISA_QUERY_LIBRARY.md)
@@ -197,6 +202,43 @@ export default function AskISA() {
       conversationsQuery.refetch();
     },
   });
+
+  // Feedback mutation
+  const feedbackMutation = trpc.askISA.submitFeedback.useMutation({
+    onSuccess: (_, variables) => {
+      // Update the message to show feedback was given
+      setMessages(prev => prev.map(msg => 
+        msg.messageId === variables.questionId 
+          ? { ...msg, feedbackGiven: variables.feedbackType }
+          : msg
+      ));
+    },
+  });
+
+  const handleFeedback = (messageIdx: number, feedbackType: 'positive' | 'negative') => {
+    const message = messages[messageIdx];
+    if (!message || message.role !== 'assistant' || !user) return;
+    
+    // Find the user question that preceded this answer
+    const userQuestion = messages[messageIdx - 1];
+    if (!userQuestion || userQuestion.role !== 'user') return;
+    
+    const messageId = message.messageId || `msg_${Date.now()}_${messageIdx}`;
+    
+    feedbackMutation.mutate({
+      questionId: messageId,
+      questionText: userQuestion.content,
+      answerText: message.content,
+      feedbackType,
+      confidenceScore: message.confidence?.score,
+      sourcesCount: message.sources?.length || 0,
+    });
+    
+    // Optimistically update UI
+    setMessages(prev => prev.map((msg, idx) => 
+      idx === messageIdx ? { ...msg, messageId, feedbackGiven: feedbackType } : msg
+    ));
+  };
 
   const askMutation = trpc.askISA.ask.useMutation({
     onSuccess: data => {
@@ -882,6 +924,35 @@ export default function AskISA() {
                                   )}
                                 </div>
                               </div>
+                            </div>
+                          )}
+                          {/* Feedback Buttons */}
+                          {user && !message.needsClarification && message.content && (
+                            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/50">
+                              <span className="text-xs text-muted-foreground">Was this helpful?</span>
+                              <Button
+                                variant={message.feedbackGiven === 'positive' ? 'default' : 'ghost'}
+                                size="sm"
+                                className={`h-7 px-2 ${message.feedbackGiven === 'positive' ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                                onClick={() => handleFeedback(idx, 'positive')}
+                                disabled={feedbackMutation.isPending || !!message.feedbackGiven}
+                              >
+                                <ThumbsUp className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button
+                                variant={message.feedbackGiven === 'negative' ? 'default' : 'ghost'}
+                                size="sm"
+                                className={`h-7 px-2 ${message.feedbackGiven === 'negative' ? 'bg-red-600 hover:bg-red-700' : ''}`}
+                                onClick={() => handleFeedback(idx, 'negative')}
+                                disabled={feedbackMutation.isPending || !!message.feedbackGiven}
+                              >
+                                <ThumbsDown className="h-3.5 w-3.5" />
+                              </Button>
+                              {message.feedbackGiven && (
+                                <span className="text-xs text-muted-foreground ml-2">
+                                  Thanks for your feedback!
+                                </span>
+                              )}
                             </div>
                           )}
                         </>
