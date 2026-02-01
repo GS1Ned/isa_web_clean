@@ -80,6 +80,9 @@ const ComplianceMonitoringDashboard = lazy(
 const IndustryTemplates = lazy(
   () => import("./pages/IndustryTemplates")
 );
+const ExternalAPIIntegration = lazy(
+  () => import("./pages/ExternalAPIIntegration")
+);
 const AdminPromptOptimization = lazy(
   () => import("./pages/AdminPromptOptimization")
 );
@@ -237,6 +240,7 @@ function Router() {
       <Route path="/tools/ai-gap-analysis" component={AIGapAnalysisWizard} />
       <Route path="/compliance/monitoring" component={ComplianceMonitoringDashboard} />
       <Route path="/templates/industry" component={IndustryTemplates} />
+      <Route path="/api-integration" component={ExternalAPIIntegration} />
       <Route
         path="/admin/prompt-optimization"
         component={AdminPromptOptimization}
