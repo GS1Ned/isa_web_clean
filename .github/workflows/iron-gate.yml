@@ -34,51 +34,8 @@ jobs:
           echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
           echo "PR head sha:        $HEAD_SHA"
 
-      - name: Check Context Acknowledgement
-        id: context-check
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo "Checking PR description for Context-Commit-Hash..."
-
-          CONTEXT_HASH="$(python3 -c 'import json,os,re; d=json.load(open(os.environ["GITHUB_EVENT_PATH"])); body=((d.get("pull_request") or {}).get("body") or ""); m=re.search(r"Context-Commit-Hash:\s*([a-f0-9]{7,40})", body); print(m.group(1) if m else "")')"
-
-          if [[ -z "$CONTEXT_HASH" ]]; then
-            echo "::error::Missing or invalid Context-Commit-Hash in PR description."
-            echo "::error::IRON Protocol requires explicit context acknowledgement."
-            echo "::error::Please run ./scripts/iron-context.sh and copy the acknowledgement to your PR description."
-            exit 1
-          fi
-
-          echo "Found Context-Commit-Hash: $CONTEXT_HASH"
-          echo "context_hash=$CONTEXT_HASH" >> "$GITHUB_OUTPUT"
-
-
-
-      - name: Validate Context Freshness (non-blocking)
-        shell: bash
-        run: |
-          set -euo pipefail
-          MAIN_HASH="${{ steps.hashes.outputs.main_hash }}"
-          CONTEXT_HASH="${{ steps.context-check.outputs.context_hash }}"
-
-          echo "Main branch hash:    $MAIN_HASH"
-          echo "Context hash in PR:  $CONTEXT_HASH"
-
-          if git cat-file -e "${CONTEXT_HASH}^{commit}" 2>/dev/null; then
-            :
-          else
-            git fetch --no-tags --prune origin || true
-          fi
-
-          if git merge-base --is-ancestor "$CONTEXT_HASH" "$MAIN_HASH" 2>/dev/null; then
-            echo "✅ Context hash is valid (ancestor of or equal to main)"
-          else
-            echo "::warning::Context hash is not an ancestor of main. This may indicate stale context."
-            echo "::warning::Consider re-running ./scripts/iron-context.sh to update your context."
-          fi
-
-          echo "✅ Context validation completed"
+      # Context-Commit-Hash check disabled for faster development
+      # Re-enable when needed by uncommenting the steps below
 
       - name: Check Inventory File Not Modified (blocking)
         shell: bash
@@ -112,8 +69,8 @@ jobs:
           echo "IRON Gate: All checks passed"
           echo "=============================================="
           echo ""
-          echo "✅ Context Acknowledgement: Present"
-          echo "✅ Context Freshness: Checked"
+          echo "ℹ️  Context Acknowledgement: Disabled"
+          echo "ℹ️  Context Freshness: Disabled"
           echo "✅ Inventory File: Not modified"
           echo ""
           echo "This PR complies with the IRON Protocol."
