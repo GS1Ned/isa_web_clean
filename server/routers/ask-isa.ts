@@ -69,6 +69,13 @@ import {
   getQueriesBySector,
   searchProductionQueries,
 } from "../ask-isa-query-library";
+import {
+  getCachedResponse,
+  cacheResponse,
+  getCacheStats,
+  invalidateCache,
+  cleanupExpiredEntries,
+} from "../ask-isa-cache";
 
 export const askISARouter = router({
   /**
@@ -86,7 +93,21 @@ export const askISARouter = router({
       const { question, conversationId, userId } = input;
 
       try {
-        // Step 0: Analyze query for ambiguity
+        // Step 0: Check cache for existing response
+        const cachedResponse = getCachedResponse(question);
+        if (cachedResponse) {
+          serverLogger.info(`[AskISA] Returning cached response for query`);
+          return {
+            answer: cachedResponse.answer,
+            sources: cachedResponse.sources,
+            confidence: cachedResponse.confidence,
+            claimVerification: cachedResponse.claimVerification,
+            conversationId: conversationId || null,
+            fromCache: true,
+          };
+        }
+
+        // Step 1: Analyze query for ambiguity
         const queryAnalysis = analyzeQuery(question);
         
         // If query is highly ambiguous, return clarification suggestions
@@ -141,7 +162,28 @@ export const askISARouter = router({
           };
         }
 
-        // Step 2: Build modular prompt using v2.0 system
+        // Step 2: Load conversation history if conversationId is provided
+        let conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }> = [];
+        
+        if (conversationId) {
+          try {
+            const existingConversation = await getQAConversation(conversationId);
+            if (existingConversation && existingConversation.messages) {
+              // Get last 6 messages (3 turns) for context
+              const recentMessages = existingConversation.messages.slice(-6);
+              conversationHistory = recentMessages.map(msg => ({
+                role: msg.role as 'user' | 'assistant',
+                content: msg.content,
+              }));
+              serverLogger.info(`[AskISA] Loaded ${conversationHistory.length} messages from conversation ${conversationId}`);
+            }
+          } catch (error) {
+            serverLogger.warn(`[AskISA] Failed to load conversation history:`, error);
+            // Continue without history
+          }
+        }
+
+        // Step 3: Build modular prompt using v2.0 system with conversation context
         const contextParams: AskISAContextParams = {
           question,
           relevantChunks: relevantResults.map(r => ({
@@ -152,19 +194,20 @@ export const askISARouter = router({
             url: r.url,
             similarity: Math.round(r.similarity * 100),
           })),
+          conversationHistory: conversationHistory.length > 0 ? conversationHistory : undefined,
         };
 
         const fullPrompt = assembleAskISAPrompt(contextParams, 'v2_modular');
 
-        // Step 3: Generate AI answer using LLM with modular prompt
+        // Step 4: Generate AI answer using LLM with modular prompt
 
-        const response = await invokeLLM({
+        const llmResponse = await invokeLLM({
           messages: [
             { role: "user", content: fullPrompt },
           ],
         });
 
-        const answerContent = response.choices[0]?.message?.content;
+        const answerContent = llmResponse.choices[0]?.message?.content;
         const answer =
           typeof answerContent === "string"
             ? answerContent
@@ -241,12 +284,24 @@ export const askISARouter = router({
           }))
         );
 
-        return {
+        // Calculate claim verification once
+        const claimVerificationResult = verifyResponseClaims(
+          answer,
+          hybridResults.map(r => ({
+            id: r.id,
+            title: r.title,
+            url: r.url,
+            authorityLevel: r.authorityLevel,
+          }))
+        );
+
+        const response = {
           answer,
           sources: validatedSources.map((source, index) => {
             const hybridResult = hybridResults[index];
             return {
               id: source.id,
+              type: hybridResult?.type || 'regulation',
               title: source.title,
               url: source.url,
               similarity: Math.round(source.similarity * 100),
@@ -269,30 +324,14 @@ export const askISARouter = router({
           // Overall authority assessment
           authority: authorityScore,
           // Claim-citation verification
-          claimVerification: verifyResponseClaims(
-            answer,
-            hybridResults.map((r, i) => ({
-              id: r.id,
-              title: r.title,
-              url: r.url,
-              authorityLevel: r.authorityLevel,
-            }))
-          ),
+          claimVerification: claimVerificationResult,
           // Response mode based on evidence quality
           responseMode: determineResponseMode(
             hybridResults.map(r => ({
               score: r.hybridScore,
               authorityLevel: r.authorityLevel,
             })),
-            verifyResponseClaims(
-              answer,
-              hybridResults.map(r => ({
-                id: r.id,
-                title: r.title,
-                url: r.url,
-                authorityLevel: r.authorityLevel,
-              }))
-            ).verificationRate
+            claimVerificationResult.verificationRate
           ),
           // Query analysis info
           queryAnalysis: {
@@ -300,6 +339,30 @@ export const askISARouter = router({
             relatedTopics: queryAnalysis.relatedTopics,
           },
         };
+
+        // Cache the response for future queries
+        cacheResponse(question, {
+          answer,
+          sources: response.sources.map(s => ({
+            id: s.id,
+            type: s.type,
+            title: s.title,
+            url: s.url,
+            similarity: s.similarity,
+            authorityLevel: s.authorityLevel,
+            authorityScore: s.authorityScore,
+          })),
+          confidence,
+          claimVerification: {
+            verificationRate: claimVerificationResult.verificationRate,
+            totalClaims: claimVerificationResult.totalClaims,
+            verifiedClaims: claimVerificationResult.verifiedClaims,
+            unverifiedClaims: claimVerificationResult.unverifiedClaims,
+            warnings: claimVerificationResult.warnings,
+          },
+        });
+
+        return response;
       } catch (error) {
         serverLogger.error("[AskISA] Failed to answer question:", error);
         serverLogger.error("[AskISA] Full error details:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
@@ -550,4 +613,156 @@ export const askISARouter = router({
         throw new Error("Failed to submit feedback");
       }
     }),
+
+  // Get feedback statistics for admin dashboard
+  getFeedbackStats: protectedProcedure
+    .input(
+      z.object({
+        timeRange: z.enum(["7d", "30d", "90d", "all"]).default("30d"),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Admin access required");
+      }
+
+      const { getDb } = await import("../db");
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      const { askIsaFeedback } = await import("../../drizzle/schema");
+      const { sql, count, avg, and, gte } = await import("drizzle-orm");
+
+      // Calculate date filter
+      let dateFilter = undefined;
+      if (input.timeRange !== "all") {
+        const days = input.timeRange === "7d" ? 7 : input.timeRange === "30d" ? 30 : 90;
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        dateFilter = gte(askIsaFeedback.timestamp, cutoffDate.toISOString());
+      }
+
+      try {
+        // Get positive count
+        const positiveResult = await db
+          .select({ count: count() })
+          .from(askIsaFeedback)
+          .where(
+            dateFilter
+              ? and(sql`${askIsaFeedback.feedbackType} = 'positive'`, dateFilter)
+              : sql`${askIsaFeedback.feedbackType} = 'positive'`
+          );
+
+        // Get negative count
+        const negativeResult = await db
+          .select({ count: count() })
+          .from(askIsaFeedback)
+          .where(
+            dateFilter
+              ? and(sql`${askIsaFeedback.feedbackType} = 'negative'`, dateFilter)
+              : sql`${askIsaFeedback.feedbackType} = 'negative'`
+          );
+
+        // Get average confidence score
+        const avgConfidenceResult = await db
+          .select({ avg: avg(askIsaFeedback.confidenceScore) })
+          .from(askIsaFeedback)
+          .where(dateFilter || undefined);
+
+        // Get daily trend (last 14 days)
+        const trendResult = await db
+          .select({
+            date: sql<string>`DATE(${askIsaFeedback.timestamp})`,
+            positive: sql<number>`SUM(CASE WHEN ${askIsaFeedback.feedbackType} = 'positive' THEN 1 ELSE 0 END)`,
+            negative: sql<number>`SUM(CASE WHEN ${askIsaFeedback.feedbackType} = 'negative' THEN 1 ELSE 0 END)`,
+          })
+          .from(askIsaFeedback)
+          .where(gte(askIsaFeedback.timestamp, sql`DATE_SUB(NOW(), INTERVAL 14 DAY)`))
+          .groupBy(sql`DATE(${askIsaFeedback.timestamp})`)
+          .orderBy(sql`DATE(${askIsaFeedback.timestamp})`);
+
+        return {
+          positive: positiveResult[0]?.count || 0,
+          negative: negativeResult[0]?.count || 0,
+          avgConfidence: avgConfidenceResult[0]?.avg ? Number(avgConfidenceResult[0].avg) : null,
+          dailyTrend: trendResult.map(row => ({
+            date: row.date,
+            positive: Number(row.positive) || 0,
+            negative: Number(row.negative) || 0,
+          })),
+        };
+      } catch (error) {
+        serverLogger.error("[AskISA] Failed to get feedback stats:", error);
+        throw new Error("Failed to get feedback statistics");
+      }
+    }),
+
+  // Get recent feedback entries for admin review
+  getRecentFeedback: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).default(20),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Admin access required");
+      }
+
+      const { getDb } = await import("../db");
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      const { askIsaFeedback } = await import("../../drizzle/schema");
+      const { desc } = await import("drizzle-orm");
+
+      try {
+        const feedback = await db
+          .select()
+          .from(askIsaFeedback)
+          .orderBy(desc(askIsaFeedback.timestamp))
+          .limit(input.limit);
+
+        return feedback.map(f => ({
+          id: String(f.id),
+          questionId: f.questionId,
+          questionText: f.questionText,
+          answerText: f.answerText,
+          feedbackType: f.feedbackType,
+          feedbackComment: f.feedbackComment,
+          confidenceScore: f.confidenceScore,
+          sourcesCount: f.sourcesCount,
+          timestamp: f.timestamp,
+        }));
+      } catch (error) {
+        serverLogger.error("[AskISA] Failed to get recent feedback:", error);
+        throw new Error("Failed to get recent feedback");
+      }
+    }),
+
+  // Get cache statistics
+  getCacheStats: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Admin access required");
+    }
+    return getCacheStats();
+  }),
+
+  // Invalidate cache (admin only)
+  invalidateCache: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Admin access required");
+    }
+    invalidateCache();
+    return { success: true, message: "Cache invalidated successfully" };
+  }),
+
+  // Cleanup expired cache entries (admin only)
+  cleanupCache: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Admin access required");
+    }
+    const cleaned = cleanupExpiredEntries();
+    return { success: true, cleanedEntries: cleaned };
+  }),
 });
