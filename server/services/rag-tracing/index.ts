@@ -11,7 +11,7 @@
 
 import { getDb } from '../../db';
 import { eq, desc, sql, and, gte } from 'drizzle-orm';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import { serverLogger } from '../../_core/logger-wiring';
 
 // ============================================================================
@@ -45,7 +45,8 @@ export interface ExtractedClaim {
 }
 
 export interface Citation {
-  text: string;
+  text?: string;
+  citedText?: string;
   sourceChunkId: number;
   sourceTitle?: string;
   sourceUrl?: string;
@@ -77,7 +78,7 @@ export interface RagTraceUpdate {
   abstentionReason?: string;
   
   // Verification
-  verificationStatus?: 'pending' | 'verified' | 'failed' | 'skipped';
+  verificationStatus?: string;
   verificationDetails?: Record<string, any>;
   
   // Model info
@@ -172,7 +173,7 @@ export class RagTraceManager {
   private completed: boolean = false;
   
   private constructor(input: RagTraceInput) {
-    this.traceId = uuidv4();
+    this.traceId = randomUUID();
     this.startTime = Date.now();
     this.input = input;
   }
@@ -198,7 +199,7 @@ export class RagTraceManager {
         `);
         manager.dbId = (result as any)[0]?.insertId;
         
-        serverLogger.debug(`[RagTrace] Started trace ${manager.traceId}`);
+        serverLogger.info(`[RagTrace] Started trace ${manager.traceId}`);
       }
     } catch (error) {
       serverLogger.warn(`[RagTrace] Failed to start trace: ${error}`);
@@ -230,7 +231,7 @@ export class RagTraceManager {
       this.updates.rerankScores = rerankResults.map(r => r.rerankScore);
     }
     
-    serverLogger.debug(`[RagTrace] Recorded retrieval: ${results.length} chunks in ${latencyMs}ms`);
+    serverLogger.info(`[RagTrace] Recorded retrieval: ${results.length} chunks in ${latencyMs}ms`);
   }
   
   /**
@@ -245,7 +246,7 @@ export class RagTraceManager {
       this.updates.selectedSpans = selectedSpans;
     }
     
-    serverLogger.debug(`[RagTrace] Recorded evidence selection: ${selectedChunkIds.length} chunks`);
+    serverLogger.info(`[RagTrace] Recorded evidence selection: ${selectedChunkIds.length} chunks`);
   }
   
   /**
@@ -254,7 +255,7 @@ export class RagTraceManager {
   recordClaimExtraction(claims: ExtractedClaim[]): void {
     this.updates.extractedClaims = claims;
     
-    serverLogger.debug(`[RagTrace] Recorded ${claims.length} extracted claims`);
+    serverLogger.info(`[RagTrace] Recorded ${claims.length} extracted claims`);
   }
   
   /**
@@ -282,11 +283,11 @@ export class RagTraceManager {
     if (citations.length > 0 && this.updates.selectedChunkIds) {
       const citedChunkIds = new Set(citations.map(c => c.sourceChunkId));
       const selectedChunkIds = new Set(this.updates.selectedChunkIds);
-      const intersection = [...citedChunkIds].filter(id => selectedChunkIds.has(id));
+      const intersection = Array.from(citedChunkIds).filter(id => selectedChunkIds.has(id));
       this.updates.citationPrecision = intersection.length / citations.length;
     }
     
-    serverLogger.debug(`[RagTrace] Recorded generation: ${answer.length} chars, ${citations.length} citations`);
+    serverLogger.info(`[RagTrace] Recorded generation: ${answer.length} chars, ${citations.length} citations`);
   }
   
   /**
@@ -296,7 +297,7 @@ export class RagTraceManager {
     this.updates.abstained = true;
     this.updates.abstentionReason = reason;
     
-    serverLogger.debug(`[RagTrace] Recorded abstention: ${reason}`);
+    serverLogger.info(`[RagTrace] Recorded abstention: ${reason}`);
   }
   
   /**
@@ -306,18 +307,18 @@ export class RagTraceManager {
     this.updates.cacheHit = true;
     this.updates.cacheKey = cacheKey;
     
-    serverLogger.debug(`[RagTrace] Recorded cache hit: ${cacheKey}`);
+    serverLogger.info(`[RagTrace] Recorded cache hit: ${cacheKey}`);
   }
   
   /**
    * Record error
    */
-  recordError(error: Error): void {
+  recordError(error: Error, errorCategory?: string): void {
     this.updates.errorOccurred = true;
-    this.updates.errorMessage = error.message;
+    this.updates.errorMessage = errorCategory ? `[${errorCategory}] ${error.message}` : error.message;
     this.updates.errorStack = error.stack;
     
-    serverLogger.debug(`[RagTrace] Recorded error: ${error.message}`);
+    serverLogger.info(`[RagTrace] Recorded error: ${errorCategory || 'UNKNOWN'} - ${error.message}`);
   }
   
   /**
@@ -331,6 +332,21 @@ export class RagTraceManager {
     if (options.llmModel) this.updates.llmModel = options.llmModel;
     if (options.embeddingModel) this.updates.embeddingModel = options.embeddingModel;
     if (options.promptVersion) this.updates.promptVersion = options.promptVersion;
+  }
+  
+  /**
+   * Set verification status and details
+   */
+  setVerificationStatus(
+    status: string,
+    details?: Record<string, any>
+  ): void {
+    this.updates.verificationStatus = status;
+    if (details) {
+      this.updates.verificationDetails = details;
+    }
+    
+    serverLogger.info(`[RagTrace] Set verification status: ${status}`);
   }
   
   /**
@@ -370,6 +386,8 @@ export class RagTraceManager {
             prompt_version = ${this.updates.promptVersion || null},
             cache_hit = ${this.updates.cacheHit ? 1 : 0},
             cache_key = ${this.updates.cacheKey || null},
+            verification_status = ${this.updates.verificationStatus || 'NOT_CHECKED'},
+            verification_details = ${JSON.stringify(this.updates.verificationDetails || {})},
             error_occurred = ${this.updates.errorOccurred ? 1 : 0},
             error_message = ${this.updates.errorMessage || null},
             error_stack = ${this.updates.errorStack || null}
@@ -399,7 +417,7 @@ export async function getTraceByTraceId(traceId: string): Promise<RagTrace | nul
     SELECT * FROM rag_traces WHERE trace_id = ${traceId}
   `);
   
-  const rows = result as any[];
+  const rows = result as unknown as any[];
   if (rows.length === 0) return null;
   
   return mapRowToTrace(rows[0]);
@@ -418,7 +436,7 @@ export async function getRecentTraces(limit: number = 100): Promise<RagTrace[]> 
     LIMIT ${limit}
   `);
   
-  return (result as any[]).map(mapRowToTrace);
+  return (result as unknown as any[]).map(mapRowToTrace);
 }
 
 /**
@@ -435,7 +453,7 @@ export async function getErrorTraces(limit: number = 100): Promise<RagTrace[]> {
     LIMIT ${limit}
   `);
   
-  return (result as any[]).map(mapRowToTrace);
+  return (result as unknown as any[]).map(mapRowToTrace);
 }
 
 /**
@@ -452,7 +470,7 @@ export async function getAbstainedTraces(limit: number = 100): Promise<RagTrace[
     LIMIT ${limit}
   `);
   
-  return (result as any[]).map(mapRowToTrace);
+  return (result as unknown as any[]).map(mapRowToTrace);
 }
 
 /**
@@ -497,7 +515,7 @@ export async function getTraceStats(days: number = 7): Promise<{
     WHERE created_at >= ${since.toISOString()}
   `);
   
-  const stats = (result as any[])[0];
+  const stats = (result as unknown as any[])[0];
   const totalTraces = stats.total_traces || 0;
   
   return {
