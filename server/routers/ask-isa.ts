@@ -78,6 +78,7 @@ import {
 } from "../ask-isa-cache";
 import { RagTraceManager } from "../services/rag-tracing";
 import { AbstentionReasonCode, classifyError } from "../services/rag-tracing/failure-taxonomy";
+import { calculateRagQualityMetrics, type SourceInfo } from "../services/rag-metrics";
 import { getVerificationStatus } from "../services/rag-tracing/failure-taxonomy";
 
 export const askISARouter = router({
@@ -398,6 +399,35 @@ export const askISARouter = router({
           }
         );
         
+        // Calculate RAG quality metrics
+        const sourceInfos: SourceInfo[] = hybridResults.map((r, index) => ({
+          sourceNumber: index + 1,
+          sourceType: r.type || 'unknown',
+          authorityLevel: r.authorityLevel || 'guidance',
+          citationCount: 0, // Will be calculated by the metric
+        }));
+        
+        const ragQualityMetrics = calculateRagQualityMetrics(answer, sourceInfos);
+        
+        // Log quality metrics for monitoring
+        serverLogger.info(
+          `[AskISA] Quality metrics: ` +
+          `traceability=${(ragQualityMetrics.traceability.overallScore * 100).toFixed(0)}%, ` +
+          `sources=${ragQualityMetrics.diversity.uniqueSourcesCited}/${ragQualityMetrics.diversity.totalSourcesAvailable}, ` +
+          `pattern=${ragQualityMetrics.diversity.interpretation.pattern}, ` +
+          `level=${ragQualityMetrics.assessment.level}`
+        );
+        
+        // Add metrics to trace metadata
+        trace.setMetrics({
+          traceabilityScore: ragQualityMetrics.traceability.overallScore,
+          citationPresenceRate: ragQualityMetrics.traceability.citationPresenceRate,
+          citationValidityRate: ragQualityMetrics.traceability.citationValidityRate,
+          sourceUtilization: ragQualityMetrics.diversity.utilizationRate,
+          sourceDiversityPattern: ragQualityMetrics.diversity.interpretation.pattern,
+          qualityLevel: ragQualityMetrics.assessment.level,
+        });
+
         // Complete the trace
         await trace.complete();
 

@@ -350,6 +350,37 @@ export class RagTraceManager {
   }
   
   /**
+   * Set RAG quality metrics
+   */
+  setMetrics(metrics: {
+    traceabilityScore?: number;
+    citationPresenceRate?: number;
+    citationValidityRate?: number;
+    sourceUtilization?: number;
+    sourceDiversityPattern?: string;
+    qualityLevel?: string;
+  }): void {
+    // Store metrics in verification details for now
+    // In future, these could have dedicated columns
+    this.updates.verificationDetails = {
+      ...this.updates.verificationDetails,
+      ragQualityMetrics: metrics,
+    };
+    
+    // Also update confidence score if traceability score is available
+    if (metrics.traceabilityScore !== undefined) {
+      // Blend traceability with existing confidence
+      const existingConfidence = this.updates.confidenceScore || 0.5;
+      this.updates.confidenceScore = (existingConfidence + metrics.traceabilityScore) / 2;
+    }
+    
+    serverLogger.info(
+      `[RagTrace] Set metrics: traceability=${metrics.traceabilityScore?.toFixed(2)}, ` +
+      `pattern=${metrics.sourceDiversityPattern}, level=${metrics.qualityLevel}`
+    );
+  }
+  
+  /**
    * Complete the trace and persist to database
    */
   async complete(): Promise<void> {
