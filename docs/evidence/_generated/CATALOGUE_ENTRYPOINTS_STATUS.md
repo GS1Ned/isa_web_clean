@@ -1,7 +1,7 @@
 # Catalogue entrypoints status
 
-- last_verified_at: `2026-02-01`
-- verified_at: `2026-02-01T05:10:25Z`
+- last_verified_at: `2026-02-02`
+- verified_at: `2026-02-02T05:09:46Z`
 - total: `14`, ok: `10`, fail: `4`
 
 ## EFRAG
@@ -23,7 +23,7 @@
   - content_type: `text/html; charset=utf-8`
 - 200 ok=true `https://knowledgehub.efrag.org/eng`
   - content_type: `text/html; charset=utf-8`
-  - etag: `W/"7f052-O/5AsTYae47eV858aFt3c1kx5hM"`
+  - etag: `W/"7f05e-HjaGuBGiirYpacp2WmKjLQWCvoo"`
 
 ## GS1_EUROPE
 
