@@ -76,6 +76,9 @@ import {
   invalidateCache,
   cleanupExpiredEntries,
 } from "../ask-isa-cache";
+import { RagTraceManager } from "../services/rag-tracing";
+import { AbstentionReasonCode, classifyError } from "../services/rag-tracing/failure-taxonomy";
+import { getVerificationStatus } from "../services/rag-tracing/failure-taxonomy";
 
 export const askISARouter = router({
   /**
@@ -92,12 +95,22 @@ export const askISARouter = router({
     )
     .mutation(async ({ input }) => {
       const { question, conversationId, userId, sector } = input;
+      
+      // Initialize RAG trace for observability
+      const trace = await RagTraceManager.start({
+        query: question,
+        sectorFilter: sector !== 'all' ? sector : undefined,
+        conversationId,
+        userId,
+      });
 
       try {
         // Step 0: Check cache for existing response
         const cachedResponse = getCachedResponse(question);
         if (cachedResponse) {
           serverLogger.info(`[AskISA] Returning cached response for query`);
+          trace.recordCacheHit(question);
+          await trace.complete();
           return {
             answer: cachedResponse.answer,
             sources: cachedResponse.sources,
@@ -114,6 +127,8 @@ export const askISARouter = router({
         // If query is highly ambiguous, return clarification suggestions
         if (queryAnalysis.isAmbiguous && queryAnalysis.ambiguityScore >= 0.5) {
           serverLogger.info(`[AskISA] Query is ambiguous (score: ${queryAnalysis.ambiguityScore}), returning clarifications`);
+          trace.recordAbstention(AbstentionReasonCode.AMBIGUOUS_QUERY);
+          await trace.complete();
           return {
             answer: '',
             sources: [],
@@ -128,6 +143,8 @@ export const askISARouter = router({
         const classification = classifyQuery(question);
         if (!classification.allowed) {
           const refusalMessage = generateRefusalMessage(classification);
+          trace.recordAbstention(AbstentionReasonCode.OUT_OF_SCOPE);
+          await trace.complete();
           return {
             answer: refusalMessage,
             sources: [],
@@ -139,12 +156,20 @@ export const askISARouter = router({
         // Step 1: Search for relevant content using HYBRID search (vector + BM25)
         // This combines semantic understanding with keyword matching for better retrieval
         // Sector filter boosts relevance of sector-specific content
+        const retrievalStartTime = Date.now();
         const hybridResults = await hybridSearch(question, {
           vectorWeight: 0.7,
           bm25Weight: 0.3,
           limit: sector === "all" ? 5 : 8, // Fetch more results when filtering by sector
           sectorFilter: sector !== "all" ? sector : undefined,
         });
+        const retrievalLatencyMs = Date.now() - retrievalStartTime;
+        
+        // Record retrieval in trace
+        trace.recordRetrieval(
+          hybridResults.map(r => ({ chunkId: r.id, score: r.hybridScore })),
+          retrievalLatencyMs
+        );
 
         // Convert hybrid results to the format expected by the rest of the pipeline
         const relevantResults = hybridResults.map(r => ({
@@ -157,6 +182,8 @@ export const askISARouter = router({
         }));
 
         if (relevantResults.length === 0) {
+          trace.recordAbstention(AbstentionReasonCode.NO_RELEVANT_EVIDENCE);
+          await trace.complete();
           return {
             answer:
               "I couldn't find any relevant information in the knowledge base to answer your question. Please try rephrasing or ask about EU regulations (CSRD, EUDR, DPP) or GS1 standards.",
@@ -203,12 +230,13 @@ export const askISARouter = router({
         const fullPrompt = assembleAskISAPrompt(contextParams, 'v2_modular');
 
         // Step 4: Generate AI answer using LLM with modular prompt
-
+        const generationStartTime = Date.now();
         const llmResponse = await invokeLLM({
           messages: [
             { role: "user", content: fullPrompt },
           ],
         });
+        const generationLatencyMs = Date.now() - generationStartTime;
 
         const answerContent = llmResponse.choices[0]?.message?.content;
         const answer =
@@ -343,6 +371,36 @@ export const askISARouter = router({
           },
         };
 
+        // Record generation in trace
+        trace.recordGeneration(
+          answer,
+          hybridResults.map(r => ({
+            sourceChunkId: r.id,
+            sourceTitle: r.title,
+            sourceUrl: r.url,
+            citedText: r.description?.slice(0, 200) || '',
+          })),
+          generationLatencyMs,
+          {
+            llmModel: 'gpt-4o-mini',
+            promptVersion: 'v2_modular',
+            confidenceScore: confidence.score,
+          }
+        );
+        
+        // Set verification status based on claim verification
+        trace.setVerificationStatus(
+          getVerificationStatus(claimVerificationResult.verificationRate),
+          {
+            verificationRate: claimVerificationResult.verificationRate,
+            totalClaims: claimVerificationResult.totalClaims,
+            verifiedClaims: claimVerificationResult.verifiedClaims,
+          }
+        );
+        
+        // Complete the trace
+        await trace.complete();
+
         // Cache the response for future queries
         cacheResponse(question, {
           answer,
@@ -369,6 +427,13 @@ export const askISARouter = router({
       } catch (error) {
         serverLogger.error("[AskISA] Failed to answer question:", error);
         serverLogger.error("[AskISA] Full error details:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        
+        // Record error in trace
+        if (error instanceof Error) {
+          trace.recordError(error, classifyError(error));
+        }
+        await trace.complete();
+        
         throw new Error("Failed to generate answer. Please try again.");
       }
     }),
