@@ -80,6 +80,12 @@ import { RagTraceManager } from "../services/rag-tracing";
 import { AbstentionReasonCode, classifyError } from "../services/rag-tracing/failure-taxonomy";
 import { calculateRagQualityMetrics, type SourceInfo } from "../services/rag-metrics";
 import { getVerificationStatus } from "../services/rag-tracing/failure-taxonomy";
+import { 
+  analyzeEvidenceSufficiency, 
+  generateAbstentionMessage,
+  inferQueryType,
+  type EvidenceChunk 
+} from "../services/evidence-analysis";
 
 export const askISARouter = router({
   /**
@@ -190,6 +196,66 @@ export const askISARouter = router({
               "I couldn't find any relevant information in the knowledge base to answer your question. Please try rephrasing or ask about EU regulations (CSRD, EUDR, DPP) or GS1 standards.",
             sources: [],
             conversationId: conversationId || null,
+          };
+        }
+
+        // Step 1.5: Analyze evidence sufficiency (Hard Abstention Policy - Gate 2.2)
+        const evidenceChunks: EvidenceChunk[] = hybridResults.map(r => ({
+          id: r.id,
+          title: r.title,
+          content: r.description,
+          description: r.description,
+          similarity: r.hybridScore,
+          authorityLevel: r.authorityLevel,
+          sourceType: r.type,
+          url: r.url,
+        }));
+        
+        const queryType = inferQueryType(question);
+        const evidenceAnalysis = analyzeEvidenceSufficiency(evidenceChunks, {
+          query: question,
+          queryType,
+        });
+        
+        // Log evidence analysis for monitoring
+        serverLogger.info(
+          `[AskISA] Evidence analysis: sufficient=${evidenceAnalysis.isSufficient}, ` +
+          `avgSimilarity=${(evidenceAnalysis.details.avgSimilarity * 100).toFixed(0)}%, ` +
+          `highQualityChunks=${evidenceAnalysis.details.highQualityChunks}, ` +
+          `authority=${evidenceAnalysis.details.highestAuthority}, ` +
+          `conflicts=${evidenceAnalysis.details.hasConflicts}`
+        );
+        
+        // If evidence is insufficient, abstain
+        if (!evidenceAnalysis.isSufficient && evidenceAnalysis.abstentionReason) {
+          const abstentionMessage = generateAbstentionMessage(
+            evidenceAnalysis.abstentionReason,
+            evidenceAnalysis.details
+          );
+          
+          trace.recordAbstention(evidenceAnalysis.abstentionReason);
+          await trace.complete();
+          
+          return {
+            answer: abstentionMessage,
+            sources: relevantResults.map(r => ({
+              id: r.id,
+              type: r.type,
+              title: r.title,
+              url: r.url,
+              similarity: Math.round(r.similarity * 100),
+            })),
+            conversationId: conversationId || null,
+            queryType,
+            confidence: { level: 'low' as const, score: evidenceAnalysis.analysisConfidence },
+            abstained: true,
+            abstentionReason: evidenceAnalysis.abstentionReason,
+            evidenceAnalysis: {
+              avgSimilarity: evidenceAnalysis.details.avgSimilarity,
+              highQualityChunks: evidenceAnalysis.details.highQualityChunks,
+              highestAuthority: evidenceAnalysis.details.highestAuthority,
+              hasConflicts: evidenceAnalysis.details.hasConflicts,
+            },
           };
         }
 
