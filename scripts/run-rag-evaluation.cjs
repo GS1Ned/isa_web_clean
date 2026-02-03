@@ -106,65 +106,41 @@ async function fetchGoldenPairs(conn, options) {
   return rows;
 }
 
-// Simulate Ask ISA query (in production, this would call the actual API)
-async function queryAskISA(question, conn) {
-  const startTime = Date.now();
-  
-  // For now, we simulate by doing a vector search
-  // In production, this would call the actual Ask ISA endpoint
-  
-  try {
-    // Get embedding for question
-    const embedding = await getEmbedding(question);
-    
-    // Search knowledge base
-    const [results] = await conn.query(`
-      SELECT id, content, sourceType, authority_level,
-             (1 - VEC_COSINE_DISTANCE(embedding, ?)) as similarity
-      FROM knowledge_embeddings
-      WHERE 1 - VEC_COSINE_DISTANCE(embedding, ?) > 0.3
-      ORDER BY similarity DESC
-      LIMIT 5
-    `, [JSON.stringify(embedding), JSON.stringify(embedding)]);
-    
-    const latencyMs = Date.now() - startTime;
-    
-    if (results.length === 0) {
-      return {
-        answer: null,
-        citations: [],
-        abstained: true,
-        abstentionReason: 'NO_RELEVANT_RESULTS',
-        latencyMs
-      };
-    }
-    
-    // Generate answer using retrieved context
-    const context = results.map(r => r.content).join('\n\n');
-    const answer = await generateAnswer(question, context);
-    
-    return {
-      answer,
-      citations: results.map(r => ({
-        sourceType: r.sourceType,
-        similarity: r.similarity,
-        authorityLevel: r.authority_level
-      })),
-      abstained: false,
-      abstentionReason: null,
-      latencyMs: Date.now() - startTime
-    };
-    
-  } catch (error) {
-    return {
-      answer: null,
-      citations: [],
-      abstained: true,
-      abstentionReason: 'ERROR',
-      error: error.message,
-      latencyMs: Date.now() - startTime
-    };
+// Calculate cosine similarity between two vectors (in-memory, like production code)
+function cosineSimilarity(a, b) {
+  if (a.length !== b.length) {
+    throw new Error(`Vectors must have same dimensions: ${a.length} vs ${b.length}`);
   }
+  
+  let dotProduct = 0;
+  let normA = 0;
+  let normB = 0;
+  
+  for (let i = 0; i < a.length; i++) {
+    dotProduct += a[i] * b[i];
+    normA += a[i] * a[i];
+    normB += b[i] * b[i];
+  }
+  
+  const magnitude = Math.sqrt(normA) * Math.sqrt(normB);
+  if (magnitude === 0) return 0;
+  
+  return dotProduct / magnitude;
+}
+
+// Fetch all knowledge embeddings from database
+async function fetchKnowledgeEmbeddings(conn) {
+  const [rows] = await conn.query(`
+    SELECT id, content, sourceType, authority_level, embedding
+    FROM knowledge_embeddings
+    WHERE isDeprecated = 0
+  `);
+  
+  // Parse JSON embeddings
+  return rows.map(row => ({
+    ...row,
+    embedding: typeof row.embedding === 'string' ? JSON.parse(row.embedding) : row.embedding
+  }));
 }
 
 // Get embedding from OpenAI
@@ -182,11 +158,83 @@ async function getEmbedding(text) {
   });
   
   if (!response.ok) {
-    throw new Error(`Embedding API error: ${response.status}`);
+    const errorText = await response.text();
+    throw new Error(`Embedding API error: ${response.status} - ${errorText}`);
   }
   
   const data = await response.json();
   return data.data[0].embedding;
+}
+
+// Simulate Ask ISA query using in-memory vector search
+async function queryAskISA(question, knowledgeBase) {
+  const startTime = Date.now();
+  
+  try {
+    // Get embedding for question
+    const queryEmbedding = await getEmbedding(question);
+    
+    // Calculate similarity for all items (like production code)
+    const results = [];
+    for (const item of knowledgeBase) {
+      if (!item.embedding || !Array.isArray(item.embedding) || item.embedding.length === 0) continue;
+      
+      const similarity = cosineSimilarity(queryEmbedding, item.embedding);
+      
+      if (similarity > 0.2) {
+        results.push({
+          id: item.id,
+          content: item.content,
+          sourceType: item.sourceType,
+          authorityLevel: item.authority_level,
+          similarity
+        });
+      }
+    }
+    
+    // Sort by similarity
+    results.sort((a, b) => b.similarity - a.similarity);
+    const topResults = results.slice(0, 5);
+    
+    const latencyMs = Date.now() - startTime;
+    
+    if (topResults.length === 0) {
+      return {
+        answer: null,
+        citations: [],
+        abstained: true,
+        abstentionReason: 'NO_RELEVANT_RESULTS',
+        latencyMs
+      };
+    }
+    
+    // Generate answer using retrieved context
+    const context = topResults.map(r => r.content).join('\n\n');
+    const answer = await generateAnswer(question, context);
+    
+    return {
+      answer,
+      citations: topResults.map(r => ({
+        sourceType: r.sourceType,
+        similarity: r.similarity,
+        authorityLevel: r.authorityLevel
+      })),
+      abstained: false,
+      abstentionReason: null,
+      latencyMs: Date.now() - startTime
+    };
+    
+  } catch (error) {
+    console.error('Query error:', error.message);
+    return {
+      answer: null,
+      citations: [],
+      abstained: true,
+      abstentionReason: 'ERROR',
+      error: error.message,
+      latencyMs: Date.now() - startTime
+    };
+  }
 }
 
 // Generate answer using GPT
@@ -229,18 +277,7 @@ async function calculateSemanticSimilarity(text1, text2) {
     getEmbedding(text2)
   ]);
   
-  // Cosine similarity
-  let dotProduct = 0;
-  let norm1 = 0;
-  let norm2 = 0;
-  
-  for (let i = 0; i < emb1.length; i++) {
-    dotProduct += emb1[i] * emb2[i];
-    norm1 += emb1[i] * emb1[i];
-    norm2 += emb2[i] * emb2[i];
-  }
-  
-  return dotProduct / (Math.sqrt(norm1) * Math.sqrt(norm2));
+  return cosineSimilarity(emb1, emb2);
 }
 
 // Calculate citation precision
@@ -263,7 +300,7 @@ function calculateCitationPrecision(expectedCitations, actualCitations) {
 }
 
 // Evaluate a single test case
-async function evaluateTestCase(pair, conn, options) {
+async function evaluateTestCase(pair, knowledgeBase, options) {
   const result = {
     id: pair.id,
     question: pair.question,
@@ -275,7 +312,7 @@ async function evaluateTestCase(pair, conn, options) {
   
   try {
     // Query Ask ISA
-    const response = await queryAskISA(pair.question, conn);
+    const response = await queryAskISA(pair.question, knowledgeBase);
     result.response = response;
     
     // Check abstention
@@ -343,24 +380,28 @@ async function evaluateTestCase(pair, conn, options) {
 // Store evaluation results
 async function storeEvaluationResults(conn, runId, results) {
   for (const result of results) {
-    await conn.query(`
-      INSERT INTO evaluation_results 
-      (id, golden_pair_id, run_id, generated_answer, citations_used, 
-       semantic_similarity, citation_precision, latency_ms, passed, 
-       failure_reason, evaluated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-    `, [
-      crypto.randomUUID(),
-      result.id,
-      runId,
-      result.response?.answer || null,
-      JSON.stringify(result.response?.citations || []),
-      result.metrics?.semanticSimilarity || null,
-      result.metrics?.citationPrecision || null,
-      result.metrics?.latencyMs || null,
-      result.passed ? 1 : 0,
-      result.failureReason || null
-    ]);
+    try {
+      await conn.query(`
+        INSERT INTO evaluation_results 
+        (run_id, run_type, golden_qa_id, generated_answer, generated_citations, 
+         abstained, answer_correctness, citation_precision, citation_recall,
+         abstention_correct, evaluator_model, evaluator_notes)
+        VALUES (?, 'ad_hoc', ?, ?, ?, ?, ?, ?, ?, ?, 'gpt-4o-mini', ?)
+      `, [
+        runId,
+        result.id,
+        result.response?.answer || null,
+        JSON.stringify(result.response?.citations || []),
+        result.response?.abstained ? 1 : 0,
+        result.metrics?.semanticSimilarity || null,
+        result.metrics?.citationPrecision || null,
+        null, // citation_recall - not calculated yet
+        result.metrics?.abstentionCorrect ? 1 : (result.metrics?.abstentionCorrect === false ? 0 : null),
+        result.failureReason || null
+      ]);
+    } catch (err) {
+      console.error(`Failed to store result for ${result.id}:`, err.message);
+    }
   }
 }
 
@@ -375,6 +416,11 @@ async function runEvaluation() {
   console.log(`   Difficulty: ${options.difficulty || 'all'}`);
   console.log(`   Dry run: ${options.dryRun}`);
   console.log(`   Verbose: ${options.verbose}\n`);
+  
+  if (!CONFIG.openaiApiKey) {
+    console.error('❌ OPENAI_API_KEY environment variable not set');
+    process.exit(1);
+  }
   
   const conn = await mysql.createConnection(CONFIG.db);
   
@@ -391,6 +437,11 @@ async function runEvaluation() {
       return;
     }
     
+    // Fetch knowledge base once
+    console.log('📚 Loading knowledge base...');
+    const knowledgeBase = await fetchKnowledgeEmbeddings(conn);
+    console.log(`   Loaded ${knowledgeBase.length} knowledge chunks\n`);
+    
     // Run evaluation
     const runId = crypto.randomUUID();
     const results = [];
@@ -403,7 +454,7 @@ async function runEvaluation() {
       const pair = pairs[i];
       process.stdout.write(`   [${i + 1}/${pairs.length}] ${pair.question.substring(0, 40)}... `);
       
-      const result = await evaluateTestCase(pair, conn, options);
+      const result = await evaluateTestCase(pair, knowledgeBase, options);
       results.push(result);
       
       if (result.passed) {
