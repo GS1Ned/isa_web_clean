@@ -32,7 +32,7 @@ import {
   Shirt
 } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
-import NavigationMenu from "@/components/NavigationMenu";
+import { NavigationMenu } from "@/components/NavigationMenu";
 import Footer from "@/components/Footer";
 
 // Sector configuration aligned with GS1 Nederland
