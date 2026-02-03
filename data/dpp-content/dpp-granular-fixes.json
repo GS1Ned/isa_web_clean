@@ -1,0 +1,72 @@
+{
+  "metadata": {
+    "version": "1.1",
+    "created": "2026-02-03",
+    "purpose": "Granular DPP content to fix citation gaps for specific questions"
+  },
+  "content": [
+    {
+      "id": "dpp-data-integrity-1",
+      "title": "DPP Data-integriteit: Authenticatie en Verificatie",
+      "content": "Data-integriteit in een Digital Product Passport wordt gewaarborgd door meerdere mechanismen. Ten eerste vereist de ESPR (EU 2024/1781) dat DPP-data wordt opgeslagen in gedecentraliseerde registers met cryptografische verificatie. Ten tweede moeten economische operatoren hun identiteit verifiëren via gekwalificeerde elektronische handtekeningen conform eIDAS. Ten derde wordt data-integriteit beschermd door audit trails die elke wijziging registreren met timestamp en actor-identificatie.",
+      "sourceType": "dpp_component",
+      "source": "EU ESPR 2024/1781 Article 10",
+      "authorityLevel": 5,
+      "language": "nl"
+    },
+    {
+      "id": "dpp-data-integrity-2",
+      "title": "DPP Data-integriteit: Technische Standaarden",
+      "content": "De technische waarborgen voor DPP data-integriteit omvatten: (1) Gebruik van GS1 Digital Link voor unieke, verifieerbare product-identificatie, (2) Blockchain of distributed ledger technologie voor onveranderlijke audit trails, (3) API-beveiliging via OAuth 2.0 en TLS 1.3 encryptie, (4) Verplichte data-validatie tegen gestandaardiseerde schema's voordat informatie wordt gepubliceerd.",
+      "sourceType": "dpp_component",
+      "source": "GS1 Digital Link Standard + EU ESPR Technical Annex",
+      "authorityLevel": 4,
+      "language": "nl"
+    },
+    {
+      "id": "dpp-consumer-purpose-1",
+      "title": "DPP Doel voor Consumenten: Transparantie en Keuzevrijheid",
+      "content": "Het primaire doel van een Digital Product Passport voor consumenten is het bieden van transparante, betrouwbare productinformatie om geïnformeerde aankoopbeslissingen te ondersteunen. Consumenten kunnen via de DPP toegang krijgen tot: (1) Milieu-impact informatie zoals carbon footprint en recycleerbaarheid, (2) Herkomst en productieomstandigheden, (3) Reparatie- en onderhoudsinstructies, (4) Garantie-informatie en contactgegevens van de fabrikant.",
+      "sourceType": "dpp_component",
+      "source": "EU ESPR 2024/1781 Recital 23-25",
+      "authorityLevel": 5,
+      "language": "nl"
+    },
+    {
+      "id": "dpp-consumer-purpose-2",
+      "title": "DPP Doel voor Consumenten: Duurzame Keuzes",
+      "content": "Een belangrijk doel van de DPP voor consumenten is het faciliteren van duurzame consumptiekeuzes. Door standaard toegang tot milieu-informatie kunnen consumenten producten vergelijken op basis van duurzaamheidscriteria. De DPP ondersteunt ook de circulaire economie door consumenten te informeren over reparatiemogelijkheden, beschikbaarheid van reserveonderdelen, en correcte afvalverwerking aan het einde van de levensduur.",
+      "sourceType": "dpp_component",
+      "source": "EU Circular Economy Action Plan + ESPR 2024/1781",
+      "authorityLevel": 5,
+      "language": "nl"
+    },
+    {
+      "id": "dpp-carbon-footprint-1",
+      "title": "Carbon Footprint in DPP: Verplichte Rapportage",
+      "content": "De carbon footprint speelt een centrale rol in het Digital Product Passport. Volgens de ESPR moeten bepaalde productcategorieën verplicht hun carbon footprint rapporteren in de DPP. Dit omvat: (1) De totale CO2-equivalent uitstoot over de levenscyclus (cradle-to-grave), (2) Uitsplitsing naar productiefase, transportfase en gebruiksfase, (3) Vergelijking met productcategorie-gemiddelden waar beschikbaar.",
+      "sourceType": "dpp_component",
+      "source": "EU ESPR 2024/1781 Article 7 + Annex I",
+      "authorityLevel": 5,
+      "language": "nl"
+    },
+    {
+      "id": "dpp-carbon-footprint-2",
+      "title": "Carbon Footprint in DPP: Methodologie en Standaarden",
+      "content": "De carbon footprint in een DPP moet worden berekend volgens gestandaardiseerde methodologieën. De EU vereist gebruik van Product Environmental Footprint (PEF) methodologie of ISO 14067. Voor batterijen specificeert de EU Battery Regulation (2023/1542) dat de carbon footprint moet worden uitgedrukt in kg CO2-equivalent per kWh opslagcapaciteit, met verplichte onafhankelijke verificatie door een geaccrediteerde instantie.",
+      "sourceType": "dpp_component",
+      "source": "EU Battery Regulation 2023/1542 Article 7 + PEF Methodology",
+      "authorityLevel": 5,
+      "language": "nl"
+    },
+    {
+      "id": "dpp-carbon-footprint-3",
+      "title": "Carbon Footprint in DPP: Prestatieklassen",
+      "content": "De ESPR introduceert carbon footprint prestatieklassen voor producten met een DPP. Producten worden ingedeeld in klassen (A tot G) op basis van hun carbon footprint ten opzichte van de productcategorie. Deze classificatie moet duidelijk zichtbaar zijn in de DPP en stelt consumenten in staat om snel de relatieve milieu-impact van een product te beoordelen. Voor batterijen gelden specifieke drempelwaarden die in de loop van de tijd worden aangescherpt.",
+      "sourceType": "dpp_component",
+      "source": "EU ESPR 2024/1781 Article 7(2) + Delegated Acts",
+      "authorityLevel": 5,
+      "language": "nl"
+    }
+  ]
+}
