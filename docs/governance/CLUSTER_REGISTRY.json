@@ -2,7 +2,7 @@
   "$schema_note": "Machine-readable registry of script clusters for Phase 4 consolidation.",
   "$version": "1.1.0",
   "$generated": "2026-02-04",
-  "$source": "Complete analysis of scripts/ directory (101 scripts)",
+  "$source": "Updated after deprecated script cleanup (32 canonical scripts remain)",
   "clusters": [
     {
       "cluster_id": "ingestion",
@@ -20,18 +20,19 @@
         "scripts/ingest_fashion_dpp_content.py",
         "scripts/run-all-ingestion.ts"
       ],
-      "deprecated_scripts": [
-        "scripts/run-first-ingestion.mjs",
-        "scripts/legacy/test-ingest-02.ts",
-        "scripts/ingest-dpp-content.cjs",
-        "scripts/ingest-dpp-granular.cjs",
-        "scripts/fix_ingest_missing_files.sh",
-        "scripts/test-gate13-ingestion.cjs"
+      "inputs": [
+        "data/standards/gs1-nl/**/*.xlsx",
+        "data/standards/sustainability/**/*.json"
       ],
-      "inputs": ["data/standards/gs1-nl/**/*.xlsx", "data/standards/sustainability/**/*.json"],
-      "outputs": ["Database: knowledge_items table"],
-      "env_interfaces": ["DATABASE_URL"],
-      "quality_gates": ["scripts/validate_gs1_efrag_catalogue.py"],
+      "outputs": [
+        "Database: knowledge_items table"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
+      "quality_gates": [
+        "scripts/validate_gs1_efrag_catalogue.py"
+      ],
       "run_config_refs": []
     },
     {
@@ -48,15 +49,16 @@
         "scripts/generate_embeddings_standalone.ts",
         "scripts/cron-generate-embeddings.sh"
       ],
-      "deprecated_scripts": [
-        "scripts/standalone-embedding-gen.ts",
-        "scripts/fix-empty-embeddings.cjs",
-        "scripts/test-batch-embedding.cjs",
-        "scripts/test-vector-search.cjs"
+      "inputs": [
+        "Database: knowledge_items table"
       ],
-      "inputs": ["Database: knowledge_items table"],
-      "outputs": ["Database: embeddings table"],
-      "env_interfaces": ["DATABASE_URL", "OPENAI_API_KEY"],
+      "outputs": [
+        "Database: embeddings table"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL",
+        "OPENAI_API_KEY"
+      ],
       "quality_gates": [],
       "run_config_refs": []
     },
@@ -79,10 +81,21 @@
       "deprecated_scripts": [
         "scripts/proto_crawl_catalogue.py"
       ],
-      "inputs": ["Database: knowledge_items table", "data/standards/**/*"],
-      "outputs": ["docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json", "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv"],
-      "env_interfaces": ["DATABASE_URL"],
-      "quality_gates": ["scripts/validate_gs1_efrag_catalogue.py", "scripts/isa-catalogue/iron_gate_catalogue.sh"],
+      "inputs": [
+        "Database: knowledge_items table",
+        "data/standards/**/*"
+      ],
+      "outputs": [
+        "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json",
+        "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
+      "quality_gates": [
+        "scripts/validate_gs1_efrag_catalogue.py",
+        "scripts/isa-catalogue/iron_gate_catalogue.sh"
+      ],
       "run_config_refs": []
     },
     {
@@ -94,12 +107,12 @@
       "canonical_scripts": [
         "scripts/parse_gs1nl_datamodel.py"
       ],
-      "deprecated_scripts": [
-        "scripts/parse_gs1nl_diy_datamodel.py",
-        "scripts/parse_gs1nl_healthcare_datamodel.py"
+      "inputs": [
+        "data/standards/gs1-nl/**/*.xlsx"
       ],
-      "inputs": ["data/standards/gs1-nl/**/*.xlsx"],
-      "outputs": ["Parsed JSON structures"],
+      "outputs": [
+        "Parsed JSON structures"
+      ],
       "env_interfaces": [],
       "quality_gates": [],
       "run_config_refs": []
@@ -115,20 +128,20 @@
         "scripts/validate_advisory.py",
         "scripts/validate_advisory_schema.cjs"
       ],
-      "deprecated_scripts": [
-        "scripts/advisory/extract_esg_requirements.py",
-        "scripts/advisory/generate_report_data.ts",
-        "scripts/generate_advisory_summary.py",
-        "scripts/patch_advisory_v1_provenance.py",
-        "scripts/canonicalize_advisory.cjs",
-        "scripts/compute_advisory_diff.cjs",
-        "scripts/validate-esg-artefacts.mjs",
-        "scripts/import-esg-artefacts.mjs"
+      "inputs": [
+        "data/standards/**/*",
+        "Database: knowledge_items table"
       ],
-      "inputs": ["data/standards/**/*", "Database: knowledge_items table"],
-      "outputs": ["data/advisories/ISA_ADVISORY_v1.0.json"],
-      "env_interfaces": ["DATABASE_URL"],
-      "quality_gates": ["scripts/validate_advisory.py", "scripts/validate_advisory_schema.cjs"],
+      "outputs": [
+        "data/advisories/ISA_ADVISORY_v1.0.json"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
+      "quality_gates": [
+        "scripts/validate_advisory.py",
+        "scripts/validate_advisory_schema.cjs"
+      ],
       "run_config_refs": []
     },
     {
@@ -136,14 +149,20 @@
       "description": "IRON Protocol compliance gates and context management",
       "label": "PRODUCT_PIPELINE",
       "owned_by": "ISA Core Team",
-      "entrypoints": [".github/workflows/iron-gate.yml"],
+      "entrypoints": [
+        ".github/workflows/iron-gate.yml"
+      ],
       "canonical_scripts": [
         "scripts/iron-context.sh",
         "scripts/iron-inventory.sh"
       ],
-      "deprecated_scripts": [],
-      "inputs": ["isa.inventory.json", "Repository state"],
-      "outputs": ["CI gate pass/fail"],
+      "inputs": [
+        "isa.inventory.json",
+        "Repository state"
+      ],
+      "outputs": [
+        "CI gate pass/fail"
+      ],
       "env_interfaces": [],
       "quality_gates": [],
       "run_config_refs": []
@@ -158,13 +177,13 @@
         "scripts/datasets/build_registry.py",
         "scripts/datasets/generate_inventory.py"
       ],
-      "deprecated_scripts": [
-        "scripts/datasets/analyze_inventory.py",
-        "scripts/datasets/expand_registry.py",
-        "scripts/datasets/ingest-gs1-eu-pcf.mjs"
+      "inputs": [
+        "data/**/*"
       ],
-      "inputs": ["data/**/*"],
-      "outputs": ["data/metadata/dataset_registry.json", "docs/INVENTORY.csv"],
+      "outputs": [
+        "data/metadata/dataset_registry.json",
+        "docs/INVENTORY.csv"
+      ],
       "env_interfaces": [],
       "quality_gates": [],
       "run_config_refs": []
@@ -180,15 +199,25 @@
         "scripts/validate_specs.py",
         "scripts/validate_cluster_registry.py"
       ],
-      "deprecated_scripts": [
-        "scripts/run-pipeline-phase3.mjs",
-        "scripts/test-phase3-sources.mjs"
+      "inputs": [
+        "outputs/document_index.json",
+        "outputs/cluster_map.json",
+        "outputs/authority_candidates.json"
       ],
-      "inputs": ["outputs/document_index.json", "outputs/cluster_map.json", "outputs/authority_candidates.json"],
-      "outputs": ["docs/spec/*.md", "docs/spec/TRACEABILITY_MATRIX.csv"],
-      "env_interfaces": ["ISA_REPO_ROOT"],
-      "quality_gates": ["scripts/validate_specs.py", "scripts/validate_cluster_registry.py"],
-      "run_config_refs": ["docs/spec/RUN_CONFIG.json"]
+      "outputs": [
+        "docs/spec/*.md",
+        "docs/spec/TRACEABILITY_MATRIX.csv"
+      ],
+      "env_interfaces": [
+        "ISA_REPO_ROOT"
+      ],
+      "quality_gates": [
+        "scripts/validate_specs.py",
+        "scripts/validate_cluster_registry.py"
+      ],
+      "run_config_refs": [
+        "docs/spec/RUN_CONFIG.json"
+      ]
     },
     {
       "cluster_id": "esrs",
@@ -200,13 +229,15 @@
         "scripts/run-esrs-ingest.ts",
         "scripts/create-esrs-tables.ts"
       ],
-      "deprecated_scripts": [
-        "scripts/drop-esrs-tables.ts",
-        "scripts/count-esrs-rows.ts"
+      "inputs": [
+        "data/standards/esrs/**/*"
       ],
-      "inputs": ["data/standards/esrs/**/*"],
-      "outputs": ["Database: esrs_* tables"],
-      "env_interfaces": ["DATABASE_URL"],
+      "outputs": [
+        "Database: esrs_* tables"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
       "quality_gates": [],
       "run_config_refs": []
     },
@@ -221,13 +252,13 @@
         "scripts/run-integration-tests.sh",
         "scripts/run-unit-tests.sh"
       ],
-      "deprecated_scripts": [
-        "scripts/test-gate1-corpus-governance.cjs",
-        "scripts/test-gate12-rag-tracing.cjs"
-      ],
       "inputs": [],
-      "outputs": ["Test results"],
-      "env_interfaces": ["DATABASE_URL"],
+      "outputs": [
+        "Test results"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
       "quality_gates": [],
       "run_config_refs": []
     },
@@ -241,14 +272,16 @@
         "scripts/run-rag-evaluation.cjs",
         "scripts/seed-golden-qa-pairs.cjs"
       ],
-      "deprecated_scripts": [
-        "scripts/analyze-rag-traces.cjs",
-        "scripts/debug-eval.cjs",
-        "scripts/run-repro-harness.js"
+      "inputs": [
+        "Database: knowledge_items table"
       ],
-      "inputs": ["Database: knowledge_items table"],
-      "outputs": ["Evaluation metrics"],
-      "env_interfaces": ["DATABASE_URL", "OPENAI_API_KEY"],
+      "outputs": [
+        "Evaluation metrics"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL",
+        "OPENAI_API_KEY"
+      ],
       "quality_gates": [],
       "run_config_refs": []
     },
@@ -259,16 +292,15 @@
       "owned_by": "ISA Core Team",
       "entrypoints": [],
       "canonical_scripts": [],
-      "deprecated_scripts": [
-        "scripts/find-eudr.mjs",
-        "scripts/query-eudr.mjs",
-        "scripts/discover-mappings.mjs",
-        "scripts/enhance-gs1-mappings.mjs",
-        "scripts/enhance-targeted-mappings.mjs"
+      "inputs": [
+        "Database: mappings"
       ],
-      "inputs": ["Database: mappings"],
-      "outputs": ["Enhanced mappings"],
-      "env_interfaces": ["DATABASE_URL"],
+      "outputs": [
+        "Enhanced mappings"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
       "quality_gates": [],
       "run_config_refs": []
     },
@@ -281,20 +313,15 @@
       "canonical_scripts": [
         "scripts/seed-regulatory-change-log.ts"
       ],
-      "deprecated_scripts": [
-        "scripts/legacy/seed-dutch-initiatives.mjs",
-        "scripts/legacy/seed-esg-data.mjs",
-        "scripts/legacy/seed-regulatory-change-log.mjs",
-        "scripts/legacy/populate-ask-isa-mappings.mjs",
-        "scripts/populate-quick-wins.mjs",
-        "scripts/query-ids-for-seed.mjs",
-        "scripts/create-dutch-tables.mjs",
-        "scripts/backfill-events.mjs",
-        "scripts/export-sample-events.mjs"
+      "inputs": [
+        "Seed data"
       ],
-      "inputs": ["Seed data"],
-      "outputs": ["Database: seeded tables"],
-      "env_interfaces": ["DATABASE_URL"],
+      "outputs": [
+        "Database: seeded tables"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
       "quality_gates": [],
       "run_config_refs": []
     },
@@ -305,18 +332,6 @@
       "owned_by": "UNKNOWN_OWNER",
       "entrypoints": [],
       "canonical_scripts": [],
-      "deprecated_scripts": [
-        "scripts/legacy/check-boolean-fields.ts",
-        "scripts/legacy/check-db-state.ts",
-        "scripts/legacy/check-diy-data.ts",
-        "scripts/legacy/check-sectors.ts",
-        "scripts/legacy/test-ingest-02.ts",
-        "scripts/legacy/test-report.ts",
-        "scripts/legacy/check-esrs-columns.mjs",
-        "scripts/legacy/check-esrs-count.mjs",
-        "scripts/legacy/check-eudr-mappings.mjs",
-        "scripts/legacy/check-regulation-ids.mjs"
-      ],
       "inputs": [],
       "outputs": [],
       "env_interfaces": [],
@@ -330,14 +345,12 @@
       "owned_by": "UNKNOWN_OWNER",
       "entrypoints": [],
       "canonical_scripts": [],
-      "deprecated_scripts": [
-        "scripts/inspect-echo.ts",
-        "scripts/inspect-fmcg-file.ts",
-        "scripts/inspect-gs1-datamodel.ts",
-        "scripts/inspect-validation-rules.ts"
+      "inputs": [
+        "data/standards/gs1-nl/**/*.xlsx"
       ],
-      "inputs": ["data/standards/gs1-nl/**/*.xlsx"],
-      "outputs": ["Console output"],
+      "outputs": [
+        "Console output"
+      ],
       "env_interfaces": [],
       "quality_gates": [],
       "run_config_refs": []
@@ -352,17 +365,6 @@
         "scripts/generate-api-docs.ts",
         "scripts/verify-data-files.ts",
         "scripts/check-db-status.ts"
-      ],
-      "deprecated_scripts": [
-        "scripts/generate-cron-config.mjs",
-        "scripts/generate-dataset-catalog.py",
-        "scripts/extract_ref_gs1_standards.py",
-        "scripts/check-new-fields.ts",
-        "scripts/analyze-news-data.ts",
-        "scripts/analyze-news-quality.ts",
-        "scripts/query-key-regulations.ts",
-        "scripts/query-key-regulations.mjs",
-        "scripts/update-regulation-quality.mjs"
       ],
       "inputs": [],
       "outputs": [],
