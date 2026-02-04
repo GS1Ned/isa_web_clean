@@ -581,13 +581,16 @@ def main():
     print(f"Repository root: {repo_root}")
     
     # Load or create config
-    config = {
+    # IMPORTANT: These are FALLBACK defaults only. For reproducible runs,
+    # ALWAYS use --config docs/spec/RUN_CONFIG.json (single source of truth).
+    # Default values here are intentionally conservative to encourage explicit config.
+    FALLBACK_DEFAULTS = {
         'configuration': {
-            'max_core_sources_per_cluster': 15,
-            'min_core_sources_per_cluster': 5,
-            'max_claims_in_traceability_per_cluster': 20,
-            'max_must_invariants_per_spec': 15,
-            'max_implicit_claims_per_spec': 5
+            'max_core_sources_per_cluster': 15,      # Fallback; RUN_CONFIG may override
+            'min_core_sources_per_cluster': 5,       # Fallback; RUN_CONFIG may override
+            'max_claims_in_traceability_per_cluster': 20,  # Fallback (low); RUN_CONFIG uses 100
+            'max_must_invariants_per_spec': 15,      # Fallback; RUN_CONFIG may override
+            'max_implicit_claims_per_spec': 5        # Fallback; RUN_CONFIG may override
         },
         'scoring_weights': {
             'NORMATIVE_CANDIDATE_status': 10,
@@ -601,7 +604,9 @@ def main():
         'exclusions': {'ULTIMATE_documents': []},
         'cluster_filenames': {}
     }
+    config = FALLBACK_DEFAULTS.copy()
     
+    config_loaded_from_file = False
     if args.config:
         config_path = Path(args.config)
         if not config_path.is_absolute():
@@ -610,6 +615,13 @@ def main():
             print(f"Loading config from: {config_path}")
             loaded = load_config(config_path)
             config.update(loaded)
+            config_loaded_from_file = True
+        else:
+            print(f"WARNING: Config file not found: {config_path}")
+    
+    if not config_loaded_from_file:
+        print("WARNING: Running with FALLBACK defaults (not reproducible).")
+        print("         For audit-ready output, use: --config docs/spec/RUN_CONFIG.json")
     
     # Determine inputs path
     inputs_path = None
@@ -716,11 +728,22 @@ def main():
         f.write(generate_master_spec(clusters, cluster_sources, filenames))
     print("  Created: ISA_MASTER_SPEC.md")
     
+    # TRACEABILITY_MATRIX schema (canonical column names):
+    # - canonical_spec: The spec file this claim belongs to
+    # - claim_id: Unique identifier (e.g., ISA-001)
+    # - statement: The normative statement text
+    # - source_path: Path to source document
+    # - source_heading: Section heading in source
+    # - short_quote: Abbreviated quote for quick reference
+    # - status: Traceability status ('traceable' or 'untraceable')
+    #   NOTE: Column is named 'status' (not 'trace_status') for brevity.
+    #         validate_specs.py accepts both names for backward compatibility.
+    TRACEABILITY_COLUMNS = [
+        'canonical_spec', 'claim_id', 'statement', 'source_path',
+        'source_heading', 'short_quote', 'status'
+    ]
     with open(out_path / 'TRACEABILITY_MATRIX.csv', 'w', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=[
-            'canonical_spec', 'claim_id', 'statement', 'source_path',
-            'source_heading', 'short_quote', 'status'
-        ])
+        w = csv.DictWriter(f, fieldnames=TRACEABILITY_COLUMNS)
         w.writeheader()
         w.writerows(traceability)
     print(f"  Created: TRACEABILITY_MATRIX.csv ({len(traceability)} rows)")

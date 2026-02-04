@@ -1,6 +1,11 @@
 {
+  "$schema_note": "This file is the SINGLE SOURCE OF TRUTH for Phase 3 synthesis parameters.",
+  "$provenance": {
+    "description": "All parameters below override script defaults. If a parameter is not set here, the script uses fallback defaults (see FALLBACK_DEFAULTS in phase3_synthesis.py).",
+    "audit_requirement": "For reproducible, audit-ready runs, ALWAYS use --config docs/spec/RUN_CONFIG.json"
+  },
   "generator": "scripts/phase3_synthesis.py",
-  "version": "2.0",
+  "version": "2.1",
   "run_date": "2026-02-04",
   "input_artifacts": {
     "document_index": "outputs/document_index.json",

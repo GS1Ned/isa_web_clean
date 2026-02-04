@@ -108,10 +108,29 @@ Edit `RUN_CONFIG.json` to adjust synthesis parameters:
 
 ## CI Integration
 
-The `spec-lint` workflow validates:
-- All canonical specs have required sections
-- TRACEABILITY_MATRIX has no untraceable claims
-- All required artifacts exist
+### Active Workflows (on main)
+
+| Workflow | Purpose | Status |
+|----------|---------|--------|
+| `iron-gate.yml` | IRON Protocol compliance checks | ✅ Active |
+| `console-check.yml` | Console usage validation | ✅ Active |
+| `catalogue-checks.yml` | Catalogue integrity | ✅ Active |
+| `generate-embeddings.yml` | Embedding generation | ✅ Active |
+
+### Spec Validation (Manual)
+
+The `spec-lint` workflow (`scripts/validate_specs.py`) is **not yet in CI** due to GitHub App workflow permissions. Run manually:
+
+```bash
+python scripts/validate_specs.py docs/spec/
+```
+
+The validation script checks:
+- All canonical specs have required sections (`Core Sources`, `Invariants`)
+- TRACEABILITY_MATRIX has no untraceable claims (checks `status` column)
+- RUN_CONFIG.json has required fields and valid limits
+
+**To add spec-lint to CI:** A repository admin must manually add `.github/workflows/spec-lint.yml` (see `scripts/validate_specs.py` for the validation logic).
 
 ## Maintenance
 
