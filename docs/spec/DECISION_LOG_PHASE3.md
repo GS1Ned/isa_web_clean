@@ -17,8 +17,8 @@ Phase 3 canonical spec synthesis completed. Created 12 canonical specification d
 | Metric | Value | Status |
 |--------|-------|--------|
 | Untraceable statements | 0 | ✅ PASS |
-| Total traced claims | 237 | — |
-| Unique source docs | 84 | — |
+| Total traced claims | 1,010 | — |
+| Unique source docs | 85 | — |
 
 ### QG-2: Cluster Coverage (PASS)
 
@@ -65,17 +65,22 @@ Phase 3 canonical spec synthesis completed. Created 12 canonical specification d
 
 ### QG-6: Conflict Documentation (DOCUMENTED)
 
-**Definition:** All conflicts MUST be documented with ID, status, and owner.
+**Definition:** All conflicts MUST be documented with ID, status, and owner. Conflict *resolution* is NOT a Phase 3 gate requirement.
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Total conflicts documented | 89 | — |
-| Conflicts with ID | 89 | ✅ |
-| Conflicts with status | 89 | ✅ |
-| Open conflicts | 89 | ⚠️ OPEN |
+| Total conflicts documented | 53 | — |
+| Conflicts with ID | 53 | ✅ |
+| Conflicts with status | 53 | ✅ |
+| Open conflicts | 53 | ⚠️ OPEN (not blocking) |
 | Resolved conflicts | 0 | — |
 
-**Note:** QG-6 documents conflict status but does not require resolution for Phase 3 completion. Open conflicts are tracked in CONFLICT_REGISTER.md for manual review.
+**Gate Interpretation:**
+- **PASS condition:** All conflicts are documented with ID, status, owner, and priority
+- **NOT a PASS condition:** Conflicts being resolved (that is a separate manual review task)
+- **Status:** ✅ PASS (documentation complete)
+
+**Note:** QG-6 is a *documentation* gate, not a *resolution* gate. Open conflicts are tracked in CONFLICT_REGISTER.md for manual review in a subsequent phase.
 
 ## Deliverables Created
 
@@ -84,8 +89,8 @@ Phase 3 canonical spec synthesis completed. Created 12 canonical specification d
 | File | Description | Size |
 |------|-------------|------|
 | `ISA_MASTER_SPEC.md` | Master index with precedence rules | 8 KB |
-| `TRACEABILITY_MATRIX.csv` | 237 traceable claims | 64 KB |
-| `CONFLICT_REGISTER.md` | 89 documented conflicts | 13 KB |
+| `TRACEABILITY_MATRIX.csv` | 1,010 traceable claims | 150 KB |
+| `CONFLICT_REGISTER.md` | 53 documented conflicts | 13 KB |
 | `DEPRECATION_MAP.md` | Document status mapping | 15 KB |
 | `RUN_CONFIG.json` | Synthesis parameters | 2 KB |
 

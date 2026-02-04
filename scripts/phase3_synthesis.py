@@ -568,7 +568,14 @@ def main():
     args = parser.parse_args()
     
     # Determine repo root
-    repo_root = Path(args.repo_root) if args.repo_root else Path(os.environ.get('ISA_REPO_ROOT', '')) or detect_repo_root()
+    # Note: Path('') evaluates to truthy PosixPath('.'), so we must check explicitly
+    env_root = os.environ.get('ISA_REPO_ROOT', '').strip()
+    if args.repo_root:
+        repo_root = Path(args.repo_root)
+    elif env_root:
+        repo_root = Path(env_root)
+    else:
+        repo_root = detect_repo_root()
     repo_root = repo_root.resolve()
     
     print(f"Repository root: {repo_root}")

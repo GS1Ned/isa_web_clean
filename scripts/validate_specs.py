@@ -58,11 +58,14 @@ def validate_traceability_matrix(matrix_path: Path) -> list:
         if col not in rows[0]:
             errors.append(f"TRACEABILITY_MATRIX.csv: Missing required column '{col}'")
     
-    # Check for untraceable claims if trace_status column exists
-    if 'trace_status' in rows[0]:
-        untraceable = [r for r in rows if r.get('trace_status') == 'untraceable']
+    # Check for untraceable claims - supports both 'status' and 'trace_status' column names
+    status_col = 'status' if 'status' in rows[0] else ('trace_status' if 'trace_status' in rows[0] else None)
+    if status_col:
+        untraceable = [r for r in rows if r.get(status_col) == 'untraceable']
         if untraceable:
             errors.append(f"TRACEABILITY_MATRIX.csv: {len(untraceable)} untraceable claims")
+    else:
+        errors.append("TRACEABILITY_MATRIX.csv: Missing 'status' or 'trace_status' column for traceability verification")
     
     # Check for empty source paths
     empty_sources = [r for r in rows if not r.get('source_path')]
@@ -114,7 +117,7 @@ def main():
     spec_files = list(spec_dir.glob('*.md'))
     spec_files = [f for f in spec_files if f.name not in [
         'ISA_MASTER_SPEC.md', 'CONFLICT_REGISTER.md', 
-        'DEPRECATION_MAP.md', 'DECISION_LOG_PHASE3.md'
+        'DEPRECATION_MAP.md', 'DECISION_LOG_PHASE3.md', 'README.md'
     ]]
     
     print(f"Validating {len(spec_files)} canonical spec files...")
