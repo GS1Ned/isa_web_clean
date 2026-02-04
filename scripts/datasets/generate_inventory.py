@@ -102,7 +102,7 @@ def generate_inventory(repo_root, output_csv):
     return rows
 
 if __name__ == '__main__':
-    repo_root = sys.argv[1] if len(sys.argv) > 1 else '/home/ubuntu/isa_web'
-    output_csv = sys.argv[2] if len(sys.argv) > 2 else '/home/ubuntu/isa_web/docs/INVENTORY.csv'
+    repo_root = sys.argv[1] if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent.parent
+    output_csv = sys.argv[2] if len(sys.argv) > 2 else str(repo_root / 'docs/INVENTORY.csv')
     
     generate_inventory(repo_root, output_csv)

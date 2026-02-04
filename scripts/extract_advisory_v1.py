@@ -13,7 +13,12 @@ Constraints:
 """
 
 import json
+import os
 from datetime import date
+from pathlib import Path
+
+# Detect repo root
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Advisory metadata
 advisory = {
@@ -920,7 +925,7 @@ advisory["metadata"] = {
 }
 
 # Write JSON output
-output_path = "/home/ubuntu/isa_web/data/advisories/ISA_ADVISORY_v1.0.json"
+output_path = REPO_ROOT / "data/advisories/ISA_ADVISORY_v1.0.json"
 with open(output_path, 'w', encoding='utf-8') as f:
     json.dump(advisory, f, indent=2, ensure_ascii=False)
 
