@@ -2,17 +2,14 @@
 
 **Canonical Specification**
 **Status:** CURRENT (as-built)
-**Generated:** 2026-02-03
 
 ## 1. Identity
 
 - **Name:** Data & Knowledge Model
-- **Scope:** This specification defines the CURRENT state of data & knowledge model within ISA.
-- **Marker:** CURRENT (as-built) — not ULTIMATE (ambition/research)
+- **Scope:** CURRENT state of data & knowledge model
+- **Marker:** CURRENT (as-built) — not ULTIMATE
 
 ## 2. Core Sources
-
-The following documents form the authoritative basis for this specification:
 
 1. `./docs/GS1_Attribute_Mapper_Technical_Specification.md`
 2. `./ARCHITECTURE.md`
@@ -27,7 +24,7 @@ The following documents form the authoritative basis for this specification:
 
 ## 3. Definitions
 
-*Terms used in this specification are defined in ISA_MASTER_SPEC.md*
+*See ISA_MASTER_SPEC.md*
 
 ## 4. Invariants (MUST-level)
 
@@ -76,22 +73,21 @@ The following documents form the authoritative basis for this specification:
 **INV-15:** required: ["attributeName", "requirementLevel", "rationale"],
 - Source: `./docs/GS1_Attribute_Mapper_Technical_Specification.md` > 2.4 Phase 3: Regulation-to-Attribute Mapping (Week 2-3, 24 hours)
 
-## 5. Interfaces / Pipelines / Entry Points
+## 5. Interfaces / Pipelines
 
-*CURRENT implementation details extracted from source documents.*
+*See source documents.*
 
 ## 6. Governance & Change Control
 
-Changes to this specification require:
-1. Review of source documents
-2. Update to TRACEABILITY_MATRIX.csv
-3. Approval per ISA governance rules
+1. Review source documents
+2. Update TRACEABILITY_MATRIX.csv
+3. Follow governance rules
 
-## 7. Observability & Evaluation Hooks
+## 7. Observability
 
-**OPEN ISSUE:** Observability hooks not fully defined for this cluster.
+**OPEN ISSUE:** Define observability hooks.
 
-## 8. Acceptance Criteria / IRON Gates
+## 8. Acceptance Criteria
 
 - AC-1: 3. **Validate:** Cross-reference with GS1 official documentation to ensure accuracy
 - AC-2: it("should retrieve attributes by standard", async () => {
@@ -101,25 +97,105 @@ Changes to this specification require:
 
 ## 9. Traceability Annex
 
-| Claim ID | Statement (truncated) | Source |
-|----------|----------------------|--------|
+| Claim ID | Statement | Source |
+|----------|-----------|--------|
 | DAT-001 | * Stores GDSN XML tags, EDI segments, and JSON-LD properties... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
 | DAT-002 | * Links EU regulations to specific GS1 technical attributes ... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
 | DAT-003 | "MANDATORY", // Legally required for compliance... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
 | DAT-004 | "RECOMMENDED", // Best practice but not legally required... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
 | DAT-005 | "CONDITIONAL", // Required only under specific circumstances... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
 | DAT-006 | rationale: text("rationale").notNull(), // Explanation of wh... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-007 | 3. **Validate:** Cross-reference with GS1 official documenta... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-008 | 15,packagingMaterialTypeCode,Packaging Material Type Code,GD... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-009 | 12,RFF+DDR,DDS Reference Number,EDI_SEGMENT,string,true,,,RF... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-010 | required: boolean;... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-011 | isRequired: attr.required,... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-012 | 5,42,MANDATORY,"EUDR Article 9 requires geolocation data for... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-013 | 8,67,MANDATORY,"PPWR Article 11 mandates recyclability label... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-014 | Task: Identify which GS1 attributes are required, recommende... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-015 | Focus on attributes that are directly required by the regula... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-016 | required: ["attributeName", "requirementLevel", "rationale"]... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-017 | required: ["mappings"],... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-018 | // Get attributes required for a specific regulation... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-019 | / `gs1Attributes.getByRegulation` / Query    / Public / Get ... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
-| DAT-020 | This component displays GS1 attributes required for a specif... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-007 | 15,packagingMaterialTypeCode,Packaging Material Type Code,GD... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-008 | 12,RFF+DDR,DDS Reference Number,EDI_SEGMENT,string,true,,,RF... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-009 | required: boolean;... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-010 | isRequired: attr.required,... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-011 | 5,42,MANDATORY,"EUDR Article 9 requires geolocation data for... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-012 | 8,67,MANDATORY,"PPWR Article 11 mandates recyclability label... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-013 | Task: Identify which GS1 attributes are required, recommende... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-014 | Focus on attributes that are directly required by the regula... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-015 | required: ["attributeName", "requirementLevel", "rationale"]... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-016 | required: ["mappings"],... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-017 | // Get attributes required for a specific regulation... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-018 | / `gs1Attributes.getByRegulation` / Query    / Public / Get ... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-019 | This component displays GS1 attributes required for a specif... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-020 | <AlertDescription>No GDSN XML attributes required for this r... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-021 | <AlertDescription>No EDI segments required for this regulati... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-022 | <AlertDescription>No JSON-LD properties required for this re... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-023 | <span className="font-semibold">Required:</span> {mapping.at... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-024 | - GDSN XML template with required fields... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-025 | Enable GS1 Netherlands members to understand which GS1 stand... | `./ARCHITECTURE.md` |
+| DAT-026 | - **Advisory Publication:** Lane C review required, no autom... | `./ARCHITECTURE.md` |
+| DAT-027 | - 🔴 **Critical:** Must-have for MVP, core user journeys... | `./docs/ISA_INFORMATION_ARCHITECTURE.md` |
+| DAT-028 | 3. **Validate:** Cross-reference with GS1 official documenta... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-029 | it("should retrieve attributes by standard", async () => {... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-030 | it("should retrieve attributes by technical format", async (... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-031 | it("should search attributes by keyword", async () => {... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-032 | it("should create regulation-attribute mapping", async () =>... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-033 | it("should filter mappings by requirement level", async () =... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-034 | it("should calculate attribute mapping statistics", async ()... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-035 | it("should increment view count", async () => {... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-036 | it("should list attributes with pagination", async () => {... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-037 | it("should filter attributes by technical format", async () ... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-038 | it("should get attribute by ID", async () => {... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-039 | it("should get attributes by regulation", async () => {... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-040 | it("should get attribute mapping statistics", async () => {... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-041 | - [ ] Verify statistics cards show correct counts... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-042 | - [ ] Verify attributes are grouped by format (GDSN, EDI, JS... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-043 | - [ ] Verify requirement level badges display correctly (MAN... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-044 | - [ ] Verify code examples render properly... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-045 | - [ ] Verify empty state displays when no attributes found... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-046 | - [ ] Verify attribute grid displays... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-047 | - [ ] Verify attribute cards show correct information... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-048 | - [ ] Verify code examples are truncated with "line-clamp-3"... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-049 | - [ ] Verify tabs stack vertically... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-050 | - [ ] Verify attribute cards stack in single column... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-051 | - [ ] Verify code examples scroll horizontally... | `./docs/GS1_Attribute_Mapper_Technical_Specification.md` |
+| DAT-052 | - Verify Lane C authorization... | `./ARCHITECTURE.md` |
+| DAT-053 | **Recommendation:** ISA should have **two distinct navigatio... | `./docs/ISA_INFORMATION_ARCHITECTURE.md` |
+| DAT-054 | **Goal:** Complete the website, ensure legal compliance... | `./docs/ISA_INFORMATION_ARCHITECTURE.md` |
+| DAT-055 | - [ ] Verify dashboard UI rendering... | `./docs/PIPELINE_OBSERVABILITY_SPEC.md` |
+| DAT-056 | - Don't skip raw tables - they're required for audit and deb... | `./CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md` |
+| DAT-057 | required: boolean("required").default(false),... | `./CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md` |
+| DAT-058 | ruleType: varchar("rule_type", { length: 50 }), // e.g., "re... | `./CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md` |
+| DAT-059 | "required": false... | `./CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md` |
+| DAT-060 | "ruleType": "required",... | `./CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md` |
+| DAT-061 | "errorMessage": "Peg hole type is required"... | `./CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md` |
+| DAT-062 | required: boolean("required").default(true),... | `./CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md` |
+| DAT-063 | Source files **must** be placed under `/data/gs1/gdsn/` in t... | `./tasks/for_chatgpt/INGEST-02_gdsn_current.md` |
+| DAT-064 | "structuredRule": "If cancelDateTime is not empty then value... | `./tasks/for_chatgpt/INGEST-02_gdsn_current.md` |
+| DAT-065 | "errorMessageDescription": "cancelDateTime must be equal to ... | `./tasks/for_chatgpt/INGEST-02_gdsn_current.md` |
+| DAT-066 | - `constrainedParty` (array) - Who must comply... | `./tasks/for_chatgpt/INGEST-02_gdsn_current.md` |
+| DAT-067 | - Test basic error handling for malformed records (e.g., mis... | `./tasks/for_chatgpt/INGEST-02_gdsn_current.md` |
+| DAT-068 | - What you must deliver (4-5 files)... | `./CHATGPT_UPDATE_PROMPT.md` |
+| DAT-069 | **Must include:**... | `./CHATGPT_UPDATE_PROMPT.md` |
+| DAT-070 | 8. **Don't skip documentation** - README is required... | `./CHATGPT_UPDATE_PROMPT.md` |
+| DAT-071 | / `applicability` / TEXT         / Who must comply (e.g., "L... | `./DATA_MODEL.md` |
+| DAT-072 | / `description`  / TEXT         / What must be disclosed    ... | `./DATA_MODEL.md` |
+| DAT-073 | / `complianceRequirements` / TEXT         / What participant... | `./DATA_MODEL.md` |
+| DAT-074 | / `relevanceScore`    / DECIMAL(3,2) / How strongly required... | `./DATA_MODEL.md` |
+| DAT-075 | - `esrs_datapoints.datapointId` must be unique... | `./DATA_MODEL.md` |
+| DAT-076 | - `knowledge_embeddings.contentHash` must be unique... | `./DATA_MODEL.md` |
+| DAT-077 | - `user.openId` must be unique... | `./DATA_MODEL.md` |
+| DAT-078 | - `relevanceScore` must be between 0.00 and 1.00... | `./DATA_MODEL.md` |
+| DAT-079 | - `effectiveDate` must be a valid date... | `./DATA_MODEL.md` |
+| DAT-080 | - `mandatory` must be boolean (true/false)... | `./DATA_MODEL.md` |
+| DAT-081 | These IDs are **permanent** and must not change across advis... | `./docs/ADVISORY_OUTPUTS.md` |
+| DAT-082 | / Field / Type / Required / Description /... | `./docs/ADVISORY_OUTPUTS.md` |
+| DAT-083 | Future ISA versions must preserve existing mapping, gap, and... | `./docs/ADVISORY_OUTPUTS.md` |
+| DAT-084 | The advisory output schema may be extended in future version... | `./docs/ADVISORY_OUTPUTS.md` |
+| DAT-085 | ISA advisory JSON files must have **deterministic, reproduci... | `./docs/ADVISORY_OUTPUTS.md` |
+| DAT-086 | - Trailing newline: Required (POSIX compliance)... | `./docs/ADVISORY_OUTPUTS.md` |
+| DAT-087 | // Required fields... | `./docs/CHATGPT_INTEGRATION_CONTRACT.md` |
+| DAT-088 | - `url`: Must be valid HTTPS URL to authoritative source... | `./docs/CHATGPT_INTEGRATION_CONTRACT.md` |
+| DAT-089 | - `description`: Required, no max length (text field)... | `./docs/CHATGPT_INTEGRATION_CONTRACT.md` |
+| DAT-090 | - **Required:** UPPERCASE filenames with underscores (e.g., ... | `./docs/CHATGPT_INTEGRATION_CONTRACT.md` |
+| DAT-091 | - **Required:** `.md` extension (Markdown format)... | `./docs/CHATGPT_INTEGRATION_CONTRACT.md` |
+| DAT-092 | - **Required:** British English spelling throughout... | `./docs/CHATGPT_INTEGRATION_CONTRACT.md` |
+| DAT-093 | - **Required:** GS1 Style Guide Release 5.6 compliance (see ... | `./docs/CHATGPT_INTEGRATION_CONTRACT.md` |
+| DAT-094 | - MUST cite advisory IDs, dataset IDs, versions... | `./docs/CHATGPT_INTEGRATION_CONTRACT.md` |
+| DAT-095 | **Criterion:** Does the system detect obligation-centric lan... | `./docs/ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md` |
+| DAT-096 | - "Shall" and "must" not in keyword lists... | `./docs/ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md` |
+| DAT-097 | / Add obligation language detection (shall, must, required) ... | `./docs/ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md` |
+| DAT-098 | The two reports provide **critical validation** of ISA's cor... | `./docs/ISA_Strategic_Insights_from_Reports.md` |
+| DAT-099 | - "Which GDSN attributes must I populate for PPWR compliance... | `./docs/ISA_Strategic_Insights_from_Reports.md` |
+| DAT-100 | - "Which JSON-LD properties are required for my textile DPP?... | `./docs/ISA_Strategic_Insights_from_Reports.md` |

@@ -1,38 +1,31 @@
 # ISA Master Specification
 
-**Version:** 1.0
 **Status:** CURRENT (as-built)
-**Generated:** 2026-02-03
 
 ## 1. Purpose
 
-This document serves as the authoritative index for the ISA (Intelligent Standards Assistant) canonical specification layer.
+Authoritative index for canonical specifications.
 
-## 2. Scope
+## 2. Document Precedence
 
-This specification covers the CURRENT (as-built) state of ISA. ULTIMATE (ambition/research) items are explicitly marked.
+1. ISA_MASTER_SPEC.md
+2. Canonical Spec Documents
+3. Primary Authority Spine
+4. Supporting Documents
 
-## 3. Document Precedence Rules
-
-1. **ISA_MASTER_SPEC.md** — This document; defines structure and precedence
-2. **Canonical Spec Documents** — One per cluster; authoritative for their domain
-3. **Primary Authority Spine** — Source documents with NORMATIVE_CANDIDATE status
-4. **Supporting Documents** — Informative; do not override canonical specs
-
-## 4. Definitions
+## 3. Definitions
 
 | Term | Definition |
 |------|------------|
-| CURRENT | The as-built, production state of ISA |
-| ULTIMATE | Aspirational/research goals not yet implemented |
-| IRON Gate | Quality checkpoint that must pass before release |
-| Normative | Statements using MUST/SHALL/REQUIRED language |
-| Informative | Supporting context without binding requirements |
+| CURRENT | As-built production state |
+| ULTIMATE | Aspirational goals |
+| IRON Gate | Quality checkpoint |
+| Normative | MUST/SHALL/REQUIRED |
 
-## 5. Canonical Specifications
+## 4. Canonical Specifications
 
-| Cluster | Canonical Spec | Core Sources |
-|---------|---------------|--------------|
+| Cluster | Spec | Sources |
+|---------|------|---------|
 | ISA Core Architecture | [isa-core-architecture.md](isa-core-architecture.md) | 15 |
 | Data & Knowledge Model | [data-knowledge-model.md](data-knowledge-model.md) | 15 |
 | Governance & IRON Protocol | [governance-iron-protocol.md](governance-iron-protocol.md) | 15 |
@@ -46,7 +39,7 @@ This specification covers the CURRENT (as-built) state of ISA. ULTIMATE (ambitio
 | UX & User Journey | [ux-user-journey.md](ux-user-journey.md) | 15 |
 | Roadmap / Evolution | [roadmap-evolution.md](roadmap-evolution.md) | 9 |
 
-## 6. Core Sources per Cluster
+## 5. Core Sources
 
 ### ISA Core Architecture
 
@@ -200,16 +193,3 @@ This specification covers the CURRENT (as-built) state of ISA. ULTIMATE (ambitio
 - `./PHASE_9_DOCUMENTATION_INVENTORY.md`
 - `./docs/STATUS.md`
 
-## 7. Change Control
-
-Updates to canonical specifications require:
-1. Identification of source document changes
-2. Update to relevant canonical spec
-3. Update to TRACEABILITY_MATRIX.csv
-4. Review per ISA governance rules
-
-## 8. References
-
-- TRACEABILITY_MATRIX.csv — Full claim traceability
-- CONFLICT_REGISTER.md — Documented conflicts and resolutions
-- DEPRECATION_MAP.md — Document status mapping

@@ -1,15 +1,21 @@
 {
-  "generator": "phase3_synthesis.py",
-  "run_date": "2026-02-03T15:42:00Z",
+  "$schema_note": "This file is the SINGLE SOURCE OF TRUTH for Phase 3 synthesis parameters.",
+  "$provenance": {
+    "description": "All parameters below override script defaults. If a parameter is not set here, the script uses fallback defaults (see FALLBACK_DEFAULTS in phase3_synthesis.py).",
+    "audit_requirement": "For reproducible, audit-ready runs, ALWAYS use --config docs/spec/RUN_CONFIG.json"
+  },
+  "generator": "scripts/phase3_synthesis.py",
+  "version": "2.1",
+  "run_date": "2026-02-04",
   "input_artifacts": {
-    "document_index": "/home/ubuntu/outputs/document_index.json",
-    "cluster_map": "/home/ubuntu/outputs/cluster_map.json",
-    "authority_candidates": "/home/ubuntu/outputs/authority_candidates.json"
+    "document_index": "outputs/document_index.json",
+    "cluster_map": "outputs/cluster_map.json",
+    "authority_candidates": "outputs/authority_candidates.json"
   },
   "configuration": {
     "max_core_sources_per_cluster": 15,
     "min_core_sources_per_cluster": 5,
-    "max_claims_in_traceability_per_cluster": 20,
+    "max_claims_in_traceability_per_cluster": 100,
     "max_must_invariants_per_spec": 15,
     "max_implicit_claims_per_spec": 5
   },
@@ -35,6 +41,20 @@
     "docs/agent_collaboration/MANUS_CHATGPT_PROTOCOL.md",
     "docs/governance/ISA_MANUS_PROJECT_GOVERNANCE.md"
   ],
+  "cluster_filenames": {
+    "ISA Core Architecture": "isa-core-architecture.md",
+    "Data & Knowledge Model": "data-knowledge-model.md",
+    "Governance & IRON Protocol": "governance-iron-protocol.md",
+    "Ingestion & Update Lifecycle": "ingestion-update-lifecycle.md",
+    "Catalogue Obligation & Source Registry": "catalogue-source-registry.md",
+    "Retrieval / Embeddings / Grounding": "retrieval-embeddings-grounding.md",
+    "Evaluation Governance & Reproducibility": "evaluation-governance-reproducibility.md",
+    "Observability / Tracing / Production Feedback": "observability-tracing-feedback.md",
+    "Repo Structure / Change Control / Release Discipline": "repo-change-control-release.md",
+    "Agent & Prompt Governance": "agent-prompt-governance.md",
+    "UX & User Journey": "ux-user-journey.md",
+    "Roadmap / Evolution": "roadmap-evolution.md"
+  },
   "exclusions": {
     "ULTIMATE_documents": [
       "docs/architecture/ISA_ULTIMATE_ARCHITECTURE.md",
@@ -42,14 +62,10 @@
     ],
     "rationale": "ULTIMATE documents represent aspirational/research goals, excluded from CURRENT (as-built) specs"
   },
-  "known_gaps": {
-    "IRON_PROTOCOL.md": "Not selected in top-15 for any cluster due to scoring; requires manual addition",
-    "observability_cluster": "Only 7 core sources (vs 15 target) - limited source material"
-  },
-  "outputs": {
-    "canonical_specs": 12,
-    "global_artifacts": 5,
-    "total_traced_claims": 237,
-    "unique_source_docs_referenced": 84
+  "normative_candidate_coverage": {
+    "total": 14,
+    "traced": 12,
+    "excluded_with_rationale": 2,
+    "missing": 0
   }
 }
