@@ -34,7 +34,7 @@ def get_all_scripts(repo_root: Path) -> set:
     if not scripts_dir.exists():
         return set()
     
-    extensions = {'.py', '.ts', '.sh', '.mjs', '.cjs'}
+    extensions = {'.py', '.ts', '.sh', '.mjs', '.cjs', '.js'}
     scripts = set()
     
     for ext in extensions:

@@ -243,7 +243,8 @@
       ],
       "deprecated_scripts": [
         "scripts/analyze-rag-traces.cjs",
-        "scripts/debug-eval.cjs"
+        "scripts/debug-eval.cjs",
+        "scripts/run-repro-harness.js"
       ],
       "inputs": ["Database: knowledge_items table"],
       "outputs": ["Evaluation metrics"],
@@ -373,8 +374,8 @@
   "orphan_scripts": [],
   "summary": {
     "total_clusters": 16,
-    "total_scripts": 101,
-    "scripts_in_clusters": 101,
+    "total_scripts": 102,
+    "scripts_in_clusters": 102,
     "orphan_scripts": 0,
     "labels": {
       "PRODUCT_PIPELINE": 8,
