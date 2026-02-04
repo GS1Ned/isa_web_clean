@@ -1,0 +1,55 @@
+{
+  "generator": "phase3_synthesis.py",
+  "run_date": "2026-02-03T15:42:00Z",
+  "input_artifacts": {
+    "document_index": "/home/ubuntu/outputs/document_index.json",
+    "cluster_map": "/home/ubuntu/outputs/cluster_map.json",
+    "authority_candidates": "/home/ubuntu/outputs/authority_candidates.json"
+  },
+  "configuration": {
+    "max_core_sources_per_cluster": 15,
+    "min_core_sources_per_cluster": 5,
+    "max_claims_in_traceability_per_cluster": 20,
+    "max_must_invariants_per_spec": 15,
+    "max_implicit_claims_per_spec": 5
+  },
+  "scoring_weights": {
+    "NORMATIVE_CANDIDATE_status": 10,
+    "explicit_normative_intent": 5,
+    "implicit_normative_intent": 2,
+    "authority_candidate": 3,
+    "primary_authority_spine": 15,
+    "core_document_in_cluster": 2
+  },
+  "primary_authority_spine": [
+    "ARCHITECTURE.md",
+    "GOVERNANCE.md",
+    "IRON_PROTOCOL.md",
+    "ISA_GOVERNANCE.md",
+    "docs/CODEX_DELEGATION_SPEC.md",
+    "docs/FILE_SYSTEM_MEMORY_ARCHITECTURE.md",
+    "docs/GOVERNANCE_SELF_CHECK_2025-12-17.md",
+    "docs/GS1_Attribute_Mapper_Technical_Specification.md",
+    "docs/ISA_INFORMATION_ARCHITECTURE.md",
+    "docs/PIPELINE_OBSERVABILITY_SPEC.md",
+    "docs/agent_collaboration/MANUS_CHATGPT_PROTOCOL.md",
+    "docs/governance/ISA_MANUS_PROJECT_GOVERNANCE.md"
+  ],
+  "exclusions": {
+    "ULTIMATE_documents": [
+      "docs/architecture/ISA_ULTIMATE_ARCHITECTURE.md",
+      "docs/ultimate_architecture_docs/ISA_ULTIMATE_ARCHITECTURE.md"
+    ],
+    "rationale": "ULTIMATE documents represent aspirational/research goals, excluded from CURRENT (as-built) specs"
+  },
+  "known_gaps": {
+    "IRON_PROTOCOL.md": "Not selected in top-15 for any cluster due to scoring; requires manual addition",
+    "observability_cluster": "Only 7 core sources (vs 15 target) - limited source material"
+  },
+  "outputs": {
+    "canonical_specs": 12,
+    "global_artifacts": 5,
+    "total_traced_claims": 237,
+    "unique_source_docs_referenced": 84
+  }
+}
