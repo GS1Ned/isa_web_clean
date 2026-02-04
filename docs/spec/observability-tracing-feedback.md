@@ -2,17 +2,14 @@
 
 **Canonical Specification**
 **Status:** CURRENT (as-built)
-**Generated:** 2026-02-03
 
 ## 1. Identity
 
 - **Name:** Observability / Tracing / Production Feedback
-- **Scope:** This specification defines the CURRENT state of observability / tracing / production feedback within ISA.
-- **Marker:** CURRENT (as-built) — not ULTIMATE (ambition/research)
+- **Scope:** CURRENT state of observability / tracing / production feedback
+- **Marker:** CURRENT (as-built) — not ULTIMATE
 
 ## 2. Core Sources
-
-The following documents form the authoritative basis for this specification:
 
 1. `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md`
 2. `./docs/PRODUCTION_DEPLOYMENT.md`
@@ -24,7 +21,7 @@ The following documents form the authoritative basis for this specification:
 
 ## 3. Definitions
 
-*Terms used in this specification are defined in ISA_MASTER_SPEC.md*
+*See ISA_MASTER_SPEC.md*
 
 ## 4. Invariants (MUST-level)
 
@@ -64,22 +61,21 @@ The following documents form the authoritative basis for this specification:
 **INV-12:** 3. **No Progress Persistence:** If interrupted, must restart from beginning
 - Source: `./docs/EMBEDDING_PIPELINE_OPTIMIZATION.md` > Limitations
 
-## 5. Interfaces / Pipelines / Entry Points
+## 5. Interfaces / Pipelines
 
-*CURRENT implementation details extracted from source documents.*
+*See source documents.*
 
 ## 6. Governance & Change Control
 
-Changes to this specification require:
-1. Review of source documents
-2. Update to TRACEABILITY_MATRIX.csv
-3. Approval per ISA governance rules
+1. Review source documents
+2. Update TRACEABILITY_MATRIX.csv
+3. Follow governance rules
 
-## 7. Observability & Evaluation Hooks
+## 7. Observability
 
-*See source documents for detailed observability requirements.*
+*See source documents.*
 
-## 8. Acceptance Criteria / IRON Gates
+## 8. Acceptance Criteria
 
 - AC-1: 2. Ensure "Normal (30 days)" is selected (default)
 - AC-2: **Note:** Automated tests validate core mode logic but require enhanced mocking for full pipeline execution. Manual testing via admin UI is recommende
@@ -89,22 +85,22 @@ Changes to this specification require:
 
 ## 9. Traceability Annex
 
-| Claim ID | Statement (truncated) | Source |
-|----------|----------------------|--------|
+| Claim ID | Statement | Source |
+|----------|-----------|--------|
 | OBS-001 | 1. **Initial Setup**: New deployments or data migrations req... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
 | OBS-002 | 2. **Data Recovery**: System failures or extended downtime r... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
-| OBS-003 | 2. Ensure "Normal (30 days)" is selected (default)... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
-| OBS-004 | **Note:** Automated tests validate core mode logic but requi... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
-| OBS-005 | 4. **Mode Analytics**: Track mode usage patterns and recomme... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
-| OBS-006 | The following environment variables must be configured in th... | `./docs/PRODUCTION_DEPLOYMENT.md` |
-| OBS-007 | / Variable / Description / Required /... | `./docs/PRODUCTION_DEPLOYMENT.md` |
-| OBS-008 | 4. **Verify rollback**: Check health endpoints... | `./docs/PRODUCTION_DEPLOYMENT.md` |
-| OBS-009 | / Criterion / Required / Actual / Status /... | `./docs/PHASE4_OPERATIONAL_READINESS_REPORT.md` |
-| OBS-010 | - ⚠️ Cookie consent banner not implemented (minimal cookies,... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-011 | - Cookie consent banner (not required for essential cookies ... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-012 | No new environment variables required. All improvements use ... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-013 | - Rate limiting: In-memory store (no Redis required)... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-014 | No database migrations required. All improvements are applic... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-015 | - [ ] Implement cookie consent banner (if required by legal ... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-016 | - [ ] Conduct load testing to validate scaling assumptions... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-017 | 3. **No Progress Persistence:** If interrupted, must restart... | `./docs/EMBEDDING_PIPELINE_OPTIMIZATION.md` |
+| OBS-003 | The following environment variables must be configured in th... | `./docs/PRODUCTION_DEPLOYMENT.md` |
+| OBS-004 | / Variable / Description / Required /... | `./docs/PRODUCTION_DEPLOYMENT.md` |
+| OBS-005 | / Criterion / Required / Actual / Status /... | `./docs/PHASE4_OPERATIONAL_READINESS_REPORT.md` |
+| OBS-006 | - ⚠️ Cookie consent banner not implemented (minimal cookies,... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
+| OBS-007 | - Cookie consent banner (not required for essential cookies ... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
+| OBS-008 | No new environment variables required. All improvements use ... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
+| OBS-009 | - Rate limiting: In-memory store (no Redis required)... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
+| OBS-010 | No database migrations required. All improvements are applic... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
+| OBS-011 | - [ ] Implement cookie consent banner (if required by legal ... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
+| OBS-012 | 3. **No Progress Persistence:** If interrupted, must restart... | `./docs/EMBEDDING_PIPELINE_OPTIMIZATION.md` |
+| OBS-013 | 2. Ensure "Normal (30 days)" is selected (default)... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
+| OBS-014 | **Note:** Automated tests validate core mode logic but requi... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
+| OBS-015 | 4. **Mode Analytics**: Track mode usage patterns and recomme... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
+| OBS-016 | 4. **Verify rollback**: Check health endpoints... | `./docs/PRODUCTION_DEPLOYMENT.md` |
+| OBS-017 | - [ ] Conduct load testing to validate scaling assumptions... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
