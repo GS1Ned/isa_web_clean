@@ -6,12 +6,12 @@ This document defines the **mandatory execution procedure** for audits, reviews,
 
 Its purpose is to ensure that all audit-related work is:
 
-* reproducible
-* evidence-based
-* conflict-aware
-* resistant to assumption-driven conclusions
+- reproducible
+- evidence-based
+- conflict-aware
+- resistant to assumption-driven conclusions
 
-This document does **not** define governance authority.
+This document does **not** define governance authority.  
 It defines **how** audits must be executed, not **what** is governed.
 
 ---
@@ -20,11 +20,11 @@ It defines **how** audits must be executed, not **what** is governed.
 
 Audit Execution Mode applies **whenever** work involves:
 
-* governance audits
-* repository reviews
-* golden path assessments
-* validation of documentation, specifications, or structure
-* claims about presence, absence, correctness, alignment, or currency
+- governance audits
+- repository reviews
+- golden path assessments
+- validation of documentation, specifications, or structure
+- claims about presence, absence, correctness, alignment, or currency
 
 Audit Execution Mode is **always active** for such work and cannot be disabled.
 
@@ -34,17 +34,15 @@ Audit Execution Mode is **always active** for such work and cannot be disabled.
 
 Every audit deliverable **must begin** with the following metadata:
 
-* **Date**: `YYYY-MM-DD`
-* **Scope**: `READ-ONLY` or `WRITE`
-* **Repository Reference**:
-
-  * repository name
-  * branch name
-  * commit hash
-* **Verification Method**:
-
-  * commands executed, and/or
-  * artifacts inspected
+- **Date**: `YYYY-MM-DD`
+- **Scope**: `READ-ONLY` or `WRITE`
+- **Repository Reference**:
+  - repository name
+  - branch name
+  - commit hash
+- **Verification Method**:
+  - commands executed, and/or
+  - artifacts inspected
 
 If any of the above elements are missing, the audit output is **invalid**.
 
@@ -54,20 +52,20 @@ If any of the above elements are missing, the audit output is **invalid**.
 
 No claim may be made about whether something:
 
-* exists or does not exist
-* is correct or incorrect
-* is aligned or misaligned
-* is current, official, or valid
-* works or fails
+- exists or does not exist
+- is correct or incorrect
+- is aligned or misaligned
+- is current, official, or valid
+- works or fails
 
 unless it is supported by **explicit evidence**.
 
 Valid evidence consists of:
 
-* concrete file paths
-* command transcripts (e.g. `ls`, `find`, `git`)
-* repository artifacts
-* verifiable outputs
+- concrete file paths
+- command transcripts (e.g. `ls`, `find`, `git`)
+- repository artifacts
+- verifiable outputs
 
 If evidence cannot be produced, the claim **must** be labeled:
 
@@ -94,23 +92,23 @@ If falsification cannot be completed, the finding **must not escalate** and rema
 
 STOP **must** be entered immediately when:
 
-* two authoritative artifacts conflict
-* evidence contradicts an earlier statement
-* an instruction hierarchy conflict is detected
-* a UI or tool instruction contradicts ISA Non-Negotiables
+- two authoritative artifacts conflict
+- evidence contradicts an earlier statement
+- an instruction hierarchy conflict is detected
+- a UI or tool instruction contradicts ISA Non-Negotiables
 
 When STOP is active:
 
-* no conclusions may be drawn
-* no governance status may be changed
-* no documentation may be updated
-* no corrective actions may be implemented
+- no conclusions may be drawn
+- no governance status may be changed
+- no documentation may be updated
+- no corrective actions may be implemented
 
 Only the following output is permitted during STOP:
 
-* a list of competing statements
-* a description of their impact
-* a description of the evidence required to resolve the conflict
+- a list of competing statements
+- a description of their impact
+- a description of the evidence required to resolve the conflict
 
 STOP ends **only** after an explicit resolution is recorded.
 
@@ -120,15 +118,27 @@ STOP ends **only** after an explicit resolution is recorded.
 
 Audit Execution Mode operates relative to the following canonical anchors:
 
-* **Canonical specifications**: `docs/spec/`
-* **Governance documentation**: `docs/governance/`
+- **Canonical specifications**: `docs/spec/`
+- **Governance documentation**: `docs/governance/`
 
 Any claim regarding missing, inconsistent, or invalid canonical material requires:
 
-* a correct repository reference
-* explicit filesystem evidence (for example: `ls`, `find` output)
+- a correct repository reference
+- explicit filesystem evidence (for example: `ls`, `find` output)
 
 Claims without such evidence are invalid.
+
+---
+
+## Secrets & Sensitive Values
+
+The following rules apply to **all audit-related work**:
+
+- Secrets (API keys, tokens, credentials) must never be embedded in audit artifacts, logs, transcripts, or documentation.
+- Audits must reason about secrets **by name and role only**, never by value.
+- The presence, absence, or correctness of secrets may only be asserted via configuration metadata or execution outcomes, never by disclosure.
+
+**When Manus is used as the execution environment, Manus acts as the operational secrets custodian, but remains fully subordinate to ISA governance rules; Manus may store and apply secrets operationally, but governance, authority, and policy for secret handling are defined exclusively by ISA canonical documentation.**
 
 ---
 
@@ -136,14 +146,14 @@ Claims without such evidence are invalid.
 
 This document:
 
-* does **not** introduce new governance rules
-* does **not** override existing authority
-* does **not** replace governance documentation
+- does **not** introduce new governance rules
+- does **not** override existing authority
+- does **not** replace governance documentation
 
 In case of conflict:
 
-* **Permanent Project Instructions take precedence**
-* Repository governance and canonical specifications take precedence over this document
+- **Permanent Project Instructions take precedence**
+- Repository governance and canonical specifications take precedence over this document
 
 This document defines **execution procedure only**.
 
@@ -153,9 +163,9 @@ This document defines **execution procedure only**.
 
 Every audit-related deliverable must include a section explicitly stating:
 
-* what was **verified**
-* what was **assumed**
-* what could **not** be verified and why
+- what was **verified**
+- what was **assumed**
+- what could **not** be verified and why
 
 ---
 
@@ -163,9 +173,9 @@ Every audit-related deliverable must include a section explicitly stating:
 
 Any audit output that violates this execution mode is considered:
 
-* procedurally invalid
-* non-governance-grade
-* subject to rejection or re-execution
+- procedurally invalid
+- non-governance-grade
+- subject to rejection or re-execution
 
 ---
 
@@ -173,5 +183,5 @@ Any audit output that violates this execution mode is considered:
 
 This document is **canonical**.
 
-It is binding for **audit execution behavior**,
+It is binding for **audit execution behavior**,  
 and must be followed for all applicable work within the ISA project.
