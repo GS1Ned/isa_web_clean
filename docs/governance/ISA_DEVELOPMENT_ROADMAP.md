@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-This roadmap outlines the strategic development priorities for ISA (Intelligent Standards Assistant) across short-term (0-2 weeks), medium-term (2-8 weeks), and long-term (2-6 months) horizons. The focus is on maximizing product quality, governance compliance, and operational efficiency.
+This document is the **sole authoritative source** for defining ISA development roadmap priorities and strategic directions. It outlines the strategic development priorities for ISA (Intelligent Standards Assistant) across short-term (0-2 weeks), medium-term (2-8 weeks), and long-term (2-6 months) horizons. The focus is on maximizing product quality, governance compliance, and operational efficiency. Any other document referencing roadmap items should defer to this file.
 
 ## Current State Assessment
 
@@ -155,6 +155,8 @@ This roadmap outlines the strategic development priorities for ISA (Intelligent 
 | DEPRECATION_MAP updates | Per deprecation | Auto (synthesis) |
 
 ### Quality Gates
+
+**Note:** The definitive source of truth for workflow execution and quality gate logic resides in the `.github/workflows/*.yml` files. The table below provides a high-level overview and documentation reference.
 
 | Gate | Trigger | Validator |
 |------|---------|-----------|

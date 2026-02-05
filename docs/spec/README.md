@@ -105,6 +105,7 @@ Edit `RUN_CONFIG.json` to adjust synthesis parameters:
 2. **CURRENT vs ULTIMATE:** Specs reflect CURRENT (as-built) state; ULTIMATE documents are excluded
 3. **Traceability:** Every claim must trace to a source document
 4. **Conflict Resolution:** Use `CONFLICT_REGISTER.md` to track and resolve conflicts
+5. **Audit Provenance:** All audit claims and deliverables MUST include repository reference (name, branch, commit hash) as per `docs/governance/AUDIT_EXECUTION_MODE.md`.
 
 ## CI Integration
 
