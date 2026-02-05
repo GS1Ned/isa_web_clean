@@ -151,6 +151,22 @@ Claims without such evidence are invalid.
 
 Relationship to Governance Authority
 
+Secrets Handling and Tooling Interaction
+
+This document does not define secrets policy.
+
+Manus or other tooling may store, manage, or inject secrets at runtime.  
+All normative rules governing secrets — including storage constraints, scope, exposure, and precedence — are defined exclusively by the ISA Non-Negotiables and canonical repository governance documentation.
+
+In case of conflict between:
+- UI guidance,
+- tooling protocols, or
+- execution-time convenience features,
+
+the repository-defined ISA governance rules take precedence.
+
+This document only defines how audits must be executed when such conflicts are detected.
+
 This document:
 
 does not introduce new governance rules
@@ -164,8 +180,6 @@ In case of conflict:
 Permanent Project Instructions take precedence
 
 Repository governance and canonical specifications take precedence over this document
-
-Omdat ik met Manus ontwikkel en Manus de secrets bewaart en op de juiste momenten gebruikt, moet Manus de omgang en governance van secrets volgen zoals vastgelegd in de ISA Non-Negotiables en repository governance docs; bij conflict prevaleert de repository boven UI/tooling.
 
 This document defines execution procedure only.
 
