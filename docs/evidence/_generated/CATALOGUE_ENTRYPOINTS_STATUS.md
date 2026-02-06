@@ -1,29 +1,29 @@
 # Catalogue entrypoints status
 
-- last_verified_at: `2026-02-04`
-- verified_at: `2026-02-04T04:52:30Z`
+- last_verified_at: `2026-02-06`
+- verified_at: `2026-02-06T04:58:55Z`
 - total: `14`, ok: `10`, fail: `4`
 
 ## EFRAG
 
 - 200 ok=true `https://www.efrag.org/en/sustainability-reporting-publications`
   - content_type: `text/html; charset=UTF-8`
-  - last_modified: `Tue, 03 Feb 2026 17:18:19 GMT`
-  - etag: `W/"1770139099-gzip"`
+  - last_modified: `Thu, 05 Feb 2026 12:26:43 GMT`
+  - etag: `W/"1770294403-gzip"`
 - 200 ok=true `https://www.efrag.org/en/news-and-calendar/news`
   - content_type: `text/html; charset=UTF-8`
-  - last_modified: `Tue, 03 Feb 2026 17:10:20 GMT`
-  - etag: `W/"1770138620-gzip"`
+  - last_modified: `Thu, 05 Feb 2026 12:29:36 GMT`
+  - etag: `W/"1770294576-gzip"`
 - 200 ok=true `https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded`
   - content_type: `text/html; charset=UTF-8`
-  - last_modified: `Tue, 03 Feb 2026 17:16:05 GMT`
-  - etag: `W/"1770138965-gzip"`
+  - last_modified: `Thu, 05 Feb 2026 13:10:13 GMT`
+  - etag: `W/"1770297013-gzip"`
 - 302 ok=true `https://efrag-website.azurewebsites.net/Activities/2304270816111835/Article-8-XBRL-Taxonomy`
   - final_url: `https://efrag-website.azurewebsites.net/Activities/2304270816111835/Article-8-XBRL-Taxonomy?AspxAutoDetectCookieSupport=1`
   - content_type: `text/html; charset=utf-8`
 - 200 ok=true `https://knowledgehub.efrag.org/eng`
   - content_type: `text/html; charset=utf-8`
-  - etag: `W/"7f5a7-fUgGbh3vKTCEdb2lEw7+QAp/ZX4"`
+  - etag: `W/"86a47-hLBT5bgWYoplvocUFOwHBxBHSok"`
 
 ## GS1_EUROPE
 
