@@ -1,0 +1,351 @@
+{
+  "last_verified_utc": "2026-02-06T19:05:26Z",
+  "git_head": "16dfc1b058d0700cc2dce932b49269e75301fecf",
+  "repo_scan_json": "isa-archive/next-step-scan/repo_scan.json",
+  "todo_hits": 3000,
+  "issue_hits": 411,
+  "top_files_by_todo_hits": [
+    {
+      "path": "docs/spec/TRACEABILITY_MATRIX.csv",
+      "hits": 213,
+      "bytes": 273411,
+      "sha256": "3f89d5c66652d837a7f28d16d6874673859d59eb3283d1fda6d36100b79c46bd"
+    },
+    {
+      "path": "todo.md",
+      "hits": 202,
+      "bytes": 149830,
+      "sha256": "78f545ad5353fc72cf23b401e7a112c4d6eb39e35116feb85d6de5d25ef30c6f"
+    },
+    {
+      "path": "server/routers/roadmap-export.ts",
+      "hits": 102,
+      "bytes": 14044,
+      "sha256": "a768fe971e2194e8ca1a1221b1f126d11b8b2012dcc8da50e7ac5db2ca22b8e4"
+    },
+    {
+      "path": "docs/ISA_VISUAL_BRANDING_ROADMAP.md",
+      "hits": 71,
+      "bytes": 35450,
+      "sha256": "edf563ad40bc6fe6dfe7ed9c36cfacab18e6c23d17409b881c71e3cb654f40da"
+    },
+    {
+      "path": "docs/spec/roadmap-evolution.md",
+      "hits": 65,
+      "bytes": 14006,
+      "sha256": "54ad4c5fa8450972ad3450a7f020c7f9163e901c290b03787d3ab7d731379cd2"
+    },
+    {
+      "path": "docs/ISA_GS1_PRE_EXECUTION_PREPARATION.md",
+      "hits": 57,
+      "bytes": 61219,
+      "sha256": "fd4555790fe0c9a4ca815b4fa9ffccf46b88fc26fee606040a81d897c8ab5444"
+    },
+    {
+      "path": "docs/ISA_PRODUCT_DIMENSIONS_ANALYSIS.md",
+      "hits": 54,
+      "bytes": 69309,
+      "sha256": "13807b97c724029e940c8047b663b1932d30cc0133b292304e5ac2960206ea7c"
+    },
+    {
+      "path": "server/routers/roadmap.ts",
+      "hits": 51,
+      "bytes": 6615,
+      "sha256": "38de06398c14887d44a4f6e9fdded2dff00a2ce28f92c3423f472ae3b9c62e43"
+    },
+    {
+      "path": "docs/ISA_IMPLEMENTATION_EXECUTION_PLAN.md",
+      "hits": 48,
+      "bytes": 54661,
+      "sha256": "5b4ad94b29666049fb5cf85e5a7d818d2daf1f42255dbf10f23ec6bb14f3b022"
+    },
+    {
+      "path": "docs/API_REFERENCE.md",
+      "hits": 46,
+      "bytes": 435618,
+      "sha256": "fcf05ab73162735fe7cad22706271c2630824a9018981b53669165a70538fa3d"
+    },
+    {
+      "path": "AUDIT_FINDINGS.md",
+      "hits": 44,
+      "bytes": 20423,
+      "sha256": "b6ecfbb3903a2175046fef2f41d0d6f3cbc44155082383fee3ee94ca429bdc7e"
+    },
+    {
+      "path": "./docs/ISA_VISUAL_BRANDING_DEVELOPMENT_PLAN.md",
+      "hits": 42,
+      "bytes": 45831,
+      "sha256": "a815e19d5e637cb6d590bd2af1a86ce755ebc5746cbc3d7c64b35fe5611b2b8c"
+    },
+    {
+      "path": "docs/ISA_V1_FORMALIZATION_TARGETS.md",
+      "hits": 41,
+      "bytes": 49338,
+      "sha256": "218b37299f10abaf81ffcd4f499445c3a9d8db20e6b9992a58f0be94e69bfd88"
+    },
+    {
+      "path": "./client/src/pages/ComplianceRoadmap.tsx",
+      "hits": 40,
+      "bytes": 22229,
+      "sha256": "2fe1a9df255bcb79679c50f57dc0b08b8910812cb17c843f9757a211110b89bb"
+    },
+    {
+      "path": "docs/spec/ingestion-update-lifecycle.md",
+      "hits": 37,
+      "bytes": 13382,
+      "sha256": "004356e67fd75aa82b4d108fb5b072ba26d41db6176b1502042b8ecb129b0e34"
+    },
+    {
+      "path": "./docs/gsmp_manual.txt",
+      "hits": 33,
+      "bytes": 266146,
+      "sha256": "a5d79a4f081724e5b54e7f529d231f1e06215b3dbf2b2ae2ed226164ad6661dd"
+    },
+    {
+      "path": "docs/ISA_DEVELOPMENT_ROADMAP_TO_FINAL_PRODUCT.md",
+      "hits": 28,
+      "bytes": 33391,
+      "sha256": "3060eda3258917cee0cc1d57cbb3ff1ad66cdd0ddd5479a1504c7a43a9543610"
+    },
+    {
+      "path": "docs/STATUS.md",
+      "hits": 28,
+      "bytes": 10124,
+      "sha256": "30b4f9f2209fbcd2abec092de1f15b1a67d0a01d9e6adcb1273b3f21d8e8f076"
+    },
+    {
+      "path": "TIMELINE_VISUALIZATION_SUMMARY.md",
+      "hits": 27,
+      "bytes": 15446,
+      "sha256": "e4ff317768d14790dc06980df0ad71d7f2023a7c3f97f6c3c9aa2d6bddf5a555"
+    },
+    {
+      "path": "docs/CHANGELOG_SUMMARY.md",
+      "hits": 27,
+      "bytes": 25840,
+      "sha256": "89378a0b1b65abab85773bca6fc3388c193832646ab090246380e0edf88696b6"
+    },
+    {
+      "path": "docs/ISA_COMPARATIVE_REFACTOR_GATE_PLAN.md",
+      "hits": 26,
+      "bytes": 22340,
+      "sha256": "c82e9d206ce743c937063522be7eb11527317ae5905a7ae4ea2fe1f912c9c023"
+    },
+    {
+      "path": "docs/ISA_Strategic_Roadmap.md",
+      "hits": 26,
+      "bytes": 77912,
+      "sha256": "ebcdab2ac67783f66c6c94b7f856cfac834aa514a8542b56e97a0052c76a7f5e"
+    },
+    {
+      "path": "docs/MANUS_BEST_PRACTICES_FOR_ISA.md",
+      "hits": 26,
+      "bytes": 29333,
+      "sha256": "88c7ee5efba1efb0dbb797e48e2228ff401c46bf3f2c37111718165e6f19bc75"
+    },
+    {
+      "path": "docs/GITHUB_PROVISIONING_REPORT.md",
+      "hits": 25,
+      "bytes": 15771,
+      "sha256": "92267a646d2506d336749ceddd837ff873a998139f0775d71c25125fb8969872"
+    },
+    {
+      "path": "GS1_ARTEFACT_PROCESSING.md",
+      "hits": 24,
+      "bytes": 10096,
+      "sha256": "ec4839a7f0d93b3027cb7e2d6047fb3e1f6576da0ef49faaa6a20dca86ede519"
+    },
+    {
+      "path": "server/roadmap-generator.ts",
+      "hits": 24,
+      "bytes": 12969,
+      "sha256": "40c54a062333eecec7af50444e9a8deeccd6f2ad9cd6d67645a414f2588c9939"
+    },
+    {
+      "path": "docs/ISA_AUTONOMOUS_ROADMAP_V1.md",
+      "hits": 23,
+      "bytes": 13480,
+      "sha256": "5f396a11b69d3c460f2ae28e15d0a7e65509a923b0132b0ab859a03c4b9fc177"
+    },
+    {
+      "path": "docs/ISA_FUTURE_DEVELOPMENT_PLAN.md",
+      "hits": 23,
+      "bytes": 27618,
+      "sha256": "6535adbc6e2d168b0d8dcb104526cdf707f0f10df6edc23764f1d9e847c4a184"
+    },
+    {
+      "path": "docs/GOVERNANCE_PHASE_2_3_REPORT.md",
+      "hits": 22,
+      "bytes": 12965,
+      "sha256": "5242ab2594862e0b9130a07b30c554641d7780715b200f062804215c9444dd4c"
+    },
+    {
+      "path": "docs/ISA_DELIVERY_MODEL.md",
+      "hits": 22,
+      "bytes": 22612,
+      "sha256": "5a2fb5d3190029e909f057e2820057e7637134577b1b132be7bd6826c4e80687"
+    }
+  ],
+  "roadmap_candidates_ranked": [
+    {
+      "score": 4,
+      "path": "./docs/ISA_NEXT_PHASE_DEVELOPMENT_PLAN.md"
+    },
+    {
+      "score": 2,
+      "path": "./docs/ISA_COMPARATIVE_REFACTOR_GATE_PLAN.md"
+    },
+    {
+      "score": 2,
+      "path": "./docs/META_PHASE_STRATEGIC_EXPLORATION_PLAN.md"
+    },
+    {
+      "score": 2,
+      "path": "./docs/PRIORITY_2_BLOCKED.md"
+    },
+    {
+      "score": 2,
+      "path": "./docs/spec/DECISION_LOG_PHASE3.md"
+    },
+    {
+      "score": 2,
+      "path": "./isa-archive/reports/test-results__phase-8-roadmap-generator-test.md"
+    },
+    {
+      "score": 2,
+      "path": "./todo_phase44_update.txt"
+    },
+    {
+      "score": 1,
+      "path": "./CHATGPT_DELEGATION_PHASE1.md"
+    },
+    {
+      "score": 1,
+      "path": "./EU_ESG_to_GS1_Mapping_v1.1/backlog.json"
+    },
+    {
+      "score": 1,
+      "path": "./IRON_VALIDATION_PLAN.md"
+    },
+    {
+      "score": 1,
+      "path": "./ISA_STATUS_REPORT_2025-01-11.md"
+    },
+    {
+      "score": 1,
+      "path": "./ISA_TODO_MANUAL_COMPLETION.md"
+    },
+    {
+      "score": 1,
+      "path": "./NEWS_HUB_PHASE4-6_SUMMARY.md"
+    },
+    {
+      "score": 1,
+      "path": "./PHASE_9_CLAIMS_SANITIZATION_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./PHASE_9_COMPLETION_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./PHASE_9_DOCUMENTATION_INVENTORY.md"
+    },
+    {
+      "score": 1,
+      "path": "./POC_EXPLORATION_TODO.md"
+    },
+    {
+      "score": 1,
+      "path": "./ROADMAP.md"
+    },
+    {
+      "score": 1,
+      "path": "./ROADMAP_GITHUB_INTEGRATION.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/Autonomous_Development_Plan.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/DATASET_PRIORITY_ANALYSIS.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/Data_Quality_Updates_Plan.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ESG_Hub_MVP_Polish_Plan.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/GOVERNANCE_PHASE_2_3_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_AUTONOMOUS_ROADMAP_V1.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_DEPLOYMENT_AND_ROADMAP.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_DEVELOPMENT_ROADMAP_TO_FINAL_PRODUCT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_DEVELOPMENT_STATUS.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_Development_Roadmap_2026.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_FUTURE_DEVELOPMENT_PLAN.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_IMPLEMENTATION_EXECUTION_PLAN.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_POC_ROADMAP.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_STATUS_SUMMARY_2025-12-19.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_Strategic_Roadmap.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_VISUAL_BRANDING_DEVELOPMENT_PLAN.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_VISUAL_BRANDING_ROADMAP.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/META_PHASE_COMPLETION_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE4_OPERATIONAL_READINESS_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_1_RESCORE.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_2_ADDENDUM.md"
+    }
+  ]
+}
