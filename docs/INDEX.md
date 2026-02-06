@@ -11,3 +11,5 @@
 - Current roadmap: `docs/planning/_root/ROADMAP.md`
 - Status reports: `docs/planning/_root/`
 - Governance root imports: `docs/governance/_root/`
+
+- Spellcheck terms: 

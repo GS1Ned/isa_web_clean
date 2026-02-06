@@ -9,3 +9,5 @@
 - Webhook integration: `docs/spec/WEBHOOK_INTEGRATION.md`
 - Artefact processing: `docs/spec/GS1_ARTEFACT_PROCESSING.md`
 - External references: `docs/spec/EXTERNAL_REFERENCES.md`
+
+- Capability map: 
