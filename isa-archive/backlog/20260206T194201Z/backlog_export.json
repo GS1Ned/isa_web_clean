@@ -1,0 +1,990 @@
+{
+  "meta": {
+    "generated_utc": "2026-02-06T19:42:01Z",
+    "git_head": "9634349c7b1941181c55b1711989d919f6b729d5",
+    "counts": {
+      "items": 135
+    }
+  },
+  "items": [
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L163",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L163",
+      "text": "data-knowledge-model.md | DAT-097 | | Add obligation language detection (shall, must, required) | Check 2 | 4h | MEDIUM | | ./docs/ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md | Phase 2: Short-Term (Next Sprint) | | Add obligation language detection (shall, must, required) | Check 2 | 4h | MEDIUM | | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L234",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L234",
+      "text": "governance-iron-protocol.md | GOV-068 | 1. **User Action Required:** Configure branch protection on GitHub repository main branch | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Immediate (Next 24 Hours) | 1. **User Action Required:** Configure branch protection on GitHub repository main branch | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L235",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L235",
+      "text": "governance-iron-protocol.md | GOV-069 | 2. **User Decision Required:** Determine ISA license | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Immediate (Next 24 Hours) | 2. **User Decision Required:** Determine ISA license | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L244",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L244",
+      "text": "governance-iron-protocol.md | GOV-078 | - Ensure procedures are comprehensive and current | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Short-Term (Next 14 Days) | - Ensure procedures are comprehensive and current | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L245",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L245",
+      "text": "governance-iron-protocol.md | GOV-079 | - Validate security monitoring is working | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Medium-Term (Next 30 Days) | - Validate security monitoring is working | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L257",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L257",
+      "text": "governance-iron-protocol.md | GOV-091 | **NOTE:** Whether they are already located in the *correct repo paths* and wired into daily flow must be verified in the next step (see Section 4). | ./docs/evidence/ISA_IRON_DOCSET_AND_CRITICAL_PATH_DECISION_DRAFT_v0.md | C. Baseline discoverability artefacts (strongly recommended, low-cost) | **NOTE:** Whether they are already located in the *correct repo paths* and wired into daily flow mus | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L299",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L299",
+      "text": "ingestion-update-lifecycle.md | ING-033 | - [x] Fix boolean→number in INGEST-02_gdsn_current.ts (required field) | ./todo.md | Ingestion Script Fixes | - [x] Fix boolean→number in INGEST-02_gdsn_current.ts (required field) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L300",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L300",
+      "text": "ingestion-update-lifecycle.md | ING-034 | - [x] Fix boolean→number in INGEST-04_ctes_kdes.ts (mandatory and required fields) | ./todo.md | Ingestion Script Fixes | - [x] Fix boolean→number in INGEST-04_ctes_kdes.ts (mandatory and required fields) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L301",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L301",
+      "text": "ingestion-update-lifecycle.md | ING-035 | 2. **Column Naming Consistency:** Drizzle schema uses camelCase for TypeScript but snake_case for database columns - tests must use TypeScript property names | ./todo.md | Meta-Learnings | 2. **Column Naming Consistency:** Drizzle schema uses camelCase for TypeScript but snake_case for da | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L302",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L302",
+      "text": "ingestion-update-lifecycle.md | ING-036 | - [x] Create server/test-helpers/db-test-utils.ts with 7 required functions: | ./todo.md | TASK 1 — DB Test Helpers (PR #4 equivalent) | - [x] Create server/test-helpers/db-test-utils.ts with 7 required functions: | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L303",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L303",
+      "text": "ingestion-update-lifecycle.md | ING-037 | - [x] Seed helpers must work within transaction context | ./todo.md | TASK 1 — DB Test Helpers (PR #4 equivalent) | - [x] Seed helpers must work within transaction context | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L304",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L304",
+      "text": "ingestion-update-lifecycle.md | ING-038 | **STATUS: ALREADY COMPLIANT** ✅ No changes required. | ./todo.md | TASK 3 — CI Scripts (PR #5 equivalent) ✅ COMPLETE | **STATUS: ALREADY COMPLIANT** ✅ No changes required. | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L305",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L305",
+      "text": "ingestion-update-lifecycle.md | ING-039 | - [x] Must not be default (verified) | ./todo.md | TASK 3 — CI Scripts (PR #5 equivalent) ✅ COMPLETE | - [x] Must not be default (verified) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L306",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L306",
+      "text": "ingestion-update-lifecycle.md | ING-040 | - [x] Update docs/CI_TESTING.md ONLY if required (not required) | ./todo.md | TASK 3 — CI Scripts (PR #5 equivalent) ✅ COMPLETE | - [x] Update docs/CI_TESTING.md ONLY if required (not required) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L307",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L307",
+      "text": "ingestion-update-lifecycle.md | ING-041 | - [x] Deliverable: No PR required - existing implementation already compliant with spec | ./todo.md | TASK 3 — CI Scripts (PR #5 equivalent) ✅ COMPLETE | - [x] Deliverable: No PR required - existing implementation already compliant with spec | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L308",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L308",
+      "text": "ingestion-update-lifecycle.md | ING-042 | - [x] Display delta analysis (5 required fields) on event detail page | ./todo.md | Step 4: Minimal UI | - [x] Display delta analysis (5 required fields) on event detail page | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L309",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L309",
+      "text": "ingestion-update-lifecycle.md | ING-043 | **Future Enhancements (Optional, NOT required for ISA-GRADE):** | ./todo.md | 🔒 BASELINE FROZEN — ISA News Hub v2 (25 January 2026) | **Future Enhancements (Optional, NOT required for ISA-GRADE):** | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L310",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L310",
+      "text": "ingestion-update-lifecycle.md | ING-044 | - [ ] Test on desktop browsers (Chrome, Safari) - USER TESTING REQUIRED | ./todo.md | Desktop Dropdown Fix | - [ ] Test on desktop browsers (Chrome, Safari) - USER TESTING REQUIRED | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L346",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L346",
+      "text": "ingestion-update-lifecycle.md | ING-080 | - [ ] Validate gs1ImpactTags inference quality | ./todo.md | 5.4 Tests | - [ ] Validate gs1ImpactTags inference quality | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L347",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L347",
+      "text": "ingestion-update-lifecycle.md | ING-081 | - [ ] Validate sectorTags inference quality | ./todo.md | 5.4 Tests | - [ ] Validate sectorTags inference quality | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L348",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L348",
+      "text": "ingestion-update-lifecycle.md | ING-082 | - [ ] Verify query performance | ./todo.md | 6.4 Tests | - [ ] Verify query performance | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L349",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L349",
+      "text": "ingestion-update-lifecycle.md | ING-083 | - [x] Verify UI rendering with real data | ./todo.md | 8.1 Coverage Analytics Dashboard ✅ COMPLETE | - [x] Verify UI rendering with real data | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L350",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L350",
+      "text": "ingestion-update-lifecycle.md | ING-084 | - [x] Verify production readiness and performance impact (TypeScript 0 errors, dev server running) | ./todo.md | 8.2 Pipeline Observability ✅ COMPLETE | - [x] Verify production readiness and performance impact (TypeScript 0 errors, dev server running) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L351",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L351",
+      "text": "ingestion-update-lifecycle.md | ING-085 | - [ ] Verify all new sources ingesting | ./todo.md | 9.4 Final Validation | - [ ] Verify all new sources ingesting | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L352",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L352",
+      "text": "ingestion-update-lifecycle.md | ING-086 | - [ ] Verify AI tagging quality | ./todo.md | 9.4 Final Validation | - [ ] Verify AI tagging quality | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L353",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L353",
+      "text": "ingestion-update-lifecycle.md | ING-087 | - [ ] Verify UI rendering correctly | ./todo.md | 9.4 Final Validation | - [ ] Verify UI rendering correctly | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L354",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L354",
+      "text": "ingestion-update-lifecycle.md | ING-088 | - [ ] Verify coverage analytics working | ./todo.md | 9.4 Final Validation | - [ ] Verify coverage analytics working | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L355",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L355",
+      "text": "ingestion-update-lifecycle.md | ING-089 | - [ ] Verify documentation accuracy | ./todo.md | 9.4 Final Validation | - [ ] Verify documentation accuracy | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L356",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L356",
+      "text": "ingestion-update-lifecycle.md | ING-090 | - [ ] Validate existing `compute_advisory_diff.cjs` script | ./todo.md | Priority 3: Advisory Diff Tracking (Version Discipline) | - [ ] Validate existing `compute_advisory_diff.cjs` script | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L357",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L357",
+      "text": "ingestion-update-lifecycle.md | ING-091 | - [x] Ensure GS1 Style Guide compliance | ./todo.md | Regulatory Change Log Public UI ✅ | - [x] Ensure GS1 Style Guide compliance | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L358",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L358",
+      "text": "ingestion-update-lifecycle.md | ING-092 | - [x] Validate GS1 Style Guide compliance | ./todo.md | Testing & Quality ⏳ | - [x] Validate GS1 Style Guide compliance | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L359",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L359",
+      "text": "ingestion-update-lifecycle.md | ING-093 | - [x] Verify traceability (source URL + SHA256) | ./todo.md | Testing & Quality ⏳ | - [x] Verify traceability (source URL + SHA256) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L360",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L360",
+      "text": "ingestion-update-lifecycle.md | ING-094 | - [x] Verify GS1 Netherlands involvement (2 contributors) | ./todo.md | Phase 2.4: GS1 NL/Europe Documentation Discovery ✅ | - [x] Verify GS1 Netherlands involvement (2 contributors) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L361",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L361",
+      "text": "ingestion-update-lifecycle.md | ING-095 | - [x] Verify TypeScript compilation (no errors) | ./todo.md | tRPC Router Integration ✅ | - [x] Verify TypeScript compilation (no errors) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L362",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L362",
+      "text": "ingestion-update-lifecycle.md | ING-096 | - [x] Verify dev server health (running successfully) | ./todo.md | tRPC Router Integration ✅ | - [x] Verify dev server health (running successfully) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L363",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L363",
+      "text": "ingestion-update-lifecycle.md | ING-097 | - [x] Verify correct retrieval of ESRS E5 → GS1 Circular Economy Attributes mapping | ./todo.md | Phase 4.3: Test Ask ISA with GS1-ESRS mapping queries ✅ | - [x] Verify correct retrieval of ESRS E5 → GS1 Circular Economy Attributes mapping | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L364",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L364",
+      "text": "ingestion-update-lifecycle.md | ING-098 | - [x] Verify data integrity (15+ mappings, ESRS E1/E5 coverage) | ./todo.md | Phase 6: Production hardening with vitest tests ✅ | - [x] Verify data integrity (15+ mappings, ESRS E1/E5 coverage) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L365",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L365",
+      "text": "ingestion-update-lifecycle.md | ING-099 | - [x] Verify data accuracy (13 mappings, 62.5% coverage, 3 gaps) | ./todo.md | Phase 7: Frontend Integration (Autonomous Development - Dec 16, 2025) ✅ COMPLETE | - [x] Verify data accuracy (13 mappings, 62.5% coverage, 3 gaps) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L366",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L366",
+      "text": "ingestion-update-lifecycle.md | ING-100 | - [x] Verify ESRS Datapoints tab loads without errors | ./todo.md | Schema Fix | - [x] Verify ESRS Datapoints tab loads without errors | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L404",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L404",
+      "text": "retrieval-embeddings-grounding.md | RET-010 | **Rationale:** Many next-generation capabilities (reasoning-optimized LLMs, VLMs, autonomous agents) have significantly higher per-query costs than current ISA operations. Cost models must be sustaina | ./ISA_CAPABILITY_MAP.md | Constraint 1: Cost Sustainability | **Rationale:** Many next-generation capabilities (reasoning-optimized LLMs, VLMs, autonomous agents) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L416",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L416",
+      "text": "retrieval-embeddings-grounding.md | RET-022 | This plan prioritizes the resolution of critical inconsistencies and stack conflicts, structured into sequential gates. Each gate must be successfully passed before the next can begin. | ./docs/ISA_COMPARATIVE_REFACTOR_GATE_PLAN.md | Task 3: Prioritized Refactor Plan with Acceptance Gates | This plan prioritizes the resolution of critical inconsistencies and stack conflicts, structured int | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L428",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L428",
+      "text": "retrieval-embeddings-grounding.md | RET-034 | As ISA explores next-generation capabilities, certain architectural principles and constraints should guide implementation decisions to ensure the platform remains maintainable, cost-effective, and al | ./ISA_CAPABILITY_MAP.md | Architectural Principles and Constraints | As ISA explores next-generation capabilities, certain architectural principles and constraints shoul | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L431",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L431",
+      "text": "retrieval-embeddings-grounding.md | RET-037 | - **Feature Flags:** All next-generation capabilities should be gated behind feature flags to enable selective deployment and A/B testing | ./ISA_CAPABILITY_MAP.md | Principle 1: Preserve Optionality | - **Feature Flags:** All next-generation capabilities should be gated behind feature flags to enable | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L439",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L439",
+      "text": "retrieval-embeddings-grounding.md | RET-045 | The current ISA implementation provides a **stable baseline** with proven capabilities in automated news aggregation, RAG-powered Q&A, regulation tracking, and standards mapping. Next-generation capab | ./ISA_CAPABILITY_MAP.md | Conclusion: From Exploration to Validation | The current ISA implementation provides a **stable baseline** with proven capabilities in automated | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L443",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L443",
+      "text": "retrieval-embeddings-grounding.md | RET-049 | 11. **If Agents Validate:** Explore proactive assistant scenario (Scenario B) with Approach 5C (LLM trend analysis) | ./ISA_CAPABILITY_MAP.md | Recommended Next Steps | 11. **If Agents Validate:** Explore proactive assistant scenario (Scenario B) with Approach 5C (LLM | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L447",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L447",
+      "text": "retrieval-embeddings-grounding.md | RET-053 | The existing ISA implementation is a valuable asset, not a constraint. Next-generation capabilities should enhance ISA's value proposition incrementally rather than requiring wholesale replacement. Th | ./ISA_CAPABILITY_MAP.md | Final Recommendations | The existing ISA implementation is a valuable asset, not a constraint. Next-generation capabilities | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L448",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L448",
+      "text": "retrieval-embeddings-grounding.md | RET-054 | 3. **Make context append-only.** ISA's agent loops should never modify previous actions or observations retroactively. Verify that todo.md updates, knowledge base additions, and pipeline logs are stri | ./docs/MANUS_BEST_PRACTICES_FOR_ISA.md | 1.1 The KV-Cache Imperative | 3. **Make context append-only.** ISA's agent loops should never modify previous actions or observati | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L455",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L455",
+      "text": "retrieval-embeddings-grounding.md | RET-061 | 3. **Pin a compact, living plan.** ISA's todo.md should be kept minimal (not exhaustive) and updated each loop. This pushes the global plan into the model's recent attention span, avoiding \"lost-in-th | ./docs/MANUS_BEST_PRACTICES_FOR_ISA.md | 1.3 Modular Prompt Structure | 3. **Pin a compact, living plan.** ISA's todo.md should be kept minimal (not exhaustive) and updated | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L456",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L456",
+      "text": "retrieval-embeddings-grounding.md | RET-062 | 2. **Update todo.md every loop during complex tasks.** ISA's typical 50-tool-call loops should update todo.md at key milestones (e.g., after each ingestion phase, after each RAG query batch) to mainta | ./docs/MANUS_BEST_PRACTICES_FOR_ISA.md | 2.1 Todo.md as Attention Manipulation | 2. **Update todo.md every loop during complex tasks.** ISA's typical 50-tool-call loops should updat | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L509",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L509",
+      "text": "evaluation-governance-reproducibility.md | EVA-015 | 1. **User Action Required:** Configure branch protection on GitHub repository main branch | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Immediate (Next 24 Hours) | 1. **User Action Required:** Configure branch protection on GitHub repository main branch | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L510",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L510",
+      "text": "evaluation-governance-reproducibility.md | EVA-016 | 2. **User Decision Required:** Determine ISA license | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Immediate (Next 24 Hours) | 2. **User Decision Required:** Determine ISA license | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L515",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L515",
+      "text": "evaluation-governance-reproducibility.md | EVA-021 | - Ensure procedures are comprehensive and current | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Short-Term (Next 14 Days) | - Ensure procedures are comprehensive and current | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L516",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L516",
+      "text": "evaluation-governance-reproducibility.md | EVA-022 | - Validate security monitoring is working | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Medium-Term (Next 30 Days) | - Validate security monitoring is working | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L576",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L576",
+      "text": "evaluation-governance-reproducibility.md | EVA-082 | **NOTE:** Whether they are already located in the *correct repo paths* and wired into daily flow must be verified in the next step (see Section 4). | ./docs/evidence/ISA_IRON_DOCSET_AND_CRITICAL_PATH_DECISION_DRAFT_v0.md | C. Baseline discoverability artefacts (strongly recommended, low-cost) | **NOTE:** Whether they are already located in the *correct repo paths* and wired into daily flow mus | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L605",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L605",
+      "text": "observability-tracing-feedback.md | OBS-011 | - [ ] Implement cookie consent banner (if required by legal review) | ./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md | 8.1 Short-Term (Next 30 Days) | - [ ] Implement cookie consent banner (if required by legal review) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L611",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L611",
+      "text": "observability-tracing-feedback.md | OBS-017 | - [ ] Conduct load testing to validate scaling assumptions | ./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md | 8.2 Long-Term (Next 90 Days) | - [ ] Conduct load testing to validate scaling assumptions | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L626",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L626",
+      "text": "repo-change-control-release.md | REP-015 | 1. **User Action Required:** Configure branch protection on GitHub repository main branch | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Immediate (Next 24 Hours) | 1. **User Action Required:** Configure branch protection on GitHub repository main branch | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L627",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L627",
+      "text": "repo-change-control-release.md | REP-016 | 2. **User Decision Required:** Determine ISA license | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Immediate (Next 24 Hours) | 2. **User Decision Required:** Determine ISA license | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L631",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L631",
+      "text": "repo-change-control-release.md | REP-020 | - Ensure procedures are comprehensive and current | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Short-Term (Next 14 Days) | - Ensure procedures are comprehensive and current | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L632",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L632",
+      "text": "repo-change-control-release.md | REP-021 | - Validate security monitoring is working | ./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md | Medium-Term (Next 30 Days) | - Validate security monitoring is working | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L878",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L878",
+      "text": "ux-user-journey.md | UX -067 | ISA cannot be delivered to GS1 NL members without Lane B transition approval. All external use is currently blocked by governance constraints. User decision required for transition, with 2-3 week time | ./ISA_STATUS_REPORT_2025-01-11.md | High Risk (Immediate Attention Required) | ISA cannot be delivered to GS1 NL members without Lane B transition approval. All external use is cu | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L922",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L922",
+      "text": "roadmap-evolution.md | ROA-011 | - **Reason for deferral:** Blocked by Phase 0 (GS1 NL cooperation required for brand assets) | ./docs/ISA_FUTURE_DEVELOPMENT_PLAN.md | Deferred Features | - **Reason for deferral:** Blocked by Phase 0 (GS1 NL cooperation required for brand assets) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L937",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L937",
+      "text": "roadmap-evolution.md | ROA-026 | - [x] Fix boolean→number in INGEST-02_gdsn_current.ts (required field) | ./todo.md | Ingestion Script Fixes | - [x] Fix boolean→number in INGEST-02_gdsn_current.ts (required field) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L938",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L938",
+      "text": "roadmap-evolution.md | ROA-027 | - [x] Fix boolean→number in INGEST-04_ctes_kdes.ts (mandatory and required fields) | ./todo.md | Ingestion Script Fixes | - [x] Fix boolean→number in INGEST-04_ctes_kdes.ts (mandatory and required fields) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L939",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L939",
+      "text": "roadmap-evolution.md | ROA-028 | 2. **Column Naming Consistency:** Drizzle schema uses camelCase for TypeScript but snake_case for database columns - tests must use TypeScript property names | ./todo.md | Meta-Learnings | 2. **Column Naming Consistency:** Drizzle schema uses camelCase for TypeScript but snake_case for da | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L940",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L940",
+      "text": "roadmap-evolution.md | ROA-029 | - [x] Create server/test-helpers/db-test-utils.ts with 7 required functions: | ./todo.md | TASK 1 — DB Test Helpers (PR #4 equivalent) | - [x] Create server/test-helpers/db-test-utils.ts with 7 required functions: | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L941",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L941",
+      "text": "roadmap-evolution.md | ROA-030 | - [x] Seed helpers must work within transaction context | ./todo.md | TASK 1 — DB Test Helpers (PR #4 equivalent) | - [x] Seed helpers must work within transaction context | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L942",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L942",
+      "text": "roadmap-evolution.md | ROA-031 | **STATUS: ALREADY COMPLIANT** ✅ No changes required. | ./todo.md | TASK 3 — CI Scripts (PR #5 equivalent) ✅ COMPLETE | **STATUS: ALREADY COMPLIANT** ✅ No changes required. | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L943",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L943",
+      "text": "roadmap-evolution.md | ROA-032 | - [x] Must not be default (verified) | ./todo.md | TASK 3 — CI Scripts (PR #5 equivalent) ✅ COMPLETE | - [x] Must not be default (verified) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L944",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L944",
+      "text": "roadmap-evolution.md | ROA-033 | - [x] Update docs/CI_TESTING.md ONLY if required (not required) | ./todo.md | TASK 3 — CI Scripts (PR #5 equivalent) ✅ COMPLETE | - [x] Update docs/CI_TESTING.md ONLY if required (not required) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L945",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L945",
+      "text": "roadmap-evolution.md | ROA-034 | - [x] Deliverable: No PR required - existing implementation already compliant with spec | ./todo.md | TASK 3 — CI Scripts (PR #5 equivalent) ✅ COMPLETE | - [x] Deliverable: No PR required - existing implementation already compliant with spec | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L946",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L946",
+      "text": "roadmap-evolution.md | ROA-035 | - [x] Display delta analysis (5 required fields) on event detail page | ./todo.md | Step 4: Minimal UI | - [x] Display delta analysis (5 required fields) on event detail page | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L947",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L947",
+      "text": "roadmap-evolution.md | ROA-036 | **Future Enhancements (Optional, NOT required for ISA-GRADE):** | ./todo.md | 🔒 BASELINE FROZEN — ISA News Hub v2 (25 January 2026) | **Future Enhancements (Optional, NOT required for ISA-GRADE):** | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L948",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L948",
+      "text": "roadmap-evolution.md | ROA-037 | - [ ] Test on desktop browsers (Chrome, Safari) - USER TESTING REQUIRED | ./todo.md | Desktop Dropdown Fix | - [ ] Test on desktop browsers (Chrome, Safari) - USER TESTING REQUIRED | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L969",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L969",
+      "text": "roadmap-evolution.md | ROA-058 | - [ ] Validate gs1ImpactTags inference quality | ./todo.md | 5.4 Tests | - [ ] Validate gs1ImpactTags inference quality | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L970",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L970",
+      "text": "roadmap-evolution.md | ROA-059 | - [ ] Validate sectorTags inference quality | ./todo.md | 5.4 Tests | - [ ] Validate sectorTags inference quality | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L971",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L971",
+      "text": "roadmap-evolution.md | ROA-060 | - [ ] Verify query performance | ./todo.md | 6.4 Tests | - [ ] Verify query performance | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L972",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L972",
+      "text": "roadmap-evolution.md | ROA-061 | - [x] Verify UI rendering with real data | ./todo.md | 8.1 Coverage Analytics Dashboard ✅ COMPLETE | - [x] Verify UI rendering with real data | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L973",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L973",
+      "text": "roadmap-evolution.md | ROA-062 | - [x] Verify production readiness and performance impact (TypeScript 0 errors, dev server running) | ./todo.md | 8.2 Pipeline Observability ✅ COMPLETE | - [x] Verify production readiness and performance impact (TypeScript 0 errors, dev server running) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L974",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L974",
+      "text": "roadmap-evolution.md | ROA-063 | - [ ] Verify all new sources ingesting | ./todo.md | 9.4 Final Validation | - [ ] Verify all new sources ingesting | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L975",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L975",
+      "text": "roadmap-evolution.md | ROA-064 | - [ ] Verify AI tagging quality | ./todo.md | 9.4 Final Validation | - [ ] Verify AI tagging quality | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L976",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L976",
+      "text": "roadmap-evolution.md | ROA-065 | - [ ] Verify UI rendering correctly | ./todo.md | 9.4 Final Validation | - [ ] Verify UI rendering correctly | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L977",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L977",
+      "text": "roadmap-evolution.md | ROA-066 | - [ ] Verify coverage analytics working | ./todo.md | 9.4 Final Validation | - [ ] Verify coverage analytics working | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L978",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L978",
+      "text": "roadmap-evolution.md | ROA-067 | - [ ] Verify documentation accuracy | ./todo.md | 9.4 Final Validation | - [ ] Verify documentation accuracy | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L979",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L979",
+      "text": "roadmap-evolution.md | ROA-068 | - [ ] Validate existing `compute_advisory_diff.cjs` script | ./todo.md | Priority 3: Advisory Diff Tracking (Version Discipline) | - [ ] Validate existing `compute_advisory_diff.cjs` script | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L980",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L980",
+      "text": "roadmap-evolution.md | ROA-069 | - [x] Ensure GS1 Style Guide compliance | ./todo.md | Regulatory Change Log Public UI ✅ | - [x] Ensure GS1 Style Guide compliance | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L981",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L981",
+      "text": "roadmap-evolution.md | ROA-070 | - [x] Validate GS1 Style Guide compliance | ./todo.md | Testing & Quality ⏳ | - [x] Validate GS1 Style Guide compliance | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L982",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L982",
+      "text": "roadmap-evolution.md | ROA-071 | - [x] Verify traceability (source URL + SHA256) | ./todo.md | Testing & Quality ⏳ | - [x] Verify traceability (source URL + SHA256) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L983",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L983",
+      "text": "roadmap-evolution.md | ROA-072 | - [x] Verify GS1 Netherlands involvement (2 contributors) | ./todo.md | Phase 2.4: GS1 NL/Europe Documentation Discovery ✅ | - [x] Verify GS1 Netherlands involvement (2 contributors) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L984",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L984",
+      "text": "roadmap-evolution.md | ROA-073 | - [x] Verify TypeScript compilation (no errors) | ./todo.md | tRPC Router Integration ✅ | - [x] Verify TypeScript compilation (no errors) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L985",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L985",
+      "text": "roadmap-evolution.md | ROA-074 | - [x] Verify dev server health (running successfully) | ./todo.md | tRPC Router Integration ✅ | - [x] Verify dev server health (running successfully) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L986",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L986",
+      "text": "roadmap-evolution.md | ROA-075 | - [x] Verify correct retrieval of ESRS E5 → GS1 Circular Economy Attributes mapping | ./todo.md | Phase 4.3: Test Ask ISA with GS1-ESRS mapping queries ✅ | - [x] Verify correct retrieval of ESRS E5 → GS1 Circular Economy Attributes mapping | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L987",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L987",
+      "text": "roadmap-evolution.md | ROA-076 | - [x] Verify data integrity (15+ mappings, ESRS E1/E5 coverage) | ./todo.md | Phase 6: Production hardening with vitest tests ✅ | - [x] Verify data integrity (15+ mappings, ESRS E1/E5 coverage) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L988",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L988",
+      "text": "roadmap-evolution.md | ROA-077 | - [x] Verify data accuracy (13 mappings, 62.5% coverage, 3 gaps) | ./todo.md | Phase 7: Frontend Integration (Autonomous Development - Dec 16, 2025) ✅ COMPLETE | - [x] Verify data accuracy (13 mappings, 62.5% coverage, 3 gaps) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L989",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L989",
+      "text": "roadmap-evolution.md | ROA-078 | - [x] Verify ESRS Datapoints tab loads without errors | ./todo.md | Schema Fix | - [x] Verify ESRS Datapoints tab loads without errors | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L990",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L990",
+      "text": "roadmap-evolution.md | ROA-079 | - [x] Verify navigation and routing - Working | ./todo.md | Phase 3: Core Feature Testing | - [x] Verify navigation and routing - Working | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L991",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L991",
+      "text": "roadmap-evolution.md | ROA-080 | - [ ] Ensure machine-readable outputs remain developer-optimized | ./todo.md | Phase 6: GS1 Style Compliance | - [ ] Ensure machine-readable outputs remain developer-optimized | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L992",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L992",
+      "text": "roadmap-evolution.md | ROA-081 | - [ ] Validate advisory report formatting | ./todo.md | Phase 6: GS1 Style Compliance | - [ ] Validate advisory report formatting | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L993",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L993",
+      "text": "roadmap-evolution.md | ROA-082 | - [x] Run eval suite and verify all tests pass (11/11 passed) | ./todo.md | Phase 5: Evaluation & Testing | - [x] Run eval suite and verify all tests pass (11/11 passed) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L994",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L994",
+      "text": "roadmap-evolution.md | ROA-083 | - [x] Verify URL includes all filter parameters | ./todo.md | Copy Link Feature ✅ COMPLETE (2025-12-17) | - [x] Verify URL includes all filter parameters | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L995",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L995",
+      "text": "roadmap-evolution.md | ROA-084 | - [x] Verify cross-restart persistence | ./todo.md | Database Persistence for Health Monitoring ✅ COMPLETE (2025-12-17) | - [x] Verify cross-restart persistence | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L996",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L996",
+      "text": "roadmap-evolution.md | ROA-085 | - [x] Verify email alert integration (already implemented) | ./todo.md | Health Monitoring Enhancements ✅ COMPLETE | - [x] Verify email alert integration (already implemented) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L997",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L997",
+      "text": "roadmap-evolution.md | ROA-086 | - [x] Test scraper execution and verify success | ./todo.md | EUR-Lex Press Releases Scraper Fix ✅ COMPLETE | - [x] Test scraper execution and verify success | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L998",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L998",
+      "text": "roadmap-evolution.md | ROA-087 | - [x] Verify health monitoring shows 100% success rate | ./todo.md | EUR-Lex Press Releases Scraper Fix ✅ COMPLETE | - [x] Verify health monitoring shows 100% success rate | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L999",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L999",
+      "text": "roadmap-evolution.md | ROA-088 | - [x] Verify responsive design and dark mode compatibility | ./todo.md | Scraper Health Trend Visualization ✅ COMPLETE | - [x] Verify responsive design and dark mode compatibility | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1000",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1000",
+      "text": "roadmap-evolution.md | ROA-089 | - [x] Validate permissions (issue, branch, PR creation) | ./todo.md | Repository Setup | - [x] Validate permissions (issue, branch, PR creation) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1001",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1001",
+      "text": "roadmap-evolution.md | ROA-090 | - [ ] Validate CI pipeline execution on real code | ./todo.md | Next Steps (Ongoing) | - [ ] Validate CI pipeline execution on real code | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1002",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1002",
+      "text": "roadmap-evolution.md | ROA-091 | - [ ] Ensure no GitHub sync/push operations | ./todo.md | Lane C Governance Enforcement | - [ ] Ensure no GitHub sync/push operations | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1003",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1003",
+      "text": "roadmap-evolution.md | ROA-092 | - [ ] Ensure no new integrations without approval | ./todo.md | Lane C Governance Enforcement | - [ ] Ensure no new integrations without approval | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1004",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1004",
+      "text": "roadmap-evolution.md | ROA-093 | - [ ] Ensure no privilege changes | ./todo.md | Lane C Governance Enforcement | - [ ] Ensure no privilege changes | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1005",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1005",
+      "text": "roadmap-evolution.md | ROA-094 | - [ ] Ensure no irreversible operations | ./todo.md | Lane C Governance Enforcement | - [ ] Ensure no irreversible operations | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1006",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1006",
+      "text": "roadmap-evolution.md | ROA-095 | - [x] Verify Lane C governance on created reports | ./todo.md | Test Coverage | - [x] Verify Lane C governance on created reports | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1007",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1007",
+      "text": "roadmap-evolution.md | ROA-096 | - [x] Verify generatedBy field set to admin user | ./todo.md | Test Coverage | - [x] Verify generatedBy field set to admin user | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1008",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1008",
+      "text": "roadmap-evolution.md | ROA-097 | - ESRS Datapoints: 5 (needs fix - should be 1,184) | ./todo.md | Dashboard Features Delivered | - ESRS Datapoints: 5 (needs fix - should be 1,184) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1009",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1009",
+      "text": "roadmap-evolution.md | ROA-098 | - [x] Verify deterministic behavior (no interpretation/reasoning) | ./todo.md | Priority 3: Standards Discovery UI ✅ COMPLETE | - [x] Verify deterministic behavior (no interpretation/reasoning) | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1010",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1010",
+      "text": "roadmap-evolution.md | ROA-099 | - [x] Validate dev server running successfully | ./todo.md | TypeScript Error Fixes ✅ COMPLETE (Production-Critical) | - [x] Validate dev server running successfully | traceable",
+      "extra": {}
+    },
+    {
+      "id": "traceability_csv:docs/spec/TRACEABILITY_MATRIX.csv:L1011",
+      "source": "traceability_csv",
+      "ref": "docs/spec/TRACEABILITY_MATRIX.csv:L1011",
+      "text": "roadmap-evolution.md | ROA-100 | - [x] Verify GitHub Actions workflow exists | ./todo.md | 4.1 CI/CD Pipeline | - [x] Verify GitHub Actions workflow exists | traceable",
+      "extra": {}
+    },
+    {
+      "id": "planning_todo_md:docs/planning/TODO.md:L1",
+      "source": "planning_todo_md",
+      "ref": "docs/planning/TODO.md:L1",
+      "text": "# Status: superseded",
+      "extra": {}
+    },
+    {
+      "id": "code_todos:server/routers.ts:328",
+      "source": "code_todos",
+      "ref": "server/routers.ts:328",
+      "text": "// TODO: Implement update preferences mutation",
+      "extra": {
+        "path": "server"
+      }
+    },
+    {
+      "id": "code_todos:server/routers/gs1nl-attributes.ts:278",
+      "source": "code_todos",
+      "ref": "server/routers/gs1nl-attributes.ts:278",
+      "text": "// TODO: Implement semantic search using embeddings",
+      "extra": {
+        "path": "server"
+      }
+    },
+    {
+      "id": "code_todos:server/cellar-ingestion-router.ts:294",
+      "source": "code_todos",
+      "ref": "server/cellar-ingestion-router.ts:294",
+      "text": "// TODO: Implement ingestion log table",
+      "extra": {
+        "path": "server"
+      }
+    },
+    {
+      "id": "code_todos:server/services/corpus-ingestion/index.ts:372",
+      "source": "code_todos",
+      "ref": "server/services/corpus-ingestion/index.ts:372",
+      "text": "// TODO: Implement embedding generation",
+      "extra": {
+        "path": "server"
+      }
+    },
+    {
+      "id": "code_todos:client/src/pages/AdminPromptOptimization.tsx:123",
+      "source": "code_todos",
+      "ref": "client/src/pages/AdminPromptOptimization.tsx:123",
+      "text": "// TODO: Save to database via tRPC mutation",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/components/RegulationTimeline.tsx:126",
+      "source": "code_todos",
+      "ref": "client/src/components/RegulationTimeline.tsx:126",
+      "text": "{/* TODO: surface relevant milestones and news events here. */}",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/components/RegulationTimeline.tsx:170",
+      "source": "code_todos",
+      "ref": "client/src/components/RegulationTimeline.tsx:170",
+      "text": "{milestone.description ?? \"TODO: add milestone description.\"}",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/components/RegulationTimeline.tsx:180",
+      "source": "code_todos",
+      "ref": "client/src/components/RegulationTimeline.tsx:180",
+      "text": "{/* TODO: enrich timeline with linked news and filters. */}",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/pages/HubRegulationDetail.tsx:52",
+      "source": "code_todos",
+      "ref": "client/src/pages/HubRegulationDetail.tsx:52",
+      "text": "// TODO: Implement saved items functionality when userContent router is available",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/pages/HubRegulationDetail.tsx:63",
+      "source": "code_todos",
+      "ref": "client/src/pages/HubRegulationDetail.tsx:63",
+      "text": "// TODO: Implement save functionality when userContent router is available",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/components/SectorFilter.tsx:98",
+      "source": "code_todos",
+      "ref": "client/src/components/SectorFilter.tsx:98",
+      "text": "{/* TODO: connect to sector taxonomy service. */}",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/components/SectorFilter.tsx:132",
+      "source": "code_todos",
+      "ref": "client/src/components/SectorFilter.tsx:132",
+      "text": "{/* TODO: convert to a multi-select dropdown once API integration is ready. */}",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/components/GS1ImpactBadge.tsx:55",
+      "source": "code_todos",
+      "ref": "client/src/components/GS1ImpactBadge.tsx:55",
+      "text": "{/* TODO: replace with dynamic GS1 impact label mapping once levels are finalized. */}",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/components/NewsRecommendationCard.tsx:125",
+      "source": "code_todos",
+      "ref": "client/src/components/NewsRecommendationCard.tsx:125",
+      "text": "{/* TODO: connect to recommendation service and populate card content. */}",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/components/NewsRecommendationCard.tsx:138",
+      "source": "code_todos",
+      "ref": "client/src/components/NewsRecommendationCard.tsx:138",
+      "text": "{summary ?? \"TODO: provide AI-generated summary of the recommendation.\"}",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/components/NewsRecommendationCard.tsx:143",
+      "source": "code_todos",
+      "ref": "client/src/components/NewsRecommendationCard.tsx:143",
+      "text": "<p>{rationale ?? \"TODO: include rationale for why this matters.\"}</p>",
+      "extra": {
+        "path": "client"
+      }
+    },
+    {
+      "id": "code_todos:client/src/components/NewsRecommendationCard.tsx:163",
+      "source": "code_todos",
+      "ref": "client/src/components/NewsRecommendationCard.tsx:163",
+      "text": "TODO: show model confidence and freshness.",
+      "extra": {
+        "path": "client"
+      }
+    }
+  ]
+}
