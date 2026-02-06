@@ -1,0 +1,985 @@
+{
+  "meta": {
+    "generated_utc": "2026-02-06T19:18:57Z",
+    "git_head": "4c84818032777e65548aa495814701785f2c30d9",
+    "scope": "root-level doclike only"
+  },
+  "move_count": 195,
+  "moves": [
+    {
+      "from": "GOVERNANCE.md",
+      "to": "docs/governance/_root/GOVERNANCE.md",
+      "bucket": "governance"
+    },
+    {
+      "from": "ISA_GOVERNANCE.md",
+      "to": "docs/governance/_root/ISA_GOVERNANCE.md",
+      "bucket": "governance"
+    },
+    {
+      "from": ".eslintrc.server.json",
+      "to": "docs/misc/_root/.eslintrc.server.json",
+      "bucket": "misc"
+    },
+    {
+      "from": ".github/PULL_REQUEST_TEMPLATE.md",
+      "to": "docs/misc/_root/.github/PULL_REQUEST_TEMPLATE.md",
+      "bucket": "misc"
+    },
+    {
+      "from": ".markdownlint.json",
+      "to": "docs/misc/_root/.markdownlint.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "ARCHITECTURE.md",
+      "to": "docs/misc/_root/ARCHITECTURE.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "AUTONOMOUS_DEVELOPMENT_SUMMARY.md",
+      "to": "docs/misc/_root/AUTONOMOUS_DEVELOPMENT_SUMMARY.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md",
+      "to": "docs/misc/_root/CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "CHATGPT_PROMPT_INGEST-03.md",
+      "to": "docs/misc/_root/CHATGPT_PROMPT_INGEST-03.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "CHATGPT_UPDATE_PROMPT.md",
+      "to": "docs/misc/_root/CHATGPT_UPDATE_PROMPT.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "CHROMIUM_INSTALLATION_GUIDE.md",
+      "to": "docs/misc/_root/CHROMIUM_INSTALLATION_GUIDE.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "CRON_DEPLOYMENT.md",
+      "to": "docs/misc/_root/CRON_DEPLOYMENT.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "DATA_MODEL.md",
+      "to": "docs/misc/_root/DATA_MODEL.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "DELEGATION_PACKAGE_INGEST-03.md",
+      "to": "docs/misc/_root/DELEGATION_PACKAGE_INGEST-03.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "EPCIS_CBV_INTEGRATION_SUMMARY.md",
+      "to": "docs/misc/_root/EPCIS_CBV_INTEGRATION_SUMMARY.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "EURLEX_SCRAPER_FIX.md",
+      "to": "docs/misc/_root/EURLEX_SCRAPER_FIX.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/CHANGELOG.md",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/CHANGELOG.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/DOCUMENT_VALUE_SCORECARD.md",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/DOCUMENT_VALUE_SCORECARD.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/EU_ESG_to_GS1_Mapping.md",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/EU_ESG_to_GS1_Mapping.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/INTEGRATION_POSITIONING.md",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/INTEGRATION_POSITIONING.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/MANIFEST.json",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/MANIFEST.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/MANUS_HANDOFF.md",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/MANUS_HANDOFF.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/checksums/SHA256SUMS.txt",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/checksums/SHA256SUMS.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/data/corpus.json",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/data/corpus.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/data/gs1_mapping.json",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/data/gs1_mapping.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/data/gs1_sources.json",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/data/gs1_sources.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/data/obligations.json",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/data/obligations.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/data/scoring.json",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/data/scoring.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/validation/completeness_matrix.csv",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/validation/completeness_matrix.csv",
+      "bucket": "misc"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/validation/placeholder_scan.txt",
+      "to": "docs/misc/_root/EU_ESG_to_GS1_Mapping_v1.1/validation/placeholder_scan.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "EXTERNAL_REFERENCES.md",
+      "to": "docs/misc/_root/EXTERNAL_REFERENCES.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "GS1_ARTEFACT_PROCESSING.md",
+      "to": "docs/misc/_root/GS1_ARTEFACT_PROCESSING.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "HEALTH_MONITORING_ENHANCEMENTS.md",
+      "to": "docs/misc/_root/HEALTH_MONITORING_ENHANCEMENTS.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "INGESTION.md",
+      "to": "docs/misc/_root/INGESTION.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "INGESTION_DELIVERABLES_INDEX.md",
+      "to": "docs/misc/_root/INGESTION_DELIVERABLES_INDEX.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "IRON_KNOWLEDGE_MAP.md",
+      "to": "docs/misc/_root/IRON_KNOWLEDGE_MAP.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "IRON_PROTOCOL.md",
+      "to": "docs/misc/_root/IRON_PROTOCOL.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "IRON_VALIDATION_PLAN.md",
+      "to": "docs/misc/_root/IRON_VALIDATION_PLAN.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "ISA_CAPABILITY_MAP.md",
+      "to": "docs/misc/_root/ISA_CAPABILITY_MAP.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "ISA_DEVELOPMENT_PLAYBOOK.md",
+      "to": "docs/misc/_root/ISA_DEVELOPMENT_PLAYBOOK.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "ISA_GATING_QUESTIONS.md",
+      "to": "docs/misc/_root/ISA_GATING_QUESTIONS.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "ISA_NEWSHUB_TARGET_DESIGN.md",
+      "to": "docs/misc/_root/ISA_NEWSHUB_TARGET_DESIGN.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "ISA_NEWS_OVERVIEW.md",
+      "to": "docs/misc/_root/ISA_NEWS_OVERVIEW.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "ISA_V1_FROZEN.md",
+      "to": "docs/misc/_root/ISA_V1_FROZEN.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "KNOWN_FAILURE_MODES.md",
+      "to": "docs/misc/_root/KNOWN_FAILURE_MODES.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "MONITORING_TESTS.md",
+      "to": "docs/misc/_root/MONITORING_TESTS.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "MULTI_REGULATION_COMPARISON_SUMMARY.md",
+      "to": "docs/misc/_root/MULTI_REGULATION_COMPARISON_SUMMARY.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "NEEDS_USER_UPLOAD.md",
+      "to": "docs/misc/_root/NEEDS_USER_UPLOAD.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "OPEN_QUESTIONS.md",
+      "to": "docs/misc/_root/OPEN_QUESTIONS.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "ORCHESTRATION_PROMPT.md",
+      "to": "docs/misc/_root/ORCHESTRATION_PROMPT.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "POC_EXPLORATION_TODO.md",
+      "to": "docs/misc/_root/POC_EXPLORATION_TODO.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "PRODUCTION_READINESS.md",
+      "to": "docs/misc/_root/PRODUCTION_READINESS.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "PROJECT_SIZE_CLEANUP.md",
+      "to": "docs/misc/_root/PROJECT_SIZE_CLEANUP.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "QUICK_START_INGESTION.md",
+      "to": "docs/misc/_root/QUICK_START_INGESTION.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "REPO_MAP.md",
+      "to": "docs/misc/_root/REPO_MAP.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "RESEARCH_FINDINGS_NEWS_SOURCES.md",
+      "to": "docs/misc/_root/RESEARCH_FINDINGS_NEWS_SOURCES.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "SCOPE_DECISIONS.md",
+      "to": "docs/misc/_root/SCOPE_DECISIONS.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "TIMELINE_VISUALIZATION_SUMMARY.md",
+      "to": "docs/misc/_root/TIMELINE_VISUALIZATION_SUMMARY.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "TYPESCRIPT_FIX_SUMMARY.md",
+      "to": "docs/misc/_root/TYPESCRIPT_FIX_SUMMARY.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "TYPESCRIPT_NOTES.md",
+      "to": "docs/misc/_root/TYPESCRIPT_NOTES.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "UX_IA_REDESIGN_COMPLETE.md",
+      "to": "docs/misc/_root/UX_IA_REDESIGN_COMPLETE.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "WEBHOOK_INTEGRATION.md",
+      "to": "docs/misc/_root/WEBHOOK_INTEGRATION.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "WORK_PRIORITIZATION.md",
+      "to": "docs/misc/_root/WORK_PRIORITIZATION.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "components.json",
+      "to": "docs/misc/_root/components.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "config/catalogue_sources.json",
+      "to": "docs/misc/_root/config/catalogue_sources.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "configs/isa-catalogue/policy.json",
+      "to": "docs/misc/_root/configs/isa-catalogue/policy.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "cron-configs/00-START-HERE.md",
+      "to": "docs/misc/_root/cron-configs/00-START-HERE.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "cron-configs/cron-job.org-instructions.md",
+      "to": "docs/misc/_root/cron-configs/cron-job.org-instructions.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "cron-configs/curl-test-config.txt",
+      "to": "docs/misc/_root/cron-configs/curl-test-config.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "cron-configs/curl-test-instructions.md",
+      "to": "docs/misc/_root/cron-configs/curl-test-instructions.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "cron-configs/easycron-instructions.md",
+      "to": "docs/misc/_root/cron-configs/easycron-instructions.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "cron-configs/github-actions-instructions.md",
+      "to": "docs/misc/_root/cron-configs/github-actions-instructions.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "cspell-gs1-terms.txt",
+      "to": "docs/misc/_root/cspell-gs1-terms.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "cspell-isa-terms.txt",
+      "to": "docs/misc/_root/cspell-isa-terms.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "cspell.json",
+      "to": "docs/misc/_root/cspell.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/DATASET_METADATA.md",
+      "to": "docs/misc/_root/data/DATASET_METADATA.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/adb_release_2.11.csv",
+      "to": "docs/misc/_root/data/adb_release_2.11.csv",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/advisories/ISA_ADVISORY_DIFF_v1.0_to_v1.0.json",
+      "to": "docs/misc/_root/data/advisories/ISA_ADVISORY_DIFF_v1.0_to_v1.0.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/advisories/ISA_ADVISORY_DIFF_v1.0_to_v1.1.json",
+      "to": "docs/misc/_root/data/advisories/ISA_ADVISORY_DIFF_v1.0_to_v1.1.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/advisories/ISA_ADVISORY_v1.0.json",
+      "to": "docs/misc/_root/data/advisories/ISA_ADVISORY_v1.0.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/advisories/ISA_ADVISORY_v1.0.summary.json",
+      "to": "docs/misc/_root/data/advisories/ISA_ADVISORY_v1.0.summary.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/advisories/ISA_ADVISORY_v1.1.json",
+      "to": "docs/misc/_root/data/advisories/ISA_ADVISORY_v1.1.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/advisories/ISA_ADVISORY_v1.1.summary.json",
+      "to": "docs/misc/_root/data/advisories/ISA_ADVISORY_v1.1.summary.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/cbv/cbv_esg_curated.json",
+      "to": "docs/misc/_root/data/cbv/cbv_esg_curated.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/cbv_bizstep.json",
+      "to": "docs/misc/_root/data/cbv_bizstep.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/cbv_bizstep_raw.txt",
+      "to": "docs/misc/_root/data/cbv_bizstep_raw.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/cbv_vocabularies.json",
+      "to": "docs/misc/_root/data/cbv_vocabularies.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/digital_link/linktypes.json",
+      "to": "docs/misc/_root/data/digital_link/linktypes.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/dpp-content/dpp-fundamentals.json",
+      "to": "docs/misc/_root/data/dpp-content/dpp-fundamentals.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/dpp-content/dpp-granular-fixes.json",
+      "to": "docs/misc/_root/data/dpp-content/dpp-granular-fixes.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/dpp_standard_summary.md",
+      "to": "docs/misc/_root/data/dpp_standard_summary.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/epcis_classes_raw.txt",
+      "to": "docs/misc/_root/data/epcis_classes_raw.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/epcis_fields_raw.txt",
+      "to": "docs/misc/_root/data/epcis_fields_raw.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/esg/common_data_categories.json",
+      "to": "docs/misc/_root/data/esg/common_data_categories.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/esg/ctes_and_kdes.json",
+      "to": "docs/misc/_root/data/esg/ctes_and_kdes.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/esg/dpp_identification_rules.json",
+      "to": "docs/misc/_root/data/esg/dpp_identification_rules.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/esg/dpp_identifier_components.json",
+      "to": "docs/misc/_root/data/esg/dpp_identifier_components.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gdm_combined_models.csv",
+      "to": "docs/misc/_root/data/gdm_combined_models.csv",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1/gdsn/gdsn_classAttributes.json",
+      "to": "docs/misc/_root/data/gs1/gdsn/gdsn_classAttributes.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1/gdsn/gdsn_classes.json",
+      "to": "docs/misc/_root/data/gs1/gdsn/gdsn_classes.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1/gdsn/gdsn_validationRules.json",
+      "to": "docs/misc/_root/data/gs1/gdsn/gdsn_validationRules.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1_position_paper_summary.md",
+      "to": "docs/misc/_root/data/gs1_position_paper_summary.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1_ref_corpus/gs1_document_index.json",
+      "to": "docs/misc/_root/data/gs1_ref_corpus/gs1_document_index.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1_ref_corpus/gs1_document_index_v2.json",
+      "to": "docs/misc/_root/data/gs1_ref_corpus/gs1_document_index_v2.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1_ref_corpus/gs1_ref_taxonomy_v1.json",
+      "to": "docs/misc/_root/data/gs1_ref_corpus/gs1_ref_taxonomy_v1.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1_ref_corpus/metadata/discovered_urls.txt",
+      "to": "docs/misc/_root/data/gs1_ref_corpus/metadata/discovered_urls.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1_ref_corpus/metadata/manifest.json",
+      "to": "docs/misc/_root/data/gs1_ref_corpus/metadata/manifest.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1_ref_corpus/metadata/metadata.csv",
+      "to": "docs/misc/_root/data/gs1_ref_corpus/metadata/metadata.csv",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1_standards_recent_updates.txt",
+      "to": "docs/misc/_root/data/gs1_standards_recent_updates.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1nl/diy_datamodel_content.json",
+      "to": "docs/misc/_root/data/gs1nl/diy_datamodel_content.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1nl/fashion_dpp_guidance_content.json",
+      "to": "docs/misc/_root/data/gs1nl/fashion_dpp_guidance_content.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1nl/fmcg_datamodel_content.json",
+      "to": "docs/misc/_root/data/gs1nl/fmcg_datamodel_content.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1nl/healthcare_datamodel_content.json",
+      "to": "docs/misc/_root/data/gs1nl/healthcare_datamodel_content.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/gs1nl/sustainability_guidance_content.json",
+      "to": "docs/misc/_root/data/gs1nl/sustainability_guidance_content.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/metadata/REGISTRY_LOCK.md",
+      "to": "docs/misc/_root/data/metadata/REGISTRY_LOCK.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/metadata/dataset_registry.json",
+      "to": "docs/misc/_root/data/metadata/dataset_registry.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/metadata/dataset_registry_v1.0.0_BACKUP.json",
+      "to": "docs/misc/_root/data/metadata/dataset_registry_v1.0.0_BACKUP.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/metadata/dataset_registry_v1.0_FROZEN.json",
+      "to": "docs/misc/_root/data/metadata/dataset_registry_v1.0_FROZEN.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/metadata/dataset_registry_v1.3.0_DRAFT.json",
+      "to": "docs/misc/_root/data/metadata/dataset_registry_v1.3.0_DRAFT.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/metadata/external_repos_archive2.json",
+      "to": "docs/misc/_root/data/metadata/external_repos_archive2.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/metadata/gs1_ref_bundle_registry.json",
+      "to": "docs/misc/_root/data/metadata/gs1_ref_bundle_registry.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/metadata/gs1_style_guide_registry.json",
+      "to": "docs/misc/_root/data/metadata/gs1_style_guide_registry.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "data/standards/gs1-eu/gdsn/carbon-footprint/v1.0/gs1_eu_pcf_attributes_extracted.json",
+      "to": "docs/misc/_root/data/standards/gs1-eu/gdsn/carbon-footprint/v1.0/gs1_eu_pcf_attributes_extracted.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0003_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0003_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0004_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0004_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0005_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0005_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0006_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0006_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0007_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0007_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0008_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0008_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0009_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0009_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0010_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0010_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0011_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0011_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0012_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0012_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/0013_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta/0013_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta/_journal.json",
+      "to": "docs/misc/_root/drizzle/meta/_journal.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta_backup_20251219_172648/0000_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta_backup_20251219_172648/0000_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta_backup_20251219_172648/0001_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta_backup_20251219_172648/0001_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta_backup_20251219_172648/0002_snapshot.json",
+      "to": "docs/misc/_root/drizzle/meta_backup_20251219_172648/0002_snapshot.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "drizzle/meta_backup_20251219_172648/_journal.json",
+      "to": "docs/misc/_root/drizzle/meta_backup_20251219_172648/_journal.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "dual-core-poc-evaluation.md",
+      "to": "docs/misc/_root/dual-core-poc-evaluation.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "package.json",
+      "to": "docs/misc/_root/package.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "research-dutch-sources.md",
+      "to": "docs/misc/_root/research-dutch-sources.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "scripts/seed-regulatory-change-log-sql.txt",
+      "to": "docs/misc/_root/scripts/seed-regulatory-change-log-sql.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "server/ingest/INGEST-03_esrs_datapoints_README.md",
+      "to": "docs/misc/_root/server/ingest/INGEST-03_esrs_datapoints_README.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "task1_review.md",
+      "to": "docs/misc/_root/task1_review.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "task3_review.md",
+      "to": "docs/misc/_root/task3_review.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "test-failure-analysis.md",
+      "to": "docs/misc/_root/test-failure-analysis.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "test-final-run.txt",
+      "to": "docs/misc/_root/test-final-run.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "test-final.txt",
+      "to": "docs/misc/_root/test-final.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "test-json-output.txt",
+      "to": "docs/misc/_root/test-json-output.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "test-null-stacktrace-fix.txt",
+      "to": "docs/misc/_root/test-null-stacktrace-fix.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "test-output.txt",
+      "to": "docs/misc/_root/test-output.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "test-simple.txt",
+      "to": "docs/misc/_root/test-simple.txt",
+      "bucket": "misc"
+    },
+    {
+      "from": "todo.md",
+      "to": "docs/misc/_root/todo.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "todo_development.md",
+      "to": "docs/misc/_root/todo_development.md",
+      "bucket": "misc"
+    },
+    {
+      "from": "tsconfig.json",
+      "to": "docs/misc/_root/tsconfig.json",
+      "bucket": "misc"
+    },
+    {
+      "from": "CHATGPT_DELEGATION_PHASE1.md",
+      "to": "isa-archive/phase-reports/CHATGPT_DELEGATION_PHASE1.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "CURRENCY_DISCLOSURE.md",
+      "to": "isa-archive/phase-reports/CURRENCY_DISCLOSURE.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "DATASET_INVENTORY.md",
+      "to": "isa-archive/phase-reports/DATASET_INVENTORY.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "DOCUMENTATION_INVENTORY.md",
+      "to": "isa-archive/phase-reports/DOCUMENTATION_INVENTORY.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "ISA_GS1_ARTIFACT_INVENTORY.md",
+      "to": "isa-archive/phase-reports/ISA_GS1_ARTIFACT_INVENTORY.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "ISA_TODO_MANUAL_COMPLETION.md",
+      "to": "isa-archive/phase-reports/ISA_TODO_MANUAL_COMPLETION.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "NEWS_HUB_PHASE4-6_SUMMARY.md",
+      "to": "isa-archive/phase-reports/NEWS_HUB_PHASE4-6_SUMMARY.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "PHASE_9_CLAIMS_SANITIZATION_REPORT.md",
+      "to": "isa-archive/phase-reports/PHASE_9_CLAIMS_SANITIZATION_REPORT.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "PHASE_9_COMPLETION_REPORT.md",
+      "to": "isa-archive/phase-reports/PHASE_9_COMPLETION_REPORT.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "PHASE_9_DOCUMENTATION_INVENTORY.md",
+      "to": "isa-archive/phase-reports/PHASE_9_DOCUMENTATION_INVENTORY.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "PROJECT_INVENTORY.md",
+      "to": "isa-archive/phase-reports/PROJECT_INVENTORY.md",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "todo_phase44_update.txt",
+      "to": "isa-archive/phase-reports/todo_phase44_update.txt",
+      "bucket": "phase_reports"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/backlog.json",
+      "to": "docs/planning/_root/EU_ESG_to_GS1_Mapping_v1.1/backlog.json",
+      "bucket": "planning"
+    },
+    {
+      "from": "ISA_STATUS_REPORT_2025-01-11.md",
+      "to": "docs/planning/_root/ISA_STATUS_REPORT_2025-01-11.md",
+      "bucket": "planning"
+    },
+    {
+      "from": "ROADMAP.md",
+      "to": "docs/planning/_root/ROADMAP.md",
+      "bucket": "planning"
+    },
+    {
+      "from": "ROADMAP_GITHUB_INTEGRATION.md",
+      "to": "docs/planning/_root/ROADMAP_GITHUB_INTEGRATION.md",
+      "bucket": "planning"
+    },
+    {
+      "from": "AUDIT_FINDINGS.md",
+      "to": "isa-archive/reports/AUDIT_FINDINGS.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "DATA_FILE_VERIFICATION_REPORT.md",
+      "to": "isa-archive/reports/DATA_FILE_VERIFICATION_REPORT.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "DIAGNOSTIC_REPORT.md",
+      "to": "isa-archive/reports/DIAGNOSTIC_REPORT.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/VALIDATION_REPORT.md",
+      "to": "isa-archive/reports/EU_ESG_to_GS1_Mapping_v1.1/VALIDATION_REPORT.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/validation/consistency_report.txt",
+      "to": "isa-archive/reports/EU_ESG_to_GS1_Mapping_v1.1/validation/consistency_report.txt",
+      "bucket": "reports"
+    },
+    {
+      "from": "INGESTION_SUMMARY_REPORT.md",
+      "to": "isa-archive/reports/INGESTION_SUMMARY_REPORT.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "ISA_NEWSHUB_AUDIT_UPDATED.md",
+      "to": "isa-archive/reports/ISA_NEWSHUB_AUDIT_UPDATED.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "ROOT_CAUSE_DIAGNOSTIC_REPORT.md",
+      "to": "isa-archive/reports/ROOT_CAUSE_DIAGNOSTIC_REPORT.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "STABILIZATION_REPORT_2026-01-04.md",
+      "to": "isa-archive/reports/STABILIZATION_REPORT_2026-01-04.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "data/gs1_ref_corpus/authoritative_documents_report.md",
+      "to": "isa-archive/reports/data/gs1_ref_corpus/authoritative_documents_report.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "test-results/ask-isa-mapping-test.md",
+      "to": "isa-archive/reports/test-results/ask-isa-mapping-test.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "timeline-test-results.md",
+      "to": "isa-archive/reports/timeline-test-results.md",
+      "bucket": "reports"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/data/atomic_requirements.json",
+      "to": "docs/spec/_root/EU_ESG_to_GS1_Mapping_v1.1/data/atomic_requirements.json",
+      "bucket": "spec"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/data/data_requirements.json",
+      "to": "docs/spec/_root/EU_ESG_to_GS1_Mapping_v1.1/data/data_requirements.json",
+      "bucket": "spec"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/schemas/atomic_requirements.schema.json",
+      "to": "docs/spec/_root/EU_ESG_to_GS1_Mapping_v1.1/schemas/atomic_requirements.schema.json",
+      "bucket": "spec"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/schemas/corpus.schema.json",
+      "to": "docs/spec/_root/EU_ESG_to_GS1_Mapping_v1.1/schemas/corpus.schema.json",
+      "bucket": "spec"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/schemas/data_requirements.schema.json",
+      "to": "docs/spec/_root/EU_ESG_to_GS1_Mapping_v1.1/schemas/data_requirements.schema.json",
+      "bucket": "spec"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/schemas/gs1_mapping.schema.json",
+      "to": "docs/spec/_root/EU_ESG_to_GS1_Mapping_v1.1/schemas/gs1_mapping.schema.json",
+      "bucket": "spec"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/schemas/obligations.schema.json",
+      "to": "docs/spec/_root/EU_ESG_to_GS1_Mapping_v1.1/schemas/obligations.schema.json",
+      "bucket": "spec"
+    },
+    {
+      "from": "EU_ESG_to_GS1_Mapping_v1.1/schemas/scoring.schema.json",
+      "to": "docs/spec/_root/EU_ESG_to_GS1_Mapping_v1.1/schemas/scoring.schema.json",
+      "bucket": "spec"
+    },
+    {
+      "from": "data/metadata/dataset_registry.schema.json",
+      "to": "docs/spec/_root/data/metadata/dataset_registry.schema.json",
+      "bucket": "spec"
+    },
+    {
+      "from": "server/epcis-schema.json",
+      "to": "docs/spec/_root/server/epcis-schema.json",
+      "bucket": "spec"
+    },
+    {
+      "from": "shared/schemas/advisory-output.schema.json",
+      "to": "docs/spec/_root/shared/schemas/advisory-output.schema.json",
+      "bucket": "spec"
+    }
+  ]
+}
