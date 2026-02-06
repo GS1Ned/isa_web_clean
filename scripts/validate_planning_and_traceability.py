@@ -9,16 +9,18 @@ allowed_planning = {
     "docs/planning/INDEX.md",
 }
 
-for p in sorted(pathlib.Path("docs/planning").rglob("*")):
-    if p.is_dir():
-        continue
-    rel = p.as_posix()
-    if rel.startswith("docs/planning/work-packages/"):
-        errors.append(f"Disallowed live planning folder exists: {rel}")
-    if rel.startswith("docs/planning/_root/"):
-        errors.append(f"Disallowed legacy planning folder exists: {rel}")
-    if rel not in allowed_planning:
-        errors.append(f"Disallowed planning file (only TODO.md + BACKLOG.csv are live): {rel}")
+planning_dir = pathlib.Path("docs/planning")
+if planning_dir.exists():
+    for p in sorted(planning_dir.rglob("*")):
+        if p.is_dir():
+            continue
+        rel = p.as_posix()
+        if rel.startswith("docs/planning/work-packages/"):
+            errors.append(f"Disallowed planning folder exists: {rel}")
+        if rel.startswith("docs/planning/_root/"):
+            errors.append(f"Disallowed legacy planning folder exists: {rel}")
+        if rel not in allowed_planning:
+            errors.append(f"Disallowed planning file (only TODO.md + BACKLOG.csv are live): {rel}")
 
 trace = pathlib.Path("docs/spec/TRACEABILITY_MATRIX.csv")
 if trace.exists():
@@ -38,11 +40,9 @@ if backlog.exists():
             if not st:
                 errors.append(f"BACKLOG.csv missing status for {bid or '(missing id)'} at line {i}")
 
-tm = pathlib.Path("docs/spec/TRACEABILITY_MATRIX.csv")
-if tm.exists():
-    with tm.open("r", encoding="utf-8", errors="replace", newline="") as f:
-        r = csv.reader(f)
-        rows = list(r)
+if trace.exists():
+    with trace.open("r", encoding="utf-8", errors="replace", newline="") as f:
+        rows = list(csv.reader(f))
     if rows:
         header = rows[0]
         if "BACKLOG_ID" in header and "BACKLOG_STATUS" in header:

@@ -19,11 +19,6 @@
 - Roadmaps are not live planning sources.
 - Roadmap documents must be archived under `isa-archive/planning/roadmaps/`.
 
-## Roadmap policy
-- The only live planning sources are:
-  - `docs/planning/TODO.md`
-  - `docs/planning/BACKLOG.csv`
-
 ## Traceability coupling
 - `docs/spec/TRACEABILITY_MATRIX.csv` must not contain TODO/FIXME/TBD/BLOCKED/HACK/NEXT markers.
 - If `BACKLOG_ID` is present, `BACKLOG_STATUS` must also be present.
