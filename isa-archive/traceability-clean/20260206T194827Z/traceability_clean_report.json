@@ -1,0 +1,449 @@
+{
+  "meta": {
+    "generated_utc": "2026-02-06T19:50:28Z",
+    "git_head": "a38696908dec7806a322803aeaf13a86733467b1",
+    "traceability_path": "docs/spec/TRACEABILITY_MATRIX.csv",
+    "backlog_path": "docs/planning/BACKLOG.csv"
+  },
+  "inputs": {
+    "traceability_sha256_before": "3f89d5c66652d837a7f28d16d6874673859d59eb3283d1fda6d36100b79c46bd",
+    "backlog_sha256": "d046c520037aaed4f28340ecd3c963716dce35cb947ba9c6f76e91664a188e56"
+  },
+  "results": {
+    "rows_total": 1010,
+    "rows_changed": 171,
+    "cells_changed": 183,
+    "rows_linked_to_backlog": 117,
+    "columns_final": [
+      "canonical_spec",
+      "claim_id",
+      "statement",
+      "source_path",
+      "source_heading",
+      "short_quote",
+      "status",
+      "BACKLOG_ID",
+      "BACKLOG_STATUS"
+    ],
+    "added_columns": [
+      "BACKLOG_ID",
+      "BACKLOG_STATUS"
+    ]
+  },
+  "samples": [
+    {
+      "line": 23,
+      "backlog": null,
+      "row_preview": [
+        "isa-core-architecture.md",
+        "ISA-022",
+        "ISA project cleanup completed successfully with minimal changes required. The project was already well-organized and clean, with no external repository archives, no large datasets in the active tree,",
+        "./PROJECT_SIZE_CLEANUP.md",
+        "Conclusion",
+        "ISA project cleanup completed successfully with minimal changes required. The project was already we",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 73,
+      "backlog": null,
+      "row_preview": [
+        "data-knowledge-model.md",
+        "DAT-007",
+        "15,packagingMaterialTypeCode,Packaging Material Type Code,GDSN_XML,enum,true,<packagingMaterialTypeCode>,Packaging Information Module,,,,\"Identifies the material type of packaging component. Must use",
+        "./docs/GS1_Attribute_Mapper_Technical_Specification.md",
+        "2.2 Phase 1: Manual Curation (Week 1, 20 hours)",
+        "15,packagingMaterialTypeCode,Packaging Material Type Code,GDSN_XML,enum,true,<packagingMaterialTypeC",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 79,
+      "backlog": null,
+      "row_preview": [
+        "data-knowledge-model.md",
+        "DAT-013",
+        "Task: Identify which GS1 attributes are required, recommended, or optional for compliance with this regulation.",
+        "./docs/GS1_Attribute_Mapper_Technical_Specification.md",
+        "2.4 Phase 3: Regulation-to-Attribute Mapping (Week 2-3, 24 hours)",
+        "Task: Identify which GS1 attributes are required, recommended, or optional for compliance with this",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 84,
+      "backlog": null,
+      "row_preview": [
+        "data-knowledge-model.md",
+        "DAT-018",
+        "| `gs1Attributes.getByRegulation` | Query | Public | Get attributes required for specific regulation |",
+        "./docs/GS1_Attribute_Mapper_Technical_Specification.md",
+        "3.3 API Endpoints Summary",
+        "| `gs1Attributes.getByRegulation` | Query | Public | Get attributes required for specific regulation",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 137,
+      "backlog": null,
+      "row_preview": [
+        "data-knowledge-model.md",
+        "DAT-071",
+        "| `applicability` | TEXT | Who must comply (e.g., \"Large companies >500 employees\") |",
+        "./DATA_MODEL.md",
+        "`regulations` (35 records)",
+        "| `applicability` | TEXT | Who must comply (e.g., \"Large companies >500 employees\") |",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 138,
+      "backlog": null,
+      "row_preview": [
+        "data-knowledge-model.md",
+        "DAT-072",
+        "| `description` | TEXT | What must be disclosed |",
+        "./DATA_MODEL.md",
+        "`esrs_datapoints` (1,184 records)",
+        "| `description` | TEXT | What must be disclosed |",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 139,
+      "backlog": null,
+      "row_preview": [
+        "data-knowledge-model.md",
+        "DAT-073",
+        "| `complianceRequirements` | TEXT | What participants must do |",
+        "./DATA_MODEL.md",
+        "`dutch_initiatives` (10 records)",
+        "| `complianceRequirements` | TEXT | What participants must do |",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 140,
+      "backlog": null,
+      "row_preview": [
+        "data-knowledge-model.md",
+        "DAT-074",
+        "| `relevanceScore` | DECIMAL(3,2) | How strongly required (0.00-1.00) |",
+        "./DATA_MODEL.md",
+        "`dutch_initiative_gs1_mappings` (Auto-generated)",
+        "| `relevanceScore` | DECIMAL(3,2) | How strongly required (0.00-1.00) |",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 151,
+      "backlog": null,
+      "row_preview": [
+        "data-knowledge-model.md",
+        "DAT-085",
+        "ISA advisory JSON files must have **deterministic, reproducible structure** to enable clean version diffs. Without canonical ordering, JSON diffs would show spurious changes (e.g., array element reord",
+        "./docs/ADVISORY_OUTPUTS.md",
+        "11.1 Purpose",
+        "ISA advisory JSON files must have **deterministic, reproducible structure** to enable clean version",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 163,
+      "backlog": {
+        "id": "TM-001",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "data-knowledge-model.md",
+        "DAT-097",
+        "| Add obligation language detection (shall, must, required) | Check 2 | 4h | MEDIUM |",
+        "./docs/ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md",
+        "Phase 2: Short-Term (Sprint)",
+        "| Add obligation language detection (shall, must, required) | Check 2 | 4h | MEDIUM |",
+        "traceable",
+        "TM-001",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 188,
+      "backlog": null,
+      "row_preview": [
+        "governance-iron-protocol.md",
+        "GOV-022",
+        "**Description:** Manus has moderate autonomy for routine development work, with escalation required for higher-risk decisions.",
+        "./ISA_GOVERNANCE.md",
+        "3.2 Lane B — Supervised Autonomy Mode",
+        "**Description:** Manus has moderate autonomy for routine development work, with escalation required",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 218,
+      "backlog": null,
+      "row_preview": [
+        "governance-iron-protocol.md",
+        "GOV-052",
+        "2. Developer/agent must record a decision (IN/OUT/IGNORE) in `SCOPE_DECISIONS.md`.",
+        "./IRON_PROTOCOL.md",
+        "5.2. Scope Drift Handling",
+        "2. Developer/agent must record a decision (IN/OUT/IGNORE) in `SCOPE_DECISIONS.md`.",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 234,
+      "backlog": {
+        "id": "TM-002",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "governance-iron-protocol.md",
+        "GOV-068",
+        "1. **User Action Required:** Configure branch protection on GitHub repository main branch",
+        "./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md",
+        "Immediate (24 Hours)",
+        "1. **User Action Required:** Configure branch protection on GitHub repository main branch",
+        "traceable",
+        "TM-002",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 235,
+      "backlog": {
+        "id": "TM-003",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "governance-iron-protocol.md",
+        "GOV-069",
+        "2. **User Decision Required:** Determine ISA license",
+        "./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md",
+        "Immediate (24 Hours)",
+        "2. **User Decision Required:** Determine ISA license",
+        "traceable",
+        "TM-003",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 243,
+      "backlog": null,
+      "row_preview": [
+        "governance-iron-protocol.md",
+        "GOV-077",
+        "3. The `iron-gate` CI check will validate compliance.",
+        "./IRON_PROTOCOL.md",
+        "4.4. Before Submitting a PR",
+        "3. The `iron-gate` CI check will validate compliance.",
+        "traceable",
+        "",
+        ""
+      ]
+    },
+    {
+      "line": 244,
+      "backlog": {
+        "id": "TM-004",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "governance-iron-protocol.md",
+        "GOV-078",
+        "- Ensure procedures are comprehensive and current",
+        "./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md",
+        "Short-Term (14 Days)",
+        "- Ensure procedures are comprehensive and current",
+        "traceable",
+        "TM-004",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 245,
+      "backlog": {
+        "id": "TM-005",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "governance-iron-protocol.md",
+        "GOV-079",
+        "- Validate security monitoring is working",
+        "./docs/GOVERNANCE_SELF_CHECK_2025-12-17.md",
+        "Medium-Term (30 Days)",
+        "- Validate security monitoring is working",
+        "traceable",
+        "TM-005",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 257,
+      "backlog": {
+        "id": "TM-006",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "governance-iron-protocol.md",
+        "GOV-091",
+        "**NOTE:** Whether they are already located in the *correct repo paths* and wired into daily flow must be verified in the step (see Section 4).",
+        "./docs/evidence/ISA_IRON_DOCSET_AND_CRITICAL_PATH_DECISION_DRAFT_v0.md",
+        "C. Baseline discoverability artefacts (strongly recommended, low-cost)",
+        "**NOTE:** Whether they are already located in the *correct repo paths* and wired into daily flow mus",
+        "traceable",
+        "TM-006",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 299,
+      "backlog": {
+        "id": "TM-007",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "ingestion-update-lifecycle.md",
+        "ING-033",
+        "- [x] Fix boolean→number in INGEST-02_gdsn_current.ts (required field)",
+        "./.md",
+        "Ingestion Script Fixes",
+        "- [x] Fix boolean→number in INGEST-02_gdsn_current.ts (required field)",
+        "traceable",
+        "TM-007",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 300,
+      "backlog": {
+        "id": "TM-008",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "ingestion-update-lifecycle.md",
+        "ING-034",
+        "- [x] Fix boolean→number in INGEST-04_ctes_kdes.ts (mandatory and required fields)",
+        "./.md",
+        "Ingestion Script Fixes",
+        "- [x] Fix boolean→number in INGEST-04_ctes_kdes.ts (mandatory and required fields)",
+        "traceable",
+        "TM-008",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 301,
+      "backlog": {
+        "id": "TM-009",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "ingestion-update-lifecycle.md",
+        "ING-035",
+        "2. **Column Naming Consistency:** Drizzle schema uses camelCase for TypeScript but snake_case for database columns - tests must use TypeScript property names",
+        "./.md",
+        "Meta-Learnings",
+        "2. **Column Naming Consistency:** Drizzle schema uses camelCase for TypeScript but snake_case for da",
+        "traceable",
+        "TM-009",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 302,
+      "backlog": {
+        "id": "TM-010",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "ingestion-update-lifecycle.md",
+        "ING-036",
+        "- [x] Create server/test-helpers/db-test-utils.ts with 7 required functions:",
+        "./.md",
+        "TASK 1 — DB Test Helpers (PR #4 equivalent)",
+        "- [x] Create server/test-helpers/db-test-utils.ts with 7 required functions:",
+        "traceable",
+        "TM-010",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 303,
+      "backlog": {
+        "id": "TM-011",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "ingestion-update-lifecycle.md",
+        "ING-037",
+        "- [x] Seed helpers must work within transaction context",
+        "./.md",
+        "TASK 1 — DB Test Helpers (PR #4 equivalent)",
+        "- [x] Seed helpers must work within transaction context",
+        "traceable",
+        "TM-011",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 304,
+      "backlog": {
+        "id": "TM-012",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "ingestion-update-lifecycle.md",
+        "ING-038",
+        "**STATUS: ALREADY COMPLIANT** ✅ No changes required.",
+        "./.md",
+        "TASK 3 — CI Scripts (PR #5 equivalent) ✅ COMPLETE",
+        "**STATUS: ALREADY COMPLIANT** ✅ No changes required.",
+        "traceable",
+        "TM-012",
+        "OPEN"
+      ]
+    },
+    {
+      "line": 305,
+      "backlog": {
+        "id": "TM-013",
+        "status": "OPEN"
+      },
+      "row_preview": [
+        "ingestion-update-lifecycle.md",
+        "ING-039",
+        "- [x] Must not be default (verified)",
+        "./.md",
+        "TASK 3 — CI Scripts (PR #5 equivalent) ✅ COMPLETE",
+        "- [x] Must not be default (verified)",
+        "traceable",
+        "TM-013",
+        "OPEN"
+      ]
+    }
+  ]
+}
