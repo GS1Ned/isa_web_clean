@@ -8,3 +8,6 @@
 ## Policy
 Planning artifacts live here. When superseded, keep file but add a banner at top:
 > Status: superseded by <path>
+
+## Archived
+- Roadmaps: `isa-archive/planning/roadmaps/`
