@@ -8,3 +8,8 @@
 - Work prioritization: `docs/governance/WORK_PRIORITIZATION.md`
 - Scope decisions: `docs/governance/SCOPE_DECISIONS.md`
 - Open questions: `docs/governance/OPEN_QUESTIONS.md`
+## Canonical policies
+
+- Planning & traceability canon (normative): `docs/governance/PLANNING_TRACEABILITY_CANON.md`
+- Planning policy: `docs/planning/PLANNING_POLICY.md`
+

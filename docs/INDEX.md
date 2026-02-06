@@ -12,4 +12,10 @@
 - Status reports: `docs/planning/_root/`
 - Governance root imports: `docs/governance/_root/`
 
-- Spellcheck terms: 
+- Spellcheck terms:
+## Planning
+
+- Live planning: `docs/planning/TODO.md` and `docs/planning/BACKLOG.csv`
+- Planning policy (normative): `docs/planning/PLANNING_POLICY.md`
+- Archived roadmaps: `isa-archive/planning/roadmaps/`
+
