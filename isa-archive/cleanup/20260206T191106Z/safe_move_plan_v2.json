@@ -1,0 +1,3050 @@
+{
+  "meta": {
+    "last_verified_utc": "2026-02-06T19:14:16Z",
+    "git_head": "7b63169fff199dd7c3d8cdaacfbafb49fb135509",
+    "repo_root": "/Users/frisowempe/Documents/isa_web_clean",
+    "source_repo_scan_json": "isa-archive/next-step-scan/repo_scan.json",
+    "allow_ext": [
+      ".csv",
+      ".json",
+      ".md",
+      ".txt"
+    ],
+    "deny_prefix": [
+      ".github/",
+      "client/",
+      "server/",
+      "src/",
+      "packages/",
+      "apps/",
+      "data/",
+      "drizzle/",
+      "public/",
+      "scripts/",
+      "bin/",
+      "infra/",
+      "ops/",
+      "terraform/",
+      "k8s/",
+      "helm/",
+      "docker/",
+      "migrations/",
+      "config/",
+      "configs/",
+      "cron-configs/"
+    ],
+    "deny_dotfiles": true
+  },
+  "counts": {
+    "other_docs": 80,
+    "reports_and_outputs": 28,
+    "phase_reports": 35,
+    "planning_docs": 25,
+    "spec_docs": 32,
+    "governance_docs": 22,
+    "docs_misc": 174,
+    "already_archived": 40
+  },
+  "move_candidates": [
+    {
+      "path": ".eslintrc.server.json",
+      "bucket": "other_docs",
+      "target": "docs/misc/eslintrc.server.json",
+      "bytes": 372,
+      "sha256": "e0a864661e0ec4a5d60bfff5e5081aefdc5b6217358140ca08f1ad3fbf9a153c"
+    },
+    {
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/PULL_REQUEST_TEMPLATE.md",
+      "bytes": 1326,
+      "sha256": "cfcde1f6b2c25979b9cb06949b360f776b7245772885c607216c2da89315e2a8"
+    },
+    {
+      "path": ".markdownlint.json",
+      "bucket": "other_docs",
+      "target": "docs/misc/markdownlint.json",
+      "bytes": 685,
+      "sha256": "05c25b8e5fdfa23c5360cbb98ae57338ef55834506c5b0982de053767ba69f88"
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/ARCHITECTURE.md",
+      "bytes": 16748,
+      "sha256": "f3635616f9fa6133ac092e627d42bca491fe064652d58546ab4c67216e618e1e"
+    },
+    {
+      "path": "AUDIT_FINDINGS.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/AUDIT_FINDINGS.md",
+      "bytes": 20423,
+      "sha256": "b6ecfbb3903a2175046fef2f41d0d6f3cbc44155082383fee3ee94ca429bdc7e"
+    },
+    {
+      "path": "AUTONOMOUS_DEVELOPMENT_SUMMARY.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/AUTONOMOUS_DEVELOPMENT_SUMMARY.md",
+      "bytes": 11009,
+      "sha256": "cbdb92f6d3ff27d316bb4e175f0242719c31d7a53ed68efde9fcfe91547a564d"
+    },
+    {
+      "path": "CHATGPT_DELEGATION_PHASE1.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/CHATGPT_DELEGATION_PHASE1.md",
+      "bytes": 6133,
+      "sha256": "2b0f54ff1f27a534c7b8b040e602e77cfa2a8bffcb14e82ca6396fc9f9450de4"
+    },
+    {
+      "path": "CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md",
+      "bytes": 17897,
+      "sha256": "148dac77211bdd557882ce034f8fde5659b8f8502d035efaaf721ec3769e10db"
+    },
+    {
+      "path": "CHATGPT_PROMPT_INGEST-03.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/CHATGPT_PROMPT_INGEST-03.md",
+      "bytes": 15859,
+      "sha256": "cb945b566b215cc8a2b8e85f54c116c4d5e0ec8e3faf0fc8e820156bc6819b7e"
+    },
+    {
+      "path": "CHATGPT_UPDATE_PROMPT.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/CHATGPT_UPDATE_PROMPT.md",
+      "bytes": 10863,
+      "sha256": "ae91ad25e855ba49b4b734ca15aced5b3df48f9f6a3ba82863c84dabd1ccd2c6"
+    },
+    {
+      "path": "CHROMIUM_INSTALLATION_GUIDE.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/CHROMIUM_INSTALLATION_GUIDE.md",
+      "bytes": 6712,
+      "sha256": "8b04ac7c3d9705cbd9b90e147d2126bdba820896d1a0e561def4668200e62105"
+    },
+    {
+      "path": "CRON_DEPLOYMENT.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/CRON_DEPLOYMENT.md",
+      "bytes": 5279,
+      "sha256": "94ca6827a3066d23e2dc80ff356b25f7b34ea2d8bb921a210953ca26aa665fda"
+    },
+    {
+      "path": "CURRENCY_DISCLOSURE.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/CURRENCY_DISCLOSURE.md",
+      "bytes": 11021,
+      "sha256": "2b0a521469de44469642ffe67f061b599334edab76ff97ef39aebb631a8b7f71"
+    },
+    {
+      "path": "DATASET_INVENTORY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/DATASET_INVENTORY.md",
+      "bytes": 12817,
+      "sha256": "8619b7e568a5c3b7bca944a7a02bf6ffc0b290e85f4304d8776365ad24864ada"
+    },
+    {
+      "path": "DATA_FILE_VERIFICATION_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/DATA_FILE_VERIFICATION_REPORT.md",
+      "bytes": 7231,
+      "sha256": "2952c773d44d215ee7916ef0be509d9ae60d13a431f36419768ee536d4074875"
+    },
+    {
+      "path": "DATA_MODEL.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/DATA_MODEL.md",
+      "bytes": 24232,
+      "sha256": "46b1b7db1d65023647195b61c10b04e72ca92a579b7dfdd3c06817885acc72e2"
+    },
+    {
+      "path": "DELEGATION_PACKAGE_INGEST-03.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/DELEGATION_PACKAGE_INGEST-03.md",
+      "bytes": 7916,
+      "sha256": "7c766f5adddd0cd6aa4590d1b7b59a110a31d95e3002744ffa66e39fb74c36ca"
+    },
+    {
+      "path": "DIAGNOSTIC_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/DIAGNOSTIC_REPORT.md",
+      "bytes": 7648,
+      "sha256": "a337655b51302f810a9cc98dfeab79ca2c40564225bb395f8aca119890579059"
+    },
+    {
+      "path": "DOCUMENTATION_INVENTORY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/DOCUMENTATION_INVENTORY.md",
+      "bytes": 8387,
+      "sha256": "8ef8271d99b0c23a01ad48e34a6cdd9aef0212b8896e37fe82c1bd3efa69d2af"
+    },
+    {
+      "path": "EPCIS_CBV_INTEGRATION_SUMMARY.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/EPCIS_CBV_INTEGRATION_SUMMARY.md",
+      "bytes": 8135,
+      "sha256": "7b7a20302a4987f2de2e210fe974719e1778c60472a07a624fa98a3054e29037"
+    },
+    {
+      "path": "EURLEX_SCRAPER_FIX.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/EURLEX_SCRAPER_FIX.md",
+      "bytes": 7316,
+      "sha256": "5c48981881f4e632321d77369a0ae80ec98d34203b4d87abebfc1c502c6456b6"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/CHANGELOG.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/CHANGELOG.md",
+      "bytes": 2794,
+      "sha256": "6d662edc2b24257e03ed1ed77cb3c0d61606b99371a08dbe9b0a9f0ac561d3f0"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/DOCUMENT_VALUE_SCORECARD.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/DOCUMENT_VALUE_SCORECARD.md",
+      "bytes": 1242,
+      "sha256": "0533ec5a90e139e9872e8d46affcd024cb7901efab9210cd4f604ce529b0b4e6"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/EU_ESG_to_GS1_Mapping.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/EU_ESG_to_GS1_Mapping.md",
+      "bytes": 1680,
+      "sha256": "b5c4d21bf44558b60f738aba7b3eb69c20cbfa91a2cf1956bc3994a71cfabe0d"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/INTEGRATION_POSITIONING.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/INTEGRATION_POSITIONING.md",
+      "bytes": 2414,
+      "sha256": "c4d16c46469459148a4cb75a4167e750a65ab1e32e00fea0b4e0b378923c34c3"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/MANIFEST.json",
+      "bucket": "other_docs",
+      "target": "docs/misc/MANIFEST.json",
+      "bytes": 3569,
+      "sha256": "79deefbd0ed3352d4fec8080f23017256f5badc031bd6cfd80e9ae2afafe1b23"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/MANUS_HANDOFF.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/MANUS_HANDOFF.md",
+      "bytes": 2319,
+      "sha256": "1e0ea455f569030b4cd2279aa493a9847e612dce3c0c84a9382280270d0f022e"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/README.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/README.md",
+      "bytes": 938,
+      "sha256": "a361f31d19e5ccdfb5a5e4e763d97c13d1313c455237df2795a7e906269fdae8"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/VALIDATION_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/VALIDATION_REPORT.md",
+      "bytes": 1428,
+      "sha256": "a924616d4ce6cac9c84a7c7a224942af85e763f8949ba839f2fcced32c22481c"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/backlog.json",
+      "bucket": "planning_docs",
+      "target": "docs/planning/backlog.json",
+      "bytes": 2477,
+      "sha256": "f8a0f4c390184a2a0ac68a9a26903378ffad3b96d98558073fe3e79ef35aa008"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/checksums/SHA256SUMS.txt",
+      "bucket": "other_docs",
+      "target": "docs/misc/SHA256SUMS.txt",
+      "bytes": 1516,
+      "sha256": "60cb60d0141f58fdcae631cc8e11d8b0bcfe68e8c68390b7b0c98d64bb38e153"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/data/atomic_requirements.json",
+      "bucket": "spec_docs",
+      "target": "docs/spec/atomic_requirements.json",
+      "bytes": 13185,
+      "sha256": "fccc10c7f5c0eb00f29d28811eae6a9d1c76a29dfebbd2dfb53eac55867c9b6a"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/data/corpus.json",
+      "bucket": "other_docs",
+      "target": "docs/misc/corpus.json",
+      "bytes": 7723,
+      "sha256": "79f9b2592a488441ee1b8e6b799c66b8ca32e92b2cdb714a6c96b94786d2864b"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/data/data_requirements.json",
+      "bucket": "spec_docs",
+      "target": "docs/spec/data_requirements.json",
+      "bytes": 8604,
+      "sha256": "2c9530325e5ffa8dc293eacc42dfdfdb107de338db29a995938756e69eba9d4b"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/data/gs1_mapping.json",
+      "bucket": "other_docs",
+      "target": "docs/misc/gs1_mapping.json",
+      "bytes": 11598,
+      "sha256": "62172f71ec37f2782d47467a36f5db0891e6c69db5ad03b47fd921c62ebcfac1"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/data/gs1_sources.json",
+      "bucket": "other_docs",
+      "target": "docs/misc/gs1_sources.json",
+      "bytes": 5278,
+      "sha256": "bdcee790ca566696bffd5f7f30312e11e72151ee42b9d978f3f03cb626f40700"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/data/obligations.json",
+      "bucket": "other_docs",
+      "target": "docs/misc/obligations.json",
+      "bytes": 7242,
+      "sha256": "f0fb75e8a7bb509d2c6a4038344935954e6befb70ba77475d0f6a26d72a38f00"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/data/scoring.json",
+      "bucket": "other_docs",
+      "target": "docs/misc/scoring.json",
+      "bytes": 10943,
+      "sha256": "afa0921048f0976cbe7917aade0d90cd74922d37c80558b92eb84c65d942947c"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/schemas/atomic_requirements.schema.json",
+      "bucket": "spec_docs",
+      "target": "docs/spec/atomic_requirements.schema.json",
+      "bytes": 1427,
+      "sha256": "2b2d0c0c3a8eaac3a8a51c9e1cf3aaea624e541804c8ede1db724c450f8fb666"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/schemas/corpus.schema.json",
+      "bucket": "spec_docs",
+      "target": "docs/spec/corpus.schema.json",
+      "bytes": 1410,
+      "sha256": "f8d81dae69390b254845083c3d8827a3dc9471539269d146da2a5ab86a6deadc"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/schemas/data_requirements.schema.json",
+      "bucket": "spec_docs",
+      "target": "docs/spec/data_requirements.schema.json",
+      "bytes": 1130,
+      "sha256": "cf8c2713bea992eb8ff0c3270e684bba2827b5472ce6241f82315214d890e471"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/schemas/gs1_mapping.schema.json",
+      "bucket": "spec_docs",
+      "target": "docs/spec/gs1_mapping.schema.json",
+      "bytes": 1076,
+      "sha256": "c161c8784aaea56bc57fd7d47da92b2c8684ecf62b8ca18893f4afcf3f7137fd"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/schemas/obligations.schema.json",
+      "bucket": "spec_docs",
+      "target": "docs/spec/obligations.schema.json",
+      "bytes": 673,
+      "sha256": "d5783d2cd498a8cce9a049345afbb37f4176b68ca03ad257022dc995adaf20bf"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/schemas/scoring.schema.json",
+      "bucket": "spec_docs",
+      "target": "docs/spec/scoring.schema.json",
+      "bytes": 1591,
+      "sha256": "712c0bba686391511d099d4038069a80decb81b27b62388cf196061e558e5775"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/validation/completeness_matrix.csv",
+      "bucket": "other_docs",
+      "target": "docs/misc/completeness_matrix.csv",
+      "bytes": 458,
+      "sha256": "31ab6dbc78072f96f848a8022c48419c6a34a4329714a16b029bcf294f679de8"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/validation/consistency_report.txt",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/consistency_report.txt",
+      "bytes": 398,
+      "sha256": "25f790359992555ec25cf33f668a853daf3e133cec624568ccf86cc5f81512b1"
+    },
+    {
+      "path": "EU_ESG_to_GS1_Mapping_v1.1/validation/placeholder_scan.txt",
+      "bucket": "other_docs",
+      "target": "docs/misc/placeholder_scan.txt",
+      "bytes": 33,
+      "sha256": "5426a5c0a80ac05fe7416db3db4864ac3cca2c8ed6315bbf8e1c194494dc1f12"
+    },
+    {
+      "path": "EXTERNAL_REFERENCES.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/EXTERNAL_REFERENCES.md",
+      "bytes": 10462,
+      "sha256": "6514041e682ebaf7af82b8e9de551293d34c637d4ffbbb5b1bddbf704c291b88"
+    },
+    {
+      "path": "GOVERNANCE.md",
+      "bucket": "governance_docs",
+      "target": "docs/governance/GOVERNANCE.md",
+      "bytes": 6322,
+      "sha256": "737c3674321797bc0142915b681231f208e82c24c8dcab4238dbb31b0ba129a5"
+    },
+    {
+      "path": "GS1_ARTEFACT_PROCESSING.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/GS1_ARTEFACT_PROCESSING.md",
+      "bytes": 10096,
+      "sha256": "ec4839a7f0d93b3027cb7e2d6047fb3e1f6576da0ef49faaa6a20dca86ede519"
+    },
+    {
+      "path": "HEALTH_MONITORING_ENHANCEMENTS.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/HEALTH_MONITORING_ENHANCEMENTS.md",
+      "bytes": 5752,
+      "sha256": "e17effa72a2dcacda72ff205bc6832db700d02d89ac05473b5370bc1e011982f"
+    },
+    {
+      "path": "INGESTION.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/INGESTION.md",
+      "bytes": 11549,
+      "sha256": "93418c62b25ffd1ef56a1e8bcc958db26df79c89628e98dd7cfe4816c6c96b55"
+    },
+    {
+      "path": "INGESTION_DELIVERABLES_INDEX.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/INGESTION_DELIVERABLES_INDEX.md",
+      "bytes": 7624,
+      "sha256": "237c964d624b6dca298bda7e6b3af2dd82df2e73d1c4f12b50200eafdbee27df"
+    },
+    {
+      "path": "INGESTION_SUMMARY_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/INGESTION_SUMMARY_REPORT.md",
+      "bytes": 10429,
+      "sha256": "0c7787d1b157452e3ff27e3cda9cb0a624316bba96939106e3d75f734eeea9ba"
+    },
+    {
+      "path": "IRON_KNOWLEDGE_MAP.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/IRON_KNOWLEDGE_MAP.md",
+      "bytes": 5071,
+      "sha256": "9252595bad4a1d06e3075d117e7691e1d585efb522c1e2c89029ee81cee137c6"
+    },
+    {
+      "path": "IRON_PROTOCOL.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/IRON_PROTOCOL.md",
+      "bytes": 4640,
+      "sha256": "c53d28c083dd64f831f616db87fb9c98682d118abe0fb99d33a88dbc1b18887a"
+    },
+    {
+      "path": "IRON_VALIDATION_PLAN.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/IRON_VALIDATION_PLAN.md",
+      "bytes": 3884,
+      "sha256": "becfdee05fa092a1e5abf817aa4d5a2f7888f8ac49e97a025c78ae8ee508ec96"
+    },
+    {
+      "path": "ISA_CAPABILITY_MAP.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/ISA_CAPABILITY_MAP.md",
+      "bytes": 80897,
+      "sha256": "d1ab40fb79665ba93049c089e68f9ce082131a566be822f24c699c0f288dbc72"
+    },
+    {
+      "path": "ISA_DEVELOPMENT_PLAYBOOK.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/ISA_DEVELOPMENT_PLAYBOOK.md",
+      "bytes": 5404,
+      "sha256": "7ec4003fe8a38dfae19ddf51a3be310bd6c9e4c6aa8ae82c3b79be6f9b4b6d3c"
+    },
+    {
+      "path": "ISA_GATING_QUESTIONS.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/ISA_GATING_QUESTIONS.md",
+      "bytes": 4164,
+      "sha256": "31c615a359ac61f918a5079754e06dba76a2ba88dcda265e086834bb6e1271be"
+    },
+    {
+      "path": "ISA_GOVERNANCE.md",
+      "bucket": "governance_docs",
+      "target": "docs/governance/ISA_GOVERNANCE.md",
+      "bytes": 15483,
+      "sha256": "d083d4ea2c1f12530d6ae47f08476bb10548ef1238b8b5d3fd9d2377bfff2ce8"
+    },
+    {
+      "path": "ISA_GS1_ARTIFACT_INVENTORY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/ISA_GS1_ARTIFACT_INVENTORY.md",
+      "bytes": 15476,
+      "sha256": "da4cb68ae84b9875400cc89150504ea1386e0640c5d817f859371b9b888acd68"
+    },
+    {
+      "path": "ISA_NEWSHUB_AUDIT_UPDATED.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/ISA_NEWSHUB_AUDIT_UPDATED.md",
+      "bytes": 15853,
+      "sha256": "936d3bfd67e257c50958bf16d6c6a0c15915530d1b74f55b66cae68fc134356f"
+    },
+    {
+      "path": "ISA_NEWSHUB_TARGET_DESIGN.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/ISA_NEWSHUB_TARGET_DESIGN.md",
+      "bytes": 32963,
+      "sha256": "894ff2e53e59deedbf8e309ef93368b7ab688716f5bc06497bb11cf7096b3fc5"
+    },
+    {
+      "path": "ISA_NEWS_OVERVIEW.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/ISA_NEWS_OVERVIEW.md",
+      "bytes": 15200,
+      "sha256": "3fd8c3f42504fe465c367d8560612acf90a56057e8251eebbaf94348d31d1dbe"
+    },
+    {
+      "path": "ISA_STATUS_REPORT_2025-01-11.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_STATUS_REPORT_2025-01-11.md",
+      "bytes": 18197,
+      "sha256": "5f34ab4939ab558133b4df5b6e6d8c17f50cf7b816dffa630110d46f6181436d"
+    },
+    {
+      "path": "ISA_TODO_MANUAL_COMPLETION.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/ISA_TODO_MANUAL_COMPLETION.md",
+      "bytes": 4667,
+      "sha256": "87b60cabefc7a5886aeedb5354ebb1a5bde5d9948e9633320b98caaa6f7ffadc"
+    },
+    {
+      "path": "ISA_V1_FROZEN.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/ISA_V1_FROZEN.md",
+      "bytes": 1345,
+      "sha256": "b1cd3b83e12e32f1a8f4677be31da25b19c80eae772afc4f373986d9db1f6a45"
+    },
+    {
+      "path": "KNOWN_FAILURE_MODES.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/KNOWN_FAILURE_MODES.md",
+      "bytes": 2780,
+      "sha256": "77a581966dbf19c46157dd6cc5a5bcd1a4e63055876b10a7ca4cbf777ac0c764"
+    },
+    {
+      "path": "MONITORING_TESTS.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/MONITORING_TESTS.md",
+      "bytes": 5076,
+      "sha256": "7183f5eaf4e4a9b91cc2cc1e1f124db6c42d2c5df656488acb7c3051d5315080"
+    },
+    {
+      "path": "MULTI_REGULATION_COMPARISON_SUMMARY.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/MULTI_REGULATION_COMPARISON_SUMMARY.md",
+      "bytes": 20694,
+      "sha256": "e20d59f838614107aaba150db70698d7dd789eb5e781dd05e502dbf31a4d1a12"
+    },
+    {
+      "path": "NEEDS_USER_UPLOAD.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/NEEDS_USER_UPLOAD.md",
+      "bytes": 11051,
+      "sha256": "432a20eddce18f3e3e9abcf42af39254f6f1ccb9141ed3301e9b4d307f26f8f7"
+    },
+    {
+      "path": "NEWS_HUB_PHASE4-6_SUMMARY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/NEWS_HUB_PHASE4-6_SUMMARY.md",
+      "bytes": 16447,
+      "sha256": "800bc4516e30a22b6ec14f1e5e9db7bf7efcbdbfc12b32afbad9a8814b27b609"
+    },
+    {
+      "path": "OPEN_QUESTIONS.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/OPEN_QUESTIONS.md",
+      "bytes": 3161,
+      "sha256": "6b12f8ef2432df570e5098d631032fcf0f2f9dbac50ce4768857650531215b41"
+    },
+    {
+      "path": "ORCHESTRATION_PROMPT.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/ORCHESTRATION_PROMPT.md",
+      "bytes": 8188,
+      "sha256": "995950b83c785ce1b80aa296b5a416d6292b2a784c057e7ae7ef4a6fb4b60699"
+    },
+    {
+      "path": "PHASE_9_CLAIMS_SANITIZATION_REPORT.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_9_CLAIMS_SANITIZATION_REPORT.md",
+      "bytes": 9458,
+      "sha256": "5050c9d145ba091faf7b16891d5f9405f31f39bb3c2676284a03414548f8f05c"
+    },
+    {
+      "path": "PHASE_9_COMPLETION_REPORT.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_9_COMPLETION_REPORT.md",
+      "bytes": 18347,
+      "sha256": "8061d6faddad40f77dec8f16647f9a07394aa842edc4bd73ecb08599703dfb4b"
+    },
+    {
+      "path": "PHASE_9_DOCUMENTATION_INVENTORY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_9_DOCUMENTATION_INVENTORY.md",
+      "bytes": 8249,
+      "sha256": "cde1e63607d4fd763f4f3a80b3d82e6a526a6fe5c3b3aefb276d9dbc0791560e"
+    },
+    {
+      "path": "POC_EXPLORATION_TODO.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/POC_EXPLORATION_TODO.md",
+      "bytes": 1058,
+      "sha256": "3c923ee31567b180515de15ec7ca9ba58b4ad474696c6aebb36992238589072c"
+    },
+    {
+      "path": "PRODUCTION_READINESS.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/PRODUCTION_READINESS.md",
+      "bytes": 2472,
+      "sha256": "4f09605ce40f809a77374ad0d77ed59ff7b46334da8baac8ab868a4b26e20862"
+    },
+    {
+      "path": "PROJECT_INVENTORY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PROJECT_INVENTORY.md",
+      "bytes": 9535,
+      "sha256": "308dbbbf624b464dda07be4520bb670ba7e48b32175472e6ee2f20c06bd38c84"
+    },
+    {
+      "path": "PROJECT_SIZE_CLEANUP.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/PROJECT_SIZE_CLEANUP.md",
+      "bytes": 12901,
+      "sha256": "dc22cee073eeb1b18fbd0707f6d0acc33cf1ffc29eb7dbd98d8eb034d956d663"
+    },
+    {
+      "path": "QUICK_START_INGESTION.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/QUICK_START_INGESTION.md",
+      "bytes": 5741,
+      "sha256": "0e7767917711d65b6e6fa09f0dd54917cde52182de50c6fd4358b3272b53a9fd"
+    },
+    {
+      "path": "README.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/README.md",
+      "bytes": 12662,
+      "sha256": "c101b27a2bf342206a549d04782f4a1e143a2c31e57fb0ede46435321613173f"
+    },
+    {
+      "path": "REPO_MAP.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/REPO_MAP.md",
+      "bytes": 5151,
+      "sha256": "625836b14f3d3cfd6e2204392a6b2d839a7ebb705e92fbba1ecebe95cfa36447"
+    },
+    {
+      "path": "RESEARCH_FINDINGS_NEWS_SOURCES.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/RESEARCH_FINDINGS_NEWS_SOURCES.md",
+      "bytes": 21625,
+      "sha256": "08bf5db6780cdb89c1c84e17a016e0c94b746008246714c1824cac1b90e2eeaf"
+    },
+    {
+      "path": "ROADMAP.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ROADMAP.md",
+      "bytes": 17028,
+      "sha256": "c3b290997a189e292c9278af9f484f265b4e1b00c95b555923d18ecbfaebe2a4"
+    },
+    {
+      "path": "ROADMAP_GITHUB_INTEGRATION.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ROADMAP_GITHUB_INTEGRATION.md",
+      "bytes": 13730,
+      "sha256": "a5bfe10b545e069a7c771c42d272eac587bef0c0d69e415bde67c22e123db228"
+    },
+    {
+      "path": "ROOT_CAUSE_DIAGNOSTIC_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/ROOT_CAUSE_DIAGNOSTIC_REPORT.md",
+      "bytes": 12154,
+      "sha256": "1cbc39118e331bfbe54a0fdd3f93e761e0b87b489f5fe512122083ea8bd13eee"
+    },
+    {
+      "path": "SCOPE_DECISIONS.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/SCOPE_DECISIONS.md",
+      "bytes": 1887,
+      "sha256": "5b221853aa4645d194bbfc1eeeeefe2707d0d1b20c536677d8e6eb5d23d15e4a"
+    },
+    {
+      "path": "STABILIZATION_REPORT_2026-01-04.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/STABILIZATION_REPORT_2026-01-04.md",
+      "bytes": 4001,
+      "sha256": "334d3f547b5810ec0509213c939bdc5b3ddcef20b1a972a9790337ef5edad10e"
+    },
+    {
+      "path": "TIMELINE_VISUALIZATION_SUMMARY.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/TIMELINE_VISUALIZATION_SUMMARY.md",
+      "bytes": 15446,
+      "sha256": "e4ff317768d14790dc06980df0ad71d7f2023a7c3f97f6c3c9aa2d6bddf5a555"
+    },
+    {
+      "path": "TYPESCRIPT_FIX_SUMMARY.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/TYPESCRIPT_FIX_SUMMARY.md",
+      "bytes": 5664,
+      "sha256": "cfe88694acb113d4e9d51aba0dc3596ca54c4ade34844b71aa5ea523bf52743a"
+    },
+    {
+      "path": "TYPESCRIPT_NOTES.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/TYPESCRIPT_NOTES.md",
+      "bytes": 1560,
+      "sha256": "7415fa7ef5073873e8acdbed098740592ba10252dcbe5e7939f5e041cb092426"
+    },
+    {
+      "path": "UX_IA_REDESIGN_COMPLETE.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/UX_IA_REDESIGN_COMPLETE.md",
+      "bytes": 2742,
+      "sha256": "96f202f2f7e1d7268080e7ea27ce941612cd120897e041fbed853ddaf149b557"
+    },
+    {
+      "path": "WEBHOOK_INTEGRATION.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/WEBHOOK_INTEGRATION.md",
+      "bytes": 10594,
+      "sha256": "19217061816da773f32e60fa2cc297512e2b2e8c5a41e0eac987b36863618645"
+    },
+    {
+      "path": "WORK_PRIORITIZATION.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/WORK_PRIORITIZATION.md",
+      "bytes": 15103,
+      "sha256": "04b2229c9cccffa5c477b829f404e63021cdcbe4f1c5b3960bc13c042e7b0171"
+    },
+    {
+      "path": "components.json",
+      "bucket": "other_docs",
+      "target": "docs/misc/components.json",
+      "bytes": 388,
+      "sha256": "8be0e54515838be398164884e96319b52bcfcbd52b2e63171d51df4131cfcb03"
+    },
+    {
+      "path": "cspell-gs1-terms.txt",
+      "bucket": "other_docs",
+      "target": "docs/misc/cspell-gs1-terms.txt",
+      "bytes": 521,
+      "sha256": "50a2a9c7af95792f16597c3146f0ebd779f3bea720a27118de520031c036f577"
+    },
+    {
+      "path": "cspell-isa-terms.txt",
+      "bucket": "other_docs",
+      "target": "docs/misc/cspell-isa-terms.txt",
+      "bytes": 352,
+      "sha256": "6bd3eb149a27a99cbb5f21c2abf330133ff81014bd5877fef6650a313e6f4132"
+    },
+    {
+      "path": "cspell.json",
+      "bucket": "other_docs",
+      "target": "docs/misc/cspell.json",
+      "bytes": 1089,
+      "sha256": "cccbe5b2e94c9928cf06245156ef1294eedd6e08af462afe395392f2213ba689"
+    },
+    {
+      "path": "docs/ADVISORY_DIFF_METRICS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ADVISORY_DIFF_METRICS.md",
+      "bytes": 22924,
+      "sha256": "aa99c6308722b89c16818e3a475a89c3548ac4ce6633ae2117ded73083822988"
+    },
+    {
+      "path": "docs/ADVISORY_METHOD.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ADVISORY_METHOD.md",
+      "bytes": 1658,
+      "sha256": "ea198ec957ebb8a6463505742c6dd073beb49f0bdb1dd23900b4a7fe96be8c5f"
+    },
+    {
+      "path": "docs/ADVISORY_OUTPUTS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ADVISORY_OUTPUTS.md",
+      "bytes": 24241,
+      "sha256": "566743016a9c9b36192f684fc7599f1e08f78382b1988fc147b57f897afaa35f"
+    },
+    {
+      "path": "docs/ADVISORY_UI_NOTES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ADVISORY_UI_NOTES.md",
+      "bytes": 15388,
+      "sha256": "20234d9c16a14db14f86e47d6bccc84d9712175c9166281fa19d17b8455ecb82"
+    },
+    {
+      "path": "docs/AGENT_COLLABORATION_SUMMARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/AGENT_COLLABORATION_SUMMARY.md",
+      "bytes": 11333,
+      "sha256": "132774c3aeb904eb6135a22b219da9cf58f43a01fed4d3045aea49de2c83167c"
+    },
+    {
+      "path": "docs/ALERTING_SYSTEM_DESIGN.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ALERTING_SYSTEM_DESIGN.md",
+      "bytes": 8530,
+      "sha256": "194db2337922edba0456cbe126fe9f6b568b43a25ce656ddd2574d929b3e6cb8"
+    },
+    {
+      "path": "docs/ALIGNMENT_CHECK_2026_01_03.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ALIGNMENT_CHECK_2026_01_03.md",
+      "bytes": 2737,
+      "sha256": "b615ad4ad06b999bfd2a297452b9a05da91ffa0c173fd291d96874842522ed08"
+    },
+    {
+      "path": "docs/ALTERNATIVE_FUTURES_EXPLORATION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ALTERNATIVE_FUTURES_EXPLORATION.md",
+      "bytes": 19988,
+      "sha256": "88cc003bfeed4e9b90891176452f1ca0fd0abf1250f86247c5f0c278fd1f447b"
+    },
+    {
+      "path": "docs/API_REFERENCE.md",
+      "bucket": "spec_docs",
+      "target": "docs/spec/API_REFERENCE.md",
+      "bytes": 435618,
+      "sha256": "fcf05ab73162735fe7cad22706271c2630824a9018981b53669165a70538fa3d"
+    },
+    {
+      "path": "docs/ASK_ISA_GUARDRAILS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ASK_ISA_GUARDRAILS.md",
+      "bytes": 1528,
+      "sha256": "109afeee6843789f553a1a173397ec49f042094af4088f362b12ba8e3d8912a8"
+    },
+    {
+      "path": "docs/ASK_ISA_QUERY_LIBRARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ASK_ISA_QUERY_LIBRARY.md",
+      "bytes": 11266,
+      "sha256": "1357bb01391a5a93ae56da0fdff905296b6e81a73f08b17cff91042ac35184a9"
+    },
+    {
+      "path": "docs/ASK_ISA_QUERY_LIBRARY_v1.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ASK_ISA_QUERY_LIBRARY_v1.md",
+      "bytes": 1978,
+      "sha256": "a0a4d0527975427eb02057ebcfc12387be18f241d5d796e6f6139751156a24d8"
+    },
+    {
+      "path": "docs/ASK_ISA_TEST_RESULTS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ASK_ISA_TEST_RESULTS.md",
+      "bytes": 1303,
+      "sha256": "5f569468362b787e0dd4ad44010f409ee87be2a202a0e9e9df58052e44672fe2"
+    },
+    {
+      "path": "docs/Autonomous_Development_Plan.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/Autonomous_Development_Plan.md",
+      "bytes": 6680,
+      "sha256": "9aa4fc17d84dfb95044f320b566534528f9bf4e4bddb64466cf63ef2c8789fe7"
+    },
+    {
+      "path": "docs/BASELINE_V2_DECISION_GRADE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/BASELINE_V2_DECISION_GRADE.md",
+      "bytes": 7613,
+      "sha256": "c5c9cd31c854979e8219f165b09f41d9b6f3e46000b779c109a213f244c3207d"
+    },
+    {
+      "path": "docs/CELLAR_INGESTION_DEPLOYMENT.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CELLAR_INGESTION_DEPLOYMENT.md",
+      "bytes": 10288,
+      "sha256": "9fee23c7360049f895802d944f9afe6e65dce9e00e84de1bb6e9b5e9110aeb3a"
+    },
+    {
+      "path": "docs/CGPT-01_INTEGRATION_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/CGPT-01_INTEGRATION_REPORT.md",
+      "bytes": 6962,
+      "sha256": "3de0fb43870227a3cea2c488e282fca1a8f09ec399e5c26de2c9a9d1956b5770"
+    },
+    {
+      "path": "docs/CHANGELOG.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CHANGELOG.md",
+      "bytes": 6094,
+      "sha256": "d728a6f6cde17a15dd2559cb267b2c79f89084bbaf24a61cb6a61716f383e21c"
+    },
+    {
+      "path": "docs/CHANGELOG_FOR_CHATGPT.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CHANGELOG_FOR_CHATGPT.md",
+      "bytes": 3134,
+      "sha256": "3ce9a102820bf82d231bacf4e809d99a294f3794ff93d102849fcc8444be2ef8"
+    },
+    {
+      "path": "docs/CHANGELOG_SUMMARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CHANGELOG_SUMMARY.md",
+      "bytes": 25840,
+      "sha256": "89378a0b1b65abab85773bca6fc3388c193832646ab090246380e0edf88696b6"
+    },
+    {
+      "path": "docs/CHATGPT_COLLABORATION_ANALYSIS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CHATGPT_COLLABORATION_ANALYSIS.md",
+      "bytes": 9912,
+      "sha256": "1d394af9dcb0edac4f8e748e71f4b9469d68b62eca29f6a52d557de4ac2fd218"
+    },
+    {
+      "path": "docs/CHATGPT_INTEGRATION_CONTRACT.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CHATGPT_INTEGRATION_CONTRACT.md",
+      "bytes": 8615,
+      "sha256": "090afad94cf9714caee5428c5947c50bd676549662dc19de27ffc937d50b5da7"
+    },
+    {
+      "path": "docs/CHATGPT_INTEGRATION_WORKFLOW.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CHATGPT_INTEGRATION_WORKFLOW.md",
+      "bytes": 11037,
+      "sha256": "61165a93f932928d1d1afb1f96e768a8a3e6a77ad1a96d3a17517436d85fc4b0"
+    },
+    {
+      "path": "docs/CHATGPT_WORK_PARCEL_02_ASK_ISA_EXPANSION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CHATGPT_WORK_PARCEL_02_ASK_ISA_EXPANSION.md",
+      "bytes": 6272,
+      "sha256": "61fd4b64574c656916562711609597623ce3ccc918b0cc1086ea279578452e72"
+    },
+    {
+      "path": "docs/CHATGPT_WORK_PARCEL_SUMMARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CHATGPT_WORK_PARCEL_SUMMARY.md",
+      "bytes": 5867,
+      "sha256": "6206ee5d27b54c82da0ddc63f9bf1a6d7bafdf1f14fe5cb08115c4516668dc3d"
+    },
+    {
+      "path": "docs/CI_TESTING.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CI_TESTING.md",
+      "bytes": 2628,
+      "sha256": "529d518a81f6a558d170161a11b2296a844ff713f2cab916b7f87278aeb2ea19"
+    },
+    {
+      "path": "docs/CLEANUP_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/CLEANUP_REPORT.md",
+      "bytes": 7105,
+      "sha256": "9c97fca6224bf6d54ac3aeebcad26902d93e2652755bb0fbde54c14ef40aa409"
+    },
+    {
+      "path": "docs/CODEX_DELEGATION_SPEC.md",
+      "bucket": "spec_docs",
+      "target": "docs/spec/CODEX_DELEGATION_SPEC.md",
+      "bytes": 16934,
+      "sha256": "6321a4ba0107fe7d849ab39730a270fb178925e6853ecb683b84774f849366ae"
+    },
+    {
+      "path": "docs/COMPLETION_SUMMARY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/COMPLETION_SUMMARY.md",
+      "bytes": 10555,
+      "sha256": "9519cd569b62b43671d22a527e45d8c953d445a7b633e70b2504e805256eab10"
+    },
+    {
+      "path": "docs/COORDINATION_WORKFLOW.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/COORDINATION_WORKFLOW.md",
+      "bytes": 9149,
+      "sha256": "90212f58052880f1bfba4224512a66f5cfec48ea5c9f4c4e65bba418122f3de0"
+    },
+    {
+      "path": "docs/CRITICAL_EVENTS_TAXONOMY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CRITICAL_EVENTS_TAXONOMY.md",
+      "bytes": 11999,
+      "sha256": "0deedf7f1785f0f6e38fb639ffaf7f69c1481d2a388b3535826820c03b18e35d"
+    },
+    {
+      "path": "docs/CRON_QUICK_START.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CRON_QUICK_START.md",
+      "bytes": 7178,
+      "sha256": "3e1a11ba1b8ad42f40dc0f4b3ffbe6002c188c8430ebc1b027aa6db85ed21613"
+    },
+    {
+      "path": "docs/CRON_SETUP_GUIDE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CRON_SETUP_GUIDE.md",
+      "bytes": 9398,
+      "sha256": "ef448c91814f57dadcd936b04f99d178793e85b6dc33a97bfc45118938ab9e67"
+    },
+    {
+      "path": "docs/DATASETS_CATALOG.json",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DATASETS_CATALOG.json",
+      "bytes": 12811,
+      "sha256": "60144643767b5d02b52e0dbcbda7009fa9a49763d42a6bc03073b045e42db728"
+    },
+    {
+      "path": "docs/DATASETS_CATALOG.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DATASETS_CATALOG.md",
+      "bytes": 13825,
+      "sha256": "6c74b59e39f7ab3eb338eedba176beddaf01f96d378d582cbdb2f5dbf89674b2"
+    },
+    {
+      "path": "docs/DATASET_CANDIDATES_DETAILED.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DATASET_CANDIDATES_DETAILED.md",
+      "bytes": 11399,
+      "sha256": "352fa33c8e33d3d3bd1e6715fd249b5f9a6b1532a2d40a6ae06521f61fab1d02"
+    },
+    {
+      "path": "docs/DATASET_PRIORITY_ANALYSIS.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/DATASET_PRIORITY_ANALYSIS.md",
+      "bytes": 15313,
+      "sha256": "8e1decbf98b7ff7d946f9a7e5c719949f93bfe845e2e399736dbbbc854ffc2c7"
+    },
+    {
+      "path": "docs/DAY1_COMPLETION_REPORT.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/DAY1_COMPLETION_REPORT.md",
+      "bytes": 9972,
+      "sha256": "4e0d13d4e6a6353fad236ac53de2196bfec5b31a17c7666439aa5f1d13323a21"
+    },
+    {
+      "path": "docs/DECISION_BRIEF_ESRS_SCHEMA_MISMATCH.md",
+      "bucket": "spec_docs",
+      "target": "docs/spec/DECISION_BRIEF_ESRS_SCHEMA_MISMATCH.md",
+      "bytes": 7050,
+      "sha256": "2473bbf82d3061253c8615a274eeee1cafe64de6c9fe28fb9b609910919cd0a8"
+    },
+    {
+      "path": "docs/DECISION_CONTEXT_ANALYSIS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DECISION_CONTEXT_ANALYSIS.md",
+      "bytes": 17905,
+      "sha256": "c9d326e9fdbff2810a8279d07cc14282b62309694fa68d682bb365b886806cd0"
+    },
+    {
+      "path": "docs/DEMO_NARRATIVES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DEMO_NARRATIVES.md",
+      "bytes": 12335,
+      "sha256": "36e5f8b43c588f49c16a62d7948f85504ff80e7bee349284b2c11a9ceda9db37"
+    },
+    {
+      "path": "docs/DEPLOYMENT.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DEPLOYMENT.md",
+      "bytes": 17915,
+      "sha256": "e7558dc85256447741992cf19729ee0276393a69494b4882f59a6bec459f1c92"
+    },
+    {
+      "path": "docs/DEPLOYMENT_GUIDE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DEPLOYMENT_GUIDE.md",
+      "bytes": 12030,
+      "sha256": "82f3cf2af6f79a619e290dbb3f85e709897d6b6135f7ab607a491fae4b2a65ec"
+    },
+    {
+      "path": "docs/DEVELOPMENT_PROGRESS_2026-02-01.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DEVELOPMENT_PROGRESS_2026-02-01.md",
+      "bytes": 3783,
+      "sha256": "578ea6201cddef4d4105fb798dc99bb7ef2fcd557f203a74503f8f3d4f5ce4bd"
+    },
+    {
+      "path": "docs/DEVELOPMENT_SESSION_2026-02-01.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DEVELOPMENT_SESSION_2026-02-01.md",
+      "bytes": 3388,
+      "sha256": "1759cb93bb2e25f961329808c23483086909e4c6c993dd56906e89c60a202d7c"
+    },
+    {
+      "path": "docs/Data_Quality_Updates_Plan.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/Data_Quality_Updates_Plan.md",
+      "bytes": 15318,
+      "sha256": "fcbe49ad89d6f803697b4e2f5ca0f1138d6a38b2c2ec5d0a1287656f6583e54d"
+    },
+    {
+      "path": "docs/Dutch_Initiatives_Data_Model.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/Dutch_Initiatives_Data_Model.md",
+      "bytes": 10115,
+      "sha256": "e9257dcb5b5154d43294724e5c5674ec71c0bb68873452130f48ff7f42721f20"
+    },
+    {
+      "path": "docs/EMBEDDING_OPTIMIZATION_ANALYSIS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/EMBEDDING_OPTIMIZATION_ANALYSIS.md",
+      "bytes": 4335,
+      "sha256": "c6e56a7f82c3c9ac5446882a9177b90de2b390cd71846f8be68297b87a35933f"
+    },
+    {
+      "path": "docs/EMBEDDING_PIPELINE_OPTIMIZATION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/EMBEDDING_PIPELINE_OPTIMIZATION.md",
+      "bytes": 7609,
+      "sha256": "5d6accc045e7dda168598499f7a41e4687803337b720320bd1703af53d87fc79"
+    },
+    {
+      "path": "docs/EMBEDDING_QUALITY_IMPROVEMENT_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/EMBEDDING_QUALITY_IMPROVEMENT_REPORT.md",
+      "bytes": 4198,
+      "sha256": "801694fafb7327e37ae9d03d272dcf65574790e431fb6ba4e5caddb605da5559"
+    },
+    {
+      "path": "docs/EMBEDDING_WORKFLOW_OPTIMIZATION_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/EMBEDDING_WORKFLOW_OPTIMIZATION_REPORT.md",
+      "bytes": 4557,
+      "sha256": "03813b28beb0f606140654f8f552274dc909c31b45372ab7b5e609dab0bc25d6"
+    },
+    {
+      "path": "docs/ENHANCED_EMBEDDING_SCHEMA.md",
+      "bucket": "spec_docs",
+      "target": "docs/spec/ENHANCED_EMBEDDING_SCHEMA.md",
+      "bytes": 8496,
+      "sha256": "f7d6dce7b9add544467fdc40a844bc5ac76644e5fc8aa8861398ab965133478f"
+    },
+    {
+      "path": "docs/ESG_Hub_MVP_Polish_Plan.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ESG_Hub_MVP_Polish_Plan.md",
+      "bytes": 23823,
+      "sha256": "2910d6eb73fb703b1c74d1ada0df1455bc4824c883d5bd294970794facc47924"
+    },
+    {
+      "path": "docs/ESG_INTEGRATION_FINAL_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/ESG_INTEGRATION_FINAL_REPORT.md",
+      "bytes": 21057,
+      "sha256": "e529d59f4d7b2f5679c88729f7ee6d060bda724c22743b4d5f5ce10f923da805"
+    },
+    {
+      "path": "docs/FEATURE_DISCOVERY_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/FEATURE_DISCOVERY_REPORT.md",
+      "bytes": 10924,
+      "sha256": "7a14eac4ffe0cce92eb45397aa12659dd667abba717ec6095d56d107830fa1d7"
+    },
+    {
+      "path": "docs/FILE_SYSTEM_MEMORY_ARCHITECTURE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/FILE_SYSTEM_MEMORY_ARCHITECTURE.md",
+      "bytes": 13464,
+      "sha256": "43292c2db4dfaa0fea4b46c44b0f72ca600b88f3e178aa1b841180777e4912b9"
+    },
+    {
+      "path": "docs/FINAL_ISA_GRADE_RESCORE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/FINAL_ISA_GRADE_RESCORE.md",
+      "bytes": 8767,
+      "sha256": "f9d5a6d57fb029d260f265a74ea387fc6040878f403e5641b1096e0203d78d5a"
+    },
+    {
+      "path": "docs/FINAL_RESCORE_POST_PIPELINE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/FINAL_RESCORE_POST_PIPELINE.md",
+      "bytes": 9177,
+      "sha256": "55be319e1d881609c603e4ef27b65b79f018adf45e05d117403f8faad905d111"
+    },
+    {
+      "path": "docs/GATING_QUESTIONS_EVIDENCE_INVENTORY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/GATING_QUESTIONS_EVIDENCE_INVENTORY.md",
+      "bytes": 18499,
+      "sha256": "1fcd239f13f99e182d1b61d1ec2522ef044e50c1f5f7eed98085b32345872f85"
+    },
+    {
+      "path": "docs/GITHUB_PROVISIONING_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/GITHUB_PROVISIONING_REPORT.md",
+      "bytes": 15771,
+      "sha256": "92267a646d2506d336749ceddd837ff873a998139f0775d71c25125fb8969872"
+    },
+    {
+      "path": "docs/GITHUB_PUSH_WORKFLOW.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GITHUB_PUSH_WORKFLOW.md",
+      "bytes": 2586,
+      "sha256": "6db5b87cc480f83bacbf6a62e72180555f66018a49d146d02a8d598ef7ee8416"
+    },
+    {
+      "path": "docs/GOVERNANCE_FINAL_SUMMARY.md",
+      "bucket": "governance_docs",
+      "target": "docs/governance/GOVERNANCE_FINAL_SUMMARY.md",
+      "bytes": 8111,
+      "sha256": "510b23696fc5781d421893c6080fd79b5cb1647189d86066a5452e816ba5e4e6"
+    },
+    {
+      "path": "docs/GOVERNANCE_PHASE_2_3_REPORT.md",
+      "bucket": "governance_docs",
+      "target": "docs/governance/GOVERNANCE_PHASE_2_3_REPORT.md",
+      "bytes": 12965,
+      "sha256": "5242ab2594862e0b9130a07b30c554641d7780715b200f062804215c9444dd4c"
+    },
+    {
+      "path": "docs/GOVERNANCE_SELF_CHECK_2025-12-17.md",
+      "bucket": "governance_docs",
+      "target": "docs/governance/GOVERNANCE_SELF_CHECK_2025-12-17.md",
+      "bytes": 12585,
+      "sha256": "37c7868068baa206f00a1c1a7f969b2364f2d8776b78ae36c47bf1f8d076850a"
+    },
+    {
+      "path": "docs/GS1_ARTEFACTS_ALIGNMENT_VALIDATION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_ARTEFACTS_ALIGNMENT_VALIDATION.md",
+      "bytes": 14326,
+      "sha256": "88960218d234601f74be5b9c111345544c9e1100362612bdd303319450541902"
+    },
+    {
+      "path": "docs/GS1_Attribute_Mapper_Technical_Specification.md",
+      "bucket": "spec_docs",
+      "target": "docs/spec/GS1_Attribute_Mapper_Technical_Specification.md",
+      "bytes": 66352,
+      "sha256": "cff83d073f9f72829313df2e5fb46a80be969ace9dbdb205ded1dde7bd3332bb"
+    },
+    {
+      "path": "docs/GS1_BRAND_RESEARCH_NOTES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_BRAND_RESEARCH_NOTES.md",
+      "bytes": 14647,
+      "sha256": "969d83a32decd3f16f86724dd3e1276cfb5c35d3c0a702225409e54ca1073d34"
+    },
+    {
+      "path": "docs/GS1_DATA_MODELS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_DATA_MODELS.md",
+      "bytes": 16404,
+      "sha256": "8a7f0b021c015cfecd60984be1b5b4c13c8f0cb0a8cc6c4a0e753df99d69325b"
+    },
+    {
+      "path": "docs/GS1_DOCUMENTS_DATASETS_ANALYSIS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_DOCUMENTS_DATASETS_ANALYSIS.md",
+      "bytes": 18175,
+      "sha256": "ccee59c36c4919964fe8d466740816194147af8f587464b407a5e0bdbfcc94cb"
+    },
+    {
+      "path": "docs/GS1_EU_PCF_EXTRACTION_NOTES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_EU_PCF_EXTRACTION_NOTES.md",
+      "bytes": 3528,
+      "sha256": "8cba5296199513e0ac4aae995d044d25fbd95de6ba5e3a507c9a53f44c75b650"
+    },
+    {
+      "path": "docs/GS1_EU_PCF_INTEGRATION_SUMMARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_EU_PCF_INTEGRATION_SUMMARY.md",
+      "bytes": 12810,
+      "sha256": "3f1cb08b3d0ca3aa390e1d23e1bc1adc55718e4be06c2d9c1599aad35ead0d50"
+    },
+    {
+      "path": "docs/GS1_EU_PCF_TO_ESRS_E1_MAPPINGS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_EU_PCF_TO_ESRS_E1_MAPPINGS.md",
+      "bytes": 12449,
+      "sha256": "692ad17f82c50c20554c9c7f24d2870e48ccfb2239da8ed81263e13bebdb0783"
+    },
+    {
+      "path": "docs/GS1_STYLE_COMPLIANCE_FINAL_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/GS1_STYLE_COMPLIANCE_FINAL_REPORT.md",
+      "bytes": 17055,
+      "sha256": "045d2531a87ed14e7f662a33afdd28291c0ffc86460d61ac7c8d4dcc77c9a0ce"
+    },
+    {
+      "path": "docs/GS1_STYLE_GUIDE_INGESTION_SUMMARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_STYLE_GUIDE_INGESTION_SUMMARY.md",
+      "bytes": 16196,
+      "sha256": "994c335d1700cc539606cf59abbd56030dac78d205bbc320855a462d28a8d9da"
+    },
+    {
+      "path": "docs/GS1_STYLE_QUICK_REFERENCE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_STYLE_QUICK_REFERENCE.md",
+      "bytes": 989,
+      "sha256": "7cca1038e617e7672664b49a8853afa55b19f0ae796f5454c3219af6a0cb20ef"
+    },
+    {
+      "path": "docs/INGESTION_DELEGATION_SUMMARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/INGESTION_DELEGATION_SUMMARY.md",
+      "bytes": 13889,
+      "sha256": "96cb456189185edcfd3e4d6b9a7a1904a2af5770b5ebbb3eba30d9da4bcdb396"
+    },
+    {
+      "path": "docs/INGESTION_GUIDE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/INGESTION_GUIDE.md",
+      "bytes": 4242,
+      "sha256": "07f5c352459207f54ec2e9ad8e77dbf9cacb85d843bd6fb4338179d8d1988537"
+    },
+    {
+      "path": "docs/INSTRUCTION_EVALUATION_ANALYSIS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/INSTRUCTION_EVALUATION_ANALYSIS.md",
+      "bytes": 9508,
+      "sha256": "5afd09edbdefb80f5be2ecbb6ef00eef23608a4ec761968077c788572bb0b797"
+    },
+    {
+      "path": "docs/INVENTORY_AFTER.csv",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/INVENTORY_AFTER.csv",
+      "bytes": 178594,
+      "sha256": "35edbe481f6eba855e82d8499e739b72cfab4d142e905fa753cad1302dc1375f"
+    },
+    {
+      "path": "docs/INVENTORY_BEFORE.csv",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/INVENTORY_BEFORE.csv",
+      "bytes": 177030,
+      "sha256": "51c5b918bc5661ef27fef1288252ae03ebbc33f504e267dc2707597a57852f63"
+    },
+    {
+      "path": "docs/INVENTORY_FINAL.csv",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/INVENTORY_FINAL.csv",
+      "bytes": 177111,
+      "sha256": "7f8d64bb7ec5264e0c08a1c9f7d2030188f608e11a610c55638f924654565ed0"
+    },
+    {
+      "path": "docs/ISA_AGENT_COLLABORATION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_AGENT_COLLABORATION.md",
+      "bytes": 13368,
+      "sha256": "ba3b70c76a6b6e6679ba4f2ce97ed49940cf0a4e5e36d78be0ea4bf946b4bcd5"
+    },
+    {
+      "path": "docs/ISA_AUTONOMOUS_ROADMAP_V1.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_AUTONOMOUS_ROADMAP_V1.md",
+      "bytes": 13480,
+      "sha256": "5f396a11b69d3c460f2ae28e15d0a7e65509a923b0132b0ab859a03c4b9fc177"
+    },
+    {
+      "path": "docs/ISA_BRAND_POSITIONING.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_BRAND_POSITIONING.md",
+      "bytes": 15404,
+      "sha256": "b48b65a996dbedbf223f9fb8ce06e6d0e17ea009ca494bef8d0a07924d70972a"
+    },
+    {
+      "path": "docs/ISA_COMPARATIVE_REFACTOR_GATE_PLAN.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/ISA_COMPARATIVE_REFACTOR_GATE_PLAN.md",
+      "bytes": 22340,
+      "sha256": "c82e9d206ce743c937063522be7eb11527317ae5905a7ae4ea2fe1f912c9c023"
+    },
+    {
+      "path": "docs/ISA_DATA_NEEDS_AND_PRIORITIES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_DATA_NEEDS_AND_PRIORITIES.md",
+      "bytes": 13806,
+      "sha256": "fcfa05933a4f7361af4c76163846d83128f687d05a43e67dfd7c9ce53ab36b03"
+    },
+    {
+      "path": "docs/ISA_DELIVERY_MODEL.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_DELIVERY_MODEL.md",
+      "bytes": 22612,
+      "sha256": "5a2fb5d3190029e909f057e2820057e7637134577b1b132be7bd6826c4e80687"
+    },
+    {
+      "path": "docs/ISA_DEPLOYMENT_AND_ROADMAP.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_DEPLOYMENT_AND_ROADMAP.md",
+      "bytes": 3750,
+      "sha256": "da9051dc14fd08b3b86ea3ec2e626fee25532c8e3a5a1530e1c568c98d7c2109"
+    },
+    {
+      "path": "docs/ISA_DEVELOPMENT_ROADMAP_TO_FINAL_PRODUCT.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_DEVELOPMENT_ROADMAP_TO_FINAL_PRODUCT.md",
+      "bytes": 33391,
+      "sha256": "3060eda3258917cee0cc1d57cbb3ff1ad66cdd0ddd5479a1504c7a43a9543610"
+    },
+    {
+      "path": "docs/ISA_DEVELOPMENT_STATUS.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_DEVELOPMENT_STATUS.md",
+      "bytes": 1611,
+      "sha256": "fe997c5b3fee05c561e61b2ff48af933e5b3a0d96fa7034cf4f1390c603e3ef7"
+    },
+    {
+      "path": "docs/ISA_DOCUMENTATION_MAP.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_DOCUMENTATION_MAP.md",
+      "bytes": 16122,
+      "sha256": "e9e039739485d1b8d78c60fb97f8a1b5226f337759624b8017ce0dee1539bbf8"
+    },
+    {
+      "path": "docs/ISA_Development_Roadmap_2026.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_Development_Roadmap_2026.md",
+      "bytes": 15869,
+      "sha256": "61bfea5dcc49da062a3cf94bf53913f4bd9f700e87b1dab4317da4d2bde893f8"
+    },
+    {
+      "path": "docs/ISA_ESG_GS1_CANONICAL_MODEL.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_ESG_GS1_CANONICAL_MODEL.md",
+      "bytes": 15128,
+      "sha256": "02437ec22344702f7baa497e7aca0cbb96a2b67f86cd8a53a3c6880c39f8453a"
+    },
+    {
+      "path": "docs/ISA_FUTURE_DEVELOPMENT_PLAN.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_FUTURE_DEVELOPMENT_PLAN.md",
+      "bytes": 27618,
+      "sha256": "6535adbc6e2d168b0d8dcb104526cdf707f0f10df6edc23764f1d9e847c4a184"
+    },
+    {
+      "path": "docs/ISA_First_Advisory_Report_GS1NL.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/ISA_First_Advisory_Report_GS1NL.md",
+      "bytes": 26382,
+      "sha256": "8cb6f6e61400c056ba9857eeccfd4da5eb78e0e4d214f0411e5c07741e903327"
+    },
+    {
+      "path": "docs/ISA_First_Advisory_Report_GS1NL_v1.1_UPDATE.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/ISA_First_Advisory_Report_GS1NL_v1.1_UPDATE.md",
+      "bytes": 11998,
+      "sha256": "121aa8e7cc107a17352cec920288d9b336ee447c5237660a5c24f8a82bd31f2c"
+    },
+    {
+      "path": "docs/ISA_GS1_PRE_EXECUTION_PREPARATION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_GS1_PRE_EXECUTION_PREPARATION.md",
+      "bytes": 61219,
+      "sha256": "fd4555790fe0c9a4ca815b4fa9ffccf46b88fc26fee606040a81d897c8ab5444"
+    },
+    {
+      "path": "docs/ISA_IMPLEMENTATION_EXECUTION_PLAN.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_IMPLEMENTATION_EXECUTION_PLAN.md",
+      "bytes": 54661,
+      "sha256": "5b4ad94b29666049fb5cf85e5a7d818d2daf1f42255dbf10f23ec6bb14f3b022"
+    },
+    {
+      "path": "docs/ISA_INFORMATION_ARCHITECTURE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_INFORMATION_ARCHITECTURE.md",
+      "bytes": 23771,
+      "sha256": "7ef3e5f175408f9a6d78a4f1ac6ee9bff23c99963f1f62cf0d4055e194520fea"
+    },
+    {
+      "path": "docs/ISA_NEVER_AGAIN_ARCHITECTURAL_CONTRACT.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_NEVER_AGAIN_ARCHITECTURAL_CONTRACT.md",
+      "bytes": 7340,
+      "sha256": "a3ad17e16f7173d72769e7d6c48cada94c3ca539604e18346987a55ba7cb2baf"
+    },
+    {
+      "path": "docs/ISA_NEWSHUB_EVOLUTION_SUMMARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_NEWSHUB_EVOLUTION_SUMMARY.md",
+      "bytes": 16874,
+      "sha256": "ba6e8cc0e516188fcace5c664727aa5b92e9b9271eded1dd9cff32afe6870ebb"
+    },
+    {
+      "path": "docs/ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md",
+      "bytes": 12316,
+      "sha256": "54466ebd76af281e96b008de40f6386c5309695cb4aea1c8f22b58194653880e"
+    },
+    {
+      "path": "docs/ISA_NEXT_PHASE_DEVELOPMENT_PLAN.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_NEXT_PHASE_DEVELOPMENT_PLAN.md",
+      "bytes": 5083,
+      "sha256": "c2e58805a9b9196572e656b9fdb614e445e5c1e6bd0c7256e3a747f675e8bab1"
+    },
+    {
+      "path": "docs/ISA_POC_ROADMAP.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_POC_ROADMAP.md",
+      "bytes": 18592,
+      "sha256": "515359941c574fe59c64efecaf34a00d07c8812f8449718b42fccd847a45c140"
+    },
+    {
+      "path": "docs/ISA_PRODUCT_DIMENSIONS_ANALYSIS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_PRODUCT_DIMENSIONS_ANALYSIS.md",
+      "bytes": 69309,
+      "sha256": "13807b97c724029e940c8047b663b1932d30cc0133b292304e5ac2960206ea7c"
+    },
+    {
+      "path": "docs/ISA_PRODUCT_VISION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_PRODUCT_VISION.md",
+      "bytes": 20914,
+      "sha256": "c4b230f3d152fda8b9158ea271853248be5758376eaf4a86c36b1866beb43725"
+    },
+    {
+      "path": "docs/ISA_STATUS_SUMMARY_2025-12-19.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_STATUS_SUMMARY_2025-12-19.md",
+      "bytes": 6037,
+      "sha256": "de6f21ec55d0bc6800c9f6c2f54d745f24669efdcb7169a435418c34f99751f4"
+    },
+    {
+      "path": "docs/ISA_STRATEGIC_CONTEXT_SYNTHESIS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_STRATEGIC_CONTEXT_SYNTHESIS.md",
+      "bytes": 14607,
+      "sha256": "01861a868e6002834604fd68b143be0d8269f6babed35b20de16bf8e70efcc24"
+    },
+    {
+      "path": "docs/ISA_STRATEGIC_DISCOVERY_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/ISA_STRATEGIC_DISCOVERY_REPORT.md",
+      "bytes": 29815,
+      "sha256": "cc99194b5647717601cf33a2bfec5c9ebbbc33c4e08dadbdc3d683d8e45f3d4d"
+    },
+    {
+      "path": "docs/ISA_STRATEGIC_EVALUATION_QUALITY_MAPPING.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_STRATEGIC_EVALUATION_QUALITY_MAPPING.md",
+      "bytes": 46007,
+      "sha256": "b6955d31a95063e3a33ce2b75ea2f885a1c824ce7c9206a797744ea52720d9be"
+    },
+    {
+      "path": "docs/ISA_STRATEGIC_PIVOT_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/ISA_STRATEGIC_PIVOT_REPORT.md",
+      "bytes": 49258,
+      "sha256": "c86d63632b6f4d4b555159c34918a6c340d03259727db47d86604bc8ed2a95bb"
+    },
+    {
+      "path": "docs/ISA_Strategic_Insights_from_Reports.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/ISA_Strategic_Insights_from_Reports.md",
+      "bytes": 24842,
+      "sha256": "5acf3ae64da5702278a648ca8ec708bb4e5dada73d79a05666abb79c063c06df"
+    },
+    {
+      "path": "docs/ISA_Strategic_Roadmap.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_Strategic_Roadmap.md",
+      "bytes": 77912,
+      "sha256": "ebcdab2ac67783f66c6c94b7f856cfac834aa514a8542b56e97a0052c76a7f5e"
+    },
+    {
+      "path": "docs/ISA_UX_STRATEGY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_UX_STRATEGY.md",
+      "bytes": 24140,
+      "sha256": "7c9ead59bbd17a21e2f4d88be585ba7fef5d48124820a65d0e3d6f642ddc14ca"
+    },
+    {
+      "path": "docs/ISA_V1_CONSISTENCY_FIXES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_V1_CONSISTENCY_FIXES.md",
+      "bytes": 10348,
+      "sha256": "dda09358d37c5828886cd4f0a87fa36c58d441b46a8b77d0103d605452098acd"
+    },
+    {
+      "path": "docs/ISA_V1_FINAL_DELIVERY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_V1_FINAL_DELIVERY.md",
+      "bytes": 10534,
+      "sha256": "4c1417ce89ba142ce257392270a437fd58d741fc75087178f45b9e24d009e2df"
+    },
+    {
+      "path": "docs/ISA_V1_FORMALIZATION_COMPLETE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_V1_FORMALIZATION_COMPLETE.md",
+      "bytes": 7513,
+      "sha256": "c94534b1c24f7720cae8f9d71118dd2d58d49bffe1a203cb9cd5e79847b0fafb"
+    },
+    {
+      "path": "docs/ISA_V1_FORMALIZATION_TARGETS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_V1_FORMALIZATION_TARGETS.md",
+      "bytes": 49338,
+      "sha256": "218b37299f10abaf81ffcd4f499445c3a9d8db20e6b9992a58f0be94e69bfd88"
+    },
+    {
+      "path": "docs/ISA_V1_HARDENING_COMPLETE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_V1_HARDENING_COMPLETE.md",
+      "bytes": 17756,
+      "sha256": "769c635f7eb7df07625ab11ea5a0d990a0edd71997bcbc23488267b25b95fbad"
+    },
+    {
+      "path": "docs/ISA_V1_LOCK_CHECKSUMS.txt",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_V1_LOCK_CHECKSUMS.txt",
+      "bytes": 1047,
+      "sha256": "4568fd0c9ecf146f90c62c8119b3d5042c705392f63930a526db2051581fba8e"
+    },
+    {
+      "path": "docs/ISA_V1_LOCK_RECORD.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_V1_LOCK_RECORD.md",
+      "bytes": 31042,
+      "sha256": "99f5e861e8aff06ba05a8faa2696dc59160949e4ef693c6cdae03c983f141646"
+    },
+    {
+      "path": "docs/ISA_VISUAL_BRANDING_DEVELOPMENT_PLAN.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_VISUAL_BRANDING_DEVELOPMENT_PLAN.md",
+      "bytes": 45831,
+      "sha256": "a815e19d5e637cb6d590bd2af1a86ce755ebc5746cbc3d7c64b35fe5611b2b8c"
+    },
+    {
+      "path": "docs/ISA_VISUAL_BRANDING_ROADMAP.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/ISA_VISUAL_BRANDING_ROADMAP.md",
+      "bytes": 35450,
+      "sha256": "edf563ad40bc6fe6dfe7ed9c36cfacab18e6c23d17409b881c71e3cb654f40da"
+    },
+    {
+      "path": "docs/ISA_WORKFLOW_IMPROVEMENTS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_WORKFLOW_IMPROVEMENTS.md",
+      "bytes": 25707,
+      "sha256": "189aee751fc4335681a0de46473270f37fde73d7494307ff076354415f5a72a4"
+    },
+    {
+      "path": "docs/KNOWN_FAILURE_MODES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/KNOWN_FAILURE_MODES.md",
+      "bytes": 7434,
+      "sha256": "950113f969c74328a6875d3c7284f9675debe3d2ed6b7c7bd8acac0be07163c3"
+    },
+    {
+      "path": "docs/MANUS_BEST_PRACTICES_EXECUTIVE_SUMMARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/MANUS_BEST_PRACTICES_EXECUTIVE_SUMMARY.md",
+      "bytes": 7587,
+      "sha256": "ec696c552f0a9de1de738127dc6cbb53aa02ca9484cea36c05973cfbefdbfde4"
+    },
+    {
+      "path": "docs/MANUS_BEST_PRACTICES_FOR_ISA.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/MANUS_BEST_PRACTICES_FOR_ISA.md",
+      "bytes": 29333,
+      "sha256": "88c7ee5efba1efb0dbb797e48e2228ff401c46bf3f2c37111718165e6f19bc75"
+    },
+    {
+      "path": "docs/MANUS_DAY1_EXECUTION_CHECKLIST.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/MANUS_DAY1_EXECUTION_CHECKLIST.md",
+      "bytes": 4052,
+      "sha256": "be475c2758138d7566f0268ef2c3226b1db8e351d4b4682d075c1aa5ae2fcd42"
+    },
+    {
+      "path": "docs/MANUS_EXECUTION_BRIEF.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/MANUS_EXECUTION_BRIEF.md",
+      "bytes": 5999,
+      "sha256": "68f9828455c2c3bcd4520d9e114051f8404d8c764e622afa1b93d0c6e6e1093d"
+    },
+    {
+      "path": "docs/MANUS_OPTIMIZATION_IMPLEMENTATION_SUMMARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/MANUS_OPTIMIZATION_IMPLEMENTATION_SUMMARY.md",
+      "bytes": 15092,
+      "sha256": "67c006942b40cbb1cf50a26c15d8c4497c503c915e054b055a7601664f81be9e"
+    },
+    {
+      "path": "docs/META_PHASE_COMPLETION_REPORT.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/META_PHASE_COMPLETION_REPORT.md",
+      "bytes": 9496,
+      "sha256": "f3d1fd9a602482994c191ce131fb5c00667f4f9ca99f159284957f85871e7445"
+    },
+    {
+      "path": "docs/META_PHASE_STRATEGIC_EXPLORATION_PLAN.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/META_PHASE_STRATEGIC_EXPLORATION_PLAN.md",
+      "bytes": 9779,
+      "sha256": "d75a032b581e54f75fdba1091bae319e7c9b4e1ccfbe8e561ae7c09ac7e3a6c3"
+    },
+    {
+      "path": "docs/NEWS_HEALTH_MONITORING.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/NEWS_HEALTH_MONITORING.md",
+      "bytes": 10212,
+      "sha256": "2448a2a63c63856e3a6113b90d51b48ab6718b8c5ddb854e527fc8396bbb84ff"
+    },
+    {
+      "path": "docs/NEWS_HUB_MATURITY_ANALYSIS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/NEWS_HUB_MATURITY_ANALYSIS.md",
+      "bytes": 12754,
+      "sha256": "9cd58fa33bc7c376e9b32a346f29bec6f2c90bdf0a318fcc670862906ef0dce7"
+    },
+    {
+      "path": "docs/NEWS_PIPELINE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/NEWS_PIPELINE.md",
+      "bytes": 14168,
+      "sha256": "b5e49672a720206978fc0328e9384570756de067bca7ea448ee69b58776e08ae"
+    },
+    {
+      "path": "docs/OPERATIONS_RUNBOOK.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/OPERATIONS_RUNBOOK.md",
+      "bytes": 9093,
+      "sha256": "a15962b1c5547eeea4728da06c0a0821126b04fb6a9ae98e793c23897821f78f"
+    },
+    {
+      "path": "docs/PHASE4_OPERATIONAL_READINESS_REPORT.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE4_OPERATIONAL_READINESS_REPORT.md",
+      "bytes": 8386,
+      "sha256": "2355b6ded9be932b6216f21bb44b066b8ea09986d67fe54f12fc852f99623a6b"
+    },
+    {
+      "path": "docs/PHASE_1_RESCORE.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_1_RESCORE.md",
+      "bytes": 3819,
+      "sha256": "769850310912c41dd52b2adc538da038136ea7a3a2678faf6a42fd03f41eb103"
+    },
+    {
+      "path": "docs/PHASE_2_ADDENDUM.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_2_ADDENDUM.md",
+      "bytes": 4711,
+      "sha256": "a6af1f0859db0e3f18f8f1843c48787fc5b1320f12ec46235a25f1aa27acd405"
+    },
+    {
+      "path": "docs/PHASE_2_DESIGN_EVALUATION.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_2_DESIGN_EVALUATION.md",
+      "bytes": 13183,
+      "sha256": "c60ff49871f620c24af6d568112d5f7ef16e62d50248726cf309a757e8de3752"
+    },
+    {
+      "path": "docs/PHASE_2_DESIGN_PROPOSAL.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_2_DESIGN_PROPOSAL.md",
+      "bytes": 12707,
+      "sha256": "6a0350550607dbc02b48f71e2b758d69f825d8a8602ea66a3fc1ff8820338447"
+    },
+    {
+      "path": "docs/PHASE_2_RESCORE.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_2_RESCORE.md",
+      "bytes": 10813,
+      "sha256": "49a224754995d06f6087a79d58cd65abd5e78db2366286bd644092d530bf9e03"
+    },
+    {
+      "path": "docs/PHASE_3_COMPLETION_REPORT.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_3_COMPLETION_REPORT.md",
+      "bytes": 4706,
+      "sha256": "6b4cbc7f6c0e98978466d173a156585a01a144681623b41e87e85f677c670c0c"
+    },
+    {
+      "path": "docs/PHASE_3_STARTDOCUMENT.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_3_STARTDOCUMENT.md",
+      "bytes": 12225,
+      "sha256": "8e14db97294c0868a1f841e7b1c855526f610f34d266668377243e3bb5844609"
+    },
+    {
+      "path": "docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md",
+      "bytes": 10047,
+      "sha256": "191973328b049464e0012068d21a2074c3cdcc95bb46fee95b9c469d2a4962d1"
+    },
+    {
+      "path": "docs/PHASE_8_1_VERIFICATION.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_8_1_VERIFICATION.md",
+      "bytes": 4651,
+      "sha256": "efc3dbc6bc023c3ba97d4b845690013d6d7c6e6dd9701f25a222691e8b27208c"
+    },
+    {
+      "path": "docs/PHASE_8_COMPLETE_SUMMARY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_8_COMPLETE_SUMMARY.md",
+      "bytes": 12827,
+      "sha256": "f1820c3409ab1a4f26154884511fe9d92d4e99902a2c9e79ae24121089543b67"
+    },
+    {
+      "path": "docs/PHASE_8_NEWS_HUB_OBSERVABILITY_COMPLETE.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_8_NEWS_HUB_OBSERVABILITY_COMPLETE.md",
+      "bytes": 19999,
+      "sha256": "690c72637f6a771b086987104594e1a19f2489681464b3a1b6869a7f0c99b44e"
+    },
+    {
+      "path": "docs/PHASE_AB_UX_SUMMARY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/PHASE_AB_UX_SUMMARY.md",
+      "bytes": 9576,
+      "sha256": "1023616573b9b7b9c56a421e9153d675068fade27182aea3a2d87c7129db0853"
+    },
+    {
+      "path": "docs/PIPELINE_OBSERVABILITY_SPEC.md",
+      "bucket": "spec_docs",
+      "target": "docs/spec/PIPELINE_OBSERVABILITY_SPEC.md",
+      "bytes": 9615,
+      "sha256": "f108fdef4412bc30a13b34537acb4314fb4641d7a25553bcc5c22937674ccfc7"
+    },
+    {
+      "path": "docs/PIPELINE_VALIDATION_REPORT.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/PIPELINE_VALIDATION_REPORT.md",
+      "bytes": 11300,
+      "sha256": "29a2b1cca4ac1aa1870c73c8644479bdfcea4ddf49830326d81b70f5b7a7a040"
+    },
+    {
+      "path": "docs/PRIORITY_1_COMPLETION_REPORT.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/PRIORITY_1_COMPLETION_REPORT.md",
+      "bytes": 9643,
+      "sha256": "67b0ec16ec971851d59b61bc9668daa52b598ac304f9498e429e6b32c594dbde"
+    },
+    {
+      "path": "docs/PRIORITY_1_SCHEMA_DEBT.md",
+      "bucket": "spec_docs",
+      "target": "docs/spec/PRIORITY_1_SCHEMA_DEBT.md",
+      "bytes": 2775,
+      "sha256": "bfeec52278ac972077e672182c5f4ef56c0ff67de6fedce75aabf684331fd659"
+    },
+    {
+      "path": "docs/PRIORITY_2_BLOCKED.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/PRIORITY_2_BLOCKED.md",
+      "bytes": 6094,
+      "sha256": "eaa5f9190e00af54915a1788cda29c9ba7f0f9ad635ed1ade2bc8a4ed0398f46"
+    },
+    {
+      "path": "docs/PRIORITY_3_COMPLETION_REPORT.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/PRIORITY_3_COMPLETION_REPORT.md",
+      "bytes": 9634,
+      "sha256": "cfb36a389632195c57ac83339f040929f61371b9cf920227453c6fb2d75aac10"
+    },
+    {
+      "path": "docs/PRODUCTION_DEPLOYMENT.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/PRODUCTION_DEPLOYMENT.md",
+      "bytes": 5012,
+      "sha256": "90bc164524ab40dc1dec0aca265bef00ddc7243d441b564351392a96cb399eb5"
+    },
+    {
+      "path": "docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/PRODUCTION_IMPROVEMENTS_JAN_2026.md",
+      "bytes": 13358,
+      "sha256": "752a6e6a65e27ea2c498606ff2c16938521cd5f3a7f8d106f44b7de3d497f737"
+    },
+    {
+      "path": "docs/PRODUCTION_READINESS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/PRODUCTION_READINESS.md",
+      "bytes": 11296,
+      "sha256": "0efdff6f0d7694ffe564a0f8e0b376a5228fffe123d863c2defd4a2955443621"
+    },
+    {
+      "path": "docs/QUALITY_BAR.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/QUALITY_BAR.md",
+      "bytes": 11561,
+      "sha256": "0109ee59e5bbb7e2f2b98b2b7dbbc07b41d9acae5cf8812131c8c9914d0fc23b"
+    },
+    {
+      "path": "docs/README.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/README.md",
+      "bytes": 4999,
+      "sha256": "a845500cdae5d76e5a30428c7c4e27aaa8e645d5685757d6732fd56582e318eb"
+    },
+    {
+      "path": "docs/REGULATORY_CHANGE_LOG_ENTRY_GUIDE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/REGULATORY_CHANGE_LOG_ENTRY_GUIDE.md",
+      "bytes": 10683,
+      "sha256": "df170bcf0abbfe86151de79d0991b13287271222a6d2b485d9b167cc41297179"
+    },
+    {
+      "path": "docs/REGULATORY_CHANGE_LOG_TEMPLATES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/REGULATORY_CHANGE_LOG_TEMPLATES.md",
+      "bytes": 6579,
+      "sha256": "1130c993d864715b9e9606c867e21a23652a5735bc1dd034a7789154cb91ed73"
+    },
+    {
+      "path": "docs/REGULATORY_LANDSCAPE_SUMMARIES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/REGULATORY_LANDSCAPE_SUMMARIES.md",
+      "bytes": 2108,
+      "sha256": "f7f814f179502ae05f796976ed740c220cf94c736cd30410c069bfcf9c8bc005"
+    },
+    {
+      "path": "docs/REPO_MAP_AFTER.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/REPO_MAP_AFTER.md",
+      "bytes": 4352,
+      "sha256": "f3e09cb5fb787ac7e72a5f24554710919132a792c82919a1a355f0782a85a938"
+    },
+    {
+      "path": "docs/REPO_MAP_BEFORE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/REPO_MAP_BEFORE.md",
+      "bytes": 4237,
+      "sha256": "480455e04b2f7c72155153be5c9d59244238fa0361841d392cbd08e551639731"
+    },
+    {
+      "path": "docs/REPO_MAP_FINAL.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/REPO_MAP_FINAL.md",
+      "bytes": 3953,
+      "sha256": "2c518e2b549a7943de22af3550e778cfab3cd801c71a24c9b641e504e675712d"
+    },
+    {
+      "path": "docs/SELF_CHECK_EVIDENCE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/SELF_CHECK_EVIDENCE.md",
+      "bytes": 5287,
+      "sha256": "cc49e4b464f65f632b4a35258a58643d285dc2d2e7dd9e8128c72443b7b19f72"
+    },
+    {
+      "path": "docs/SERVERLOGGER_INTEGRATION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/SERVERLOGGER_INTEGRATION.md",
+      "bytes": 7226,
+      "sha256": "79e700dafe3ff1e37e7f15d9024a298d70ebb9bbe99010e191a8b7514eb979b0"
+    },
+    {
+      "path": "docs/STATUS.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/STATUS.md",
+      "bytes": 10124,
+      "sha256": "30b4f9f2209fbcd2abec092de1f15b1a67d0a01d9e6adcb1273b3f21d8e8f076"
+    },
+    {
+      "path": "docs/STRATEGIC_EVALUATION_2026-02-01.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/STRATEGIC_EVALUATION_2026-02-01.md",
+      "bytes": 4591,
+      "sha256": "883cf43185d3cff13cbb513e21fea6bc2d83d4515b3b1d4d5bafb4d2c8590bee"
+    },
+    {
+      "path": "docs/STRATEGIC_PIVOT_POC.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/STRATEGIC_PIVOT_POC.md",
+      "bytes": 4839,
+      "sha256": "78d76fe7c2a6489127913a074615838000174f78b0140f32a0c9e7ab96c4cdff"
+    },
+    {
+      "path": "docs/STYLE_ALIGNMENT_RECOMMENDATIONS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/STYLE_ALIGNMENT_RECOMMENDATIONS.md",
+      "bytes": 10939,
+      "sha256": "2fbd3d9f9e0d4b46cfdcc7ec9d439c4f58755d06075a5a34a13cf853d30f6c09"
+    },
+    {
+      "path": "docs/STYLE_GUIDE_ADOPTION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/STYLE_GUIDE_ADOPTION.md",
+      "bytes": 12388,
+      "sha256": "abda305bc33ebacbd85723eab7447902405bbfad24346676156cb245fcb37bf9"
+    },
+    {
+      "path": "docs/TESTING_GUIDE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/TESTING_GUIDE.md",
+      "bytes": 6943,
+      "sha256": "ec6bc342b8574504970d2c276c275226d83f8648d65cba1bc7cc55e3c535d28a"
+    },
+    {
+      "path": "docs/TRUST_RISK_ANALYSIS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/TRUST_RISK_ANALYSIS.md",
+      "bytes": 12910,
+      "sha256": "a0a16cef3ec14ee8d5a4cb1081ac750cf91c4167b23fe82d81fe78b6ade36634"
+    },
+    {
+      "path": "docs/UX_PHASE_A_SUMMARY.md",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/UX_PHASE_A_SUMMARY.md",
+      "bytes": 7920,
+      "sha256": "a7d6a35efa8cc2ecb936fa206a97b7d6acd6966c2ba6f0c78784c825b66a37ff"
+    },
+    {
+      "path": "docs/WIDE_RESEARCH_USAGE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/WIDE_RESEARCH_USAGE.md",
+      "bytes": 10206,
+      "sha256": "368a886d6ef58edf72f3957dfb01256d146bb0b1b57593e1d62d9a8a0ad3f104"
+    },
+    {
+      "path": "docs/_AUDIT_FINDINGS.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/_AUDIT_FINDINGS.md",
+      "bytes": 11770,
+      "sha256": "13d6d89cc77a53c8288dbf3010b5c6b112d5d18e07f6282d0a0b7b806168a5c9"
+    },
+    {
+      "path": "docs/_CONSOLIDATION_VALIDATION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/_CONSOLIDATION_VALIDATION.md",
+      "bytes": 15098,
+      "sha256": "323c6fd5f47275f0a40931d9c3ad2d4ecb1ee8f758cc8c5cea52205fb8ac24ec"
+    },
+    {
+      "path": "docs/agent_collaboration/MANUS_CHATGPT_PROTOCOL.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/MANUS_CHATGPT_PROTOCOL.md",
+      "bytes": 9554,
+      "sha256": "3ef880f35d86053b73d7762e435ffd44d2f3932e35019a8cf28697e3a5ec22d6"
+    },
+    {
+      "path": "docs/autonomous-session-2025-12-17-critical-events.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/autonomous-session-2025-12-17-critical-events.md",
+      "bytes": 6721,
+      "sha256": "59380f0c6c73b10ba615739240c20fbfa6ab245354bd6fd82816da85d1cdd5ba"
+    },
+    {
+      "path": "docs/autonomous-session-2025-12-17.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/autonomous-session-2025-12-17.md",
+      "bytes": 15028,
+      "sha256": "14b231ee23b44803dca47879503f618d796b54a0b66e99676b69c7af274b391c"
+    },
+    {
+      "path": "docs/datasets-catalog.schema.json",
+      "bucket": "spec_docs",
+      "target": "docs/spec/datasets-catalog.schema.json",
+      "bytes": 12073,
+      "sha256": "3c4f62dbf0c1c34463ea7fada83988cb915a3127b0875e9ef3d644b492650a29"
+    },
+    {
+      "path": "docs/datasets/EXTERNAL_GS1_AND_ESG_REPOS_ARCHIVE2.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/EXTERNAL_GS1_AND_ESG_REPOS_ARCHIVE2.md",
+      "bytes": 11025,
+      "sha256": "5d6f97abbc008ea2f70a12e9a5263463224e14b59e89b3d16f0023b73d159c8e"
+    },
+    {
+      "path": "docs/datasets/HOW_TO_QUERY_ARCHIVE2_INDEX.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/HOW_TO_QUERY_ARCHIVE2_INDEX.md",
+      "bytes": 13339,
+      "sha256": "b258112e9b1cd9ea582f7ab171affeb683455d0af0c5d5e288058248591d11d7"
+    },
+    {
+      "path": "docs/efrag_xbrl_research.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/efrag_xbrl_research.md",
+      "bytes": 7010,
+      "sha256": "62905cb7e982558b5eeebb3caf8f69e886a6decd670a123bf3e182e22b736afa"
+    },
+    {
+      "path": "docs/eurlex_research.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/eurlex_research.md",
+      "bytes": 5346,
+      "sha256": "d4e18028887103ba58b9a533cb353fc58a04523bc39d9b8a740086cc7d43f3a7"
+    },
+    {
+      "path": "docs/evidence/CRITICAL_FILES_CANDIDATES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CRITICAL_FILES_CANDIDATES.md",
+      "bytes": 3264,
+      "sha256": "5d44262d27fe0b2b1c655c6f01c34f379d54261028b2f4a79bfda362328277bc"
+    },
+    {
+      "path": "docs/evidence/DOC_AUTHORITY_MAP.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DOC_AUTHORITY_MAP.md",
+      "bytes": 1149,
+      "sha256": "cd73a5c35e5627e472fc4dfb09d9e302c32adb9469b1a1f7adee2f5d077add59"
+    },
+    {
+      "path": "docs/evidence/ENTRYPOINTS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ENTRYPOINTS.md",
+      "bytes": 2144,
+      "sha256": "84af0d44181f593ff08d49d3f3ec7eb74d7309a6e9a6eb4ba825dbd8caa0fc16"
+    },
+    {
+      "path": "docs/evidence/EVIDENCE_INDEX.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/EVIDENCE_INDEX.md",
+      "bytes": 3698,
+      "sha256": "a624d40752802523b66b5c2fb540c5894229b5de55aa3de922a5cbf29c55a11a"
+    },
+    {
+      "path": "docs/evidence/ISA_ACCEPTANCE_CRITERIA_v1.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_ACCEPTANCE_CRITERIA_v1.md",
+      "bytes": 2113,
+      "sha256": "b92890fd388c290e5a1b0541d983c21d86f7bba46228a88b0008e7fa1fbf4a12"
+    },
+    {
+      "path": "docs/evidence/ISA_EVIDENCE_PACK_v0.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_EVIDENCE_PACK_v0.md",
+      "bytes": 1710,
+      "sha256": "b32852f4ce902cbdf71a8b4fab73d9fa6be5dbe52d45b2a332c76692ea861c51"
+    },
+    {
+      "path": "docs/evidence/ISA_EXECUTION_MAP.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_EXECUTION_MAP.md",
+      "bytes": 4622,
+      "sha256": "65f276bc3d560c3402170f58f7c2c44bba80e29d41bf721aefa61769a21547cd"
+    },
+    {
+      "path": "docs/evidence/ISA_IRON_DOCSET_AND_CRITICAL_PATH_DECISION_DRAFT_v0.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_IRON_DOCSET_AND_CRITICAL_PATH_DECISION_DRAFT_v0.md",
+      "bytes": 6041,
+      "sha256": "a4e3f9887133ce5918f98c205c8bad5638aac9f113795418e831b5a1aa456379"
+    },
+    {
+      "path": "docs/evidence/ISA_JOURNEY_TRACES_v0.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_JOURNEY_TRACES_v0.md",
+      "bytes": 3851,
+      "sha256": "c92d01718f213b146aaf6820ca76e80645499cd0c6c6d48d70bf91d785d0104d"
+    },
+    {
+      "path": "docs/evidence/ISA_JOURNEY_TRACES_v1.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_JOURNEY_TRACES_v1.md",
+      "bytes": 5128,
+      "sha256": "560cc720e3a5215092d8f71c0f173dd3470075a226add50c6353f2ea370a76ba"
+    },
+    {
+      "path": "docs/evidence/ISA_SOURCES_REGISTRY_v0.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_SOURCES_REGISTRY_v0.md",
+      "bytes": 2237,
+      "sha256": "dac0cb605b5c88b3e108dfffcbd96e388f33963598e2041c67e956adace76826"
+    },
+    {
+      "path": "docs/evidence/_benchmarks/ISA_EXTERNAL_BENCHMARK_NOTES_v1.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_EXTERNAL_BENCHMARK_NOTES_v1.md",
+      "bytes": 3254,
+      "sha256": "da53d619ee5195a81045b2d522babcd532be5345d4ffe770b1536905088fa317"
+    },
+    {
+      "path": "docs/evidence/_benchmarks/ISA_EXTERNAL_BENCHMARK_NOTES_v2.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_EXTERNAL_BENCHMARK_NOTES_v2.md",
+      "bytes": 1995,
+      "sha256": "d907b6952fa5810bdd67cc34bd80b867f2b7f4e1cc1298548c7b0909a8685191"
+    },
+    {
+      "path": "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json",
+      "bucket": "planning_docs",
+      "target": "docs/planning/CATALOGUE_ENTRYPOINTS_STATUS.json",
+      "bytes": 5703,
+      "sha256": "01223db28d0c87d810d04ddeec783a3139147697e8822d54aa974c5257841305"
+    },
+    {
+      "path": "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
+      "bucket": "planning_docs",
+      "target": "docs/planning/CATALOGUE_ENTRYPOINTS_STATUS.md",
+      "bytes": 2094,
+      "sha256": "624f741e10a9c83e431e43d7c604b11250c9c84c1a3b8c188462dd9cc47defb7"
+    },
+    {
+      "path": "docs/evidence/_generated/CENSUS.json",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CENSUS.json",
+      "bytes": 14987,
+      "sha256": "bdb371ebe66a9668c087e23c363abfe3546eb37a413d3393e81080058e35bc02"
+    },
+    {
+      "path": "docs/evidence/_generated/CENSUS_DIFF.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CENSUS_DIFF.md",
+      "bytes": 525,
+      "sha256": "6dc0537a003045784a261c50703a516e867c1d0c9e6ecbb9dc2cb4d82896a86e"
+    },
+    {
+      "path": "docs/evidence/_generated/DOCSET_MAP.csv",
+      "bucket": "docs_misc",
+      "target": "docs/misc/DOCSET_MAP.csv",
+      "bytes": 1549,
+      "sha256": "6a3b50f9c0765f17a02b4fc93dd0685e67cb472c82a277274e8f886a635a03a8"
+    },
+    {
+      "path": "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_EFRAG_CATALOGUE.csv",
+      "bytes": 82599,
+      "sha256": "cdd22511549bdbaca595b1400cf2c4af803478ebcb8a423e9c5e06f49bd30be0"
+    },
+    {
+      "path": "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_EFRAG_CATALOGUE.json",
+      "bytes": 312247,
+      "sha256": "fc37ddd3ffa82864b4438b2dade79d7a65e351a8e320853b7d26cce9f95bb6b7"
+    },
+    {
+      "path": "docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_EFRAG_CATALOGUE_INDEX.md",
+      "bytes": 925,
+      "sha256": "af79a1d53c812975fb3949a62f338aa980e43976ae7a0cc5d60decf2f6de73b7"
+    },
+    {
+      "path": "docs/evidence/_generated/LARGE_ASSETS.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/LARGE_ASSETS.md",
+      "bytes": 2107,
+      "sha256": "a4d38682de2257bf071cabd00c8baa37abacd3dc2fa07a5a78f17f47b20a221f"
+    },
+    {
+      "path": "docs/evidence/_generated/SUBDIR_SUMMARY.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/SUBDIR_SUMMARY.md",
+      "bytes": 511,
+      "sha256": "e086191abb7af401077ecf815d563d964c66975a40619656ad6abdd0efe86f58"
+    },
+    {
+      "path": "docs/evidence/_generated/isa_catalogue_latest/files/items.csv",
+      "bucket": "docs_misc",
+      "target": "docs/misc/items.csv",
+      "bytes": 489228,
+      "sha256": "c65cba03d5c7b6dc585a15ee79716ee8132ba6754c33dccbe00a1a76195b7704"
+    },
+    {
+      "path": "docs/evidence/_generated/isa_catalogue_latest/files/state.json",
+      "bucket": "docs_misc",
+      "target": "docs/misc/state.json",
+      "bytes": 133,
+      "sha256": "afe3bb9b15f90031bbd0069fdde76b72aa2698e8fb76049c584109130f2c58a0"
+    },
+    {
+      "path": "docs/evidence/_generated/isa_catalogue_latest/files/summary.json",
+      "bucket": "docs_misc",
+      "target": "docs/misc/summary.json",
+      "bytes": 95306,
+      "sha256": "0b3bfea1290876b189a3d37bc650b0ab448201885121cfc8004e64dcbbf42077"
+    },
+    {
+      "path": "docs/evidence/_generated/isa_catalogue_latest/index.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/index.md",
+      "bytes": 750,
+      "sha256": "c8f4e392a4da1fa320c28aea9843b3930fbf498f10a76cc1df5d5aa42158aa5a"
+    },
+    {
+      "path": "docs/evidence/_generated/isa_catalogue_latest/summary.json",
+      "bucket": "docs_misc",
+      "target": "docs/misc/summary.json",
+      "bytes": 934,
+      "sha256": "7d44a4f67befcf575ddb929523572764f71e938f9d2befed1d790214e1618806"
+    },
+    {
+      "path": "docs/evidence/_research/ISA_CURRENT_ARCHITECTURE_BRIEF_v0.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_CURRENT_ARCHITECTURE_BRIEF_v0.md",
+      "bytes": 3704,
+      "sha256": "3dfe9091a380368a51af79a8df669cf593e27df1ce21f59ca4c2f36ed21693bd"
+    },
+    {
+      "path": "docs/evidence/_research/ISA_RESEARCH_PLAN_v1.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_RESEARCH_PLAN_v1.md",
+      "bytes": 3289,
+      "sha256": "e30c90174b50f9d0435bc799477bf9107a193252e0ae4a2c6d62cef6488e518e"
+    },
+    {
+      "path": "docs/evidence/_research/ISA_RESEARCH_PLAN_v2.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_RESEARCH_PLAN_v2.md",
+      "bytes": 1815,
+      "sha256": "c18eb00474ae270323dd11bfd8b9786a0b88f18d1ec0416a3d7bbb056350f3ad"
+    },
+    {
+      "path": "docs/gs1_research/README.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/README.md",
+      "bytes": 9188,
+      "sha256": "c0c2f9b5721fe26b9affa0a17cadf4de8bffd6ced817f5e39dd7711d86a8bdbd"
+    },
+    {
+      "path": "docs/gs1_research/STRATEGIC_FOCUS_SELECTION.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/STRATEGIC_FOCUS_SELECTION.md",
+      "bytes": 20567,
+      "sha256": "b8efb05b6133d644632c3adb051bc6f529d3cdb735dd25698eb499e935978a32"
+    },
+    {
+      "path": "docs/gs1_research/decision_support_feasibility.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/decision_support_feasibility.md",
+      "bytes": 46541,
+      "sha256": "f453df67b28f6fb1ceccfba92b9d6e21c6c01a4e44c7e38f6c7d91f894539d40"
+    },
+    {
+      "path": "docs/gs1_research/executive_summary.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/executive_summary.md",
+      "bytes": 23199,
+      "sha256": "c19b66ce315d46dd7d15e5296e38f40740c5ae890f826a451e338f4be465098b"
+    },
+    {
+      "path": "docs/gs1_research/feasibility_assessment.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/feasibility_assessment.md",
+      "bytes": 33772,
+      "sha256": "56e7cd7423c8421bc1059e7b4d79fc18f8a3f5924d0c1617a32cf9044cfd9b8c"
+    },
+    {
+      "path": "docs/gs1_research/feasibility_findings.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/feasibility_findings.md",
+      "bytes": 5109,
+      "sha256": "535a4878b4395bfdae763cfadd9d7387e290af0d729dd2303036d34991be6938"
+    },
+    {
+      "path": "docs/gs1_research/gs1_process_synthesis.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/gs1_process_synthesis.md",
+      "bytes": 17980,
+      "sha256": "00420c4b0d975160758d87b166c2bf2d96ceb55df294001d243b9867eaa88eaf"
+    },
+    {
+      "path": "docs/gs1_research/gsmp_manual_notes.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/gsmp_manual_notes.md",
+      "bytes": 2269,
+      "sha256": "899ce0134473b74dd00a543fc4a8bd2bf2bdc38e9819a30d1fc08db9cd11d3e4"
+    },
+    {
+      "path": "docs/gs1_research/hardest_questions_decision_tensions.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/hardest_questions_decision_tensions.md",
+      "bytes": 20875,
+      "sha256": "83ffd31e277a306cac57ba012eb1f1373401b0c83d3bc9c9f37f47c575cd80a1"
+    },
+    {
+      "path": "docs/gs1_research/isa_relevance_mapping.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/isa_relevance_mapping.md",
+      "bytes": 25281,
+      "sha256": "4ce14ec53dcafe9cb982f54e96e06968a75280098ab58247ef0d79c9534a3653"
+    },
+    {
+      "path": "docs/gs1_research/research_gs1_standards_development.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/research_gs1_standards_development.md",
+      "bytes": 3907,
+      "sha256": "3343d35a75e0015dbb3c369346d18b7f2bd371279d486b425cddb1e64a5eb2a6"
+    },
+    {
+      "path": "docs/gsmp_manual.txt",
+      "bucket": "docs_misc",
+      "target": "docs/misc/gsmp_manual.txt",
+      "bytes": 266146,
+      "sha256": "a5d79a4f081724e5b54e7f529d231f1e06215b3dbf2b2ae2ed226164ad6661dd"
+    },
+    {
+      "path": "docs/isa_research_findings.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/isa_research_findings.md",
+      "bytes": 4420,
+      "sha256": "fd4eda062acd7878131845cb02fb255eb517c402c00906a1af908426421e90b6"
+    },
+    {
+      "path": "docs/legacy/CHATGPT_DOCS_SHA256SUMS.txt",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CHATGPT_DOCS_SHA256SUMS.txt",
+      "bytes": 794,
+      "sha256": "c1a4ecd3a522ff3470757fcf6eb1afe9af198c60fceed30f910952b4117d99fe"
+    },
+    {
+      "path": "docs/legacy/CHATGPT_PROMPT_WORK_PARCEL_02.txt",
+      "bucket": "docs_misc",
+      "target": "docs/misc/CHATGPT_PROMPT_WORK_PARCEL_02.txt",
+      "bytes": 6838,
+      "sha256": "6fe3416327c41207dc254f594e74102d351124dcf8a5cf07c9ece7b92b632021"
+    },
+    {
+      "path": "docs/legacy/STABILIZATION_REPORT_2026-01-04.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/STABILIZATION_REPORT_2026-01-04.md",
+      "bytes": 7501,
+      "sha256": "c7e3882fc8ef0cf77ead2ef78bb8699fb3b3cc27ca120b30b7baab15760df3d3"
+    },
+    {
+      "path": "docs/reference/ISA_DEVELOPMENT_RUBRIC.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_DEVELOPMENT_RUBRIC.md",
+      "bytes": 4921,
+      "sha256": "9f7a75dea098864597df390f7454a42c6415e56aa7ab926c3c2cda052165f2fe"
+    },
+    {
+      "path": "docs/reference/ISA_REFERENCE_DOSSIER.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_REFERENCE_DOSSIER.md",
+      "bytes": 4336,
+      "sha256": "874bf577a298ea4477d36fd48c818b9149d9efb60da48a0a39d1b3d996711f7c"
+    },
+    {
+      "path": "docs/references/gs1/GS1_STYLE_GUIDE_EXTRACT.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GS1_STYLE_GUIDE_EXTRACT.md",
+      "bytes": 28489,
+      "sha256": "426c03787b541632f474a6d37a4fe295ae250cfd965cc29a5e5f5829170fc3a0"
+    },
+    {
+      "path": "docs/references/gs1/ISA_TOP_20_STYLE_RULES.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/ISA_TOP_20_STYLE_RULES.md",
+      "bytes": 9611,
+      "sha256": "d92b8c1f2f6fc4230ce47952f6ce1037fd13927da3d3677748bd3708941abb99"
+    },
+    {
+      "path": "docs/research_findings_poc_pivot.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/research_findings_poc_pivot.md",
+      "bytes": 9635,
+      "sha256": "9c9f0b4a49bc0024fe547cf4db13b9806e1ae238a6848ae4e20e7e6e1060cf2d"
+    },
+    {
+      "path": "docs/screenshots/news-hub-enhanced-filters.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/news-hub-enhanced-filters.md",
+      "bytes": 1057,
+      "sha256": "1858ef7e174a5090535aa3b57ae6d1b7b071e39384c97cd6f284f7f62af67831"
+    },
+    {
+      "path": "docs/spec/DECISION_LOG_PHASE3.md",
+      "bucket": "governance_docs",
+      "target": "docs/governance/DECISION_LOG_PHASE3.md",
+      "bytes": 7698,
+      "sha256": "9a0523797fc4b8507dad774a6d4003d4039a0c686398bb473f880b8f2cf4aa23"
+    },
+    {
+      "path": "docs/spec/agent-prompt-governance.md",
+      "bucket": "governance_docs",
+      "target": "docs/governance/agent-prompt-governance.md",
+      "bytes": 13932,
+      "sha256": "bd062dc5f5fe468eb1881c39228274f99a2224d81a817677023b62f6c1b0fd43"
+    },
+    {
+      "path": "docs/spec/evaluation-governance-reproducibility.md",
+      "bucket": "governance_docs",
+      "target": "docs/governance/evaluation-governance-reproducibility.md",
+      "bytes": 17185,
+      "sha256": "73ed5bde549218cf393bf7e59c546076d065f1c11be4b4de66dbdceec480c718"
+    },
+    {
+      "path": "docs/spec/governance-iron-protocol.md",
+      "bucket": "governance_docs",
+      "target": "docs/governance/governance-iron-protocol.md",
+      "bytes": 14452,
+      "sha256": "e7dd9c2c861737ca254d875a1f91c44d6f98eeb27adf68324e2d0f543860e274"
+    },
+    {
+      "path": "docs/templates/ADVISORY_REPORT_TEMPLATE.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/ADVISORY_REPORT_TEMPLATE.md",
+      "bytes": 6905,
+      "sha256": "bb5af9b0cdf579b1938614a57c277f3e5fb0e018fe17f34e251a5deeb7a9875e"
+    },
+    {
+      "path": "docs/templates/GAP_ANALYSIS_TEMPLATE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/GAP_ANALYSIS_TEMPLATE.md",
+      "bytes": 7479,
+      "sha256": "8998fc232975de99f30d3f8584d37e6ce9a9685b20e4cee99538c59263ca1af1"
+    },
+    {
+      "path": "docs/templates/RECOMMENDATION_TEMPLATE.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/RECOMMENDATION_TEMPLATE.md",
+      "bytes": 8193,
+      "sha256": "1b369f37afd12285f8affb99c2faa71738505945debcac700201890d56ab8726"
+    },
+    {
+      "path": "docs/test-failure-analysis-2025-12-17.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/test-failure-analysis-2025-12-17.md",
+      "bytes": 7071,
+      "sha256": "388e31df7d9fcf059e7af867e2ebbe94ef7ece409b08ca2ffeba760c2c62a551"
+    },
+    {
+      "path": "docs/test-failure-resolution-2025-12-17.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/test-failure-resolution-2025-12-17.md",
+      "bytes": 7081,
+      "sha256": "c8c66d9f45f584b8f7feeadd9bac98c098f0010e0053905e43f6e512456187be"
+    },
+    {
+      "path": "docs/typescript-cleanup-2026-01-02.md",
+      "bucket": "docs_misc",
+      "target": "docs/misc/typescript-cleanup-2026-01-02.md",
+      "bytes": 5935,
+      "sha256": "e85acbfe9d1ba7d35a7c82771a9ec154c1a80b05d21d2080119a527813cfc2f2"
+    },
+    {
+      "path": "dual-core-poc-evaluation.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/dual-core-poc-evaluation.md",
+      "bytes": 5026,
+      "sha256": "fa431c1e32f5f9165568146e6d7e931331ed1505b370714cd5cdbdd3acb65c4e"
+    },
+    {
+      "path": "research-dutch-sources.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/research-dutch-sources.md",
+      "bytes": 8328,
+      "sha256": "16e8e7d3cda5f709dee6205864b06c91c5fd10fa9a7f3f625ecb214948796f5f"
+    },
+    {
+      "path": "shared/schemas/advisory-output.schema.json",
+      "bucket": "spec_docs",
+      "target": "docs/spec/advisory-output.schema.json",
+      "bytes": 13917,
+      "sha256": "aef56bd7f4a660d670a35cc0a06b4f5904cc4ed1b238cfafc8495dc1119d91f0"
+    },
+    {
+      "path": "task1_review.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/task1_review.md",
+      "bytes": 2735,
+      "sha256": "758f704eb87d58829c62c4719d25f98e45a86dbca0473b969a09f4fde77716ef"
+    },
+    {
+      "path": "task3_review.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/task3_review.md",
+      "bytes": 3215,
+      "sha256": "577723fc09f449126951ef5b90d5113e589edc2966243e1f54cb86e07bf298af"
+    },
+    {
+      "path": "test-failure-analysis.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/test-failure-analysis.md",
+      "bytes": 4825,
+      "sha256": "88763fa9c0747c78c683591ab25c81059837a22f70df43b58a262295cf3721ac"
+    },
+    {
+      "path": "test-final-run.txt",
+      "bucket": "other_docs",
+      "target": "docs/misc/test-final-run.txt",
+      "bytes": 730592,
+      "sha256": "e2b761342feef5903c883ccd5ad91de291a0cd9284c00f336982c2672300dbc7"
+    },
+    {
+      "path": "test-final.txt",
+      "bucket": "other_docs",
+      "target": "docs/misc/test-final.txt",
+      "bytes": 620193,
+      "sha256": "3598d9dbe57bffbb089a79036e0ae7377a8b972ed5a120b1858da9bc0ffad5bc"
+    },
+    {
+      "path": "test-json-output.txt",
+      "bucket": "other_docs",
+      "target": "docs/misc/test-json-output.txt",
+      "bytes": 3717036,
+      "sha256": "bc93bf80931b0ad068e2064be2709e7be165336f426e3389ea2ebf75724278fd"
+    },
+    {
+      "path": "test-null-stacktrace-fix.txt",
+      "bucket": "other_docs",
+      "target": "docs/misc/test-null-stacktrace-fix.txt",
+      "bytes": 711118,
+      "sha256": "916fa3a2f202ab8f01c0a3a2718e3c04081261c2a6d73b664a67557087494b1e"
+    },
+    {
+      "path": "test-output.txt",
+      "bucket": "other_docs",
+      "target": "docs/misc/test-output.txt",
+      "bytes": 10785625,
+      "sha256": "38290213077bc09722129303f0cbf64b71ef2eac26c7624e66a579dcecb5e0ed"
+    },
+    {
+      "path": "test-results/ask-isa-mapping-test.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/ask-isa-mapping-test.md",
+      "bytes": 3351,
+      "sha256": "41131e7ab960b33438b691485d8b493b3eee7359ff75c81b3635e8493eb9b929"
+    },
+    {
+      "path": "test-simple.txt",
+      "bucket": "other_docs",
+      "target": "docs/misc/test-simple.txt",
+      "bytes": 4117445,
+      "sha256": "77130b70029492a9702d95ae4f2f76cb7b03be0e63183ea4b2932c5f686026ac"
+    },
+    {
+      "path": "timeline-test-results.md",
+      "bucket": "reports_and_outputs",
+      "target": "isa-archive/reports/timeline-test-results.md",
+      "bytes": 4667,
+      "sha256": "d4390410b0995fd602935f9ba11be195662a9745034703d3019200b0f7a30e82"
+    },
+    {
+      "path": "todo.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/todo.md",
+      "bytes": 149830,
+      "sha256": "78f545ad5353fc72cf23b401e7a112c4d6eb39e35116feb85d6de5d25ef30c6f"
+    },
+    {
+      "path": "todo_development.md",
+      "bucket": "other_docs",
+      "target": "docs/misc/todo_development.md",
+      "bytes": 4590,
+      "sha256": "ec1c6a1b139cc5974ec875d4ea4e0b8fb7a937a2aa4a356784a3341a6ee022d0"
+    },
+    {
+      "path": "todo_phase44_update.txt",
+      "bucket": "phase_reports",
+      "target": "isa-archive/phase-reports/todo_phase44_update.txt",
+      "bytes": 2811,
+      "sha256": "50f41a30269d72539b9e1b179edd626735262daae699b33030de1aa45e11bd14"
+    }
+  ],
+  "top_files_by_todo_hits": [
+    {
+      "path": "docs/spec/TRACEABILITY_MATRIX.csv",
+      "hits": 213,
+      "bytes": 273411,
+      "sha256": "3f89d5c66652d837a7f28d16d6874673859d59eb3283d1fda6d36100b79c46bd"
+    },
+    {
+      "path": "todo.md",
+      "hits": 202,
+      "bytes": 149830,
+      "sha256": "78f545ad5353fc72cf23b401e7a112c4d6eb39e35116feb85d6de5d25ef30c6f"
+    },
+    {
+      "path": "server/routers/roadmap-export.ts",
+      "hits": 102,
+      "bytes": 14044,
+      "sha256": "a768fe971e2194e8ca1a1221b1f126d11b8b2012dcc8da50e7ac5db2ca22b8e4"
+    },
+    {
+      "path": "docs/ISA_VISUAL_BRANDING_ROADMAP.md",
+      "hits": 71,
+      "bytes": 35450,
+      "sha256": "edf563ad40bc6fe6dfe7ed9c36cfacab18e6c23d17409b881c71e3cb654f40da"
+    },
+    {
+      "path": "docs/spec/roadmap-evolution.md",
+      "hits": 65,
+      "bytes": 14006,
+      "sha256": "54ad4c5fa8450972ad3450a7f020c7f9163e901c290b03787d3ab7d731379cd2"
+    },
+    {
+      "path": "docs/ISA_GS1_PRE_EXECUTION_PREPARATION.md",
+      "hits": 57,
+      "bytes": 61219,
+      "sha256": "fd4555790fe0c9a4ca815b4fa9ffccf46b88fc26fee606040a81d897c8ab5444"
+    },
+    {
+      "path": "docs/ISA_PRODUCT_DIMENSIONS_ANALYSIS.md",
+      "hits": 54,
+      "bytes": 69309,
+      "sha256": "13807b97c724029e940c8047b663b1932d30cc0133b292304e5ac2960206ea7c"
+    },
+    {
+      "path": "server/routers/roadmap.ts",
+      "hits": 51,
+      "bytes": 6615,
+      "sha256": "38de06398c14887d44a4f6e9fdded2dff00a2ce28f92c3423f472ae3b9c62e43"
+    },
+    {
+      "path": "docs/ISA_IMPLEMENTATION_EXECUTION_PLAN.md",
+      "hits": 48,
+      "bytes": 54661,
+      "sha256": "5b4ad94b29666049fb5cf85e5a7d818d2daf1f42255dbf10f23ec6bb14f3b022"
+    },
+    {
+      "path": "docs/API_REFERENCE.md",
+      "hits": 46,
+      "bytes": 435618,
+      "sha256": "fcf05ab73162735fe7cad22706271c2630824a9018981b53669165a70538fa3d"
+    },
+    {
+      "path": "AUDIT_FINDINGS.md",
+      "hits": 44,
+      "bytes": 20423,
+      "sha256": "b6ecfbb3903a2175046fef2f41d0d6f3cbc44155082383fee3ee94ca429bdc7e"
+    },
+    {
+      "path": "./docs/ISA_VISUAL_BRANDING_DEVELOPMENT_PLAN.md",
+      "hits": 42,
+      "bytes": 45831,
+      "sha256": "a815e19d5e637cb6d590bd2af1a86ce755ebc5746cbc3d7c64b35fe5611b2b8c"
+    },
+    {
+      "path": "docs/ISA_V1_FORMALIZATION_TARGETS.md",
+      "hits": 41,
+      "bytes": 49338,
+      "sha256": "218b37299f10abaf81ffcd4f499445c3a9d8db20e6b9992a58f0be94e69bfd88"
+    },
+    {
+      "path": "./client/src/pages/ComplianceRoadmap.tsx",
+      "hits": 40,
+      "bytes": 22229,
+      "sha256": "2fe1a9df255bcb79679c50f57dc0b08b8910812cb17c843f9757a211110b89bb"
+    },
+    {
+      "path": "docs/spec/ingestion-update-lifecycle.md",
+      "hits": 37,
+      "bytes": 13382,
+      "sha256": "004356e67fd75aa82b4d108fb5b072ba26d41db6176b1502042b8ecb129b0e34"
+    },
+    {
+      "path": "./docs/gsmp_manual.txt",
+      "hits": 33,
+      "bytes": 266146,
+      "sha256": "a5d79a4f081724e5b54e7f529d231f1e06215b3dbf2b2ae2ed226164ad6661dd"
+    },
+    {
+      "path": "docs/ISA_DEVELOPMENT_ROADMAP_TO_FINAL_PRODUCT.md",
+      "hits": 28,
+      "bytes": 33391,
+      "sha256": "3060eda3258917cee0cc1d57cbb3ff1ad66cdd0ddd5479a1504c7a43a9543610"
+    },
+    {
+      "path": "docs/STATUS.md",
+      "hits": 28,
+      "bytes": 10124,
+      "sha256": "30b4f9f2209fbcd2abec092de1f15b1a67d0a01d9e6adcb1273b3f21d8e8f076"
+    },
+    {
+      "path": "TIMELINE_VISUALIZATION_SUMMARY.md",
+      "hits": 27,
+      "bytes": 15446,
+      "sha256": "e4ff317768d14790dc06980df0ad71d7f2023a7c3f97f6c3c9aa2d6bddf5a555"
+    },
+    {
+      "path": "docs/CHANGELOG_SUMMARY.md",
+      "hits": 27,
+      "bytes": 25840,
+      "sha256": "89378a0b1b65abab85773bca6fc3388c193832646ab090246380e0edf88696b6"
+    },
+    {
+      "path": "docs/ISA_COMPARATIVE_REFACTOR_GATE_PLAN.md",
+      "hits": 26,
+      "bytes": 22340,
+      "sha256": "c82e9d206ce743c937063522be7eb11527317ae5905a7ae4ea2fe1f912c9c023"
+    },
+    {
+      "path": "docs/ISA_Strategic_Roadmap.md",
+      "hits": 26,
+      "bytes": 77912,
+      "sha256": "ebcdab2ac67783f66c6c94b7f856cfac834aa514a8542b56e97a0052c76a7f5e"
+    },
+    {
+      "path": "docs/MANUS_BEST_PRACTICES_FOR_ISA.md",
+      "hits": 26,
+      "bytes": 29333,
+      "sha256": "88c7ee5efba1efb0dbb797e48e2228ff401c46bf3f2c37111718165e6f19bc75"
+    },
+    {
+      "path": "docs/GITHUB_PROVISIONING_REPORT.md",
+      "hits": 25,
+      "bytes": 15771,
+      "sha256": "92267a646d2506d336749ceddd837ff873a998139f0775d71c25125fb8969872"
+    },
+    {
+      "path": "GS1_ARTEFACT_PROCESSING.md",
+      "hits": 24,
+      "bytes": 10096,
+      "sha256": "ec4839a7f0d93b3027cb7e2d6047fb3e1f6576da0ef49faaa6a20dca86ede519"
+    },
+    {
+      "path": "server/roadmap-generator.ts",
+      "hits": 24,
+      "bytes": 12969,
+      "sha256": "40c54a062333eecec7af50444e9a8deeccd6f2ad9cd6d67645a414f2588c9939"
+    },
+    {
+      "path": "docs/ISA_AUTONOMOUS_ROADMAP_V1.md",
+      "hits": 23,
+      "bytes": 13480,
+      "sha256": "5f396a11b69d3c460f2ae28e15d0a7e65509a923b0132b0ab859a03c4b9fc177"
+    },
+    {
+      "path": "docs/ISA_FUTURE_DEVELOPMENT_PLAN.md",
+      "hits": 23,
+      "bytes": 27618,
+      "sha256": "6535adbc6e2d168b0d8dcb104526cdf707f0f10df6edc23764f1d9e847c4a184"
+    },
+    {
+      "path": "docs/GOVERNANCE_PHASE_2_3_REPORT.md",
+      "hits": 22,
+      "bytes": 12965,
+      "sha256": "5242ab2594862e0b9130a07b30c554641d7780715b200f062804215c9444dd4c"
+    },
+    {
+      "path": "docs/ISA_DELIVERY_MODEL.md",
+      "hits": 22,
+      "bytes": 22612,
+      "sha256": "5a2fb5d3190029e909f057e2820057e7637134577b1b132be7bd6826c4e80687"
+    }
+  ],
+  "roadmap_candidates_ranked": [
+    {
+      "score": 4,
+      "path": "./docs/ISA_NEXT_PHASE_DEVELOPMENT_PLAN.md"
+    },
+    {
+      "score": 2,
+      "path": "./docs/ISA_COMPARATIVE_REFACTOR_GATE_PLAN.md"
+    },
+    {
+      "score": 2,
+      "path": "./docs/META_PHASE_STRATEGIC_EXPLORATION_PLAN.md"
+    },
+    {
+      "score": 2,
+      "path": "./docs/PRIORITY_2_BLOCKED.md"
+    },
+    {
+      "score": 2,
+      "path": "./docs/spec/DECISION_LOG_PHASE3.md"
+    },
+    {
+      "score": 2,
+      "path": "./isa-archive/reports/test-results__phase-8-roadmap-generator-test.md"
+    },
+    {
+      "score": 2,
+      "path": "./todo_phase44_update.txt"
+    },
+    {
+      "score": 1,
+      "path": "./CHATGPT_DELEGATION_PHASE1.md"
+    },
+    {
+      "score": 1,
+      "path": "./EU_ESG_to_GS1_Mapping_v1.1/backlog.json"
+    },
+    {
+      "score": 1,
+      "path": "./IRON_VALIDATION_PLAN.md"
+    },
+    {
+      "score": 1,
+      "path": "./ISA_STATUS_REPORT_2025-01-11.md"
+    },
+    {
+      "score": 1,
+      "path": "./ISA_TODO_MANUAL_COMPLETION.md"
+    },
+    {
+      "score": 1,
+      "path": "./NEWS_HUB_PHASE4-6_SUMMARY.md"
+    },
+    {
+      "score": 1,
+      "path": "./PHASE_9_CLAIMS_SANITIZATION_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./PHASE_9_COMPLETION_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./PHASE_9_DOCUMENTATION_INVENTORY.md"
+    },
+    {
+      "score": 1,
+      "path": "./POC_EXPLORATION_TODO.md"
+    },
+    {
+      "score": 1,
+      "path": "./ROADMAP.md"
+    },
+    {
+      "score": 1,
+      "path": "./ROADMAP_GITHUB_INTEGRATION.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/Autonomous_Development_Plan.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/DATASET_PRIORITY_ANALYSIS.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/Data_Quality_Updates_Plan.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ESG_Hub_MVP_Polish_Plan.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/GOVERNANCE_PHASE_2_3_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_AUTONOMOUS_ROADMAP_V1.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_DEPLOYMENT_AND_ROADMAP.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_DEVELOPMENT_ROADMAP_TO_FINAL_PRODUCT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_DEVELOPMENT_STATUS.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_Development_Roadmap_2026.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_FUTURE_DEVELOPMENT_PLAN.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_IMPLEMENTATION_EXECUTION_PLAN.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_POC_ROADMAP.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_STATUS_SUMMARY_2025-12-19.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_Strategic_Roadmap.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_VISUAL_BRANDING_DEVELOPMENT_PLAN.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/ISA_VISUAL_BRANDING_ROADMAP.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/META_PHASE_COMPLETION_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE4_OPERATIONAL_READINESS_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_1_RESCORE.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_2_ADDENDUM.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_2_DESIGN_EVALUATION.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_2_DESIGN_PROPOSAL.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_2_RESCORE.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_3_COMPLETION_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_3_STARTDOCUMENT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_8_1_VERIFICATION.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_8_COMPLETE_SUMMARY.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_8_NEWS_HUB_OBSERVABILITY_COMPLETE.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PHASE_AB_UX_SUMMARY.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PRIORITY_1_COMPLETION_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PRIORITY_1_SCHEMA_DEBT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/PRIORITY_3_COMPLETION_REPORT.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/STATUS.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/UX_PHASE_A_SUMMARY.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/evidence/_research/ISA_RESEARCH_PLAN_v1.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/evidence/_research/ISA_RESEARCH_PLAN_v2.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/governance/ISA_DEVELOPMENT_ROADMAP.md"
+    },
+    {
+      "score": 1,
+      "path": "./docs/governance/PHASE4_CLOSEOUT_REPORT.md"
+    }
+  ]
+}
