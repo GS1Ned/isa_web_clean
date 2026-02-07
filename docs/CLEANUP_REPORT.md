@@ -192,8 +192,8 @@ mv _Quarantine_Pending_Removal/duplicates/gs1_link_types/ data/
 ## Generated Artifacts
 
 1. **Inventories:**
-   - `docs/INVENTORY_BEFORE.csv` (1,106 files)
-   - `docs/INVENTORY_AFTER.csv` (1,114 files)
+   - `docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv` (1,106 files)
+   - `docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv` (1,114 files)
 
 2. **Repository Maps:**
    - `docs/REPO_MAP_BEFORE.md`

@@ -143,9 +143,9 @@ data/
 ## Generated Artifacts
 
 ### Inventories
-1. **INVENTORY_BEFORE.csv** - Initial state (1,106 files)
-2. **INVENTORY_AFTER.csv** - Post-cleanup (1,114 files)
-3. **INVENTORY_FINAL.csv** - Final state (1,108 files)
+1. **docs/evidence/generated/inventory/INVENTORY_BEFORE.csv** - Initial state (1,106 files)
+2. **docs/evidence/generated/inventory/INVENTORY_AFTER.csv** - Post-cleanup (1,114 files)
+3. **docs/evidence/generated/inventory/INVENTORY_FINAL.csv** - Final state (1,108 files)
 
 ### Repository Maps
 1. **REPO_MAP_BEFORE.md** - Initial analysis

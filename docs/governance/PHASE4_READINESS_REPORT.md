@@ -90,7 +90,7 @@ Validating RUN_CONFIG.json...
 **Legacy scripts (FAIL - 20 files with hardcoded paths):**
 ```
 scripts/advisory/extract_esg_requirements.py:87:    db_path = '/home/ubuntu/.manus/isa_web.db'
-scripts/datasets/analyze_inventory.py:137:    '/home/ubuntu/isa_web/docs/INVENTORY_BEFORE.csv'
+scripts/datasets/analyze_inventory.py:137:    '/home/ubuntu/isa_web/docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv'
 scripts/datasets/build_registry.py:219:    '/home/ubuntu/isa_web'
 scripts/generate-dataset-catalog.py:15:    PROJECT_ROOT = Path("/home/ubuntu/isa_web")
 ... (16 more files)

@@ -11402,7 +11402,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_BEFORE.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv",
         "line": 24,
         "text": "ROADMAP.md,14248,.md,2025-12-11T10:02:40.798828,98bbf5939e4e11cda5a92ff16b3ef5d026676c2309784331868567934870bcf3,ROADMAP.md,False,False\r",
         "submatches": [
@@ -11419,7 +11419,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_BEFORE.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv",
         "line": 43,
         "text": "todo.md,17689,.md,2025-12-12T05:42:00.546147,77b4332d3d7815f1a2b6cd2cf69544553b61aa8bae2534365eddba21212cf4b8,todo.md,False,False\r",
         "submatches": [
@@ -11436,7 +11436,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_BEFORE.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv",
         "line": 522,
         "text": "server/roadmap-generator.ts,12866,.ts,2025-12-11T10:02:40.794828,9ea20654e98b44cc1aaac1cb7e69e8eefe6fdf9f75f35b3ccb4fc6d212aba315,server,False,False\r",
         "submatches": [
@@ -11448,7 +11448,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_BEFORE.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv",
         "line": 574,
         "text": "server/routers/roadmap-export.ts,9223,.ts,2025-12-11T10:02:40.794828,581e6a0a9c13fb3e2368a1bfdde7f81cbe76adc08b32aed28b05380db0fe960d,server,False,False\r",
         "submatches": [
@@ -11460,7 +11460,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_BEFORE.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv",
         "line": 575,
         "text": "server/routers/roadmap.ts,6615,.ts,2025-12-11T10:02:40.794828,38de06398c14887d44a4f6e9fdded2dff00a2ce28f92c3423f472ae3b9c62e43,server,False,False\r",
         "submatches": [
@@ -11472,7 +11472,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_BEFORE.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv",
         "line": 827,
         "text": "dist/public/assets/hack-CaT9iCJl.js,80241,.js,2025-12-13T14:56:14.814318,e1a5064e1ee240147e7a5000884c157de6a4b6ff9a6a140bcd3194a09106d5d2,dist,False,False\r",
         "submatches": [
@@ -17170,7 +17170,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_AFTER.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv",
         "line": 24,
         "text": "ROADMAP.md,14248,.md,2025-12-11T10:02:40.798828,98bbf5939e4e11cda5a92ff16b3ef5d026676c2309784331868567934870bcf3,ROADMAP.md,False,False\r",
         "submatches": [
@@ -17187,7 +17187,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_AFTER.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv",
         "line": 43,
         "text": "todo.md,17689,.md,2025-12-12T05:42:00.546147,77b4332d3d7815f1a2b6cd2cf69544553b61aa8bae2534365eddba21212cf4b8,todo.md,False,False\r",
         "submatches": [
@@ -17204,7 +17204,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_AFTER.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv",
         "line": 526,
         "text": "server/roadmap-generator.ts,12866,.ts,2025-12-11T10:02:40.794828,9ea20654e98b44cc1aaac1cb7e69e8eefe6fdf9f75f35b3ccb4fc6d212aba315,server,False,False\r",
         "submatches": [
@@ -17216,7 +17216,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_AFTER.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv",
         "line": 578,
         "text": "server/routers/roadmap-export.ts,9223,.ts,2025-12-11T10:02:40.794828,581e6a0a9c13fb3e2368a1bfdde7f81cbe76adc08b32aed28b05380db0fe960d,server,False,False\r",
         "submatches": [
@@ -17228,7 +17228,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_AFTER.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv",
         "line": 579,
         "text": "server/routers/roadmap.ts,6615,.ts,2025-12-11T10:02:40.794828,38de06398c14887d44a4f6e9fdded2dff00a2ce28f92c3423f472ae3b9c62e43,server,False,False\r",
         "submatches": [
@@ -17240,7 +17240,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_AFTER.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv",
         "line": 830,
         "text": "dist/public/assets/hack-CaT9iCJl.js,80241,.js,2025-12-13T15:04:37.857456,e1a5064e1ee240147e7a5000884c157de6a4b6ff9a6a140bcd3194a09106d5d2,dist,False,False\r",
         "submatches": [
@@ -23797,7 +23797,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_FINAL.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv",
         "line": 24,
         "text": "ROADMAP.md,14248,.md,2025-12-11T10:02:40.798828,98bbf5939e4e11cda5a92ff16b3ef5d026676c2309784331868567934870bcf3,ROADMAP.md,False,False\r",
         "submatches": [
@@ -23814,7 +23814,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_FINAL.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv",
         "line": 43,
         "text": "todo.md,17689,.md,2025-12-12T05:42:00.546147,77b4332d3d7815f1a2b6cd2cf69544553b61aa8bae2534365eddba21212cf4b8,todo.md,False,False\r",
         "submatches": [
@@ -23831,7 +23831,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_FINAL.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv",
         "line": 530,
         "text": "server/roadmap-generator.ts,12866,.ts,2025-12-11T10:02:40.794828,9ea20654e98b44cc1aaac1cb7e69e8eefe6fdf9f75f35b3ccb4fc6d212aba315,server,False,False\r",
         "submatches": [
@@ -23843,7 +23843,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_FINAL.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv",
         "line": 582,
         "text": "server/routers/roadmap-export.ts,9223,.ts,2025-12-11T10:02:40.794828,581e6a0a9c13fb3e2368a1bfdde7f81cbe76adc08b32aed28b05380db0fe960d,server,False,False\r",
         "submatches": [
@@ -23855,7 +23855,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_FINAL.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv",
         "line": 583,
         "text": "server/routers/roadmap.ts,6615,.ts,2025-12-11T10:02:40.794828,38de06398c14887d44a4f6e9fdded2dff00a2ce28f92c3423f472ae3b9c62e43,server,False,False\r",
         "submatches": [
@@ -23867,7 +23867,7 @@
         ]
       },
       {
-        "path": "docs/INVENTORY_FINAL.csv",
+        "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv",
         "line": 835,
         "text": "dist/public/assets/hack-CaT9iCJl.js,80241,.js,2025-12-13T16:01:35.542580,e1a5064e1ee240147e7a5000884c157de6a4b6ff9a6a140bcd3194a09106d5d2,dist,False,False\r",
         "submatches": [
@@ -44201,9 +44201,9 @@
       "./docs/GS1_STYLE_GUIDE_INGESTION_SUMMARY.md",
       "./docs/INGESTION_DELEGATION_SUMMARY.md",
       "./docs/INSTRUCTION_EVALUATION_ANALYSIS.md",
-      "./docs/INVENTORY_AFTER.csv",
-      "./docs/INVENTORY_BEFORE.csv",
-      "./docs/INVENTORY_FINAL.csv",
+      "./docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv",
+      "./docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv",
+      "./docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv",
       "./docs/ISA_AUTONOMOUS_ROADMAP_V1.md",
       "./docs/ISA_BRAND_POSITIONING.md",
       "./docs/ISA_COMPARATIVE_REFACTOR_GATE_PLAN.md",
