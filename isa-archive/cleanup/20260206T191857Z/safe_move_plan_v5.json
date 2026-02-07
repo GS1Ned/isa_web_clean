@@ -332,38 +332,38 @@
       "bucket": "misc"
     },
     {
-      "from": "configs/isa-catalogue/policy.json",
-      "to": "docs/misc/_root/configs/isa-catalogue/policy.json",
+      "from": "config/isa-catalogue/policy.json",
+      "to": "docs/misc/_root/config/isa-catalogue/policy.json",
       "bucket": "misc"
     },
     {
-      "from": "cron-configs/00-START-HERE.md",
-      "to": "docs/misc/_root/cron-configs/00-START-HERE.md",
+      "from": "ops/cron/00-START-HERE.md",
+      "to": "docs/misc/_root/ops/cron/00-START-HERE.md",
       "bucket": "misc"
     },
     {
-      "from": "cron-configs/cron-job.org-instructions.md",
-      "to": "docs/misc/_root/cron-configs/cron-job.org-instructions.md",
+      "from": "ops/cron/cron-job.org-instructions.md",
+      "to": "docs/misc/_root/ops/cron/cron-job.org-instructions.md",
       "bucket": "misc"
     },
     {
-      "from": "cron-configs/curl-test-config.txt",
-      "to": "docs/misc/_root/cron-configs/curl-test-config.txt",
+      "from": "ops/cron/curl-test-config.txt",
+      "to": "docs/misc/_root/ops/cron/curl-test-config.txt",
       "bucket": "misc"
     },
     {
-      "from": "cron-configs/curl-test-instructions.md",
-      "to": "docs/misc/_root/cron-configs/curl-test-instructions.md",
+      "from": "ops/cron/curl-test-instructions.md",
+      "to": "docs/misc/_root/ops/cron/curl-test-instructions.md",
       "bucket": "misc"
     },
     {
-      "from": "cron-configs/easycron-instructions.md",
-      "to": "docs/misc/_root/cron-configs/easycron-instructions.md",
+      "from": "ops/cron/easycron-instructions.md",
+      "to": "docs/misc/_root/ops/cron/easycron-instructions.md",
       "bucket": "misc"
     },
     {
-      "from": "cron-configs/github-actions-instructions.md",
-      "to": "docs/misc/_root/cron-configs/github-actions-instructions.md",
+      "from": "ops/cron/github-actions-instructions.md",
+      "to": "docs/misc/_root/ops/cron/github-actions-instructions.md",
       "bucket": "misc"
     },
     {

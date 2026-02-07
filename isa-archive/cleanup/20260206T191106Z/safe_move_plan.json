@@ -780,63 +780,63 @@
       "sha256": "f0fbafc3ea196e45e05d0c33bf3524d36cf453018e38043ab5114b6eceb19198"
     },
     {
-      "path": "configs/isa-catalogue/policy.json",
+      "path": "config/isa-catalogue/policy.json",
       "bucket": "other_docs",
       "target": "docs/misc/policy.json",
       "bytes": 383,
       "sha256": "adabe5a2c3e4699065fa1b6d0a0cb8d3cc371750b70f7a654f6f1caa2a29fe11"
     },
     {
-      "path": "cron-configs/.github/workflows/isa-news-cron.yml",
+      "path": "ops/cron/.github/workflows/isa-news-cron.yml",
       "bucket": "other_docs",
       "target": "docs/misc/isa-news-cron.yml",
       "bytes": 1834,
       "sha256": "f5b257e0372a07014074567a4d5f6def391b3bc556d8962ddfac89bd479c134e"
     },
     {
-      "path": "cron-configs/00-START-HERE.md",
+      "path": "ops/cron/00-START-HERE.md",
       "bucket": "other_docs",
       "target": "docs/misc/00-START-HERE.md",
       "bytes": 3159,
       "sha256": "6498beef1787a4c082e076edf495e370231ed74eaacecc9391cabfddba8b8383"
     },
     {
-      "path": "cron-configs/README.md",
+      "path": "ops/cron/README.md",
       "bucket": "other_docs",
       "target": "docs/misc/README.md",
       "bytes": 1294,
       "sha256": "3621611ecc773c85a8229350b275ea27f62b273e93376ce4edb04c616f6f2e71"
     },
     {
-      "path": "cron-configs/cron-job.org-instructions.md",
+      "path": "ops/cron/cron-job.org-instructions.md",
       "bucket": "other_docs",
       "target": "docs/misc/cron-job.org-instructions.md",
       "bytes": 986,
       "sha256": "43fdb55dcd8d81c7178ad74b2beef9078324e65d11e7d6d9584a1f3e1f382cd3"
     },
     {
-      "path": "cron-configs/curl-test-config.txt",
+      "path": "ops/cron/curl-test-config.txt",
       "bucket": "other_docs",
       "target": "docs/misc/curl-test-config.txt",
       "bytes": 816,
       "sha256": "0e5ce8948bedebe0cb5e0252b7384803e81f8d7f5a83460163e53e65ca6ff13e"
     },
     {
-      "path": "cron-configs/curl-test-instructions.md",
+      "path": "ops/cron/curl-test-instructions.md",
       "bucket": "other_docs",
       "target": "docs/misc/curl-test-instructions.md",
       "bytes": 659,
       "sha256": "bfe68b28cca1797a8b278543a92ae49b241ae3cea8a35c86806c97ad27241aa7"
     },
     {
-      "path": "cron-configs/easycron-instructions.md",
+      "path": "ops/cron/easycron-instructions.md",
       "bucket": "other_docs",
       "target": "docs/misc/easycron-instructions.md",
       "bytes": 911,
       "sha256": "0998f803c2d512150aa3acc061192bdfe292208772ac9536d0bb67a7f0fd3ff9"
     },
     {
-      "path": "cron-configs/github-actions-instructions.md",
+      "path": "ops/cron/github-actions-instructions.md",
       "bucket": "other_docs",
       "target": "docs/misc/github-actions-instructions.md",
       "bytes": 630,

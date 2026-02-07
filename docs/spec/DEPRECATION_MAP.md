@@ -159,7 +159,7 @@
 |-----------|-----------|-----------|
 | `./EU_ESG_to_GS1_Mapping_v1.1/CHANGELOG.md` | `./docs/CHANGELOG.md` | Same filename, shorter path is canonical |
 | `./EU_ESG_to_GS1_Mapping_v1.1/README.md` | `./README.md` | Same filename, shorter path is canonical |
-| `./cron-configs/README.md` | `./README.md` | Same filename, shorter path is canonical |
+| `./ops/cron/README.md` | `./README.md` | Same filename, shorter path is canonical |
 | `./data/gs1_ref_corpus/README.md` | `./README.md` | Same filename, shorter path is canonical |
 | `./docs/KNOWN_FAILURE_MODES.md` | `./KNOWN_FAILURE_MODES.md` | Same filename, shorter path is canonical |
 | `./docs/PRODUCTION_READINESS.md` | `./PRODUCTION_READINESS.md` | Same filename, shorter path is canonical |

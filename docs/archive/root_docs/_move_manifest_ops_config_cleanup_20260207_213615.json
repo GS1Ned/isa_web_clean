@@ -1,0 +1,41 @@
+{
+  "created_at_local": "2026-02-07 21:36:16",
+  "repo_root": "/Users/frisowempe/Documents/GitHub/isa_web_clean",
+  "move_map_file": "docs/archive/root_docs/_move_map_ops_config_cleanup_20260207_213615.json",
+  "moved_count": 2,
+  "skipped_count": 0,
+  "errors_count": 0,
+  "moved": [
+    {
+      "from": "cron-configs",
+      "to": "ops/cron"
+    },
+    {
+      "from": "configs",
+      "to": "config"
+    }
+  ],
+  "skipped": [],
+  "errors": [],
+  "text_refs_updated_count": 18,
+  "text_refs_updated": [
+    "docs/CRON_QUICK_START.md",
+    "docs/INVENTORY_AFTER.csv",
+    "docs/INVENTORY_BEFORE.csv",
+    "docs/INVENTORY_FINAL.csv",
+    "docs/archive/root_docs/_move_map_ops_config_cleanup_20260207_213615.json",
+    "docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.json",
+    "docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.md",
+    "docs/governance/SCOPE_DECISIONS.md",
+    "docs/spec/DEPRECATION_MAP.md",
+    "isa-archive/cleanup/20260206T191106Z/safe_move_plan.json",
+    "isa-archive/cleanup/20260206T191106Z/safe_move_plan.md",
+    "isa-archive/cleanup/20260206T191106Z/safe_move_plan_v2.json",
+    "isa-archive/cleanup/20260206T191106Z/safe_move_plan_v3.json",
+    "isa-archive/cleanup/20260206T191106Z/safe_move_plan_v4.json",
+    "isa-archive/cleanup/20260206T191857Z/safe_move_plan_v5.json",
+    "isa-archive/cleanup/20260206T191857Z/safe_move_plan_v5.md",
+    "isa-archive/next-step-scan/repo_scan.json",
+    "scripts/isa-catalogue/iron_gate_catalogue.sh"
+  ]
+}

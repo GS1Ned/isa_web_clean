@@ -30,8 +30,8 @@
       "docker/",
       "migrations/",
       "config/",
-      "configs/",
-      "cron-configs/"
+      "config/",
+      "ops/cron/"
     ],
     "deny_dotfiles": true
   },

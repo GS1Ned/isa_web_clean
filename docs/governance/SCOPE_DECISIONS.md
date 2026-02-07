@@ -42,4 +42,4 @@ Once a decision is recorded here, it is considered **final** unless explicitly r
 | `Archive/` | **OUT** | Deprecated or historical content. | 2026-01-27 |
 | `.DS_Store` | **OUT** | macOS specific metadata. | 2026-01-27 |
 | `iron-gate-FIXED.yml` | **OUT** | Temporary fix file, superseded by workflow in .github/workflows/. | 2026-01-27 |
-| `configs/` | **IN** | Configuration directory for ISA catalogue and policies, part of source code. | 2026-02-01 |
+| `config/` | **IN** | Configuration directory for ISA catalogue and policies, part of source code. | 2026-02-01 |
