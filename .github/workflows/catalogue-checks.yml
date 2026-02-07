@@ -29,6 +29,7 @@ jobs:
 
           if [[ "$ACTOR" != "github-actions[bot]" ]]; then
             if printf '%s\n' "$CHANGED" | grep -E '^[AMDR]\s+docs/evidence/(generated/_generated|_generated)/(GS1_EFRAG_CATALOGUE\.(json|csv)|GS1_EFRAG_CATALOGUE_INDEX\.md|CATALOGUE_ENTRYPOINTS_STATUS\.(json|md)|isa_catalogue_latest/|isa_catalogue_runs/)' >/dev/null; then
+
               echo "::error::Generated catalogue artefacts may only be updated by github-actions[bot] (scheduled refresh)."
               echo "::error::If you changed generator logic, remove generated outputs from this PR and let the scheduled job refresh them."
               exit 1

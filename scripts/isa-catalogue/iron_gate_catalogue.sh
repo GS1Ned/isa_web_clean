@@ -1,10 +1,11 @@
-ISA_EVIDENCE_OUT_DIR="${ISA_EVIDENCE_OUT_DIR:-$ISA_EVIDENCE_OUT_DIR}"
 #!/usr/bin/env bash
 set -euo pipefail
 set +H 2>/dev/null || true
 
 REPO_ROOT="${REPO_ROOT:-$(git rev-parse --show-toplevel)}"
-export REPO_ROOT
+ISA_EVIDENCE_OUT_DIR="${ISA_EVIDENCE_OUT_DIR:-$REPO_ROOT/docs/evidence/_generated}"
+export REPO_ROOT ISA_EVIDENCE_OUT_DIR
+
 POLICY="$REPO_ROOT/config/isa-catalogue/policy.json"
 LATEST="$ISA_EVIDENCE_OUT_DIR/isa_catalogue_latest"
 
@@ -12,8 +13,10 @@ python3 - <<'PY'
 import os, json, sys, datetime, csv
 
 repo = os.environ.get("REPO_ROOT") or sys.exit(2)
+out_dir = os.environ.get("ISA_EVIDENCE_OUT_DIR") or os.path.join(repo, "docs/evidence/_generated")
+
 policy_path = os.path.join(repo, "config/isa-catalogue/policy.json")
-latest = os.path.join(repo, "docs/evidence/_generated/isa_catalogue_latest")
+latest = os.path.join(out_dir, "isa_catalogue_latest")
 sum_path = os.path.join(latest, "summary.json")
 csv_path = os.path.join(latest, "files", "items.csv")
 
@@ -65,11 +68,14 @@ with open(csv_path, newline="", encoding="utf-8") as fh:
     r = csv.DictReader(fh)
     for row in r:
         v = (row.get("last_verified_date") or "").strip()
-        if not v: continue
+        if not v:
+            continue
         try:
             dt = parse_iso(v)
-            if dt.tzinfo is None: dt = dt.replace(tzinfo=datetime.timezone.utc)
-            if (max_lv is None) or (dt > max_lv): max_lv = dt
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=datetime.timezone.utc)
+            if (max_lv is None) or (dt > max_lv):
+                max_lv = dt
         except Exception:
             bad += 1
 
@@ -83,5 +89,6 @@ if age_lv > staleness_days_max:
 print("IRON PASS")
 print(f"generated_at_age_days={age_gen:.2f}")
 print(f"last_verified_age_days={age_lv:.2f}")
-if bad: print(f"note_bad_last_verified_date_rows={bad}")
+if bad:
+    print(f"note_bad_last_verified_date_rows={bad}")
 PY

@@ -974,93 +974,93 @@
       "sha256": "d907b6952fa5810bdd67cc34bd80b867f2b7f4e1cc1298548c7b0909a8685191"
     },
     {
-      "path": "docs/evidence/_generated/CENSUS.json",
+      "path": "docs/evidence/generated/_generated/CENSUS.json",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/CENSUS.json",
+      "target": "docs/misc/_docs/evidence/generated/_generated/CENSUS.json",
       "bytes": 14987,
       "sha256": "bdb371ebe66a9668c087e23c363abfe3546eb37a413d3393e81080058e35bc02"
     },
     {
-      "path": "docs/evidence/_generated/CENSUS_DIFF.md",
+      "path": "docs/evidence/generated/_generated/CENSUS_DIFF.md",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/CENSUS_DIFF.md",
+      "target": "docs/misc/_docs/evidence/generated/_generated/CENSUS_DIFF.md",
       "bytes": 525,
       "sha256": "6dc0537a003045784a261c50703a516e867c1d0c9e6ecbb9dc2cb4d82896a86e"
     },
     {
-      "path": "docs/evidence/_generated/DOCSET_MAP.csv",
+      "path": "docs/evidence/generated/_generated/DOCSET_MAP.csv",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/DOCSET_MAP.csv",
+      "target": "docs/misc/_docs/evidence/generated/_generated/DOCSET_MAP.csv",
       "bytes": 1549,
       "sha256": "6a3b50f9c0765f17a02b4fc93dd0685e67cb472c82a277274e8f886a635a03a8"
     },
     {
-      "path": "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv",
+      "path": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv",
+      "target": "docs/misc/_docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv",
       "bytes": 82599,
       "sha256": "cdd22511549bdbaca595b1400cf2c4af803478ebcb8a423e9c5e06f49bd30be0"
     },
     {
-      "path": "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json",
+      "path": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.json",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json",
+      "target": "docs/misc/_docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.json",
       "bytes": 312247,
       "sha256": "fc37ddd3ffa82864b4438b2dade79d7a65e351a8e320853b7d26cce9f95bb6b7"
     },
     {
-      "path": "docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
+      "path": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
+      "target": "docs/misc/_docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
       "bytes": 925,
       "sha256": "af79a1d53c812975fb3949a62f338aa980e43976ae7a0cc5d60decf2f6de73b7"
     },
     {
-      "path": "docs/evidence/_generated/LARGE_ASSETS.md",
+      "path": "docs/evidence/generated/_generated/LARGE_ASSETS.md",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/LARGE_ASSETS.md",
+      "target": "docs/misc/_docs/evidence/generated/_generated/LARGE_ASSETS.md",
       "bytes": 2107,
       "sha256": "a4d38682de2257bf071cabd00c8baa37abacd3dc2fa07a5a78f17f47b20a221f"
     },
     {
-      "path": "docs/evidence/_generated/SUBDIR_SUMMARY.md",
+      "path": "docs/evidence/generated/_generated/SUBDIR_SUMMARY.md",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/SUBDIR_SUMMARY.md",
+      "target": "docs/misc/_docs/evidence/generated/_generated/SUBDIR_SUMMARY.md",
       "bytes": 511,
       "sha256": "e086191abb7af401077ecf815d563d964c66975a40619656ad6abdd0efe86f58"
     },
     {
-      "path": "docs/evidence/_generated/isa_catalogue_latest/files/items.csv",
+      "path": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.csv",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/isa_catalogue_latest/files/items.csv",
+      "target": "docs/misc/_docs/evidence/generated/_generated/isa_catalogue_latest/files/items.csv",
       "bytes": 489228,
       "sha256": "c65cba03d5c7b6dc585a15ee79716ee8132ba6754c33dccbe00a1a76195b7704"
     },
     {
-      "path": "docs/evidence/_generated/isa_catalogue_latest/files/state.json",
+      "path": "docs/evidence/generated/_generated/isa_catalogue_latest/files/state.json",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/isa_catalogue_latest/files/state.json",
+      "target": "docs/misc/_docs/evidence/generated/_generated/isa_catalogue_latest/files/state.json",
       "bytes": 133,
       "sha256": "afe3bb9b15f90031bbd0069fdde76b72aa2698e8fb76049c584109130f2c58a0"
     },
     {
-      "path": "docs/evidence/_generated/isa_catalogue_latest/files/summary.json",
+      "path": "docs/evidence/generated/_generated/isa_catalogue_latest/files/summary.json",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/isa_catalogue_latest/files/summary.json",
+      "target": "docs/misc/_docs/evidence/generated/_generated/isa_catalogue_latest/files/summary.json",
       "bytes": 95306,
       "sha256": "0b3bfea1290876b189a3d37bc650b0ab448201885121cfc8004e64dcbbf42077"
     },
     {
-      "path": "docs/evidence/_generated/isa_catalogue_latest/index.md",
+      "path": "docs/evidence/generated/_generated/isa_catalogue_latest/index.md",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/isa_catalogue_latest/index.md",
+      "target": "docs/misc/_docs/evidence/generated/_generated/isa_catalogue_latest/index.md",
       "bytes": 750,
       "sha256": "c8f4e392a4da1fa320c28aea9843b3930fbf498f10a76cc1df5d5aa42158aa5a"
     },
     {
-      "path": "docs/evidence/_generated/isa_catalogue_latest/summary.json",
+      "path": "docs/evidence/generated/_generated/isa_catalogue_latest/summary.json",
       "bucket": "docs_misc",
-      "target": "docs/misc/_docs/evidence/_generated/isa_catalogue_latest/summary.json",
+      "target": "docs/misc/_docs/evidence/generated/_generated/isa_catalogue_latest/summary.json",
       "bytes": 934,
       "sha256": "7d44a4f67befcf575ddb929523572764f71e938f9d2befed1d790214e1618806"
     },
@@ -2290,14 +2290,14 @@
       "sha256": "30b4f9f2209fbcd2abec092de1f15b1a67d0a01d9e6adcb1273b3f21d8e8f076"
     },
     {
-      "path": "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json",
+      "path": "docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json",
       "bucket": "planning_docs",
       "target": "docs/planning/CATALOGUE_ENTRYPOINTS_STATUS.json",
       "bytes": 5703,
       "sha256": "01223db28d0c87d810d04ddeec783a3139147697e8822d54aa974c5257841305"
     },
     {
-      "path": "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
+      "path": "docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
       "bucket": "planning_docs",
       "target": "docs/planning/CATALOGUE_ENTRYPOINTS_STATUS.md",
       "bytes": 2094,
@@ -3024,7 +3024,7 @@
     },
     {
       "score": 1,
-      "path": "./docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md"
+      "path": "./docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md"
     },
     {
       "score": 1,
