@@ -1,3 +1,4 @@
+ISA_EVIDENCE_OUT_DIR="${ISA_EVIDENCE_OUT_DIR:-$ISA_EVIDENCE_OUT_DIR}"
 #!/usr/bin/env bash
 set -euo pipefail
 set +H 2>/dev/null || true
@@ -5,7 +6,7 @@ set +H 2>/dev/null || true
 REPO_ROOT="${REPO_ROOT:-$(git rev-parse --show-toplevel)}"
 export REPO_ROOT
 POLICY="$REPO_ROOT/config/isa-catalogue/policy.json"
-LATEST="$REPO_ROOT/docs/evidence/_generated/isa_catalogue_latest"
+LATEST="$ISA_EVIDENCE_OUT_DIR/isa_catalogue_latest"
 
 python3 - <<'PY'
 import os, json, sys, datetime, csv
