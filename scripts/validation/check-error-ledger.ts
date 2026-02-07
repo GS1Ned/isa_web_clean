@@ -1,4 +1,4 @@
-import { getDb } from './server/db';
+import { getDb } from '../../server/db';
 
 async function main() {
   const db = await getDb();

@@ -1,4 +1,4 @@
-import { getDb } from './server/db';
+import { getDb } from '../../server/db';
 import { pipelineExecutionLog } from './drizzle/schema';
 import { desc } from 'drizzle-orm';
 
