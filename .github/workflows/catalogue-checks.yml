@@ -39,4 +39,7 @@ jobs:
         run: bash scripts/isa-catalogue/iron_gate_catalogue.sh
         
       - name: Validate GS1/EFRAG catalogue legacy artefacts + required bodies
+        env:
+          ISA_EVIDENCE_OUT_DIR: docs/evidence/generated/_generated
+          ISA_EVIDENCE_SNAPSHOT: '1'
         run: python3 scripts/validate_gs1_efrag_catalogue.py
