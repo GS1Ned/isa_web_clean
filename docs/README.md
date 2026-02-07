@@ -5,6 +5,11 @@
 
 ---
 
+## Canonical Repository Overview
+
+- 📄 **Repository Tree:** [/REPO_TREE.md](/REPO_TREE.md)
+
+
 ## 📋 Project Status & Planning
 
 | Document                                       | Status     | Description                                                     | Last Updated |
