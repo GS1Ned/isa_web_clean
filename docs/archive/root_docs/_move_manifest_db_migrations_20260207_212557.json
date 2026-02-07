@@ -1,0 +1,20 @@
+{
+  "created_at_local": "2026-02-07 21:25:57",
+  "move_map_file": "docs/archive/root_docs/_move_map_db_migrations_20260207_212557.json",
+  "inventory_file": "docs/archive/root_docs/_inventory_db_migrations_20260207_212557.json",
+  "moved_count": 2,
+  "skipped_count": 0,
+  "errors_count": 0,
+  "moved": [
+    {
+      "from": "migrations/manual_ingest_02_04_05_06.sql",
+      "to": "drizzle/migrations/_root/manual_ingest_02_04_05_06.sql"
+    },
+    {
+      "from": "server/db/migrations/0001_add_error_ledger.sql",
+      "to": "drizzle/migrations/_server/0001_add_error_ledger.sql"
+    }
+  ],
+  "skipped": [],
+  "errors": []
+}
