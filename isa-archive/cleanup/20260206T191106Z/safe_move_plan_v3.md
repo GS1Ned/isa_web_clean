@@ -190,9 +190,9 @@
 | `docs/INGESTION_DELEGATION_SUMMARY.md` | `docs/misc/_docs/INGESTION_DELEGATION_SUMMARY.md` | `docs_misc` |
 | `docs/INGESTION_GUIDE.md` | `docs/misc/_docs/INGESTION_GUIDE.md` | `docs_misc` |
 | `docs/INSTRUCTION_EVALUATION_ANALYSIS.md` | `docs/misc/_docs/INSTRUCTION_EVALUATION_ANALYSIS.md` | `docs_misc` |
-| `docs/INVENTORY_AFTER.csv` | `isa-archive/phase-reports/docs/INVENTORY_AFTER.csv` | `phase_reports` |
-| `docs/INVENTORY_BEFORE.csv` | `isa-archive/phase-reports/docs/INVENTORY_BEFORE.csv` | `phase_reports` |
-| `docs/INVENTORY_FINAL.csv` | `isa-archive/phase-reports/docs/INVENTORY_FINAL.csv` | `phase_reports` |
+| `docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv` | `isa-archive/phase-reports/docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv` | `phase_reports` |
+| `docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv` | `isa-archive/phase-reports/docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv` | `phase_reports` |
+| `docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv` | `isa-archive/phase-reports/docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv` | `phase_reports` |
 | `docs/ISA_AGENT_COLLABORATION.md` | `docs/misc/_docs/ISA_AGENT_COLLABORATION.md` | `docs_misc` |
 | `docs/ISA_AUTONOMOUS_ROADMAP_V1.md` | `docs/planning/ISA_AUTONOMOUS_ROADMAP_V1.md` | `planning_docs` |
 | `docs/ISA_BRAND_POSITIONING.md` | `docs/misc/_docs/ISA_BRAND_POSITIONING.md` | `docs_misc` |

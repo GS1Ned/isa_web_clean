@@ -1982,23 +1982,23 @@
       "sha256": "1fcd239f13f99e182d1b61d1ec2522ef044e50c1f5f7eed98085b32345872f85"
     },
     {
-      "path": "docs/INVENTORY_AFTER.csv",
+      "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv",
       "bucket": "phase_reports",
-      "target": "isa-archive/phase-reports/docs/INVENTORY_AFTER.csv",
+      "target": "isa-archive/phase-reports/docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv",
       "bytes": 178594,
       "sha256": "35edbe481f6eba855e82d8499e739b72cfab4d142e905fa753cad1302dc1375f"
     },
     {
-      "path": "docs/INVENTORY_BEFORE.csv",
+      "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv",
       "bucket": "phase_reports",
-      "target": "isa-archive/phase-reports/docs/INVENTORY_BEFORE.csv",
+      "target": "isa-archive/phase-reports/docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv",
       "bytes": 177030,
       "sha256": "51c5b918bc5661ef27fef1288252ae03ebbc33f504e267dc2707597a57852f63"
     },
     {
-      "path": "docs/INVENTORY_FINAL.csv",
+      "path": "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv",
       "bucket": "phase_reports",
-      "target": "isa-archive/phase-reports/docs/INVENTORY_FINAL.csv",
+      "target": "isa-archive/phase-reports/docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv",
       "bytes": 177111,
       "sha256": "7f8d64bb7ec5264e0c08a1c9f7d2030188f608e11a610c55638f924654565ed0"
     },

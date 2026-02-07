@@ -20,9 +20,9 @@
   "text_refs_updated_count": 18,
   "text_refs_updated": [
     "docs/CRON_QUICK_START.md",
-    "docs/INVENTORY_AFTER.csv",
-    "docs/INVENTORY_BEFORE.csv",
-    "docs/INVENTORY_FINAL.csv",
+    "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_AFTER.csv",
+    "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_BEFORE.csv",
+    "docs/evidence/generated/inventory/docs/evidence/generated/inventory/INVENTORY_FINAL.csv",
     "docs/archive/root_docs/_move_map_ops_config_cleanup_20260207_213615.json",
     "docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.json",
     "docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.md",

@@ -1,7 +1,7 @@
 # ISA Dataset Candidates - Detailed Analysis
 
 **Generated:** 2025-12-13  
-**Source:** INVENTORY_BEFORE.csv  
+**Source:** docs/evidence/generated/inventory/INVENTORY_BEFORE.csv  
 **Total Candidates:** 82 files  
 **Total Size:** 56.4 MB
 
