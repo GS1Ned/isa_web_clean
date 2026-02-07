@@ -58,6 +58,8 @@ jobs:
 
           echo "✅ Inventory file check passed"
       - name: Check GS1/EFRAG catalogue freshness
+  env:
+    ISA_EVIDENCE_OUT_DIR: docs/evidence/generated/_generated
         run: python3 scripts/validate_gs1_efrag_catalogue.py
 
 
