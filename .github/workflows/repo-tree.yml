@@ -1,0 +1,41 @@
+name: Generate Repository Tree
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repo-tree:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: sudo apt-get update && sudo apt-get install -y tree
+
+      - run: |
+          mkdir -p docs/repo
+          {
+            echo "# Repository Tree"
+            echo
+            echo "Generated on: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo
+            echo '```'
+            tree -a -L 6 \
+              -I '.git|node_modules|dist|build|.next|coverage|.turbo|.cache|.DS_Store'
+            echo '```'
+          } > docs/repo/REPO_TREE.md
+
+      - run: |
+          if git diff --quiet; then
+            echo "No changes in repository tree."
+            exit 0
+          fi
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add docs/repo/REPO_TREE.md
+          git commit -m "chore(ci): update repository tree"
+          git push
