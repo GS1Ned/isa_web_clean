@@ -1,17 +1,19 @@
+import os
+EVIDENCE_OUT_DIR = os.environ.get('ISA_EVIDENCE_OUT_DIR', 'docs/evidence/_generated')
 import os, json, csv, datetime, sys
 
 repo_root = os.getcwd()
-latest_dir = os.path.join(repo_root, "docs/evidence/_generated/isa_catalogue_latest")
+latest_dir = os.path.join(repo_root, EVIDENCE_OUT_DIR, 'isa_catalogue_latest')
 files_dir = os.path.join(latest_dir, "files")
 items_csv = os.path.join(files_dir, "items.csv")
 summary_json = os.path.join(latest_dir, "summary.json")
 
 required = [
-  "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv",
-  "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json",
-  "docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
-  "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json",
-  "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
+os.path.join(repo_root, EVIDENCE_OUT_DIR, "GS1_EFRAG_CATALOGUE.csv"),
+os.path.join(repo_root, EVIDENCE_OUT_DIR, "GS1_EFRAG_CATALOGUE.json"),
+os.path.join(repo_root, EVIDENCE_OUT_DIR, "GS1_EFRAG_CATALOGUE_INDEX.md"),
+os.path.join(repo_root, EVIDENCE_OUT_DIR, "CATALOGUE_ENTRYPOINTS_STATUS.json"),
+os.path.join(repo_root, EVIDENCE_OUT_DIR, "CATALOGUE_ENTRYPOINTS_STATUS.md"),
 ]
 
 missing = [p for p in required if not os.path.isfile(os.path.join(repo_root, p))]

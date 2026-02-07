@@ -1,3 +1,4 @@
+ISA_EVIDENCE_OUT_DIR="${ISA_EVIDENCE_OUT_DIR:-$REPO_ROOT/docs/evidence/_generated}"
 #!/usr/bin/env bash
 set -euo pipefail
 set +H 2>/dev/null || true
@@ -6,9 +7,10 @@ KEEP_SUCCESS="${KEEP_SUCCESS:?set KEEP_SUCCESS=/path/to/isa_out_...}"
 REPO_ROOT="${REPO_ROOT:-$(git rev-parse --show-toplevel)}"
 
 ts="$(date -u +%Y%m%dT%H%M%SZ)"
-OUT_RUNS="$REPO_ROOT/docs/evidence/generated/_generated/isa_catalogue_runs"
+
+OUT_RUNS="$ISA_EVIDENCE_OUT_DIR/isa_catalogue_runs"
 OUT_SNAP="$OUT_RUNS/$ts"
-OUT_LATEST="$REPO_ROOT/docs/evidence/generated/_generated/isa_catalogue_latest"
+OUT_LATEST="$ISA_EVIDENCE_OUT_DIR/isa_catalogue_latest"
 
 mkdir -p "$OUT_SNAP/files"
 

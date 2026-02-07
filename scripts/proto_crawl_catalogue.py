@@ -1,3 +1,4 @@
+import os
 import csv, json, os, re, hashlib
 from datetime import datetime, timezone, date
 from html.parser import HTMLParser
@@ -5,9 +6,9 @@ from urllib.parse import urljoin, urlparse, urldefrag
 from urllib.request import Request, urlopen
 
 CFG="config/catalogue_sources.json"
-OUT_JSON="docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json"
-OUT_CSV="docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv"
-OUT_MD="docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md"
+OUT_JSON="os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/GS1_EFRAG_CATALOGUE.json"
+OUT_CSV="os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/GS1_EFRAG_CATALOGUE.csv"
+OUT_MD="os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/GS1_EFRAG_CATALOGUE_INDEX.md"
 
 UA="ISA-PrototypeCrawler/0.1"
 EXTS=(".pdf",".zip",".xsd",".json",".csv",".xml",".ttl",".rdf",".html",".htm",".docx",".xlsx",".pptx")

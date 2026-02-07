@@ -1,8 +1,9 @@
+import os
 from pathlib import Path
 import json, datetime, ssl, urllib.request, urllib.error
 
-OUT_JSON=Path("docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json")
-OUT_MD=Path("docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md")
+OUT_JSON=Path("os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/CATALOGUE_ENTRYPOINTS_STATUS.json")
+OUT_MD=Path("os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/CATALOGUE_ENTRYPOINTS_STATUS.md")
 CFG=Path("config/catalogue_sources.json")
 
 def norm_seed(s):
