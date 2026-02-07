@@ -1,3 +1,5 @@
+import os
+EVIDENCE_OUT_DIR = os.environ.get('ISA_EVIDENCE_OUT_DIR', 'docs/evidence/_generated')
 import os, json, csv, datetime, sys
 
 repo_root = os.getcwd()
