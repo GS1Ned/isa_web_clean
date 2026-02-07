@@ -16,31 +16,49 @@ jobs:
 
       - run: sudo apt-get update && sudo apt-get install -y tree
 
-      - run: |
-          mkdir -p docs/repo
+      - id: gen
+        run: |
+          set -euo pipefail
+
+          TARGET="docs/repo/REPO_TREE.md"
+          if [ -f "$TARGET" ]; then
+            MISSING_BEFORE=0
+          else
+            MISSING_BEFORE=1
+          fi
+
+          mkdir -p "$(dirname "$TARGET")"
+
           {
             echo "# Repository Tree"
             echo
             echo "Generated on: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
             echo
             echo '```'
-            tree -a -L 6 \
-              -I '.git|node_modules|dist|build|.next|coverage|.turbo|.cache|.DS_Store'
+            tree -a -L 6 -I '.git|node_modules|dist|build|.next|coverage|.turbo|.cache|.DS_Store'
             echo '```'
-          } > docs/repo/REPO_TREE.md
+          } > "$TARGET"
 
-      - run: |
-          if [ ! -f docs/repo/REPO_TREE.md ]; then
-            echo "REPO_TREE.md missing; bootstrap commit required."
-            FORCE_COMMIT=1
+          if [ "$MISSING_BEFORE" -eq 1 ]; then
+            echo "SHOULD_COMMIT=1" >> "$GITHUB_OUTPUT"
           else
-            FORCE_COMMIT=0
+            if git diff --quiet; then
+              echo "SHOULD_COMMIT=0" >> "$GITHUB_OUTPUT"
+            else
+              echo "SHOULD_COMMIT=1" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
-          if [ "$FORCE_COMMIT" -eq 0 ] && git diff --quiet; then
-            echo "No changes in repository tree."
-            exit 0
-          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repo-tree
+          path: docs/repo/REPO_TREE.md
 
+      - if: steps.gen.outputs.SHOULD_COMMIT == '1'
+        run: |
+          set -euo pipefail
           git config user.name "github-actions"
-          git config u
+          git config user.email "github-actions@users.noreply.github.com"
+          git add docs/repo/REPO_TREE.md
+          git commit -m "chore(ci): update repository tree" || exit 0
+          git push
