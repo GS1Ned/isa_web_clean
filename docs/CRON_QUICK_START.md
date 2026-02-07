@@ -235,7 +235,7 @@ node scripts/generate-cron-config.mjs
 
 - **Detailed Setup Guide:** `docs/CRON_SETUP_GUIDE.md`
 - **Configuration Generator:** `scripts/generate-cron-config.mjs`
-- **Alternative Cron Services:** See `cron-configs/` directory
+- **Alternative Cron Services:** See `ops/cron/` directory
 - **Monitoring Code:** `server/cron-monitoring-simple.ts`
 
 ---
@@ -251,7 +251,7 @@ A: Yes! Edit your cronjob in cron-job.org and change the schedule to any time yo
 A: Yes, but be mindful of rate limits from news sources. Daily is recommended.
 
 **Q: What if I want to use a different cron service?**
-A: See `cron-configs/` directory for configurations for EasyCron, GitHub Actions, and more.
+A: See `ops/cron/` directory for configurations for EasyCron, GitHub Actions, and more.
 
 **Q: How do I test manually?**
 A: Use curl:

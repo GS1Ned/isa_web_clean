@@ -4,14 +4,14 @@ set +H 2>/dev/null || true
 
 REPO_ROOT="${REPO_ROOT:-$(git rev-parse --show-toplevel)}"
 export REPO_ROOT
-POLICY="$REPO_ROOT/configs/isa-catalogue/policy.json"
+POLICY="$REPO_ROOT/config/isa-catalogue/policy.json"
 LATEST="$REPO_ROOT/docs/evidence/_generated/isa_catalogue_latest"
 
 python3 - <<'PY'
 import os, json, sys, datetime, csv
 
 repo = os.environ.get("REPO_ROOT") or sys.exit(2)
-policy_path = os.path.join(repo, "configs/isa-catalogue/policy.json")
+policy_path = os.path.join(repo, "config/isa-catalogue/policy.json")
 latest = os.path.join(repo, "docs/evidence/_generated/isa_catalogue_latest")
 sum_path = os.path.join(latest, "summary.json")
 csv_path = os.path.join(latest, "files", "items.csv")
