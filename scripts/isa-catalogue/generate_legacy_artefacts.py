@@ -1,8 +1,9 @@
+import os
 import csv, json, os, datetime, hashlib
 from collections import defaultdict
 
 repo_root = os.environ["REPO_ROOT"]
-latest_dir = os.path.join(repo_root, "docs/evidence/_generated/isa_catalogue_latest")
+latest_dir = os.path.join(repo_root, "os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/isa_catalogue_latest")
 files_dir = os.path.join(latest_dir, "files")
 items_csv = os.path.join(files_dir, "items.csv")
 index_md = os.path.join(latest_dir, "index.md")
@@ -11,11 +12,11 @@ summary_json = os.path.join(latest_dir, "summary.json")
 if not os.path.isfile(items_csv):
     raise SystemExit(f"missing {items_csv}")
 
-out_csv = os.path.join(repo_root, "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv")
-out_json = os.path.join(repo_root, "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json")
-out_index = os.path.join(repo_root, "docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md")
-out_status_json = os.path.join(repo_root, "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json")
-out_status_md = os.path.join(repo_root, "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md")
+out_csv = os.path.join(repo_root, "os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/GS1_EFRAG_CATALOGUE.csv")
+out_json = os.path.join(repo_root, "os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/GS1_EFRAG_CATALOGUE.json")
+out_index = os.path.join(repo_root, "os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/GS1_EFRAG_CATALOGUE_INDEX.md")
+out_status_json = os.path.join(repo_root, "os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/CATALOGUE_ENTRYPOINTS_STATUS.json")
+out_status_md = os.path.join(repo_root, "os.environ.get("ISA_EVIDENCE_OUT_DIR", "docs/evidence/_generated")/CATALOGUE_ENTRYPOINTS_STATUS.md")
 
 rows = []
 with open(items_csv, newline="", encoding="utf-8") as fh:
