@@ -128,9 +128,9 @@
 | `./docs/evidence/ISA_SOURCES_REGISTRY_v0.md` | catalogue-source-registry.md | active | — | Core source |
 | `./docs/evidence/_benchmarks/ISA_EXTERNAL_BENCHMARK_NOTES_v1.md` | retrieval-embeddings-grounding.md | active | — | Core source |
 | `./docs/evidence/_benchmarks/ISA_EXTERNAL_BENCHMARK_NOTES_v2.md` | catalogue-source-registry.md | active | — | Core source |
-| `./docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md` | catalogue-source-registry.md | active | — | Core source |
-| `./docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md` | catalogue-source-registry.md | active | — | Core source |
-| `./docs/evidence/_generated/isa_catalogue_latest/index.md` | catalogue-source-registry.md | active | — | Core source |
+| `./docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md` | catalogue-source-registry.md | active | — | Core source |
+| `./docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE_INDEX.md` | catalogue-source-registry.md | active | — | Core source |
+| `./docs/evidence/generated/_generated/isa_catalogue_latest/index.md` | catalogue-source-registry.md | active | — | Core source |
 | `./docs/evidence/_research/ISA_CURRENT_ARCHITECTURE_BRIEF_v0.md` | repo-change-control-release.md | active | — | Core source |
 | `./docs/governance/DATE_INTEGRITY_AUDIT.md` | agent-prompt-governance.md | active | — | Core source |
 | `./docs/governance/TEMPORAL_GUARDRAILS.md` | governance-iron-protocol.md | active | — | Core source |

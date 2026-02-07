@@ -6,10 +6,10 @@ DOC_AUTHORITY_MAP.md,docs/evidence/DOC_AUTHORITY_MAP.md,copied
 ENTRYPOINTS.md,docs/evidence/ENTRYPOINTS.md,copied
 CRITICAL_FILES_CANDIDATES.md,docs/evidence/CRITICAL_FILES_CANDIDATES.md,copied
 EXEC_GRAPH.mmd,docs/evidence/EXEC_GRAPH.mmd,copied
-CENSUS.json,docs/evidence/_generated/CENSUS.json,copied
-CENSUS_DIFF.md,docs/evidence/_generated/CENSUS_DIFF.md,copied
-SUBDIR_SUMMARY.md,docs/evidence/_generated/SUBDIR_SUMMARY.md,copied
-LARGE_ASSETS.md,docs/evidence/_generated/LARGE_ASSETS.md,copied
+CENSUS.json,docs/evidence/generated/_generated/CENSUS.json,copied
+CENSUS_DIFF.md,docs/evidence/generated/_generated/CENSUS_DIFF.md,copied
+SUBDIR_SUMMARY.md,docs/evidence/generated/_generated/SUBDIR_SUMMARY.md,copied
+LARGE_ASSETS.md,docs/evidence/generated/_generated/LARGE_ASSETS.md,copied
 ISA_RESEARCH_PLAN_v1.md,docs/evidence/_research/ISA_RESEARCH_PLAN_v1.md,copied
 ISA_RESEARCH_PLAN_v2.md,docs/evidence/_research/ISA_RESEARCH_PLAN_v2.md,copied
 ISA_CURRENT_ARCHITECTURE_BRIEF_v0.md,docs/evidence/_research/ISA_CURRENT_ARCHITECTURE_BRIEF_v0.md,copied

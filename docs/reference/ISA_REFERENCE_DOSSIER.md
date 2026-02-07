@@ -58,7 +58,7 @@ Purpose: Demonstrable completeness and currency of sources.
 
 | Artifact | Location |
 |----------|----------|
-| Catalogue Items | `docs/evidence/_generated/isa_catalogue_latest/` |
+| Catalogue Items | `docs/evidence/generated/_generated/isa_catalogue_latest/` |
 | Source Config | `config/catalogue_sources.json` |
 | Validation Script | `scripts/validate_gs1_efrag_catalogue.py` |
 | Update Workflow | `.github/workflows/update-gs1-efrag-catalogue.yml` |

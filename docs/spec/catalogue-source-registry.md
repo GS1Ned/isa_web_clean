@@ -20,7 +20,7 @@
 7. `./docs/evidence/_benchmarks/ISA_EXTERNAL_BENCHMARK_NOTES_v2.md`
 8. `./docs/GOVERNANCE_FINAL_SUMMARY.md`
 9. `./docs/evidence/ENTRYPOINTS.md`
-10. `./docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md`
+10. `./docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md`
 
 ## 3. Definitions
 

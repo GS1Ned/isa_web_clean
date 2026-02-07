@@ -86,8 +86,8 @@
         "data/standards/**/*"
       ],
       "outputs": [
-        "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json",
-        "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv"
+        "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.json",
+        "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv"
       ],
       "env_interfaces": [
         "DATABASE_URL"

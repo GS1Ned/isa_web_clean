@@ -1,7 +1,7 @@
 # ISA catalogue export (snapshot)
 
 - generated_at: `2026-01-31T08:51:46.356875Z`
-- snapshot: `/Users/frisowempe/Documents/GitHub/isa_web_clean/docs/evidence/_generated/isa_catalogue_runs/20260131T085146Z`
+- snapshot: `/Users/frisowempe/Documents/GitHub/isa_web_clean/docs/evidence/generated/_generated/isa_catalogue_runs/20260131T085146Z`
 - source_run_dir: `/Users/frisowempe/isa_out_20260130T201336Z`
 - file_count: `4`
 

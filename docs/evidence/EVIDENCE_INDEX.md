@@ -12,7 +12,7 @@ Goal: make handoff/commit to GitHub deterministic and avoid divergence between l
 ## Recommended commit structure (single PR)
 - docs/iron/ (IRON canon: protocol + governance + scope decisions + validation plan + knowledge map + risk register; plus enforcement files elsewhere)
 - docs/evidence/ (these research outputs)
-- docs/evidence/_generated/ (rebuildable census/summaries)
+- docs/evidence/generated/_generated/ (rebuildable census/summaries)
 - docs/evidence/_research/ (research plans)
 - docs/evidence/_benchmarks/ (external benchmarking notes)
 
@@ -27,10 +27,10 @@ Goal: make handoff/commit to GitHub deterministic and avoid divergence between l
 - `docs/evidence/EXEC_GRAPH.mmd` — Mermaid execution graph
 
 ### Generated / rebuildable artefacts
-- `docs/evidence/_generated/CENSUS.json` — Machine census of repo snapshot
-- `docs/evidence/_generated/CENSUS_DIFF.md` — Inventory vs snapshot diffs
-- `docs/evidence/_generated/SUBDIR_SUMMARY.md` — Directory summary
-- `docs/evidence/_generated/LARGE_ASSETS.md` — Largest assets + classification
+- `docs/evidence/generated/_generated/CENSUS.json` — Machine census of repo snapshot
+- `docs/evidence/generated/_generated/CENSUS_DIFF.md` — Inventory vs snapshot diffs
+- `docs/evidence/generated/_generated/SUBDIR_SUMMARY.md` — Directory summary
+- `docs/evidence/generated/_generated/LARGE_ASSETS.md` — Largest assets + classification
 
 ### Research planning and traces
 - `docs/evidence/_research/ISA_RESEARCH_PLAN_v1.md` — Research plan v1

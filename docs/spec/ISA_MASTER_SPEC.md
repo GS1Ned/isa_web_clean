@@ -104,7 +104,7 @@ Authoritative index for canonical specifications.
 - `./docs/evidence/_benchmarks/ISA_EXTERNAL_BENCHMARK_NOTES_v2.md`
 - `./docs/GOVERNANCE_FINAL_SUMMARY.md`
 - `./docs/evidence/ENTRYPOINTS.md`
-- `./docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md`
+- `./docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md`
 
 ### Retrieval / Embeddings / Grounding
 

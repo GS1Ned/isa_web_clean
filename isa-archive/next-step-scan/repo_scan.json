@@ -20473,7 +20473,7 @@
         ]
       },
       {
-        "path": "docs/evidence/_generated/CENSUS.json",
+        "path": "docs/evidence/generated/_generated/CENSUS.json",
         "line": 421,
         "text": "      \"ROADMAP.md\": {",
         "submatches": [
@@ -20485,7 +20485,7 @@
         ]
       },
       {
-        "path": "docs/evidence/_generated/CENSUS.json",
+        "path": "docs/evidence/generated/_generated/CENSUS.json",
         "line": 625,
         "text": "      \"todo.md\": {",
         "submatches": [
@@ -40262,7 +40262,7 @@
         ]
       },
       {
-        "path": "docs/evidence/_generated/isa_catalogue_latest/files/items.csv",
+        "path": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.csv",
         "line": 322,
         "text": "entrypoints,https://www.efrag.org/News,https://www.efrag.org/sites/default/files/media/document/2024-10/Conflict%20of%20Interest%20Policy%20for%20EFRAG%20Boards.pdf,pdf,Legal &amp; Policies | EFRAG,,,,html_link,200,application/pdf,211030,\"\"\"33856-624860b536997\"\"\",\"Tue, 15 Oct 2024 15:59:54 GMT\",2026-01-30",
         "submatches": [
@@ -40274,7 +40274,7 @@
         ]
       },
       {
-        "path": "docs/evidence/_generated/isa_catalogue_latest/files/items.csv",
+        "path": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.csv",
         "line": 1600,
         "text": "GS1 Global,https://www.gs1.org/,https://gs1go2.azureedge.net/cdn/ff/X1BQx626Bk1c6JpITSO1mLvn0lKYR9P9LgqBcir57hM/1763640429/public/2025-11/gs1-google-pr.pdf,pdf,GS1 brings trusted medicine information to smartphones through collaboration with Google – empowering patients | GS1,,,,html_link,200,application/pdf,,,\"Wed, 20 Jan 1988 04:20:42 GMT\",2026-01-30",
         "submatches": [
@@ -42888,7 +42888,7 @@
         ]
       },
       {
-        "path": "docs/evidence/_generated/isa_catalogue_latest/files/items.jsonl",
+        "path": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.jsonl",
         "line": 321,
         "text": "{\"source\":\"entrypoints\",\"source_url\":\"https://www.efrag.org/News\",\"resource_url\":\"https://www.efrag.org/sites/default/files/media/document/2024-10/Conflict%20of%20Interest%20Policy%20for%20EFRAG%20Boards.pdf\",\"format\":\"pdf\",\"title\":\"Legal &amp; Policies | EFRAG\",\"date_published\":\"\",\"version\":\"\",\"status\":\"\",\"discovered_via\":\"html_link\",\"http_status\":200,\"content_type\":\"application/pdf\",\"content_length\":\"211030\",\"etag\":\"\\\"33856-624860b536997\\\"\",\"last_modified\":\"Tue, 15 Oct 2024 15:59:54 GMT\",\"last_verified_date\":\"2026-01-30\"}",
         "submatches": [
@@ -42900,7 +42900,7 @@
         ]
       },
       {
-        "path": "docs/evidence/_generated/isa_catalogue_latest/files/items.jsonl",
+        "path": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.jsonl",
         "line": 1599,
         "text": "{\"source\":\"GS1 Global\",\"source_url\":\"https://www.gs1.org/\",\"resource_url\":\"https://gs1go2.azureedge.net/cdn/ff/X1BQx626Bk1c6JpITSO1mLvn0lKYR9P9LgqBcir57hM/1763640429/public/2025-11/gs1-google-pr.pdf\",\"format\":\"pdf\",\"title\":\"GS1 brings trusted medicine information to smartphones through collaboration with Google – empowering patients | GS1\",\"date_published\":\"\",\"version\":\"\",\"status\":\"\",\"discovered_via\":\"html_link\",\"http_status\":200,\"content_type\":\"application/pdf\",\"content_length\":\"\",\"etag\":\"\",\"last_modified\":\"Wed, 20 Jan 1988 04:20:42 GMT\",\"last_verified_date\":\"2026-01-30\"}",
         "submatches": [
@@ -43891,7 +43891,7 @@
       },
       {
         "score": 1,
-        "path": "./docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md"
+        "path": "./docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md"
       },
       {
         "score": 1,
@@ -44309,13 +44309,13 @@
       "./docs/evidence/ISA_JOURNEY_TRACES_v1.md",
       "./docs/evidence/ISA_SOURCES_REGISTRY_v0.md",
       "./docs/evidence/_benchmarks/ISA_EXTERNAL_BENCHMARK_NOTES_v2.md",
-      "./docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
-      "./docs/evidence/_generated/CENSUS.json",
-      "./docs/evidence/_generated/DOCSET_MAP.csv",
-      "./docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv",
-      "./docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json",
-      "./docs/evidence/_generated/isa_catalogue_latest/files/items.csv",
-      "./docs/evidence/_generated/isa_catalogue_latest/files/items.jsonl",
+      "./docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
+      "./docs/evidence/generated/_generated/CENSUS.json",
+      "./docs/evidence/generated/_generated/DOCSET_MAP.csv",
+      "./docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv",
+      "./docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.json",
+      "./docs/evidence/generated/_generated/isa_catalogue_latest/files/items.csv",
+      "./docs/evidence/generated/_generated/isa_catalogue_latest/files/items.jsonl",
       "./docs/evidence/_research/ISA_RESEARCH_PLAN_v1.md",
       "./docs/evidence/_research/ISA_RESEARCH_PLAN_v2.md",
       "./docs/governance/AUDIT_EXECUTION_MODE.md",
