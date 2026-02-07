@@ -25,20 +25,26 @@ jobs:
           ACTOR="${{ github.actor }}"
           BASE="${{ github.event.pull_request.base.sha }}"
           HEAD="${{ github.event.pull_request.head.sha }}"
-          CHANGED="$(git diff --name-only "$BASE...$HEAD" || true)"
+          CHANGED="$(git diff --name-status "$BASE...$HEAD" || true)"
+
           if [[ "$ACTOR" != "github-actions[bot]" ]]; then
-            if printf '%s\n' "$CHANGED" | grep -E '^(docs/evidence/_generated/(GS1_EFRAG_CATALOGUE\.(json|csv)|GS1_EFRAG_CATALOGUE_INDEX\.md|CATALOGUE_ENTRYPOINTS_STATUS\.(json|md))|docs/evidence/_generated/isa_catalogue_latest/|docs/evidence/_generated/isa_catalogue_runs/)' >/dev/null; then
+            if printf '%s\n' "$CHANGED" | grep -E '^[AMDR]\s+docs/evidence/(generated/_generated|_generated)/(GS1_EFRAG_CATALOGUE\.(json|csv)|GS1_EFRAG_CATALOGUE_INDEX\.md|CATALOGUE_ENTRYPOINTS_STATUS\.(json|md)|isa_catalogue_latest/|isa_catalogue_runs/)' >/dev/null; then
               echo "::error::Generated catalogue artefacts may only be updated by github-actions[bot] (scheduled refresh)."
               echo "::error::If you changed generator logic, remove generated outputs from this PR and let the scheduled job refresh them."
               exit 1
             fi
           fi
           echo "ok"
-          
-      - name: IRON gate: "catalogue present + fresh"
+
+      - name: 'IRON gate: "catalogue present + fresh"'
+        shell: bash
+        env:
+          ISA_EVIDENCE_OUT_DIR: docs/evidence/generated/_generated
+          ISA_EVIDENCE_SNAPSHOT: '1'
         run: bash scripts/isa-catalogue/iron_gate_catalogue.sh
-        
+
       - name: Validate GS1/EFRAG catalogue legacy artefacts + required bodies
+        shell: bash
         env:
           ISA_EVIDENCE_OUT_DIR: docs/evidence/generated/_generated
           ISA_EVIDENCE_SNAPSHOT: '1'
