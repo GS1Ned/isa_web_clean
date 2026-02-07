@@ -217,7 +217,7 @@ def build_registry(repo_root, inventory_csv):
 if __name__ == '__main__':
     import sys
     repo_root = sys.argv[1] if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent.parent
-    inventory_csv = sys.argv[2] if len(sys.argv) > 2 else str(repo_root / 'docs/INVENTORY_BEFORE.csv')
+    inventory_csv = sys.argv[2] if len(sys.argv) > 2 else str(repo_root / 'docs/evidence/generated/inventory/INVENTORY_BEFORE.csv')
     output_json = sys.argv[3] if len(sys.argv) > 3 else str(repo_root / 'data/metadata/dataset_registry.json')
     
     registry = build_registry(repo_root, inventory_csv)
