@@ -133,3 +133,19 @@ __pycache__/
 
 # ISA catalogue snapshots (auto-generated)
 docs/evidence/_generated/isa_catalogue_runs/
+
+# Local analysis bundles / trees
+repo_tree_*.txt
+isa_context_bundle_*/
+.isa_rca_bundle/
+patterns.txt
+
+# Generated evidence bundles
+docs/evidence/_generated/
+
+# Generated reports
+reports/
+
+# Local helper script copies
+isa_rca_bundle.sh
+
