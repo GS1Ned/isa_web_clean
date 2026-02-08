@@ -1,7 +1,7 @@
 # Planning & Traceability Canon (normative)
 
 ## Live planning sources (only)
-- `docs/planning/TODO.md`
+- `docs/planning/todo.md`
 - `docs/planning/BACKLOG.csv`
 
 ## Roadmaps

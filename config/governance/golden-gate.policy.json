@@ -7,7 +7,7 @@
     "must_exist": [
       "AGENT_START_HERE.md",
       "todo.md",
-      "docs/planning/TODO.md",
+      "docs/planning/todo.md",
       "docs/spec/DEPRECATION_MAP.md"
     ],
     "repo_structure_snapshot_any_of": [

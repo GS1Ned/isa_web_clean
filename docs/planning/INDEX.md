@@ -1,7 +1,7 @@
 # Planning — Index
 
 ## Live (canonical)
-- `docs/planning/TODO.md` — short next actions
+- `docs/planning/todo.md` — short next actions
 - `docs/planning/BACKLOG.csv` — structured backlog (status/priority/owner/area/acceptance/next_action/target_phase)
 
 ## Policy (normative)

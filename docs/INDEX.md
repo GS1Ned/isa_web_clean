@@ -15,7 +15,7 @@
 - Spellcheck terms:
 ## Planning
 
-- Live planning: `docs/planning/TODO.md` and `docs/planning/BACKLOG.csv`
+- Live planning: `docs/planning/todo.md` and `docs/planning/BACKLOG.csv`
 - Planning policy (normative): `docs/planning/PLANNING_POLICY.md`
 - Archived roadmaps: `isa-archive/planning/roadmaps/`
 
