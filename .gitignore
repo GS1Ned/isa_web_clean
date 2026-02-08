@@ -142,8 +142,10 @@ patterns.txt
 
 # Generated evidence bundles
 docs/evidence/_generated/
+docs/evidence/generated/_generated/
 
 # Generated reports
+docs/reports/
 reports/
 
 # Local helper script copies
