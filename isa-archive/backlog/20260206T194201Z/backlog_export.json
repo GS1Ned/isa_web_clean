@@ -827,9 +827,9 @@
       "extra": {}
     },
     {
-      "id": "planning_todo_md:docs/planning/TODO.md:L1",
+      "id": "planning_todo_md:docs/planning/todo.md:L1",
       "source": "planning_todo_md",
-      "ref": "docs/planning/TODO.md:L1",
+      "ref": "docs/planning/todo.md:L1",
       "text": "# Status: superseded",
       "extra": {}
     },
