@@ -1,5 +1,4 @@
 # Planning & Traceability Canon (normative)
-
 ## Live planning sources (only)
 - `todo.md`
 - `docs/planning/BACKLOG.csv`
