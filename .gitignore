@@ -154,3 +154,12 @@ _context_bundles/
 # Generated outputs (local/CI)
 docs/reports/
 docs/evidence/generated/_generated/
+context_bundles/
+*.tar.gz
+*.tar
+*.zip
+*.dmp
+*.dump
+docs/evidence/generated/_generated/isa_catalogue_runs/
+docs/evidence/generated/_generated/isa_catalogue_latest/
+docs/evidence/_generated/isa_catalogue_latest/
