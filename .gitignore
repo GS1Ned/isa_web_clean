@@ -150,3 +150,7 @@ reports/
 isa_rca_bundle.sh
 
 _context_bundles/
+
+# Generated outputs (local/CI)
+docs/reports/
+docs/evidence/generated/_generated/
