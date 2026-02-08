@@ -38,11 +38,19 @@ for name in sorted(os.listdir(files_dir)):
     with open(p, "rb") as fh:
         data = fh.read()
     items.append({"filename": name, "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()})
+repo_root = os.environ["REPO_ROOT"]
+def rel(p):
+    try:
+        return os.path.relpath(p, repo_root)
+    except Exception:
+        return p
 summary = {
     "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00","Z"),
     "snapshot_dir": out_snap,
+    "snapshot_dir_rel": rel(out_snap),
     "source_run_dir": os.environ["KEEP_SUCCESS"],
-    "repo_root": os.environ["REPO_ROOT"],
+    "source_run_dir_rel": rel(os.environ["KEEP_SUCCESS"]),
+    "repo_root": repo_root,
     "files": items
 }
 with open(os.path.join(out_snap, "summary.json"), "w", encoding="utf-8") as f:
@@ -50,8 +58,8 @@ with open(os.path.join(out_snap, "summary.json"), "w", encoding="utf-8") as f:
 md = []
 md.append("# ISA catalogue export (snapshot)\n\n")
 md.append(f"- generated_at: `{summary['generated_at']}`\n")
-md.append(f"- snapshot: `{summary['snapshot_dir']}`\n")
-md.append(f"- source_run_dir: `{summary['source_run_dir']}`\n")
+md.append(f"- snapshot: `{summary.get('snapshot_dir_rel') or summary['snapshot_dir']}`\n")
+md.append(f"- source_run_dir: `{summary.get('source_run_dir_rel') or summary['source_run_dir']}`\n")
 md.append(f"- file_count: `{len(items)}`\n\n")
 md.append("## Files\n")
 for it in items:
