@@ -1,0 +1,48 @@
+{
+  "id": "golden-gate-policy",
+  "version": "0.1.0",
+  "status": "PROPOSED",
+  "last_verified_date": "2026-02-08",
+  "required_anchors": {
+    "must_exist": [
+      "AGENT_START_HERE.md",
+      "todo.md",
+      "docs/planning/TODO.md",
+      "docs/spec/DEPRECATION_MAP.md"
+    ],
+    "repo_structure_snapshot_any_of": [
+      "REPO_TREE.md",
+      "docs/REPO_MAP.md"
+    ]
+  },
+  "forbidden_strings_live_docs": {
+    "enabled": true,
+    "scope_globs": [
+      "docs/**/*.md"
+    ],
+    "exclude_globs": [
+      "docs/archive/**",
+      "isa-archive/**"
+    ],
+    "patterns": [
+      "docs/evidence/generated/_generated/isa_catalogue_latest/"
+    ]
+  },
+  "shadow_planning": {
+    "enabled": true,
+    "canonical_planning_root": "docs/planning",
+    "block_globs_outside_canonical": [
+      "**/*ROADMAP*.md",
+      "**/*Roadmap*.md",
+      "**/*roadmap*.md",
+      "**/*BACKLOG*.md",
+      "**/*TODO*.md"
+    ],
+    "allow_paths": [
+      "todo.md",
+      "docs/planning/**",
+      "isa-archive/**",
+      "docs/archive/**"
+    ]
+  }
+}
