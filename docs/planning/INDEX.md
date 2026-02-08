@@ -1,9 +1,8 @@
 # Planning — Index
 
 ## Live (canonical)
-- `docs/planning/TODO.md` — short next actions
-- `docs/planning/BACKLOG.csv` — structured backlog (status/priority/owner/area/acceptance/next_action/target_phase)
-
+- `todo.md` — short next actions (single live TODO)
+- `docs/planning/BACKLOG.csv` — structured backlog
 ## Policy (normative)
 - `docs/planning/PLANNING_POLICY.md`
 - Canon note: `docs/governance/PLANNING_TRACEABILITY_CANON.md`

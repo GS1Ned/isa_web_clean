@@ -1,9 +1,8 @@
 # Planning & Traceability Canon (normative)
 
 ## Live planning sources (only)
-- `docs/planning/TODO.md`
+- `todo.md`
 - `docs/planning/BACKLOG.csv`
-
 ## Roadmaps
 - Roadmaps are not live planning sources.
 - Roadmap documents must be archived under `isa-archive/planning/roadmaps/`.
