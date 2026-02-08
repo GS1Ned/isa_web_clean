@@ -164,3 +164,12 @@ Develop ISA as if you must defend decisions to a critical auditor.
 > Then build.  
 >
 > Not the other way around.
+
+<!-- ISA:REPO_ASSESSMENT_DOSSIER:BEGIN -->
+## Repository hygiene
+
+### Repo assessment (local, gitignored outputs)
+
+- How-to: `docs/reference/REPO_ASSESSMENT_HOWTO.md`
+- Output policy: reports are written under `docs/reports/` and may be gitignored; canonical trace is this dossier + how-to + runner scripts.
+<!-- ISA:REPO_ASSESSMENT_DOSSIER:END -->

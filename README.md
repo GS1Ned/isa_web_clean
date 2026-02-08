@@ -1,5 +1,12 @@
 # ISA — Intelligent Standards Architect
 
+<!-- ISA:REPO_ASSESSMENT_LINKS:BEGIN -->
+## Repository assessment
+
+- Canonical how-to: `docs/reference/REPO_ASSESSMENT_HOWTO.md`
+<!-- ISA:REPO_ASSESSMENT_LINKS:END -->
+
+
 **Status:** Phase 9 Consolidation Complete  
 **Governance Mode:** Lane C (User-Decision Mode)  
 **Last Updated:** 2025-12-17  
