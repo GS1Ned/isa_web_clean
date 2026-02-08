@@ -1,4 +1,4 @@
-ISA_EVIDENCE_OUT_DIR="${ISA_EVIDENCE_OUT_DIR:-$REPO_ROOT/docs/evidence/_generated}"
+ISA_EVIDENCE_OUT_DIR="${ISA_EVIDENCE_OUT_DIR:-$REPO_ROOT/docs/evidence/generated/_generated}"
 #!/usr/bin/env bash
 set -euo pipefail
 set +H 2>/dev/null || true
