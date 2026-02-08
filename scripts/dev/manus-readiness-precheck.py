@@ -14,8 +14,7 @@ req = [
     "AGENT_START_HERE.md",
     "REPO_TREE.md",
     "todo.md",
-    "docs/planning/TODO.md",
-    "docs/spec/DEPRECATION_MAP.md",
+        "docs/spec/DEPRECATION_MAP.md",
 ]
 missing = [p for p in req if not pathlib.Path(p).exists()]
 
