@@ -46,6 +46,9 @@
     ]
   },
   "must_exist": [
-    "todo.md"
+    "todo.md",
+    "docs/planning/BACKLOG.csv",
+    "docs/spec/DEPRECATION_MAP.md",
+    "AGENT_START_HERE.md"
   ]
 }
