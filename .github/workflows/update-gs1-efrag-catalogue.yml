@@ -20,7 +20,12 @@ jobs:
       - run: python3 scripts/proto_crawl_catalogue.py
       - run: python3 scripts/validate_gs1_efrag_catalogue.py
       - run: |
-          if git diff --quiet; then exit 0; fi
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit; exiting."
+            exit 0
+          fi
+          echo "Changes detected:"
+          git status --porcelain
           git config user.name "gs1ned-isa-bot"
           git config user.email "gs1ned-isa-bot@users.noreply.github.com"
           BR="bot/update-gs1-efrag-catalogue"
