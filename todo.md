@@ -17,3 +17,6 @@ Rules:
 - [ ] Define canonical DB layout (drizzle + migrations) under /db (prepare PR4).
 - [ ] Classify docs/archive/root_docs into docs/spec, docs/governance, docs/runbooks, docs/architecture.
 
+
+## Repository hygiene
+- [ ] Repo assessment bundle: keep docs/reports ignored; maintain docs/reference/REPO_ASSESSMENT_HOWTO.md + scripts/audit runner as canonical
