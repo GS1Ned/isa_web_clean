@@ -19,7 +19,7 @@ req = [
 ]
 missing = [p for p in req if not pathlib.Path(p).exists()]
 
-find_cmd = r"""find . -maxdepth 4 -type f \( -iname '*todo*.md' -o -iname '*backlog*.md' -o -iname '*roadmap*.md' \) ! -path './docs/planning/*' ! -path './isa-archive/*' ! -path './.git/*' 2>/dev/null || true"""
+find_cmd = r"""find . -maxdepth 4 -type f \( -iname '*todo*.md' -o -iname '*backlog*.md' -o -iname '*roadmap*.md' \) ! -path './todo.md' ! -path './docs/planning/*' ! -path './isa-archive/*' ! -path './.git/*' 2>/dev/null || true"""
 shadow = sorted([s.lstrip("./") for s in sh("bash", "-lc", find_cmd).splitlines() if s.strip()])
 
 forbidden_pats = [
