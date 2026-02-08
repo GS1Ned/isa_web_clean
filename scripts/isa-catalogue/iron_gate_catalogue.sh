@@ -3,7 +3,7 @@ set -euo pipefail
 set +H 2>/dev/null || true
 
 REPO_ROOT="${REPO_ROOT:-$(git rev-parse --show-toplevel)}"
-ISA_EVIDENCE_OUT_DIR="${ISA_EVIDENCE_OUT_DIR:-$REPO_ROOT/docs/evidence/_generated}"
+ISA_EVIDENCE_OUT_DIR="${ISA_EVIDENCE_OUT_DIR:-$REPO_ROOT/docs/evidence/generated/_generated}"
 export REPO_ROOT ISA_EVIDENCE_OUT_DIR
 
 POLICY="$REPO_ROOT/config/isa-catalogue/policy.json"
@@ -13,7 +13,7 @@ python3 - <<'PY'
 import os, json, sys, datetime, csv
 
 repo = os.environ.get("REPO_ROOT") or sys.exit(2)
-out_dir = os.environ.get("ISA_EVIDENCE_OUT_DIR") or os.path.join(repo, "docs/evidence/_generated")
+out_dir = os.environ.get("ISA_EVIDENCE_OUT_DIR") or os.path.join(repo, "docs/evidence/generated/_generated")
 
 policy_path = os.path.join(repo, "config/isa-catalogue/policy.json")
 latest = os.path.join(out_dir, "isa_catalogue_latest")
