@@ -10,6 +10,6 @@ Maintain a dataset/artefact registry for ISA inputs/outputs.
 - list datasets
 - get dataset by ID
 
-## Acceptance criteria
-- Registry entries are typed and retrievable.
-- Entries include provenance and freshness fields.
+## Acceptance
+- Entries are typed and retrievable
+- Entries include provenance and freshness fields

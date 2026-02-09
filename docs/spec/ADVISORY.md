@@ -5,12 +5,11 @@ Generate advisory outputs (diffs/reports) from ISA knowledge.
 
 ## Inputs
 - selected artefacts/datasets
-- comparison baseline (version/date)
+- baseline selector (version/date)
 
 ## Outputs
-- advisory report objects
-- retrievable report list
+- advisory report objects + evidence pointers
 
-## Acceptance criteria
-- Advisory output is reproducible from inputs.
-- Reports include evidence pointers for claims.
+## Acceptance
+- Output reproducible from inputs
+- Reports include evidence pointers
