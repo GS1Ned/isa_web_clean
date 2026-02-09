@@ -15,3 +15,6 @@
 
 ## Canonical planning
 - Next actions: docs/planning/NEXT_ACTIONS.json
+
+## Manual preflight (NO_GATES)
+- Checklist: docs/governance/MANUAL_PREFLIGHT.md

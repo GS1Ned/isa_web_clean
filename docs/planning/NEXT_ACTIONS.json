@@ -12,7 +12,7 @@
     {
       "id": "P0-0001",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Lock canonical plan-as-code entrypoints",
       "next_action": "Ensure PROGRAM_PLAN.md and NEXT_ACTIONS.json are referenced by AGENT_START_HERE and AGENT_MAP",
@@ -23,12 +23,24 @@
         "AGENT_START_HERE.md",
         "docs/agent/AGENT_MAP.md"
       ],
-      "validation_command": "(NO_GATES_WINDOW) run local preflight only"
+      "validation_command": "(NO_GATES_WINDOW) run local preflight only",
+      "completed_at_utc": "2026-02-09T20:18:09Z",
+      "evidence": {
+        "prs": [
+          180
+        ],
+        "head_sha": "f56c8b73e54ec24f9670ffb21058965505253232",
+        "paths": [
+          "AGENT_START_HERE.md",
+          "docs/planning/INDEX.md",
+          "docs/agent/AGENT_MAP.md"
+        ]
+      }
     },
     {
       "id": "P0-0002",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Define manual preflight checklist (NO_GATES window)",
       "next_action": "Add a minimal manual preflight checklist in docs/planning/INDEX.md and ensure AGENT_MAP points to it (no CI gates during window)",
@@ -40,7 +52,17 @@
         "docs/planning/INDEX.md",
         "docs/agent/AGENT_MAP.md"
       ],
-      "validation_command": "(NO_GATES_WINDOW) local preflight only"
+      "validation_command": "(NO_GATES_WINDOW) local preflight only",
+      "completed_at_utc": "2026-02-09T20:18:09Z",
+      "evidence": {
+        "prs": [
+          181
+        ],
+        "head_sha": "f56c8b73e54ec24f9670ffb21058965505253232",
+        "paths": [
+          "docs/governance/MANUAL_PREFLIGHT.md"
+        ]
+      }
     },
     {
       "id": "P0-0003",

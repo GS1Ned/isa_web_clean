@@ -20,3 +20,6 @@ Status: CANONICAL
 
 ## Core contract
 - Core contract: docs/core/ISA_CORE_CONTRACT.md
+
+## NO_GATES Operations
+- Manual preflight checklist: docs/governance/MANUAL_PREFLIGHT.md
