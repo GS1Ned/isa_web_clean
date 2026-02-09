@@ -1,5 +1,5 @@
 {
-  "date": "20260209T154123Z",
+  "date": "20260209T171634Z",
   "status": "CANONICAL",
   "schema_version": "1.0",
   "execution_rules": {
@@ -30,15 +30,17 @@
       "priority": "P0",
       "status": "READY",
       "capability": "Meta",
-      "title": "Implement plan quality gate and wire into gate/all",
-      "next_action": "Add scripts/gate/plan_quality and ensure it runs via scripts/gate/all",
-      "acceptance_criteria": "CI fails when NEXT_ACTIONS has no READY items or missing acceptance/evidence; passes on valid plan",
+      "title": "Define manual preflight checklist (NO_GATES window)",
+      "next_action": "Add a minimal manual preflight checklist in docs/planning/INDEX.md and ensure AGENT_MAP points to it (no CI gates during window)",
+      "acceptance_criteria": "docs/planning/INDEX.md contains a manual preflight checklist; docs/agent/AGENT_MAP.md points to it; NEXT_ACTIONS contains no gate-command references (NO_GATES window)",
       "evidence_links": [
         "scripts/gate/plan_quality",
-        "scripts/gate/all",
-        "docs/planning/NEXT_ACTIONS.json"
+        "(NO_GATES_WINDOW) local preflight only",
+        "docs/planning/NEXT_ACTIONS.json",
+        "docs/planning/INDEX.md",
+        "docs/agent/AGENT_MAP.md"
       ],
-      "validation_command": "(NO_GATES_WINDOW) run local preflight only"
+      "validation_command": "(NO_GATES_WINDOW) local preflight only"
     },
     {
       "id": "P0-0003",
