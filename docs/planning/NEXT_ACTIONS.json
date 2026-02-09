@@ -45,7 +45,7 @@
     {
       "id": "P0-0003",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Finalize ISA Core Contract (6 capabilities + non-scope)",
       "next_action": "Edit docs/core/ISA_CORE_CONTRACT.md to lock the 6 core capabilities, explicit non-scope, and expected entrypoints placeholders; ensure AGENT_MAP references it",
@@ -55,12 +55,22 @@
         "docs/agent/AGENT_MAP.md",
         "docs/planning/PROGRAM_PLAN.md"
       ],
-      "validation_command": "(NO_GATES_WINDOW) run local preflight only"
+      "validation_command": "(NO_GATES_WINDOW) run local preflight only",
+      "completed_at_utc": "2026-02-09T19:31:01Z",
+      "evidence": {
+        "prs": [
+          178
+        ],
+        "head_sha": "fcf5e0df8764ce7837902b99488f7aad6bd70506",
+        "paths": [
+          "docs/core/ISA_CORE_CONTRACT.md"
+        ]
+      }
     },
     {
       "id": "P0-0004",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Create minimal specs for all 6 core capabilities",
       "next_action": "Create docs/spec/INDEX.md plus 6 minimal specs (ASK_ISA, NEWS_HUB, KNOWLEDGE_BASE, CATALOG, ESRS_MAPPING, ADVISORY) and link them from INDEX and AGENT_MAP",
@@ -69,7 +79,23 @@
         "docs/spec/INDEX.md",
         "docs/agent/AGENT_MAP.md"
       ],
-      "validation_command": "(NO_GATES_WINDOW) run local preflight only"
+      "validation_command": "(NO_GATES_WINDOW) run local preflight only",
+      "completed_at_utc": "2026-02-09T19:31:01Z",
+      "evidence": {
+        "prs": [
+          177
+        ],
+        "head_sha": "fcf5e0df8764ce7837902b99488f7aad6bd70506",
+        "paths": [
+          "docs/spec/INDEX.md",
+          "docs/spec/ASK_ISA.md",
+          "docs/spec/NEWS_HUB.md",
+          "docs/spec/KNOWLEDGE_BASE.md",
+          "docs/spec/CATALOG.md",
+          "docs/spec/ESRS_MAPPING.md",
+          "docs/spec/ADVISORY.md"
+        ]
+      }
     }
   ]
 }
