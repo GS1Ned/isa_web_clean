@@ -10,4 +10,10 @@
 - Artefact processing: `docs/spec/GS1_ARTEFACT_PROCESSING.md`
 - External references: `docs/spec/EXTERNAL_REFERENCES.md`
 
-- Capability map: 
+- Capability map:
+- Ask ISA: `docs/spec/ASK_ISA.md`
+- News Hub: `docs/spec/NEWS_HUB.md`
+- Knowledge Base: `docs/spec/KNOWLEDGE_BASE.md`
+- Catalog: `docs/spec/CATALOG.md`
+- ESRS ↔ GS1 Mapping: `docs/spec/ESRS_MAPPING.md`
+- Advisory: `docs/spec/ADVISORY.md`

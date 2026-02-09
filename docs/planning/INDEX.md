@@ -9,3 +9,6 @@
 
 ## Archived
 - Roadmaps: `isa-archive/planning/roadmaps/`
+
+## Specs
+- Specs index: docs/spec/INDEX.md
