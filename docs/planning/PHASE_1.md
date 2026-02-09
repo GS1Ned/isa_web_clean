@@ -21,3 +21,6 @@ Deliver a minimal, testable Ask ISA path that:
 2) produces a traceable response with evidence pointers,
 3) is callable from the client UI,
 4) and can be validated via an automated “smoke” harness later reintroduced as gates.
+
+## Ask ISA contract
+- Runtime contract: `docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md`
