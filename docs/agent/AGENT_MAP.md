@@ -6,7 +6,7 @@ Status: CANONICAL
 - Execution queue (single source of next work): docs/planning/NEXT_ACTIONS.json
 - Program plan: docs/planning/PROGRAM_PLAN.md
 
-## How to work
+## Execution procedure (agent)
 1) Read docs/planning/NEXT_ACTIONS.json
 2) Pick the first item with status=READY
 3) Implement exactly one PR for that item
