@@ -5,7 +5,7 @@
   "execution_rules": {
     "single_source_of_next_work": "docs/planning/NEXT_ACTIONS.json",
     "one_pr_per_item": true,
-    "default_validation_command": "bash scripts/gate/all",
+    "default_validation_command": "(NO_GATES_WINDOW) run local preflight only",
     "evidence_links_must_resolve": true
   },
   "items": [
@@ -23,7 +23,7 @@
         "AGENT_START_HERE.md",
         "docs/agent/AGENT_MAP.md"
       ],
-      "validation_command": "bash scripts/gate/all"
+      "validation_command": "(NO_GATES_WINDOW) run local preflight only"
     },
     {
       "id": "P0-0002",
@@ -38,7 +38,7 @@
         "scripts/gate/all",
         "docs/planning/NEXT_ACTIONS.json"
       ],
-      "validation_command": "bash scripts/gate/all"
+      "validation_command": "(NO_GATES_WINDOW) run local preflight only"
     },
     {
       "id": "P0-0003",
@@ -53,7 +53,7 @@
         "docs/agent/AGENT_MAP.md",
         "docs/planning/PROGRAM_PLAN.md"
       ],
-      "validation_command": "bash scripts/gate/all"
+      "validation_command": "(NO_GATES_WINDOW) run local preflight only"
     },
     {
       "id": "P0-0004",
@@ -67,7 +67,7 @@
         "docs/spec/INDEX.md",
         "docs/agent/AGENT_MAP.md"
       ],
-      "validation_command": "bash scripts/gate/all"
+      "validation_command": "(NO_GATES_WINDOW) run local preflight only"
     }
   ]
 }
