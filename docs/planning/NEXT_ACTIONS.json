@@ -118,6 +118,62 @@
           "docs/spec/ADVISORY.md"
         ]
       }
+    },
+    {
+      "id": "P1-0001",
+      "status": "READY",
+      "title": "Ask ISA: define end-to-end runtime contract and entrypoints (server+client)",
+      "acceptance_criteria": [
+        "docs/spec/ASK_ISA.md links to proven code entrypoints (server/prompts/ask_isa/*, client UI refs)",
+        "A single documented request/response contract exists (paths + minimal examples)",
+        "A minimal server route or callable function is identified and referenced from docs"
+      ],
+      "created_at_utc": "2026-02-09T20:26:20Z",
+      "evidence": {
+        "paths": [
+          "server/prompts/ask_isa/index.ts",
+          "client/src",
+          "docs/spec/ASK_ISA.md"
+        ]
+      }
+    },
+    {
+      "id": "P1-0002",
+      "status": "READY",
+      "title": "Ask ISA: minimal smoke harness (no gates yet) and manual runbook",
+      "acceptance_criteria": [
+        "A single command is documented to run an Ask ISA smoke query locally",
+        "Smoke output includes evidence pointers (paths/ids)",
+        "docs/governance/MANUAL_PREFLIGHT.md references the smoke step as optional validation"
+      ],
+      "created_at_utc": "2026-02-09T20:26:20Z",
+      "evidence": {
+        "paths": [
+          "docs/governance/MANUAL_PREFLIGHT.md",
+          "server/prompts/ask_isa/index.ts"
+        ]
+      }
+    },
+    {
+      "id": "P1-0003",
+      "status": "READY",
+      "title": "News Hub: baseline architecture map and proven code/data entrypoints",
+      "acceptance_criteria": [
+        "docs/spec/NEWS_HUB.md links to proven code/data entrypoints",
+        "A minimal end-to-end baseline is defined (ingest -> store -> expose -> UI)",
+        "No duplicate planning sources created; all tracked in NEXT_ACTIONS.json"
+      ],
+      "created_at_utc": "2026-02-09T20:26:20Z",
+      "evidence": {
+        "paths": [
+          "docs/spec/NEWS_HUB.md",
+          "server/services",
+          "client/src"
+        ]
+      }
     }
-  ]
+  ],
+  "meta": {
+    "last_updated_at_utc": "2026-02-09T20:26:20Z"
+  }
 }
