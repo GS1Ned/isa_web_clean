@@ -3,10 +3,13 @@ import csv, pathlib, re, sys
 errors = []
 
 allowed_planning = {
-    "todo.md",
     "docs/planning/BACKLOG.csv",
-    "docs/planning/PLANNING_POLICY.md",
     "docs/planning/INDEX.md",
+    "docs/planning/NEXT_ACTIONS.json",
+    "docs/planning/NEXT_ACTIONS.md",
+    "docs/planning/PLANNING_POLICY.md",
+    "docs/planning/PROGRAM_PLAN.md",
+    "todo.md",
 }
 
 planning_dir = pathlib.Path("docs/planning")
@@ -20,7 +23,7 @@ if planning_dir.exists():
         if rel.startswith("docs/planning/_root/"):
             errors.append(f"Disallowed legacy planning folder exists: {rel}")
         if rel not in allowed_planning:
-            errors.append(f"Disallowed planning file (only todo.md + BACKLOG.csv are live): {rel}")
+            errors.append(f"Disallowed planning file (canonical planning is docs/planning/NEXT_ACTIONS.json + docs/planning/PROGRAM_PLAN.md): {rel}")
 
 trace = pathlib.Path("docs/spec/TRACEABILITY_MATRIX.csv")
 if trace.exists():

@@ -1,0 +1,73 @@
+{
+  "date": "20260209T154123Z",
+  "status": "CANONICAL",
+  "schema_version": "1.0",
+  "execution_rules": {
+    "single_source_of_next_work": "docs/planning/NEXT_ACTIONS.json",
+    "one_pr_per_item": true,
+    "default_validation_command": "bash scripts/gate/all",
+    "evidence_links_must_resolve": true
+  },
+  "items": [
+    {
+      "id": "P0-0001",
+      "priority": "P0",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Lock canonical plan-as-code entrypoints",
+      "next_action": "Ensure PROGRAM_PLAN.md and NEXT_ACTIONS.json are referenced by AGENT_START_HERE and AGENT_MAP",
+      "acceptance_criteria": "AGENT_START_HERE and AGENT_MAP link to docs/planning/PROGRAM_PLAN.md and docs/planning/NEXT_ACTIONS.json",
+      "evidence_links": [
+        "docs/planning/PROGRAM_PLAN.md",
+        "docs/planning/NEXT_ACTIONS.json",
+        "AGENT_START_HERE.md",
+        "docs/agent/AGENT_MAP.md"
+      ],
+      "validation_command": "bash scripts/gate/all"
+    },
+    {
+      "id": "P0-0002",
+      "priority": "P0",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Implement plan quality gate and wire into gate/all",
+      "next_action": "Add scripts/gate/plan_quality and ensure it runs via scripts/gate/all",
+      "acceptance_criteria": "CI fails when NEXT_ACTIONS has no READY items or missing acceptance/evidence; passes on valid plan",
+      "evidence_links": [
+        "scripts/gate/plan_quality",
+        "scripts/gate/all",
+        "docs/planning/NEXT_ACTIONS.json"
+      ],
+      "validation_command": "bash scripts/gate/all"
+    },
+    {
+      "id": "P0-0003",
+      "priority": "P0",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Finalize ISA Core Contract (6 capabilities + non-scope)",
+      "next_action": "Edit docs/core/ISA_CORE_CONTRACT.md to lock the 6 core capabilities, explicit non-scope, and expected entrypoints placeholders; ensure AGENT_MAP references it",
+      "acceptance_criteria": "ISA_CORE_CONTRACT lists 6 capabilities and explicit non-scope; referenced from docs/agent/AGENT_MAP.md; gates pass",
+      "evidence_links": [
+        "docs/core/ISA_CORE_CONTRACT.md",
+        "docs/agent/AGENT_MAP.md",
+        "docs/planning/PROGRAM_PLAN.md"
+      ],
+      "validation_command": "bash scripts/gate/all"
+    },
+    {
+      "id": "P0-0004",
+      "priority": "P0",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Create minimal specs for all 6 core capabilities",
+      "next_action": "Create docs/spec/INDEX.md plus 6 minimal specs (ASK_ISA, NEWS_HUB, KNOWLEDGE_BASE, CATALOG, ESRS_MAPPING, ADVISORY) and link them from INDEX and AGENT_MAP",
+      "acceptance_criteria": "Each spec exists, includes inputs/outputs and acceptance criteria; all are linked from docs/spec/INDEX.md and docs/agent/AGENT_MAP.md; gates pass",
+      "evidence_links": [
+        "docs/spec/INDEX.md",
+        "docs/agent/AGENT_MAP.md"
+      ],
+      "validation_command": "bash scripts/gate/all"
+    }
+  ]
+}
