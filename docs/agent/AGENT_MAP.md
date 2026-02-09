@@ -23,3 +23,8 @@ Status: CANONICAL
 
 ## NO_GATES Operations
 - Manual preflight checklist: docs/governance/MANUAL_PREFLIGHT.md
+
+## Ask ISA (Phase 1)
+- Spec: `docs/spec/ASK_ISA.md`
+- Runtime contract: `docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md`
+- Server entry: `server/prompts/ask_isa/index.ts`

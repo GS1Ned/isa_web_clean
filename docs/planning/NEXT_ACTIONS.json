@@ -131,10 +131,15 @@
       "created_at_utc": "2026-02-09T20:26:20Z",
       "evidence": {
         "paths": [
-          "server/prompts/ask_isa/index.ts",
           "client/src",
-          "docs/spec/ASK_ISA.md"
-        ]
+          "docs/agent/AGENT_MAP.md",
+          "docs/planning/PHASE_1.md",
+          "docs/spec/ASK_ISA.md",
+          "docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md",
+          "server/prompts/ask_isa/index.ts"
+        ],
+        "verified_at_utc": "2026-02-09T20:37:32Z",
+        "head_sha": "7a8260077fd4c814ceb66a01e1848d32cf97647d"
       }
     },
     {
@@ -174,6 +179,6 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-02-09T20:26:20Z"
+    "last_updated_at_utc": "2026-02-09T20:37:32Z"
   }
 }
