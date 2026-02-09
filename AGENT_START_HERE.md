@@ -10,3 +10,5 @@ The following files are authoritative, stable entry points for agents and toolin
 - Next actions (canonical): `todo.md`
 - Structured backlog (canonical): `docs/planning/BACKLOG.csv`
 
+## Canonical anchors
+- Agent map: docs/agent/AGENT_MAP.md

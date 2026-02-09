@@ -12,3 +12,6 @@
 
 ## Specs
 - Specs index: docs/spec/INDEX.md
+
+## Canonical planning
+- Next actions: docs/planning/NEXT_ACTIONS.json
