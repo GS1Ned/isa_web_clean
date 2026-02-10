@@ -8,7 +8,6 @@
 
 
 **Status:** Phase 9 Consolidation Complete  
-**Governance Mode:** Lane C (User-Decision Mode)  
 **Last Updated:** 2025-12-17  
 **Phase:** 9 (Consolidation, Hardening, Close-Out)
 
@@ -22,7 +21,7 @@ ISA (Intelligent Standards Architect) is a sustainability compliance intelligenc
 
 ISA provides **regulation-to-standard mapping intelligence** for GS1 Netherlands members navigating EU sustainability compliance requirements. The platform ingests regulatory content from authoritative sources (EUR-Lex, EFRAG), processes GS1 technical standards (GDSN, EPCIS, WebVoc), and generates structured mappings using AI-assisted analysis. Users can query the knowledge graph, explore compliance timelines, and access versioned advisory outputs that trace every data point back to its source.
 
-The system operates under strict governance constraints (Lane C) that prioritize data integrity, citation accuracy, and user authority over convenience or automation. All AI-generated content includes mandatory citations, all datasets carry provenance metadata, and all potentially impactful decisions require explicit user approval.
+The system operates under strict governance constraints that prioritize data integrity, citation accuracy, and version control. All AI-generated content includes mandatory citations, all datasets carry provenance metadata, and all potentially impactful decisions are tracked in version control.
 
 ---
 
@@ -54,7 +53,7 @@ The system operates under strict governance constraints (Lane C) that prioritize
 **GS1 Standards:** 60+ standards cataloged (verified 2024-11-30)  
 **AI Mappings:** 450+ regulation-to-standard mappings (generated 2024-12-10)  
 **News Sources:** 7 sources monitored (100% health rate as of 2025-12-17)  
-**Advisory Reports:** 2 versions (v1.0, v1.1) under Lane C review  
+**Advisory Reports:** 2 versions (v1.0, v1.1) under governance review  
 **Test Coverage:** 517/574 tests passing (90.1%)
 
 **Known Gaps (intentionally deferred):**
@@ -67,11 +66,9 @@ The system operates under strict governance constraints (Lane C) that prioritize
 
 ---
 
-## Governance Status
+## Governance Principles
 
-**Current Mode:** Lane C (User-Decision Mode)
-
-ISA operates under a three-lane governance framework designed to balance development velocity with data integrity and user authority. Lane C is the most restrictive mode, requiring explicit user approval for all potentially impactful decisions.
+ISA operates under strict governance constraints that prioritize data integrity, citation accuracy, and version control.
 
 **Authoritative Governance Document:**  
 📄 **[ISA_GOVERNANCE.md](./docs/governance/_root/ISA_GOVERNANCE.md)**
@@ -79,21 +76,21 @@ ISA operates under a three-lane governance framework designed to balance develop
 **Key Governance Principles:**
 1. **Data Integrity:** All datasets include source, version, format, last_verified_date
 2. **Citation Accuracy:** All AI-generated content includes mandatory citations
-3. **User Authority:** Silence is NOT consent; explicit approval required for Lane C triggers
+3. **Version Control:** All changes tracked in Git with conventional commits
 4. **Transparency:** All decisions documented with rationale and alternatives
-5. **Reversibility:** All changes tracked in version control with rollback capability
+5. **Reversibility:** All changes can be rolled back via Git
 
-**Lane C Triggers (require escalation):**
+**Critical Changes Requiring Review:**
 - Schema changes affecting data integrity
 - New data sources or ingestion pipelines
 - Changes to AI prompts or mapping logic
-- Advisory report generation or publication
+- Advisory report publication
 - Governance framework modifications
 - External integrations or API exposure
 
 **For Developers:**
 - Read docs/governance/_root/ISA_GOVERNANCE.md before making any changes
-- Follow mandatory escalation format for all Lane C triggers
+- Follow governance principles for all critical changes
 - Perform governance self-checks before and after work
 - When in doubt, escalate
 
@@ -136,7 +133,7 @@ isa_web_clean/
 Tracks 38 EU regulations with compliance timelines, regulation comparison tool, and real-time news feed from 7 sources. Includes 1,184 ESRS datapoints from EFRAG IG3 and 60+ GS1 standards catalog.
 
 ### Advisory System
-Generates versioned advisory outputs (v1.0, v1.1) with full dataset provenance tracking, advisory diff computation, and GS1-to-ESRS mapping engine. All outputs subject to Lane C review before publication.
+Generates versioned advisory outputs (v1.0, v1.1) with full dataset provenance tracking, advisory diff computation, and GS1-to-ESRS mapping engine. All outputs subject to governance review before publication.
 
 ### Ask ISA
 RAG-powered Q&A system with 30 production queries, mandatory citations, query guardrails (6 allowed types, 5 forbidden types), and confidence scoring. All responses include source citations.
@@ -273,9 +270,9 @@ pnpm test --watch                # Watch mode
 
 **Before Contributing:**
 1. Read [ISA_GOVERNANCE.md](./docs/governance/_root/ISA_GOVERNANCE.md)
-2. Understand current governance mode (Lane C)
-3. Follow mandatory escalation format for all Lane C triggers
-4. Ensure all changes comply with red-line principles
+2. Understand governance principles
+3. Follow governance requirements for critical changes
+4. Ensure all changes comply with governance principles
 
 **Contribution Workflow:**
 1. Fork repository (or create branch if write access)
@@ -308,7 +305,7 @@ pnpm test --watch                # Watch mode
 
 **Status:** Not yet determined (pending governance decision)
 
-**⚠️ GOVERNANCE ESCALATION REQUIRED:** Licensing decisions require user approval under Lane C.
+**⚠️ GOVERNANCE ESCALATION REQUIRED:** Licensing decisions require review and approval.
 
 ---
 
@@ -332,7 +329,6 @@ pnpm test --watch                # Watch mode
 ---
 
 **Phase 9 Status:** Consolidation Complete  
-**Governance Mode:** Lane C (User-Decision Mode)  
 **Last Updated:** 2025-12-17
 
 For governance questions or escalations, refer to [ISA_GOVERNANCE.md](./docs/governance/_root/ISA_GOVERNANCE.md).

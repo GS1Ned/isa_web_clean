@@ -22,7 +22,7 @@ ISA provides **regulation-to-standard mapping intelligence** for GS1 Netherlands
 - Full dataset provenance tracking
 - Advisory diff computation between versions
 - GS1-to-ESRS mapping engine with 450+ AI-generated mappings
-- All outputs subject to Lane C governance review
+- All outputs subject to governance review before publication
 
 ### Ask ISA (RAG-powered Q&A)
 - 30 production queries with mandatory citations
@@ -91,22 +91,20 @@ ISA does NOT:
 - Multi-language support (English only)
 - EPCIS 2.0 validation (exploratory only)
 
-## Governance Mode
-
-**Current Mode:** Lane C (User-Decision Mode)
+## Governance Principles
 
 ISA operates under strict governance constraints that prioritize:
 1. **Data Integrity:** All datasets include source, version, format, last_verified_date
 2. **Citation Accuracy:** All AI-generated content includes mandatory citations
-3. **User Authority:** Silence is NOT consent; explicit approval required for Lane C triggers
+3. **Version Control:** All changes tracked in Git with conventional commits
 4. **Transparency:** All decisions documented with rationale and alternatives
-5. **Reversibility:** All changes tracked in version control with rollback capability
+5. **Reversibility:** All changes can be rolled back via Git
 
-Lane C triggers requiring escalation:
+**Critical Changes Requiring Review:**
 - Schema changes affecting data integrity
 - New data sources or ingestion pipelines
 - Changes to AI prompts or mapping logic
-- Advisory report generation or publication
+- Advisory report publication
 - Governance framework modifications
 - External integrations or API exposure
 
