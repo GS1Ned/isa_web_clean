@@ -46,7 +46,7 @@
       "next_action": "Add a minimal manual preflight checklist in docs/planning/INDEX.md and ensure AGENT_MAP points to it (no CI gates during window)",
       "acceptance_criteria": "docs/planning/INDEX.md contains a manual preflight checklist; docs/agent/AGENT_MAP.md points to it; NEXT_ACTIONS contains no gate-command references (NO_GATES window)",
       "evidence_links": [
-        "scripts/gate/plan_quality",
+        "scripts/validate_planning_and_traceability.py",
         "(NO_GATES_WINDOW) local preflight only",
         "docs/planning/NEXT_ACTIONS.json",
         "docs/planning/INDEX.md",
@@ -133,7 +133,7 @@
         "paths": [
           "client/src",
           "docs/agent/AGENT_MAP.md",
-          "docs/planning/PHASE_1.md",
+          "docs/planning/INDEX.md",
           "docs/spec/ASK_ISA.md",
           "docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md",
           "server/prompts/ask_isa/index.ts"

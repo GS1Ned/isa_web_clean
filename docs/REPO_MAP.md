@@ -42,12 +42,12 @@ This document provides a high-level, evidence-bound map of the ISA repository. I
 | `server/ingest/` (directory) | Data ingestion pipelines | Contains all scripts for ingesting regulations, standards, and other data. |
 | `server/_core/logger-wiring.ts` | Centralized logging | Configures the `pino` logger for structured, production-grade logging. |
 | `server/_core/security-headers.ts` | HTTP security configuration | Defines CSP, CORS, and other security headers to protect against attacks. |
-| `.github/workflows/iron-gate.yml` | IRON Protocol enforcement | The CI workflow that ensures all PRs comply with the governance protocol. |
-| `ROADMAP.md` | Strategic project direction | The canonical source for what to work on next. |
-| `IRON_PROTOCOL.md` | Core governance rules | Defines the rules of engagement for development. |
-| `SCOPE_DECISIONS.md` | Persistent scope registry | Prevents scope creep and ensures a clean repository. |
+| `.github/workflows/iron-gate.yml.disabled` | IRON Protocol enforcement (disabled) | Legacy CI workflow currently disabled. |
+| `docs/planning/NEXT_ACTIONS.json` | Execution queue (canonical) | The single source of what to work on next. |
+| `docs/governance/IRON_PROTOCOL.md` | Core governance rules | Defines the rules of engagement for development. |
+| `docs/governance/SCOPE_DECISIONS.md` | Persistent scope registry | Prevents scope creep and ensures a clean repository. |
 | `README.md` | Project overview and setup | The first document a new developer should read. |
-| `ARCHITECTURE.md` | High-level system design | Provides a conceptual overview of how the system fits together. |
+| `docs/spec/ARCHITECTURE.md` | High-level system design | Provides a conceptual overview of how the system fits together. |
 
 ### Top-10 Critical Directories
 
@@ -75,7 +75,7 @@ This document provides a high-level, evidence-bound map of the ISA repository. I
 | **API (tRPC)** | `server/routers.ts` | `server/` (individual router files) |
 | **Data Ingestion** | `server/ingest/` | `scripts/` (utility scripts) |
 | **Ask ISA** | `server/hybrid-search.ts` | `server/prompts/ask_isa/` |
-| **Roadmap** | `ROADMAP.md` | `IRON_KNOWLEDGE_MAP.md` |
+| **Planning** | `docs/planning/NEXT_ACTIONS.json` | `docs/planning/BACKLOG.csv` |
 | **Monitoring** | `server/_core/performance-monitoring.ts` | `server/db-health-guard.test.ts` |
 
 ---
@@ -85,8 +85,7 @@ This document provides a high-level, evidence-bound map of the ISA repository. I
 | Document | Purpose |
 |---|---|
 | `README.md` | Project overview and setup instructions. |
-| `ARCHITECTURE.md` | High-level conceptual overview of the system. |
-| `ISA_GOVERNANCE.md` | (Superseded) Legacy governance document. |
-| `IRON_PROTOCOL.md` | The active, binding governance protocol for all development. |
-| `IRON_KNOWLEDGE_MAP.md` | The single source of truth for finding all project documentation. |
-
+| `docs/spec/ARCHITECTURE.md` | High-level conceptual overview of the system. |
+| `docs/governance/_root/ISA_GOVERNANCE.md` | The active governance framework for all development. |
+| `docs/governance/IRON_PROTOCOL.md` | The active, binding governance protocol for all development. |
+| `docs/governance/IRON_KNOWLEDGE_MAP.md` | The single source of truth for finding all project documentation. |

@@ -54,7 +54,7 @@ Provide Q&A over ISA knowledge with traceable evidence pointers.
 
 ## Canonical anchors
 ### Canonical links
-- Planning: `docs/planning/PHASE_1.md`
+- Planning: `docs/planning/INDEX.md`
 - Next actions: `docs/planning/NEXT_ACTIONS.json` (P1-0001)
 - Agent map: `docs/agent/AGENT_MAP.md`
 - Runtime contract: `docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md`
