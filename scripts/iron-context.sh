@@ -49,15 +49,14 @@ fi
 echo ""
 
 # =============================================================================
-# STEP 3: Display ROADMAP summary
+# STEP 3: Display planning summary
 # =============================================================================
-echo "[3/4] Current ROADMAP priorities:"
+echo "[3/4] Current planning priorities:"
 echo "----------------------------------------------"
-if [[ -f "ROADMAP.md" ]]; then
-  # Extract the first 30 lines or until the first major section
-  head -50 ROADMAP.md | grep -E "^#|^\*|^-|^[0-9]" | head -20
+if [[ -f "docs/planning/NEXT_ACTIONS.json" ]]; then
+  grep -E '"id"|"status"|"title"' docs/planning/NEXT_ACTIONS.json | head -20 || true
 else
-  echo "      ⚠️  ROADMAP.md not found!"
+  echo "      ⚠️  docs/planning/NEXT_ACTIONS.json not found!"
 fi
 echo "----------------------------------------------"
 echo ""
@@ -67,11 +66,11 @@ echo ""
 # =============================================================================
 echo "[4/4] IRON Protocol status:"
 echo "----------------------------------------------"
-if [[ -f "IRON_PROTOCOL.md" ]]; then
-  echo "      IRON_PROTOCOL.md found."
-  echo "      Last modified: $(stat -c %y IRON_PROTOCOL.md 2>/dev/null || stat -f %Sm IRON_PROTOCOL.md 2>/dev/null || echo 'unknown')"
+if [[ -f "docs/governance/IRON_PROTOCOL.md" ]]; then
+  echo "      docs/governance/IRON_PROTOCOL.md found."
+  echo "      Last modified: $(stat -c %y docs/governance/IRON_PROTOCOL.md 2>/dev/null || stat -f %Sm docs/governance/IRON_PROTOCOL.md 2>/dev/null || echo 'unknown')"
 else
-  echo "      ⚠️  IRON_PROTOCOL.md not found!"
+  echo "      ⚠️  docs/governance/IRON_PROTOCOL.md not found!"
 fi
 echo "----------------------------------------------"
 echo ""
@@ -87,7 +86,7 @@ echo "Context-Commit-Hash: $GIT_HASH"
 echo ""
 echo "**Context Acknowledgement:**"
 echo "- **Inventory:** Reviewed \`isa.inventory.json\` (commit: \`$GIT_HASH\`)"
-echo "- **Roadmap:** [Fill in current priority from ROADMAP.md]"
+echo "- **Planning:** [Fill in current priority from docs/planning/NEXT_ACTIONS.json]"
 echo "- **Protocol:** This task adheres to the IRON Protocol."
 echo ""
 echo "=============================================="

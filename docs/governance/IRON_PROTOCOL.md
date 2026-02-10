@@ -35,8 +35,8 @@ The protocol is built on a strict hierarchy of authority:
 | Level | Artefact(s) | Owner | Purpose |
 |---|---|---|---|
 | **L1: System State** | Live system (runtime reality) | Machine | The ultimate ground truth. |
-| **L2: Governance Intent** | `ROADMAP.md`, `IRON_PROTOCOL.md` | Human | The strategic direction and rules of work. |
-| **L3: System Inventory** | `isa.inventory.json`, `SCOPE_DECISIONS.md` | Machine | The ground truth of what exists in the repository. |
+| **L2: Governance Intent** | `docs/planning/NEXT_ACTIONS.json`, `docs/planning/BACKLOG.csv`, `docs/governance/IRON_PROTOCOL.md` | Human | The strategic direction and rules of work. |
+| **L3: System Inventory** | `isa.inventory.json`, `docs/governance/SCOPE_DECISIONS.md` | Machine | The ground truth of what exists in the repository. |
 | **L4: Explanatory Docs** | All other `.md` files | Human | Supporting context and documentation. |
 | **L5: Ephemeral Context** | Chat history, notes, etc. | N/A | Transient, non-authoritative information. |
 
@@ -58,16 +58,16 @@ This script is the **single entry point** for all development work.
 
 ### 4.2. During Development
 
-- Work on the current ROADMAP priority.
-- If the task diverges from the roadmap, **pause and escalate**.
+- Work on the current planning priority from canonical planning sources.
+- If the task diverges from canonical planning, **pause and escalate**.
 
 ### 4.3. IRON CONFLICT: The Stop Condition
 
 Execution **must halt** if an **IRON CONFLICT** is detected. An IRON CONFLICT occurs when:
 
-1.  **L1 (System State) conflicts with L2 (Governance Intent):** The live system behaves in a way that contradicts the roadmap.
-2.  **L2 (Governance Intent) conflicts with L3 (System Inventory):** The roadmap assumes a state that the inventory proves false.
-3.  **L3 (System Inventory) detects unknown scope:** The `iron-inventory.sh` script finds files/directories not in `SCOPE_DECISIONS.md`.
+1.  **L1 (System State) conflicts with L2 (Governance Intent):** The live system behaves in a way that contradicts canonical planning.
+2.  **L2 (Governance Intent) conflicts with L3 (System Inventory):** Canonical planning assumes a state that the inventory proves false.
+3.  **L3 (System Inventory) detects unknown scope:** The `iron-inventory.sh` script finds files/directories not in `docs/governance/SCOPE_DECISIONS.md`.
 
 When an IRON CONFLICT occurs, the agent must:
 1.  Declare `IRON CONFLICT`.
@@ -97,7 +97,7 @@ Every PR must pass the IRON Gate:
 ### 5.2. Scope Drift Handling
 
 1.  `iron-inventory.sh` detects unknown scope and exits with an error.
-2.  Developer/agent must record a decision (IN/OUT/IGNORE) in `SCOPE_DECISIONS.md`.
+2.  Developer/agent must record a decision (IN/OUT/IGNORE) in `docs/governance/SCOPE_DECISIONS.md`.
 3.  `iron-inventory.sh` is updated to reflect the decision.
 
 ### 5.3. Self-Correction Loop
@@ -125,14 +125,17 @@ Every PR must pass the IRON Gate:
 # Generate inventory only
 ./scripts/iron-inventory.sh
 
-# Check current roadmap
-cat ROADMAP.md
+# Check current planning queue
+cat docs/planning/NEXT_ACTIONS.json
+
+# Check structured backlog
+cat docs/planning/BACKLOG.csv
 
 # Check scope decisions
-cat SCOPE_DECISIONS.md
+cat docs/governance/SCOPE_DECISIONS.md
 
 # Check this protocol
-cat IRON_PROTOCOL.md
+cat docs/governance/IRON_PROTOCOL.md
 ```
 
 ---
