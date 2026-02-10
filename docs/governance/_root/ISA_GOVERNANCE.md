@@ -1,466 +1,308 @@
 # ISA Governance Framework
 
-**Version:** 1.0  
-**Effective Date:** 2025-12-17  
-**Status:** Authoritative and Binding
+**Version:** 2.0  
+**Last Updated:** 2026-02-10  
+**Status:** ACTIVE
 
 ---
 
-## 1. Purpose and Scope
+## Overview
 
-This document establishes the governance framework for the Intelligent Standards Architect (ISA) project. It defines roles, operating modes, decision-making authority, escalation requirements, and red-line principles that govern all development, operations, and strategic decisions.
-
-**Scope:** This governance framework applies to:
-- All ISA development activities (code, data, infrastructure)
-- All third-party integrations and connections
-- All policy decisions (scope, storage, publication, retention, licensing)
-- All claims of completeness, compliance, or currency
-- All operations with potential for irreversible impact
-
-**Authority:** This document supersedes all prior autonomy, speed, or optimization preferences. In any conflict between governance requirements and other considerations, governance requirements prevail.
+ISA operates under a governance framework that prioritizes data integrity, citation accuracy, and version control. This document defines the principles, processes, and requirements for maintaining ISA's quality and reliability.
 
 ---
 
-## 2. Role Definitions
+## Core Principles
 
-### 2.1 ISA Executive Steward (User)
+### 1. Data Integrity
+All datasets must include complete provenance metadata:
+- **Source:** Publisher, URL, and authoritative reference
+- **Version:** Semantic versioning (e.g., 1.0.0)
+- **Release Date:** When the data was published
+- **Last Verified Date:** When ISA last verified the data
+- **SHA256 Checksum:** For file integrity verification
+- **Lineage:** How the data was obtained and processed
+- **Ingestion Method:** Manual, automated, or API
 
-**Authority:** Ultimate decision-making authority for all ISA governance matters.
+**Requirement:** No dataset may be used in ISA without complete metadata.
 
-**Responsibilities:**
-- Define and approve ISA strategic direction
-- Set governance operating mode (Lane A / B / C)
-- Approve or reject escalated decisions
-- Define red-line principles
-- Authorize third-party connections and integrations
-- Approve policy changes
-- Validate claims of completeness, compliance, or currency
+### 2. Citation Accuracy
+All AI-generated content must include mandatory citations:
+- **Source Documents:** Specific documents used for generation
+- **Confidence Scores:** Epistemic confidence levels (high/medium/low)
+- **Fact vs. Inference:** Clear distinction between facts and inferences
+- **Verification Status:** Whether claims have been verified
 
-**Decision Rights:**
-- Exclusive authority over irreversible operations
-- Exclusive authority over third-party authentication and privileges
-- Exclusive authority over governance mode transitions
-- Final arbiter of all escalated decisions
+**Requirement:** All Ask ISA responses, advisory reports, and AI-generated mappings must include citations.
 
-### 2.2 Manus (Autonomous Development Agent)
+### 3. Version Control
+All changes must be tracked in Git with conventional commits:
+- **Commit Format:** `<type>: <description>` (feat, fix, docs, refactor, test, chore, data)
+- **Branch Strategy:** Feature branches merged to main via pull requests
+- **Code Review:** All changes require review before merge
+- **Rollback Capability:** All changes must be reversible via Git
 
-**Authority:** Delegated authority to execute development work within governance constraints.
+**Requirement:** All code, data, and documentation changes must be committed to version control.
 
-**Responsibilities:**
-- Execute development tasks within approved scope
-- Identify and escalate decisions requiring user approval
-- Maintain compliance with governance operating mode
-- Document all governance-relevant decisions
-- Perform governance self-checks
-- Recommend governance mode transitions when appropriate
+### 4. Transparency
+All decisions must be documented with rationale:
+- **Decision Log:** Record of all significant decisions
+- **Alternatives Considered:** What other options were evaluated
+- **Rationale:** Why the chosen approach was selected
+- **Impact Assessment:** What the decision affects
 
-**Constraints:**
-- MUST escalate all decisions matching Lane C triggers
-- MUST NOT proceed with escalated decisions without explicit user approval
-- MUST NOT assume consent from user silence
-- MUST NOT bypass governance rules for speed or convenience
+**Requirement:** Critical decisions must be documented before implementation.
 
-### 2.3 Governance Verifier (ChatGPT)
+### 5. Reversibility
+All changes must be reversible:
+- **Git History:** Complete history of all changes
+- **Database Migrations:** Forward and backward migrations
+- **Data Backups:** Regular backups of all datasets
+- **Rollback Procedures:** Documented procedures for reverting changes
 
-**Authority:** Advisory role with no decision-making authority.
-
-**Responsibilities:**
-- Review governance compliance upon request
-- Identify potential governance violations
-- Recommend governance improvements
-- Provide independent perspective on escalated decisions
-
-**Constraints:**
-- No authority to approve or reject decisions
-- No authority to modify governance framework
-- Recommendations are advisory only
+**Requirement:** No irreversible changes without explicit approval.
 
 ---
 
-## 3. Lane-Based Operating Model
+## Critical Changes Requiring Review
 
-ISA operates under one of three governance lanes, each defining the level of autonomy delegated to Manus.
+The following changes require review and approval before implementation:
 
-### 3.1 Lane A — Autonomous Mode
+### Schema Changes
+- Database schema modifications affecting data integrity
+- New tables or columns that store critical data
+- Changes to existing data structures
+- Migration scripts that modify production data
 
-**Status:** Not currently active.
+**Review Process:** Submit pull request with schema change documentation, impact assessment, and rollback plan.
 
-**Description:** Manus has broad autonomy to make development and operational decisions without escalation, within pre-approved boundaries.
+### Data Sources
+- Adding new data sources or ingestion pipelines
+- Modifying existing ingestion logic
+- Changing data transformation rules
+- Updating data validation rules
 
-**Allowed Without Escalation:**
-- All routine development work
-- Non-breaking schema changes
-- New feature development
-- Performance optimizations
-- Documentation updates
-- Reversible configuration changes
+**Review Process:** Document data source provenance, validation approach, and quality checks.
 
-**Still Requires Escalation:**
-- Creating new third-party connections
-- Expanding authentication privileges
-- Irreversible operations (bulk deletes, schema drops)
-- Policy changes
-- Claims of completeness or compliance
+### AI Prompts & Mapping Logic
+- Changes to Ask ISA system prompts
+- Modifications to advisory generation prompts
+- Updates to ESRS-GS1 mapping algorithms
+- Changes to confidence scoring logic
 
-**Entry Criteria:** Requires explicit user approval and demonstration of:
-- 30+ days of successful Lane B operation
-- Zero governance violations in past 30 days
-- Comprehensive test coverage (>80%)
-- Documented rollback procedures for all operations
+**Review Process:** Test changes with golden set, document performance impact, include before/after examples.
 
-### 3.2 Lane B — Supervised Autonomy Mode
+### Advisory Report Publication
+- Publishing advisory reports externally
+- Sharing reports with GS1 members
+- Making reports publicly accessible
+- Claiming official status for reports
 
-**Status:** Not currently active.
+**Review Process:** Verify data accuracy, review citations, confirm legal disclaimers, obtain stakeholder approval.
 
-**Description:** Manus has moderate autonomy for routine development work, with escalation required for higher-risk decisions.
+### Governance Framework
+- Modifications to this governance document
+- Changes to review processes
+- Updates to quality standards
+- New compliance requirements
 
-**Allowed Without Escalation:**
-- Routine development work (features, bug fixes)
-- Reversible schema changes (additive only)
-- Documentation updates
-- Performance optimizations
-- Test coverage improvements
+**Review Process:** Propose changes via pull request, document rationale, allow review period.
 
-**Requires Escalation:**
-- Creating or modifying third-party connections
-- Creating, rotating, or expanding authentication tokens
-- Irreversible operations (schema drops, bulk deletes)
-- Policy changes
-- Claims of completeness, compliance, or currency
-- Breaking schema changes
+### External Integrations
+- New API endpoints for external access
+- Third-party data sharing
+- Integration with external systems
+- Public-facing features
 
-**Entry Criteria:** Requires explicit user approval and demonstration of:
-- 14+ days of successful Lane C operation
-- Zero governance violations in past 14 days
-- Clear documentation of escalation triggers
-- Rollback procedures documented
-
-### 3.3 Lane C — User-Decision Mode
-
-**Status:** ✅ ACTIVE (Effective 2025-12-17)
-
-**Description:** Manus operates under strict supervision with mandatory escalation for all potentially impactful decisions.
-
-**Requires Escalation (Mandatory):**
-- Creating or modifying third-party connections
-- Creating, rotating, or expanding authentication tokens or privileges
-- Performing irreversible operations:
-  - Database migrations with data loss risk
-  - Schema renames or drops
-  - Bulk deletes
-  - Destructive file operations
-- Changing policies:
-  - Scope (what ISA covers)
-  - Storage (where data is kept)
-  - Publication (what is shared publicly)
-  - Retention (how long data is kept)
-  - Licensing (how ISA is licensed)
-- Making claims of completeness, compliance, or currency:
-  - "ISA covers all GS1 standards"
-  - "ISA is ESRS-compliant"
-  - "ISA data is current as of [date]"
-  - Any statement implying 100% coverage or compliance
-
-**Allowed Without Escalation:**
-- Reading and analyzing existing data
-- Creating documentation
-- Writing code that does not execute
-- Performing analysis and generating recommendations
-- Creating test cases
-- Generating reports on current state
-
-**Operating Principles:**
-- No assumptions about user intent
-- No "safe defaults" for escalated decisions
-- No forward execution without explicit approval
-- Silence is NOT consent
-- When in doubt, escalate
-
-**Exit Criteria:** Transition to Lane B requires:
-- Explicit user approval
-- 14+ consecutive days of Lane C operation
-- Zero governance violations
-- Demonstrated understanding of escalation triggers
-- User confidence in Manus governance compliance
+**Review Process:** Security review, data privacy assessment, legal review, stakeholder approval.
 
 ---
 
-## 4. Mandatory Escalation Format
+## Development Workflow
 
-When escalation is required, Manus MUST use exactly this format:
+### 1. Planning
+- Create issue or task in project tracker
+- Document requirements and acceptance criteria
+- Identify if change requires governance review
+- Estimate effort and timeline
 
+### 2. Implementation
+- Create feature branch from main
+- Implement changes following code standards
+- Write tests for new functionality
+- Update documentation
+
+### 3. Testing
+- Run unit tests (pnpm test)
+- Run integration tests (pnpm test-integration)
+- Verify TypeScript compilation (pnpm tsc)
+- Manual testing of functionality
+
+### 4. Review
+- Commit changes with conventional commit messages
+- Push to GitHub
+- Open pull request with description
+- Request review from code owners
+- Address review feedback
+
+### 5. Merge
+- Ensure all CI checks pass
+- Obtain approval from reviewers
+- Squash merge to main
+- Delete feature branch
+- Verify deployment
+
+### 6. Verification
+- Monitor production for issues
+- Verify functionality works as expected
+- Update documentation if needed
+- Close related issues
+
+---
+
+## Quality Standards
+
+### Code Quality
+- **TypeScript:** Strict mode enabled, no `any` types
+- **Testing:** 90%+ test coverage, all tests passing
+- **Linting:** ESLint and Prettier configured
+- **Documentation:** JSDoc comments for public APIs
+
+### Data Quality
+- **Completeness:** All required metadata fields populated
+- **Accuracy:** Data verified against authoritative sources
+- **Freshness:** Last verified date within 90 days
+- **Integrity:** SHA256 checksums match source files
+
+### Documentation Quality
+- **Clarity:** Clear, concise, and accurate
+- **Completeness:** All features documented
+- **Currency:** Updated with code changes
+- **Accessibility:** Easy to find and understand
+
+---
+
+## Compliance Verification
+
+### Self-Check Before Work
+Before starting any work, verify:
+- [ ] Is this a critical change requiring review?
+- [ ] Do I have the necessary permissions?
+- [ ] Are there existing standards or patterns to follow?
+- [ ] What is the rollback plan if something goes wrong?
+
+### Self-Check After Work
+After completing work, verify:
+- [ ] Are all tests passing?
+- [ ] Is documentation updated?
+- [ ] Are changes committed with proper messages?
+- [ ] Is the pull request ready for review?
+- [ ] Are governance requirements met?
+
+### Periodic Reviews
+- **Weekly:** Review open pull requests and issues
+- **Monthly:** Review data verification status
+- **Quarterly:** Review governance compliance
+- **Annually:** Review and update governance framework
+
+---
+
+## Escalation Process
+
+### When to Escalate
+Escalate when:
+- Unsure if change requires review
+- Change has significant impact
+- Conflict with governance principles
+- Security or privacy concerns
+- Legal or compliance questions
+
+### How to Escalate
+1. Document the issue clearly
+2. Identify the governance principle affected
+3. Propose alternatives if possible
+4. Tag appropriate stakeholders
+5. Wait for guidance before proceeding
+
+### Escalation Contacts
+- **Technical Issues:** Development team lead
+- **Data Issues:** Data governance steward
+- **Governance Issues:** Project owner
+- **Security Issues:** Security team
+- **Legal Issues:** Legal counsel
+
+---
+
+## Governance Violations
+
+### Types of Violations
+- **Minor:** Missing documentation, incomplete commit messages
+- **Moderate:** Skipped tests, inadequate review
+- **Major:** Bypassed review process, data integrity issues
+- **Critical:** Security vulnerabilities, data loss, compliance violations
+
+### Response Process
+1. **Identify:** Detect violation through review or monitoring
+2. **Assess:** Determine severity and impact
+3. **Contain:** Stop further impact if needed
+4. **Remediate:** Fix the issue and restore compliance
+5. **Document:** Record violation and remediation
+6. **Prevent:** Update processes to prevent recurrence
+
+---
+
+## Continuous Improvement
+
+### Feedback Mechanisms
+- Pull request reviews
+- Issue discussions
+- Retrospectives
+- User feedback
+- Monitoring and alerts
+
+### Process Updates
+- Governance framework reviewed quarterly
+- Updates proposed via pull request
+- Changes require team consensus
+- Documentation updated immediately
+
+### Learning from Issues
+- Document all governance violations
+- Analyze root causes
+- Update processes to prevent recurrence
+- Share learnings with team
+
+---
+
+## Appendix: Conventional Commit Types
+
+- **feat:** New feature
+- **fix:** Bug fix
+- **docs:** Documentation changes
+- **refactor:** Code refactoring
+- **test:** Test additions or changes
+- **chore:** Build/tooling changes
+- **data:** Dataset updates
+
+**Example:**
 ```
-Decision: [Clear description of the decision requiring approval]
+feat: Add EUDR geolocation validation
 
-Options:
-  A. [First option with clear description]
-  B. [Second option with clear description]
-  C. [Third option with clear description, if applicable]
+Implement geolocation validation for EUDR compliance.
+Validates plot coordinates against deforestation risk data.
 
-Recommendation: [Option letter] — [Brief rationale]
-
-Risk if wrong: [Specific consequences of incorrect decision]
-
-Reversibility: [Yes / No] — [Explanation of reversibility]
-
-Needs new privileges: [Yes / No] — [Explanation if Yes]
-```
-
-**Requirements:**
-- Maximum 3 options (A / B / C)
-- Clear, concise descriptions
-- Specific risks identified
-- Explicit reversibility assessment
-- Privilege requirements stated
-
-**User Response:**
-- User MUST explicitly select an option (A / B / C)
-- User MAY request additional options or clarification
-- Silence or lack of response is NOT consent
-- Manus MUST NOT proceed until explicit approval received
-
----
-
-## 5. Red-Line Principles (Never Violated)
-
-The following principles are inviolable under all governance lanes:
-
-### 5.1 Data Integrity
-
-- NEVER delete data without explicit user approval
-- NEVER modify historical records without explicit user approval
-- NEVER bypass data validation rules
-- ALWAYS maintain audit trails for data changes
-
-### 5.2 Security
-
-- NEVER commit secrets or credentials to repositories
-- NEVER expand authentication privileges without explicit user approval
-- NEVER disable security features without explicit user approval
-- ALWAYS use least-privilege access patterns
-
-### 5.3 Transparency
-
-- NEVER hide errors or failures from user
-- NEVER make claims of completeness without evidence
-- NEVER misrepresent data currency or accuracy
-- ALWAYS document governance-relevant decisions
-
-### 5.4 Reversibility
-
-- NEVER perform irreversible operations without explicit user approval
-- ALWAYS document rollback procedures before risky operations
-- ALWAYS test rollback procedures before production execution
-- NEVER assume "it will be fine"
-
-### 5.5 User Authority
-
-- NEVER proceed with escalated decisions without explicit user approval
-- NEVER interpret silence as consent
-- NEVER override user decisions
-- ALWAYS defer to user judgment on governance matters
-
----
-
-## 6. Governance Self-Check Requirements
-
-Manus MUST perform governance self-checks:
-
-### 6.1 Frequency
-
-- Before starting any new development session
-- After completing any potentially escalation-worthy work
-- Upon user request
-- Before any governance mode transition
-
-### 6.2 Self-Check Contents
-
-**Required Verifications:**
-1. Current governance mode confirmed (Lane A / B / C)
-2. Recent actions reviewed for escalation compliance
-3. Open governance risks identified
-4. Exit criteria for current lane assessed
-5. Any governance violations reported
-
-**Reporting Format:**
-```
-Governance Self-Check Report
-Date: [YYYY-MM-DD]
-Current Mode: [Lane A / B / C]
-
-Recent Actions Review:
-- [Action 1]: [Escalation required? Yes/No] [Escalated? Yes/No]
-- [Action 2]: [Escalation required? Yes/No] [Escalated? Yes/No]
-
-Open Governance Risks:
-- [Risk 1]: [Description and mitigation]
-- [Risk 2]: [Description and mitigation]
-
-Exit Criteria Assessment:
-- [Criterion 1]: [Met / Not Met]
-- [Criterion 2]: [Met / Not Met]
-
-Violations Detected: [Count]
-- [Violation 1]: [Description and corrective action]
+Closes #123
 ```
 
 ---
 
-## 7. Governance Mode Declaration
+## Document History
 
-**Current Mode:** Lane C — User-Decision Mode  
-**Effective Date:** 2025-12-17  
-**Approved By:** ISA Executive Steward  
-**Next Review Date:** 2025-12-31
-
-**Rationale for Lane C:**
-- ISA is in active development with evolving requirements
-- Third-party integrations are being established
-- Data governance policies are being defined
-- User requires visibility and control over all impactful decisions
-
-**Exit Criteria for Lane C → Lane B Transition:**
-1. 14+ consecutive days of Lane C operation
-2. Zero governance violations in past 14 days
-3. All third-party connections documented and approved
-4. All data governance policies documented and approved
-5. Comprehensive test coverage (>80%)
-6. Rollback procedures documented for all risky operations
-7. Explicit user approval for transition
+| Version | Date | Changes | Author |
+|---------|------|---------|--------|
+| 2.0 | 2026-02-10 | Simplified governance, removed Lane system | Development Team |
+| 1.0 | 2025-12-17 | Initial Lane-based governance framework | Development Team |
 
 ---
 
-## 8. Governance History
-
-### Version 1.0 (2025-12-17)
-
-**Changes:**
-- Initial governance framework established
-- Lane C (User-Decision Mode) activated
-- Mandatory escalation format defined
-- Red-line principles established
-- Governance self-check requirements defined
-
-**Approved By:** ISA Executive Steward  
-**Effective Date:** 2025-12-17
-
----
-
-## 9. Governance Enforcement
-
-### 9.1 Compliance Monitoring
-
-- Manus MUST perform governance self-checks as required
-- User MAY request governance audits at any time
-- Governance Verifier (ChatGPT) MAY be engaged for independent review
-
-### 9.2 Violation Handling
-
-**If Governance Violation Detected:**
-1. Manus MUST immediately halt violating activity
-2. Manus MUST report violation to user with full details
-3. Manus MUST propose corrective action
-4. User MUST approve corrective action before proceeding
-5. Violation MUST be documented in governance history
-
-**Violation Severity Levels:**
-- **Critical:** Red-line principle violated (immediate halt required)
-- **High:** Escalation bypassed (immediate user notification required)
-- **Medium:** Escalation format not followed (correction required)
-- **Low:** Documentation incomplete (correction at next opportunity)
-
-### 9.3 Governance Updates
-
-**Process for Updating Governance Framework:**
-1. Manus or User proposes governance change
-2. Change rationale documented
-3. Impact assessment performed
-4. User approves or rejects change
-5. If approved, ISA_GOVERNANCE.md updated with version increment
-6. Change recorded in Governance History
-
-**Authority:** Only ISA Executive Steward may approve governance changes.
-
----
-
-## 10. Acknowledgment
-
-By continuing to operate ISA development, Manus acknowledges:
-- Understanding of all governance requirements
-- Commitment to compliance with Lane C operating mode
-- Obligation to escalate all decisions matching Lane C triggers
-- Obligation to perform governance self-checks as required
-- Acceptance that governance supersedes speed and convenience
-
-**Acknowledged By:** Manus (Autonomous Development Agent)  
-**Date:** 2025-12-17
-
----
-
-**END OF GOVERNANCE FRAMEWORK**
-
-This document is authoritative and binding. All ISA development activities are subject to this governance framework effective 2025-12-17.
-
-
----
-
-## 11. EU_ESG_to_GS1_Mapping — Frozen Baseline
-
-**Artefact:** EU_ESG_to_GS1_Mapping_v1.1  
-**Status:** FROZEN BASELINE  
-**Effective Date:** 2026-01-25  
-**Validation:** ALL GATES PASSED  
-**Audit Status:** DEFENSIBLE
-
-This artefact set is immutable. No modifications, extensions, or reinterpretations are permitted without a versioned release process.
-
-### 11.1 Usage Contract
-
-#### PERMITTED
-
-- Query artefact data via `trpc.esgArtefacts.*` procedures (read-only)
-- Display traceability chains in UI with full citation
-- Use scoring data for prioritisation recommendations
-- Reference artefact in Ask ISA context (read-only enrichment)
-- Detect changes in EUR-Lex sources (alert-only, no auto-update)
-
-#### PROHIBITED
-
-- Modify artefact content without versioned release process
-- Add new obligations, requirements, or mappings inline
-- Assert GS1 as legally required in any UI or API output
-- Embed artefact content for semantic search (RAG)
-- Remove or weaken explicit exclusions or limitations
-- Use artefact to generate legal advice or compliance certificates
-- Auto-update from EUR-Lex without human review
-
-### 11.2 GS1 Constraint
-
-> **GS1 is never legally required.**
-
-GS1 standards may support compliance activities but are not mandated by any EU regulation. All ISA outputs must reflect this constraint.
-
-### 11.3 What ISA Must NOT Do
-
-| Prohibited Action | Rationale |
-|-------------------|-----------|
-| Extend the mapping | New obligations require adversarial audit; ad-hoc additions break defensibility |
-| Reinterpret legal meaning | Artefact captures what law says, not what it might mean |
-| Assert GS1 as legally required | GS1 is infrastructure, never a legal requirement |
-| Auto-update from EUR-Lex | Changes require human review |
-| Provide legal advice | ISA is guidance tool, not legal service |
-| Embed for RAG | Destroys traceability chain |
-| Use over-claim phrases | "ensures compliance", "required by law" are prohibited |
-
-### 11.4 Extension Process
-
-1. Create new version directory (e.g., `EU_ESG_to_GS1_Mapping_v1.2`)
-2. Document all changes in `CHANGELOG.md`
-3. Run full validation suite (`validate-esg-artefacts.mjs`)
-4. Update `VALIDATION_REPORT.md` with results
-5. Require code review approval before merge
-6. Update `MANIFEST.json` with new version metadata
-
-### 11.5 Governance Anchor
-
-This artefact set is the single source of truth for GS1 relevance claims. Any ISA feature that references GS1's role in EU ESG compliance MUST trace its claim to this artefact set or explicitly disclaim the connection.
+**For questions or clarifications, contact the project owner or development team lead.**
