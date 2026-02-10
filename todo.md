@@ -1,7 +1,12 @@
-# TODO (canonical)
+# TODO (deprecated pointer)
 
-This is the single canonical, live planning list for ISA.
+Status: DEPRECATED (non-canonical)
+
+Canonical planning sources:
+- `docs/planning/NEXT_ACTIONS.json`
+- `docs/planning/BACKLOG.csv`
 
 Rules:
+- Do not use this file as a live planning source.
 - Do not create additional TODO/Todo/todo planning files elsewhere in the repo.
-- If legacy planning documents are found, migrate key items into this file or into `docs/planning/BACKLOG.csv`, then mark the legacy file as superseded or archive it under `isa-archive/`.
+- Migrate any remaining planning items to `docs/planning/NEXT_ACTIONS.json` or `docs/planning/BACKLOG.csv`.

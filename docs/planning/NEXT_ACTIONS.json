@@ -15,11 +15,11 @@
       "status": "DONE",
       "capability": "Meta",
       "title": "Lock canonical plan-as-code entrypoints",
-      "next_action": "Ensure PROGRAM_PLAN.md and NEXT_ACTIONS.json are referenced by AGENT_START_HERE and AGENT_MAP",
-      "acceptance_criteria": "AGENT_START_HERE and AGENT_MAP link to docs/planning/PROGRAM_PLAN.md and docs/planning/NEXT_ACTIONS.json",
+      "next_action": "Ensure NEXT_ACTIONS.json and BACKLOG.csv are referenced by AGENT_START_HERE and AGENT_MAP",
+      "acceptance_criteria": "AGENT_START_HERE and AGENT_MAP link to docs/planning/NEXT_ACTIONS.json and docs/planning/BACKLOG.csv",
       "evidence_links": [
-        "docs/planning/PROGRAM_PLAN.md",
         "docs/planning/NEXT_ACTIONS.json",
+        "docs/planning/BACKLOG.csv",
         "AGENT_START_HERE.md",
         "docs/agent/AGENT_MAP.md"
       ],
@@ -75,7 +75,7 @@
       "evidence_links": [
         "docs/core/ISA_CORE_CONTRACT.md",
         "docs/agent/AGENT_MAP.md",
-        "docs/planning/PROGRAM_PLAN.md"
+        "docs/planning/BACKLOG.csv"
       ],
       "validation_command": "(NO_GATES_WINDOW) run local preflight only",
       "completed_at_utc": "2026-02-09T19:31:01Z",

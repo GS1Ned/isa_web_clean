@@ -1,12 +1,16 @@
 # Planning Policy (canonical)
 
-## Canonical "live" planning sources
-- `todo.md` — short next actions (single live TODO)
+## Canonical planning sources (SSoT)
+- `docs/planning/NEXT_ACTIONS.json` — next execution queue
 - `docs/planning/BACKLOG.csv` — structured backlog
+- `docs/planning/PROGRAM_PLAN.md` — support narrative (optional, non-canonical)
+
+## Deprecated planning files
+- `todo.md` — deprecated; point to `docs/planning/NEXT_ACTIONS.json` and `docs/planning/BACKLOG.csv`
 ## Rules
 - Do not create new planning files elsewhere in the repo.
 - If a planning document is discovered in other locations, either:
-  - migrate its content into `todo.md` or `BACKLOG.csv`, or
+  - migrate its content into `docs/planning/NEXT_ACTIONS.json` or `docs/planning/BACKLOG.csv`, or
   - archive it under `isa-archive/` and add a superseded banner.
 
 ## Backlog workflow

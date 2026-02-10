@@ -4,7 +4,8 @@ Status: CANONICAL
 ## Start
 - Planning index: docs/planning/INDEX.md
 - Execution queue (single source of next work): docs/planning/NEXT_ACTIONS.json
-- Program plan: docs/planning/PROGRAM_PLAN.md
+- Structured backlog (canonical): docs/planning/BACKLOG.csv
+- Program plan (support, optional): docs/planning/PROGRAM_PLAN.md
 
 ## Execution procedure (agent)
 1) Read docs/planning/NEXT_ACTIONS.json
