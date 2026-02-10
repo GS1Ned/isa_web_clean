@@ -26,11 +26,35 @@ echo "=============================================="
 echo ""
 
 # =============================================================================
-# STEP 1: Pull latest code
+# STEP 1: Safe sync with origin/main (non-destructive)
 # =============================================================================
-echo "[1/4] Pulling latest code from origin/main..."
-git fetch origin
-git reset --hard origin/main
+echo "[1/4] Syncing with origin/main (safe, non-destructive)..."
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "STOP=working tree is dirty; commit/stash/discard changes before running iron-context.sh"
+  exit 1
+fi
+
+git fetch origin --prune
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+if [[ "$CURRENT_BRANCH" == "HEAD" ]]; then
+  echo "STOP=detached HEAD; checkout a branch before running iron-context.sh"
+  exit 1
+fi
+
+if [[ "$CURRENT_BRANCH" == "main" ]]; then
+  git pull --ff-only origin main
+else
+  if git merge-base --is-ancestor HEAD origin/main; then
+    git merge --ff-only origin/main
+  elif git merge-base --is-ancestor origin/main HEAD; then
+    echo "      Branch is ahead of origin/main; no fast-forward needed."
+  else
+    echo "STOP=branch has diverged from origin/main; resolve manually (rebase or merge) before running this script"
+    exit 1
+  fi
+fi
+
 GIT_HASH=$(git rev-parse HEAD)
 echo "      Current commit: $GIT_HASH"
 echo ""
