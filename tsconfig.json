@@ -35,5 +35,8 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": false,
     "forceConsistentCasingInFileNames": true
+  },
+  "watchOptions": {
+    "excludeDirectories": ["**/node_modules", "dist", ".git", ".github", "docs"]
   }
 }

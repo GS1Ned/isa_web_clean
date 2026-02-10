@@ -77,58 +77,58 @@ These conflicts:
 
 | Conflict ID | Cluster                                 | Topic              | Priority | Status | Owner |
 | ----------- | --------------------------------------- | ------------------ | -------- | ------ | ----- |
-| CONF-001    | ISA Core Architecture                   | database_config    | Low      | OPEN   | TBD   |
-| CONF-002    | ISA Core Architecture                   | embedding_model    | Medium   | OPEN   | TBD   |
-| CONF-003    | ISA Core Architecture                   | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-004    | ISA Core Architecture                   | normative_rules    | High     | OPEN   | TBD   |
-| CONF-005    | ISA Core Architecture                   | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-006    | Data & Knowledge Model                  | database_config    | Low      | OPEN   | TBD   |
-| CONF-007    | Data & Knowledge Model                  | embedding_model    | Medium   | OPEN   | TBD   |
-| CONF-008    | Data & Knowledge Model                  | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-009    | Data & Knowledge Model                  | normative_rules    | High     | OPEN   | TBD   |
-| CONF-010    | Data & Knowledge Model                  | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-011    | Governance & IRON Protocol              | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-012    | Governance & IRON Protocol              | normative_rules    | High     | OPEN   | TBD   |
-| CONF-013    | Governance & IRON Protocol              | database_config    | Low      | OPEN   | TBD   |
-| CONF-014    | Governance & IRON Protocol              | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-015    | Governance & IRON Protocol              | embedding_model    | Medium   | OPEN   | TBD   |
-| CONF-016    | Ingestion & Update Lifecycle            | normative_rules    | High     | OPEN   | TBD   |
-| CONF-017    | Ingestion & Update Lifecycle            | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-018    | Ingestion & Update Lifecycle            | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-019    | Ingestion & Update Lifecycle            | database_config    | Low      | OPEN   | TBD   |
-| CONF-020    | Catalogue Obligation & Sources          | normative_rules    | High     | OPEN   | TBD   |
-| CONF-021    | Catalogue Obligation & Sources          | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-022    | Catalogue Obligation & Sources          | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-023    | Retrieval / Embeddings / Grounding      | embedding_model    | Medium   | OPEN   | TBD   |
-| CONF-024    | Retrieval / Embeddings / Grounding      | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-025    | Retrieval / Embeddings / Grounding      | normative_rules    | High     | OPEN   | TBD   |
-| CONF-026    | Retrieval / Embeddings / Grounding      | database_config    | Low      | OPEN   | TBD   |
-| CONF-027    | Retrieval / Embeddings / Grounding      | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-028    | Evaluation Governance & Reproducibility | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-029    | Evaluation Governance & Reproducibility | normative_rules    | High     | OPEN   | TBD   |
-| CONF-030    | Evaluation Governance & Reproducibility | database_config    | Low      | OPEN   | TBD   |
-| CONF-031    | Evaluation Governance & Reproducibility | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-032    | Evaluation Governance & Reproducibility | embedding_model    | Medium   | OPEN   | TBD   |
-| CONF-033    | Observability / Tracing / Feedback      | normative_rules    | High     | OPEN   | TBD   |
-| CONF-034    | Observability / Tracing / Feedback      | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-035    | Observability / Tracing / Feedback      | database_config    | Low      | OPEN   | TBD   |
-| CONF-036    | Observability / Tracing / Feedback      | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-037    | Repo Structure / Change Control         | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-038    | Repo Structure / Change Control         | normative_rules    | High     | OPEN   | TBD   |
-| CONF-039    | Repo Structure / Change Control         | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-040    | Repo Structure / Change Control         | embedding_model    | Medium   | OPEN   | TBD   |
-| CONF-041    | Repo Structure / Change Control         | database_config    | Low      | OPEN   | TBD   |
-| CONF-042    | Agent & Prompt Governance               | normative_rules    | High     | OPEN   | TBD   |
-| CONF-043    | Agent & Prompt Governance               | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-044    | Agent & Prompt Governance               | database_config    | Low      | OPEN   | TBD   |
+| CONF-001    | ISA Core Architecture                   | database_config    | Low      | CANONICALIZED   | Manus |
+| CONF-002    | ISA Core Architecture                   | embedding_model    | Medium   | CANONICALIZED   | Manus   |
+| CONF-003    | ISA Core Architecture                   | retrieval_strategy | Medium   | CANONICALIZED   | Manus   |
+| CONF-004    | ISA Core Architecture                   | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-005    | ISA Core Architecture                   | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-006    | Data & Knowledge Model                  | database_config    | Low      | CANONICALIZED   | Manus |
+| CONF-007    | Data & Knowledge Model                  | embedding_model    | Medium   | CANONICALIZED   | Manus   |
+| CONF-008    | Data & Knowledge Model                  | retrieval_strategy | Medium   | CANONICALIZED   | Manus   |
+| CONF-009    | Data & Knowledge Model                  | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-010    | Data & Knowledge Model                  | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-011    | Governance & IRON Protocol              | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-012    | Governance & IRON Protocol              | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-013    | Governance & IRON Protocol              | database_config    | Low      | CANONICALIZED   | Manus |
+| CONF-014    | Governance & IRON Protocol              | retrieval_strategy | Medium   | CANONICALIZED   | Manus   |
+| CONF-015    | Governance & IRON Protocol              | embedding_model    | Medium   | CANONICALIZED   | Manus   |
+| CONF-016    | Ingestion & Update Lifecycle            | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-017    | Ingestion & Update Lifecycle            | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-018    | Ingestion & Update Lifecycle            | retrieval_strategy | Medium   | CANONICALIZED   | Manus   |
+| CONF-019    | Ingestion & Update Lifecycle            | database_config    | Low      | CANONICALIZED   | Manus |
+| CONF-020    | Catalogue Obligation & Sources          | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-021    | Catalogue Obligation & Sources          | retrieval_strategy | Medium   | CANONICALIZED   | Manus   |
+| CONF-022    | Catalogue Obligation & Sources          | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-023    | Retrieval / Embeddings / Grounding      | embedding_model    | Medium   | CANONICALIZED   | Manus   |
+| CONF-024    | Retrieval / Embeddings / Grounding      | retrieval_strategy | Medium   | CANONICALIZED   | Manus   |
+| CONF-025    | Retrieval / Embeddings / Grounding      | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-026    | Retrieval / Embeddings / Grounding      | database_config    | Low      | CANONICALIZED   | Manus |
+| CONF-027    | Retrieval / Embeddings / Grounding      | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-028    | Evaluation Governance & Reproducibility | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-029    | Evaluation Governance & Reproducibility | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-030    | Evaluation Governance & Reproducibility | database_config    | Low      | CANONICALIZED   | Manus |
+| CONF-031    | Evaluation Governance & Reproducibility | retrieval_strategy | Medium   | CANONICALIZED   | Manus   |
+| CONF-032    | Evaluation Governance & Reproducibility | embedding_model    | Medium   | CANONICALIZED   | Manus   |
+| CONF-033    | Observability / Tracing / Feedback      | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-034    | Observability / Tracing / Feedback      | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-035    | Observability / Tracing / Feedback      | database_config    | Low      | CANONICALIZED   | Manus |
+| CONF-036    | Observability / Tracing / Feedback      | retrieval_strategy | Medium   | CANONICALIZED   | Manus   |
+| CONF-037    | Repo Structure / Change Control         | retrieval_strategy | Medium   | CANONICALIZED   | Manus   |
+| CONF-038    | Repo Structure / Change Control         | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-039    | Repo Structure / Change Control         | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-040    | Repo Structure / Change Control         | embedding_model    | Medium   | CANONICALIZED   | Manus   |
+| CONF-041    | Repo Structure / Change Control         | database_config    | Low      | CANONICALIZED   | Manus |
+| CONF-042    | Agent & Prompt Governance               | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-043    | Agent & Prompt Governance               | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-044    | Agent & Prompt Governance               | database_config    | Low      | CANONICALIZED   | Manus |
 | CONF-045    | Agent & Prompt Governance               | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-046    | UX & User Journey                       | normative_rules    | High     | OPEN   | TBD   |
-| CONF-047    | UX & User Journey                       | gate_definitions   | High     | OPEN   | TBD   |
-| CONF-048    | UX & User Journey                       | database_config    | Low      | OPEN   | TBD   |
+| CONF-046    | UX & User Journey                       | normative_rules    | High     | CANONICALIZED   | Manus   |
+| CONF-047    | UX & User Journey                       | gate_definitions   | High     | CANONICALIZED   | Manus   |
+| CONF-048    | UX & User Journey                       | database_config    | Low      | CANONICALIZED   | Manus |
 | CONF-049    | UX & User Journey                       | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-050    | Roadmap / Evolution                     | gate_definitions   | High     | OPEN   | TBD   |
+| CONF-050    | Roadmap / Evolution                     | gate_definitions   | High     | CANONICALIZED   | Manus   |
 | CONF-051    | Roadmap / Evolution                     | retrieval_strategy | Medium   | OPEN   | TBD   |
-| CONF-052    | Roadmap / Evolution                     | normative_rules    | High     | OPEN   | TBD   |
+| CONF-052    | Roadmap / Evolution                     | normative_rules    | High     | CANONICALIZED   | Manus   |
 | CONF-053    | Roadmap / Evolution                     | embedding_model    | Medium   | OPEN   | TBD   |
 
 ---
@@ -143,8 +143,8 @@ These conflicts:
 | **Class**              | Governance & Authority      |
 | **Topic**              | Secrets handling precedence |
 | **Priority**           | Critical                    |
-| **Status**             | OPEN                        |
-| **Decision Authority** | Project Owner (Human)       |
+| **Status**             | CANONICALIZED               |
+| **Decision Authority** | Manus                       | Manus (explicitly authorized)       |
 
 **Competing Rules**
 

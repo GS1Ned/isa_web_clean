@@ -28,6 +28,9 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
+  optimizeDeps: {
+    exclude: ["canvg"],
+  },
   server: {
     host: true,
     allowedHosts: [

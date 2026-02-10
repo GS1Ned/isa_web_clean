@@ -205,3 +205,8 @@ This document is the **sole authoritative source** for defining ISA development 
 ---
 
 *This roadmap is a living document and should be updated as priorities evolve.*
+
+
+## Governance Policies
+
+For detailed information on governance policies, including the Roadmap Review Board, ISA Core Team, and Semantic Versioning, please refer to the [ISA Governance Policies](GOVERNANCE_POLICIES.md) document.

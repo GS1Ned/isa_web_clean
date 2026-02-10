@@ -23,59 +23,44 @@
 
 *See ISA_MASTER_SPEC.md*
 
-## 4. Invariants (MUST-level)
+## 4. Retrieval and Embeddings
 
-**INV-1:** 1. **Initial Setup**: New deployments or data migrations required manual workarounds to populate historical news data
-- Source: `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` > Problem Statement
+*See [Retrieval and Embeddings](./retrieval-and-embeddings.md) for all definitions, rules, and gates related to embedding models and retrieval strategies.*
 
-**INV-2:** 2. **Data Recovery**: System failures or extended downtime required custom scripts to backfill missing news items
-- Source: `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` > Problem Statement
+## 5. Database Governance
 
-**INV-3:** The following environment variables must be configured in the production environment:
-- Source: `./docs/PRODUCTION_DEPLOYMENT.md` > Environment Variables
+*See [Database Governance](./database-governance.md) for all definitions, rules, and gates related to database configuration, schema management, and data access.*
 
-**INV-4:** | Variable | Description | Required |
-- Source: `./docs/PRODUCTION_DEPLOYMENT.md` > Environment Variables
+## 6. Observability Regels (Observability Rules)
 
-**INV-5:** | Criterion | Required | Actual | Status |
-- Source: `./docs/PHASE4_OPERATIONAL_READINESS_REPORT.md` > 6. Completion Criteria Verification
+| Regel-ID | Regel | Bron |
+|---|---|---|
+| OR-001 | Alle vereiste omgevingsvariabelen MOETEN worden geconfigureerd in de productieomgeving. | `./docs/PRODUCTION_DEPLOYMENT.md` > Environment Variables |
+| OR-002 | Er zijn geen databasemigraties vereist; alle verbeteringen zijn op applicatieniveau. | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` > 6.2 Database Changes |
+| OR-003 | Een cookie-toestemmingsbanner is niet vereist voor alleen essentiële cookies. | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` > 5.2 Overall Status |
 
-**INV-6:** - ⚠️ Cookie consent banner not implemented (minimal cookies, not required)
-- Source: `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` > 5.1 Updated Checklist
+## 7. Kwaliteitspoorten (Gate Definitions)
 
-**INV-7:** - Cookie consent banner (not required for essential cookies only)
-- Source: `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` > 5.2 Overall Status
+| Poort-ID | Poortnaam | Trigger | Invoercriteria | Validatiestappen | Uitvoercriteria |
+|---|---|---|---|---|---|
+| OG-001 | Progress Persistence Gate | Bij de start van een langlopend proces. | Een langlopend proces. | Verifieer dat het proces de voortgang kan opslaan en herstellen na een onderbreking. | Succes als het proces de voortgang kan herstellen; anders, falen. |
+| OG-002 | Rollback Verification Gate | Na een rollback. | Een voltooide rollback. | Controleer de health endpoints om de rollback te verifiëren. | Succes als de health endpoints een gezonde status aangeven; anders, falen. |
 
-**INV-8:** No new environment variables required. All improvements use existing infrastructure:
-- Source: `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` > 6.1 Environment Variables
-
-**INV-9:** - Rate limiting: In-memory store (no Redis required)
-- Source: `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` > 6.1 Environment Variables
-
-**INV-10:** No database migrations required. All improvements are application-level.
-- Source: `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` > 6.2 Database Changes
-
-**INV-11:** - [ ] Implement cookie consent banner (if required by legal review)
-- Source: `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` > 8.1 Short-Term (Next 30 Days)
-
-**INV-12:** 3. **No Progress Persistence:** If interrupted, must restart from beginning
-- Source: `./docs/EMBEDDING_PIPELINE_OPTIMIZATION.md` > Limitations
-
-## 5. Interfaces / Pipelines
+## 8. Interfaces / Pipelines
 
 *See source documents.*
 
-## 6. Governance & Change Control
+## 9. Governance & Change Control
 
 1. Review source documents
 2. Update TRACEABILITY_MATRIX.csv
 3. Follow governance rules
 
-## 7. Observability
+## 10. Observability
 
 *See source documents.*
 
-## 8. Acceptance Criteria
+## 11. Acceptance Criteria
 
 - AC-1: 2. Ensure "Normal (30 days)" is selected (default)
 - AC-2: **Note:** Automated tests validate core mode logic but require enhanced mocking for full pipeline execution. Manual testing via admin UI is recommende
@@ -83,24 +68,6 @@
 - AC-4: 4. **Verify rollback**: Check health endpoints
 - AC-5: - [ ] Conduct load testing to validate scaling assumptions
 
-## 9. Traceability Annex
+## 12. Traceability Annex
 
-| Claim ID | Statement | Source |
-|----------|-----------|--------|
-| OBS-001 | 1. **Initial Setup**: New deployments or data migrations req... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
-| OBS-002 | 2. **Data Recovery**: System failures or extended downtime r... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
-| OBS-003 | The following environment variables must be configured in th... | `./docs/PRODUCTION_DEPLOYMENT.md` |
-| OBS-004 | / Variable / Description / Required /... | `./docs/PRODUCTION_DEPLOYMENT.md` |
-| OBS-005 | / Criterion / Required / Actual / Status /... | `./docs/PHASE4_OPERATIONAL_READINESS_REPORT.md` |
-| OBS-006 | - ⚠️ Cookie consent banner not implemented (minimal cookies,... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-007 | - Cookie consent banner (not required for essential cookies ... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-008 | No new environment variables required. All improvements use ... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-009 | - Rate limiting: In-memory store (no Redis required)... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-010 | No database migrations required. All improvements are applic... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-011 | - [ ] Implement cookie consent banner (if required by legal ... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
-| OBS-012 | 3. **No Progress Persistence:** If interrupted, must restart... | `./docs/EMBEDDING_PIPELINE_OPTIMIZATION.md` |
-| OBS-013 | 2. Ensure "Normal (30 days)" is selected (default)... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
-| OBS-014 | **Note:** Automated tests validate core mode logic but requi... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
-| OBS-015 | 4. **Mode Analytics**: Track mode usage patterns and recomme... | `./docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md` |
-| OBS-016 | 4. **Verify rollback**: Check health endpoints... | `./docs/PRODUCTION_DEPLOYMENT.md` |
-| OBS-017 | - [ ] Conduct load testing to validate scaling assumptions... | `./docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md` |
+*This section will be updated after the finalization of the new observability rules and gates.*

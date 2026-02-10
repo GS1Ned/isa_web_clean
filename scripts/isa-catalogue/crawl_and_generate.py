@@ -5,19 +5,19 @@ from urllib.parse import urljoin, urlparse, urldefrag
 from urllib.request import Request, urlopen
 
 CFG="config/catalogue_sources.json"
-OUT_JSON="docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json"
-OUT_CSV="docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv"
-OUT_MD="docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md"
-
+OUT_DIR="docs/evidence/_generated/isa_catalogue_latest"
 UA="ISA-PrototypeCrawler/0.1"
 EXTS=(".pdf",".zip",".xsd",".json",".csv",".xml",".ttl",".rdf",".html",".htm",".docx",".xlsx",".pptx")
 
 def iso_now():
   return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+
 def iso_today():
   return date.today().isoformat()
+
 def stable_id(body, url, version=""):
   return hashlib.sha256(f"{body}|{url}|{version}".encode("utf-8")).hexdigest()
+
 def norm(u):
   return urldefrag(u)[0].strip().rstrip(".,;:)]}>\"'")
 
@@ -25,6 +25,7 @@ def http_get(url, timeout=45):
   req=Request(url, headers={"User-Agent":UA, "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"})
   with urlopen(req, timeout=timeout) as r:
     return r.read(), r.headers.get("Content-Type","")
+
 def http_head(url, timeout=30):
   req=Request(url, method="HEAD", headers={"User-Agent":UA})
   try:
@@ -192,18 +193,11 @@ def main():
     seen.add(k)
     uniq.append(it)
 
-  out={
-    "catalogue_version":cfg.get("schema_version","1.0.0"),
-    "generated_at":now,
-    "last_verified_at":today,
-    "required_bodies":required,
-    "sources":sources,
-    "items":uniq
-  }
-  os.makedirs(os.path.dirname(OUT_JSON), exist_ok=True)
-  json.dump(out, open(OUT_JSON,"w",encoding="utf-8"), ensure_ascii=False, indent=2)
+  os.makedirs(OUT_DIR, exist_ok=True)
+  with open(os.path.join(OUT_DIR, "items.json"), "w", encoding="utf-8") as f:
+    json.dump(uniq, f, ensure_ascii=False, indent=2)
 
-  with open(OUT_CSV,"w",encoding="utf-8",newline="") as f:
+  with open(os.path.join(OUT_DIR, "items.csv"), "w", encoding="utf-8", newline="") as f:
     w=csv.writer(f)
     w.writerow(["record_id","issuing_body","title","publication_date","canonical_url","landing_page_url","download_url","format_label","mime_type","http_status","last_verified_at"])
     for it in uniq:
@@ -229,7 +223,8 @@ def main():
     for seed in (sources.get(b,{}).get("seeds",[]) or []):
       md.append(f"- {seed['url'] if isinstance(seed,dict) else seed}")
     md.append("")
-  open(OUT_MD,"w",encoding="utf-8").write("\n".join(md))
+  with open(os.path.join(OUT_DIR, "index.md"), "w", encoding="utf-8") as f:
+    f.write("\n".join(md))
 
 if __name__=="__main__":
   main()
