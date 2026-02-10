@@ -467,8 +467,8 @@ export async function generateReportHtmlForPdf(reportId: number, options: PdfExp
     const governanceNotice = options.includeGovernanceNotice !== false ? `
       <div style="background-color: #fef3c7; border: 1px solid #f59e0b; padding: 16px; margin-bottom: 24px; border-radius: 8px;">
         <p style="margin: 0; font-size: 14px; color: #92400e;">
-          <strong>⚠️ Lane C Governance Notice:</strong> This advisory report is AI-generated and for internal use only. 
-          Publication is deferred pending Phase 9 governance review. Always consult official GS1 and regulatory 
+          <strong>⚠️ Governance Notice:</strong> This advisory report is AI-generated and for internal use only. 
+          Publication is deferred pending governance review. Always consult official GS1 and regulatory 
           documentation for authoritative guidance.
         </p>
       </div>

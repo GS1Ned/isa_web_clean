@@ -19,7 +19,7 @@ import { generateReportHtmlForPdf } from "../advisory-report-export";
  * Advisory Reports Router
  * 
  * Implements Decision 4: Advisory report generation with publication deferred to Phase 9.
- * Supports Lane C governance with internal-only status by default.
+ * Supports governance with internal-only status by default.
  */
 export const advisoryReportsRouter = router({
   /**
@@ -133,7 +133,6 @@ export const advisoryReportsRouter = router({
         generatedBy: ctx.user.name || ctx.user.email || "Unknown",
         reviewStatus: "DRAFT",
         publicationStatus: "INTERNAL_ONLY", // Decision 4: Defer publication
-        laneStatus: "LANE_C", // Enforce Lane C governance
       } as any);
     }),
 

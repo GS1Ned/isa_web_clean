@@ -14,7 +14,7 @@ import {
  * Dataset Registry Router
  * 
  * Implements Decision 3: Dataset registry with last_verified_date tracking.
- * Supports Lane C governance with additive-only schema changes.
+ * Supports governance with additive-only schema changes.
  */
 export const datasetRegistryRouter = router({
   /**
@@ -98,7 +98,6 @@ export const datasetRegistryRouter = router({
 
       return await createDataset({
         ...input,
-        laneStatus: "LANE_C" as any, // Enforce Lane C governance
       });
     }),
 
