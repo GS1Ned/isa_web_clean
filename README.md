@@ -112,7 +112,11 @@ ISA operates under a three-lane governance framework designed to balance develop
 
 ```
 isa_web/
+<<<<<<< HEAD
 ├── docs/governance/_root/ISA_GOVERNANCE.md  # Authoritative governance framework
+=======
+ ├── ISA_GOVERNANCE.md          # Authoritative governance framework
+>>>>>>> b8ba780 (feat(docs): add comprehensive planning and governance documentation including execution logs, knowledge gaps, and capability inventory)
 ├── ARCHITECTURE.md            # System architecture (current state)
 ├── ROADMAP.md                 # Development roadmap
 ├── todo.md                    # Task tracking
@@ -172,19 +176,19 @@ News pipeline management, regulatory change log, scraper health monitoring, cove
 **Prerequisites:** Node.js 22.13.0 + pnpm + MySQL/TiDB
 
 **Setup:**
-```bash
-pnpm install          # Install dependencies
-pnpm db:push          # Run database migrations
-pnpm dev              # Start development server
-pnpm test             # Run tests
-pnpm tsc              # Type checking
 ```
-
-**Environment Variables:** All system environment variables pre-configured in Manus platform. See `server/_core/env.ts` for available variables. Never commit `.env` files.
-
----
-
-## Data Governance
+isa_web/
+ ├── ISA_GOVERNANCE.md        # Authoritative governance framework
+ ├── ARCHITECTURE.md         # System architecture (current state)
+ ├── ROADMAP.md              # Development roadmap
+ ├── todo.md                 # Task tracking
+ ├── client/                 # Frontend (React 19 + Tailwind 4)
+ ├── server/                 # Backend (Express 4 + tRPC 11)
+ ├── drizzle/                # Database schema and migrations
+ ├── data/                   # Dataset files and metadata
+ ├── docs/                   # Documentation (see docs/README.md)
+ └── scripts/                # Automation scripts
+```
 
 ### Dataset Registry
 
