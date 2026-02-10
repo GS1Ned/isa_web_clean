@@ -144,7 +144,7 @@
     },
     {
       "id": "P1-0002",
-      "status": "READY",
+      "status": "IN_PROGRESS",
       "title": "Ask ISA: minimal smoke harness (no gates yet) and manual runbook",
       "acceptance_criteria": [
         "A single command is documented to run an Ask ISA smoke query locally",
@@ -154,9 +154,15 @@
       "created_at_utc": "2026-02-09T20:26:20Z",
       "evidence": {
         "paths": [
+          "docs/governance/ASK_ISA_SMOKE_RUNBOOK.md",
           "docs/governance/MANUAL_PREFLIGHT.md",
+          "docs/spec/ASK_ISA.md",
+          "docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md",
+          "scripts/probe/ask_isa_smoke.py",
           "server/prompts/ask_isa/index.ts"
-        ]
+        ],
+        "verified_at_utc": "2026-02-09T23:08:32Z",
+        "head_sha": "cc5f5cad5f709bb84f4f6fbb5b194495a45ba0f0"
       }
     },
     {
@@ -179,6 +185,6 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-02-09T20:37:32Z"
+    "last_updated_at_utc": "2026-02-09T23:08:32Z"
   }
 }
