@@ -111,21 +111,19 @@ ISA operates under a three-lane governance framework designed to balance develop
 ## Project Structure
 
 ```
-isa_web/
-<<<<<<< HEAD
-├── docs/governance/_root/ISA_GOVERNANCE.md  # Authoritative governance framework
-=======
- ├── ISA_GOVERNANCE.md          # Authoritative governance framework
->>>>>>> b8ba780 (feat(docs): add comprehensive planning and governance documentation including execution logs, knowledge gaps, and capability inventory)
-├── ARCHITECTURE.md            # System architecture (current state)
-├── ROADMAP.md                 # Development roadmap
-├── todo.md                    # Task tracking
-├── client/                    # Frontend (React 19 + Tailwind 4)
-├── server/                    # Backend (Express 4 + tRPC 11)
-├── drizzle/                   # Database schema and migrations
-├── data/                      # Dataset files and metadata
-├── docs/                      # Documentation (see docs/README.md)
-└── scripts/                   # Automation scripts
+isa_web_clean/
+├── AGENT_START_HERE.md                 # Canonical agent entrypoint
+├── docs/REPO_MAP.md                    # Evidence-bound repository map
+├── docs/planning/INDEX.md              # Canonical planning index
+├── docs/spec/INDEX.md                  # Specs index (capabilities)
+├── docs/governance/_root/ISA_GOVERNANCE.md # Authoritative governance framework
+├── REPO_TREE.md                        # CI-generated repo tree snapshot
+├── todo.md                             # Deprecated pointer to canonical planning
+├── client/                             # Frontend (Vite/React)
+├── server/                             # Backend (Express + tRPC)
+├── drizzle/                            # Database schema and migrations
+├── scripts/                            # Automation and probes
+└── data/                               # Dataset files and metadata
 ```
 
 **Documentation Map:** See [docs/README.md](./docs/README.md) for full documentation structure.
@@ -155,7 +153,7 @@ News pipeline management, regulatory change log, scraper health monitoring, cove
 
 ### GitHub-First Workflow (Required as of 2025-12-17)
 
-**Repository:** https://github.com/GS1-ISA/isa
+**Repository:** https://github.com/GS1Ned/isa_web_clean
 
 **Workflow:**
 1. Create feature branch from main
@@ -164,12 +162,12 @@ News pipeline management, regulatory change log, scraper health monitoring, cove
 4. Push to GitHub
 5. Open pull request with governance checklist
 6. CI checks run automatically
-7. Request review from CODEOWNERS
+7. Request review from repo maintainers
 8. Merge after approval
 
 **Sync Cadence:** Minimum once per development day
 
-**Documentation:** See [ROADMAP_GITHUB_INTEGRATION.md](./ROADMAP_GITHUB_INTEGRATION.md)
+**Documentation:** See [docs/planning/INDEX.md](./docs/planning/INDEX.md) and [.github/PULL_REQUEST_TEMPLATE.md](./.github/PULL_REQUEST_TEMPLATE.md)
 
 ### Local Development
 
@@ -177,11 +175,10 @@ News pipeline management, regulatory change log, scraper health monitoring, cove
 
 **Setup:**
 ```
-isa_web/
- ├── ISA_GOVERNANCE.md        # Authoritative governance framework
- ├── ARCHITECTURE.md         # System architecture (current state)
- ├── ROADMAP.md              # Development roadmap
- ├── todo.md                 # Task tracking
+isa_web_clean/
+ ├── docs/governance/_root/ISA_GOVERNANCE.md  # Authoritative governance framework
+ ├── docs/planning/INDEX.md                  # Canonical planning index
+ ├── todo.md                                 # Deprecated pointer to canonical planning
  ├── client/                 # Frontend (React 19 + Tailwind 4)
  ├── server/                 # Backend (Express 4 + tRPC 11)
  ├── drizzle/                # Database schema and migrations
@@ -241,8 +238,9 @@ pnpm test --watch                # Watch mode
 
 ### Core Documentation
 - [ISA_GOVERNANCE.md](./docs/governance/_root/ISA_GOVERNANCE.md) - Authoritative governance framework
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - System architecture (current state only)
-- [ROADMAP.md](./ROADMAP.md) - Development roadmap
+- [docs/spec/ARCHITECTURE.md](./docs/spec/ARCHITECTURE.md) - System architecture (current state)
+- [docs/planning/INDEX.md](./docs/planning/INDEX.md) - Planning index (canonical)
+- [docs/planning/NEXT_ACTIONS.json](./docs/planning/NEXT_ACTIONS.json) - Execution queue (canonical)
 - [docs/README.md](./docs/README.md) - Documentation map
 
 ### Data & Ingestion
@@ -263,19 +261,9 @@ pnpm test --watch                # Watch mode
 
 ## Security
 
-**Security Policy:** See [SECURITY.md](https://github.com/GS1-ISA/isa/blob/main/SECURITY.md) in GitHub repository
+**Security Policy:** No `SECURITY.md` is present in this repository.
 
-**Key Security Measures:**
-- No secrets committed to repository
-- Least-privilege access patterns
-- Fine-grained authentication tokens
-- Secret scanning enabled (org-level)
-- Dependabot alerts enabled (org-level)
-- Push protection enabled (org-level)
-
-**Reporting Security Issues:**
-- Email: security@gs1.nl (placeholder - update with real contact)
-- Do NOT open public issues for security vulnerabilities
+**Reporting Security Issues:** Define a private reporting channel and add `SECURITY.md` when ready.
 
 ---
 
@@ -330,8 +318,8 @@ pnpm test --watch                # Watch mode
 **Development Agent:** Manus AI  
 **Governance Steward:** ISA Executive Steward
 
-**Repository:** https://github.com/GS1-ISA/isa  
-**Issues:** https://github.com/GS1-ISA/isa/issues
+**Repository:** https://github.com/GS1Ned/isa_web_clean  
+**Issues:** https://github.com/GS1Ned/isa_web_clean/issues
 
 ---
 

@@ -340,7 +340,7 @@ Advisory report available for download
 - **Rollback:** Instant rollback to previous checkpoints
 
 ### GitHub Integration (as of 2025-12-17)
-- **Repository:** https://github.com/GS1-ISA/isa
+- **Repository:** https://github.com/GS1Ned/isa_web_clean
 - **Workflow:** Feature branches → Pull requests → CI checks → Merge
 - **Sync Cadence:** Minimum once per development day
 - **CI/CD:** GitHub Actions for automated testing
@@ -375,10 +375,10 @@ All secrets managed via Manus platform:
 
 ### Documentation (Current State)
 - **Architecture:** This document (update after major changes)
-- **Governance:** ISA_GOVERNANCE.md (authoritative framework)
+- **Governance:** docs/governance/_root/ISA_GOVERNANCE.md (authoritative framework)
 - **Data Model:** DATA_MODEL.md (update after schema changes)
 - **News Pipeline:** docs/NEWS_PIPELINE.md (update after pipeline changes)
-- **Roadmap:** ROADMAP.md (update monthly)
+- **Planning:** docs/planning/NEXT_ACTIONS.json + docs/planning/BACKLOG.csv (canonical)
 
 ---
 
@@ -409,7 +409,7 @@ All secrets managed via Manus platform:
 **Development Agent:** Manus AI  
 **Governance Steward:** ISA Executive Steward
 
-**Repository:** https://github.com/GS1-ISA/isa  
-**Issues:** https://github.com/GS1-ISA/isa/issues
+**Repository:** https://github.com/GS1Ned/isa_web_clean  
+**Issues:** https://github.com/GS1Ned/isa_web_clean/issues
 
 **Last Major Update:** 2025-12-17 (Phase 9 Consolidation Complete)

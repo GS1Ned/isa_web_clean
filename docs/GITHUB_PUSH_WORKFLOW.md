@@ -4,56 +4,51 @@ This document describes how the ISA project manages GitHub repository synchroniz
 
 ## Repository Configuration
 
-**Primary Repository:** https://github.com/GS1-ISA/isa_web.git
+**Primary Repository:** https://github.com/GS1Ned/isa_web_clean
 
-The repository is configured with a Personal Access Token (PAT) for automated pushes. The PAT is stored securely in the deployment environment and is never committed to the repository.
+Use the default `origin` remote for pushes. Avoid embedding tokens in git remotes; prefer SSH or GitHub CLI auth (`gh auth login`).
 
 ## Push Strategy
 
 ### Regular Pushes
-- Pushed at appropriate milestones: feature completion, bug fixes, documentation updates
-- Non-destructive pushes (no force flag) when history is clean
-- Automatic push on checkpoint creation
+- Push feature branches (not `main`) at reviewable milestones: feature completion, bug fixes, documentation updates
+- Open PRs targeting `main`
+- Prefer fast, incremental commits over large history rewrites
 
 ### Force Pushes
-- Used when necessary to resolve conflicts or rebase history
-- **Requires explicit confirmation before execution**
-- Used as last resort when normal push fails
-- Never used to discard important commits
+- Avoid force pushes by default
+- If history rewrite is required, force push only to your own feature branch (never to `main`)
 
 ## Push Workflow
 
 ```
-1. Feature development → Commit locally
-2. Tests pass → Create checkpoint (via webdev_save_checkpoint)
-3. Checkpoint created → Push to GitHub (user_github remote)
-4. If conflict detected → Ask user for confirmation before force push
-5. Force push executes → GitHub updated with latest code
+1. Create branch from `origin/main`
+2. Implement change → commit locally
+3. Run local validation (see docs/governance/MANUAL_PREFLIGHT.md)
+4. Push branch to `origin`
+5. Open PR → merge to `main`
 ```
 
 ## Security
 
-- **PAT Token:** Stored in environment variables, never in repository
-- **Token Scope:** `repo` (full control of private repositories)
-- **Token Rotation:** Recommended every 90 days
-- **Token Revocation:** Available at https://github.com/settings/tokens
+- Do not commit secrets to the repository.
+- Prefer short-lived auth via SSH or GitHub CLI.
 
 ## Remote Configuration
 
-The project uses the `user_github` remote for authenticated pushes:
+Expected remote for pushes is `origin`:
 
 ```bash
-user_github = https://x-access-token:[PAT_TOKEN]@github.com/GS1-ISA/isa_web.git
+origin = https://github.com/GS1Ned/isa_web_clean.git
 ```
 
-This remote is configured during project initialization and persists across sessions.
+Verify with `git remote -v`.
 
 ## Troubleshooting
 
 ### Push Fails with "invalid credentials"
-- Verify PAT token is set in environment
-- Check token has `repo` scope
-- Verify token has not expired
+- Re-authenticate with `gh auth login` or ensure your SSH key is loaded
+- Verify you have push permission to the repository
 
 ### Push Fails with "Everything up-to-date"
 - Local and remote are synchronized
@@ -61,22 +56,24 @@ This remote is configured during project initialization and persists across sess
 - This is normal and not an error
 
 ### Push Fails with Merge Conflict
-- Automatic force push will be attempted
-- User confirmation required before force push
-- If force push fails, manual intervention needed
+- Resolve conflicts locally and push updated commits to your feature branch
+- Avoid force pushing unless you are intentionally rewriting your own branch history
 
 ## Manual Push
 
 To manually push to GitHub:
 
 ```bash
-cd /home/ubuntu/isa_web
+git fetch origin --prune
 
-# Push without force
-git push user_github main
+# Create a feature branch from current main
+git checkout -b feature/my-change origin/main
 
-# Force push (use with caution)
-git push -f user_github main
+# Push branch
+git push -u origin feature/my-change
+
+# Open PR (optional)
+gh pr create
 ```
 
 ## Verification
@@ -84,9 +81,9 @@ git push -f user_github main
 After each push, verify the repository is updated:
 
 ```bash
-# Check GitHub repository
-git ls-remote user_github main
+# Check remote main tip
+git ls-remote origin main
 
-# Compare local vs remote
-git log --oneline -5 user_github/main
+# Compare local vs origin/main
+git log --oneline -5 origin/main
 ```
