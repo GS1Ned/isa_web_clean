@@ -1,0 +1,9 @@
+model = "gpt-5.3-codex"
+model_reasoning_effort = "xhigh"
+personality = "pragmatic"
+
+sandbox_mode = "workspace-write"
+web_search = "live"
+
+history.persistence = "save-all"
+history.max_bytes = 104857600
