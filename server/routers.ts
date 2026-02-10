@@ -1,5 +1,3 @@
-import { COOKIE_NAME } from "@shared/const";
-import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
@@ -22,23 +20,7 @@ import { userSavedItems, userAlerts, hubNews, pipelineExecutionLog, regulatoryEv
 import { eq, and, desc, sql } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 import { TRPCError } from "@trpc/server";
-import { cellarIngestionRouter } from "./cellar-ingestion-router.js";
 import { gs1StandardsRouter } from "./gs1-standards-router.js";
-import { epcisRouter } from "./epcis-router.js";
-import { batchEpcisRouter } from "./routers/batch-epcis.js";
-import { complianceRisksRouter } from "./routers/compliance-risks.js";
-import { remediationRouter } from "./routers/remediation.js";
-import { scoringRouter } from "./routers/scoring.js";
-import { benchmarkingRouter } from "./routers/benchmarking.js";
-import { roadmapRouter } from "./routers/roadmap.js";
-import { roadmapExportRouter } from "./routers/roadmap-export.js";
-import { collaborationRouter } from "./routers/collaboration.js";
-import { templatesRouter } from "./routers/templates.js";
-import { adminTemplatesRouter } from "./routers/admin-templates.js";
-import { templateAnalyticsRouter } from "./routers/template-analytics.js";
-import { realtimeRouter } from "./routers/realtime.js";
-import { notificationPreferencesRouter } from "./routers/notification-preferences.js";
-import { executiveAnalyticsRouter } from "./routers/executive-analytics.js";
 import { askISARouter } from "./routers/ask-isa.js";
 import { askISAV2Router } from "./routers/ask-isa-v2.js";
 import { citationAdminRouter } from "./routers/citation-admin.js";
@@ -58,7 +40,6 @@ import { observabilityRouter } from "./routers/observability.js";
 import { datasetRegistryRouter } from "./routers/dataset-registry.js";
 import { advisoryReportsRouter } from "./routers/advisory-reports.js";
 import { governanceDocumentsRouter } from "./routers/governance-documents.js";
-import { stakeholderDashboardRouter } from "./routers/stakeholder-dashboard.js";
 import { dataQualityRouter } from "./routers-data-quality.js";
 import { standardsDirectoryRouter } from "./routers/standards-directory.js";
 import { productionMonitoringRouter } from "./routers/production-monitoring.js";
@@ -66,7 +47,6 @@ import { errorTrackingRouter } from "./router-error-tracking.js";
 import { performanceTrackingRouter } from "./router-performance-tracking.js";
 import { webhookConfigRouter, webhookConfigSchemas } from "./routers-webhook-config.js";
 import { gapAnalyzerRouter } from "./routers/gap-analyzer.js";
-import { impactSimulatorRouter } from "./routers/impact-simulator.js";
 import { attributeRecommenderRouter } from "./routers/attribute-recommender.js";
 import { esgArtefactsRouter } from "./routers/esg-artefacts.js";
 import { evaluationRouter } from "./routers/evaluation.js";
@@ -900,20 +880,20 @@ export const appRouter = router({
   }),
 
   /**
-   * CELLAR Ingestion Router (Admin only)
+   * CELLAR Ingestion Router (Admin only) - ARCHIVED
    */
-  cellarIngestion: cellarIngestionRouter,
+  // cellarIngestion: cellarIngestionRouter,
   gs1Standards: gs1StandardsRouter,
 
   /**
-   * EPCIS 2.0 Integration Router
+   * EPCIS 2.0 Integration Router - ARCHIVED
    */
-  epcis: epcisRouter,
+  // epcis: epcisRouter,
 
   /**
-   * Batch EPCIS Processing Router
+   * Batch EPCIS Processing Router - ARCHIVED
    */
-  batchEpcis: batchEpcisRouter,
+  // batchEpcis: batchEpcisRouter,
 
   /**
    * Compliance Risk Detection Router
@@ -921,9 +901,9 @@ export const appRouter = router({
   complianceRisks: complianceRisksRouter,
 
   /**
-   * Risk Remediation Router
+   * Risk Remediation Router - ARCHIVED
    */
-  remediation: remediationRouter,
+  // remediation: remediationRouter,
 
   /**
    * Compliance Scoring Router
@@ -931,9 +911,9 @@ export const appRouter = router({
   scoring: scoringRouter,
 
   /**
-   * Benchmarking Router
+   * Benchmarking Router - ARCHIVED
    */
-  benchmarking: benchmarkingRouter,
+  // benchmarking: benchmarkingRouter,
 
   /**
    * Compliance Roadmap Router
@@ -946,12 +926,12 @@ export const appRouter = router({
   roadmapExport: roadmapExportRouter,
 
   /**
-   * Roadmap Collaboration Router
+   * Roadmap Collaboration Router - ARCHIVED
    */
-  collaboration: collaborationRouter,
+  // collaboration: collaborationRouter,
   templates: templatesRouter,
   adminTemplates: adminTemplatesRouter,
-  templateAnalytics: templateAnalyticsRouter,
+  // templateAnalytics: templateAnalyticsRouter, // ARCHIVED
   realtime: realtimeRouter,
   notificationPreferences: notificationPreferencesRouter,
   executiveAnalytics: executiveAnalyticsRouter,
@@ -1262,9 +1242,9 @@ export const appRouter = router({
   }),
 
   /**
-   * Stakeholder Dashboard - Live project status and metrics
+   * Stakeholder Dashboard - Live project status and metrics - ARCHIVED
    */
-  stakeholderDashboard: stakeholderDashboardRouter,
+  // stakeholderDashboard: stakeholderDashboardRouter,
 
   /**
    * Data Quality - Track B Priority 1
@@ -1291,10 +1271,10 @@ export const appRouter = router({
    */
   gapAnalyzer: gapAnalyzerRouter,
   /**
-   * Impact Simulator - Core 2 of Dual-Core PoC
+   * Impact Simulator - Core 2 of Dual-Core PoC - ARCHIVED
    * Regulatory change impact simulation with uncertainty markers
    */
-  impactSimulator: impactSimulatorRouter,
+  // impactSimulator: impactSimulatorRouter,
   /**
    * Attribute Recommender - AI-powered GS1 attribute suggestions
    * Provides recommendations with confidence scoring and epistemic markers
