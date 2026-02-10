@@ -14,8 +14,9 @@
 
 - Spellcheck terms:
 ## Planning
-- Live planning: `todo.md`
+- Live planning: `docs/planning/NEXT_ACTIONS.json`
 - Structured backlog: `docs/planning/BACKLOG.csv`
+- Program plan (support, optional): `docs/planning/PROGRAM_PLAN.md`
 - Planning policy (normative): `docs/planning/PLANNING_POLICY.md`
+- Deprecated pointer: `todo.md`
 - Archived roadmaps: `isa-archive/planning/roadmaps/`
-

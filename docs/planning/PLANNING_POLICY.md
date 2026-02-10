@@ -1,12 +1,16 @@
 # Planning Policy (canonical)
 
-## Canonical "live" planning sources
-- `todo.md` — short next actions (single live TODO)
+## Canonical planning sources (SSoT)
+- `docs/planning/NEXT_ACTIONS.json` — next execution queue
 - `docs/planning/BACKLOG.csv` — structured backlog
+- `docs/planning/PROGRAM_PLAN.md` — support narrative (optional, non-canonical)
+
+## Deprecated planning files
+- `todo.md` — deprecated; point to `docs/planning/NEXT_ACTIONS.json` and `docs/planning/BACKLOG.csv`
 ## Rules
 - Do not create new planning files elsewhere in the repo.
 - If a planning document is discovered in other locations, either:
-  - migrate its content into `todo.md` or `BACKLOG.csv`, or
+  - migrate its content into `docs/planning/NEXT_ACTIONS.json` or `docs/planning/BACKLOG.csv`, or
   - archive it under `isa-archive/` and add a superseded banner.
 
 ## Backlog workflow
@@ -23,5 +27,6 @@
 - If `BACKLOG_ID` is present, `BACKLOG_STATUS` must also be present.
 
 ## CI guardrails
-- CI enforces the rules above (validate-docs workflow).
-- If CI fails, fix the policy violation before any other changes.
+- During `docs/governance/NO_GATES_WINDOW.md`, workflow runs are advisory and non-blocking.
+- Required pre-merge discipline is the deterministic manual checklist in `docs/governance/MANUAL_PREFLIGHT.md`.
+- Only claim "enforced" when a rule maps to an active gate workflow file or a deterministic manual command in canonical preflight docs.

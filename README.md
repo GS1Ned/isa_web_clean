@@ -74,7 +74,7 @@ The system operates under strict governance constraints (Lane C) that prioritize
 ISA operates under a three-lane governance framework designed to balance development velocity with data integrity and user authority. Lane C is the most restrictive mode, requiring explicit user approval for all potentially impactful decisions.
 
 **Authoritative Governance Document:**  
-📄 **[ISA_GOVERNANCE.md](./ISA_GOVERNANCE.md)**
+📄 **[ISA_GOVERNANCE.md](./docs/governance/_root/ISA_GOVERNANCE.md)**
 
 **Key Governance Principles:**
 1. **Data Integrity:** All datasets include source, version, format, last_verified_date
@@ -92,7 +92,7 @@ ISA operates under a three-lane governance framework designed to balance develop
 - External integrations or API exposure
 
 **For Developers:**
-- Read ISA_GOVERNANCE.md before making any changes
+- Read docs/governance/_root/ISA_GOVERNANCE.md before making any changes
 - Follow mandatory escalation format for all Lane C triggers
 - Perform governance self-checks before and after work
 - When in doubt, escalate
@@ -112,7 +112,7 @@ ISA operates under a three-lane governance framework designed to balance develop
 
 ```
 isa_web/
-├── ISA_GOVERNANCE.md          # Authoritative governance framework
+├── docs/governance/_root/ISA_GOVERNANCE.md  # Authoritative governance framework
 ├── ARCHITECTURE.md            # System architecture (current state)
 ├── ROADMAP.md                 # Development roadmap
 ├── todo.md                    # Task tracking
@@ -236,7 +236,7 @@ pnpm test --watch                # Watch mode
 ## Documentation
 
 ### Core Documentation
-- [ISA_GOVERNANCE.md](./ISA_GOVERNANCE.md) - Authoritative governance framework
+- [ISA_GOVERNANCE.md](./docs/governance/_root/ISA_GOVERNANCE.md) - Authoritative governance framework
 - [ARCHITECTURE.md](./ARCHITECTURE.md) - System architecture (current state only)
 - [ROADMAP.md](./ROADMAP.md) - Development roadmap
 - [docs/README.md](./docs/README.md) - Documentation map
@@ -280,7 +280,7 @@ pnpm test --watch                # Watch mode
 **⚠️ GOVERNANCE REQUIREMENT:** All contributions subject to ISA governance framework.
 
 **Before Contributing:**
-1. Read [ISA_GOVERNANCE.md](./ISA_GOVERNANCE.md)
+1. Read [ISA_GOVERNANCE.md](./docs/governance/_root/ISA_GOVERNANCE.md)
 2. Understand current governance mode (Lane C)
 3. Follow mandatory escalation format for all Lane C triggers
 4. Ensure all changes comply with red-line principles
@@ -343,4 +343,4 @@ pnpm test --watch                # Watch mode
 **Governance Mode:** Lane C (User-Decision Mode)  
 **Last Updated:** 2025-12-17
 
-For governance questions or escalations, refer to [ISA_GOVERNANCE.md](./ISA_GOVERNANCE.md).
+For governance questions or escalations, refer to [ISA_GOVERNANCE.md](./docs/governance/_root/ISA_GOVERNANCE.md).

@@ -8,8 +8,8 @@ allowed_planning = {
     "docs/planning/NEXT_ACTIONS.json",
     "docs/planning/NEXT_ACTIONS.md",
     "docs/planning/PLANNING_POLICY.md",
+    # Support-only planning narrative. Optional and non-canonical.
     "docs/planning/PROGRAM_PLAN.md",
-    "todo.md",
 }
 
 planning_dir = pathlib.Path("docs/planning")
@@ -23,7 +23,12 @@ if planning_dir.exists():
         if rel.startswith("docs/planning/_root/"):
             errors.append(f"Disallowed legacy planning folder exists: {rel}")
         if rel not in allowed_planning:
-            errors.append(f"Disallowed planning file (canonical planning is docs/planning/NEXT_ACTIONS.json + docs/planning/PROGRAM_PLAN.md): {rel}")
+            errors.append(
+                "Disallowed planning file (canonical planning is "
+                "docs/planning/NEXT_ACTIONS.json + docs/planning/BACKLOG.csv; "
+                "docs/planning/PROGRAM_PLAN.md is support-only if present): "
+                f"{rel}"
+            )
 
 trace = pathlib.Path("docs/spec/TRACEABILITY_MATRIX.csv")
 if trace.exists():

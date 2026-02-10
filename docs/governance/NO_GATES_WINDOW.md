@@ -13,7 +13,8 @@ Until the ISA Core reset reaches the "Gate Reintroduction Milestone", CI gates a
 
 ## Manual discipline (required)
 - Before merging, run the local preflight command set defined in docs/planning/INDEX.md (or equivalent manual checklist).
-- Keep planning canonical sources consistent (NEXT_ACTIONS.json + PROGRAM_PLAN.md).
+- Keep planning canonical sources consistent (`docs/planning/NEXT_ACTIONS.json` + `docs/planning/BACKLOG.csv`).
+- Treat active workflow files as advisory telemetry only until gates are explicitly reintroduced.
 
 ## Stop criteria (Gate Reintroduction Milestone)
 Gates must be reintroduced and made non-negotiable when:

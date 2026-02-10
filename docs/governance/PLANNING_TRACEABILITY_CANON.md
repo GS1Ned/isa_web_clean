@@ -1,7 +1,11 @@
 # Planning & Traceability Canon (normative)
 ## Live planning sources (only)
-- `todo.md`
+- `docs/planning/NEXT_ACTIONS.json`
 - `docs/planning/BACKLOG.csv`
+- `docs/planning/PROGRAM_PLAN.md` (support narrative only, non-canonical)
+
+## Deprecated planning files
+- `todo.md` is deprecated and must point to `docs/planning/NEXT_ACTIONS.json` and `docs/planning/BACKLOG.csv`
 ## Roadmaps
 - Roadmaps are not live planning sources.
 - Roadmap documents must be archived under `isa-archive/planning/roadmaps/`.
@@ -12,7 +16,6 @@
 - Backlog items that affect traceability should link via `BACKLOG_ID` and maintain `BACKLOG_STATUS`.
 
 ## CI guardrails
-- CI enforces:
-  - only the allowed planning files exist under `docs/planning/`
-  - no roadmap/work-packages folders reappear
-  - traceability/backlog consistency rules above
+- During `docs/governance/NO_GATES_WINDOW.md`, workflows are advisory and non-blocking.
+- Required enforcement path is deterministic manual preflight from `docs/governance/MANUAL_PREFLIGHT.md`.
+- Only claim "enforced" when a rule maps to an active gate workflow file or a deterministic manual command in canonical preflight docs.
