@@ -27,5 +27,6 @@
 - If `BACKLOG_ID` is present, `BACKLOG_STATUS` must also be present.
 
 ## CI guardrails
-- CI enforces the rules above (validate-docs workflow).
-- If CI fails, fix the policy violation before any other changes.
+- During `docs/governance/NO_GATES_WINDOW.md`, workflow runs are advisory and non-blocking.
+- Required pre-merge discipline is the deterministic manual checklist in `docs/governance/MANUAL_PREFLIGHT.md`.
+- Only claim "enforced" when a rule maps to an active gate workflow file or a deterministic manual command in canonical preflight docs.

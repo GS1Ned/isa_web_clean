@@ -109,14 +109,30 @@ Edit `RUN_CONFIG.json` to adjust synthesis parameters:
 
 ## CI Integration
 
-### Active Workflows (on main)
+### Workflow files on `main` (fact, not gate policy)
 
 | Workflow | Purpose | Status |
 |----------|---------|--------|
-| `iron-gate.yml` | IRON Protocol compliance checks | ✅ Active |
-| `console-check.yml` | Console usage validation | ✅ Active |
-| `catalogue-checks.yml` | Catalogue integrity | ✅ Active |
-| `generate-embeddings.yml` | Embedding generation | ✅ Active |
+| `validate-docs.yml` | Documentation validation | ✅ Active file |
+| `ask-isa-smoke.yml` | Ask ISA smoke check | ✅ Active file |
+| `ask-isa-runtime-smoke.yml` | Ask ISA runtime smoke check | ✅ Active file |
+| `repo-tree.yml` | Repository tree snapshot/update | ✅ Active file |
+
+### Disabled workflow files on `main` (fact)
+
+| Workflow | Status |
+|----------|--------|
+| `iron-gate.yml.disabled` | Disabled |
+| `console-check.yml.disabled` | Disabled |
+| `catalogue-checks.yml.disabled` | Disabled |
+| `generate-embeddings.yml.disabled` | Disabled |
+| `generate-embeddings-optimized.yml.disabled` | Disabled |
+| `update-gs1-efrag-catalogue.yml.disabled` | Disabled |
+
+### Gate policy (NO_GATES)
+
+During `docs/governance/NO_GATES_WINDOW.md`, workflow activity is advisory and non-blocking.
+Use deterministic manual checks from `docs/governance/MANUAL_PREFLIGHT.md` for merge discipline.
 
 ### Spec Validation (Manual)
 
