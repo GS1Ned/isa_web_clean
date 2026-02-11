@@ -3,9 +3,11 @@
  * 
  * Production: Throws error listing missing required variable NAMES
  * Development: Logs warning, exits non-zero if critical vars missing
+ * Test: Logs warning, never exits (allows tests to run)
  */
 
 const isProduction = process.env.NODE_ENV === "production";
+const isTest = process.env.NODE_ENV === "test" || process.env.VITEST === "true";
 
 // Required variables that must be present
 const REQUIRED_VARS = ["VITE_APP_ID", "JWT_SECRET", "DATABASE_URL"] as const;
@@ -63,12 +65,16 @@ function validateEnv(): void {
     if (isProduction) {
       // Production: throw error immediately
       throw new Error("[ENV] Configuration error:\n" + errorLines.join("\n"));
+    } else if (isTest) {
+      // Test: log warning but never exit (allow tests to run)
+      process.stderr.write("[ENV] ⚠️  Test environment configuration warning:\n");
+      errorLines.forEach(line => process.stderr.write("  - " + line + "\n"));
     } else {
       // Development: log warning
       process.stderr.write("[ENV] ⚠️  Configuration warning:\n");
       errorLines.forEach(line => process.stderr.write("  - " + line + "\n"));
 
-      // Exit if critical variables are missing
+      // Exit if critical variables are missing (development only)
       const criticalMissing = missing.filter(v => 
         (CRITICAL_VARS as readonly string[]).includes(v)
       );
@@ -80,7 +86,7 @@ function validateEnv(): void {
     }
   } else {
     // All validations passed
-    if (!isProduction) {
+    if (!isProduction && !isTest) {
       process.stdout.write("[ENV] ✓ All required environment variables present and valid\n");
     }
   }
