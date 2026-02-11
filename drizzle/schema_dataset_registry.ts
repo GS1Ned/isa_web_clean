@@ -20,59 +20,29 @@ export const datasetRegistry = mysqlTable(
   "dataset_registry",
   {
     id: int("id").autoincrement().primaryKey(),
-    name: varchar("name", { length: 255 }).notNull(),
-    description: text("description"),
-    category: mysqlEnum("category", [
-      "GS1_STANDARDS",
-      "GDSN_DATA",
-      "ESRS_DATAPOINTS",
-      "CBV_VOCABULARIES",
-      "DPP_RULES",
-      "EU_REGULATIONS",
-      "INDUSTRY_DATASETS",
-      "OTHER",
+    datasetName: varchar("dataset_name", { length: 128 }).notNull(),
+    sourceType: mysqlEnum("source_type", [
+      "official_api",
+      "official_download",
+      "curated_list",
+      "scraped",
+      "manual",
     ]).notNull(),
-    source: varchar("source", { length: 512 }).notNull(), // URL or organization
-    format: mysqlEnum("format", [
-      "JSON",
-      "CSV",
-      "XML",
-      "XLSX",
-      "PDF",
-      "API",
-      "OTHER",
-    ]).notNull(),
-    version: varchar("version", { length: 64 }), // Dataset version (e.g., "3.1.32", "2024-Q1")
-    recordCount: int("recordCount"), // Number of records in dataset
-    fileSize: int("fileSize"), // Size in bytes
-    downloadUrl: varchar("downloadUrl", { length: 512 }),
-    apiEndpoint: varchar("apiEndpoint", { length: 512 }),
-    
-    // Governance & Verification (Decision 3: additive only)
-    lastVerifiedDate: timestamp("lastVerifiedDate"), // When dataset was last manually verified
-    verifiedBy: varchar("verifiedBy", { length: 255 }), // Admin user who verified
-    verificationNotes: text("verificationNotes"), // Notes from verification process
-    isActive: boolean("isActive").default(true).notNull(), // Whether dataset is currently maintained
-    
-    // Metadata
-    metadata: json("metadata").$type<Record<string, unknown>>(), // Flexible metadata storage
-    tags: json("tags").$type<string[]>(), // Searchable tags
-    relatedRegulationIds: json("relatedRegulationIds").$type<number[]>(), // Link to regulations table
-    relatedStandardIds: json("relatedStandardIds").$type<number[]>(), // Link to gs1Standards table
-    
-    // Lane C Governance
-    governanceNotes: text("governanceNotes"), // Lane C compliance notes
-    laneStatus: mysqlEnum("laneStatus", ["LANE_A", "LANE_B", "LANE_C"])
-      .default("LANE_C")
-      .notNull(),
-    
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    sourceUrl: varchar("source_url", { length: 512 }),
+    sourceAuthority: varchar("source_authority", { length: 128 }),
+    licenseType: varchar("license_type", { length: 64 }),
+    licenseDisclaimer: text("license_disclaimer"),
+    version: varchar("version", { length: 32 }),
+    publicationDate: timestamp("publication_date", { mode: 'date' }),
+    lastVerifiedAt: timestamp("last_verified_at"),
+    checksum: varchar("checksum", { length: 64 }),
+    isActive: boolean("is_active").default(true).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
   table => ({
-    categoryIdx: index("category_idx").on(table.category),
-    lastVerifiedIdx: index("lastVerified_idx").on(table.lastVerifiedDate),
-    isActiveIdx: index("isActive_idx").on(table.isActive),
+    sourceTypeIdx: index("source_type_idx").on(table.sourceType),
+    isActiveIdx: index("is_active_idx").on(table.isActive),
   })
 );
 
