@@ -1,0 +1,52 @@
+name: ISA Refactoring Validation
+
+on:
+  push:
+    branches: [ main, isa_web_clean_Q_branch ]
+    paths:
+      - 'docs/**'
+      - 'scripts/refactor/**'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    
+    - name: Install jq and bc
+      run: sudo apt-get update && sudo apt-get install -y jq bc
+    
+    - name: Run Validation Gates
+      run: |
+        chmod +x scripts/refactor/validate_gates.sh
+        scripts/refactor/validate_gates.sh
+    
+    - name: Check Quality Score
+      run: |
+        SCORE=$(jq -r '.overall_score' docs/planning/refactoring/QUALITY_SCORECARDS.json)
+        echo "Overall Quality Score: $SCORE/100"
+        if (( $(echo "$SCORE < 60" | bc -l) )); then
+          echo "::error::Quality score below threshold"
+          exit 1
+        fi
+    
+    - name: Generate Report
+      if: always()
+      run: |
+        echo "## Refactoring Validation Report" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -f docs/planning/refactoring/QUALITY_SCORECARDS.json ]; then
+          echo "### Quality Scores" >> $GITHUB_STEP_SUMMARY
+          jq -r '.capabilities | to_entries[] | "- **\(.key):** \(.value.grade) (\(.value.score)/100)"'             docs/planning/refactoring/QUALITY_SCORECARDS.json >> $GITHUB_STEP_SUMMARY
+        fi

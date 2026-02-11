@@ -1,0 +1,85 @@
+{
+  "version": "1.0",
+  "generated": "2026-02-12",
+  "overall_score": 71.7,
+  "capabilities": {
+    "ASK_ISA": {
+      "score": 100,
+      "grade": "A",
+      "metrics": {
+        "total_files": 51,
+        "has_contract": true,
+        "has_tests": true,
+        "has_docs": true,
+        "doc_files": 20,
+        "code_files": 29,
+        "doc_ratio": 0.39
+      }
+    },
+    "NEWS_HUB": {
+      "score": 70,
+      "grade": "C",
+      "metrics": {
+        "total_files": 41,
+        "has_contract": false,
+        "has_tests": true,
+        "has_docs": true,
+        "doc_files": 28,
+        "code_files": 13,
+        "doc_ratio": 0.68
+      }
+    },
+    "KNOWLEDGE_BASE": {
+      "score": 50,
+      "grade": "F",
+      "metrics": {
+        "total_files": 12,
+        "has_contract": false,
+        "has_tests": false,
+        "has_docs": true,
+        "doc_files": 5,
+        "code_files": 5,
+        "doc_ratio": 0.42
+      }
+    },
+    "CATALOG": {
+      "score": 70,
+      "grade": "C",
+      "metrics": {
+        "total_files": 34,
+        "has_contract": false,
+        "has_tests": true,
+        "has_docs": true,
+        "doc_files": 11,
+        "code_files": 15,
+        "doc_ratio": 0.32
+      }
+    },
+    "ESRS_MAPPING": {
+      "score": 70,
+      "grade": "C",
+      "metrics": {
+        "total_files": 41,
+        "has_contract": false,
+        "has_tests": true,
+        "has_docs": true,
+        "doc_files": 17,
+        "code_files": 24,
+        "doc_ratio": 0.41
+      }
+    },
+    "ADVISORY": {
+      "score": 70,
+      "grade": "C",
+      "metrics": {
+        "total_files": 64,
+        "has_contract": false,
+        "has_tests": true,
+        "has_docs": true,
+        "doc_files": 45,
+        "code_files": 16,
+        "doc_ratio": 0.7
+      }
+    }
+  }
+}
