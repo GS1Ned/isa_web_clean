@@ -2,8 +2,8 @@ import "@testing-library/jest-dom/vitest";
 import { config } from "dotenv";
 import crypto from "crypto";
 
-// Load environment variables from .env file for tests
-config();
+// Load environment variables from .env file for tests (override shell env)
+config({ override: true });
 
 // Ensure JWT_SECRET is set for tests (generate random if missing)
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
