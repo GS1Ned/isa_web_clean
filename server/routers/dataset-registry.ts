@@ -98,6 +98,7 @@ export const datasetRegistryRouter = router({
 
       return await createDataset({
         ...input,
+        sourceUrl: input.source,
       });
     }),
 

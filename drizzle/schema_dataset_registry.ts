@@ -52,7 +52,7 @@ export const datasetRegistry = mysqlTable(
     checksum: varchar("checksum", { length: 64 }),
     isActive: boolean("is_active").default(true).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
     
     // Ultimate schema fields (added 2026-02-11)
     name: varchar("name", { length: 255 }),
@@ -85,7 +85,7 @@ export const datasetRegistry = mysqlTable(
     fileSize: int("file_size"),
     downloadUrl: varchar("download_url", { length: 512 }),
     apiEndpoint: varchar("api_endpoint", { length: 512 }),
-    lastVerifiedDate: timestamp("last_verified_at"), // Alias for compatibility
+    lastVerifiedDate: timestamp("last_verified_at"),
     verifiedBy: varchar("verified_by", { length: 255 }),
     verificationNotes: text("verification_notes"),
     metadata: json("metadata").$type<Record<string, unknown>>(),
