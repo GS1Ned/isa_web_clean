@@ -1,0 +1,334 @@
+{
+  "registry_version": "1.0.0",
+  "generated_at": "2026-02-11T18:45:00Z",
+  "repo_root": "/Users/frisowempe/isa_web_clean",
+  "total_keys": 30,
+  "keys": [
+    {
+      "key_name": "DATABASE_URL",
+      "category": "server",
+      "sensitivity": "secret",
+      "evidence_refs": [
+        "server/_core/env.ts:11",
+        "server/db.ts",
+        "drizzle.config.ts:3"
+      ],
+      "recommended_storage": "manus_secret",
+      "notes": "MySQL/TiDB connection string with credentials"
+    },
+    {
+      "key_name": "JWT_SECRET",
+      "category": "server",
+      "sensitivity": "secret",
+      "evidence_refs": [
+        "server/_core/env.ts:11",
+        "server/_core/oauth.ts"
+      ],
+      "recommended_storage": "manus_secret",
+      "notes": "Session signing key, must be >=32 chars"
+    },
+    {
+      "key_name": "OPENAI_API_KEY",
+      "category": "server",
+      "sensitivity": "secret",
+      "evidence_refs": [
+        "server/llm-utils.ts",
+        "server/services/ask-isa/"
+      ],
+      "recommended_storage": "manus_secret",
+      "notes": "OpenAI API key for GPT-4 and embeddings"
+    },
+    {
+      "key_name": "CRON_SECRET",
+      "category": "server",
+      "sensitivity": "secret",
+      "evidence_refs": [
+        "server/cron-endpoint.ts",
+        "server/cron-secret-validation.test.ts"
+      ],
+      "recommended_storage": "manus_secret",
+      "notes": "Authenticates cron job endpoints"
+    },
+    {
+      "key_name": "GITHUB_PAT",
+      "category": "server",
+      "sensitivity": "secret",
+      "evidence_refs": [
+        "server/github-integration.ts"
+      ],
+      "recommended_storage": "manus_secret",
+      "notes": "GitHub Personal Access Token"
+    },
+    {
+      "key_name": "SENDGRID_API_KEY",
+      "category": "server",
+      "sensitivity": "secret",
+      "evidence_refs": [
+        "server/email-service.ts"
+      ],
+      "recommended_storage": "manus_secret",
+      "notes": "SendGrid email API key (optional)"
+    },
+    {
+      "key_name": "SMTP_PASSWORD",
+      "category": "server",
+      "sensitivity": "secret",
+      "evidence_refs": [
+        "server/email-service.ts"
+      ],
+      "recommended_storage": "manus_secret",
+      "notes": "SMTP password (optional, alternative to SendGrid)"
+    },
+    {
+      "key_name": "BUILT_IN_FORGE_API_KEY",
+      "category": "server",
+      "sensitivity": "secret",
+      "evidence_refs": [
+        "server/forge-integration.ts"
+      ],
+      "recommended_storage": "manus_secret",
+      "notes": "Manus Forge API key"
+    },
+    {
+      "key_name": "VITE_APP_ID",
+      "category": "client",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "client/src/main.tsx",
+        "server/_core/env.ts:11"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Manus application identifier, public"
+    },
+    {
+      "key_name": "OAUTH_SERVER_URL",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/_core/oauth.ts",
+        "server/_core/env.ts:11"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "OAuth server URL (https://manus.im)"
+    },
+    {
+      "key_name": "OWNER_OPEN_ID",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/_core/env.ts:11",
+        "server/admin-middleware.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Admin user identifier"
+    },
+    {
+      "key_name": "NODE_ENV",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/_core/index.ts",
+        "server/_core/env.ts:9"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Environment mode (development/production/test)"
+    },
+    {
+      "key_name": "PORT",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/_core/index.ts:115"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Server port (default 3000)"
+    },
+    {
+      "key_name": "BUILT_IN_FORGE_API_URL",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/forge-integration.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Manus Forge API URL"
+    },
+    {
+      "key_name": "VITE_FRONTEND_FORGE_API_URL",
+      "category": "client",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "client/src/lib/forge-client.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Frontend Forge API URL"
+    },
+    {
+      "key_name": "VITE_FRONTEND_FORGE_API_KEY",
+      "category": "client",
+      "sensitivity": "secret",
+      "evidence_refs": [
+        "client/src/lib/forge-client.ts"
+      ],
+      "recommended_storage": "manus_secret",
+      "notes": "Frontend Forge API key (exposed to client)"
+    },
+    {
+      "key_name": "VITE_OAUTH_PORTAL_URL",
+      "category": "client",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "client/src/lib/oauth.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "OAuth portal URL"
+    },
+    {
+      "key_name": "VITE_APP_URL",
+      "category": "client",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "client/src/config.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Application URL for callbacks"
+    },
+    {
+      "key_name": "ISA_ADVISORY_VERSION",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/advisory-report-export.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Advisory report version identifier"
+    },
+    {
+      "key_name": "SENDER_EMAIL",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/email-service.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Email sender address"
+    },
+    {
+      "key_name": "SMTP_HOST",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/email-service.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "SMTP server hostname"
+    },
+    {
+      "key_name": "SMTP_PORT",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/email-service.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "SMTP server port"
+    },
+    {
+      "key_name": "SMTP_SECURE",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/email-service.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "SMTP TLS flag"
+    },
+    {
+      "key_name": "SMTP_USER",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/email-service.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "SMTP username"
+    },
+    {
+      "key_name": "RUN_CELLAR_TESTS",
+      "category": "tooling",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "vitest.config.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Enable CELLAR integration tests"
+    },
+    {
+      "key_name": "VITEST",
+      "category": "tooling",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/_core/env.ts:10"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Automatically set by vitest"
+    },
+    {
+      "key_name": "DB_HOST",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/db-legacy.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Legacy DB host (superseded by DATABASE_URL)"
+    },
+    {
+      "key_name": "DB_USER",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/db-legacy.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Legacy DB user (superseded by DATABASE_URL)"
+    },
+    {
+      "key_name": "DB_PASSWORD",
+      "category": "server",
+      "sensitivity": "secret",
+      "evidence_refs": [
+        "server/db-legacy.ts"
+      ],
+      "recommended_storage": "manus_secret",
+      "notes": "Legacy DB password (superseded by DATABASE_URL)"
+    },
+    {
+      "key_name": "DB_NAME",
+      "category": "server",
+      "sensitivity": "non_secret",
+      "evidence_refs": [
+        "server/db-legacy.ts"
+      ],
+      "recommended_storage": "local_env",
+      "notes": "Legacy DB name (superseded by DATABASE_URL)"
+    }
+  ],
+  "summary": {
+    "total_keys": 30,
+    "secrets": 10,
+    "non_secrets": 20,
+    "by_category": {
+      "server": 21,
+      "client": 5,
+      "tooling": 2,
+      "ci": 0
+    },
+    "by_storage": {
+      "manus_secret": 10,
+      "local_env": 20,
+      "github_actions_secret": 0,
+      "github_actions_variable": 0
+    }
+  }
+}
