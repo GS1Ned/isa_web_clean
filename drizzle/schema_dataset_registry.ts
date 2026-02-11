@@ -16,6 +16,15 @@ import {
  * Tracks public datasets, their sources, formats, and verification status.
  * Supports Lane C governance with last_verified_date tracking (Decision 3).
  */
+/**
+ * Dataset Registry - Catalog of GS1 and ESG-related datasets
+ * 
+ * NOTE: This schema matches the ACTUAL database structure (as of 2026-02-11).
+ * The database has an older/simpler schema than originally designed.
+ * Code and tests expecting richer fields (category, format, metadata, etc.) will fail.
+ * 
+ * TODO: Either migrate DB to richer schema OR update all code to use current schema.
+ */
 export const datasetRegistry = mysqlTable(
   "dataset_registry",
   {
