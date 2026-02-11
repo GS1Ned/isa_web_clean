@@ -896,9 +896,9 @@ export const appRouter = router({
   // batchEpcis: batchEpcisRouter,
 
   /**
-   * Compliance Risk Detection Router
+   * Compliance Risk Detection Router - ARCHIVED
    */
-  complianceRisks: complianceRisksRouter,
+  // complianceRisks: complianceRisksRouter,
 
   /**
    * Risk Remediation Router - ARCHIVED
@@ -906,9 +906,9 @@ export const appRouter = router({
   // remediation: remediationRouter,
 
   /**
-   * Compliance Scoring Router
+   * Compliance Scoring Router - ARCHIVED
    */
-  scoring: scoringRouter,
+  // scoring: scoringRouter,
 
   /**
    * Benchmarking Router - ARCHIVED
@@ -916,25 +916,25 @@ export const appRouter = router({
   // benchmarking: benchmarkingRouter,
 
   /**
-   * Compliance Roadmap Router
+   * Compliance Roadmap Router - ARCHIVED
    */
-  roadmap: roadmapRouter,
+  // roadmap: roadmapRouter,
 
   /**
-   * Roadmap Export and Sharing Router
+   * Roadmap Export and Sharing Router - ARCHIVED
    */
-  roadmapExport: roadmapExportRouter,
+  // roadmapExport: roadmapExportRouter,
 
   /**
    * Roadmap Collaboration Router - ARCHIVED
    */
   // collaboration: collaborationRouter,
-  templates: templatesRouter,
-  adminTemplates: adminTemplatesRouter,
+  // templates: templatesRouter,
+  // adminTemplates: adminTemplatesRouter,
   // templateAnalytics: templateAnalyticsRouter, // ARCHIVED
-  realtime: realtimeRouter,
-  notificationPreferences: notificationPreferencesRouter,
-  executiveAnalytics: executiveAnalyticsRouter,
+  // realtime: realtimeRouter,
+  // notificationPreferences: notificationPreferencesRouter,
+  // executiveAnalytics: executiveAnalyticsRouter,
 
   /**
    * User Onboarding Progress Router
