@@ -1,0 +1,19 @@
+{
+  "generated": "2026-02-12T00:23:24.326090",
+  "contracts_created": 6,
+  "status": "DRAFT",
+  "completeness": {
+    "ASK_ISA": 0.3,
+    "NEWS_HUB": 0.3,
+    "KNOWLEDGE_BASE": 0.3,
+    "CATALOG": 0.3,
+    "ESRS_MAPPING": 0.3,
+    "ADVISORY": 0.3
+  },
+  "next_steps": [
+    "Analyze code to populate entrypoints",
+    "Document inputs/outputs",
+    "Define invariants",
+    "Create smoke tests for remaining 5 capabilities"
+  ]
+}
