@@ -1,274 +1,252 @@
 # ISA Project Structure
 
+## Repo Anchors
+
+### Canonical Navigation
+- `/AGENT_START_HERE.md` - Agent entrypoint
+- `/README.md` - Project overview
+- `/REPO_TREE.md` - Repository structure
+- `/AGENTS.md` - Agent collaboration guide
+- `/package.json` - Dependencies and scripts
+
+### Refactor / Governance Evidence
+- `/docs/planning/refactoring/FILE_INVENTORY.json` - Complete file registry (828 files)
+- `/docs/planning/refactoring/QUALITY_SCORECARDS.json` - Capability quality scores
+- `/docs/planning/refactoring/EVIDENCE_MARKERS.json` - Traceability markers
+- `/docs/planning/refactoring/FINAL_STATUS_REPORT.md` - Refactoring completion status
+- `/docs/planning/refactoring/EXECUTION_SUMMARY.md` - Phase-by-phase results
+- `/docs/planning/refactoring/MOVE_PLAN.json` - File relocation plan
+- `/docs/planning/refactoring/MOVE_EXECUTION_LOG.json` - Relocation audit trail
+
+### Gate Runner
+- `/scripts/refactor/validate_gates.sh` - 5 automated validation gates
+
+**Rule**: Any statement about repository state must link to one of the anchors above (file path), or it is considered unverified.
+
+## How to Validate (One Pass)
+
+Run the gate runner to verify repository state:
+```bash
+bash scripts/refactor/validate_gates.sh
+```
+
+Then confirm these artifacts exist and are current:
+- `docs/planning/refactoring/FILE_INVENTORY.json` (828 files, 100% classified)
+- `docs/planning/refactoring/QUALITY_SCORECARDS.json` (overall score 71.7/100)
+- `docs/planning/refactoring/FINAL_STATUS_REPORT.md` (all gates passing)
+
 ## Directory Organization
 
+### Root Structure
 ```
 isa_web_clean/
-├── .ai/                        # Agent navigation layer
-│   ├── ENTRYPOINTS.md         # Canonical agent entrypoints
-│   ├── NAV_POLICY.md          # Navigation policy
-│   ├── CANONICAL_REGISTRY.json # Registry of canonical documents
-│   └── CAPABILITY_GRAPH.json  # Capability mapping graph
-│
-├── .amazonq/                   # Amazon Q configuration
-│   └── rules/                 # Project rules and memory bank
-│
-├── client/                     # Frontend application
-│   ├── src/
-│   │   ├── _core/             # Core utilities and types
-│   │   ├── components/        # React components (shadcn/ui)
-│   │   ├── contexts/          # React contexts
-│   │   ├── hooks/             # Custom React hooks
-│   │   ├── lib/               # Client-side utilities
-│   │   ├── pages/             # Page components (Wouter routing)
-│   │   ├── App.tsx            # Root application component
-│   │   └── main.tsx           # Application entry point
-│   ├── public/                # Static assets
-│   └── index.html             # HTML entry point
-│
-├── server/                     # Backend application
-│   ├── _core/                 # Core server infrastructure
-│   │   ├── types/             # TypeScript type definitions
-│   │   ├── context.ts         # tRPC context
-│   │   ├── trpc.ts            # tRPC setup
-│   │   ├── env.ts             # Environment configuration
-│   │   ├── oauth.ts           # Manus OAuth integration
-│   │   └── logger-wiring.ts   # Logging infrastructure
-│   ├── routers/               # tRPC routers (API endpoints)
-│   │   ├── ask-isa.ts         # Ask ISA Q&A router
-│   │   ├── advisory-reports.ts # Advisory system router
-│   │   ├── scraper-health.ts  # News scraper monitoring
-│   │   ├── dataset-registry.ts # Dataset registry router
-│   │   └── [50+ other routers]
-│   ├── services/              # Business logic services
-│   │   ├── news/              # News pipeline services
-│   │   ├── corpus-governance/ # Corpus management
-│   │   ├── rag-metrics/       # RAG evaluation metrics
-│   │   └── rag-tracing/       # RAG tracing and observability
-│   ├── ingest/                # Data ingestion scripts
-│   │   ├── INGEST-02_gdsn_current.ts
-│   │   ├── INGEST-03_esrs_datapoints.ts
-│   │   ├── INGEST-04_ctes_kdes.ts
-│   │   ├── INGEST-05_dpp_rules.ts
-│   │   └── INGEST-06_cbv_digital_link.ts
-│   ├── news/                  # News scraping utilities
-│   │   ├── news-scraper-eurlex.ts
-│   │   ├── news-scraper-gs1eu.ts
-│   │   └── news-scraper-greendeal.ts
-│   ├── mappings/              # ESRS-to-GS1 mapping engine
-│   ├── prompts/               # AI prompt templates
-│   │   ├── ask_isa/           # Ask ISA prompts
-│   │   └── ingestion/         # Ingestion prompts
-│   ├── evaluation/            # RAG evaluation harness
-│   ├── utils/                 # Server utilities
-│   │   ├── server-logger.ts   # Structured logging
-│   │   └── pipeline-logger.ts # Pipeline-specific logging
-│   └── routers.ts             # Root tRPC router
-│
-├── drizzle/                    # Database layer
-│   ├── schema.ts              # Main database schema
-│   ├── schema_*.ts            # Feature-specific schemas
-│   ├── relations.ts           # Database relations
-│   ├── migrations/            # SQL migrations
-│   └── meta/                  # Drizzle metadata
-│
-├── data/                       # Dataset files
-│   ├── metadata/              # Dataset registry and metadata
-│   │   ├── dataset_registry.json # Canonical dataset registry
-│   │   └── dataset_registry.schema.json
-│   ├── advisories/            # Advisory report versions
-│   ├── efrag/                 # EFRAG ESRS data
-│   ├── gs1/                   # GS1 standards data
-│   ├── gs1nl/                 # GS1 Netherlands sector models
-│   ├── gs1_ref_corpus/        # GS1 reference corpus
-│   ├── gs1_web_vocab/         # GS1 WebVoc vocabulary
-│   ├── esg/                   # ESG-specific data
-│   ├── cbv/                   # EPCIS CBV vocabularies
-│   └── standards/             # Standards documents
-│
-├── docs/                       # Documentation
-│   ├── governance/_root/      # Governance framework
-│   │   └── ISA_GOVERNANCE.md  # Authoritative governance doc
-│   ├── planning/              # Planning documents
-│   │   ├── INDEX.md           # Canonical planning index
-│   │   ├── NEXT_ACTIONS.json  # Execution queue (canonical)
-│   │   ├── BACKLOG.csv        # Backlog (canonical)
-│   │   ├── PLANNING_POLICY.md # Planning policy
-│   │   └── PROGRAM_PLAN.md    # Program plan narrative
-│   ├── spec/                  # Technical specifications
-│   │   ├── INDEX.md           # Specs index
-│   │   ├── ARCHITECTURE.md    # System architecture
-│   │   ├── ASK_ISA.md         # Ask ISA specification
-│   │   ├── ADVISORY.md        # Advisory system spec
-│   │   └── [50+ other specs]
-│   ├── evidence/              # Evidence and traceability
-│   │   ├── EVIDENCE_LEDGER.md # Evidence tracking
-│   │   └── EVIDENCE_INDEX.md  # Evidence index
-│   ├── decisions/             # Decision log
-│   │   └── DECISION_LOG.md    # Canonical decision log
-│   ├── reference/             # Reference documentation
-│   │   ├── ISA_DEVELOPMENT_RUBRIC.md
-│   │   └── REPO_ASSESSMENT_HOWTO.md
-│   ├── agent/                 # Agent collaboration docs
-│   │   └── AGENT_MAP.md       # Agent navigation map
-│   ├── REPO_MAP.md            # Repository map
-│   ├── DATASETS_CATALOG.md    # Dataset catalog
-│   ├── NEWS_PIPELINE.md       # News pipeline architecture
-│   ├── ADVISORY_METHOD.md     # Advisory methodology
-│   └── README.md              # Documentation index
-│
-├── scripts/                    # Automation scripts
-│   ├── audit/                 # Audit scripts
-│   ├── datasets/              # Dataset processing
-│   ├── dev/                   # Development utilities
-│   ├── ingestion/             # Ingestion automation
-│   ├── probe/                 # Health check probes
-│   ├── validation/            # Validation scripts
-│   └── validate_planning_and_traceability.py
-│
-├── .github/                    # GitHub configuration
-│   ├── workflows/             # CI/CD workflows
-│   │   ├── repo-tree.yml      # Repo tree generation
-│   │   ├── validate-docs.yml  # Documentation validation
-│   │   └── ask-isa-smoke.yml  # Ask ISA smoke tests
-│   └── PULL_REQUEST_TEMPLATE.md
-│
-├── config/                     # Configuration files
-│   ├── governance/            # Governance policies
-│   └── isa-catalogue/         # Catalogue configuration
-│
-├── shared/                     # Shared code (client + server)
-│   ├── _core/                 # Core shared utilities
-│   ├── schemas/               # JSON schemas
-│   ├── types.ts               # Shared TypeScript types
-│   └── const.ts               # Shared constants
-│
-├── isa-archive/                # Historical archives
-│   ├── phase-reports/         # Phase completion reports
-│   ├── planning/              # Archived planning docs
-│   └── reports/               # Archived reports
-│
-├── AGENT_START_HERE.md         # Canonical agent entrypoint
-├── README.md                   # Project README
-├── REPO_TREE.md                # CI-generated repo tree
-├── package.json                # Node.js dependencies
-├── tsconfig.json               # TypeScript configuration
-├── vite.config.ts              # Vite build configuration
-├── vitest.config.ts            # Vitest test configuration
-└── drizzle.config.ts           # Drizzle ORM configuration
+├── client/                 # Frontend application (React 19)
+├── server/                 # Backend application (Express + tRPC)
+├── shared/                 # Shared types and utilities
+├── drizzle/                # Database schema and migrations
+├── data/                   # Dataset files and metadata
+├── docs/                   # Documentation
+├── scripts/                # Automation and utility scripts
+├── config/                 # Configuration files
+├── ops/                    # Operations and cron jobs
+├── probes/                 # Health check and status probes
+└── isa-archive/            # Archived historical content
 ```
 
 ## Core Components
 
-### Frontend Architecture
-- **Framework:** React 19 with TypeScript
-- **Routing:** Wouter (lightweight React router)
-- **State Management:** React Query (@tanstack/react-query)
-- **API Client:** tRPC client with React Query integration
-- **UI Components:** shadcn/ui (Radix UI primitives)
-- **Styling:** Tailwind CSS 4 with custom design system
-- **Build Tool:** Vite 7
+### Frontend (client/)
+- **Framework**: React 19 + TypeScript
+- **Styling**: Tailwind CSS 4 + shadcn/ui components
+- **Routing**: Wouter
+- **State Management**: tRPC client + TanStack Query
+- **Structure**:
+  - `src/_core/` - Core utilities and configuration
+  - `src/components/` - Reusable UI components
+  - `src/pages/` - Page components
+  - `src/contexts/` - React contexts
+  - `src/hooks/` - Custom React hooks
+  - `src/lib/` - Utility libraries
 
-### Backend Architecture
-- **Framework:** Express 4 with TypeScript
-- **API Layer:** tRPC 11 (type-safe RPC)
-- **Database:** MySQL/TiDB with Drizzle ORM
-- **Authentication:** Manus OAuth integration
-- **AI/ML:** OpenAI GPT-4 + text-embedding-3-small
-- **Scraping:** Playwright for web scraping
-- **Logging:** Structured logging with server-logger
+### Backend (server/)
+- **Framework**: Express 4 + tRPC 11
+- **Database**: Drizzle ORM + MySQL/TiDB
+- **Authentication**: Manus OAuth
+- **Structure**:
+  - `_core/` - Core server infrastructure (trpc, auth, logging)
+  - `routers/` - tRPC route handlers
+  - `services/` - Business logic services
+  - `ingest/` - Data ingestion pipelines
+  - `news/` - News scraping and processing
+  - `mappings/` - ESRS-to-GS1 mapping logic
+  - `prompts/` - AI prompt templates
+  - `evaluation/` - Testing and evaluation harnesses
+  - `test-helpers/` - Testing utilities
+  - `utils/` - Server utilities
 
-### Database Schema Organization
-- **schema.ts:** Core tables (regulations, standards, news)
-- **schema_advisory_reports.ts:** Advisory system tables
-- **schema_ask_isa_feedback.ts:** Ask ISA feedback tracking
-- **schema_corpus_governance.ts:** Corpus management
-- **schema_dataset_registry.ts:** Dataset registry
-- **schema_esg_extensions.ts:** ESG-specific extensions
-- **schema_gs1_esrs_mappings.ts:** GS1-ESRS mappings
-- **schema_news_history.ts:** News pipeline history
-- **schema_pipeline_observability.ts:** Pipeline monitoring
-- **schema_regulatory_change_log.ts:** Regulatory changes
-- **schema_scraper_health.ts:** Scraper health monitoring
+### Shared (shared/)
+- **Purpose**: Code shared between client and server
+- **Contents**:
+  - `types.ts` - Shared TypeScript types
+  - `const.ts` - Shared constants
+  - `epcis-cbv-types.ts` - EPCIS/CBV type definitions
+  - `gs1-link-types.ts` - GS1 Digital Link types
+  - `news-tags.ts` - News categorization tags
+  - `schemas/` - JSON schemas
+
+### Database (drizzle/)
+- **ORM**: Drizzle ORM
+- **Structure**:
+  - `schema.ts` - Main database schema
+  - `schema_*.ts` - Domain-specific schemas
+  - `relations.ts` - Table relationships
+  - `migrations/` - SQL migration files
+  - `meta/` - Migration metadata
+
+### Data (data/)
+- **Purpose**: Dataset files and metadata
+- **Structure**:
+  - `metadata/` - Dataset registry and metadata
+  - `advisories/` - Advisory report versions
+  - `efrag/` - EFRAG ESRS data
+  - `gs1/` - GS1 standards data
+  - `gs1nl/` - GS1 Netherlands sector models
+  - `gs1_ref_corpus/` - GS1 reference documents
+  - `gs1_web_vocab/` - GS1 Web Vocabulary
+  - `esg/` - ESG-related datasets
+  - `cbv/` - Core Business Vocabulary
+  - `digital_link/` - GS1 Digital Link data
+  - `standards/` - Standards documentation
+
+### Documentation (docs/)
+- **Structure**:
+  - `governance/` - Governance framework and policies
+  - `planning/` - Project planning and roadmaps
+  - `spec/` - Technical specifications by capability
+  - `reference/` - Reference documentation
+  - `evidence/` - Evidence and audit trails
+  - `decisions/` - Decision logs
+  - `agent/` - Agent collaboration documentation
+  - `core/` - Core documentation
+  - `ops/` - Operations documentation
+
+### Scripts (scripts/)
+- **Purpose**: Automation and utility scripts
+- **Structure**:
+  - `audit/` - Repository assessment scripts
+  - `datasets/` - Dataset processing scripts
+  - `dev/` - Development utilities
+  - `ingestion/` - Data ingestion scripts
+  - `isa-catalogue/` - Catalogue management
+  - `probe/` - Health check probes
+  - `refactor/` - Refactoring automation
+  - `validation/` - Validation scripts
 
 ## Architectural Patterns
 
-### tRPC Router Pattern
-All API endpoints are organized as tRPC routers in `server/routers/`:
-- Type-safe client-server communication
-- Automatic TypeScript inference
-- Input validation with Zod schemas
-- Centralized error handling
+### Full-Stack TypeScript
+- Shared types between client and server
+- End-to-end type safety via tRPC
+- Consistent tooling and build process
 
-### Service Layer Pattern
-Business logic separated into `server/services/`:
-- Reusable service modules
-- Clear separation of concerns
-- Testable business logic
-- Shared across multiple routers
+### tRPC API Layer
+- Type-safe API calls without code generation
+- Automatic request/response validation
+- Integrated with React Query for caching
 
-### Data Ingestion Pipeline
-Structured ingestion scripts in `server/ingest/`:
-- INGEST-02: GDSN current data
-- INGEST-03: ESRS datapoints from EFRAG
-- INGEST-04: CTEs and KDEs
-- INGEST-05: DPP identification rules
-- INGEST-06: CBV vocabularies and Digital Link
+### Database-First Design
+- Drizzle ORM for type-safe database access
+- Migration-based schema evolution
+- Separate schemas for different domains
 
-### News Pipeline Architecture
-Multi-source news aggregation:
-- Playwright-based scrapers for each source
-- Health monitoring and retry logic
-- AI-powered content analysis
-- Deduplication and archival
-- Observability and alerting
+### Capability-Based Organization
+- Documentation organized by capability (ASK_ISA, NEWS_HUB, etc.)
+- Each capability has its own spec directory
+- Runtime contracts define capability boundaries
 
-### RAG (Retrieval-Augmented Generation)
-Ask ISA Q&A system:
-- Hybrid search (BM25 + semantic embeddings)
-- Query guardrails and validation
-- Citation extraction and verification
-- Confidence scoring
-- Evaluation harness with golden set
+### Governance-First Development
+- All changes tracked in version control
+- Mandatory governance self-checks
+- Evidence-based decision making
+- Provenance tracking for all datasets
+
+### AI Integration Patterns
+- OpenAI GPT-4 for advisory generation and Q&A
+- text-embedding-3-small for semantic search
+- Mandatory citations for all AI-generated content
+- Query guardrails and confidence scoring
+
+### Data Pipeline Architecture
+- Scheduled news scraping (7 sources)
+- EFRAG and EUR-Lex ingestion
+- GS1 standards processing
+- Embedding generation for semantic search
+- Pipeline observability and health monitoring
 
 ## Key Relationships
 
-### Frontend → Backend
-- Client uses tRPC client to call server routers
-- Type safety enforced at compile time
-- React Query manages caching and state
+### Client ↔ Server
+- tRPC for type-safe API calls
+- Manus OAuth for authentication
+- Server-side rendering via Vite
 
-### Backend → Database
-- Drizzle ORM provides type-safe database access
-- Schema-first approach with migrations
-- Relations defined in drizzle/relations.ts
+### Server ↔ Database
+- Drizzle ORM for queries
+- Connection pooling
+- SSL/TLS for production
 
-### Backend → AI Services
-- OpenAI GPT-4 for advisory generation and Q&A
-- text-embedding-3-small for semantic search
-- Prompt templates in server/prompts/
+### Server ↔ External APIs
+- OpenAI for LLM and embeddings
+- Playwright for web scraping
+- EUR-Lex and EFRAG for regulatory data
+- GS1 sources for standards data
 
-### Data Flow
-1. **Ingestion:** Scripts in server/ingest/ → Database
-2. **Processing:** Services in server/services/ → Database
-3. **API:** Routers in server/routers/ → tRPC → Client
-4. **UI:** Client pages/components → User
+### Data ↔ Documentation
+- Dataset registry links to documentation
+- Evidence pointers in governance docs
+- Provenance metadata in all datasets
 
-## Canonical Documents
+## Entrypoints (Canonical)
 
-### Planning SSoT (Single Source of Truth)
-- **docs/planning/NEXT_ACTIONS.json:** Execution queue
-- **docs/planning/BACKLOG.csv:** Backlog items
-- **docs/planning/INDEX.md:** Planning index
+### Backend Entrypoint
+**File**: `/server/_core/index.ts`  
+**Script**: `pnpm dev` (development), `pnpm start` (production)  
+**Verified**: Per `/package.json` scripts section
 
-### Governance SSoT
-- **docs/governance/_root/ISA_GOVERNANCE.md:** Authoritative governance framework
+Express + tRPC server with Manus OAuth authentication.
 
-### Agent Navigation SSoT
-- **.ai/ENTRYPOINTS.md:** Agent entrypoints
-- **.ai/CANONICAL_REGISTRY.json:** Canonical document registry
-- **AGENT_START_HERE.md:** Primary agent entrypoint
+### Frontend Entrypoint
+**File**: `/client/src/main.tsx`  
+**Build**: Vite bundles from this entrypoint  
+**Verified**: Standard Vite + React pattern
 
-### Evidence SSoT
-- **docs/evidence/EVIDENCE_LEDGER.md:** Evidence tracking
-- **docs/decisions/DECISION_LOG.md:** Decision log
+React 19 application with Wouter routing and tRPC client.
+
+### Tooling Entrypoints
+**Refactor Runners**: `/scripts/refactor/phase_*.py` (inventory, contracts, relocation, quality, automation, final lock)  
+**Gate Runner**: `/scripts/refactor/validate_gates.sh` (5 automated gates)  
+**Verified**: Per `/docs/planning/refactoring/EXECUTION_SUMMARY.md`
+
+Automated refactoring and validation infrastructure.
+
+## Generated vs Handwritten
+
+### Generated Artifacts
+**Directory**: `/docs/planning/refactoring/`  
+**Generated by**: `/scripts/refactor/phase_*.py` scripts  
+**Artifacts**:
+- `FILE_INVENTORY.json` - Generated by phase_0_inventory.py
+- `QUALITY_SCORECARDS.json` - Generated by phase_3_quality.py
+- `EVIDENCE_MARKERS.json` - Generated by phase_3_quality.py
+- `MOVE_PLAN.json` - Generated by phase_2_plan.py
+- `MOVE_EXECUTION_LOG.json` - Generated by phase_2_execute.py
+- `FINAL_STATUS_REPORT.md` - Generated by phase_5_final_lock.py
+- `EXECUTION_SUMMARY.md` - Handwritten summary
+
+**Verification**: Run `/scripts/refactor/validate_gates.sh` to confirm generated artifacts are current.
+
+### Handwritten Documentation
+**Directory**: `/docs/spec/*/RUNTIME_CONTRACT.md`  
+**Files**: 6 runtime contracts (ASK_ISA, NEWS_HUB, KNOWLEDGE_BASE, CATALOG, ESRS_MAPPING, ADVISORY)  
+**Generated**: Skeletons by phase_1_contracts.py, content requires manual enhancement  
+**Current Completeness**: 30% per `/docs/planning/refactoring/EXECUTION_SUMMARY.md`

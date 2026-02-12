@@ -1,597 +1,359 @@
 # ISA Development Guidelines
 
+## Repo Anchors
+
+### Canonical Navigation
+- `/AGENT_START_HERE.md` - Agent entrypoint
+- `/README.md` - Project overview
+- `/REPO_TREE.md` - Repository structure
+- `/AGENTS.md` - Agent collaboration guide
+- `/package.json` - Dependencies and scripts
+
+### Refactor / Governance Evidence
+- `/docs/planning/refactoring/FILE_INVENTORY.json` - Complete file registry (828 files)
+- `/docs/planning/refactoring/QUALITY_SCORECARDS.json` - Capability quality scores
+- `/docs/planning/refactoring/EVIDENCE_MARKERS.json` - Traceability markers
+- `/docs/planning/refactoring/FINAL_STATUS_REPORT.md` - Refactoring completion status
+- `/docs/planning/refactoring/EXECUTION_SUMMARY.md` - Phase-by-phase results
+- `/docs/planning/refactoring/MOVE_PLAN.json` - File relocation plan
+- `/docs/planning/refactoring/MOVE_EXECUTION_LOG.json` - Relocation audit trail
+
+### Gate Runner
+- `/scripts/refactor/validate_gates.sh` - 5 automated validation gates
+
+**Rule**: Any statement about repository state must link to one of the anchors above (file path), or it is considered unverified.
+
+## How to Validate (One Pass)
+
+Run the gate runner to verify repository state:
+```bash
+bash scripts/refactor/validate_gates.sh
+```
+
+Then confirm these artifacts exist and are current:
+- `docs/planning/refactoring/FILE_INVENTORY.json` (828 files, 100% classified)
+- `docs/planning/refactoring/QUALITY_SCORECARDS.json` (overall score 71.7/100)
+- `docs/planning/refactoring/FINAL_STATUS_REPORT.md` (all gates passing)
+
 ## Code Quality Standards
 
-### TypeScript Conventions
+### File Organization
+- **Python scripts**: Include docstring header with purpose, constraints, and metadata
+- **TypeScript files**: Use clear module-level comments for complex logic
+- **Imports**: Group by category (external, internal core, internal features)
+- **Exports**: Use named exports for utilities, default exports for pages/components
 
-**Strict Type Safety:**
-- All code uses TypeScript with strict mode enabled
-- Explicit return types for functions
-- No `any` types unless absolutely necessary
-- Use type inference where appropriate but prefer explicit types for public APIs
-
-**Naming Conventions:**
-- PascalCase for types, interfaces, classes, React components
-- camelCase for variables, functions, methods
-- UPPER_SNAKE_CASE for constants
-- Prefix interfaces with descriptive names (no `I` prefix)
-- Use descriptive names that convey intent
-
-**File Organization:**
-- One primary export per file
-- Group related functionality in directories
-- Use index files sparingly (explicit imports preferred)
-- Separate types into dedicated type files when shared
+### Naming Conventions
+- **Files**: kebab-case for scripts (extract_advisory_v1.py), PascalCase for React components (ComponentShowcase.tsx)
+- **Variables**: camelCase for local variables, UPPER_SNAKE_CASE for constants
+- **Functions**: camelCase with descriptive verb prefixes (analyze, generate, build, get)
+- **Types/Interfaces**: PascalCase with descriptive suffixes (Result, Info, Chain, Config)
+- **Database schemas**: snake_case for table/column names
 
 ### Documentation Standards
+- **Python**: Triple-quoted docstrings with purpose, constraints, and usage
+- **TypeScript**: JSDoc comments for public APIs and complex functions
+- **Inline comments**: Explain "why" not "what", especially for business logic
+- **README files**: Include purpose, usage, and examples
 
-**JSDoc Comments:**
-- All public functions and complex logic require JSDoc comments
-- Include parameter descriptions and return types
-- Document side effects and async behavior
-- Example from codebase:
-```typescript
-/**
- * Advisory Report Export Service
- * Phase 1 Enhancement: Generate professional Markdown reports from analysis results
- */
-```
+## Structural Conventions
 
-**Inline Comments:**
-- Use comments to explain "why" not "what"
-- Step-by-step comments for complex workflows
-- Example pattern from ask-isa.ts:
-```typescript
-// Step 1: Analyze query for ambiguity
-// Step 2: Load conversation history if conversationId is provided
-// Step 3: Build modular prompt using v2.0 system
-```
+### React Component Patterns
+- **Lazy loading**: Use React.lazy() for non-critical pages to improve initial load
+- **Component structure**: Imports → Types → Component → Exports
+- **State management**: useState for local state, tRPC queries for server state
+- **Error boundaries**: Wrap app in ErrorBoundary for graceful error handling
+- **Loading states**: Provide fallback UI for Suspense boundaries
 
-**Section Dividers:**
-- Use clear section dividers for major code blocks
-- Example pattern:
-```typescript
-// =============================================================================
-// TYPES
-// =============================================================================
+### TypeScript Type Safety
+- **Strict typing**: Enable strict mode, avoid `any` types
+- **Type definitions**: Define interfaces for all data structures
+- **Union types**: Use for enums and discriminated unions (e.g., CBVBizStep)
+- **Type guards**: Implement type guard functions (isESGRelevantBizStep)
+- **Null safety**: Use optional chaining (?.) and nullish coalescing (??)
 
-// =============================================================================
-// CONSTANTS
-// =============================================================================
-```
-
-### Code Structure Patterns
-
-**Separation of Concerns:**
-- Business logic in service modules (`server/services/`)
-- Database operations in dedicated db files (`db-*.ts`)
-- API endpoints in tRPC routers (`server/routers/`)
-- UI components in component files (`client/src/components/`)
-
-**Error Handling:**
-- Always use try-catch for async operations
-- Log errors with structured logging (serverLogger)
-- Provide user-friendly error messages
-- Example pattern:
-```typescript
-try {
-  // operation
-} catch (error) {
-  serverLogger.error('[Context] Error message:', error);
-  throw new Error('User-friendly message');
-}
-```
-
-**Validation:**
-- Use Zod schemas for input validation
-- Validate at API boundaries (tRPC procedures)
-- Validate business logic constraints in services
-- Example pattern:
-```typescript
-.input(
-  z.object({
-    question: z.string().min(3).max(1000),
-    conversationId: z.number().optional(),
-  })
-)
-```
+### Database Patterns
+- **Schema organization**: Separate schema files by domain (schema_advisory_reports.ts)
+- **Migrations**: Use Drizzle Kit for schema changes
+- **Queries**: Use Drizzle ORM with sql tagged templates for complex queries
+- **Transactions**: Wrap multi-step operations in transactions
+- **Error handling**: Always check db connection before queries
 
 ## Semantic Patterns
 
-### tRPC Router Pattern
+### Data Processing
+- **Immutability**: Prefer const over let, use spread operators for updates
+- **Functional style**: Use map/filter/reduce over imperative loops
+- **Error handling**: Try-catch blocks with structured logging
+- **Validation**: Validate inputs at boundaries (API routes, file parsers)
+- **Provenance tracking**: Include metadata (source, version, date) in all datasets
 
-**Standard Router Structure:**
-```typescript
-export const routerName = router({
-  procedureName: publicProcedure
-    .input(z.object({ /* validation */ }))
-    .query(async ({ input }) => {
-      // implementation
-    }),
-  
-  mutationName: protectedProcedure
-    .input(z.object({ /* validation */ }))
-    .mutation(async ({ input, ctx }) => {
-      // implementation with auth context
-    }),
-});
-```
+### API Design (tRPC)
+- **Router organization**: Group related procedures in routers (advisory, news, admin)
+- **Input validation**: Use Zod schemas for all inputs
+- **Error responses**: Return structured errors with context
+- **Pagination**: Implement cursor-based pagination for large datasets
+- **Caching**: Use TanStack Query for client-side caching
 
-**Key Characteristics:**
-- Use `publicProcedure` for unauthenticated endpoints
-- Use `protectedProcedure` for authenticated endpoints
-- `.query()` for read operations
-- `.mutation()` for write operations
-- Always validate input with Zod schemas
-- Access user context via `ctx.user` in protected procedures
+### AI Integration
+- **Prompt templates**: Store prompts in server/prompts/ directory
+- **Citation tracking**: Always include source citations in AI responses
+- **Confidence scoring**: Return confidence scores with AI-generated content
+- **Guardrails**: Implement query type validation (allowed/forbidden types)
+- **Fallback handling**: Provide graceful degradation when AI unavailable
 
-### Database Access Pattern
-
-**Drizzle ORM Usage:**
-```typescript
-const db = await getDb();
-if (!db) throw new Error('Database not available');
-
-const results = await db
-  .select()
-  .from(tableName)
-  .where(eq(tableName.field, value))
-  .limit(10);
-```
-
-**Key Characteristics:**
-- Always check if db is available
-- Use Drizzle query builder (no raw SQL unless necessary)
-- Import operators from 'drizzle-orm' (eq, and, desc, sql)
-- Use parameterized queries for safety
-- Handle null/undefined results explicitly
-
-### Logging Pattern
-
-**Structured Logging:**
-```typescript
-import { serverLogger } from './utils/server-logger';
-
-serverLogger.info('[Context] Operation description', { metadata });
-serverLogger.warn('[Context] Warning message', details);
-serverLogger.error('[Context] Error occurred:', error);
-```
-
-**Key Characteristics:**
-- Always prefix with context in brackets: `[AskISA]`, `[EventProcessor]`
-- Use appropriate log levels (info, warn, error)
-- Include relevant metadata for debugging
-- Never log sensitive data (passwords, tokens)
-
-### React Component Pattern
-
-**Functional Components with Hooks:**
-```typescript
-export default function ComponentName() {
-  const [state, setState] = useState<Type>(initialValue);
-  const { data, isLoading } = trpc.router.procedure.useQuery(input);
-  
-  const handleAction = () => {
-    // event handler
-  };
-  
-  return (
-    <div className="space-y-6">
-      {/* JSX */}
-    </div>
-  );
-}
-```
-
-**Key Characteristics:**
-- Use functional components (no class components)
-- Hooks at top of component
-- Event handlers defined before return
-- Use tRPC hooks for API calls
-- Tailwind CSS for styling
-- shadcn/ui components for UI primitives
-
-### AI/LLM Integration Pattern
-
-**OpenAI API Calls:**
-```typescript
-const response = await invokeLLM({
-  messages: [
-    { role: 'system', content: 'System prompt...' },
-    { role: 'user', content: 'User query...' }
-  ],
-  response_format: { type: 'json_schema', json_schema: { /* schema */ } }
-});
-
-const content = response.choices?.[0]?.message?.content;
-const parsed = typeof content === 'string' ? JSON.parse(content) : null;
-```
-
-**Key Characteristics:**
-- Use `invokeLLM` wrapper function
-- Always provide system and user messages
-- Use structured output with JSON schema when possible
-- Handle null/undefined responses gracefully
-- Parse JSON responses safely with try-catch
-- Log LLM errors for debugging
-
-### Data Validation Pattern
-
-**Multi-Layer Validation:**
-```typescript
-// 1. Input validation (Zod at API boundary)
-.input(z.object({ field: z.string().min(1) }))
-
-// 2. Business logic validation
-const validation = validateBusinessRules(data);
-if (!validation.isValid) {
-  return { error: validation.message };
-}
-
-// 3. Data integrity validation
-const integrity = checkDataIntegrity(data);
-if (!integrity.passed) {
-  serverLogger.warn('[Context] Integrity check failed:', integrity.issues);
-}
-```
-
-**Key Characteristics:**
-- Validate at API boundaries with Zod
-- Validate business rules in service layer
-- Check data integrity before critical operations
-- Return structured validation results
-- Log validation failures for monitoring
+### Governance Compliance
+- **Version control**: Use conventional commits (feat, fix, docs, refactor, test, chore, data)
+- **Evidence tracking**: Link decisions to evidence in governance docs
+- **Dataset registry**: Register all datasets in data/metadata/dataset_registry.json
+- **Checksums**: Include SHA256 checksums for data integrity
+- **Audit trails**: Log all critical operations with timestamps
 
 ## Internal API Usage
 
-### tRPC Client Usage (Frontend)
-
-**Query Pattern:**
+### tRPC Client Pattern
 ```typescript
-const { data, isLoading, error } = trpc.router.procedure.useQuery(
-  input,
-  { enabled: condition }
-);
-```
-
-**Mutation Pattern:**
-```typescript
-const mutation = trpc.router.procedure.useMutation({
-  onSuccess: (data) => {
-    // handle success
-  },
-  onError: (error) => {
-    // handle error
-  }
+// Query pattern
+const { data, isLoading, error } = trpc.advisory.getReport.useQuery({ 
+  version: "1.0" 
 });
 
-mutation.mutate(input);
+// Mutation pattern
+const mutation = trpc.advisory.generateReport.useMutation({
+  onSuccess: (data) => {
+    // Handle success
+  },
+  onError: (error) => {
+    // Handle error
+  }
+});
 ```
 
-**Key Characteristics:**
-- Use React Query hooks provided by tRPC
-- Handle loading and error states
-- Use `enabled` option for conditional queries
-- Invalidate queries after mutations
-- Access mutation state via `mutation.isLoading`, `mutation.error`
-
-### Database Helper Functions
-
-**Common Patterns:**
+### Database Query Pattern
 ```typescript
-// Get single record
-export async function getRecordById(id: number): Promise<Record | null> {
-  const db = await getDb();
-  if (!db) throw new Error('Database not available');
-  const results = await db.select().from(table).where(eq(table.id, id)).limit(1);
-  return results[0] || null;
-}
+// Get database connection
+const db = await getDb();
+if (!db) return null;
 
-// List records with pagination
-export async function listRecords(limit: number = 20): Promise<Record[]> {
-  const db = await getDb();
-  if (!db) throw new Error('Database not available');
-  return await db.select().from(table).limit(limit).orderBy(desc(table.createdAt));
-}
+// Import schemas
+const { regulations, esrsDatapoints } = await import("../drizzle/schema");
 
-// Create record
-export async function createRecord(data: InsertRecord): Promise<number> {
-  const db = await getDb();
-  if (!db) throw new Error('Database not available');
-  const result = await db.insert(table).values(data);
-  return Number(result[0].insertId);
+// Execute query with error handling
+try {
+  const results = await db
+    .select({ id: regulations.id, title: regulations.title })
+    .from(regulations)
+    .where(sql`${regulations.id} = ${regulationId}`)
+    .limit(1);
+  return results[0];
+} catch (error) {
+  serverLogger.error("[Context] Query failed:", error);
+  return null;
 }
 ```
 
-### Utility Functions
+### Logging Pattern
+```typescript
+// Import logger
+import { serverLogger } from "./_core/logger-wiring";
 
-**Common Utilities:**
-- `cn()` from `@/lib/utils` - Merge Tailwind classes
-- `serverLogger` - Structured logging
-- `invokeLLM()` - OpenAI API wrapper
-- `getDb()` - Database connection
-- `prepareContentForEmbedding()` - Content preparation for embeddings
+// Log with context
+serverLogger.info("[ComponentName] Operation started", { metadata });
+serverLogger.error("[ComponentName] Operation failed:", error);
+```
+
+### Component UI Pattern
+```typescript
+// shadcn/ui component usage
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+// Use semantic variants
+<Button variant="outline" size="sm">Action</Button>
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+  </CardHeader>
+  <CardContent>Content</CardContent>
+</Card>
+```
 
 ## Code Idioms
 
-### Conditional Rendering (React)
-
-```typescript
-{isLoading && <Skeleton />}
-{error && <ErrorMessage error={error} />}
-{data && <DataDisplay data={data} />}
-{!data && !isLoading && <EmptyState />}
-```
-
 ### Array Processing
-
 ```typescript
-// Map with type safety
-const mapped = items.map((item) => ({
-  id: item.id,
-  name: item.name,
-}));
+// Filtering and mapping
+const gaps = datapoints
+  .filter(dp => !hasGS1Coverage(dp))
+  .map(dp => ({ id: dp.id, status: 'missing' }));
 
-// Filter with type guards
-const filtered = items.filter((item): item is ValidType => 
-  item.field !== null && item.field !== undefined
-);
-
-// Reduce for aggregation
-const aggregated = items.reduce((acc, item) => {
-  acc[item.key] = (acc[item.key] || 0) + 1;
-  return acc;
-}, {} as Record<string, number>);
+// Grouping
+const byStandard = new Map<string, number>();
+items.forEach(item => {
+  byStandard.set(item.standard, (byStandard.get(item.standard) || 0) + 1);
+});
 ```
 
-### Async/Await Patterns
-
+### Conditional Rendering
 ```typescript
-// Sequential operations
-const step1 = await operation1();
-const step2 = await operation2(step1);
-const step3 = await operation3(step2);
+// Ternary for simple cases
+{isLoading ? <Spinner /> : <Content />}
 
-// Parallel operations
-const [result1, result2, result3] = await Promise.all([
-  operation1(),
-  operation2(),
-  operation3(),
-]);
+// Logical AND for conditional display
+{error && <Alert variant="destructive">{error.message}</Alert>}
 
-// Error handling with fallback
-try {
-  const result = await riskyOperation();
-  return result;
-} catch (error) {
-  serverLogger.error('[Context] Operation failed:', error);
-  return fallbackValue;
+// Optional chaining for nested properties
+{data?.regulation?.title}
+```
+
+### Type Narrowing
+```typescript
+// Type guard functions
+export function isESGRelevantBizStep(bizStep: string): bizStep is CBVBizStep {
+  const esgBizSteps: CBVBizStep[] = [...];
+  return esgBizSteps.includes(bizStep as CBVBizStep);
+}
+
+// Usage
+if (isESGRelevantBizStep(step)) {
+  // step is now typed as CBVBizStep
 }
 ```
 
-### Type Guards
+## Popular Annotations
 
+### TypeScript Annotations
 ```typescript
-// Type narrowing
-if (typeof value === 'string') {
-  // value is string here
-}
+// Type assertion
+const element = document.getElementById('root') as HTMLElement;
 
-// Null/undefined checks
-if (value !== null && value !== undefined) {
-  // value is non-nullable here
-}
+// Non-null assertion (use sparingly)
+const value = maybeNull!;
 
-// Array type guard
-if (Array.isArray(value) && value.length > 0) {
-  // value is non-empty array
+// Type parameter constraints
+function process<T extends BaseType>(item: T): T { }
+
+// Readonly properties
+interface Config {
+  readonly version: string;
 }
 ```
 
-## Frequently Used Annotations
-
-### TypeScript Utility Types
-
+### JSDoc Annotations
 ```typescript
-// Partial - make all properties optional
-type PartialUser = Partial<User>;
-
-// Pick - select specific properties
-type UserCredentials = Pick<User, 'email' | 'password'>;
-
-// Omit - exclude specific properties
-type UserWithoutPassword = Omit<User, 'password'>;
-
-// Record - key-value mapping
-type UserMap = Record<string, User>;
-
-// Array element type
-type ArrayElement<T> = T extends (infer U)[] ? U : never;
+/**
+ * Analyze compliance gaps for a specific regulation
+ * @param regulationId - Database ID of the regulation
+ * @returns Gap analysis result or null if not found
+ */
+export async function analyzeComplianceGaps(
+  regulationId: number
+): Promise<GapAnalysisResult | null> { }
 ```
 
-### React Types
-
+### React Annotations
 ```typescript
-// Component props
-interface ComponentProps {
-  title: string;
-  onAction?: () => void;
-  children?: React.ReactNode;
-}
+// Lazy loading with type safety
+const Component = lazy(() => import("./Component").then(m => ({ 
+  default: m.Component 
+})));
 
-// Event handlers
-const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-  // handler
-};
-
-// Ref types
-const inputRef = React.useRef<HTMLInputElement>(null);
+// Event handler types
+const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => { };
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { };
 ```
 
-### Zod Schema Patterns
+## Testing Patterns
 
+### Test Organization
+- **Unit tests**: Test individual functions in isolation
+- **Integration tests**: Test database interactions and API routes
+- **Test files**: Co-locate with source files (*.test.ts)
+- **Test helpers**: Shared utilities in server/test-helpers/
+
+### Test Structure
 ```typescript
-// Basic validation
-z.string().min(1).max(100)
-z.number().int().positive()
-z.boolean()
-z.array(z.string())
-z.enum(['option1', 'option2'])
+import { describe, it, expect } from 'vitest';
 
-// Optional fields
-z.string().optional()
-z.number().nullable()
-z.string().default('default value')
+describe('ComponentName', () => {
+  it('should handle expected case', () => {
+    const result = functionUnderTest(input);
+    expect(result).toBe(expected);
+  });
 
-// Object schemas
-z.object({
-  required: z.string(),
-  optional: z.number().optional(),
-  nested: z.object({
-    field: z.string()
-  })
-})
-
-// Union types
-z.union([z.string(), z.number()])
-z.discriminatedUnion('type', [
-  z.object({ type: z.literal('a'), value: z.string() }),
-  z.object({ type: z.literal('b'), value: z.number() })
-])
+  it('should handle edge case', () => {
+    const result = functionUnderTest(edgeInput);
+    expect(result).toBeNull();
+  });
+});
 ```
 
-## Best Practices
+## Performance Considerations
 
-### Performance
+- **Lazy loading**: Split large pages into separate chunks
+- **Memoization**: Use React.memo for expensive components
+- **Query optimization**: Use indexes and limit result sets
+- **Caching**: Leverage TanStack Query cache for repeated requests
+- **Batch operations**: Process files in batches to avoid memory issues
 
-- Use React.memo for expensive components
-- Implement pagination for large datasets
-- Use database indexes for frequent queries
-- Cache expensive computations
-- Lazy load routes and components
-- Optimize images and assets
+## Security Practices
 
-### Security
+- **Input validation**: Validate all user inputs with Zod schemas
+- **SQL injection**: Use parameterized queries via Drizzle ORM
+- **XSS prevention**: React escapes by default, avoid dangerouslySetInnerHTML
+- **Authentication**: Use Manus OAuth for user authentication
+- **Secrets management**: Store secrets in environment variables, never commit
+- **Rate limiting**: Apply rate limits to API endpoints
 
-- Never expose API keys in client code
-- Validate all user input
-- Use parameterized queries (Drizzle ORM)
-- Implement rate limiting on sensitive endpoints
-- Use HTTPS in production
-- Sanitize user-generated content
+## Accessibility
 
-### Testing
+- **Semantic HTML**: Use proper HTML elements (button, nav, main)
+- **ARIA labels**: Add aria-label for icon-only buttons
+- **Keyboard navigation**: Ensure all interactive elements are keyboard accessible
+- **Focus management**: Manage focus for modals and dynamic content
+- **Color contrast**: Follow WCAG guidelines for text contrast
 
-- Write unit tests for business logic
-- Test error handling paths
-- Mock external dependencies (database, APIs)
-- Use Vitest for testing
-- Test edge cases and boundary conditions
-- Maintain test coverage above 80%
+## Where Guidelines Are Enforced
 
-### Accessibility
+### Automated Enforcement
+**Gate Runner**: `/scripts/refactor/validate_gates.sh`  
+**Enforces**:
+1. File inventory exists and is current
+2. All 6 runtime contracts exist
+3. Quality score ≥ 60 (current: 71.7/100)
+4. Link validation (basic check)
+5. UNKNOWN classification < 5% (current: 0%)
 
-- Use semantic HTML elements
-- Provide alt text for images
-- Ensure keyboard navigation works
-- Use ARIA labels where needed
-- Test with screen readers
-- Maintain color contrast ratios
+**Status**: 5/5 gates passing per `/docs/planning/refactoring/FINAL_STATUS_REPORT.md`
 
-### Code Review
+### Quality Tracking
+**Inventory**: `/docs/planning/refactoring/FILE_INVENTORY.json` (828 files, 100% classified)  
+**Scorecards**: `/docs/planning/refactoring/QUALITY_SCORECARDS.json` (capability-level quality scores)  
+**Evidence**: `/docs/planning/refactoring/EVIDENCE_MARKERS.json` (traceability markers)
 
-- Keep pull requests focused and small
-- Write descriptive commit messages
-- Follow conventional commit format
-- Include tests with code changes
-- Update documentation when needed
-- Request reviews from CODEOWNERS
+**Rule**: Guidelines without enforcement anchors are non-binding. All normative guidelines must reference validation gates or quality scorecards.
 
-## Governance Compliance
+## Doc Governance (Minimum)
 
-### Lane C Requirements
+### Evidence Requirements
+**Normative statements** (requirements, constraints, architectural decisions) must include:
+1. Evidence pointer to repo artifact (file path), OR
+2. Explicit UNVERIFIED label with rationale
 
-**Before Making Changes:**
-1. Read `docs/governance/_root/ISA_GOVERNANCE.md`
-2. Identify if change triggers Lane C escalation
-3. Follow mandatory escalation format if required
-4. Document decision rationale
+**Evidence Registry**: `/docs/planning/refactoring/EVIDENCE_MARKERS.json`  
+**Current Status**: 0 markers found per `/docs/planning/refactoring/PHASE_3_SUMMARY.md` (opportunity for improvement)
 
-**Lane C Triggers:**
-- Schema changes affecting data integrity
-- New data sources or ingestion pipelines
-- Changes to AI prompts or mapping logic
-- Advisory report generation or publication
-- Governance framework modifications
-- External integrations or API exposure
+### Validation Workflow
+1. Make documentation change
+2. Add evidence markers linking to implementation
+3. Run `/scripts/refactor/validate_gates.sh`
+4. Confirm gates pass and scorecards are current
+5. Commit with conventional commit message
 
-**Escalation Format:**
-```markdown
-## Lane C Escalation Required
+### Non-Binding Content
+Content without evidence pointers or UNVERIFIED labels is considered:
+- Informational (not normative)
+- Subject to change without notice
+- Not validated by automated gates
 
-**Change Type:** [Schema/Data Source/AI Prompt/etc.]
-**Impact:** [Description of impact]
-**Rationale:** [Why this change is needed]
-**Alternatives Considered:** [Other options]
-**Rollback Plan:** [How to revert if needed]
-```
-
-### Data Integrity
-
-**All Datasets Must Include:**
-- Source (publisher, URL)
-- Version (semantic versioning)
-- Release date
-- Last verified date
-- SHA256 checksum
-- Lineage (how data was obtained)
-- Ingestion method
-
-**Citation Requirements:**
-- All AI-generated content must include citations
-- Citations must reference specific sources
-- Sources must be traceable to authoritative documents
-- Include confidence scores for AI-generated content
-
-### Version Control
-
-**Commit Message Format:**
-```
-<type>: <description>
-
-[optional body]
-
-[optional footer]
-```
-
-**Types:**
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `refactor`: Code refactoring
-- `test`: Test additions or changes
-- `chore`: Build/tooling changes
-- `data`: Dataset updates
-
-**Example:**
-```
-feat: add EUDR geolocation validation
-
-Implement geolocation validation for EUDR compliance.
-Validates plot coordinates against deforestation risk data.
-
-Closes #123
-```
-
-## Common Pitfalls to Avoid
-
-1. **Don't use `any` type** - Use `unknown` and type guards instead
-2. **Don't mutate state directly** - Use setState or immutable updates
-3. **Don't forget error handling** - Always handle async errors
-4. **Don't skip input validation** - Validate at API boundaries
-5. **Don't log sensitive data** - Sanitize logs
-6. **Don't hardcode values** - Use constants or environment variables
-7. **Don't skip database null checks** - Always check if db is available
-8. **Don't ignore TypeScript errors** - Fix them, don't suppress
-9. **Don't skip governance checks** - Follow Lane C requirements
-10. **Don't commit without testing** - Run tests before committing
+**Recommendation**: Add evidence markers systematically to establish traceability (target: 100+ markers per `/docs/planning/refactoring/COMPLETION_SUMMARY.md`).
