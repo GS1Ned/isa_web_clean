@@ -11,156 +11,191 @@
 
 ## 2. Core Sources
 
-1. `./ARCHITECTURE.md`
-2. `./docs/FILE_SYSTEM_MEMORY_ARCHITECTURE.md`
-3. `./docs/ISA_INFORMATION_ARCHITECTURE.md`
-4. `./ROADMAP_GITHUB_INTEGRATION.md`
-5. `./docs/ISA_VISUAL_BRANDING_ROADMAP.md`
-6. `./docs/ISA_STRATEGIC_CONTEXT_SYNTHESIS.md`
-7. `./PROJECT_SIZE_CLEANUP.md`
-8. `./docs/ALERTING_SYSTEM_DESIGN.md`
-9. `./tasks/for_chatgpt/CGPT-15_user_guide.md`
-10. `./docs/MANUS_OPTIMIZATION_IMPLEMENTATION_SUMMARY.md`
+**Current Architecture Evidence:**
+1. `server/_core/index.ts` - Core server infrastructure
+2. `server/routers.ts` - tRPC router registry
+3. `drizzle/schema.ts` - Database schema
+4. `client/src/App.tsx` - Frontend routing
+5. `docs/architecture/panel/ATAM_SCENARIOS.md` - Quality attribute scenarios
+6. `docs/architecture/panel/ATAM_RISKS_SENSITIVITIES_TRADEOFFS.md` - Architecture risks
+7. `docs/sre/SLO_CATALOG.md` - SLO definitions
+8. `docs/governance/_root/ISA_GOVERNANCE.md` - Governance framework
 
-## 3. Definitions
+## 3. System Components
 
-*See ISA_MASTER_SPEC.md*
+### Frontend (React 19 + Vite)
+- **Entry:** `client/src/App.tsx`
+- **Routing:** Wouter (patched)
+- **State:** TanStack Query + tRPC client
+- **UI:** shadcn/ui + Tailwind CSS 4
 
-## 4. Invariants (MUST-level)
+### Backend (Express + tRPC)
+- **Entry:** `server/_core/index.ts`
+- **Routers:** `server/routers/*.ts` (6 capabilities)
+- **Services:** `server/services/` (RAG, mappings, news)
+- **Auth:** Manus OAuth (`server/_core/auth.ts`)
 
-**INV-1:** Enable GS1 Netherlands members to understand which GS1 standards and data attributes are required for compliance with EU regulations (CSRD, EUDR, DPP, ESRS) through structured mappings, versioned advi
-- Source: `./ARCHITECTURE.md` > Core Mission
+### Database (Drizzle ORM + TiDB)
+- **Schema:** `drizzle/schema*.ts`
+- **Migrations:** `drizzle/migrations/`
+- **Tables:** 20+ tables (regulations, standards, mappings, news, etc.)
 
-**INV-2:** - **Advisory Publication:** Lane C review required, no automated publication
-- Source: `./ARCHITECTURE.md` > Data Limitations
+### Data Layer
+- **Registry:** `data/metadata/dataset_registry.json`
+- **ESRS:** `data/efrag/esrs_datapoints_efrag_ig3.json`
+- **GS1:** `data/gs1/gs1_standards_catalog.json`
+- **Advisories:** `data/advisories/advisory_v*.json`
 
-**INV-3:** - 🔴 **Critical:** Must-have for MVP, core user journeys
-- Source: `./docs/ISA_INFORMATION_ARCHITECTURE.md` > 4. Page-Type Priority Matrix
+## 4. Core Invariants
 
-**INV-4:** 6. **Code Review:** CODEOWNERS review required
-- Source: `./ROADMAP_GITHUB_INTEGRATION.md` > New Workflow (GitHub-First)
+**INV-1: Governance-First**
+All critical changes require governance self-check. Advisory publication requires Lane C review.
+- Evidence: `docs/governance/_root/ISA_GOVERNANCE.md`
 
-**INV-5:** Sync must occur after:
-- Source: `./ROADMAP_GITHUB_INTEGRATION.md` > Additional Triggers
+**INV-2: Citation Accuracy**
+All AI-generated content must include mandatory citations to source documents.
+- Evidence: `server/services/ask-isa/ask-isa-guardrails.ts`
 
-**INV-6:** Immediate sync required for:
-- Source: `./ROADMAP_GITHUB_INTEGRATION.md` > Emergency Sync
+**INV-3: Data Provenance**
+All datasets must include source, version, format, last_verified_date, SHA256 checksums.
+- Evidence: `data/metadata/dataset_registry.json`
 
-**INV-7:** All third-party integrations (data sources, APIs, services) must follow the systematic evaluation framework defined in `INTEGRATIONS_RESEARCH_PROTOCOL.md`.
-- Source: `./ROADMAP_GITHUB_INTEGRATION.md` > Integration Research Framework
+**INV-4: Schema Validation**
+All proof artifacts must validate against JSON schemas.
+- Evidence: `scripts/gates/validate-proof-artifacts.sh`
 
-**INV-8:** **Core Principle:** Integration research and implementation must not interrupt or delay core ISA development.
-- Source: `./ROADMAP_GITHUB_INTEGRATION.md` > Non-Interruption Rule
+**INV-5: No Unverifiable Claims**
+Anything not verifiable is UNKNOWN and cannot score ≥9/10.
+- Evidence: `docs/architecture/panel/KICKOFF_PACKAGE.md`
 
-**INV-9:** - Must ISA display the GS1 logo?
-- Source: `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` > 1. Clarify ISA's Official Status
+## 5. Interfaces & Pipelines
 
-**INV-10:** - Is "Powered by GS1" attribution required?
-- Source: `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` > 1. Clarify ISA's Official Status
+### API Layer (tRPC)
+- **Router Registry:** `server/routers.ts`
+- **Ask ISA:** `server/routers/ask-isa.ts`
+- **Advisory:** `server/routers/advisory.ts`
+- **Catalog:** `server/routers/catalog.ts`
+- **News Hub:** `server/routers/news.ts`
+- **ESRS Mapping:** `server/routers/esrs-mapping.ts`
+- **Knowledge Base:** `server/routers/knowledge-base.ts`
 
-**INV-11:** - Determine if GS1 logo is required and where
-- Source: `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` > 3. Audit Current ISA Visual Implementation
+### Data Pipelines
+- **News Scraping:** `server/news-scraper.ts` (7 sources, cron-triggered)
+- **ESRS Ingestion:** `server/ingest/INGEST-03_esrs_datapoints.ts`
+- **GS1 Ingestion:** `server/ingest/INGEST-04_gs1_standards.ts`
+- **Embedding Generation:** `server/embedding.ts`
+- **Advisory Generation:** `scripts/advisory/generate_advisory_v1.py`
 
-**INV-12:** - ✅ GS1 logo is displayed (if required) with proper attribution
-- Source: `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` > Exit Criteria
-
-**INV-13:** - Determines level of GS1 branding required
-- Source: `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` > Critical Decisions (Block Phase 0 → Phase 1 Transition)
-
-**INV-14:** 2. **Must ISA display the GS1 logo?**
-- Source: `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` > Critical Decisions (Block Phase 0 → Phase 1 Transition)
-
-**INV-15:** - ✅ GS1 logo displayed (if required) with proper attribution
-- Source: `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` > Phase 1: GS1 Brand Compliance
-
-## 5. Interfaces / Pipelines
-
-*See source documents.*
+### Frontend Routes
+- **ESG Hub:** `/hub/*` (regulations, standards, news)
+- **Ask ISA:** `/ask-isa`
+- **Advisory:** `/advisory`
+- **Admin:** `/admin/*` (news pipeline, mappings, health)
 
 ## 6. Governance & Change Control
 
-1. Review source documents
-2. Update TRACEABILITY_MATRIX.csv
-3. Follow governance rules
+**Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
+
+**Key Principles:**
+1. Data integrity: All datasets include provenance metadata
+2. Citation accuracy: All AI content includes mandatory citations
+3. Version control: All changes tracked in Git
+4. Transparency: All decisions documented with rationale
+5. Reversibility: All changes can be rolled back
+
+**Critical Changes Requiring Review:**
+- Schema changes affecting data integrity
+- New data sources or ingestion pipelines
+- Changes to AI prompts or mapping logic
+- Advisory report publication
+- Governance framework modifications
+
+**Validation Gates:** `scripts/gates/`
+- canonical-docs-allowlist.sh
+- doc-code-validator.sh
+- validate-proof-artifacts.sh
+- security-gate.sh
+- governance-gate.sh
+- slo-policy-check.sh
 
 ## 7. Observability
 
-**OPEN ISSUE:** Define observability hooks.
+### Logging
+- **Infrastructure:** `server/_core/logger-wiring.ts`
+- **Coverage:** 50.2% (measured by observability-contract.sh)
+- **Format:** Structured JSON logs with context prefixes
 
-## 8. Acceptance Criteria
+### Tracing
+- **RAG Tracing:** `server/services/rag-tracing/trace-logger.ts`
+- **Status:** Partial (no distributed tracing)
 
-- AC-1: - Verify Lane C authorization
-- AC-2: - **Tested:** Unit tests ensure correctness
-- AC-3: **Solution:** Use `sort-keys` to ensure consistent JSON output.
-- AC-4: **Recommendation:** ISA should have **two distinct navigation patterns**:
-- AC-5: **Goal:** Complete the website, ensure legal compliance
+### Metrics
+- **Status:** UNKNOWN (no metrics collection infrastructure)
+- **SLOs Defined:** 9 SLOs in `docs/sre/SLO_CATALOG.md`
+- **Error Budget:** `docs/sre/ERROR_BUDGET_POLICY.md`
 
-## 9. Traceability Annex
+### Monitoring
+- **News Pipeline:** `server/news-pipeline-status.ts`
+- **Scraper Health:** Database table + admin UI
+- **Test Results:** `test-results/ci/*.json`
 
-| Claim ID | Statement | Source |
-|----------|-----------|--------|
-| ISA-001 | Enable GS1 Netherlands members to understand which GS1 stand... | `./ARCHITECTURE.md` |
-| ISA-002 | - **Advisory Publication:** Lane C review required, no autom... | `./ARCHITECTURE.md` |
-| ISA-003 | - 🔴 **Critical:** Must-have for MVP, core user journeys... | `./docs/ISA_INFORMATION_ARCHITECTURE.md` |
-| ISA-004 | - Verify Lane C authorization... | `./ARCHITECTURE.md` |
-| ISA-005 | - **Tested:** Unit tests ensure correctness... | `./docs/FILE_SYSTEM_MEMORY_ARCHITECTURE.md` |
-| ISA-006 | **Solution:** Use `sort-keys` to ensure consistent JSON outp... | `./docs/FILE_SYSTEM_MEMORY_ARCHITECTURE.md` |
-| ISA-007 | **Recommendation:** ISA should have **two distinct navigatio... | `./docs/ISA_INFORMATION_ARCHITECTURE.md` |
-| ISA-008 | **Goal:** Complete the website, ensure legal compliance... | `./docs/ISA_INFORMATION_ARCHITECTURE.md` |
-| ISA-009 | 6. **Code Review:** CODEOWNERS review required... | `./ROADMAP_GITHUB_INTEGRATION.md` |
-| ISA-010 | Sync must occur after:... | `./ROADMAP_GITHUB_INTEGRATION.md` |
-| ISA-011 | Immediate sync required for:... | `./ROADMAP_GITHUB_INTEGRATION.md` |
-| ISA-012 | All third-party integrations (data sources, APIs, services) ... | `./ROADMAP_GITHUB_INTEGRATION.md` |
-| ISA-013 | **Core Principle:** Integration research and implementation ... | `./ROADMAP_GITHUB_INTEGRATION.md` |
-| ISA-014 | - Must ISA display the GS1 logo?... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-015 | - Is "Powered by GS1" attribution required?... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-016 | - Determine if GS1 logo is required and where... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-017 | - ✅ GS1 logo is displayed (if required) with proper attribut... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-018 | - Determines level of GS1 branding required... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-019 | 2. **Must ISA display the GS1 logo?**... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-020 | - ✅ GS1 logo displayed (if required) with proper attribution... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-021 | **Decision:** All automated processes must be monitorable an... | `./docs/ISA_STRATEGIC_CONTEXT_SYNTHESIS.md` |
-| ISA-022 | ISA project cleanup completed successfully with minimal chan... | `./PROJECT_SIZE_CLEANUP.md` |
-| ISA-023 | - Minimum 100 samples required for baseline... | `./docs/ALERTING_SYSTEM_DESIGN.md` |
-| ISA-024 | **This is a DOCUMENTATION task - NO CODE required**... | `./tasks/for_chatgpt/CGPT-15_user_guide.md` |
-| ISA-025 | 4. Fill in required attributes... | `./tasks/for_chatgpt/CGPT-15_user_guide.md` |
-| ISA-026 | 2. Identify required CTEs (harvest, processing, shipping)... | `./tasks/for_chatgpt/CGPT-15_user_guide.md` |
-| ISA-027 | 1. Use ESG Hub to identify required ESRS datapoints... | `./tasks/for_chatgpt/CGPT-15_user_guide.md` |
-| ISA-028 | 2. Identify required attributes per category... | `./tasks/for_chatgpt/CGPT-15_user_guide.md` |
-| ISA-029 | Must include:... | `./tasks/for_chatgpt/CGPT-15_user_guide.md` |
-| ISA-030 | Each phase includes a decision gate to ensure quality and pr... | `./ROADMAP_GITHUB_INTEGRATION.md` |
-| ISA-031 | Before merging to main, verify:... | `./ROADMAP_GITHUB_INTEGRATION.md` |
-| ISA-032 | 2. **Mandatory Source Availability:** Verify GS1 Global, GS1... | `./ROADMAP_GITHUB_INTEGRATION.md` |
-| ISA-033 | 7. ✅ Validate permissions (issue, branch, PR creation)... | `./ROADMAP_GITHUB_INTEGRATION.md` |
-| ISA-034 | 4. Validate CI pipeline execution... | `./ROADMAP_GITHUB_INTEGRATION.md` |
-| ISA-035 | 5. **Validation Checkpoints:** Review and validate at each p... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-036 | - Color palette (verify hex codes, accessible alternatives)... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-037 | - [ ] **Check for updated brand manual:** Verify if Version ... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-038 | Align ISA's visual identity with GS1 brand guidelines to ens... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-039 | - Ensure accessible color alternatives for text on white... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-040 | - Verify WCAG 2.1 AA compliance (4.5:1 for normal text)... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-041 | - Ensure proper sizing, clearance, and alignment per GS1 gui... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-042 | - Ensure logo works on light and dark backgrounds... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-043 | - Verify tokens work across all components... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-044 | - [ ] **Validate with stakeholders:**... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-045 | **Rationale:** Validate IA and navigation before building ma... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-046 | **Rationale:** Ensure designs are validated before investing... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-047 | - [ ] **Visual regression testing:** Compare to designs, ens... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-048 | 1. **Design Review:** Compare implementation to designs, ens... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-049 | 4. **Should ISA use the GS1 Web Design System components?**... | `./docs/ISA_VISUAL_BRANDING_ROADMAP.md` |
-| ISA-050 | **Decision:** News and regulations should reference each oth... | `./docs/ISA_STRATEGIC_CONTEXT_SYNTHESIS.md` |
-| ISA-051 | **Rationale:** Users arriving at a regulation page should se... | `./docs/ISA_STRATEGIC_CONTEXT_SYNTHESIS.md` |
-| ISA-052 | - Verify that removed files (debug scripts, unused XLSX) are... | `./PROJECT_SIZE_CLEANUP.md` |
-| ISA-053 | - Confirm that large datasets in /upload should remain there... | `./PROJECT_SIZE_CLEANUP.md` |
-| ISA-054 | - Simulate error spike → verify alert triggered... | `./docs/ALERTING_SYSTEM_DESIGN.md` |
-| ISA-055 | - Simulate performance degradation → verify alert triggered... | `./docs/ALERTING_SYSTEM_DESIGN.md` |
-| ISA-056 | - Verify cooldown prevents duplicate alerts... | `./docs/ALERTING_SYSTEM_DESIGN.md` |
-| ISA-057 | - Verify alert acknowledgment updates database... | `./docs/ALERTING_SYSTEM_DESIGN.md` |
-| ISA-058 | - Update thresholds → verify new thresholds applied... | `./docs/ALERTING_SYSTEM_DESIGN.md` |
-| ISA-059 | - Disable notifications → verify no emails sent... | `./docs/ALERTING_SYSTEM_DESIGN.md` |
-| ISA-060 | - **Validate inputs:** Check GTINs with check digit validato... | `./tasks/for_chatgpt/CGPT-15_user_guide.md` |
-| ISA-061 | - Test with intentional errors to verify logging... | `./docs/MANUS_OPTIMIZATION_IMPLEMENTATION_SUMMARY.md` |
-| ISA-062 | / `README.md` / Project overview and setup / The first docum... | `./REPO_MAP.md` |
-| ISA-063 | 2. Verify notification system:... | `./docs/NEWS_HEALTH_MONITORING.md` |
-| ISA-064 | 2. Verify `updateHealthSummary()` is being called after `rec... | `./docs/NEWS_HEALTH_MONITORING.md` |
-| ISA-065 | 6. Test and validate... | `./INGESTION_DELIVERABLES_INDEX.md` |
+### Gates
+- **Observability Contract:** `scripts/gates/observability-contract.sh`
+- **Status:** FAIL (50.2% logging coverage, no tracing/metrics)
+
+## 8. Quality & Testing
+
+### Test Infrastructure
+- **Framework:** Vitest
+- **Coverage:** 90.1% pass rate (517/574 tests)
+- **Status:** 57 failures (20 flaky, 25 broken, 10 obsolete, 2 environment)
+- **Analysis:** `docs/TEST_FAILURE_TRIAGE.md`
+
+### Proof Artifacts
+- **Schemas:** `docs/quality/schemas/*.schema.json` (11 schemas)
+- **Artifacts:** `test-results/ci/*.json` (9/11 generated)
+- **Validation:** `scripts/gates/validate-proof-artifacts.sh` (9 PASS, 0 FAIL, 2 SKIP)
+
+### Architecture Review
+- **Framework:** Repo-Tight v5
+- **ATAM Artifacts:** `docs/architecture/panel/ATAM_*.md`
+- **Baseline Score:** 6.2/10 overall
+- **Target:** ≥9/10 with schema-valid proof artifacts
+
+### Known Gaps
+- D3 Security: No secret scanning, authz tests, dependency scanning
+- D4 Reliability: No SLO monitoring, success rate tracking
+- D5 Performance: No latency monitoring, load testing
+- D8 Observability: No distributed tracing, metrics collection
+
+## 9. References
+
+### Canonical Documents
+- `docs/INDEX.md` - Documentation index
+- `docs/REPO_MAP.md` - Repository map
+- `docs/governance/_root/ISA_GOVERNANCE.md` - Governance framework
+- `docs/architecture/panel/KICKOFF_PACKAGE.md` - Architecture review kickoff
+- `docs/sre/SLO_CATALOG.md` - SLO definitions
+- `docs/sre/ERROR_BUDGET_POLICY.md` - Error budget policy
+
+### Runtime Contracts
+- `docs/spec/ASK_ISA/RUNTIME_CONTRACT.md`
+- `docs/spec/ADVISORY/RUNTIME_CONTRACT.md`
+- `docs/spec/CATALOG/RUNTIME_CONTRACT.md`
+- `docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md`
+- `docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md`
+- `docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md`
+
+### Generated Artifacts
+- `docs/architecture/panel/_generated/ARCHITECTURE_SCORECARD.json`
+- `docs/architecture/panel/_generated/REF_INDEX.json`
+- `docs/architecture/panel/_generated/INBOUND_LINKS.json`
+- `docs/evidence/_generated/catalogue.json`
+- `docs/sre/_generated/error_budget_status.json`
+- `test-results/ci/*.json`
+
+---
+
+**Document Status:** SSOT (Single Source of Truth)  
+**Last Updated:** 2026-02-12  
+**Maintainer:** ISA Repository Steward
