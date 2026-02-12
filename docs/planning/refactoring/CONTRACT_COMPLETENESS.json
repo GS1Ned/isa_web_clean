@@ -1,0 +1,289 @@
+{
+  "version": "1.0",
+  "generated": "2026-02-12",
+  "overall_completeness": 70.0,
+  "capabilities": {
+    "ASK_ISA": {
+      "score": 70.0,
+      "max_score": 100,
+      "completeness": 70.0,
+      "sections": {
+        "Entry Points": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Inputs/Outputs": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Invariants": {
+          "present": true,
+          "complete": true,
+          "points": 10
+        },
+        "Failure Modes": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Data Dependencies": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Security/Secrets": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Verification Methods": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Evidence": {
+          "present": true,
+          "complete": true,
+          "points": 15
+        }
+      }
+    },
+    "NEWS_HUB": {
+      "score": 70.0,
+      "max_score": 100,
+      "completeness": 70.0,
+      "sections": {
+        "Entry Points": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Inputs/Outputs": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Invariants": {
+          "present": true,
+          "complete": true,
+          "points": 10
+        },
+        "Failure Modes": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Data Dependencies": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Security/Secrets": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Verification Methods": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Evidence": {
+          "present": true,
+          "complete": true,
+          "points": 15
+        }
+      }
+    },
+    "KNOWLEDGE_BASE": {
+      "score": 70.0,
+      "max_score": 100,
+      "completeness": 70.0,
+      "sections": {
+        "Entry Points": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Inputs/Outputs": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Invariants": {
+          "present": true,
+          "complete": true,
+          "points": 10
+        },
+        "Failure Modes": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Data Dependencies": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Security/Secrets": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Verification Methods": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Evidence": {
+          "present": true,
+          "complete": true,
+          "points": 15
+        }
+      }
+    },
+    "CATALOG": {
+      "score": 70.0,
+      "max_score": 100,
+      "completeness": 70.0,
+      "sections": {
+        "Entry Points": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Inputs/Outputs": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Invariants": {
+          "present": true,
+          "complete": true,
+          "points": 10
+        },
+        "Failure Modes": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Data Dependencies": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Security/Secrets": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Verification Methods": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Evidence": {
+          "present": true,
+          "complete": true,
+          "points": 15
+        }
+      }
+    },
+    "ESRS_MAPPING": {
+      "score": 70.0,
+      "max_score": 100,
+      "completeness": 70.0,
+      "sections": {
+        "Entry Points": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Inputs/Outputs": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Invariants": {
+          "present": true,
+          "complete": true,
+          "points": 10
+        },
+        "Failure Modes": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Data Dependencies": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Security/Secrets": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Verification Methods": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Evidence": {
+          "present": true,
+          "complete": true,
+          "points": 15
+        }
+      }
+    },
+    "ADVISORY": {
+      "score": 70.0,
+      "max_score": 100,
+      "completeness": 70.0,
+      "sections": {
+        "Entry Points": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Inputs/Outputs": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Invariants": {
+          "present": true,
+          "complete": true,
+          "points": 10
+        },
+        "Failure Modes": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Data Dependencies": {
+          "present": true,
+          "complete": false,
+          "points": 9.0
+        },
+        "Security/Secrets": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Verification Methods": {
+          "present": true,
+          "complete": false,
+          "points": 6.0
+        },
+        "Evidence": {
+          "present": true,
+          "complete": true,
+          "points": 15
+        }
+      }
+    }
+  }
+}

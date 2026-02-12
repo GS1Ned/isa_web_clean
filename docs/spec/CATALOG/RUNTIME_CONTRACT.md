@@ -35,44 +35,95 @@ Catalog regulations and standards
 ## Inputs/Outputs
 
 ### Inputs
-- (To be documented based on code analysis)
+**Catalog Queries (tRPC procedures)**
+- `getRegulations()` - List all regulations
+- `getStandards()` - List all GS1 standards
+- `getESRSDatapoints()` - List ESRS datapoints
+- `getDutchInitiatives()` - List national programs
 
 ### Outputs
-- (To be documented based on code analysis)
+**Regulation**
+```typescript
+{
+  id: number,
+  title: string,
+  description: string,
+  category: string,
+  status: string,
+  applicability: string[],
+  relatedStandards: number[]
+}
+```
+
+**Standard**
+```typescript
+{
+  id: number,
+  name: string,
+  description: string,
+  type: string,
+  relatedRegulations: number[]
+}
+```
 
 ## Invariants
 
-1. (To be documented)
-2. (To be documented)
+1. **Coverage**: 38 EU regulations, 60+ GS1 standards, 1,184 ESRS datapoints, 10 Dutch initiatives
+2. **Bidirectional Links**: Regulations ↔ Standards mappings maintained
+3. **AI Descriptions**: All items have AI-enhanced descriptions
+4. **Filtering**: Support category, status, applicability filters
+5. **Search**: Full-text search across all catalog items
 
 ## Failure Modes
 
 ### Observable Signals
-- (To be documented)
+- **Empty Catalog**: No data in database
+- **Broken Links**: Regulation-Standard mappings invalid
+- **Query Timeout**: Database query exceeds 5s
 
 ### Recovery Procedures
-- (To be documented)
+- **Empty Catalog**: Trigger data ingestion
+- **Broken Links**: Regenerate mappings
+- **Query Timeout**: Add database indexes, optimize query
 
 ## Data Dependencies
 
 ### Database Tables
-- (To be documented)
+- `regulations` - 38 EU regulations
+- `gs1_standards` - 60+ standards
+- `esrs_datapoints` - 1,184 datapoints
+- `dutch_initiatives` - 10 programs
+- `regulation_standard_mappings` - Bidirectional links
 
 ### External APIs
-- (To be documented)
+- None (read-only from database)
 
 ## Security/Secrets
 
 ### Required Secrets
-- (To be documented - names only, no values)
+- `DATABASE_URL` - TiDB connection
 
 ### Authentication
-- (To be documented)
+- **Public Read**: Catalog browsing requires Manus OAuth
+- **Admin Write**: Data updates restricted to admin role
 
 ## Verification Methods
 
 ### Smoke Test
-- Location: `scripts/probe/catalog_smoke.py`
+- **Location**: `scripts/probe/catalog_health.sh`
+- **Status**: ⏳ Planned
+- **Frequency**: After data ingestion
+- **Coverage**: Record counts, link integrity, search functionality
+
+### Integration Tests
+- **Location**: `server/routers/catalog.test.ts`
+- **Coverage**: CRUD operations, filtering, search, mappings
+- **Framework**: Vitest
+- **Status**: 90%+ passing
+
+### Manual Verification
+- **UI Pages**: `/hub/regulations`, `/hub/standards`, `/hub/esrs-datapoints`
+- **Metrics**: 38 regulations, 60+ standards, 1,184 ESRS datapoints, 10 initiatives
 - Status: ⏳ To be created
 
 ### Integration Tests

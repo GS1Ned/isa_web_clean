@@ -35,44 +35,109 @@ Generate advisory reports
 ## Inputs/Outputs
 
 ### Inputs
-- (To be documented based on code analysis)
+**Advisory Generation**
+- Dataset registry (15 canonical datasets)
+- ESRS-GS1 mappings (450+ mappings)
+- Compliance roadmap template
+- Version specification (v1.0, v1.1, etc.)
 
 ### Outputs
-- (To be documented based on code analysis)
+**Advisory Report**
+```typescript
+{
+  version: string,  // e.g., "1.0"
+  generatedAt: Date,
+  datasets: Array<{
+    name: string,
+    version: string,
+    recordCount: number,
+    sha256: string
+  }>,
+  mappings: object,
+  roadmap: object,
+  provenance: object
+}
+```
+
+**Advisory Diff**
+```typescript
+{
+  fromVersion: string,
+  toVersion: string,
+  changes: Array<{
+    type: 'added' | 'removed' | 'modified',
+    path: string,
+    oldValue: any,
+    newValue: any
+  }>
+}
+```
 
 ## Invariants
 
-1. (To be documented)
-2. (To be documented)
+1. **Full Provenance**: All datasets include source, version, SHA256, last_verified_date
+2. **Versioned Outputs**: All reports versioned (v1.0, v1.1, etc.)
+3. **Governance Review**: All reports subject to Lane C review before publication
+4. **Diff Computation**: Changes tracked between versions
+5. **Immutable**: Published reports never modified, only superseded
+6. **Dataset Registry**: All datasets registered in data/metadata/dataset_registry.json
 
 ## Failure Modes
 
 ### Observable Signals
-- (To be documented)
+- **Missing Dataset**: Required dataset not in registry
+- **Checksum Mismatch**: Dataset SHA256 doesn't match registry
+- **Generation Timeout**: Report generation exceeds 5 minutes
+- **Validation Failure**: Report schema validation fails
 
 ### Recovery Procedures
-- (To be documented)
+- **Missing Dataset**: Trigger data ingestion, abort generation
+- **Checksum Mismatch**: Alert admin, verify data integrity
+- **Generation Timeout**: Optimize queries, increase timeout
+- **Validation Failure**: Fix schema, regenerate report
 
 ## Data Dependencies
 
 ### Database Tables
-- (To be documented)
+- All catalog tables (regulations, standards, ESRS, initiatives)
+- `esrs_gs1_mappings` - 450+ mappings
 
 ### External APIs
-- (To be documented)
+- **Manus Forge API** - GPT-4 for advisory generation
+
+### File System
+- `data/metadata/dataset_registry.json` - Dataset registry (v1.4.0)
+- `data/advisories/` - Published advisory reports
 
 ## Security/Secrets
 
 ### Required Secrets
-- (To be documented - names only, no values)
+- `OPENAI_API_KEY` - Advisory generation
+- `DATABASE_URL` - TiDB connection
 
 ### Authentication
-- (To be documented)
+- **Lane C Restricted**: Advisory generation requires executive approval
+- **Admin Only**: Report publication restricted
+- **Public Read**: Viewing published reports requires Manus OAuth
 
 ## Verification Methods
 
 ### Smoke Test
-- Location: `scripts/probe/advisory_smoke.py`
+- **Location**: `scripts/validate_advisory_schema.cjs`
+- **Status**: ✅ Exists and operational
+- **Frequency**: Before each advisory publication
+- **Coverage**: Schema validation, provenance verification, checksum validation
+
+### Integration Tests
+- **Location**: `server/routers/advisory.test.ts`
+- **Coverage**: Report generation, diff computation, dataset registry
+- **Framework**: Vitest
+- **Status**: 90%+ passing
+
+### Manual Verification
+- **Governance Review**: Lane C approval required before publication
+- **Runbook**: `docs/ADVISORY_METHOD.md`
+- **Metrics**: 2 versions published (v1.0, v1.1), 100% provenance coverage
 - Status: ⏳ To be created
 
 ### Integration Tests

@@ -31,45 +31,85 @@ Manage knowledge embeddings
 ## Inputs/Outputs
 
 ### Inputs
-- (To be documented based on code analysis)
+**Corpus Ingestion**
+- Source data (regulations, standards, ESRS, initiatives)
+- Content type specification
+
+**Embedding Generation**
+- Text chunks (max 2000 chars)
+- Model: `text-embedding-3-small`
 
 ### Outputs
-- (To be documented based on code analysis)
+**Knowledge Chunk**
+```typescript
+{
+  id: number,
+  content: string,
+  contentHash: string,  // SHA-256
+  sourceType: string,
+  sourceId: number,
+  metadata: object
+}
+```
 
 ## Invariants
 
-1. (To be documented)
-2. (To be documented)
+1. **Deduplication**: Chunks deduplicated by SHA-256 hash
+2. **Coverage Target**: 155+ chunks across all source types
+3. **Chunk Size**: Max 2000 characters per chunk
+4. **Metadata Required**: All chunks include source type, ID, title, URL
+5. **Semantic Search**: LLM-based relevance scoring (0-10 scale)
 
 ## Failure Modes
 
 ### Observable Signals
-- (To be documented)
+- **Empty Corpus**: No source data available
+- **Embedding API Failure**: LLM API timeout/error
+- **Storage Failure**: Database write error
 
 ### Recovery Procedures
-- (To be documented)
+- **Empty Corpus**: Trigger data ingestion pipeline
+- **Embedding Failure**: Retry with exponential backoff
+- **Storage Failure**: Queue for batch retry
 
 ## Data Dependencies
 
 ### Database Tables
-- (To be documented)
+- `knowledge_embeddings` - 155 semantic chunks
+- `regulations` - Source data
+- `gs1_standards` - Source data
+- `esrs_datapoints` - Source data
+- `dutch_initiatives` - Source data
 
 ### External APIs
-- (To be documented)
+- **Manus Forge API** - Embedding generation
 
 ## Security/Secrets
 
 ### Required Secrets
-- (To be documented - names only, no values)
+- `OPENAI_API_KEY` - Embedding generation
+- `DATABASE_URL` - TiDB connection
 
 ### Authentication
-- (To be documented)
+- **Admin Only**: Knowledge base generation restricted
 
 ## Verification Methods
 
 ### Smoke Test
-- Location: `scripts/probe/knowledge_base_smoke.py`
-- Status: ⏳ To be created
+- **Location**: `scripts/probe/knowledge_base_health.sh`
+- **Status**: ⏳ Planned
+- **Frequency**: After KB generation
+- **Coverage**: Chunk count, deduplication, coverage stats
+
+### Integration Tests
+- **Location**: `server/embedding.test.ts`
+- **Coverage**: Embedding generation, semantic search, deduplication
+- **Framework**: Vitest
+- **Status**: 80%+ passing
+
+### Manual Verification
+- **Admin Dashboard**: `/admin/knowledge-base`
+- **Metrics**: 155+ chunks, 100% coverage across source types
 
 ### Integration Tests
 - (To be documented)
