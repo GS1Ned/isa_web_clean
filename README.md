@@ -1,5 +1,12 @@
 # ISA — Intelligent Standards Architect
 
+![Validation Gates](https://img.shields.io/badge/gates-6%2F6%20passing-success)
+![Quality Score](https://img.shields.io/badge/quality-75%2F100-yellow)
+![Semantic Validity](https://img.shields.io/badge/semantic-91.9%25-success)
+![Evidence Markers](https://img.shields.io/badge/evidence-145%20markers-blue)
+![Test Coverage](https://img.shields.io/badge/tests-90.1%25-yellow)
+![Contract Completeness](https://img.shields.io/badge/contracts-70%25-yellow)
+
 <!-- ISA:REPO_ASSESSMENT_LINKS:BEGIN -->
 ## Repository assessment
 
