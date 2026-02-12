@@ -1,5 +1,8 @@
 # ISA Repository Refactoring - Final Status Report
 
+<!-- EVIDENCE:requirement:docs/planning/refactoring/FILE_INVENTORY.json -->
+<!-- EVIDENCE:requirement:docs/planning/refactoring/QUALITY_SCORECARDS.json -->
+<!-- EVIDENCE:implementation:scripts/refactor/validate_gates.sh -->
 **Version:** 1.0.0  
 **Generated:** 2026-02-12 00:53:56  
 **Status:** ✅ COMPLETE
@@ -19,6 +22,12 @@ The ISA repository refactoring has completed successfully with the following out
 
 ## Phase Completion Status
 
+<!-- EVIDENCE:implementation:scripts/refactor/phase_0_inventory.py -->
+<!-- EVIDENCE:implementation:scripts/refactor/phase_1_contracts.py -->
+<!-- EVIDENCE:implementation:scripts/refactor/phase_2_execute.py -->
+<!-- EVIDENCE:implementation:scripts/refactor/phase_3_quality.py -->
+<!-- EVIDENCE:implementation:scripts/refactor/phase_4_automation.py -->
+<!-- EVIDENCE:implementation:scripts/refactor/phase_5_final_lock.py -->
 | Phase | Status | Duration | Key Outputs |
 |-------|--------|----------|-------------|
 | Phase 0: Inventory | ✅ Complete | 4 min | FILE_INVENTORY.json (828 files) |
@@ -34,6 +43,12 @@ The ISA repository refactoring has completed successfully with the following out
 
 ## Capability Distribution
 
+<!-- EVIDENCE:requirement:docs/spec/ASK_ISA/RUNTIME_CONTRACT.md -->
+<!-- EVIDENCE:requirement:docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md -->
+<!-- EVIDENCE:requirement:docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md -->
+<!-- EVIDENCE:requirement:docs/spec/CATALOG/RUNTIME_CONTRACT.md -->
+<!-- EVIDENCE:requirement:docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md -->
+<!-- EVIDENCE:requirement:docs/spec/ADVISORY/RUNTIME_CONTRACT.md -->
 | Capability | Files | Quality Grade | Score |
 |------------|-------|---------------|-------|
 | ASK_ISA | 66 | A | 100/100 |
@@ -62,6 +77,8 @@ The ISA repository refactoring has completed successfully with the following out
 - Automated quality gates enforce minimum standards
 
 ### 3. Automation & CI
+<!-- EVIDENCE:implementation:scripts/refactor/validate_gates.sh -->
+<!-- EVIDENCE:implementation:.github/workflows/refactoring-validation.yml -->
 - Validation gates script: `scripts/refactor/validate_gates.sh`
 - GitHub Actions workflow: `.github/workflows/refactoring-validation.yml`
 - 5 automated gates enforce refactoring standards

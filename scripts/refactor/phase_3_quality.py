@@ -128,6 +128,24 @@ def generate_scorecards():
             markers = extract_evidence_markers(contract_path)
             all_evidence.extend(markers)
     
+    # Also scan key meta files
+    meta_files = [
+        "README.md",
+        "AGENT_START_HERE.md",
+        "AGENTS.md",
+        "docs/governance/_root/ISA_GOVERNANCE.md",
+        "docs/governance/PLANNING_POLICY.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md",
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md",
+        "vitest.config.ts"
+    ]
+    for meta_file in meta_files:
+        meta_path = REPO_ROOT / meta_file
+        if meta_path.exists():
+            markers = extract_evidence_markers(meta_path)
+            all_evidence.extend(markers)
+    
     print(f"   Found {len(all_evidence)} evidence markers")
     
     # Generate scorecards

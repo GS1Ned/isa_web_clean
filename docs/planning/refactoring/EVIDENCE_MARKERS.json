@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "generated": "2026-02-12",
-  "total_markers": 50,
+  "total_markers": 145,
   "markers": [
     {
       "type": "inline",
@@ -302,6 +302,576 @@
       "category": "requirement",
       "reference": "data/advisories/",
       "file": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "data/metadata/dataset_registry.json",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "data/efrag/esrs_datapoints_efrag_ig3.json",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "data/gs1/gs1_standards_catalog.json",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/gs1-mapping-engine.ts",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/news-sources.ts",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "data/advisories/",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "docs/test-failure-analysis-2025-12-17.md",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/governance/_root/ISA_GOVERNANCE.md",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/governance/_root/ISA_GOVERNANCE.md",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "package.json",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/_core/index.ts",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/embedding.ts",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "vite.config.ts",
+      "file": "README.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "README.md",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "AGENT_START_HERE.md",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/REPO_MAP.md",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/NEXT_ACTIONS.json",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/BACKLOG.csv",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/PROGRAM_PLAN.md",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "REPO_TREE.md",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/spec/ASK_ISA.md",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/prompts/ask_isa/index.ts",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/probe/ask_isa_smoke.py",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/governance/ASK_ISA_SMOKE_RUNBOOK.md",
+      "file": "AGENT_START_HERE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/governance/_root/ISA_GOVERNANCE.md",
+      "file": "AGENTS.md"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": "AGENTS.md",
+      "file": "AGENTS.md"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": "scripts/refactor/validate_gates.sh",
+      "file": "AGENTS.md"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "docs/governance/MANUAL_PREFLIGHT.md",
+      "file": "AGENTS.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": ".github/PULL_REQUEST_TEMPLATE.md",
+      "file": "AGENTS.md"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": "docs/governance/PLANNING_POLICY.md",
+      "file": "AGENTS.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "data/metadata/dataset_registry.json",
+      "file": "AGENTS.md"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": "docs/DATASETS_CATALOG.md",
+      "file": "AGENTS.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "data/metadata/dataset_registry.json",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": "server/routers/ask-isa.ts",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/ask-isa.ts",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": "server/routers/ask-isa.ts",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": ".git/config",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": ".github/PULL_REQUEST_TEMPLATE.md",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/NEXT_ACTIONS.json",
+      "file": "docs/governance/PLANNING_POLICY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/BACKLOG.csv",
+      "file": "docs/governance/PLANNING_POLICY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/PROGRAM_PLAN.md",
+      "file": "docs/governance/PLANNING_POLICY.md"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "todo.md",
+      "file": "docs/governance/PLANNING_POLICY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/spec/TRACEABILITY_MATRIX.csv",
+      "file": "docs/governance/PLANNING_POLICY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/governance/NO_GATES_WINDOW.md",
+      "file": "docs/governance/PLANNING_POLICY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/governance/MANUAL_PREFLIGHT.md",
+      "file": "docs/governance/PLANNING_POLICY.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": ".github/workflows/",
+      "file": "docs/governance/PLANNING_POLICY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/FILE_INVENTORY.json",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/validate_gates.sh",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_0_inventory.py",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_1_contracts.py",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_2_execute.py",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_3_quality.py",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_4_automation.py",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_5_final_lock.py",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/validate_gates.sh",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": ".github/workflows/refactoring-validation.yml",
+      "file": "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/FILE_INVENTORY.json",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/MOVE_EXECUTION_LOG.json",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_0_inventory.py",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/CLASSIFICATION_RULES.json",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_1_contracts.py",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_2_plan.py",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_2_execute.py",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/MOVE_PLAN.json",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_3_quality.py",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/EVIDENCE_MARKERS.json",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_4_automation.py",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": ".github/workflows/refactoring-validation.yml",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/phase_5_final_lock.py",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/REFACTORING_COMPLETE.json",
+      "file": "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "AGENT_START_HERE.md",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/MASTER_REFACTORING_PLAN.md",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/FILE_INVENTORY.json",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/FINAL_STATUS_REPORT.md",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/validate_gates.sh",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/_core/index.ts",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "client/src/main.tsx",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": ".github/workflows/refactoring-validation.yml",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/CLASSIFICATION_RULES.json",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "scripts/refactor/validate_gates.sh",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "docs/planning/refactoring/FINAL_STATUS_REPORT.md",
+      "file": "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "vitest.config.ts",
+      "file": "vitest.config.ts"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "server/db-health-guard.test.ts",
+      "file": "vitest.config.ts"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "vitest.setup.ts",
+      "file": "vitest.config.ts"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": "package.json",
+      "file": "vitest.config.ts"
     }
   ]
 }
