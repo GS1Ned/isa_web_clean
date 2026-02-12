@@ -76,6 +76,20 @@ if (( $(echo "$PERCENT > 5" | bc -l) )); then
 fi
 echo "✅ PASS (UNKNOWN: $PERCENT%)"
 
+# Gate 6: Semantic Validation
+echo "Gate 6: Semantic Validation..."
+if [ ! -f "scripts/refactor/semantic_validator.py" ]; then
+    echo "⚠️  SKIP: semantic_validator.py not found"
+else
+    if python3 scripts/refactor/semantic_validator.py > /dev/null 2>&1; then
+        VALIDITY=$(jq -r '.overall_validity' docs/planning/refactoring/SEMANTIC_VALIDATION.json)
+        echo "✅ PASS (validity: $VALIDITY%)"
+    else
+        echo "❌ FAIL: Semantic validation failed"
+        exit 1
+    fi
+fi
+
 echo ""
 echo "================================="
 echo "✅ ALL GATES PASSED"
