@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical document allowlist for ISA repository governance",
+  "last_updated": "2026-02-12",
+  "policy": "No new docs outside this allowlist. Migrate content to canonical docs, then delete when inbound_links==0.",
+  "allowed_docs": [
+    "docs/INDEX.md",
+    "docs/REPO_MAP.md",
+    "docs/README.md",
+    "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
+    "docs/spec/ESRS_MAPPING/isa-core-architecture.md",
+    "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+    "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+    "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+    "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+    "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+    "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+  ],
+  "allowed_patterns": [
+    "docs/governance/**/*.md",
+    "docs/architecture/panel/**/*.md",
+    "docs/sre/**/*.md",
+    "docs/quality/schemas/**/*.json",
+    "docs/planning/**/*.md",
+    "docs/planning/**/*.json",
+    "docs/spec/**/RUNTIME_CONTRACT.md"
+  ],
+  "allowed_generated": [
+    "docs/**/_generated/**",
+    "docs/evidence/_generated/**",
+    "test-results/ci/**",
+    "REPO_TREE.md"
+  ],
+  "forbidden_patterns": [
+    "__MACOSX/**",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/*.swp",
+    "**/*~"
+  ],
+  "exemptions": {
+    "scripts/**": "Scripts are code, not docs",
+    "*.json": "Config/data files allowed",
+    "*.yml": "Config files allowed",
+    "*.yaml": "Config files allowed"
+  }
+}

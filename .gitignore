@@ -116,6 +116,7 @@ data/gs1_ref_corpus/xlsx
 !data/gs1_ref_corpus/**/.gitkeep
 
 # External archives
+__MACOSX/
 __MACOSX
 data/external/
 data/external/Archive_2.zip
