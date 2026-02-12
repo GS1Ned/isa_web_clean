@@ -51,11 +51,7 @@ const NewsAdmin = lazy(() =>
 );
 const HubCompare = lazy(() => import("./pages/HubCompare"));
 const HubCompareEnhanced = lazy(() => import("./pages/HubCompareEnhanced"));
-const AdminCellarIngestion = lazy(() => import("./pages/AdminCellarIngestion"));
 const AdminEUDRSeeder = lazy(() => import("./pages/AdminEUDRSeeder"));
-const AdminCellarSyncMonitor = lazy(
-  () => import("./pages/AdminCellarSyncMonitor")
-);
 const AdvisoryDashboard = lazy(() => import("./pages/AdvisoryDashboard"));
 const AdvisoryExplorer = lazy(() => import("./pages/AdvisoryExplorer"));
 const AdvisoryTraceability = lazy(() => import("./pages/AdvisoryTraceability")
@@ -222,8 +218,6 @@ function Router() {
       <Route path="/admin/system-monitoring" component={SystemMonitoring} />
       <Route path="/admin/coverage-analytics" component={AdminCoverageAnalytics} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
-      <Route path="/admin/cellar" component={AdminCellarIngestion} />
-      <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />
       <Route path="/admin/news-pipeline" component={AdminNewsPipelineManager} />
       <Route path="/admin/news" component={NewsAdmin} />
       <Route path="/admin/scraper-health" component={AdminScraperHealth} />

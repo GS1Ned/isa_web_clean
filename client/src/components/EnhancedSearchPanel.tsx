@@ -7,7 +7,7 @@
  * - Authority Level (binding, authoritative, guidance, informational)
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -100,13 +100,15 @@ export function EnhancedSearchPanel({ onResultSelect }: EnhancedSearchPanelProps
     },
     {
       enabled: query.length >= 3,
-      onSuccess: (data) => {
-        if (data.results) {
-          setResults(data.results);
-        }
-      },
     }
   );
+
+  // Update results when data changes (TanStack Query v5)
+  useEffect(() => {
+    if (searchMutation.data?.results) {
+      setResults(searchMutation.data.results);
+    }
+  }, [searchMutation.data]);
 
   const toggleFilter = (
     value: string,
