@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-02-12T14:05:38Z"
+    "generated_at": "2026-02-12T18:27:31Z"
   },
   "status": "fail",
   "checks": {
@@ -15,7 +15,7 @@
       "pct": 70
     },
     "catalogue_freshness": {
-      "days_old": 20496.6
+      "days_old": 20496.8
     }
   },
   "thresholds": {
