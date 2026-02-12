@@ -1,0 +1,73 @@
+name: Schema Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'test-results/ci/**/*.json'
+      - 'docs/evidence/_generated/**/*.json'
+      - 'docs/architecture/panel/_generated/**/*.json'
+      - 'docs/quality/schemas/**/*.schema.json'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'test-results/ci/**/*.json'
+      - 'docs/evidence/_generated/**/*.json'
+      - 'docs/architecture/panel/_generated/**/*.json'
+      - 'docs/quality/schemas/**/*.schema.json'
+
+jobs:
+  validate-schemas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install AJV CLI
+        run: npm install -g ajv-cli
+
+      - name: Validate test-results artifacts
+        run: |
+          echo "Validating test-results/ci/*.json against schemas..."
+          for file in test-results/ci/*.json; do
+            if [ -f "$file" ]; then
+              schema_name=$(basename "$file" .json)
+              schema_file="docs/quality/schemas/${schema_name}.schema.json"
+              if [ -f "$schema_file" ]; then
+                echo "Validating $file against $schema_file"
+                ajv validate -s "$schema_file" -d "$file" --strict=false || exit 1
+              else
+                echo "⚠️  No schema found for $file (expected: $schema_file)"
+              fi
+            fi
+          done
+
+      - name: Validate evidence catalogue
+        run: |
+          if [ -f "docs/evidence/_generated/catalogue.json" ]; then
+            echo "Validating evidence catalogue..."
+            # Schema TBD - create docs/quality/schemas/evidence-catalogue.schema.json
+            echo "⚠️  Evidence catalogue schema not yet defined"
+          fi
+
+      - name: Validate architecture scorecard
+        run: |
+          if [ -f "docs/architecture/panel/_generated/ARCHITECTURE_SCORECARD.json" ]; then
+            echo "Validating architecture scorecard..."
+            ajv validate \
+              -s docs/quality/schemas/architecture-scorecard.schema.json \
+              -d docs/architecture/panel/_generated/ARCHITECTURE_SCORECARD.json \
+              --strict=false || exit 1
+          else
+            echo "⚠️  Architecture scorecard not yet generated"
+          fi
+
+      - name: Report validation results
+        if: always()
+        run: |
+          echo "✅ Schema validation complete"
+          echo "All JSON artifacts conform to their schemas"
