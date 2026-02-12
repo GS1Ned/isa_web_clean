@@ -105,6 +105,75 @@ THRESHOLDS: { ... }
 - Test Coverage: 90.1%
 - Contract Completeness: 70%
 
+## Proof Artifact Commands
+
+### Generate All Proof Artifacts
+```bash
+# Security gate
+bash scripts/gates/security-gate.sh
+
+# Performance smoke test
+bash scripts/gates/perf-smoke.sh
+
+# Reliability smoke test
+bash scripts/gates/reliability-smoke.sh
+
+# Observability contract
+bash scripts/gates/observability-contract.sh
+
+# Governance gate
+bash scripts/gates/governance-gate.sh
+
+# SLO policy check
+bash scripts/gates/slo-policy-check.sh
+
+# Error budget status
+pnpm tsx scripts/sre/generate-error-budget-status.ts
+
+# Evidence catalogue
+pnpm tsx scripts/sre/generate-evidence-catalogue.ts
+```
+
+### Validate All Schemas
+```bash
+bash scripts/gates/validate-proof-artifacts.sh
+```
+
+### Artifact → Schema Mapping
+
+| Artifact | Schema | Command |
+|----------|--------|----------|
+| `test-results/ci/security-gate.json` | `docs/quality/schemas/security-gate.schema.json` | `bash scripts/gates/security-gate.sh` |
+| `test-results/ci/perf.json` | `docs/quality/schemas/perf.schema.json` | `bash scripts/gates/perf-smoke.sh` |
+| `test-results/ci/reliability.json` | `docs/quality/schemas/reliability.schema.json` | `bash scripts/gates/reliability-smoke.sh` |
+| `test-results/ci/observability.json` | `docs/quality/schemas/observability.schema.json` | `bash scripts/gates/observability-contract.sh` |
+| `test-results/ci/governance.json` | `docs/quality/schemas/governance.schema.json` | `bash scripts/gates/governance-gate.sh` |
+| `test-results/ci/slo-policy-check.json` | `docs/quality/schemas/slo-policy-check.schema.json` | `bash scripts/gates/slo-policy-check.sh` |
+| `test-results/ci/rag-eval.json` | `docs/quality/schemas/rag-eval.schema.json` | TBD (requires RAG eval harness) |
+| `docs/evidence/_generated/catalogue.json` | `docs/quality/schemas/catalogue.schema.json` | `pnpm tsx scripts/sre/generate-evidence-catalogue.ts` |
+| `docs/sre/_generated/error_budget_status.json` | `docs/quality/schemas/error-budget-status.schema.json` | `pnpm tsx scripts/sre/generate-error-budget-status.ts` |
+| `docs/architecture/panel/_generated/ARCHITECTURE_SCORECARD.json` | `docs/quality/schemas/architecture-scorecard.schema.json` | Manual (expert panel output) |
+
+## Proof Status
+
+**Current Status (2026-02-12):**
+- ✅ Schema validation gate: OPERATIONAL
+- ✅ 9 schemas defined
+- ✅ 9/11 artifacts generated
+- ⏳ 2 artifacts pending (summary.json, rag-eval.json)
+- ✅ All generated artifacts schema-valid
+
+**Missing Proof Artifacts:**
+1. `test-results/ci/summary.json` - Requires test execution
+2. `test-results/ci/rag-eval.json` - Requires RAG evaluation harness
+
+**Proof Artifacts with UNKNOWN Status:**
+- `security-gate.json`: No secret scanning, authz tests, or dependency scanning
+- `perf.json`: No performance instrumentation
+- `reliability.json`: No SLO monitoring
+
+**Rule:** Dimensions with UNKNOWN proof artifacts cannot score ≥9/10.
+
 ---
 
 **Status:** Ready for expert distribution

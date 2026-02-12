@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/observability.schema.json",
+  "title": "ISA Observability Contract",
+  "type": "object",
+  "required": ["meta", "status", "checks", "thresholds"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["generated_at"],
+      "properties": {
+        "generated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "fail", "unknown"]
+    },
+    "checks": {
+      "type": "object",
+      "required": ["structured_logging", "trace_propagation", "metrics_collection"],
+      "properties": {
+        "structured_logging": {
+          "type": "object",
+          "required": ["implemented", "coverage_pct"],
+          "properties": {
+            "implemented": {"type": "boolean"},
+            "coverage_pct": {"type": "number", "minimum": 0, "maximum": 100}
+          }
+        },
+        "trace_propagation": {
+          "type": "object",
+          "required": ["implemented"],
+          "properties": {
+            "implemented": {"type": "boolean"}
+          }
+        },
+        "metrics_collection": {
+          "type": "object",
+          "required": ["implemented"],
+          "properties": {
+            "implemented": {"type": "boolean"}
+          }
+        }
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "required": ["structured_logging_coverage_min"],
+      "properties": {
+        "structured_logging_coverage_min": {"type": "number", "minimum": 0, "maximum": 100}
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

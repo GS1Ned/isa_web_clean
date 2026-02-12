@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "generated_at": "2026-02-12T14:00:57Z"
+  },
+  "status": "unknown",
+  "metrics": {},
+  "thresholds": {
+    "catalog_p95_latency_ms_max": 500,
+    "catalog_p99_latency_ms_max": 1000,
+    "db_query_p95_ms_max": 500
+  },
+  "unknowns": [
+    "No performance instrumentation in place",
+    "p95/p99 latency not measured",
+    "Database query performance not profiled"
+  ]
+}

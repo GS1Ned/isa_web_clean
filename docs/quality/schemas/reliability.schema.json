@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/reliability.schema.json",
+  "title": "ISA Reliability Metrics",
+  "type": "object",
+  "required": ["meta", "status", "metrics", "thresholds"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["generated_at"],
+      "properties": {
+        "generated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "fail", "unknown"]
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "ask_isa_success_rate": {"type": "number", "minimum": 0, "maximum": 1},
+        "news_pipeline_success_rate": {"type": "number", "minimum": 0, "maximum": 1},
+        "news_freshness_hours": {"type": "number", "minimum": 0}
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "required": ["ask_isa_success_rate_min", "news_pipeline_success_rate_min", "news_freshness_hours_max"],
+      "properties": {
+        "ask_isa_success_rate_min": {"type": "number", "minimum": 0, "maximum": 1},
+        "news_pipeline_success_rate_min": {"type": "number", "minimum": 0, "maximum": 1},
+        "news_freshness_hours_max": {"type": "number", "minimum": 0}
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

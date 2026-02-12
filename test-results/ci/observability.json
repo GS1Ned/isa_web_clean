@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "generated_at": "2026-02-12T14:01:14Z"
+  },
+  "status": "fail",
+  "checks": {
+    "structured_logging": {
+      "implemented": true,
+      "coverage_pct": 50.2
+    },
+    "trace_propagation": {
+      "implemented": true
+    },
+    "metrics_collection": {
+      "implemented": true
+    }
+  },
+  "thresholds": {
+    "structured_logging_coverage_min": 80
+  },
+  "unknowns": [
+  ""
+]
+}

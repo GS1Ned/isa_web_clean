@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/perf.schema.json",
+  "title": "ISA Performance Metrics",
+  "type": "object",
+  "required": ["meta", "status", "metrics", "thresholds"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["generated_at"],
+      "properties": {
+        "generated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "fail", "unknown"]
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "catalog_p95_latency_ms": {"type": "number", "minimum": 0},
+        "catalog_p99_latency_ms": {"type": "number", "minimum": 0},
+        "db_query_p95_ms": {"type": "number", "minimum": 0}
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "required": ["catalog_p95_latency_ms_max", "db_query_p95_ms_max"],
+      "properties": {
+        "catalog_p95_latency_ms_max": {"type": "number", "minimum": 0},
+        "catalog_p99_latency_ms_max": {"type": "number", "minimum": 0},
+        "db_query_p95_ms_max": {"type": "number", "minimum": 0}
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

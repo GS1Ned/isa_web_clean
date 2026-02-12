@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "generated_at": "2026-02-12T14:05:38Z"
+  },
+  "status": "fail",
+  "checks": {
+    "validation_gates": {
+      "passing": 6,
+      "total": 6
+    },
+    "evidence_markers": {
+      "count": 0
+    },
+    "contract_completeness": {
+      "pct": 70
+    },
+    "catalogue_freshness": {
+      "days_old": 20496.6
+    }
+  },
+  "thresholds": {
+    "validation_gates_min": 6,
+    "evidence_markers_min": 100,
+    "contract_completeness_min": 60,
+    "catalogue_freshness_max_days": 7
+  }
+}

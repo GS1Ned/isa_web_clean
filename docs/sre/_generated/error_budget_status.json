@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "generated_at": "2026-02-12T14:00:08.975Z",
+    "measurement_window_days": 28
+  },
+  "overall_state": "UNKNOWN",
+  "slos": [
+    {
+      "id": "UF-1",
+      "name": "Ask ISA Latency",
+      "state": "UNKNOWN",
+      "budget_remaining_pct": 100,
+      "measured": false
+    },
+    {
+      "id": "UF-2",
+      "name": "Ask ISA Availability",
+      "state": "UNKNOWN",
+      "budget_remaining_pct": 100,
+      "measured": false
+    },
+    {
+      "id": "UF-3",
+      "name": "Catalog Latency",
+      "state": "UNKNOWN",
+      "budget_remaining_pct": 100,
+      "measured": false
+    },
+    {
+      "id": "UF-4",
+      "name": "Advisory Generation",
+      "state": "UNKNOWN",
+      "budget_remaining_pct": 100,
+      "measured": false
+    },
+    {
+      "id": "P-1",
+      "name": "News Freshness",
+      "state": "UNKNOWN",
+      "budget_remaining_pct": 100,
+      "measured": false
+    },
+    {
+      "id": "P-2",
+      "name": "News Success Rate",
+      "state": "UNKNOWN",
+      "budget_remaining_pct": 100,
+      "measured": false
+    },
+    {
+      "id": "P-3",
+      "name": "Catalogue Freshness",
+      "state": "UNKNOWN",
+      "budget_remaining_pct": 100,
+      "measured": false
+    },
+    {
+      "id": "RQ-1",
+      "name": "Citation Precision",
+      "state": "UNKNOWN",
+      "budget_remaining_pct": 100,
+      "measured": false
+    },
+    {
+      "id": "RQ-2",
+      "name": "Groundedness",
+      "state": "UNKNOWN",
+      "budget_remaining_pct": 100,
+      "measured": false
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "generated_at": "2026-02-12T14:01:03Z"
+  },
+  "status": "unknown",
+  "metrics": {},
+  "thresholds": {
+    "ask_isa_success_rate_min": 0.995,
+    "news_pipeline_success_rate_min": 0.95,
+    "news_freshness_hours_max": 24
+  },
+  "unknowns": [
+    "No SLO monitoring in place",
+    "Ask ISA success rate not tracked",
+    "News pipeline metrics not collected"
+  ]
+}
