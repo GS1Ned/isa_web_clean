@@ -16,15 +16,16 @@ Map GS1 standards to ESRS
 
 ## Entry Points
 
+<!-- EVIDENCE:implementation:server/routers/esrs-gs1-mapping.ts -->
 ### API Endpoints (tRPC)
-- `server/routers/esrs-gs1-mapping.ts`
-- `server/routers/esrs-roadmap.ts`
-- `server/routers/gap-analyzer.ts`
+- `server/routers/esrs-gs1-mapping.ts` <!-- EVIDENCE:implementation:server/routers/esrs-gs1-mapping.ts -->
+- `server/routers/esrs-roadmap.ts` <!-- EVIDENCE:implementation:server/routers/esrs-roadmap.ts -->
+- `server/routers/gap-analyzer.ts` <!-- EVIDENCE:implementation:server/routers/gap-analyzer.ts -->
 
 ### Services
-- `server/batch-generate-esrs-mappings.ts`
-- `server/compliance-scoring.ts`
-- `server/create-attribute-mappings.ts`
+- `server/batch-generate-esrs-mappings.ts` <!-- EVIDENCE:implementation:server/batch-generate-esrs-mappings.ts -->
+- `server/compliance-scoring.ts` <!-- EVIDENCE:implementation:server/compliance-scoring.ts -->
+- `server/create-attribute-mappings.ts` <!-- EVIDENCE:implementation:server/create-attribute-mappings.ts -->
 
 ### UI Components
 - `client/src/components/ComplianceCoverageChart.tsx`
@@ -79,8 +80,12 @@ Map GS1 standards to ESRS
 
 ## Evidence
 
+<!-- EVIDENCE:requirement:docs/planning/refactoring/FILE_INVENTORY.json -->
 - Phase 0 Inventory: 41 files classified as ESRS_MAPPING
+<!-- EVIDENCE:implementation:server/routers/esrs-gs1-mapping.ts -->
 - Code entrypoints: 9 identified
+<!-- EVIDENCE:decision:docs/planning/refactoring/QUALITY_SCORECARDS.json -->
+- Quality grade: C (70/100)
 
 ---
 

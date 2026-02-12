@@ -14,6 +14,7 @@ ISA operates under a governance framework that prioritizes data integrity, citat
 
 ## Core Principles
 
+<!-- EVIDENCE:requirement:data/metadata/dataset_registry.json -->
 ### 1. Data Integrity
 All datasets must include complete provenance metadata:
 - **Source:** Publisher, URL, and authoritative reference
@@ -24,8 +25,10 @@ All datasets must include complete provenance metadata:
 - **Lineage:** How the data was obtained and processed
 - **Ingestion Method:** Manual, automated, or API
 
+<!-- EVIDENCE:constraint:server/routers/ask-isa.ts -->
 **Requirement:** No dataset may be used in ISA without complete metadata.
 
+<!-- EVIDENCE:implementation:server/routers/ask-isa.ts -->
 ### 2. Citation Accuracy
 All AI-generated content must include mandatory citations:
 - **Source Documents:** Specific documents used for generation
@@ -33,8 +36,10 @@ All AI-generated content must include mandatory citations:
 - **Fact vs. Inference:** Clear distinction between facts and inferences
 - **Verification Status:** Whether claims have been verified
 
+<!-- EVIDENCE:constraint:server/routers/ask-isa.ts -->
 **Requirement:** All Ask ISA responses, advisory reports, and AI-generated mappings must include citations.
 
+<!-- EVIDENCE:implementation:.git/config -->
 ### 3. Version Control
 All changes must be tracked in Git with conventional commits:
 - **Commit Format:** `<type>: <description>` (feat, fix, docs, refactor, test, chore, data)
@@ -42,6 +47,7 @@ All changes must be tracked in Git with conventional commits:
 - **Code Review:** All changes require review before merge
 - **Rollback Capability:** All changes must be reversible via Git
 
+<!-- EVIDENCE:constraint:.github/PULL_REQUEST_TEMPLATE.md -->
 **Requirement:** All code, data, and documentation changes must be committed to version control.
 
 ### 4. Transparency

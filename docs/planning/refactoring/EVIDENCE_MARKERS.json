@@ -1,8 +1,44 @@
 {
   "version": "1.0",
   "generated": "2026-02-12",
-  "total_markers": 25,
+  "total_markers": 50,
   "markers": [
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "data/metadata/dataset_registry.json",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": "server/routers/ask-isa.ts",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/ask-isa.ts",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": "server/routers/ask-isa.ts",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": ".git/config",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "type": "inline",
+      "category": "constraint",
+      "reference": ".github/PULL_REQUEST_TEMPLATE.md",
+      "file": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
     {
       "type": "inline",
       "category": "implementation",
@@ -152,6 +188,120 @@
       "category": "decision",
       "reference": "docs/planning/refactoring/QUALITY_SCORECARDS.json",
       "file": "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/esrs-gs1-mapping.ts",
+      "file": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/esrs-gs1-mapping.ts",
+      "file": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/esrs-roadmap.ts",
+      "file": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/gap-analyzer.ts",
+      "file": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/batch-generate-esrs-mappings.ts",
+      "file": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/compliance-scoring.ts",
+      "file": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/create-attribute-mappings.ts",
+      "file": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/FILE_INVENTORY.json",
+      "file": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/esrs-gs1-mapping.ts",
+      "file": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "file": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/advisory-reports.ts",
+      "file": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/advisory-diff.ts",
+      "file": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/advisory-reports.ts",
+      "file": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/advisory-report-export.ts",
+      "file": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "client/src/pages/AdvisoryDashboard.tsx",
+      "file": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/FILE_INVENTORY.json",
+      "file": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/advisory-reports.ts",
+      "file": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "file": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "data/advisories/",
+      "file": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
     }
   ]
 }

@@ -15,6 +15,6 @@
 | ESRS_MAPPING | C | 70/100 | 51 | ❌ | ✅ | ✅ |
 | ADVISORY | C | 70/100 | 82 | ❌ | ✅ | ✅ |
 
-## Evidence Markers: 25
+## Evidence Markers: 50
 
 Evidence markers provide traceability from implementation to requirements.

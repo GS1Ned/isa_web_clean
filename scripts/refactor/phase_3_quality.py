@@ -15,7 +15,11 @@ CAPABILITIES = ["ASK_ISA", "NEWS_HUB", "KNOWLEDGE_BASE", "CATALOG", "ESRS_MAPPIN
 
 def extract_evidence_markers(file_path: Path) -> List[Dict]:
     """Extract evidence markers from markdown files"""
-    if not file_path.exists() or file_path.suffix not in ['.md', '.ts', '.tsx']:
+    if not file_path.exists():
+        return []
+    
+    # Only scan text files
+    if file_path.suffix not in ['.md', '.ts', '.tsx', '.js', '.jsx', '.py', '.sh', '.json', '.yaml', '.yml']:
         return []
     
     markers = []
@@ -27,6 +31,8 @@ def extract_evidence_markers(file_path: Path) -> List[Dict]:
             (r'<!-- EVIDENCE:([^:]+):([^>]+)-->', 'inline'),
             (r'\[EVIDENCE:([^:]+):([^\]]+)\]', 'bracket'),
             (r'@evidence\s+(\w+)\s+(.+)', 'annotation'),
+            (r'//\s*EVIDENCE:([^:]+):([^\n]+)', 'comment'),
+            (r'#\s*EVIDENCE:([^:]+):([^\n]+)', 'comment'),
         ]
         
         for pattern, marker_type in patterns:
@@ -38,7 +44,8 @@ def extract_evidence_markers(file_path: Path) -> List[Dict]:
                     'file': str(file_path.relative_to(REPO_ROOT))
                 })
     except Exception as e:
-        print(f"Error reading {file_path}: {e}")
+        # Skip binary files silently
+        pass
     
     return markers
 

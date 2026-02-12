@@ -48,12 +48,19 @@ The system operates under strict governance constraints that prioritize data int
 
 ## Verified Coverage (as of 2025-12-17)
 
+<!-- EVIDENCE:requirement:data/metadata/dataset_registry.json -->
 **Regulations Tracked:** 38 EU regulations  
+<!-- EVIDENCE:requirement:data/efrag/esrs_datapoints_efrag_ig3.json -->
 **ESRS Datapoints:** 1,184 datapoints from EFRAG IG3 (verified 2024-12-15)  
+<!-- EVIDENCE:requirement:data/gs1/gs1_standards_catalog.json -->
 **GS1 Standards:** 60+ standards cataloged (verified 2024-11-30)  
+<!-- EVIDENCE:implementation:server/gs1-mapping-engine.ts -->
 **AI Mappings:** 450+ regulation-to-standard mappings (generated 2024-12-10)  
+<!-- EVIDENCE:implementation:server/news-sources.ts -->
 **News Sources:** 7 sources monitored (100% health rate as of 2025-12-17)  
+<!-- EVIDENCE:requirement:data/advisories/ -->
 **Advisory Reports:** 2 versions (v1.0, v1.1) under governance review  
+<!-- EVIDENCE:decision:docs/test-failure-analysis-2025-12-17.md -->
 **Test Coverage:** 517/574 tests passing (90.1%)
 
 **Known Gaps (intentionally deferred):**
@@ -68,9 +75,11 @@ The system operates under strict governance constraints that prioritize data int
 
 ## Governance Principles
 
+<!-- EVIDENCE:requirement:docs/governance/_root/ISA_GOVERNANCE.md -->
 ISA operates under strict governance constraints that prioritize data integrity, citation accuracy, and version control.
 
 **Authoritative Governance Document:**  
+<!-- EVIDENCE:requirement:docs/governance/_root/ISA_GOVERNANCE.md -->
 📄 **[ISA_GOVERNANCE.md](./docs/governance/_root/ISA_GOVERNANCE.md)**
 
 **Key Governance Principles:**
@@ -98,9 +107,13 @@ ISA operates under strict governance constraints that prioritize data integrity,
 
 ## Technology Stack
 
+<!-- EVIDENCE:implementation:package.json -->
 **Frontend:** React 19 + TypeScript + Tailwind CSS 4 + shadcn/ui + Wouter + tRPC client  
+<!-- EVIDENCE:implementation:server/_core/index.ts -->
 **Backend:** Express 4 + tRPC 11 + Drizzle ORM + MySQL/TiDB + Manus OAuth  
+<!-- EVIDENCE:implementation:server/embedding.ts -->
 **AI/ML:** OpenAI GPT-4 (advisory, Q&A) + text-embedding-3-small (semantic search)  
+<!-- EVIDENCE:implementation:vite.config.ts -->
 **Infrastructure:** Manus hosting + GitHub (version control) + Playwright (scraping) + Vitest (testing)
 
 ---

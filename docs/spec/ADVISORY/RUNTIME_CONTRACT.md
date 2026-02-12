@@ -16,18 +16,19 @@ Generate advisory reports
 
 ## Entry Points
 
+<!-- EVIDENCE:implementation:server/routers/advisory-reports.ts -->
 ### API Endpoints (tRPC)
-- `server/routers/advisory-diff.ts`
+- `server/routers/advisory-diff.ts` <!-- EVIDENCE:implementation:server/routers/advisory-diff.ts -->
 - `server/routers/advisory-reports.test.ts`
-- `server/routers/advisory-reports.ts`
+- `server/routers/advisory-reports.ts` <!-- EVIDENCE:implementation:server/routers/advisory-reports.ts -->
 
 ### Services
 - `server/advisory-diff.test.ts`
 - `server/advisory-report-export.test.ts`
-- `server/advisory-report-export.ts`
+- `server/advisory-report-export.ts` <!-- EVIDENCE:implementation:server/advisory-report-export.ts -->
 
 ### UI Components
-- `client/src/pages/AdvisoryDashboard.tsx`
+- `client/src/pages/AdvisoryDashboard.tsx` <!-- EVIDENCE:implementation:client/src/pages/AdvisoryDashboard.tsx -->
 - `client/src/pages/AdvisoryDiff.tsx`
 - `client/src/pages/AdvisoryDiffComparison.tsx`
 
@@ -79,8 +80,14 @@ Generate advisory reports
 
 ## Evidence
 
+<!-- EVIDENCE:requirement:docs/planning/refactoring/FILE_INVENTORY.json -->
 - Phase 0 Inventory: 64 files classified as ADVISORY
+<!-- EVIDENCE:implementation:server/routers/advisory-reports.ts -->
 - Code entrypoints: 9 identified
+<!-- EVIDENCE:decision:docs/planning/refactoring/QUALITY_SCORECARDS.json -->
+- Quality grade: C (70/100)
+<!-- EVIDENCE:requirement:data/advisories/ -->
+- Advisory versions: v1.0, v1.1
 
 ---
 

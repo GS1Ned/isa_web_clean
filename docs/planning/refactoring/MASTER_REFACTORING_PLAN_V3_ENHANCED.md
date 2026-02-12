@@ -10,6 +10,7 @@
 
 ## Evidence Table (Repository State as of 2026-02-12)
 
+<!-- EVIDENCE:requirement:AGENT_START_HERE.md -->
 | Artifact | Status | Path |
 |----------|--------|------|
 | AGENT_START_HERE.md | ✅ FOUND | `/AGENT_START_HERE.md` |
@@ -17,23 +18,34 @@
 | REPO_TREE.md | ✅ FOUND | `/REPO_TREE.md` |
 | AGENTS.md | ✅ FOUND | `/AGENTS.md` |
 | package.json | ✅ FOUND | `/package.json` |
+<!-- EVIDENCE:requirement:docs/planning/refactoring/MASTER_REFACTORING_PLAN.md -->
 | MASTER_REFACTORING_PLAN.md | ✅ FOUND | `/docs/planning/refactoring/MASTER_REFACTORING_PLAN.md` |
 | MASTER_REFACTORING_PLAN_V2_ENHANCED.md | ✅ FOUND | `/docs/planning/refactoring/MASTER_REFACTORING_PLAN_V2_ENHANCED.md` |
+<!-- EVIDENCE:requirement:docs/planning/refactoring/FILE_INVENTORY.json -->
 | FILE_INVENTORY.json | ✅ FOUND | `/docs/planning/refactoring/FILE_INVENTORY.json` |
 | QUALITY_SCORECARDS.json | ✅ FOUND | `/docs/planning/refactoring/QUALITY_SCORECARDS.json` |
 | EVIDENCE_MARKERS.json | ✅ FOUND | `/docs/planning/refactoring/EVIDENCE_MARKERS.json` |
+<!-- EVIDENCE:requirement:docs/planning/refactoring/FINAL_STATUS_REPORT.md -->
 | FINAL_STATUS_REPORT.md | ✅ FOUND | `/docs/planning/refactoring/FINAL_STATUS_REPORT.md` |
 | EXECUTION_SUMMARY.md | ✅ FOUND | `/docs/planning/refactoring/EXECUTION_SUMMARY.md` |
 | MOVE_PLAN.json | ✅ FOUND | `/docs/planning/refactoring/MOVE_PLAN.json` |
 | MOVE_EXECUTION_LOG.json | ✅ FOUND | `/docs/planning/refactoring/MOVE_EXECUTION_LOG.json` |
+<!-- EVIDENCE:implementation:scripts/refactor/validate_gates.sh -->
 | validate_gates.sh | ✅ FOUND | `/scripts/refactor/validate_gates.sh` |
+<!-- EVIDENCE:requirement:docs/spec/ASK_ISA/RUNTIME_CONTRACT.md -->
 | Runtime Contracts (6) | ✅ FOUND | `/docs/spec/{ASK_ISA,NEWS_HUB,KNOWLEDGE_BASE,CATALOG,ESRS_MAPPING,ADVISORY}/RUNTIME_CONTRACT.md` |
+<!-- EVIDENCE:implementation:server/_core/index.ts -->
 | Backend Entrypoint | ✅ FOUND | `/server/_core/index.ts` |
+<!-- EVIDENCE:implementation:client/src/main.tsx -->
 | Frontend Entrypoint | ✅ FOUND | `/client/src/main.tsx` |
+<!-- EVIDENCE:implementation:.github/workflows/refactoring-validation.yml -->
 | CI Workflows | ✅ FOUND | `/.github/workflows/*.yml` (6 workflows) |
+<!-- EVIDENCE:requirement:docs/planning/refactoring/CLASSIFICATION_RULES.json -->
 | CLASSIFICATION_RULES.json | ✅ FOUND | `/docs/planning/refactoring/CLASSIFICATION_RULES.json` |
 
+<!-- EVIDENCE:implementation:scripts/refactor/validate_gates.sh -->
 **Verification Command:** `bash scripts/refactor/validate_gates.sh`  
+<!-- EVIDENCE:decision:docs/planning/refactoring/FINAL_STATUS_REPORT.md -->
 **Current Gate Status:** 5/5 passing (per `/docs/planning/refactoring/FINAL_STATUS_REPORT.md`)
 
 ---
