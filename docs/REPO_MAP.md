@@ -47,7 +47,7 @@ This document provides a high-level, evidence-bound map of the ISA repository. I
 | `docs/governance/IRON_PROTOCOL.md` | Core governance rules | Defines the rules of engagement for development. |
 | `docs/governance/SCOPE_DECISIONS.md` | Persistent scope registry | Prevents scope creep and ensures a clean repository. |
 | `README.md` | Project overview and setup | The first document a new developer should read. |
-| `docs/spec/ARCHITECTURE.md` | High-level system design | Provides a conceptual overview of how the system fits together. |
+| `docs/spec/ESRS_MAPPING/isa-core-architecture.md` | **Architecture SSOT** - System architecture and components |
 
 ### Top-10 Critical Directories
 
@@ -84,8 +84,12 @@ This document provides a high-level, evidence-bound map of the ISA repository. I
 
 | Document | Purpose |
 |---|---|
-| `README.md` | Project overview and setup instructions. |
-| `docs/spec/ARCHITECTURE.md` | High-level conceptual overview of the system. |
-| `docs/governance/_root/ISA_GOVERNANCE.md` | The active governance framework for all development. |
-| `docs/governance/IRON_PROTOCOL.md` | The active, binding governance protocol for all development. |
-| `docs/governance/IRON_KNOWLEDGE_MAP.md` | The single source of truth for finding all project documentation. |
+| `README.md` | Project overview and setup instructions |
+| `docs/INDEX.md` | Documentation index and navigation |
+| `docs/REPO_MAP.md` | This file - repository structure map |
+| `docs/spec/ESRS_MAPPING/isa-core-architecture.md` | **Architecture SSOT** - Single source of truth for system architecture |
+| `docs/governance/_root/ISA_GOVERNANCE.md` | Governance framework for all development |
+| `docs/architecture/panel/KICKOFF_PACKAGE.md` | Architecture review framework (Repo-Tight v5) |
+| `docs/planning/INDEX.md` | Planning documentation index |
+| `docs/planning/NEXT_ACTIONS.json` | Execution queue (canonical) |
+| `config/governance/canonical_docs_allowlist.json` | Canonical docs policy |
