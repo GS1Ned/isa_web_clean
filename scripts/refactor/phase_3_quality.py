@@ -24,7 +24,7 @@ def extract_evidence_markers(file_path: Path) -> List[Dict]:
         
         # Evidence patterns
         patterns = [
-            (r'<!-- EVIDENCE:([^:]+):([^-]+)-->', 'inline'),
+            (r'<!-- EVIDENCE:([^:]+):([^>]+)-->', 'inline'),
             (r'\[EVIDENCE:([^:]+):([^\]]+)\]', 'bracket'),
             (r'@evidence\s+(\w+)\s+(.+)', 'annotation'),
         ]
@@ -107,10 +107,19 @@ def generate_scorecards():
     # Extract evidence markers
     print("\n1. Extracting evidence markers...")
     all_evidence = []
+    
+    # Scan inventory files
     for file_data in inventory['files']:
         file_path = REPO_ROOT / file_data['path']
         markers = extract_evidence_markers(file_path)
         all_evidence.extend(markers)
+    
+    # Also scan runtime contracts directly (may not be in inventory)
+    for cap in CAPABILITIES:
+        contract_path = REPO_ROOT / f"docs/spec/{cap}/RUNTIME_CONTRACT.md"
+        if contract_path.exists():
+            markers = extract_evidence_markers(contract_path)
+            all_evidence.extend(markers)
     
     print(f"   Found {len(all_evidence)} evidence markers")
     

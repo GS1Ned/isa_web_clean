@@ -16,8 +16,9 @@ Aggregate and enrich ESG news
 
 ## Entry Points
 
+<!-- EVIDENCE:implementation:server/news-admin-router.ts -->
 ### API Endpoints (tRPC)
-- `server/news-admin-router.ts`
+- `server/news-admin-router.ts` <!-- EVIDENCE:implementation:server/news-admin-router.ts -->
 
 ### Services
 - `server/_core/performance-monitoring.ts`
@@ -77,8 +78,12 @@ Aggregate and enrich ESG news
 
 ## Evidence
 
+<!-- EVIDENCE:requirement:docs/planning/refactoring/FILE_INVENTORY.json -->
 - Phase 0 Inventory: 41 files classified as NEWS_HUB
+<!-- EVIDENCE:implementation:server/news-admin-router.ts -->
 - Code entrypoints: 7 identified
+<!-- EVIDENCE:decision:docs/planning/refactoring/QUALITY_SCORECARDS.json -->
+- Quality grade: C (70/100)
 
 ---
 

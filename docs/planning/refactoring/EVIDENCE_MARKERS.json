@@ -1,6 +1,157 @@
 {
   "version": "1.0",
   "generated": "2026-02-12",
-  "total_markers": 0,
-  "markers": []
+  "total_markers": 25,
+  "markers": [
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/ask-isa.ts",
+      "file": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/ask-isa-enhanced-routes.ts",
+      "file": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/ask-isa-v2.ts",
+      "file": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/ask-isa.ts",
+      "file": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/FILE_INVENTORY.json",
+      "file": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/ask-isa.ts",
+      "file": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "file": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/news-admin-router.ts",
+      "file": "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/news-admin-router.ts",
+      "file": "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/FILE_INVENTORY.json",
+      "file": "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/news-admin-router.ts",
+      "file": "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "file": "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/db-knowledge.ts",
+      "file": "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/claim-citation-verifier.ts",
+      "file": "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/db-knowledge-vector.ts",
+      "file": "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/db-knowledge.ts",
+      "file": "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/FILE_INVENTORY.json",
+      "file": "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/db-knowledge.ts",
+      "file": "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "file": "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/standards-directory.ts",
+      "file": "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/gs1-standards-router.ts",
+      "file": "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/standards-directory.ts",
+      "file": "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "requirement",
+      "reference": "docs/planning/refactoring/FILE_INVENTORY.json",
+      "file": "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "implementation",
+      "reference": "server/routers/standards-directory.ts",
+      "file": "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+    },
+    {
+      "type": "inline",
+      "category": "decision",
+      "reference": "docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "file": "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+    }
+  ]
 }

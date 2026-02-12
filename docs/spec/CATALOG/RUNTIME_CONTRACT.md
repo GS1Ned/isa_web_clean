@@ -16,10 +16,11 @@ Catalog regulations and standards
 
 ## Entry Points
 
+<!-- EVIDENCE:implementation:server/routers/standards-directory.ts -->
 ### API Endpoints (tRPC)
-- `server/gs1-standards-router.ts`
+- `server/gs1-standards-router.ts` <!-- EVIDENCE:implementation:server/gs1-standards-router.ts -->
 - `server/routers/standards-directory.test.ts`
-- `server/routers/standards-directory.ts`
+- `server/routers/standards-directory.ts` <!-- EVIDENCE:implementation:server/routers/standards-directory.ts -->
 
 ### Services
 - `server/check-regulations.ts`
@@ -79,8 +80,12 @@ Catalog regulations and standards
 
 ## Evidence
 
+<!-- EVIDENCE:requirement:docs/planning/refactoring/FILE_INVENTORY.json -->
 - Phase 0 Inventory: 34 files classified as CATALOG
+<!-- EVIDENCE:implementation:server/routers/standards-directory.ts -->
 - Code entrypoints: 9 identified
+<!-- EVIDENCE:decision:docs/planning/refactoring/QUALITY_SCORECARDS.json -->
+- Quality grade: C (70/100)
 
 ---
 

@@ -16,10 +16,11 @@ Answer user questions via RAG
 
 ## Entry Points
 
+<!-- EVIDENCE:implementation:server/routers/ask-isa.ts -->
 ### API Endpoints (tRPC)
-- `server/routers/ask-isa-enhanced-routes.ts`
-- `server/routers/ask-isa-v2.ts`
-- `server/routers/ask-isa.ts`
+- `server/routers/ask-isa-enhanced-routes.ts` <!-- EVIDENCE:implementation:server/routers/ask-isa-enhanced-routes.ts -->
+- `server/routers/ask-isa-v2.ts` <!-- EVIDENCE:implementation:server/routers/ask-isa-v2.ts -->
+- `server/routers/ask-isa.ts` <!-- EVIDENCE:implementation:server/routers/ask-isa.ts -->
 
 ### Services
 - `server/_core/embedding.ts`
@@ -79,8 +80,12 @@ Answer user questions via RAG
 
 ## Evidence
 
+<!-- EVIDENCE:requirement:docs/planning/refactoring/FILE_INVENTORY.json -->
 - Phase 0 Inventory: 51 files classified as ASK_ISA
+<!-- EVIDENCE:implementation:server/routers/ask-isa.ts -->
 - Code entrypoints: 9 identified
+<!-- EVIDENCE:decision:docs/planning/refactoring/QUALITY_SCORECARDS.json -->
+- Quality grade: A (100/100)
 
 ---
 

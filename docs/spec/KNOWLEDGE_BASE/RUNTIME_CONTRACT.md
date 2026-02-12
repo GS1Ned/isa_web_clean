@@ -16,13 +16,14 @@ Manage knowledge embeddings
 
 ## Entry Points
 
+<!-- EVIDENCE:implementation:server/db-knowledge.ts -->
 ### API Endpoints (tRPC)
 - (To be documented)
 
 ### Services
-- `server/claim-citation-verifier.ts`
-- `server/db-knowledge-vector.ts`
-- `server/db-knowledge.ts`
+- `server/claim-citation-verifier.ts` <!-- EVIDENCE:implementation:server/claim-citation-verifier.ts -->
+- `server/db-knowledge-vector.ts` <!-- EVIDENCE:implementation:server/db-knowledge-vector.ts -->
+- `server/db-knowledge.ts` <!-- EVIDENCE:implementation:server/db-knowledge.ts -->
 
 ### UI Components
 - `client/src/pages/AdminKnowledgeBase.tsx`
@@ -75,8 +76,12 @@ Manage knowledge embeddings
 
 ## Evidence
 
+<!-- EVIDENCE:requirement:docs/planning/refactoring/FILE_INVENTORY.json -->
 - Phase 0 Inventory: 12 files classified as KNOWLEDGE_BASE
+<!-- EVIDENCE:implementation:server/db-knowledge.ts -->
 - Code entrypoints: 4 identified
+<!-- EVIDENCE:decision:docs/planning/refactoring/QUALITY_SCORECARDS.json -->
+- Quality grade: F (50/100)
 
 ---
 
