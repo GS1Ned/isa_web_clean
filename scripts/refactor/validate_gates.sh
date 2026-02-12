@@ -52,8 +52,8 @@ echo "✅ PASS (score: $SCORE)"
 echo "Gate 4: Link Validation..."
 BROKEN=0
 for md in $(find docs -name "*.md"); do
-    # Check for broken relative links
-    grep -oP '\[.*?\]\((?!http).*?\)' "$md" | while read -r link; do
+    # Check for broken relative links (basic pattern matching)
+    grep -oE '\[.*?\]\((?!http).*?\)' "$md" | while read -r link; do
         path=$(echo "$link" | sed -E 's/.*\((.*)\)/\1/')
         dir=$(dirname "$md")
         if [ ! -f "$dir/$path" ] && [ ! -f "docs/$path" ]; then

@@ -1,11 +1,11 @@
 {
   "version": "1.0",
   "generated": "2026-02-12",
-  "overall_validity": 89.3,
+  "overall_validity": 91.4,
   "entrypoints": {
-    "valid": 50,
+    "valid": 54,
     "total": 60,
-    "percent": 83.3
+    "percent": 90.0
   },
   "evidence": {
     "valid": 124,
@@ -20,12 +20,8 @@
   "errors": [
     "[ASK_ISA] Missing: server/routers/ask-isa.test.ts",
     "[ASK_ISA] Missing: docs/governance/ASK_ISA_SMOKE_RUNBOOK.md",
-    "[NEWS_HUB] Missing: scripts/probe/news_hub_health.sh",
     "[NEWS_HUB] Missing: server/routers/news-hub.test.ts",
-    "[KNOWLEDGE_BASE] Missing: scripts/probe/knowledge_base_health.sh",
-    "[CATALOG] Missing: scripts/probe/catalog_health.sh",
     "[CATALOG] Missing: server/routers/catalog.test.ts",
-    "[ESRS_MAPPING] Missing: scripts/probe/esrs_mapping_health.sh",
     "[ADVISORY] Missing: server/routers/advisory.test.ts",
     "[ADVISORY] Missing: docs/ADVISORY_METHOD.md",
     "[Evidence] Missing: data/efrag/esrs_datapoints_efrag_ig3.json",
