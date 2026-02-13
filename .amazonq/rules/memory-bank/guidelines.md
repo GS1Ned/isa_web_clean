@@ -2,495 +2,406 @@
 
 ## Code Quality Standards
 
-### TypeScript Conventions
-- **Strict Type Safety:** All code uses TypeScript 5.9.3 with strict mode enabled
-- **Type Exports:** Database schema types exported from `drizzle/schema.ts` using `$inferSelect` and `$inferInsert`
-- **Enum Usage:** MySQL enums defined in schema, TypeScript enums avoided in favor of string literal unions
-- **Null Handling:** Explicit null checks, optional chaining (`?.`), and nullish coalescing (`??`) used throughout
+### File Headers and Documentation
+- Every file starts with a JSDoc comment block explaining its purpose
+- Include use cases, performance characteristics, and key features
+- Example: "RAG-powered Q&A system using LLM-based semantic matching"
+- Document API costs and performance optimizations where relevant
+
+### TypeScript Standards
+- Strict TypeScript with explicit types for all function parameters and returns
+- Use interface definitions for complex data structures
+- Export types alongside implementation for reusability
+- Prefer type safety over any types
 
 ### Naming Conventions
-- **Database Tables:** Snake_case (e.g., `advisory_reports`, `gs1_esrs_mappings`)
-- **TypeScript Variables:** camelCase (e.g., `regulationId`, `datasetVersion`)
-- **Constants:** UPPER_SNAKE_CASE (e.g., `COOKIE_NAME`, `REPO_ROOT`)
-- **Types/Interfaces:** PascalCase (e.g., `RagTrace`, `AskISAContextParams`)
-- **Files:** Kebab-case for modules (e.g., `ask-isa-guardrails.ts`), PascalCase for components
+- **Files:** kebab-case (e.g., `advisory-report-export.ts`, `ask-isa-guardrails.ts`)
+- **Functions:** camelCase with descriptive verbs (e.g., `generateEmbedding`, `verifyResponseClaims`)
+- **Types/Interfaces:** PascalCase (e.g., `EmbeddingResult`, `GoldenSetTestCase`)
+- **Constants:** UPPER_SNAKE_CASE (e.g., `EMBEDDING_MODEL`, `BATCH_SIZE`)
+- **Private variables:** Prefix with underscore (e.g., `_selectedFruits`)
 
 ### Code Organization
-- **Modular Structure:** Related functionality grouped in dedicated directories (`/routers`, `/services`, `/prompts`)
-- **Separation of Concerns:** Database operations in `db-*.ts` files, business logic in services, API routes in routers
-- **Index Files:** Service directories use `index.ts` as main export point
-- **Co-location:** Test files (`*.test.ts`) placed alongside source files
+- Group related functionality into sections with comment separators
+- Use `// =============================================================================` for major sections
+- Organize imports by category: external libraries, internal modules, types
+- Place type definitions at the top of files before implementation
 
-### Documentation Standards
-- **JSDoc Comments:** All public functions and complex logic documented with JSDoc
-- **Inline Comments:** Explain "why" not "what" - focus on business logic and constraints
-- **Type Documentation:** Complex types include description comments
-- **File Headers:** Service files include purpose and context comments
+## Semantic Patterns
 
-## Database Patterns
-
-### Schema Design
-- **Drizzle ORM:** All database operations use Drizzle ORM with type-safe queries
-- **Auto-increment IDs:** Primary keys use `int().autoincrement().notNull()`
-- **Timestamps:** `createdAt` and `updatedAt` columns with automatic defaults
-- **JSON Columns:** Complex data stored as JSON with proper TypeScript typing
-- **Indexes:** Strategic indexes on foreign keys, search columns, and filter columns
-
-### Query Patterns
+### Error Handling Pattern
 ```typescript
-// Standard select with filter
-const results = await db
-  .select()
-  .from(tableName)
-  .where(eq(tableName.column, value))
-  .limit(limit);
-
-// Join pattern
-const results = await db
-  .select()
-  .from(table1)
-  .leftJoin(table2, eq(table1.id, table2.foreignKey));
-
-// Aggregation pattern
-const stats = await db
-  .select({ count: sql<number>`count(*)` })
-  .from(tableName)
-  .where(conditions);
+try {
+  // Operation
+  const result = await someOperation();
+  return result;
+} catch (error) {
+  serverLogger.error('[Context] Error message:', error);
+  throw new Error('User-friendly error message');
+}
 ```
 
-### Migration Strategy
-- **Version Control:** All migrations tracked in `drizzle/meta/_journal.json`
-- **Naming:** Descriptive migration names (e.g., `0015_ultimate_dataset_registry.sql`)
-- **Reversibility:** Migrations designed to be reversible where possible
-- **Testing:** Migrations tested in development before production deployment
+### Logging Pattern
+- Use structured logging with context prefixes: `[AskISA]`, `[Advisory]`
+- Log at appropriate levels: info for flow, warn for issues, error for failures
+- Include relevant data in log messages for debugging
+- Example: `serverLogger.info('[AskISA] Query is ambiguous (score: ${score}), returning clarifications')`
 
-## API Design Patterns
+### Validation Pattern
+- Validate inputs early with Zod schemas in tRPC procedures
+- Use guard clauses to handle edge cases first
+- Return early for invalid states
+- Provide clear error messages
 
-### tRPC Router Structure
+### Async/Await Pattern
+- Always use async/await over promises
+- Handle errors with try/catch blocks
+- Use Promise.all for parallel operations
+- Avoid nested callbacks
+
+## tRPC Router Patterns
+
+### Router Definition
 ```typescript
 export const routerName = router({
-  // Public procedures - no authentication required
-  publicEndpoint: publicProcedure
-    .input(z.object({ ... }))
-    .query(async ({ input }) => { ... }),
-  
-  // Protected procedures - authentication required
-  protectedEndpoint: protectedProcedure
-    .input(z.object({ ... }))
-    .mutation(async ({ ctx, input }) => { ... }),
+  procedureName: publicProcedure
+    .input(z.object({ /* schema */ }))
+    .mutation(async ({ input, ctx }) => {
+      // Implementation
+    }),
 });
 ```
 
 ### Input Validation
-- **Zod Schemas:** All inputs validated with Zod schemas
-- **Type Inference:** Input types inferred from Zod schemas
-- **Validation Rules:** Min/max lengths, enums, optional fields clearly defined
-- **Error Messages:** Descriptive validation error messages
+- Use Zod for all input validation
+- Define schemas inline or import from shared types
+- Use `.min()`, `.max()`, `.optional()`, `.default()` for constraints
+- Validate enums with `.enum([...])` for type safety
+
+### Procedure Types
+- `publicProcedure` - No authentication required
+- `protectedProcedure` - Requires authenticated user (ctx.user available)
+- Use `.query()` for read operations
+- Use `.mutation()` for write operations
+
+### Context Usage
+- Access user from `ctx.user` in protected procedures
+- Check user role with `ctx.user.role === 'admin'`
+- Throw errors for unauthorized access
+
+## Database Patterns
+
+### Query Pattern
+```typescript
+const { getDb } = await import('../db');
+const db = await getDb();
+if (!db) throw new Error('Database not available');
+
+const { tableName } = await import('../../drizzle/schema');
+const results = await db.select().from(tableName).where(...);
+```
+
+### Transaction Pattern
+- Use database transactions for multi-step operations
+- Rollback on errors
+- Keep transactions short and focused
 
 ### Error Handling
-```typescript
-try {
-  // Operation
-  return { success: true, data };
-} catch (error) {
-  serverLogger.error('[Context] Operation failed:', error);
-  throw new TRPCError({ 
-    code: 'INTERNAL_SERVER_ERROR',
-    message: 'User-friendly error message'
-  });
-}
-```
+- Always check if database connection exists
+- Provide meaningful error messages
+- Log database errors with context
 
-### Response Patterns
-- **Consistent Structure:** Success responses include `success: boolean` flag
-- **Pagination:** List endpoints support `page`, `pageSize`, `limit` parameters
-- **Metadata:** Responses include relevant metadata (total count, page info)
-- **Null Safety:** Explicit null returns instead of throwing for "not found" cases
-
-## Service Layer Patterns
-
-### Service Organization
-- **Single Responsibility:** Each service handles one domain area
-- **Dependency Injection:** Services receive dependencies as parameters
-- **Stateless:** Services are stateless, state managed in database
-- **Composability:** Services can call other services
-
-### RAG Pipeline Pattern
-```typescript
-// 1. Initialize trace for observability
-const trace = await RagTraceManager.start({ query, userId });
-
-try {
-  // 2. Retrieve relevant documents
-  const results = await hybridSearch(query, options);
-  trace.recordRetrieval(results, latencyMs);
-  
-  // 3. Analyze evidence sufficiency
-  const analysis = analyzeEvidenceSufficiency(results);
-  if (!analysis.isSufficient) {
-    trace.recordAbstention(analysis.abstentionReason);
-    return abstentionResponse;
-  }
-  
-  // 4. Generate answer with LLM
-  const answer = await invokeLLM({ messages });
-  trace.recordGeneration(answer, citations, latencyMs);
-  
-  // 5. Verify and validate
-  const verification = verifyResponse(answer, results);
-  trace.setVerificationStatus(verification.status);
-  
-  // 6. Complete trace
-  await trace.complete();
-  
-  return response;
-} catch (error) {
-  trace.recordError(error);
-  await trace.complete();
-  throw error;
-}
-```
-
-### Observability Pattern
-- **Structured Logging:** Use `serverLogger` with context prefixes
-- **Trace IDs:** Generate unique trace IDs for request tracking
-- **Metrics Collection:** Record latency, success rates, error rates
-- **Error Classification:** Categorize errors for better debugging
-
-## Frontend Patterns
+## Frontend Component Patterns
 
 ### Component Structure
-- **Functional Components:** All components use React functional components with hooks
-- **TypeScript Props:** Props interfaces defined with TypeScript
-- **Composition:** Prefer composition over inheritance
-- **Hooks:** Custom hooks for reusable logic
+```typescript
+export default function ComponentName() {
+  // State declarations
+  const [state, setState] = useState(initialValue);
+  
+  // Hooks
+  const { data } = trpc.router.procedure.useQuery();
+  
+  // Event handlers
+  const handleEvent = () => {
+    // Implementation
+  };
+  
+  // Render
+  return (
+    <div>
+      {/* JSX */}
+    </div>
+  );
+}
+```
 
 ### State Management
-- **TanStack Query:** Server state managed with TanStack Query (React Query)
-- **tRPC Client:** Type-safe API calls with tRPC client
-- **Local State:** Component state with `useState` for UI-only state
-- **Context:** React Context for cross-cutting concerns (auth, theme)
+- Use useState for local component state
+- Use React Query (via tRPC) for server state
+- Use context for global state (theme, auth)
+- Avoid prop drilling - use context or composition
 
-### Styling Patterns
-- **Tailwind CSS:** Utility-first styling with Tailwind CSS 4
-- **shadcn/ui:** Reusable components from shadcn/ui library
-- **Responsive Design:** Mobile-first responsive design
-- **Dark Mode:** Theme support with `next-themes`
+### Event Handlers
+- Prefix with `handle` (e.g., `handleSubmit`, `handleClick`)
+- Define handlers before render
+- Use arrow functions for inline handlers
+- Prevent default behavior when needed
+
+### Styling
+- Use Tailwind CSS utility classes
+- Use shadcn/ui components for consistency
+- Follow responsive design patterns (mobile-first)
+- Use semantic color classes (e.g., `text-muted-foreground`, `bg-primary`)
+
+## AI/LLM Integration Patterns
+
+### Prompt Assembly
+- Use modular prompt systems with clear sections
+- Include context, instructions, and constraints
+- Document prompt versions (e.g., `v2_modular`)
+- Validate responses programmatically
+
+### Embedding Generation
+- Use batch operations for multiple texts
+- Truncate text to max length before embedding
+- Handle API errors gracefully
+- Track token usage for cost monitoring
+
+### RAG Pattern
+```typescript
+// 1. Retrieve relevant context
+const results = await hybridSearch(query, options);
+
+// 2. Build prompt with context
+const prompt = assemblePrompt({ question, relevantChunks: results });
+
+// 3. Generate response
+const response = await invokeLLM({ messages: [{ role: 'user', content: prompt }] });
+
+// 4. Validate and verify
+const verification = verifyResponse(response, results);
+
+// 5. Return with citations
+return { answer: response, sources: results, verification };
+```
+
+### Citation Tracking
+- Always include source citations in responses
+- Validate citation format and provenance
+- Track authority levels of sources
+- Verify claims against source material
 
 ## Testing Patterns
 
-### Test Organization
-- **Vitest Framework:** All tests use Vitest
-- **Co-location:** Test files next to source files
-- **Naming:** `*.test.ts` for unit tests, `*-integration.test.ts` for integration tests
-- **Coverage:** Aim for 80%+ coverage on critical paths
-
 ### Test Structure
 ```typescript
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-
-describe('FeatureName', () => {
-  beforeEach(() => {
-    // Setup
-  });
-  
-  afterEach(() => {
-    // Cleanup
-  });
-  
-  it('should handle expected case', async () => {
+describe('Feature Name', () => {
+  it('should do something specific', async () => {
     // Arrange
-    const input = { ... };
+    const input = setupTestData();
     
     // Act
     const result = await functionUnderTest(input);
     
     // Assert
-    expect(result).toEqual(expectedOutput);
-  });
-  
-  it('should handle error case', async () => {
-    // Test error handling
+    expect(result).toBe(expectedValue);
   });
 });
 ```
 
-### Mocking Strategy
-- **Database Mocks:** Mock database calls in unit tests
-- **API Mocks:** Mock external API calls
-- **Test Helpers:** Reusable test utilities in `/test-helpers`
-- **Integration Tests:** Use real database for integration tests
+### Test Organization
+- Group related tests with describe blocks
+- Use descriptive test names starting with "should"
+- Follow Arrange-Act-Assert pattern
+- Test edge cases and error conditions
 
-## Data Processing Patterns
-
-### Python Scripts
-- **Shebang:** All scripts start with `#!/usr/bin/env python3`
-- **Docstrings:** Module-level docstrings explain purpose and constraints
-- **Type Hints:** Use type hints for function parameters and returns
-- **Error Handling:** Explicit error handling with try/except
-- **Path Handling:** Use `pathlib.Path` for file operations
-
-### Data Extraction Pattern
-```python
-# Detect repo root
-REPO_ROOT = Path(__file__).resolve().parent.parent
-
-# Define data structure
-data = {
-    "id": "unique_id",
-    "version": "1.0.0",
-    "metadata": { ... },
-    "items": []
-}
-
-# Process and validate
-for item in source_items:
-    processed = process_item(item)
-    data["items"].append(processed)
-
-# Write output
-output_path = REPO_ROOT / "data/output.json"
-with open(output_path, 'w', encoding='utf-8') as f:
-    json.dump(data, f, indent=2, ensure_ascii=False)
-```
-
-## Governance Patterns
-
-### Evidence Markers
-- **Format:** `<!-- EVIDENCE:type:path -->`
-- **Types:** `requirement`, `implementation`, `decision`, `test`
-- **Placement:** Inline in markdown documentation
-- **Traceability:** Links documentation to code/data
-
-### Version Control
-- **Conventional Commits:** Use conventional commit format (feat, fix, docs, etc.)
-- **Branch Strategy:** Feature branches from main, PR-based workflow
-- **Commit Messages:** Descriptive messages with context
-- **Atomic Commits:** One logical change per commit
-
-### Dataset Provenance
-- **Registry:** All datasets registered in `data/metadata/dataset_registry.json`
-- **Metadata:** Include source, version, verification date, checksums
-- **Immutability:** Frozen datasets marked with version locks
-- **Citations:** All data usage includes source citations
-
-## Security Patterns
-
-### Authentication
-- **Manus OAuth:** OAuth-based authentication via Manus
-- **JWT Tokens:** Session tokens stored in secure cookies
-- **Role-Based Access:** Admin vs user role checks
-- **Protected Routes:** tRPC `protectedProcedure` for authenticated endpoints
-
-### Data Protection
-- **Environment Variables:** Sensitive data in `.env` (not committed)
-- **Input Sanitization:** All user inputs validated and sanitized
-- **SQL Injection Prevention:** Parameterized queries via Drizzle ORM
-- **XSS Prevention:** React automatic escaping, CSP headers
-
-### API Security
-- **Rate Limiting:** Express rate limit middleware
-- **CORS:** Configured for Manus hosting environment
-- **Helmet:** Security headers via Helmet middleware
-- **HTTPS Only:** Production requires HTTPS
+### Mocking
+- Mock external dependencies (API calls, database)
+- Use test helpers for common mocks
+- Avoid over-mocking - test real behavior when possible
 
 ## Performance Patterns
 
-### Optimization Strategies
-- **Lazy Loading:** Dynamic imports for large modules
-- **Caching:** Response caching for expensive operations
-- **Pagination:** All list endpoints support pagination
-- **Indexing:** Database indexes on frequently queried columns
+### Batch Operations
+- Batch API calls when possible (embeddings, database queries)
+- Use optimal batch sizes (e.g., 100 for embeddings)
+- Report progress for long-running operations
+- Handle partial failures gracefully
 
-### Query Optimization
-- **Limit Results:** Always use `.limit()` on queries
-- **Select Specific Columns:** Avoid `SELECT *` when possible
-- **Batch Operations:** Batch inserts/updates when processing multiple items
-- **Connection Pooling:** MySQL connection pooling configured
+### Caching
+- Cache expensive operations (embeddings, API responses)
+- Implement cache invalidation strategies
+- Track cache hit rates for monitoring
+- Clean up expired entries periodically
 
-### Frontend Performance
-- **Code Splitting:** Vite automatic code splitting
-- **Tree Shaking:** Unused code eliminated in production builds
-- **Asset Optimization:** Images optimized, lazy loaded
-- **Bundle Size:** Monitor bundle size, keep under 500KB initial load
+### Database Optimization
+- Use indexes for frequently queried columns
+- Limit result sets with `.limit()`
+- Use pagination for large datasets
+- Avoid N+1 queries with joins
 
-## AI/ML Integration Patterns
+## Security Patterns
 
-### LLM Usage
-- **Prompt Engineering:** Structured prompts with clear instructions
-- **Context Management:** Limit context to relevant information
-- **Error Handling:** Graceful degradation on LLM failures
-- **Cost Monitoring:** Track token usage and costs
+### Input Sanitization
+- Validate all user inputs with Zod
+- Sanitize HTML content before rendering
+- Escape SQL queries (handled by Drizzle ORM)
+- Validate file uploads
 
-### RAG Pipeline
-- **Hybrid Search:** Combine vector search (semantic) with BM25 (keyword)
-- **Evidence Analysis:** Validate evidence sufficiency before generation
-- **Citation Validation:** Verify all citations against source documents
-- **Abstention Policy:** Refuse to answer when evidence is insufficient
+### Authentication
+- Check authentication in protected procedures
+- Verify user roles for admin operations
+- Use secure session management
+- Never expose sensitive data in responses
 
-### Quality Assurance
-- **Claim Verification:** Verify factual claims against sources
-- **Confidence Scoring:** Calculate confidence based on evidence quality
-- **Authority Scoring:** Weight sources by authority level
-- **Traceability:** Track all data lineage from source to output
+### API Keys
+- Store API keys in environment variables
+- Never commit keys to version control
+- Validate key presence before use
+- Rotate keys regularly
 
-## Common Code Idioms
+## Observability Patterns
 
-### Async/Await Pattern
-```typescript
-// Always use async/await, not .then()
-async function fetchData() {
-  try {
-    const result = await apiCall();
-    return result;
-  } catch (error) {
-    serverLogger.error('Fetch failed:', error);
-    throw error;
-  }
-}
-```
+### Tracing
+- Use RagTraceManager for RAG operations
+- Record retrieval, generation, and verification steps
+- Track latency and quality metrics
+- Complete traces even on errors
+
+### Metrics
+- Calculate quality metrics (traceability, diversity)
+- Track confidence scores
+- Monitor cache hit rates
+- Log performance statistics
+
+### Error Classification
+- Classify errors by type (abstention, failure)
+- Record error context and stack traces
+- Track error rates by category
+- Alert on critical errors
+
+## Data Patterns
+
+### Provenance Tracking
+- Include source, version, and verification date for all data
+- Track lineage and transformations
+- Document ingestion methods
+- Maintain checksums for integrity
+
+### Versioning
+- Version all datasets and reports
+- Use semantic versioning (v1.0, v1.1)
+- Compute diffs between versions
+- Archive old versions
+
+### Validation
+- Validate data against JSON schemas
+- Check completeness and consistency
+- Verify references and citations
+- Report validation errors clearly
+
+## Common Idioms
 
 ### Optional Chaining
 ```typescript
-// Safe property access
 const value = object?.property?.nestedProperty ?? defaultValue;
-
-// Safe array access
-const firstItem = array?.[0];
 ```
 
 ### Array Operations
 ```typescript
-// Map for transformation
-const transformed = items.map(item => ({ ...item, newField: value }));
+// Map with type safety
+const mapped = items.map(item => ({ id: item.id, name: item.name }));
 
-// Filter for selection
-const filtered = items.filter(item => item.status === 'active');
+// Filter with type guards
+const filtered = items.filter((item): item is ValidType => item.isValid);
 
 // Reduce for aggregation
 const sum = items.reduce((acc, item) => acc + item.value, 0);
 ```
 
-### Object Destructuring
+### Conditional Rendering
 ```typescript
-// Function parameters
-function processData({ id, name, options = {} }: DataInput) { ... }
+// Short-circuit evaluation
+{condition && <Component />}
 
-// Variable assignment
-const { data, error } = await fetchData();
+// Ternary operator
+{condition ? <ComponentA /> : <ComponentB />}
+
+// Nullish coalescing
+{value ?? <DefaultComponent />}
 ```
 
-### Template Literals
+### Destructuring
 ```typescript
-// String interpolation
-const message = `User ${userId} performed action ${action}`;
+// Object destructuring with defaults
+const { prop1, prop2 = defaultValue } = object;
 
-// Multi-line strings
-const query = `
-  SELECT * FROM table
-  WHERE condition = true
-  ORDER BY created_at DESC
-`;
+// Array destructuring
+const [first, second, ...rest] = array;
+
+// Function parameter destructuring
+function handler({ input, ctx }: { input: Input; ctx: Context }) {
+  // Implementation
+}
 ```
 
-## Frequently Used Annotations
+## Governance Patterns
 
-### TypeScript Annotations
-```typescript
-// Type assertion
-const value = data as ExpectedType;
+### Documentation Requirements
+- Document all critical changes in decision logs
+- Include rationale and alternatives considered
+- Reference governance framework for major changes
+- Update evidence markers when modifying features
 
-// Non-null assertion (use sparingly)
-const definitelyExists = maybeExists!;
+### Code Review
+- Follow conventional commit format (feat, fix, docs, etc.)
+- Include governance checklist in PRs
+- Ensure tests pass before merging
+- Update documentation with code changes
 
-// Type guard
-if (typeof value === 'string') { ... }
-
-// Generic constraints
-function process<T extends BaseType>(item: T): T { ... }
-```
-
-### JSDoc Annotations
-```typescript
-/**
- * Process user data and return formatted result
- * @param userId - The user's unique identifier
- * @param options - Processing options
- * @returns Formatted user data
- * @throws {Error} If user not found
- */
-async function processUser(userId: number, options?: Options): Promise<UserData> { ... }
-```
-
-### Drizzle ORM Annotations
-```typescript
-// Table definition with indexes
-export const tableName = mysqlTable("table_name", {
-  id: int().autoincrement().notNull(),
-  name: varchar({ length: 255 }).notNull(),
-  createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
-}, (table) => [
-  index("name_idx").on(table.name),
-]);
-```
-
-## Development Workflow
-
-### Local Development
-1. Start dev server: `pnpm dev`
-2. Run tests: `pnpm test` or `pnpm test --watch`
-3. Type check: `pnpm check`
-4. Format code: `pnpm format`
-
-### Code Review Checklist
-- [ ] TypeScript compiles without errors
-- [ ] All tests pass
-- [ ] Code follows naming conventions
-- [ ] Functions have JSDoc comments
-- [ ] Error handling implemented
-- [ ] Logging added for debugging
-- [ ] No sensitive data in code
-- [ ] Database queries optimized
-- [ ] API inputs validated
-- [ ] Governance requirements met
-
-### Deployment Process
-1. Create feature branch
-2. Implement changes with tests
-3. Run full test suite
-4. Commit with conventional commit message
-5. Push to GitHub
-6. Open pull request
-7. Address review feedback
-8. Merge after approval
-9. Deploy to production
+### Quality Gates
+- Run all tests before committing
+- Check TypeScript compilation
+- Validate schemas and contracts
+- Verify governance compliance
 
 ## Anti-Patterns to Avoid
 
-### Code Smells
-- ❌ Large functions (>100 lines) - break into smaller functions
-- ❌ Deep nesting (>3 levels) - extract to functions
-- ❌ Magic numbers - use named constants
-- ❌ Commented-out code - delete it (Git history preserves it)
-- ❌ Console.log in production - use serverLogger
+### Don't
+- Use `any` type without justification
+- Ignore TypeScript errors
+- Skip error handling
+- Commit commented-out code
+- Use magic numbers (define constants)
+- Nest callbacks deeply
+- Mutate props or state directly
+- Skip input validation
+- Log sensitive data
+- Hard-code configuration values
 
-### Database Anti-Patterns
-- ❌ N+1 queries - use joins or batch queries
-- ❌ Missing indexes on foreign keys
-- ❌ SELECT * in production code
-- ❌ Unparameterized queries (SQL injection risk)
-- ❌ Missing error handling on database operations
+### Do
+- Use explicit types
+- Handle all error cases
+- Write self-documenting code
+- Remove dead code
+- Define named constants
+- Use async/await
+- Treat data as immutable
+- Validate all inputs
+- Sanitize logs
+- Use environment variables
 
-### API Anti-Patterns
-- ❌ Unvalidated inputs
-- ❌ Exposing internal errors to users
-- ❌ Missing rate limiting on expensive operations
-- ❌ Inconsistent response formats
-- ❌ Missing pagination on list endpoints
+## Code Review Checklist
 
-### React Anti-Patterns
-- ❌ Prop drilling (use Context or state management)
-- ❌ Inline function definitions in JSX (causes re-renders)
-- ❌ Missing keys in lists
-- ❌ Mutating state directly
-- ❌ Side effects in render functions
+Before submitting code for review:
+- [ ] All TypeScript types are explicit
+- [ ] Error handling is comprehensive
+- [ ] Logging includes appropriate context
+- [ ] Input validation uses Zod schemas
+- [ ] Tests cover new functionality
+- [ ] Documentation is updated
+- [ ] No sensitive data in logs or code
+- [ ] Performance considerations addressed
+- [ ] Security best practices followed
+- [ ] Governance requirements met

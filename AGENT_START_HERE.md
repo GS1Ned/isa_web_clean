@@ -3,11 +3,25 @@
 <!-- EVIDENCE:requirement:README.md -->
 <!-- EVIDENCE:requirement:AGENT_START_HERE.md -->
 <!-- EVIDENCE:requirement:docs/REPO_MAP.md -->
+<!-- EVIDENCE:requirement:.amazonq/rules/mcp-usage.md -->
 The following files are authoritative, stable entry points for agents and tooling:
 
 - `/README.md` — Human-facing project overview
 - `/AGENT_START_HERE.md` — Primary agent orientation and rules
 - `/docs/REPO_MAP.md` — Canonical repository structure snapshot (CI-generated)
+- `/.amazonq/rules/mcp-usage.md` — MCP server usage policy (v2.0)
+
+## MCP Server Policy
+
+**Policy Location:** `.amazonq/rules/mcp-usage.md`  
+**Evidence Log:** `docs/evidence/_generated/mcp_log.md`  
+**Smoke Tests:** `.mcp/test-new-servers.md`
+
+**Key Principle:** MCP servers invoked when net benefit > net cost
+
+**Configured Servers:** Postgres, Filesystem, Git, Fetch, Puppeteer, Sequential Thinking, Memory, GitHub (+ 17 recommended additions)
+
+**Tool-Use Preflight:** Apply decision tree at task start (see policy file)
 ## Planning (canonical)
 
 <!-- EVIDENCE:requirement:docs/planning/NEXT_ACTIONS.json -->

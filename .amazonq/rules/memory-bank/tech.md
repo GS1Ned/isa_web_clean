@@ -2,154 +2,362 @@
 
 ## Programming Languages
 
-- **TypeScript 5.9.3** - Primary language for frontend and backend
-- **JavaScript (ESM)** - Build scripts and utilities
-- **Python 3.x** - Data processing and ingestion scripts
-- **SQL** - Database migrations and queries
-- **Bash** - Shell scripts for automation
+### TypeScript 5.9.3
+Primary language for both frontend and backend.
+
+**Usage:**
+- All client code (React components, hooks, utilities)
+- All server code (Express, tRPC, services)
+- Shared types and schemas
+- Build scripts and automation
+
+**Configuration:** `tsconfig.json`
+
+### JavaScript (ESM)
+Used for specific scripts and legacy compatibility.
+
+**Usage:**
+- Some build scripts (`.mjs` files)
+- Node.js automation scripts
+- Migration scripts
+
+### Python 3.x
+Used for data processing and validation scripts.
+
+**Usage:**
+- Dataset processing (`scripts/datasets/`)
+- Validation scripts (`scripts/validation/`)
+- Refactoring automation (`scripts/refactor/`)
+
+### SQL
+Database schema and migrations.
+
+**Usage:**
+- Drizzle migrations (`drizzle/*.sql`)
+- Manual database scripts (`scripts/*.sql`)
 
 ## Frontend Stack
 
-### Core Framework
-- **React 19.1.1** - UI library
-- **TypeScript 5.9.3** - Type safety
-- **Vite 7.1.7** - Build tool and dev server
+### React 19.1.1
+Modern React with concurrent features.
 
-### Styling
-- **Tailwind CSS 4.1.14** - Utility-first CSS framework
-- **@tailwindcss/typography** - Typography plugin
-- **tailwindcss-animate** - Animation utilities
-- **PostCSS 8.4.47** - CSS processing
+**Key Features:**
+- Functional components with hooks
+- Concurrent rendering
+- Automatic batching
+- Server components (not used)
 
-### UI Components
-- **shadcn/ui** - Component library (Radix UI primitives)
-- **Radix UI** - Accessible component primitives
-- **Lucide React** - Icon library
-- **Framer Motion** - Animation library
+### Wouter 3.3.5
+Lightweight routing library.
 
-### State Management
-- **@tanstack/react-query 5.90.2** - Server state management
-- **React Hook Form 7.64.0** - Form state management
-- **Zod 4.1.12** - Schema validation
+**Usage:**
+- Client-side routing
+- Route parameters and navigation
+- Custom patch applied (`patches/wouter@3.7.1.patch`)
 
-### Routing
-- **Wouter 3.3.5** - Lightweight routing (patched)
+### Tailwind CSS 4.1.14
+Utility-first CSS framework.
 
-### Data Visualization
-- **Recharts 2.15.4** - Charts and graphs
-- **ReactFlow 11.11.4** - Flow diagrams
-- **Leaflet 1.9.4** - Maps (with react-leaflet)
+**Configuration:** `tailwind.config.js`
+**Plugins:**
+- `@tailwindcss/typography` - Typography utilities
+- `tailwindcss-animate` - Animation utilities
+
+### shadcn/ui
+Component library built on Radix UI.
+
+**Components Used:**
+- Accordion, Alert Dialog, Avatar, Checkbox
+- Dialog, Dropdown Menu, Hover Card, Label
+- Popover, Progress, Radio Group, Scroll Area
+- Select, Separator, Slider, Switch, Tabs
+- Toggle, Tooltip, and more
+
+**Configuration:** `components.json`
+
+### TanStack Query 5.90.2
+Data fetching and caching.
+
+**Usage:**
+- API call management
+- Cache invalidation
+- Optimistic updates
+- Background refetching
+
+### tRPC Client 11.6.0
+Type-safe API client.
+
+**Usage:**
+- Automatic TypeScript types from server
+- React Query integration
+- Mutation handling
+
+### Additional Frontend Libraries
+- `framer-motion` 12.23.22 - Animations
+- `recharts` 2.15.4 - Charts and visualizations
+- `reactflow` 11.11.4 - Flow diagrams
+- `react-leaflet` 5.0.0 - Maps (EUDR geolocation)
+- `lucide-react` 0.453.0 - Icons
+- `sonner` 2.0.7 - Toast notifications
+- `cmdk` 1.1.1 - Command palette
+- `react-hook-form` 7.64.0 - Form management
+- `zod` 4.1.12 - Schema validation
 
 ## Backend Stack
 
-### Core Framework
-- **Express 4.21.2** - Web server
-- **tRPC 11.6.0** - Type-safe RPC
-- **Node.js 22.13.0** - Runtime
+### Node.js 22.13.0
+JavaScript runtime.
 
-### Database
-- **Drizzle ORM 0.44.5** - Type-safe ORM
-- **MySQL2 3.15.1** - MySQL driver
-- **TiDB** - Cloud database (MySQL-compatible)
+**Requirements:**
+- Node.js 22.13.0 (specified in development)
+- ESM module system (`"type": "module"` in package.json)
 
-### AI/ML
-- **OpenAI GPT-4** - LLM for advisory and Q&A
-- **text-embedding-3-small** - Embeddings for semantic search
-- **wink-bm25-text-search 3.1.2** - BM25 search algorithm
+### Express 4.21.2
+Web server framework.
 
-### Authentication
-- **Manus OAuth** - Authentication provider
-- **jose 6.1.0** - JWT handling
-- **cookie 1.0.2** - Cookie parsing
+**Middleware:**
+- `helmet` 8.1.0 - Security headers
+- `express-rate-limit` 8.2.1 - Rate limiting
+- `cookie` 1.0.2 - Cookie parsing
 
-### Data Processing
-- **ExcelJS 4.4.0** - Excel file processing
-- **fast-xml-parser 5.3.2** - XML parsing
-- **Cheerio 1.1.2** - HTML parsing
-- **Playwright 1.57.0** - Web scraping
-- **rss-parser 3.13.0** - RSS feed parsing
+### tRPC Server 11.6.0
+Type-safe API framework.
 
-### Utilities
-- **Axios 1.12.2** - HTTP client
-- **date-fns 4.1.0** - Date utilities
-- **nanoid 5.1.5** - ID generation
-- **sort-keys 6.0.0** - Object key sorting
-- **superjson 1.13.3** - JSON serialization
+**Features:**
+- Procedure definitions
+- Input validation with Zod
+- Middleware support
+- Context management
 
-### Security
-- **Helmet 8.1.0** - Security headers
-- **express-rate-limit 8.2.1** - Rate limiting
+**Configuration:** `server/_core/trpc.ts`
 
-### Monitoring
-- **node-cron 4.2.1** - Cron job scheduling
+### Drizzle ORM 0.44.5
+Type-safe database ORM.
+
+**Features:**
+- Schema-first approach
+- Automatic TypeScript types
+- Migration generation
+- Query builder
+
+**Configuration:** `drizzle.config.ts`
+**CLI:** `drizzle-kit` 0.31.4
+
+### MySQL 2 (mysql2) 3.15.1
+Database driver.
+
+**Usage:**
+- Connection pooling
+- Prepared statements
+- SSL/TLS support
+- Compatible with MySQL and TiDB
+
+### Additional Backend Libraries
+- `axios` 1.12.2 - HTTP client
+- `cheerio` 1.1.2 - HTML parsing (web scraping)
+- `playwright` 1.57.0 - Browser automation (web scraping)
+- `rss-parser` 3.13.0 - RSS feed parsing
+- `node-cron` 4.2.1 - Scheduled tasks
+- `exceljs` 4.4.0 - Excel file processing
+- `fast-xml-parser` 5.3.2 - XML parsing
+- `wink-bm25-text-search` 3.1.2 - BM25 search algorithm
+- `nanoid` 5.1.5 - ID generation
+- `jose` 6.1.0 - JWT handling
+- `dotenv` 17.2.2 - Environment variables
+
+## AI/ML Stack
+
+### OpenAI API
+LLM and embedding services.
+
+**Models Used:**
+- `gpt-4` - Advisory generation, Q&A responses
+- `text-embedding-3-small` - Document embeddings
+
+**Usage:**
+- `server/_core/llm.ts` - LLM client
+- `server/_core/embedding.ts` - Embedding generation
+- `server/embedding.ts` - Batch embedding generation
+
+### Vector Search
+Hybrid search combining BM25 and vector similarity.
+
+**Implementation:**
+- BM25: `wink-bm25-text-search` library
+- Vector: Cosine similarity on embeddings
+- Hybrid: Weighted combination of scores
+
+## Build Tools
+
+### Vite 7.1.7
+Frontend build tool and dev server.
+
+**Features:**
+- Fast HMR (Hot Module Replacement)
+- ESM-based development
+- Optimized production builds
+- Plugin ecosystem
+
+**Configuration:** `vite.config.ts`
+**Plugins:**
+- `@vitejs/plugin-react` 5.0.4 - React support
+- `vite-plugin-manus-runtime` 0.0.56 - Manus integration
+- `@builder.io/vite-plugin-jsx-loc` 0.1.1 - JSX location tracking
+
+### esbuild 0.25.0
+Backend bundler.
+
+**Usage:**
+- Bundle server code for production
+- Fast compilation
+- Tree shaking
+
+**Command:** `esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist`
+
+### tsx 4.19.1
+TypeScript execution for development.
+
+**Usage:**
+- Run TypeScript files directly
+- Watch mode for development
+- Script execution
+
+**Command:** `tsx watch server/_core/index.ts`
+
+## Testing Stack
+
+### Vitest 2.1.4
+Test framework.
+
+**Features:**
+- Vite-powered testing
+- Jest-compatible API
+- Fast execution
+- Watch mode
+
+**Configuration:** `vitest.config.ts`, `vitest.setup.ts`
+
+### Testing Library
+React component testing.
+
+**Libraries:**
+- `@testing-library/react` 16.3.0 - React testing utilities
+- `@testing-library/jest-dom` 6.9.1 - DOM matchers
+- `@testing-library/user-event` 14.6.1 - User interaction simulation
+
+### Test Environments
+- `happy-dom` 20.0.11 - Lightweight DOM implementation
+- `jsdom` 27.3.0 - Full DOM implementation
 
 ## Development Tools
 
-### Build Tools
-- **esbuild 0.25.0** - Fast bundler
-- **tsx 4.19.1** - TypeScript execution
-- **pnpm 10.4.1** - Package manager
+### Package Manager: pnpm 10.4.1
+Fast, disk-efficient package manager.
 
-### Testing
-- **Vitest 2.1.4** - Test framework
-- **@testing-library/react 16.3.0** - React testing utilities
-- **@testing-library/user-event 14.6.1** - User interaction simulation
-- **happy-dom 20.0.11** - DOM implementation
-- **jsdom 27.3.0** - Alternative DOM implementation
+**Features:**
+- Content-addressable storage
+- Strict dependency resolution
+- Workspace support
+- Patch support
 
-### Code Quality
-- **Prettier 3.6.2** - Code formatter
-- **ESLint** - Linting (configured)
-- **markdownlint-cli 0.47.0** - Markdown linting
-- **cspell 9.4.0** - Spell checking
+**Configuration:** `pnpm-lock.yaml`, `.pnpmfile.cjs`
 
-### Database Tools
-- **drizzle-kit 0.31.4** - Schema management and migrations
-- **better-sqlite3 12.5.0** - SQLite for testing
+### Code Quality Tools
 
-### Validation
-- **ajv 8.17.1** - JSON schema validation
-- **ajv-formats 3.0.1** - Format validators
+#### Prettier 3.6.2
+Code formatter.
+
+**Configuration:** `.prettierrc`, `.prettierignore`
+
+#### ESLint
+Linting (server-side).
+
+**Configuration:** `.eslintrc.server.json`
+
+#### markdownlint-cli 0.47.0
+Markdown linting.
+
+**Configuration:** `.markdownlint.json`
+
+#### cspell 9.4.0
+Spell checker.
+
+**Configuration:** `cspell.json`
+**Dictionaries:** `@cspell/dict-en-gb` 5.0.20
+
+### Version Control
+
+#### Git
+Version control system.
+
+**Configuration:** `.gitignore`
+
+#### GitHub
+Remote repository and CI/CD.
+
+**Workflows:** `.github/workflows/`
+- `q-branch-ci.yml` - Main CI pipeline
+- `repo-tree.yml` - Repository tree generation
+- `schema-validation.yml` - Schema validation
+- `validate-docs.yml` - Documentation validation
+- `refactoring-validation.yml` - Refactoring checks
 
 ## Infrastructure
 
-### Hosting
-- **Manus** - Application hosting and AI infrastructure
+### Hosting: Manus
+Platform hosting and infrastructure.
 
-### Version Control
-- **GitHub** - Repository hosting
-- **Git** - Version control
+**Features:**
+- OAuth authentication
+- Runtime environment
+- Database hosting (TiDB)
 
-### CI/CD
-- **GitHub Actions** - Automated workflows
-  - `q-branch-ci.yml` - Branch CI
-  - `schema-validation.yml` - Schema validation
-  - `repo-tree.yml` - Repository tree generation
-  - `ask-isa-smoke.yml` - Smoke tests
+### Database: TiDB (MySQL-compatible)
+Distributed SQL database.
 
-### Cloud Services
-- **AWS S3** - File storage (optional)
-- **OpenAI API** - LLM and embeddings
+**Features:**
+- MySQL compatibility
+- Horizontal scalability
+- ACID transactions
+- SSL/TLS support
+
+### Authentication: Manus OAuth
+OAuth 2.0 authentication.
+
+**Implementation:** `server/_core/oauth.ts`
 
 ## Development Commands
 
+### Installation
+```bash
+pnpm install
+```
+
 ### Development
 ```bash
-pnpm dev                    # Start dev server
+pnpm dev                    # Start dev server (frontend + backend)
+```
+
+### Building
+```bash
 pnpm build                  # Build for production
 pnpm start                  # Start production server
-pnpm check                  # TypeScript type checking
+```
+
+### Type Checking
+```bash
+pnpm check                  # TypeScript type checking (no emit)
 ```
 
 ### Testing
 ```bash
 pnpm test                   # Run all tests
 pnpm test-unit              # Run unit tests
-pnpm test-integration       # Run integration tests
+pnpm test-integration       # Run integration tests (requires DB)
+pnpm test-db-health         # Run database health tests
 pnpm test-ci                # Run CI test suite
 pnpm test-ci:unit           # Run CI unit tests
 pnpm test-ci:integration    # Run CI integration tests
-pnpm test-db-health         # Run database health tests
 ```
 
 ### Database
@@ -163,10 +371,10 @@ pnpm verify:data            # Verify data files
 pnpm ingest:esrs            # Ingest ESRS datapoints
 ```
 
-### Advisory System
+### Advisory Operations
 ```bash
 pnpm validate:advisory      # Validate advisory schema
-pnpm canonicalize:advisory  # Canonicalize advisory JSON
+pnpm canonicalize:advisory  # Canonicalize advisory format
 pnpm diff:advisory          # Compute advisory diff
 ```
 
@@ -176,77 +384,85 @@ pnpm format                 # Format code with Prettier
 pnpm lint:style             # Lint markdown and check spelling
 ```
 
-### Custom Scripts
-```bash
-# Gate validation
-bash scripts/gates/validate-proof-artifacts.sh
-
-# Security gate
-bash scripts/gates/security-gate.sh
-
-# Performance smoke test
-bash scripts/gates/perf-smoke.sh
-
-# Reliability smoke test
-bash scripts/gates/reliability-smoke.sh
-
-# Observability contract
-bash scripts/gates/observability-contract.sh
-
-# Governance gate
-bash scripts/gates/governance-gate.sh
-
-# SLO policy check
-bash scripts/gates/slo-policy-check.sh
-
-# Generate error budget status
-pnpm tsx scripts/sre/generate-error-budget-status.ts
-
-# Generate evidence catalogue
-pnpm tsx scripts/sre/generate-evidence-catalogue.ts
-
-# Repository assessment
-bash scripts/audit/repo_assessment.sh
-```
-
 ## Environment Variables
 
-Required environment variables (see `.env.example`):
-
+### Required Variables
 - `DATABASE_URL` - MySQL/TiDB connection string
 - `OPENAI_API_KEY` - OpenAI API key
 - `MANUS_CLIENT_ID` - Manus OAuth client ID
 - `MANUS_CLIENT_SECRET` - Manus OAuth client secret
+
+### Optional Variables
 - `NODE_ENV` - Environment (development/production)
-- `CRON_SECRET` - Secret for cron endpoints
+- `PORT` - Server port (default: 3000)
+- `RUN_DB_TESTS` - Enable database tests (true/false)
 
-## Package Manager
-
-- **pnpm 10.4.1** - Fast, disk space efficient package manager
-- **Patches:** `wouter@3.7.1` (custom patch applied)
-- **Overrides:** `tailwindcss>nanoid@3.3.7` (security)
-
-## Node.js Version
-
-- **Required:** Node.js 22.13.0
-- **Recommended:** Use nvm or similar for version management
+**Configuration:** `.env` (local), `.env.example` (template)
 
 ## Browser Support
 
-- Modern browsers with ES2020+ support
-- Chrome, Firefox, Safari, Edge (latest versions)
+### Target Browsers
+Modern browsers with ES2020+ support:
+- Chrome/Edge (latest)
+- Firefox (latest)
+- Safari (latest)
+
+### Polyfills
+None required (modern browser target).
 
 ## Performance Considerations
 
-- **Max Old Space Size:** 4096 MB (configured in dev script)
-- **Build Optimization:** esbuild for fast bundling
-- **Code Splitting:** Vite automatic code splitting
-- **Tree Shaking:** Enabled in production builds
+### Frontend
+- Code splitting via Vite
+- Lazy loading of routes
+- React Query caching
+- Optimistic updates
 
-## Security Features
+### Backend
+- Database connection pooling
+- Rate limiting
+- Response caching
+- Batch operations
 
-- **Helmet:** Security headers middleware
-- **Rate Limiting:** Express rate limit middleware
-- **CORS:** Configured for Manus hosting
-- **OAuth:** Manus OAuth integration
-- **Environment Variables:** Sensitive data in .env (not committed)
+### Database
+- Indexed queries
+- Prepared statements
+- Connection pooling
+- Query optimization
+
+## Security
+
+### Frontend
+- Content Security Policy (CSP)
+- XSS protection
+- CSRF protection via SameSite cookies
+
+### Backend
+- Helmet security headers
+- Rate limiting
+- Input validation (Zod)
+- SQL injection protection (Drizzle ORM)
+- OAuth authentication
+
+### Database
+- SSL/TLS connections
+- Prepared statements
+- Least privilege access
+
+## Monitoring and Observability
+
+### Logging
+- `server/utils/server-logger.ts` - Structured logging
+- `server/utils/pipeline-logger.ts` - Pipeline-specific logging
+
+### Error Tracking
+- `server/_core/error-tracking.ts` - Error tracking service
+- `server/db-error-tracking.ts` - Database error logging
+
+### Performance Monitoring
+- `server/_core/performance-monitoring.ts` - Performance tracking
+- `server/db-performance-tracking.ts` - Database performance
+
+### Health Checks
+- `server/health.ts` - Health check endpoints
+- `scripts/probe/` - Health check scripts

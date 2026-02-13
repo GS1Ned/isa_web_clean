@@ -3,39 +3,44 @@
 ## Project Identity
 
 **Name:** ISA (Intelligent Standards Architect)  
-**Type:** Sustainability compliance intelligence platform  
-**Owner:** GS1 Netherlands  
+**Version:** 1.0.0  
 **Status:** Phase 9 Consolidation Complete (as of 2025-12-17)
 
 ## Purpose
 
-ISA connects EU ESG regulations to GS1 standards through AI-powered analysis and a structured knowledge graph. It provides regulation-to-standard mapping intelligence for GS1 Netherlands members navigating EU sustainability compliance requirements.
+ISA is a sustainability compliance intelligence platform that connects EU ESG regulations to GS1 standards through AI-powered analysis and a structured knowledge graph. It provides regulation-to-standard mapping intelligence for GS1 Netherlands members navigating EU sustainability compliance requirements.
 
-## Core Value Proposition
+## Value Proposition
 
-- **Regulatory Intelligence:** Ingests content from authoritative sources (EUR-Lex, EFRAG)
-- **Standards Processing:** Processes GS1 technical standards (GDSN, EPCIS, WebVoc)
-- **AI-Assisted Mapping:** Generates structured regulation-to-standard mappings
-- **Knowledge Graph:** Enables querying, compliance timeline exploration, and versioned advisory outputs
-- **Full Traceability:** Every data point traces back to its source with provenance metadata
+ISA bridges the gap between complex EU sustainability regulations (CSRD/ESRS, EUDR, DPP, PPWR, Batteries) and practical GS1 technical standards implementation. The platform:
 
-## Key Features
+- Ingests regulatory content from authoritative sources (EUR-Lex, EFRAG)
+- Processes GS1 technical standards (GDSN, EPCIS, WebVoc)
+- Generates structured mappings using AI-assisted analysis
+- Enables users to query the knowledge graph
+- Provides compliance timelines and versioned advisory outputs
+- Traces every data point back to its source
+
+## Core Capabilities
 
 ### 1. ESG Hub
+Regulatory tracking and monitoring system:
 - Tracks 38 EU regulations with compliance timelines
 - Regulation comparison tool
-- Real-time news feed from 7 monitored sources
+- Real-time news feed from 7 sources (100% health rate)
 - 1,184 ESRS datapoints from EFRAG IG3
 - 60+ GS1 standards catalog
 
 ### 2. Advisory System
+Versioned advisory report generation:
 - Generates versioned advisory outputs (v1.0, v1.1)
 - Full dataset provenance tracking
 - Advisory diff computation
-- GS1-to-ESRS mapping engine
-- All outputs subject to governance review
+- GS1-to-ESRS mapping engine (450+ mappings)
+- All outputs subject to governance review before publication
 
-### 3. Ask ISA (RAG-powered Q&A)
+### 3. Ask ISA
+RAG-powered Q&A system:
 - 30 production queries
 - Mandatory citations for all responses
 - Query guardrails (6 allowed types, 5 forbidden types)
@@ -43,13 +48,15 @@ ISA connects EU ESG regulations to GS1 standards through AI-powered analysis and
 - Source citation tracking
 
 ### 4. EPCIS Tools (Exploratory)
+Supply chain traceability tools:
 - EUDR geolocation mapper
 - Barcode scanner
 - EPCIS event upload (JSON/XML)
 - Compliance report generation
-- **Note:** NOT production-ready
+- **Note:** NOT production-ready, exploratory only
 
 ### 5. Admin Tools
+System management and monitoring:
 - News pipeline management
 - Regulatory change log
 - Scraper health monitoring
@@ -59,37 +66,69 @@ ISA connects EU ESG regulations to GS1 standards through AI-powered analysis and
 
 ## Target Users
 
-- **Primary:** GS1 Netherlands members and stakeholders
-- **Geographic Focus:** EU regulations + Dutch/Benelux initiatives
-- **Use Cases:** ESG compliance navigation, standard selection, regulatory tracking
+**Primary Audience:** GS1 Netherlands members and stakeholders
+
+**User Roles:**
+- Sustainability compliance officers
+- ESG data managers
+- Supply chain professionals
+- GS1 standards implementers
+- Regulatory affairs specialists
+
+## Key Use Cases
+
+1. **Regulation-to-Standard Mapping:** Discover which GS1 standards support specific EU regulatory requirements
+2. **Compliance Timeline Planning:** Track upcoming regulatory deadlines and prepare implementation roadmaps
+3. **Knowledge Discovery:** Query the knowledge graph to find relevant standards, datapoints, and guidance
+4. **Advisory Report Generation:** Generate versioned advisory reports with full provenance tracking
+5. **News Monitoring:** Stay informed about regulatory changes and GS1 standards updates
+6. **Gap Analysis:** Identify coverage gaps between regulations and available standards
+
+## Scope and Boundaries
+
+### What ISA IS
+- Regulation-to-standard mapping intelligence platform
+- Knowledge graph for EU ESG regulations and GS1 standards
+- Advisory report generation system with governance controls
+- News monitoring and aggregation system
+- RAG-powered Q&A system with mandatory citations
+
+### What ISA IS NOT
+- Legal advice or compliance guarantee provider
+- Real-time regulatory update service
+- Replacement for professional ESG consultants or auditors
+- Production-ready EPCIS validation system
+- Public API service (internal use only)
+- Multi-jurisdiction compliance platform (EU + Dutch/Benelux only)
+
+### Geographic Scope
+- **Primary:** EU regulations
+- **Secondary:** Dutch/Benelux initiatives
+- **Out of Scope:** Non-EU jurisdictions
+
+### Regulatory Scope
+- **In Scope:** CSRD/ESRS, EUDR, DPP, PPWR, Batteries Regulation
+- **Partial Coverage:** Sector-specific Green Deals
+- **Out of Scope:** CS3D/CSDDD detailed implementation guidance, ESPR delegated acts (pending publication)
+
+### Standards Scope
+- **In Scope:** GS1 standards only (GDSN, EPCIS, WebVoc, Digital Link, etc.)
+- **Out of Scope:** ISO, UNECE, or other SDO standards
+
+### Temporal Scope
+- Datasets verified as of their documented `last_verified_date`
+- No guarantee of currency beyond explicitly timestamped verification dates
+- News pipeline operates on scheduled intervals (not real-time)
 
 ## Verified Coverage (as of 2025-12-17)
 
-- **Regulations:** 38 EU regulations tracked
-- **ESRS Datapoints:** 1,184 from EFRAG IG3 (verified 2024-12-15)
-- **GS1 Standards:** 60+ cataloged (verified 2024-11-30)
+- **Regulations Tracked:** 38 EU regulations
+- **ESRS Datapoints:** 1,184 datapoints from EFRAG IG3 (verified 2024-12-15)
+- **GS1 Standards:** 60+ standards cataloged (verified 2024-11-30)
 - **AI Mappings:** 450+ regulation-to-standard mappings (generated 2024-12-10)
-- **News Sources:** 7 sources (100% health rate)
-- **Advisory Reports:** 2 versions (v1.0, v1.1)
+- **News Sources:** 7 sources monitored (100% health rate)
+- **Advisory Reports:** 2 versions (v1.0, v1.1) under governance review
 - **Test Coverage:** 517/574 tests passing (90.1%)
-
-## What ISA Is NOT
-
-- Does NOT provide legal advice or compliance guarantees
-- Does NOT claim 100% coverage of any regulation or standard
-- Does NOT offer real-time regulatory updates (scheduled intervals only)
-- Does NOT replace professional ESG consultants or auditors
-- Does NOT support jurisdictions outside EU + Dutch/Benelux
-- Does NOT provide production-ready EPCIS validation
-- Does NOT offer public API access (internal use only)
-
-## Scope Boundaries
-
-- **Geographic:** EU regulations + Dutch/Benelux initiatives only
-- **Temporal:** Datasets verified as of documented `last_verified_date`
-- **Regulatory:** Focus on CSRD/ESRS, EUDR, DPP, PPWR, Batteries (not exhaustive)
-- **Standards:** GS1 standards only (no ISO, UNECE, or other SDOs)
-- **Language:** English only
 
 ## Governance Principles
 
@@ -101,13 +140,22 @@ ISA operates under strict governance constraints:
 4. **Transparency:** All decisions documented with rationale and alternatives
 5. **Reversibility:** All changes can be rolled back via Git
 
-**Authoritative Document:** `docs/governance/_root/ISA_GOVERNANCE.md`
+**Authoritative Governance Document:** `docs/governance/_root/ISA_GOVERNANCE.md`
 
-## Known Gaps (Intentionally Deferred)
+## Quality Metrics
 
-- CS3D/CSDDD detailed implementation guidance
-- ESPR delegated acts (pending publication)
-- Sector-specific Green Deals (partial coverage)
-- Real-time regulatory change detection
-- Multi-language support
-- EPCIS 2.0 validation (exploratory only)
+- **Validation Gates:** 6/6 passing
+- **Quality Score:** 75/100
+- **Semantic Validity:** 91.9%
+- **Evidence Markers:** 145 markers
+- **Test Coverage:** 90.1%
+- **Contract Completeness:** 70%
+
+## Known Limitations
+
+- English language only (no multi-language support)
+- Scheduled news updates (not real-time)
+- EPCIS 2.0 validation is exploratory only
+- No 100% coverage guarantee for any regulation or standard
+- Datasets verified as of documented dates (not continuously updated)
+- Internal use only (no public API access)
