@@ -1,10 +1,8 @@
 import { defineConfig } from "vitest/config";
 import path from "path";
 
-<!-- EVIDENCE:implementation:vitest.config.ts -->
 const templateRoot = path.resolve(import.meta.dirname);
 
-<!-- EVIDENCE:decision:server/db-health-guard.test.ts -->
 const dbDependentTests = [
   "server/alert-system.test.ts",
   "server/admin-analytics.test.ts",
@@ -37,10 +35,7 @@ const dbDependentTests = [
   "server/routers.test.ts",
 ];
 
-<!-- EVIDENCE:implementation:vitest.setup.ts -->
 export default defineConfig(() => {
-  // Use explicit environment flag instead of async detection
-  <!-- EVIDENCE:constraint:package.json -->
   const runDbTests = process.env.RUN_DB_TESTS === "true" || process.env.DATABASE_URL;
   const exclude = runDbTests ? [] : dbDependentTests;
 

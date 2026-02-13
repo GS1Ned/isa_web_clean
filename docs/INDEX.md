@@ -2,14 +2,15 @@
 
 ## Start Here
 
-**Architecture SSOT:** `docs/spec/ESRS_MAPPING/isa-core-architecture.md`  
-**Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`  
+**Architecture SSOT:** `docs/spec/ARCHITECTURE.md`
+**Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
 **Repository Map:** `docs/REPO_MAP.md`
 
 ## Core Documentation
 
 ### Architecture & Quality
-- **Architecture SSOT:** `docs/spec/ESRS_MAPPING/isa-core-architecture.md`
+
+- **Architecture SSOT:** `docs/spec/ARCHITECTURE.md`
 - **Architecture Review:** `docs/architecture/panel/KICKOFF_PACKAGE.md`
 - **ATAM Scenarios:** `docs/architecture/panel/ATAM_SCENARIOS.md`
 - **ATAM Risks:** `docs/architecture/panel/ATAM_RISKS_SENSITIVITIES_TRADEOFFS.md`
@@ -45,6 +46,8 @@
 - **Refactoring Status:** `docs/planning/refactoring/`
 
 ## Archives
+
+- **Governance (historical):** `isa-archive/governance/`
 - **Phase Reports:** `isa-archive/phase-reports/`
 - **Roadmaps:** `isa-archive/planning/roadmaps/`
 - **Backlog Snapshots:** `isa-archive/backlog/`
@@ -52,5 +55,5 @@
 ---
 
 **Document Status:** Canonical Index  
-**Last Updated:** 2026-02-12  
+**Last Updated:** 2026-02-13  
 **Maintainer:** ISA Repository Steward
