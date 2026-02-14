@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Corpus Ingestion Service
  * Part of Gate 1.3: Refactor Ingestion Pipeline

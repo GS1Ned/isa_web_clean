@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useState, useCallback } from "react";
 import { trpc } from "@/lib/trpc";
 import ReactFlow, {

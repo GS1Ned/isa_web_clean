@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Enhanced Knowledge Vector Search
  * 

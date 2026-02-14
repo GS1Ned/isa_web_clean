@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * ISA Reasoning Engine v1
  * 

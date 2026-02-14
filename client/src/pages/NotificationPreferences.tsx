@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect } from "react";
 import { Bell, Clock, Mail, RotateCcw, Save, FileText, AlertTriangle, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";

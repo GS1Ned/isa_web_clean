@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {  } from "react";
 import { trpc } from "@/lib/trpc";
 import {

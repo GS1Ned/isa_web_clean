@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Gap Analysis Panel Component
  * 

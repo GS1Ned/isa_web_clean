@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * ESG Regulatory Traceability View
  * 

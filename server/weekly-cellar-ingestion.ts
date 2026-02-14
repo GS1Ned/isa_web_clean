@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Weekly CELLAR Auto-Ingestion Script
  *

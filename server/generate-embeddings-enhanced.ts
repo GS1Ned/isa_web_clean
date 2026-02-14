@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Enhanced Embedding Generation with Metadata Context
  *

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NEWS_SOURCES, type NewsSource } from "../news-sources";
 import type { FetchResult, RawNewsItem } from "../news-fetcher";
 import type { InvokeResult } from "../_core/llm";

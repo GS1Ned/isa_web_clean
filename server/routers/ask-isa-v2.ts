@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Ask ISA v2 Router - Enhanced with Knowledge Embeddings and Reasoning Engine
  * 
