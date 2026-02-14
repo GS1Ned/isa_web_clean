@@ -2,6 +2,7 @@
 
 ## Start Here
 
+**Agent Map (Canonical):** `docs/agent/AGENT_MAP.md`
 **Architecture SSOT:** `docs/spec/ARCHITECTURE.md`
 **Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
 **Repository Map:** `docs/REPO_MAP.md`
@@ -18,6 +19,7 @@
 
 ### Governance
 - **Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
+- **Agent Map (Canonical):** `docs/agent/AGENT_MAP.md`
 - **Canonical Docs Allowlist:** `config/governance/canonical_docs_allowlist.json`
 - **Planning Index:** `docs/planning/INDEX.md`
 - **Next Actions:** `docs/planning/NEXT_ACTIONS.json`

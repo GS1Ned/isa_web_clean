@@ -5,6 +5,12 @@
 # Build outputs
 dist/
 build/
+.next/
+out/
+coverage/
+.cache/
+logs/
+node_modules/
 *.dist
 
 # Environment variables

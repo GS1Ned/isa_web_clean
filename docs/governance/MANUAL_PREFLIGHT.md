@@ -38,8 +38,8 @@ PASS if these files exist and form a link chain:
 - `docs/agent/AGENT_MAP.md` links:
   - `docs/planning/INDEX.md`
   - `docs/planning/NEXT_ACTIONS.json`
-  - `docs/core/ISA_CORE_CONTRACT.md`
-  - `docs/spec/INDEX.md`
+  - `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
+  - `docs/spec/README.md`
 - `docs/planning/INDEX.md` links `docs/planning/NEXT_ACTIONS.json`
 
 ## 4. Planning Integrity (Plan-as-code)
@@ -53,9 +53,9 @@ PASS if:
 
 ## 5. Spec & Core Contract Minimums
 PASS if:
-- `docs/spec/INDEX.md` exists and links to all 6 specs:
+- `docs/spec/README.md` exists and links to all 6 specs:
   - ASK_ISA, NEWS_HUB, KNOWLEDGE_BASE, CATALOG, ESRS_MAPPING, ADVISORY
-- `docs/core/ISA_CORE_CONTRACT.md` mentions all 6 capabilities and includes an explicit Non-scope/Exclusions section.
+- `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md` mentions all 6 capabilities and includes an explicit Non-scope/Exclusions section.
 
 ## 6. Security Hygiene (repo-only)
 PASS if:
@@ -75,4 +75,3 @@ Record in PR description:
 - head_sha
 - files changed
 - any deviations from checklist and why
-

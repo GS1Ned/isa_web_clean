@@ -15,6 +15,8 @@ const dbDependentTests = [
   "server/epcis-integration.test.ts",
   "server/epcis-ui.test.ts",
   "server/esrs.test.ts",
+  "server/esrs-gs1-mapping.test.ts",
+  "server/gs1-nl-content.test.ts",
   "server/gs1-mapping-engine.test.ts",
   "server/news-health-monitor.test.ts",
   "server/news-pipeline-db-integration.test.ts",
@@ -33,13 +35,18 @@ const dbDependentTests = [
   "server/routers/standards-directory.test.ts",
   "server/standards-directory.test.ts",
   "server/routers.test.ts",
+  "server/test-helpers/db-test-utils.test.ts",
 ];
 
 export default defineConfig(() => {
-  const runDbTests = process.env.RUN_DB_TESTS === "true" || process.env.DATABASE_URL;
+  // DB tests must be opt-in. A configured DATABASE_URL alone should not turn unit tests
+  // into integration tests (new devs/agents often have a .env but no seeded DB).
+  const runDbTests = process.env.RUN_DB_TESTS === "true";
   const exclude = runDbTests ? [] : dbDependentTests;
 
-  console.log(`[vitest.config] RUN_DB_TESTS=${process.env.RUN_DB_TESTS}, DATABASE_URL=${!!process.env.DATABASE_URL}, excluding ${exclude.length} tests`);
+  console.log(
+    `[vitest.config] RUN_DB_TESTS=${process.env.RUN_DB_TESTS}, DATABASE_URL=${!!process.env.DATABASE_URL}, excluding ${exclude.length} tests`
+  );
 
   return {
     root: templateRoot,

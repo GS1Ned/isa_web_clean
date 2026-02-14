@@ -7,7 +7,7 @@
  * Usage: DATABASE_URL=... pnpm exec tsx scripts/check-db-status.ts
  */
 
-import mysql from "mysql2/promise";
+import { createMysqlConnection } from "../server/db-connection";
 
 const DATABASE_URL = process.env.DATABASE_URL;
 
@@ -24,7 +24,8 @@ async function main() {
 
   try {
     console.log("Connecting to database...");
-    const connection = await mysql.createConnection(DATABASE_URL!);
+    // Uses ISA's URL parser (supports `?sslmode=require`, `?ssl=true`, etc.)
+    const connection = await createMysqlConnection(DATABASE_URL!);
     console.log("✅ Database connected");
     console.log();
 

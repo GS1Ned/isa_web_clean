@@ -7,8 +7,6 @@ const describeGithub = hasGithubPat ? describe : describe.skip;
 describeGithub('GitHub PAT Validation', () => {
   it('should validate GitHub PAT has correct permissions', async () => {
     const token = ENV.githubPat;
-    console.log('Token length:', token?.length);
-    console.log('Token starts with:', token?.substring(0, 10));
     expect(token).toBeDefined();
     expect(token).not.toBe('');
 

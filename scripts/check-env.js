@@ -31,14 +31,12 @@ const allKeys = envExampleContent
   .map(line => line.split('=')[0].trim())
   .filter(key => key.length > 0);
 
-// Required keys that must be present
+// Required keys that must be present.
+// Source of truth: `server/_core/env.ts` (fail-fast server validation).
 const REQUIRED_KEYS = [
   'VITE_APP_ID',
   'JWT_SECRET',
   'DATABASE_URL',
-  'OAUTH_SERVER_URL',
-  'OWNER_OPEN_ID',
-  'OPENAI_API_KEY',
 ];
 
 // Check for missing required keys
