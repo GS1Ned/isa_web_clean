@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+if [ -z "${ROOT}" ]; then
+  echo "STOP=not_a_git_worktree"
+  exit 1
+fi
+cd "${ROOT}"
+
 DATE="2026-02-15"
 BASE="docs/research/isa-deep-research/${DATE}"
 RAW="${BASE}/raw"
