@@ -1,0 +1,1916 @@
+{
+  "version": "2026-02-15",
+  "generated_at": "2026-02-15T17:26:03.352Z",
+  "clone_root": "/tmp/isa_oss_benchmarks_2026_02_15_repos",
+  "repos": [
+    {
+      "full_name": "SigNoz/signoz",
+      "url": "https://github.com/SigNoz/signoz",
+      "commit_sha": "df72c897f91e1457f6adf5c9fc14e3e3cc201a30",
+      "inspect_paths": [
+        {
+          "path": ".github/workflows/build-community.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/build-community.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/build-enterprise.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/build-enterprise.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/build-staging.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/build-staging.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/commitci.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/commitci.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/docs.yml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/docs.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/goci.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/goci.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/gor-histogramquantile.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/gor-histogramquantile.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/gor-signoz-community.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/gor-signoz-community.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/gor-signoz.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/gor-signoz.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/integrationci.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/integrationci.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/jsci.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/jsci.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/postci.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/postci.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/prereleaser.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/prereleaser.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/release-drafter.yml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/release-drafter.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/releaser.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/releaser.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/run-e2e.yaml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/run-e2e.yaml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": "CODE_OF_CONDUCT.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/CODE_OF_CONDUCT.md",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "conf/prometheus.yml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/conf/prometheus.yml",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/CONTRIBUTING.md",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "deploy/common/clickhouse/config.xml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/deploy/common/clickhouse/config.xml",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "deploy/install.sh",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/deploy/install.sh",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "docs/api/openapi.yml",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/api/openapi.yml",
+          "reasons": [
+            "docs"
+          ]
+        },
+        {
+          "path": "docs/contributing/development.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/development.md",
+          "reasons": [
+            "docs"
+          ]
+        },
+        {
+          "path": "docs/contributing/go/endpoint.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/go/endpoint.md",
+          "reasons": [
+            "docs"
+          ]
+        },
+        {
+          "path": "docs/contributing/go/errors.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/go/errors.md",
+          "reasons": [
+            "docs"
+          ]
+        },
+        {
+          "path": "docs/contributing/go/flagger.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/go/flagger.md",
+          "reasons": [
+            "docs",
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "docs/contributing/go/handler.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/go/handler.md",
+          "reasons": [
+            "docs",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "docs/contributing/go/integration.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/go/integration.md",
+          "reasons": [
+            "docs"
+          ]
+        },
+        {
+          "path": "docs/contributing/go/provider.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/go/provider.md",
+          "reasons": [
+            "docs"
+          ]
+        },
+        {
+          "path": "docs/contributing/go/readme.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/go/readme.md",
+          "reasons": [
+            "docs",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "docs/contributing/go/sql.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/go/sql.md",
+          "reasons": [
+            "docs",
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "docs/contributing/onboarding.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/onboarding.md",
+          "reasons": [
+            "docs"
+          ]
+        },
+        {
+          "path": "docs/otel-demo-docs.md",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/otel-demo-docs.md",
+          "reasons": [
+            "docs"
+          ]
+        },
+        {
+          "path": "ee/gateway/httpgateway/provider.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/ee/gateway/httpgateway/provider.go",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "ee/query-service/usage/manager.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/ee/query-service/usage/manager.go",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "ee/zeus/httpzeus/provider.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/ee/zeus/httpzeus/provider.go",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "frontend/src/api/index.ts",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/frontend/src/api/index.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "frontend/src/constants/sessionStorage.ts",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/frontend/src/constants/sessionStorage.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "frontend/src/index.tsx",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/frontend/src/index.tsx",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "frontend/src/mocks-server/__mockdata__/tracedetail.ts",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/frontend/src/mocks-server/__mockdata__/tracedetail.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "frontend/src/pages/Integrations/IntegrationDetailPage/IntegrationDetailPage.styles.scss",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/frontend/src/pages/Integrations/IntegrationDetailPage/IntegrationDetailPage.styles.scss",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "frontend/src/pages/Integrations/IntegrationDetailPage/IntegrationDetailPage.tsx",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/frontend/src/pages/Integrations/IntegrationDetailPage/IntegrationDetailPage.tsx",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "frontend/src/pages/Integrations/Integrations.styles.scss",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/frontend/src/pages/Integrations/Integrations.styles.scss",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "frontend/src/pages/Integrations/IntegrationsList.tsx",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/frontend/src/pages/Integrations/IntegrationsList.tsx",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "frontend/webpack.config.prod.js",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/frontend/webpack.config.prod.js",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "go.mod",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/go.mod",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "go.sum",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/go.sum",
+          "reasons": [
+            "keyword:governance",
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/LICENSE",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "pkg/alertmanager/alertmanagernotify/alertmanagernotifytest/test.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/alertmanager/alertmanagernotify/alertmanagernotifytest/test.go",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "pkg/alertmanager/alertmanagernotify/msteamsv2/msteamsv2_test.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/alertmanager/alertmanagernotify/msteamsv2/msteamsv2_test.go",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "pkg/alertmanager/alertmanagernotify/msteamsv2/msteamsv2.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/alertmanager/alertmanagernotify/msteamsv2/msteamsv2.go",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "pkg/apiserver/signozapiserver/authdomain.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/apiserver/signozapiserver/authdomain.go",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "pkg/apiserver/signozapiserver/metricsexplorer.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/apiserver/signozapiserver/metricsexplorer.go",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "pkg/apiserver/signozapiserver/org.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/apiserver/signozapiserver/org.go",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "pkg/apiserver/signozapiserver/preference.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/apiserver/signozapiserver/preference.go",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "pkg/apiserver/signozapiserver/promote.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/apiserver/signozapiserver/promote.go",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "pkg/apiserver/signozapiserver/session.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/apiserver/signozapiserver/session.go",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "pkg/apiserver/signozapiserver/user.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/apiserver/signozapiserver/user.go",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "pkg/http/client/http.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/http/client/http.go",
+          "reasons": [
+            "keyword:observability",
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "pkg/http/client/option.go",
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/pkg/http/client/option.go",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "full_name": "langfuse/langfuse",
+      "url": "https://github.com/langfuse/langfuse",
+      "commit_sha": "afa2143e8a10560088a2080a0d2f308f339c94fa",
+      "inspect_paths": [
+        {
+          "path": ".env.dev-redis-cluster.example",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.env.dev-redis-cluster.example",
+          "reasons": [
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": ".github/workflows/_deploy_ecs_service.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/_deploy_ecs_service.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/ci.yml.template",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/ci.yml.template",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/codeql.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/codeql.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/codespell.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/codespell.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/dependabot-rebase-stale.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/dependabot-rebase-stale.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/deploy.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/deploy.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/licencecheck.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/licencecheck.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/pipeline.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/pipeline.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/release.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/release.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/sdk-api-spec.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/sdk-api-spec.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/snyk-web.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/snyk-web.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/snyk-worker.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/snyk-worker.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/stale_issues.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/stale_issues.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/validate-pr-title.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/validate-pr-title.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": "AGENTS.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/AGENTS.md",
+          "reasons": [
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "CLAUDE.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/CLAUDE.md",
+          "reasons": [
+            "keyword:eval",
+            "keyword:governance",
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/CONTRIBUTING.md",
+          "reasons": [
+            "canonical",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "docker-compose.build.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/docker-compose.build.yml",
+          "reasons": [
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "docker-compose.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/docker-compose.yml",
+          "reasons": [
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/LICENSE",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "package.json",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/package.json",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "packages/shared/scripts/seeder/utils/framework-traces/beeai-2025-08-01.json",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/beeai-2025-08-01.json",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/shared/scripts/seeder/utils/framework-traces/google-gemini-2025-08-01.json",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/google-gemini-2025-08-01.json",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/shared/scripts/seeder/utils/markdown.txt",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/markdown.txt",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/shared/scripts/seeder/utils/postgres-seed-constants.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/postgres-seed-constants.ts",
+          "reasons": [
+            "keyword:eval",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/shared/scripts/seeder/utils/README.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/README.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/shared/scripts/seeder/utils/seed-helpers.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/seed-helpers.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "packages/shared/scripts/seeder/utils/seeder-orchestrator.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/seeder-orchestrator.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "packages/shared/src/interfaces/filters.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/src/interfaces/filters.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "packages/shared/src/server/services/StorageService.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/src/server/services/StorageService.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/pnpm-lock.yaml",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "README.cn.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/README.cn.md",
+          "reasons": [
+            "keyword:eval",
+            "keyword:governance",
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "README.ja.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/README.ja.md",
+          "reasons": [
+            "keyword:eval",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "README.kr.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/README.kr.md",
+          "reasons": [
+            "keyword:governance",
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "readme.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/readme.md",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "README.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/README.md",
+          "reasons": [
+            "canonical",
+            "keyword:eval",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "SECURITY.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/SECURITY.md",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "web/src/__tests__/withMiddlewares.servertest.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/__tests__/withMiddlewares.servertest.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/components/trace2/components/IOPreview/IOPreview.tsx",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/components/trace2/components/IOPreview/IOPreview.tsx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/components/trace2/components/TraceLogView/useLogViewDownload.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/components/trace2/components/TraceLogView/useLogViewDownload.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/features/events/components/V4BetaSidebarToggle.tsx",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/features/events/components/V4BetaSidebarToggle.tsx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/features/mcp/README.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/features/mcp/README.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/features/playground/page/components/MultiWindowPlayground.tsx",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/features/playground/page/components/MultiWindowPlayground.tsx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/features/playground/page/index.tsx",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/features/playground/page/index.tsx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/features/score-analytics/README.md",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/features/score-analytics/README.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/features/support-chat/plain/plainClient.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/features/support-chat/plain/plainClient.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/pages/_app.tsx",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/pages/_app.tsx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/pages/api/public/dataset-run-items.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/pages/api/public/dataset-run-items.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "web/src/pages/api/public/mcp/index.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/pages/api/public/mcp/index.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "web/src/pages/project/[projectId]/scores/analytics.tsx",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/web/src/pages/project/[projectId]/scores/analytics.tsx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "worker/package.json",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/worker/package.json",
+          "reasons": [
+            "keyword:observability",
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "worker/src/__tests__/chatml/integration.test.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/worker/src/__tests__/chatml/integration.test.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "worker/src/__tests__/evalService.test.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/worker/src/__tests__/evalService.test.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "worker/src/backgroundMigrations/backfillBillingCycleAnchors.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/worker/src/backgroundMigrations/backfillBillingCycleAnchors.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "worker/src/backgroundMigrations/backfillEventsHistoric.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/worker/src/backgroundMigrations/backfillEventsHistoric.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "worker/src/backgroundMigrations/migrateDatasetRunItemsFromPostgresToClickhouseRmt.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/worker/src/backgroundMigrations/migrateDatasetRunItemsFromPostgresToClickhouseRmt.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "worker/src/backgroundMigrations/migrateTracesFromPostgresToClickhouse.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/worker/src/backgroundMigrations/migrateTracesFromPostgresToClickhouse.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "worker/src/env.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/worker/src/env.ts",
+          "reasons": [
+            "keyword:observability",
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "worker/src/features/evaluation/evalService.ts",
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/worker/src/features/evaluation/evalService.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "full_name": "Helicone/helicone",
+      "url": "https://github.com/Helicone/helicone",
+      "commit_sha": "bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b",
+      "inspect_paths": [
+        {
+          "path": ".github/workflows/claude-code-review.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/claude-code-review.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/claude.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/claude.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/clickhouse-migration-check.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/clickhouse-migration-check.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/docker-push.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/docker-push.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/e2e-test-suite.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/e2e-test-suite.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/hql-clickhouse-tests.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/hql-clickhouse-tests.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/jawn-build-precheck.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/jawn-build-precheck.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/jawn-deployment.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/jawn-deployment.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/jawn-typecheck.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/jawn-typecheck.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/nightly-e2e-test-suite.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/nightly-e2e-test-suite.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/packages-test.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/packages-test.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/request-body-buffer-container-tests.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/request-body-buffer-container-tests.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/tusk-sanity-check.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/tusk-sanity-check.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/worker-build-precheck.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/worker-build-precheck.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/worker-test.yml",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/worker-test.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": "bifrost/app/agent-course/page.tsx",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/app/agent-course/page.tsx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "bifrost/app/llm-cost/CalculatorInfo.tsx",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/app/llm-cost/CalculatorInfo.tsx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "bifrost/lib/clients/jawnTypes/private.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/lib/clients/jawnTypes/private.ts",
+          "reasons": [
+            "keyword:eval",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "bifrost/lib/clients/jawnTypes/public.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/lib/clients/jawnTypes/public.ts",
+          "reasons": [
+            "keyword:eval",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "bifrost/public/static/greptile-clear.svg",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/public/static/greptile-clear.svg",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "bifrost/public/static/reworkd.svg",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/public/static/reworkd.svg",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "CLAUDE.md",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/CLAUDE.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "CONTRIBUTING_GUIDELINES.md",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/CONTRIBUTING_GUIDELINES.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "DEVELOPER_README.md",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/DEVELOPER_README.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "DIAGRAMS.md",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/DIAGRAMS.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "docs/swagger.json",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/docs/swagger.json",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "e2e/lib/test-helpers.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/e2e/lib/test-helpers.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "e2e/tests/on-push/ci-infra/health.test.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/e2e/tests/on-push/ci-infra/health.test.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "examples/export/typescript/index.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/examples/export/typescript/index.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "examples/export/typescript/README.md",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/examples/export/typescript/README.md",
+          "reasons": [
+            "keyword:governance",
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "examples/qawolf/examples.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/examples/qawolf/examples.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "FULL_AGENT_LOOP.md",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/FULL_AGENT_LOOP.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "helicone-cron/src/db/database.types.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/helicone-cron/src/db/database.types.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "helicone-heartbeat/worker-configuration.d.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/helicone-heartbeat/worker-configuration.d.ts",
+          "reasons": [
+            "keyword:governance",
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "helicone-mcp/src/types/public.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/helicone-mcp/src/types/public.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/LICENSE",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "mitmproxy.sh",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/mitmproxy.sh",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "package.json",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/package.json",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "packages/cost/providers/anthropic/index.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/packages/cost/providers/anthropic/index.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/cost/providers/google/index.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/packages/cost/providers/google/index.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/cost/providers/openai/index.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/packages/cost/providers/openai/index.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/cost/README.md",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/packages/cost/README.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/README.md",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/packages/README.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "readme.md",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/readme.md",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "README.md",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/README.md",
+          "reasons": [
+            "canonical",
+            "keyword:eval",
+            "keyword:governance",
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "sdk/typescript/helpers/package-lock.json",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/sdk/typescript/helpers/package-lock.json",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "supabase/migrations/20250109062323_gov-orgs.sql",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/supabase/migrations/20250109062323_gov-orgs.sql",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "supabase/migrations/20250110024823_gov-keys.sql",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/supabase/migrations/20250110024823_gov-keys.sql",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "valhalla/jawn/src/controllers/public/evalController.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/valhalla/jawn/src/controllers/public/evalController.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "valhalla/jawn/src/controllers/public/evaluatorController.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/valhalla/jawn/src/controllers/public/evaluatorController.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "web/services/hooks/useOrgOnboarding.ts",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/web/services/hooks/useOrgOnboarding.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "yarn.lock",
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/yarn.lock",
+          "reasons": [
+            "keyword:governance",
+            "keyword:observability"
+          ]
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "full_name": "colinhacks/zod",
+      "url": "https://github.com/colinhacks/zod",
+      "commit_sha": "c7805073fef5b6b8857307c3d4b3597a70613bc2",
+      "inspect_paths": [
+        {
+          "path": ".github/workflows/claude-code-review.yml",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/.github/workflows/claude-code-review.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/claude.yml",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/.github/workflows/claude.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/pullfrog.yml",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/.github/workflows/pullfrog.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/release.yml",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/.github/workflows/release.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/stale.yml",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/.github/workflows/stale.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/test.yml",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/.github/workflows/test.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": "CODE_OF_CONDUCT.md",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/CODE_OF_CONDUCT.md",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/CONTRIBUTING.md",
+          "reasons": [
+            "canonical",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/LICENSE",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "logo.svg",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/logo.svg",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "package.json",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/package.json",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "packages/docs-v3/CONTRIBUTING.md",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/docs-v3/CONTRIBUTING.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/docs-v3/logo.svg",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/docs-v3/logo.svg",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/docs-v3/README.md",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/docs-v3/README.md",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "packages/docs/content/api.mdx",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/docs/content/api.mdx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/docs/content/v4/changelog.mdx",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/docs/content/v4/changelog.mdx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/docs/pnpm-lock.yaml",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/docs/pnpm-lock.yaml",
+          "reasons": [
+            "keyword:governance",
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "packages/docs/public/codecs/codecs-network-dark.svg",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/docs/public/codecs/codecs-network-dark.svg",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/docs/public/codecs/codecs-network-light.svg",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/docs/public/codecs/codecs-network-light.svg",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/zod/src/v3/tests/async-parsing.test.ts",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v3/tests/async-parsing.test.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/zod/src/v3/ZodError.ts",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v3/ZodError.ts",
+          "reasons": [
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "packages/zod/src/v4/classic/tests/async-parsing.test.ts",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/classic/tests/async-parsing.test.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/zod/src/v4/classic/tests/map.test.ts",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/classic/tests/map.test.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/zod/src/v4/core/schemas.ts",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/core/schemas.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/zod/src/v4/mini/tests/object.test.ts",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/mini/tests/object.test.ts",
+          "reasons": [
+            "keyword:eval"
+          ]
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/pnpm-lock.yaml",
+          "reasons": [
+            "keyword:governance",
+            "keyword:observability",
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "readme.md",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/readme.md",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "README.md",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/README.md",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "tea.yaml",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/tea.yaml",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "tsconfig.json",
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/tsconfig.json",
+          "reasons": [
+            "canonical"
+          ]
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "full_name": "trpc/trpc",
+      "url": "https://github.com/trpc/trpc",
+      "commit_sha": "08a7c997343105e479a1e0d488e7d882e3a60703",
+      "inspect_paths": [
+        {
+          "path": ".github/workflows/codeql-analysis.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/codeql-analysis.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/dependabot-approve.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/dependabot-approve.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/labeler.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/labeler.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/lint.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/lint.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/lock-issues.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/lock-issues.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/main.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/release-canary.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/release-canary.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/release-manual.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/release-manual.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/release-tmp.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/release-tmp.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/semantic-pr.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/semantic-pr.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": ".github/workflows/subtree.yml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/subtree.yml",
+          "reasons": [
+            "ci-workflow"
+          ]
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/CONTRIBUTING.md",
+          "reasons": [
+            "canonical",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "examples/soa/README.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/examples/soa/README.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "examples/standalone-server/package.json",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/examples/standalone-server/package.json",
+          "reasons": [
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/LICENSE",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "package.json",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/package.json",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "packages/client/src/links.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/client/src/links/httpSubscriptionLink.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/httpSubscriptionLink.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/client/src/links/internals/dedupeLink.test.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/internals/dedupeLink.test.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/client/src/links/internals/dedupeLink.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/internals/dedupeLink.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/client/src/links/localLink.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/localLink.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/client/src/links/retryLink.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/retryLink.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/client/src/links/splitLink.test.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/splitLink.test.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/client/src/links/wsLink/wsClient/options.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/wsLink/wsClient/options.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/client/src/links/wsLink/wsClient/requestManager.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/wsLink/wsClient/requestManager.ts",
+          "reasons": [
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "packages/client/src/links/wsLink/wsClient/wsClient.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/wsLink/wsClient/wsClient.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/server/src/unstable-core-do-not-import/http/contentType.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/server/src/unstable-core-do-not-import/http/contentType.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/server/src/unstable-core-do-not-import/http/resolveResponse.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/server/src/unstable-core-do-not-import/http/resolveResponse.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "packages/server/src/unstable-core-do-not-import/http/types.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/server/src/unstable-core-do-not-import/http/types.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/server/src/unstable-core-do-not-import/rpc/codes.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/server/src/unstable-core-do-not-import/rpc/codes.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/server/src/unstable-core-do-not-import/rpc/index.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/server/src/unstable-core-do-not-import/rpc/index.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "packages/tests/server/adapters/fastify.test.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/tests/server/adapters/fastify.test.ts",
+          "reasons": [
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "packages/tests/server/streaming.test.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/tests/server/streaming.test.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/pnpm-lock.yaml",
+          "reasons": [
+            "keyword:governance",
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "readme.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/readme.md",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "README.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/README.md",
+          "reasons": [
+            "canonical",
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "SECURITY.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/SECURITY.md",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "tsconfig.json",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/tsconfig.json",
+          "reasons": [
+            "canonical"
+          ]
+        },
+        {
+          "path": "vitest.config.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/vitest.config.ts",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "www/blog/2023-01-14-typescript-performance-lessons.mdx",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/blog/2023-01-14-typescript-performance-lessons.mdx",
+          "reasons": [
+            "keyword:eval",
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "www/blog/2023-01-17-tinyrpc-client.mdx",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/blog/2023-01-17-tinyrpc-client.mdx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/blog/2024-05-23-trpc-actions.mdx",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/blog/2024-05-23-trpc-actions.mdx",
+          "reasons": [
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "www/docs/client/links/httpSubscriptionLink.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/docs/client/links/httpSubscriptionLink.md",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "www/docs/client/links/retryLink.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/docs/client/links/retryLink.md",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "www/docs/client/links/wsLink.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/docs/client/links/wsLink.md",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "www/docs/client/tanstack-react-query/migrating.mdx",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/docs/client/tanstack-react-query/migrating.mdx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/docs/community/contributing.mdx",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/docs/community/contributing.mdx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/docs/migration/migrate-from-v10-to-v11.mdx",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/docs/migration/migrate-from-v10-to-v11.mdx",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "www/docs/server/validators.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/docs/server/validators.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/sidebars.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/sidebars.ts",
+          "reasons": [
+            "keyword:governance",
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "www/src/components/TwitterWall/script.output.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/src/components/TwitterWall/script.output.ts",
+          "reasons": [
+            "keyword:observability"
+          ]
+        },
+        {
+          "path": "www/src/components/TwitterWall/tweetsOld.ts",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/src/components/TwitterWall/tweetsOld.ts",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/unversioned/_contributing.mdx",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/unversioned/_contributing.mdx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/vercel.json",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/vercel.json",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/versioned_docs/version-10.x/client/links/wsLink.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/versioned_docs/version-10.x/client/links/wsLink.md",
+          "reasons": [
+            "keyword:reliability"
+          ]
+        },
+        {
+          "path": "www/versioned_docs/version-10.x/community/contributing.mdx",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/versioned_docs/version-10.x/community/contributing.mdx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/versioned_docs/version-10.x/migration/migrate-from-v9-to-v10.mdx",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/versioned_docs/version-10.x/migration/migrate-from-v9-to-v10.mdx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/versioned_docs/version-10.x/server/validators.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/versioned_docs/version-10.x/server/validators.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/versioned_docs/version-9.x/client/links.md",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/versioned_docs/version-9.x/client/links.md",
+          "reasons": [
+            "keyword:governance"
+          ]
+        },
+        {
+          "path": "www/versioned_docs/version-9.x/main/contributing.mdx",
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/www/versioned_docs/version-9.x/main/contributing.mdx",
+          "reasons": [
+            "keyword:governance"
+          ]
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    }
+  ]
+}

@@ -1,0 +1,1113 @@
+{
+  "version": "2026-02-15",
+  "repo": "GS1Ned/isa_web_clean",
+  "branch": "strict-no-console",
+  "candidates": [
+    {
+      "name": "SigNoz/signoz",
+      "url": "https://github.com/SigNoz/signoz",
+      "signals": {
+        "stars": 25744,
+        "forks": 1959,
+        "last_commit_date": "2026-02-15",
+        "release_date": "2026-02-11"
+      },
+      "why_liked": [
+        {
+          "claim": "Observability product repo with many CI workflows and release automation",
+          "evidence_url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/releaser.yaml",
+          "evidence_date": ""
+        },
+        {
+          "claim": "Publishes an OpenAPI spec as a tracked artifact",
+          "evidence_url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/api/openapi.yml",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/jsci.yaml",
+        "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/releaser.yaml",
+        "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/conf/prometheus.yml",
+        "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/CONTRIBUTING.md",
+        "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/api/openapi.yml",
+        "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/development.md",
+        "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/README.md"
+      ],
+      "patterns": [
+        "P-001 Docs-as-interface",
+        "P-002 CI workflows as governance",
+        "P-004 Artifact-first APIs (OpenAPI specs)",
+        "P-006 Tracing and metrics via OpenTelemetry",
+        "P-008 Release automation and versioned artifacts"
+      ],
+      "avoid": [
+        "Large multi-language codebase; extract workflow patterns, not implementation details"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "langfuse/langfuse",
+      "url": "https://github.com/langfuse/langfuse",
+      "signals": {
+        "stars": 21945,
+        "forks": 2164,
+        "last_commit_date": "2026-02-15",
+        "release_date": "2026-02-12"
+      },
+      "why_liked": [
+        {
+          "claim": "LLM observability/eval oriented repo with CI-heavy posture",
+          "evidence_url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/pipeline.yml",
+          "evidence_date": ""
+        },
+        {
+          "claim": "Stores small trace-like fixtures as versioned JSON files",
+          "evidence_url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/google-gemini-2025-08-01.json",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/pipeline.yml",
+        "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/sdk-api-spec.yml",
+        "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/CONTRIBUTING.md",
+        "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/beeai-2025-08-01.json",
+        "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/README.md"
+      ],
+      "patterns": [
+        "P-001 Docs-as-interface",
+        "P-002 CI workflows as governance",
+        "P-006 Tracing and metrics via OpenTelemetry",
+        "P-009 Deterministic fixtures for eval and traces"
+      ],
+      "avoid": [
+        "App-level architecture; map concepts to ISA boundaries rather than copying folder layout"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Helicone/helicone",
+      "url": "https://github.com/Helicone/helicone",
+      "signals": {
+        "stars": 5113,
+        "forks": 481,
+        "last_commit_date": "2026-02-13",
+        "release_date": "2025-08-21"
+      },
+      "why_liked": [
+        {
+          "claim": "CI is decomposed into targeted workflows (typecheck, migrations, e2e)",
+          "evidence_url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/jawn-typecheck.yml",
+          "evidence_date": ""
+        },
+        {
+          "claim": "Explicit typed client boundary surface present",
+          "evidence_url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/lib/clients/jawnTypes/public.ts",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/clickhouse-migration-check.yml",
+        "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/e2e-test-suite.yml",
+        "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/lib/clients/jawnTypes/public.ts",
+        "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/DEVELOPER_README.md",
+        "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/README.md"
+      ],
+      "patterns": [
+        "P-002 CI workflows as governance",
+        "P-003 Typed API boundary with tRPC + Zod",
+        "P-006 Tracing and metrics via OpenTelemetry"
+      ],
+      "avoid": [
+        "Product-specific infra; focus on CI and boundary patterns"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "colinhacks/zod",
+      "url": "https://github.com/colinhacks/zod",
+      "signals": {
+        "stars": 41853,
+        "forks": 1820,
+        "last_commit_date": "2026-02-15",
+        "release_date": "2026-01-22"
+      },
+      "why_liked": [
+        {
+          "claim": "Canonical TS-first schema validation and parsing library",
+          "evidence_url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/README.md",
+          "evidence_date": ""
+        },
+        {
+          "claim": "Core schema code and tests are maintained under packages",
+          "evidence_url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/core/schemas.ts",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/.github/workflows/test.yml",
+        "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/classic/tests/async-parsing.test.ts",
+        "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/core/schemas.ts",
+        "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/README.md"
+      ],
+      "patterns": [
+        "P-003 Typed API boundary with tRPC + Zod"
+      ],
+      "avoid": [
+        "Library repo; use as boundary-validation reference, not as app architecture reference"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "trpc/trpc",
+      "url": "https://github.com/trpc/trpc",
+      "signals": {
+        "stars": 39542,
+        "forks": 1488,
+        "last_commit_date": "2026-02-14",
+        "release_date": "2026-02-09"
+      },
+      "why_liked": [
+        {
+          "claim": "Client link patterns include retries and dedupe",
+          "evidence_url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/retryLink.ts",
+          "evidence_date": ""
+        },
+        {
+          "claim": "End-to-end typesafe RPC boundary for TS apps",
+          "evidence_url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/README.md",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/main.yml",
+        "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/CONTRIBUTING.md",
+        "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/internals/dedupeLink.ts",
+        "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/retryLink.ts",
+        "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/README.md"
+      ],
+      "patterns": [
+        "P-002 CI workflows as governance",
+        "P-003 Typed API boundary with tRPC + Zod",
+        "P-007 Durable workflows for reliability"
+      ],
+      "avoid": [
+        "Router patterns are framework-specific; map to ISA tRPC layer where appropriate"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "drizzle-team/drizzle-orm",
+      "url": "https://github.com/drizzle-team/drizzle-orm",
+      "signals": {
+        "stars": 32788,
+        "forks": 1195,
+        "last_commit_date": "2026-02-15",
+        "release_date": "2026-02-09"
+      },
+      "why_liked": [
+        {
+          "claim": "Tracing hooks exist in the core library",
+          "evidence_url": "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/drizzle-orm/src/tracing.ts",
+          "evidence_date": ""
+        },
+        {
+          "claim": "Type-driven DB layer with explicit adapters",
+          "evidence_url": "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/README.md",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/.github/workflows/release-latest.yaml",
+        "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/CONTRIBUTING.md",
+        "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/drizzle-orm/src/index.ts",
+        "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/drizzle-orm/src/tracing.ts",
+        "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/README.md"
+      ],
+      "patterns": [
+        "P-003 Typed API boundary with tRPC + Zod",
+        "P-006 Tracing and metrics via OpenTelemetry"
+      ],
+      "avoid": [
+        "Multi-package monorepo; keep ISA DB boundary simple"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "semantic-release/semantic-release",
+      "url": "https://github.com/semantic-release/semantic-release",
+      "signals": {
+        "stars": 23308,
+        "forks": 1796,
+        "last_commit_date": "2026-02-14",
+        "release_date": "2026-01-30"
+      },
+      "why_liked": [
+        {
+          "claim": "Automates releases driven by commit history and conventions",
+          "evidence_url": "https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/README.md",
+          "evidence_date": ""
+        },
+        {
+          "claim": "CI workflow dedicated to release automation",
+          "evidence_url": "https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/.github/workflows/release.yml",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/.github/workflows/release.yml",
+        "https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/.github/workflows/test.yml",
+        "https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/docs/usage/README.md",
+        "https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/README.md"
+      ],
+      "patterns": [
+        "P-002 CI workflows as governance",
+        "P-008 Release automation and versioned artifacts"
+      ],
+      "avoid": [
+        "Release automation requires consistent commit discipline"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "ajv-validator/ajv",
+      "url": "https://github.com/ajv-validator/ajv",
+      "signals": {
+        "stars": 14595,
+        "forks": 942,
+        "last_commit_date": "2026-02-14",
+        "release_date": "2026-02-14"
+      },
+      "why_liked": [
+        {
+          "claim": "Benchmarks and docs exist as first-class folders",
+          "evidence_url": "https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/benchmark/README.md",
+          "evidence_date": ""
+        },
+        {
+          "claim": "Canonical JSON Schema validator for JS/TS",
+          "evidence_url": "https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/README.md",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/.github/workflows/build.yml",
+        "https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/benchmark/README.md",
+        "https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/lib/ajv.ts",
+        "https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/README.md"
+      ],
+      "patterns": [
+        "P-005 Schema validation in CI (AJV)"
+      ],
+      "avoid": [
+        "Library repo; apply as CI/schema gate component"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "open-telemetry/opentelemetry-js",
+      "url": "https://github.com/open-telemetry/opentelemetry-js",
+      "signals": {
+        "stars": 3276,
+        "forks": 996,
+        "last_commit_date": "2026-02-13",
+        "release_date": "2026-02-12"
+      },
+      "why_liked": [
+        {
+          "claim": "Node tracer provider is implemented as a package",
+          "evidence_url": "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts",
+          "evidence_date": ""
+        },
+        {
+          "claim": "Reference OpenTelemetry implementation for JS/TS",
+          "evidence_url": "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/README.md",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/.github/workflows/benchmark.yml",
+        "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/.github/workflows/e2e.yml",
+        "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts",
+        "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/README.md"
+      ],
+      "patterns": [
+        "P-002 CI workflows as governance",
+        "P-006 Tracing and metrics via OpenTelemetry"
+      ],
+      "avoid": [
+        "SDK repo; focus on instrumentation patterns and config"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "temporalio/sdk-typescript",
+      "url": "https://github.com/temporalio/sdk-typescript",
+      "signals": {
+        "stars": 776,
+        "forks": 158,
+        "last_commit_date": "2026-02-15",
+        "release_date": "2026-01-08"
+      },
+      "why_liked": [
+        {
+          "claim": "Durable workflow SDK for TypeScript",
+          "evidence_url": "https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/README.md",
+          "evidence_date": ""
+        },
+        {
+          "claim": "OpenTelemetry interceptors are provided as a separate package",
+          "evidence_url": "https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/packages/interceptors-opentelemetry/src/instrumentation.ts",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/.github/workflows/ci.yml",
+        "https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/packages/interceptors-opentelemetry/src/instrumentation.ts",
+        "https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/packages/worker/README.md",
+        "https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/README.md"
+      ],
+      "patterns": [
+        "P-006 Tracing and metrics via OpenTelemetry",
+        "P-007 Durable workflows for reliability"
+      ],
+      "avoid": [
+        "Adds infrastructure complexity; use for ingestion reliability only"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "cli/cli",
+      "url": "https://github.com/cli/cli",
+      "signals": {
+        "stars": 42479,
+        "forks": 7938,
+        "last_commit_date": "2026-02-13",
+        "release_date": "2026-01-21"
+      },
+      "why_liked": [
+        {
+          "claim": "Mature governance docs for project layout and releases",
+          "evidence_url": "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/project-layout.md",
+          "evidence_date": ""
+        },
+        {
+          "claim": "Security scanning workflow exists in CI",
+          "evidence_url": "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/.github/workflows/codeql.yml",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/.github/workflows/codeql.yml",
+        "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/.github/workflows/go.yml",
+        "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/project-layout.md",
+        "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/releasing.md",
+        "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/README.md"
+      ],
+      "patterns": [
+        "P-001 Docs-as-interface",
+        "P-002 CI workflows as governance",
+        "P-008 Release automation and versioned artifacts"
+      ],
+      "avoid": [
+        "Different language/runtime; use governance patterns only"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "inngest/inngest",
+      "url": "https://github.com/inngest/inngest",
+      "signals": {
+        "stars": 4843,
+        "forks": 252,
+        "last_commit_date": "2026-02-14",
+        "release_date": "2026-02-11"
+      },
+      "why_liked": [
+        {
+          "claim": "Documents an OpenAPI workflow",
+          "evidence_url": "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/OPENAPI_WORKFLOW.md",
+          "evidence_date": ""
+        },
+        {
+          "claim": "Engineering docs for evolving APIs and architecture",
+          "evidence_url": "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/DEVSERVER_ARCHITECTURE.md",
+          "evidence_date": ""
+        }
+      ],
+      "inspect_paths": [
+        "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/.github/workflows/e2e.yml",
+        "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/DEVSERVER_ARCHITECTURE.md",
+        "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/IMPLEMENTING_NEW_REST_API_V2_ENDPOINTS.md",
+        "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/OPENAPI_WORKFLOW.md",
+        "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/README.md"
+      ],
+      "patterns": [
+        "P-001 Docs-as-interface",
+        "P-004 Artifact-first APIs (OpenAPI specs)",
+        "P-007 Durable workflows for reliability"
+      ],
+      "avoid": [
+        "Different language/runtime; extract docs and workflow patterns"
+      ],
+      "last_verified_date": "2026-02-15"
+    }
+  ],
+  "patterns": [
+    {
+      "name": "P-001 Docs-as-interface",
+      "summary": "Docs are treated as an interface: project layout, contributor rules, and playbooks are versioned with code.",
+      "evidence": [
+        {
+          "url": "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/project-layout.md",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/DEVSERVER_ARCHITECTURE.md",
+          "date": ""
+        }
+      ],
+      "example_repos": [
+        {
+          "url": "https://github.com/cli/cli",
+          "paths": [
+            "docs/project-layout.md",
+            "docs/release-process-deep-dive.md"
+          ]
+        },
+        {
+          "url": "https://github.com/inngest/inngest",
+          "paths": [
+            "docs/DEVSERVER_ARCHITECTURE.md",
+            "docs/PULL_REQUEST_GUIDELINES.md"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "More docs to maintain; requires fast doc gates in CI"
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "docs/INDEX.md",
+          "docs/spec/**/RUNTIME_CONTRACT.md"
+        ],
+        "change_outline": "Add a small docs index entry for research packages and standardize a header block (date, sources, validator).",
+        "no_console_strategy": "Docs and examples must avoid console methods; use serverLogger or stdout/stderr write patterns only."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "P-002 CI workflows as governance",
+      "summary": "Granular CI workflows act as governance: separate checks for typecheck, migrations, docs, security, and releases.",
+      "evidence": [
+        {
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/pipeline.yml",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/clickhouse-migration-check.yml",
+          "date": ""
+        }
+      ],
+      "example_repos": [
+        {
+          "url": "https://github.com/langfuse/langfuse",
+          "paths": [
+            ".github/workflows/pipeline.yml",
+            ".github/workflows/sdk-api-spec.yml"
+          ]
+        },
+        {
+          "url": "https://github.com/Helicone/helicone",
+          "paths": [
+            ".github/workflows/e2e-test-suite.yml",
+            ".github/workflows/jawn-typecheck.yml"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "More workflows increase cognitive load; mitigate with naming conventions and CI docs index"
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          ".github/workflows/",
+          "scripts/"
+        ],
+        "change_outline": "Add small, scoped workflows per gate (docs policy, schema validation, no-console gate, deterministic artifacts).",
+        "no_console_strategy": "Gate scripts should fail via exit code and structured stderr output, not console methods."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "P-003 Typed API boundary with tRPC + Zod",
+      "summary": "Typed boundaries (tRPC + schema validation) reduce ambiguity and localize changes.",
+      "evidence": [
+        {
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/README.md",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/README.md",
+          "date": ""
+        }
+      ],
+      "example_repos": [
+        {
+          "url": "https://github.com/trpc/trpc",
+          "paths": [
+            "packages/client/src/links/retryLink.ts",
+            "packages/client/src/links/internals/dedupeLink.ts"
+          ]
+        },
+        {
+          "url": "https://github.com/colinhacks/zod",
+          "paths": [
+            "packages/zod/src/v4/core/schemas.ts"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Requires discipline around modular router composition and shared types"
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "server/routers.ts",
+          "server/_core/trpc.ts",
+          "shared/"
+        ],
+        "change_outline": "Split server routers into domain modules; require schema validation for DB-touching mutations.",
+        "no_console_strategy": "All error paths should use serverLogger and include trace id metadata."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "P-004 Artifact-first APIs (OpenAPI specs)",
+      "summary": "OpenAPI specs and examples are tracked as artifacts and evolve with explicit workflows.",
+      "evidence": [
+        {
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/api/openapi.yml",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/OPENAPI_WORKFLOW.md",
+          "date": ""
+        }
+      ],
+      "example_repos": [
+        {
+          "url": "https://github.com/SigNoz/signoz",
+          "paths": [
+            "docs/api/openapi.yml"
+          ]
+        },
+        {
+          "url": "https://github.com/inngest/inngest",
+          "paths": [
+            "docs/OPENAPI_WORKFLOW.md",
+            "docs/api_v2_examples.json"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Specs can drift from implementation without automation"
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "docs/quality/schemas/",
+          ".github/workflows/schema-validation.yml"
+        ],
+        "change_outline": "Where ISA emits JSON artifacts, add schemas and validate in CI; consider spec exports for non-tRPC consumers.",
+        "no_console_strategy": "Validation scripts should report failures via exit codes and stderr only."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "P-005 Schema validation in CI (AJV)",
+      "summary": "JSON Schema validation (AJV) is a low-cost CI gate for generated artifacts and runtime contracts.",
+      "evidence": [
+        {
+          "url": "https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/README.md",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/.github/workflows/schema-validation.yml",
+          "date": ""
+        }
+      ],
+      "example_repos": [
+        {
+          "url": "https://github.com/ajv-validator/ajv",
+          "paths": [
+            "lib/ajv.ts",
+            ".github/workflows/build.yml"
+          ]
+        },
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean",
+          "paths": [
+            ".github/workflows/schema-validation.yml",
+            "docs/quality/schemas/"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Schemas need ownership; treat them as versioned contracts"
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "docs/quality/schemas/",
+          ".github/workflows/schema-validation.yml"
+        ],
+        "change_outline": "Add schemas for new generated artifacts and validate them in CI using AJV.",
+        "no_console_strategy": "Validators should be silent on success and print structured failure messages to stderr."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "P-006 Tracing and metrics via OpenTelemetry",
+      "summary": "OpenTelemetry provides a standard approach for traces and metrics across HTTP, DB, background work, and LLM calls.",
+      "evidence": [
+        {
+          "url": "https://opentelemetry.io/docs/",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts",
+          "date": ""
+        }
+      ],
+      "example_repos": [
+        {
+          "url": "https://github.com/open-telemetry/opentelemetry-js",
+          "paths": [
+            "packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts"
+          ]
+        },
+        {
+          "url": "https://github.com/temporalio/sdk-typescript",
+          "paths": [
+            "packages/interceptors-opentelemetry/src/instrumentation.ts"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Requires exporter decisions (OTLP endpoint, sampling, PII policy)"
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "server/_core/index.ts",
+          "server/db-connection.ts",
+          "server/_core/llm.ts"
+        ],
+        "change_outline": "Add spans around API requests, DB queries, ingestion jobs, and LLM calls; attach trace ids to serverLogger meta.",
+        "no_console_strategy": "Use serverLogger for all runtime logging; never call console methods."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "P-007 Durable workflows for reliability",
+      "summary": "Durable workflows and explicit retry semantics make ingestion pipelines resilient and observable.",
+      "evidence": [
+        {
+          "url": "https://docs.temporal.io/",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/retryLink.ts",
+          "date": ""
+        }
+      ],
+      "example_repos": [
+        {
+          "url": "https://github.com/temporalio/sdk-typescript",
+          "paths": [
+            "packages/worker/",
+            "packages/workflow/"
+          ]
+        },
+        {
+          "url": "https://github.com/trpc/trpc",
+          "paths": [
+            "packages/client/src/links/retryLink.ts"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Adds infrastructure complexity; best used for ingestion and scheduled jobs"
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "server/ingest/",
+          "server/cron-*",
+          "server/_core/performance-monitoring.ts"
+        ],
+        "change_outline": "Define idempotency keys per ingest item, persist provenance, and apply bounded retries with backoff.",
+        "no_console_strategy": "Emit structured events via serverLogger and store failures in error ledger persistence."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "P-008 Release automation and versioned artifacts",
+      "summary": "Release automation makes artifact versioning explicit and reduces manual drift.",
+      "evidence": [
+        {
+          "url": "https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/README.md",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/release-drafter.yml",
+          "date": ""
+        }
+      ],
+      "example_repos": [
+        {
+          "url": "https://github.com/semantic-release/semantic-release",
+          "paths": [
+            ".github/workflows/release.yml",
+            "docs/usage/README.md"
+          ]
+        },
+        {
+          "url": "https://github.com/SigNoz/signoz",
+          "paths": [
+            ".github/workflows/release-drafter.yml"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Requires commit discipline and changelog conventions"
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "package.json",
+          "docs/CHANGELOG.md",
+          ".github/workflows/"
+        ],
+        "change_outline": "Adopt predictable versioning for ISA artifacts (schemas, datasets, advisory format) and automate release notes.",
+        "no_console_strategy": "Release scripts should fail via exit codes and use structured stderr output only."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "P-009 Deterministic fixtures for eval and traces",
+      "summary": "Small deterministic fixtures (trace samples, eval inputs) make regressions reproducible and support CI eval gates.",
+      "evidence": [
+        {
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/beeai-2025-08-01.json",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/openai/evals",
+          "date": ""
+        }
+      ],
+      "example_repos": [
+        {
+          "url": "https://github.com/langfuse/langfuse",
+          "paths": [
+            "packages/shared/scripts/seeder/utils/framework-traces/*.json"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Fixture curation takes time; keep them small and versioned"
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "scripts/run-rag-evaluation.cjs",
+          "data/metadata/",
+          "docs/quality/schemas/"
+        ],
+        "change_outline": "Add deterministic evaluation fixtures and a schema-validated evaluation report as a CI regression gate.",
+        "no_console_strategy": "Evaluation harness writes artifacts to disk and uses serverLogger only for structured errors."
+      },
+      "last_verified_date": "2026-02-15"
+    }
+  ],
+  "action_plan": [
+    {
+      "id": "AP-0001",
+      "title": "Enforce scoped no-console gate",
+      "priority": "P0",
+      "value": "Prevents regressions and keeps logs routable through ISA logger facade",
+      "effort": "S",
+      "risk": "Low (scoped grep only)",
+      "files": [
+        ".github/workflows/",
+        "scripts/"
+      ],
+      "acceptance_criteria": [
+        "CI fails if console\\. appears under server/, client/, shared/, scripts/, docs/research/oss-benchmarks/2026-02-15/",
+        "Gate avoids scanning legacy .github text to prevent false positives"
+      ],
+      "no_console_compliance": "All new code and docs use serverLogger or stdout/stderr write patterns only; no console methods.",
+      "evidence": [
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/.github/workflows/console-check.yml.disabled",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/server/utils/server-logger.ts",
+          "date": ""
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0002",
+      "title": "Modularize server routers into domain routers",
+      "priority": "P0",
+      "value": "Reduces agent context and makes routing changes safer",
+      "effort": "M",
+      "risk": "Medium (routing/exports churn)",
+      "files": [
+        "server/routers.ts",
+        "server/routers/"
+      ],
+      "acceptance_criteria": [
+        "server/routers.ts becomes composition only",
+        "Each domain router has focused tests and schema-validated inputs for mutations",
+        "Existing route names remain backwards compatible"
+      ],
+      "no_console_compliance": "All errors and diagnostics use serverLogger with trace ids.",
+      "evidence": [
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/server/routers.ts",
+          "date": ""
+        },
+        {
+          "url": "https://trpc.io/docs/router",
+          "date": ""
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0003",
+      "title": "Trace id propagation and error ledger correlation",
+      "priority": "P0",
+      "value": "Enables correlation across API, DB, ingestion, and LLM calls",
+      "effort": "M",
+      "risk": "Medium (touches many call sites)",
+      "files": [
+        "server/_core/index.ts",
+        "server/utils/server-logger.ts",
+        "server/_core/logger-wiring.ts"
+      ],
+      "acceptance_criteria": [
+        "Every request has a trace id and it is attached to logs and error ledger rows",
+        "LLM invocation records and ingestion jobs include trace ids",
+        "No secrets are logged; only safe metadata"
+      ],
+      "no_console_compliance": "Structured stderr/stdout writes only through logger facade; no console methods.",
+      "evidence": [
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/server/_core/logger-wiring.ts",
+          "date": ""
+        },
+        {
+          "url": "https://opentelemetry.io/docs/concepts/signals/traces/",
+          "date": ""
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0004",
+      "title": "Ingestion reliability: idempotency, provenance, retries",
+      "priority": "P0",
+      "value": "Prevents duplicates and makes reprocessing safe and observable",
+      "effort": "L",
+      "risk": "High (touches data writes and scheduling semantics)",
+      "files": [
+        "server/ingest/",
+        "server/db.ts",
+        "drizzle/schema/"
+      ],
+      "acceptance_criteria": [
+        "Each ingest item has an idempotency key and is deduped at write boundary",
+        "Provenance stored: source URL, retrieval timestamp, content hash, parser version",
+        "Retries are bounded with backoff and failures are stored via error ledger"
+      ],
+      "no_console_compliance": "Ingestion events are logged via serverLogger with trace ids.",
+      "evidence": [
+        {
+          "url": "https://docs.temporal.io/",
+          "date": ""
+        },
+        {
+          "url": "https://stripe.com/docs/idempotency",
+          "date": ""
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0005",
+      "title": "Add JSON schema and AJV validation for research artifacts",
+      "priority": "P1",
+      "value": "Prevents silent drift in benchmarks.json and future research JSON",
+      "effort": "S",
+      "risk": "Low",
+      "files": [
+        "docs/quality/schemas/",
+        ".github/workflows/schema-validation.yml"
+      ],
+      "acceptance_criteria": [
+        "benchmarks.json validates against a schema in CI",
+        "Required keys and array ordering rules are enforced"
+      ],
+      "no_console_compliance": "Validators emit failures via exit codes and stderr only.",
+      "evidence": [
+        {
+          "url": "https://github.com/ajv-validator/ajv",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/.github/workflows/schema-validation.yml",
+          "date": ""
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0006",
+      "title": "Baseline OpenTelemetry instrumentation for ISA",
+      "priority": "P1",
+      "value": "Unified tracing for API, DB, ingestion, and LLM calls",
+      "effort": "L",
+      "risk": "Medium (exporter config, PII policy)",
+      "files": [
+        "server/_core/index.ts",
+        "server/db-connection.ts",
+        "server/_core/llm.ts"
+      ],
+      "acceptance_criteria": [
+        "Traces emitted in dev with local exporter",
+        "Production exporter configurable and secrets are excluded"
+      ],
+      "no_console_compliance": "No instrumentation uses console methods; route logs via serverLogger.",
+      "evidence": [
+        {
+          "url": "https://github.com/open-telemetry/opentelemetry-js",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/SigNoz/signoz",
+          "date": ""
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0007",
+      "title": "Deterministic RAG evaluation fixtures and schema",
+      "priority": "P1",
+      "value": "Makes RAG quality measurable and reproducible",
+      "effort": "M",
+      "risk": "Medium (dataset curation)",
+      "files": [
+        "data/metadata/",
+        "scripts/run-rag-evaluation.cjs",
+        "docs/quality/schemas/"
+      ],
+      "acceptance_criteria": [
+        "Small fixture set runs in CI",
+        "Evaluation report is JSON and schema-validated"
+      ],
+      "no_console_compliance": "Runner writes artifacts to disk and uses serverLogger for structured errors.",
+      "evidence": [
+        {
+          "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/google-gemini-2025-08-01.json",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/scripts/run-rag-evaluation.cjs",
+          "date": ""
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0008",
+      "title": "Version and release ISA artifacts predictably",
+      "priority": "P2",
+      "value": "Predictable versioning for consumers of ISA artifacts",
+      "effort": "M",
+      "risk": "Medium (requires conventions)",
+      "files": [
+        "docs/CHANGELOG.md",
+        ".github/workflows/"
+      ],
+      "acceptance_criteria": [
+        "Define artifact versioning rules",
+        "Automate changelog generation and tagging"
+      ],
+      "no_console_compliance": "Release scripts emit structured stderr on failure; no console usage.",
+      "evidence": [
+        {
+          "url": "https://github.com/semantic-release/semantic-release",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/docs/DATASETS_CATALOG.json",
+          "date": ""
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0009",
+      "title": "Ownership and review boundaries (CODEOWNERS)",
+      "priority": "P2",
+      "value": "Govern high-risk changes via review requirements",
+      "effort": "S",
+      "risk": "Low",
+      "files": [
+        "CODEOWNERS"
+      ],
+      "acceptance_criteria": [
+        "Critical folders require review by named owners"
+      ],
+      "no_console_compliance": "Policy-only change; no runtime impact.",
+      "evidence": [
+        {
+          "url": "https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean/tree/e91943c/server",
+          "date": ""
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0010",
+      "title": "CI index and naming convention doc",
+      "priority": "P2",
+      "value": "Reduces mystery CI and improves onboarding",
+      "effort": "S",
+      "risk": "Low",
+      "files": [
+        "docs/CI_TESTING.md",
+        "docs/ci/INDEX.md"
+      ],
+      "acceptance_criteria": [
+        "Document each workflow and what it gates",
+        "Define naming conventions for workflows and scripts"
+      ],
+      "no_console_compliance": "Docs avoid examples with console methods.",
+      "evidence": [
+        {
+          "url": "https://github.com/GS1Ned/isa_web_clean/tree/e91943c/.github/workflows",
+          "date": ""
+        },
+        {
+          "url": "https://github.com/Helicone/helicone/tree/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows",
+          "date": ""
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    }
+  ]
+}
