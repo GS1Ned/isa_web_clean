@@ -1,0 +1,558 @@
+{
+  "version": "2026-02-15",
+  "generated_at": "2026-02-15T17:24:08.900Z",
+  "repos": [
+    {
+      "rank": 1,
+      "full_name": "SigNoz/signoz",
+      "url": "https://github.com/SigNoz/signoz",
+      "description": "SigNoz is an open-source observability platform native to OpenTelemetry with logs, traces and metrics in a single application. An open-source alternative to DataDog, NewRelic, etc. 🔥 🖥.   👉  Open source Application Performance Monitoring (APM) & Observability tool",
+      "language": "TypeScript",
+      "default_branch": "main",
+      "license": {
+        "key": "other",
+        "name": "Other",
+        "url": ""
+      },
+      "signals": {
+        "stars": 25744,
+        "forks": 1959,
+        "last_commit_date": "2026-02-15",
+        "release_date": "2026-02-11"
+      },
+      "score": {
+        "total": 12,
+        "buckets": {
+          "stars": 3,
+          "recency": 3,
+          "transfer": 2,
+          "scope_fit": 4
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": true
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/SigNoz/signoz",
+          "https://github.com/SigNoz/signoz/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/SigNoz/signoz",
+          "https://api.github.com/repos/SigNoz/signoz/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 2,
+      "full_name": "langfuse/langfuse",
+      "url": "https://github.com/langfuse/langfuse",
+      "description": "🪢 Open source LLM engineering platform: LLM Observability, metrics, evals, prompt management, playground, datasets. Integrates with OpenTelemetry, Langchain, OpenAI SDK, LiteLLM, and more. 🍊YC W23 ",
+      "language": "TypeScript",
+      "default_branch": "main",
+      "license": {
+        "key": "other",
+        "name": "Other",
+        "url": ""
+      },
+      "signals": {
+        "stars": 21945,
+        "forks": 2164,
+        "last_commit_date": "2026-02-15",
+        "release_date": "2026-02-12"
+      },
+      "score": {
+        "total": 12,
+        "buckets": {
+          "stars": 3,
+          "recency": 3,
+          "transfer": 2,
+          "scope_fit": 4
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": true
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/langfuse/langfuse",
+          "https://github.com/langfuse/langfuse/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/langfuse/langfuse",
+          "https://api.github.com/repos/langfuse/langfuse/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 3,
+      "full_name": "Helicone/helicone",
+      "url": "https://github.com/Helicone/helicone",
+      "description": "🧊 Open source LLM observability platform. One line of code to monitor, evaluate, and experiment. YC W23 🍓",
+      "language": "TypeScript",
+      "default_branch": "main",
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "signals": {
+        "stars": 5113,
+        "forks": 481,
+        "last_commit_date": "2026-02-13",
+        "release_date": "2025-08-21"
+      },
+      "score": {
+        "total": 12,
+        "buckets": {
+          "stars": 3,
+          "recency": 3,
+          "transfer": 2,
+          "scope_fit": 4
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": true
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/Helicone/helicone",
+          "https://github.com/Helicone/helicone/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/Helicone/helicone",
+          "https://api.github.com/repos/Helicone/helicone/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 4,
+      "full_name": "colinhacks/zod",
+      "url": "https://github.com/colinhacks/zod",
+      "description": "TypeScript-first schema validation with static type inference",
+      "language": "TypeScript",
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "signals": {
+        "stars": 41853,
+        "forks": 1820,
+        "last_commit_date": "2026-02-15",
+        "release_date": "2026-01-22"
+      },
+      "score": {
+        "total": 11,
+        "buckets": {
+          "stars": 3,
+          "recency": 3,
+          "transfer": 2,
+          "scope_fit": 3
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": false
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/colinhacks/zod",
+          "https://github.com/colinhacks/zod/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/colinhacks/zod",
+          "https://api.github.com/repos/colinhacks/zod/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 5,
+      "full_name": "trpc/trpc",
+      "url": "https://github.com/trpc/trpc",
+      "description": "🧙‍♀️  Move Fast and Break Nothing. End-to-end typesafe APIs made easy. ",
+      "language": "TypeScript",
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "signals": {
+        "stars": 39542,
+        "forks": 1488,
+        "last_commit_date": "2026-02-14",
+        "release_date": "2026-02-09"
+      },
+      "score": {
+        "total": 11,
+        "buckets": {
+          "stars": 3,
+          "recency": 3,
+          "transfer": 2,
+          "scope_fit": 3
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": false
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/trpc/trpc",
+          "https://github.com/trpc/trpc/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/trpc/trpc",
+          "https://api.github.com/repos/trpc/trpc/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 6,
+      "full_name": "drizzle-team/drizzle-orm",
+      "url": "https://github.com/drizzle-team/drizzle-orm",
+      "description": "ORM",
+      "language": "TypeScript",
+      "default_branch": "main",
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "signals": {
+        "stars": 32788,
+        "forks": 1195,
+        "last_commit_date": "2026-02-15",
+        "release_date": "2026-02-09"
+      },
+      "score": {
+        "total": 11,
+        "buckets": {
+          "stars": 3,
+          "recency": 3,
+          "transfer": 2,
+          "scope_fit": 3
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": false
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/drizzle-team/drizzle-orm",
+          "https://github.com/drizzle-team/drizzle-orm/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/drizzle-team/drizzle-orm",
+          "https://api.github.com/repos/drizzle-team/drizzle-orm/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 7,
+      "full_name": "semantic-release/semantic-release",
+      "url": "https://github.com/semantic-release/semantic-release",
+      "description": ":package::rocket: Fully automated version management and package publishing",
+      "language": "JavaScript",
+      "default_branch": "master",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "signals": {
+        "stars": 23308,
+        "forks": 1796,
+        "last_commit_date": "2026-02-14",
+        "release_date": "2026-01-30"
+      },
+      "score": {
+        "total": 11,
+        "buckets": {
+          "stars": 3,
+          "recency": 3,
+          "transfer": 2,
+          "scope_fit": 3
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": false
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/semantic-release/semantic-release",
+          "https://github.com/semantic-release/semantic-release/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/semantic-release/semantic-release",
+          "https://api.github.com/repos/semantic-release/semantic-release/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 8,
+      "full_name": "ajv-validator/ajv",
+      "url": "https://github.com/ajv-validator/ajv",
+      "description": "The fastest JSON schema Validator. Supports JSON Schema draft-04/06/07/2019-09/2020-12 and JSON Type Definition (RFC8927)",
+      "language": "TypeScript",
+      "default_branch": "master",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "signals": {
+        "stars": 14595,
+        "forks": 942,
+        "last_commit_date": "2026-02-14",
+        "release_date": "2026-02-14"
+      },
+      "score": {
+        "total": 11,
+        "buckets": {
+          "stars": 3,
+          "recency": 3,
+          "transfer": 2,
+          "scope_fit": 3
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": false
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/ajv-validator/ajv",
+          "https://github.com/ajv-validator/ajv/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/ajv-validator/ajv",
+          "https://api.github.com/repos/ajv-validator/ajv/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 9,
+      "full_name": "open-telemetry/opentelemetry-js",
+      "url": "https://github.com/open-telemetry/opentelemetry-js",
+      "description": "OpenTelemetry JavaScript Client",
+      "language": "TypeScript",
+      "default_branch": "main",
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "signals": {
+        "stars": 3276,
+        "forks": 996,
+        "last_commit_date": "2026-02-13",
+        "release_date": "2026-02-12"
+      },
+      "score": {
+        "total": 11,
+        "buckets": {
+          "stars": 2,
+          "recency": 3,
+          "transfer": 2,
+          "scope_fit": 4
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": true
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/open-telemetry/opentelemetry-js",
+          "https://github.com/open-telemetry/opentelemetry-js/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/open-telemetry/opentelemetry-js",
+          "https://api.github.com/repos/open-telemetry/opentelemetry-js/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 10,
+      "full_name": "temporalio/sdk-typescript",
+      "url": "https://github.com/temporalio/sdk-typescript",
+      "description": "Temporal TypeScript SDK",
+      "language": "TypeScript",
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "signals": {
+        "stars": 776,
+        "forks": 158,
+        "last_commit_date": "2026-02-15",
+        "release_date": "2026-01-08"
+      },
+      "score": {
+        "total": 10,
+        "buckets": {
+          "stars": 1,
+          "recency": 3,
+          "transfer": 2,
+          "scope_fit": 4
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": true
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/temporalio/sdk-typescript",
+          "https://github.com/temporalio/sdk-typescript/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/temporalio/sdk-typescript",
+          "https://api.github.com/repos/temporalio/sdk-typescript/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 11,
+      "full_name": "cli/cli",
+      "url": "https://github.com/cli/cli",
+      "description": "GitHub’s official command line tool",
+      "language": "Go",
+      "default_branch": "trunk",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "signals": {
+        "stars": 42479,
+        "forks": 7938,
+        "last_commit_date": "2026-02-13",
+        "release_date": "2026-01-21"
+      },
+      "score": {
+        "total": 9,
+        "buckets": {
+          "stars": 3,
+          "recency": 3,
+          "transfer": 1,
+          "scope_fit": 2
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": false,
+          "obs": false
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/cli/cli",
+          "https://github.com/cli/cli/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/cli/cli",
+          "https://api.github.com/repos/cli/cli/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "rank": 12,
+      "full_name": "inngest/inngest",
+      "url": "https://github.com/inngest/inngest",
+      "description": "The leading workflow orchestration platform.  Run stateful step functions and AI workflows on serverless, servers, or the edge.",
+      "language": "Go",
+      "default_branch": "main",
+      "license": {
+        "key": "other",
+        "name": "Other",
+        "url": ""
+      },
+      "signals": {
+        "stars": 4843,
+        "forks": 252,
+        "last_commit_date": "2026-02-14",
+        "release_date": "2026-02-11"
+      },
+      "score": {
+        "total": 9,
+        "buckets": {
+          "stars": 2,
+          "recency": 3,
+          "transfer": 1,
+          "scope_fit": 3
+        },
+        "scope_fit_flags": {
+          "governance": true,
+          "ci": true,
+          "typed": true,
+          "obs": false
+        }
+      },
+      "urls_visited": {
+        "web": [
+          "https://github.com/inngest/inngest",
+          "https://github.com/inngest/inngest/releases/latest"
+        ],
+        "api": [
+          "https://api.github.com/repos/inngest/inngest",
+          "https://api.github.com/repos/inngest/inngest/releases/latest"
+        ]
+      },
+      "unverified": [],
+      "last_verified_date": "2026-02-15"
+    }
+  ]
+}
