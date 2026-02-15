@@ -187,9 +187,9 @@ pnpm tsx scripts/verify-bm25.ts
 // Test BM25 search
 import { isBM25Ready, bm25Search } from './server/bm25-search';
 
-console.log('BM25 Ready:', isBM25Ready());
+print('BM25 Ready:', isBM25Ready());
 const results = bm25Search('CSRD sustainability', 5);
-console.log('Results:', results.length);
+print('Results:', results.length);
 ```
 
 ### Step 5: Code Deployment

@@ -184,7 +184,8 @@ export default function ImpactSimulator() {
         // Clear after loading to avoid stale data on refresh
         // sessionStorage.removeItem('core1Data');
       } catch (e) {
-        console.error('Failed to parse Core 1 data:', e);
+        // Clear invalid data to avoid repeated parse failures.
+        sessionStorage.removeItem('core1Data');
       }
     }
   }, []);

@@ -190,7 +190,6 @@ export default function EvaluationDashboard() {
       setProgress(100);
     },
     onError: (error) => {
-      console.error('Evaluation failed:', error);
       setIsRunning(false);
       setProgress(0);
     },

@@ -64,7 +64,7 @@ const epcisRepos = repos.filter(repo =>
   repo.standards.some(std => std.includes('EPCIS') || std.includes('CBV'))
 );
 
-console.log(epcisRepos);
+print(epcisRepos);
 ```
 
 **Result:**
@@ -123,7 +123,7 @@ const dlParsingRepos = repos.filter(repo =>
   repo.roles.includes('parsing_reference')
 );
 
-console.log(dlParsingRepos);
+print(dlParsingRepos);
 ```
 
 **Result:**
@@ -182,7 +182,7 @@ const eudrRepos = repos.filter(repo =>
   repo.regulations.includes('EUDR')
 );
 
-console.log(eudrRepos);
+print(eudrRepos);
 ```
 
 **Result:**
@@ -207,7 +207,7 @@ const webvocRepos = repos.filter(repo =>
   repo.standards.includes('GS1 Web Vocabulary')
 );
 
-console.log(webvocRepos);
+print(webvocRepos);
 ```
 
 **Result:**
@@ -268,7 +268,7 @@ const aiValidationRepos = repos.filter(repo =>
   (repo.roles.includes('validation_reference') || repo.roles.includes('ingestion_candidate'))
 );
 
-console.log(aiValidationRepos);
+print(aiValidationRepos);
 ```
 
 **Result:**
@@ -332,9 +332,9 @@ const testRepos = repos.filter(repo =>
   repo.roles.includes('test_case_source')
 );
 
-console.log(`Found ${testRepos.length} test case sources:`);
+print(`Found ${testRepos.length} test case sources:`);
 testRepos.forEach(repo => {
-  console.log(`- ${repo.id} (${repo.standards.join(', ')})`);
+  print(`- ${repo.id} (${repo.standards.join(', ')})`);
 });
 ```
 
@@ -359,7 +359,7 @@ const dlTestRepos = testRepos.filter(repo =>
   repo.standards.some(std => std.includes('Digital Link'))
 );
 
-console.log(dlTestRepos);
+print(dlTestRepos);
 ```
 
 ---
@@ -372,7 +372,7 @@ console.log(dlTestRepos);
 const repos = require('./data/metadata/external_repos_archive2.json');
 
 const highPriority = repos.filter(repo => repo.priority === 'high');
-console.log(`${highPriority.length} high-priority repos`);
+print(`${highPriority.length} high-priority repos`);
 ```
 
 **Result:** 11 repositories
@@ -386,7 +386,7 @@ const ingestCandidates = repos.filter(repo =>
   repo.roles.includes('ingestion_candidate')
 );
 
-console.log(ingestCandidates);
+print(ingestCandidates);
 ```
 
 **Result:**

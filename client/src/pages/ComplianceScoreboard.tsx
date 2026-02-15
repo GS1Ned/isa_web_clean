@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, {  } from "react";
 import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 import {
   Card,
   CardContent,
@@ -33,7 +34,7 @@ export default function ComplianceScoreboard() {
     try {
       await recalculateMutation.mutateAsync({ reason: "user_requested" });
     } catch (error) {
-      console.error("Failed to recalculate score:", error);
+      toast.error(`Failed to recalculate score: ${String(error)}`);
     }
   };
 

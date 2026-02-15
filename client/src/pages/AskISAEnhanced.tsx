@@ -59,8 +59,8 @@ export default function AskISAEnhanced() {
             <div className="lg:col-span-2">
               <EnhancedSearchPanel
                 onResultSelect={(result) => {
-                  // Could open a detail modal or navigate to the source
-                  console.log("Selected result:", result);
+                  // Could open a detail modal or navigate to the source.
+                  void result;
                 }}
               />
             </div>

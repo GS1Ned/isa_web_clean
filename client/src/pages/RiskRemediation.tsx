@@ -60,7 +60,7 @@ export default function RiskRemediation() {
       });
       setSelectedPlanId(result.planId);
     } catch (error) {
-      console.error("Failed to create plan:", error);
+      alert(`Failed to create plan: ${String(error)}`);
     }
   };
 
@@ -71,7 +71,7 @@ export default function RiskRemediation() {
         status: "completed",
       });
     } catch (error) {
-      console.error("Failed to update step:", error);
+      alert(`Failed to update step: ${String(error)}`);
     }
   };
 
@@ -81,7 +81,7 @@ export default function RiskRemediation() {
       await completePlanMutation.mutateAsync({ planId: selectedPlanId });
       setSelectedPlanId(null);
     } catch (error) {
-      console.error("Failed to complete plan:", error);
+      alert(`Failed to complete plan: ${String(error)}`);
     }
   };
 

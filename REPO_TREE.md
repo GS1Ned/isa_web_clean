@@ -293,7 +293,6 @@ Generated on: 2026-02-09T04:54:34Z
 │       │       └── ObservabilityDashboard.tsx
 │       └── select-fix.css
 ├── codemods
-│   └── replace-console-with-serverLogger.js
 ├── components.json
 ├── config
 │   ├── catalogue_sources.json

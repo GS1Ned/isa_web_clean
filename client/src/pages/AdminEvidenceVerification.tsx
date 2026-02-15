@@ -46,7 +46,7 @@ export default function AdminEvidenceVerification() {
       // Refetch evidence list
       await refetchPending();
     } catch (error) {
-      console.error("Failed to verify evidence:", error);
+      alert(`Failed to verify evidence: ${String(error)}`);
     }
   };
 

@@ -385,7 +385,7 @@ Created `pipeline-observability.test.ts` with 18 comprehensive tests:
 - GS1 Style Guide compliant (British English, sentence case)
 - Comprehensive JSDoc comments
 - Defensive programming (null checks, error handling)
-- No console.warn or console.error in production code
+- No printWarning or printError in production code
 
 **Performance:**
 - Observability overhead: < 50ms per pipeline execution

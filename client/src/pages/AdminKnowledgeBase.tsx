@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import {
@@ -92,7 +93,7 @@ export default function AdminKnowledgeBase() {
       refetchStats();
     },
     onError: error => {
-      console.error("Failed to generate embeddings:", error);
+      toast.error(`Failed to generate embeddings: ${String(error)}`);
       setGeneratingType(null);
     },
   });

@@ -81,7 +81,7 @@ export default function ComplianceRoadmap() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("PDF export failed:", error);
+      alert(`PDF export failed: ${String(error)}`);
     }
   };
 
@@ -139,7 +139,7 @@ export default function ComplianceRoadmap() {
         setSelectedStrategy(null);
       }
     } catch (error) {
-      console.error("Failed to generate roadmap:", error);
+      alert(`Failed to generate roadmap: ${String(error)}`);
     }
   };
 

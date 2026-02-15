@@ -346,7 +346,7 @@ interface AttributeRow {
 }
 
 async function seedGS1Attributes() {
-  console.log("Loading GS1 attributes from CSV...");
+  print("Loading GS1 attributes from CSV...");
 
   const csvContent = fs.readFileSync("./data/gs1_attributes.csv", "utf-8");
   const records: AttributeRow[] = csv.parse(csvContent, {
@@ -359,7 +359,7 @@ async function seedGS1Attributes() {
     },
   });
 
-  console.log(`Parsed ${records.length} attributes from CSV`);
+  print(`Parsed ${records.length} attributes from CSV`);
 
   let inserted = 0;
   for (const record of records) {
@@ -383,16 +383,16 @@ async function seedGS1Attributes() {
       });
       inserted++;
     } catch (error) {
-      console.error(`Failed to insert ${record.attributeName}:`, error);
+      printError(`Failed to insert ${record.attributeName}:`, error);
     }
   }
 
-  console.log(
+  print(
     `✅ Successfully inserted ${inserted}/${records.length} attributes`
   );
 }
 
-seedGS1Attributes().catch(console.error);
+seedGS1Attributes().catch(printError);
 ```
 
 **Execution:**
@@ -444,14 +444,14 @@ interface GS1NavigatorAttribute {
 }
 
 async function scrapeGS1Navigator() {
-  console.log("Fetching attributes from GS1 Navigator API...");
+  print("Fetching attributes from GS1 Navigator API...");
 
   const response = await axios.get<GS1NavigatorAttribute[]>(
     "https://navigator.gs1.org/api/gdsn/attributes?version=13"
   );
 
   const allAttributes = response.data;
-  console.log(`Fetched ${allAttributes.length} total attributes`);
+  print(`Fetched ${allAttributes.length} total attributes`);
 
   // Filter for ESG-relevant attributes
   const esgKeywords = [
@@ -479,7 +479,7 @@ async function scrapeGS1Navigator() {
     return esgKeywords.some(keyword => searchText.includes(keyword));
   });
 
-  console.log(`Filtered to ${esgAttributes.length} ESG-relevant attributes`);
+  print(`Filtered to ${esgAttributes.length} ESG-relevant attributes`);
 
   // Check which attributes already exist (from Phase 1 manual curation)
   const existingNames = await db
@@ -491,7 +491,7 @@ async function scrapeGS1Navigator() {
   const newAttributes = esgAttributes.filter(
     attr => !existingSet.has(attr.name)
   );
-  console.log(`${newAttributes.length} new attributes to import`);
+  print(`${newAttributes.length} new attributes to import`);
 
   // Map GS1 modules to standard IDs (requires manual mapping table)
   const moduleToStandardId: Record<string, number> = {
@@ -521,16 +521,16 @@ async function scrapeGS1Navigator() {
       });
       inserted++;
     } catch (error) {
-      console.error(`Failed to insert ${attr.name}:`, error);
+      printError(`Failed to insert ${attr.name}:`, error);
     }
   }
 
-  console.log(
+  print(
     `✅ Successfully inserted ${inserted}/${newAttributes.length} attributes`
   );
 }
 
-scrapeGS1Navigator().catch(console.error);
+scrapeGS1Navigator().catch(printError);
 ```
 
 **Execution:**
@@ -682,14 +682,14 @@ Focus on attributes that are directly required by the regulation's legal text, n
       });
       inserted++;
     } catch (error) {
-      console.error(
+      printError(
         `Failed to insert mapping for ${mapping.attributeName}:`,
         error
       );
     }
   }
 
-  console.log(
+  print(
     `✅ Generated ${inserted} attribute mappings for regulation ${regulationId}`
   );
   return inserted;
@@ -703,7 +703,7 @@ async function batchGenerateMappings() {
 
   let totalMappings = 0;
   for (const reg of allRegulations) {
-    console.log(`\nProcessing regulation ${reg.id}...`);
+    print(`\nProcessing regulation ${reg.id}...`);
     const count = await generateAttributeMappings(reg.id);
     totalMappings += count;
 
@@ -711,10 +711,10 @@ async function batchGenerateMappings() {
     await new Promise(resolve => setTimeout(resolve, 2000));
   }
 
-  console.log(`\n✅ Total mappings generated: ${totalMappings}`);
+  print(`\n✅ Total mappings generated: ${totalMappings}`);
 }
 
-batchGenerateMappings().catch(console.error);
+batchGenerateMappings().catch(printError);
 ```
 
 **Expected Output:** 500-1,000 regulation→attribute mappings (15-25 per regulation)

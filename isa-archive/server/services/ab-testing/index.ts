@@ -1,3 +1,8 @@
+import { format as utilFormat } from "node:util";
+
+const cliOut = (...args: unknown[]) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args: unknown[]) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 /**
  * ISA A/B Testing Service
  * 
@@ -282,7 +287,7 @@ export interface ExperimentMetrics {
  */
 export function recordExperimentMetrics(metrics: ExperimentMetrics): void {
   // Log for now - in production, write to rag_traces with experiment metadata
-  console.log('[A/B Test] Recording metrics:', {
+  cliOut('[A/B Test] Recording metrics:', {
     experiment: metrics.experimentId,
     variant: metrics.variantId,
     latency: metrics.metrics.latencyMs,

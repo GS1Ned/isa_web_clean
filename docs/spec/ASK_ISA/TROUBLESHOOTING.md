@@ -404,12 +404,12 @@ echo $ASK_ISA_CACHE_TTL
 // Verify cache enabled
 const cachedResponse = getCachedResponse(question);
 if (!cachedResponse) {
-  console.log('Cache miss for:', question);
+  print('Cache miss for:', question);
 }
 
 // Check normalization
 const normalizedQuery = question.toLowerCase().trim();
-console.log('Normalized:', normalizedQuery);
+print('Normalized:', normalizedQuery);
 
 // Rebuild cache
 curl -X POST https://your-app.com/trpc/askISA.invalidateCache
@@ -435,8 +435,8 @@ pnpm tsx scripts/warm-cache.ts
 import { classifyQuery } from './ask-isa-guardrails';
 
 const result = classifyQuery("What will happen in 2027?");
-console.log('Type:', result.type);
-console.log('Allowed:', result.allowed);
+print('Type:', result.type);
+print('Allowed:', result.allowed);
 // Expected: type='forbidden', allowed=false
 ```
 
@@ -514,7 +514,7 @@ try {
 ```typescript
 import { isBM25Ready } from './bm25-search';
 
-console.log('BM25 Ready:', isBM25Ready());
+print('BM25 Ready:', isBM25Ready());
 // Expected: true
 ```
 
@@ -542,7 +542,7 @@ pnpm tsx scripts/test-bm25-search.ts
 pnpm tsx -e "
 import { getKnowledgeStats } from './server/db-knowledge';
 const stats = await getKnowledgeStats();
-console.table(stats);
+printTable(stats);
 "
 ```
 
@@ -553,7 +553,7 @@ console.table(stats);
 pnpm tsx -e "
 import { getCacheStats } from './server/ask-isa-cache';
 const stats = getCacheStats();
-console.log(JSON.stringify(stats, null, 2));
+print(JSON.stringify(stats, null, 2));
 "
 ```
 
@@ -564,7 +564,7 @@ console.log(JSON.stringify(stats, null, 2));
 pnpm tsx -e "
 import { classifyQuery } from './server/ask-isa-guardrails';
 const result = classifyQuery('Your test query');
-console.log(JSON.stringify(result, null, 2));
+print(JSON.stringify(result, null, 2));
 "
 ```
 
@@ -575,8 +575,8 @@ console.log(JSON.stringify(result, null, 2));
 pnpm tsx -e "
 import { hybridSearch } from './server/hybrid-search';
 const results = await hybridSearch('CSRD sustainability', { limit: 5 });
-console.log('Results:', results.length);
-console.table(results.map(r => ({ title: r.title, score: r.hybridScore })));
+print('Results:', results.length);
+printTable(results.map(r => ({ title: r.title, score: r.hybridScore })));
 "
 ```
 

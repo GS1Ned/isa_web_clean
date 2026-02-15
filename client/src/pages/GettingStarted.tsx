@@ -96,7 +96,7 @@ export default function GettingStarted() {
       await seedEUDRMutation.mutateAsync();
       await seedEPCISMutation.mutateAsync();
     } catch (error) {
-      console.error("Failed to seed data:", error);
+      alert(`Failed to seed data: ${String(error)}`);
     }
   };
 

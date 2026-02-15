@@ -57,7 +57,6 @@ function PdfExportButton({ reportId, reportTitle }: { reportId: number; reportTi
       }
     } catch (error) {
       toast.error('Failed to export report');
-      console.error('Export error:', error);
     } finally {
       setIsExporting(false);
     }

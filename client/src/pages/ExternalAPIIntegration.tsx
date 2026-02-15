@@ -120,8 +120,9 @@ const response = await fetch('https://api.isa.gs1.nl/v1/ask', {
 });
 
 const data = await response.json();
-console.log(data.answer);
-console.log(data.sources);`,
+// Handle the response payload:
+// - data.answer
+// - data.sources`,
 
     regulations: `// Get Regulations API
 const response = await fetch('https://api.isa.gs1.nl/v1/regulations', {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, FileText, Sheet } from "lucide-react";
 import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 
 interface ExportButtonsProps {
   regulationId: string;
@@ -38,13 +39,12 @@ export function ExportButtons({
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-
-        console.log(`[Export] ${regulationTitle} exported as PDF`);
+        toast.success(`Exported PDF: ${regulationTitle}`);
       }
       setIsExporting(false);
     },
     onError: error => {
-      console.error("[Export] Failed to export PDF:", error);
+      toast.error(`Failed to export PDF: ${String(error)}`);
       setIsExporting(false);
     },
   });
@@ -63,13 +63,12 @@ export function ExportButtons({
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-
-        console.log(`[Export] ${regulationTitle} exported as CSV`);
+        toast.success(`Exported CSV: ${regulationTitle}`);
       }
       setIsExporting(false);
     },
     onError: error => {
-      console.error("[Export] Failed to export CSV:", error);
+      toast.error(`Failed to export CSV: ${String(error)}`);
       setIsExporting(false);
     },
   });
@@ -137,21 +136,19 @@ export function BulkExportButtons({
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
 
-        console.log(
-          `[Export] ${regulationIds.length} regulations exported as CSV`
-        );
+        toast.success(`Exported CSV: ${regulationIds.length} regulations`);
       }
       setIsExporting(false);
     },
     onError: error => {
-      console.error("[Export] Failed to export regulations:", error);
+      toast.error(`Failed to export regulations: ${String(error)}`);
       setIsExporting(false);
     },
   });
 
   const handleBulkExport = async () => {
     if (regulationIds.length === 0) {
-      console.warn("[Export] Please select at least one regulation to export");
+      toast.warning("Please select at least one regulation to export");
       return;
     }
 

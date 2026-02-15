@@ -8,7 +8,6 @@ config({ override: true });
 // Ensure JWT_SECRET is set for tests (generate random if missing)
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
   process.env.JWT_SECRET = crypto.randomBytes(32).toString('base64');
-  console.log('[vitest.setup] Generated test JWT_SECRET');
 }
 
 // Set NODE_ENV to test to prevent process.exit in env validation

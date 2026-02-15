@@ -90,6 +90,7 @@ export default function AIGapAnalysisWizard() {
   const [currentStep, setCurrentStep] = useState(1);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
   
   // Form state
   const [companyName, setCompanyName] = useState("");
@@ -133,6 +134,7 @@ export default function AIGapAnalysisWizard() {
   // Run AI analysis
   const runAnalysis = async () => {
     setIsAnalyzing(true);
+    setAnalysisError(null);
     
     try {
       // Build context for AI analysis
@@ -224,7 +226,9 @@ Focus on practical, actionable recommendations.`;
       setAnalysisComplete(true);
       setCurrentStep(6);
     } catch (error) {
-      console.error("Analysis failed:", error);
+      setAnalysisComplete(false);
+      setAnalysisResult(null);
+      setAnalysisError(`Analysis failed: ${String(error)}`);
     } finally {
       setIsAnalyzing(false);
     }
@@ -530,6 +534,18 @@ Target: ${t.deadline}
                     Our AI is reviewing your selected regulations and identifying potential gaps
                     based on your company profile.
                   </p>
+                </>
+              ) : analysisError ? (
+                <>
+                  <AlertCircle className="h-12 w-12 text-destructive mb-4" />
+                  <h3 className="text-lg font-medium mb-2">Analysis Failed</h3>
+                  <p className="text-muted-foreground text-center max-w-md mb-4">
+                    {analysisError}
+                  </p>
+                  <Button onClick={runAnalysis} className="gap-2">
+                    <RefreshCw className="h-4 w-4" />
+                    Retry
+                  </Button>
                 </>
               ) : analysisComplete ? (
                 <>

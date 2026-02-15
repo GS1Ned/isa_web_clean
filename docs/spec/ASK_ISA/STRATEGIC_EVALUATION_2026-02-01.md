@@ -103,7 +103,7 @@ Consider a strategic re-evaluation when:
 
 | Item | Severity | Effort |
 |------|----------|--------|
-| Console.log cleanup | Low | Low |
+| Logging cleanup | Low | Low |
 | Test coverage gaps | Medium | Medium |
 | API documentation | Low | Medium |
 | Error handling consistency | Medium | Medium |

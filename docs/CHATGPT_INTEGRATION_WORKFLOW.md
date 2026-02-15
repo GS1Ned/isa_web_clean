@@ -281,7 +281,7 @@ pnpm test
 import { mapESRSToGS1Attributes } from "./server/mappings/esrs-to-gs1-mapper";
 
 const result = await mapESRSToGS1Attributes(["E1-1_01"]);
-console.log(result);
+print(result);
 // Verify output matches expected format
 ```
 

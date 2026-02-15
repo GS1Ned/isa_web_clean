@@ -156,17 +156,17 @@ export async function ingestSomething(options: IngestOptions = {}): Promise<Inge
       }
       
       if (verbose && result.recordsProcessed % 100 === 0) {
-        console.log(`Processed ${result.recordsProcessed} records...`);
+        print(`Processed ${result.recordsProcessed} records...`);
       }
     }
     
     result.duration = Date.now() - startTime;
-    console.log(`✅ Ingestion complete: ${result.recordsInserted} inserted, ${result.recordsUpdated} updated, ${result.recordsSkipped} skipped in ${result.duration}ms`);
+    print(`✅ Ingestion complete: ${result.recordsInserted} inserted, ${result.recordsUpdated} updated, ${result.recordsSkipped} skipped in ${result.duration}ms`);
     
   } catch (error) {
     result.success = false;
     result.errors = [error instanceof Error ? error.message : String(error)];
-    console.error('❌ Ingestion failed:', error);
+    printError('❌ Ingestion failed:', error);
   }
   
   return result;
@@ -460,7 +460,7 @@ for (const sheetName of sheetNames) {
   const worksheet = workbook.Sheets[sheetName];
   const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][];
   
-  console.log(`Processing sheet: ${sheetName}`);
+  print(`Processing sheet: ${sheetName}`);
   
   // Skip header row (row 0), start from row 1 (data row 2 in Excel)
   for (let i = 1; i < rows.length; i++) {

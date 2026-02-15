@@ -229,12 +229,12 @@ async function main() {
   const failures = results.filter(r => !r.passed);
 
   if (failures.length > 0) {
-    console.error("❌ Architectural contract violations detected:");
-    failures.forEach(f => console.error(`  - ${f.message}`));
+    printError("❌ Architectural contract violations detected:");
+    failures.forEach(f => printError(`  - ${f.message}`));
     process.exit(1);
   }
 
-  console.log("✅ All architectural contracts satisfied");
+  print("✅ All architectural contracts satisfied");
 }
 
 main();

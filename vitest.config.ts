@@ -44,10 +44,6 @@ export default defineConfig(() => {
   const runDbTests = process.env.RUN_DB_TESTS === "true";
   const exclude = runDbTests ? [] : dbDependentTests;
 
-  console.log(
-    `[vitest.config] RUN_DB_TESTS=${process.env.RUN_DB_TESTS}, DATABASE_URL=${!!process.env.DATABASE_URL}, excluding ${exclude.length} tests`
-  );
-
   return {
     root: templateRoot,
     resolve: {

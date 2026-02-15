@@ -560,7 +560,7 @@ const diff = {
   regressions
 };
 
-console.log(JSON.stringify(diff, null, 2));
+print(JSON.stringify(diff, null, 2));
 ```
 
 ---

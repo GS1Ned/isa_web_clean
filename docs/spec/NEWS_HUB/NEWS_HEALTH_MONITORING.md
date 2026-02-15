@@ -138,13 +138,13 @@ import { getSourceHealth, getAllSourcesHealth } from "./news-health-monitor";
 
 // Get health for specific source
 const health = await getSourceHealth("gs1-nl");
-console.log(`Success rate: ${health.successRate}%`);
-console.log(`Consecutive failures: ${health.consecutiveFailures}`);
+print(`Success rate: ${health.successRate}%`);
+print(`Consecutive failures: ${health.consecutiveFailures}`);
 
 // Get health for all sources
 const allHealth = await getAllSourcesHealth();
 for (const [sourceId, health] of allHealth.entries()) {
-  console.log(`${sourceId}: ${health.successRate}% (${health.totalExecutions} runs)`);
+  print(`${sourceId}: ${health.successRate}% (${health.totalExecutions} runs)`);
 }
 ```
 
@@ -356,7 +356,7 @@ pnpm test news-pipeline-db-integration.test.ts
 3. Check database connection:
    ```typescript
    const db = await getDb();
-   console.log("Database available:", db !== null);
+   print("Database available:", db !== null);
    ```
 
 ## Future Enhancements

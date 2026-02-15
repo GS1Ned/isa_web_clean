@@ -133,9 +133,9 @@ const result = await trpc.askISA.ask.mutate({
   sector: "fmcg"
 });
 
-console.log(result.answer);
-console.log(result.sources.length); // Up to 5 sources
-console.log(result.confidence.level); // "high" | "medium" | "low"
+print(result.answer);
+print(result.sources.length); // Up to 5 sources
+print(result.confidence.level); // "high" | "medium" | "low"
 ```
 
 ---

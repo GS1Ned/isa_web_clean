@@ -570,7 +570,7 @@ export default function AskISA() {
         setShowHistory(false);
       }
     } catch (error) {
-      console.error("Failed to load conversation:", error);
+      alert(`Failed to load conversation: ${String(error)}`);
     }
   };
 
