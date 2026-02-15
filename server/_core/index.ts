@@ -19,7 +19,7 @@ import {
 } from "../cron-endpoint";
 import { scheduleAlertMonitoring } from "../alert-monitoring-cron";
 import { initializeBM25Index } from "../bm25-search";
-import { serverLogger } from '../utils/server-logger';
+import { serverLogger } from "./logger-wiring";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -125,11 +125,11 @@ async function startServer() {
     
     // Initialize BM25 search index in background (non-blocking)
     initializeBM25Index().catch(err => {
-      serverLogger.error('[BM25] Failed to initialize search index:', err);
+      serverLogger.error(err, { context: "[BM25] Failed to initialize search index:" });
     });
   });
 }
 
 startServer().catch(err => {
-  serverLogger.error("[server] Failed to start:", err);
+  serverLogger.error(err, { context: "[server] Failed to start:" });
 });
