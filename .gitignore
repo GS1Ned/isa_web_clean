@@ -24,7 +24,8 @@ node_modules/
 .mcp/
 
 # IDE and editor files
-.vscode/
+.vscode/*
+!.vscode/mcp.json
 .idea/
 *.swp
 *.swo
