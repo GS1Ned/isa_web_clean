@@ -2,19 +2,21 @@ name: Schema Validation
 
 on:
   push:
-    branches: [main]
+    branches: [main, strict-no-console]
     paths:
       - 'test-results/ci/**/*.json'
       - 'docs/evidence/_generated/**/*.json'
       - 'docs/architecture/panel/_generated/**/*.json'
       - 'docs/quality/schemas/**/*.schema.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.json'
   pull_request:
-    branches: [main]
+    branches: [main, strict-no-console]
     paths:
       - 'test-results/ci/**/*.json'
       - 'docs/evidence/_generated/**/*.json'
       - 'docs/architecture/panel/_generated/**/*.json'
       - 'docs/quality/schemas/**/*.schema.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.json'
 
 jobs:
   validate-schemas:
@@ -64,6 +66,22 @@ jobs:
               --strict=false || exit 1
           else
             echo "⚠️  Architecture scorecard not yet generated"
+          fi
+
+      - name: Validate OSS benchmarks package (2026-02-15)
+        run: |
+          set -euo pipefail
+          if [ -f "docs/research/oss-benchmarks/2026-02-15/benchmarks.json" ]; then
+            echo "Validating OSS benchmarks JSON against schema..."
+            ajv validate \
+              -s docs/quality/schemas/oss-benchmarks-2026-02-15.schema.json \
+              -d docs/research/oss-benchmarks/2026-02-15/benchmarks.json \
+              --strict=false || exit 1
+
+            echo "Running OSS benchmarks validator script..."
+            bash scripts/validate_oss_benchmarks_2026_02_15.sh
+          else
+            echo "⚠️  OSS benchmarks package not present"
           fi
 
       - name: Report validation results
