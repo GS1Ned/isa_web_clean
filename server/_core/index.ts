@@ -4,6 +4,7 @@ import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { initOtel } from "./otel";
 import "./logger-wiring"; // Initialize persisted serverLogger
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
@@ -41,6 +42,9 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 }
 
 async function startServer() {
+  // Telemetry must initialize before requests are served, but must never block startup.
+  await initOtel();
+
   const app = express();
   const server = createServer(app);
 
