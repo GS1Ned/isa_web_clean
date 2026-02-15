@@ -43,12 +43,18 @@ function safeStringify(v: unknown) {
 export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: string }) => {
   const persist = opts?.persist ?? DEFAULT_PERSIST_FN;
   const environment = opts?.environment ?? process.env.NODE_ENV ?? "unknown";
+  const silent =
+    process.env.ISA_TEST_SILENT === "true" ||
+    process.env.NODE_ENV === "test" ||
+    process.env.VITEST === "true";
 
   function writeStdout(line: string) {
+    if (silent) return;
     process.stdout.write(line.endsWith("\n") ? line : `${line}\n`);
   }
 
   function writeStderr(line: string) {
+    if (silent) return;
     process.stderr.write(line.endsWith("\n") ? line : `${line}\n`);
   }
 
@@ -77,19 +83,21 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
       failing_inputs: safeStringify((metaObj as any).failingInputs ?? null),
     };
 
-    try {
-      writeStderr(JSON.stringify({ level: "error", traceId, payload, meta: metaObj, ts: row.created_at }));
-    } catch {
-      writeStderr(util.format("[error] %s", payload.message ?? JSON.stringify(payload)));
-    }
-
-    try {
-      await persist(row);
-    } catch (e) {
+    if (!silent) {
       try {
-        writeStderr(JSON.stringify({ level: "error", msg: "persist failed", err: String(e), traceId }));
+        writeStderr(JSON.stringify({ level: "error", traceId, payload, meta: metaObj, ts: row.created_at }));
       } catch {
-        writeStderr(util.format("[error] persist failed %s", String(e)));
+        writeStderr(util.format("[error] %s", payload.message ?? JSON.stringify(payload)));
+      }
+
+      try {
+        await persist(row);
+      } catch (e) {
+        try {
+          writeStderr(JSON.stringify({ level: "error", msg: "persist failed", err: String(e), traceId }));
+        } catch {
+          writeStderr(util.format("[error] persist failed %s", String(e)));
+        }
       }
     }
 
@@ -97,6 +105,7 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
   }
 
   async function warn(warnMsg: unknown, meta?: unknown) {
+    if (silent) return crypto.randomUUID();
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     const traceId = (metaObj as any).traceId ?? crypto.randomUUID();
     try {
@@ -108,6 +117,7 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
   }
 
   function info(msg: unknown, meta?: unknown) {
+    if (silent) return;
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     if (process.env.NODE_ENV !== "production") {
       writeStdout(util.format("[info] %s %s", String(msg), Object.keys(metaObj).length ? JSON.stringify(metaObj) : "{}"));

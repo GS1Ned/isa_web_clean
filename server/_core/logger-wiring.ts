@@ -7,11 +7,18 @@
 import { serverLoggerFactory } from "../utils/server-logger";
 import { getDb } from "../db";
 
+const silent =
+  process.env.ISA_TEST_SILENT === "true" ||
+  process.env.NODE_ENV === "test" ||
+  process.env.VITEST === "true";
+
 function writeStdout(line: string) {
+  if (silent) return;
   process.stdout.write(line.endsWith("\n") ? line : `${line}\n`);
 }
 
 function writeStderr(line: string) {
+  if (silent) return;
   process.stderr.write(line.endsWith("\n") ? line : `${line}\n`);
 }
 
@@ -73,14 +80,16 @@ async function createPersistFn() {
 
 let serverLogger = serverLoggerFactory(); // fallback
 
-(async () => {
-  try {
-    const persist = await createPersistFn();
-    serverLogger = serverLoggerFactory({ persist, environment: process.env.NODE_ENV });
-    writeStdout("[logger-wiring] persisted serverLogger wired");
-  } catch (e) {
-    serverLogger.error("[logger-wiring] failed to wire persisted serverLogger", String(e));
-  }
-})();
+if (!silent) {
+  (async () => {
+    try {
+      const persist = await createPersistFn();
+      serverLogger = serverLoggerFactory({ persist, environment: process.env.NODE_ENV });
+      writeStdout("[logger-wiring] persisted serverLogger wired");
+    } catch (e) {
+      serverLogger.error("[logger-wiring] failed to wire persisted serverLogger", String(e));
+    }
+  })();
+}
 
 export { serverLogger };

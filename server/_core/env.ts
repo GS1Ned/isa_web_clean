@@ -8,6 +8,7 @@
 
 const isProduction = process.env.NODE_ENV === "production";
 const isTest = process.env.NODE_ENV === "test" || process.env.VITEST === "true";
+const isSilentTest = process.env.ISA_TEST_SILENT === "true" || isTest;
 
 // Required variables that must be present
 const REQUIRED_VARS = ["VITE_APP_ID", "JWT_SECRET", "DATABASE_URL"] as const;
@@ -65,10 +66,8 @@ function validateEnv(): void {
     if (isProduction) {
       // Production: throw error immediately
       throw new Error("[ENV] Configuration error:\n" + errorLines.join("\n"));
-    } else if (isTest) {
-      // Test: log warning but never exit (allow tests to run)
-      process.stderr.write("[ENV] ⚠️  Test environment configuration warning:\n");
-      errorLines.forEach(line => process.stderr.write("  - " + line + "\n"));
+    } else if (isSilentTest) {
+      // Test: never exit and stay silent (tests should be console-free).
     } else {
       // Development: log warning
       process.stderr.write("[ENV] ⚠️  Configuration warning:\n");
@@ -86,7 +85,7 @@ function validateEnv(): void {
     }
   } else {
     // All validations passed
-    if (!isProduction && !isTest) {
+    if (!isProduction && !isSilentTest) {
       process.stdout.write("[ENV] ✓ All required environment variables present and valid\n");
     }
   }

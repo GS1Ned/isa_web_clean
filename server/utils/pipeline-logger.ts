@@ -8,6 +8,11 @@
 import { randomBytes } from "crypto";
 import { format as utilFormat } from "node:util";
 
+const silent =
+  process.env.ISA_TEST_SILENT === "true" ||
+  process.env.NODE_ENV === "test" ||
+  process.env.VITEST === "true";
+
 export type PipelineType = 'news_ingestion' | 'news_archival';
 export type TriggerSource = 'cron' | 'manual' | 'api';
 export type ExecutionStatus = 'running' | 'success' | 'partial_success' | 'failed';
@@ -108,17 +113,19 @@ export class PipelineExecutionContext {
       ...event,
     };
     
-    // Output with structured format (avoid direct console usage for strict governance)
-    const write = (stream: NodeJS.WriteStream, ...args: unknown[]) =>
-      stream.write(`${utilFormat(...args)}\n`);
-    const logMethod =
-      event.level === "error" || event.level === "warn"
-        ? (...args: unknown[]) => write(process.stderr, ...args)
-        : (...args: unknown[]) => write(process.stdout, ...args);
-    logMethod(
-      `[Pipeline ${this.executionId}] ${event.eventType}: ${event.message}`,
-      event.data || ""
-    );
+    if (!silent) {
+      // Output with structured format (avoid direct console usage for strict governance)
+      const write = (stream: NodeJS.WriteStream, ...args: unknown[]) =>
+        stream.write(`${utilFormat(...args)}\n`);
+      const logMethod =
+        event.level === "error" || event.level === "warn"
+          ? (...args: unknown[]) => write(process.stderr, ...args)
+          : (...args: unknown[]) => write(process.stdout, ...args);
+      logMethod(
+        `[Pipeline ${this.executionId}] ${event.eventType}: ${event.message}`,
+        event.data || ""
+      );
+    }
     
     // Track errors and warnings
     if (event.level === 'error' && event.error) {
