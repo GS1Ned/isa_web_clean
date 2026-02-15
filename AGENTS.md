@@ -28,6 +28,14 @@
 - Make minimal, reviewable commits with governance-grade messages.
 - Prefer small diffs; avoid refactors unless necessary for the task.
 
+## Tooling: MCP (Agent-Ready)
+- Canonical policy: `docs/agent/MCP_POLICY.md`
+- Canonical recipes: `docs/agent/MCP_RECIPES.md`
+- Default behavior:
+  - Use `filesystem` + `git` MCP servers for any repo-truth claim or edit.
+  - Use `fetch` + `github` MCP servers for external evidence and OSS patterns (record URLs + UTC dates).
+  - Use `playwright` MCP server for UI/DOM repro and JS-rendered sources.
+
 ## ISA-specific
 <!-- EVIDENCE:requirement:data/metadata/dataset_registry.json -->
 <!-- EVIDENCE:constraint:docs/DATASETS_CATALOG.md -->

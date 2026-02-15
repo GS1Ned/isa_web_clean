@@ -20,6 +20,8 @@ This file is the only top-level entrypoint for agent onboarding.
 | Document | Path | Purpose |
 | --- | --- | --- |
 | Agent Map (Canonical) | `docs/agent/AGENT_MAP.md` | Canonical navigation map for humans and agents |
+| MCP Policy (Canonical) | `docs/agent/MCP_POLICY.md` | MCP server usage + evidence logging policy |
+| MCP Recipes (Canonical) | `docs/agent/MCP_RECIPES.md` | Step-by-step MCP playbooks for common ISA tasks |
 | Docs Index (Canonical) | `docs/INDEX.md` | Canonical documentation index |
 | Execution Queue (Canonical) | `docs/planning/NEXT_ACTIONS.json` | Single source of next work |
 | Governance Root (Canonical) | `docs/governance/_root/ISA_GOVERNANCE.md` | Governance principles and rules |
@@ -123,3 +125,4 @@ bash scripts/dev/local-doctor.sh
 3. **Conventional commits:** `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`
 4. **Evidence-first:** Back claims with file paths. Mark unknowns as UNKNOWN.
 5. **Minimal changes:** Only change what is needed. Avoid speculative refactoring.
+6. **MCP usage:** Follow `docs/agent/MCP_POLICY.md` and `docs/agent/MCP_RECIPES.md`.
