@@ -44,7 +44,6 @@ describe.skip("CELLAR Ingestion Integration Tests", () => {
       expect(Array.isArray(acts)).toBe(true);
 
       if (acts.length === 0) {
-        console.warn("No ESG regulations found in CELLAR for test period");
         return; // Skip remaining steps if no data
       }
 
@@ -83,7 +82,6 @@ describe.skip("CELLAR Ingestion Integration Tests", () => {
     it("should query existing regulations", async () => {
       const db = await getDb();
       if (!db) {
-        console.warn("Database not available, skipping test");
         return;
       }
 
@@ -95,7 +93,6 @@ describe.skip("CELLAR Ingestion Integration Tests", () => {
     it("should insert and retrieve a test regulation", async () => {
       const db = await getDb();
       if (!db) {
-        console.warn("Database not available, skipping test");
         return;
       }
 
@@ -131,7 +128,6 @@ describe.skip("CELLAR Ingestion Integration Tests", () => {
     it("should update existing regulation", async () => {
       const db = await getDb();
       if (!db) {
-        console.warn("Database not available, skipping test");
         return;
       }
 

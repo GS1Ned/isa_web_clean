@@ -13,20 +13,20 @@ describe("serverLogger", () => {
 
   describe("error logging", () => {
     it("should log error with trace ID", async () => {
-      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const stderrSpy = vi.spyOn(process.stderr, "write").mockImplementation(() => true as any);
       const logger = serverLoggerFactory();
 
       const traceId = await logger.error(new Error("Test error"));
 
       expect(traceId).toBeDefined();
       expect(typeof traceId).toBe("string");
-      expect(consoleSpy).toHaveBeenCalled();
+      expect(stderrSpy).toHaveBeenCalled();
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
     });
 
     it("should handle error with metadata", async () => {
-      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const stderrSpy = vi.spyOn(process.stderr, "write").mockImplementation(() => true as any);
       const logger = serverLoggerFactory();
 
       const traceId = await logger.error(new Error("Test error"), {
@@ -35,9 +35,9 @@ describe("serverLogger", () => {
       });
 
       expect(traceId).toBeDefined();
-      expect(consoleSpy).toHaveBeenCalled();
+      expect(stderrSpy).toHaveBeenCalled();
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
     });
 
     it("should call persist function when provided", async () => {
@@ -59,7 +59,7 @@ describe("serverLogger", () => {
     });
 
     it("should handle persist failures gracefully", async () => {
-      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const stderrSpy = vi.spyOn(process.stderr, "write").mockImplementation(() => true as any);
       const persistMock = vi.fn().mockRejectedValue(new Error("Persist failed"));
       const logger = serverLoggerFactory({ persist: persistMock });
 
@@ -67,92 +67,94 @@ describe("serverLogger", () => {
 
       expect(traceId).toBeDefined();
       expect(persistMock).toHaveBeenCalled();
-      expect(consoleSpy).toHaveBeenCalledTimes(2); // Original error + persist failure
+      expect(stderrSpy).toHaveBeenCalledTimes(2); // Original error + persist failure
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
     });
 
     it("should handle non-Error objects", async () => {
-      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const stderrSpy = vi.spyOn(process.stderr, "write").mockImplementation(() => true as any);
       const logger = serverLoggerFactory();
 
       const traceId = await logger.error("String error message");
 
       expect(traceId).toBeDefined();
-      expect(consoleSpy).toHaveBeenCalled();
+      expect(stderrSpy).toHaveBeenCalled();
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
     });
   });
 
   describe("warn logging", () => {
     it("should log warning with trace ID", async () => {
-      const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      const stderrSpy = vi.spyOn(process.stderr, "write").mockImplementation(() => true as any);
       const logger = serverLoggerFactory();
 
       const traceId = await logger.warn("Test warning");
 
       expect(traceId).toBeDefined();
       expect(typeof traceId).toBe("string");
-      expect(consoleSpy).toHaveBeenCalled();
+      expect(stderrSpy).toHaveBeenCalled();
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
     });
 
     it("should handle warning with metadata", async () => {
-      const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      const stderrSpy = vi.spyOn(process.stderr, "write").mockImplementation(() => true as any);
       const logger = serverLoggerFactory();
 
       const traceId = await logger.warn("Test warning", { context: "test" });
 
       expect(traceId).toBeDefined();
-      expect(consoleSpy).toHaveBeenCalled();
+      expect(stderrSpy).toHaveBeenCalled();
 
-      consoleSpy.mockRestore();
+      stderrSpy.mockRestore();
     });
   });
 
   describe("info logging", () => {
     it("should log info in development mode", () => {
-      const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+      const stdoutSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true as any);
       const originalEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "development";
 
       const logger = serverLoggerFactory();
       logger.info("Test info message");
 
-      expect(consoleSpy).toHaveBeenCalledWith("[info]", "Test info message", {});
+      const firstChunk = String(stdoutSpy.mock.calls[0]?.[0] ?? "");
+      expect(firstChunk).toContain("[info]");
+      expect(firstChunk).toContain("Test info message");
 
       process.env.NODE_ENV = originalEnv;
-      consoleSpy.mockRestore();
+      stdoutSpy.mockRestore();
     });
 
     it("should log JSON in production mode", () => {
-      const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+      const stdoutSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true as any);
       const originalEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
 
       const logger = serverLoggerFactory();
       logger.info("Test info message");
 
-      expect(consoleSpy).toHaveBeenCalled();
-      const call = consoleSpy.mock.calls[0][0];
+      expect(stdoutSpy).toHaveBeenCalled();
+      const call = String(stdoutSpy.mock.calls[0][0] ?? "");
       expect(typeof call).toBe("string");
       expect(() => JSON.parse(call)).not.toThrow();
 
       process.env.NODE_ENV = originalEnv;
-      consoleSpy.mockRestore();
+      stdoutSpy.mockRestore();
     });
 
     it("should handle info with metadata", () => {
-      const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+      const stdoutSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true as any);
       const logger = serverLoggerFactory();
 
       logger.info("Test info", { context: "test" });
 
-      expect(consoleSpy).toHaveBeenCalled();
+      expect(stdoutSpy).toHaveBeenCalled();
 
-      consoleSpy.mockRestore();
+      stdoutSpy.mockRestore();
     });
   });
 

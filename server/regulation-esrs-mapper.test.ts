@@ -79,9 +79,6 @@ describeDb("Regulation-ESRS Mapping", () => {
     }
 
     testRegulationId = regulations[0].id;
-    console.log(
-      `[Test] Using regulation ID ${testRegulationId}: ${regulations[0].title}`
-    );
   });
 
   it("should fetch ESRS mappings for a regulation (empty initially)", async () => {
@@ -118,8 +115,6 @@ describeDb("Regulation-ESRS Mapping", () => {
     expect(result).toBeDefined();
     expect(Boolean(result.success)).toBe(true);
     expect(result.mappingsCount).toBeGreaterThan(0);
-
-    console.log(`[Test] Generated ${result.mappingsCount} ESRS mappings`);
   }, 60000); // 60s timeout for LLM call
 
   it("should fetch generated ESRS mappings with datapoint details", async () => {
@@ -150,9 +145,6 @@ describeDb("Regulation-ESRS Mapping", () => {
     expect(firstMapping.relevanceScore).toBeGreaterThanOrEqual(1);
     expect(firstMapping.relevanceScore).toBeLessThanOrEqual(10);
 
-    console.log(
-      `[Test] Sample mapping: ${firstMapping.datapoint?.datapointId} (${firstMapping.datapoint?.esrsStandard}) - Relevance: ${firstMapping.relevanceScore}/10`
-    );
   });
 
   it("should group mappings by ESRS standard", async () => {
@@ -174,8 +166,6 @@ describeDb("Regulation-ESRS Mapping", () => {
       },
       {} as Record<string, number>
     );
-
-    console.log(`[Test] Mappings by standard:`, mappingsByStandard);
 
     // Should have at least one standard
     expect(Object.keys(mappingsByStandard).length).toBeGreaterThan(0);
@@ -203,10 +193,6 @@ describeDb("Regulation-ESRS Mapping", () => {
       regulationId: testRegulationId,
     });
     const afterCount = afterMappings.length;
-
-    console.log(
-      `[Test] Before: ${beforeCount} mappings, After: ${afterCount} mappings`
-    );
 
     // Should have mappings (count may vary due to LLM)
     expect(afterCount).toBeGreaterThan(0);

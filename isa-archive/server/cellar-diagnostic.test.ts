@@ -30,9 +30,6 @@ describe.skip("CELLAR Diagnostic", () => {
       LIMIT 1
     `;
 
-    console.log("\n=== Testing Basic CELLAR Query ===");
-    console.log("Query:", query);
-
     try {
       const response = await axios.post(
         CELLAR_ENDPOINT,
@@ -46,12 +43,8 @@ describe.skip("CELLAR Diagnostic", () => {
         }
       );
 
-      console.log("Status:", response.status);
-      console.log("Response:", JSON.stringify(response.data, null, 2));
-
       expect(response.status).toBe(200);
     } catch (error) {
-      console.error("Error:", error);
       throw error;
     }
   }, 60000);
@@ -70,8 +63,6 @@ describe.skip("CELLAR Diagnostic", () => {
       LIMIT 10
     `;
 
-    console.log("\n=== Testing Recent Regulations Query ===");
-
     try {
       const response = await axios.post(
         CELLAR_ENDPOINT,
@@ -85,22 +76,8 @@ describe.skip("CELLAR Diagnostic", () => {
         }
       );
 
-      console.log("Status:", response.status);
-      console.log(
-        "Results count:",
-        response.data.results?.bindings?.length || 0
-      );
-
-      if (response.data.results?.bindings?.length > 0) {
-        console.log(
-          "Sample result:",
-          JSON.stringify(response.data.results.bindings[0], null, 2)
-        );
-      }
-
       expect(response.status).toBe(200);
     } catch (error) {
-      console.error("Error:", error);
       throw error;
     }
   }, 60000);
@@ -121,8 +98,6 @@ describe.skip("CELLAR Diagnostic", () => {
       }
     `;
 
-    console.log("\n=== Testing Known CELEX ID Query (CSRD) ===");
-
     try {
       const response = await axios.post(
         CELLAR_ENDPOINT,
@@ -136,12 +111,8 @@ describe.skip("CELLAR Diagnostic", () => {
         }
       );
 
-      console.log("Status:", response.status);
-      console.log("Results:", JSON.stringify(response.data, null, 2));
-
       expect(response.status).toBe(200);
     } catch (error) {
-      console.error("Error:", error);
       throw error;
     }
   }, 60000);

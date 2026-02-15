@@ -291,7 +291,6 @@ describe("Standards Directory Router", () => {
 
       // Skip test if no ESRS datapoints are seeded in the database
       if (list.standards.length === 0) {
-        console.log("[Test] Skipping ESRS datapoints test - no data seeded");
         return;
       }
 
@@ -417,8 +416,6 @@ describe("Standards Directory Router", () => {
         // Validate structure when data exists
         expect(esrsDatapoints[0].owningOrganization).toBe("EFRAG");
         expect(esrsDatapoints[0].jurisdiction).toBe("EU");
-      } else {
-        console.log("[Test] No ESRS datapoints seeded - skipping data validation");
       }
     });
   });

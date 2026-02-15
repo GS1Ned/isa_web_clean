@@ -4,7 +4,7 @@
  * Tests for error tracking and performance monitoring infrastructure.
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import {
   trackError,
   getRecentErrors,
@@ -137,19 +137,29 @@ describe("Performance Monitoring", () => {
   });
 
   it("should measure async operation performance", async () => {
-    const result = await measurePerformance(
-      "test.async",
-      async () => {
-        await new Promise(resolve => setTimeout(resolve, 10));
-        return "success";
-      }
-    );
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(0));
 
-    expect(result).toBe("success");
+    try {
+      const promise = measurePerformance(
+        "test.async",
+        async () => {
+          await new Promise(resolve => setTimeout(resolve, 10));
+          return "success";
+        }
+      );
 
-    const metrics = getRecentMetrics(10, "test.async");
-    expect(metrics).toHaveLength(1);
-    expect(metrics[0].duration).toBeGreaterThanOrEqual(10);
+      await vi.advanceTimersByTimeAsync(10);
+      const result = await promise;
+
+      expect(result).toBe("success");
+
+      const metrics = getRecentMetrics(10, "test.async");
+      expect(metrics).toHaveLength(1);
+      expect(metrics[0].duration).toBeGreaterThanOrEqual(10);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("should track errors in measured operations", async () => {
