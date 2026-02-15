@@ -13,6 +13,7 @@ import { getDb } from '../../db';
 import { eq, desc, sql, and, gte } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
 import { serverLogger } from '../../_core/logger-wiring';
+import { getRequestTraceId } from "../../_core/request-context";
 
 // ============================================================================
 // Types
@@ -173,7 +174,7 @@ export class RagTraceManager {
   private completed: boolean = false;
   
   private constructor(input: RagTraceInput) {
-    this.traceId = randomUUID();
+    this.traceId = getRequestTraceId() ?? randomUUID();
     this.startTime = Date.now();
     this.input = input;
   }
