@@ -7,6 +7,10 @@ Status: CANONICAL
 - Docs index: `docs/INDEX.md`
 - Execution queue (single source of next work): `docs/planning/NEXT_ACTIONS.json`
 
+## Tooling: MCP
+- Canonical policy: `docs/agent/MCP_POLICY.md`
+- Canonical recipes: `docs/agent/MCP_RECIPES.md`
+
 ## Planning
 - Planning index: `docs/planning/INDEX.md`
 - Structured backlog (canonical): `docs/planning/BACKLOG.csv`

@@ -18,6 +18,7 @@
     "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
   ],
   "allowed_patterns": [
+    "docs/agent/**/*.md",
     "docs/governance/**/*.md",
     "docs/architecture/panel/**/*.md",
     "docs/sre/**/*.md",
