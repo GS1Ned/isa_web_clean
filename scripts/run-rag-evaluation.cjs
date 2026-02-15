@@ -26,21 +26,81 @@ const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
 const mysql = require('mysql2/promise');
 const crypto = require('crypto');
 
+const SSL_QUERY_KEYS = ["ssl", "sslmode", "ssl-mode", "sslMode"];
+
+function normalizeSslValue(value) {
+  if (!value) return undefined;
+
+  // URL-encoded JSON objects from DATABASE_URL (e.g. ssl={"rejectUnauthorized":true})
+  if (value.startsWith("{")) {
+    try {
+      const parsed = JSON.parse(value);
+      if (typeof parsed === "object" && parsed !== null) {
+        return parsed;
+      }
+    } catch {
+      // Not valid JSON, fall through to string parsing
+    }
+  }
+
+  const normalized = value.toLowerCase();
+
+  // Enable SSL with no verification (common for development/test)
+  if (["true", "1", "required", "require"].includes(normalized)) {
+    return { rejectUnauthorized: false };
+  }
+
+  // Disable SSL
+  if (["false", "0", "disabled", "disable"].includes(normalized)) {
+    return undefined;
+  }
+
+  // Enable SSL with full certificate verification
+  if (["verify-ca", "verify-full", "verify_ca", "verify_full"].includes(normalized)) {
+    return { rejectUnauthorized: true };
+  }
+
+  // Enable SSL but skip certificate verification
+  if (["skip-verify", "accept-invalid", "skip_verify", "accept_invalid"].includes(normalized)) {
+    return { rejectUnauthorized: false };
+  }
+
+  // Default: enable SSL without verification if unknown value
+  return { rejectUnauthorized: false };
+}
+
+function buildMysqlConfigFromUrl(databaseUrl) {
+  const url = new URL(databaseUrl);
+
+  const sslValue =
+    SSL_QUERY_KEYS.map((key) => url.searchParams.get(key)).find(Boolean) ??
+    null;
+  const ssl =
+    sslValue === null ? { rejectUnauthorized: true } : normalizeSslValue(sslValue);
+
+  const config = {
+    host: url.hostname,
+    port: url.port ? Number(url.port) : undefined,
+    user: url.username ? decodeURIComponent(url.username) : undefined,
+    password: url.password ? decodeURIComponent(url.password) : undefined,
+    database: url.pathname.replace(/^\//, ""),
+  };
+
+  if (ssl) {
+    config.ssl = ssl;
+  }
+
+  return config;
+}
+
 // Configuration
 const CONFIG = {
   // OpenAI for semantic similarity
   openaiApiKey: process.env.OPENAI_API_KEY,
   openaiBaseUrl: process.env.OPENAI_API_BASE || 'https://api.openai.com/v1',
   
-  // Database
-  db: {
-    host: 'gateway01.eu-central-1.prod.aws.tidbcloud.com',
-    port: 4000,
-    user: 'dtVAxSKn7P5nF6W.root',
-    password: 'qyjk6KJU2cT8Yjkb',
-    database: 'isa_db',
-    ssl: { rejectUnauthorized: true }
-  },
+  // Database (required unless --dry-run)
+  databaseUrl: process.env.DATABASE_URL,
   
   // Evaluation thresholds
   thresholds: {
@@ -421,12 +481,24 @@ async function runEvaluation() {
   cliOut(`   Dry run: ${options.dryRun}`);
   cliOut(`   Verbose: ${options.verbose}\n`);
   
-  if (!CONFIG.openaiApiKey) {
+  if (!options.dryRun && !CONFIG.openaiApiKey) {
     cliErr('❌ OPENAI_API_KEY environment variable not set');
     process.exit(1);
   }
-  
-  const conn = await mysql.createConnection(CONFIG.db);
+
+  if (!CONFIG.databaseUrl) {
+    if (options.dryRun) {
+      cliOut('Dry run requested and DATABASE_URL is not set.');
+      cliOut('Skipping database connection. Set DATABASE_URL to enumerate test cases.\n');
+      return;
+    }
+    cliErr('❌ DATABASE_URL environment variable not set');
+    process.exit(1);
+  }
+
+  const conn = await mysql.createConnection(
+    buildMysqlConfigFromUrl(CONFIG.databaseUrl)
+  );
   
   try {
     // Fetch golden pairs

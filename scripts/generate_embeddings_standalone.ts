@@ -4,9 +4,13 @@ import { format as utilFormat } from "node:util";
 const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
 const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
 
-
-const DATABASE_URL = "mysql://dtVAxSKn7P5nF6W.root:qyjk6KJU2cT8Yjkb@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/isa_db?ssl-mode=REQUIRED";
+const DATABASE_URL = process.env.DATABASE_URL;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
+if (!DATABASE_URL) {
+  cliErr("❌ DATABASE_URL not found in environment");
+  process.exit(1);
+}
 
 if (!OPENAI_API_KEY) {
   cliErr("❌ OPENAI_API_KEY not found in environment");
