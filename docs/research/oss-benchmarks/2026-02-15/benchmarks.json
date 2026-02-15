@@ -16,12 +16,12 @@
         {
           "claim": "Observability product repo with many CI workflows and release automation",
           "evidence_url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/releaser.yaml",
-          "evidence_date": ""
+          "evidence_date": "2026-02-15"
         },
         {
           "claim": "Publishes an OpenAPI spec as a tracked artifact",
           "evidence_url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/api/openapi.yml",
-          "evidence_date": ""
+          "evidence_date": "2026-02-15"
         }
       ],
       "inspect_paths": [
@@ -58,12 +58,12 @@
         {
           "claim": "LLM observability/eval oriented repo with CI-heavy posture",
           "evidence_url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/pipeline.yml",
-          "evidence_date": ""
+          "evidence_date": "2026-02-14"
         },
         {
           "claim": "Stores small trace-like fixtures as versioned JSON files",
           "evidence_url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/google-gemini-2025-08-01.json",
-          "evidence_date": ""
+          "evidence_date": "2026-02-14"
         }
       ],
       "inspect_paths": [
@@ -97,12 +97,12 @@
         {
           "claim": "CI is decomposed into targeted workflows (typecheck, migrations, e2e)",
           "evidence_url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/jawn-typecheck.yml",
-          "evidence_date": ""
+          "evidence_date": "2026-02-13"
         },
         {
           "claim": "Explicit typed client boundary surface present",
           "evidence_url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/lib/clients/jawnTypes/public.ts",
-          "evidence_date": ""
+          "evidence_date": "2026-02-13"
         }
       ],
       "inspect_paths": [
@@ -135,12 +135,12 @@
         {
           "claim": "Canonical TS-first schema validation and parsing library",
           "evidence_url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/README.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-15"
         },
         {
           "claim": "Core schema code and tests are maintained under packages",
           "evidence_url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/core/schemas.ts",
-          "evidence_date": ""
+          "evidence_date": "2026-02-15"
         }
       ],
       "inspect_paths": [
@@ -170,12 +170,12 @@
         {
           "claim": "Client link patterns include retries and dedupe",
           "evidence_url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/retryLink.ts",
-          "evidence_date": ""
+          "evidence_date": "2026-02-14"
         },
         {
           "claim": "End-to-end typesafe RPC boundary for TS apps",
           "evidence_url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/README.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-14"
         }
       ],
       "inspect_paths": [
@@ -208,12 +208,12 @@
         {
           "claim": "Tracing hooks exist in the core library",
           "evidence_url": "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/drizzle-orm/src/tracing.ts",
-          "evidence_date": ""
+          "evidence_date": "2026-02-09"
         },
         {
           "claim": "Type-driven DB layer with explicit adapters",
           "evidence_url": "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/README.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-09"
         }
       ],
       "inspect_paths": [
@@ -245,12 +245,12 @@
         {
           "claim": "Automates releases driven by commit history and conventions",
           "evidence_url": "https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/README.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-14"
         },
         {
           "claim": "CI workflow dedicated to release automation",
           "evidence_url": "https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/.github/workflows/release.yml",
-          "evidence_date": ""
+          "evidence_date": "2026-02-14"
         }
       ],
       "inspect_paths": [
@@ -281,12 +281,12 @@
         {
           "claim": "Benchmarks and docs exist as first-class folders",
           "evidence_url": "https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/benchmark/README.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-14"
         },
         {
           "claim": "Canonical JSON Schema validator for JS/TS",
           "evidence_url": "https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/README.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-14"
         }
       ],
       "inspect_paths": [
@@ -316,12 +316,12 @@
         {
           "claim": "Node tracer provider is implemented as a package",
           "evidence_url": "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts",
-          "evidence_date": ""
+          "evidence_date": "2026-02-12"
         },
         {
           "claim": "Reference OpenTelemetry implementation for JS/TS",
           "evidence_url": "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/README.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-12"
         }
       ],
       "inspect_paths": [
@@ -352,12 +352,12 @@
         {
           "claim": "Durable workflow SDK for TypeScript",
           "evidence_url": "https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/README.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-12"
         },
         {
           "claim": "OpenTelemetry interceptors are provided as a separate package",
           "evidence_url": "https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/packages/interceptors-opentelemetry/src/instrumentation.ts",
-          "evidence_date": ""
+          "evidence_date": "2026-02-12"
         }
       ],
       "inspect_paths": [
@@ -388,12 +388,12 @@
         {
           "claim": "Mature governance docs for project layout and releases",
           "evidence_url": "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/project-layout.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-13"
         },
         {
           "claim": "Security scanning workflow exists in CI",
           "evidence_url": "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/.github/workflows/codeql.yml",
-          "evidence_date": ""
+          "evidence_date": "2026-02-13"
         }
       ],
       "inspect_paths": [
@@ -426,12 +426,12 @@
         {
           "claim": "Documents an OpenAPI workflow",
           "evidence_url": "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/OPENAPI_WORKFLOW.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-14"
         },
         {
           "claim": "Engineering docs for evolving APIs and architecture",
           "evidence_url": "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/DEVSERVER_ARCHITECTURE.md",
-          "evidence_date": ""
+          "evidence_date": "2026-02-14"
         }
       ],
       "inspect_paths": [
@@ -459,11 +459,11 @@
       "evidence": [
         {
           "url": "https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/project-layout.md",
-          "date": ""
+          "date": "2026-02-13"
         },
         {
           "url": "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/DEVSERVER_ARCHITECTURE.md",
-          "date": ""
+          "date": "2026-02-14"
         }
       ],
       "example_repos": [
@@ -501,11 +501,11 @@
       "evidence": [
         {
           "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/pipeline.yml",
-          "date": ""
+          "date": "2026-02-14"
         },
         {
           "url": "https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/clickhouse-migration-check.yml",
-          "date": ""
+          "date": "2026-02-13"
         }
       ],
       "example_repos": [
@@ -543,11 +543,11 @@
       "evidence": [
         {
           "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/README.md",
-          "date": ""
+          "date": "2026-02-14"
         },
         {
           "url": "https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/README.md",
-          "date": ""
+          "date": "2026-02-15"
         }
       ],
       "example_repos": [
@@ -585,11 +585,11 @@
       "evidence": [
         {
           "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/api/openapi.yml",
-          "date": ""
+          "date": "2026-02-15"
         },
         {
           "url": "https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/OPENAPI_WORKFLOW.md",
-          "date": ""
+          "date": "2026-02-14"
         }
       ],
       "example_repos": [
@@ -626,11 +626,11 @@
       "evidence": [
         {
           "url": "https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/README.md",
-          "date": ""
+          "date": "2026-02-14"
         },
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/.github/workflows/schema-validation.yml",
-          "date": ""
+          "date": "2026-02-15"
         }
       ],
       "example_repos": [
@@ -672,7 +672,7 @@
         },
         {
           "url": "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts",
-          "date": ""
+          "date": "2026-02-12"
         }
       ],
       "example_repos": [
@@ -713,7 +713,7 @@
         },
         {
           "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/retryLink.ts",
-          "date": ""
+          "date": "2026-02-14"
         }
       ],
       "example_repos": [
@@ -751,11 +751,11 @@
       "evidence": [
         {
           "url": "https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/README.md",
-          "date": ""
+          "date": "2026-02-14"
         },
         {
           "url": "https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/release-drafter.yml",
-          "date": ""
+          "date": "2026-02-15"
         }
       ],
       "example_repos": [
@@ -793,7 +793,7 @@
       "evidence": [
         {
           "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/beeai-2025-08-01.json",
-          "date": ""
+          "date": "2026-02-14"
         },
         {
           "url": "https://github.com/openai/evals",
@@ -843,11 +843,11 @@
       "evidence": [
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/.github/workflows/console-check.yml.disabled",
-          "date": ""
+          "date": "2026-02-15"
         },
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/server/utils/server-logger.ts",
-          "date": ""
+          "date": "2026-02-15"
         }
       ],
       "last_verified_date": "2026-02-15"
@@ -872,7 +872,7 @@
       "evidence": [
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/server/routers.ts",
-          "date": ""
+          "date": "2026-02-15"
         },
         {
           "url": "https://trpc.io/docs/router",
@@ -902,7 +902,7 @@
       "evidence": [
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/server/_core/logger-wiring.ts",
-          "date": ""
+          "date": "2026-02-15"
         },
         {
           "url": "https://opentelemetry.io/docs/concepts/signals/traces/",
@@ -964,7 +964,7 @@
         },
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/.github/workflows/schema-validation.yml",
-          "date": ""
+          "date": "2026-02-15"
         }
       ],
       "last_verified_date": "2026-02-15"
@@ -1018,11 +1018,11 @@
       "evidence": [
         {
           "url": "https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/google-gemini-2025-08-01.json",
-          "date": ""
+          "date": "2026-02-14"
         },
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/scripts/run-rag-evaluation.cjs",
-          "date": ""
+          "date": "2026-02-15"
         }
       ],
       "last_verified_date": "2026-02-15"
@@ -1050,7 +1050,7 @@
         },
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/docs/DATASETS_CATALOG.json",
-          "date": ""
+          "date": "2026-02-15"
         }
       ],
       "last_verified_date": "2026-02-15"
