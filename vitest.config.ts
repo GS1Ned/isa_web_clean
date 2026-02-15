@@ -3,6 +3,13 @@ import path from "path";
 
 const templateRoot = path.resolve(import.meta.dirname);
 
+// Ensure test-mode semantics are active during module import.
+// Some modules validate env / wire loggers at import time, before `setupFiles` run.
+process.env.NODE_ENV ||= "test";
+process.env.VITEST ||= "true";
+process.env.DOTENV_CONFIG_QUIET ||= "true";
+process.env.ISA_TEST_SILENT ||= "true";
+
 const dbDependentTests = [
   "server/alert-system.test.ts",
   "server/admin-analytics.test.ts",

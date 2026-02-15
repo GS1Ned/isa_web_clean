@@ -135,7 +135,6 @@
 - Runbook: `docs/governance/ASK_ISA_SMOKE_RUNBOOK.md`
 - Smoke script: `scripts/probe/ask_isa_smoke.py`
 - Ask ISA spec: `docs/spec/ASK_ISA.md`
-- Contract: `docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md`
+- Contract: `docs/spec/ASK_ISA/ASK_ISA_RUNTIME_CONTRACT.md`
 - Planning: `docs/planning/NEXT_ACTIONS.json`
 - Repo tree: `REPO_TREE.md`
-

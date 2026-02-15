@@ -1,16 +1,16 @@
 {
   "version": "1.0",
   "generated": "2026-02-12",
-  "overall_validity": 91.9,
+  "overall_validity": 92.4,
   "entrypoints": {
     "valid": 54,
     "total": 60,
     "percent": 90.0
   },
   "evidence": {
-    "valid": 124,
+    "valid": 125,
     "total": 134,
-    "percent": 92.5
+    "percent": 93.3
   },
   "schemas": {
     "valid": 3,
@@ -28,6 +28,6 @@
     "[Evidence] Missing: data/gs1/gs1_standards_catalog.json",
     "[Evidence] Missing: docs/test-failure-analysis-2025-12-17.md",
     "[Evidence] Missing: docs/planning/PROGRAM_PLAN.md",
-    "[Evidence] Missing: docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md"
+    "[Evidence] Missing: docs/governance/ASK_ISA_SMOKE_RUNBOOK.md"
   ]
 }

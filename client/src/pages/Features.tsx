@@ -283,7 +283,7 @@ const features: Feature[] = [
     status: "active",
     category: "Admin",
     icon: Database,
-    link: "/admin/cellar-ingestion",
+    link: "/admin/monitoring",
     tags: ["Automation", "CELLAR", "Ingestion"],
   },
   {

@@ -135,7 +135,7 @@
           "docs/agent/AGENT_MAP.md",
           "docs/planning/INDEX.md",
           "docs/spec/ASK_ISA.md",
-          "docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md",
+          "docs/spec/ASK_ISA/ASK_ISA_RUNTIME_CONTRACT.md",
           "server/prompts/ask_isa/index.ts"
         ],
         "verified_at_utc": "2026-02-09T20:37:32Z",
@@ -158,7 +158,7 @@
           "docs/governance/ASK_ISA_SMOKE_RUNBOOK.md",
           "docs/governance/MANUAL_PREFLIGHT.md",
           "docs/spec/ASK_ISA.md",
-          "docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md",
+          "docs/spec/ASK_ISA/ASK_ISA_RUNTIME_CONTRACT.md",
           "scripts/probe/ask_isa_smoke.py",
           "server/prompts/ask_isa/index.ts"
         ],

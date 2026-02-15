@@ -12,6 +12,11 @@ allowed_planning = {
     "docs/planning/PROGRAM_PLAN.md",
 }
 
+allowed_planning_prefixes = (
+    # Refactoring inventory/artifacts are governed by scripts/refactor/* gates.
+    "docs/planning/refactoring/",
+)
+
 planning_dir = pathlib.Path("docs/planning")
 if planning_dir.exists():
     for p in sorted(planning_dir.rglob("*")):
@@ -22,6 +27,8 @@ if planning_dir.exists():
             errors.append(f"Disallowed planning folder exists: {rel}")
         if rel.startswith("docs/planning/_root/"):
             errors.append(f"Disallowed legacy planning folder exists: {rel}")
+        if rel.startswith(allowed_planning_prefixes):
+            continue
         if rel not in allowed_planning:
             errors.append(
                 "Disallowed planning file (canonical planning is "
