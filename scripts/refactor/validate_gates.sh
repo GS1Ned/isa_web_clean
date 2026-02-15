@@ -53,8 +53,12 @@ echo "Gate 4: Link Validation..."
 BROKEN=0
 for md in $(find docs -name "*.md"); do
     # Check for broken relative links (basic pattern matching)
-    grep -oE '\[.*?\]\((?!http).*?\)' "$md" | while read -r link; do
-        path=$(echo "$link" | sed -E 's/.*\((.*)\)/\1/')
+    grep -oE '\\[[^]]*\\]\\([^)]*\\)' "$md" | while read -r link; do
+        path=$(echo "$link" | sed -E 's/.*\\((.*)\\)/\\1/')
+        # Skip absolute URLs
+        if [[ "$path" == http://* || "$path" == https://* ]]; then
+            continue
+        fi
         dir=$(dirname "$md")
         if [ ! -f "$dir/$path" ] && [ ! -f "docs/$path" ]; then
             echo "⚠️  Potential broken link in $md: $path"
