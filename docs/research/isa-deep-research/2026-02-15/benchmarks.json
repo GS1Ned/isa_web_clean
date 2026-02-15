@@ -1,0 +1,1936 @@
+{
+  "version": "2026-02-15",
+  "repo": "GS1Ned/isa_web_clean",
+  "branch": "strict-no-console",
+  "isa_baseline": {
+    "entrypoints": [
+      "server/_core/index.ts",
+      "client/src/main.tsx",
+      "client/src/App.tsx"
+    ],
+    "ci_gates": [
+      ".github/workflows/schema-validation.yml",
+      ".github/workflows/validate-docs.yml",
+      ".github/workflows/refactoring-validation.yml",
+      ".github/workflows/repo-tree.yml",
+      "scripts/refactor/validate_gates.sh",
+      "scripts/validate_planning_and_traceability.py"
+    ],
+    "no_console_enforcement_paths": [
+      ".eslintrc.server.json",
+      ".github/workflows/console-check.yml.disabled",
+      "scripts/validate_oss_benchmarks_2026_02_15.sh"
+    ],
+    "observability_stack": [
+      "server/utils/server-logger.ts",
+      "server/_core/logger-wiring.ts",
+      "server/utils/pipeline-logger.ts",
+      "server/_core/performance-monitoring.ts"
+    ],
+    "last_verified_date": "2026-02-15"
+  },
+  "candidates": [
+    {
+      "name": "open-metadata/OpenMetadata",
+      "url": "https://github.com/open-metadata/OpenMetadata",
+      "signals": {
+        "stars": 8699,
+        "forks": 1631,
+        "last_commit_date": "2026-02-15T13:51:33Z",
+        "release_date": "2026-02-04T11:31:09Z"
+      },
+      "evidence": [
+        {
+          "title": "open-metadata/OpenMetadata README.md",
+          "url": "https://github.com/open-metadata/OpenMetadata/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "open-metadata/OpenMetadata workflow py-nox-ci.yml",
+          "url": "https://github.com/open-metadata/OpenMetadata/blob/main/.github/workflows/py-nox-ci.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "UI Feedback - 1.0",
+          "url": "https://github.com/open-metadata/OpenMetadata/issues/10543",
+          "date": "2023-03-13T08:11:58Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        "docker/development/distributed-test/README.md",
+        "ingestion/LICENSE",
+        "SECURITY.md",
+        "CONTRIBUTING.md",
+        ".github/CODEOWNERS",
+        ".github/workflows/py-nox-ci.yml",
+        ".github/workflows/maven-build-collate.yml",
+        ".github/workflows/maven-build-skip.yml",
+        ".github/workflows/maven-build.yml",
+        ".github/workflows/maven-postgres-rdf-tests-build.yml",
+        ".github/workflows/maven-postgres-tests-build-skip.yml",
+        ".github/workflows/maven-postgres-tests-build.yml",
+        ".github/workflows/maven-sonar-build.yml",
+        "docs/impersonation-design.md",
+        "docs/plans/2026-01-27-search-indexing-stats-redesign.md",
+        "docs/rdf-local-development.md"
+      ],
+      "replicate": [
+        "Metadata registry + stewardship fields",
+        "Lineage/provenance as first-class artefacts",
+        "Connector-driven ingestion boundary"
+      ],
+      "avoid": [
+        "Scope creep without capability boundaries",
+        "Unversioned internal contracts"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "datahub-project/datahub",
+      "url": "https://github.com/datahub-project/datahub",
+      "signals": {
+        "stars": 11579,
+        "forks": 3369,
+        "last_commit_date": "2026-02-14T19:02:14Z",
+        "release_date": "2026-02-10T19:39:15Z"
+      },
+      "evidence": [
+        {
+          "title": "datahub-project/datahub README.md",
+          "url": "https://github.com/datahub-project/datahub/blob/master/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "datahub-project/datahub workflow build-and-test.yml",
+          "url": "https://github.com/datahub-project/datahub/blob/master/.github/workflows/build-and-test.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Make Airflow plugin fully compatible with Airflow >=2.7",
+          "url": "https://github.com/datahub-project/datahub/issues/13357",
+          "date": "2025-04-29T13:45:05Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        "contrib/metadata-model-extensions/datahub-demo-dataset-governance-validator/README.md",
+        "LICENSE",
+        "SECURITY.md",
+        "docs/CONTRIBUTING.md",
+        "CODEOWNERS",
+        "docs/dev-guides/semantic-search/ARCHITECTURE.md",
+        ".github/workflows/build-and-test.yml",
+        ".github/workflows/python-build-pages.yml",
+        ".github/workflows/quickstart-test.yml",
+        ".github/workflows/spark-smoke-test.yml",
+        ".github/workflows/test-results.yml",
+        ".github/workflows/update-test-weights.yml",
+        ".github/workflows/lint-actions.yml",
+        ".github/workflows/actions.yml",
+        "docs/SECURITY_STANCE.md",
+        "docs/advanced/aspect-versioning.md",
+        "docs/advanced/derived-aspects.md",
+        "docs/CODE_OF_CONDUCT.md"
+      ],
+      "replicate": [
+        "Event-oriented ingestion with idempotent upserts",
+        "Entity graph modelling for discoverability",
+        "Operational metadata as evidence"
+      ],
+      "avoid": [
+        "High operational complexity without a minimal profile",
+        "Tight coupling between ingestion and UI"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "OpenLineage/OpenLineage",
+      "url": "https://github.com/OpenLineage/OpenLineage",
+      "signals": {
+        "stars": 2316,
+        "forks": 425,
+        "last_commit_date": "2026-02-13T03:30:12Z",
+        "release_date": "2026-01-29T21:17:03Z"
+      },
+      "evidence": [
+        {
+          "title": "OpenLineage/OpenLineage README.md",
+          "url": "https://github.com/OpenLineage/OpenLineage/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "OpenLineage/OpenLineage workflow integration-tests-spark-aws.yml",
+          "url": "https://github.com/OpenLineage/OpenLineage/blob/main/.github/workflows/integration-tests-spark-aws.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[Discussion] Consistent approach for metastore symlinks",
+          "url": "https://github.com/OpenLineage/OpenLineage/issues/3642",
+          "date": "2025-04-16T15:22:03Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        "client/java/README.md",
+        "client/python/LICENSE",
+        "GOVERNANCE.md",
+        "CONTRIBUTING.md",
+        "CODEOWNERS",
+        ".github/workflows/integration-tests-spark-aws.yml",
+        ".github/workflows/datadog-sca.yml",
+        ".github/workflows/datadog-static-analysis.yml",
+        ".github/workflows/visual-difference-detection.yml",
+        ".github/workflows/website-new-version.yml",
+        ".github/workflows/website-snapshot.yml",
+        "spec/OpenLineage.md",
+        "spec/Naming.md",
+        "spec/Versioning.md",
+        "spec/facets/ExternalQueryRunFacet.md"
+      ],
+      "replicate": [
+        "Versioned provenance event schema",
+        "Compatibility discipline and reference tooling"
+      ],
+      "avoid": [
+        "Schema drift without stable identifiers",
+        "Spec-first without ISA reference implementation"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "MarquezProject/marquez",
+      "url": "https://github.com/MarquezProject/marquez",
+      "signals": {
+        "stars": 2121,
+        "forks": 380,
+        "last_commit_date": "2025-03-27T07:32:36Z",
+        "release_date": "2024-10-24T08:23:00Z"
+      },
+      "evidence": [
+        {
+          "title": "MarquezProject/marquez README.md",
+          "url": "https://github.com/MarquezProject/marquez/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "MarquezProject/marquez workflow test-chart.yaml",
+          "url": "https://github.com/MarquezProject/marquez/blob/main/.github/workflows/test-chart.yaml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Very slow /api/v1/jobs endpoint after upgrading to 0.50.0",
+          "url": "https://github.com/MarquezProject/marquez/issues/2987",
+          "date": "2024-12-12T08:31:12Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        "api/src/test/resources/apples/README.md",
+        "LICENSE",
+        "GOVERNANCE.md",
+        "CONTRIBUTING.md",
+        ".github/workflows/test-chart.yaml",
+        ".github/workflows/test-website.yml",
+        ".github/workflows/deploy-website.yml",
+        ".github/workflows/headerchecker.yml",
+        "docs/README.md",
+        "docs/src/pages/markdown-page.md"
+      ],
+      "replicate": [
+        "Lineage service pattern: API + storage + run model",
+        "Clear job/run/dataset primitives"
+      ],
+      "avoid": [
+        "Using lineage store as system of record for domain data"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "open-policy-agent/opa",
+      "url": "https://github.com/open-policy-agent/opa",
+      "signals": {
+        "stars": 11228,
+        "forks": 1511,
+        "last_commit_date": "2026-02-14T12:43:54Z",
+        "release_date": "2026-01-29T21:07:36Z"
+      },
+      "evidence": [
+        {
+          "title": "open-policy-agent/opa README.md",
+          "url": "https://github.com/open-policy-agent/opa/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "open-policy-agent/opa workflow codeql-analysis.yml",
+          "url": "https://github.com/open-policy-agent/opa/blob/main/.github/workflows/codeql-analysis.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Possible memory leak involving topdown/http?",
+          "url": "https://github.com/open-policy-agent/opa/issues/2978",
+          "date": "2020-12-04T15:41:28Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        "docs/README.md",
+        "internal/semver/LICENSE",
+        "GOVERNANCE.md",
+        "SECURITY.md",
+        "CONTRIBUTING.md",
+        ".github/workflows/codeql-analysis.yml",
+        ".github/workflows/benchmarks.yaml",
+        ".github/workflows/link-checker.yaml",
+        ".github/workflows/nightly.yaml",
+        ".github/workflows/post-merge.yaml",
+        ".github/workflows/post-tag.yaml",
+        ".github/workflows/pull-request.yaml",
+        ".github/workflows/scorecards.yml",
+        "docs/devel/DEVELOPMENT.md",
+        "docs/devel/RELEASE.md",
+        "docs/docs/aws-cloudformation-hooks.md",
+        "docs/docs/cheatsheet.md",
+        "docs/docs/cicd.md"
+      ],
+      "replicate": [
+        "Policy-as-code for audit gates",
+        "Separation of policy decisions from application logic"
+      ],
+      "avoid": [
+        "Policy sprawl without ownership/lifecycle",
+        "Non-reproducible decisions due to hidden inputs"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "kyverno/kyverno",
+      "url": "https://github.com/kyverno/kyverno",
+      "signals": {
+        "stars": 7398,
+        "forks": 1233,
+        "last_commit_date": "2026-02-15T09:16:47Z",
+        "release_date": "2026-02-02T11:39:39Z"
+      },
+      "evidence": [
+        {
+          "title": "kyverno/kyverno README.md",
+          "url": "https://github.com/kyverno/kyverno/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "kyverno/kyverno workflow devcontainer-build.yaml",
+          "url": "https://github.com/kyverno/kyverno/blob/main/.github/workflows/devcontainer-build.yaml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[Bug] Memory leak causes Kyverno Pods to crash with OOMKilled in loaded conditions",
+          "url": "https://github.com/kyverno/kyverno/issues/4072",
+          "date": "2022-06-03T21:48:33Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        "charts/kyverno-policies/README.md",
+        "LICENSE",
+        "GOVERNANCE.md",
+        "SECURITY.md",
+        "CONTRIBUTING.md",
+        "CODEOWNERS",
+        ".github/workflows/devcontainer-build.yaml",
+        ".github/workflows/images-build.yaml",
+        ".github/workflows/helm-test.yaml",
+        ".github/workflows/load-testing.yml",
+        ".github/workflows/tests.yaml",
+        ".github/workflows/lint.yaml",
+        ".github/workflows/helm-release.yaml",
+        ".github/workflows/release.yaml",
+        "docs/dev/controllers/policycache.md",
+        "docs/user/cli/commands/kyverno_fix_policy.md",
+        "docs/dev/README.md",
+        "docs/dev/api/README.md",
+        "docs/dev/controllers/README.md",
+        "docs/dev/feature-flags/README.md"
+      ],
+      "replicate": [
+        "Rule enforcement with explicit test cases",
+        "Exception handling as a deliberate workflow"
+      ],
+      "avoid": [
+        "Rule proliferation without prioritisation"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "sigstore/cosign",
+      "url": "https://github.com/sigstore/cosign",
+      "signals": {
+        "stars": 5650,
+        "forks": 690,
+        "last_commit_date": "2026-02-11T22:44:31Z",
+        "release_date": "2026-01-09T22:13:05Z"
+      },
+      "evidence": [
+        {
+          "title": "sigstore/cosign README.md",
+          "url": "https://github.com/sigstore/cosign/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "sigstore/cosign workflow golangci-lint.yml",
+          "url": "https://github.com/sigstore/cosign/blob/main/.github/workflows/golangci-lint.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "VAULT KMS signing and verification broken after rotating a key in vault",
+          "url": "https://github.com/sigstore/cosign/issues/1351",
+          "date": "2022-01-24T07:11:18Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        "README.md",
+        "LICENSE",
+        "CONTRIBUTING.md",
+        "CODEOWNERS",
+        ".github/workflows/golangci-lint.yml",
+        ".github/workflows/build.yaml",
+        ".github/workflows/e2e-tests.yml",
+        ".github/workflows/kind-verify-attestation.yaml",
+        ".github/workflows/tests.yaml",
+        ".github/workflows/codeql-analysis.yml",
+        ".github/workflows/cut-release.yml",
+        ".github/workflows/validate-release.yml",
+        "doc/cosign.md",
+        "doc/cosign_attach.md",
+        "doc/cosign_attach_attestation.md",
+        "doc/cosign_attach_sbom.md",
+        "doc/cosign_attach_signature.md",
+        "doc/cosign_attest-blob.md"
+      ],
+      "replicate": [
+        "Verifiable evidence artefacts (signatures/attestations)",
+        "Treat build outputs as auditable artefacts"
+      ],
+      "avoid": [
+        "Adopting signing without clear artefact inventory"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "backstage/backstage",
+      "url": "https://github.com/backstage/backstage",
+      "signals": {
+        "stars": 32606,
+        "forks": 7090,
+        "last_commit_date": "2026-02-15T14:51:55Z",
+        "release_date": "2026-02-02T16:37:37Z"
+      },
+      "evidence": [
+        {
+          "title": "backstage/backstage README.md",
+          "url": "https://github.com/backstage/backstage/blob/master/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "backstage/backstage workflow ci-noop.yml",
+          "url": "https://github.com/backstage/backstage/blob/master/.github/workflows/ci-noop.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "OpenAPI spec for the REST API",
+          "url": "https://github.com/backstage/backstage/issues/2566",
+          "date": "2020-09-22T20:41:19Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        ".changeset/README.md",
+        "LICENSE",
+        "SECURITY.md",
+        "CONTRIBUTING.md",
+        ".github/CODEOWNERS",
+        ".github/workflows/ci-noop.yml",
+        ".github/workflows/ci.yml",
+        ".github/workflows/verify_codeql.yml",
+        ".github/workflows/sync_patch-release.yml",
+        ".github/workflows/sync_release-manifest.yml",
+        ".github/workflows/api-breaking-changes-comment.yml",
+        ".github/workflows/api-breaking-changes.yml",
+        ".github/workflows/automate_area-labels.yml",
+        "docs/architecture-decisions/adr000-template.md",
+        "docs/architecture-decisions/adr001-add-adr-log.md",
+        "docs/architecture-decisions/adr002-default-catalog-file-format.md",
+        "docs/architecture-decisions/adr003-avoid-default-exports.md",
+        "docs/architecture-decisions/adr004-module-export-structure.md",
+        "docs/architecture-decisions/adr005-catalog-core-entities.md"
+      ],
+      "replicate": [
+        "Plugin modularity for capability boundaries",
+        "Docs information architecture that scales"
+      ],
+      "avoid": [
+        "Over-building platform extensibility early"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "dagster-io/dagster",
+      "url": "https://github.com/dagster-io/dagster",
+      "signals": {
+        "stars": 14951,
+        "forks": 1976,
+        "last_commit_date": "2026-02-13T23:17:10Z",
+        "release_date": "2026-02-05T21:39:54Z"
+      },
+      "evidence": [
+        {
+          "title": "dagster-io/dagster workflow build-docs.yml",
+          "url": "https://github.com/dagster-io/dagster/blob/master/.github/workflows/build-docs.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Support Auth & RBAC in Dagit",
+          "url": "https://github.com/dagster-io/dagster/issues/2219",
+          "date": "2020-02-27T21:44:23Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Doc 302 new etl tutorial - part 1",
+          "url": "https://github.com/dagster-io/dagster/pull/25320",
+          "date": "2024-10-16T20:32:50Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        "docs/sphinx/_ext/sphinx-click/LICENSE",
+        ".github/CONTRIBUTING.md",
+        ".github/CODEOWNERS",
+        ".github/workflows/build-docs.yml",
+        ".github/workflows/build-integration-registry.yml",
+        ".github/workflows/build-storybook-core.yml",
+        ".github/workflows/build-storybook-ui.yml",
+        ".github/workflows/automate-stale-issues.yml",
+        ".github/workflows/check-docs.yml",
+        "docs/docs/deployment/dagster-plus/getting-started.md",
+        "docs/CLAUDE.md",
+        "docs/CONTRIBUTING.md",
+        "docs/README.md",
+        "docs/docs/about/changelog.md"
+      ],
+      "replicate": [
+        "Idempotent pipeline steps with run metadata",
+        "Run logs and retries as evidence"
+      ],
+      "avoid": [
+        "Tight coupling to one orchestrator runtime"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "dbt-labs/dbt-core",
+      "url": "https://github.com/dbt-labs/dbt-core",
+      "signals": {
+        "stars": 12247,
+        "forks": 2274,
+        "last_commit_date": "2026-02-12T23:02:08Z",
+        "release_date": "2026-02-13T17:42:26Z"
+      },
+      "evidence": [
+        {
+          "title": "dbt-labs/dbt-core README.md",
+          "url": "https://github.com/dbt-labs/dbt-core/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "dbt-labs/dbt-core workflow release-branch-tests.yml",
+          "url": "https://github.com/dbt-labs/dbt-core/blob/main/.github/workflows/release-branch-tests.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[Bug] dbtCore - after upgrading, can't run DBT",
+          "url": "https://github.com/dbt-labs/dbt-core/issues/10135",
+          "date": "2024-05-13T11:13:16Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        ".changes/README.md",
+        "core/LICENSE",
+        "SECURITY.md",
+        "CONTRIBUTING.md",
+        ".github/CODEOWNERS",
+        "ARCHITECTURE.md",
+        ".github/workflows/release-branch-tests.yml",
+        ".github/workflows/test-repeater.yml",
+        ".github/workflows/cut-release-branch.yml",
+        ".github/workflows/nightly-release.yml",
+        ".github/workflows/release.yml",
+        ".github/workflows/artifact-reviews.yml",
+        ".github/workflows/auto-respond-bug-reports.yml",
+        ".github/workflows/backport.yml",
+        "docs/arch/1_Overview.md",
+        "docs/arch/2_CLI.md",
+        "docs/arch/3.1_Partial_Parsing.md",
+        "docs/arch/3.2_Deferral.md",
+        "docs/arch/3_Parsing.md",
+        "docs/arch/4.1_Task_Framework.md"
+      ],
+      "replicate": [
+        "Deterministic manifests as audit artefacts",
+        "Schema tests as gates"
+      ],
+      "avoid": [
+        "Generated artefacts without schema validation/versioning"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "langfuse/langfuse",
+      "url": "https://github.com/langfuse/langfuse",
+      "signals": {
+        "stars": 21945,
+        "forks": 2164,
+        "last_commit_date": "2026-02-14T17:56:13Z",
+        "release_date": "2026-02-12T18:01:03Z"
+      },
+      "evidence": [
+        {
+          "title": "langfuse/langfuse README.md",
+          "url": "https://github.com/langfuse/langfuse/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "langfuse/langfuse workflow codeql.yml",
+          "url": "https://github.com/langfuse/langfuse/blob/main/.github/workflows/codeql.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "bug: langfuse docker compose failing on arm linux machines",
+          "url": "https://github.com/langfuse/langfuse/issues/4683",
+          "date": "2024-12-11T14:32:55Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        ".claude/hooks/README.md",
+        "ee/LICENSE",
+        "SECURITY.md",
+        "CONTRIBUTING.md",
+        ".github/CODEOWNERS",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/release.yml",
+        ".github/workflows/_deploy_ecs_service.yml",
+        ".github/workflows/codespell.yml",
+        ".github/workflows/dependabot-rebase-stale.yml",
+        ".github/workflows/deploy.yml",
+        ".github/workflows/licencecheck.yml",
+        ".github/workflows/pipeline.yml"
+      ],
+      "replicate": [
+        "Trace-first LLM interactions + evaluation loop",
+        "Dataset-based evaluation as evidence"
+      ],
+      "avoid": [
+        "Capturing prompts/outputs without retention/privacy controls",
+        "High-cardinality trace metadata"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Arize-ai/phoenix",
+      "url": "https://github.com/Arize-ai/phoenix",
+      "signals": {
+        "stars": 8549,
+        "forks": 721,
+        "last_commit_date": "2026-02-15T10:07:30Z",
+        "release_date": "2026-02-14T00:06:16Z"
+      },
+      "evidence": [
+        {
+          "title": "Arize-ai/phoenix README.md",
+          "url": "https://github.com/Arize-ai/phoenix/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Arize-ai/phoenix workflow helm-ci.yml",
+          "url": "https://github.com/Arize-ai/phoenix/blob/main/.github/workflows/helm-ci.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[BUG] DSPy connector not showing the token count, although it is returned in the request",
+          "url": "https://github.com/Arize-ai/phoenix/issues/3119",
+          "date": "2024-05-08T11:02:48Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "inspect_paths": [
+        "app/README.md",
+        "js/packages/phoenix-cli/LICENSE",
+        "SECURITY.md",
+        "CONTRIBUTING.md",
+        ".github/CODEOWNERS",
+        ".github/workflows/helm-ci.yml",
+        ".github/workflows/python-CI.yml",
+        ".github/workflows/typescript-CI.yml",
+        ".github/workflows/typescript-packages-CI.yml",
+        ".github/workflows/docker-build-experimental.yml",
+        ".github/workflows/docker-build-nightly.yml",
+        ".github/workflows/docker-build-release.yml",
+        ".github/workflows/helm-release.yaml",
+        "docs/phoenix/skill.md"
+      ],
+      "replicate": [
+        "Evaluation harnesses as versioned artefacts",
+        "RAG-focused metrics and tracing practices"
+      ],
+      "avoid": [
+        "Ad-hoc evaluation without drift detection"
+      ],
+      "last_verified_date": "2026-02-15"
+    }
+  ],
+  "patterns": [
+    {
+      "name": "Policy-as-Code Governance Gates",
+      "summary": "Define audit gates as versioned policies with explicit inputs/outputs and test fixtures; keep policy evaluation separate from application code.",
+      "evidence": [
+        {
+          "title": "OPA policy language / operations docs",
+          "url": "https://github.com/open-policy-agent/opa/blob/main/docs/docs/policy-language.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Kyverno policy docs",
+          "url": "https://github.com/kyverno/kyverno/blob/main/docs/dev/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/open-policy-agent/opa",
+          "paths": [
+            "docs/docs/policy-language.md"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/kyverno/kyverno",
+          "paths": [
+            "docs/dev/README.md"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Policy sprawl risk: requires ownership, review, and deprecation policy.",
+        "Performance considerations for complex policies; requires profiling and caching."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "docs/governance",
+          "server/_core",
+          "server/routers"
+        ],
+        "change_outline": "Introduce a policy evaluation boundary for governance rules (inputs: artefact metadata; outputs: allow/deny + reasons). Start with 1-2 high-value gates (evidence completeness, citation presence) and add tests as fixtures.",
+        "no_console_strategy": "Use existing structured logger (`server/utils/server-logger.ts`) for diagnostics; avoid direct output API usage."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Provenance Events (OpenLineage-style)",
+      "summary": "Model ingestion and transformation runs as immutable events with stable identifiers, timestamps, inputs/outputs, and run facets; store as auditable artefacts.",
+      "evidence": [
+        {
+          "title": "OpenLineage spec / reference materials",
+          "url": "https://github.com/OpenLineage/OpenLineage/blob/main/spec/facets/BaseSubsetDatasetFacet.json",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Marquez lineage service docs",
+          "url": "https://github.com/MarquezProject/marquez/blob/main/docs/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/OpenLineage/OpenLineage",
+          "paths": [
+            "spec/facets/BaseSubsetDatasetFacet.json"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/MarquezProject/marquez",
+          "paths": [
+            "docs/README.md"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Requires consistent entity IDs; retrofitting IDs later is expensive.",
+        "High-cardinality facets can inflate storage and query costs."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "server/cron-endpoint.ts",
+          "server/utils/pipeline-logger.ts",
+          "drizzle/schema_pipeline_observability.ts"
+        ],
+        "change_outline": "Add a minimal provenance event table and emit one event per ingestion step (source fetch, parse, normalise, embed, persist). Link events to existing pipeline execution logs.",
+        "no_console_strategy": "Emit events via DB writes and structured logger; avoid direct output API usage."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Schema-Validated Evidence Artefacts in CI",
+      "summary": "Treat generated artefacts (scorecards, catalogues, benchmarks) as schema-validated evidence. Enforce parsing + schema validation in CI before merge.",
+      "evidence": [
+        {
+          "title": "ISA schema-validation workflow",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/.github/workflows/schema-validation.yml",
+          "date": "2026-02-12T12:07:21+01:00",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "dbt-core deterministic artefacts mindset (entry doc)",
+          "url": "https://github.com/dbt-labs/dbt-core/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/GS1Ned/isa_web_clean",
+          "paths": [
+            ".github/workflows/schema-validation.yml",
+            "docs/quality/schemas"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/dbt-labs/dbt-core",
+          "paths": [
+            "README.md"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Schemas require maintenance; breaking schema changes must be versioned."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "docs/quality/schemas",
+          "docs/evidence/_generated",
+          "test-results/ci"
+        ],
+        "change_outline": "Define JSON schemas for each evidence artefact and enforce AJV validation in CI. Add drift checks by comparing current vs previous artefact snapshots.",
+        "no_console_strategy": "CI steps rely on exit codes and structured artefact output; avoid direct output API usage."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Deterministic Repo Map for Humans and Agents",
+      "summary": "Generate and maintain deterministic repo maps (tree + capability index + contracts) so both humans and automation can navigate without guesswork.",
+      "evidence": [
+        {
+          "title": "ISA repo map artefact",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/REPO_TREE.md",
+          "date": "2026-02-15T13:43:02+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "ISA repo-tree workflow",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/.github/workflows/repo-tree.yml",
+          "date": "2026-02-10T01:46:32+01:00",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/GS1Ned/isa_web_clean",
+          "paths": [
+            "REPO_TREE.md",
+            ".github/workflows/repo-tree.yml"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Repo maps must be regenerated consistently; otherwise they become misleading."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "REPO_TREE.md",
+          "docs/spec",
+          "docs/governance"
+        ],
+        "change_outline": "Add a machine-readable capability map (JSON) that points to entrypoints, routers, schemas, and tests. Validate it in CI.",
+        "no_console_strategy": "Generator writes to files and fails via exit code."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Trace-First LLM Calls + Evaluation Loop",
+      "summary": "Treat each LLM call as a traceable unit with inputs, outputs, model config, tool calls, and evaluation results; store datasets and run evaluations continuously.",
+      "evidence": [
+        {
+          "title": "Langfuse tracing/evaluation (entry doc)",
+          "url": "https://github.com/langfuse/langfuse/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Phoenix LLM/RAG observability/eval (entry doc)",
+          "url": "https://github.com/Arize-ai/phoenix/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/langfuse/langfuse",
+          "paths": [
+            "README.md"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/Arize-ai/phoenix",
+          "paths": [
+            "README.md"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Trace data can contain sensitive content; requires retention, redaction, and access controls.",
+        "High volume tracing increases storage costs; requires sampling and aggregation."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "server/_core/llm.ts",
+          "server/routers/ask-isa-v2.js",
+          "drizzle/schema_*"
+        ],
+        "change_outline": "Add a trace table keyed by request ID + invocation ID; store prompt template version, retrieval set IDs, and evaluation scores. Provide an evaluation runner that uses fixed datasets.",
+        "no_console_strategy": "Persist trace rows and use structured server logger; avoid direct output API usage."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Idempotent Ingestion with Run Ledgers",
+      "summary": "Make ingestion steps idempotent and record every run with inputs, retries, outcomes, and artefact references; treat the ledger as audit evidence.",
+      "evidence": [
+        {
+          "title": "OpenMetadata ingestion platform (entry doc)",
+          "url": "https://github.com/open-metadata/OpenMetadata/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Dagster runs/assets (entry doc)",
+          "url": "https://github.com/dagster-io/dagster/blob/master/",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/open-metadata/OpenMetadata",
+          "paths": [
+            "README.md"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/dagster-io/dagster",
+          "paths": [
+            "README.md"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Requires careful definition of idempotency keys and retry semantics."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "server/utils/pipeline-logger.ts",
+          "server/db-pipeline-observability.ts"
+        ],
+        "change_outline": "Standardise on run_id and idempotency keys per pipeline. Persist run metadata and artefact IDs; expose via monitoring router.",
+        "no_console_strategy": "Use DB ledger + structured logger only."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Evidence Artefacts that are Independently Verifiable",
+      "summary": "Produce evidence artefacts that can be verified by third parties (signatures, attestations, immutable logs). Tie evidence to commit SHA and build inputs.",
+      "evidence": [
+        {
+          "title": "Cosign signing/verification (entry doc)",
+          "url": "https://github.com/sigstore/cosign/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "ISA persisted error ledger wiring",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/server/_core/logger-wiring.ts",
+          "date": "2026-02-15T14:34:04+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/sigstore/cosign",
+          "paths": [
+            "README.md"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/GS1Ned/isa_web_clean",
+          "paths": [
+            "server/_core/logger-wiring.ts"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Requires defining artefact inventory (datasets, embeddings, mappings) and storage strategy."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "docs/evidence",
+          "artifacts",
+          "server/ingest"
+        ],
+        "change_outline": "Define artefact inventory + checksums. Attach provenance metadata to artefacts and store references in DB.",
+        "no_console_strategy": "Write evidence metadata to JSON/DB; runtime logging via structured logger only."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Planning Policy Enforced by CI",
+      "summary": "Keep planning artefacts canonical and machine-validated; reject uncontrolled planning sprawl via CI gates.",
+      "evidence": [
+        {
+          "title": "ISA planning/traceability validator",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/scripts/validate_planning_and_traceability.py",
+          "date": "2026-02-15T14:34:04+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "ISA validate-docs workflow",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/.github/workflows/validate-docs.yml",
+          "date": "2026-02-10T01:29:08+01:00",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/GS1Ned/isa_web_clean",
+          "paths": [
+            "scripts/validate_planning_and_traceability.py",
+            ".github/workflows/validate-docs.yml"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Overly strict gates can slow iteration; needs explicit exceptions process."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "docs/planning",
+          ".github/workflows"
+        ],
+        "change_outline": "Extend validators to cover evidence artefacts and enforce allowed path sets.",
+        "no_console_strategy": "Use exit codes and structured artefacts; avoid direct output API usage."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Security Hygiene in CI (Static Analysis, SECURITY.md)",
+      "summary": "Encode security posture as repo artefacts and CI checks (security policy, static analysis, dependency checks).",
+      "evidence": [
+        {
+          "title": "OPA workflow example",
+          "url": "https://github.com/open-policy-agent/opa/blob/main/.github/workflows/codeql-analysis.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Cosign workflow example",
+          "url": "https://github.com/sigstore/cosign/blob/main/.github/workflows/golangci-lint.yml",
+          "date": "",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/open-policy-agent/opa",
+          "paths": [
+            ".github/workflows/"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/sigstore/cosign",
+          "paths": [
+            ".github/workflows/"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "False positives require triage; must be owned."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          ".github/workflows",
+          "SECURITY.md"
+        ],
+        "change_outline": "Enable static analysis and dependency scanning workflows. Add security policy doc.",
+        "no_console_strategy": "CI tooling uses exit codes and summaries."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Deterministic Generated Artefacts (Canonicalisation)",
+      "summary": "Generate deterministic artefacts (mappings, diffs, benchmarks) with stable ordering and schema validation; store diffs as evidence.",
+      "evidence": [
+        {
+          "title": "dbt-core deterministic artefacts (entry doc)",
+          "url": "https://github.com/dbt-labs/dbt-core/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "ISA advisory canonicaliser",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/scripts/canonicalize_advisory.cjs",
+          "date": "2026-02-04T17:38:10+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/dbt-labs/dbt-core",
+          "paths": [
+            "README.md"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/GS1Ned/isa_web_clean",
+          "paths": [
+            "scripts/canonicalize_advisory.cjs"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Canonicalisers must be deterministic across platforms; requires tests."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "scripts",
+          "docs/evidence/_generated"
+        ],
+        "change_outline": "Add canonicalisers for key outputs and validate canonical form in CI.",
+        "no_console_strategy": "Use file outputs and exit codes."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Entity Graph Modelling for Standards/Regulations",
+      "summary": "Model standards, regulations, obligations, datapoints, and mappings as typed entities with stable IDs and provenance links.",
+      "evidence": [
+        {
+          "title": "OpenMetadata entity-centric governance (entry doc)",
+          "url": "https://github.com/open-metadata/OpenMetadata/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "DataHub metadata graph (entry doc)",
+          "url": "https://github.com/datahub-project/datahub/blob/master/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/open-metadata/OpenMetadata",
+          "paths": [
+            "README.md"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/datahub-project/datahub",
+          "paths": [
+            "README.md"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Entity graphs require strict schema governance to avoid over-generalisation."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "drizzle/schema.ts",
+          "data/metadata",
+          "server/db.ts"
+        ],
+        "change_outline": "Define canonical IDs and relationship tables for regulations, standards, mappings, and evidence sources. Attach provenance metadata to edges.",
+        "no_console_strategy": "Use structured logging only."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Correlation IDs Everywhere (Run ID, Trace ID)",
+      "summary": "Use stable run_id/trace_id across ingestion, mapping, and LLM steps; persist into ledgers and evidence artefacts for audit tracing.",
+      "evidence": [
+        {
+          "title": "ISA trace_id in structured logger",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/server/utils/server-logger.ts",
+          "date": "2026-02-15T14:34:04+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Langfuse trace-first approach (entry doc)",
+          "url": "https://github.com/langfuse/langfuse/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/GS1Ned/isa_web_clean",
+          "paths": [
+            "server/utils/server-logger.ts",
+            "server/_core/logger-wiring.ts"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/langfuse/langfuse",
+          "paths": [
+            "README.md"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Missing propagation breaks traceability; requires integration tests."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "server/_core/context.ts",
+          "server/utils",
+          "drizzle/schema_*"
+        ],
+        "change_outline": "Standardise request/run IDs and persist them in all evidence tables and artefacts. Expose filtering in monitoring router.",
+        "no_console_strategy": "Use structured logger and DB writes only."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Continuous Benchmark JSON + Drift Detection",
+      "summary": "Maintain deterministic benchmark JSON that can be regenerated in CI and diffed to detect drift; require explicit approval for changes.",
+      "evidence": [
+        {
+          "title": "ISA benchmark validator (existing)",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/scripts/validate_oss_benchmarks_2026_02_15.sh",
+          "date": "2026-02-15T18:57:02+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Cosign provenance mindset (entry doc)",
+          "url": "https://github.com/sigstore/cosign/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/GS1Ned/isa_web_clean",
+          "paths": [
+            "scripts/validate_oss_benchmarks_2026_02_15.sh"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/sigstore/cosign",
+          "paths": [
+            "README.md"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Benchmarks require periodic curation; needs ownership and cadence."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "docs/research",
+          "scripts",
+          ".github/workflows"
+        ],
+        "change_outline": "Add CI job to regenerate benchmark JSON and fail on unapproved drift. Document override via ADR.",
+        "no_console_strategy": "Validation uses parsing + exit codes; no direct output API usage."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Docs Information Architecture that Scales",
+      "summary": "Use a stable docs hierarchy with a canonical index; separate spec, governance, how-to, and research to avoid entropy.",
+      "evidence": [
+        {
+          "title": "Backstage docs entrypoint",
+          "url": "https://github.com/backstage/backstage/blob/master/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "OPA docs entrypoint",
+          "url": "https://github.com/open-policy-agent/opa/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/backstage/backstage",
+          "paths": [
+            "README.md",
+            "docs/"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/open-policy-agent/opa",
+          "paths": [
+            "README.md",
+            "docs/"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Requires ongoing pruning and link checks."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "docs/spec",
+          "docs/governance",
+          "docs/architecture"
+        ],
+        "change_outline": "Add a canonical docs index and enforce link/structure checks in CI.",
+        "no_console_strategy": "Docs checks report via exit codes and summaries."
+      },
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Capability Boundaries via Plugins/Routers",
+      "summary": "Scale features with explicit capability modules (plugins/routers), each with ownership and contracts; enforce boundaries in CI.",
+      "evidence": [
+        {
+          "title": "Backstage plugin modularity (entry doc)",
+          "url": "https://github.com/backstage/backstage/blob/master/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "ISA router composition",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/server/routers.ts",
+          "date": "2026-02-14T22:56:45+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "examples": [
+        {
+          "repo_url": "https://github.com/backstage/backstage",
+          "paths": [
+            "README.md"
+          ]
+        },
+        {
+          "repo_url": "https://github.com/GS1Ned/isa_web_clean",
+          "paths": [
+            "server/routers.ts",
+            "server/routers/"
+          ]
+        }
+      ],
+      "tradeoffs": [
+        "Boundary erosion unless ownership is enforced and reviewed."
+      ],
+      "isa_mapping": {
+        "target_paths": [
+          "server/routers",
+          "docs/spec"
+        ],
+        "change_outline": "Define canonical capability modules with runtime contracts and ownership.",
+        "no_console_strategy": "Use structured logger only."
+      },
+      "last_verified_date": "2026-02-15"
+    }
+  ],
+  "architecture_benchmark": {
+    "ranked": [
+      {
+        "rank": 1,
+        "approach": "Modular monolith",
+        "reason": "Governance and audit readiness with lowest operational overhead."
+      },
+      {
+        "rank": 2,
+        "approach": "Event-driven ingestion pipeline",
+        "reason": "Strong provenance and traceability for complex ingestion."
+      },
+      {
+        "rank": 3,
+        "approach": "Monorepo modular architecture",
+        "reason": "Scales capability modules but needs strict deterministic tooling."
+      },
+      {
+        "rank": 4,
+        "approach": "Microservices",
+        "reason": "Independent scaling but high governance and audit surface area."
+      },
+      {
+        "rank": 5,
+        "approach": "Serverless ingestion",
+        "reason": "Harder reproducibility and evidence capture without mature tracing/retention."
+      }
+    ],
+    "evidence": [
+      {
+        "title": "ISA server runtime shape (Express + tRPC)",
+        "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/server/_core/index.ts",
+        "date": "2026-02-15T14:34:04+01:00",
+        "type": "GitHub repository file",
+        "format": "web",
+        "last_verified_date": "2026-02-15"
+      },
+      {
+        "title": "OpenLineage repository",
+        "url": "https://github.com/OpenLineage/OpenLineage",
+        "date": "2026-02-15T04:28:13Z",
+        "type": "GitHub repository",
+        "format": "web",
+        "last_verified_date": "2026-02-15"
+      }
+    ],
+    "last_verified_date": "2026-02-15"
+  },
+  "action_plan": [
+    {
+      "id": "AP-0001",
+      "title": "Add provenance event model for ingestion and mapping runs",
+      "priority": "P0",
+      "value": "End-to-end audit tracing across ingestion/mapping/LLM steps.",
+      "effort": "M",
+      "risk": "Medium",
+      "files": [
+        "drizzle/schema_pipeline_observability.ts",
+        "server/utils/pipeline-logger.ts",
+        "server/db-pipeline-observability.ts"
+      ],
+      "acceptance_criteria": [
+        "A run event record exists for each ingestion step with stable run_id and timestamps.",
+        "Events link to stored artefacts (source URLs, hashes).",
+        "A query endpoint returns run event timelines."
+      ],
+      "no_console_compliance": "Use DB writes and structured server logger; avoid direct output API usage.",
+      "evidence": [
+        {
+          "title": "OpenLineage spec / reference materials",
+          "url": "https://github.com/OpenLineage/OpenLineage/blob/main/spec/facets/BaseSubsetDatasetFacet.json",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Marquez lineage service docs",
+          "url": "https://github.com/MarquezProject/marquez/blob/main/docs/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0002",
+      "title": "Introduce policy-as-code gates for evidence completeness",
+      "priority": "P0",
+      "value": "Governance gates become auditable and testable; reduces inconsistent enforcement.",
+      "effort": "M",
+      "risk": "Medium",
+      "files": [
+        "docs/governance",
+        "scripts",
+        "server/_core"
+      ],
+      "acceptance_criteria": [
+        "At least 2 governance gates exist with tests and fixture inputs.",
+        "CI fails when evidence artefacts violate gate rules."
+      ],
+      "no_console_compliance": "Gates run as scripts with exit codes; runtime uses structured logger only.",
+      "evidence": [
+        {
+          "title": "OPA policy language / operations docs",
+          "url": "https://github.com/open-policy-agent/opa/blob/main/docs/docs/policy-language.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Kyverno policy docs",
+          "url": "https://github.com/kyverno/kyverno/blob/main/docs/dev/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0003",
+      "title": "Define and enforce JSON schemas for all generated evidence artefacts",
+      "priority": "P0",
+      "value": "Prevents evidence drift; enables deterministic validation and audit readiness.",
+      "effort": "S",
+      "risk": "Low",
+      "files": [
+        "docs/quality/schemas",
+        ".github/workflows/schema-validation.yml"
+      ],
+      "acceptance_criteria": [
+        "Every artefact under docs/evidence/_generated has a schema.",
+        "Schema validation runs in CI and fails on mismatch."
+      ],
+      "no_console_compliance": "Validation uses exit codes; avoid direct output API usage.",
+      "evidence": [
+        {
+          "title": "ISA schema-validation workflow",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/.github/workflows/schema-validation.yml",
+          "date": "2026-02-12T12:07:21+01:00",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "dbt-core deterministic artefacts mindset (entry doc)",
+          "url": "https://github.com/dbt-labs/dbt-core/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0004",
+      "title": "Add LLM trace tables with retention and redaction policy",
+      "priority": "P0",
+      "value": "Traceable, reproducible LLM outputs with privacy controls.",
+      "effort": "M",
+      "risk": "High",
+      "files": [
+        "server/_core/llm.ts",
+        "drizzle/schema_*",
+        "server/routers/ask-isa-v2.js"
+      ],
+      "acceptance_criteria": [
+        "LLM traces persist prompt template version, retrieval set IDs, and model config.",
+        "A retention job deletes or redacts sensitive fields after configured window."
+      ],
+      "no_console_compliance": "Use structured server logger; avoid direct output API usage.",
+      "evidence": [
+        {
+          "title": "Langfuse tracing/evaluation (entry doc)",
+          "url": "https://github.com/langfuse/langfuse/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Phoenix LLM/RAG observability/eval (entry doc)",
+          "url": "https://github.com/Arize-ai/phoenix/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0005",
+      "title": "Create a machine-readable capability map for agent navigation",
+      "priority": "P1",
+      "value": "Deterministic navigation for agents and reviewers; reduces onboarding time.",
+      "effort": "S",
+      "risk": "Low",
+      "files": [
+        "REPO_TREE.md",
+        "AGENTS.md",
+        "docs/spec"
+      ],
+      "acceptance_criteria": [
+        "A JSON capability map exists and is validated in CI.",
+        "Map links each capability to entrypoints, routers, schemas, and tests."
+      ],
+      "no_console_compliance": "Generator writes files and fails via exit code only.",
+      "evidence": [
+        {
+          "title": "ISA repo map artefact",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/REPO_TREE.md",
+          "date": "2026-02-15T13:43:02+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "ISA repo-tree workflow",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/.github/workflows/repo-tree.yml",
+          "date": "2026-02-10T01:46:32+01:00",
+          "type": "GitHub Actions workflow",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0006",
+      "title": "Enable security hygiene workflows (static analysis, dependency checks)",
+      "priority": "P1",
+      "value": "Improves supply-chain assurance and reduces security debt.",
+      "effort": "S",
+      "risk": "Medium",
+      "files": [
+        ".github/workflows",
+        "SECURITY.md"
+      ],
+      "acceptance_criteria": [
+        "Static analysis workflow runs on PRs.",
+        "Security policy file exists and is referenced in README."
+      ],
+      "no_console_compliance": "CI tooling uses exit codes and summaries.",
+      "evidence": [
+        {
+          "title": "dbt-core deterministic artefacts (entry doc)",
+          "url": "https://github.com/dbt-labs/dbt-core/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "ISA advisory canonicaliser",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/scripts/canonicalize_advisory.cjs",
+          "date": "2026-02-04T17:38:10+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0007",
+      "title": "Add drift detection for benchmarks and evidence artefacts",
+      "priority": "P1",
+      "value": "Detects governance/architecture drift early; makes regressions visible.",
+      "effort": "M",
+      "risk": "Low",
+      "files": [
+        "docs/research",
+        "scripts",
+        ".github/workflows"
+      ],
+      "acceptance_criteria": [
+        "CI compares regenerated benchmark JSON to committed version and fails on unapproved drift.",
+        "A documented override/approval process exists (ADR)."
+      ],
+      "no_console_compliance": "Use structured diffs and exit codes.",
+      "evidence": [
+        {
+          "title": "ISA benchmark validator (existing)",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/scripts/validate_oss_benchmarks_2026_02_15.sh",
+          "date": "2026-02-15T18:57:02+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Cosign provenance mindset (entry doc)",
+          "url": "https://github.com/sigstore/cosign/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0008",
+      "title": "Standardise run_id propagation through API context",
+      "priority": "P1",
+      "value": "End-to-end traceability for requests and background jobs.",
+      "effort": "S",
+      "risk": "Low",
+      "files": [
+        "server/_core/context.ts",
+        "server/utils/server-logger.ts"
+      ],
+      "acceptance_criteria": [
+        "All major procedures include run_id/trace_id in ledger rows.",
+        "Monitoring endpoints can filter by run_id."
+      ],
+      "no_console_compliance": "Use structured logger and DB ledger only.",
+      "evidence": [
+        {
+          "title": "ISA trace_id in structured logger",
+          "url": "https://github.com/GS1Ned/isa_web_clean/blob/strict-no-console/server/utils/server-logger.ts",
+          "date": "2026-02-15T14:34:04+01:00",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Langfuse trace-first approach (entry doc)",
+          "url": "https://github.com/langfuse/langfuse/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0009",
+      "title": "Define entity ID conventions for regulations, standards, and mappings",
+      "priority": "P1",
+      "value": "Enables stable joins and provenance; reduces ambiguous linking.",
+      "effort": "M",
+      "risk": "Medium",
+      "files": [
+        "drizzle/schema.ts",
+        "data/metadata",
+        "server/db.ts"
+      ],
+      "acceptance_criteria": [
+        "Every regulation/standard/mapping row has a stable canonical ID.",
+        "Provenance includes source URL + retrieval timestamp + hash."
+      ],
+      "no_console_compliance": "Migration and ETL scripts use structured logging only.",
+      "evidence": [
+        {
+          "title": "OpenMetadata entity-centric governance (entry doc)",
+          "url": "https://github.com/open-metadata/OpenMetadata/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "DataHub metadata graph (entry doc)",
+          "url": "https://github.com/datahub-project/datahub/blob/master/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "id": "AP-0010",
+      "title": "Refine docs IA with a canonical index and ownership",
+      "priority": "P2",
+      "value": "Improves maintainability and reduces doc entropy.",
+      "effort": "S",
+      "risk": "Low",
+      "files": [
+        "docs/spec",
+        "docs/governance",
+        "docs/architecture"
+      ],
+      "acceptance_criteria": [
+        "Docs index exists with allowed paths.",
+        "Link checks run in CI."
+      ],
+      "no_console_compliance": "Docs tooling uses exit codes only.",
+      "evidence": [
+        {
+          "title": "Backstage docs entrypoint",
+          "url": "https://github.com/backstage/backstage/blob/master/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "OPA docs entrypoint",
+          "url": "https://github.com/open-policy-agent/opa/blob/main/README.md",
+          "date": "",
+          "type": "GitHub repository file",
+          "format": "web",
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    }
+  ]
+}

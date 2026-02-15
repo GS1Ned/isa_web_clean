@@ -1,0 +1,1384 @@
+{
+  "version": "2026-02-15",
+  "generated_at": "2026-02-15T18:46:23+00:00",
+  "last_verified_date": "2026-02-15",
+  "raw_unique_count": 440,
+  "cap": 80,
+  "count": 80,
+  "candidates": [
+    {
+      "name": "open-metadata/OpenMetadata",
+      "url": "https://github.com/open-metadata/OpenMetadata",
+      "signals": {
+        "stars": 8699,
+        "forks": 1631,
+        "pushed_at": "2026-02-15T16:43:05Z",
+        "updated_at": "2026-02-15T14:21:14Z",
+        "open_issues_count": 679
+      },
+      "description": "OpenMetadata is a unified metadata platform for data discovery, data observability, and data governance powered by a central metadata repository, in-depth column level lineage, and seamless team collaboration.",
+      "primary_language": "TypeScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "datahub-project/datahub",
+      "url": "https://github.com/datahub-project/datahub",
+      "signals": {
+        "stars": 11579,
+        "forks": 3369,
+        "pushed_at": "2026-02-15T11:45:10Z",
+        "updated_at": "2026-02-15T14:29:14Z",
+        "open_issues_count": 738
+      },
+      "description": "The Metadata Platform for your Data and AI Stack",
+      "primary_language": "Java",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "backstage/backstage",
+      "url": "https://github.com/backstage/backstage",
+      "signals": {
+        "stars": 32606,
+        "forks": 7090,
+        "pushed_at": "2026-02-15T15:36:16Z",
+        "updated_at": "2026-02-15T16:18:52Z",
+        "open_issues_count": 444
+      },
+      "description": "Backstage is an open framework for building developer portals",
+      "primary_language": "TypeScript",
+      "sources": [
+        "curated"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "open-policy-agent/opa",
+      "url": "https://github.com/open-policy-agent/opa",
+      "signals": {
+        "stars": 11228,
+        "forks": 1511,
+        "pushed_at": "2026-02-14T15:51:00Z",
+        "updated_at": "2026-02-15T11:57:47Z",
+        "open_issues_count": 378
+      },
+      "description": "Open Policy Agent (OPA) is an open source, general-purpose policy engine.",
+      "primary_language": "Go",
+      "sources": [
+        "curated"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "kyverno/kyverno",
+      "url": "https://github.com/kyverno/kyverno",
+      "signals": {
+        "stars": 7398,
+        "forks": 1233,
+        "pushed_at": "2026-02-15T13:51:15Z",
+        "updated_at": "2026-02-15T18:14:13Z",
+        "open_issues_count": 303
+      },
+      "description": "Cloud Native Policy Management",
+      "primary_language": "Go",
+      "sources": [
+        "curated"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "sigstore/cosign",
+      "url": "https://github.com/sigstore/cosign",
+      "signals": {
+        "stars": 5650,
+        "forks": 690,
+        "pushed_at": "2026-02-11T22:44:32Z",
+        "updated_at": "2026-02-15T00:58:04Z",
+        "open_issues_count": 302
+      },
+      "description": "Code signing and transparency for containers and binaries",
+      "primary_language": "Go",
+      "sources": [
+        "curated"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "OpenLineage/OpenLineage",
+      "url": "https://github.com/OpenLineage/OpenLineage",
+      "signals": {
+        "stars": 2316,
+        "forks": 425,
+        "pushed_at": "2026-02-15T04:28:13Z",
+        "updated_at": "2026-02-13T22:50:57Z",
+        "open_issues_count": 311
+      },
+      "description": "An Open Standard for lineage metadata collection",
+      "primary_language": "Java",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "MarquezProject/marquez",
+      "url": "https://github.com/MarquezProject/marquez",
+      "signals": {
+        "stars": 2121,
+        "forks": 380,
+        "pushed_at": "2026-02-11T20:50:22Z",
+        "updated_at": "2026-02-14T00:57:04Z",
+        "open_issues_count": 238
+      },
+      "description": "Collect, aggregate, and visualize a data ecosystem's metadata",
+      "primary_language": "Java",
+      "sources": [
+        "curated"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "dagster-io/dagster",
+      "url": "https://github.com/dagster-io/dagster",
+      "signals": {
+        "stars": 14951,
+        "forks": 1976,
+        "pushed_at": "2026-02-13T23:20:28Z",
+        "updated_at": "2026-02-15T14:18:32Z",
+        "open_issues_count": 2763
+      },
+      "description": "An orchestration platform for the development, production, and observation of data assets.",
+      "primary_language": "Python",
+      "sources": [
+        "curated"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "dbt-labs/dbt-core",
+      "url": "https://github.com/dbt-labs/dbt-core",
+      "signals": {
+        "stars": 12247,
+        "forks": 2274,
+        "pushed_at": "2026-02-15T09:15:02Z",
+        "updated_at": "2026-02-15T17:58:00Z",
+        "open_issues_count": 814
+      },
+      "description": "dbt enables data analysts and engineers to transform their data using the same practices that software engineers use to build applications.",
+      "primary_language": "Python",
+      "sources": [
+        "curated"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "langfuse/langfuse",
+      "url": "https://github.com/langfuse/langfuse",
+      "signals": {
+        "stars": 21945,
+        "forks": 2164,
+        "pushed_at": "2026-02-15T16:59:07Z",
+        "updated_at": "2026-02-15T16:35:23Z",
+        "open_issues_count": 514
+      },
+      "description": "\ud83e\udea2 Open source LLM engineering platform: LLM Observability, metrics, evals, prompt management, playground, datasets. Integrates with OpenTelemetry, Langchain, OpenAI SDK, LiteLLM, and more. \ud83c\udf4aYC W23 ",
+      "primary_language": "TypeScript",
+      "sources": [
+        "curated"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Arize-ai/phoenix",
+      "url": "https://github.com/Arize-ai/phoenix",
+      "signals": {
+        "stars": 8549,
+        "forks": 721,
+        "pushed_at": "2026-02-15T11:27:24Z",
+        "updated_at": "2026-02-15T18:35:07Z",
+        "open_issues_count": 318
+      },
+      "description": "AI Observability & Evaluation",
+      "primary_language": "Jupyter Notebook",
+      "sources": [
+        "curated"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "joelparkerhenderson/architecture-decision-record",
+      "url": "https://github.com/joelparkerhenderson/architecture-decision-record",
+      "signals": {
+        "stars": 15081,
+        "forks": 2672,
+        "pushed_at": "2026-02-05T12:28:41Z",
+        "updated_at": "2026-02-15T16:42:00Z",
+        "open_issues_count": 5
+      },
+      "description": "Architecture decision record (ADR) examples for software planning, IT leadership, and template documentation",
+      "primary_language": "",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "npryce/adr-tools",
+      "url": "https://github.com/npryce/adr-tools",
+      "signals": {
+        "stars": 5240,
+        "forks": 619,
+        "pushed_at": "2024-04-25T18:22:02Z",
+        "updated_at": "2026-02-15T16:42:27Z",
+        "open_issues_count": 69
+      },
+      "description": "Command-line tools for working with Architecture Decision Records",
+      "primary_language": "Shell",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Marker-Inc-Korea/AutoRAG",
+      "url": "https://github.com/Marker-Inc-Korea/AutoRAG",
+      "signals": {
+        "stars": 4570,
+        "forks": 372,
+        "pushed_at": "2025-12-23T19:00:38Z",
+        "updated_at": "2026-02-14T23:43:21Z",
+        "open_issues_count": 148
+      },
+      "description": "AutoRAG: An Open-Source Framework for Retrieval-Augmented Generation (RAG) Evaluation & Optimization with AutoML-Style Automation",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "datopian/portaljs",
+      "url": "https://github.com/datopian/portaljs",
+      "signals": {
+        "stars": 2261,
+        "forks": 333,
+        "pushed_at": "2026-02-09T10:34:59Z",
+        "updated_at": "2026-02-13T12:11:00Z",
+        "open_issues_count": 77
+      },
+      "description": "\ud83c\udf00 Rapidly build feature-rich data portals using a modern frontend framework. Native CKAN support. OpenMetadata and Git compatible.",
+      "primary_language": "TypeScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "adr/madr",
+      "url": "https://github.com/adr/madr",
+      "signals": {
+        "stars": 1998,
+        "forks": 446,
+        "pushed_at": "2025-12-23T22:25:14Z",
+        "updated_at": "2026-02-15T08:39:09Z",
+        "open_issues_count": 24
+      },
+      "description": "Markdown Architectural Decision Records",
+      "primary_language": "Markdown",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Hamza417/Inure",
+      "url": "https://github.com/Hamza417/Inure",
+      "signals": {
+        "stars": 1646,
+        "forks": 84,
+        "pushed_at": "2026-02-13T01:19:20Z",
+        "updated_at": "2026-02-15T02:00:34Z",
+        "open_issues_count": 7
+      },
+      "description": "An elegant and beautiful premium Android app manager with Root and Shizuku support, a built-in terminal, analytics, virustotal, debloat, stats and various other features with a custom theme engine, developed with purely custom UI design and reproducible build.",
+      "primary_language": "Kotlin",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "thomvaill/log4brains",
+      "url": "https://github.com/thomvaill/log4brains",
+      "signals": {
+        "stars": 1409,
+        "forks": 108,
+        "pushed_at": "2024-12-17T16:51:30Z",
+        "updated_at": "2026-02-15T15:49:53Z",
+        "open_issues_count": 58
+      },
+      "description": "\u270d\ufe0f Architecture Decision Records (ADR) management and publication tool",
+      "primary_language": "TypeScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "aws-cloudformation/cloudformation-guard",
+      "url": "https://github.com/aws-cloudformation/cloudformation-guard",
+      "signals": {
+        "stars": 1365,
+        "forks": 195,
+        "pushed_at": "2026-02-11T23:39:27Z",
+        "updated_at": "2026-02-15T11:00:22Z",
+        "open_issues_count": 49
+      },
+      "description": "Guard offers a policy-as-code domain-specific language (DSL) to write rules and validate JSON- and YAML-formatted data such as CloudFormation Templates, K8s configurations, and Terraform JSON plans/configurations against those rules. Take this survey to provide feedback about cfn-guard: https://amazonmr.au1.qualtrics.com/jfe/form/SV_bpyzpfoYGGuuUl0",
+      "primary_language": "Rust",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "datasets/commons",
+      "url": "https://github.com/datasets/commons",
+      "signals": {
+        "stars": 918,
+        "forks": 151,
+        "pushed_at": "2025-12-25T14:35:43Z",
+        "updated_at": "2026-01-25T21:20:02Z",
+        "open_issues_count": 239
+      },
+      "description": "DataHub commons. Wiki catalog of interesting and important datasets",
+      "primary_language": "",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "642933588/jiron-cloud",
+      "url": "https://github.com/642933588/jiron-cloud",
+      "signals": {
+        "stars": 622,
+        "forks": 176,
+        "pushed_at": "2025-08-05T08:22:28Z",
+        "updated_at": "2026-02-11T14:43:31Z",
+        "open_issues_count": 7
+      },
+      "description": "\u8be5\u9879\u76ee\u6574\u5408\u4e86\u591a\u6b3e\u4f18\u79c0\u7684\u5f00\u6e90\u4ea7\u54c1\uff0c\u6784\u5efa\u4e86\u4e00\u4e2a\u529f\u80fd\u5168\u9762\u7684\u6570\u636e\u5f00\u53d1\u5e73\u53f0\u3002\u5e73\u53f0\u63d0\u4f9b\u4e86\u5f3a\u5927\u7684\u6570\u636e\u96c6\u6210\u3001\u6570\u636e\u5f00\u53d1\u3001\u6570\u636e\u67e5\u8be2\u3001\u6570\u636e\u670d\u52a1\u3001\u6570\u636e\u8d28\u91cf\u7ba1\u7406\u3001\u5de5\u4f5c\u6d41\u8c03\u5ea6\u548c\u5143\u6570\u636e\u7ba1\u7406\u529f\u80fd\u3002#dinky #dolphinscheduler #datavines #flinkcdc #openmetadata #flink #\u6570\u636e\u5f00\u53d1 #\u6570\u636e\u5e73\u53f0 # \u6570\u636e\u5f00\u53d1\u5e73\u53f0 #\u5927\u6570\u636e",
+      "primary_language": "Java",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Azure/enterprise-azure-policy-as-code",
+      "url": "https://github.com/Azure/enterprise-azure-policy-as-code",
+      "signals": {
+        "stars": 513,
+        "forks": 319,
+        "pushed_at": "2026-02-13T00:33:51Z",
+        "updated_at": "2026-02-13T11:58:01Z",
+        "open_issues_count": 16
+      },
+      "description": "Enterprise-ready Azure Policy-as-Code (PaC) solution (includes Az DevOps pipeline) ",
+      "primary_language": "PowerShell",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "macacajs/macaca-datahub",
+      "url": "https://github.com/macacajs/macaca-datahub",
+      "signals": {
+        "stars": 478,
+        "forks": 55,
+        "pushed_at": "2026-01-13T18:47:51Z",
+        "updated_at": "2026-02-13T12:20:51Z",
+        "open_issues_count": 7
+      },
+      "description": "Continuous data provider for development, testing, staging and production. Just enjoy the data out-of-the-box.\ud83d\udce6",
+      "primary_language": "JavaScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "kpcyrd/rebuilderd",
+      "url": "https://github.com/kpcyrd/rebuilderd",
+      "signals": {
+        "stars": 420,
+        "forks": 32,
+        "pushed_at": "2026-01-08T19:04:17Z",
+        "updated_at": "2026-02-07T16:35:46Z",
+        "open_issues_count": 44
+      },
+      "description": "Independent verification of binary packages - Reproducible Builds",
+      "primary_language": "Rust",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "256lights/zb",
+      "url": "https://github.com/256lights/zb",
+      "signals": {
+        "stars": 398,
+        "forks": 14,
+        "pushed_at": "2025-12-05T15:26:32Z",
+        "updated_at": "2026-02-04T03:22:16Z",
+        "open_issues_count": 51
+      },
+      "description": "An experiment in hermetic, reproducible build systems",
+      "primary_language": "Go",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "vectara/open-rag-eval",
+      "url": "https://github.com/vectara/open-rag-eval",
+      "signals": {
+        "stars": 343,
+        "forks": 21,
+        "pushed_at": "2025-12-15T23:29:13Z",
+        "updated_at": "2026-02-14T09:02:36Z",
+        "open_issues_count": 5
+      },
+      "description": "RAG evaluation without the need for \"golden answers\"",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "phodal/adr",
+      "url": "https://github.com/phodal/adr",
+      "signals": {
+        "stars": 269,
+        "forks": 52,
+        "pushed_at": "2024-08-30T01:19:53Z",
+        "updated_at": "2026-02-09T15:01:03Z",
+        "open_issues_count": 8
+      },
+      "description": "Architecture Decision Records in Node.js with Reporter, supported Windows, GNU/Linux, macOS - \u8f7b\u91cf\u7ea7\u67b6\u6784\u51b3\u7b56\u8bb0\u5f55\u5de5\u5177",
+      "primary_language": "TypeScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "firecrawl/rag-arena",
+      "url": "https://github.com/firecrawl/rag-arena",
+      "signals": {
+        "stars": 215,
+        "forks": 32,
+        "pushed_at": "2024-04-14T16:53:41Z",
+        "updated_at": "2026-01-17T13:42:20Z",
+        "open_issues_count": 3
+      },
+      "description": "Open-source RAG evaluation through users' feedback",
+      "primary_language": "TypeScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "dotnet/reproducible-builds",
+      "url": "https://github.com/dotnet/reproducible-builds",
+      "signals": {
+        "stars": 214,
+        "forks": 19,
+        "pushed_at": "2026-01-27T21:27:07Z",
+        "updated_at": "2026-02-13T12:21:55Z",
+        "open_issues_count": 10
+      },
+      "description": "Contains the DotNet.ReproducibleBuilds package",
+      "primary_language": "C#",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "acryldata/datahub-helm",
+      "url": "https://github.com/acryldata/datahub-helm",
+      "signals": {
+        "stars": 202,
+        "forks": 264,
+        "pushed_at": "2026-02-13T22:27:46Z",
+        "updated_at": "2026-02-15T13:43:57Z",
+        "open_issues_count": 6
+      },
+      "description": "Repository of helm charts for deploying DataHub on a Kubernetes cluster",
+      "primary_language": "Mustache",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "cBioPortal/datahub",
+      "url": "https://github.com/cBioPortal/datahub",
+      "signals": {
+        "stars": 198,
+        "forks": 139,
+        "pushed_at": "2026-02-13T19:50:52Z",
+        "updated_at": "2026-02-13T19:15:12Z",
+        "open_issues_count": 159
+      },
+      "description": "A centralized location for storing curated data from cBioPortal",
+      "primary_language": "HTML",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "YHPeter/Awesome-RAG-Evaluation",
+      "url": "https://github.com/YHPeter/Awesome-RAG-Evaluation",
+      "signals": {
+        "stars": 192,
+        "forks": 19,
+        "pushed_at": "2025-04-25T05:41:01Z",
+        "updated_at": "2026-02-10T06:57:22Z",
+        "open_issues_count": 1
+      },
+      "description": "The official repository for the paper: Evaluation of Retrieval-Augmented Generation: A Survey.",
+      "primary_language": "TeX",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "globalbao/azure-policy-as-code",
+      "url": "https://github.com/globalbao/azure-policy-as-code",
+      "signals": {
+        "stars": 186,
+        "forks": 80,
+        "pushed_at": "2024-04-20T04:59:58Z",
+        "updated_at": "2026-01-29T21:13:23Z",
+        "open_issues_count": 4
+      },
+      "description": "Bicep and Terraform code examples for policy-as-code workflows. Azure governance guardrails and automation - by @JesseLoudon",
+      "primary_language": "HCL",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "mrwilson/adr-viewer",
+      "url": "https://github.com/mrwilson/adr-viewer",
+      "signals": {
+        "stars": 184,
+        "forks": 28,
+        "pushed_at": "2024-12-02T11:12:57Z",
+        "updated_at": "2026-02-08T13:56:53Z",
+        "open_issues_count": 13
+      },
+      "description": "Generate easy-to-read web pages for your Architecture Decision Records",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "gettek/terraform-azurerm-policy-as-code",
+      "url": "https://github.com/gettek/terraform-azurerm-policy-as-code",
+      "signals": {
+        "stars": 167,
+        "forks": 76,
+        "pushed_at": "2025-11-15T20:32:57Z",
+        "updated_at": "2026-02-01T09:20:06Z",
+        "open_issues_count": 0
+      },
+      "description": "Terraform modules that simplify the deployment of both custom and built-in Azure Policies",
+      "primary_language": "HCL",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "tmobile/magtape",
+      "url": "https://github.com/tmobile/magtape",
+      "signals": {
+        "stars": 151,
+        "forks": 29,
+        "pushed_at": "2024-04-24T21:10:25Z",
+        "updated_at": "2025-10-01T13:07:01Z",
+        "open_issues_count": 27
+      },
+      "description": "MagTape Policy-as-Code for Kubernetes",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "linkedin/datahub-gma",
+      "url": "https://github.com/linkedin/datahub-gma",
+      "signals": {
+        "stars": 136,
+        "forks": 60,
+        "pushed_at": "2026-02-13T19:49:30Z",
+        "updated_at": "2026-02-07T16:14:20Z",
+        "open_issues_count": 36
+      },
+      "description": "General Metadata Architecture",
+      "primary_language": "Java",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Marklogic-retired/marklogic-data-hub",
+      "url": "https://github.com/Marklogic-retired/marklogic-data-hub",
+      "signals": {
+        "stars": 130,
+        "forks": 124,
+        "pushed_at": "2025-07-28T03:57:15Z",
+        "updated_at": "2026-01-28T15:07:29Z",
+        "open_issues_count": 2
+      },
+      "description": "The MarkLogic Data Hub: documentation ==>",
+      "primary_language": "TypeScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "endjin/dotnet-adr",
+      "url": "https://github.com/endjin/dotnet-adr",
+      "signals": {
+        "stars": 123,
+        "forks": 16,
+        "pushed_at": "2025-07-23T02:49:42Z",
+        "updated_at": "2026-01-25T16:17:22Z",
+        "open_issues_count": 12
+      },
+      "description": "A cross platform .NET Global Tool for creating and managing Architectural Decision Records (ADRs).",
+      "primary_language": "C#",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "marouni/adr",
+      "url": "https://github.com/marouni/adr",
+      "signals": {
+        "stars": 119,
+        "forks": 25,
+        "pushed_at": "2025-05-25T16:39:03Z",
+        "updated_at": "2025-07-06T11:01:46Z",
+        "open_issues_count": 6
+      },
+      "description": "A minimalist command line tool written in Go to work with Architecture Decision Records",
+      "primary_language": "Go",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "advanced-security/policy-as-code",
+      "url": "https://github.com/advanced-security/policy-as-code",
+      "signals": {
+        "stars": 95,
+        "forks": 22,
+        "pushed_at": "2026-02-11T21:55:51Z",
+        "updated_at": "2026-02-15T11:58:11Z",
+        "open_issues_count": 14
+      },
+      "description": "GitHub Advanced Security Policy as Code",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "opendatalab/OHR-Bench",
+      "url": "https://github.com/opendatalab/OHR-Bench",
+      "signals": {
+        "stars": 94,
+        "forks": 14,
+        "pushed_at": "2025-12-03T11:55:00Z",
+        "updated_at": "2026-02-10T08:31:33Z",
+        "open_issues_count": 0
+      },
+      "description": "(ICCV 2025) OCR Hinders RAG: Evaluating the Cascading Impact of OCR on Retrieval-Augmented Generation",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "SEACrowd/seacrowd-datahub",
+      "url": "https://github.com/SEACrowd/seacrowd-datahub",
+      "signals": {
+        "stars": 94,
+        "forks": 55,
+        "pushed_at": "2025-01-24T17:38:31Z",
+        "updated_at": "2025-12-16T13:55:34Z",
+        "open_issues_count": 91
+      },
+      "description": "A collaborative project to collect datasets in SEA languages, SEA regions, or SEA cultures.",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "ashpearce/GRC-Playground",
+      "url": "https://github.com/ashpearce/GRC-Playground",
+      "signals": {
+        "stars": 92,
+        "forks": 78,
+        "pushed_at": "2025-11-06T19:51:48Z",
+        "updated_at": "2026-02-08T21:11:50Z",
+        "open_issues_count": 0
+      },
+      "description": "A hands-on, real-world GRC lab series built for beginners and curious pros alike. No PDFs. No gatekeeping. Just practical labs for understanding controls, policy as code, and continuous authorization.",
+      "primary_language": "Open Policy Agent",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "kpcyrd/pacman-bintrans",
+      "url": "https://github.com/kpcyrd/pacman-bintrans",
+      "signals": {
+        "stars": 86,
+        "forks": 5,
+        "pushed_at": "2024-07-23T21:00:45Z",
+        "updated_at": "2025-12-02T20:40:06Z",
+        "open_issues_count": 6
+      },
+      "description": "Experimental pacman integration for Reproducible Builds and Binary Transparency (with sigstore/rekor)",
+      "primary_language": "Rust",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "xfhg/intercept",
+      "url": "https://github.com/xfhg/intercept",
+      "signals": {
+        "stars": 85,
+        "forks": 10,
+        "pushed_at": "2026-01-04T07:40:25Z",
+        "updated_at": "2026-01-04T07:40:30Z",
+        "open_issues_count": 4
+      },
+      "description": "INTERCEPT / Policy as Code Auditing",
+      "primary_language": "Go",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "RUC-NLPIR/OmniEval",
+      "url": "https://github.com/RUC-NLPIR/OmniEval",
+      "signals": {
+        "stars": 81,
+        "forks": 7,
+        "pushed_at": "2024-12-20T04:21:46Z",
+        "updated_at": "2026-01-27T06:53:47Z",
+        "open_issues_count": 2
+      },
+      "description": "Open source code of the paper: \"OmniEval: An Omnidirectional and Automatic RAG Evaluation Benchmark in Financial Domain\"",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Energinet-DataHub/greenforce-frontend",
+      "url": "https://github.com/Energinet-DataHub/greenforce-frontend",
+      "signals": {
+        "stars": 80,
+        "forks": 19,
+        "pushed_at": "2026-02-15T06:06:54Z",
+        "updated_at": "2026-02-13T08:09:37Z",
+        "open_issues_count": 119
+      },
+      "description": "GreenForce monorepo for the DataHub and Energy Origin frontends. Part of Energinet DataHub.",
+      "primary_language": "TypeScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "qdrant/qdrant-rag-eval",
+      "url": "https://github.com/qdrant/qdrant-rag-eval",
+      "signals": {
+        "stars": 80,
+        "forks": 25,
+        "pushed_at": "2025-04-25T08:26:11Z",
+        "updated_at": "2026-02-04T10:22:52Z",
+        "open_issues_count": 1
+      },
+      "description": "This repo is the central repo for all the RAG Evaluation reference material and partner workshop",
+      "primary_language": "Jupyter Notebook",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "BytePioneer-AI/RAGEval",
+      "url": "https://github.com/BytePioneer-AI/RAGEval",
+      "signals": {
+        "stars": 79,
+        "forks": 13,
+        "pushed_at": "2026-01-26T10:26:36Z",
+        "updated_at": "2026-02-13T00:36:16Z",
+        "open_issues_count": 10
+      },
+      "description": "\u7075\u9274 RAG\u8bc4\u6d4b\u7cfb\u7edf | RAGEval  \u2728 \u5f00\u7bb1\u5373\u7528\u7684RAG\u7cfb\u7edf\u81ea\u52a8\u5316\u8bc4\u4f30\u5de5\u5177 | One-stop RAG Evaluation Solution",
+      "primary_language": "TypeScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "berkeley-dsep-infra/datahub",
+      "url": "https://github.com/berkeley-dsep-infra/datahub",
+      "signals": {
+        "stars": 74,
+        "forks": 41,
+        "pushed_at": "2026-02-13T22:29:15Z",
+        "updated_at": "2026-02-13T20:03:01Z",
+        "open_issues_count": 155
+      },
+      "description": "JupyterHubs for use by Berkeley enrolled students",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "acryldata/mcp-server-datahub",
+      "url": "https://github.com/acryldata/mcp-server-datahub",
+      "signals": {
+        "stars": 68,
+        "forks": 33,
+        "pushed_at": "2026-02-12T02:39:02Z",
+        "updated_at": "2026-02-13T09:05:20Z",
+        "open_issues_count": 21
+      },
+      "description": "The official Model Context Protocol (MCP) server for DataHub (https://datahub.com)",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Zlika/reproducible-build-maven-plugin",
+      "url": "https://github.com/Zlika/reproducible-build-maven-plugin",
+      "signals": {
+        "stars": 68,
+        "forks": 20,
+        "pushed_at": "2024-09-06T16:08:43Z",
+        "updated_at": "2025-08-13T11:13:55Z",
+        "open_issues_count": 6
+      },
+      "description": "A simple Maven plugin to make your build byte-for-byte reproducible",
+      "primary_language": "Java",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "adoble/adr-j",
+      "url": "https://github.com/adoble/adr-j",
+      "signals": {
+        "stars": 63,
+        "forks": 20,
+        "pushed_at": "2026-02-14T15:06:17Z",
+        "updated_at": "2026-02-14T14:58:15Z",
+        "open_issues_count": 5
+      },
+      "description": "Java based command-line tool for working with Architecture Decision Records",
+      "primary_language": "Java",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "open-metadata/openmetadata-helm-charts",
+      "url": "https://github.com/open-metadata/openmetadata-helm-charts",
+      "signals": {
+        "stars": 63,
+        "forks": 109,
+        "pushed_at": "2026-02-13T10:37:01Z",
+        "updated_at": "2026-02-12T12:26:37Z",
+        "open_issues_count": 12
+      },
+      "description": "",
+      "primary_language": "Go Template",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "datasets/core-datasets",
+      "url": "https://github.com/datasets/core-datasets",
+      "signals": {
+        "stars": 61,
+        "forks": 15,
+        "pushed_at": "2024-10-25T14:26:29Z",
+        "updated_at": "2025-11-17T13:11:27Z",
+        "open_issues_count": 0
+      },
+      "description": "DataHub.io awesome datasets - curated collections of high quality dataset organized by topic",
+      "primary_language": "JavaScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "microsoft/micronaire",
+      "url": "https://github.com/microsoft/micronaire",
+      "signals": {
+        "stars": 61,
+        "forks": 11,
+        "pushed_at": "2024-11-22T18:31:26Z",
+        "updated_at": "2026-01-09T23:57:18Z",
+        "open_issues_count": 8
+      },
+      "description": "A RAG evaluation pipeline for Semantic Kernel",
+      "primary_language": "C#",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "makenotion/datahub-tools",
+      "url": "https://github.com/makenotion/datahub-tools",
+      "signals": {
+        "stars": 60,
+        "forks": 15,
+        "pushed_at": "2025-03-31T21:33:58Z",
+        "updated_at": "2026-01-18T17:36:21Z",
+        "open_issues_count": 0
+      },
+      "description": "simplify working with DataHub API endpoints",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "sysdiglabs/terraform-provider-sysdig",
+      "url": "https://github.com/sysdiglabs/terraform-provider-sysdig",
+      "signals": {
+        "stars": 57,
+        "forks": 55,
+        "pushed_at": "2026-02-12T16:15:11Z",
+        "updated_at": "2026-02-12T16:20:36Z",
+        "open_issues_count": 0
+      },
+      "description": "Sysdig Terraform provider. Allow to handle Sysdig Secure policies as code.",
+      "primary_language": "Go",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "straw-hat-team/adr",
+      "url": "https://github.com/straw-hat-team/adr",
+      "signals": {
+        "stars": 54,
+        "forks": 6,
+        "pushed_at": "2026-02-12T18:40:03Z",
+        "updated_at": "2026-02-12T18:40:31Z",
+        "open_issues_count": 11
+      },
+      "description": "Architecture Decision Record (ADR)",
+      "primary_language": "TypeScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "snapre/macaca-datahub-sample",
+      "url": "https://github.com/snapre/macaca-datahub-sample",
+      "signals": {
+        "stars": 52,
+        "forks": 0,
+        "pushed_at": "2026-01-07T21:44:16Z",
+        "updated_at": "2025-12-22T09:40:48Z",
+        "open_issues_count": 13
+      },
+      "description": "\u4e00\u4e2a Demo \u6559\u4f60\u7528 Macaca DataHub \u89e3\u51b3\u524d\u7aef\u5f00\u53d1\u65f6\u7684\u6570\u636e Mock \u95ee\u9898",
+      "primary_language": "JavaScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "factorhouse/factorhouse-local",
+      "url": "https://github.com/factorhouse/factorhouse-local",
+      "signals": {
+        "stars": 51,
+        "forks": 6,
+        "pushed_at": "2026-01-30T05:17:26Z",
+        "updated_at": "2026-01-29T06:50:27Z",
+        "open_issues_count": 3
+      },
+      "description": "Docker Compose environments for developing modern data platform architectures using Kafka, Flink, Spark, Iceberg, OpenLineage, OpenMetadata, Pinot, ClickHouse, StarRocks + Kpow & Flex by Factor House",
+      "primary_language": "Shell",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "joshrotenberg/adrs",
+      "url": "https://github.com/joshrotenberg/adrs",
+      "signals": {
+        "stars": 49,
+        "forks": 6,
+        "pushed_at": "2026-02-11T08:58:02Z",
+        "updated_at": "2026-02-11T08:56:03Z",
+        "open_issues_count": 8
+      },
+      "description": "Architectural Decision Record tool in Rust",
+      "primary_language": "Rust",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "kpcyrd/repro-env",
+      "url": "https://github.com/kpcyrd/repro-env",
+      "signals": {
+        "stars": 48,
+        "forks": 5,
+        "pushed_at": "2026-02-05T19:00:46Z",
+        "updated_at": "2026-02-03T22:19:54Z",
+        "open_issues_count": 4
+      },
+      "description": "Dependency lockfiles for reproducible build environments \ud83d\udce6\ud83d\udd12",
+      "primary_language": "Rust",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "acryldata/datahub-actions",
+      "url": "https://github.com/acryldata/datahub-actions",
+      "signals": {
+        "stars": 47,
+        "forks": 49,
+        "pushed_at": "2025-05-02T19:17:06Z",
+        "updated_at": "2025-08-27T02:48:42Z",
+        "open_issues_count": 16
+      },
+      "description": "DataHub Actions is a framework for responding to changes to your DataHub Metadata Graph in real time.",
+      "primary_language": "",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "pimcore/data-importer",
+      "url": "https://github.com/pimcore/data-importer",
+      "signals": {
+        "stars": 44,
+        "forks": 65,
+        "pushed_at": "2026-02-11T09:03:59Z",
+        "updated_at": "2026-02-11T09:04:03Z",
+        "open_issues_count": 62
+      },
+      "description": "This extension adds a comprehensive import functionality to Pimcore Datahub.",
+      "primary_language": "PHP",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "datasets/carbondoomsday",
+      "url": "https://github.com/datasets/carbondoomsday",
+      "signals": {
+        "stars": 43,
+        "forks": 3,
+        "pushed_at": "2025-03-06T00:05:29Z",
+        "updated_at": "2025-12-12T19:28:21Z",
+        "open_issues_count": 4
+      },
+      "description": "Carbon dashboard on datahub",
+      "primary_language": "CSS",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Perseudonymous/datapoint-python",
+      "url": "https://github.com/Perseudonymous/datapoint-python",
+      "signals": {
+        "stars": 43,
+        "forks": 28,
+        "pushed_at": "2025-01-29T09:43:59Z",
+        "updated_at": "2026-02-10T15:02:17Z",
+        "open_issues_count": 27
+      },
+      "description": "A Python module for accessing UK weather data via the Met Office's open data API known as Datahub.",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "pulumi/pulumi-policy",
+      "url": "https://github.com/pulumi/pulumi-policy",
+      "signals": {
+        "stars": 43,
+        "forks": 7,
+        "pushed_at": "2026-02-12T08:18:49Z",
+        "updated_at": "2026-02-12T08:18:53Z",
+        "open_issues_count": 58
+      },
+      "description": "Pulumi's Policy as Code SDK, CrossGuard. Define infrastructure checks in code to enforce security, compliance, cost, and other practices, enforced at deployment time.",
+      "primary_language": "TypeScript",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "adr/e-adr",
+      "url": "https://github.com/adr/e-adr",
+      "signals": {
+        "stars": 42,
+        "forks": 9,
+        "pushed_at": "2026-02-02T07:47:55Z",
+        "updated_at": "2026-02-11T14:52:46Z",
+        "open_issues_count": 9
+      },
+      "description": "Architectural Decisions Records embedded in Java code",
+      "primary_language": "Java",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "nscuro/dtapac",
+      "url": "https://github.com/nscuro/dtapac",
+      "signals": {
+        "stars": 40,
+        "forks": 8,
+        "pushed_at": "2026-02-12T19:39:12Z",
+        "updated_at": "2026-02-12T19:38:58Z",
+        "open_issues_count": 4
+      },
+      "description": "Audit Dependency-Track findings and policy violations via policy as code",
+      "primary_language": "Go",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "SAP-samples/datahub-integration-examples",
+      "url": "https://github.com/SAP-samples/datahub-integration-examples",
+      "signals": {
+        "stars": 40,
+        "forks": 28,
+        "pushed_at": "2025-03-07T12:54:54Z",
+        "updated_at": "2025-02-02T00:33:09Z",
+        "open_issues_count": 14
+      },
+      "description": "Example operators, pipelines, and Dockerfiles for SAP Data Hub showing how to connect to different sources or how to perform certain tasks.",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "bradcypert/adl",
+      "url": "https://github.com/bradcypert/adl",
+      "signals": {
+        "stars": 39,
+        "forks": 18,
+        "pushed_at": "2025-10-21T13:58:57Z",
+        "updated_at": "2025-11-22T17:06:22Z",
+        "open_issues_count": 2
+      },
+      "description": "A tiny tool for managing your architecture decision records",
+      "primary_language": "Zig",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "raboof/sbt-reproducible-builds",
+      "url": "https://github.com/raboof/sbt-reproducible-builds",
+      "signals": {
+        "stars": 39,
+        "forks": 4,
+        "pushed_at": "2026-02-13T09:07:34Z",
+        "updated_at": "2026-02-13T09:07:58Z",
+        "open_issues_count": 29
+      },
+      "description": "Make your published artifacts bit-by-bit reproducible, and compare with other certifications",
+      "primary_language": "Scala",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "cloudera-labs/cloudera.cluster",
+      "url": "https://github.com/cloudera-labs/cloudera.cluster",
+      "signals": {
+        "stars": 38,
+        "forks": 53,
+        "pushed_at": "2025-08-26T22:01:01Z",
+        "updated_at": "2025-12-07T18:37:32Z",
+        "open_issues_count": 52
+      },
+      "description": "An Ansible collection for Cloudera Platform for on-premise and cloud Datahubs",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "PrefectHQ/prefect-openmetadata",
+      "url": "https://github.com/PrefectHQ/prefect-openmetadata",
+      "signals": {
+        "stars": 36,
+        "forks": 3,
+        "pushed_at": "2024-04-25T21:18:11Z",
+        "updated_at": "2026-02-07T02:09:47Z",
+        "open_issues_count": 1
+      },
+      "description": "Prefect integration with OpenMetadata",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "jenstroeger/python-package-template",
+      "url": "https://github.com/jenstroeger/python-package-template",
+      "signals": {
+        "stars": 35,
+        "forks": 11,
+        "pushed_at": "2026-02-09T09:10:47Z",
+        "updated_at": "2026-01-30T05:37:55Z",
+        "open_issues_count": 61
+      },
+      "description": "An opinionated Python package/application template repository, with SLSA and SBOM support built in, enabled for security scanners, code linters, typing, testing and code coverage monitoring, and release automation for reproducible builds.",
+      "primary_language": "Makefile",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "open-metadata/openmetadata-demo",
+      "url": "https://github.com/open-metadata/openmetadata-demo",
+      "signals": {
+        "stars": 35,
+        "forks": 30,
+        "pushed_at": "2026-02-12T17:59:41Z",
+        "updated_at": "2026-02-12T17:59:54Z",
+        "open_issues_count": 7
+      },
+      "description": "Utilities to showcase OpenMetadata",
+      "primary_language": "Python",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "urnetwork/build",
+      "url": "https://github.com/urnetwork/build",
+      "signals": {
+        "stars": 33,
+        "forks": 3,
+        "pushed_at": "2026-02-15T04:04:10Z",
+        "updated_at": "2026-02-15T04:04:11Z",
+        "open_issues_count": 3
+      },
+      "description": "Reproducible builds",
+      "primary_language": "Shell",
+      "sources": [
+        "gh_search_repos"
+      ],
+      "last_verified_date": "2026-02-15"
+    }
+  ],
+  "curated_must_include": [
+    "open-metadata/OpenMetadata",
+    "datahub-project/datahub",
+    "backstage/backstage",
+    "open-policy-agent/opa",
+    "kyverno/kyverno",
+    "sigstore/cosign",
+    "OpenLineage/OpenLineage",
+    "MarquezProject/marquez",
+    "dagster-io/dagster",
+    "dbt-labs/dbt-core",
+    "langfuse/langfuse",
+    "Arize-ai/phoenix"
+  ]
+}

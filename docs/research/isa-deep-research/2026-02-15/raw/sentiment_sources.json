@@ -1,0 +1,1303 @@
+{
+  "version": "2026-02-15",
+  "generated_at": "2026-02-15T18:50:13+00:00",
+  "sources": [
+    {
+      "repo": "open-metadata/OpenMetadata",
+      "issues_top": [
+        {
+          "title": "UI Feedback - 1.0",
+          "url": "https://github.com/open-metadata/OpenMetadata/issues/10543",
+          "date": "2023-03-13T08:11:58Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 95,
+          "number": 10543,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Lineage Query Parsing issues",
+          "url": "https://github.com/open-metadata/OpenMetadata/issues/7427",
+          "date": "2022-09-13T14:32:50Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 74,
+          "number": 7427,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Release 1.7.0 - Bugs and Feedback",
+          "url": "https://github.com/open-metadata/OpenMetadata/issues/20430",
+          "date": "2025-03-26T04:27:20Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 62,
+          "number": 20430,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Release 1.2 - UI Feedback",
+          "url": "https://github.com/open-metadata/OpenMetadata/issues/13316",
+          "date": "2023-09-23T19:17:00Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 58,
+          "number": 13316,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "UI - epic for 1.1 backlogs",
+          "url": "https://github.com/open-metadata/OpenMetadata/issues/11154",
+          "date": "2023-04-19T17:46:07Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 30,
+          "number": 11154,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "feat(ui): Project explore card",
+          "url": "https://github.com/open-metadata/OpenMetadata/pull/23295",
+          "date": "2025-09-08T14:27:35Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 96,
+          "number": 23295,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Feat(ui): SSO configuration from UI and  Scim bot token generate revoke functionality and Group Mapping  in settings page",
+          "url": "https://github.com/open-metadata/OpenMetadata/pull/21839",
+          "date": "2025-06-18T11:43:24Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 29,
+          "number": 21839,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Fixes 10351: Fixes Metrics Computation, Samping, test suites and partioning",
+          "url": "https://github.com/open-metadata/OpenMetadata/pull/10603",
+          "date": "2023-03-15T14:48:49Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 21,
+          "number": 10603,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Fix #19068: While user in Pagination, Browser Back button takes them to start page ",
+          "url": "https://github.com/open-metadata/OpenMetadata/pull/19229",
+          "date": "2025-01-03T14:13:52Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 23,
+          "number": 19229,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat: Enhanced the TagsPage to support auto-classification configurations",
+          "url": "https://github.com/open-metadata/OpenMetadata/pull/24774",
+          "date": "2025-12-10T18:37:30Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 7,
+          "number": 24774,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "datahub-project/datahub",
+      "issues_top": [
+        {
+          "title": "Make Airflow plugin fully compatible with Airflow >=2.7",
+          "url": "https://github.com/datahub-project/datahub/issues/13357",
+          "date": "2025-04-29T13:45:05Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 47,
+          "number": 13357,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "\"requests.exceptions.ConnectionError\" when bootstrapping the data with \"python mce_cli.py produce -d bootstrap_mce.dat \"",
+          "url": "https://github.com/datahub-project/datahub/issues/1516",
+          "date": "2019-12-16T18:12:09Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 42,
+          "number": 1516,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Datasets not visible on the UI",
+          "url": "https://github.com/datahub-project/datahub/issues/1179",
+          "date": "2018-05-22T23:25:23Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 32,
+          "number": 1179,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Logout with OIDC not working",
+          "url": "https://github.com/datahub-project/datahub/issues/8369",
+          "date": "2023-07-05T12:07:07Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 32,
+          "number": 8369,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "How to support Chinese search",
+          "url": "https://github.com/datahub-project/datahub/issues/1772",
+          "date": "2020-08-03T02:42:55Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 29,
+          "number": 1772,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "feat(gms): Pluggable authentication and authorization framework",
+          "url": "https://github.com/datahub-project/datahub/pull/6243",
+          "date": "2022-10-19T15:58:02Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 1,
+          "number": 6243,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat(ingestion): powerbi # Configurable Admin API",
+          "url": "https://github.com/datahub-project/datahub/pull/7055",
+          "date": "2023-01-17T12:25:07Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 0,
+          "number": 7055,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat(models) : Joins (Datasets) schema, resolvers and UI",
+          "url": "https://github.com/datahub-project/datahub/pull/8325",
+          "date": "2023-06-28T15:37:30Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 20,
+          "number": 8325,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat(ingestion) Adding vertexAI ingestion source (v1 - model group and model) ",
+          "url": "https://github.com/datahub-project/datahub/pull/12632",
+          "date": "2025-02-13T21:53:20Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 4,
+          "number": 12632,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Upgrade docusaurus documentation website to v3",
+          "url": "https://github.com/datahub-project/datahub/pull/14258",
+          "date": "2025-07-30T00:16:38Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 0,
+          "number": 14258,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "backstage/backstage",
+      "issues_top": [
+        {
+          "title": "OpenAPI spec for the REST API",
+          "url": "https://github.com/backstage/backstage/issues/2566",
+          "date": "2020-09-22T20:41:19Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 86,
+          "number": 2566,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Latest release 1.24.0 breaks GitHub auth",
+          "url": "https://github.com/backstage/backstage/issues/23748",
+          "date": "2024-03-21T06:00:39Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 78,
+          "number": 23748,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Migrate to Material-UI v5",
+          "url": "https://github.com/backstage/backstage/issues/7094",
+          "date": "2021-09-07T21:16:31Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 69,
+          "number": 7094,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Backstage doesn't recognize branches that contain forward slashes",
+          "url": "https://github.com/backstage/backstage/issues/2815",
+          "date": "2020-10-08T20:32:23Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 67,
+          "number": 2815,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "\ud83d\udcac RFC: Allow `nunjucks` templating in the `parameters` schema",
+          "url": "https://github.com/backstage/backstage/issues/16275",
+          "date": "2023-02-09T11:40:58Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 66,
+          "number": 16275,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "Bitbucket Server Catalog Plugin Event Support",
+          "url": "https://github.com/backstage/backstage/pull/19633",
+          "date": "2023-08-29T00:36:39Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 115,
+          "number": 19633,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat: events",
+          "url": "https://github.com/backstage/backstage/pull/13931",
+          "date": "2022-09-29T19:18:00Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 35,
+          "number": 13931,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat: add auditor to coreServices",
+          "url": "https://github.com/backstage/backstage/pull/26372",
+          "date": "2024-08-30T00:32:16Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 26,
+          "number": 26372,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Mcalus3/add catalog import plugin",
+          "url": "https://github.com/backstage/backstage/pull/3121",
+          "date": "2020-10-27T07:41:40Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 20,
+          "number": 3121,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Updated Using Backstage documentation for Feature Issue 21943 Write a UI Guide",
+          "url": "https://github.com/backstage/backstage/pull/31842",
+          "date": "2025-11-21T13:43:01Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 25,
+          "number": 31842,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "open-policy-agent/opa",
+      "issues_top": [
+        {
+          "title": "Possible memory leak involving topdown/http?",
+          "url": "https://github.com/open-policy-agent/opa/issues/2978",
+          "date": "2020-12-04T15:41:28Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 53,
+          "number": 2978,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Opa cli slow on Windows 10",
+          "url": "https://github.com/open-policy-agent/opa/issues/4646",
+          "date": "2022-04-30T07:43:21Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 37,
+          "number": 4646,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Add the ability to create decision labels within a policy",
+          "url": "https://github.com/open-policy-agent/opa/issues/6559",
+          "date": "2024-01-29T16:27:11Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 31,
+          "number": 6559,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Support fsnotify based reloading of certificate, key and CA certs",
+          "url": "https://github.com/open-policy-agent/opa/issues/5788",
+          "date": "2023-03-22T10:37:57Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 29,
+          "number": 5788,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Compile API and negation",
+          "url": "https://github.com/open-policy-agent/opa/issues/2045",
+          "date": "2020-01-29T17:46:42Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 27,
+          "number": 2045,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "feat: new event-based decisions log buffer implementation",
+          "url": "https://github.com/open-policy-agent/opa/pull/7446",
+          "date": "2025-03-12T23:59:29Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 3,
+          "number": 7446,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Adding rule annotations with schema type checking support for OPA",
+          "url": "https://github.com/open-policy-agent/opa/pull/3123",
+          "date": "2021-02-03T23:16:49Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 4,
+          "number": 3123,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Add support for manual plugin triggers",
+          "url": "https://github.com/open-policy-agent/opa/pull/3668",
+          "date": "2021-07-22T01:35:29Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 43,
+          "number": 3668,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Support for bundle signature verification",
+          "url": "https://github.com/open-policy-agent/opa/pull/2475",
+          "date": "2020-06-17T20:09:09Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 7,
+          "number": 2475,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Update docs and server binding addr per OPA v1.0 specs",
+          "url": "https://github.com/open-policy-agent/opa/pull/7140",
+          "date": "2024-10-29T23:36:03Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 4,
+          "number": 7140,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "kyverno/kyverno",
+      "issues_top": [
+        {
+          "title": "[Bug] Memory leak causes Kyverno Pods to crash with OOMKilled in loaded conditions",
+          "url": "https://github.com/kyverno/kyverno/issues/4072",
+          "date": "2022-06-03T21:48:33Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 76,
+          "number": 4072,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[Bug] err: invalid kind\" \"kind\"=\"RangeAllocation\" in OpenShift",
+          "url": "https://github.com/kyverno/kyverno/issues/5136",
+          "date": "2022-10-25T08:09:30Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 57,
+          "number": 5136,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[BUG] kyverno slowing made K9s timedout",
+          "url": "https://github.com/kyverno/kyverno/issues/918",
+          "date": "2020-06-05T07:23:52Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 47,
+          "number": 918,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[Bug] [CLI] Variables present in the message section of the policy throws an error ",
+          "url": "https://github.com/kyverno/kyverno/issues/3982",
+          "date": "2022-05-21T05:54:04Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 46,
+          "number": 3982,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[Feature] New JMESPath filter `random()`",
+          "url": "https://github.com/kyverno/kyverno/issues/3598",
+          "date": "2022-04-13T22:42:19Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 46,
+          "number": 3598,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "feat: support Cli  for map",
+          "url": "https://github.com/kyverno/kyverno/pull/12667",
+          "date": "2025-04-08T13:22:14Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 5,
+          "number": 12667,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Feature : Exit the cli when rule name is incorrect",
+          "url": "https://github.com/kyverno/kyverno/pull/9545",
+          "date": "2024-01-29T07:39:43Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 76,
+          "number": 9545,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "added verify image ristretto cache implementation",
+          "url": "https://github.com/kyverno/kyverno/pull/7969",
+          "date": "2023-08-04T14:10:10Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 23,
+          "number": 7969,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "chore: Push and sign install manifests to GHCR",
+          "url": "https://github.com/kyverno/kyverno/pull/4895",
+          "date": "2022-10-12T07:27:35Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 80,
+          "number": 4895,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Extend Pod Security Admission",
+          "url": "https://github.com/kyverno/kyverno/pull/4364",
+          "date": "2022-08-21T13:11:17Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 14,
+          "number": 4364,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "sigstore/cosign",
+      "issues_top": [
+        {
+          "title": "VAULT KMS signing and verification broken after rotating a key in vault",
+          "url": "https://github.com/sigstore/cosign/issues/1351",
+          "date": "2022-01-24T07:11:18Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 33,
+          "number": 1351,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Allow specifying CA chain when not using Fulcio",
+          "url": "https://github.com/sigstore/cosign/issues/1554",
+          "date": "2022-03-04T21:47:42Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 33,
+          "number": 1554,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "cosign sign does not use local image registry credentials",
+          "url": "https://github.com/sigstore/cosign/issues/587",
+          "date": "2021-08-27T14:54:23Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 32,
+          "number": 587,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "bug: x509 verification broken",
+          "url": "https://github.com/sigstore/cosign/issues/2632",
+          "date": "2023-01-16T00:44:49Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 32,
+          "number": 2632,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Cosign 2.0 Tracking",
+          "url": "https://github.com/sigstore/cosign/issues/2376",
+          "date": "2022-10-24T05:45:48Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 29,
+          "number": 2376,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "Sigstore bundle",
+          "url": "https://github.com/sigstore/cosign/pull/2204",
+          "date": "2022-08-26T13:17:30Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 29,
+          "number": 2204,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Add support for new bundle specification for attesting/verifying OCI image attestations",
+          "url": "https://github.com/sigstore/cosign/pull/3889",
+          "date": "2024-09-25T19:31:43Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 14,
+          "number": 3889,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Upgrade to TUF v2 client",
+          "url": "https://github.com/sigstore/cosign/pull/3844",
+          "date": "2024-08-20T23:50:44Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 36,
+          "number": 3844,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "adds tsa cert chain check for env var or tuf targets.",
+          "url": "https://github.com/sigstore/cosign/pull/3600",
+          "date": "2024-03-15T15:22:13Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 27,
+          "number": 3600,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat: Implement 'env' package to handle environment variables in cosign ",
+          "url": "https://github.com/sigstore/cosign/pull/2322",
+          "date": "2022-10-09T17:56:05Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 14,
+          "number": 2322,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "OpenLineage/OpenLineage",
+      "issues_top": [
+        {
+          "title": "[Discussion] Consistent approach for metastore symlinks",
+          "url": "https://github.com/OpenLineage/OpenLineage/issues/3642",
+          "date": "2025-04-16T15:22:03Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 40,
+          "number": 3642,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[Bug]. Iceberg DataSet from Flink NameSpace Different than Spark",
+          "url": "https://github.com/OpenLineage/OpenLineage/issues/2625",
+          "date": "2024-04-19T14:17:16Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 30,
+          "number": 2625,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Spark integration can cause YARN applications to crash if Spark context is explicitly stopped",
+          "url": "https://github.com/OpenLineage/OpenLineage/issues/2513",
+          "date": "2024-03-13T20:14:20Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 21,
+          "number": 2513,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Flink with Kafka",
+          "url": "https://github.com/OpenLineage/OpenLineage/issues/2840",
+          "date": "2024-07-09T18:30:24Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 18,
+          "number": 2840,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[FEATURE] Non-blocking Transport interface",
+          "url": "https://github.com/OpenLineage/OpenLineage/issues/3771",
+          "date": "2025-06-13T16:21:08Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 18,
+          "number": 3771,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "python: async HTTP transport v2",
+          "url": "https://github.com/OpenLineage/OpenLineage/pull/3812",
+          "date": "2025-06-25T12:27:17Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 4,
+          "number": 3812,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "python/client: generate Python facets from JSON schemas.",
+          "url": "https://github.com/OpenLineage/OpenLineage/pull/2520",
+          "date": "2024-03-14T23:21:25Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 2,
+          "number": 2520,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Hive/add integration",
+          "url": "https://github.com/OpenLineage/OpenLineage/pull/3555",
+          "date": "2025-03-14T09:47:53Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 3,
+          "number": 3555,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[SPARK] lineage metadata extraction built-in within Spark extensions",
+          "url": "https://github.com/OpenLineage/OpenLineage/pull/2272",
+          "date": "2023-11-21T09:55:38Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 4,
+          "number": 2272,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[AIRFLOW] added OpenLineage setup check DAG ",
+          "url": "https://github.com/OpenLineage/OpenLineage/pull/2519",
+          "date": "2024-03-14T22:00:02Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 3,
+          "number": 2519,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "MarquezProject/marquez",
+      "issues_top": [
+        {
+          "title": "Very slow /api/v1/jobs endpoint after upgrading to 0.50.0",
+          "url": "https://github.com/MarquezProject/marquez/issues/2987",
+          "date": "2024-12-12T08:31:12Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 14,
+          "number": 2987,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Define naming convention for Flyway migration scripts ",
+          "url": "https://github.com/MarquezProject/marquez/issues/237",
+          "date": "2019-01-05T20:25:49Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 12,
+          "number": 237,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "When I open the dataset, I get \"Something went wrong while fetching dataset runs\"",
+          "url": "https://github.com/MarquezProject/marquez/issues/2880",
+          "date": "2024-08-26T03:37:44Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 12,
+          "number": 2880,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Discrepancy in building DatasetVersionIds and which `version` is used",
+          "url": "https://github.com/MarquezProject/marquez/issues/1977",
+          "date": "2022-05-05T22:37:51Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 11,
+          "number": 1977,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Unable to check the column lineage and dataset lineage and got below error need some attention",
+          "url": "https://github.com/MarquezProject/marquez/issues/2921",
+          "date": "2024-10-11T15:19:30Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 11,
+          "number": 2921,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "Implement job service",
+          "url": "https://github.com/MarquezProject/marquez/pull/154",
+          "date": "2018-11-23T19:37:35Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 3,
+          "number": 154,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Add majority of datasource functionality",
+          "url": "https://github.com/MarquezProject/marquez/pull/351",
+          "date": "2019-02-27T23:21:14Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 5,
+          "number": 351,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "add raw OpenLineage get event API",
+          "url": "https://github.com/MarquezProject/marquez/pull/2070",
+          "date": "2022-08-12T12:54:14Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 2,
+          "number": 2070,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Add basic namespace resources and data object",
+          "url": "https://github.com/MarquezProject/marquez/pull/116",
+          "date": "2018-10-25T21:06:05Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 5,
+          "number": 116,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Added resource-layer changes",
+          "url": "https://github.com/MarquezProject/marquez/pull/187",
+          "date": "2018-12-10T19:12:14Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 1,
+          "number": 187,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "dagster-io/dagster",
+      "issues_top": [
+        {
+          "title": "Support Auth & RBAC in Dagit",
+          "url": "https://github.com/dagster-io/dagster/issues/2219",
+          "date": "2020-02-27T21:44:23Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 87,
+          "number": 2219,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Partitioned asset checks",
+          "url": "https://github.com/dagster-io/dagster/issues/17005",
+          "date": "2023-10-04T16:21:25Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 61,
+          "number": 17005,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Sqlmesh integration",
+          "url": "https://github.com/dagster-io/dagster/issues/21655",
+          "date": "2024-05-06T13:24:07Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 51,
+          "number": 21655,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "`dagster-webserver` memory leak",
+          "url": "https://github.com/dagster-io/dagster/issues/18997",
+          "date": "2024-01-03T16:38:26Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 41,
+          "number": 18997,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "DagsterInvalidSubsetError when asset exists",
+          "url": "https://github.com/dagster-io/dagster/issues/21152",
+          "date": "2024-04-11T12:06:38Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 38,
+          "number": 21152,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "Doc 302 new etl tutorial - part 1",
+          "url": "https://github.com/dagster-io/dagster/pull/25320",
+          "date": "2024-10-16T20:32:50Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 6,
+          "number": 25320,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Bump rsa from 3.4.2 to 4.7 in /python_modules/automation/automation/docker/images/buildkite-test-image-builder",
+          "url": "https://github.com/dagster-io/dagster/pull/6372",
+          "date": "2022-01-27T19:56:51Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 232,
+          "number": 6372,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Bump pyyaml from 5.2 to 5.4 in /python_modules/automation/automation/docker/images/buildkite-test-image-builder",
+          "url": "https://github.com/dagster-io/dagster/pull/6373",
+          "date": "2022-01-27T19:56:51Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 232,
+          "number": 6373,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Bump urllib3 from 1.25.9 to 1.26.5 in /python_modules/automation/automation/docker/images/buildkite-test-image-builder",
+          "url": "https://github.com/dagster-io/dagster/pull/6374",
+          "date": "2022-01-27T19:56:53Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 231,
+          "number": 6374,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "add local to prod example",
+          "url": "https://github.com/dagster-io/dagster/pull/8948",
+          "date": "2022-07-19T17:40:50Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 4,
+          "number": 8948,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "dbt-labs/dbt-core",
+      "issues_top": [
+        {
+          "title": "[Bug] dbtCore - after upgrading, can't run DBT",
+          "url": "https://github.com/dbt-labs/dbt-core/issues/10135",
+          "date": "2024-05-13T11:13:16Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 78,
+          "number": 10135,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Allow instances of generic data tests to be documented",
+          "url": "https://github.com/dbt-labs/dbt-core/issues/2578",
+          "date": "2020-06-22T13:36:12Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 58,
+          "number": 2578,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Support Materialized Views",
+          "url": "https://github.com/dbt-labs/dbt-core/issues/1162",
+          "date": "2018-12-03T16:51:21Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 48,
+          "number": 1162,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[Feature] dbt should know about metrics",
+          "url": "https://github.com/dbt-labs/dbt-core/issues/4071",
+          "date": "2021-10-15T15:58:08Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 48,
+          "number": 4071,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Add namespacing for dbt resources",
+          "url": "https://github.com/dbt-labs/dbt-core/issues/1269",
+          "date": "2019-01-30T14:26:43Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 43,
+          "number": 1269,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "dbt Constraints / model contracts",
+          "url": "https://github.com/dbt-labs/dbt-core/pull/6271",
+          "date": "2022-11-16T18:51:23Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 30,
+          "number": 6271,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Add Grant SQL Macros",
+          "url": "https://github.com/dbt-labs/dbt-core/pull/5369",
+          "date": "2022-06-13T20:20:41Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 8,
+          "number": 5369,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Use mashumaro for serializing logging events",
+          "url": "https://github.com/dbt-labs/dbt-core/pull/4505",
+          "date": "2021-12-16T19:52:51Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 7,
+          "number": 4505,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Feature/dbt deps tarball",
+          "url": "https://github.com/dbt-labs/dbt-core/pull/4689",
+          "date": "2022-02-05T21:51:52Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 43,
+          "number": 4689,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Parsing performance",
+          "url": "https://github.com/dbt-labs/dbt-core/pull/3034",
+          "date": "2021-01-26T16:42:29Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 0,
+          "number": 3034,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "langfuse/langfuse",
+      "issues_top": [
+        {
+          "title": "bug: langfuse docker compose failing on arm linux machines",
+          "url": "https://github.com/langfuse/langfuse/issues/4683",
+          "date": "2024-12-11T14:32:55Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 38,
+          "number": 4683,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "bug: pydantic v1 validation errors for UpdateGenerationBody",
+          "url": "https://github.com/langfuse/langfuse/issues/4961",
+          "date": "2025-01-10T08:04:03Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 37,
+          "number": 4961,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "bug: if event is too big, it gets dropped instead of dropping large input/output/metadata",
+          "url": "https://github.com/langfuse/langfuse/issues/1676",
+          "date": "2024-04-11T13:31:42Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 36,
+          "number": 1676,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "bug: otel reporting does not include input/output values.",
+          "url": "https://github.com/langfuse/langfuse/issues/5971",
+          "date": "2025-03-11T17:02:31Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 34,
+          "number": 5971,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "bug: Possible Gemini token/cost mismatch in Langfuse (using Google SDK)",
+          "url": "https://github.com/langfuse/langfuse/issues/8020",
+          "date": "2025-07-22T07:57:27Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 29,
+          "number": 8020,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "chore(deps): bump @aws-sdk/client-s3 from 3.507.0 to 3.515.0",
+          "url": "https://github.com/langfuse/langfuse/pull/1192",
+          "date": "2024-02-16T22:19:26Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 414,
+          "number": 1192,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat(billing): Enforce Usage Threshold on Hobby Plan (DRAFT)",
+          "url": "https://github.com/langfuse/langfuse/pull/9426",
+          "date": "2025-09-30T10:13:50Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 0,
+          "number": 9426,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat(data-table): break out scores to individual columns in tables",
+          "url": "https://github.com/langfuse/langfuse/pull/2743",
+          "date": "2024-07-25T15:21:43Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 1,
+          "number": 2743,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat(comments): Support send email notifications on comment mention",
+          "url": "https://github.com/langfuse/langfuse/pull/9951",
+          "date": "2025-10-22T22:11:13Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 2,
+          "number": 9951,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat(data-table): virtual detail column interface to add individual score columns",
+          "url": "https://github.com/langfuse/langfuse/pull/2772",
+          "date": "2024-07-29T09:28:22Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 1,
+          "number": 2772,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "repo": "Arize-ai/phoenix",
+      "issues_top": [
+        {
+          "title": "[BUG] DSPy connector not showing the token count, although it is returned in the request",
+          "url": "https://github.com/Arize-ai/phoenix/issues/3119",
+          "date": "2024-05-08T11:02:48Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 23,
+          "number": 3119,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "\ud83d\uddfa  Annotation Configuration",
+          "url": "https://github.com/Arize-ai/phoenix/issues/5917",
+          "date": "2025-01-06T23:29:17Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 23,
+          "number": 5917,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[BUG]: ImportError: cannot import name '_ExtendedAttributes'",
+          "url": "https://github.com/Arize-ai/phoenix/issues/8305",
+          "date": "2025-06-26T14:34:13Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 21,
+          "number": 8305,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "[BUG]: Response Format not handled correctly in playground",
+          "url": "https://github.com/Arize-ai/phoenix/issues/10487",
+          "date": "2025-12-05T19:50:47Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 17,
+          "number": 10487,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "Phoenix failed to migrate the database to the latest version",
+          "url": "https://github.com/Arize-ai/phoenix/issues/3246",
+          "date": "2024-05-20T07:08:27Z",
+          "type": "GitHub issue",
+          "format": "web",
+          "comments_count": 17,
+          "number": 3246,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "prs_top": [
+        {
+          "title": "feat: token-based authentication",
+          "url": "https://github.com/Arize-ai/phoenix/pull/4370",
+          "date": "2024-08-23T20:22:47Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 2,
+          "number": 4370,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat(trace): span streaming, filtering, and exporting",
+          "url": "https://github.com/Arize-ai/phoenix/pull/1235",
+          "date": "2023-08-30T15:55:16Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 2,
+          "number": 1235,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat: time series",
+          "url": "https://github.com/Arize-ai/phoenix/pull/252",
+          "date": "2023-02-15T16:51:42Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 4,
+          "number": 252,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat: Overhaul invocation parameter specification",
+          "url": "https://github.com/Arize-ai/phoenix/pull/5228",
+          "date": "2024-10-29T20:42:08Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 1,
+          "number": 5228,
+          "last_verified_date": "2026-02-15"
+        },
+        {
+          "title": "feat: Enable hdf5 read from url",
+          "url": "https://github.com/Arize-ai/phoenix/pull/89",
+          "date": "2022-12-02T00:44:20Z",
+          "type": "GitHub pull request",
+          "format": "web",
+          "comments_count": 1,
+          "number": 89,
+          "last_verified_date": "2026-02-15"
+        }
+      ],
+      "last_verified_date": "2026-02-15"
+    }
+  ],
+  "last_verified_date": "2026-02-15"
+}

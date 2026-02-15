@@ -1,0 +1,108 @@
+{
+  "version": "2026-02-15",
+  "generated_at": "2026-02-15T18:46:23+00:00",
+  "last_verified_date": "2026-02-15",
+  "repo_queries": [
+    {
+      "query": "\"data catalog\" governance pushed:>2024-02-15 stars:>200 fork:false archived:false",
+      "timestamp": "2026-02-15T18:46:23+00:00",
+      "limit": 60,
+      "result_count": 13,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "\"metadata platform\" governance pushed:>2024-02-15 stars:>200 fork:false archived:false",
+      "timestamp": "2026-02-15T18:46:24+00:00",
+      "limit": 60,
+      "result_count": 4,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "\"policy as code\" pushed:>2024-02-15 stars:>200 fork:false archived:false",
+      "timestamp": "2026-02-15T18:46:25+00:00",
+      "limit": 60,
+      "result_count": 60,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "\"architecture decision record\" pushed:>2024-02-15 stars:>100 fork:false archived:false",
+      "timestamp": "2026-02-15T18:46:28+00:00",
+      "limit": 60,
+      "result_count": 60,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "\"evidence\" \"quality gate\" pushed:>2024-02-15 stars:>50 fork:false archived:false",
+      "timestamp": "2026-02-15T18:46:30+00:00",
+      "limit": 60,
+      "result_count": 7,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "\"reproducible build\" pushed:>2024-02-15 stars:>50 fork:false archived:false",
+      "timestamp": "2026-02-15T18:46:30+00:00",
+      "limit": 60,
+      "result_count": 60,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "\"openlineage\" pushed:>2024-02-15 stars:>50 fork:false archived:false",
+      "timestamp": "2026-02-15T18:46:33+00:00",
+      "limit": 60,
+      "result_count": 60,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "\"rag evaluation\" pushed:>2024-02-15 stars:>50 fork:false archived:false",
+      "timestamp": "2026-02-15T18:46:35+00:00",
+      "limit": 60,
+      "result_count": 60,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "openmetadata pushed:>2024-02-15 stars:>200 fork:false archived:false",
+      "timestamp": "2026-02-15T18:46:37+00:00",
+      "limit": 60,
+      "result_count": 60,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "datahub pushed:>2024-02-15 stars:>200 fork:false archived:false",
+      "timestamp": "2026-02-15T18:46:39+00:00",
+      "limit": 60,
+      "result_count": 60,
+      "last_verified_date": "2026-02-15"
+    }
+  ],
+  "code_queries": [
+    {
+      "query": "filename:AGENTS.md pushed:>2024-02-15",
+      "timestamp": "2026-02-15T18:46:41+00:00",
+      "limit": 60,
+      "result_count": 0,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "filename:ADR.md \"Architecture Decision Record\" pushed:>2024-02-15",
+      "timestamp": "2026-02-15T18:46:42+00:00",
+      "limit": 60,
+      "result_count": 0,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "path:docs/adr pushed:>2024-02-15",
+      "timestamp": "2026-02-15T18:46:42+00:00",
+      "limit": 60,
+      "result_count": 0,
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "query": "filename:mkdocs.yml pushed:>2024-02-15",
+      "timestamp": "2026-02-15T18:46:43+00:00",
+      "limit": 60,
+      "result_count": 0,
+      "last_verified_date": "2026-02-15"
+    }
+  ],
+  "unique_repo_count": 440
+}
