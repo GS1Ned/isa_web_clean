@@ -48,7 +48,7 @@ Provide Q&A over ISA knowledge with traceable evidence pointers.
   - `drizzle/schema_ask_isa_feedback.ts`
   - `drizzle/schema_corpus_governance.ts`
   - `drizzle/schema.ts`
-- Runtime contract: `docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md`
+- Runtime contract: `docs/spec/ASK_ISA/ASK_ISA_RUNTIME_CONTRACT.md`
 - Verified_at_utc: `2026-02-09T20:37:32Z`
 - Repo_head_sha: `7a8260077fd4c814ceb66a01e1848d32cf97647d`
 
@@ -57,4 +57,4 @@ Provide Q&A over ISA knowledge with traceable evidence pointers.
 - Planning: `docs/planning/INDEX.md`
 - Next actions: `docs/planning/NEXT_ACTIONS.json` (P1-0001)
 - Agent map: `docs/agent/AGENT_MAP.md`
-- Runtime contract: `docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md`
+- Runtime contract: `docs/spec/ASK_ISA/ASK_ISA_RUNTIME_CONTRACT.md`

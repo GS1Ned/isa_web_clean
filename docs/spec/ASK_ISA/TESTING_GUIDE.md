@@ -474,7 +474,7 @@ if not (repo / ".git").exists():
 
 required = [
     "docs/spec/ASK_ISA.md",
-    "docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md",
+    "docs/spec/ASK_ISA/ASK_ISA_RUNTIME_CONTRACT.md",
     "server/prompts/ask_isa/index.ts",
     "docs/planning/NEXT_ACTIONS.json",
 ]

@@ -24,5 +24,5 @@ python3 scripts/probe/ask_isa_smoke.py
 - Script: `scripts/probe/ask_isa_smoke.py`
 - Runbook: `docs/governance/ASK_ISA_SMOKE_RUNBOOK.md`
 - Spec: `docs/spec/ASK_ISA.md`
-- Runtime contract: `docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md`
+- Runtime contract: `docs/spec/ASK_ISA/ASK_ISA_RUNTIME_CONTRACT.md`
 - Planning: `docs/planning/NEXT_ACTIONS.json` (P1-0002)
