@@ -1,0 +1,14 @@
+# ISA Code Owners
+#
+# See: https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+* @GS1Ned
+
+/server/ @GS1Ned
+/client/ @GS1Ned
+/drizzle/ @GS1Ned
+/scripts/ @GS1Ned
+/data/metadata/ @GS1Ned
+/docs/quality/schemas/ @GS1Ned
+/.github/workflows/ @GS1Ned
+
