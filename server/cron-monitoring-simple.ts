@@ -49,7 +49,7 @@ export function logCronExecution(log: CronExecutionLog) {
 
   try {
     fs.appendFileSync(logFile, logEntry);
-    console.log(`[cron-monitoring] Logged: ${log.jobName} - ${log.status}`);
+    serverLogger.info(`[cron-monitoring] Logged: ${log.jobName} - ${log.status}`);
   } catch (error) {
     serverLogger.error("[cron-monitoring] Failed to write log:", error);
   }
@@ -181,7 +181,7 @@ ${recentExecutions.map((log, i) => `${i + 1}. ${log.timestamp} - ${log.status} (
         title: `⚠️ Cron Job Failure: ${jobName}`,
         content: message,
       });
-      console.log(`[cron-monitoring] Alert sent to owner`);
+      serverLogger.info(`[cron-monitoring] Alert sent to owner`);
     } catch (error) {
       serverLogger.error("[cron-monitoring] Failed to send alert:", error);
     }
@@ -207,13 +207,11 @@ export function cleanupOldLogs() {
     for (const file of filesToDelete) {
       const filepath = path.join(LOG_DIR, file);
       fs.unlinkSync(filepath);
-      console.log(`[cron-monitoring] Deleted old log file: ${file}`);
+      serverLogger.info(`[cron-monitoring] Deleted old log file: ${file}`);
     }
 
     if (filesToDelete.length > 0) {
-      console.log(
-        `[cron-monitoring] Cleaned up ${filesToDelete.length} old log files`
-      );
+      serverLogger.info(`[cron-monitoring] Cleaned up ${filesToDelete.length} old log files`);
     }
   } catch (error) {
     serverLogger.error("[cron-monitoring] Failed to cleanup logs:", error);

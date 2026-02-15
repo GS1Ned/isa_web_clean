@@ -5,6 +5,10 @@
 
 import { getDb } from "./server/db.ts";
 import { hubNews } from "./drizzle/schema.ts";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 const sampleArticles = [
   {
@@ -119,23 +123,23 @@ const sampleArticles = [
 ];
 
 async function seedNews() {
-  console.log("Seeding sample news articles...\n");
+  cliOut("Seeding sample news articles...\n");
 
   const db = await getDb();
   if (!db) {
-    console.error("❌ Database not available");
+    cliErr("❌ Database not available");
     return;
   }
 
   try {
     for (const article of sampleArticles) {
       await db.insert(hubNews).values(article);
-      console.log(`✅ Inserted: ${article.title}`);
+      cliOut(`✅ Inserted: ${article.title}`);
     }
 
-    console.log(`\n✅ Successfully seeded ${sampleArticles.length} articles`);
+    cliOut(`\n✅ Successfully seeded ${sampleArticles.length} articles`);
   } catch (error) {
-    console.error("❌ Error seeding news:", error);
+    cliErr("❌ Error seeding news:", error);
   }
 }
 

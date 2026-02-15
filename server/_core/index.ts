@@ -114,11 +114,11 @@ async function startServer() {
   const port = await findAvailablePort(preferredPort);
 
   if (port !== preferredPort) {
-    console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
+    serverLogger.info(`Port ${preferredPort} is busy, using port ${port} instead`);
   }
 
   server.listen(port, async () => {
-    console.log(`Server running on http://localhost:${port}/`);
+    serverLogger.info(`Server running on http://localhost:${port}/`);
     
     // Start alert monitoring (runs every 5 minutes)
     scheduleAlertMonitoring();
@@ -130,4 +130,6 @@ async function startServer() {
   });
 }
 
-startServer().catch(console.error);
+startServer().catch(err => {
+  serverLogger.error("[server] Failed to start:", err);
+});

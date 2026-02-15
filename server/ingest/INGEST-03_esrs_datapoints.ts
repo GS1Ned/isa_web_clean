@@ -139,7 +139,7 @@ function parseWorkbook(
       continue;
     }
     if (verbose) {
-      console.log(`Processing sheet ${sheetName} with ${rows.length - 1} rows`);
+      serverLogger.info(`Processing sheet ${sheetName} with ${rows.length - 1} rows`);
     }
     for (let index = 1; index < rows.length; index += 1) {
       const row = rows[index];
@@ -230,7 +230,7 @@ export async function ingestEsrsDatapoints(
       throw new Error("Database connection not available");
     }
     if (verbose) {
-      console.log("Starting ESRS datapoints ingestion");
+      serverLogger.info("Starting ESRS datapoints ingestion");
     }
     const workbook = loadWorkbookFile();
     const parsedRows = parseWorkbook(workbook, verbose);
@@ -242,7 +242,7 @@ export async function ingestEsrsDatapoints(
     for (const row of parsedRows) {
       if (limit !== undefined && result.recordsProcessed >= limit) {
         if (verbose) {
-          console.log(
+          serverLogger.info(
             `Limit reached (${limit} records), stopping ingestion loop`
           );
         }
@@ -344,14 +344,14 @@ export async function ingestEsrsDatapoints(
         result.recordsSkipped += 1;
       }
       if (verbose && result.recordsProcessed % 100 === 0) {
-        console.log(
+        serverLogger.info(
           `Processed ${result.recordsProcessed} ESRS datapoints so far`
         );
       }
     }
     result.duration = Date.now() - startTime;
     if (result.success) {
-      console.log(
+      serverLogger.info(
         `ESRS ingestion complete` +
           ` processed=${result.recordsProcessed}` +
           ` inserted=${result.recordsInserted}` +

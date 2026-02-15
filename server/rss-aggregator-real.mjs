@@ -174,10 +174,10 @@ async function saveNewsToDatabase(connection, newsItem) {
     ];
 
     await connection.execute(query, values);
-    console.log(`  ✓ ${newsItem.title.substring(0, 60)}...`);
+    process.stdout.write(`  ✓ ${newsItem.title.substring(0, 60)}...\n`);
     return true;
   } catch (error) {
-    console.error(`  ✗ Error saving: ${error.message}`);
+    process.stderr.write(`  ✗ Error saving: ${error.message}\n`);
     return false;
   }
 }
@@ -189,11 +189,11 @@ async function processRSSItems(connection, feedConfig, feed) {
   let savedCount = 0;
 
   if (!feed.items || feed.items.length === 0) {
-    console.log(`  No items found`);
+    process.stdout.write("  No items found\n");
     return 0;
   }
 
-  console.log(`  Processing ${feed.items.length} items...`);
+  process.stdout.write(`  Processing ${feed.items.length} items...\n`);
 
   for (const item of feed.items) {
     const title = item.title || "";
@@ -241,7 +241,7 @@ async function processRSSItems(connection, feedConfig, feed) {
  * Main aggregation function
  */
 async function aggregateNews() {
-  console.log("🔄 Starting real RSS aggregation...\n");
+  process.stdout.write("🔄 Starting real RSS aggregation...\n\n");
 
   let connection;
   try {
@@ -257,23 +257,21 @@ async function aggregateNews() {
 
     // Process each RSS feed
     for (const feedConfig of RSS_FEEDS) {
-      console.log(`📰 Fetching: ${feedConfig.title}`);
+      process.stdout.write(`📰 Fetching: ${feedConfig.title}\n`);
 
       try {
         const feed = await parser.parseURL(feedConfig.url);
         const saved = await processRSSItems(connection, feedConfig, feed);
-        console.log(`  Saved ${saved} relevant items\n`);
+        process.stdout.write(`  Saved ${saved} relevant items\n\n`);
         totalSaved += saved;
       } catch (error) {
-        console.log(`  ✗ Failed to fetch: ${error.message}\n`);
+        process.stdout.write(`  ✗ Failed to fetch: ${error.message}\n\n`);
       }
     }
 
-    console.log(
-      `✅ Aggregation complete! Saved ${totalSaved} news items total.`
-    );
+    process.stdout.write(`✅ Aggregation complete! Saved ${totalSaved} news items total.\n`);
   } catch (error) {
-    console.error("❌ Aggregation failed:", error.message);
+    process.stderr.write(`❌ Aggregation failed: ${error.message}\n`);
     process.exit(1);
   } finally {
     if (connection) await connection.end();

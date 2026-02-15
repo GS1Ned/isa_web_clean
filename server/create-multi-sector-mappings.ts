@@ -170,7 +170,7 @@ async function createDIYMappings(): Promise<{
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
-  console.log("[Mapper] Creating DIY/Garden/Pet attribute mappings...");
+  serverLogger.info("[Mapper] Creating DIY/Garden/Pet attribute mappings...");
 
   // Fetch DIY attributes
   const diyAttributes = await db
@@ -178,7 +178,7 @@ async function createDIYMappings(): Promise<{
     .from(gs1Attributes)
     .where(eq(gs1Attributes.sector, "diy_garden_pet"));
 
-  console.log(
+  serverLogger.info(
     `[Mapper] Found ${diyAttributes.length} DIY/Garden/Pet attributes`
   );
 
@@ -219,11 +219,11 @@ async function createDIYMappings(): Promise<{
     }
 
     if (created % 100 === 0 && created > 0) {
-      console.log(`[Mapper] Created ${created} DIY mappings...`);
+      serverLogger.info(`[Mapper] Created ${created} DIY mappings...`);
     }
   }
 
-  console.log(
+  serverLogger.info(
     `[Mapper] DIY mapping complete: ${created} created, ${skipped} skipped`
   );
   return { created, skipped };
@@ -239,7 +239,7 @@ async function createHealthcareMappings(): Promise<{
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
-  console.log("[Mapper] Creating Healthcare attribute mappings...");
+  serverLogger.info("[Mapper] Creating Healthcare attribute mappings...");
 
   // Fetch Healthcare attributes
   const healthcareAttributes = await db
@@ -247,7 +247,7 @@ async function createHealthcareMappings(): Promise<{
     .from(gs1Attributes)
     .where(eq(gs1Attributes.sector, "healthcare"));
 
-  console.log(
+  serverLogger.info(
     `[Mapper] Found ${healthcareAttributes.length} Healthcare attributes`
   );
 
@@ -288,11 +288,11 @@ async function createHealthcareMappings(): Promise<{
     }
 
     if (created % 50 === 0 && created > 0) {
-      console.log(`[Mapper] Created ${created} Healthcare mappings...`);
+      serverLogger.info(`[Mapper] Created ${created} Healthcare mappings...`);
     }
   }
 
-  console.log(
+  serverLogger.info(
     `[Mapper] Healthcare mapping complete: ${created} created, ${skipped} skipped`
   );
   return { created, skipped };
@@ -302,7 +302,7 @@ async function createHealthcareMappings(): Promise<{
  * Main execution
  */
 async function main() {
-  console.log("[Mapper] Starting multi-sector attribute mapping...");
+  serverLogger.info("[Mapper] Starting multi-sector attribute mapping...");
   const startTime = Date.now();
 
   try {
@@ -314,13 +314,13 @@ async function main() {
 
     const duration = Math.round((Date.now() - startTime) / 1000);
 
-    console.log(`[Mapper] Completed in ${duration}s`);
-    console.log(`[Mapper] Summary:`);
-    console.log(`  - DIY mappings created: ${diyResult.created}`);
-    console.log(`  - DIY mappings skipped: ${diyResult.skipped}`);
-    console.log(`  - Healthcare mappings created: ${healthcareResult.created}`);
-    console.log(`  - Healthcare mappings skipped: ${healthcareResult.skipped}`);
-    console.log(
+    serverLogger.info(`[Mapper] Completed in ${duration}s`);
+    serverLogger.info(`[Mapper] Summary:`);
+    serverLogger.info(`  - DIY mappings created: ${diyResult.created}`);
+    serverLogger.info(`  - DIY mappings skipped: ${diyResult.skipped}`);
+    serverLogger.info(`  - Healthcare mappings created: ${healthcareResult.created}`);
+    serverLogger.info(`  - Healthcare mappings skipped: ${healthcareResult.skipped}`);
+    serverLogger.info(
       `  - Total mappings created: ${diyResult.created + healthcareResult.created}`
     );
   } catch (error) {
@@ -333,7 +333,7 @@ async function main() {
 if (import.meta.url === `file://${process.argv[1]}`) {
   main()
     .then(() => {
-      console.log("[Mapper] Mapping successful");
+      serverLogger.info("[Mapper] Mapping successful");
       process.exit(0);
     })
     .catch(error => {

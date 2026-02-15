@@ -35,7 +35,7 @@ export const cronRouter = router({
         throw new Error("Unauthorized: Invalid cron secret");
       }
 
-      console.log("[cron] Daily news ingestion triggered via API");
+      serverLogger.info("[cron] Daily news ingestion triggered via API");
 
       try {
         const result = await dailyNewsIngestion();
@@ -73,7 +73,7 @@ export const cronRouter = router({
         throw new Error("Unauthorized: Invalid cron secret");
       }
 
-      console.log("[cron] Weekly news archival triggered via API");
+      serverLogger.info("[cron] Weekly news archival triggered via API");
 
       try {
         const result = await weeklyNewsArchival();

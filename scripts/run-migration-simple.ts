@@ -1,4 +1,8 @@
 import { config } from 'dotenv';
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 config({ override: true });
 import mysql from 'mysql2/promise';
 import { readFileSync } from 'fs';
@@ -9,11 +13,11 @@ async function runMigration() {
   const sql = readFileSync('./drizzle/migrations/0016_add_regulatory_tracking_columns.sql', 'utf-8');
   
   try {
-    console.log('Running migration: 0016_add_regulatory_tracking_columns.sql');
+    cliOut('Running migration: 0016_add_regulatory_tracking_columns.sql');
     await connection.query(sql);
-    console.log('✓ Migration completed successfully');
+    cliOut('✓ Migration completed successfully');
   } catch (error) {
-    console.error('✗ Migration failed:', error.message);
+    cliErr('✗ Migration failed:', error.message);
     process.exit(1);
   } finally {
     await connection.end();

@@ -6,6 +6,10 @@
 
 import fs from 'fs';
 import path from 'path';
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 interface TestReport {
   numTotalTests: number;
@@ -57,20 +61,20 @@ for (let i = 0; i < args.length; i++) {
 }
 
 if (!outputPath) {
-  console.error('Error: --output is required');
+  cliErr('Error: --output is required');
   process.exit(1);
 }
 
 function readReport(filePath: string): TestReport | null {
   try {
     if (!fs.existsSync(filePath)) {
-      console.warn(`Warning: ${filePath} does not exist`);
+      cliErr(`Warning: ${filePath} does not exist`);
       return null;
     }
     const content = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(content);
   } catch (error) {
-    console.error(`Error reading ${filePath}:`, error);
+    cliErr(`Error reading ${filePath}:`, error);
     return null;
   }
 }
@@ -108,7 +112,7 @@ const summary: SummaryReport = {
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(summary, null, 2));
 
-console.log(`Summary report written to ${outputPath}`);
-console.log(`Total: ${total}, Passed: ${passed}, Failed: ${failed}, Pass Rate: ${passRate.toFixed(1)}%`);
+cliOut(`Summary report written to ${outputPath}`);
+cliOut(`Total: ${total}, Passed: ${passed}, Failed: ${failed}, Pass Rate: ${passRate.toFixed(1)}%`);
 
 process.exit(failed > 0 ? 1 : 0);

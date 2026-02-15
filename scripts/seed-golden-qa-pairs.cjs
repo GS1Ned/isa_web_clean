@@ -12,6 +12,10 @@
  * These pairs serve as the evaluation baseline for RAG quality metrics.
  */
 
+const { format: utilFormat } = require("node:util");
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 const mysql = require('mysql2/promise');
 
 // Map our categories to the schema's domain field
@@ -443,7 +447,7 @@ const GOLDEN_QA_PAIRS = [
 ];
 
 async function seedGoldenQAPairs() {
-  console.log('🌱 Starting Golden QA Dataset Seed...\n');
+  cliOut('🌱 Starting Golden QA Dataset Seed...\n');
   
   const conn = await mysql.createConnection({
     host: 'gateway01.eu-central-1.prod.aws.tidbcloud.com',
@@ -457,11 +461,11 @@ async function seedGoldenQAPairs() {
   try {
     // Check current count
     const [existing] = await conn.query('SELECT COUNT(*) as count FROM golden_qa_pairs');
-    console.log(`📊 Existing golden QA pairs: ${existing[0].count}`);
+    cliOut(`📊 Existing golden QA pairs: ${existing[0].count}`);
     
     if (existing[0].count > 0) {
-      console.log('⚠️  Golden QA pairs already exist. Skipping seed to avoid duplicates.');
-      console.log('   To re-seed, first run: DELETE FROM golden_qa_pairs;');
+      cliOut('⚠️  Golden QA pairs already exist. Skipping seed to avoid duplicates.');
+      cliOut('   To re-seed, first run: DELETE FROM golden_qa_pairs;');
       return;
     }
 
@@ -497,19 +501,19 @@ async function seedGoldenQAPairs() {
         
         // Progress indicator
         if (inserted % 10 === 0) {
-          console.log(`   Inserted ${inserted}/${GOLDEN_QA_PAIRS.length} pairs...`);
+          cliOut(`   Inserted ${inserted}/${GOLDEN_QA_PAIRS.length} pairs...`);
         }
       } catch (err) {
-        console.error(`❌ Error inserting pair: ${pair.question.substring(0, 50)}...`);
-        console.error(`   ${err.message}`);
+        cliErr(`❌ Error inserting pair: ${pair.question.substring(0, 50)}...`);
+        cliErr(`   ${err.message}`);
         errors++;
       }
     }
 
-    console.log(`\n✅ Seed complete!`);
-    console.log(`   Inserted: ${inserted}`);
-    console.log(`   Errors: ${errors}`);
-    console.log(`   Total pairs: ${GOLDEN_QA_PAIRS.length}`);
+    cliOut(`\n✅ Seed complete!`);
+    cliOut(`   Inserted: ${inserted}`);
+    cliOut(`   Errors: ${errors}`);
+    cliOut(`   Total pairs: ${GOLDEN_QA_PAIRS.length}`);
 
     // Show distribution
     const [distribution] = await conn.query(`
@@ -519,8 +523,8 @@ async function seedGoldenQAPairs() {
       ORDER BY domain, difficulty
     `);
     
-    console.log('\n📊 Distribution by domain and difficulty:');
-    console.table(distribution);
+    cliOut('\n📊 Distribution by domain and difficulty:');
+    cliOut(distribution);
 
   } finally {
     await conn.end();
@@ -528,4 +532,4 @@ async function seedGoldenQAPairs() {
 }
 
 // Run the seed
-seedGoldenQAPairs().catch(console.error);
+seedGoldenQAPairs().catch((err) => cliErr(err));

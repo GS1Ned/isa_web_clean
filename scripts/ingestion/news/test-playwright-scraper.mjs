@@ -1,24 +1,28 @@
 import { scrapeGS1NetherlandsNewsPlaywright } from "./server/news-scraper-playwright.ts";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
 
-console.log("Testing Playwright scraper for GS1.nl...\n");
+
+cliOut("Testing Playwright scraper for GS1.nl...\n");
 
 try {
   const articles = await scrapeGS1NetherlandsNewsPlaywright();
 
-  console.log(`\n✅ Found ${articles.length} articles:\n`);
+  cliOut(`\n✅ Found ${articles.length} articles:\n`);
 
   articles.forEach((article, i) => {
-    console.log(`${i + 1}. ${article.title}`);
-    console.log(`   URL: ${article.url}`);
-    console.log(`   Date: ${article.publishedAt.toLocaleDateString("nl-NL")}`);
+    cliOut(`${i + 1}. ${article.title}`);
+    cliOut(`   URL: ${article.url}`);
+    cliOut(`   Date: ${article.publishedAt.toLocaleDateString("nl-NL")}`);
     if (article.imageUrl) {
-      console.log(`   Image: ${article.imageUrl.substring(0, 60)}...`);
+      cliOut(`   Image: ${article.imageUrl.substring(0, 60)}...`);
     }
-    console.log();
+    cliOut();
   });
 
-  console.log(`\n✅ Scraper test completed successfully`);
+  cliOut(`\n✅ Scraper test completed successfully`);
 } catch (error) {
-  console.error("❌ Error:", error);
+  cliErr("❌ Error:", error);
   process.exit(1);
 }

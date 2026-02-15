@@ -6,7 +6,8 @@
  * NOTE: The persist function is a no-op by default. To persist to error_ledger,
  * wire a persist function at server startup that does an insert into your DB.
  */
-import crypto from "crypto";
+ import crypto from "crypto";
+import util from "util";
 
 type PersistFn = (row: {
   trace_id: string;
@@ -43,6 +44,14 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
   const persist = opts?.persist ?? DEFAULT_PERSIST_FN;
   const environment = opts?.environment ?? process.env.NODE_ENV ?? "unknown";
 
+  function writeStdout(line: string) {
+    process.stdout.write(line.endsWith("\n") ? line : `${line}\n`);
+  }
+
+  function writeStderr(line: string) {
+    process.stderr.write(line.endsWith("\n") ? line : `${line}\n`);
+  }
+
   async function error(err: unknown, meta?: unknown) {
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     const traceId = (metaObj as any).traceId ?? crypto.randomUUID();
@@ -69,18 +78,18 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
     };
 
     try {
-      console.error(JSON.stringify({ level: "error", traceId, payload, meta: metaObj, ts: row.created_at }));
+      writeStderr(JSON.stringify({ level: "error", traceId, payload, meta: metaObj, ts: row.created_at }));
     } catch {
-      console.error("[error]", payload.message ?? JSON.stringify(payload));
+      writeStderr(util.format("[error] %s", payload.message ?? JSON.stringify(payload)));
     }
 
     try {
       await persist(row);
     } catch (e) {
       try {
-        console.error(JSON.stringify({ level: "error", msg: "persist failed", err: String(e), traceId }));
+        writeStderr(JSON.stringify({ level: "error", msg: "persist failed", err: String(e), traceId }));
       } catch {
-        console.error("[error] persist failed", e);
+        writeStderr(util.format("[error] persist failed %s", String(e)));
       }
     }
 
@@ -91,9 +100,9 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     const traceId = (metaObj as any).traceId ?? crypto.randomUUID();
     try {
-      console.warn(JSON.stringify({ level: "warn", traceId, message: String(warnMsg), meta: metaObj, ts: nowIso() }));
+      writeStderr(JSON.stringify({ level: "warn", traceId, message: String(warnMsg), meta: metaObj, ts: nowIso() }));
     } catch {
-      console.warn("[warn]", warnMsg);
+      writeStderr(util.format("[warn] %s", String(warnMsg)));
     }
     return traceId;
   }
@@ -101,9 +110,9 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
   function info(msg: unknown, meta?: unknown) {
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     if (process.env.NODE_ENV !== "production") {
-      console.log("[info]", msg, metaObj);
+      writeStdout(util.format("[info] %s %s", String(msg), Object.keys(metaObj).length ? JSON.stringify(metaObj) : "{}"));
     } else {
-      console.log(JSON.stringify({ level: "info", message: String(msg), meta: metaObj, ts: nowIso() }));
+      writeStdout(JSON.stringify({ level: "info", message: String(msg), meta: metaObj, ts: nowIso() }));
     }
   }
 

@@ -19,6 +19,10 @@
  *   --verbose       Show detailed output for each test
  */
 
+const { format: utilFormat } = require("node:util");
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 const mysql = require('mysql2/promise');
 const crypto = require('crypto');
 
@@ -225,7 +229,7 @@ async function queryAskISA(question, knowledgeBase) {
     };
     
   } catch (error) {
-    console.error('Query error:', error.message);
+    cliErr('Query error:', error.message);
     return {
       answer: null,
       citations: [],
@@ -400,7 +404,7 @@ async function storeEvaluationResults(conn, runId, results) {
         result.failureReason || null
       ]);
     } catch (err) {
-      console.error(`Failed to store result for ${result.id}:`, err.message);
+      cliErr(`Failed to store result for ${result.id}:`, err.message);
     }
   }
 }
@@ -409,16 +413,16 @@ async function storeEvaluationResults(conn, runId, results) {
 async function runEvaluation() {
   const options = parseArgs();
   
-  console.log('🧪 ISA RAG Evaluation Harness\n');
-  console.log('Configuration:');
-  console.log(`   Limit: ${options.limit || 'all'}`);
-  console.log(`   Domain: ${options.domain || 'all'}`);
-  console.log(`   Difficulty: ${options.difficulty || 'all'}`);
-  console.log(`   Dry run: ${options.dryRun}`);
-  console.log(`   Verbose: ${options.verbose}\n`);
+  cliOut('🧪 ISA RAG Evaluation Harness\n');
+  cliOut('Configuration:');
+  cliOut(`   Limit: ${options.limit || 'all'}`);
+  cliOut(`   Domain: ${options.domain || 'all'}`);
+  cliOut(`   Difficulty: ${options.difficulty || 'all'}`);
+  cliOut(`   Dry run: ${options.dryRun}`);
+  cliOut(`   Verbose: ${options.verbose}\n`);
   
   if (!CONFIG.openaiApiKey) {
-    console.error('❌ OPENAI_API_KEY environment variable not set');
+    cliErr('❌ OPENAI_API_KEY environment variable not set');
     process.exit(1);
   }
   
@@ -427,20 +431,20 @@ async function runEvaluation() {
   try {
     // Fetch golden pairs
     const pairs = await fetchGoldenPairs(conn, options);
-    console.log(`📋 Found ${pairs.length} test cases\n`);
+    cliOut(`📋 Found ${pairs.length} test cases\n`);
     
     if (options.dryRun) {
-      console.log('Test cases that would be run:');
+      cliOut('Test cases that would be run:');
       for (const pair of pairs) {
-        console.log(`   [${pair.domain}/${pair.difficulty}] ${pair.question.substring(0, 60)}...`);
+        cliOut(`   [${pair.domain}/${pair.difficulty}] ${pair.question.substring(0, 60)}...`);
       }
       return;
     }
     
     // Fetch knowledge base once
-    console.log('📚 Loading knowledge base...');
+    cliOut('📚 Loading knowledge base...');
     const knowledgeBase = await fetchKnowledgeEmbeddings(conn);
-    console.log(`   Loaded ${knowledgeBase.length} knowledge chunks\n`);
+    cliOut(`   Loaded ${knowledgeBase.length} knowledge chunks\n`);
     
     // Run evaluation
     const runId = crypto.randomUUID();
@@ -448,7 +452,7 @@ async function runEvaluation() {
     let passed = 0;
     let failed = 0;
     
-    console.log('Running evaluation...\n');
+    cliOut('Running evaluation...\n');
     
     for (let i = 0; i < pairs.length; i++) {
       const pair = pairs[i];
@@ -459,17 +463,17 @@ async function runEvaluation() {
       
       if (result.passed) {
         passed++;
-        console.log('✅ PASS');
+        cliOut('✅ PASS');
       } else {
         failed++;
-        console.log(`❌ FAIL: ${result.failureReason}`);
+        cliOut(`❌ FAIL: ${result.failureReason}`);
       }
       
       if (options.verbose && result.response?.answer) {
-        console.log(`      Expected: ${pair.expected_answer.substring(0, 100)}...`);
-        console.log(`      Got: ${result.response.answer.substring(0, 100)}...`);
-        console.log(`      Similarity: ${result.metrics?.semanticSimilarity?.toFixed(3) || 'N/A'}`);
-        console.log('');
+        cliOut(`      Expected: ${pair.expected_answer.substring(0, 100)}...`);
+        cliOut(`      Got: ${result.response.answer.substring(0, 100)}...`);
+        cliOut(`      Similarity: ${result.metrics?.semanticSimilarity?.toFixed(3) || 'N/A'}`);
+        cliOut('');
       }
       
       // Rate limiting
@@ -480,13 +484,13 @@ async function runEvaluation() {
     await storeEvaluationResults(conn, runId, results);
     
     // Summary
-    console.log('\n' + '='.repeat(60));
-    console.log('📊 EVALUATION SUMMARY');
-    console.log('='.repeat(60));
-    console.log(`   Run ID: ${runId}`);
-    console.log(`   Total: ${results.length}`);
-    console.log(`   Passed: ${passed} (${(passed / results.length * 100).toFixed(1)}%)`);
-    console.log(`   Failed: ${failed} (${(failed / results.length * 100).toFixed(1)}%)`);
+    cliOut('\n' + '='.repeat(60));
+    cliOut('📊 EVALUATION SUMMARY');
+    cliOut('='.repeat(60));
+    cliOut(`   Run ID: ${runId}`);
+    cliOut(`   Total: ${results.length}`);
+    cliOut(`   Passed: ${passed} (${(passed / results.length * 100).toFixed(1)}%)`);
+    cliOut(`   Failed: ${failed} (${(failed / results.length * 100).toFixed(1)}%)`);
     
     // Metrics summary
     const validResults = results.filter(r => r.metrics?.semanticSimilarity != null);
@@ -495,10 +499,10 @@ async function runEvaluation() {
       const avgCitation = validResults.reduce((sum, r) => sum + (r.metrics.citationPrecision || 0), 0) / validResults.length;
       const avgLatency = validResults.reduce((sum, r) => sum + (r.metrics.latencyMs || 0), 0) / validResults.length;
       
-      console.log('\n📈 Average Metrics:');
-      console.log(`   Semantic Similarity: ${avgSimilarity.toFixed(3)}`);
-      console.log(`   Citation Precision: ${avgCitation.toFixed(3)}`);
-      console.log(`   Latency: ${avgLatency.toFixed(0)}ms`);
+      cliOut('\n📈 Average Metrics:');
+      cliOut(`   Semantic Similarity: ${avgSimilarity.toFixed(3)}`);
+      cliOut(`   Citation Precision: ${avgCitation.toFixed(3)}`);
+      cliOut(`   Latency: ${avgLatency.toFixed(0)}ms`);
     }
     
     // By domain
@@ -515,14 +519,14 @@ async function runEvaluation() {
       }
     }
     
-    console.log('\n📊 By Domain:');
+    cliOut('\n📊 By Domain:');
     for (const [domain, stats] of Object.entries(byDomain)) {
       const total = stats.passed + stats.failed;
       const rate = (stats.passed / total * 100).toFixed(1);
-      console.log(`   ${domain}: ${stats.passed}/${total} (${rate}%)`);
+      cliOut(`   ${domain}: ${stats.passed}/${total} (${rate}%)`);
     }
     
-    console.log('\n✅ Evaluation complete. Results stored in evaluation_results table.');
+    cliOut('\n✅ Evaluation complete. Results stored in evaluation_results table.');
     
   } finally {
     await conn.end();
@@ -530,4 +534,4 @@ async function runEvaluation() {
 }
 
 // Run
-runEvaluation().catch(console.error);
+runEvaluation().catch((err) => cliErr(err));

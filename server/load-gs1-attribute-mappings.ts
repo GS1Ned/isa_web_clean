@@ -26,7 +26,7 @@ interface GS1AttributeMapping {
 }
 
 async function loadGS1AttributeMappings() {
-  console.log('Loading GS1 attribute to ESRS mappings...');
+  serverLogger.info('Loading GS1 attribute to ESRS mappings...');
   
   const db = await getDb();
   if (!db) {
@@ -53,14 +53,14 @@ async function loadGS1AttributeMappings() {
     )
   `);
   
-  console.log('✓ Table gs1_attribute_esrs_mapping created/verified');
+  serverLogger.info('✓ Table gs1_attribute_esrs_mapping created/verified');
   
   // Read mappings JSON
   const mappingsPath = join(__dirname, '../../isa_resources/gs1_attribute_esrs_initial_mappings.json');
   const mappingsJson = readFileSync(mappingsPath, 'utf-8');
   const mappings: GS1AttributeMapping[] = JSON.parse(mappingsJson);
   
-  console.log(`Found ${mappings.length} GS1 attribute mappings to load`);
+  serverLogger.info(`Found ${mappings.length} GS1 attribute mappings to load`);
   
   let loaded = 0;
   let skipped = 0;
@@ -86,10 +86,10 @@ async function loadGS1AttributeMappings() {
       `);
       
       loaded++;
-      console.log(`✓ Loaded: ${mapping.gs1_attribute_name} → ESRS mapping ${mapping.esrs_mapping_id} (${mapping.confidence} confidence)`);
+      serverLogger.info(`✓ Loaded: ${mapping.gs1_attribute_name} → ESRS mapping ${mapping.esrs_mapping_id} (${mapping.confidence} confidence)`);
     } catch (error: any) {
       if (error.code === 'ER_DUP_ENTRY') {
-        console.log(`⊘ Skipped duplicate: ${mapping.gs1_attribute_name} → ESRS mapping ${mapping.esrs_mapping_id}`);
+        serverLogger.info(`⊘ Skipped duplicate: ${mapping.gs1_attribute_name} → ESRS mapping ${mapping.esrs_mapping_id}`);
         skipped++;
       } else {
         serverLogger.error(`✗ Failed to load ${mapping.gs1_attribute_name}:`, error.message);
@@ -98,14 +98,14 @@ async function loadGS1AttributeMappings() {
     }
   }
   
-  console.log(`\nLoading complete:`);
-  console.log(`  Loaded: ${loaded}/${mappings.length}`);
-  console.log(`  Skipped: ${skipped}/${mappings.length}`);
+  serverLogger.info(`\nLoading complete:`);
+  serverLogger.info(`  Loaded: ${loaded}/${mappings.length}`);
+  serverLogger.info(`  Skipped: ${skipped}/${mappings.length}`);
   
   // Verify count
   const result = await db.execute(sql`SELECT COUNT(*) as count FROM gs1_attribute_esrs_mapping`);
   const count = (result[0] as any)[0].count;
-  console.log(`\nTotal attribute mappings in database: ${count}`);
+  serverLogger.info(`\nTotal attribute mappings in database: ${count}`);
   
   // Show summary by confidence level
   const confidenceResult = await db.execute(sql`
@@ -115,11 +115,11 @@ async function loadGS1AttributeMappings() {
     ORDER BY FIELD(confidence, 'high', 'medium', 'low')
   `);
   
-  console.log(`\nMappings by confidence level:`);
+  serverLogger.info(`\nMappings by confidence level:`);
   const confidenceRows = confidenceResult[0] as any;
   if (Array.isArray(confidenceRows)) {
     for (const row of confidenceRows) {
-      console.log(`  ${row.confidence}: ${row.count}`);
+      serverLogger.info(`  ${row.confidence}: ${row.count}`);
     }
   }
   

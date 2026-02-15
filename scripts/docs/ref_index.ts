@@ -7,6 +7,10 @@
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 const REPO_ROOT = process.cwd();
 const OUTPUT_DIR = 'docs/architecture/panel/_generated';
@@ -138,7 +142,7 @@ function extractReferences(filePath: string): Map<string, Reference[]> {
       }
     });
   } catch (error) {
-    console.warn(`Warning: Could not read ${filePath}:`, error);
+    cliErr(`Warning: Could not read ${filePath}:`, error);
   }
   
   return references;
@@ -157,10 +161,10 @@ function resolveReferencePath(fromFile: string, refPath: string): string {
 }
 
 function main() {
-  console.log('Scanning repository for references...');
+  cliOut('Scanning repository for references...');
   
   const files = findAllFiles();
-  console.log(`Found ${files.length} files to scan`);
+  cliOut(`Found ${files.length} files to scan`);
   
   const allReferences = new Map<string, Reference[]>();
   
@@ -175,7 +179,7 @@ function main() {
     });
   }
   
-  console.log(`Found ${allReferences.size} unique referenced paths`);
+  cliOut(`Found ${allReferences.size} unique referenced paths`);
   
   // Build reference index
   const refIndex: ReferencedPath[] = [];
@@ -220,17 +224,17 @@ function main() {
     inbound_links: inboundLinks
   }, null, 2));
   
-  console.log(`\nReference index written to ${REF_INDEX_FILE}`);
-  console.log(`Inbound links written to ${INBOUND_LINKS_FILE}`);
+  cliOut(`\nReference index written to ${REF_INDEX_FILE}`);
+  cliOut(`Inbound links written to ${INBOUND_LINKS_FILE}`);
   
   // Summary statistics
   const broken = refIndex.filter(r => !r.exists).length;
   const orphans = refIndex.filter(r => r.inbound_count === 0).length;
   
-  console.log(`\nSummary:`);
-  console.log(`  Total referenced paths: ${refIndex.length}`);
-  console.log(`  Broken references: ${broken}`);
-  console.log(`  Orphaned paths: ${orphans}`);
+  cliOut(`\nSummary:`);
+  cliOut(`  Total referenced paths: ${refIndex.length}`);
+  cliOut(`  Broken references: ${broken}`);
+  cliOut(`  Orphaned paths: ${orphans}`);
 }
 
 main();

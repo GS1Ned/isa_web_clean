@@ -5,7 +5,8 @@
  * Enables systematic monitoring of AI processing quality, source reliability, and pipeline health.
  */
 
-import { randomBytes } from 'crypto';
+import { randomBytes } from "crypto";
+import { format as utilFormat } from "node:util";
 
 export type PipelineType = 'news_ingestion' | 'news_archival';
 export type TriggerSource = 'cron' | 'manual' | 'api';
@@ -107,9 +108,17 @@ export class PipelineExecutionContext {
       ...event,
     };
     
-    // Output to console with structured format
-    const logMethod = event.level === 'error' ? console.error : event.level === 'warn' ? console.warn : console.log;
-    logMethod(`[Pipeline ${this.executionId}] ${event.eventType}: ${event.message}`, event.data || '');
+    // Output with structured format (avoid direct console usage for strict governance)
+    const write = (stream: NodeJS.WriteStream, ...args: unknown[]) =>
+      stream.write(`${utilFormat(...args)}\n`);
+    const logMethod =
+      event.level === "error" || event.level === "warn"
+        ? (...args: unknown[]) => write(process.stderr, ...args)
+        : (...args: unknown[]) => write(process.stdout, ...args);
+    logMethod(
+      `[Pipeline ${this.executionId}] ${event.eventType}: ${event.message}`,
+      event.data || ""
+    );
     
     // Track errors and warnings
     if (event.level === 'error' && event.error) {

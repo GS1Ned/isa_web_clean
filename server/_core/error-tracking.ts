@@ -263,7 +263,11 @@ export function errorHandlerMiddleware(
     timestamp: new Date(),
   };
   
-  trackError(error, "error", context).catch(console.error);
+  trackError(error, "error", context).catch((trackErrorFailure) => {
+    serverLogger.error(trackErrorFailure, {
+      context: "[error-tracking] Failed to track error from middleware:",
+    });
+  });
   
   // Send error response
   res.status(500).json({

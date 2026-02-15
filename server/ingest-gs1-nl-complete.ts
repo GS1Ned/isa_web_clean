@@ -61,13 +61,13 @@ async function parseDIYModel(): Promise<{ attributes: AttributeRecord[], codeLis
   const workbook = new ExcelJS.Workbook();
   const filePath = '/home/ubuntu/isa_web/data/standards/gs1-nl/benelux-datasource/v3.1.33/GS1 Data Source Datamodel 3.1.33.xlsx';
   
-  console.log('[DIY] Loading workbook...');
+  serverLogger.info('[DIY] Loading workbook...');
   await workbook.xlsx.readFile(filePath);
   
   const sheet = workbook.getWorksheet('Fielddefinitions');
   if (!sheet) throw new Error('Fielddefinitions sheet not found');
   
-  console.log(`[DIY] Processing ${sheet.rowCount} rows...`);
+  serverLogger.info(`[DIY] Processing ${sheet.rowCount} rows...`);
   
   const attributes: AttributeRecord[] = [];
   const codeLists = new Map<string, CodeListValue[]>();
@@ -121,7 +121,7 @@ async function parseDIYModel(): Promise<{ attributes: AttributeRecord[], codeLis
     });
   }
   
-  console.log(`[DIY] Parsed ${attributes.length} attributes`);
+  serverLogger.info(`[DIY] Parsed ${attributes.length} attributes`);
   return { attributes, codeLists };
 }
 
@@ -133,7 +133,7 @@ async function parseFMCGModel(): Promise<{ attributes: AttributeRecord[], codeLi
   const workbook = new ExcelJS.Workbook();
   const filePath = '/home/ubuntu/isa_web/data/standards/gs1-nl/benelux-datasource/v3.1.33/benelux-fmcg-data-model-31335-nederlands.xlsx';
   
-  console.log('[FMCG] Loading workbook...');
+  serverLogger.info('[FMCG] Loading workbook...');
   await workbook.xlsx.readFile(filePath);
   
   // Find the Attributes sheet
@@ -142,7 +142,7 @@ async function parseFMCGModel(): Promise<{ attributes: AttributeRecord[], codeLi
     s.name.toLowerCase().includes('veld')
   ) || workbook.worksheets[0];
   
-  console.log(`[FMCG] Processing sheet "${sheet.name}" with ${sheet.rowCount} rows...`);
+  serverLogger.info(`[FMCG] Processing sheet "${sheet.name}" with ${sheet.rowCount} rows...`);
   
   const attributes: AttributeRecord[] = [];
   const codeLists = new Map<string, CodeListValue[]>();
@@ -154,7 +154,7 @@ async function parseFMCGModel(): Promise<{ attributes: AttributeRecord[], codeLi
     headers.push(String(cell.value || '').trim().toLowerCase());
   });
   
-  console.log(`[FMCG] Headers: ${headers.slice(0, 10).join(', ')}`);
+  serverLogger.info(`[FMCG] Headers: ${headers.slice(0, 10).join(', ')}`);
   
   // Find column indices
   // Expected: Lokale attribuutnaam, GDSN naam, BMS ID, TC Field ID, Definitie
@@ -164,7 +164,7 @@ async function parseFMCGModel(): Promise<{ attributes: AttributeRecord[], codeLi
   const tcIdx = headers.findIndex(h => h.includes('tc') && h.includes('field'));
   const descIdx = headers.findIndex(h => h.includes('definitie'));
   
-  console.log(`[FMCG] Column indices: name=${nameIdx}, gdsn=${gdsnIdx}, bms=${bmsIdx}, tc=${tcIdx}, desc=${descIdx}`);
+  serverLogger.info(`[FMCG] Column indices: name=${nameIdx}, gdsn=${gdsnIdx}, bms=${bmsIdx}, tc=${tcIdx}, desc=${descIdx}`);
   
   // Validate indices
   if (nameIdx < 0 || descIdx < 0) {
@@ -216,7 +216,7 @@ async function parseFMCGModel(): Promise<{ attributes: AttributeRecord[], codeLi
     });
   }
   
-  console.log(`[FMCG] Parsed ${attributes.length} attributes`);
+  serverLogger.info(`[FMCG] Parsed ${attributes.length} attributes`);
   return { attributes, codeLists };
 }
 
@@ -228,7 +228,7 @@ async function parseHealthcareModel(): Promise<{ attributes: AttributeRecord[], 
   const workbook = new ExcelJS.Workbook();
   const filePath = '/home/ubuntu/isa_web/data/standards/gs1-nl/benelux-datasource/v3.1.33/common-echo-datamodel_3133.xlsx';
   
-  console.log('[ECHO] Loading workbook...');
+  serverLogger.info('[ECHO] Loading workbook...');
   await workbook.xlsx.readFile(filePath);
   
   // Find the Attributes sheet
@@ -237,7 +237,7 @@ async function parseHealthcareModel(): Promise<{ attributes: AttributeRecord[], 
     s.name.toLowerCase().includes('field')
   ) || workbook.worksheets[0];
   
-  console.log(`[ECHO] Processing sheet "${sheet.name}" with ${sheet.rowCount} rows...`);
+  serverLogger.info(`[ECHO] Processing sheet "${sheet.name}" with ${sheet.rowCount} rows...`);
   
   const attributes: AttributeRecord[] = [];
   const codeLists = new Map<string, CodeListValue[]>();
@@ -249,14 +249,14 @@ async function parseHealthcareModel(): Promise<{ attributes: AttributeRecord[], 
     headers.push(String(cell.value || '').trim().toLowerCase());
   });
   
-  console.log(`[ECHO] Headers: ${headers.slice(0, 10).join(', ')}`);
+  serverLogger.info(`[ECHO] Headers: ${headers.slice(0, 10).join(', ')}`);
   
   // Expected: BMS ID, Attribute name English, Attribute Definitions, Definition English, Instruction/Entry notes
   const codeIdx = headers.findIndex(h => h.includes('bms') && h.includes('id'));
   const nameIdx = headers.findIndex(h => h.includes('attribute') && h.includes('name'));
   const descIdx = headers.findIndex(h => h.includes('definition') && h.includes('english'));
   
-  console.log(`[ECHO] Column indices: code=${codeIdx}, name=${nameIdx}, desc=${descIdx}`);
+  serverLogger.info(`[ECHO] Column indices: code=${codeIdx}, name=${nameIdx}, desc=${descIdx}`);
   
   // Validate indices
   if (codeIdx < 0 || nameIdx < 0) {
@@ -304,7 +304,7 @@ async function parseHealthcareModel(): Promise<{ attributes: AttributeRecord[], 
     });
   }
   
-  console.log(`[ECHO] Parsed ${attributes.length} attributes`);
+  serverLogger.info(`[ECHO] Parsed ${attributes.length} attributes`);
   return { attributes, codeLists };
 }
 
@@ -312,7 +312,7 @@ async function parseHealthcareModel(): Promise<{ attributes: AttributeRecord[], 
  * Main ingestion function
  */
 async function ingestGS1NLComplete() {
-  console.log('\n=== GS1 NL/Benelux Complete Ingestion ===\n');
+  serverLogger.info('\n=== GS1 NL/Benelux Complete Ingestion ===\n');
   
   try {
     // Get database connection
@@ -330,18 +330,18 @@ async function ingestGS1NLComplete() {
       ...echoData.attributes,
     ];
     
-    console.log(`\n=== Summary ===`);
-    console.log(`DIY/Garden/Pets: ${diyData.attributes.length} attributes`);
-    console.log(`FMCG: ${fmcgData.attributes.length} attributes`);
-    console.log(`Healthcare: ${echoData.attributes.length} attributes`);
-    console.log(`Total: ${allAttributes.length} attributes`);
+    serverLogger.info(`\n=== Summary ===`);
+    serverLogger.info(`DIY/Garden/Pets: ${diyData.attributes.length} attributes`);
+    serverLogger.info(`FMCG: ${fmcgData.attributes.length} attributes`);
+    serverLogger.info(`Healthcare: ${echoData.attributes.length} attributes`);
+    serverLogger.info(`Total: ${allAttributes.length} attributes`);
     
     // Clear existing data
-    console.log('\nClearing existing gs1_attributes data...');
+    serverLogger.info('\nClearing existing gs1_attributes data...');
     await dbInstance.delete(gs1Attributes);
     
     // Insert in batches of 500
-    console.log('\nInserting attributes...');
+    serverLogger.info('\nInserting attributes...');
     const batchSize = 500;
     for (let i = 0; i < allAttributes.length; i += batchSize) {
       const batch = allAttributes.slice(i, i + batchSize).map(attr => ({
@@ -354,29 +354,29 @@ async function ingestGS1NLComplete() {
         sustainabilityRelated: attr.isSustainabilityRelated,
       }));
       await dbInstance.insert(gs1Attributes).values(batch);
-      console.log(`  Inserted batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(allAttributes.length / batchSize)}`);
+      serverLogger.info(`  Inserted batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(allAttributes.length / batchSize)}`);
     }
     
-    console.log('\n✅ Ingestion complete!');
-    console.log(`Total records inserted: ${allAttributes.length}`);
+    serverLogger.info('\n✅ Ingestion complete!');
+    serverLogger.info(`Total records inserted: ${allAttributes.length}`);
     
     // Summary by sector
     const diyCount = allAttributes.filter(a => a.sector === 'diy_garden_pet').length;
     const fmcgCount = allAttributes.filter(a => a.sector === 'food_hb').length;
     const echoCount = allAttributes.filter(a => a.sector === 'healthcare').length;
     
-    console.log(`\nBreakdown by sector:`);
-    console.log(`  DIY/Garden/Pets: ${diyCount}`);
-    console.log(`  FMCG: ${fmcgCount}`);
-    console.log(`  Healthcare: ${echoCount}`);
+    serverLogger.info(`\nBreakdown by sector:`);
+    serverLogger.info(`  DIY/Garden/Pets: ${diyCount}`);
+    serverLogger.info(`  FMCG: ${fmcgCount}`);
+    serverLogger.info(`  Healthcare: ${echoCount}`);
     
     // Summary by flags
     const packagingCount = allAttributes.filter(a => a.isPackagingRelated).length;
     const sustainabilityCount = allAttributes.filter(a => a.isSustainabilityRelated).length;
     
-    console.log(`\nESG relevance:`);
-    console.log(`  Packaging-related: ${packagingCount}`);
-    console.log(`  Sustainability-related: ${sustainabilityCount}`);
+    serverLogger.info(`\nESG relevance:`);
+    serverLogger.info(`  Packaging-related: ${packagingCount}`);
+    serverLogger.info(`  Sustainability-related: ${sustainabilityCount}`);
     
   } catch (error) {
     serverLogger.error('❌ Ingestion failed:', error);

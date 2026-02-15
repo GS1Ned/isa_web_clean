@@ -1,6 +1,10 @@
 import { chromium } from "playwright";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
 
-console.log("Debugging GS1.nl page structure...\n");
+
+cliOut("Debugging GS1.nl page structure...\n");
 
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext();
@@ -22,17 +26,17 @@ await page.screenshot({
   path: "/home/ubuntu/gs1-page-debug.png",
   fullPage: true,
 });
-console.log("✅ Screenshot saved to /home/ubuntu/gs1-page-debug.png");
+cliOut("✅ Screenshot saved to /home/ubuntu/gs1-page-debug.png");
 
 // Get page HTML
 const html = await page.content();
-console.log("\n📄 Page HTML length:", html.length, "characters");
+cliOut("\n📄 Page HTML length:", html.length, "characters");
 
 // Check for news links
 const links2025 = await page.$$('a[href*="/nieuws/2025/"]');
 const links2024 = await page.$$('a[href*="/nieuws/2024/"]');
-console.log(`\n🔗 Found ${links2025.length} links to 2025 articles`);
-console.log(`🔗 Found ${links2024.length} links to 2024 articles`);
+cliOut(`\n🔗 Found ${links2025.length} links to 2025 articles`);
+cliOut(`🔗 Found ${links2024.length} links to 2024 articles`);
 
 // Get all links
 const allLinks = await page.evaluate(() => {
@@ -43,8 +47,8 @@ const allLinks = await page.evaluate(() => {
     .slice(0, 20);
 });
 
-console.log("\n📋 Sample news links found:");
-allLinks.forEach(link => console.log(`  - ${link}`));
+cliOut("\n📋 Sample news links found:");
+allLinks.forEach(link => cliOut(`  - ${link}`));
 
 await browser.close();
-console.log("\n✅ Debug complete");
+cliOut("\n✅ Debug complete");

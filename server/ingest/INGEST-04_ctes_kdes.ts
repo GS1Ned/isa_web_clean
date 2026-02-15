@@ -71,7 +71,7 @@ export async function ingestCtesKdes(
     }
 
     if (verbose) {
-      console.log("Starting CTEs and KDEs ingestion");
+      serverLogger.info("Starting CTEs and KDEs ingestion");
     }
 
     const filePath = path.join(
@@ -83,7 +83,7 @@ export async function ingestCtesKdes(
     const ctesList = loadJsonFile<CteRaw[]>(filePath);
 
     if (verbose) {
-      console.log(`Loaded ${ctesList.length} CTEs`);
+      serverLogger.info(`Loaded ${ctesList.length} CTEs`);
     }
 
     // Track unique KDEs
@@ -103,7 +103,7 @@ export async function ingestCtesKdes(
     }
 
     if (verbose) {
-      console.log(`Found ${kdeMap.size} unique KDEs`);
+      serverLogger.info(`Found ${kdeMap.size} unique KDEs`);
     }
 
     // Insert KDEs first
@@ -144,7 +144,7 @@ export async function ingestCtesKdes(
     for (const cte of ctesList) {
       if (limit !== undefined && cteCount >= limit) {
         if (verbose) {
-          console.log(`Limit reached (${limit}), stopping`);
+          serverLogger.info(`Limit reached (${limit}), stopping`);
         }
         break;
       }
@@ -195,13 +195,13 @@ export async function ingestCtesKdes(
       cteCount += 1;
 
       if (verbose && cteCount % 2 === 0) {
-        console.log(`Processed ${cteCount} CTEs`);
+        serverLogger.info(`Processed ${cteCount} CTEs`);
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
-      console.log(
+      serverLogger.info(
         `CTEs/KDEs ingestion complete: ${kdeCount} KDEs + ${cteCount} CTEs in ${result.duration}ms`
       );
     }

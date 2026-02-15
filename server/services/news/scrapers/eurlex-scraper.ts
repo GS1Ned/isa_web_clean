@@ -6,8 +6,8 @@
  */
 
 import Parser from "rss-parser";
+import { format } from "node:util";
 import { serverLogger } from "../../../_core/logger-wiring";
-
 
 export interface EURLexArticle {
   title: string;
@@ -24,7 +24,7 @@ const parser = new Parser({
 
 export async function scrapeEURLexNews(): Promise<EURLexArticle[]> {
   try {
-    console.log("[EUR-Lex Scraper] Fetching RSS feed...");
+    serverLogger.info("[EUR-Lex Scraper] Fetching RSS feed...");
 
     // EUR-Lex doesn't have a public RSS feed, so we'll use EU Commission press releases
     // which includes EUR-Lex regulatory announcements
@@ -32,7 +32,7 @@ export async function scrapeEURLexNews(): Promise<EURLexArticle[]> {
       "https://ec.europa.eu/commission/presscorner/api/documents.rss?pagenumber=0&pagesize=50&language=en";
 
     const feed = await parser.parseURL(feedUrl);
-    console.log(`[EUR-Lex Scraper] Found ${feed.items.length} press releases`);
+    serverLogger.info(`[EUR-Lex Scraper] Found ${feed.items.length} press releases`);
 
     const articles: EURLexArticle[] = [];
 
@@ -88,7 +88,7 @@ export async function scrapeEURLexNews(): Promise<EURLexArticle[]> {
       });
     }
 
-    console.log(
+    serverLogger.info(
       `[EUR-Lex Scraper] Filtered to ${articles.length} sustainability articles`
     );
     return articles;
@@ -100,18 +100,26 @@ export async function scrapeEURLexNews(): Promise<EURLexArticle[]> {
 
 // CLI execution for testing
 if (import.meta.url === `file://${process.argv[1]}`) {
+  const cliOut = (...args: unknown[]) =>
+    process.stdout.write(`${format(...args)}\n`);
+  const cliErr = (...args: unknown[]) =>
+    process.stderr.write(`${format(...args)}\n`);
+
   scrapeEURLexNews()
     .then(articles => {
-      console.log("\n=== EUR-Lex Scraping Results ===");
-      console.log(`Total articles: ${articles.length}\n`);
+      cliOut("\n=== EUR-Lex Scraping Results ===");
+      cliOut(`Total articles: ${articles.length}\n`);
 
       articles.forEach((article, index) => {
-        console.log(`${index + 1}. ${article.title}`);
-        console.log(`   URL: ${article.url}`);
-        console.log(`   Date: ${article.publishedAt.toISOString()}`);
-        console.log(`   Summary: ${article.summary.substring(0, 150)}...`);
-        console.log("");
+        cliOut(`${index + 1}. ${article.title}`);
+        cliOut(`   URL: ${article.url}`);
+        cliOut(`   Date: ${article.publishedAt.toISOString()}`);
+        cliOut(`   Summary: ${article.summary.substring(0, 150)}...`);
+        cliOut("");
       });
     })
-    .catch(console.error);
+    .catch(error => {
+      cliErr(error);
+      process.exitCode = 1;
+    });
 }

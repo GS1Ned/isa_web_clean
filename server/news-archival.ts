@@ -26,9 +26,7 @@ export async function archiveOldNews(
   const errors: string[] = [];
   let archived = 0;
 
-  console.log(
-    `[news-archival] Starting archival for items older than ${daysThreshold} days...`
-  );
+  serverLogger.info(`[news-archival] Starting archival for items older than ${daysThreshold} days...`);
 
   try {
     const db = await getDb();
@@ -47,7 +45,7 @@ export async function archiveOldNews(
       .from(hubNews)
       .where(lt(hubNews.publishedDate, cutoffDateStr));
 
-    console.log(`[news-archival] Found ${oldNews.length} items to archive`);
+    serverLogger.info(`[news-archival] Found ${oldNews.length} items to archive`);
 
     if (oldNews.length === 0) {
       return {
@@ -101,9 +99,7 @@ export async function archiveOldNews(
     }
 
     const duration = Date.now() - startTime;
-    console.log(
-      `[news-archival] Archival complete: ${archived} archived, ${errors.length} errors, ${duration}ms`
-    );
+    serverLogger.info(`[news-archival] Archival complete: ${archived} archived, ${errors.length} errors, ${duration}ms`);
 
     return {
       success: errors.length === 0,

@@ -5,23 +5,27 @@ import { scrapeGS1NetherlandsNewsPlaywright } from "./server/news-scraper-playwr
 import { processNewsItem } from "./server/news-ai-processor.ts";
 import { createHubNews } from "./server/db.ts";
 import { generateRecommendations } from "./server/news-recommendation-engine.ts";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
 
-console.log("🚀 Fetching live news from GS1.nl...\n");
+
+cliOut("🚀 Fetching live news from GS1.nl...\n");
 
 try {
   // Scrape articles
   const articles = await scrapeGS1NetherlandsNewsPlaywright();
-  console.log(`✅ Scraped ${articles.length} articles\n`);
+  cliOut(`✅ Scraped ${articles.length} articles\n`);
 
   if (articles.length === 0) {
-    console.log("❌ No articles found");
+    cliOut("❌ No articles found");
     process.exit(1);
   }
 
   // Process each article
   let inserted = 0;
   for (const article of articles.slice(0, 10)) {
-    console.log(`Processing: ${article.title.substring(0, 60)}...`);
+    cliOut(`Processing: ${article.title.substring(0, 60)}...`);
 
     try {
       // AI processing
@@ -43,7 +47,7 @@ try {
       });
 
       if (!processed) {
-        console.log("  ⚠️  AI processing failed, skipping");
+        cliOut("  ⚠️  AI processing failed, skipping");
         continue;
       }
 
@@ -62,7 +66,7 @@ try {
       });
 
       const newsId = result.id;
-      console.log(`  ✅ Inserted with ID ${newsId}`);
+      cliOut(`  ✅ Inserted with ID ${newsId}`);
 
       // Generate recommendations
       try {
@@ -73,18 +77,18 @@ try {
           processed.whyItMatters
         );
       } catch (error) {
-        console.log(`  ⚠️  Recommendations failed: ${error.message}`);
+        cliOut(`  ⚠️  Recommendations failed: ${error.message}`);
       }
       inserted++;
     } catch (error) {
-      console.error(`  ❌ Error:`, error.message);
+      cliErr(`  ❌ Error:`, error.message);
     }
   }
 
-  console.log(
+  cliOut(
     `\n🎉 Successfully inserted ${inserted}/${articles.length} articles`
   );
 } catch (error) {
-  console.error("❌ Fatal error:", error);
+  cliErr("❌ Fatal error:", error);
   process.exit(1);
 }

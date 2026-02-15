@@ -26,9 +26,7 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    console.log(
-      "[Green Deal Zorg] Fetching news from https://www.greendealduurzamezorg.nl/service/nieuws/"
-    );
+    serverLogger.info("[Green Deal Zorg] Fetching news from https://www.greendealduurzamezorg.nl/service/nieuws/");
     await page.goto("https://www.greendealduurzamezorg.nl/service/nieuws/", {
       waitUntil: "networkidle",
       timeout: 30000,
@@ -38,9 +36,7 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
     await page
       .waitForSelector("article, .news-item, .article-card", { timeout: 10000 })
       .catch(() => {
-        console.log(
-          "[Green Deal Zorg] No article selector found, trying alternative approach"
-        );
+        serverLogger.warn("[Green Deal Zorg] No article selector found, trying alternative approach");
       });
 
     // Extract article data from the page
@@ -116,9 +112,7 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
       return items;
     });
 
-    console.log(
-      `[Green Deal Zorg] Found ${articles.length} articles on listing page`
-    );
+    serverLogger.info(`[Green Deal Zorg] Found ${articles.length} articles on listing page`);
 
     // Fetch full content for each article
     const fullArticles: RawNewsItem[] = [];
@@ -167,25 +161,21 @@ export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
           source: sourceObj,
         });
 
-        console.log(`[Green Deal Zorg] Scraped: ${article.title}`);
+        serverLogger.info(`[Green Deal Zorg] Scraped: ${article.title}`);
       } catch (error) {
         serverLogger.error(`[Green Deal Zorg] Error scraping detail page ${article.url}:`, error);
       }
     }
 
     await browser.close();
-    console.log(
-      `[Green Deal Zorg] Successfully scraped ${fullArticles.length} articles`
-    );
+    serverLogger.info(`[Green Deal Zorg] Successfully scraped ${fullArticles.length} articles`);
     return fullArticles;
   } catch (error: any) {
     if (
       error.code === "MODULE_NOT_FOUND" ||
       error.message?.includes("playwright")
     ) {
-      console.log(
-        "[Green Deal Zorg] Playwright not available (deployment mode), returning empty array"
-      );
+      serverLogger.info("[Green Deal Zorg] Playwright not available (deployment mode), returning empty array");
       return [];
     }
     serverLogger.error("[Green Deal Zorg] Scraping error:", error);

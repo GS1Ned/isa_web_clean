@@ -4,21 +4,25 @@
 import { scrapeGS1NetherlandsNewsPlaywright } from "./server/news-scraper-playwright.ts";
 import { processNewsItem } from "./server/news-ai-processor.ts";
 import { createHubNews } from "./server/db.ts";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
 
-console.log("🚀 Fetching live news from GS1.nl...\n");
+
+cliOut("🚀 Fetching live news from GS1.nl...\n");
 
 try {
   const articles = await scrapeGS1NetherlandsNewsPlaywright();
-  console.log(`✅ Scraped ${articles.length} articles\n`);
+  cliOut(`✅ Scraped ${articles.length} articles\n`);
 
   if (articles.length === 0) {
-    console.log("❌ No articles found");
+    cliOut("❌ No articles found");
     process.exit(1);
   }
 
   let inserted = 0;
   for (const article of articles.slice(0, 10)) {
-    console.log(`${inserted + 1}. ${article.title.substring(0, 70)}...`);
+    cliOut(`${inserted + 1}. ${article.title.substring(0, 70)}...`);
 
     try {
       const processed = await processNewsItem({
@@ -39,7 +43,7 @@ try {
       });
 
       if (!processed) {
-        console.log("   ⚠️  AI processing failed, skipping\n");
+        cliOut("   ⚠️  AI processing failed, skipping\n");
         continue;
       }
 
@@ -56,17 +60,17 @@ try {
         retrievedAt: new Date(),
       });
 
-      console.log(`   ✅ Inserted\n`);
+      cliOut(`   ✅ Inserted\n`);
       inserted++;
     } catch (error) {
-      console.error(`   ❌ Error: ${error.message}\n`);
+      cliErr(`   ❌ Error: ${error.message}\n`);
     }
   }
 
-  console.log(
+  cliOut(
     `\n🎉 Successfully inserted ${inserted}/${articles.length} articles`
   );
 } catch (error) {
-  console.error("❌ Fatal error:", error);
+  cliErr("❌ Fatal error:", error);
   process.exit(1);
 }

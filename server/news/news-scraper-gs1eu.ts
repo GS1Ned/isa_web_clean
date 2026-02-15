@@ -28,7 +28,7 @@ export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
   let browser: Browser | null = null;
 
   try {
-    console.log("[GS1 EU Scraper] Launching browser...");
+    serverLogger.info("[GS1 EU Scraper] Launching browser...");
     browser = await chromium.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -41,7 +41,7 @@ export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
 
     const page = await context.newPage();
 
-    console.log("[GS1 EU Scraper] Navigating to GS1 Europe news page...");
+    serverLogger.info("[GS1 EU Scraper] Navigating to GS1 Europe news page...");
     await page.goto(GS1_EU_NEWS_URL, {
       waitUntil: "domcontentloaded",
       timeout: 30000,
@@ -146,7 +146,7 @@ export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
       return items;
     });
 
-    console.log(`[GS1 EU Scraper] Found ${articles.length} articles`);
+    serverLogger.info(`[GS1 EU Scraper] Found ${articles.length} articles`);
 
     // Deduplicate by URL
     const seen = new Set<string>();
@@ -156,9 +156,7 @@ export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
       return true;
     });
 
-    console.log(
-      `[GS1 EU Scraper] Returning ${uniqueArticles.length} unique articles`
-    );
+    serverLogger.info(`[GS1 EU Scraper] Returning ${uniqueArticles.length} unique articles`);
 
     // Convert to RawNewsItem format
     const newsItems: RawNewsItem[] = uniqueArticles

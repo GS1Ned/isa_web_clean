@@ -56,7 +56,7 @@ export async function parseEFRAGTaxonomy(
   };
 
   try {
-    console.log(`[EFRAG Parser] Loading Excel file: ${filePath}`);
+    serverLogger.info(`[EFRAG Parser] Loading Excel file: ${filePath}`);
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.readFile(filePath);
 
@@ -72,8 +72,8 @@ export async function parseEFRAGTaxonomy(
       throw new Error("No worksheet found in Excel file");
     }
 
-    console.log(`[EFRAG Parser] Parsing worksheet: ${sheet.name}`);
-    console.log(`[EFRAG Parser] Total rows: ${sheet.rowCount}`);
+    serverLogger.info(`[EFRAG Parser] Parsing worksheet: ${sheet.name}`);
+    serverLogger.info(`[EFRAG Parser] Total rows: ${sheet.rowCount}`);
 
     // Find header row (usually row 1, but may vary)
     let headerRow: ExcelJS.Row | undefined;
@@ -104,7 +104,7 @@ export async function parseEFRAGTaxonomy(
 
     // Extract column indices from header
     const columnMap = extractColumnMap(headerRow);
-    console.log(`[EFRAG Parser] Column map:`, columnMap);
+    serverLogger.info(`[EFRAG Parser] Column map:`, columnMap);
 
     // Parse data rows
     for (let i = headerRowNumber + 1; i <= sheet.rowCount; i++) {
@@ -134,12 +134,12 @@ export async function parseEFRAGTaxonomy(
       }
     }
 
-    console.log(`[EFRAG Parser] Parsing complete:`);
-    console.log(`  - Total datapoints: ${result.totalCount}`);
-    console.log(`  - Mandatory: ${result.mandatoryCount}`);
-    console.log(`  - Voluntary: ${result.voluntaryCount}`);
-    console.log(`  - By standard:`, result.byStandard);
-    console.log(`  - Errors: ${result.errors.length}`);
+    serverLogger.info(`[EFRAG Parser] Parsing complete:`);
+    serverLogger.info(`  - Total datapoints: ${result.totalCount}`);
+    serverLogger.info(`  - Mandatory: ${result.mandatoryCount}`);
+    serverLogger.info(`  - Voluntary: ${result.voluntaryCount}`);
+    serverLogger.info(`  - By standard:`, result.byStandard);
+    serverLogger.info(`  - Errors: ${result.errors.length}`);
 
     return result;
   } catch (error) {

@@ -70,7 +70,7 @@ export async function ingestCbvVocabularies(
     }
 
     if (verbose) {
-      console.log("Starting CBV vocabularies ingestion");
+      serverLogger.info("Starting CBV vocabularies ingestion");
     }
 
     const filePath = path.join(
@@ -99,13 +99,13 @@ export async function ingestCbvVocabularies(
     }
 
     if (verbose) {
-      console.log(`Loaded ${vocabularies.length} CBV vocabulary items`);
+      serverLogger.info(`Loaded ${vocabularies.length} CBV vocabulary items`);
     }
 
     for (const vocab of vocabularies) {
       if (limit !== undefined && result.recordsProcessed >= limit) {
         if (verbose) {
-          console.log(`Limit reached (${limit}), stopping`);
+          serverLogger.info(`Limit reached (${limit}), stopping`);
         }
         break;
       }
@@ -137,13 +137,13 @@ export async function ingestCbvVocabularies(
       }
 
       if (verbose && result.recordsProcessed % 20 === 0) {
-        console.log(`Processed ${result.recordsProcessed} vocabularies`);
+        serverLogger.info(`Processed ${result.recordsProcessed} vocabularies`);
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
-      console.log(
+      serverLogger.info(
         `CBV vocabularies ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
       );
     }
@@ -180,7 +180,7 @@ export async function ingestDigitalLinkTypes(
     }
 
     if (verbose) {
-      console.log("Starting Digital Link types ingestion");
+      serverLogger.info("Starting Digital Link types ingestion");
     }
 
     const filePath = path.join(
@@ -194,13 +194,13 @@ export async function ingestDigitalLinkTypes(
     const linkTypes = Object.entries(linkTypesData);
 
     if (verbose) {
-      console.log(`Loaded ${linkTypes.length} Digital Link types`);
+      serverLogger.info(`Loaded ${linkTypes.length} Digital Link types`);
     }
 
     for (const [linkType, linkData] of linkTypes) {
       if (limit !== undefined && result.recordsProcessed >= limit) {
         if (verbose) {
-          console.log(`Limit reached (${limit}), stopping`);
+          serverLogger.info(`Limit reached (${limit}), stopping`);
         }
         break;
       }
@@ -233,13 +233,13 @@ export async function ingestDigitalLinkTypes(
       }
 
       if (verbose && result.recordsProcessed % 10 === 0) {
-        console.log(`Processed ${result.recordsProcessed} link types`);
+        serverLogger.info(`Processed ${result.recordsProcessed} link types`);
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
-      console.log(
+      serverLogger.info(
         `Digital Link types ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
       );
     }
@@ -262,7 +262,7 @@ export async function ingestCbvDigitalLink(
   const startTime = Date.now();
 
   if (verbose) {
-    console.log("=== INGEST-06: CBV Vocabularies & Digital Link Types ===");
+    serverLogger.info("=== INGEST-06: CBV Vocabularies & Digital Link Types ===");
   }
 
   const cbvResult = await ingestCbvVocabularies(options);
@@ -279,11 +279,11 @@ export async function ingestCbvDigitalLink(
   };
 
   if (verbose) {
-    console.log("\n=== INGEST-06 Summary ===");
-    console.log(`CBV Vocabularies: ${cbvResult.recordsInserted}`);
-    console.log(`Digital Link Types: ${linkResult.recordsInserted}`);
-    console.log(`Total: ${combinedResult.recordsInserted} records`);
-    console.log(`Duration: ${combinedResult.duration}ms`);
+    serverLogger.info("\n=== INGEST-06 Summary ===");
+    serverLogger.info(`CBV Vocabularies: ${cbvResult.recordsInserted}`);
+    serverLogger.info(`Digital Link Types: ${linkResult.recordsInserted}`);
+    serverLogger.info(`Total: ${combinedResult.recordsInserted} records`);
+    serverLogger.info(`Duration: ${combinedResult.duration}ms`);
   }
 
   return combinedResult;

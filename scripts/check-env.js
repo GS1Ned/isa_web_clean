@@ -12,6 +12,10 @@ import { config } from 'dotenv';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -48,31 +52,31 @@ const missingOptional = allKeys
   .filter(key => !process.env[key]);
 
 // Report results
-console.log('=== Environment Variable Presence Check ===\n');
+cliOut('=== Environment Variable Presence Check ===\n');
 
 if (missingRequired.length === 0) {
-  console.log('✓ All required environment variables are present\n');
+  cliOut('✓ All required environment variables are present\n');
 } else {
-  console.error('✗ Missing required environment variables:');
-  missingRequired.forEach(key => console.error(`  - ${key}`));
-  console.error('');
+  cliErr('✗ Missing required environment variables:');
+  missingRequired.forEach(key => cliErr(`  - ${key}`));
+  cliErr('');
 }
 
 if (missingOptional.length > 0) {
-  console.log('⚠️  Missing optional environment variables:');
-  missingOptional.forEach(key => console.log(`  - ${key}`));
-  console.log('');
+  cliOut('⚠️  Missing optional environment variables:');
+  missingOptional.forEach(key => cliOut(`  - ${key}`));
+  cliOut('');
 }
 
-console.log(`Total keys in .env.example: ${allKeys.length}`);
-console.log(`Required keys present: ${REQUIRED_KEYS.length - missingRequired.length}/${REQUIRED_KEYS.length}`);
-console.log(`Optional keys present: ${allKeys.length - REQUIRED_KEYS.length - missingOptional.length}/${allKeys.length - REQUIRED_KEYS.length}`);
+cliOut(`Total keys in .env.example: ${allKeys.length}`);
+cliOut(`Required keys present: ${REQUIRED_KEYS.length - missingRequired.length}/${REQUIRED_KEYS.length}`);
+cliOut(`Optional keys present: ${allKeys.length - REQUIRED_KEYS.length - missingOptional.length}/${allKeys.length - REQUIRED_KEYS.length}`);
 
 // Exit with error if required keys are missing
 if (missingRequired.length > 0) {
-  console.error('\n❌ Cannot start server without required environment variables');
+  cliErr('\n❌ Cannot start server without required environment variables');
   process.exit(1);
 }
 
-console.log('\n✓ Environment check passed');
+cliOut('\n✓ Environment check passed');
 process.exit(0);

@@ -14,37 +14,33 @@ import { serverLogger } from "./_core/logger-wiring";
  * Run alert detection and send notifications
  */
 export async function runAlertMonitoring(): Promise<void> {
-  console.log("[AlertMonitoring] Starting alert detection...");
+  serverLogger.info("[AlertMonitoring] Starting alert detection...");
 
   try {
     // Detect all alerts
     const alerts = await detectAllAlerts(DEFAULT_THRESHOLDS);
 
     if (alerts.length === 0) {
-      console.log("[AlertMonitoring] No alerts detected");
+      serverLogger.info("[AlertMonitoring] No alerts detected");
       return;
     }
 
-    console.log(`[AlertMonitoring] Detected ${alerts.length} alert(s)`);
+    serverLogger.info(`[AlertMonitoring] Detected ${alerts.length} alert(s)`);
 
     // Process each alert
     for (const alert of alerts) {
-      console.log(
-        `[AlertMonitoring] Processing ${alert.alertType} alert (${alert.severity}): ${alert.title}`
-      );
+      serverLogger.info(`[AlertMonitoring] Processing ${alert.alertType} alert (${alert.severity}): ${alert.title}`);
 
       const result = await processAlert(alert);
 
       if (result.success) {
-        console.log(
-          `[AlertMonitoring] Alert processed successfully (ID: ${result.alertId}, Notification sent: ${result.notificationSent})`
-        );
+        serverLogger.info(`[AlertMonitoring] Alert processed successfully (ID: ${result.alertId}, Notification sent: ${result.notificationSent})`);
       } else {
         serverLogger.error(`[AlertMonitoring] Failed to process alert: ${result.error}`);
       }
     }
 
-    console.log("[AlertMonitoring] Alert detection complete");
+    serverLogger.info("[AlertMonitoring] Alert detection complete");
   } catch (error) {
     serverLogger.error("[AlertMonitoring] Error during alert detection:", error);
   }
@@ -69,5 +65,5 @@ export function scheduleAlertMonitoring(): void {
     });
   }, FIVE_MINUTES);
 
-  console.log("[AlertMonitoring] Scheduled to run every 5 minutes");
+  serverLogger.info("[AlertMonitoring] Scheduled to run every 5 minutes");
 }

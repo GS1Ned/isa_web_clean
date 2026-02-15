@@ -1098,118 +1098,13 @@ export async function getMostVotedMappings(limit: number = 10) {
 // ============================================================================
 
 /**
- * Get user's onboarding progress
- * TEMPORARILY DISABLED: userOnboardingProgress table commented out
+ * TEMPORARILY DISABLED
+ * userOnboardingProgress helpers were previously implemented here but relied on a
+ * commented-out table/schema. Keeping the commented block caused churn and made
+ * ongoing DB work harder to review.
  */
-/* export async function getUserOnboardingProgress(userId: number) {
-  const db = await getDb();
-  if (!db) return null;
-
-  try {
-    const result = await db
-      .select()
-      .from(userOnboardingProgress)
-      .where(eq(userOnboardingProgress.userId, userId))
-      .limit(1);
-
-    return result.length > 0 ? result[0] : null;
-  } catch (error) {
-    serverLogger.error("[Database] Failed to get onboarding progress:", error);
-    return null;
-  }
-} */
-
-/**
- * Save user's onboarding progress
- */
-/* export async function saveUserOnboardingProgress(
-  userId: number,
-  completedSteps: number[],
-  currentStep: number
-) {
-  const db = await getDb();
-  if (!db) return null;
-
-  try {
-    const totalSteps = 4; // Total number of onboarding steps
-    const completionPercentage = Math.round((completedSteps.length / totalSteps) * 100);
-    const isCompleted = completedSteps.length >= totalSteps;
-
-    // Check if progress exists
-    const existing = await getUserOnboardingProgress(userId);
-
-    if (existing) {
-      // Update existing progress
-      await db
-        .update(userOnboardingProgress)
-        .set({
-          completedSteps: completedSteps as any,
-          currentStep,
-          completionPercentage,
-          isCompleted,
-          completedAt: isCompleted ? new Date() : null,
-          updatedAt: new Date().toISOString(),
-        })
-        .where(eq(userOnboardingProgress.userId, userId));
-
-      return {
-        ...existing,
-        completedSteps,
-        currentStep,
-        completionPercentage,
-        isCompleted,
-      };
-    } else {
-      // Insert new progress
-      const [inserted] = await db
-        .insert(userOnboardingProgress)
-        .values({
-          userId,
-          completedSteps: completedSteps as any,
-          currentStep,
-          completionPercentage,
-          isCompleted,
-          startedAt: new Date().toISOString(),
-          completedAt: isCompleted ? new Date() : null,
-          updatedAt: new Date().toISOString(),
-        });
-
-      return {
-        id: inserted.insertId,
-        userId,
-        completedSteps,
-        currentStep,
-        completionPercentage,
-        isCompleted,
-        startedAt: new Date().toISOString(),
-        completedAt: isCompleted ? new Date() : null,
-        updatedAt: new Date().toISOString(),
-      };
-    }
-  } catch (error) {
-    serverLogger.error("[Database] Failed to save onboarding progress:", error);
-    return null;
-  }
-} */
-
-/**
- * Reset user's onboarding progress
- */
-/* export async function resetUserOnboardingProgress(userId: number) {
-  const db = await getDb();
-  if (!db) return false;
-
-  try {
-    await db
-      .delete(userOnboardingProgress)
-      .where(eq(userOnboardingProgress.userId, userId));
-
-    return true;
-  } catch (error) {
-    serverLogger.error("[Database] Failed to reset onboarding progress:", error);
-    return false;
-  }
-} */
+// If onboarding is re-enabled, reintroduce these helpers alongside the table/schema,
+// and add tests or a migration to prevent regressions.
 
 // ============================================================================
 // DUTCH INITIATIVES
@@ -1339,105 +1234,10 @@ export async function getDutchInitiativeSectors() {
 }
 
 // ============================================================================
-// KNOWLEDGE EMBEDDINGS & Q&A (DEPRECATED - Use db-knowledge.ts instead)
+// KNOWLEDGE EMBEDDINGS (MOVED)
 // ============================================================================
-
-/**
- * Store embedding for a knowledge source
- * @deprecated Use storeKnowledgeChunk from db-knowledge.ts instead
- */
-/* export async function storeEmbedding(data: {
-  sourceType: 'regulation' | 'standard' | 'esrs_datapoint' | 'dutch_initiative';
-  sourceId: number;
-  content: string;
-  contentHash: string;
-  embedding: number[];
-  embeddingModel: string;
-  title: string;
-  url?: string;
-}) {
-  const db = await getDb();
-  if (!db) return null;
-
-  try {
-    const { knowledgeEmbeddings } = await import('../drizzle/schema');
-    
-    // Check if embedding already exists for this content hash
-    const existing = await db
-      .select()
-      .from(knowledgeEmbeddings)
-      .where(eq(knowledgeEmbeddings.contentHash, data.contentHash))
-      .limit(1);
-
-    if (existing.length > 0) {
-      return existing[0];
-    }
-
-    // Insert new embedding
-    const [result] = await db
-      .insert(knowledgeEmbeddings)
-      .values({
-        sourceType: data.sourceType,
-        sourceId: data.sourceId,
-        content: data.content,
-        contentHash: data.contentHash,
-        embedding: data.embedding as any,
-        embeddingModel: data.embeddingModel,
-        title: data.title,
-        url: data.url,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      });
-
-    return result;
-  } catch (error) {
-    serverLogger.error('[Database] Failed to store embedding:', error);
-    return null;
-  }
-}
-
-/**
- * Search embeddings by semantic similarity
- * @deprecated Use searchKnowledgeChunks from db-knowledge.ts instead
- */
-/* export async function searchEmbeddings(
-  queryEmbedding: number[],
-  limit: number = 10,
-  sourceTypes?: Array<'regulation' | 'standard' | 'esrs_datapoint' | 'dutch_initiative'>
-) {
-  const db = await getDb();
-  if (!db) return [];
-
-  try {
-    const { knowledgeEmbeddings } = await import('../drizzle/schema');
-    
-    // Fetch all embeddings (or filtered by source type)
-    let query = db.select().from(knowledgeEmbeddings);
-    
-    if (sourceTypes && sourceTypes.length > 0) {
-      // Note: This is simplified - in production, use proper SQL IN clause
-      query = query.where(eq(knowledgeEmbeddings.sourceType, sourceTypes[0])) as any;
-    }
-
-    const embeddings = await query;
-
-    // Calculate relevance using LLM-based scoring
-    const { scoreRelevance } = await import('./embedding');
-    
-    const results = embeddings.map(emb => ({
-      ...emb,
-      similarity: cosineSimilarity(queryEmbedding, emb.embedding as number[]),
-    }));
-
-    // Sort by similarity and return top results
-    return results
-      .sort((a, b) => b.similarity - a.similarity)
-      .slice(0, limit);
-  } catch (error) {
-    serverLogger.error('[Database] Failed to search embeddings:', error);
-    return [];
-  }
-} */
+// Deprecated embeddings helpers previously lived in this file; the active
+// implementation is now in db-knowledge.ts and db-knowledge-vector.ts.
 
 /**
  * Create a new Q&A conversation

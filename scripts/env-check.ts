@@ -9,6 +9,10 @@
 
 import { config } from "dotenv";
 import { resolve } from "path";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 // Load .env from repo root
 config({ path: resolve(import.meta.dirname, "..", ".env") });
@@ -74,32 +78,32 @@ let missingRequired = 0;
 let totalPresent = 0;
 let totalChecked = 0;
 
-console.log("ISA Environment Check");
-console.log("=====================\n");
+cliOut("ISA Environment Check");
+cliOut("=====================\n");
 
 for (const group of groups) {
-  console.log(`[${group.name}]`);
+  cliOut(`[${group.name}]`);
   for (const v of group.vars) {
     totalChecked++;
     const present = !!process.env[v.name];
     if (present) {
       totalPresent++;
-      console.log(`  OK   ${v.name}`);
+      cliOut(`  OK   ${v.name}`);
     } else if (v.required) {
       missingRequired++;
-      console.log(`  MISS ${v.name} (REQUIRED)`);
+      cliOut(`  MISS ${v.name} (REQUIRED)`);
     } else {
-      console.log(`  --   ${v.name} (optional, not set)`);
+      cliOut(`  --   ${v.name} (optional, not set)`);
     }
   }
-  console.log();
+  cliOut();
 }
 
-console.log(`Summary: ${totalPresent}/${totalChecked} present`);
+cliOut(`Summary: ${totalPresent}/${totalChecked} present`);
 
 if (missingRequired > 0) {
-  console.log(`\nERROR: ${missingRequired} required variable(s) missing.`);
+  cliOut(`\nERROR: ${missingRequired} required variable(s) missing.`);
   process.exit(1);
 } else {
-  console.log("\nAll required variables present.");
+  cliOut("\nAll required variables present.");
 }

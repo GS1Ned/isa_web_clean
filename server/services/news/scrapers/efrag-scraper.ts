@@ -6,8 +6,8 @@
  */
 
 import Parser from "rss-parser";
+import { format } from "node:util";
 import { serverLogger } from "../../../_core/logger-wiring";
-
 
 export interface EFRAGArticle {
   title: string;
@@ -24,13 +24,13 @@ const parser = new Parser({
 
 export async function scrapeEFRAGNews(): Promise<EFRAGArticle[]> {
   try {
-    console.log("[EFRAG Scraper] Fetching RSS feed...");
+    serverLogger.info("[EFRAG Scraper] Fetching RSS feed...");
 
     // EFRAG RSS feed for news and updates
     const feedUrl = "https://www.efrag.org/Assets/RSS/News.xml";
 
     const feed = await parser.parseURL(feedUrl);
-    console.log(`[EFRAG Scraper] Found ${feed.items.length} news items`);
+    serverLogger.info(`[EFRAG Scraper] Found ${feed.items.length} news items`);
 
     const articles: EFRAGArticle[] = [];
 
@@ -79,7 +79,7 @@ export async function scrapeEFRAGNews(): Promise<EFRAGArticle[]> {
       });
     }
 
-    console.log(`[EFRAG Scraper] Filtered to ${articles.length} ESRS articles`);
+    serverLogger.info(`[EFRAG Scraper] Filtered to ${articles.length} ESRS articles`);
     return articles;
   } catch (error) {
     serverLogger.error(error, { context: "[EFRAG Scraper] Error:" });
@@ -89,18 +89,26 @@ export async function scrapeEFRAGNews(): Promise<EFRAGArticle[]> {
 
 // CLI execution for testing
 if (import.meta.url === `file://${process.argv[1]}`) {
+  const cliOut = (...args: unknown[]) =>
+    process.stdout.write(`${format(...args)}\n`);
+  const cliErr = (...args: unknown[]) =>
+    process.stderr.write(`${format(...args)}\n`);
+
   scrapeEFRAGNews()
     .then(articles => {
-      console.log("\n=== EFRAG Scraping Results ===");
-      console.log(`Total articles: ${articles.length}\n`);
+      cliOut("\n=== EFRAG Scraping Results ===");
+      cliOut(`Total articles: ${articles.length}\n`);
 
       articles.forEach((article, index) => {
-        console.log(`${index + 1}. ${article.title}`);
-        console.log(`   URL: ${article.url}`);
-        console.log(`   Date: ${article.publishedAt.toISOString()}`);
-        console.log(`   Summary: ${article.summary.substring(0, 150)}...`);
-        console.log("");
+        cliOut(`${index + 1}. ${article.title}`);
+        cliOut(`   URL: ${article.url}`);
+        cliOut(`   Date: ${article.publishedAt.toISOString()}`);
+        cliOut(`   Summary: ${article.summary.substring(0, 150)}...`);
+        cliOut("");
       });
     })
-    .catch(console.error);
+    .catch(error => {
+      cliErr(error);
+      process.exitCode = 1;
+    });
 }

@@ -8,26 +8,30 @@
  */
 
 import { createMysqlConnection } from "../server/db-connection";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 const DATABASE_URL = process.env.DATABASE_URL;
 
 if (!DATABASE_URL) {
-  console.error("❌ DATABASE_URL environment variable is required");
+  cliErr("❌ DATABASE_URL environment variable is required");
   process.exit(1);
 }
 
 async function main() {
-  console.log("=".repeat(60));
-  console.log("ISA Database Status Check");
-  console.log("=".repeat(60));
-  console.log();
+  cliOut("=".repeat(60));
+  cliOut("ISA Database Status Check");
+  cliOut("=".repeat(60));
+  cliOut();
 
   try {
-    console.log("Connecting to database...");
+    cliOut("Connecting to database...");
     // Uses ISA's URL parser (supports `?sslmode=require`, `?ssl=true`, etc.)
     const connection = await createMysqlConnection(DATABASE_URL!);
-    console.log("✅ Database connected");
-    console.log();
+    cliOut("✅ Database connected");
+    cliOut();
 
     // Get table counts
     const tables = [
@@ -44,51 +48,51 @@ async function main() {
       "dpp_identification_rules",
     ];
 
-    console.log("Table Record Counts:");
-    console.log("-".repeat(40));
+    cliOut("Table Record Counts:");
+    cliOut("-".repeat(40));
     
     for (const table of tables) {
       try {
         const [rows] = await connection.execute(`SELECT COUNT(*) as count FROM ${table}`);
         const count = (rows as any)[0]?.count || 0;
-        console.log(`  ${table.padEnd(30)} ${count}`);
+        cliOut(`  ${table.padEnd(30)} ${count}`);
       } catch (error) {
-        console.log(`  ${table.padEnd(30)} (table not found)`);
+        cliOut(`  ${table.padEnd(30)} (table not found)`);
       }
     }
 
-    console.log();
-    console.log("Embedding Status:");
-    console.log("-".repeat(40));
+    cliOut();
+    cliOut("Embedding Status:");
+    cliOut("-".repeat(40));
 
     // Check regulations embeddings
     const [regTotal] = await connection.execute("SELECT COUNT(*) as count FROM regulations");
     const [regNull] = await connection.execute("SELECT COUNT(*) as count FROM regulations WHERE embedding IS NULL");
     const regTotalCount = (regTotal as any)[0]?.count || 0;
     const regNullCount = (regNull as any)[0]?.count || 0;
-    console.log(`  Regulations: ${regTotalCount - regNullCount}/${regTotalCount} have embeddings`);
+    cliOut(`  Regulations: ${regTotalCount - regNullCount}/${regTotalCount} have embeddings`);
 
     // Check gs1_standards embeddings
     const [stdTotal] = await connection.execute("SELECT COUNT(*) as count FROM gs1_standards");
     const [stdNull] = await connection.execute("SELECT COUNT(*) as count FROM gs1_standards WHERE embedding IS NULL");
     const stdTotalCount = (stdTotal as any)[0]?.count || 0;
     const stdNullCount = (stdNull as any)[0]?.count || 0;
-    console.log(`  GS1 Standards: ${stdTotalCount - stdNullCount}/${stdTotalCount} have embeddings`);
+    cliOut(`  GS1 Standards: ${stdTotalCount - stdNullCount}/${stdTotalCount} have embeddings`);
 
     // Check knowledge_embeddings
     const [keTotal] = await connection.execute("SELECT COUNT(*) as count FROM knowledge_embeddings");
     const keTotalCount = (keTotal as any)[0]?.count || 0;
-    console.log(`  Knowledge Embeddings: ${keTotalCount} total records`);
+    cliOut(`  Knowledge Embeddings: ${keTotalCount} total records`);
 
-    console.log();
-    console.log("=".repeat(60));
-    console.log("Status check complete");
-    console.log("=".repeat(60));
+    cliOut();
+    cliOut("=".repeat(60));
+    cliOut("Status check complete");
+    cliOut("=".repeat(60));
 
     await connection.end();
     process.exit(0);
   } catch (error) {
-    console.error("Error:", error);
+    cliErr("Error:", error);
     process.exit(1);
   }
 }

@@ -106,7 +106,7 @@ async function fetchRSSFeed(feedUrl) {
     const parsed = await parseStringPromise(text);
     return parsed.rss?.channel?.[0]?.item || [];
   } catch (error) {
-    console.error(`Error fetching ${feedUrl}:`, error.message);
+    process.stderr.write(`Error fetching ${feedUrl}: ${error.message}\n`);
     return [];
   }
 }
@@ -137,10 +137,10 @@ async function saveNewsToDatabase(connection, newsItem) {
     ];
 
     await connection.execute(query, values);
-    console.log(`✓ Saved: ${newsItem.title}`);
+    process.stdout.write(`✓ Saved: ${newsItem.title}\n`);
     return true;
   } catch (error) {
-    console.error(`Error saving news: ${error.message}`);
+    process.stderr.write(`Error saving news: ${error.message}\n`);
     return false;
   }
 }
@@ -206,7 +206,7 @@ async function processRSSItems(connection, feedConfig, items) {
  * Main aggregation function
  */
 async function aggregateNews() {
-  console.log("🔄 Starting RSS aggregation...");
+  process.stdout.write("🔄 Starting RSS aggregation...\n");
 
   // Create database connection
   let connection;
@@ -222,18 +222,18 @@ async function aggregateNews() {
 
     // Process each RSS feed
     for (const feedConfig of RSS_FEEDS) {
-      console.log(`\n📰 Processing ${feedConfig.title}...`);
+      process.stdout.write(`\n📰 Processing ${feedConfig.title}...\n`);
       const items = await fetchRSSFeed(feedConfig.url);
-      console.log(`   Found ${items.length} items`);
+      process.stdout.write(`   Found ${items.length} items\n`);
 
       const saved = await processRSSItems(connection, feedConfig, items);
-      console.log(`   Saved ${saved} relevant items`);
+      process.stdout.write(`   Saved ${saved} relevant items\n`);
       totalSaved += saved;
     }
 
-    console.log(`\n✅ Aggregation complete! Saved ${totalSaved} news items.`);
+    process.stdout.write(`\n✅ Aggregation complete! Saved ${totalSaved} news items.\n`);
   } catch (error) {
-    console.error("❌ Aggregation failed:", error.message);
+    process.stderr.write(`❌ Aggregation failed: ${error.message}\n`);
   } finally {
     if (connection) await connection.end();
   }

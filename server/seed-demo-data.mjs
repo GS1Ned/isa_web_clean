@@ -1,5 +1,9 @@
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
+import { format } from "node:util";
+
+const cliOut = (...args) => process.stdout.write(`${format(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${format(...args)}\n`);
 
 // Import schema tables
 const regulations = { __tableName: "regulations" };
@@ -224,12 +228,12 @@ const sampleAlerts = [
 
 async function seedData() {
   try {
-    console.log("🌱 Starting demo data seed...");
+    cliOut("🌱 Starting demo data seed...");
 
     const connection = await mysql.createConnection(process.env.DATABASE_URL);
 
     // Insert regulations
-    console.log("📋 Inserting sample regulations...");
+    cliOut("📋 Inserting sample regulations...");
     for (const reg of sampleRegulations) {
       await connection.execute(
         `INSERT INTO regulations (celexId, title, description, regulationType, effectiveDate, sourceUrl) 
@@ -244,10 +248,10 @@ async function seedData() {
         ]
       );
     }
-    console.log(`✓ Inserted ${sampleRegulations.length} regulations`);
+    cliOut(`✓ Inserted ${sampleRegulations.length} regulations`);
 
     // Insert GS1 standards
-    console.log("📊 Inserting GS1 standards...");
+    cliOut("📊 Inserting GS1 standards...");
     for (const std of sampleGS1Standards) {
       await connection.execute(
         `INSERT INTO gs1_standards (standardCode, standardName, description, category, scope, referenceUrl) 
@@ -262,10 +266,10 @@ async function seedData() {
         ]
       );
     }
-    console.log(`✓ Inserted ${sampleGS1Standards.length} GS1 standards`);
+    cliOut(`✓ Inserted ${sampleGS1Standards.length} GS1 standards`);
 
     // Insert mappings
-    console.log("🔗 Inserting regulation-to-standard mappings...");
+    cliOut("🔗 Inserting regulation-to-standard mappings...");
     for (const mapping of sampleMappings) {
       await connection.execute(
         `INSERT INTO regulation_standard_mappings (regulationId, standardId, relevanceScore, mappingReason) 
@@ -278,10 +282,10 @@ async function seedData() {
         ]
       );
     }
-    console.log(`✓ Inserted ${sampleMappings.length} mappings`);
+    cliOut(`✓ Inserted ${sampleMappings.length} mappings`);
 
     // Insert alerts
-    console.log("🚨 Inserting regulatory change alerts...");
+    cliOut("🚨 Inserting regulatory change alerts...");
     for (const alert of sampleAlerts) {
       await connection.execute(
         `INSERT INTO regulatory_change_alerts (regulationId, changeType, changeDescription, affectedStandardsCount, severity) 
@@ -295,20 +299,20 @@ async function seedData() {
         ]
       );
     }
-    console.log(`✓ Inserted ${sampleAlerts.length} alerts`);
+    cliOut(`✓ Inserted ${sampleAlerts.length} alerts`);
 
     await connection.end();
 
-    console.log("\n✅ Demo data seed completed successfully!");
-    console.log("\nYou can now:");
-    console.log("- View regulations at /api/trpc/regulations.list");
-    console.log("- View standards at /api/trpc/standards.list");
-    console.log("- View recent changes at /api/trpc/insights.recentChanges");
-    console.log("- View dashboard stats at /api/trpc/insights.stats");
+    cliOut("\n✅ Demo data seed completed successfully!");
+    cliOut("\nYou can now:");
+    cliOut("- View regulations at /api/trpc/regulations.list");
+    cliOut("- View standards at /api/trpc/standards.list");
+    cliOut("- View recent changes at /api/trpc/insights.recentChanges");
+    cliOut("- View dashboard stats at /api/trpc/insights.stats");
 
     process.exit(0);
   } catch (error) {
-    console.error("❌ Error seeding data:", error);
+    cliErr("❌ Error seeding data:", error);
     process.exit(1);
   }
 }

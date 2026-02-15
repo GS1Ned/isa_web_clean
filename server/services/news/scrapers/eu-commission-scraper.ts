@@ -6,8 +6,8 @@
  */
 
 import Parser from "rss-parser";
+import { format } from "node:util";
 import { serverLogger } from "../../../_core/logger-wiring";
-
 
 export interface EUCommissionArticle {
   title: string;
@@ -24,7 +24,7 @@ const parser = new Parser({
 
 export async function scrapeEUCommissionNews(): Promise<EUCommissionArticle[]> {
   try {
-    console.log("[EU Commission Scraper] Fetching press releases...");
+    serverLogger.info("[EU Commission Scraper] Fetching press releases...");
 
     // Try multiple EU Commission RSS feeds
     const feeds = [
@@ -37,9 +37,9 @@ export async function scrapeEUCommissionNews(): Promise<EUCommissionArticle[]> {
 
     for (const feedUrl of feeds) {
       try {
-        console.log(`[EU Commission Scraper] Trying feed: ${feedUrl}`);
+        serverLogger.info(`[EU Commission Scraper] Trying feed: ${feedUrl}`);
         const feed = await parser.parseURL(feedUrl);
-        console.log(
+        serverLogger.info(
           `[EU Commission Scraper] Found ${feed.items.length} items in feed`
         );
 
@@ -109,20 +109,21 @@ export async function scrapeEUCommissionNews(): Promise<EUCommissionArticle[]> {
 
         // If we got results from this feed, we can stop trying others
         if (allArticles.length > 0) {
-          console.log(
+          serverLogger.info(
             `[EU Commission Scraper] Successfully fetched ${allArticles.length} articles from ${feedUrl}`
           );
           break;
         }
       } catch (feedError) {
-        console.log(
-          `[EU Commission Scraper] Feed ${feedUrl} failed, trying next...`
-        );
+        serverLogger.warn(`[EU Commission Scraper] Feed ${feedUrl} failed, trying next...`, {
+          feedUrl,
+          error: String(feedError),
+        });
         continue;
       }
     }
 
-    console.log(
+    serverLogger.info(
       `[EU Commission Scraper] Total filtered articles: ${allArticles.length}`
     );
     return allArticles;
@@ -134,18 +135,26 @@ export async function scrapeEUCommissionNews(): Promise<EUCommissionArticle[]> {
 
 // CLI execution for testing
 if (import.meta.url === `file://${process.argv[1]}`) {
+  const cliOut = (...args: unknown[]) =>
+    process.stdout.write(`${format(...args)}\n`);
+  const cliErr = (...args: unknown[]) =>
+    process.stderr.write(`${format(...args)}\n`);
+
   scrapeEUCommissionNews()
     .then(articles => {
-      console.log("\n=== EU Commission Scraping Results ===");
-      console.log(`Total articles: ${articles.length}\n`);
+      cliOut("\n=== EU Commission Scraping Results ===");
+      cliOut(`Total articles: ${articles.length}\n`);
 
       articles.slice(0, 10).forEach((article, index) => {
-        console.log(`${index + 1}. ${article.title}`);
-        console.log(`   URL: ${article.url}`);
-        console.log(`   Date: ${article.publishedAt.toISOString()}`);
-        console.log(`   Summary: ${article.summary.substring(0, 150)}...`);
-        console.log("");
+        cliOut(`${index + 1}. ${article.title}`);
+        cliOut(`   URL: ${article.url}`);
+        cliOut(`   Date: ${article.publishedAt.toISOString()}`);
+        cliOut(`   Summary: ${article.summary.substring(0, 150)}...`);
+        cliOut("");
       });
     })
-    .catch(console.error);
+    .catch(error => {
+      cliErr(error);
+      process.exitCode = 1;
+    });
 }

@@ -53,7 +53,7 @@ function log(level, message, data = {}) {
     message,
     ...data,
   };
-  console.log(JSON.stringify(logEntry));
+  process.stdout.write(`${JSON.stringify(logEntry)}\n`);
 }
 
 /**

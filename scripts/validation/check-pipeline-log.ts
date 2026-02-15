@@ -1,27 +1,31 @@
 import { getDb } from '../../server/db';
 import { pipelineExecutionLog } from './drizzle/schema';
 import { desc } from 'drizzle-orm';
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 async function check() {
   const db = await getDb();
   if (!db) {
-    console.log('❌ Database not available');
+    cliOut('❌ Database not available');
     process.exit(1);
   }
   
   const logs = await db.select().from(pipelineExecutionLog).orderBy(desc(pipelineExecutionLog.startedAt)).limit(1);
   
   if (logs.length === 0) {
-    console.log('❌ No execution logs found in database');
+    cliOut('❌ No execution logs found in database');
     process.exit(1);
   }
   
-  console.log('✅ Latest execution log found:');
-  console.log(JSON.stringify(logs[0], null, 2));
+  cliOut('✅ Latest execution log found:');
+  cliOut(JSON.stringify(logs[0], null, 2));
   process.exit(0);
 }
 
 check().catch((err) => {
-  console.error('Error:', err);
+  cliErr('Error:', err);
   process.exit(1);
 });

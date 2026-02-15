@@ -9,7 +9,11 @@
 
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
+import { format } from "node:util";
 import * as schema from "../drizzle/schema.ts";
+
+const cliOut = (...args) => process.stdout.write(`${format(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${format(...args)}\n`);
 
 const gs1StandardsData = [
   // === Identification Standards ===
@@ -323,7 +327,7 @@ const gs1StandardsData = [
 ];
 
 async function seedGS1Standards() {
-  console.log("🌱 Starting GS1 Standards seed...");
+  cliOut("🌱 Starting GS1 Standards seed...");
 
   const connection = await mysql.createConnection(process.env.DATABASE_URL);
   const db = drizzle(connection, { schema, mode: "default" });
@@ -336,42 +340,42 @@ async function seedGS1Standards() {
       .execute();
 
     if (existingStandards.length > 0) {
-      console.log(
+      cliErr(
         `⚠️  Found ${existingStandards.length} existing standards. Skipping seed to avoid duplicates.`
       );
-      console.log("   To re-seed, manually delete existing records first.");
+      cliErr("   To re-seed, manually delete existing records first.");
       return;
     }
 
     // Insert all standards
-    console.log(`📦 Inserting ${gs1StandardsData.length} GS1 standards...`);
+    cliOut(`📦 Inserting ${gs1StandardsData.length} GS1 standards...`);
 
     for (const standard of gs1StandardsData) {
       await db.insert(schema.gs1Standards).values(standard).execute();
-      console.log(`   ✓ ${standard.standardCode} - ${standard.standardName}`);
+      cliOut(`   ✓ ${standard.standardCode} - ${standard.standardName}`);
     }
 
-    console.log(
+    cliOut(
       `\n✅ Successfully seeded ${gs1StandardsData.length} GS1 standards!`
     );
-    console.log("\nStandards by category:");
-    console.log(
+    cliOut("\nStandards by category:");
+    cliOut(
       `   - Identification: ${gs1StandardsData.filter(s => s.category === "Identification").length}`
     );
-    console.log(
+    cliOut(
       `   - Traceability: ${gs1StandardsData.filter(s => s.category === "Traceability").length}`
     );
-    console.log(
+    cliOut(
       `   - Packaging: ${gs1StandardsData.filter(s => s.category === "Packaging").length}`
     );
-    console.log(
+    cliOut(
       `   - Data_Exchange: ${gs1StandardsData.filter(s => s.category === "Data_Exchange").length}`
     );
-    console.log(
+    cliOut(
       `   - Quality: ${gs1StandardsData.filter(s => s.category === "Quality").length}`
     );
   } catch (error) {
-    console.error("❌ Error seeding GS1 standards:", error);
+    cliErr("❌ Error seeding GS1 standards:", error);
     throw error;
   } finally {
     await connection.end();
@@ -381,10 +385,10 @@ async function seedGS1Standards() {
 // Run the seed
 seedGS1Standards()
   .then(() => {
-    console.log("\n🎉 Seed completed successfully!");
+    cliOut("\n🎉 Seed completed successfully!");
     process.exit(0);
   })
   .catch(error => {
-    console.error("\n💥 Seed failed:", error);
+    cliErr("\n💥 Seed failed:", error);
     process.exit(1);
   });

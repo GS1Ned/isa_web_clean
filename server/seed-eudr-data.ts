@@ -308,7 +308,7 @@ export async function seedEUDRData(userId: number) {
         dueDiligenceStatement: data.dueDiligenceStatement || null,
       });
       inserted++;
-      console.log(`✓ Inserted ${data.productName} (${data.productGtin})`);
+      serverLogger.info(`✓ Inserted ${data.productName} (${data.productGtin})`);
     } catch (error) {
       errors++;
       serverLogger.error(`✗ Failed to insert ${data.productName}:`, error);
@@ -328,19 +328,19 @@ export async function seedEUDRData(userId: number) {
 // Seeding should only happen via admin UI at /admin/eudr-seeder
 /*
 if (import.meta.url === `file://${process.argv[1]}`) {
-  console.log("Seeding EUDR sample data...");
+  serverLogger.info("Seeding EUDR sample data...");
   
   // Use a default user ID for CLI execution (admin user)
   const defaultUserId = 1;
   
   seedEUDRData(defaultUserId)
     .then((result) => {
-      console.log("\n" + result.message);
-      console.log(`Total: ${result.total}, Inserted: ${result.inserted}, Errors: ${result.errors}`);
+      serverLogger.info("\n" + result.message);
+      serverLogger.info(`Total: ${result.total}, Inserted: ${result.inserted}, Errors: ${result.errors}`);
       process.exit(0);
     })
     .catch((error) => {
-      console.error("Seeding failed:", error);
+      serverLogger.error("Seeding failed:", error);
       process.exit(1);
     });
 }

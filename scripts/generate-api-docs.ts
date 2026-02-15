@@ -3,6 +3,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { appRouter } from "../server/routers.ts";
 import type { ProcedureRouterRecord } from "@trpc/server";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -355,10 +359,10 @@ const main = async () => {
   const content = lines.join("\n");
   await fs.writeFile(DOC_PATH, content);
 
-  console.log(`Generated ${DOC_PATH}`);
+  cliOut(`Generated ${DOC_PATH}`);
 };
 
 main().catch(error => {
-  console.error(error);
+  cliErr(error);
   process.exitCode = 1;
 });

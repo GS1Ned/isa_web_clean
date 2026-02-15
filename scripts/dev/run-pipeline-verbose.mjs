@@ -1,7 +1,11 @@
 import { runNewsPipeline } from './server/news-pipeline.js';
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
 
-console.log('=== Starting ESG News Pipeline ===');
-console.log('Start time:', new Date().toISOString());
+
+cliOut('=== Starting ESG News Pipeline ===');
+cliOut('Start time:', new Date().toISOString());
 
 try {
   const result = await runNewsPipeline({ 
@@ -9,14 +13,14 @@ try {
     triggeredBy: 'manual'
   });
   
-  console.log('\n=== Pipeline Completed ===');
-  console.log('End time:', new Date().toISOString());
-  console.log('Result:', JSON.stringify(result, null, 2));
+  cliOut('\n=== Pipeline Completed ===');
+  cliOut('End time:', new Date().toISOString());
+  cliOut('Result:', JSON.stringify(result, null, 2));
   
   process.exit(result.success ? 0 : 1);
 } catch (error) {
-  console.error('\n=== Pipeline Failed ===');
-  console.error('Error:', error.message);
-  console.error('Stack:', error.stack);
+  cliErr('\n=== Pipeline Failed ===');
+  cliErr('Error:', error.message);
+  cliErr('Stack:', error.stack);
   process.exit(1);
 }

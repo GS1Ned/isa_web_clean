@@ -5,6 +5,10 @@
  */
 
 import mysql from "mysql2/promise";
+import { format } from "node:util";
+
+const cliOut = (...args) => process.stdout.write(`${format(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${format(...args)}\n`);
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -342,7 +346,7 @@ async function seedRegulations() {
   const connection = await mysql.createConnection(process.env.DATABASE_URL);
 
   try {
-    console.log("🌱 Seeding production regulations...");
+    cliOut("🌱 Seeding production regulations...");
 
     for (const reg of regulations) {
       await connection.execute(
@@ -363,9 +367,9 @@ async function seedRegulations() {
       );
     }
 
-    console.log(`✅ Successfully seeded ${regulations.length} regulations`);
+    cliOut(`✅ Successfully seeded ${regulations.length} regulations`);
   } catch (error) {
-    console.error("❌ Error seeding regulations:", error);
+    cliErr("❌ Error seeding regulations:", error);
   } finally {
     await connection.end();
   }

@@ -22,11 +22,21 @@ import {
   type NewSource,
 } from './index';
 
+function out(...parts: unknown[]) {
+  const line =
+    parts.length === 0
+      ? ""
+      : parts
+          .map(p => (typeof p === "string" ? p : JSON.stringify(p)))
+          .join(" ");
+  process.stdout.write(`${line}\n`);
+}
+
 async function runTest() {
-  console.log('=== GATE 1.1: CORPUS GOVERNANCE TEST ===\n');
+  out('=== GATE 1.1: CORPUS GOVERNANCE TEST ===\n');
 
   // Test 1: Create a test source
-  console.log('Test 1: Creating test source...');
+  out('Test 1: Creating test source...');
   const testSource: NewSource = {
     name: 'ESPR - Ecodesign for Sustainable Products Regulation',
     acronym: 'ESPR',
@@ -47,14 +57,14 @@ async function runTest() {
   };
 
   const source = await createSource(testSource);
-  console.log('✅ Source created with ID:', source.id);
-  console.log('   Name:', source.name);
-  console.log('   Authority Level:', source.authorityLevel);
-  console.log('   Status:', source.status);
-  console.log('');
+  out('✅ Source created with ID:', source.id);
+  out('   Name:', source.name);
+  out('   Authority Level:', source.authorityLevel);
+  out('   Status:', source.status);
+  out('');
 
   // Test 2: Create chunks for the source
-  console.log('Test 2: Creating source chunks...');
+  out('Test 2: Creating source chunks...');
   const testChunks = [
     {
       chunkType: 'article' as const,
@@ -77,33 +87,33 @@ async function runTest() {
   ];
 
   const chunks = await createSourceChunksBatch(source.id, testChunks);
-  console.log('✅ Created', chunks.length, 'chunks');
+  out('✅ Created', chunks.length, 'chunks');
   for (const chunk of chunks) {
-    console.log('   Chunk', chunk.chunkIndex, ':', chunk.heading, '(' + chunk.chunkType + ')');
-    console.log('   Content hash:', chunk.contentHash.substring(0, 16) + '...');
+    out('   Chunk', chunk.chunkIndex, ':', chunk.heading, '(' + chunk.chunkType + ')');
+    out('   Content hash:', chunk.contentHash.substring(0, 16) + '...');
   }
-  console.log('');
+  out('');
 
   // Test 3: Retrieve source by external ID
-  console.log('Test 3: Retrieving source by external ID...');
+  out('Test 3: Retrieving source by external ID...');
   const retrieved = await getSourceByExternalId('eu-reg-2024-1781-test');
   if (retrieved) {
-    console.log('✅ Source retrieved successfully');
-    console.log('   ID:', retrieved.id);
-    console.log('   Name:', retrieved.name);
+    out('✅ Source retrieved successfully');
+    out('   ID:', retrieved.id);
+    out('   Name:', retrieved.name);
   } else {
-    console.log('❌ Failed to retrieve source');
+    out('❌ Failed to retrieve source');
   }
-  console.log('');
+  out('');
 
   // Test 4: Retrieve chunks for source
-  console.log('Test 4: Retrieving chunks for source...');
+  out('Test 4: Retrieving chunks for source...');
   const retrievedChunks = await getChunksBySourceId(source.id);
-  console.log('✅ Retrieved', retrievedChunks.length, 'chunks');
-  console.log('');
+  out('✅ Retrieved', retrievedChunks.length, 'chunks');
+  out('');
 
   // Test 5: Test supersede functionality
-  console.log('Test 5: Testing supersede functionality...');
+  out('Test 5: Testing supersede functionality...');
   const newVersionSource: NewSource = {
     ...testSource,
     externalId: 'eu-reg-2024-1781-v2-test',
@@ -113,52 +123,56 @@ async function runTest() {
   };
 
   const newSource = await supersedeSource(source.id, newVersionSource);
-  console.log('✅ New version created with ID:', newSource.id);
+  out('✅ New version created with ID:', newSource.id);
   
   const oldSource = await getSourceById(source.id);
   if (oldSource && oldSource.status === 'superseded' && oldSource.supersededBy === newSource.id) {
-    console.log('✅ Old source correctly marked as superseded');
-    console.log('   Old source status:', oldSource.status);
-    console.log('   Superseded by:', oldSource.supersededBy);
+    out('✅ Old source correctly marked as superseded');
+    out('   Old source status:', oldSource.status);
+    out('   Superseded by:', oldSource.supersededBy);
   } else {
-    console.log('❌ Supersede functionality failed');
+    out('❌ Supersede functionality failed');
   }
-  console.log('');
+  out('');
 
   // Test 6: Get corpus statistics
-  console.log('Test 6: Getting corpus statistics...');
+  out('Test 6: Getting corpus statistics...');
   const stats = await getCorpusStats();
-  console.log('✅ Corpus Statistics:');
-  console.log('   Total sources:', stats.totalSources);
-  console.log('   Active sources:', stats.activeSources);
-  console.log('   Total chunks:', stats.totalChunks);
-  console.log('   Active chunks:', stats.activeChunks);
-  console.log('   Sources by type:', JSON.stringify(stats.sourcesByType));
-  console.log('   Sources by authority:', JSON.stringify(stats.sourcesByAuthority));
-  console.log('');
+  out('✅ Corpus Statistics:');
+  out('   Total sources:', stats.totalSources);
+  out('   Active sources:', stats.activeSources);
+  out('   Total chunks:', stats.totalChunks);
+  out('   Active chunks:', stats.activeChunks);
+  out('   Sources by type:', JSON.stringify(stats.sourcesByType));
+  out('   Sources by authority:', JSON.stringify(stats.sourcesByAuthority));
+  out('');
 
   // Cleanup: Delete test data
-  console.log('Cleanup: Removing test data...');
+  out('Cleanup: Removing test data...');
   const db = await getDb();
   if (db) {
     await db.execute(`DELETE FROM source_chunks WHERE source_id IN (${source.id}, ${newSource.id})`);
     await db.execute(`DELETE FROM sources WHERE id IN (${source.id}, ${newSource.id})`);
   }
-  console.log('✅ Test data cleaned up');
-  console.log('');
+  out('✅ Test data cleaned up');
+  out('');
 
-  console.log('=== GATE 1.1 TEST COMPLETE ===');
-  console.log('');
-  console.log('Acceptance Criteria:');
-  console.log('✅ sources and source_chunks tables exist in TiDB');
-  console.log('✅ Test document can be ingested with version and authority metadata');
-  console.log('✅ Chunks can be created with content hashing');
-  console.log('✅ Source can be retrieved by external ID');
-  console.log('✅ Supersede functionality works correctly');
-  console.log('✅ Corpus statistics can be retrieved');
-  console.log('');
-  console.log('GATE 1.1 PASSED ✅');
+  out('=== GATE 1.1 TEST COMPLETE ===');
+  out('');
+  out('Acceptance Criteria:');
+  out('✅ sources and source_chunks tables exist in TiDB');
+  out('✅ Test document can be ingested with version and authority metadata');
+  out('✅ Chunks can be created with content hashing');
+  out('✅ Source can be retrieved by external ID');
+  out('✅ Supersede functionality works correctly');
+  out('✅ Corpus statistics can be retrieved');
+  out('');
+  out('GATE 1.1 PASSED ✅');
 }
 
 // Run the test
-runTest().catch(console.error).finally(() => process.exit(0));
+runTest()
+  .catch(err => {
+    process.stderr.write(`${String(err)}\n`);
+  })
+  .finally(() => process.exit(0));

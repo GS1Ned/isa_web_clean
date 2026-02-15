@@ -11,6 +11,7 @@
  */
 
 import { trackError } from "./error-tracking";
+import { serverLogger } from "./logger-wiring";
 
 export interface PerformanceMetric {
   operation: string;
@@ -80,7 +81,11 @@ function checkThresholds(metric: PerformanceMetric): void {
         metadata: metric.metadata,
         timestamp: metric.timestamp,
       }
-    ).catch(console.error);
+    ).catch((error) => {
+      serverLogger.error(error, {
+        context: "[performance-monitoring] Failed to track slow-operation warning:",
+      });
+    });
   }
 }
 

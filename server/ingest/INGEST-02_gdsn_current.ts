@@ -87,7 +87,7 @@ export async function ingestGdsnClasses(
     }
 
     if (verbose) {
-      console.log("Starting GDSN classes ingestion");
+      serverLogger.info("Starting GDSN classes ingestion");
     }
 
     const filePath = path.join(
@@ -100,13 +100,13 @@ export async function ingestGdsnClasses(
     const classes = loadJsonFile<GdsnClassRaw>(filePath);
 
     if (verbose) {
-      console.log(`Loaded ${classes.length} GDSN classes`);
+      serverLogger.info(`Loaded ${classes.length} GDSN classes`);
     }
 
     for (const cls of classes) {
       if (limit !== undefined && result.recordsProcessed >= limit) {
         if (verbose) {
-          console.log(`Limit reached (${limit}), stopping`);
+          serverLogger.info(`Limit reached (${limit}), stopping`);
         }
         break;
       }
@@ -152,13 +152,13 @@ export async function ingestGdsnClasses(
       }
 
       if (verbose && result.recordsProcessed % 100 === 0) {
-        console.log(`Processed ${result.recordsProcessed} classes`);
+        serverLogger.info(`Processed ${result.recordsProcessed} classes`);
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
-      console.log(
+      serverLogger.info(
         `GDSN classes ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
       );
     }
@@ -195,7 +195,7 @@ export async function ingestGdsnClassAttributes(
     }
 
     if (verbose) {
-      console.log("Starting GDSN class attributes ingestion");
+      serverLogger.info("Starting GDSN class attributes ingestion");
     }
 
     const filePath = path.join(
@@ -208,13 +208,13 @@ export async function ingestGdsnClassAttributes(
     const attributes = loadJsonFile<GdsnAttributeRaw>(filePath);
 
     if (verbose) {
-      console.log(`Loaded ${attributes.length} GDSN class attributes`);
+      serverLogger.info(`Loaded ${attributes.length} GDSN class attributes`);
     }
 
     for (const attr of attributes) {
       if (limit !== undefined && result.recordsProcessed >= limit) {
         if (verbose) {
-          console.log(`Limit reached (${limit}), stopping`);
+          serverLogger.info(`Limit reached (${limit}), stopping`);
         }
         break;
       }
@@ -250,13 +250,13 @@ export async function ingestGdsnClassAttributes(
       }
 
       if (verbose && result.recordsProcessed % 200 === 0) {
-        console.log(`Processed ${result.recordsProcessed} attributes`);
+        serverLogger.info(`Processed ${result.recordsProcessed} attributes`);
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
-      console.log(
+      serverLogger.info(
         `GDSN class attributes ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
       );
     }
@@ -293,7 +293,7 @@ export async function ingestGdsnValidationRules(
     }
 
     if (verbose) {
-      console.log("Starting GDSN validation rules ingestion");
+      serverLogger.info("Starting GDSN validation rules ingestion");
     }
 
     const filePath = path.join(
@@ -306,13 +306,13 @@ export async function ingestGdsnValidationRules(
     const rules = loadJsonFile<GdsnValidationRuleRaw>(filePath);
 
     if (verbose) {
-      console.log(`Loaded ${rules.length} GDSN validation rules`);
+      serverLogger.info(`Loaded ${rules.length} GDSN validation rules`);
     }
 
     for (const rule of rules) {
       if (limit !== undefined && result.recordsProcessed >= limit) {
         if (verbose) {
-          console.log(`Limit reached (${limit}), stopping`);
+          serverLogger.info(`Limit reached (${limit}), stopping`);
         }
         break;
       }
@@ -353,13 +353,13 @@ export async function ingestGdsnValidationRules(
       }
 
       if (verbose && result.recordsProcessed % 100 === 0) {
-        console.log(`Processed ${result.recordsProcessed} validation rules`);
+        serverLogger.info(`Processed ${result.recordsProcessed} validation rules`);
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
-      console.log(
+      serverLogger.info(
         `GDSN validation rules ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
       );
     }
@@ -382,7 +382,7 @@ export async function ingestGdsnCurrent(
   const startTime = Date.now();
 
   if (verbose) {
-    console.log("=== INGEST-02: GDSN Current v3.1.32 ===");
+    serverLogger.info("=== INGEST-02: GDSN Current v3.1.32 ===");
   }
 
   const classesResult = await ingestGdsnClasses(options);
@@ -419,12 +419,12 @@ export async function ingestGdsnCurrent(
   };
 
   if (verbose) {
-    console.log("\n=== INGEST-02 Summary ===");
-    console.log(`Classes: ${classesResult.recordsInserted}`);
-    console.log(`Attributes: ${attributesResult.recordsInserted}`);
-    console.log(`Validation Rules: ${rulesResult.recordsInserted}`);
-    console.log(`Total: ${combinedResult.recordsInserted} records`);
-    console.log(`Duration: ${combinedResult.duration}ms`);
+    serverLogger.info("\n=== INGEST-02 Summary ===");
+    serverLogger.info(`Classes: ${classesResult.recordsInserted}`);
+    serverLogger.info(`Attributes: ${attributesResult.recordsInserted}`);
+    serverLogger.info(`Validation Rules: ${rulesResult.recordsInserted}`);
+    serverLogger.info(`Total: ${combinedResult.recordsInserted} records`);
+    serverLogger.info(`Duration: ${combinedResult.duration}ms`);
   }
 
   return combinedResult;

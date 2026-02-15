@@ -234,7 +234,7 @@ const gs1Standards = [
  * Ingest GS1 standards into database
  */
 async function ingestGS1Standards() {
-  console.log("[GS1 Ingestion] Starting GS1 Standards Log ingestion...\n");
+  serverLogger.info("[GS1 Ingestion] Starting GS1 Standards Log ingestion...\n");
 
   // Database connection
   const connection = await createMysqlConnection(process.env.DATABASE_URL!);
@@ -267,10 +267,10 @@ async function ingestGS1Standards() {
     }
   }
 
-  console.log("[GS1 Ingestion] ✅ Ingestion complete!");
-  console.log(`[GS1 Ingestion]   Total inserted: ${inserted}`);
-  console.log(`[GS1 Ingestion]   Total skipped: ${skipped}`);
-  console.log(`[GS1 Ingestion]   Total processed: ${inserted + skipped}\n`);
+  serverLogger.info("[GS1 Ingestion] ✅ Ingestion complete!");
+  serverLogger.info(`[GS1 Ingestion]   Total inserted: ${inserted}`);
+  serverLogger.info(`[GS1 Ingestion]   Total skipped: ${skipped}`);
+  serverLogger.info(`[GS1 Ingestion]   Total processed: ${inserted + skipped}\n`);
 
   await connection.end();
 }

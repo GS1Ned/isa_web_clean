@@ -9,6 +9,54 @@
 import fetch from "node-fetch";
 import { parseStringPromise } from "xml2js";
 
+function nowIso() {
+  return new Date().toISOString();
+}
+
+function formatLine(message, meta) {
+  if (meta === undefined || meta === null || meta === "") return String(message);
+  try {
+    return `${String(message)} ${typeof meta === "string" ? meta : JSON.stringify(meta)}`;
+  } catch {
+    return `${String(message)} ${String(meta)}`;
+  }
+}
+
+function writeStdout(line) {
+  process.stdout.write(line.endsWith("\n") ? line : `${line}\n`);
+}
+
+function writeStderr(line) {
+  process.stderr.write(line.endsWith("\n") ? line : `${line}\n`);
+}
+
+// Local logger wrapper for this standalone .mjs script.
+// Avoid importing serverLogger because it's wired via TypeScript modules.
+const log = {
+  info(message, meta) {
+    if (process.env.NODE_ENV !== "production") {
+      // Preserve human-readable output in dev.
+      writeStdout(formatLine(message, meta));
+      return;
+    }
+    writeStdout(JSON.stringify({ level: "info", message: String(message), meta: meta ?? {}, ts: nowIso() }));
+  },
+  warn(message, meta) {
+    if (process.env.NODE_ENV !== "production") {
+      writeStderr(formatLine(message, meta));
+      return;
+    }
+    writeStderr(JSON.stringify({ level: "warn", message: String(message), meta: meta ?? {}, ts: nowIso() }));
+  },
+  error(message, meta) {
+    if (process.env.NODE_ENV !== "production") {
+      writeStderr(formatLine(message, meta));
+      return;
+    }
+    writeStderr(JSON.stringify({ level: "error", message: String(message), meta: meta ?? {}, ts: nowIso() }));
+  },
+};
+
 const RSS_SOURCES = [
   {
     name: "EU Commission - Sustainability",
@@ -39,7 +87,7 @@ async function fetchRSSFeed(url) {
     });
 
     if (!response.ok) {
-      console.warn(`[RSS] Failed to fetch ${url}: ${response.status}`);
+      log.warn(`[RSS] Failed to fetch ${url}: ${response.status}`, { url, status: response.status });
       return [];
     }
 
@@ -57,7 +105,7 @@ async function fetchRSSFeed(url) {
       source: item.source?.[0]?.title?.[0] || "Unknown",
     }));
   } catch (error) {
-    console.error(`[RSS] Error fetching ${url}:`, error.message);
+    log.error(`[RSS] Error fetching ${url}`, { url, error: String(error) });
     return [];
   }
 }
@@ -66,14 +114,14 @@ async function fetchRSSFeed(url) {
  * Aggregate news from all sources
  */
 async function aggregateNews() {
-  console.log("[RSS] Starting news aggregation...");
+  log.info("[RSS] Starting news aggregation...");
 
   const allNews = [];
 
   for (const source of RSS_SOURCES) {
-    console.log(`[RSS] Fetching from ${source.name}...`);
+    log.info(`[RSS] Fetching from ${source.name}...`);
     const items = await fetchRSSFeed(source.url);
-    console.log(`[RSS] Found ${items.length} items from ${source.name}`);
+    log.info(`[RSS] Found ${items.length} items from ${source.name}`);
 
     allNews.push(
       ...items.map(item => ({
@@ -87,7 +135,7 @@ async function aggregateNews() {
   // Sort by date (newest first)
   allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
-  console.log(`[RSS] Aggregated ${allNews.length} news items total`);
+  log.info(`[RSS] Aggregated ${allNews.length} news items total`);
 
   // In production, save to database
   // await saveNewsToDatabase(allNews);
@@ -160,14 +208,14 @@ async function main() {
 
     // Log sample
     if (enrichedNews.length > 0) {
-      console.log("\n[RSS] Sample enriched news item:");
-      console.log(JSON.stringify(enrichedNews[0], null, 2));
+      log.info("\n[RSS] Sample enriched news item:");
+      log.info(JSON.stringify(enrichedNews[0], null, 2));
     }
 
-    console.log("[RSS] News aggregation completed successfully");
+    log.info("[RSS] News aggregation completed successfully");
     process.exit(0);
   } catch (error) {
-    console.error("[RSS] Aggregation failed:", error);
+    log.error("[RSS] Aggregation failed", { error: String(error) });
     process.exit(1);
   }
 }

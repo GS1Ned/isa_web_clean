@@ -5,6 +5,7 @@
 
 import { getDb } from "./db";
 import { notifyOwner } from "./_core/notification";
+import { serverLogger } from "./_core/logger-wiring";
 
 interface CronExecutionLog {
   jobName: string;
@@ -21,7 +22,7 @@ interface CronExecutionLog {
 export async function logCronExecution(log: CronExecutionLog) {
   const db = await getDb();
   if (!db) {
-    console.error("[cron-monitoring] Database not available");
+    serverLogger.error("[cron-monitoring] Database not available");
     return;
   }
 
@@ -37,11 +38,11 @@ export async function logCronExecution(log: CronExecutionLog) {
       executedAt: log.timestamp,
     });
 
-    console.log(
+    serverLogger.info(
       `[cron-monitoring] Logged execution: ${log.jobName} - ${log.status}`
     );
   } catch (error) {
-    console.error("[cron-monitoring] Failed to log execution:", error);
+    serverLogger.error(error, { context: "[cron-monitoring] Failed to log execution:" });
   }
 }
 
@@ -65,7 +66,7 @@ export async function getExecutionHistory(jobName: string, limit: number = 10) {
 
     return logs;
   } catch (error) {
-    console.error("[cron-monitoring] Failed to get execution history:", error);
+    serverLogger.error(error, { context: "[cron-monitoring] Failed to get execution history:" });
     return [];
   }
 }
@@ -101,7 +102,7 @@ export async function getExecutionStats(jobName: string, days: number = 7) {
 
     return stats[0];
   } catch (error) {
-    console.error("[cron-monitoring] Failed to get execution stats:", error);
+    serverLogger.error(error, { context: "[cron-monitoring] Failed to get execution stats:" });
     return null;
   }
 }
@@ -123,7 +124,7 @@ export async function checkAndAlertOnFailures(
   const allFailed = history.every(log => log.status === "failure");
 
   if (allFailed) {
-    console.error(
+    serverLogger.error(
       `[cron-monitoring] ⚠️  ${jobName} has failed ${threshold} times consecutively!`
     );
 
@@ -157,9 +158,9 @@ ${history.map((log, i) => `${i + 1}. ${log.executedAt.toISOString()} - ${log.sta
         title: `⚠️ Cron Job Failure: ${jobName}`,
         content: message,
       });
-      console.log(`[cron-monitoring] Alert sent to owner`);
+      serverLogger.info("[cron-monitoring] Alert sent to owner");
     } catch (error) {
-      console.error("[cron-monitoring] Failed to send alert:", error);
+      serverLogger.error(error, { context: "[cron-monitoring] Failed to send alert:" });
     }
   }
 }
@@ -187,9 +188,9 @@ export async function cleanupOldLogs() {
       )
     `);
 
-    console.log("[cron-monitoring] Cleaned up old execution logs");
+    serverLogger.info("[cron-monitoring] Cleaned up old execution logs");
   } catch (error) {
-    console.error("[cron-monitoring] Failed to cleanup logs:", error);
+    serverLogger.error(error, { context: "[cron-monitoring] Failed to cleanup logs:" });
   }
 }
 

@@ -7,6 +7,10 @@
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 const OUTPUT_FILE = 'docs/evidence/_generated/catalogue.json';
 
@@ -27,7 +31,7 @@ try {
     });
   }
 } catch (error) {
-  console.warn('Could not read evidence markers:', error);
+  cliErr('Could not read evidence markers:', error);
 }
 
 // Count datasets
@@ -40,7 +44,7 @@ try {
     datasets.with_provenance = (data.datasets || []).filter((d: any) => d.provenance).length;
   }
 } catch (error) {
-  console.warn('Could not read dataset registry:', error);
+  cliErr('Could not read dataset registry:', error);
 }
 
 // Count contracts
@@ -55,7 +59,7 @@ try {
     }
   }
 } catch (error) {
-  console.warn('Could not read quality scorecards');
+  cliErr('Could not read quality scorecards');
 }
 
 const catalogue = {
@@ -71,9 +75,9 @@ const catalogue = {
 fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
 fs.writeFileSync(OUTPUT_FILE, JSON.stringify(catalogue, null, 2));
 
-console.log(`Evidence catalogue written to ${OUTPUT_FILE}`);
-console.log(`Evidence markers: ${evidenceMarkers.total}`);
-console.log(`Datasets: ${datasets.total} (${datasets.with_provenance} with provenance)`);
-console.log(`Contracts: ${contracts.total} (${contracts.completeness_pct}% complete)`);
+cliOut(`Evidence catalogue written to ${OUTPUT_FILE}`);
+cliOut(`Evidence markers: ${evidenceMarkers.total}`);
+cliOut(`Datasets: ${datasets.total} (${datasets.with_provenance} with provenance)`);
+cliOut(`Contracts: ${contracts.total} (${contracts.completeness_pct}% complete)`);
 
 process.exit(0);

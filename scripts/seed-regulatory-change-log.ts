@@ -8,6 +8,10 @@
  */
 
 import { createRegulatoryChangeLogEntry } from "../server/db-regulatory-change-log";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 interface ChangeLogEntry {
   entryDate: string;
@@ -173,8 +177,8 @@ const efragGuidanceEntries: ChangeLogEntry[] = [
 ];
 
 async function seedRegulatoryChangeLog() {
-  console.log("Starting Regulatory Change Log seed...");
-  console.log(`Entries to insert: ${efragGuidanceEntries.length}`);
+  cliOut("Starting Regulatory Change Log seed...");
+  cliOut(`Entries to insert: ${efragGuidanceEntries.length}`);
   
   let successCount = 0;
   let errorCount = 0;
@@ -187,32 +191,32 @@ async function seedRegulatoryChangeLog() {
         entryDate: entry.entryDate + ' 00:00:00'
       };
       const result = await createRegulatoryChangeLogEntry(entryWithTimestamp);
-      console.log(`✓ Created: ${entry.title} (ID: ${result.id})`);
+      cliOut(`✓ Created: ${entry.title} (ID: ${result.id})`);
       successCount++;
     } catch (error: any) {
       // Check if it's a duplicate entry error
       if (error.message?.includes("Duplicate entry") || error.code === "ER_DUP_ENTRY") {
-        console.log(`⚠ Skipped (already exists): ${entry.title}`);
+        cliOut(`⚠ Skipped (already exists): ${entry.title}`);
       } else {
-        console.error(`✗ Failed: ${entry.title}`, error.message);
+        cliErr(`✗ Failed: ${entry.title}`, error.message);
         errorCount++;
       }
     }
   }
   
-  console.log("\n--- Seed Complete ---");
-  console.log(`Success: ${successCount}`);
-  console.log(`Errors: ${errorCount}`);
-  console.log(`Skipped: ${efragGuidanceEntries.length - successCount - errorCount}`);
+  cliOut("\n--- Seed Complete ---");
+  cliOut(`Success: ${successCount}`);
+  cliOut(`Errors: ${errorCount}`);
+  cliOut(`Skipped: ${efragGuidanceEntries.length - successCount - errorCount}`);
 }
 
 // Run the seed
 seedRegulatoryChangeLog()
   .then(() => {
-    console.log("\nDone!");
+    cliOut("\nDone!");
     process.exit(0);
   })
   .catch((error) => {
-    console.error("Seed failed:", error);
+    cliErr("Seed failed:", error);
     process.exit(1);
   });

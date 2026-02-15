@@ -6,6 +6,10 @@
 
 import fs from 'fs';
 import path from 'path';
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 const OUTPUT_FILE = 'docs/sre/_generated/error_budget_status.json';
 
@@ -40,8 +44,8 @@ const status = {
 fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
 fs.writeFileSync(OUTPUT_FILE, JSON.stringify(status, null, 2));
 
-console.log(`Error budget status written to ${OUTPUT_FILE}`);
-console.log(`Overall state: ${status.overall_state} (no telemetry)`);
-console.log(`SLOs tracked: ${SLOS.length}`);
+cliOut(`Error budget status written to ${OUTPUT_FILE}`);
+cliOut(`Overall state: ${status.overall_state} (no telemetry)`);
+cliOut(`SLOs tracked: ${SLOS.length}`);
 
 process.exit(0);
