@@ -32,8 +32,21 @@ fi
 
 echo "READY=files_present"
 
-# JSON parse check
-node -e "import fs from 'fs'; JSON.parse(fs.readFileSync('${BASE}/benchmarks.json','utf8'));" >/dev/null
+# JSON parse checks (benchmarks + raw artifacts)
+node - <<NODE >/dev/null
+import fs from 'node:fs';
+
+const files = [
+  '${BASE}/benchmarks.json',
+  '${BASE}/raw/github_search_candidates.json',
+  '${BASE}/raw/top12_repo_metadata.json',
+  '${BASE}/raw/top5_forensic_paths.json',
+];
+
+for (const f of files) {
+  JSON.parse(fs.readFileSync(f, 'utf8'));
+}
+NODE
 
 echo "READY=json_parse_ok"
 
@@ -46,29 +59,38 @@ const p = 'docs/research/oss-benchmarks/2026-02-15/benchmarks.json';
 const obj = JSON.parse(fs.readFileSync(p, 'utf8'));
 
 const bad = [];
-let seen = 0;
+const missing = [];
 
-function walk(v) {
-  if (!v) return;
-  if (Array.isArray(v)) {
-    for (const x of v) walk(x);
+function checkRecord(kind, rec, idx) {
+  const where = `${kind}[${idx}]`;
+  if (!rec || typeof rec !== 'object') {
+    missing.push({ where, reason: 'not_an_object' });
     return;
   }
-  if (typeof v === 'object') {
-    for (const [k, val] of Object.entries(v)) {
-      if (k === 'last_verified_date') {
-        seen++;
-        if (val !== DATE) bad.push({ path: p, value: val });
-      }
-      walk(val);
-    }
+  if (!('last_verified_date' in rec)) {
+    missing.push({ where, reason: 'missing_last_verified_date' });
+    return;
+  }
+  if (rec.last_verified_date !== DATE) {
+    bad.push({ where, value: rec.last_verified_date });
   }
 }
 
-walk(obj);
+const candidates = Array.isArray(obj.candidates) ? obj.candidates : null;
+const patterns = Array.isArray(obj.patterns) ? obj.patterns : null;
+const actionPlan = Array.isArray(obj.action_plan) ? obj.action_plan : null;
 
-if (seen === 0) {
-  process.stderr.write('No last_verified_date fields found\n');
+if (!candidates || !patterns || !actionPlan) {
+  process.stderr.write('benchmarks.json missing required arrays: candidates/patterns/action_plan\n');
+  process.exit(1);
+}
+
+for (let i = 0; i < candidates.length; i++) checkRecord('candidates', candidates[i], i);
+for (let i = 0; i < patterns.length; i++) checkRecord('patterns', patterns[i], i);
+for (let i = 0; i < actionPlan.length; i++) checkRecord('action_plan', actionPlan[i], i);
+
+if (missing.length) {
+  process.stderr.write(`missing last_verified_date fields: ${JSON.stringify(missing, null, 2)}\n`);
   process.exit(1);
 }
 
