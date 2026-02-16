@@ -1,0 +1,19 @@
+name: No Console Gate
+
+on:
+  pull_request:
+    branches: [main, strict-no-console]
+  push:
+    branches: [main, strict-no-console]
+
+jobs:
+  no-console:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run scoped no-console gate
+        run: |
+          set -euo pipefail
+          bash scripts/gates/no-console-gate.sh
+
