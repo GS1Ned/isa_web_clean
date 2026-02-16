@@ -1,10 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
+import crypto from "node:crypto";
 import XLSX from "xlsx";
 import { eq } from "drizzle-orm";
 import { getDb } from "../db";
 import { esrsDatapoints, rawEsrsDatapoints } from "../../drizzle/schema";
 import { serverLogger } from "../_core/logger-wiring";
+import { recordIngestProvenance, sha256Hex } from "./_core/provenance";
 
 
 export interface IngestOptions {
@@ -216,6 +218,12 @@ export async function ingestEsrsDatapoints(
 ): Promise<IngestResult> {
   const startTime = Date.now();
   const { dryRun = false, limit, verbose = false } = options;
+  const traceId = crypto.randomUUID();
+  const sourceLocator = path.join(
+    "data",
+    "efrag",
+    "EFRAGIG3ListofESRSDataPoints.xlsx"
+  );
   const result: IngestResult = {
     success: true,
     recordsProcessed: 0,
@@ -230,20 +238,31 @@ export async function ingestEsrsDatapoints(
       throw new Error("Database connection not available");
     }
     if (verbose) {
-      serverLogger.info("Starting ESRS datapoints ingestion");
+      serverLogger.info("Starting ESRS datapoints ingestion", { traceId });
     }
+
+    const filePath = path.join(process.cwd(), sourceLocator);
+    let retrievedAt: string | null = null;
+    try {
+      const st = fs.statSync(filePath);
+      retrievedAt = new Date(st.mtimeMs).toISOString();
+    } catch {
+      retrievedAt = null;
+    }
+
     const workbook = loadWorkbookFile();
     const parsedRows = parseWorkbook(workbook, verbose);
     if (parsedRows.length === 0) {
       if (verbose) {
-        serverLogger.warn("No ESRS datapoints found in workbook");
+        serverLogger.warn("No ESRS datapoints found in workbook", { traceId });
       }
     }
     for (const row of parsedRows) {
       if (limit !== undefined && result.recordsProcessed >= limit) {
         if (verbose) {
           serverLogger.info(
-            `Limit reached (${limit} records), stopping ingestion loop`
+            `Limit reached (${limit} records), stopping ingestion loop`,
+            { traceId }
           );
         }
         break;
@@ -264,6 +283,7 @@ export async function ingestEsrsDatapoints(
           sheetName: row.sheetName,
           rowIndex: row.rowIndex
         };
+        const contentHash = sha256Hex(JSON.stringify(rawPayload));
         const existingRaw = await db
           .select()
           .from(rawEsrsDatapoints)
@@ -340,12 +360,29 @@ export async function ingestEsrsDatapoints(
           });
           result.recordsInserted += 1;
         }
+
+        const prov = await recordIngestProvenance(db as any, {
+          pipelineType: "INGEST-03_esrs_datapoints",
+          itemKey: row.code,
+          sourceLocator,
+          retrievedAt,
+          contentHash,
+          parserVersion: "INGEST-03_esrs_datapoints@v1",
+          traceId,
+        });
+        if (!prov.ok && verbose) {
+          serverLogger.warn("[INGEST-03] provenance upsert failed", {
+            traceId,
+            error: prov.error,
+          });
+        }
       } else {
         result.recordsSkipped += 1;
       }
       if (verbose && result.recordsProcessed % 100 === 0) {
         serverLogger.info(
-          `Processed ${result.recordsProcessed} ESRS datapoints so far`
+          `Processed ${result.recordsProcessed} ESRS datapoints so far`,
+          { traceId }
         );
       }
     }
@@ -357,7 +394,8 @@ export async function ingestEsrsDatapoints(
           ` inserted=${result.recordsInserted}` +
           ` updated=${result.recordsUpdated}` +
           ` skipped=${result.recordsSkipped}` +
-          ` durationMs=${result.duration}`
+          ` durationMs=${result.duration}`,
+        { traceId }
       );
     }
   } catch (error) {
@@ -365,7 +403,13 @@ export async function ingestEsrsDatapoints(
     const message =
       error instanceof Error ? error.message : String(error);
     result.errors = [message];
-    serverLogger.error("ESRS ingestion failed", error);
+    await serverLogger.error(error, {
+      traceId,
+      code: "INGEST-03_ESRS_DATAPOINTS",
+      classification: "ingest",
+      affectedFiles: ["server/ingest/INGEST-03_esrs_datapoints.ts", sourceLocator],
+      failingInputs: { pipelineType: "INGEST-03_esrs_datapoints" },
+    });
   }
   return result;
 }
@@ -399,4 +443,3 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     }
   });
 }
-

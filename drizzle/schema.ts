@@ -1129,6 +1129,25 @@ export const pipelineExecutionLog = mysqlTable("pipeline_execution_log", {
 	index("execution_id").on(table.executionId),
 ]);
 
+export const ingestItemProvenance = mysqlTable("ingest_item_provenance", {
+	id: int().autoincrement().notNull(),
+	pipelineType: varchar("pipeline_type", { length: 64 }).notNull(),
+	itemKey: varchar("item_key", { length: 255 }).notNull(),
+	sourceLocator: varchar("source_locator", { length: 512 }),
+	retrievedAt: timestamp("retrieved_at", { mode: 'string' }),
+	contentHash: varchar("content_hash", { length: 64 }),
+	parserVersion: varchar("parser_version", { length: 64 }),
+	lastIngestedAt: timestamp("last_ingested_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	traceId: varchar("trace_id", { length: 64 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("ingest_item_provenance_unique").on(table.pipelineType, table.itemKey),
+	index("idx_ingest_item_provenance_pipeline_type").on(table.pipelineType),
+	index("idx_ingest_item_provenance_last_ingested_at").on(table.lastIngestedAt),
+	index("idx_ingest_item_provenance_trace_id").on(table.traceId),
+]);
+
 export const qaConversations = mysqlTable("qa_conversations", {
 	id: int().autoincrement().notNull(),
 	userId: int(),
