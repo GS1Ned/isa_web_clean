@@ -9,6 +9,8 @@ on:
       - 'docs/architecture/panel/_generated/**/*.json'
       - 'docs/quality/schemas/**/*.schema.json'
       - 'docs/research/oss-benchmarks/2026-02-15/**/*.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.md'
+      - 'scripts/validate_oss_benchmarks_2026_02_15.sh'
   pull_request:
     branches: [main, strict-no-console]
     paths:
@@ -17,6 +19,8 @@ on:
       - 'docs/architecture/panel/_generated/**/*.json'
       - 'docs/quality/schemas/**/*.schema.json'
       - 'docs/research/oss-benchmarks/2026-02-15/**/*.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.md'
+      - 'scripts/validate_oss_benchmarks_2026_02_15.sh'
 
 jobs:
   validate-schemas:
@@ -71,18 +75,20 @@ jobs:
       - name: Validate OSS benchmarks package (2026-02-15)
         run: |
           set -euo pipefail
-          if [ -f "docs/research/oss-benchmarks/2026-02-15/benchmarks.json" ]; then
-            echo "Validating OSS benchmarks JSON against schema..."
-            ajv validate \
-              -s docs/quality/schemas/oss-benchmarks-2026-02-15.schema.json \
-              -d docs/research/oss-benchmarks/2026-02-15/benchmarks.json \
-              --strict=false || exit 1
-
-            echo "Running OSS benchmarks validator script..."
-            bash scripts/validate_oss_benchmarks_2026_02_15.sh
-          else
-            echo "⚠️  OSS benchmarks package not present"
+          benchmarks_file="docs/research/oss-benchmarks/2026-02-15/benchmarks.json"
+          if [ ! -f "$benchmarks_file" ]; then
+            echo "STOP=missing_required_file:$benchmarks_file"
+            exit 1
           fi
+
+          echo "Validating OSS benchmarks JSON against schema..."
+          ajv validate \
+            -s docs/quality/schemas/oss-benchmarks-2026-02-15.schema.json \
+            -d "$benchmarks_file" \
+            --strict=false || exit 1
+
+          echo "Running OSS benchmarks validator script..."
+          bash scripts/validate_oss_benchmarks_2026_02_15.sh
 
       - name: Report validation results
         if: always()
