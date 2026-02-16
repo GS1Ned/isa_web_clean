@@ -6,8 +6,9 @@
  * NOTE: The persist function is a no-op by default. To persist to error_ledger,
  * wire a persist function at server startup that does an insert into your DB.
  */
- import crypto from "crypto";
+import crypto from "crypto";
 import util from "util";
+import { getRequestTraceId } from "../_core/request-context";
 
 type PersistFn = (row: {
   trace_id: string;
@@ -60,7 +61,8 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
 
   async function error(err: unknown, meta?: unknown) {
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
-    const traceId = (metaObj as any).traceId ?? crypto.randomUUID();
+    const traceId = (metaObj as any).traceId ?? getRequestTraceId() ?? crypto.randomUUID();
+    const metaOut = { ...metaObj, traceId };
     const payload =
       err && typeof err === "object" && "message" in (err as any)
         ? {
@@ -73,19 +75,19 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
     const row = {
       trace_id: traceId,
       created_at: nowIso(),
-      error_code: (metaObj as any).code ?? payload.name ?? "ERROR",
-      classification: (metaObj as any).classification ?? "deterministic",
-      commit_sha: (metaObj as any).commitSha ?? null,
-      branch: (metaObj as any).branch ?? null,
+      error_code: (metaOut as any).code ?? payload.name ?? "ERROR",
+      classification: (metaOut as any).classification ?? "deterministic",
+      commit_sha: (metaOut as any).commitSha ?? null,
+      branch: (metaOut as any).branch ?? null,
       environment,
-      affected_files: safeStringify((metaObj as any).affectedFiles ?? null),
-      error_payload: safeStringify({ payload, meta: metaObj }),
-      failing_inputs: safeStringify((metaObj as any).failingInputs ?? null),
+      affected_files: safeStringify((metaOut as any).affectedFiles ?? null),
+      error_payload: safeStringify({ payload, meta: metaOut }),
+      failing_inputs: safeStringify((metaOut as any).failingInputs ?? null),
     };
 
     if (!silent) {
       try {
-        writeStderr(JSON.stringify({ level: "error", traceId, payload, meta: metaObj, ts: row.created_at }));
+        writeStderr(JSON.stringify({ level: "error", traceId, payload, meta: metaOut, ts: row.created_at }));
       } catch {
         writeStderr(util.format("[error] %s", payload.message ?? JSON.stringify(payload)));
       }
@@ -105,11 +107,12 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
   }
 
   async function warn(warnMsg: unknown, meta?: unknown) {
-    if (silent) return crypto.randomUUID();
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
-    const traceId = (metaObj as any).traceId ?? crypto.randomUUID();
+    const traceId = (metaObj as any).traceId ?? getRequestTraceId() ?? crypto.randomUUID();
+    const metaOut = { ...metaObj, traceId };
+    if (silent) return traceId;
     try {
-      writeStderr(JSON.stringify({ level: "warn", traceId, message: String(warnMsg), meta: metaObj, ts: nowIso() }));
+      writeStderr(JSON.stringify({ level: "warn", traceId, message: String(warnMsg), meta: metaOut, ts: nowIso() }));
     } catch {
       writeStderr(util.format("[warn] %s", String(warnMsg)));
     }
@@ -119,10 +122,20 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
   function info(msg: unknown, meta?: unknown) {
     if (silent) return;
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
+    const traceId = (metaObj as any).traceId ?? getRequestTraceId() ?? crypto.randomUUID();
+    const metaOut = { ...metaObj, traceId };
     if (process.env.NODE_ENV !== "production") {
-      writeStdout(util.format("[info] %s %s", String(msg), Object.keys(metaObj).length ? JSON.stringify(metaObj) : "{}"));
+      writeStdout(
+        util.format(
+          "[info] %s %s",
+          String(msg),
+          Object.keys(metaOut).length ? JSON.stringify(metaOut) : "{}"
+        )
+      );
     } else {
-      writeStdout(JSON.stringify({ level: "info", message: String(msg), meta: metaObj, ts: nowIso() }));
+      writeStdout(
+        JSON.stringify({ level: "info", traceId, message: String(msg), meta: metaOut, ts: nowIso() })
+      );
     }
   }
 
