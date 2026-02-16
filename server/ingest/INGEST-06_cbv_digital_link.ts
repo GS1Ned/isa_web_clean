@@ -1,7 +1,13 @@
 import * as fs from "fs";
 import * as path from "path";
+import crypto from "node:crypto";
 import { getDb } from "../db";
 import { serverLogger } from "../_core/logger-wiring";
+import {
+  getIngestProvenanceContentHash,
+  recordIngestProvenance,
+  sha256Hex,
+} from "./_core/provenance";
 
 import {
   cbvVocabularies,
@@ -14,6 +20,7 @@ export interface IngestOptions {
   dryRun?: boolean;
   limit?: number;
   verbose?: boolean;
+  traceId?: string;
 }
 
 export interface IngestResult {
@@ -49,11 +56,53 @@ function loadJsonFile<T>(filePath: string): T {
   return JSON.parse(content) as T;
 }
 
+const PIPELINE_TYPE = "INGEST-06_cbv_digital_link";
+const PARSER_VERSION = "INGEST-06_cbv_digital_link@v1";
+
+function getRetrievedAtIso(filePath: string): string | null {
+  try {
+    const st = fs.statSync(filePath);
+    return new Date(st.mtimeMs).toISOString();
+  } catch {
+    return null;
+  }
+}
+
+async function upsertProvenanceOrWarn(
+  db: any,
+  input: {
+    itemKey: string;
+    sourceLocator: string;
+    retrievedAt: string | null;
+    contentHash: string;
+    traceId: string;
+  },
+  verbose: boolean
+): Promise<void> {
+  const prov = await recordIngestProvenance(db, {
+    pipelineType: PIPELINE_TYPE,
+    itemKey: input.itemKey,
+    sourceLocator: input.sourceLocator,
+    retrievedAt: input.retrievedAt,
+    contentHash: input.contentHash,
+    parserVersion: PARSER_VERSION,
+    traceId: input.traceId,
+  });
+
+  if (!prov.ok && verbose) {
+    serverLogger.warn("[INGEST-06] provenance upsert failed", {
+      traceId: input.traceId,
+      error: prov.error,
+    });
+  }
+}
+
 export async function ingestCbvVocabularies(
   options: IngestOptions = {}
 ): Promise<IngestResult> {
   const startTime = Date.now();
   const { dryRun = false, limit, verbose = false } = options;
+  const traceId = options.traceId ?? crypto.randomUUID();
   const result: IngestResult = {
     success: true,
     recordsProcessed: 0,
@@ -70,15 +119,12 @@ export async function ingestCbvVocabularies(
     }
 
     if (verbose) {
-      serverLogger.info("Starting CBV vocabularies ingestion");
+      serverLogger.info("Starting CBV vocabularies ingestion", { traceId });
     }
 
-    const filePath = path.join(
-      process.cwd(),
-      "data",
-      "cbv",
-      "cbv_esg_curated.json"
-    );
+    const sourceLocator = path.join("data", "cbv", "cbv_esg_curated.json");
+    const filePath = path.join(process.cwd(), sourceLocator);
+    const retrievedAt = getRetrievedAtIso(filePath);
     const cbvData = loadJsonFile<Record<string, Record<string, CbvVocabularyItem>>>(filePath);
 
     // Flatten the nested structure
@@ -99,7 +145,9 @@ export async function ingestCbvVocabularies(
     }
 
     if (verbose) {
-      serverLogger.info(`Loaded ${vocabularies.length} CBV vocabulary items`);
+      serverLogger.info(`Loaded ${vocabularies.length} CBV vocabulary items`, {
+        traceId,
+      });
     }
 
     for (const vocab of vocabularies) {
@@ -113,10 +161,24 @@ export async function ingestCbvVocabularies(
       result.recordsProcessed += 1;
 
       if (!dryRun) {
-        // Insert into raw table
-        await db.insert(rawCbvVocabularies).values({
-          rawJson: vocab.data,
-        });
+        const itemKey = `cbv:${vocab.type}:${vocab.code}`;
+        const payload = { type: vocab.type, ...vocab.data };
+        const contentHash = sha256Hex(JSON.stringify(payload));
+        const existingHash = await getIngestProvenanceContentHash(
+          db as any,
+          PIPELINE_TYPE,
+          itemKey
+        );
+        const skipRaw = existingHash !== null && existingHash === contentHash;
+
+        // Insert into raw table (dedupe via provenance to avoid append-only duplication)
+        if (!skipRaw) {
+          await db.insert(rawCbvVocabularies).values({
+            rawJson: vocab.data,
+          });
+        } else {
+          result.recordsSkipped += 1;
+        }
 
         // Insert into canonical table
         await db.insert(cbvVocabularies).values({
@@ -133,27 +195,40 @@ export async function ingestCbvVocabularies(
           },
         });
 
+        await upsertProvenanceOrWarn(
+          db as any,
+          { itemKey, sourceLocator, retrievedAt, contentHash, traceId },
+          verbose
+        );
+
         result.recordsInserted += 1;
       }
 
       if (verbose && result.recordsProcessed % 20 === 0) {
-        serverLogger.info(`Processed ${result.recordsProcessed} vocabularies`);
+        serverLogger.info(`Processed ${result.recordsProcessed} vocabularies`, {
+          traceId,
+        });
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
       serverLogger.info(
-        `CBV vocabularies ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
+        `CBV vocabularies ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`,
+        { traceId }
       );
     }
   } catch (error) {
     result.success = false;
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
-    if (verbose) {
-      serverLogger.error("CBV vocabularies ingestion failed:", errorMessage);
-    }
+    await serverLogger.error(error, {
+      traceId,
+      code: "INGEST-06_CBV_VOCABULARIES",
+      classification: "ingest",
+      affectedFiles: ["server/ingest/INGEST-06_cbv_digital_link.ts"],
+      failingInputs: { pipelineType: PIPELINE_TYPE, stage: "cbv_vocabularies" },
+    });
   }
 
   return result;
@@ -164,6 +239,7 @@ export async function ingestDigitalLinkTypes(
 ): Promise<IngestResult> {
   const startTime = Date.now();
   const { dryRun = false, limit, verbose = false } = options;
+  const traceId = options.traceId ?? crypto.randomUUID();
   const result: IngestResult = {
     success: true,
     recordsProcessed: 0,
@@ -180,21 +256,24 @@ export async function ingestDigitalLinkTypes(
     }
 
     if (verbose) {
-      serverLogger.info("Starting Digital Link types ingestion");
+      serverLogger.info("Starting Digital Link types ingestion", { traceId });
     }
 
-    const filePath = path.join(
-      process.cwd(),
+    const sourceLocator = path.join(
       "data",
       "digital_link",
       "linktypes.json"
     );
+    const filePath = path.join(process.cwd(), sourceLocator);
+    const retrievedAt = getRetrievedAtIso(filePath);
     const linkTypesData = loadJsonFile<Record<string, DigitalLinkTypeData>>(filePath);
 
     const linkTypes = Object.entries(linkTypesData);
 
     if (verbose) {
-      serverLogger.info(`Loaded ${linkTypes.length} Digital Link types`);
+      serverLogger.info(`Loaded ${linkTypes.length} Digital Link types`, {
+        traceId,
+      });
     }
 
     for (const [linkType, linkData] of linkTypes) {
@@ -208,10 +287,23 @@ export async function ingestDigitalLinkTypes(
       result.recordsProcessed += 1;
 
       if (!dryRun) {
-        // Insert into raw table
-        await db.insert(rawDigitalLinkTypes).values({
-          rawJson: linkData,
-        });
+        const itemKey = `digital_link:${linkType}`;
+        const contentHash = sha256Hex(JSON.stringify({ linkType, ...linkData }));
+        const existingHash = await getIngestProvenanceContentHash(
+          db as any,
+          PIPELINE_TYPE,
+          itemKey
+        );
+        const skipRaw = existingHash !== null && existingHash === contentHash;
+
+        // Insert into raw table (dedupe via provenance to avoid append-only duplication)
+        if (!skipRaw) {
+          await db.insert(rawDigitalLinkTypes).values({
+            rawJson: linkData,
+          });
+        } else {
+          result.recordsSkipped += 1;
+        }
 
         // Insert into canonical table
         await db.insert(digitalLinkTypes).values({
@@ -229,27 +321,40 @@ export async function ingestDigitalLinkTypes(
           },
         });
 
+        await upsertProvenanceOrWarn(
+          db as any,
+          { itemKey, sourceLocator, retrievedAt, contentHash, traceId },
+          verbose
+        );
+
         result.recordsInserted += 1;
       }
 
       if (verbose && result.recordsProcessed % 10 === 0) {
-        serverLogger.info(`Processed ${result.recordsProcessed} link types`);
+        serverLogger.info(`Processed ${result.recordsProcessed} link types`, {
+          traceId,
+        });
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
       serverLogger.info(
-        `Digital Link types ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
+        `Digital Link types ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`,
+        { traceId }
       );
     }
   } catch (error) {
     result.success = false;
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
-    if (verbose) {
-      serverLogger.error("Digital Link types ingestion failed:", errorMessage);
-    }
+    await serverLogger.error(error, {
+      traceId,
+      code: "INGEST-06_DIGITAL_LINK_TYPES",
+      classification: "ingest",
+      affectedFiles: ["server/ingest/INGEST-06_cbv_digital_link.ts"],
+      failingInputs: { pipelineType: PIPELINE_TYPE, stage: "digital_link_types" },
+    });
   }
 
   return result;
@@ -260,13 +365,16 @@ export async function ingestCbvDigitalLink(
 ): Promise<IngestResult> {
   const { verbose = false } = options;
   const startTime = Date.now();
+  const traceId = options.traceId ?? crypto.randomUUID();
 
   if (verbose) {
-    serverLogger.info("=== INGEST-06: CBV Vocabularies & Digital Link Types ===");
+    serverLogger.info("=== INGEST-06: CBV Vocabularies & Digital Link Types ===", {
+      traceId,
+    });
   }
 
-  const cbvResult = await ingestCbvVocabularies(options);
-  const linkResult = await ingestDigitalLinkTypes(options);
+  const cbvResult = await ingestCbvVocabularies({ ...options, traceId });
+  const linkResult = await ingestDigitalLinkTypes({ ...options, traceId });
 
   const combinedResult: IngestResult = {
     success: cbvResult.success && linkResult.success,
@@ -279,11 +387,17 @@ export async function ingestCbvDigitalLink(
   };
 
   if (verbose) {
-    serverLogger.info("\n=== INGEST-06 Summary ===");
-    serverLogger.info(`CBV Vocabularies: ${cbvResult.recordsInserted}`);
-    serverLogger.info(`Digital Link Types: ${linkResult.recordsInserted}`);
-    serverLogger.info(`Total: ${combinedResult.recordsInserted} records`);
-    serverLogger.info(`Duration: ${combinedResult.duration}ms`);
+    serverLogger.info("\n=== INGEST-06 Summary ===", { traceId });
+    serverLogger.info(`CBV Vocabularies: ${cbvResult.recordsInserted}`, {
+      traceId,
+    });
+    serverLogger.info(`Digital Link Types: ${linkResult.recordsInserted}`, {
+      traceId,
+    });
+    serverLogger.info(`Total: ${combinedResult.recordsInserted} records`, {
+      traceId,
+    });
+    serverLogger.info(`Duration: ${combinedResult.duration}ms`, { traceId });
   }
 
   return combinedResult;
