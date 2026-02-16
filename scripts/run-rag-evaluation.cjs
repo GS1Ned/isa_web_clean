@@ -65,8 +65,11 @@ function normalizeSslValue(value) {
     return { rejectUnauthorized: false };
   }
 
-  // Default: enable SSL without verification if unknown value
-  return { rejectUnauthorized: false };
+  throw new Error(
+    `Unsupported SSL mode "${value}" in DATABASE_URL. ` +
+      `Use one of: true, false, required, disabled, verify-ca, verify-full, skip-verify, ` +
+      `or a JSON SSL object.`
+  );
 }
 
 function buildMysqlConfigFromUrl(databaseUrl) {

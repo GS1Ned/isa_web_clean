@@ -17,8 +17,8 @@ scopes=(
 
 # Pattern format: "NAME:::REGEX"
 patterns=(
-  "private_key_block:::BEGIN (RSA|OPENSSH|EC) PRIVATE KEY"
-  "mysql_url_with_creds:::\\bmysql:\\/\\/[^:\\s/]+:[^@\\s/]{12,}@"
+  "private_key_block:::BEGIN (RSA |OPENSSH |EC )?PRIVATE KEY"
+  "mysql_url_with_creds:::\\bmysql:\\/\\/[^:\\s/]+:[^@\\s/]+@([0-9]{1,3}(\\.[0-9]{1,3}){3}|[^\\s/:]+\\.[^\\s/:]+)"
   "hardcoded_password:::password\\s*[:=]\\s*['\\\"][^'\\\"]{6,}['\\\"]"
   "hardcoded_api_key:::api[_-]?key\\s*[:=]\\s*['\\\"][^'\\\"]{10,}['\\\"]"
   "openai_like_key:::\\bsk-[A-Za-z0-9]{20,}\\b"
