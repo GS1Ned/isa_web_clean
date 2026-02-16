@@ -1,27 +1,51 @@
 # Repository Tree
 
-Generated on: 2026-02-09T04:54:34Z
+Generated on: 2026-02-16T04:51:48Z
 
 ```
 .
+├── .amazonq
+│   ├── default.json
+│   └── rules
+│       ├── agent-context.md
+│       ├── canonical_documents_rules.md
+│       ├── mcp-usage.md
+│       └── memory-bank
+│           ├── guidelines.md
+│           ├── product.md
+│           ├── structure.md
+│           └── tech.md
+├── .codex
+│   └── config.toml
+├── .env.example
 ├── .eslintrc.server.json
 ├── .github
 │   ├── PULL_REQUEST_TEMPLATE.md
+│   ├── copilot-instructions.md
 │   └── workflows
-│       ├── catalogue-checks.yml
-│       ├── console-check.yml
-│       ├── generate-embeddings-optimized.yml
-│       ├── generate-embeddings.yml
+│       ├── ask-isa-runtime-smoke.yml
+│       ├── ask-isa-smoke.yml
+│       ├── catalogue-checks.yml.disabled
+│       ├── console-check.yml.disabled
+│       ├── generate-embeddings-optimized.yml.disabled
+│       ├── generate-embeddings.yml.disabled
 │       ├── iron-gate.yml.disabled
+│       ├── q-branch-ci.yml
+│       ├── refactoring-validation.yml
 │       ├── repo-tree.yml
-│       ├── update-gs1-efrag-catalogue.yml
+│       ├── schema-validation.yml
+│       ├── update-gs1-efrag-catalogue.yml.disabled
 │       └── validate-docs.yml
 ├── .gitignore
 ├── .gitkeep
 ├── .markdownlint.json
+├── .mcp.json
 ├── .pat_test
 ├── .prettierignore
 ├── .prettierrc
+├── .vscode
+│   └── mcp.json
+├── AGENTS.md
 ├── AGENT_START_HERE.md
 ├── EU_ESG_to_GS1_Mapping_v1.1
 │   ├── CHANGELOG.md
@@ -54,6 +78,7 @@ Generated on: 2026-02-09T04:54:34Z
 │       ├── completeness_matrix.csv
 │       ├── consistency_report.txt
 │       └── placeholder_scan.txt
+├── ISA_MAP.md
 ├── README.md
 ├── REPO_TREE.md
 ├── _golden_gate_roadmaps_move_map.json
@@ -104,7 +129,6 @@ Generated on: 2026-02-09T04:54:34Z
 │       │   ├── NewsTimeline.test.tsx.disabled
 │       │   ├── NewsTimeline.tsx
 │       │   ├── NewsTimelineItem.tsx
-│       │   ├── NotificationCenter.tsx
 │       │   ├── PageLayout.tsx
 │       │   ├── PipelineStatusBanner.tsx
 │       │   ├── RecommendedResources.tsx
@@ -190,8 +214,6 @@ Generated on: 2026-02-09T04:54:34Z
 │       │   ├── AIGapAnalysisWizard.tsx
 │       │   ├── About.tsx
 │       │   ├── AdminAnalyticsDashboard.tsx
-│       │   ├── AdminCellarIngestion.tsx
-│       │   ├── AdminCellarSyncMonitor.tsx
 │       │   ├── AdminEUDRSeeder.tsx
 │       │   ├── AdminEvidenceVerification.tsx
 │       │   ├── AdminFeedbackDashboard.tsx
@@ -292,11 +314,11 @@ Generated on: 2026-02-09T04:54:34Z
 │       │       ├── CoverageAnalytics.tsx
 │       │       └── ObservabilityDashboard.tsx
 │       └── select-fix.css
-├── codemods
 ├── components.json
 ├── config
 │   ├── catalogue_sources.json
 │   ├── governance
+│   │   ├── canonical_docs_allowlist.json
 │   │   └── golden-gate.policy.json
 │   └── isa-catalogue
 │       └── policy.json
@@ -354,19 +376,16 @@ Generated on: 2026-02-09T04:54:34Z
 │   ├── gs1_web_vocab
 │   │   └── gs1Voc.jsonld
 │   ├── gs1nl
-│   │   ├── benelux-diy-datamodel-3.1.34.1-file1.xlsx
-│   │   ├── benelux-diy-datamodel-3.1.34.1-file2.xlsx
-│   │   ├── benelux-diy-datamodel-3.1.34.1-file3.xlsx
 │   │   ├── benelux-fmcg-datamodel-3.1.34.2.xlsx
 │   │   ├── benelux-healthcare-datamodel-3.1.31.xlsx
 │   │   ├── diy_datamodel_content.json
 │   │   ├── fashion_dpp_guidance_content.json
 │   │   ├── fmcg_datamodel_content.json
 │   │   ├── healthcare_datamodel_content.json
-│   │   ├── sustainability_guidance_content.json
-│   │   └── toelichting-op-velden-1.23.pdf
+│   │   └── sustainability_guidance_content.json
 │   ├── metadata
 │   │   ├── REGISTRY_LOCK.md
+│   │   ├── artifact_move_manifest_2026-02-14.json
 │   │   ├── dataset_registry.json
 │   │   ├── dataset_registry.schema.json
 │   │   ├── dataset_registry_v1.0.0_BACKUP.json
@@ -387,312 +406,174 @@ Generated on: 2026-02-09T04:54:34Z
 │                   ├── GS1 Data Source Datamodel 3.1.33.xlsx
 │                   ├── benelux-fmcg-data-model-31335-nederlands.xlsx
 │                   ├── common-echo-datamodel_3133.xlsx
-│                   ├── gs1-data-source-datamodel-3133.zip
 │                   ├── overview_of_validation_rules_for_the_benelux-31334.xlsx
 │                   └── supporting
 ├── db
 │   └── sql
 │       └── check_esrs_count.sql
 ├── docs
-│   ├── ADVISORY_DIFF_METRICS.md
-│   ├── ADVISORY_METHOD.md
-│   ├── ADVISORY_OUTPUTS.md
-│   ├── ADVISORY_UI_NOTES.md
 │   ├── AGENT_COLLABORATION_SUMMARY.md
 │   ├── ALERTING_SYSTEM_DESIGN.md
-│   ├── ALIGNMENT_CHECK_2026_01_03.md
-│   ├── ALTERNATIVE_FUTURES_EXPLORATION.md
-│   ├── API_REFERENCE.md
-│   ├── ASK_ISA_GUARDRAILS.md
-│   ├── ASK_ISA_QUERY_LIBRARY.md
-│   ├── ASK_ISA_QUERY_LIBRARY_v1.md
-│   ├── ASK_ISA_TEST_RESULTS.md
 │   ├── Autonomous_Development_Plan.md
-│   ├── BASELINE_V2_DECISION_GRADE.md
 │   ├── CELLAR_INGESTION_DEPLOYMENT.md
-│   ├── CGPT-01_INTEGRATION_REPORT.md
 │   ├── CHANGELOG.md
 │   ├── CHANGELOG_FOR_CHATGPT.md
-│   ├── CHANGELOG_SUMMARY.md
-│   ├── CHATGPT_COLLABORATION_ANALYSIS.md
 │   ├── CHATGPT_INTEGRATION_CONTRACT.md
 │   ├── CHATGPT_INTEGRATION_WORKFLOW.md
-│   ├── CHATGPT_WORK_PARCEL_02_ASK_ISA_EXPANSION.md
-│   ├── CHATGPT_WORK_PARCEL_SUMMARY.md
 │   ├── CI_TESTING.md
+│   ├── CLAUDE_CODE_CONTEXT.md
+│   ├── CLAUDE_CODE_ONBOARDING.md
 │   ├── CLEANUP_REPORT.md
-│   ├── CODEX_DELEGATION_SPEC.md
-│   ├── COMPLETION_SUMMARY.md
 │   ├── COORDINATION_WORKFLOW.md
-│   ├── CRITICAL_EVENTS_TAXONOMY.md
 │   ├── CRON_QUICK_START.md
-│   ├── CRON_SETUP_GUIDE.md
 │   ├── DATASETS_CATALOG.json
-│   ├── DATASETS_CATALOG.md
 │   ├── DATASET_CANDIDATES_DETAILED.md
 │   ├── DATASET_PRIORITY_ANALYSIS.md
-│   ├── DAY1_COMPLETION_REPORT.md
 │   ├── DECISION_BRIEF_ESRS_SCHEMA_MISMATCH.md
 │   ├── DECISION_CONTEXT_ANALYSIS.md
 │   ├── DEMO_NARRATIVES.md
-│   ├── DEPLOYMENT.md
 │   ├── DEPLOYMENT_GUIDE.md
-│   ├── DEVELOPMENT_PROGRESS_2026-02-01.md
-│   ├── DEVELOPMENT_SESSION_2026-02-01.md
 │   ├── Data_Quality_Updates_Plan.md
 │   ├── Dutch_Initiatives_Data_Model.md
 │   ├── EMBEDDING_OPTIMIZATION_ANALYSIS.md
 │   ├── EMBEDDING_PIPELINE_OPTIMIZATION.md
-│   ├── EMBEDDING_QUALITY_IMPROVEMENT_REPORT.md
 │   ├── EMBEDDING_WORKFLOW_OPTIMIZATION_REPORT.md
-│   ├── ENHANCED_EMBEDDING_SCHEMA.md
-│   ├── ESG_Hub_MVP_Polish_Plan.md
 │   ├── ESG_INTEGRATION_FINAL_REPORT.md
-│   ├── FEATURE_DISCOVERY_REPORT.md
-│   ├── FILE_SYSTEM_MEMORY_ARCHITECTURE.md
-│   ├── FINAL_ISA_GRADE_RESCORE.md
-│   ├── FINAL_RESCORE_POST_PIPELINE.md
-│   ├── GATING_QUESTIONS_EVIDENCE_INVENTORY.md
 │   ├── GITHUB_PROVISIONING_REPORT.md
 │   ├── GITHUB_PUSH_WORKFLOW.md
-│   ├── GOVERNANCE_FINAL_SUMMARY.md
-│   ├── GOVERNANCE_PHASE_2_3_REPORT.md
-│   ├── GOVERNANCE_SELF_CHECK_2025-12-17.md
 │   ├── GS1_ARTEFACTS_ALIGNMENT_VALIDATION.md
-│   ├── GS1_Attribute_Mapper_Technical_Specification.md
 │   ├── GS1_BRAND_RESEARCH_NOTES.md
-│   ├── GS1_DATA_MODELS.md
-│   ├── GS1_DOCUMENTS_DATASETS_ANALYSIS.md
 │   ├── GS1_EU_PCF_EXTRACTION_NOTES.md
 │   ├── GS1_EU_PCF_INTEGRATION_SUMMARY.md
-│   ├── GS1_EU_PCF_TO_ESRS_E1_MAPPINGS.md
-│   ├── GS1_STYLE_COMPLIANCE_FINAL_REPORT.md
-│   ├── GS1_STYLE_GUIDE_INGESTION_SUMMARY.md
-│   ├── GS1_STYLE_QUICK_REFERENCE.md
 │   ├── INDEX.md
 │   ├── INGESTION_DELEGATION_SUMMARY.md
 │   ├── INGESTION_GUIDE.md
-│   ├── INSTRUCTION_EVALUATION_ANALYSIS.md
 │   ├── ISA_AGENT_COLLABORATION.md
 │   ├── ISA_BRAND_POSITIONING.md
 │   ├── ISA_COMPARATIVE_REFACTOR_GATE_PLAN.md
-│   ├── ISA_DATA_NEEDS_AND_PRIORITIES.md
-│   ├── ISA_DELIVERY_MODEL.md
-│   ├── ISA_DEVELOPMENT_STATUS.md
-│   ├── ISA_DOCUMENTATION_MAP.md
 │   ├── ISA_ESG_GS1_CANONICAL_MODEL.md
-│   ├── ISA_FUTURE_DEVELOPMENT_PLAN.md
-│   ├── ISA_First_Advisory_Report_GS1NL.md
-│   ├── ISA_First_Advisory_Report_GS1NL_v1.1_UPDATE.md
 │   ├── ISA_GS1_PRE_EXECUTION_PREPARATION.md
 │   ├── ISA_IMPLEMENTATION_EXECUTION_PLAN.md
-│   ├── ISA_INFORMATION_ARCHITECTURE.md
 │   ├── ISA_NEVER_AGAIN_ARCHITECTURAL_CONTRACT.md
-│   ├── ISA_NEWSHUB_EVOLUTION_SUMMARY.md
-│   ├── ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md
-│   ├── ISA_NEXT_PHASE_DEVELOPMENT_PLAN.md
 │   ├── ISA_PRODUCT_DIMENSIONS_ANALYSIS.md
-│   ├── ISA_PRODUCT_VISION.md
-│   ├── ISA_STATUS_SUMMARY_2025-12-19.md
 │   ├── ISA_STRATEGIC_CONTEXT_SYNTHESIS.md
 │   ├── ISA_STRATEGIC_DISCOVERY_REPORT.md
 │   ├── ISA_STRATEGIC_EVALUATION_QUALITY_MAPPING.md
 │   ├── ISA_STRATEGIC_PIVOT_REPORT.md
 │   ├── ISA_Strategic_Insights_from_Reports.md
-│   ├── ISA_UX_STRATEGY.md
-│   ├── ISA_V1_CONSISTENCY_FIXES.md
-│   ├── ISA_V1_FINAL_DELIVERY.md
-│   ├── ISA_V1_FORMALIZATION_COMPLETE.md
-│   ├── ISA_V1_FORMALIZATION_TARGETS.md
-│   ├── ISA_V1_HARDENING_COMPLETE.md
 │   ├── ISA_V1_LOCK_CHECKSUMS.txt
-│   ├── ISA_V1_LOCK_RECORD.md
 │   ├── ISA_VISUAL_BRANDING_DEVELOPMENT_PLAN.md
 │   ├── ISA_WORKFLOW_IMPROVEMENTS.md
-│   ├── KNOWN_FAILURE_MODES.md
 │   ├── MANUS_BEST_PRACTICES_EXECUTIVE_SUMMARY.md
 │   ├── MANUS_BEST_PRACTICES_FOR_ISA.md
-│   ├── MANUS_DAY1_EXECUTION_CHECKLIST.md
-│   ├── MANUS_EXECUTION_BRIEF.md
 │   ├── MANUS_OPTIMIZATION_IMPLEMENTATION_SUMMARY.md
 │   ├── META_PHASE_COMPLETION_REPORT.md
-│   ├── META_PHASE_STRATEGIC_EXPLORATION_PLAN.md
-│   ├── NEWS_HEALTH_MONITORING.md
-│   ├── NEWS_HUB_MATURITY_ANALYSIS.md
-│   ├── NEWS_PIPELINE.md
 │   ├── OPERATIONS_RUNBOOK.md
 │   ├── PHASE4_OPERATIONAL_READINESS_REPORT.md
-│   ├── PHASE_1_RESCORE.md
 │   ├── PHASE_2_ADDENDUM.md
 │   ├── PHASE_2_DESIGN_EVALUATION.md
 │   ├── PHASE_2_DESIGN_PROPOSAL.md
-│   ├── PHASE_2_RESCORE.md
-│   ├── PHASE_3_COMPLETION_REPORT.md
-│   ├── PHASE_3_STARTDOCUMENT.md
-│   ├── PHASE_8.3_INGESTION_WINDOW_COMPLETE.md
 │   ├── PHASE_8_1_VERIFICATION.md
-│   ├── PHASE_8_COMPLETE_SUMMARY.md
-│   ├── PHASE_8_NEWS_HUB_OBSERVABILITY_COMPLETE.md
-│   ├── PHASE_AB_UX_SUMMARY.md
 │   ├── PIPELINE_OBSERVABILITY_SPEC.md
 │   ├── PIPELINE_VALIDATION_REPORT.md
-│   ├── PRIORITY_1_COMPLETION_REPORT.md
 │   ├── PRIORITY_1_SCHEMA_DEBT.md
 │   ├── PRIORITY_2_BLOCKED.md
 │   ├── PRIORITY_3_COMPLETION_REPORT.md
 │   ├── PRODUCTION_DEPLOYMENT.md
 │   ├── PRODUCTION_IMPROVEMENTS_JAN_2026.md
 │   ├── PRODUCTION_READINESS.md
-│   ├── QUALITY_BAR.md
 │   ├── README.md
-│   ├── REGULATORY_CHANGE_LOG_ENTRY_GUIDE.md
-│   ├── REGULATORY_CHANGE_LOG_TEMPLATES.md
-│   ├── REGULATORY_LANDSCAPE_SUMMARIES.md
 │   ├── REPO_MAP.md
-│   ├── REPO_MAP_AFTER.md
-│   ├── REPO_MAP_BEFORE.md
 │   ├── REPO_MAP_FINAL.md
-│   ├── SELF_CHECK_EVIDENCE.md
 │   ├── SERVERLOGGER_INTEGRATION.md
-│   ├── STATUS.md
-│   ├── STRATEGIC_EVALUATION_2026-02-01.md
-│   ├── STRATEGIC_PIVOT_POC.md
 │   ├── STYLE_ALIGNMENT_RECOMMENDATIONS.md
-│   ├── STYLE_GUIDE_ADOPTION.md
-│   ├── TESTING_GUIDE.md
-│   ├── TRUST_RISK_ANALYSIS.md
-│   ├── UX_PHASE_A_SUMMARY.md
-│   ├── WIDE_RESEARCH_USAGE.md
+│   ├── TEST_FAILURE_TRIAGE.md
 │   ├── _AUDIT_FINDINGS.md
-│   ├── _CONSOLIDATION_VALIDATION.md
-│   ├── agent_collaboration
-│   │   └── MANUS_CHATGPT_PROTOCOL.md
-│   ├── archive
-│   │   └── root_docs
-│   │       ├── _inventory_db_migrations_20260207_212557.json
-│   │       ├── _move_manifest_db_migrations_20260207_212557.json
-│   │       ├── _move_manifest_evidence_generated_20260207_215427.json
-│   │       ├── _move_manifest_ops_config_cleanup_20260207_213615.json
-│   │       ├── _move_manifest_root_scripts_20260207_212036.json
-│   │       ├── _move_map_db_migrations_20260207_212557.json
-│   │       ├── _move_map_evidence_generated_20260207_215427.json
-│   │       ├── _move_map_ops_config_cleanup_20260207_213615.json
-│   │       └── _move_map_root_scripts_20260207_212036.json
+│   ├── agent
+│   │   ├── AGENT_MAP.md
+│   │   ├── MCP_POLICY.md
+│   │   └── MCP_RECIPES.md
+│   ├── architecture
+│   │   └── panel
+│   │       ├── ATAM_RISKS_SENSITIVITIES_TRADEOFFS.md
+│   │       ├── ATAM_SCENARIOS.md
+│   │       ├── ATAM_UTILITY_TREE.md
+│   │       ├── BASELINE_REVIEW_REPORT.md
+│   │       ├── GOVERNANCE_CONSOLIDATION_LOG.md
+│   │       ├── ISO25010_MAPPING.md
+│   │       ├── KICKOFF_PACKAGE.md
+│   │       ├── README.md
+│   │       ├── REPO_TIGHT_V5_COMPLETION.md
+│   │       └── _generated
+│   │           ├── ARCHITECTURE_SCORECARD.json
+│   │           ├── INBOUND_LINKS.json
+│   │           └── REF_INDEX.json
 │   ├── autonomous-session-2025-12-17-critical-events.md
-│   ├── autonomous-session-2025-12-17.md
-│   ├── data
-│   │   └── EXTERNAL_ARTEFACTS.md
-│   ├── datasets
-│   │   ├── EXTERNAL_GS1_AND_ESG_REPOS_ARCHIVE2.md
-│   │   └── HOW_TO_QUERY_ARCHIVE2_INDEX.md
 │   ├── datasets-catalog.schema.json
-│   ├── efrag_xbrl_research.md
+│   ├── decisions
+│   │   ├── CONFLICTS_PLAN_DECISIONS_2026-02-10.md
+│   │   └── DECISION_LOG.md
 │   ├── eurlex_research.md
 │   ├── evidence
-│   │   ├── CRITICAL_FILES_CANDIDATES.md
-│   │   ├── DOC_AUTHORITY_MAP.md
-│   │   ├── ENTRYPOINTS.md
-│   │   ├── EVIDENCE_INDEX.md
 │   │   ├── EXEC_GRAPH.mmd
-│   │   ├── ISA_ACCEPTANCE_CRITERIA_v1.md
-│   │   ├── ISA_EVIDENCE_PACK_v0.md
-│   │   ├── ISA_EXECUTION_MAP.md
-│   │   ├── ISA_IRON_DOCSET_AND_CRITICAL_PATH_DECISION_DRAFT_v0.md
-│   │   ├── ISA_JOURNEY_TRACES_v0.md
-│   │   ├── ISA_JOURNEY_TRACES_v1.md
-│   │   ├── ISA_SOURCES_REGISTRY_v0.md
-│   │   ├── _benchmarks
-│   │   │   ├── ISA_EXTERNAL_BENCHMARK_NOTES_v1.md
-│   │   │   └── ISA_EXTERNAL_BENCHMARK_NOTES_v2.md
-│   │   ├── _research
-│   │   │   ├── ISA_CURRENT_ARCHITECTURE_BRIEF_v0.md
-│   │   │   ├── ISA_RESEARCH_PLAN_v1.md
-│   │   │   └── ISA_RESEARCH_PLAN_v2.md
 │   │   └── generated
 │   │       ├── _generated
 │   │       │   ├── CATALOGUE_ENTRYPOINTS_STATUS.json
-│   │       │   ├── CATALOGUE_ENTRYPOINTS_STATUS.md
 │   │       │   ├── CENSUS.json
-│   │       │   ├── CENSUS_DIFF.md
 │   │       │   ├── DOCSET_MAP.csv
 │   │       │   ├── GS1_EFRAG_CATALOGUE.csv
 │   │       │   ├── GS1_EFRAG_CATALOGUE.json
-│   │       │   ├── GS1_EFRAG_CATALOGUE_INDEX.md
-│   │       │   ├── LARGE_ASSETS.md
-│   │       │   ├── SUBDIR_SUMMARY.md
 │   │       │   └── isa_catalogue_latest
 │   │       │       ├── files
-│   │       │       ├── index.md
 │   │       │       └── summary.json
 │   │       └── inventory
 │   │           ├── INVENTORY_AFTER.csv
 │   │           ├── INVENTORY_BEFORE.csv
 │   │           └── INVENTORY_FINAL.csv
 │   ├── governance
-│   │   ├── AUDIT_EXECUTION_MODE.md
-│   │   ├── CLUSTER_REGISTRY.json
-│   │   ├── CLUSTER_REGISTRY.md
-│   │   ├── DATE_CORRECTION_ACTIONS.md
-│   │   ├── DATE_INTEGRITY_AUDIT.md
+│   │   ├── CREDENTIALS_VERIFICATION.md
+│   │   ├── CRITICAL_FILES_CANDIDATES.md
+│   │   ├── DOC_AUTHORITY_MAP.md
+│   │   ├── ENTRYPOINTS.md
+│   │   ├── EVIDENCE_INDEX.md
+│   │   ├── EVIDENCE_LEDGER.md
+│   │   ├── GITHUB_WORKFLOW.md
 │   │   ├── INDEX.md
-│   │   ├── IRON_KNOWLEDGE_MAP.md
 │   │   ├── IRON_PROTOCOL.md
-│   │   ├── IRON_VALIDATION_PLAN.md
+│   │   ├── ISA_ACCEPTANCE_CRITERIA_v1.md
 │   │   ├── ISA_DEVELOPMENT_PLAYBOOK.md
 │   │   ├── ISA_MANUS_PROJECT_GOVERNANCE.md
+│   │   ├── ISA_ULTIMATE_VISION.md
 │   │   ├── KNOWN_FAILURE_MODES.md
+│   │   ├── LARGE_ASSETS.md
 │   │   ├── LIVING_DOCUMENTATION_POLICY.md
 │   │   ├── LLM_STRUCTURAL_RISK_ASSESSMENT.md
+│   │   ├── MANUAL_PREFLIGHT.md
+│   │   ├── NO_GATES_WINDOW.md
 │   │   ├── OPEN_QUESTIONS.md
-│   │   ├── PHASE4_CLOSEOUT_REPORT.md
-│   │   ├── PHASE4_READINESS_REPORT.md
+│   │   ├── PLANNING_POLICY.md
 │   │   ├── PLANNING_TRACEABILITY_CANON.md
+│   │   ├── PROGRAM_PLAN.md
 │   │   ├── SCOPE_DECISIONS.md
+│   │   ├── SECRET_RISK_FINDINGS.md
 │   │   ├── TEMPORAL_GUARDRAILS.md
-│   │   ├── VALIDATION_SUMMARY.md
 │   │   ├── WORK_PRIORITIZATION.md
 │   │   ├── _root
-│   │   │   ├── GOVERNANCE.md
 │   │   │   └── ISA_GOVERNANCE.md
-│   │   ├── agent-prompts
-│   │   │   ├── AUTONOMOUS_DEVELOPMENT_SUMMARY.md
-│   │   │   ├── CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md
-│   │   │   ├── CHATGPT_PROMPT_INGEST-03.md
-│   │   │   ├── CHATGPT_UPDATE_PROMPT.md
-│   │   │   ├── DELEGATION_PACKAGE_INGEST-03.md
-│   │   │   └── ORCHESTRATION_PROMPT.md
-│   │   └── reviews
-│   │       ├── dual-core-poc-evaluation.md
-│   │       ├── task1_review.md
-│   │       └── task3_review.md
-│   ├── gs1_research
-│   │   ├── README.md
-│   │   ├── README.pdf
-│   │   ├── STRATEGIC_FOCUS_SELECTION.md
-│   │   ├── decision_support_feasibility.md
-│   │   ├── executive_summary.md
-│   │   ├── executive_summary.pdf
-│   │   ├── feasibility_assessment.md
-│   │   ├── feasibility_findings.md
-│   │   ├── gs1_process_synthesis.md
-│   │   ├── gs1_process_synthesis.pdf
-│   │   ├── gsmp_manual_notes.md
-│   │   ├── hardest_questions_decision_tensions.md
-│   │   ├── hardest_questions_decision_tensions.pdf
-│   │   ├── isa_relevance_mapping.md
-│   │   ├── isa_relevance_mapping.pdf
-│   │   └── research_gs1_standards_development.md
+│   │   ├── agent-prompt-governance.md
+│   │   ├── credentials_presence.md
+│   │   ├── governance-iron-protocol.md
+│   │   └── planning_artifacts
+│   │       ├── CAPABILITY_DOCUMENTATION_REFACTOR_PLAN.md
+│   │       ├── CAPABILITY_REFACTOR_SUMMARY.md
+│   │       ├── ENV_KEY_REGISTRY.json
+│   │       ├── PHASE_1_PROGRESS_REPORT.md
+│   │       ├── PHASE_2_PROGRESS_SUMMARY.md
+│   │       ├── PRE_ARCHITECTURE_REVIEW_PLAN.md
+│   │       └── WORK_COMPLETED_SUMMARY.md
 │   ├── gsmp_manual.pdf
 │   ├── gsmp_manual.txt
-│   ├── isa_architecture.png
-│   ├── isa_cicd_pipeline.png
-│   ├── isa_data_flow.png
-│   ├── isa_implementation_timeline.png
 │   ├── isa_research_findings.md
-│   ├── legacy
-│   │   ├── CHATGPT_DOCS_SHA256SUMS.txt
-│   │   ├── CHATGPT_PROMPT_WORK_PARCEL_02.txt
-│   │   └── STABILIZATION_REPORT_2026-01-04.md
 │   ├── misc
 │   │   └── _root
 │   │       └── README.md
@@ -703,35 +584,242 @@ Generated on: 2026-02-09T04:54:34Z
 │   ├── planning
 │   │   ├── BACKLOG.csv
 │   │   ├── INDEX.md
-│   │   └── PLANNING_POLICY.md
+│   │   ├── NEXT_ACTIONS.json
+│   │   └── refactoring
+│   │       ├── CANONICAL_CONTENT_MAP.md
+│   │       ├── CAPABILITY_CONFLICTS.md
+│   │       ├── CAPABILITY_DOCS_INVENTORY.json
+│   │       ├── COMPLETION_SUMMARY.md
+│   │       ├── CONTRACT_COMPLETENESS.json
+│   │       ├── EVIDENCE_MARKERS.json
+│   │       ├── EXECUTION_SUMMARY.md
+│   │       ├── FILE_INVENTORY.json
+│   │       ├── FINAL_STATUS_REPORT.md
+│   │       ├── MASTER_REFACTORING_PLAN.md
+│   │       ├── MASTER_REFACTORING_PLAN_V2_ENHANCED.md
+│   │       ├── MASTER_REFACTORING_PLAN_V3_ENHANCED.md
+│   │       ├── MOVE_EXECUTION_LOG.json
+│   │       ├── MOVE_PLAN.json
+│   │       ├── PHASE_0_REPORT.md
+│   │       ├── PHASE_0_SUMMARY.json
+│   │       ├── PHASE_1_REPORT.md
+│   │       ├── PHASE_1_SUMMARY.json
+│   │       ├── PHASE_2_COMPLETION_SUMMARY.md
+│   │       ├── PHASE_2_PLANNING_REPORT.md
+│   │       ├── PHASE_3_PROGRESS.md
+│   │       ├── PHASE_3_SUMMARY.md
+│   │       ├── PHASE_4_SUMMARY.json
+│   │       ├── QUALITY_SCORECARDS.json
+│   │       ├── REFACTORING_COMPLETE.json
+│   │       ├── REFACTORING_STATUS.md
+│   │       ├── SEMANTIC_VALIDATION.json
+│   │       ├── SESSION_2026-02-12_SUMMARY.md
+│   │       └── V3_COMPLETION_SUMMARY.md
+│   ├── quality
+│   │   └── schemas
+│   │       ├── architecture-scorecard.schema.json
+│   │       ├── catalogue.schema.json
+│   │       ├── error-budget-status.schema.json
+│   │       ├── governance.schema.json
+│   │       ├── observability.schema.json
+│   │       ├── perf.schema.json
+│   │       ├── rag-eval.schema.json
+│   │       ├── reliability.schema.json
+│   │       ├── security-gate.schema.json
+│   │       ├── slo-policy-check.schema.json
+│   │       └── test-summary.schema.json
 │   ├── reference
 │   │   ├── ISA_DEVELOPMENT_RUBRIC.md
-│   │   ├── ISA_REFERENCE_DOSSIER.md
 │   │   └── REPO_ASSESSMENT_HOWTO.md
-│   ├── references
-│   │   └── gs1
-│   │       ├── GS1-Style-Guide.pdf
-│   │       ├── GS1_STYLE_GUIDE_EXTRACT.md
-│   │       └── ISA_TOP_20_STYLE_RULES.md
+│   ├── research
+│   │   ├── isa-deep-research
+│   │   │   └── 2026-02-15
+│   │   │       ├── ANTI_PATTERNS.md
+│   │   │       ├── ARCHITECTURE_BENCHMARK.md
+│   │   │       ├── CANDIDATES.md
+│   │   │       ├── DOCS_AND_STRUCTURE_GOLD.md
+│   │   │       ├── FINDINGS.md
+│   │   │       ├── ISA_ACTION_PLAN.md
+│   │   │       ├── ISA_BASELINE.md
+│   │   │       ├── PLAN.md
+│   │   │       ├── benchmarks.json
+│   │   │       └── raw
+│   │   │           ├── candidate_pool.json
+│   │   │           ├── github_discovery_queries.json
+│   │   │           ├── sentiment_sources.json
+│   │   │           ├── top12_repo_metadata.json
+│   │   │           └── top5_forensic_paths.json
+│   │   └── oss-benchmarks
+│   │       └── 2026-02-15
+│   │           ├── ANTI_PATTERNS.md
+│   │           ├── CANDIDATES.md
+│   │           ├── FINDINGS.md
+│   │           ├── ISA_ACTION_PLAN.md
+│   │           ├── ISA_BASELINE.md
+│   │           ├── PLAN.md
+│   │           ├── benchmarks.json
+│   │           └── raw
+│   │               ├── github_search_candidates.json
+│   │               ├── top12_repo_metadata.json
+│   │               └── top5_forensic_paths.json
 │   ├── research_findings_poc_pivot.md
-│   ├── screenshots
-│   │   └── news-hub-enhanced-filters.md
 │   ├── spec
+│   │   ├── ADVISORY
+│   │   │   ├── ADVISORY_DIFF_METRICS.md
+│   │   │   ├── ADVISORY_METHOD.md
+│   │   │   ├── ADVISORY_OUTPUTS.md
+│   │   │   ├── ADVISORY_UI_NOTES.md
+│   │   │   ├── ALIGNMENT_CHECK_2026_01_03.md
+│   │   │   ├── API_REFERENCE.md
+│   │   │   ├── ARCHITECTURE.md
+│   │   │   ├── CHANGELOG_SUMMARY.md
+│   │   │   ├── CHATGPT_WORK_PARCEL_SUMMARY.md
+│   │   │   ├── COMPLETION_SUMMARY.md
+│   │   │   ├── DAY1_COMPLETION_REPORT.md
+│   │   │   ├── FEATURE_DISCOVERY_REPORT.md
+│   │   │   ├── FILE_SYSTEM_MEMORY_ARCHITECTURE.md
+│   │   │   ├── GS1_STYLE_COMPLIANCE_FINAL_REPORT.md
+│   │   │   ├── GS1_STYLE_GUIDE_INGESTION_SUMMARY.md
+│   │   │   ├── GS1_STYLE_QUICK_REFERENCE.md
+│   │   │   ├── INDEX.md
+│   │   │   ├── ISA_CORE_CONTRACT.md
+│   │   │   ├── ISA_DELIVERY_MODEL.md
+│   │   │   ├── ISA_FUTURE_DEVELOPMENT_PLAN.md
+│   │   │   ├── ISA_First_Advisory_Report_GS1NL.md
+│   │   │   ├── ISA_First_Advisory_Report_GS1NL_v1.1_UPDATE.md
+│   │   │   ├── ISA_PRODUCT_VISION.md
+│   │   │   ├── ISA_REFERENCE_DOSSIER.md
+│   │   │   ├── ISA_UX_STRATEGY.md
+│   │   │   ├── ISA_V1_CONSISTENCY_FIXES.md
+│   │   │   ├── ISA_V1_FINAL_DELIVERY.md
+│   │   │   ├── ISA_V1_FORMALIZATION_COMPLETE.md
+│   │   │   ├── ISA_V1_FORMALIZATION_TARGETS.md
+│   │   │   ├── ISA_V1_HARDENING_COMPLETE.md
+│   │   │   ├── ISA_V1_LOCK_RECORD.md
+│   │   │   ├── MANUS_DAY1_EXECUTION_CHECKLIST.md
+│   │   │   ├── MANUS_EXECUTION_BRIEF.md
+│   │   │   ├── PHASE_AB_UX_SUMMARY.md
+│   │   │   ├── QUALITY_BAR.md
+│   │   │   ├── REGULATORY_CHANGE_LOG_ENTRY_GUIDE.md
+│   │   │   ├── REGULATORY_CHANGE_LOG_TEMPLATES.md
+│   │   │   ├── REGULATORY_LANDSCAPE_SUMMARIES.md
+│   │   │   ├── RUNTIME_CONTRACT.md
+│   │   │   ├── STRATEGIC_PIVOT_POC.md
+│   │   │   ├── STYLE_GUIDE_ADOPTION.md
+│   │   │   ├── UX_PHASE_A_SUMMARY.md
+│   │   │   ├── _CONSOLIDATION_VALIDATION.md
+│   │   │   ├── efrag_xbrl_research.md
+│   │   │   └── repo-change-control-release.md
+│   │   ├── ADVISORY.md
 │   │   ├── ARCHITECTURE.md
+│   │   ├── ASK_ISA
+│   │   │   ├── AGENT_MAP.md
+│   │   │   ├── API_REFERENCE.md
+│   │   │   ├── ASK_ISA_GUARDRAILS.md
+│   │   │   ├── ASK_ISA_QUERY_LIBRARY.md
+│   │   │   ├── ASK_ISA_QUERY_LIBRARY_v1.md
+│   │   │   ├── ASK_ISA_RUNTIME_CONTRACT.md
+│   │   │   ├── ASK_ISA_SMOKE_RUNBOOK.md
+│   │   │   ├── ASK_ISA_TEST_RESULTS.md
+│   │   │   ├── CAPABILITY_SPEC.md
+│   │   │   ├── CHATGPT_WORK_PARCEL_02_ASK_ISA_EXPANSION.md
+│   │   │   ├── DEPLOYMENT.md
+│   │   │   ├── DEVELOPMENT_PROGRESS_2026-02-01.md
+│   │   │   ├── DEVELOPMENT_SESSION_2026-02-01.md
+│   │   │   ├── EMBEDDING_QUALITY_IMPROVEMENT_REPORT.md
+│   │   │   ├── ENHANCED_EMBEDDING_SCHEMA.md
+│   │   │   ├── IMPLEMENTATION_GUIDE.md
+│   │   │   ├── ISA_DATA_NEEDS_AND_PRIORITIES.md
+│   │   │   ├── ISA_DEVELOPMENT_STATUS.md
+│   │   │   ├── META_PHASE_STRATEGIC_EXPLORATION_PLAN.md
+│   │   │   ├── RUNTIME_CONTRACT.md
+│   │   │   ├── STRATEGIC_EVALUATION_2026-02-01.md
+│   │   │   ├── TESTING_GUIDE.md
+│   │   │   ├── TROUBLESHOOTING.md
+│   │   │   └── TRUST_RISK_ANALYSIS.md
+│   │   ├── ASK_ISA.md
+│   │   ├── CATALOG
+│   │   │   ├── CATALOGUE_ENTRYPOINTS_STATUS.md
+│   │   │   ├── DATASETS_CATALOG.md
+│   │   │   ├── GS1_DOCUMENTS_DATASETS_ANALYSIS.md
+│   │   │   ├── GS1_EFRAG_CATALOGUE_INDEX.md
+│   │   │   ├── ISA_INFORMATION_ARCHITECTURE.md
+│   │   │   ├── ISA_MASTER_SPEC.md
+│   │   │   ├── ISA_STATUS_SUMMARY_2025-12-19.md
+│   │   │   ├── MULTI_REGULATION_COMPARISON_SUMMARY.md
+│   │   │   ├── RUNTIME_CONTRACT.md
+│   │   │   ├── catalogue-source-registry.md
+│   │   │   └── index.md
+│   │   ├── CATALOG.md
 │   │   ├── CONFLICT_REGISTER.md
-│   │   ├── DATA_MODEL.md
 │   │   ├── DECISION_LOG_PHASE3.md
+│   │   ├── DEPLOYMENT_GUIDE.md
 │   │   ├── DEPRECATION_MAP.md
 │   │   ├── EPCIS_CBV_INTEGRATION_SUMMARY.md
+│   │   ├── ESRS_MAPPING
+│   │   │   ├── ALTERNATIVE_FUTURES_EXPLORATION.md
+│   │   │   ├── CGPT-01_INTEGRATION_REPORT.md
+│   │   │   ├── CHATGPT_COLLABORATION_ANALYSIS.md
+│   │   │   ├── DATA_MODEL.md
+│   │   │   ├── ESG_Hub_MVP_Polish_Plan.md
+│   │   │   ├── GS1_DATA_MODELS.md
+│   │   │   ├── GS1_EU_PCF_TO_ESRS_E1_MAPPINGS.md
+│   │   │   ├── INGESTION.md
+│   │   │   ├── INGESTION_SUMMARY_REPORT.md
+│   │   │   ├── ISA_NEXT_PHASE_DEVELOPMENT_PLAN.md
+│   │   │   ├── KNOWN_FAILURE_MODES.md
+│   │   │   ├── PRIORITY_1_COMPLETION_REPORT.md
+│   │   │   ├── RUNTIME_CONTRACT.md
+│   │   │   ├── STATUS.md
+│   │   │   ├── WIDE_RESEARCH_USAGE.md
+│   │   │   ├── isa-core-architecture.md
+│   │   │   └── test-failure-analysis-2025-12-17.md
+│   │   ├── ESRS_MAPPING.md
 │   │   ├── EURLEX_SCRAPER_FIX.md
 │   │   ├── EXTERNAL_REFERENCES.md
 │   │   ├── GS1_ARTEFACT_PROCESSING.md
-│   │   ├── INDEX.md
-│   │   ├── INGESTION.md
 │   │   ├── INGESTION_DELIVERABLES_INDEX.md
-│   │   ├── INGESTION_SUMMARY_REPORT.md
+│   │   ├── INTEGRATION_CONTRACTS.md
 │   │   ├── ISA_CAPABILITY_MAP.md
-│   │   ├── ISA_MASTER_SPEC.md
+│   │   ├── KNOWLEDGE_BASE
+│   │   │   ├── GS1_Attribute_Mapper_Technical_Specification.md
+│   │   │   ├── IRON_KNOWLEDGE_MAP.md
+│   │   │   ├── ISA_DOCUMENTATION_MAP.md
+│   │   │   ├── RUNTIME_CONTRACT.md
+│   │   │   └── data-knowledge-model.md
+│   │   ├── KNOWLEDGE_BASE.md
+│   │   ├── NEWS_HUB
+│   │   │   ├── API_REFERENCE.md
+│   │   │   ├── BASELINE_V2_DECISION_GRADE.md
+│   │   │   ├── CAPABILITY_SPEC.md
+│   │   │   ├── CHROMIUM_INSTALLATION_GUIDE.md
+│   │   │   ├── CODEX_DELEGATION_SPEC.md
+│   │   │   ├── CRITICAL_EVENTS_TAXONOMY.md
+│   │   │   ├── CRON_DEPLOYMENT.md
+│   │   │   ├── CRON_SETUP_GUIDE.md
+│   │   │   ├── FINAL_ISA_GRADE_RESCORE.md
+│   │   │   ├── FINAL_RESCORE_POST_PIPELINE.md
+│   │   │   ├── INSTRUCTION_EVALUATION_ANALYSIS.md
+│   │   │   ├── ISA_NEWSHUB_AUDIT_UPDATED.md
+│   │   │   ├── ISA_NEWSHUB_EVOLUTION_SUMMARY.md
+│   │   │   ├── ISA_NEWSHUB_TARGET_DESIGN.md
+│   │   │   ├── ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md
+│   │   │   ├── ISA_NEWS_OVERVIEW.md
+│   │   │   ├── NEWS_HEALTH_MONITORING.md
+│   │   │   ├── NEWS_HUB_MATURITY_ANALYSIS.md
+│   │   │   ├── NEWS_PIPELINE.md
+│   │   │   ├── PHASE_1_RESCORE.md
+│   │   │   ├── PHASE_2_RESCORE.md
+│   │   │   ├── PHASE_3_COMPLETION_REPORT.md
+│   │   │   ├── PHASE_3_STARTDOCUMENT.md
+│   │   │   ├── PHASE_8.3_INGESTION_WINDOW_COMPLETE.md
+│   │   │   ├── PHASE_8_COMPLETE_SUMMARY.md
+│   │   │   ├── PHASE_8_NEWS_HUB_OBSERVABILITY_COMPLETE.md
+│   │   │   ├── RESEARCH_FINDINGS_NEWS_SOURCES.md
+│   │   │   ├── RUNTIME_CONTRACT.md
+│   │   │   ├── autonomous-session-2025-12-17.md
+│   │   │   └── research-dutch-sources.md
+│   │   ├── NEWS_HUB.md
 │   │   ├── PRODUCTION_READINESS.md
 │   │   ├── QUICK_START_INGESTION.md
 │   │   ├── README.md
@@ -740,34 +828,19 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   ├── TYPESCRIPT_FIX_SUMMARY.md
 │   │   ├── TYPESCRIPT_NOTES.md
 │   │   ├── WEBHOOK_INTEGRATION.md
-│   │   ├── agent-prompt-governance.md
-│   │   ├── catalogue-source-registry.md
-│   │   ├── data-knowledge-model.md
-│   │   ├── evaluation-governance-reproducibility.md
-│   │   ├── governance-iron-protocol.md
+│   │   ├── contracts
+│   │   │   └── ASK_ISA_RUNTIME_CONTRACT.md
 │   │   ├── ingestion-update-lifecycle.md
-│   │   ├── isa-core-architecture.md
-│   │   ├── newshub
-│   │   │   ├── ISA_NEWSHUB_AUDIT_UPDATED.md
-│   │   │   ├── ISA_NEWSHUB_TARGET_DESIGN.md
-│   │   │   ├── ISA_NEWS_OVERVIEW.md
-│   │   │   ├── RESEARCH_FINDINGS_NEWS_SOURCES.md
-│   │   │   └── research-dutch-sources.md
 │   │   ├── observability-tracing-feedback.md
 │   │   ├── ops
-│   │   │   ├── CHROMIUM_INSTALLATION_GUIDE.md
-│   │   │   ├── CRON_DEPLOYMENT.md
 │   │   │   └── HEALTH_MONITORING_ENHANCEMENTS.md
-│   │   ├── regulations
-│   │   │   └── MULTI_REGULATION_COMPARISON_SUMMARY.md
-│   │   ├── repo-change-control-release.md
 │   │   ├── retrieval-embeddings-grounding.md
 │   │   └── ux-user-journey.md
-│   ├── templates
-│   │   ├── ADVISORY_REPORT_TEMPLATE.md
-│   │   ├── GAP_ANALYSIS_TEMPLATE.md
-│   │   └── RECOMMENDATION_TEMPLATE.md
-│   ├── test-failure-analysis-2025-12-17.md
+│   ├── sre
+│   │   ├── ERROR_BUDGET_POLICY.md
+│   │   ├── SLO_CATALOG.md
+│   │   └── _generated
+│   │       └── error_budget_status.json
 │   ├── test-failure-resolution-2025-12-17.md
 │   └── typescript-cleanup-2026-01-02.md
 ├── drizzle
@@ -786,6 +859,7 @@ Generated on: 2026-02-09T04:54:34Z
 │   ├── 0012_chunky_kulan_gath.sql
 │   ├── 0013_stale_morg.sql
 │   ├── 0014_corpus_governance.sql
+│   ├── 0014_daffy_lake.sql
 │   ├── meta
 │   │   ├── 0003_snapshot.json
 │   │   ├── 0004_snapshot.json
@@ -798,6 +872,7 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   ├── 0011_snapshot.json
 │   │   ├── 0012_snapshot.json
 │   │   ├── 0013_snapshot.json
+│   │   ├── 0014_snapshot.json
 │   │   └── _journal.json
 │   ├── meta_backup_20251219_172648
 │   │   ├── 0000_snapshot.json
@@ -806,6 +881,8 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   └── _journal.json
 │   ├── migrations
 │   │   ├── .gitkeep
+│   │   ├── 0015_ultimate_dataset_registry.sql
+│   │   ├── 0016_add_regulatory_tracking_columns.sql
 │   │   ├── _root
 │   │   │   └── manual_ingest_02_04_05_06.sql
 │   │   ├── _server
@@ -824,6 +901,7 @@ Generated on: 2026-02-09T04:54:34Z
 │   ├── schema_gs1_esrs_mappings.ts
 │   ├── schema_gs1_eu_pcf.ts
 │   ├── schema_news_history.ts
+│   ├── schema_news_hub.ts
 │   ├── schema_news_recommendations.ts
 │   ├── schema_pipeline_observability.ts
 │   ├── schema_regulatory_change_log.ts
@@ -857,10 +935,117 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   └── 20260206T192047Z
 │   │       ├── safe_move_plan_v6.json
 │   │       └── safe_move_plan_v6.md
+│   ├── docs
+│   │   ├── _benchmarks
+│   │   │   ├── ISA_EXTERNAL_BENCHMARK_NOTES_v1.md
+│   │   │   └── ISA_EXTERNAL_BENCHMARK_NOTES_v2.md
+│   │   ├── _research
+│   │   │   ├── ISA_CURRENT_ARCHITECTURE_BRIEF_v0.md
+│   │   │   ├── ISA_RESEARCH_PLAN_v1.md
+│   │   │   └── ISA_RESEARCH_PLAN_v2.md
+│   │   ├── agent-prompts
+│   │   │   ├── AUTONOMOUS_DEVELOPMENT_SUMMARY.md
+│   │   │   ├── CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md
+│   │   │   ├── CHATGPT_PROMPT_INGEST-03.md
+│   │   │   ├── CHATGPT_UPDATE_PROMPT.md
+│   │   │   ├── DELEGATION_PACKAGE_INGEST-03.md
+│   │   │   └── ORCHESTRATION_PROMPT.md
+│   │   ├── agent_collaboration
+│   │   │   └── MANUS_CHATGPT_PROTOCOL.md
+│   │   ├── archive
+│   │   │   ├── planning
+│   │   │   │   └── PHASE_1.md
+│   │   │   └── root_docs
+│   │   │       ├── _inventory_db_migrations_20260207_212557.json
+│   │   │       ├── _move_manifest_db_migrations_20260207_212557.json
+│   │   │       ├── _move_manifest_evidence_generated_20260207_215427.json
+│   │   │       ├── _move_manifest_ops_config_cleanup_20260207_213615.json
+│   │   │       ├── _move_manifest_root_scripts_20260207_212036.json
+│   │   │       ├── _move_map_db_migrations_20260207_212557.json
+│   │   │       ├── _move_map_evidence_generated_20260207_215427.json
+│   │   │       ├── _move_map_ops_config_cleanup_20260207_213615.json
+│   │   │       └── _move_map_root_scripts_20260207_212036.json
+│   │   ├── data
+│   │   │   └── EXTERNAL_ARTEFACTS.md
+│   │   ├── datasets
+│   │   │   ├── EXTERNAL_GS1_AND_ESG_REPOS_ARCHIVE2.md
+│   │   │   └── HOW_TO_QUERY_ARCHIVE2_INDEX.md
+│   │   ├── gs1_research
+│   │   │   ├── README.md
+│   │   │   ├── README.pdf
+│   │   │   ├── STRATEGIC_FOCUS_SELECTION.md
+│   │   │   ├── decision_support_feasibility.md
+│   │   │   ├── executive_summary.md
+│   │   │   ├── executive_summary.pdf
+│   │   │   ├── feasibility_assessment.md
+│   │   │   ├── feasibility_findings.md
+│   │   │   ├── gs1_process_synthesis.md
+│   │   │   ├── gs1_process_synthesis.pdf
+│   │   │   ├── gsmp_manual_notes.md
+│   │   │   ├── hardest_questions_decision_tensions.md
+│   │   │   ├── hardest_questions_decision_tensions.pdf
+│   │   │   ├── isa_relevance_mapping.md
+│   │   │   ├── isa_relevance_mapping.pdf
+│   │   │   └── research_gs1_standards_development.md
+│   │   ├── legacy
+│   │   │   ├── CHATGPT_DOCS_SHA256SUMS.txt
+│   │   │   ├── CHATGPT_PROMPT_WORK_PARCEL_02.txt
+│   │   │   └── STABILIZATION_REPORT_2026-01-04.md
+│   │   ├── references
+│   │   │   └── gs1
+│   │   │       ├── GS1_STYLE_GUIDE_EXTRACT.md
+│   │   │       └── ISA_TOP_20_STYLE_RULES.md
+│   │   ├── reviews
+│   │   │   ├── dual-core-poc-evaluation.md
+│   │   │   ├── task1_review.md
+│   │   │   └── task3_review.md
+│   │   ├── screenshots
+│   │   │   └── news-hub-enhanced-filters.md
+│   │   └── templates
+│   │       ├── ADVISORY_REPORT_TEMPLATE.md
+│   │       ├── GAP_ANALYSIS_TEMPLATE.md
+│   │       └── RECOMMENDATION_TEMPLATE.md
+│   ├── governance
+│   │   ├── ACCELERATED_COMPLETION_PLAN.md
+│   │   ├── AUDIT_EXECUTION_MODE.md
+│   │   ├── CENSUS_DIFF.md
+│   │   ├── CLUSTER_REGISTRY.json
+│   │   ├── CLUSTER_REGISTRY.md
+│   │   ├── COMPLETE_REFACTORING_PLAN.md
+│   │   ├── COMPLETION_DELIVERY_PLAN.md
+│   │   ├── DATE_CORRECTION_ACTIONS.md
+│   │   ├── DATE_INTEGRITY_AUDIT.md
+│   │   ├── DAY_0_AUDIT_RESULTS.md
+│   │   ├── DAY_0_EXECUTION.md
+│   │   ├── DAY_1_EXECUTION_SUMMARY.md
+│   │   ├── DAY_1_PLAN.md
+│   │   ├── DAY_1_PROGRESS.md
+│   │   ├── GATING_QUESTIONS_EVIDENCE_INVENTORY.md
+│   │   ├── GOVERNANCE.md
+│   │   ├── GOVERNANCE_FINAL_SUMMARY.md
+│   │   ├── GOVERNANCE_PHASE_2_3_REPORT.md
+│   │   ├── GOVERNANCE_SELF_CHECK_2025-12-17.md
+│   │   ├── IRON_VALIDATION_PLAN.md
+│   │   ├── ISA_EVIDENCE_PACK_v0.md
+│   │   ├── ISA_EXECUTION_MAP.md
+│   │   ├── ISA_IRON_DOCSET_AND_CRITICAL_PATH_DECISION_DRAFT_v0.md
+│   │   ├── ISA_JOURNEY_TRACES_v0.md
+│   │   ├── ISA_JOURNEY_TRACES_v1.md
+│   │   ├── ISA_SOURCES_REGISTRY_v0.md
+│   │   ├── PHASE4_CLOSEOUT_REPORT.md
+│   │   ├── PHASE4_READINESS_REPORT.md
+│   │   ├── REFACTORING_EXECUTION_SUMMARY.md
+│   │   ├── REFACTORING_PLAN.md
+│   │   ├── REPOSITORY_INVESTIGATION_STATUS.md
+│   │   ├── SCHEMA_MISMATCH_ANALYSIS.md
+│   │   ├── SELF_CHECK_EVIDENCE.md
+│   │   ├── SUBDIR_SUMMARY.md
+│   │   ├── VALIDATION_SUMMARY.md
+│   │   ├── evaluation-governance-reproducibility.md
+│   │   └── forge_vars_where_used.md
 │   ├── manus-tasks
 │   │   └── docs__research__manus_research_findings.md
 │   ├── next-step-scan
-│   │   ├── repo_scan.json
 │   │   └── repo_scan_summary.txt
 │   ├── phase-reports
 │   │   ├── CHATGPT_DELEGATION_PHASE1.md
@@ -924,13 +1109,6 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   ├── tasks__for_chatgpt__INGEST-06_cbv_vocabularies.md
 │   │   ├── tasks__for_chatgpt___CHATGPT_INSTRUCTIONS.md
 │   │   ├── test-failure-analysis.md
-│   │   ├── test-outputs
-│   │   │   ├── test-final-run.txt
-│   │   │   ├── test-final.txt
-│   │   │   ├── test-json-output.txt
-│   │   │   ├── test-null-stacktrace-fix.txt
-│   │   │   ├── test-output.txt
-│   │   │   └── test-simple.txt
 │   │   ├── test-results__phase-7-frontend-integration-test.md
 │   │   ├── test-results__phase-8-roadmap-generator-test.md
 │   │   └── timeline-test-results.md
@@ -946,11 +1124,42 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   │   └── ISA_DEVELOPMENT_ROADMAP.md
 │   │   └── spec
 │   │       └── roadmap-evolution.md
+│   ├── server
+│   │   ├── ask-isa-enhanced.ts
+│   │   ├── automated-cellar-sync.ts
+│   │   ├── cellar-connector.test.ts
+│   │   ├── cellar-connector.ts
+│   │   ├── cellar-diagnostic.test.ts
+│   │   ├── cellar-ingestion-integration.test.ts
+│   │   ├── cellar-ingestion-router.ts
+│   │   ├── cellar-normalizer.test.ts
+│   │   ├── cellar-normalizer.ts
+│   │   ├── epcis-integration.test.ts
+│   │   ├── epcis-router.ts
+│   │   ├── epcis-ui.test.ts
+│   │   ├── epcis-xml-parser.ts
+│   │   ├── eudr-analyzer.ts
+│   │   ├── generate-all-embeddings-optimized.ts
+│   │   ├── generate-all-embeddings-v2.ts
+│   │   ├── generate-all-embeddings.ts
+│   │   ├── news-sources-phase3.ts
+│   │   ├── routers
+│   │   │   ├── batch-epcis.ts
+│   │   │   ├── benchmarking.ts
+│   │   │   ├── collaboration.ts
+│   │   │   ├── impact-simulator.ts
+│   │   │   ├── remediation.ts
+│   │   │   ├── stakeholder-dashboard.ts
+│   │   │   └── template-analytics.ts
+│   │   └── services
+│   │       └── ab-testing
+│   │           └── index.ts
 │   └── traceability-clean
 │       └── 20260206T194827Z
 │           ├── TRACEABILITY_MATRIX.cleaned.csv
 │           ├── traceability_clean_report.json
 │           └── traceability_clean_report.md
+├── isa_map.json
 ├── ops
 │   └── cron
 │       ├── .github
@@ -970,7 +1179,9 @@ Generated on: 2026-02-09T04:54:34Z
 ├── scripts
 │   ├── audit
 │   │   └── repo_assessment.sh
+│   ├── check-columns.ts
 │   ├── check-db-status.ts
+│   ├── check-env.js
 │   ├── create-dutch-initiatives-tables.sql
 │   ├── create-esrs-tables.ts
 │   ├── cron-generate-embeddings.sh
@@ -981,14 +1192,30 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   ├── ingest_gs1_eu_pcf_attributes.sql
 │   │   └── ingest_gs1_eu_pcf_code_lists.sql
 │   ├── dev
+│   │   ├── auto-sync-q-branch.sh
 │   │   ├── get-scope-stats.mjs
+│   │   ├── local-doctor.sh
 │   │   ├── manus-readiness-precheck.py
 │   │   ├── run-pipeline-verbose.mjs
+│   │   ├── setup-q-branch.sh
 │   │   ├── test-db-ssl.mjs
 │   │   ├── test-efrag-detail.mjs
 │   │   ├── test-efrag-pipeline.mjs
 │   │   └── test-xml-parser.mjs
+│   ├── docs
+│   │   └── ref_index.ts
+│   ├── env-check.ts
 │   ├── extract_advisory_v1.py
+│   ├── gates
+│   │   ├── canonical-docs-allowlist.sh
+│   │   ├── doc-code-validator.sh
+│   │   ├── governance-gate.sh
+│   │   ├── observability-contract.sh
+│   │   ├── perf-smoke.sh
+│   │   ├── reliability-smoke.sh
+│   │   ├── security-gate.sh
+│   │   ├── slo-policy-check.sh
+│   │   └── validate-proof-artifacts.sh
 │   ├── generate-api-docs.ts
 │   ├── generate_embeddings_standalone.ts
 │   ├── ingest_fashion_dpp_content.py
@@ -1014,20 +1241,51 @@ Generated on: 2026-02-09T04:54:34Z
 │   ├── migrate-scraper-health.sql
 │   ├── parse_gs1nl_datamodel.py
 │   ├── phase3_synthesis.py
+│   ├── probe
+│   │   ├── advisory_health.sh
+│   │   ├── ask_isa_smoke.py
+│   │   ├── catalog_health.sh
+│   │   ├── esrs_mapping_health.sh
+│   │   ├── knowledge_base_health.sh
+│   │   └── news_hub_health.sh
 │   ├── proto_crawl_catalogue.py
+│   ├── refactor
+│   │   ├── phase_0_final_pass.py
+│   │   ├── phase_0_inventory.py
+│   │   ├── phase_0_refine.py
+│   │   ├── phase_0_ultra.py
+│   │   ├── phase_1_contracts.py
+│   │   ├── phase_2_execute.py
+│   │   ├── phase_2_plan.py
+│   │   ├── phase_3_quality.py
+│   │   ├── phase_4_automation.py
+│   │   ├── phase_5_final_lock.py
+│   │   ├── score_contract_completeness.py
+│   │   ├── semantic_validator.py
+│   │   └── validate_gates.sh
 │   ├── run-all-ingestion.ts
 │   ├── run-ci-tests.sh
 │   ├── run-esrs-ingest.ts
 │   ├── run-integration-tests.sh
+│   ├── run-migration-simple.ts
+│   ├── run-migration.ts
 │   ├── run-rag-evaluation.cjs
 │   ├── run-unit-tests.sh
 │   ├── seed-golden-qa-pairs.cjs
 │   ├── seed-regulatory-change-log-sql.txt
 │   ├── seed-regulatory-change-log.ts
+│   ├── smoke.sh
+│   ├── sre
+│   │   ├── generate-error-budget-status.ts
+│   │   └── generate-evidence-catalogue.ts
+│   ├── test-report.ts
 │   ├── validate_advisory.py
 │   ├── validate_advisory_schema.cjs
 │   ├── validate_cluster_registry.py
 │   ├── validate_gs1_efrag_catalogue.py
+│   ├── validate_isa_deep_research_2026_02_15.sh
+│   ├── validate_mcp_agent_readiness.sh
+│   ├── validate_oss_benchmarks_2026_02_15.sh
 │   ├── validate_planning_and_traceability.py
 │   ├── validate_specs.py
 │   ├── validation
@@ -1075,7 +1333,6 @@ Generated on: 2026-02-09T04:54:34Z
 │   ├── alert-notification-service.ts
 │   ├── alert-system.test.ts
 │   ├── ask-isa-cache.ts
-│   ├── ask-isa-enhanced.ts
 │   ├── ask-isa-guardrails.test.ts
 │   ├── ask-isa-guardrails.ts
 │   ├── ask-isa-integration.test.ts
@@ -1085,18 +1342,10 @@ Generated on: 2026-02-09T04:54:34Z
 │   ├── auth.logout.test.ts
 │   ├── authority-model.test.ts
 │   ├── authority-model.ts
-│   ├── automated-cellar-sync.ts
 │   ├── batch-epcis-processor.ts
 │   ├── batch-generate-esrs-mappings.ts
 │   ├── bm25-search.ts
-│   ├── cellar-connector.test.ts
-│   ├── cellar-connector.ts
-│   ├── cellar-diagnostic.test.ts
-│   ├── cellar-ingestion-integration.test.ts
-│   ├── cellar-ingestion-router.ts
 │   ├── cellar-ingestion-scheduler.mjs
-│   ├── cellar-normalizer.test.ts
-│   ├── cellar-normalizer.ts
 │   ├── check-regulations.ts
 │   ├── citation-validation.ts
 │   ├── claim-citation-verifier.test.ts
@@ -1142,14 +1391,9 @@ Generated on: 2026-02-09T04:54:34Z
 │   ├── email-service.ts
 │   ├── embedding.test.ts
 │   ├── embedding.ts
-│   ├── epcis-integration.test.ts
-│   ├── epcis-router.ts
 │   ├── epcis-schema.json
-│   ├── epcis-ui.test.ts
-│   ├── epcis-xml-parser.ts
 │   ├── esrs-gs1-mapping.test.ts
 │   ├── esrs.test.ts
-│   ├── eudr-analyzer.ts
 │   ├── evaluation
 │   │   ├── evaluation-harness.test.ts
 │   │   ├── evaluation-harness.ts
@@ -1164,9 +1408,6 @@ Generated on: 2026-02-09T04:54:34Z
 │   ├── export.test.ts
 │   ├── gap-reasoning.test.ts
 │   ├── gap-reasoning.ts
-│   ├── generate-all-embeddings-optimized.ts
-│   ├── generate-all-embeddings-v2.ts
-│   ├── generate-all-embeddings.ts
 │   ├── generate-embeddings-enhanced.ts
 │   ├── generate-embeddings-optimized.ts
 │   ├── github-pat-validation.test.ts
@@ -1283,10 +1524,7 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   ├── ask-isa.ts
 │   │   ├── attribute-recommender.test.ts
 │   │   ├── attribute-recommender.ts
-│   │   ├── batch-epcis.ts
-│   │   ├── benchmarking.ts
 │   │   ├── citation-admin.ts
-│   │   ├── collaboration.ts
 │   │   ├── compliance-risks.ts
 │   │   ├── coverage-analytics.ts
 │   │   ├── cron.ts
@@ -1304,7 +1542,6 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   ├── gs1-attributes.test.ts
 │   │   ├── gs1-attributes.ts
 │   │   ├── gs1nl-attributes.ts
-│   │   ├── impact-simulator.ts
 │   │   ├── monitoring.ts
 │   │   ├── notification-preferences.ts
 │   │   ├── observability.ts
@@ -1312,16 +1549,13 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   ├── production-monitoring.ts
 │   │   ├── realtime.ts
 │   │   ├── regulatory-change-log.ts
-│   │   ├── remediation.ts
 │   │   ├── roadmap-export.ts
 │   │   ├── roadmap.ts
 │   │   ├── scoring.ts
 │   │   ├── scraper-health.test.ts
 │   │   ├── scraper-health.ts
-│   │   ├── stakeholder-dashboard.ts
 │   │   ├── standards-directory.test.ts
 │   │   ├── standards-directory.ts
-│   │   ├── template-analytics.ts
 │   │   └── templates.ts
 │   ├── routers-data-quality.ts
 │   ├── routers-webhook-config.ts
@@ -1339,8 +1573,6 @@ Generated on: 2026-02-09T04:54:34Z
 │   ├── seed-gs1-standards.ts
 │   ├── seed-production-regulations.mjs
 │   ├── services
-│   │   ├── ab-testing
-│   │   │   └── index.ts
 │   │   ├── authority-scoring
 │   │   │   └── index.ts
 │   │   ├── corpus-governance
@@ -1395,12 +1627,19 @@ Generated on: 2026-02-09T04:54:34Z
 │   │   └── advisory-output.schema.json
 │   └── types.ts
 ├── test-results
-│   └── ask-isa-mapping-test.md
+│   ├── ask-isa-mapping-test.md
+│   └── ci
+│       ├── governance.json
+│       ├── observability.json
+│       ├── perf.json
+│       ├── reliability.json
+│       ├── security-gate.json
+│       └── slo-policy-check.json
 ├── todo.md
 ├── tsconfig.json
 ├── vite.config.ts
 ├── vitest.config.ts
 └── vitest.setup.ts
 
-161 directories, 1238 files
+199 directories, 1438 files
 ```
