@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { recordIngestProvenance, sha256Hex } from "./provenance";
+import {
+  getIngestProvenanceContentHash,
+  recordIngestProvenance,
+  sha256Hex,
+} from "./provenance";
 
 describe("server/ingest/_core/provenance", () => {
   it("sha256Hex is deterministic and matches a known test vector", () => {
@@ -25,5 +29,13 @@ describe("server/ingest/_core/provenance", () => {
 
     expect(res.ok).toBe(false);
   });
-});
 
+  it("getIngestProvenanceContentHash returns existing hash when present", async () => {
+    const db = {
+      execute: async () => [[{ content_hash: "abc123" }]],
+    };
+
+    const hash = await getIngestProvenanceContentHash(db as any, "p1", "k1");
+    expect(hash).toBe("abc123");
+  });
+});
