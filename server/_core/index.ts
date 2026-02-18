@@ -9,6 +9,7 @@ import "./logger-wiring"; // Initialize persisted serverLogger
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
+import { traceIdMiddleware } from "./trace-id";
 import { performHealthCheck, performReadinessCheck } from "../health";
 import { serveStatic, setupVite } from "./vite";
 import { apiRateLimiter, authRateLimiter } from "./rate-limit";
@@ -50,6 +51,9 @@ async function startServer() {
 
   // Trust proxy for proper IP detection behind reverse proxy
   app.set('trust proxy', 1);
+
+  // Request correlation and trace id propagation (applies to all endpoints)
+  app.use(traceIdMiddleware);
 
   // Security headers (production only)
   if (process.env.NODE_ENV === "production") {

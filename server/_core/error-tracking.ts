@@ -254,6 +254,7 @@ export function errorHandlerMiddleware(
   next: any
 ): void {
   const context: ErrorContext = {
+    traceId: req?.traceId,
     requestPath: req.path,
     requestMethod: req.method,
     userAgent: req.get("user-agent"),
