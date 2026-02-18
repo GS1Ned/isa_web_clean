@@ -90,8 +90,20 @@ done
 echo "" >> "${LOG_FILE}"
 
 # Make sure local default branch exists and is up-to-date
-git checkout "${DEFAULT_BRANCH}" >/dev/null 2>&1 || git checkout -b "${DEFAULT_BRANCH}" "origin/${DEFAULT_BRANCH}"
-git pull --ff-only origin "${DEFAULT_BRANCH}"
+if git show-ref --verify --quiet "refs/heads/${DEFAULT_BRANCH}"; then
+  git checkout "${DEFAULT_BRANCH}"
+else
+  # If the branch exists on origin, fetch and create a local tracking branch
+  if git ls-remote --exit-code --heads origin "${DEFAULT_BRANCH}" >/dev/null 2>&1; then
+    git fetch origin "${DEFAULT_BRANCH}:${DEFAULT_BRANCH}" || true
+    git checkout "${DEFAULT_BRANCH}"
+  else
+    # Create a new local branch if no remote exists
+    git checkout -b "${DEFAULT_BRANCH}"
+  fi
+fi
+# Try to fast-forward pull; continue even if it fails
+git pull --ff-only origin "${DEFAULT_BRANCH}" || true
 
 # Process PRs in listed order
 for line in "${PR_LINES[@]}"; do
