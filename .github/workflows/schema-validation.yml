@@ -2,19 +2,25 @@ name: Schema Validation
 
 on:
   push:
-    branches: [main]
+    branches: [main, strict-no-console]
     paths:
       - 'test-results/ci/**/*.json'
       - 'docs/evidence/_generated/**/*.json'
       - 'docs/architecture/panel/_generated/**/*.json'
       - 'docs/quality/schemas/**/*.schema.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.md'
+      - 'scripts/validate_oss_benchmarks_2026_02_15.sh'
   pull_request:
-    branches: [main]
+    branches: [main, strict-no-console]
     paths:
       - 'test-results/ci/**/*.json'
       - 'docs/evidence/_generated/**/*.json'
       - 'docs/architecture/panel/_generated/**/*.json'
       - 'docs/quality/schemas/**/*.schema.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.md'
+      - 'scripts/validate_oss_benchmarks_2026_02_15.sh'
 
 jobs:
   validate-schemas:
@@ -65,6 +71,24 @@ jobs:
           else
             echo "⚠️  Architecture scorecard not yet generated"
           fi
+
+      - name: Validate OSS benchmarks package (2026-02-15)
+        run: |
+          set -euo pipefail
+          benchmarks_file="docs/research/oss-benchmarks/2026-02-15/benchmarks.json"
+          if [ ! -f "$benchmarks_file" ]; then
+            echo "STOP=missing_required_file:$benchmarks_file"
+            exit 1
+          fi
+
+          echo "Validating OSS benchmarks JSON against schema..."
+          ajv validate \
+            -s docs/quality/schemas/oss-benchmarks-2026-02-15.schema.json \
+            -d "$benchmarks_file" \
+            --strict=false || exit 1
+
+          echo "Running OSS benchmarks validator script..."
+          bash scripts/validate_oss_benchmarks_2026_02_15.sh
 
       - name: Report validation results
         if: always()

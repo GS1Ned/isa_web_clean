@@ -1,0 +1,60 @@
+name: release-artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_kind:
+        description: "Semantic version bump for the next isa-artifacts tag (based on the latest tag)."
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      artifact_scope:
+        description: "Which area the release represents (used for commit filtering in release notes and optional dataset version checks)."
+        required: true
+        type: choice
+        options:
+          - datasets
+          - schemas
+          - docs
+          - all
+      dry_run:
+        description: "If true, compute the next version and generate notes but do not tag or create a GitHub Release."
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Configure git identity (for annotated tags)
+        run: |
+          set -euo pipefail
+          git config user.name "gs1ned-isa-bot"
+          git config user.email "gs1ned-isa-bot@users.noreply.github.com"
+
+      - name: Release artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          args=(--release-kind "${{ inputs.release_kind }}" --artifact-scope "${{ inputs.artifact_scope }}")
+          if [[ "${{ inputs.dry_run }}" == "true" ]]; then
+            args+=(--dry-run)
+          fi
+          bash scripts/release-artifacts.sh "${args[@]}"
+

@@ -4,10 +4,12 @@ import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { initOtel } from "./otel";
 import "./logger-wiring"; // Initialize persisted serverLogger
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
+import { traceIdMiddleware } from "./trace-id";
 import { performHealthCheck, performReadinessCheck } from "../health";
 import { serveStatic, setupVite } from "./vite";
 import { apiRateLimiter, authRateLimiter } from "./rate-limit";
@@ -41,11 +43,17 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 }
 
 async function startServer() {
+  // Telemetry must initialize before requests are served, but must never block startup.
+  await initOtel();
+
   const app = express();
   const server = createServer(app);
 
   // Trust proxy for proper IP detection behind reverse proxy
   app.set('trust proxy', 1);
+
+  // Request correlation and trace id propagation (applies to all endpoints)
+  app.use(traceIdMiddleware);
 
   // Security headers (production only)
   if (process.env.NODE_ENV === "production") {

@@ -50,6 +50,54 @@ NODE
 
 echo "READY=json_parse_ok"
 
+# Evidence dates must be explicit (no empty strings).
+node - <<'NODE'
+import fs from 'node:fs';
+
+const p = 'docs/research/oss-benchmarks/2026-02-15/benchmarks.json';
+const obj = JSON.parse(fs.readFileSync(p, 'utf8'));
+
+const bad = [];
+
+function isNonEmptyString(v) {
+  return typeof v === 'string' && v.trim().length > 0;
+}
+
+const candidates = Array.isArray(obj.candidates) ? obj.candidates : [];
+for (let i = 0; i < candidates.length; i++) {
+  const why = Array.isArray(candidates[i]?.why_liked) ? candidates[i].why_liked : [];
+  for (let j = 0; j < why.length; j++) {
+    const v = why[j]?.evidence_date;
+    if (!isNonEmptyString(v)) bad.push({ where: `candidates[${i}].why_liked[${j}].evidence_date`, reason: 'empty_or_missing' });
+  }
+}
+
+const patterns = Array.isArray(obj.patterns) ? obj.patterns : [];
+for (let i = 0; i < patterns.length; i++) {
+  const evidence = Array.isArray(patterns[i]?.evidence) ? patterns[i].evidence : [];
+  for (let j = 0; j < evidence.length; j++) {
+    const v = evidence[j]?.date;
+    if (!isNonEmptyString(v)) bad.push({ where: `patterns[${i}].evidence[${j}].date`, reason: 'empty_or_missing' });
+  }
+}
+
+const actionPlan = Array.isArray(obj.action_plan) ? obj.action_plan : [];
+for (let i = 0; i < actionPlan.length; i++) {
+  const evidence = Array.isArray(actionPlan[i]?.evidence) ? actionPlan[i].evidence : [];
+  for (let j = 0; j < evidence.length; j++) {
+    const v = evidence[j]?.date;
+    if (!isNonEmptyString(v)) bad.push({ where: `action_plan[${i}].evidence[${j}].date`, reason: 'empty_or_missing' });
+  }
+}
+
+if (bad.length) {
+  process.stderr.write(`blank evidence dates found (use an explicit value like UNVERIFIED): ${JSON.stringify(bad, null, 2)}\n`);
+  process.exit(1);
+}
+NODE
+
+echo "READY=evidence_dates_ok"
+
 # Validate last_verified_date everywhere
 node - <<'NODE'
 import fs from 'node:fs';
@@ -101,6 +149,23 @@ if (bad.length) {
 NODE
 
 echo "READY=last_verified_date_ok"
+
+# Ensure markdown evidence lines don't ship with a blank "(date: )" placeholder.
+if command -v rg >/dev/null 2>&1; then
+  if rg -n -F "(date: )" "${BASE}" >/dev/null; then
+    rg -n -F "(date: )" "${BASE}" || true
+    echo "STOP=blank_evidence_date_in_docs"
+    exit 1
+  fi
+else
+  if grep -RInF "(date: )" "${BASE}" >/dev/null; then
+    grep -RInF "(date: )" "${BASE}" || true
+    echo "STOP=blank_evidence_date_in_docs"
+    exit 1
+  fi
+fi
+
+echo "READY=docs_dates_ok"
 
 # No-console gate (scoped). Regex uses an escaped dot to match the literal '.' character.
 pat='console\.'
