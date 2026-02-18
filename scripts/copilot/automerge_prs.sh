@@ -8,16 +8,8 @@ if [[ -z "${REPO_ROOT}" ]]; then
 fi
 
 cd "${REPO_ROOT}"
-
 LOG_DIR="./docs/planning/merge"
 LOG_FILE="${LOG_DIR}/PR_MERGE_AUTOPILOT_LOG.md"
-mkdir -p "${LOG_DIR}"
-
-echo "# PR Merge Autopilot Log" > "${LOG_FILE}"
-echo "" >> "${LOG_FILE}"
-echo "- started_at: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "${LOG_FILE}"
-echo "- repo: $(git remote get-url origin 2>/dev/null || echo unknown)" >> "${LOG_FILE}"
-echo "" >> "${LOG_FILE}"
 
 need_cmd () {
   command -v "$1" >/dev/null 2>&1 || { echo "STOP: missing command '$1'"; exit 1; }
@@ -48,6 +40,14 @@ fi
 
 # Fetch latest
 git fetch origin --prune
+
+# Create log directory and initialize the log AFTER ensuring the working tree is clean
+mkdir -p "${LOG_DIR}"
+echo "# PR Merge Autopilot Log" > "${LOG_FILE}"
+echo "" >> "${LOG_FILE}"
+echo "- started_at: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "${LOG_FILE}"
+echo "- repo: $(git remote get-url origin 2>/dev/null || echo unknown)" >> "${LOG_FILE}"
+echo "" >> "${LOG_FILE}"
 
 # Get open PRs (number, title, headRefName)
 PRS_JSON="$(gh pr list --state open --json number,title,headRefName)"
