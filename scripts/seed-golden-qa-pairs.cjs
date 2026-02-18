@@ -18,6 +18,67 @@ const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
 
 const mysql = require('mysql2/promise');
 
+const SSL_QUERY_KEYS = ["ssl", "sslmode", "ssl-mode", "sslMode"];
+
+function normalizeSslValue(value) {
+  if (!value) return undefined;
+
+  if (value.startsWith("{")) {
+    try {
+      const parsed = JSON.parse(value);
+      if (typeof parsed === "object" && parsed !== null) {
+        return parsed;
+      }
+    } catch {
+      // Not valid JSON, fall through to string parsing
+    }
+  }
+
+  const normalized = value.toLowerCase();
+
+  if (["true", "1", "required", "require"].includes(normalized)) {
+    return { rejectUnauthorized: false };
+  }
+
+  if (["false", "0", "disabled", "disable"].includes(normalized)) {
+    return undefined;
+  }
+
+  if (["verify-ca", "verify-full", "verify_ca", "verify_full"].includes(normalized)) {
+    return { rejectUnauthorized: true };
+  }
+
+  if (["skip-verify", "accept-invalid", "skip_verify", "accept_invalid"].includes(normalized)) {
+    return { rejectUnauthorized: false };
+  }
+
+  return { rejectUnauthorized: false };
+}
+
+function buildMysqlConfigFromUrl(databaseUrl) {
+  const url = new URL(databaseUrl);
+
+  const sslValue =
+    SSL_QUERY_KEYS.map((key) => url.searchParams.get(key)).find(Boolean) ??
+    null;
+  const ssl =
+    sslValue === null ? { rejectUnauthorized: true } : normalizeSslValue(sslValue);
+
+  const config = {
+    host: url.hostname,
+    port: url.port ? Number(url.port) : undefined,
+    user: url.username ? decodeURIComponent(url.username) : undefined,
+    password: url.password ? decodeURIComponent(url.password) : undefined,
+    database: url.pathname.replace(/^\//, ""),
+  };
+
+  if (ssl) {
+    config.ssl = ssl;
+  }
+
+  return config;
+}
+
 // Map our categories to the schema's domain field
 // Map our difficulty to schema's enum: easy, medium, hard
 const DIFFICULTY_MAP = {
@@ -448,15 +509,14 @@ const GOLDEN_QA_PAIRS = [
 
 async function seedGoldenQAPairs() {
   cliOut('🌱 Starting Golden QA Dataset Seed...\n');
-  
-  const conn = await mysql.createConnection({
-    host: 'gateway01.eu-central-1.prod.aws.tidbcloud.com',
-    port: 4000,
-    user: 'dtVAxSKn7P5nF6W.root',
-    password: 'qyjk6KJU2cT8Yjkb',
-    database: 'isa_db',
-    ssl: { rejectUnauthorized: true }
-  });
+
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) {
+    cliErr('❌ DATABASE_URL environment variable not set');
+    process.exit(1);
+  }
+
+  const conn = await mysql.createConnection(buildMysqlConfigFromUrl(databaseUrl));
 
   try {
     // Check current count

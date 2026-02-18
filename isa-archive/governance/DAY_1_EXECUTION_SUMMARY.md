@@ -103,7 +103,7 @@ Commented out 9 archived routers in `server/routers.ts`:
 
 **Evidence:**
 ```
-DATABASE_URL in file: mysql://dtVAxSKn7P5nF6W.root:qyjk6KJU2cT8Yjkb@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/isa_db
+DATABASE_URL in file: mysql://<redacted_user>:<redacted_password>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/isa_db
 DATABASE_URL loaded: mysql://...jouw-string-hier...
 ```
 
