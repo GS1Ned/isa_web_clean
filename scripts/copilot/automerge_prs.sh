@@ -120,7 +120,15 @@ for line in "${PR_LINES[@]}"; do
   echo "- started: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "${LOG_FILE}"
 
   # Fetch branch
-  git fetch origin "${pr_branch}:${pr_branch}" || git fetch origin "refs/heads/${pr_branch}:refs/heads/${pr_branch}"
+  # Stash any local changes to avoid checkout conflicts
+  STASHED=false
+  if [[ -n "$(git status --porcelain)" ]]; then
+    git stash push -u -m "automerge-autostash: ${pr_branch} $(date -u +"%Y%m%dT%H%M%SZ")" >/dev/null 2>&1 || true
+    STASHED=true
+  fi
+
+  # Fetch branch and create local ref if needed
+  git fetch origin "${pr_branch}:${pr_branch}" || git fetch origin "refs/heads/${pr_branch}:refs/heads/${pr_branch}" || true
 
   # Checkout PR branch
   git checkout "${pr_branch}"
@@ -168,6 +176,10 @@ for line in "${PR_LINES[@]}"; do
 
   # Return to default branch for next iteration
   git checkout "${DEFAULT_BRANCH}"
+  # Restore stashed changes if any
+  if [[ "${STASHED}" == "true" ]]; then
+    git stash pop --index >/dev/null 2>&1 || true
+  fi
 done
 
 echo "" >> "${LOG_FILE}"
