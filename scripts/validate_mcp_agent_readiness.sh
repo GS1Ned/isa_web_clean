@@ -23,6 +23,7 @@ required_files=(
   ".amazonq/rules/mcp-usage.md"
   ".amazonq/rules/agent-context.md"
   ".mcp.json"
+  "scripts/validate_mcp_connectivity.sh"
   "AGENTS.md"
   "AGENT_START_HERE.md"
 )
@@ -91,6 +92,14 @@ for doc in "AGENTS.md" "AGENT_START_HERE.md"; do
     fi
   fi
 done
+
+if [[ "${MCP_VALIDATE_CONNECTIVITY:-0}" == "1" ]]; then
+  echo ""
+  echo "Running optional MCP connectivity checks..."
+  if ! bash "scripts/validate_mcp_connectivity.sh"; then
+    fail "mcp_connectivity_validation_failed"
+  fi
+fi
 
 echo ""
 echo "DONE=mcp_agent_ready"

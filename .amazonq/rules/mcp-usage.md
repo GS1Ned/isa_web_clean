@@ -32,3 +32,5 @@ Policy fields:
 - No secrets: never log tokens/headers/cookies or private content from external sources.
 - No-console: do not add console logging in code or examples; log via evidence artifacts only.
 - Web sources: always record URL and retrieval date (UTC) for any external evidence.
+- Search-first behavior: use `filesystem.search_files` for repo discovery; if unavailable, fallback to `rg -n` and record the fallback in evidence.
+- GitHub auth safety: treat `GH_TOKEN` as user-level secret; validate only via local authenticated API call and never store literal token values in repo docs/config.

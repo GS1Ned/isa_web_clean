@@ -1,13 +1,14 @@
 # MCP Recipes (Canonical)
 Status: CANONICAL
-Last Updated: 2026-02-15
+Last Updated: 2026-02-18
 
 All recipes assume the policy in `docs/agent/MCP_POLICY.md`.
 
 ## Recipe: Investigate Bug With Reproduction (Playwright + Repo Truth)
 1. Establish repo truth.
   - Use `git` to confirm base branch and current status.
-  - Use `filesystem` to locate the suspected codepaths and configs.
+  - Use `filesystem.search_files` to locate suspected codepaths/configs.
+  - If path/text discovery is blocked, use `rg -n` as fallback and log the fallback in evidence.
 2. Reproduce deterministically.
   - Use `playwright` to reproduce the issue and capture:
     - screenshot(s)
@@ -46,7 +47,7 @@ Acceptance checks:
 4. Validate tool/config facts.
   - Use `openai_docs` for any Codex/MCP/OpenAI product claims that affect the implementation.
 5. Map into ISA with minimal diff.
-  - Use `filesystem` and `git` to implement the smallest adaptation in ISA code/docs.
+  - Use `filesystem.search_files` + `filesystem` + `git` to implement the smallest adaptation in ISA code/docs.
 6. Evidence log (no-console).
   - Append one entry with the key URLs, dates, and what was adopted (and why).
 
@@ -64,7 +65,7 @@ Acceptance checks:
   - Use `git` to confirm clean status and base branch.
   - Identify the smallest refactor boundary and success metric.
 2. Implement in small steps.
-  - Use `filesystem` to make incremental edits.
+  - Use `filesystem.search_files` to narrow scope, then `filesystem` to make incremental edits.
   - Use `git` after each step to keep diffs reviewable and to detect accidental churn.
 3. Run deterministic gates.
   - Run the repo’s preflight checks relevant to the change (typecheck/tests/gates).

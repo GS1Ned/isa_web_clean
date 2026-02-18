@@ -1,6 +1,6 @@
 # MCP Policy (Canonical)
 Status: CANONICAL
-Last Updated: 2026-02-15
+Last Updated: 2026-02-18
 
 ## Purpose And Scope
 This policy defines when ISA agents should use MCP servers, and how to log evidence without violating `strict-no-console` or leaking secrets.
@@ -33,6 +33,11 @@ Common ISA task mappings:
 - Repo refactor and evidence artifacts: `filesystem` + `git`.
 - Benchmark research and external comparison: `github` + `fetch` + `openai_docs`.
 - Scraping/DOM/repro work: `playwright` (use `fetch` when JS automation is not required).
+
+### Search-Capable MCP + Fallback
+- Primary search path in-repo: use `filesystem.search_files` first for file/path discovery.
+- Content search fallback: if `filesystem` is unavailable or incomplete for text matching, use `rg` (`rg -n "pattern" <path>`).
+- Always reflect the same evidence standards regardless of path: record searched paths, matched files, and UTC timestamp in evidence artifacts when the result is used for a claim.
 
 ## Evidence Logging (No-Console Compatible)
 Do not add console logging in code or examples.
@@ -69,10 +74,15 @@ User-level (never commit):
   - Amazon Q: global config under `~/.aws/amazonq/...`
   - Claude Code: user settings / `claude mcp` commands
 
+Token handling requirements:
+- Never commit or paste literal token values into repo files, prompts, or logs.
+- A token string cannot be trusted by format alone; validate by running an authenticated GitHub API request locally and only report pass/fail.
+
 ## Verification Checklist (Per Tool)
 Codex (CLI + VS Code):
 1. Confirm `.codex/config.toml` is picked up in this repo.
 2. Confirm MCP servers list includes: `filesystem`, `git`, `fetch`, `playwright`, `openai_docs`, `github`.
+3. Run `bash scripts/validate_mcp_connectivity.sh` for runtime connectivity checks.
 
 Amazon Q (VS Code):
 1. Confirm `.amazonq/default.json` exists.
@@ -81,3 +91,8 @@ Amazon Q (VS Code):
 Claude Code:
 1. Confirm `.mcp.json` exists at repo root.
 2. Confirm `claude mcp list` shows the server set (auth-dependent for `github`).
+
+Repo validation commands:
+- Baseline: `bash scripts/validate_mcp_agent_readiness.sh`
+- With runtime checks: `MCP_VALIDATE_CONNECTIVITY=1 bash scripts/validate_mcp_agent_readiness.sh`
+- GitHub auth in connectivity checks: uses `GH_TOKEN` first, then falls back to `gh auth token` when available.
