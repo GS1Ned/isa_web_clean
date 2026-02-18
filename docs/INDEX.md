@@ -18,6 +18,8 @@
 - **ATAM Scenarios:** `docs/architecture/panel/ATAM_SCENARIOS.md`
 - **ATAM Risks:** `docs/architecture/panel/ATAM_RISKS_SENSITIVITIES_TRADEOFFS.md`
 - **ISO/IEC 25010 Mapping:** `docs/architecture/panel/ISO25010_MAPPING.md`
+- **CI Index:** `docs/ci/INDEX.md`
+- **CI Testing Guide:** `docs/CI_TESTING.md`
 
 ### Governance
 - **Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
@@ -43,6 +45,8 @@
 - **Proof Schemas:** `docs/quality/schemas/*.schema.json`
 - **Test Results:** `test-results/ci/*.json`
 - **Evidence Catalogue:** `docs/evidence/_generated/catalogue.json`
+- **Research: ISA Deep Research (2026-02-15):** `docs/research/isa-deep-research/2026-02-15/`
+- **Research: OSS Benchmarks (2026-02-15):** `docs/research/oss-benchmarks/2026-02-15/`
 
 ## Planning
 - **Planning Index:** `docs/planning/INDEX.md`

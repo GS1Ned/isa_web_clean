@@ -1,76 +1,65 @@
 # CI Testing Guide
 
-This project ships a dedicated CI runner at `scripts/run-ci-tests.sh` to keep Vitest runs deterministic, capture full logs, and provide a concise failure summary without piping output through shell utilities.
+FACT
+- CI test entrypoints:
+  - `scripts/run-ci-tests.sh`
+  - `scripts/run-unit-tests.sh`
+  - `scripts/run-integration-tests.sh`
+- Package scripts:
+  - `pnpm test-ci`
+  - `pnpm test-ci:unit`
+  - `pnpm test-ci:integration`
 
 ## How the CI script works
 
-The script executes test phases in a strict order:
+`scripts/run-ci-tests.sh` runs two Vitest phases in a fixed order:
 
-1. **Guard/architecture checks** (if any guard tests exist)
-2. **Unit tests** (no database)
-3. **DB integration tests** (`RUN_DB_TESTS=true`)
-4. **External integration tests** (optional, `USE_INTEGRATION_MOCKS=false`)
+1. **Unit tests** via `scripts/run-unit-tests.sh`
+2. **Integration tests** via `scripts/run-integration-tests.sh` (sets `RUN_DB_TESTS=true`)
 
-Each phase runs with `--runInBand` and `--reporter=verbose`, and writes its full output to `logs/`. After every phase, the script records pass/fail status and prints a final summary with log locations. The script exits non-zero if any phase fails.
+Both phases produce JSON reports, and the script writes an aggregated summary via `scripts/test-report.ts`.
 
 ## Environment flags
 
-The script sets the following flags explicitly for each phase:
-
-- `RUN_DB_TESTS`
-  - `false` for unit tests (prevents DB-dependent suites from running)
-  - `true` for DB integration and external integration phases
-- `USE_INTEGRATION_MOCKS`
-  - `true` for unit and DB integration phases
-  - `false` for the optional external integration phase
-- `RUN_EXTERNAL_INTEGRATION_TESTS`
-  - When set to `true`, the external integration phase runs with real integrations
-  - When `false` or unset, the phase is skipped and recorded as `skipped`
+- `scripts/run-integration-tests.sh` sets `RUN_DB_TESTS=true`.
+- Database connectivity details are provided via the standard runtime environment variables (see `.env.example`).
 
 ## Running locally
 
-Run all CI phases (guard ➜ unit ➜ DB ➜ optional integration):
+Run the CI bundle (unit + integration) and write reports under `test-results/ci/`:
 
 ```bash
-pnpm test:ci
+pnpm test-ci
 ```
 
 Run only unit tests (no DB):
 
 ```bash
-pnpm test:ci:unit
+pnpm test-ci:unit
 ```
 
-Run only DB integration tests:
+Run only integration tests (DB expected):
 
 ```bash
-pnpm test:ci:db
+pnpm test-ci:integration
 ```
 
-Run external integrations explicitly:
+## Reports
 
-```bash
-RUN_EXTERNAL_INTEGRATION_TESTS=true pnpm test:ci
-```
+`pnpm test-ci` writes:
+- `test-results/ci/unit.json`
+- `test-results/ci/integration.json`
+- `test-results/ci/summary.json`
 
-## Logs and troubleshooting
+`pnpm test-ci:unit` and `pnpm test-ci:integration` accept:
+- `--report-file <path>`
+- `--coverage`
 
-Logs are written to `logs/`:
-
-- `logs/guard-tests.log`
-- `logs/unit-tests.log`
-- `logs/db-tests.log`
-- `logs/integration-tests.log`
-
-Common failure scenarios and where to look:
-
-- **Unit test failures**: Check `logs/unit-tests.log` for failing assertions and stack traces.
-- **DB integration failures**: Check `logs/db-tests.log` for connectivity, migration, or query errors.
-- **External integration failures**: Check `logs/integration-tests.log` for real API responses, rate limits, or auth issues.
-- **Guard/architecture failures**: Check `logs/guard-tests.log` for explicit guardrail violations or DB health issues.
+RECOMMENDATION
+- In CI, prefer `pnpm test-ci` so all reports land under `test-results/ci/` and can be schema-validated.
+- When debugging locally, open the JSON report(s) for the failing phase and re-run the exact Vitest command for faster iteration.
 
 ## CI integration notes
 
-- Use `pnpm test:ci` in CI to get consistent ordering and summaries.
-- The script is designed to fail fast: once a phase fails, later phases are skipped and recorded as `skipped`.
-- The final summary is printed to stdout for easy CI visibility, while full logs remain in `logs/`.
+- Use `pnpm test-ci` in CI to get consistent ordering and a single summary artifact.
+- `scripts/run-ci-tests.sh` exits non-zero if either phase fails.
