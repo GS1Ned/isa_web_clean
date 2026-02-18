@@ -56,11 +56,17 @@ CREATE TABLE error_ledger (
 
 ### 4. CI/CD Integration
 
-**File: `.github/workflows/console-check.yml`**
+**File: `scripts/gates/no-console-gate.sh`**
+- Scoped gate for forbidden console usage in code paths: `server/`, `client/`, `shared/`, `scripts/`
+- Intentionally does not scan `.github/` to avoid false positives from policy text
+
+**File: `.github/workflows/no-console-gate.yml`**
 - GitHub Actions workflow
-- Prevents new direct error or warning output in server code
-- Runs on pull requests affecting `server/**` or `scripts/**`
+- Runs on pull requests and pushes to `main` and `strict-no-console`
 - Fails CI if violations are found
+
+**Historical:** `.github/workflows/console-check.yml.disabled`
+- Legacy workflow kept disabled; replaced by the scoped gate above.
 
 **File: `.eslintrc.server.json`**
 - ESLint rules for server-side console usage
