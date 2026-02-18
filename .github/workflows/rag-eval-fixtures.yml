@@ -1,0 +1,41 @@
+name: rag-eval-fixtures
+
+on:
+  pull_request:
+    branches: [ main, strict-no-console ]
+    paths:
+      - "data/metadata/rag_eval_fixtures_v1.json"
+      - "scripts/run-rag-evaluation-fixtures.cjs"
+      - "docs/quality/schemas/rag-eval.schema.json"
+      - ".github/workflows/rag-eval-fixtures.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  rag-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Generate fixture-based rag-eval artifact
+        run: |
+          set -euo pipefail
+          node scripts/run-rag-evaluation-fixtures.cjs \
+            --fixtures data/metadata/rag_eval_fixtures_v1.json \
+            --out test-results/ci/rag-eval.json
+
+      - name: Validate rag-eval artifact against schema (AJV)
+        run: |
+          set -euo pipefail
+          npm install -g ajv-cli
+          ajv validate \
+            -s docs/quality/schemas/rag-eval.schema.json \
+            -d test-results/ci/rag-eval.json \
+            --strict=false
+

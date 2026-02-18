@@ -1,0 +1,93 @@
+{
+  "version": "v1",
+  "generated_at": "2026-02-15T00:00:00.000Z",
+  "notes": "Deterministic, offline fixtures for ISA RAG evaluation. No DB access, no network calls, no model inference.",
+  "cases": [
+    {
+      "id": "RAG-EVAL-0001",
+      "query": "Explain ESRS E1-6 at a high level.",
+      "expected_citations": ["fixture:esrs-e1-6", "fixture:efrag-esrs"],
+      "actual": {
+        "answer": "ESRS E1-6 concerns greenhouse gas emissions disclosures and related requirements.",
+        "citations": ["fixture:esrs-e1-6", "fixture:efrag-esrs"],
+        "latency_ms": 120,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "ESRS E1-6 concerns greenhouse gas emissions disclosures and related requirements.",
+        "citations": ["fixture:esrs-e1-6", "fixture:efrag-esrs"],
+        "latency_ms": 110,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0002",
+      "query": "What is a GS1 Digital Link URI?",
+      "expected_citations": ["fixture:gs1-digital-link"],
+      "actual": {
+        "answer": "A GS1 Digital Link URI encodes an identifier and optional qualifiers to resolve to information resources.",
+        "citations": ["fixture:gs1-digital-link"],
+        "latency_ms": 95,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "A GS1 Digital Link URI encodes an identifier and optional qualifiers to resolve to information resources.",
+        "citations": ["fixture:gs1-digital-link"],
+        "latency_ms": 92,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0003",
+      "query": "Summarize ISA dataset registry semantics.",
+      "expected_citations": ["fixture:dataset-registry", "fixture:dataset-governance"],
+      "actual": {
+        "answer": "The dataset registry enumerates artifacts with versioning, lineage, and ingestion metadata.",
+        "citations": ["fixture:dataset-registry"],
+        "latency_ms": 140,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "The dataset registry enumerates artifacts with versioning, lineage, and ingestion metadata.",
+        "citations": ["fixture:dataset-registry"],
+        "latency_ms": 135,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0004",
+      "query": "Describe ISA trace id propagation expectations.",
+      "expected_citations": ["fixture:trace-id-policy"],
+      "actual": {
+        "answer": "Each request should carry a trace id that is propagated to logs and persisted error records.",
+        "citations": ["fixture:trace-id-policy"],
+        "latency_ms": 105,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "Each request should carry a trace id that is propagated to logs and persisted error records.",
+        "citations": ["fixture:trace-id-policy"],
+        "latency_ms": 101,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0005",
+      "query": "What does strict no-console mean in ISA?",
+      "expected_citations": ["fixture:logging-policy"],
+      "actual": {
+        "answer": "ISA forbids Node console method usage in core code and routes logs through the server logger facade.",
+        "citations": ["fixture:logging-policy"],
+        "latency_ms": 160,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "ISA forbids Node console method usage in core code and routes logs through the server logger facade.",
+        "citations": ["fixture:logging-policy"],
+        "latency_ms": 158,
+        "cost_usd": 0
+      }
+    }
+  ]
+}
+
