@@ -1,7 +1,13 @@
 import * as fs from "fs";
 import * as path from "path";
+import crypto from "node:crypto";
 import { getDb } from "../db";
 import { serverLogger } from "../_core/logger-wiring";
+import {
+  getIngestProvenanceContentHash,
+  recordIngestProvenance,
+  sha256Hex,
+} from "./_core/provenance";
 
 import {
   dppIdentifierComponents,
@@ -14,6 +20,7 @@ export interface IngestOptions {
   dryRun?: boolean;
   limit?: number;
   verbose?: boolean;
+  traceId?: string;
 }
 
 export interface IngestResult {
@@ -51,11 +58,53 @@ function loadJsonFile<T>(filePath: string): T {
   return JSON.parse(content) as T;
 }
 
+const PIPELINE_TYPE = "INGEST-05_dpp_rules";
+const PARSER_VERSION = "INGEST-05_dpp_rules@v1";
+
+function getRetrievedAtIso(filePath: string): string | null {
+  try {
+    const st = fs.statSync(filePath);
+    return new Date(st.mtimeMs).toISOString();
+  } catch {
+    return null;
+  }
+}
+
+async function upsertProvenanceOrWarn(
+  db: any,
+  input: {
+    itemKey: string;
+    sourceLocator: string;
+    retrievedAt: string | null;
+    contentHash: string;
+    traceId: string;
+  },
+  verbose: boolean
+): Promise<void> {
+  const prov = await recordIngestProvenance(db, {
+    pipelineType: PIPELINE_TYPE,
+    itemKey: input.itemKey,
+    sourceLocator: input.sourceLocator,
+    retrievedAt: input.retrievedAt,
+    contentHash: input.contentHash,
+    parserVersion: PARSER_VERSION,
+    traceId: input.traceId,
+  });
+
+  if (!prov.ok && verbose) {
+    serverLogger.warn("[INGEST-05] provenance upsert failed", {
+      traceId: input.traceId,
+      error: prov.error,
+    });
+  }
+}
+
 export async function ingestDppComponents(
   options: IngestOptions = {}
 ): Promise<IngestResult> {
   const startTime = Date.now();
   const { dryRun = false, limit, verbose = false } = options;
+  const traceId = options.traceId ?? crypto.randomUUID();
   const result: IngestResult = {
     success: true,
     recordsProcessed: 0,
@@ -72,15 +121,18 @@ export async function ingestDppComponents(
     }
 
     if (verbose) {
-      serverLogger.info("Starting DPP identifier components ingestion");
+      serverLogger.info("Starting DPP identifier components ingestion", {
+        traceId,
+      });
     }
 
-    const filePath = path.join(
-      process.cwd(),
+    const sourceLocator = path.join(
       "data",
       "esg",
       "dpp_identifier_components.json"
     );
+    const filePath = path.join(process.cwd(), sourceLocator);
+    const retrievedAt = getRetrievedAtIso(filePath);
     const componentsData = loadJsonFile<Record<string, ComponentCategory>>(filePath);
 
     // Flatten the nested structure
@@ -96,7 +148,9 @@ export async function ingestDppComponents(
     }
 
     if (verbose) {
-      serverLogger.info(`Loaded ${components.length} DPP identifier components`);
+      serverLogger.info(`Loaded ${components.length} DPP identifier components`, {
+        traceId,
+      });
     }
 
     for (const component of components) {
@@ -110,10 +164,28 @@ export async function ingestDppComponents(
       result.recordsProcessed += 1;
 
       if (!dryRun) {
-        // Insert into raw table
-        await db.insert(rawDppIdentifierComponents).values({
-          rawJson: component.data,
-        });
+        const itemKey = `component:${component.code}`;
+        const payload = {
+          code: component.code,
+          name: component.name,
+          ...component.data,
+        };
+        const contentHash = sha256Hex(JSON.stringify(payload));
+        const existingHash = await getIngestProvenanceContentHash(
+          db as any,
+          PIPELINE_TYPE,
+          itemKey
+        );
+        const skipRaw = existingHash !== null && existingHash === contentHash;
+
+        // Insert into raw table (dedupe via provenance to avoid append-only duplication)
+        if (!skipRaw) {
+          await db.insert(rawDppIdentifierComponents).values({
+            rawJson: component.data,
+          });
+        } else {
+          result.recordsSkipped += 1;
+        }
 
         // Insert into canonical table
         await db.insert(dppIdentifierComponents).values({
@@ -133,27 +205,40 @@ export async function ingestDppComponents(
           },
         });
 
+        await upsertProvenanceOrWarn(
+          db as any,
+          { itemKey, sourceLocator, retrievedAt, contentHash, traceId },
+          verbose
+        );
+
         result.recordsInserted += 1;
       }
 
       if (verbose && result.recordsProcessed % 10 === 0) {
-        serverLogger.info(`Processed ${result.recordsProcessed} components`);
+        serverLogger.info(`Processed ${result.recordsProcessed} components`, {
+          traceId,
+        });
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
       serverLogger.info(
-        `DPP components ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
+        `DPP components ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`,
+        { traceId }
       );
     }
   } catch (error) {
     result.success = false;
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
-    if (verbose) {
-      serverLogger.error("DPP components ingestion failed:", errorMessage);
-    }
+    await serverLogger.error(error, {
+      traceId,
+      code: "INGEST-05_DPP_COMPONENTS",
+      classification: "ingest",
+      affectedFiles: ["server/ingest/INGEST-05_dpp_rules.ts"],
+      failingInputs: { pipelineType: PIPELINE_TYPE, stage: "components" },
+    });
   }
 
   return result;
@@ -164,6 +249,7 @@ export async function ingestDppRules(
 ): Promise<IngestResult> {
   const startTime = Date.now();
   const { dryRun = false, limit, verbose = false } = options;
+  const traceId = options.traceId ?? crypto.randomUUID();
   const result: IngestResult = {
     success: true,
     recordsProcessed: 0,
@@ -180,25 +266,30 @@ export async function ingestDppRules(
     }
 
     if (verbose) {
-      serverLogger.info("Starting DPP identification rules ingestion");
+      serverLogger.info("Starting DPP identification rules ingestion", {
+        traceId,
+      });
     }
 
-    const filePath = path.join(
-      process.cwd(),
+    const sourceLocator = path.join(
       "data",
       "esg",
       "dpp_identification_rules.json"
     );
+    const filePath = path.join(process.cwd(), sourceLocator);
+    const retrievedAt = getRetrievedAtIso(filePath);
     const rules = loadJsonFile<DppRuleRaw[]>(filePath);
 
     if (verbose) {
-      serverLogger.info(`Loaded ${rules.length} DPP identification rules`);
+      serverLogger.info(`Loaded ${rules.length} DPP identification rules`, {
+        traceId,
+      });
     }
 
     for (const rule of rules) {
       if (limit !== undefined && result.recordsProcessed >= limit) {
         if (verbose) {
-          serverLogger.info(`Limit reached (${limit}), stopping`);
+          serverLogger.info(`Limit reached (${limit}), stopping`, { traceId });
         }
         break;
       }
@@ -207,11 +298,23 @@ export async function ingestDppRules(
 
       if (!dryRun) {
         const ruleCode = `DPP_RULE_${rule.productCategory.replace(/\s+/g, "_").toUpperCase()}`;
+        const itemKey = `rule:${ruleCode}`;
+        const contentHash = sha256Hex(JSON.stringify({ ruleCode, ...rule }));
+        const existingHash = await getIngestProvenanceContentHash(
+          db as any,
+          PIPELINE_TYPE,
+          itemKey
+        );
+        const skipRaw = existingHash !== null && existingHash === contentHash;
 
-        // Insert into raw table
-        await db.insert(rawDppIdentificationRules).values({
-          rawJson: rule,
-        });
+        // Insert into raw table (dedupe via provenance to avoid append-only duplication)
+        if (!skipRaw) {
+          await db.insert(rawDppIdentificationRules).values({
+            rawJson: rule,
+          });
+        } else {
+          result.recordsSkipped += 1;
+        }
 
         // Insert into canonical table
         await db.insert(dppIdentificationRules).values({
@@ -231,27 +334,38 @@ export async function ingestDppRules(
           },
         });
 
+        await upsertProvenanceOrWarn(
+          db as any,
+          { itemKey, sourceLocator, retrievedAt, contentHash, traceId },
+          verbose
+        );
+
         result.recordsInserted += 1;
       }
 
       if (verbose && result.recordsProcessed % 5 === 0) {
-        serverLogger.info(`Processed ${result.recordsProcessed} rules`);
+        serverLogger.info(`Processed ${result.recordsProcessed} rules`, { traceId });
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
       serverLogger.info(
-        `DPP rules ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`
+        `DPP rules ingestion complete: ${result.recordsInserted} inserted in ${result.duration}ms`,
+        { traceId }
       );
     }
   } catch (error) {
     result.success = false;
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
-    if (verbose) {
-      serverLogger.error("DPP rules ingestion failed:", errorMessage);
-    }
+    await serverLogger.error(error, {
+      traceId,
+      code: "INGEST-05_DPP_RULES",
+      classification: "ingest",
+      affectedFiles: ["server/ingest/INGEST-05_dpp_rules.ts"],
+      failingInputs: { pipelineType: PIPELINE_TYPE, stage: "rules" },
+    });
   }
 
   return result;
@@ -262,13 +376,14 @@ export async function ingestDppIdentificationRules(
 ): Promise<IngestResult> {
   const { verbose = false } = options;
   const startTime = Date.now();
+  const traceId = options.traceId ?? crypto.randomUUID();
 
   if (verbose) {
-    serverLogger.info("=== INGEST-05: DPP Identification Rules ===");
+    serverLogger.info("=== INGEST-05: DPP Identification Rules ===", { traceId });
   }
 
-  const componentsResult = await ingestDppComponents(options);
-  const rulesResult = await ingestDppRules(options);
+  const componentsResult = await ingestDppComponents({ ...options, traceId });
+  const rulesResult = await ingestDppRules({ ...options, traceId });
 
   const combinedResult: IngestResult = {
     success: componentsResult.success && rulesResult.success,
@@ -288,11 +403,15 @@ export async function ingestDppIdentificationRules(
   };
 
   if (verbose) {
-    serverLogger.info("\n=== INGEST-05 Summary ===");
-    serverLogger.info(`Components: ${componentsResult.recordsInserted}`);
-    serverLogger.info(`Rules: ${rulesResult.recordsInserted}`);
-    serverLogger.info(`Total: ${combinedResult.recordsInserted} records`);
-    serverLogger.info(`Duration: ${combinedResult.duration}ms`);
+    serverLogger.info("\n=== INGEST-05 Summary ===", { traceId });
+    serverLogger.info(`Components: ${componentsResult.recordsInserted}`, {
+      traceId,
+    });
+    serverLogger.info(`Rules: ${rulesResult.recordsInserted}`, { traceId });
+    serverLogger.info(`Total: ${combinedResult.recordsInserted} records`, {
+      traceId,
+    });
+    serverLogger.info(`Duration: ${combinedResult.duration}ms`, { traceId });
   }
 
   return combinedResult;
