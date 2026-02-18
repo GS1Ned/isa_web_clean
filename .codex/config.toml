@@ -21,25 +21,25 @@ history.persistence = "save-all"
 history.max_bytes = 104857600
 
 [mcp_servers.filesystem]
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-filesystem@2026.1.14", "."]
+command = "pnpm"
+args = ["-s", "dlx", "@modelcontextprotocol/server-filesystem@2026.1.14", "."]
 cwd = "."
 
 [mcp_servers.git]
-command = "npx"
-args = ["-y", "@cyanheads/git-mcp-server@2.8.4"]
+command = "pnpm"
+args = ["-s", "dlx", "@cyanheads/git-mcp-server@2.8.4"]
 cwd = "."
-env = { MCP_LOG_LEVEL = "error", GIT_BASE_DIR = "." }
+env = { MCP_LOG_LEVEL = "error" }
 
 [mcp_servers.fetch]
-command = "npx"
-args = ["-y", "@lmcc-dev/mult-fetch-mcp-server@1.3.2"]
+command = "pnpm"
+args = ["-s", "dlx", "@lmcc-dev/mult-fetch-mcp-server@1.3.2"]
 cwd = "."
 env = { MCP_LANG = "en" }
 
 [mcp_servers.playwright]
-command = "npx"
-args = ["-y", "@playwright/mcp@0.0.68"]
+command = "pnpm"
+args = ["-s", "dlx", "@playwright/mcp@0.0.68"]
 cwd = "."
 
 [mcp_servers.openai_docs]
