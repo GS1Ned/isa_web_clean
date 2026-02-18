@@ -95,3 +95,4 @@ Claude Code:
 Repo validation commands:
 - Baseline: `bash scripts/validate_mcp_agent_readiness.sh`
 - With runtime checks: `MCP_VALIDATE_CONNECTIVITY=1 bash scripts/validate_mcp_agent_readiness.sh`
+- GitHub auth in connectivity checks: uses `GH_TOKEN` first, then falls back to `gh auth token` when available.

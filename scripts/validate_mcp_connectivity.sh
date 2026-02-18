@@ -101,17 +101,42 @@ check_http_status() {
 
 check_http_status "openai_docs" "https://developers.openai.com/mcp"
 
-if [[ -n "${GH_TOKEN:-}" ]]; then
-  github_code="$(curl -sS -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${GH_TOKEN}" "https://api.githubcopilot.com/mcp/" || true)"
+GITHUB_AUTH_SOURCE=""
+GITHUB_AUTH_TOKEN=""
+
+resolve_github_token() {
+  if [[ -n "${GH_TOKEN:-}" ]]; then
+    GITHUB_AUTH_SOURCE="GH_TOKEN"
+    GITHUB_AUTH_TOKEN="${GH_TOKEN}"
+    return 0
+  fi
+
+  if command -v gh >/dev/null 2>&1; then
+    if gh auth status >/dev/null 2>&1; then
+      local gh_token
+      gh_token="$(gh auth token 2>/dev/null || true)"
+      if [[ -n "$gh_token" ]]; then
+        GITHUB_AUTH_SOURCE="gh"
+        GITHUB_AUTH_TOKEN="$gh_token"
+        return 0
+      fi
+    fi
+  fi
+
+  return 1
+}
+
+if resolve_github_token; then
+  github_code="$(curl -sS -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${GITHUB_AUTH_TOKEN}" "https://api.githubcopilot.com/mcp/" || true)"
   if [[ "$github_code" =~ ^(200|301|302|307|308|403|405)$ ]]; then
-    echo "OK: github http_status=$github_code auth=provided"
+    echo "OK: github http_status=$github_code auth=$GITHUB_AUTH_SOURCE"
   else
-    echo "ERROR: github unexpected_http_status=$github_code auth=provided"
+    echo "ERROR: github unexpected_http_status=$github_code auth=$GITHUB_AUTH_SOURCE"
     fail "mcp_github_auth_failed"
   fi
 else
   check_http_status "github" "https://api.githubcopilot.com/mcp/"
-  warn "GH_TOKEN is unset; github MCP auth was not validated."
+  warn "GitHub token unavailable (GH_TOKEN unset and gh auth token unavailable); github MCP auth was not validated."
 fi
 
 echo ""
