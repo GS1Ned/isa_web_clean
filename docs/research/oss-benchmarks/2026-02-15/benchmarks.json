@@ -668,7 +668,7 @@
       "evidence": [
         {
           "url": "https://opentelemetry.io/docs/",
-          "date": "UNVERIFIED"
+        "date": "2026-02-15"
         },
         {
           "url": "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts",
