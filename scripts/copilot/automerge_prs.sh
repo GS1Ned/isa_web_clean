@@ -64,12 +64,20 @@ if command -v node >/dev/null 2>&1; then
   parse_with_node="true"
 fi
 
+PR_TMP=""
+PR_LINES=()
+PR_TMP="$(mktemp)"
 if [[ "${parse_with_node}" == "true" ]]; then
-  mapfile -t PR_LINES < <(node -e 'const prs=JSON.parse(process.argv[1]); for (const p of prs) console.log(`${p.number}\t${p.headRefName}\t${p.title}`);' "${PRS_JSON}")
+  node -e 'const prs=JSON.parse(process.argv[1]); for (const p of prs) console.log(`${p.number}\t${p.headRefName}\t${p.title}`);' "${PRS_JSON}" > "${PR_TMP}"
 else
   # Fallback: use gh formatting
-  mapfile -t PR_LINES < <(gh pr list --state open --json number,title,headRefName --template '{{range .}}{{.number}}{{"\t"}}{{.headRefName}}{{"\t"}}{{.title}}{{"\n"}}{{end}}')
+  gh pr list --state open --json number,title,headRefName --template '{{range .}}{{.number}}{{"\t"}}{{.headRefName}}{{"\t"}}{{.title}}{{"\n"}}{{end}}' > "${PR_TMP}"
 fi
+
+while IFS= read -r line || [[ -n "$line" ]]; do
+  PR_LINES+=("$line")
+done < "${PR_TMP}"
+rm -f "${PR_TMP}"
 
 echo "" >> "${LOG_FILE}"
 echo "## PRs discovered" >> "${LOG_FILE}"
