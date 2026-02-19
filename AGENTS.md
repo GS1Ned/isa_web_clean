@@ -36,6 +36,13 @@
   - Use `fetch` + `github` MCP servers for external evidence and OSS patterns (record URLs + UTC dates).
   - Use `playwright` MCP server for UI/DOM repro and JS-rendered sources.
 
+## Documentation Hygiene (Global)
+- Use integrate-first mode for all work, not only MCP.
+- Do not create ad-hoc report artifacts by default.
+- Classify findings as `INTEGRATE_NOW`, `RESOLVE_NOW`, or `DROP_NOW` per `docs/agent/MCP_POLICY.md`.
+- Resolve uncertainty in the same run or drop it; do not commit unresolved documentation claims.
+- Run `python scripts/validate_planning_and_traceability.py` before finalizing doc-heavy changes.
+
 ## ISA-specific
 <!-- EVIDENCE:requirement:data/metadata/dataset_registry.json -->
 <!-- EVIDENCE:constraint:docs/DATASETS_CATALOG.md -->

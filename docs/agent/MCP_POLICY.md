@@ -1,6 +1,6 @@
 # MCP Policy (Canonical)
 Status: CANONICAL
-Last Updated: 2026-02-18
+Last Updated: 2026-02-19
 
 ## Purpose And Scope
 This policy defines when ISA agents should use MCP servers, and how to log evidence without violating `strict-no-console` or leaking secrets.
@@ -38,6 +38,14 @@ Common ISA task mappings:
 - Primary search path in-repo: use `filesystem.search_files` first for file/path discovery.
 - Content search fallback: if `filesystem` is unavailable or incomplete for text matching, use `rg` (`rg -n "pattern" <path>`).
 - Always reflect the same evidence standards regardless of path: record searched paths, matched files, and UTC timestamp in evidence artifacts when the result is used for a claim.
+
+## Lean Documentation Integration Mode (Repository-Wide)
+These rules apply to all work, not only MCP:
+- Integrate useful outcomes directly into existing canonical docs/config before creating new artifacts.
+- Do not commit ad-hoc report files by default.
+- Triage every finding as `INTEGRATE_NOW`, `RESOLVE_NOW`, or `DROP_NOW`.
+- Resolve uncertainty in the same run or drop it; do not commit unresolved claims.
+- Keep scratch analysis outside the repo (`/tmp`) unless explicitly promoted to a canonical doc update.
 
 ## Evidence Logging (No-Console Compatible)
 Do not add console logging in code or examples.
@@ -96,3 +104,4 @@ Repo validation commands:
 - Baseline: `bash scripts/validate_mcp_agent_readiness.sh`
 - With runtime checks: `MCP_VALIDATE_CONNECTIVITY=1 bash scripts/validate_mcp_agent_readiness.sh`
 - GitHub auth in connectivity checks: uses `GH_TOKEN` first, then falls back to `gh auth token` when available.
+- Documentation hygiene gate: `python scripts/validate_planning_and_traceability.py`
