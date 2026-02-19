@@ -1,4 +1,4 @@
-import csv, pathlib, re, sys
+import csv, pathlib, re, subprocess, sys
 
 errors = []
 
@@ -68,6 +68,102 @@ if trace.exists():
                     continue
                 if (row[ix_id] or "").strip() and not (row[ix_st] or "").strip():
                     errors.append(f"TRACEABILITY_MATRIX.csv line {line_no}: BACKLOG_ID present but BACKLOG_STATUS empty")
+
+
+def _added_files_in_latest_commit() -> list[str]:
+    try:
+        subprocess.run(
+            ["git", "rev-parse", "--verify", "HEAD^"],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception:
+        return []
+
+    try:
+        result = subprocess.run(
+            ["git", "diff", "--name-status", "--diff-filter=A", "HEAD^", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+    except Exception:
+        return []
+
+    added = []
+    for line in result.stdout.splitlines():
+        parts = line.split("\t")
+        if len(parts) >= 2:
+            added.append(parts[-1].strip().replace("\\", "/"))
+    return added
+
+
+def _added_files_in_worktree() -> list[str]:
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain=v1", "--untracked-files=all"],
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+    except Exception:
+        return []
+
+    added = []
+    for raw in result.stdout.splitlines():
+        if len(raw) < 4:
+            continue
+        status = raw[:2]
+        path = raw[3:].strip().replace("\\", "/")
+        if status in {"A ", "??"} and path:
+            added.append(path)
+    return added
+
+
+added_files = sorted(set(_added_files_in_latest_commit() + _added_files_in_worktree()))
+added_markdown = [p for p in added_files if p.lower().endswith(".md")]
+
+allowed_new_markdown_exact = {
+    "README.md",
+    "AGENTS.md",
+    "AGENT_START_HERE.md",
+    "docs/INDEX.md",
+    "docs/README.md",
+}
+
+allowed_new_markdown_prefixes = (
+    "docs/agent/",
+    "docs/planning/",
+    "docs/governance/",
+    "docs/spec/",
+    "docs/core/",
+    "docs/decisions/",
+    "docs/evidence/",
+    "docs/archive/",
+    "docs/misc/_root/",
+    "isa-archive/",
+)
+
+artifact_name_re = re.compile(
+    r"(?i)(report|summary|notes|patch|findings|results|failure[_-]?modes|drift)"
+)
+
+for rel in added_markdown:
+    if rel not in allowed_new_markdown_exact and not rel.startswith(allowed_new_markdown_prefixes):
+        errors.append(
+            "Disallowed new markdown file path: "
+            f"{rel}. Integrate content into canonical docs instead of creating ad-hoc docs."
+        )
+
+    basename = pathlib.PurePosixPath(rel).name
+    if not (rel.startswith("docs/archive/") or rel.startswith("isa-archive/")) and artifact_name_re.search(basename):
+        errors.append(
+            "Forbidden new report-style markdown artifact: "
+            f"{rel}. Use integrate-first mode (patch canonical docs) instead."
+        )
 
 if errors:
     print("\n".join(errors))

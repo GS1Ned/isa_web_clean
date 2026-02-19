@@ -25,6 +25,11 @@ Status: CANONICAL
 - Planning policy: `docs/governance/PLANNING_POLICY.md`
 - IRON protocol: `docs/governance/IRON_PROTOCOL.md`
 
+## Default Documentation Mode
+- Integrate useful outcomes into existing canonical docs.
+- Avoid standalone report artifacts unless explicitly requested.
+- Resolve uncertainty now; do not commit unresolved claims.
+
 ## Execution Procedure (Agent)
 1) Read `docs/planning/NEXT_ACTIONS.json`
 2) Pick the first item with `status=READY`

@@ -69,7 +69,16 @@ PASS if:
 - fix surface is enumerated
 - no unexpected file churn
 
-## 8. Outputs
+## 8. Documentation Hygiene Gate
+Run:
+- `python scripts/validate_planning_and_traceability.py`
+
+PASS if:
+- no planning drift
+- no non-canonical doc sprawl
+- no forbidden new report-style documentation artifacts
+
+## 9. Outputs
 Record in PR description:
 - timestamp_utc
 - head_sha
