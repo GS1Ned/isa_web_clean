@@ -1,6 +1,6 @@
 # MCP Policy (Canonical)
 Status: CANONICAL
-Last Updated: 2026-02-18
+Last Updated: 2026-02-19
 
 ## Purpose And Scope
 This policy defines when ISA agents should use MCP servers, and how to log evidence without violating `strict-no-console` or leaking secrets.
