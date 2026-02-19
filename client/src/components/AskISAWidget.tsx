@@ -15,7 +15,7 @@ interface AskISAWidgetProps {
 }
 
 export function AskISAWidget({ 
-  regulationId, 
+  regulationId: _regulationId, 
   regulationName,
   contextHint,
   className = ""

@@ -3,7 +3,7 @@ import {
   advisoryReports,
   advisoryReportVersions,
 } from "../drizzle/schema";
-import { eq, and, desc, sql, inArray } from "drizzle-orm";
+import { eq, and, desc, sql } from "drizzle-orm";
 
 /**
  * Get all advisory reports with optional filtering

@@ -267,7 +267,7 @@ export function extractCitations(
 export function verifyClaims(
   claims: ExtractedClaim[],
   citations: CitationReference[],
-  responseText: string
+  _responseText: string
 ): ClaimVerificationResult[] {
   const results: ClaimVerificationResult[] = [];
   

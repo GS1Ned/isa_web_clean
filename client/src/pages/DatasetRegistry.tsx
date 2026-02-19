@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, CheckCircle2, Database, Download, ExternalLink, Calendar } from "lucide-react";
+import { AlertCircle, CheckCircle2, Database, Download, ExternalLink } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 /**

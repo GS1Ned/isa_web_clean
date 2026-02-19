@@ -5,7 +5,7 @@
  */
 
 import { getDb } from "./db";
-import { alertHistory, alertCooldowns } from "../drizzle/schema";
+import { alertHistory } from "../drizzle/schema";
 import { notifyOwner } from "./_core/notification";
 import { broadcastAlert, AlertPayload } from "./webhook-notification-service";
 import {

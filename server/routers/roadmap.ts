@@ -154,7 +154,7 @@ export const roadmapRouter = router({
         status: z.enum(["pending", "in_progress", "completed", "blocked"]),
       })
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx: _ctx }) => {
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
@@ -177,7 +177,7 @@ export const roadmapRouter = router({
         progressPercentage: z.number().optional(),
       })
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx: _ctx }) => {
       await updateRoadmapStatus(
         input.roadmapId,
         input.status,

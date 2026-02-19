@@ -333,7 +333,7 @@ export const complianceRisksRouter = router({
  * Generate actionable recommendations based on risks
  */
 function generateRecommendations(
-  allRisks: any[],
+  _allRisks: any[],
   unresolvedRisks: any[]
 ): string[] {
   const recommendations: string[] = [];

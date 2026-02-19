@@ -24,7 +24,7 @@
  */
 
 import { serverLogger } from '../../_core/logger-wiring';
-import { AuthorityLevel, AUTHORITY_LEVEL_RANK } from '../authority-scoring';
+import { AuthorityLevel } from '../authority-scoring';
 
 // ============================================================================
 // Types

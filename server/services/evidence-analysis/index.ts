@@ -316,7 +316,7 @@ export function analyzeEvidenceSufficiency(
  */
 export function generateAbstentionMessage(
   reason: AbstentionReasonCode,
-  details?: EvidenceAnalysisResult['details']
+  _details?: EvidenceAnalysisResult['details']
 ): string {
   switch (reason) {
     case AbstentionReasonCode.NO_RELEVANT_EVIDENCE:

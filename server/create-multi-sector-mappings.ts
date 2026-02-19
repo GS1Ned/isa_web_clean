@@ -11,7 +11,7 @@ import {
   regulations,
   attributeRegulationMappings,
 } from "../drizzle/schema";
-import { eq, and, or } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 
 

@@ -115,7 +115,7 @@ export async function processEPCISEvents(
   for (const event of events) {
     try {
       // Insert EPCIS event
-      const _insertedEvent = await db.insert(epcisEvents).values({
+      await db.insert(epcisEvents).values({
         userId,
         eventType: event.type as any,
         eventTime: new Date(event.eventTime).toISOString(),

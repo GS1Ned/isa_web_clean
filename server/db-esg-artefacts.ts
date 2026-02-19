@@ -8,7 +8,7 @@
  */
 
 import { getDb } from "./db";
-import { eq, desc, sql, and, inArray } from "drizzle-orm";
+import { eq, desc, sql, inArray } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 
 // ============================================================================

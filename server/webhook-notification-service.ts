@@ -456,9 +456,7 @@ export async function getDeliveryHistory(limit = 50) {
 /**
  * Get webhook delivery statistics
  */
-export async function getDeliveryStats(hoursBack = 24) {
-  const since = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
-  
+export async function getDeliveryStats(_hoursBack = 24) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
