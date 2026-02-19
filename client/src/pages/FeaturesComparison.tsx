@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Link } from "wouter";
 import { Zap, CheckCircle2, Clock, Zap as ZapIcon } from "lucide-react";
 
@@ -94,13 +95,6 @@ export default function FeaturesComparison() {
       ],
     },
   ];
-
-  const _getIcon = (v03: boolean, v10: boolean, v20: boolean) => {
-    if (v20) return "v2.0";
-    if (v10) return "v1.0";
-    if (v03) return "v0.3";
-    return "planned";
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -204,7 +198,7 @@ export default function FeaturesComparison() {
               </thead>
               <tbody>
                 {features.map(category => (
-                  <tbody key={category.category}>
+                  <Fragment key={category.category}>
                     <tr className="border-b border-border bg-accent/5">
                       <td colSpan={4} className="py-3 px-4">
                         <h3 className="font-bold text-foreground text-sm">
@@ -249,7 +243,7 @@ export default function FeaturesComparison() {
                         </td>
                       </tr>
                     ))}
-                  </tbody>
+                  </Fragment>
                 ))}
               </tbody>
             </table>

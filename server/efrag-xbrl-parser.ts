@@ -183,7 +183,6 @@ function parseDatapointRow(
   columnMap: Record<string, number>
 ): ESRSDatapoint | null {
   // Extract values from mapped columns
-  const _level = getCellValue(row, columnMap.level);
   const role = getCellValue(row, columnMap.role);
   const name = getCellValue(row, columnMap.name);
   const xbrlTag = getCellValue(row, columnMap.xbrlTag);
@@ -281,27 +280,6 @@ function isEmptyRow(row: ExcelJS.Row): boolean {
 }
 
 /**
- * Generate datapoint ID from components
- */
-function generateDatapointId(
-  standard: string,
-  dr: string,
-  name: string
-): string {
-  const standardCode = standard.replace(/\s+/g, "").toUpperCase();
-  const drCode = dr.replace(/\s+/g, "").toUpperCase();
-  const nameSlug = name.substring(0, 20).replace(/[^a-zA-Z0-9]/g, "_");
-  return `${standardCode}_${drCode}_${nameSlug}`;
-}
-
-/**
- * Normalize standard name (e.g., "ESRS E1" → "ESRS E1")
- */
-function normalizeStandard(standard: string): string {
-  return standard.trim().toUpperCase().replace(/\s+/g, " ");
-}
-
-/**
  * Normalize data type
  */
 function normalizeDataType(data_type: string): string {
@@ -323,20 +301,6 @@ function normalizeDataType(data_type: string): string {
   if (normalized.includes("monetary")) return "monetary";
 
   return normalized || "text";
-}
-
-/**
- * Determine if datapoint is mandatory
- */
-function determineMandatory(mandatoryStr: string): boolean {
-  const normalized = mandatoryStr.toLowerCase().trim();
-  return (
-    normalized === "mandatory" ||
-    normalized === "required" ||
-    normalized === "yes" ||
-    normalized === "true" ||
-    normalized === "m"
-  );
 }
 
 /**

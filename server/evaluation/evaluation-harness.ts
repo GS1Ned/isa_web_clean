@@ -5,7 +5,6 @@
  * against the golden set of test questions.
  */
 
-import { serverLogger } from '../_core/logger-wiring';
 import { type GoldenSetTestCase, GOLDEN_SET, getGoldenSetStats } from './golden-set';
 import { type AuthorityLevel, AUTHORITY_LEVELS } from '../authority-model';
 import { type VerificationSummary } from '../claim-citation-verifier';

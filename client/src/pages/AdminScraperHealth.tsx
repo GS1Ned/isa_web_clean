@@ -22,7 +22,7 @@ export default function AdminScraperHealth() {
   });
 
   // Query recent failures
-  const { data: recentFailures, isLoading: loadingFailures } = trpc.scraperHealth.getRecentFailures.useQuery({
+  const { data: recentFailures } = trpc.scraperHealth.getRecentFailures.useQuery({
     limit: 10,
   });
 
@@ -52,10 +52,6 @@ export default function AdminScraperHealth() {
   const handleRefresh = () => {
     refetchSources();
     refetchStats();
-  };
-
-  const refetchTrends = () => {
-    // Trend data will auto-refetch when timeRange changes
   };
 
   const handleClearAlert = (sourceId: string) => {

@@ -18,7 +18,6 @@ import {
 } from "./news-deduplicator";
 import { getNewsBySourceUrl } from "./db-news-helpers";
 import { generateRecommendations } from "./news-recommendation-engine";
-import type { InsertHubNews } from "../drizzle/schema";
 import { PipelineExecutionContext, calculateQualityScore } from "./utils/pipeline-logger";
 import { savePipelineExecutionLog } from "./db-pipeline-observability";
 import { serverLogger } from "./_core/logger-wiring";

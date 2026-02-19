@@ -10,7 +10,7 @@
  */
 
 import { getDb } from '../../db';
-import { eq, desc, sql, and, gte } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
 import { serverLogger } from '../../_core/logger-wiring';
 import { getRequestTraceId } from "../../_core/request-context";
@@ -170,20 +170,18 @@ export class RagTraceManager {
   private dbId: number | null = null;
   private startTime: number;
   private updates: RagTraceUpdate = {};
-  private input: RagTraceInput;
   private completed: boolean = false;
   
-  private constructor(input: RagTraceInput) {
+  private constructor() {
     this.traceId = getRequestTraceId() ?? randomUUID();
     this.startTime = Date.now();
-    this.input = input;
   }
   
   /**
    * Start a new RAG trace
    */
   static async start(input: RagTraceInput): Promise<RagTraceManager> {
-    const manager = new RagTraceManager(input);
+    const manager = new RagTraceManager();
     
     try {
       const db = await getDb();

@@ -13,7 +13,7 @@ import {
   type Regulation,
   type GS1Standard,
 } from "../drizzle/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 /**
  * Keyword mappings: regulation keywords → GS1 standard codes

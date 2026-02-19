@@ -15,7 +15,7 @@ import { router, publicProcedure } from "../_core/trpc";
 import { z } from "zod";
 import { getDb } from "../db";
 import { knowledgeEmbeddings } from "../../drizzle/schema";
-import { sql, like, or, and, desc, asc } from "drizzle-orm";
+import { sql, like, or, and, asc } from "drizzle-orm";
 import { serverLogger } from "../_core/logger-wiring";
 
 // Sector enum for filtering

@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, FileText, ExternalLink, Download, Search } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 
 /**
  * Governance Documents Page
@@ -43,24 +42,6 @@ export default function GovernanceDocuments() {
         return "destructive";
       default:
         return "outline";
-    }
-  };
-
-  const getVerificationBadge = (lastVerifiedDate: string | null) => {
-    if (!lastVerifiedDate) {
-      return <Badge variant="destructive">Never Verified</Badge>;
-    }
-
-    const daysSinceVerification = Math.floor(
-      (Date.now() - new Date(lastVerifiedDate).getTime()) / (1000 * 60 * 60 * 24)
-    );
-
-    if (daysSinceVerification > 90) {
-      return <Badge variant="destructive">Verification Expired</Badge>;
-    } else if (daysSinceVerification > 60) {
-      return <Badge variant="outline" className="border-yellow-500 text-yellow-700">Verification Expiring Soon</Badge>;
-    } else {
-      return <Badge variant="outline" className="border-green-500 text-green-700">Recently Verified</Badge>;
     }
   };
 

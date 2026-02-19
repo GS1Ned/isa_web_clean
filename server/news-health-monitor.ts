@@ -7,7 +7,7 @@
 import { notifyOwner } from "./_core/notification";
 import { getDb } from "./db";
 import { scraperExecutions, scraperHealthSummary } from "../drizzle/schema";
-import { eq, desc, and, gte, sql } from "drizzle-orm";
+import { eq, desc, and, gte } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 
 
@@ -78,7 +78,7 @@ export async function recordScraperExecution(metrics: ScraperHealthMetrics): Pro
     });
 
     // Update health summary
-    await updateHealthSummary(sourceId, sourceName, success, itemsFetched, durationMs, error);
+    await updateHealthSummary(sourceId, sourceName, success, error);
 
     // Check for persistent failures and alert
     await checkHealthAndAlert(sourceId, sourceName);
@@ -95,8 +95,6 @@ async function updateHealthSummary(
   sourceId: string,
   sourceName: string,
   success: boolean,
-  itemsFetched: number,
-  durationMs: number,
   error?: string
 ): Promise<void> {
   const db = await getDb();

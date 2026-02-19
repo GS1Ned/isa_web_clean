@@ -18,10 +18,9 @@ import {
   evaluateResponse,
   generateReport,
   type TestCaseResult,
-  type EvaluationReport,
   type AskISAResponse,
 } from "../evaluation/evaluation-harness";
-import { hybridSearch, buildContextFromHybridResults } from "../hybrid-search";
+import { hybridSearch } from "../hybrid-search";
 import { invokeLLM } from "../_core/llm";
 import { assembleAskISAPrompt } from "../prompts/ask_isa";
 import { verifyResponseClaims } from "../claim-citation-verifier";

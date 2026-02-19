@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { useLocation, useRoute } from "wouter";
+import { useLocation } from "wouter";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { NewsCard } from "@/components/NewsCard";
 import { NewsCardSkeleton } from "@/components/NewsCardSkeleton";
@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Newspaper, Search, Filter, X, Link2, Check, Calendar } from "lucide-react";
+import { Newspaper, Search, Filter, Link2, Check, Calendar } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import {
   GS1_IMPACT_TAG_LABELS,
@@ -45,7 +45,7 @@ const IMPACT_FILTERS = ["All", "HIGH", "MEDIUM", "LOW"];
 const SOURCE_TYPE_FILTERS = ["All", "GS1 Official", "EU Official"];
 
 export default function NewsHub() {
-  const [location, setLocation] = useLocation();
+  const [, setLocation] = useLocation();
   
   // Initialize state from URL params
   const getInitialState = () => {

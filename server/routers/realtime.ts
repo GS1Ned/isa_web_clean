@@ -2,7 +2,6 @@ import { router, protectedProcedure, adminProcedure } from "../_core/trpc";
 import { z } from "zod";
 import {
   realtimeNotifications,
-  NotificationEventType,
 } from "../realtime-notifications";
 
 export const realtimeRouter = router({

@@ -4,6 +4,7 @@
  * Manages Slack and Teams webhook integrations for real-time alerts
  */
 
+import React from "react";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ export function WebhookConfiguration() {
 
   // Fetch configurations
   const { data: configurations, isLoading } = trpc.webhookConfig.getConfigurations.useQuery();
+  type ExistingWebhookConfig = NonNullable<typeof configurations>[number];
 
   // Mutations
   const saveConfig = trpc.webhookConfig.saveConfiguration.useMutation({
@@ -105,14 +107,17 @@ export function WebhookConfiguration() {
     });
   };
 
-  const handleToggleEnabled = (config: any) => {
+  const handleToggleEnabled = (config: ExistingWebhookConfig) => {
     saveConfig.mutate({
-      ...config,
-      enabled: !config.enabled,
+      id: config.id,
+      platform: config.platform,
+      webhookUrl: config.webhookUrl,
+      channelName: config.channelName ?? undefined,
+      enabled: config.enabled !== 1,
     });
   };
 
-  const handleTestWebhook = (config: any) => {
+  const handleTestWebhook = (config: ExistingWebhookConfig) => {
     testWebhook.mutate({
       platform: config.platform,
       webhookUrl: config.webhookUrl,

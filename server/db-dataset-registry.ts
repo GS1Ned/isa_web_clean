@@ -1,9 +1,6 @@
 import { getDb } from "./db";
 import { datasetRegistry } from "../drizzle/schema";
-import type { InferInsertModel } from "drizzle-orm";
-
-type InsertDatasetRegistry = InferInsertModel<typeof datasetRegistry>;
-import { eq, and, desc, sql, isNull, isNotNull } from "drizzle-orm";
+import { eq, and, desc, sql, isNotNull } from "drizzle-orm";
 
 /**
  * Get all datasets with optional filtering

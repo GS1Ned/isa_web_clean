@@ -6,20 +6,18 @@
  * and detailed attribute information for data architects and compliance teams.
  */
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Search, 
   Database, 
-  Filter, 
   ChevronRight, 
   ExternalLink,
   Download,
@@ -27,7 +25,6 @@ import {
   Package,
   Leaf,
   Heart,
-  ShoppingBag,
   Building2,
   Shirt
 } from "lucide-react";
@@ -89,13 +86,13 @@ const mockAttributes: GS1Attribute[] = [
 ];
 
 export default function GS1NLAttributeBrowser() {
-  const { t, language } = useI18n();
+  const { language } = useI18n();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSector, setSelectedSector] = useState("all");
   const [selectedAttribute, setSelectedAttribute] = useState<GS1Attribute | null>(null);
 
   // Fetch GS1 NL attributes from API
-  const { data: attributes, isLoading, error } = useQuery({
+  const { data: attributes, isLoading } = useQuery({
     queryKey: ["/api/gs1nl/attributes", selectedSector],
     queryFn: async () => {
       const params = new URLSearchParams();

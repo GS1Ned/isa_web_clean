@@ -1,6 +1,6 @@
 import { getDb } from './db';
 import { hubNews, regulations } from '../drizzle/schema';
-import { sql, count, and, gte, lte, eq } from 'drizzle-orm';
+import { count } from 'drizzle-orm';
 
 /**
  * Get news count per regulation

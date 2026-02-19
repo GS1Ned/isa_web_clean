@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/table";
 import {
   AlertCircle,
-  Activity,
   TrendingUp,
   Clock,
   RefreshCw,
@@ -37,9 +36,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+type SeverityBadgeVariant = "default" | "secondary" | "destructive" | "outline";
+
 export default function SystemMonitoring() {
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [selectedError, setSelectedError] = useState<any>(null);
+  const [, setRefreshKey] = useState(0);
 
   // Fetch error tracking data
   const { data: errorStats } = trpc.errorTracking.getErrorStats.useQuery(
@@ -51,6 +51,8 @@ export default function SystemMonitoring() {
     { limit: 50 },
     { refetchInterval: 30000 }
   );
+  type RecentError = NonNullable<typeof recentErrors>[number];
+  const [selectedError, setSelectedError] = useState<RecentError | null>(null);
 
   const { data: errorTrends } = trpc.errorTracking.getErrorTrends.useQuery(
     { hours: 24, interval: "hour" },
@@ -77,7 +79,7 @@ export default function SystemMonitoring() {
     setRefreshKey((prev) => prev + 1);
   };
 
-  const getSeverityColor = (severity: string) => {
+  const getSeverityColor = (severity: string): SeverityBadgeVariant => {
     switch (severity) {
       case "critical":
         return "destructive";
@@ -260,14 +262,14 @@ export default function SystemMonitoring() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {recentErrors?.map((error: any) => (
+                  {recentErrors?.map((error) => (
                     <TableRow
                       key={error.id}
                       className="cursor-pointer hover:bg-muted/50"
                       onClick={() => setSelectedError(error)}
                     >
                       <TableCell>
-                        <Badge variant={getSeverityColor(error.severity) as any}>
+                        <Badge variant={getSeverityColor(error.severity)}>
                           <span className="flex items-center gap-1">
                             {getSeverityIcon(error.severity)}
                             {error.severity}
@@ -322,7 +324,7 @@ export default function SystemMonitoring() {
                     </pre>
                   </div>
                 )}
-                {selectedError.context && (
+                {Boolean(selectedError.context) && (
                   <div>
                     <div className="text-sm font-medium text-muted-foreground mb-1">Context</div>
                     <pre className="text-xs bg-muted p-3 rounded-lg overflow-x-auto">
@@ -333,7 +335,7 @@ export default function SystemMonitoring() {
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <div className="text-muted-foreground">Severity</div>
-                    <Badge variant={getSeverityColor(selectedError.severity) as any}>
+                    <Badge variant={getSeverityColor(selectedError.severity)}>
                       {selectedError.severity}
                     </Badge>
                   </div>
@@ -373,26 +375,28 @@ export default function SystemMonitoring() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {slowOps?.map((op: any) => (
-                    <TableRow key={op.id}>
-                      <TableCell className="font-mono text-sm">{op.operation}</TableCell>
-                      <TableCell>
-                        <Badge variant={op.duration > 3000 ? "destructive" : "default"}>
-                          <Clock className="h-3 w-3 mr-1" />
-                          {op.duration.toFixed(0)}ms
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={op.success ? "secondary" : "destructive"}>
-                          {op.success ? "Success" : "Failed"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{op.userId || "Anonymous"}</TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {formatDistanceToNow(new Date(op.timestamp), { addSuffix: true })}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {slowOps?.map((op) => {
+                    const duration = op.avgDuration || 0;
+                    const rowKey = `${op.operation}-${op.maxDuration}-${op.count}`;
+                    return (
+                      <TableRow key={rowKey}>
+                        <TableCell className="font-mono text-sm">{op.operation}</TableCell>
+                        <TableCell>
+                          <Badge variant={duration > 3000 ? "destructive" : "default"}>
+                            <Clock className="h-3 w-3 mr-1" />
+                            {duration.toFixed(0)}ms avg
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">Aggregated</Badge>
+                        </TableCell>
+                        <TableCell>{op.count} samples</TableCell>
+                        <TableCell className="text-muted-foreground">
+                          Last 24h
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
 
@@ -479,9 +483,12 @@ export default function SystemMonitoring() {
  * Alert History Tab Component
  */
 function AlertHistoryTab() {
+  type AlertTypeFilter = "error_rate" | "critical_error" | "performance_degradation";
+  type AlertSeverityFilter = "info" | "warning" | "critical";
+
   const [filter, setFilter] = useState<{
-    alertType?: "error_rate" | "critical_error" | "performance_degradation";
-    severity?: "info" | "warning" | "critical";
+    alertType?: AlertTypeFilter;
+    severity?: AlertSeverityFilter;
     unacknowledgedOnly: boolean;
   }>({ unacknowledgedOnly: false });
 
@@ -512,6 +519,24 @@ function AlertHistoryTab() {
 
   const handleTriggerDetection = () => {
     triggerDetectionMutation.mutate();
+  };
+
+  const parseAlertType = (value: string): AlertTypeFilter | undefined => {
+    if (
+      value === "error_rate" ||
+      value === "critical_error" ||
+      value === "performance_degradation"
+    ) {
+      return value;
+    }
+    return undefined;
+  };
+
+  const parseSeverity = (value: string): AlertSeverityFilter | undefined => {
+    if (value === "info" || value === "warning" || value === "critical") {
+      return value;
+    }
+    return undefined;
   };
 
   const getAlertTypeLabel = (type: string) => {
@@ -604,7 +629,7 @@ function AlertHistoryTab() {
                 onChange={(e) =>
                   setFilter({
                     ...filter,
-                    alertType: e.target.value as any || undefined,
+                    alertType: parseAlertType(e.target.value),
                   })
                 }
               >
@@ -623,7 +648,7 @@ function AlertHistoryTab() {
                 onChange={(e) =>
                   setFilter({
                     ...filter,
-                    severity: e.target.value as any || undefined,
+                    severity: parseSeverity(e.target.value),
                   })
                 }
               >
@@ -673,7 +698,7 @@ function AlertHistoryTab() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {alertHistory?.map((alert: any) => (
+              {alertHistory?.map((alert) => (
                 <TableRow key={alert.id}>
                   <TableCell className="text-sm">
                     {formatDistanceToNow(new Date(alert.createdAt), { addSuffix: true })}

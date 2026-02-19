@@ -8,13 +8,12 @@ import {
   users,
   complianceRoadmaps,
 } from "../../drizzle/schema";
-import { eq, count, sum, avg, and, gte } from "drizzle-orm";
 
 export const executiveAnalyticsRouter = router({
   /**
    * Get organization-wide compliance scorecard
    */
-  getOrganizationScorecard: adminProcedure.query(async ({ ctx }) => {
+  getOrganizationScorecard: adminProcedure.query(async () => {
     const db = await getDb();
     if (!db) throw new Error("Database connection failed");
 
@@ -95,7 +94,7 @@ export const executiveAnalyticsRouter = router({
   /**
    * Get risk status overview
    */
-  getRiskStatus: adminProcedure.query(async ({ ctx }) => {
+  getRiskStatus: adminProcedure.query(async () => {
     const db = await getDb();
     if (!db) throw new Error("Database connection failed");
 
@@ -133,7 +132,7 @@ export const executiveAnalyticsRouter = router({
   /**
    * Get remediation progress
    */
-  getRemediationProgress: adminProcedure.query(async ({ ctx }) => {
+  getRemediationProgress: adminProcedure.query(async () => {
     const db = await getDb();
     if (!db) throw new Error("Database connection failed");
 
@@ -161,7 +160,7 @@ export const executiveAnalyticsRouter = router({
   /**
    * Get evidence verification metrics
    */
-  getEvidenceMetrics: adminProcedure.query(async ({ ctx }) => {
+  getEvidenceMetrics: adminProcedure.query(async () => {
     const db = await getDb();
     if (!db) throw new Error("Database connection failed");
 
@@ -200,7 +199,7 @@ export const executiveAnalyticsRouter = router({
   /**
    * Get regulation coverage
    */
-  getRegulationCoverage: adminProcedure.query(async ({ ctx }) => {
+  getRegulationCoverage: adminProcedure.query(async () => {
     const db = await getDb();
     if (!db) throw new Error("Database connection failed");
 
@@ -228,7 +227,7 @@ export const executiveAnalyticsRouter = router({
   /**
    * Get team performance breakdown
    */
-  getTeamPerformance: adminProcedure.query(async ({ ctx }) => {
+  getTeamPerformance: adminProcedure.query(async () => {
     const db = await getDb();
     if (!db) throw new Error("Database connection failed");
 
@@ -273,7 +272,7 @@ export const executiveAnalyticsRouter = router({
   /**
    * Get strategic insights and recommendations
    */
-  getStrategicInsights: adminProcedure.query(async ({ ctx }) => {
+  getStrategicInsights: adminProcedure.query(async () => {
     const db = await getDb();
     if (!db) throw new Error("Database connection failed");
 
@@ -336,7 +335,7 @@ export const executiveAnalyticsRouter = router({
   /**
    * Get compliance trend (30/60/90 day)
    */
-  getComplianceTrend: adminProcedure.query(async ({ ctx }) => {
+  getComplianceTrend: adminProcedure.query(async () => {
     const db = await getDb();
     if (!db) throw new Error("Database connection failed");
 

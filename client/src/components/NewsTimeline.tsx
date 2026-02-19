@@ -69,6 +69,25 @@ const DATE_GROUP_ORDER: DateGroupKey[] = [
   "older",
 ];
 
+type RawNewsItem = {
+  id?: unknown;
+  title?: unknown;
+  summary?: unknown;
+  publishedDate?: unknown;
+  createdAt?: unknown;
+  retrievedAt?: unknown;
+  regulationTags?: unknown;
+  impactLevel?: unknown;
+  sourceType?: unknown;
+  newsType?: unknown;
+  gs1ImpactTags?: unknown;
+  sectorTags?: unknown;
+};
+
+function isRawNewsItem(value: unknown): value is RawNewsItem {
+  return typeof value === "object" && value !== null;
+}
+
 function normalizeDate(value: unknown): Date | null {
   if (!value) return null;
   if (value instanceof Date) return value;
@@ -85,7 +104,11 @@ function getDateGroup(date: Date): DateGroupKey {
   return "older";
 }
 
-function mapRawNewsToTimelineItem(raw: any): NewsTimelineItemData | null {
+function mapRawNewsToTimelineItem(raw: unknown): NewsTimelineItemData | null {
+  if (!isRawNewsItem(raw)) {
+    return null;
+  }
+
   const date =
     normalizeDate(raw.publishedDate) ||
     normalizeDate(raw.createdAt) ||
@@ -96,16 +119,22 @@ function mapRawNewsToTimelineItem(raw: any): NewsTimelineItemData | null {
   }
 
   return {
-    id: raw.id,
-    title: raw.title ?? "",
-    summary: raw.summary ?? "",
+    id: raw.id as NewsTimelineItemData["id"],
+    title: (raw.title ?? "") as string,
+    summary: (raw.summary ?? "") as string,
     publishedDate: date,
-    regulationTags: Array.isArray(raw.regulationTags) ? raw.regulationTags : [],
-    impactLevel: raw.impactLevel ?? null,
-    sourceType: raw.sourceType ?? null,
-    newsType: raw.newsType ?? null,
-    gs1ImpactTags: Array.isArray(raw.gs1ImpactTags) ? raw.gs1ImpactTags : [],
-    sectorTags: Array.isArray(raw.sectorTags) ? raw.sectorTags : [],
+    regulationTags: Array.isArray(raw.regulationTags)
+      ? (raw.regulationTags as string[])
+      : [],
+    impactLevel: (raw.impactLevel ?? null) as NewsTimelineItemData["impactLevel"],
+    sourceType: (raw.sourceType ?? null) as NewsTimelineItemData["sourceType"],
+    newsType: (raw.newsType ?? null) as NewsTimelineItemData["newsType"],
+    gs1ImpactTags: Array.isArray(raw.gs1ImpactTags)
+      ? (raw.gs1ImpactTags as string[])
+      : [],
+    sectorTags: Array.isArray(raw.sectorTags)
+      ? (raw.sectorTags as string[])
+      : [],
   };
 }
 
@@ -132,7 +161,7 @@ export function NewsTimeline() {
     return () => window.clearTimeout(handle);
   }, [searchInput]);
 
-  const newsItems = (data ?? []) as any[];
+  const newsItems: unknown[] = Array.isArray(data) ? data : [];
 
   const filteredNews = useMemo(() => {
     if (!newsItems.length) return [];
@@ -467,4 +496,3 @@ export function NewsTimeline() {
     </Card>
   );
 }
-

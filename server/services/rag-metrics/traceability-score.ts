@@ -209,7 +209,7 @@ function extractCitedSources(sentence: string): number[] {
  */
 export function calculateTraceabilityScore(
   answer: string,
-  retrievedSourceIds: number[],
+  _retrievedSourceIds: number[],
   maxSourceNumber: number = 5
 ): TraceabilityScore {
   // Extract claims from the answer

@@ -7,7 +7,6 @@ import {
   HelpCircle,
   Lightbulb,
   Search,
-  Shield,
   Zap,
   Target,
   BookOpen,

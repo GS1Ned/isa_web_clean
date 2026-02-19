@@ -14,7 +14,7 @@ import ExcelJS from 'exceljs';
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import * as schema from '../drizzle/schema';
-import { gs1Attributes, gs1AttributeCodeLists } from '../drizzle/schema';
+import { gs1Attributes } from '../drizzle/schema';
 import { createMysqlConnection } from './db-connection';
 import { serverLogger } from "./_core/logger-wiring";
 

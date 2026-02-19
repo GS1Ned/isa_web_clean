@@ -82,7 +82,7 @@ export const adminTemplatesRouter = router({
         tags: z.array(z.string()).optional(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ ctx: _ctx, input }) => {
       const db = await getDb();
       if (!db)
         throw new TRPCError({

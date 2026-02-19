@@ -4,19 +4,10 @@
  * RSS endpoint is blocked by Cloudflare, so we scrape the HTML page
  */
 
-import { chromium, type Browser, type Page } from "playwright";
+import { chromium, type Browser } from "playwright";
 import type { RawNewsItem } from "../news-fetcher";
 import { NEWS_SOURCES } from "../news-sources";
 import { serverLogger } from "../_core/logger-wiring";
-
-
-interface GS1EUArticle {
-  title: string;
-  url: string;
-  summary: string;
-  publishedAt: Date;
-  imageUrl?: string;
-}
 
 const GS1_EU_NEWS_URL = "https://gs1.eu/news/";
 const GS1_EU_SOURCE = NEWS_SOURCES.find(s => s.id === "gs1-eu-updates")!;

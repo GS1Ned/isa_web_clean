@@ -117,7 +117,7 @@ export async function handleWeeklyNewsArchival(req: Request, res: Response) {
  * Health check endpoint
  * GET /cron/health
  */
-export function handleCronHealth(req: Request, res: Response) {
+export function handleCronHealth(_req: Request, res: Response) {
   res.status(200).json({
     status: "ok",
     timestamp: new Date().toISOString(),

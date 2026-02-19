@@ -6,138 +6,8 @@
 import { notifyOwner } from "./_core/notification";
 import { getDb } from "./db";
 import { users, userAlerts, regulations, hubNews } from "../drizzle/schema";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
-
-
-/**
- * Email template for deadline alert
- */
-function getDeadlineAlertTemplate(
-  userName: string,
-  regulationName: string,
-  deadline: Date,
-  daysUntil: number
-): string {
-  return `
-    <html>
-      <body style="font-family: Arial, sans-serif; color: #333;">
-        <h2>⏰ Compliance Deadline Alert</h2>
-        <p>Hi ${userName},</p>
-        <p>This is a reminder that <strong>${regulationName}</strong> has an important deadline coming up:</p>
-        <div style="background-color: #f0f0f0; padding: 15px; border-left: 4px solid #0066cc;">
-          <p><strong>Deadline:</strong> ${deadline.toLocaleDateString()}</p>
-          <p><strong>Time until deadline:</strong> ${daysUntil} days</p>
-        </div>
-        <p>Make sure your organization is prepared for compliance. Visit the ISA Hub to review the full requirements and GS1 standards that apply.</p>
-        <p>
-          <a href="https://isa.example.com/hub/regulations" style="background-color: #0066cc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-            View Regulation Details
-          </a>
-        </p>
-        <hr />
-        <p style="font-size: 12px; color: #666;">
-          You're receiving this because you have alerts enabled for this regulation. 
-          <a href="https://isa.example.com/hub/dashboard">Manage your alerts</a>
-        </p>
-      </body>
-    </html>
-  `;
-}
-
-/**
- * Email template for new regulation notification
- */
-function getNewRegulationTemplate(
-  userName: string,
-  regulationName: string,
-  description: string,
-  effectiveDate: Date
-): string {
-  return `
-    <html>
-      <body style="font-family: Arial, sans-serif; color: #333;">
-        <h2>📋 New Regulation Announced</h2>
-        <p>Hi ${userName},</p>
-        <p>A new ESG regulation relevant to your interests has been announced:</p>
-        <div style="background-color: #f0f0f0; padding: 15px; border-left: 4px solid #00aa00;">
-          <h3>${regulationName}</h3>
-          <p>${description}</p>
-          <p><strong>Effective Date:</strong> ${effectiveDate.toLocaleDateString()}</p>
-        </div>
-        <p>Learn which GS1 standards apply and what changes you need to make to your supply chain.</p>
-        <p>
-          <a href="https://isa.example.com/hub/regulations" style="background-color: #00aa00; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-            Explore Regulation
-          </a>
-        </p>
-        <hr />
-        <p style="font-size: 12px; color: #666;">
-          You're receiving this because you have alerts enabled for new regulations.
-          <a href="https://isa.example.com/hub/dashboard">Manage your alerts</a>
-        </p>
-      </body>
-    </html>
-  `;
-}
-
-/**
- * Email template for daily digest
- */
-function getDailyDigestTemplate(
-  userName: string,
-  newsItems: Array<{ title: string; summary: string; url: string }>,
-  regulationUpdates: Array<{ name: string; change: string }>
-): string {
-  const newsHtml = newsItems
-    .map(
-      item => `
-    <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #ddd;">
-      <h4 style="margin: 0 0 5px 0;">${item.title}</h4>
-      <p style="margin: 0 0 10px 0; color: #666;">${item.summary}</p>
-      <a href="${item.url}" style="color: #0066cc; text-decoration: none;">Read more →</a>
-    </div>
-  `
-    )
-    .join("");
-
-  const regulationHtml = regulationUpdates
-    .map(
-      item => `
-    <li><strong>${item.name}:</strong> ${item.change}</li>
-  `
-    )
-    .join("");
-
-  return `
-    <html>
-      <body style="font-family: Arial, sans-serif; color: #333;">
-        <h2>📰 Daily ESG Regulations Digest</h2>
-        <p>Hi ${userName},</p>
-        <p>Here's your daily summary of ESG regulatory updates:</p>
-        
-        <h3>Latest News</h3>
-        ${newsHtml}
-        
-        <h3>Regulation Updates</h3>
-        <ul>
-          ${regulationHtml}
-        </ul>
-        
-        <p>
-          <a href="https://isa.example.com/hub/news" style="background-color: #0066cc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-            View Full News Feed
-          </a>
-        </p>
-        <hr />
-        <p style="font-size: 12px; color: #666;">
-          You're receiving this daily digest because you have digest alerts enabled.
-          <a href="https://isa.example.com/hub/dashboard">Manage your preferences</a>
-        </p>
-      </body>
-    </html>
-  `;
-}
 
 /**
  * Send deadline alert email
@@ -168,7 +38,6 @@ export async function sendDeadlineAlert(
     const userEmail = user[0].email;
     const userName = user[0].name || "User";
     const regulationName = regulation[0].title;
-    const deadline = new Date(regulation[0].effectiveDate || Date.now());
 
     // Send notification via owner notification system
     const success = await notifyOwner({
@@ -299,7 +168,7 @@ export async function sendDailyDigests(): Promise<number> {
  * Process all pending alerts
  */
 export async function processPendingAlerts(
-  daysBeforeDeadline: number = 7
+  _daysBeforeDeadline: number = 7
 ): Promise<{ sent: number; failed: number }> {
   try {
     const db = await getDb();

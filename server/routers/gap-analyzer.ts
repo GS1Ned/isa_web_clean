@@ -13,7 +13,7 @@
  */
 
 import { z } from 'zod';
-import { publicProcedure, protectedProcedure, router } from '../_core/trpc';
+import { publicProcedure, router } from '../_core/trpc';
 import { getDb } from '../db.js';
 import { sql } from 'drizzle-orm';
 import {
@@ -174,7 +174,7 @@ async function performGapAnalysis(input: GapAnalysisInput): Promise<GapAnalysisR
   let coveredCount = 0;
   let partialCount = 0;
   
-  for (const [mappingId, data] of Array.from(requirementMap.entries())) {
+  for (const [_mappingId, data] of Array.from(requirementMap.entries())) {
     const { requirement, attributes } = data;
     
     // Check if this standard is relevant for the sector

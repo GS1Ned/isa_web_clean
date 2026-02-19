@@ -115,7 +115,7 @@ export const citationAdminRouter = router({
       try {
         const { knowledgeEmbeddings } = await import("../../drizzle/schema");
 
-        const result = await db
+        await db
           .update(knowledgeEmbeddings)
           .set({
             datasetId: input.datasetId,
