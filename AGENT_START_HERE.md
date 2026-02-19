@@ -4,6 +4,8 @@ The following files are authoritative, stable entry points for agents and toolin
 
 - `/README.md` — Human-facing project overview
 - `/AGENT_START_HERE.md` — Primary agent orientation and rules
+- `/docs/agent/AGENT_MAP.md` — Canonical navigation map
+- `/docs/agent/MCP_POLICY.md` — MCP + lean documentation execution policy
 - `/docs/REPO_MAP.md` — Canonical repository structure snapshot (CI-generated)
 ## Planning (canonical)
 
@@ -18,6 +20,7 @@ The following files are authoritative, stable entry points for agents and toolin
 - Ask ISA runtime contract: `docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md`
 - Ask ISA prompt entrypoint: `server/prompts/ask_isa/index.ts`
 - Planning (canonical): `docs/planning/NEXT_ACTIONS.json` + `docs/planning/BACKLOG.csv`
+- MCP and documentation hygiene policy: `docs/agent/MCP_POLICY.md`
 - Ask ISA smoke:
   - Script: `scripts/probe/ask_isa_smoke.py`
   - Runbook: `docs/governance/ASK_ISA_SMOKE_RUNBOOK.md`

@@ -22,6 +22,19 @@
 - Make minimal, reviewable commits with governance-grade messages.
 - Prefer small diffs; avoid refactors unless necessary for the task.
 
+## Tooling: MCP
+- Canonical policy: `docs/agent/MCP_POLICY.md`
+- Default behavior:
+  - Use `filesystem` + `git` for repo-truth claims and edits.
+  - Use `fetch` first for external evidence; escalate to `playwright` for JS-rendered sources.
+
+## Documentation Hygiene (Global)
+- Use integrate-first mode for all work, not only MCP.
+- Do not create ad-hoc report artifacts by default.
+- Classify findings as `INTEGRATE_NOW`, `RESOLVE_NOW`, or `DROP_NOW` per `docs/agent/MCP_POLICY.md`.
+- Resolve uncertainty in the same run or drop it; do not commit unresolved documentation claims.
+- Run `python scripts/validate_planning_and_traceability.py` before finalizing doc-heavy changes.
+
 ## ISA-specific
 - Prefer authoritative sources for regulatory/standards facts (EU institutions, GS1, official specs).
 - If currency cannot be verified live, state it explicitly and downgrade confidence.

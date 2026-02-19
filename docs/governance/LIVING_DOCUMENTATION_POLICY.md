@@ -118,6 +118,26 @@ Any modification to this policy requires:
 * a commit message referencing this document
 * an updated impact statement
 
+## 10. Lean Documentation Enforcement (Repository-Wide)
+
+To prevent documentation sprawl, ISA uses **integration-first** as the default mode for all work:
+
+* useful, verified outcomes are integrated into existing canonical documents
+* uncertain outcomes are resolved immediately or dropped
+* low-value/generated report artifacts are not committed by default
+
+Mandatory triage for findings:
+
+* `INTEGRATE_NOW`: verified + operationally relevant, patch canonical docs directly
+* `RESOLVE_NOW`: uncertain, must be investigated in the same run
+* `DROP_NOW`: non-operational or redundant, do not commit
+
+This enforcement is implemented in validation gates and agent workflow anchors, including:
+
+* `AGENTS.md`
+* `docs/agent/MCP_POLICY.md`
+* `scripts/validate_planning_and_traceability.py`
+
 ---
 
 **End of Policy**

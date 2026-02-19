@@ -30,3 +30,8 @@
 - During `docs/governance/NO_GATES_WINDOW.md`, workflow runs are advisory and non-blocking.
 - Required pre-merge discipline is the deterministic manual checklist in `docs/governance/MANUAL_PREFLIGHT.md`.
 - Only claim "enforced" when a rule maps to an active gate workflow file or a deterministic manual command in canonical preflight docs.
+
+## Documentation sprawl guardrail (repo-wide linkage)
+- Integration-first mode is mandatory across all work, not only planning/MCP (`docs/agent/MCP_POLICY.md`).
+- New markdown artifacts must stay in canonical locations and avoid ad-hoc report-style files.
+- Enforced by `python scripts/validate_planning_and_traceability.py`.

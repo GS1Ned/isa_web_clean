@@ -4,6 +4,8 @@
 - Governance: `docs/governance/`
 - Specs: `docs/spec/`
 - Planning: `docs/planning/`
+- Agent map: `docs/agent/AGENT_MAP.md`
+- MCP + lean execution policy: `docs/agent/MCP_POLICY.md`
 - Root-migrated docs dump (triage needed): `docs/misc/_root/`
 - Archived phase reports: `isa-archive/phase-reports/`
 

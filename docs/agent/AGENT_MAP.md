@@ -6,6 +6,7 @@ Status: CANONICAL
 - Execution queue (single source of next work): docs/planning/NEXT_ACTIONS.json
 - Structured backlog (canonical): docs/planning/BACKLOG.csv
 - Program plan (support, optional): docs/planning/PROGRAM_PLAN.md
+- MCP + lean execution policy: docs/agent/MCP_POLICY.md
 
 ## Execution procedure (agent)
 1) Read docs/planning/NEXT_ACTIONS.json
@@ -24,6 +25,11 @@ Status: CANONICAL
 
 ## NO_GATES Operations
 - Manual preflight checklist: docs/governance/MANUAL_PREFLIGHT.md
+
+## Default Documentation Mode
+- Integrate useful outcomes into existing canonical docs.
+- Avoid standalone report artifacts unless explicitly requested.
+- Resolve uncertainty now; do not commit unresolved claims.
 
 ## Ask ISA (Phase 1)
 - Spec: `docs/spec/ASK_ISA.md`
