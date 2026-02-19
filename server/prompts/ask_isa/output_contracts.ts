@@ -40,7 +40,7 @@ export type AskISAResponse = z.infer<typeof AskISAResponseSchema>;
 export const ValidationErrorSchema = z.object({
   field: z.string(),
   message: z.string(),
-  value: z.any().optional()
+  value: z.unknown().optional()
 });
 
 export type ValidationError = z.infer<typeof ValidationErrorSchema>;
@@ -51,7 +51,7 @@ export type ValidationError = z.infer<typeof ValidationErrorSchema>;
  * @param response - Response object to validate
  * @returns Validation result with errors (if any)
  */
-export function validateAskISAResponse(response: any): {
+export function validateAskISAResponse(response: unknown): {
   valid: boolean;
   errors: ValidationError[];
   data?: AskISAResponse;
@@ -65,7 +65,7 @@ export function validateAskISAResponse(response: any): {
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const errors = error.issues.map((err: any) => ({
+      const errors = error.issues.map((err: z.ZodIssue) => ({
         field: err.path.join('.'),
         message: err.message,
         value: err.code

@@ -2,12 +2,11 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CheckCircle2, AlertCircle, Info, ExternalLink, TrendingUp, Target, Lightbulb } from "lucide-react";
+import { CheckCircle2, AlertCircle, Info, TrendingUp, Target, Lightbulb } from "lucide-react";
 import { ComplianceCoverageChart } from "@/components/ComplianceCoverageChart";
 
 export default function HubEsrsGs1Mappings() {
@@ -20,12 +19,18 @@ export default function HubEsrsGs1Mappings() {
   // Fetch full advisory for detailed mappings
   const { data: advisory, isLoading: advisoryLoading } = trpc.advisory.getFull.useQuery();
 
+  type SummaryData = NonNullable<typeof summary>;
+  type TopRecommendation = NonNullable<SummaryData["topRecommendations"]>[number];
+  type AdvisoryData = NonNullable<typeof advisory>;
+  type MappingResult = NonNullable<AdvisoryData["mappingResults"]>[number];
+  type GapAnalysisItem = NonNullable<AdvisoryData["gapAnalysis"]>[number];
+
   const isLoading = summaryLoading || advisoryLoading;
 
   // Filter mappings by selected ESRS standard
   const filteredMappings = selectedStandard === "all" 
     ? advisory?.mappingResults || []
-    : advisory?.mappingResults?.filter((m: any) => m.regulationStandard === selectedStandard) || [];
+    : advisory?.mappingResults?.filter((m: MappingResult) => m.regulationStandard === selectedStandard) || [];
 
   // Get ESRS standards list
   const esrs_standards = summary?.coverageByESRS 
@@ -195,7 +200,7 @@ export default function HubEsrsGs1Mappings() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {summary?.topRecommendations?.map((rec: any) => (
+                      {summary?.topRecommendations?.map((rec: TopRecommendation) => (
                         <div key={rec.id} className="border-l-4 border-blue-600 pl-4 py-2">
                           <div className="flex items-start justify-between mb-1">
                             <h4 className="font-semibold">{rec.title}</h4>
@@ -238,7 +243,7 @@ export default function HubEsrsGs1Mappings() {
 
                 {/* Mappings List */}
                 <div className="space-y-4">
-                  {filteredMappings.map((mapping: any) => (
+                  {filteredMappings.map((mapping: MappingResult) => (
                     <Card key={mapping.id}>
                       <CardHeader>
                         <div className="flex items-start justify-between">
@@ -308,7 +313,7 @@ export default function HubEsrsGs1Mappings() {
                 </Alert>
 
                 <div className="space-y-4">
-                  {advisory?.gapAnalysis?.map((gap: any) => (
+                  {advisory?.gapAnalysis?.map((gap: GapAnalysisItem) => (
                     <Card key={gap.id} className="border-l-4 border-orange-500">
                       <CardHeader>
                         <div className="flex items-start justify-between">

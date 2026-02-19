@@ -415,8 +415,11 @@ export async function fetchAllNews(): Promise<FetchResult[]> {
 	
 	  serverLogger.info(`[news-fetcher] Completed: ${successCount}/${enabledSources.length} sources, ${totalItems} items`);
 	  
-	  // Print health summary after each run
-	  printHealthSummary();
+	  // Print health summary after each run without surfacing background failures
+	  // as unhandled rejections in calling flows (e.g. unit tests without DB quota).
+	  void printHealthSummary().catch(error => {
+	    serverLogger.warn("[news-fetcher] Health summary logging skipped:", error);
+	  });
 
   return results;
 }
