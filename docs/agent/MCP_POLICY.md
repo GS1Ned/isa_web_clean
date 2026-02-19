@@ -105,3 +105,14 @@ Repo validation commands:
 - With runtime checks: `MCP_VALIDATE_CONNECTIVITY=1 bash scripts/validate_mcp_agent_readiness.sh`
 - GitHub auth in connectivity checks: uses `GH_TOKEN` first, then falls back to `gh auth token` when available.
 - Documentation hygiene gate: `python scripts/validate_planning_and_traceability.py`
+- Connectivity mode options:
+  - `MCP_CONNECTIVITY_MODE=strict` (default): validates `filesystem`, `git`, `fetch`, `playwright`, plus HTTP endpoints.
+  - `MCP_CONNECTIVITY_MODE=fast`: validates `filesystem`, `git`, `fetch`, plus HTTP endpoints (skips `playwright` to reduce runtime).
+- Machine-readable summary options:
+  - `MCP_SUMMARY_JSON_PATH=/path/to/summary.json`: writes JSON summary for CI/artifacts.
+  - `MCP_SUMMARY_STDOUT=1`: prints compact summary JSON to stdout.
+
+CI profile defaults:
+- Pull Request profile: `fast` (quick feedback)
+- Nightly/scheduled profile: `strict` (full connectivity coverage)
+- Workflow file: `.github/workflows/mcp-validation-profiles.yml`
