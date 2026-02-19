@@ -1,0 +1,72 @@
+name: mcp-validation-profiles
+
+on:
+  pull_request:
+    branches: [strict-no-console, main]
+    paths:
+      - ".codex/config.toml"
+      - ".amazonq/**"
+      - ".mcp.json"
+      - ".vscode/mcp.json"
+      - "docs/agent/MCP_POLICY.md"
+      - "docs/agent/MCP_RECIPES.md"
+      - "scripts/validate_mcp_agent_readiness.sh"
+      - "scripts/validate_mcp_connectivity.sh"
+      - ".github/workflows/mcp-validation-profiles.yml"
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  mcp-fast-pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.0"
+      - name: Install pnpm
+        run: npm install -g pnpm@10.4.1
+      - name: Validate MCP readiness (fast profile)
+        env:
+          MCP_VALIDATE_CONNECTIVITY: "1"
+          MCP_CONNECTIVITY_MODE: "fast"
+          MCP_SUMMARY_JSON_PATH: "artifacts/mcp-summary-fast.json"
+        run: bash scripts/validate_mcp_agent_readiness.sh
+      - name: Show machine-readable summary
+        run: cat artifacts/mcp-summary-fast.json
+      - name: Upload summary artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcp-summary-fast
+          path: artifacts/mcp-summary-fast.json
+
+  mcp-strict-nightly:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.0"
+      - name: Install pnpm
+        run: npm install -g pnpm@10.4.1
+      - name: Validate MCP readiness (strict profile)
+        env:
+          MCP_VALIDATE_CONNECTIVITY: "1"
+          MCP_CONNECTIVITY_MODE: "strict"
+          MCP_SUMMARY_JSON_PATH: "artifacts/mcp-summary-strict.json"
+        run: bash scripts/validate_mcp_agent_readiness.sh
+      - name: Show machine-readable summary
+        run: cat artifacts/mcp-summary-strict.json
+      - name: Upload summary artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcp-summary-strict
+          path: artifacts/mcp-summary-strict.json

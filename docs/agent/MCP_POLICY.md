@@ -108,3 +108,11 @@ Repo validation commands:
 - Connectivity mode options:
   - `MCP_CONNECTIVITY_MODE=strict` (default): validates `filesystem`, `git`, `fetch`, `playwright`, plus HTTP endpoints.
   - `MCP_CONNECTIVITY_MODE=fast`: validates `filesystem`, `git`, `fetch`, plus HTTP endpoints (skips `playwright` to reduce runtime).
+- Machine-readable summary options:
+  - `MCP_SUMMARY_JSON_PATH=/path/to/summary.json`: writes JSON summary for CI/artifacts.
+  - `MCP_SUMMARY_STDOUT=1`: prints compact summary JSON to stdout.
+
+CI profile defaults:
+- Pull Request profile: `fast` (quick feedback)
+- Nightly/scheduled profile: `strict` (full connectivity coverage)
+- Workflow file: `.github/workflows/mcp-validation-profiles.yml`
