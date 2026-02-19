@@ -105,3 +105,6 @@ Repo validation commands:
 - With runtime checks: `MCP_VALIDATE_CONNECTIVITY=1 bash scripts/validate_mcp_agent_readiness.sh`
 - GitHub auth in connectivity checks: uses `GH_TOKEN` first, then falls back to `gh auth token` when available.
 - Documentation hygiene gate: `python scripts/validate_planning_and_traceability.py`
+- Connectivity mode options:
+  - `MCP_CONNECTIVITY_MODE=strict` (default): validates `filesystem`, `git`, `fetch`, `playwright`, plus HTTP endpoints.
+  - `MCP_CONNECTIVITY_MODE=fast`: validates `filesystem`, `git`, `fetch`, plus HTTP endpoints (skips `playwright` to reduce runtime).
