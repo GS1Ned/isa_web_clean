@@ -14,9 +14,6 @@
  */
 
 import { 
-  Leaf, 
-  ShoppingBag, 
-  Building, 
   Shirt,
   Tractor,
   Store,

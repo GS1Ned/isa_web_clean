@@ -26,8 +26,6 @@ export interface QueryClassification {
  * Classify a query to determine if it's allowed or forbidden
  */
 export function classifyQuery(question: string): QueryClassification {
-  const lowerQuestion = question.toLowerCase();
-
   // Forbidden patterns - General ESG explanations
   const generalESGPatterns = [
     /what is (csrd|esrs|eudr|dpp|espr|ppwr)/i,

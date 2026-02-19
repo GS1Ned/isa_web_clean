@@ -17,8 +17,6 @@ import {
   SECTOR_TAGS,
   inferGS1ImpactTags,
   inferSectorTags,
-  type GS1ImpactTag,
-  type SectorTag,
 } from "../shared/news-tags";
 import type { RawNewsItem } from "./news-fetcher";
 import { serverLogger } from "./_core/logger-wiring";

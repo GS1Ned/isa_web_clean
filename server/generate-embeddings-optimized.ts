@@ -23,7 +23,7 @@
 import { getDb } from "./db";
 import { regulations, gs1Standards, knowledgeEmbeddings } from "../drizzle/schema";
 import { generateEmbedding, prepareTextForEmbedding } from "./_core/embedding";
-import { eq, and, sql, isNull, or } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 import crypto from "crypto";
 
@@ -40,18 +40,6 @@ const CONFIG = {
 };
 
 // ========== Types ==========
-
-interface EmbeddingJob {
-  id: number;
-  jobType: string;
-  status: "pending" | "running" | "completed" | "failed";
-  totalItems: number;
-  processedItems: number;
-  failedItems: number;
-  startedAt: Date;
-  completedAt?: Date;
-  errorLog?: string;
-}
 
 interface DocumentToProcess {
   id: number;
@@ -139,11 +127,6 @@ function isTransientError(error: any): boolean {
   );
 }
 
-function isInvalidInputError(error: any): boolean {
-  const message = error?.message || "";
-  return message.includes("400") || message.includes("invalid");
-}
-
 // ========== Batch Processing ==========
 
 async function generateEmbeddingsBatch(
@@ -225,8 +208,7 @@ async function retryWithBackoff<T>(
 async function upsertKnowledgeEmbedding(
   db: any,
   doc: DocumentToProcess,
-  embedding: number[],
-  tokens: number
+  embedding: number[]
 ): Promise<"created" | "updated"> {
   const contentHash = hashContent(doc.content);
 
@@ -314,8 +296,7 @@ async function processDocumentBatch(
       await upsertKnowledgeEmbedding(
         db,
         doc,
-        embeddingResult.embedding,
-        embeddingResult.tokens
+        embeddingResult.embedding
       );
 
       results.push({

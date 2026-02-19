@@ -934,7 +934,7 @@ export async function getLowScoredMappings(minVotes: number = 3) {
   try {
     const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } =
       await import("../drizzle/schema");
-    const { count, sql, desc, gte } = await import("drizzle-orm");
+    const { count, sql, desc } = await import("drizzle-orm");
 
     const lowScored = await db
       .select({
@@ -1220,8 +1220,6 @@ export async function getDutchInitiativeSectors() {
 
   try {
     const { dutchInitiatives } = await import("../drizzle/schema");
-    const { sql } = await import("drizzle-orm");
-
     const result = await db
       .selectDistinct({ sector: dutchInitiatives.sector })
       .from(dutchInitiatives);

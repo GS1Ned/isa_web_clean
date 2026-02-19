@@ -144,7 +144,7 @@ export const attributeRecommenderRouter = router({
    */
   getHistory: protectedProcedure
     .input(z.object({ limit: z.number().optional() }).optional())
-    .query(async ({ ctx, input }) => {
+    .query(async () => {
       // For now, return empty array - can be extended to store history in DB
       return [];
     }),

@@ -6,7 +6,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { 
   TrendingUp, 
-  TrendingDown, 
   AlertTriangle, 
   CheckCircle2, 
   XCircle,
@@ -170,7 +169,7 @@ export default function AdvisoryDiff() {
     );
   }
 
-  const { metadata, coverageDeltas, gapLifecycle, recommendationLifecycle, compositeMetrics } = diffData;
+  const { metadata, coverageDeltas, gapLifecycle, recommendationLifecycle, compositeMetrics } = diffData as AdvisoryDiffData;
 
   return (
     <div className="container py-8 max-w-7xl">

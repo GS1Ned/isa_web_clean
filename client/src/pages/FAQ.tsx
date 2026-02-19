@@ -123,11 +123,6 @@ export default function FAQ() {
       item.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const _categories = [
-    "All",
-    ...Array.from(new Set(faqItems.map(item => item.category))),
-  ];
-
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
   };

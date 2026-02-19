@@ -96,7 +96,7 @@ async function calculateEvidenceScore(userId: number): Promise<number> {
 /**
  * Calculate regulation coverage score
  */
-async function calculateRegulationScore(userId: number): Promise<number> {
+async function calculateRegulationScore(_userId: number): Promise<number> {
   const db = await getDb();
   if (!db) return 0;
 
@@ -182,7 +182,6 @@ export async function calculateComplianceMetrics(
     e => e.verificationStatus === "verified"
   ).length;
 
-  const allRegulations = await db.select().from(regulations);
   const userMappings = await db.select().from(regulationEsrsMappings);
 
   const uniqueRegulationIds = new Set(userMappings.map(m => m.regulationId));

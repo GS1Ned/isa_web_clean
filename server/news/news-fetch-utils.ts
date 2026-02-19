@@ -131,7 +131,7 @@ export function recordSuccess(sourceId: string, responseTimeMs: number): void {
 /**
  * Record a failed fetch
  */
-export function recordFailure(sourceId: string, error: Error): void {
+export function recordFailure(sourceId: string, _error: Error): void {
   const health = getSourceHealth(sourceId);
   health.lastFailure = new Date();
   health.consecutiveFailures++;

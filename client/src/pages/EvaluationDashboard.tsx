@@ -53,7 +53,6 @@ import {
   Target,
   TrendingUp,
   TrendingDown,
-  Minus,
   History,
   LineChart,
 } from "lucide-react";
@@ -189,7 +188,7 @@ export default function EvaluationDashboard() {
       setIsRunning(false);
       setProgress(100);
     },
-    onError: (error) => {
+    onError: (_error) => {
       setIsRunning(false);
       setProgress(0);
     },
@@ -687,7 +686,7 @@ export default function EvaluationDashboard() {
                   Score Trend
                 </h4>
                 <div className="h-32 flex items-end gap-1">
-                  {historyQuery.data.slice(-10).map((report, idx) => (
+                  {historyQuery.data.slice(-10).map((report) => (
                     <div
                       key={report.id}
                       className="flex-1 flex flex-col items-center gap-1"

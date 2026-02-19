@@ -21,7 +21,6 @@ import {
   ArrowRight,
   Layers
 } from "lucide-react";
-import { format } from "date-fns";
 
 // Event type configuration
 const EVENT_TYPE_CONFIG: Record<string, { label: string; icon: React.ElementType; color: string }> = {

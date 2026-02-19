@@ -4,7 +4,7 @@
 
 import { getDb } from "./db";
 import { hubNews } from "../drizzle/schema";
-import { eq, inArray, gte } from "drizzle-orm";
+import { inArray } from "drizzle-orm";
 import type { HubNews } from "../drizzle/schema";
 
 /**

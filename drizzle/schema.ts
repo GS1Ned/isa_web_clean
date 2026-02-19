@@ -1,4 +1,4 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, index, int, varchar, text, timestamp, mysqlEnum, json, decimal, foreignKey, float, tinyint } from "drizzle-orm/mysql-core"
+import { mysqlTable, index, int, varchar, text, timestamp, mysqlEnum, json, decimal, float, tinyint } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 export const advisoryReportVersions = mysqlTable("advisory_report_versions", {

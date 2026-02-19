@@ -11,7 +11,6 @@ import bm25 from 'wink-bm25-text-search';
 import nlp from 'wink-nlp-utils';
 import { getDb } from './db';
 import { regulations, gs1Standards } from '../drizzle/schema';
-import { sql } from 'drizzle-orm';
 import { serverLogger } from './_core/logger-wiring';
 
 /**

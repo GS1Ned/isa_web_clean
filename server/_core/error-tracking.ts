@@ -251,7 +251,7 @@ export function errorHandlerMiddleware(
   error: Error,
   req: any,
   res: any,
-  next: any
+  _next: any
 ): void {
   const context: ErrorContext = {
     traceId: req?.traceId,

@@ -281,7 +281,7 @@ async function collectRemediationOpportunities(userId: number) {
 function prioritizeActions(
   opportunities: any[],
   strategy: string,
-  scoreGap: number
+  _scoreGap: number
 ) {
   let actions = [...opportunities];
 
@@ -338,7 +338,7 @@ function generateMilestones(
   targetScore: number,
   startDate: Date,
   endDate: Date,
-  actionCount: number
+  _actionCount: number
 ): MilestoneItem[] {
   const milestones: MilestoneItem[] = [];
   const scoreIncrement = (targetScore - currentScore) / 4;
@@ -362,7 +362,7 @@ function generateMilestones(
 /**
  * Generate descriptive roadmap title
  */
-function generateRoadmapTitle(strategy: string, scoreGap: number): string {
+function generateRoadmapTitle(strategy: string, _scoreGap: number): string {
   const strategyNames = {
     risk_first: "Risk-First Compliance Roadmap",
     quick_wins: "Quick Wins Compliance Roadmap",

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, protectedProcedure, router, adminProcedure } from "./_core/trpc";
+import { router, adminProcedure } from "./_core/trpc";
 import {
   getErrorStats,
   getRecentErrors,

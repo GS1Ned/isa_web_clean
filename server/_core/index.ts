@@ -69,7 +69,7 @@ async function startServer() {
   app.use("/api/oauth", authRateLimiter);
   registerOAuthRoutes(app);
   // Health check endpoint (public, no auth required)
-  app.get("/health", async (req, res) => {
+  app.get("/health", async (_req, res) => {
     try {
       const health = await performHealthCheck();
       const statusCode = health.status === 'healthy' ? 200 : health.status === 'degraded' ? 200 : 503;
@@ -84,7 +84,7 @@ async function startServer() {
   });
 
   // Readiness check endpoint (public, no auth required)
-  app.get("/ready", async (req, res) => {
+  app.get("/ready", async (_req, res) => {
     try {
       const readiness = await performReadinessCheck();
       const statusCode = readiness.ready ? 200 : 503;

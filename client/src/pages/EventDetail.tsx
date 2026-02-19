@@ -13,7 +13,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   ArrowLeft, 
   Calendar, 
-  ExternalLink, 
   ChevronRight, 
   FileText, 
   Scale, 
@@ -23,7 +22,6 @@ import {
   AlertCircle,
   CheckCircle2,
   XCircle,
-  Layers,
   Newspaper,
   TrendingUp
 } from "lucide-react";

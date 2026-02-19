@@ -342,7 +342,7 @@ function generateRelatedTopics(query: string): string[] {
 /**
  * Generate "Did you mean?" suggestions
  */
-export function generateDidYouMean(query: string, searchResults: Array<{ title: string; score: number }>): string[] {
+export function generateDidYouMean(_query: string, searchResults: Array<{ title: string; score: number }>): string[] {
   const suggestions: string[] = [];
   
   // If search results have low scores, suggest related queries
