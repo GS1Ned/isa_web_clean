@@ -45,8 +45,6 @@ const nonSilentBaseEnv: EnvOverrides = {
 };
 
 describe("serverLogger", () => {
-  const originalSilent = process.env.ISA_TEST_SILENT;
-
   beforeEach(() => {
     vi.clearAllMocks();
     process.env.ISA_TEST_SILENT = "false";
