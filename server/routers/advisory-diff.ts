@@ -10,6 +10,7 @@ import { router, publicProcedure } from "../_core/trpc";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import { execSync } from "child_process";
+import { serverLogger } from "../_core/logger-wiring";
 
 export const advisoryDiffRouter = router({
   /**
@@ -54,6 +55,11 @@ export const advisoryDiffRouter = router({
             throw new Error("Diff computation failed to produce output file");
           }
         } catch (error: any) {
+          serverLogger.error("[AdvisoryDiff] Failed to compute advisory diff", {
+            version1,
+            version2,
+            error: String(error?.message ?? error),
+          });
           throw new Error(`Failed to compute diff: ${error.message}`);
         }
       }
