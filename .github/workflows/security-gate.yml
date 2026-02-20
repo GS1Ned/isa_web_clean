@@ -42,7 +42,8 @@ jobs:
         env:
           SECURITY_AUDIT_TIMEOUT_SEC: "180"
           SECURITY_AUDIT_LEVEL: "high"
-          SECURITY_AUDIT_BLOCKING_LEVELS: "critical"
+          SECURITY_AUDIT_BLOCKING_LEVELS: "high,critical"
+          SECURITY_AUDIT_WAIVER_IDS: "GHSA-4R6H-8V6P-XVW6,GHSA-5PGG-2G8V-P4X9,GHSA-3PPC-4F35-3M26"
         run: |
           set -euo pipefail
           bash scripts/gates/security-gate.sh test-results/ci/security-gate.ci.json

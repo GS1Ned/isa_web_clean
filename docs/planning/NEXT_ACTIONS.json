@@ -1,5 +1,5 @@
 {
-  "date": "20260220T061440Z",
+  "date": "20260220T062736Z",
   "status": "CANONICAL",
   "schema_version": "1.0",
   "execution_rules": {
@@ -10,12 +10,34 @@
   },
   "items": [
     {
-      "id": "PR2-0002",
+      "id": "PR2-0003",
       "priority": "P1",
       "status": "READY",
       "capability": "Meta",
+      "title": "Security waiver burn-down: remove temporary advisory waivers from high-severity gate policy (SEC-002)",
+      "next_action": "Remediate or replace dependencies behind temporary waiver IDs and remove SECURITY_AUDIT_WAIVER_IDS from gate defaults and CI workflows.",
+      "acceptance_criteria": "security-gate passes with SECURITY_AUDIT_BLOCKING_LEVELS=high,critical and empty waiver IDs; architecture/backlog updated.",
+      "evidence_links": [
+        "scripts/gates/security-gate.sh",
+        ".github/workflows/security-gate.yml",
+        ".github/workflows/tiered-tests.yml",
+        "docs/planning/BACKLOG.csv",
+        "docs/spec/ARCHITECTURE.md"
+      ],
+      "validation_command": "SECURITY_AUDIT_WAIVER_IDS= SECURITY_AUDIT_BLOCKING_LEVELS=high,critical bash scripts/gates/security-gate.sh /tmp/security.no-waiver.current.json",
+      "created_at_utc": "2026-02-20T06:27:36Z",
+      "source_plan": "ISA Production Readiness Convergence Plan (2026-02-20)",
+      "task_refs": [
+        "SEC-002"
+      ]
+    },
+    {
+      "id": "PR2-0002",
+      "priority": "P1",
+      "status": "DONE",
+      "capability": "Meta",
       "title": "Security ratchet follow-up: evaluate high-severity advisory blocking mode (SEC-001)",
-      "next_action": "Assess current high-severity advisories and implement ratchet plan to move from critical-only blocking to high-severity enforcement with mitigation playbook.",
+      "next_action": "Completed in SEC-001 high-severity ratchet patch group.",
       "acceptance_criteria": "Security policy/risk posture is updated with explicit high-severity handling decision and backlog tasks; deterministic security gate behavior preserved.",
       "evidence_links": [
         "docs/spec/ARCHITECTURE.md",
@@ -27,7 +49,18 @@
       "source_plan": "ISA Production Readiness Convergence Plan (2026-02-20)",
       "task_refs": [
         "T-017"
-      ]
+      ],
+      "completed_at_utc": "2026-02-20T06:27:36Z",
+      "evidence": {
+        "head_sha": "15af8f3908d163a5e6fe65bf24b7d7e2c77f9d74",
+        "paths": [
+          "scripts/gates/security-gate.sh",
+          ".github/workflows/security-gate.yml",
+          ".github/workflows/tiered-tests.yml",
+          "docs/spec/ARCHITECTURE.md",
+          "docs/planning/BACKLOG.csv"
+        ]
+      }
     },
     {
       "id": "PR2-0001",
@@ -253,6 +286,6 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-02-20T06:14:40Z"
+    "last_updated_at_utc": "2026-02-20T06:27:36Z"
   }
 }

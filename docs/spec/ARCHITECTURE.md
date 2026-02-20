@@ -212,9 +212,9 @@ bash scripts/validate_oss_benchmarks_2026_02_15.sh
 
 **FACT [EV-VAL-001]:** `observability_contract` currently reports `pass` with runtime-scoped coverage at threshold.
 
-**FACT [EV-VAL-002]:** `security_gate` currently reports `pass` under deterministic timeout-fail semantics with `critical` blocking severity.
+**FACT [EV-VAL-002]:** `security_gate` currently reports `pass` under deterministic timeout-fail semantics with `high,critical` blocking severity and explicit temporary waiver IDs.
 
-Security ratchet policy: `critical`-only blocking remains temporary; promotion to include `high` blocking is tracked in `docs/planning/BACKLOG.csv` (`SEC-001`) and must follow advisory remediation burn-down.
+Security ratchet policy: high-severity enforcement is now active. Temporary waivers for currently unresolved advisories are tracked in `docs/planning/BACKLOG.csv` and must be burned down before waiver removal.
 
 **FACT [EV-VAL-004]:** Canonical doc-code validation passes in `--canonical-only` mode.
 
@@ -237,7 +237,7 @@ Security ratchet policy: `critical`-only blocking remains temporary; promotion t
 1. Enforce manifest ownership and evidence drift checks in CI.
 2. Maintain non-breaking split-by-ownership discipline and prevent reintroduction of inline mixed routers.
 3. Keep six capability runtime contracts evidence-backed and synchronized with router/table ownership contracts.
-4. Reduce non-blocking high-severity dependency advisory backlog while preserving deterministic security gate behavior.
+4. Burn down temporary high-severity advisory waivers and remove waiver IDs while preserving deterministic security gate behavior.
 
 ---
 
