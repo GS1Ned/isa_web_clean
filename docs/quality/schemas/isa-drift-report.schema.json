@@ -25,7 +25,8 @@
         "major_score_degrade_pct": { "type": "number" },
         "major_latency_increase_pct": { "type": "number" },
         "minor_score_degrade_pct": { "type": "number" },
-        "minor_latency_increase_pct": { "type": "number" }
+        "minor_latency_increase_pct": { "type": "number" },
+        "runtime_latency_baseline_floor_ms": { "type": "number" }
       }
     },
     "summary": {
