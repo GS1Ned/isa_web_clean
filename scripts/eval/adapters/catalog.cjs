@@ -1,4 +1,12 @@
-const { readJson, avg, safeDiv, latencyNorm, daysSince } = require("../lib/common.cjs");
+const {
+  readJson,
+  avg,
+  safeDiv,
+  latencyNorm,
+  daysSince,
+  selectDatasetByPrefix,
+} = require("../lib/common.cjs");
+const { measureRuntimeProbe } = require("../lib/runtime-probes.cjs");
 
 function hasValue(value) {
   return value !== null && value !== undefined && String(value).trim().length > 0;
@@ -25,8 +33,8 @@ function lifecycleMatchesExpected(statusRaw, expectedStateRaw) {
 }
 
 async function evaluate(context) {
-  const { registryEntry, thresholdsByMetric } = context;
-  const dataset = registryEntry.datasets.find((d) => d.id === "catalog_records_v1");
+  const { registryEntry, datasets, thresholdsByMetric, fixtureVersion } = context;
+  const dataset = selectDatasetByPrefix(datasets, "catalog_records_");
   const payload = readJson(dataset.path);
   const rows = Array.isArray(payload.records) ? payload.records : [];
 
@@ -57,7 +65,40 @@ async function evaluate(context) {
     0
   );
 
-  const latencyP95Ms = 220;
+  const contractAdherence = Number(
+    avg([metadataCompleteness, authorityTierCorrectness, lifecycleStateCorrectness]).toFixed(4)
+  );
+  const integrationCompleteness = Number(
+    safeDiv(
+      rows.filter(
+        (row) =>
+          hasValue(row.sourceType) &&
+          hasValue(row.verificationDate) &&
+          (hasValue(row.releaseDate) || hasValue(row.pubDate))
+      ).length,
+      rows.length,
+      0
+    ).toFixed(4)
+  );
+
+  const latencyProbe = await measureRuntimeProbe({
+    probeId: "catalog.adapter.compute.v1",
+    fn: () => {
+      let checksum = 0;
+      for (const row of rows) {
+        checksum += Number(hasValue(row.id));
+        checksum += Number(hasValue(row.title));
+        checksum += Number(hasValue(row.publisher));
+        checksum += Number(hasValue(row.sourceType));
+        checksum += Number(hasValue(row.verificationDate));
+        checksum += Number(hasValue(row.releaseDate) || hasValue(row.pubDate));
+      }
+      return checksum;
+    },
+  });
+
+  const latencyP95Ms = latencyProbe.p95_ms;
+  const latencyMeasurementMode = latencyProbe.measurement_mode;
 
   const metrics = [
     {
@@ -67,6 +108,8 @@ async function evaluate(context) {
       kind: "coverage",
       value: Number(metadataCompleteness.toFixed(4)),
       fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: dataset.id,
@@ -75,6 +118,8 @@ async function evaluate(context) {
       kind: "authority",
       value: Number(authorityTierCorrectness.toFixed(4)),
       fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: dataset.id,
@@ -83,6 +128,8 @@ async function evaluate(context) {
       kind: "correctness",
       value: verificationCurrencyDays,
       fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: dataset.id,
@@ -91,6 +138,28 @@ async function evaluate(context) {
       kind: "correctness",
       value: Number(lifecycleStateCorrectness.toFixed(4)),
       fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
+    },
+    {
+      dataset_id: dataset.id,
+      metric_id: "catalog.contract.adherence",
+      dimension: "contract adherence",
+      kind: "contract_adherence",
+      value: contractAdherence,
+      fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
+    },
+    {
+      dataset_id: dataset.id,
+      metric_id: "catalog.integration.completeness",
+      dimension: "integration completeness",
+      kind: "integration_completeness",
+      value: integrationCompleteness,
+      fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: dataset.id,
@@ -99,6 +168,22 @@ async function evaluate(context) {
       kind: "latency",
       value: latencyP95Ms,
       fixture_path: dataset.path,
+      measurement_mode: latencyMeasurementMode,
+      fixture_version: fixtureVersion,
+      runtime_probe_id: latencyProbe.runtime_probe_id,
+      runtime_probe_samples: latencyProbe.samples,
+    },
+    {
+      dataset_id: dataset.id,
+      metric_id: "catalog.latency.measurement_mode_runtime",
+      dimension: "latency measurement mode runtime",
+      kind: "integration_completeness",
+      value: latencyMeasurementMode === "runtime" ? 1 : 0,
+      fixture_path: dataset.path,
+      measurement_mode: latencyMeasurementMode,
+      fixture_version: fixtureVersion,
+      runtime_probe_id: latencyProbe.runtime_probe_id,
+      runtime_probe_samples: latencyProbe.samples,
     },
   ];
 
@@ -108,17 +193,25 @@ async function evaluate(context) {
     coverage: Number(metadataCompleteness.toFixed(4)),
     explainability: Number(metadataCompleteness.toFixed(4)),
     authority: Number(authorityTierCorrectness.toFixed(4)),
+    contract_adherence: contractAdherence,
+    integration_completeness: integrationCompleteness,
     latency_norm: Number(latencyNorm(latencyP95Ms, latencyThreshold).toFixed(4)),
   };
+
+  const syntheticLatencyCount = metrics.filter(
+    (metric) => metric.kind === "latency" && metric.measurement_mode === "synthetic"
+  ).length;
 
   return {
     capability: "CATALOG",
     datasetIds: [dataset.id],
+    fixtureVersion,
     sampleCount: rows.length,
-    minimumSamples: registryEntry.datasets.reduce((sum, d) => sum + Number(d.minimum_samples || 0), 0),
+    minimumSamples: datasets.reduce((sum, d) => sum + Number(d.minimum_samples || 0), 0),
     contractPath: registryEntry.contract_path,
     metrics,
     rollups,
+    syntheticLatencyCount,
   };
 }
 

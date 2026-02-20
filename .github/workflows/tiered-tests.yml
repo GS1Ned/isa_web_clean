@@ -135,6 +135,7 @@ jobs:
           node scripts/eval/run-capability-evals.cjs \
             --registry data/evaluation/golden/registry.json \
             --thresholds docs/quality/thresholds/isa-capability-thresholds.json \
+            --stage stage_a \
             --out-json test-results/ci/isa-capability-eval.json
 
       - name: Assert capability thresholds (advisory-first)

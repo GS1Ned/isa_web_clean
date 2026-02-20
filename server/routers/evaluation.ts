@@ -339,9 +339,12 @@ export const evaluationRouter = router({
     const evalArtifact = readArtifactIfPresent<{
       run_id?: string;
       generated_at?: string;
+      stage?: string;
       isa_quality_score?: { value?: number; grade?: string; confidence?: string };
       capabilities?: Array<{
         capability: string;
+        stage?: string;
+        fixture_version?: string;
         status: string;
         capability_score: { value: number; grade: string };
       }>;
@@ -356,7 +359,8 @@ export const evaluationRouter = router({
 
     const driftArtifact = readArtifactIfPresent<{
       status?: string;
-      summary?: { major?: number; minor?: number; none?: number };
+      stage?: string;
+      summary?: { major?: number; minor?: number; transition?: number; none?: number };
     }>(CAPABILITY_DRIFT_ARTIFACT);
 
     if (!evalArtifact) {
@@ -370,13 +374,15 @@ export const evaluationRouter = router({
       available: true,
       runId: evalArtifact.run_id ?? null,
       generatedAt: evalArtifact.generated_at ?? null,
+      stage: evalArtifact.stage ?? null,
       isaQualityScore: evalArtifact.isa_quality_score ?? null,
       status: evalArtifact.status ?? "unknown",
       summary: evalArtifact.summary ?? null,
       capabilities: evalArtifact.capabilities ?? [],
       drift: driftArtifact ?? {
         status: "unknown",
-        summary: { major: 0, minor: 0, none: 0 },
+        stage: null,
+        summary: { major: 0, minor: 0, transition: 0, none: 0 },
       },
     };
   }),
@@ -413,6 +419,7 @@ export const evaluationRouter = router({
     const capabilityEval = readArtifactIfPresent<{
       run_id?: string;
       generated_at?: string;
+      stage?: string;
       isa_quality_score?: { value?: number; grade?: string; confidence?: string };
       summary?: unknown;
       status?: string;
@@ -426,10 +433,11 @@ export const evaluationRouter = router({
       askIsa: latestAskIsaReport,
       capabilityEvaluation: capabilityEval
         ? {
-            runId: capabilityEval.run_id ?? null,
-            generatedAt: capabilityEval.generated_at ?? null,
-            isaQualityScore: capabilityEval.isa_quality_score ?? null,
-            summary: capabilityEval.summary ?? null,
+          runId: capabilityEval.run_id ?? null,
+          generatedAt: capabilityEval.generated_at ?? null,
+          stage: capabilityEval.stage ?? null,
+          isaQualityScore: capabilityEval.isa_quality_score ?? null,
+          summary: capabilityEval.summary ?? null,
             status: capabilityEval.status ?? "unknown",
           }
         : null,

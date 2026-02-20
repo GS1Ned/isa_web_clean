@@ -3,7 +3,17 @@ name: ISA Capability Eval Nightly
 on:
   schedule:
     - cron: "17 2 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Evaluation stage"
+        required: false
+        default: "stage_a"
+        type: choice
+        options:
+          - stage_a
+          - stage_b
+          - stage_c
 
 permissions:
   contents: read
@@ -36,6 +46,7 @@ jobs:
           node scripts/eval/run-capability-evals.cjs \
             --registry data/evaluation/golden/registry.json \
             --thresholds docs/quality/thresholds/isa-capability-thresholds.json \
+            --stage "${{ github.event.inputs.stage || 'stage_a' }}" \
             --out-json test-results/ci/isa-capability-eval.json \
             --run-id nightly-${{ github.run_id }}
 
@@ -57,6 +68,26 @@ jobs:
             --baseline data/evaluation/baselines/isa-capability-baseline.json \
             --history test-results/ci/isa-capability-eval-history.json \
             --out test-results/ci/isa-drift-report.json
+
+      - name: Publish nightly capability summary
+        if: always()
+        run: |
+          FIXTURE_VERSIONS="unknown"
+          BLOCKING_METRICS="unknown"
+          if [[ -f "test-results/ci/isa-capability-eval.json" ]]; then
+            FIXTURE_VERSIONS="$(jq -r '[.capabilities[] | "\(.capability)=\(.fixture_version // "unknown")"] | join(", ")' test-results/ci/isa-capability-eval.json)"
+            BLOCKING_METRICS="$(jq -r '[.capabilities[].metrics[] | select(.status=="fail" and .enforcement=="fail") | "\(.capability):\(.metric_id)=\(.value)"] | if length==0 then "none" else join("; ") end' test-results/ci/isa-capability-eval.json)"
+          fi
+          {
+            echo "## Nightly Capability Eval";
+            echo "";
+            echo "- Stage: `${{ github.event.inputs.stage || 'stage_a' }}`";
+            echo "- Threshold assertion outcome: `${{ steps.assert.outcome }}`";
+            echo "- Drift detection outcome: `${{ steps.drift.outcome }}`";
+            echo "- Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}";
+            echo "- Fixture versions: ${FIXTURE_VERSIONS}";
+            echo "- Blocking metrics: ${BLOCKING_METRICS}";
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload nightly capability artifacts
         if: always()

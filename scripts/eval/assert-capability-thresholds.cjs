@@ -36,7 +36,7 @@ function main() {
   );
 
   process.stdout.write(
-    `READY=threshold_assertions_loaded metrics=${metrics.length} blocking_failures=${blockingFailures.length} warning_failures=${warningFailures.length}\n`
+    `READY=threshold_assertions_loaded stage=${report.stage || "unknown"} metrics=${metrics.length} blocking_failures=${blockingFailures.length} warning_failures=${warningFailures.length}\n`
   );
 
   if (warningFailures.length > 0) {

@@ -1,0 +1,509 @@
+{
+  "version": "v2",
+  "generated_at": "2026-02-20T15:02:18.099Z",
+  "notes": "Deterministic operational baseline fixtures derived from v1 set; expanded case count for stage-b benchmarking.",
+  "cases": [
+    {
+      "id": "RAG-EVAL-0001",
+      "query": "Explain ESRS E1-6 at a high level.",
+      "expected_citations": [
+        "fixture:esrs-e1-6",
+        "fixture:efrag-esrs"
+      ],
+      "actual": {
+        "answer": "ESRS E1-6 concerns greenhouse gas emissions disclosures and related requirements.",
+        "citations": [
+          "fixture:esrs-e1-6",
+          "fixture:efrag-esrs"
+        ],
+        "latency_ms": 120,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "ESRS E1-6 concerns greenhouse gas emissions disclosures and related requirements.",
+        "citations": [
+          "fixture:esrs-e1-6",
+          "fixture:efrag-esrs"
+        ],
+        "latency_ms": 110,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0002",
+      "query": "What is a GS1 Digital Link URI?",
+      "expected_citations": [
+        "fixture:gs1-digital-link"
+      ],
+      "actual": {
+        "answer": "A GS1 Digital Link URI encodes identifiers and qualifiers to resolve product information resources.",
+        "citations": [
+          "fixture:gs1-digital-link"
+        ],
+        "latency_ms": 95,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "A GS1 Digital Link URI encodes identifiers and qualifiers to resolve product information resources.",
+        "citations": [
+          "fixture:gs1-digital-link"
+        ],
+        "latency_ms": 92,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0003",
+      "query": "Summarize ISA dataset registry semantics.",
+      "expected_citations": [
+        "fixture:dataset-registry",
+        "fixture:dataset-governance"
+      ],
+      "actual": {
+        "answer": "The dataset registry enumerates artifacts with versioning, lineage and ingestion metadata.",
+        "citations": [
+          "fixture:dataset-registry",
+          "fixture:dataset-governance"
+        ],
+        "latency_ms": 140,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "The dataset registry enumerates artifacts with versioning, lineage and ingestion metadata.",
+        "citations": [
+          "fixture:dataset-registry",
+          "fixture:dataset-governance"
+        ],
+        "latency_ms": 135,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0004",
+      "query": "Describe ISA trace id propagation expectations.",
+      "expected_citations": [
+        "fixture:trace-id-policy"
+      ],
+      "actual": {
+        "answer": "Each request should carry a trace id propagated to logs and persisted error records.",
+        "citations": [
+          "fixture:trace-id-policy"
+        ],
+        "latency_ms": 105,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "Each request should carry a trace id propagated to logs and persisted error records.",
+        "citations": [
+          "fixture:trace-id-policy"
+        ],
+        "latency_ms": 101,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0005",
+      "query": "What does strict no-console mean in ISA?",
+      "expected_citations": [
+        "fixture:logging-policy"
+      ],
+      "actual": {
+        "answer": "ISA forbids Node console usage in core code and routes logs through server logger wiring.",
+        "citations": [
+          "fixture:logging-policy"
+        ],
+        "latency_ms": 160,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "ISA forbids Node console usage in core code and routes logs through server logger wiring.",
+        "citations": [
+          "fixture:logging-policy"
+        ],
+        "latency_ms": 158,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0006",
+      "query": "What does the ISA capability heartbeat validate?",
+      "expected_citations": [
+        "fixture:capability-heartbeat",
+        "fixture:runtime-contracts"
+      ],
+      "actual": {
+        "answer": "Capability heartbeat tests verify ASK_ISA, NEWS_HUB, KNOWLEDGE_BASE, CATALOG, ESRS_MAPPING and ADVISORY endpoints do not crash and return typed responses.",
+        "citations": [
+          "fixture:capability-heartbeat",
+          "fixture:runtime-contracts"
+        ],
+        "latency_ms": 145,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "Capability heartbeat tests verify ASK_ISA, NEWS_HUB, KNOWLEDGE_BASE, CATALOG, ESRS_MAPPING and ADVISORY endpoints do not crash and return typed responses.",
+        "citations": [
+          "fixture:capability-heartbeat",
+          "fixture:runtime-contracts"
+        ],
+        "latency_ms": 139,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0007",
+      "query": "How is advisory diff computed in ISA?",
+      "expected_citations": [
+        "fixture:advisory-diff-script",
+        "fixture:advisory-diff-router"
+      ],
+      "actual": {
+        "answer": "Advisory diff is computed by a deterministic Node script that compares advisory JSON structures and writes version-to-version diff artifacts used by the router.",
+        "citations": [
+          "fixture:advisory-diff-script",
+          "fixture:advisory-diff-router"
+        ],
+        "latency_ms": 170,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "Advisory diff is computed by a deterministic Node script that compares advisory JSON structures and writes version-to-version diff artifacts used by the router.",
+        "citations": [
+          "fixture:advisory-diff-script",
+          "fixture:advisory-diff-router"
+        ],
+        "latency_ms": 167,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0008",
+      "query": "What does the SLO policy gate enforce?",
+      "expected_citations": [
+        "fixture:slo-policy-gate",
+        "fixture:slo-catalog"
+      ],
+      "actual": {
+        "answer": "The SLO policy gate checks that SLO catalog coverage exists and that error budget status artifacts are present for policy state evaluation.",
+        "citations": [
+          "fixture:slo-policy-gate",
+          "fixture:slo-catalog"
+        ],
+        "latency_ms": 112,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "The SLO policy gate checks that SLO catalog coverage exists and that error budget status artifacts are present for policy state evaluation.",
+        "citations": [
+          "fixture:slo-policy-gate",
+          "fixture:slo-catalog"
+        ],
+        "latency_ms": 109,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0009",
+      "query": "What does schema-validation cover in ISA CI?",
+      "expected_citations": [
+        "fixture:schema-validation-workflow",
+        "fixture:quality-schemas"
+      ],
+      "actual": {
+        "answer": "Schema validation checks generated CI JSON artifacts against canonical JSON schemas in docs/quality/schemas to enforce contract integrity.",
+        "citations": [
+          "fixture:schema-validation-workflow",
+          "fixture:quality-schemas"
+        ],
+        "latency_ms": 124,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "Schema validation checks generated CI JSON artifacts against canonical JSON schemas in docs/quality/schemas to enforce contract integrity.",
+        "citations": [
+          "fixture:schema-validation-workflow",
+          "fixture:quality-schemas"
+        ],
+        "latency_ms": 121,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0010",
+      "query": "How does ISA enforce evidence-first evaluation?",
+      "expected_citations": [
+        "fixture:agents-policy",
+        "fixture:golden-registry"
+      ],
+      "actual": {
+        "answer": "ISA enforces evidence-first evaluation by anchoring capability metrics to repo fixtures, runtime contracts and threshold assertions that include provenance metadata.",
+        "citations": [
+          "fixture:agents-policy",
+          "fixture:golden-registry"
+        ],
+        "latency_ms": 131,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "ISA enforces evidence-first evaluation by anchoring capability metrics to repo fixtures, runtime contracts and threshold assertions that include provenance metadata.",
+        "citations": [
+          "fixture:agents-policy",
+          "fixture:golden-registry"
+        ],
+        "latency_ms": 128,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0001-V2",
+      "query": "Explain ESRS E1-6 at a high level. (operational baseline fixture 1)",
+      "expected_citations": [
+        "fixture:esrs-e1-6",
+        "fixture:efrag-esrs"
+      ],
+      "actual": {
+        "answer": "ESRS E1-6 concerns greenhouse gas emissions disclosures and related requirements.",
+        "citations": [
+          "fixture:esrs-e1-6",
+          "fixture:efrag-esrs"
+        ],
+        "latency_ms": 138,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "ESRS E1-6 concerns greenhouse gas emissions disclosures and related requirements.",
+        "citations": [
+          "fixture:esrs-e1-6",
+          "fixture:efrag-esrs"
+        ],
+        "latency_ms": 130,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0002-V2",
+      "query": "What is a GS1 Digital Link URI? (operational baseline fixture 2)",
+      "expected_citations": [
+        "fixture:gs1-digital-link-v2"
+      ],
+      "actual": {
+        "answer": "A GS1 Digital Link URI encodes identifiers and qualifiers to resolve product information resources.",
+        "citations": [
+          "fixture:gs1-digital-link-v2"
+        ],
+        "latency_ms": 113,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "A GS1 Digital Link URI encodes identifiers and qualifiers to resolve product information resources.",
+        "citations": [
+          "fixture:gs1-digital-link-v2"
+        ],
+        "latency_ms": 112,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0003-V2",
+      "query": "Summarize ISA dataset registry semantics. (operational baseline fixture 3)",
+      "expected_citations": [
+        "fixture:dataset-registry",
+        "fixture:dataset-governance"
+      ],
+      "actual": {
+        "answer": "The dataset registry enumerates artifacts with versioning, lineage and ingestion metadata.",
+        "citations": [
+          "fixture:dataset-registry",
+          "fixture:dataset-governance"
+        ],
+        "latency_ms": 158,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "The dataset registry enumerates artifacts with versioning, lineage and ingestion metadata.",
+        "citations": [
+          "fixture:dataset-registry",
+          "fixture:dataset-governance"
+        ],
+        "latency_ms": 155,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0004-V2",
+      "query": "Describe ISA trace id propagation expectations. (operational baseline fixture 4)",
+      "expected_citations": [
+        "fixture:trace-id-policy"
+      ],
+      "actual": {
+        "answer": "Each request should carry a trace id propagated to logs and persisted error records.",
+        "citations": [
+          "fixture:trace-id-policy"
+        ],
+        "latency_ms": 123,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "Each request should carry a trace id propagated to logs and persisted error records.",
+        "citations": [
+          "fixture:trace-id-policy"
+        ],
+        "latency_ms": 121,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0005-V2",
+      "query": "What does strict no-console mean in ISA? (operational baseline fixture 5)",
+      "expected_citations": [
+        "fixture:logging-policy-v2"
+      ],
+      "actual": {
+        "answer": "ISA forbids Node console usage in core code and routes logs through server logger wiring.",
+        "citations": [
+          "fixture:logging-policy-v2"
+        ],
+        "latency_ms": 178,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "ISA forbids Node console usage in core code and routes logs through server logger wiring.",
+        "citations": [
+          "fixture:logging-policy-v2"
+        ],
+        "latency_ms": 178,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0006-V2",
+      "query": "What does the ISA capability heartbeat validate? (operational baseline fixture 6)",
+      "expected_citations": [
+        "fixture:capability-heartbeat",
+        "fixture:runtime-contracts"
+      ],
+      "actual": {
+        "answer": "Capability heartbeat tests verify ASK_ISA, NEWS_HUB, KNOWLEDGE_BASE, CATALOG, ESRS_MAPPING and ADVISORY endpoints do not crash and return typed responses.",
+        "citations": [
+          "fixture:capability-heartbeat",
+          "fixture:runtime-contracts"
+        ],
+        "latency_ms": 163,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "Capability heartbeat tests verify ASK_ISA, NEWS_HUB, KNOWLEDGE_BASE, CATALOG, ESRS_MAPPING and ADVISORY endpoints do not crash and return typed responses.",
+        "citations": [
+          "fixture:capability-heartbeat",
+          "fixture:runtime-contracts"
+        ],
+        "latency_ms": 159,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0007-V2",
+      "query": "How is advisory diff computed in ISA? (operational baseline fixture 7)",
+      "expected_citations": [
+        "fixture:advisory-diff-script",
+        "fixture:advisory-diff-router"
+      ],
+      "actual": {
+        "answer": "Advisory diff is computed by a deterministic Node script that compares advisory JSON structures and writes version-to-version diff artifacts used by the router.",
+        "citations": [
+          "fixture:advisory-diff-script",
+          "fixture:advisory-diff-router"
+        ],
+        "latency_ms": 188,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "Advisory diff is computed by a deterministic Node script that compares advisory JSON structures and writes version-to-version diff artifacts used by the router.",
+        "citations": [
+          "fixture:advisory-diff-script",
+          "fixture:advisory-diff-router"
+        ],
+        "latency_ms": 187,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0008-V2",
+      "query": "What does the SLO policy gate enforce? (operational baseline fixture 8)",
+      "expected_citations": [
+        "fixture:slo-policy-gate",
+        "fixture:slo-catalog"
+      ],
+      "actual": {
+        "answer": "The SLO policy gate checks that SLO catalog coverage exists and that error budget status artifacts are present for policy state evaluation.",
+        "citations": [
+          "fixture:slo-policy-gate",
+          "fixture:slo-catalog"
+        ],
+        "latency_ms": 130,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "The SLO policy gate checks that SLO catalog coverage exists and that error budget status artifacts are present for policy state evaluation.",
+        "citations": [
+          "fixture:slo-policy-gate",
+          "fixture:slo-catalog"
+        ],
+        "latency_ms": 129,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0009-V2",
+      "query": "What does schema-validation cover in ISA CI? (operational baseline fixture 9)",
+      "expected_citations": [
+        "fixture:schema-validation-workflow",
+        "fixture:quality-schemas"
+      ],
+      "actual": {
+        "answer": "Schema validation checks generated CI JSON artifacts against canonical JSON schemas in docs/quality/schemas to enforce contract integrity.",
+        "citations": [
+          "fixture:schema-validation-workflow",
+          "fixture:quality-schemas"
+        ],
+        "latency_ms": 142,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "Schema validation checks generated CI JSON artifacts against canonical JSON schemas in docs/quality/schemas to enforce contract integrity.",
+        "citations": [
+          "fixture:schema-validation-workflow",
+          "fixture:quality-schemas"
+        ],
+        "latency_ms": 141,
+        "cost_usd": 0
+      }
+    },
+    {
+      "id": "RAG-EVAL-0010-V2",
+      "query": "How does ISA enforce evidence-first evaluation? (operational baseline fixture 10)",
+      "expected_citations": [
+        "fixture:agents-policy",
+        "fixture:golden-registry"
+      ],
+      "actual": {
+        "answer": "ISA enforces evidence-first evaluation by anchoring capability metrics to repo fixtures, runtime contracts and threshold assertions that include provenance metadata.",
+        "citations": [
+          "fixture:agents-policy",
+          "fixture:golden-registry"
+        ],
+        "latency_ms": 149,
+        "cost_usd": 0
+      },
+      "repeat_actual": {
+        "answer": "ISA enforces evidence-first evaluation by anchoring capability metrics to repo fixtures, runtime contracts and threshold assertions that include provenance metadata.",
+        "citations": [
+          "fixture:agents-policy",
+          "fixture:golden-registry"
+        ],
+        "latency_ms": 148,
+        "cost_usd": 0
+      }
+    }
+  ]
+}

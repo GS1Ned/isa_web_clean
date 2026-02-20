@@ -1,4 +1,11 @@
-const { readJson, percentile, avg, safeDiv, latencyNorm } = require("../lib/common.cjs");
+const {
+  readJson,
+  percentile,
+  avg,
+  safeDiv,
+  latencyNorm,
+  selectDatasetByPrefix,
+} = require("../lib/common.cjs");
 
 function minutesBetween(laterIso, earlierIso) {
   const later = Date.parse(laterIso);
@@ -8,8 +15,8 @@ function minutesBetween(laterIso, earlierIso) {
 }
 
 async function evaluate(context) {
-  const { registryEntry, thresholdsByMetric } = context;
-  const dataset = registryEntry.datasets.find((d) => d.id === "news_timeline_v1");
+  const { registryEntry, datasets, thresholdsByMetric, fixtureVersion } = context;
+  const dataset = selectDatasetByPrefix(datasets, "news_timeline_");
   const payload = readJson(dataset.path);
 
   const sources = Array.isArray(payload.sources) ? payload.sources : [];
@@ -49,6 +56,35 @@ async function evaluate(context) {
     0
   );
 
+  const contractAdherence = Number(
+    safeDiv(
+      rawArticles.filter(
+        (article) =>
+          typeof article.id === "string" &&
+          typeof article.sourceId === "string" &&
+          typeof article.publishedAt === "string" &&
+          article.classification_expected &&
+          article.classification_predicted
+      ).length,
+      rawArticles.length,
+      0
+    ).toFixed(4)
+  );
+  const integrationCompleteness = Number(
+    safeDiv(
+      rawArticles.filter(
+        (article) =>
+          enabledSourceIds.has(article.sourceId) &&
+          typeof article.dedup_key === "string" &&
+          article.dedup_key.trim().length > 0 &&
+          Number.isFinite(Number(article.processing_latency_ms))
+      ).length,
+      rawArticles.length,
+      0
+    ).toFixed(4)
+  );
+  const latencyMeasurementMode = "fixture";
+
   const metrics = [
     {
       dataset_id: dataset.id,
@@ -57,6 +93,8 @@ async function evaluate(context) {
       kind: "correctness",
       value: freshnessMedianMinutes,
       fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: dataset.id,
@@ -65,6 +103,8 @@ async function evaluate(context) {
       kind: "coverage",
       value: Number(sourceCoverage.toFixed(4)),
       fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: dataset.id,
@@ -73,6 +113,8 @@ async function evaluate(context) {
       kind: "correctness",
       value: Number(duplicateRate.toFixed(4)),
       fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: dataset.id,
@@ -81,6 +123,28 @@ async function evaluate(context) {
       kind: "correctness",
       value: Number(classificationF1.toFixed(4)),
       fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
+    },
+    {
+      dataset_id: dataset.id,
+      metric_id: "news.contract.adherence",
+      dimension: "contract adherence",
+      kind: "contract_adherence",
+      value: contractAdherence,
+      fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
+    },
+    {
+      dataset_id: dataset.id,
+      metric_id: "news.integration.completeness",
+      dimension: "integration completeness",
+      kind: "integration_completeness",
+      value: integrationCompleteness,
+      fixture_path: dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: dataset.id,
@@ -89,6 +153,18 @@ async function evaluate(context) {
       kind: "latency",
       value: latencyP95Ms,
       fixture_path: dataset.path,
+      measurement_mode: latencyMeasurementMode,
+      fixture_version: fixtureVersion,
+    },
+    {
+      dataset_id: dataset.id,
+      metric_id: "news.latency.measurement_mode_runtime",
+      dimension: "latency measurement mode runtime",
+      kind: "integration_completeness",
+      value: latencyMeasurementMode === "runtime" ? 1 : 0,
+      fixture_path: dataset.path,
+      measurement_mode: latencyMeasurementMode,
+      fixture_version: fixtureVersion,
     },
   ];
 
@@ -98,17 +174,25 @@ async function evaluate(context) {
     coverage: Number(sourceCoverage.toFixed(4)),
     explainability: Number(sourceCoverage.toFixed(4)),
     authority: Number(authorityRatio.toFixed(4)),
+    contract_adherence: contractAdherence,
+    integration_completeness: integrationCompleteness,
     latency_norm: Number(latencyNorm(latencyP95Ms, latencyThreshold).toFixed(4)),
   };
+
+  const syntheticLatencyCount = metrics.filter(
+    (metric) => metric.kind === "latency" && metric.measurement_mode === "synthetic"
+  ).length;
 
   return {
     capability: "NEWS_HUB",
     datasetIds: [dataset.id],
+    fixtureVersion,
     sampleCount: rawArticles.length,
-    minimumSamples: registryEntry.datasets.reduce((sum, d) => sum + Number(d.minimum_samples || 0), 0),
+    minimumSamples: datasets.reduce((sum, d) => sum + Number(d.minimum_samples || 0), 0),
     contractPath: registryEntry.contract_path,
     metrics,
     rollups,
+    syntheticLatencyCount,
   };
 }
 

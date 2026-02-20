@@ -37,10 +37,25 @@ function loadHistory(historyPath) {
   return Array.isArray(payload) ? payload : [];
 }
 
-function toMetricSeries(history, metricId) {
+function toComparableSeries(history, metricId, stage, fixtureVersion) {
   return history
+    .filter((run) => {
+      const runStage = run.stage || "stage_a";
+      const meta = run.metric_meta?.[metricId] || {};
+      const runFixtureVersion = meta.fixture_version || "v0";
+      return runStage === stage && runFixtureVersion === fixtureVersion;
+    })
     .map((run) => run.metrics?.[metricId])
     .filter((value) => Number.isFinite(value));
+}
+
+function hasPriorDifferentFixtureVersion(history, metricId, stage, fixtureVersion) {
+  return history.some((run) => {
+    const runStage = run.stage || "stage_a";
+    if (runStage !== stage) return false;
+    const runFixtureVersion = run.metric_meta?.[metricId]?.fixture_version || "v0";
+    return runFixtureVersion !== fixtureVersion;
+  });
 }
 
 function degradePct(value, baseline, thresholdOp) {
@@ -56,14 +71,12 @@ function deltaPct(value, baseline) {
   return ((value - baseline) / baseline) * 100;
 }
 
-function classifyDrift(metric, baselineValue, historySeriesWithCurrent) {
+function classifyDrift(metric, baselineValue, comparableSeries) {
   const { value, threshold_op: thresholdOp } = metric;
   const direction = thresholdOp === "<=" ? "latency" : "score";
 
-  const currentDegradePct = degradePct(value, baselineValue, thresholdOp);
-  const lastTwo = historySeriesWithCurrent.slice(-2);
-  const lastThree = historySeriesWithCurrent.slice(-3);
-
+  const lastTwo = comparableSeries.slice(-2);
+  const lastThree = comparableSeries.slice(-3);
   let drift = "none";
 
   if (lastThree.length === 3) {
@@ -90,9 +103,12 @@ function classifyDrift(metric, baselineValue, historySeriesWithCurrent) {
   return {
     drift,
     direction,
-    currentDegradePct,
     deltaPct: deltaPct(value, baselineValue),
   };
+}
+
+function baselineMetaForMetric(baseline, metricId) {
+  return baseline.metric_meta?.[metricId] || {};
 }
 
 function main() {
@@ -100,14 +116,21 @@ function main() {
   const evaluation = readJson(options.evalPath);
   const baseline = readJson(options.baselinePath);
   const history = loadHistory(options.historyPath);
+  const stage = evaluation.stage || baseline.stage || "stage_a";
 
   const currentMetrics = evaluation.capabilities.flatMap((capability) =>
     capability.metrics.map((metric) => ({ capability: capability.capability, ...metric }))
   );
 
   const currentMetricMap = {};
+  const currentMetricMeta = {};
   for (const metric of currentMetrics) {
     currentMetricMap[metric.metric_id] = metric.value;
+    currentMetricMeta[metric.metric_id] = {
+      capability: metric.capability,
+      fixture_version: metric.fixture_version || "v0",
+      measurement_mode: metric.measurement_mode || "fixture",
+    };
   }
 
   const nextHistory = [
@@ -115,7 +138,9 @@ function main() {
     {
       run_id: evaluation.run_id,
       generated_at: evaluation.generated_at,
+      stage,
       metrics: currentMetricMap,
+      metric_meta: currentMetricMeta,
     },
   ];
 
@@ -125,30 +150,74 @@ function main() {
     const baselineValue = baseline.metrics?.[metric.metric_id];
     if (!Number.isFinite(baselineValue)) continue;
 
-    const historicalSeries = toMetricSeries(nextHistory, metric.metric_id);
-    const driftInfo = classifyDrift(metric, baselineValue, historicalSeries);
+    const fixtureVersion = metric.fixture_version || "v0";
+    const baselineMeta = baselineMetaForMetric(baseline, metric.metric_id);
+    const baselineStage = baseline.stage || null;
+    const baselineFixtureVersion = baselineMeta.fixture_version || null;
+    const stageMismatch = Boolean(baselineStage && baselineStage !== stage);
+    const baselineFixtureMismatch = Boolean(
+      baselineFixtureVersion && baselineFixtureVersion !== fixtureVersion
+    );
+
+    const comparableSeries = toComparableSeries(
+      nextHistory,
+      metric.metric_id,
+      stage,
+      fixtureVersion
+    );
+    const transition = hasPriorDifferentFixtureVersion(
+      history,
+      metric.metric_id,
+      stage,
+      fixtureVersion
+    );
+
+    let drift = "none";
+    let direction = metric.threshold_op === "<=" ? "latency" : "score";
+    let comparisonMode = "stage+fixture_version";
+
+    if (stageMismatch || baselineFixtureMismatch) {
+      drift = "transition";
+      comparisonMode = "transition";
+    } else if (transition && comparableSeries.length < 3) {
+      drift = "transition";
+      comparisonMode = "transition";
+    } else {
+      const driftInfo = classifyDrift(metric, baselineValue, comparableSeries);
+      drift = driftInfo.drift;
+      direction = driftInfo.direction;
+    }
 
     driftRows.push({
       metric_id: metric.metric_id,
       capability: metric.capability,
       kind: metric.kind,
-      direction: driftInfo.direction,
+      direction,
+      stage,
+      fixture_version: fixtureVersion,
+      measurement_mode: metric.measurement_mode || "fixture",
+      comparison_mode: comparisonMode,
+      transition: comparisonMode === "transition",
       current: Number(metric.value.toFixed ? metric.value.toFixed(4) : metric.value),
       baseline: baselineValue,
-      delta_pct: Number(driftInfo.deltaPct.toFixed(4)),
-      drift: driftInfo.drift,
+      delta_pct: Number(deltaPct(metric.value, baselineValue).toFixed(4)),
+      drift,
     });
   }
 
   const summary = {
     major: driftRows.filter((row) => row.drift === "major").length,
     minor: driftRows.filter((row) => row.drift === "minor").length,
+    transition: driftRows.filter((row) => row.drift === "transition").length,
     none: driftRows.filter((row) => row.drift === "none").length,
   };
 
   const alerts = [];
   if (summary.major > 0) alerts.push(`major drift detected for ${summary.major} metrics`);
   if (summary.minor > 0) alerts.push(`minor drift detected for ${summary.minor} metrics`);
+  if (summary.transition > 0) {
+    alerts.push(`transition comparison mode for ${summary.transition} metrics`);
+  }
 
   const status = summary.major > 0 ? "fail" : summary.minor > 0 ? "warn" : "pass";
 
@@ -157,6 +226,7 @@ function main() {
     run_id: evaluation.run_id,
     baseline_path: options.baselinePath,
     history_path: options.historyPath,
+    stage,
     rules: DRIFT_RULES,
     summary,
     status,

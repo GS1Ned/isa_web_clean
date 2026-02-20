@@ -1,6 +1,7 @@
 {
   "baseline_id": "isa-capability-baseline-v1",
   "generated_at": "2026-02-20T00:00:00Z",
+  "stage": "stage_a",
   "metrics": {
     "kb.ingestion.correctness": 1.0,
     "kb.metadata.completeness": 1.0,

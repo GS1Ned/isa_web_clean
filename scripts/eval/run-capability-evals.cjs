@@ -9,6 +9,7 @@ const {
   compareThreshold,
   computeCapabilityScore,
   scoreGrade,
+  inferFixtureVersion,
 } = require("./lib/common.cjs");
 
 const ADAPTERS = {
@@ -28,6 +29,7 @@ function parseArgs() {
     outJson: "test-results/ci/isa-capability-eval.json",
     outMarkdown: "/tmp/isa-capability-eval.md",
     capabilities: null,
+    stage: null,
     runId: `isa-eval-${crypto.randomUUID()}`,
   };
 
@@ -38,11 +40,71 @@ function parseArgs() {
     else if (arg === "--out-json") options.outJson = args[++i];
     else if (arg === "--out-md") options.outMarkdown = args[++i];
     else if (arg === "--capabilities") options.capabilities = args[++i];
+    else if (arg === "--stage") options.stage = args[++i];
     else if (arg === "--run-id") options.runId = args[++i];
     else throw new Error(`Unknown argument: ${arg}`);
   }
 
   return options;
+}
+
+const DEFAULT_WEIGHTS = {
+  correctness: 0.3,
+  coverage: 0.2,
+  explainability: 0.15,
+  authority: 0.15,
+  contract_adherence: 0.1,
+  integration_completeness: 0.1,
+  latency_norm: 0.0,
+};
+
+function resolveStageConfig(thresholdsDoc, requestedStage) {
+  const availableStages = thresholdsDoc.stages || null;
+  if (!availableStages) {
+    return {
+      stage: requestedStage || thresholdsDoc.default_stage || "stage_a",
+      weights: {
+        ...DEFAULT_WEIGHTS,
+        ...(thresholdsDoc.weights || {}),
+      },
+      metrics: thresholdsDoc.metrics || {},
+      syntheticLatencyPenalty: Number(thresholdsDoc.synthetic_latency_penalty || 0),
+    };
+  }
+
+  const stage = requestedStage || thresholdsDoc.default_stage || "stage_a";
+  const stageConfig = availableStages[stage];
+  if (!stageConfig) {
+    throw new Error(
+      `Unknown stage "${stage}". Available stages: ${Object.keys(availableStages).join(", ")}`
+    );
+  }
+
+  return {
+    stage,
+    weights: {
+      ...DEFAULT_WEIGHTS,
+      ...(thresholdsDoc.weights || {}),
+      ...(stageConfig.weights || {}),
+    },
+    metrics: stageConfig.metrics || thresholdsDoc.metrics || {},
+    syntheticLatencyPenalty: Number(
+      stageConfig.synthetic_latency_penalty ?? thresholdsDoc.synthetic_latency_penalty ?? 0
+    ),
+  };
+}
+
+function selectDatasetsForStage(registryEntry, stage) {
+  const stageIds = registryEntry.fixture_tiers?.[stage];
+  if (!Array.isArray(stageIds) || stageIds.length === 0) {
+    return registryEntry.datasets || [];
+  }
+  const datasetMap = new Map((registryEntry.datasets || []).map((dataset) => [dataset.id, dataset]));
+  const selected = stageIds.map((datasetId) => datasetMap.get(datasetId)).filter(Boolean);
+  if (!selected.length) {
+    throw new Error(`No datasets resolved for capability ${registryEntry.capability} at stage ${stage}`);
+  }
+  return selected;
 }
 
 function toCapabilitySet(rawValue) {
@@ -84,6 +146,7 @@ function buildMarkdown(report) {
   lines.push(`- Generated At: ${report.generated_at}`);
   lines.push(`- ISA Quality Score: ${report.isa_quality_score.value.toFixed(4)} (${report.isa_quality_score.grade})`);
   lines.push(`- Confidence: ${report.isa_quality_score.confidence}`);
+  lines.push(`- Stage: ${report.stage}`);
   lines.push(`- Status: ${report.status}`);
   lines.push("");
   lines.push("## Capability Scores");
@@ -93,8 +156,8 @@ function buildMarkdown(report) {
 
   for (const capability of report.capabilities) {
     lines.push(
-      `| ${capability.capability} | ${capability.capability_score.value.toFixed(4)} | ${capability.capability_score.grade} | ${capability.status} | ${capability.sample_count} | ${capability.confidence} |`
-    );
+        `| ${capability.capability} | ${capability.capability_score.value.toFixed(4)} | ${capability.capability_score.grade} | ${capability.status} | ${capability.sample_count} | ${capability.confidence} |`
+      );
   }
 
   const failedMetrics = report.capabilities
@@ -135,15 +198,10 @@ async function main() {
   const thresholdsDoc = readJson(options.thresholds);
   const selectedCapabilities = toCapabilitySet(options.capabilities);
   const generatedAt = new Date().toISOString();
-
-  const thresholdsByMetric = thresholdsDoc.metrics || {};
-  const weights = thresholdsDoc.weights || {
-    correctness: 0.4,
-    coverage: 0.2,
-    explainability: 0.15,
-    authority: 0.15,
-    latency_norm: 0.1,
-  };
+  const stageConfig = resolveStageConfig(thresholdsDoc, options.stage);
+  const stage = stageConfig.stage;
+  const thresholdsByMetric = stageConfig.metrics;
+  const weights = stageConfig.weights;
 
   const capabilityReports = [];
 
@@ -156,8 +214,14 @@ async function main() {
       throw new Error(`No adapter registered for capability: ${capability}`);
     }
 
+    const selectedDatasets = selectDatasetsForStage(registryEntry, stage);
+    const fixtureVersion = inferFixtureVersion(selectedDatasets.map((dataset) => dataset.id));
+
     const evaluated = await adapter.evaluate({
       registryEntry,
+      datasets: selectedDatasets,
+      stage,
+      fixtureVersion,
       thresholdsByMetric,
       generatedAt,
       runId: options.runId,
@@ -183,25 +247,39 @@ async function main() {
         status: compareThreshold(metric.value, threshold.op, threshold.value) ? "pass" : "fail",
         timestamp_utc: generatedAt,
         fixture_path: metric.fixture_path,
+        fixture_version: metric.fixture_version || fixtureVersion,
+        measurement_mode: metric.measurement_mode || "fixture",
+        runtime_probe_id: metric.runtime_probe_id,
+        runtime_probe_samples: metric.runtime_probe_samples,
         contract_path: evaluated.contractPath,
         provenance: {
           registry_path: options.registry,
           thresholds_path: options.thresholds,
+          stage,
         },
       };
     });
 
-    const capabilityScoreValue = Number(computeCapabilityScore(evaluated.rollups, weights).toFixed(4));
+    const syntheticPenalty =
+      evaluated.syntheticLatencyCount > 0 ? stageConfig.syntheticLatencyPenalty : 0;
+    const capabilityScoreValue = Number(
+      computeCapabilityScore(evaluated.rollups, weights, {
+        syntheticPenalty,
+      }).toFixed(4)
+    );
     const confidence = capabilityConfidence(evaluated.sampleCount, evaluated.minimumSamples);
 
     capabilityReports.push({
       capability,
+      stage,
+      fixture_version: evaluated.fixtureVersion || fixtureVersion,
       dataset_ids: evaluated.datasetIds,
       sample_count: evaluated.sampleCount,
       minimum_samples: evaluated.minimumSamples,
       confidence,
       contract_path: evaluated.contractPath,
       metric_rollups: evaluated.rollups,
+      synthetic_penalty: syntheticPenalty,
       capability_score: {
         value: capabilityScoreValue,
         grade: scoreGrade(capabilityScoreValue),
@@ -225,10 +303,11 @@ async function main() {
   const confidences = capabilityReports.map((capability) => capability.confidence);
 
   const report = {
-    schema_version: "1.0.0",
+    schema_version: "2.0.0",
     generated_at: generatedAt,
     run_id: options.runId,
-    mode: "fixture-first",
+    mode: "fixture-first-stage-aware",
+    stage,
     enforcement_mode: thresholdsDoc.enforcement_mode || "advisory-first",
     registry_path: options.registry,
     thresholds_path: options.thresholds,

@@ -56,11 +56,16 @@
       "properties": {
         "run_id": {"type": "string"},
         "generated_at": {"type": "string", "format": "date-time"},
+        "stage": {"type": "string", "enum": ["stage_a", "stage_b", "stage_c"]},
         "status": {"type": "string", "enum": ["pass", "fail"]},
         "isa_quality_score": {"type": "number", "minimum": 0, "maximum": 1},
         "blocking_failures": {"type": "integer", "minimum": 0},
         "warning_failures": {"type": "integer", "minimum": 0},
-        "drift_status": {"type": "string", "enum": ["unknown", "pass", "warn", "fail"]}
+        "drift_status": {"type": "string", "enum": ["unknown", "pass", "warn", "fail", "transition"]},
+        "fixture_versions": {
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        }
       }
     }
   }

@@ -7,6 +7,7 @@
     "schema_version",
     "generated_at",
     "run_id",
+    "stage",
     "capabilities",
     "isa_quality_score",
     "summary",
@@ -16,6 +17,7 @@
     "schema_version": { "type": "string" },
     "generated_at": { "type": "string", "format": "date-time" },
     "run_id": { "type": "string" },
+    "stage": { "type": "string", "enum": ["stage_a", "stage_b", "stage_c"] },
     "mode": { "type": "string" },
     "enforcement_mode": { "type": "string" },
     "registry_path": { "type": "string" },
@@ -27,6 +29,8 @@
         "type": "object",
         "required": [
           "capability",
+          "stage",
+          "fixture_version",
           "dataset_ids",
           "sample_count",
           "minimum_samples",
@@ -49,6 +53,8 @@
               "ASK_ISA"
             ]
           },
+          "stage": { "type": "string", "enum": ["stage_a", "stage_b", "stage_c"] },
+          "fixture_version": { "type": "string" },
           "dataset_ids": {
             "type": "array",
             "items": { "type": "string" }
@@ -59,12 +65,22 @@
           "contract_path": { "type": "string" },
           "metric_rollups": {
             "type": "object",
-            "required": ["correctness", "coverage", "explainability", "authority", "latency_norm"],
+            "required": [
+              "correctness",
+              "coverage",
+              "explainability",
+              "authority",
+              "contract_adherence",
+              "integration_completeness",
+              "latency_norm"
+            ],
             "properties": {
               "correctness": { "type": "number", "minimum": 0, "maximum": 1 },
               "coverage": { "type": "number", "minimum": 0, "maximum": 1 },
               "explainability": { "type": "number", "minimum": 0, "maximum": 1 },
               "authority": { "type": "number", "minimum": 0, "maximum": 1 },
+              "contract_adherence": { "type": "number", "minimum": 0, "maximum": 1 },
+              "integration_completeness": { "type": "number", "minimum": 0, "maximum": 1 },
               "latency_norm": { "type": "number", "minimum": 0, "maximum": 1 }
             }
           },
@@ -93,6 +109,8 @@
                 "status",
                 "timestamp_utc",
                 "fixture_path",
+                "fixture_version",
+                "measurement_mode",
                 "contract_path"
               ],
               "properties": {
@@ -109,11 +127,19 @@
                 "status": { "type": "string", "enum": ["pass", "fail"] },
                 "timestamp_utc": { "type": "string", "format": "date-time" },
                 "fixture_path": { "type": "string" },
+                "fixture_version": { "type": "string" },
+                "measurement_mode": {
+                  "type": "string",
+                  "enum": ["runtime", "fixture", "synthetic"]
+                },
+                "runtime_probe_id": { "type": "string" },
+                "runtime_probe_samples": { "type": "integer", "minimum": 1 },
                 "contract_path": { "type": "string" },
                 "provenance": { "type": "object" }
               }
             }
           },
+          "synthetic_penalty": { "type": "number", "minimum": 0, "maximum": 1 },
           "status": { "type": "string", "enum": ["pass", "warn", "fail"] }
         }
       }
@@ -145,6 +171,9 @@
       }
     },
     "status": { "type": "string", "enum": ["pass", "fail"] },
-    "drift_status": { "type": "string", "enum": ["unknown", "none", "minor", "major"] }
+    "drift_status": {
+      "type": "string",
+      "enum": ["unknown", "none", "minor", "major", "transition"]
+    }
   }
 }
