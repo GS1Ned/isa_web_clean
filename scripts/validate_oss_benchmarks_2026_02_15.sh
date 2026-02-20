@@ -50,7 +50,7 @@ NODE
 
 echo "READY=json_parse_ok"
 
-# Evidence dates must be explicit (no empty strings).
+# Evidence dates must be explicit (no empty strings) and may not use legacy UNVERIFIED.
 node - <<'NODE'
 import fs from 'node:fs';
 
@@ -63,12 +63,17 @@ function isNonEmptyString(v) {
   return typeof v === 'string' && v.trim().length > 0;
 }
 
+function isLegacyUnverified(v) {
+  return typeof v === 'string' && v.trim().toUpperCase() === 'UNVERIFIED';
+}
+
 const candidates = Array.isArray(obj.candidates) ? obj.candidates : [];
 for (let i = 0; i < candidates.length; i++) {
   const why = Array.isArray(candidates[i]?.why_liked) ? candidates[i].why_liked : [];
   for (let j = 0; j < why.length; j++) {
     const v = why[j]?.evidence_date;
     if (!isNonEmptyString(v)) bad.push({ where: `candidates[${i}].why_liked[${j}].evidence_date`, reason: 'empty_or_missing' });
+    if (isLegacyUnverified(v)) bad.push({ where: `candidates[${i}].why_liked[${j}].evidence_date`, reason: 'legacy_unverified_value_forbidden' });
   }
 }
 
@@ -78,6 +83,7 @@ for (let i = 0; i < patterns.length; i++) {
   for (let j = 0; j < evidence.length; j++) {
     const v = evidence[j]?.date;
     if (!isNonEmptyString(v)) bad.push({ where: `patterns[${i}].evidence[${j}].date`, reason: 'empty_or_missing' });
+    if (isLegacyUnverified(v)) bad.push({ where: `patterns[${i}].evidence[${j}].date`, reason: 'legacy_unverified_value_forbidden' });
   }
 }
 
@@ -87,11 +93,12 @@ for (let i = 0; i < actionPlan.length; i++) {
   for (let j = 0; j < evidence.length; j++) {
     const v = evidence[j]?.date;
     if (!isNonEmptyString(v)) bad.push({ where: `action_plan[${i}].evidence[${j}].date`, reason: 'empty_or_missing' });
+    if (isLegacyUnverified(v)) bad.push({ where: `action_plan[${i}].evidence[${j}].date`, reason: 'legacy_unverified_value_forbidden' });
   }
 }
 
 if (bad.length) {
-  process.stderr.write(`blank evidence dates found (use an explicit value like UNVERIFIED): ${JSON.stringify(bad, null, 2)}\n`);
+  process.stderr.write(`invalid evidence dates found (use verified date or explicit UNKNOWN reason): ${JSON.stringify(bad, null, 2)}\n`);
   process.exit(1);
 }
 NODE
@@ -150,17 +157,27 @@ NODE
 
 echo "READY=last_verified_date_ok"
 
-# Ensure markdown evidence lines don't ship with a blank "(date: )" placeholder.
+# Ensure markdown evidence lines don't ship with blank or legacy UNVERIFIED placeholders.
 if command -v rg >/dev/null 2>&1; then
   if rg -n -F "(date: )" "${BASE}" >/dev/null; then
     rg -n -F "(date: )" "${BASE}" || true
     echo "STOP=blank_evidence_date_in_docs"
     exit 1
   fi
+  if rg -n -F "(date: UNVERIFIED)" "${BASE}" >/dev/null; then
+    rg -n -F "(date: UNVERIFIED)" "${BASE}" || true
+    echo "STOP=legacy_unverified_date_in_docs"
+    exit 1
+  fi
 else
   if grep -RInF "(date: )" "${BASE}" >/dev/null; then
     grep -RInF "(date: )" "${BASE}" || true
     echo "STOP=blank_evidence_date_in_docs"
+    exit 1
+  fi
+  if grep -RInF "(date: UNVERIFIED)" "${BASE}" >/dev/null; then
+    grep -RInF "(date: UNVERIFIED)" "${BASE}" || true
+    echo "STOP=legacy_unverified_date_in_docs"
     exit 1
   fi
 fi

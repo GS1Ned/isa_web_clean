@@ -24,7 +24,7 @@ FACT
 - JSON artifacts without schema validation drift silently and break downstream consumption.
 - Evidence:
   - ISA already validates JSON artifacts against schemas using AJV in CI: https://github.com/GS1Ned/isa_web_clean/blob/e91943c/.github/workflows/schema-validation.yml
-  - AJV is a canonical JSON Schema validator: https://ajv.js.org/ (date: UNVERIFIED)
+  - AJV is a canonical JSON Schema validator: https://ajv.js.org/ (date: UNKNOWN - not live-verified on 2026-02-20)
 
 INTERPRETATION
 - Treat schemas as contracts; validate in CI and keep artifacts deterministic.
@@ -39,8 +39,8 @@ RECOMMENDATION
 FACT
 - Ingestion jobs that cannot be re-run safely will duplicate data or produce non-deterministic outputs.
 - Evidence:
-  - Stripe idempotency guidance (conceptual reference): https://stripe.com/docs/idempotency (date: UNVERIFIED)
-  - Temporal positioning for durable workflows and retries: https://docs.temporal.io/ (date: UNVERIFIED)
+  - Stripe idempotency guidance (conceptual reference): https://stripe.com/docs/idempotency (date: UNKNOWN - not live-verified on 2026-02-20)
+  - Temporal positioning for durable workflows and retries: https://docs.temporal.io/ (date: UNKNOWN - not live-verified on 2026-02-20)
 
 INTERPRETATION
 - Idempotency keys + provenance (source URL, timestamp, content hash) are the minimum set for reliable reprocessing.
@@ -56,7 +56,7 @@ FACT
 - When a router file contains many unrelated domains, both humans and agents lose locality, and changes become high-risk.
 - Evidence:
   - ISA has a large router composition file: https://github.com/GS1Ned/isa_web_clean/blob/e91943c/server/routers.ts
-  - tRPC encourages router composition patterns: https://trpc.io/docs/router (date: UNVERIFIED)
+  - tRPC encourages router composition patterns: https://trpc.io/docs/router (date: UNKNOWN - not live-verified on 2026-02-20)
 
 INTERPRETATION
 - Modular routers reduce agent context and make ownership possible.
@@ -71,7 +71,7 @@ RECOMMENDATION
 FACT
 - Without a trace/correlation id passed across HTTP, DB, and LLM calls, it is difficult to answer "what happened" for a user request.
 - Evidence:
-  - OpenTelemetry docs on tracing concepts: https://opentelemetry.io/docs/concepts/signals/traces/ (date: UNVERIFIED)
+  - OpenTelemetry docs on tracing concepts: https://opentelemetry.io/docs/concepts/signals/traces/ (date: UNKNOWN - not live-verified on 2026-02-20)
   - ISA error ledger persistence wiring (trace id field): https://github.com/GS1Ned/isa_web_clean/blob/e91943c/server/_core/logger-wiring.ts
 
 INTERPRETATION

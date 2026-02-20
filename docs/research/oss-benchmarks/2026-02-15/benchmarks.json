@@ -668,7 +668,7 @@
       "evidence": [
         {
           "url": "https://opentelemetry.io/docs/",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         },
         {
           "url": "https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts",
@@ -709,7 +709,7 @@
       "evidence": [
         {
           "url": "https://docs.temporal.io/",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         },
         {
           "url": "https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/retryLink.ts",
@@ -797,7 +797,7 @@
         },
         {
           "url": "https://github.com/openai/evals",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         }
       ],
       "example_repos": [
@@ -876,7 +876,7 @@
         },
         {
           "url": "https://trpc.io/docs/router",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         }
       ],
       "last_verified_date": "2026-02-15"
@@ -906,7 +906,7 @@
         },
         {
           "url": "https://opentelemetry.io/docs/concepts/signals/traces/",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         }
       ],
       "last_verified_date": "2026-02-15"
@@ -932,11 +932,11 @@
       "evidence": [
         {
           "url": "https://docs.temporal.io/",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         },
         {
           "url": "https://stripe.com/docs/idempotency",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         }
       ],
       "last_verified_date": "2026-02-15"
@@ -960,7 +960,7 @@
       "evidence": [
         {
           "url": "https://github.com/ajv-validator/ajv",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         },
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/.github/workflows/schema-validation.yml",
@@ -989,11 +989,11 @@
       "evidence": [
         {
           "url": "https://github.com/open-telemetry/opentelemetry-js",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         },
         {
           "url": "https://github.com/SigNoz/signoz",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         }
       ],
       "last_verified_date": "2026-02-15"
@@ -1046,7 +1046,7 @@
       "evidence": [
         {
           "url": "https://github.com/semantic-release/semantic-release",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         },
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/blob/e91943c/docs/DATASETS_CATALOG.json",
@@ -1072,11 +1072,11 @@
       "evidence": [
         {
           "url": "https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         },
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/tree/e91943c/server",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         }
       ],
       "last_verified_date": "2026-02-15"
@@ -1100,11 +1100,11 @@
       "evidence": [
         {
           "url": "https://github.com/GS1Ned/isa_web_clean/tree/e91943c/.github/workflows",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         },
         {
           "url": "https://github.com/Helicone/helicone/tree/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows",
-          "date": "UNVERIFIED"
+          "date": "UNKNOWN_NOT_LIVE_VERIFIED_2026-02-20"
         }
       ],
       "last_verified_date": "2026-02-15"

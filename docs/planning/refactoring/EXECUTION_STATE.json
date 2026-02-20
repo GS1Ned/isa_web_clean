@@ -4,7 +4,7 @@
     "updated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "7961d538a7780aa8aaf645b88e681ea3c48a6129"
+      "commit": "d4fc56d9c58a7cbb0df720fb9fe22e01c3e80081"
     }
   },
   "registry_version": "1.1.0",
@@ -152,7 +152,8 @@
         "Canonical repo_ref metadata refreshed to satisfy freshness drift gate",
         "Planning validator and no-console gate remediated and revalidated",
         "Security gate deterministic policy hardened and revalidated",
-        "Manifest ownership drift remediated by explicit shared-platform ownership coverage"
+        "Manifest ownership drift remediated by explicit shared-platform ownership coverage",
+        "Benchmark evidence package normalized to verified-or-unknown date policy"
       ],
       "evidence_paths": [
         "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
@@ -160,10 +161,9 @@
         "scripts/gates/canonical-docs-allowlist.sh"
       ],
       "unresolved_issues": [
-        "Dependency audit still reports non-blocking high-severity advisories under current critical-only blocking policy",
-        "PG-01 canonical metadata refresh and queue alignment in progress"
+        "Dependency audit still reports non-blocking high-severity advisories under current critical-only blocking policy"
       ],
-      "confidence": 0.93
+      "confidence": 0.94
     },
     {
       "id": "DONE",
@@ -310,8 +310,7 @@
         ]
       }
     ],
-    "next_deterministic_task": "T-016 normalize benchmark evidence dates and validator policy",
-    "last_validated_at": "2026-02-20T05:49:20Z",
+    "next_deterministic_task": "T-018 final validation bundle rerun and readiness decision recompute",
     "patch_group_checkpoints": [
       {
         "patch_group": "PG-00",
@@ -384,9 +383,20 @@
           "doc_code_validator_canonical": "pass",
           "planning_validator": "pass"
         }
+      },
+      {
+        "patch_group": "PG-06",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "benchmark_validator": "pass",
+          "benchmark_no_unverified_policy": "pass",
+          "planning_validator": "pass"
+        },
+        "validated_at": "2026-02-20T06:12:29Z"
       }
     ],
-    "reopened_at": "2026-02-20T05:39:12Z"
+    "reopened_at": "2026-02-20T05:39:12Z",
+    "last_validated_at": "2026-02-20T06:12:29Z"
   },
   "continuation_run_history": [
     {
