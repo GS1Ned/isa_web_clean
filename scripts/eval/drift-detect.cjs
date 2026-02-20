@@ -8,6 +8,7 @@ const DRIFT_RULES = {
   major_latency_increase_pct: 30,
   minor_score_degrade_pct: 8,
   minor_latency_increase_pct: 15,
+  runtime_latency_baseline_floor_ms: 1,
 };
 
 function parseArgs() {
@@ -74,6 +75,10 @@ function deltaPct(value, baseline) {
 function classifyDrift(metric, baselineValue, comparableSeries) {
   const { value, threshold_op: thresholdOp } = metric;
   const direction = thresholdOp === "<=" ? "latency" : "score";
+  const isRuntimeLatency = direction === "latency" && metric.measurement_mode === "runtime";
+  const comparisonBaseline = isRuntimeLatency
+    ? Math.max(baselineValue, DRIFT_RULES.runtime_latency_baseline_floor_ms)
+    : baselineValue;
 
   const lastTwo = comparableSeries.slice(-2);
   const lastThree = comparableSeries.slice(-3);
@@ -81,7 +86,7 @@ function classifyDrift(metric, baselineValue, comparableSeries) {
 
   if (lastThree.length === 3) {
     const avgLastThree = avg(lastThree);
-    const movingDegrade = degradePct(avgLastThree, baselineValue, thresholdOp);
+    const movingDegrade = degradePct(avgLastThree, comparisonBaseline, thresholdOp);
     if (direction === "score" && movingDegrade > DRIFT_RULES.major_score_degrade_pct) {
       drift = "major";
     }
@@ -92,7 +97,7 @@ function classifyDrift(metric, baselineValue, comparableSeries) {
 
   if (drift === "none" && lastTwo.length === 2) {
     const bothDegraded = lastTwo.every((runValue) => {
-      const pct = degradePct(runValue, baselineValue, thresholdOp);
+      const pct = degradePct(runValue, comparisonBaseline, thresholdOp);
       if (direction === "score") return pct > DRIFT_RULES.minor_score_degrade_pct;
       return pct > DRIFT_RULES.minor_latency_increase_pct;
     });
