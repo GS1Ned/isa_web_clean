@@ -6,6 +6,7 @@ const {
   daysSince,
   selectDatasetByPrefix,
 } = require("../lib/common.cjs");
+const { measureRuntimeProbe } = require("../lib/runtime-probes.cjs");
 
 function hasValue(value) {
   return value !== null && value !== undefined && String(value).trim().length > 0;
@@ -80,8 +81,24 @@ async function evaluate(context) {
     ).toFixed(4)
   );
 
-  const latencyP95Ms = 220;
-  const latencyMeasurementMode = "synthetic";
+  const latencyProbe = await measureRuntimeProbe({
+    probeId: "catalog.adapter.compute.v1",
+    fn: () => {
+      let checksum = 0;
+      for (const row of rows) {
+        checksum += Number(hasValue(row.id));
+        checksum += Number(hasValue(row.title));
+        checksum += Number(hasValue(row.publisher));
+        checksum += Number(hasValue(row.sourceType));
+        checksum += Number(hasValue(row.verificationDate));
+        checksum += Number(hasValue(row.releaseDate) || hasValue(row.pubDate));
+      }
+      return checksum;
+    },
+  });
+
+  const latencyP95Ms = latencyProbe.p95_ms;
+  const latencyMeasurementMode = latencyProbe.measurement_mode;
 
   const metrics = [
     {
@@ -153,6 +170,8 @@ async function evaluate(context) {
       fixture_path: dataset.path,
       measurement_mode: latencyMeasurementMode,
       fixture_version: fixtureVersion,
+      runtime_probe_id: latencyProbe.runtime_probe_id,
+      runtime_probe_samples: latencyProbe.samples,
     },
     {
       dataset_id: dataset.id,
@@ -163,6 +182,8 @@ async function evaluate(context) {
       fixture_path: dataset.path,
       measurement_mode: latencyMeasurementMode,
       fixture_version: fixtureVersion,
+      runtime_probe_id: latencyProbe.runtime_probe_id,
+      runtime_probe_samples: latencyProbe.samples,
     },
   ];
 
