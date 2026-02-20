@@ -52,7 +52,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22.13.0"
-          cache: "pnpm"
 
       - name: Install pnpm
         run: npm install -g pnpm@10.4.1
@@ -87,7 +86,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22.13.0"
-          cache: "pnpm"
 
       - name: Install pnpm
         run: npm install -g pnpm@10.4.1
@@ -130,7 +128,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22.13.0"
-          cache: "pnpm"
 
       - name: Install pnpm
         run: npm install -g pnpm@10.4.1
