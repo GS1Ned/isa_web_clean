@@ -1,130 +1,63 @@
 ---
 DOC_TYPE: SPEC
 CAPABILITY: KNOWLEDGE_BASE
-COMPONENT: embeddings
-FUNCTION_LABEL: "Manage knowledge embeddings"
+COMPONENT: runtime
+FUNCTION_LABEL: "Corpus, embeddings and retrieval substrate"
 OWNER: gs1ned-isa
 STATUS: active
-LAST_VERIFIED: 2026-02-12
-VERIFICATION_METHOD: manual
+LAST_VERIFIED: 2026-02-20
+VERIFICATION_METHOD: repo-evidence
 ---
 
 # KNOWLEDGE_BASE Runtime Contract
 
-## Purpose
-Manage knowledge embeddings
+## Canonical Role
+KNOWLEDGE_BASE provides ingestion-governed corpus storage, embeddings, and retrieval primitives consumed by ASK_ISA, ESRS_MAPPING and ADVISORY.
 
-## Entry Points
+## Runtime Surfaces (Code Truth)
+<!-- EVIDENCE:implementation:server/routers.ts -->
+- Top-level `appRouter` surface: `citationAdmin`.
+- Modules:
+  - `server/routers/citation-admin.ts`
+  - `server/db-knowledge.ts`
+  - `server/db-knowledge-vector.ts`
+  - `server/hybrid-search.ts`
+  - `server/embedding.ts`
 
-<!-- EVIDENCE:implementation:server/db-knowledge.ts -->
-### API Endpoints (tRPC)
-- (To be documented)
+## Data Surfaces (Ownership Contract)
+<!-- EVIDENCE:implementation:docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json -->
+- Owned tables:
+  - `knowledge_embeddings`
+  - `sources`
+  - `source_chunks`
+  - `ingest_item_provenance`
+- Schema anchors:
+  - `drizzle/schema.ts`
+  - `drizzle/schema_corpus_governance.ts`
 
-### Services
-- `server/claim-citation-verifier.ts` <!-- EVIDENCE:implementation:server/claim-citation-verifier.ts -->
-- `server/db-knowledge-vector.ts` <!-- EVIDENCE:implementation:server/db-knowledge-vector.ts -->
-- `server/db-knowledge.ts` <!-- EVIDENCE:implementation:server/db-knowledge.ts -->
+## Input / Output Contract (Current)
+- Inputs: corpus and citation-management operations through `citationAdmin` and knowledge services.
+- Outputs: retrieval-ready vectors/chunks and provenance-linked corpus artifacts.
+- Exact payload shapes remain code-truth in tRPC routers and service modules.
 
-### UI Components
-- `client/src/pages/AdminKnowledgeBase.tsx`
+## Verification
+<!-- EVIDENCE:implementation:scripts/probe/knowledge_base_health.sh -->
+- Smoke probe: `scripts/probe/knowledge_base_health.sh`
+- Tests:
+  - `server/embedding.test.ts`
+  - `server/routers/__tests__/capability-heartbeat.test.ts`
+- Canonical gate alignment:
+  - `bash scripts/gates/doc-code-validator.sh --canonical-only`
+  - `python3 scripts/validate_planning_and_traceability.py`
 
-## Inputs/Outputs
-
-### Inputs
-**Corpus Ingestion**
-- Source data (regulations, standards, ESRS, initiatives)
-- Content type specification
-
-**Embedding Generation**
-- Text chunks (max 2000 chars)
-- Model: `text-embedding-3-small`
-
-### Outputs
-**Knowledge Chunk**
-```typescript
-{
-  id: number,
-  content: string,
-  contentHash: string,  // SHA-256
-  sourceType: string,
-  sourceId: number,
-  metadata: object
-}
-```
-
-## Invariants
-
-1. **Deduplication**: Chunks deduplicated by SHA-256 hash
-2. **Coverage Target**: 155+ chunks across all source types
-3. **Chunk Size**: Max 2000 characters per chunk
-4. **Metadata Required**: All chunks include source type, ID, title, URL
-5. **Semantic Search**: LLM-based relevance scoring (0-10 scale)
-
-## Failure Modes
-
-### Observable Signals
-- **Empty Corpus**: No source data available
-- **Embedding API Failure**: LLM API timeout/error
-- **Storage Failure**: Database write error
-
-### Recovery Procedures
-- **Empty Corpus**: Trigger data ingestion pipeline
-- **Embedding Failure**: Retry with exponential backoff
-- **Storage Failure**: Queue for batch retry
-
-## Data Dependencies
-
-### Database Tables
-- `knowledge_embeddings` - 155 semantic chunks
-- `regulations` - Source data
-- `gs1_standards` - Source data
-- `esrs_datapoints` - Source data
-- `dutch_initiatives` - Source data
-
-### External APIs
-- **Manus Forge API** - Embedding generation
-
-## Security/Secrets
-
-### Required Secrets
-- `OPENAI_API_KEY` - Embedding generation
-- `DATABASE_URL` - TiDB connection
-
-### Authentication
-- **Admin Only**: Knowledge base generation restricted
-
-## Verification Methods
-
-### Smoke Test
-- **Location**: `scripts/probe/knowledge_base_health.sh`
-- **Status**: ⏳ Planned
-- **Frequency**: After KB generation
-- **Coverage**: Chunk count, deduplication, coverage stats
-
-### Integration Tests
-- **Location**: `server/embedding.test.ts`
-- **Coverage**: Embedding generation, semantic search, deduplication
-- **Framework**: Vitest
-- **Status**: 80%+ passing
-
-### Manual Verification
-- **Admin Dashboard**: `/admin/knowledge-base`
-- **Metrics**: 155+ chunks, 100% coverage across source types
-
-### Integration Tests
-- (To be documented)
+## Operational Unknowns
+- Provider-specific embedding model versioning at runtime is UNKNOWN from repository-only evidence.
+- Production vector index sizing and deployed throughput limits are UNKNOWN from repository-only evidence.
 
 ## Evidence
-
-<!-- EVIDENCE:requirement:docs/planning/refactoring/FILE_INVENTORY.json -->
-- Phase 0 Inventory: 12 files classified as KNOWLEDGE_BASE
+<!-- EVIDENCE:implementation:server/routers/citation-admin.ts -->
 <!-- EVIDENCE:implementation:server/db-knowledge.ts -->
-- Code entrypoints: 4 identified
-<!-- EVIDENCE:decision:docs/planning/refactoring/QUALITY_SCORECARDS.json -->
-- Quality grade: F (50/100)
+<!-- EVIDENCE:implementation:server/db-knowledge-vector.ts -->
+<!-- EVIDENCE:implementation:server/hybrid-search.ts -->
 
----
-
-**Contract Status:** DRAFT  
-**Completeness:** ~30% (skeleton only, needs detailed analysis)  
-**Next Steps:** Analyze code to populate all sections
+**Contract Status:** CURRENT_EVIDENCE_BACKED

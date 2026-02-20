@@ -33,9 +33,9 @@ FACT
 - Signals (from `raw/top12_repo_metadata.json`): stars=25744, forks=1959, last_commit_date=2026-02-15, release_date=2026-02-11, last_verified_date=2026-02-15
 - Why liked (evidence-first):
   - Claim: Shows an OSS observability product with extensive CI workflows and release automation.
-    - Evidence: https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/releaser.yaml (date: UNVERIFIED)
+    - Evidence: https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/releaser.yaml (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Publishes an OpenAPI spec as a tracked artifact.
-    - Evidence: https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/api/openapi.yml (date: UNVERIFIED)
+    - Evidence: https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/api/openapi.yml (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths (examples):
   - https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/contributing/development.md
   - https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/jsci.yaml
@@ -53,9 +53,9 @@ FACT
 - Signals: stars=21945, forks=2164, last_commit_date=2026-02-15, release_date=2026-02-12, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Demonstrates LLM observability and evaluation workflows, with a CI-heavy repo posture.
-    - Evidence: https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/pipeline.yml (date: UNVERIFIED)
+    - Evidence: https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/pipeline.yml (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Stores trace-like seed artifacts as data files (useful for deterministic fixtures).
-    - Evidence: https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/google-gemini-2025-08-01.json (date: UNVERIFIED)
+    - Evidence: https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/google-gemini-2025-08-01.json (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths (examples):
   - https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/CONTRIBUTING.md
   - https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/sdk-api-spec.yml
@@ -73,9 +73,9 @@ FACT
 - Signals: stars=5113, forks=481, last_commit_date=2026-02-13, release_date=2025-08-21, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Shows an OSS gateway/product with many targeted CI checks.
-    - Evidence: https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/e2e-test-suite.yml (date: UNVERIFIED)
+    - Evidence: https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/e2e-test-suite.yml (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Contains explicit typed client schemas (useful for boundary clarity).
-    - Evidence: https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/lib/clients/jawnTypes/public.ts (date: UNVERIFIED)
+    - Evidence: https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/bifrost/lib/clients/jawnTypes/public.ts (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths:
   - https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/DEVELOPER_README.md
   - https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/clickhouse-migration-check.yml
@@ -93,9 +93,9 @@ FACT
 - Signals: stars=41853, forks=1820, last_commit_date=2026-02-15, release_date=2026-01-22, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Demonstrates schema-first runtime validation with strong TS typing.
-    - Evidence: https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/README.md (date: UNVERIFIED)
+    - Evidence: https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Maintains test coverage around parsing/validation behavior.
-    - Evidence: https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/classic/tests/async-parsing.test.ts (date: UNVERIFIED)
+    - Evidence: https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/classic/tests/async-parsing.test.ts (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths:
   - https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/packages/zod/src/v4/core/schemas.ts
   - https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/.github/workflows/test.yml
@@ -113,9 +113,9 @@ FACT
 - Signals: stars=39542, forks=1488, last_commit_date=2026-02-14, release_date=2026-02-09, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Provides an end-to-end typesafe RPC boundary for TS apps.
-    - Evidence: https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/README.md (date: UNVERIFIED)
+    - Evidence: https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Includes client link patterns for retries and dedupe.
-    - Evidence: https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/retryLink.ts (date: UNVERIFIED)
+    - Evidence: https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/retryLink.ts (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths:
   - https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/internals/dedupeLink.ts
   - https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/.github/workflows/main.yml
@@ -133,9 +133,9 @@ FACT
 - Signals: stars=32788, forks=1195, last_commit_date=2026-02-15, release_date=2026-02-09, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Demonstrates a type-driven DB layer with explicit adapters and migration utilities.
-    - Evidence: https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/README.md (date: UNVERIFIED)
+    - Evidence: https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Includes tracing utilities in the core library.
-    - Evidence: https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/drizzle-orm/src/tracing.ts (date: UNVERIFIED)
+    - Evidence: https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/drizzle-orm/src/tracing.ts (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths:
   - https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/drizzle-orm/src/migrator.ts
   - https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/.github/workflows/release-latest.yaml
@@ -153,9 +153,9 @@ FACT
 - Signals: stars=23308, forks=1796, last_commit_date=2026-02-14, release_date=2026-01-30, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Demonstrates automated releases driven by commit history.
-    - Evidence: https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/README.md (date: UNVERIFIED)
+    - Evidence: https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Maintains a CI workflow dedicated to releases.
-    - Evidence: https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/.github/workflows/release.yml (date: UNVERIFIED)
+    - Evidence: https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/.github/workflows/release.yml (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths:
   - https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/docs/usage/README.md
   - https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/.github/workflows/test.yml
@@ -173,9 +173,9 @@ FACT
 - Signals: stars=14595, forks=942, last_commit_date=2026-02-14, release_date=2026-02-14, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Canonical JS/TS JSON Schema validator library with benchmarks and docs.
-    - Evidence: https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/README.md (date: UNVERIFIED)
+    - Evidence: https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Includes a `benchmark/` folder suitable as a reference for performance regression testing.
-    - Evidence: https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/benchmark/README.md (date: UNVERIFIED)
+    - Evidence: https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/benchmark/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths:
   - https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/lib/ajv.ts
   - https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/.github/workflows/build.yml
@@ -193,9 +193,9 @@ FACT
 - Signals: stars=3276, forks=996, last_commit_date=2026-02-13, release_date=2026-02-12, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Reference implementation for OpenTelemetry in JS/TS.
-    - Evidence: https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/README.md (date: UNVERIFIED)
+    - Evidence: https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Provides a Node tracer provider in a dedicated package.
-    - Evidence: https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts (date: UNVERIFIED)
+    - Evidence: https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths:
   - https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/.github/workflows/e2e.yml
   - https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/.github/workflows/benchmark.yml
@@ -213,9 +213,9 @@ FACT
 - Signals: stars=776, forks=158, last_commit_date=2026-02-15, release_date=2026-01-08, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Demonstrates durable workflows, retries, and structured execution for long-running jobs.
-    - Evidence: https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/README.md (date: UNVERIFIED)
+    - Evidence: https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Provides OpenTelemetry interceptors as a separate package.
-    - Evidence: https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/packages/interceptors-opentelemetry/src/instrumentation.ts (date: UNVERIFIED)
+    - Evidence: https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/packages/interceptors-opentelemetry/src/instrumentation.ts (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths:
   - https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/.github/workflows/ci.yml
   - https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/docs/README.md
@@ -233,9 +233,9 @@ FACT
 - Signals: stars=42479, forks=7938, last_commit_date=2026-02-13, release_date=2026-01-21, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Demonstrates governance-grade docs for project layout and release processes.
-    - Evidence: https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/project-layout.md (date: UNVERIFIED)
+    - Evidence: https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/project-layout.md (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Maintains security/scanning workflows as part of CI posture.
-    - Evidence: https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/.github/workflows/codeql.yml (date: UNVERIFIED)
+    - Evidence: https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/.github/workflows/codeql.yml (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths:
   - https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/releasing.md
   - https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/.github/workflows/go.yml
@@ -253,9 +253,9 @@ FACT
 - Signals: stars=4843, forks=252, last_commit_date=2026-02-14, release_date=2026-02-11, last_verified_date=2026-02-15
 - Why liked:
   - Claim: Provides explicit engineering docs for adding and evolving APIs.
-    - Evidence: https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/IMPLEMENTING_NEW_REST_API_V2_ENDPOINTS.md (date: UNVERIFIED)
+    - Evidence: https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/IMPLEMENTING_NEW_REST_API_V2_ENDPOINTS.md (date: UNKNOWN - not live-verified on 2026-02-20)
   - Claim: Documents OpenAPI workflow conventions.
-    - Evidence: https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/OPENAPI_WORKFLOW.md (date: UNVERIFIED)
+    - Evidence: https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/OPENAPI_WORKFLOW.md (date: UNKNOWN - not live-verified on 2026-02-20)
 - Inspect paths:
   - https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/.github/workflows/e2e.yml
   - https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/DEVSERVER_ARCHITECTURE.md

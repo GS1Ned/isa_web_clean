@@ -90,11 +90,12 @@ Completion gate rule: every row must be `ACCEPTED` or `BLOCKED_WITH_MITIGATION`.
 | `DELTA-02` | Capability ownership normalization | Router/table/schema/contract surfaces mapped to one owner or shared platform | `ACCEPTED` | Enforced in `CAPABILITY_MANIFEST.json` evidence/status sections | `+0.10` |
 | `DELTA-03` | Shared primitive promotion | Cross-capability concepts promoted to primitive dictionary | `ACCEPTED` | Enforced in `PRIMITIVE_DICTIONARY.json` evidence refs | `+0.08` |
 | `DELTA-04A` | Multi-router module normalization (pilot) | At least one mixed router surface is physically extracted without API break | `ACCEPTED` | `esrs` moved from inline `server/routers.ts` to `server/routers/esrs.ts` while preserving `appRouter.esrs` key | `+0.05` |
-| `DELTA-04B` | Multi-router module normalization (remaining scope) | Remaining mixed router surfaces are split, sub-owned, or shared-promoted | `BLOCKED_WITH_MITIGATION` | Sub-surface ownership is explicit; remaining physical splits deferred and tracked in execution registry | `-0.09` |
+| `DELTA-04B` | Multi-router module normalization (remaining scope) | Remaining mixed router surfaces are split, sub-owned, or shared-promoted | `ACCEPTED` | `dutchInitiatives` moved from inline `server/routers.ts` to `server/routers/dutch-initiatives.ts` while preserving `appRouter.dutchInitiatives` key | `+0.06` |
 | `DELTA-05` | Validation confidence model | Weighted pass/fail/unknown with limitation annotations | `ACCEPTED` | Enforced in `MINIMAL_VALIDATION_BUNDLE.json` | `+0.10` |
 | `DELTA-06` | Operational execution registry | Registry checkpoint required for phase transitions and DONE threshold | `ACCEPTED` | Enforced in `EXECUTION_STATE.json` | `+0.09` |
 | `DELTA-07` | Repo-manifest drift handling | Drift remediated or recorded as explicit delta row | `ACCEPTED` | Manifest authority + evidence pointers enforced | `+0.06` |
 | `DELTA-08` | Validation limitations | Known gate limitations explicitly documented and weighted | `ACCEPTED` | Maintained in validation bundle results | `-0.07` |
+| `DELTA-09` | Runtime contract factual hardening | Six capability runtime contracts are evidence-backed, non-DRAFT, and path-valid | `ACCEPTED` | Enforced across `docs/spec/*/RUNTIME_CONTRACT.md` under canonical doc-code validation | `+0.07` |
 
 ---
 
@@ -186,6 +187,9 @@ bash scripts/gates/canonical-docs-allowlist.sh
 bash scripts/gates/doc-code-validator.sh --canonical-only
 bash scripts/gates/canonical-contract-drift.sh
 python3 scripts/gates/manifest-ownership-drift.py
+bash scripts/gates/reliability-smoke.sh /tmp/reliability.current.json
+bash scripts/gates/perf-smoke.sh /tmp/perf.current.json
+bash scripts/validate_oss_benchmarks_2026_02_15.sh
 ```
 
 ### 9.2 Confidence Formula
@@ -202,13 +206,15 @@ python3 scripts/gates/manifest-ownership-drift.py
 - `done_confidence_threshold = 0.75`
 - `delta_rows_terminal_required = true`
 - If threshold or delta-terminal conditions are not met, status must be `DONE_WITH_LIMITATIONS` (or DONE remains not complete).
-- Current gate interpretation: threshold is met; remaining failures are tracked as explicit post-DONE limitations.
+- Current gate interpretation: threshold is met; remaining limitations are tracked as explicit post-DONE follow-up items.
 
 ### 9.4 Current Validation Limitations (Evidence-Backed)
 
 **FACT [EV-VAL-001]:** `observability_contract` currently reports `pass` with runtime-scoped coverage at threshold.
 
 **FACT [EV-VAL-002]:** `security_gate` currently reports `pass` under deterministic timeout-fail semantics with `critical` blocking severity.
+
+Security ratchet policy: `critical`-only blocking remains temporary; promotion to include `high` blocking is tracked in `docs/planning/BACKLOG.csv` (`SEC-001`) and must follow advisory remediation burn-down.
 
 **FACT [EV-VAL-004]:** Canonical doc-code validation passes in `--canonical-only` mode.
 
@@ -229,8 +235,8 @@ python3 scripts/gates/manifest-ownership-drift.py
 ## 10. Production Readiness Roadmap (Architecture-Convergence Scope)
 
 1. Enforce manifest ownership and evidence drift checks in CI.
-2. Resolve blocked multi-router physical splits incrementally with non-breaking sub-surface ownership.
-3. Reduce canonical doc-code drift first; keep global backlog visible but non-blocking for canonical gate.
+2. Maintain non-breaking split-by-ownership discipline and prevent reintroduction of inline mixed routers.
+3. Keep six capability runtime contracts evidence-backed and synchronized with router/table ownership contracts.
 4. Reduce non-blocking high-severity dependency advisory backlog while preserving deterministic security gate behavior.
 
 ---

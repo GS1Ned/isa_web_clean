@@ -45,6 +45,7 @@ import { insightsRouter } from "./routers/insights.js";
 import { regulationsRouter } from "./routers/regulations.js";
 import { standardsRouter } from "./routers/standards.js";
 import { userRouter } from "./routers/user.js";
+import { dutchInitiativesRouter } from "./routers/dutch-initiatives.js";
 
 import {
   getUserOnboardingProgress,
@@ -511,40 +512,7 @@ export const appRouter = router({
   /**
    * Dutch Initiatives Router
    */
-  dutchInitiatives: router({
-    /**
-     * Get all Dutch initiatives with optional filtering
-     */
-    list: publicProcedure
-      .input(
-        z.object({
-          sector: z.string().optional(),
-          status: z.string().optional(),
-        })
-      )
-      .query(async ({ input }) => {
-        const { getDutchInitiatives } = await import("./db");
-        return await getDutchInitiatives(input);
-      }),
-
-    /**
-     * Get a single Dutch initiative with all mappings
-     */
-    getWithMappings: publicProcedure
-      .input(z.object({ initiativeId: z.number() }))
-      .query(async ({ input }) => {
-        const { getDutchInitiativeWithMappings } = await import("./db");
-        return await getDutchInitiativeWithMappings(input.initiativeId);
-      }),
-
-    /**
-     * Get unique sectors for filtering
-     */
-    getSectors: publicProcedure.query(async () => {
-      const { getDutchInitiativeSectors } = await import("./db");
-      return await getDutchInitiativeSectors();
-    }),
-  }),
+  dutchInitiatives: dutchInitiativesRouter,
 
   /**
    * Stakeholder Dashboard - Live project status and metrics - ARCHIVED

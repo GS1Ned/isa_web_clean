@@ -1,5 +1,5 @@
 {
-  "date": "20260209T171634Z",
+  "date": "20260220T061440Z",
   "status": "CANONICAL",
   "schema_version": "1.0",
   "execution_rules": {
@@ -9,6 +9,69 @@
     "evidence_links_must_resolve": true
   },
   "items": [
+    {
+      "id": "PR2-0002",
+      "priority": "P1",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Security ratchet follow-up: evaluate high-severity advisory blocking mode (SEC-001)",
+      "next_action": "Assess current high-severity advisories and implement ratchet plan to move from critical-only blocking to high-severity enforcement with mitigation playbook.",
+      "acceptance_criteria": "Security policy/risk posture is updated with explicit high-severity handling decision and backlog tasks; deterministic security gate behavior preserved.",
+      "evidence_links": [
+        "docs/spec/ARCHITECTURE.md",
+        "docs/planning/BACKLOG.csv",
+        "scripts/gates/security-gate.sh"
+      ],
+      "validation_command": "bash scripts/gates/security-gate.sh /tmp/security.current.json",
+      "created_at_utc": "2026-02-20T06:14:40Z",
+      "source_plan": "ISA Production Readiness Convergence Plan (2026-02-20)",
+      "task_refs": [
+        "T-017"
+      ]
+    },
+    {
+      "id": "PR2-0001",
+      "priority": "P0",
+      "status": "DONE",
+      "capability": "Meta",
+      "title": "Production readiness convergence PG-02: harden six runtime contracts and architecture deltas",
+      "next_action": "Completed in PG-02 runtime contract hardening.",
+      "acceptance_criteria": "All six runtime contracts are non-DRAFT, contain only evidence-backed claims or explicit UNKNOWN; canonical doc-code validation passes.",
+      "evidence_links": [
+        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+        "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+        "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+        "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
+        "docs/spec/ARCHITECTURE.md"
+      ],
+      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-02-20T05:39:36Z",
+      "source_plan": "ISA Production Readiness Convergence Plan (2026-02-20)",
+      "task_refs": [
+        "T-004",
+        "T-005",
+        "T-006",
+        "T-007",
+        "T-008",
+        "T-009",
+        "T-010"
+      ],
+      "completed_at_utc": "2026-02-20T06:14:40Z",
+      "evidence": {
+        "head_sha": "a9c2e9f6408b82e61dc4422de740764eb2758381",
+        "paths": [
+          "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+          "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+          "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+          "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+          "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+          "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
+          "docs/spec/ARCHITECTURE.md"
+        ]
+      }
+    },
     {
       "id": "P0-0001",
       "priority": "P0",
@@ -121,7 +184,7 @@
     },
     {
       "id": "P1-0001",
-      "status": "READY",
+      "status": "CANCELLED",
       "title": "Ask ISA: define end-to-end runtime contract and entrypoints (server+client)",
       "acceptance_criteria": [
         "docs/spec/ASK_ISA.md links to proven code entrypoints (server/prompts/ask_isa/*, client UI refs)",
@@ -140,7 +203,9 @@
         ],
         "verified_at_utc": "2026-02-09T20:37:32Z",
         "head_sha": "7a8260077fd4c814ceb66a01e1848d32cf97647d"
-      }
+      },
+      "superseded_by": "PR2-0001",
+      "superseded_at_utc": "2026-02-20T05:39:36Z"
     },
     {
       "id": "P1-0002",
@@ -168,7 +233,7 @@
     },
     {
       "id": "P1-0003",
-      "status": "IN_PROGRESS",
+      "status": "CANCELLED",
       "title": "News Hub: baseline architecture map and proven code/data entrypoints",
       "acceptance_criteria": [
         "docs/spec/NEWS_HUB.md links to proven code/data entrypoints",
@@ -182,10 +247,12 @@
           "server/services",
           "client/src"
         ]
-      }
+      },
+      "superseded_by": "PR2-0001",
+      "superseded_at_utc": "2026-02-20T05:39:36Z"
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-02-11T22:51:00Z"
+    "last_updated_at_utc": "2026-02-20T06:14:40Z"
   }
 }

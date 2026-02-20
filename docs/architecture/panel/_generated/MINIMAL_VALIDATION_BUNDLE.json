@@ -4,7 +4,7 @@
     "generated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "d4f1af0"
+      "commit": "a9c2e9f6408b82e61dc4422de740764eb2758381"
     },
     "baseline_run": {
       "captured_at": "2026-02-20T02:56:32Z",
@@ -24,6 +24,27 @@
         "doc_code_validator_canonical": "pass"
       },
       "validated_at": "2026-02-20T02:57:29Z"
+    },
+    "latest_run": {
+      "validated_at": "2026-02-20T06:14:40Z",
+      "run_type": "PG-07_FULL_BUNDLE",
+      "commit": "a9c2e9f6408b82e61dc4422de740764eb2758381",
+      "statuses": {
+        "planning_validator": "pass",
+        "ts_check": "pass",
+        "no_console_gate": "pass",
+        "secrets_scan": "pass",
+        "slo_policy": "pass",
+        "observability_contract": "pass",
+        "security_gate": "pass",
+        "canonical_docs_allowlist": "pass",
+        "doc_code_validator": "pass",
+        "canonical_contract_drift": "pass",
+        "manifest_ownership_drift": "pass",
+        "reliability_smoke": "pass",
+        "perf_smoke": "pass",
+        "benchmark_validator": "pass"
+      }
     }
   },
   "bundle": {
@@ -38,7 +59,10 @@
       "bash scripts/gates/canonical-docs-allowlist.sh",
       "bash scripts/gates/doc-code-validator.sh --canonical-only",
       "bash scripts/gates/canonical-contract-drift.sh",
-      "python3 scripts/gates/manifest-ownership-drift.py"
+      "python3 scripts/gates/manifest-ownership-drift.py",
+      "bash scripts/gates/reliability-smoke.sh /tmp/reliability.current.json",
+      "bash scripts/gates/perf-smoke.sh /tmp/perf.current.json",
+      "bash scripts/validate_oss_benchmarks_2026_02_15.sh"
     ]
   },
   "weights": {
@@ -51,93 +75,117 @@
     "security_gate": 0.12,
     "canonical_docs_allowlist": 0.1,
     "doc_code_validator": 0.13,
-    "canonical_contract_drift": 0.0,
-    "manifest_ownership_drift": 0.0
+    "canonical_contract_drift": 0,
+    "manifest_ownership_drift": 0,
+    "reliability_smoke": 0,
+    "perf_smoke": 0,
+    "benchmark_validator": 0
   },
   "results": [
     {
       "id": "planning_validator",
       "status": "pass",
-      "signal": 1.0,
+      "signal": 1,
       "contribution": 0.1,
       "limitation": "Canonical planning validator now passes; non-canonical planning docs were removed from tracked canonical scope."
     },
     {
       "id": "ts_check",
       "status": "pass",
-      "signal": 1.0,
+      "signal": 1,
       "contribution": 0.15,
       "limitation": "Type safety only; no runtime behavior guarantee."
     },
     {
       "id": "no_console_gate",
       "status": "pass",
-      "signal": 1.0,
+      "signal": 1,
       "contribution": 0.1,
       "limitation": "No forbidden console usage remains in tracked scripts under gate scope."
     },
     {
       "id": "secrets_scan",
       "status": "pass",
-      "signal": 1.0,
+      "signal": 1,
       "contribution": 0.1,
       "limitation": "Heuristic scan only; cannot prove absence of all secret forms."
     },
     {
       "id": "slo_policy",
       "status": "pass",
-      "signal": 1.0,
+      "signal": 1,
       "contribution": 0.08,
       "limitation": "Validates policy presence, not runtime SLO enforcement."
     },
     {
       "id": "observability_contract",
       "status": "pass",
-      "signal": 1.0,
+      "signal": 1,
       "contribution": 0.12,
       "limitation": "Runtime-scoped coverage passes threshold; gate does not prove end-to-end trace completeness."
     },
     {
       "id": "security_gate",
       "status": "pass",
-      "signal": 1.0,
+      "signal": 1,
       "contribution": 0.12,
       "limitation": "Deterministic security gate passes with blocking levels set to critical; high-severity advisories remain tracked as non-blocking risk backlog."
     },
     {
       "id": "canonical_docs_allowlist",
       "status": "pass",
-      "signal": 1.0,
+      "signal": 1,
       "contribution": 0.1,
       "limitation": "Deterministic tracked-file checks pass; untracked local noise is warning-only by policy."
     },
     {
       "id": "doc_code_validator",
       "status": "pass",
-      "signal": 1.0,
+      "signal": 1,
       "contribution": 0.13,
       "limitation": "Canonical-scope mode passes; global legacy backlog remains outside canonical gate."
     },
     {
       "id": "canonical_contract_drift",
       "status": "pass",
-      "signal": 1.0,
-      "contribution": 0.0,
+      "signal": 1,
+      "contribution": 0,
       "limitation": "Passes with HEAD/HEAD^ freshness rule; requires refresh commit after each canonical contract update."
     },
     {
       "id": "manifest_ownership_drift",
       "status": "pass",
-      "signal": 1.0,
-      "contribution": 0.0,
+      "signal": 1,
+      "contribution": 0,
       "limitation": "Manifest now covers all runtime router surfaces and mysqlTable names with explicit owner/shared assignment."
+    },
+    {
+      "id": "reliability_smoke",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0,
+      "limitation": "Deterministic pass/fail contract now enforced; represents smoke-level reliability checks only."
+    },
+    {
+      "id": "perf_smoke",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0,
+      "limitation": "Deterministic pass/fail contract now enforced; represents smoke-level performance checks only."
+    },
+    {
+      "id": "benchmark_validator",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0,
+      "limitation": "Benchmark package validator enforces verified-or-unknown evidence date policy for 2026-02-15 benchmark set."
     }
   ],
   "aggregate": {
-    "confidence_score": 1.0,
-    "rounded_confidence_score": 1.0,
+    "confidence_score": 1,
+    "rounded_confidence_score": 1,
     "formula": "sum(weight_i * signal_i)",
-    "status_interpretation": "all validation bundle checks pass under current deterministic policy thresholds"
+    "status_interpretation": "all weighted validation checks pass under current deterministic policy thresholds; extended non-weighted checks also pass"
   },
   "completion_gate": {
     "done_confidence_threshold": 0.75,

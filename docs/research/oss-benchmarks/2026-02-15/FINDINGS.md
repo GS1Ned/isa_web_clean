@@ -7,8 +7,8 @@ Last verified date (all patterns): 2026-02-15
 FACT
 - Summary: High-signal projects treat docs as an interface: contributor workflows, project layout, and API artifacts live alongside code and are continuously validated.
 - Evidence:
-  - https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/project-layout.md (date: UNVERIFIED)
-  - https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/DEVSERVER_ARCHITECTURE.md (date: UNVERIFIED)
+  - https://github.com/cli/cli/blob/1af2823fc330004cb1e00ecdde6032040237de6d/docs/project-layout.md (date: UNKNOWN - not live-verified on 2026-02-20)
+  - https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/DEVSERVER_ARCHITECTURE.md (date: UNKNOWN - not live-verified on 2026-02-20)
 - Example repos and concrete paths:
   - https://github.com/cli/cli
     - `docs/project-layout.md`
@@ -37,8 +37,8 @@ RECOMMENDATION
 FACT
 - Summary: Mature repos split CI into many targeted workflows (lint, docs, security scans, release automation, API spec checks) to keep feedback loops fast and responsibility clear.
 - Evidence:
-  - https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/pipeline.yml (date: UNVERIFIED)
-  - https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/clickhouse-migration-check.yml (date: UNVERIFIED)
+  - https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/.github/workflows/pipeline.yml (date: UNKNOWN - not live-verified on 2026-02-20)
+  - https://github.com/Helicone/helicone/blob/bd1a3e3be30d2f69c9452667f7d62d02c0a43a7b/.github/workflows/clickhouse-migration-check.yml (date: UNKNOWN - not live-verified on 2026-02-20)
 - Example repos and concrete paths:
   - https://github.com/langfuse/langfuse
     - `.github/workflows/pipeline.yml`
@@ -67,8 +67,8 @@ RECOMMENDATION
 FACT
 - Summary: Strongly typed request/response boundaries reduce cross-module ambiguity and shrink agent context by making contracts explicit.
 - Evidence:
-  - https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/README.md (date: UNVERIFIED)
-  - https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/README.md (date: UNVERIFIED)
+  - https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
+  - https://github.com/colinhacks/zod/blob/c7805073fef5b6b8857307c3d4b3597a70613bc2/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
 - Example repos and concrete paths:
   - https://github.com/trpc/trpc
     - `packages/client/src/links/retryLink.ts`
@@ -97,8 +97,8 @@ RECOMMENDATION
 FACT
 - Summary: Repos that publish an OpenAPI spec as a tracked file can validate clients, docs, and backward compatibility via CI.
 - Evidence:
-  - https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/api/openapi.yml (date: UNVERIFIED)
-  - https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/OPENAPI_WORKFLOW.md (date: UNVERIFIED)
+  - https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/docs/api/openapi.yml (date: UNKNOWN - not live-verified on 2026-02-20)
+  - https://github.com/inngest/inngest/blob/28f4a97dc3b37465aa974332a6dd4bf9597317b8/docs/OPENAPI_WORKFLOW.md (date: UNKNOWN - not live-verified on 2026-02-20)
 - Example repos and concrete paths:
   - https://github.com/SigNoz/signoz
     - `docs/api/openapi.yml`
@@ -126,8 +126,8 @@ RECOMMENDATION
 FACT
 - Summary: JSON Schema validation is a reliable, low-cost CI gate for generated artifacts and contract files.
 - Evidence:
-  - https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/README.md (date: UNVERIFIED)
-  - https://github.com/GS1Ned/isa_web_clean/blob/e91943c/.github/workflows/schema-validation.yml (date: UNVERIFIED)
+  - https://github.com/ajv-validator/ajv/blob/142ce84b807c4fe66e619c22480a28d0e4bd50fa/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
+  - https://github.com/GS1Ned/isa_web_clean/blob/e91943c/.github/workflows/schema-validation.yml (date: UNKNOWN - not live-verified on 2026-02-20)
 - Example repos and concrete paths:
   - https://github.com/ajv-validator/ajv
     - `lib/ajv.ts`
@@ -156,8 +156,8 @@ RECOMMENDATION
 FACT
 - Summary: OpenTelemetry provides a standard vocabulary and SDKs to add spans/metrics around HTTP, DB, and background work.
 - Evidence:
-  - https://opentelemetry.io/docs/ (date: UNVERIFIED)
-  - https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts (date: UNVERIFIED)
+  - https://opentelemetry.io/docs/ (date: UNKNOWN - not live-verified on 2026-02-20)
+  - https://github.com/open-telemetry/opentelemetry-js/blob/ad92be4c2c1094745a85b0b7eeff1444a11b1b4a/packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts (date: UNKNOWN - not live-verified on 2026-02-20)
 - Example repos and concrete paths:
   - https://github.com/open-telemetry/opentelemetry-js
     - `packages/opentelemetry-sdk-trace-node/src/NodeTracerProvider.ts`
@@ -185,8 +185,8 @@ RECOMMENDATION
 FACT
 - Summary: Workflow engines and explicit retry policies make ingestion pipelines resilient and observable.
 - Evidence:
-  - https://docs.temporal.io/ (date: UNVERIFIED)
-  - https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/README.md (date: UNVERIFIED)
+  - https://docs.temporal.io/ (date: UNKNOWN - not live-verified on 2026-02-20)
+  - https://github.com/temporalio/sdk-typescript/blob/bebf54e2356a7b1d602d1a7ef4275621da1cf4a0/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
 - Example repos and concrete paths:
   - https://github.com/temporalio/sdk-typescript
     - `packages/worker/`
@@ -214,8 +214,8 @@ RECOMMENDATION
 FACT
 - Summary: Automated releases reduce manual drift and make artifact versioning explicit.
 - Evidence:
-  - https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/README.md (date: UNVERIFIED)
-  - https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/release-drafter.yml (date: UNVERIFIED)
+  - https://github.com/semantic-release/semantic-release/blob/be0ff3854cd97165de4317e30a7746197bfa7b3b/README.md (date: UNKNOWN - not live-verified on 2026-02-20)
+  - https://github.com/SigNoz/signoz/blob/df72c897f91e1457f6adf5c9fc14e3e3cc201a30/.github/workflows/release-drafter.yml (date: UNKNOWN - not live-verified on 2026-02-20)
 - Example repos and concrete paths:
   - https://github.com/semantic-release/semantic-release
     - `.github/workflows/release.yml`
@@ -243,8 +243,8 @@ RECOMMENDATION
 FACT
 - Summary: High-signal repos store small deterministic fixture artifacts (trace samples, eval inputs) as versioned files to make regressions reproducible.
 - Evidence:
-  - https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/beeai-2025-08-01.json (date: UNVERIFIED)
-  - https://github.com/openai/evals (date: UNVERIFIED)
+  - https://github.com/langfuse/langfuse/blob/afa2143e8a10560088a2080a0d2f308f339c94fa/packages/shared/scripts/seeder/utils/framework-traces/beeai-2025-08-01.json (date: UNKNOWN - not live-verified on 2026-02-20)
+  - https://github.com/openai/evals (date: UNKNOWN - not live-verified on 2026-02-20)
 - Example repos and concrete paths:
   - https://github.com/langfuse/langfuse
     - `packages/shared/scripts/seeder/utils/framework-traces/*.json`

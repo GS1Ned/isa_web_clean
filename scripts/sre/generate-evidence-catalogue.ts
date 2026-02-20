@@ -40,8 +40,14 @@ try {
   const registryFile = 'data/metadata/dataset_registry.json';
   if (fs.existsSync(registryFile)) {
     const data = JSON.parse(fs.readFileSync(registryFile, 'utf-8'));
-    datasets.total = data.datasets?.length || 0;
-    datasets.with_provenance = (data.datasets || []).filter((d: any) => d.provenance).length;
+    const primaryDatasets = Array.isArray(data.datasets) ? data.datasets : [];
+    const newDatasets = Array.isArray(data.newDatasets) ? data.newDatasets : [];
+    const registeredStandards = Array.isArray(data.registeredStandards) ? data.registeredStandards : [];
+    const effectiveDatasets =
+      primaryDatasets.length > 0 ? primaryDatasets : [...newDatasets, ...registeredStandards];
+
+    datasets.total = effectiveDatasets.length;
+    datasets.with_provenance = effectiveDatasets.filter((d: any) => d.provenance || d.lineage).length;
   }
 } catch (error) {
   cliErr('Could not read dataset registry:', error);

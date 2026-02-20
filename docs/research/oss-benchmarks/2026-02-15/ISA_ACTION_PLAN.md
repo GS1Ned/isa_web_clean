@@ -31,7 +31,7 @@ RECOMMENDATION
 FACT
 - Evidence:
   - Current router composition is large: https://github.com/GS1Ned/isa_web_clean/blob/e91943c/server/routers.ts
-  - tRPC router composition docs: https://trpc.io/docs/router (date: UNVERIFIED)
+  - tRPC router composition docs: https://trpc.io/docs/router (date: UNKNOWN - not live-verified on 2026-02-20)
 
 RECOMMENDATION
 - Priority: P0
@@ -56,7 +56,7 @@ RECOMMENDATION
 FACT
 - Evidence:
   - Error ledger persistence wiring: https://github.com/GS1Ned/isa_web_clean/blob/e91943c/server/_core/logger-wiring.ts
-  - OpenTelemetry trace concepts: https://opentelemetry.io/docs/concepts/signals/traces/ (date: UNVERIFIED)
+  - OpenTelemetry trace concepts: https://opentelemetry.io/docs/concepts/signals/traces/ (date: UNKNOWN - not live-verified on 2026-02-20)
 
 RECOMMENDATION
 - Priority: P0
@@ -81,7 +81,7 @@ RECOMMENDATION
 
 FACT
 - Evidence:
-  - Temporal durability concept reference: https://docs.temporal.io/ (date: UNVERIFIED)
+  - Temporal durability concept reference: https://docs.temporal.io/ (date: UNKNOWN - not live-verified on 2026-02-20)
   - tRPC retry link pattern (conceptual reference for retries): https://github.com/trpc/trpc/blob/08a7c997343105e479a1e0d488e7d882e3a60703/packages/client/src/links/retryLink.ts
 
 RECOMMENDATION
@@ -201,7 +201,7 @@ RECOMMENDATION
 
 FACT
 - Evidence:
-  - GitHub CODEOWNERS docs: https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners (date: UNVERIFIED)
+  - GitHub CODEOWNERS docs: https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners (date: UNKNOWN - not live-verified on 2026-02-20)
   - ISA has many high-risk areas (ingest, core, schemas): https://github.com/GS1Ned/isa_web_clean/tree/e91943c/server
 
 RECOMMENDATION
