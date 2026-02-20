@@ -284,12 +284,12 @@
       "id": "RAG-EVAL-0002-V2",
       "query": "What is a GS1 Digital Link URI? (operational baseline fixture 2)",
       "expected_citations": [
-        "fixture:gs1-digital-link"
+        "fixture:gs1-digital-link-v2"
       ],
       "actual": {
         "answer": "A GS1 Digital Link URI encodes identifiers and qualifiers to resolve product information resources.",
         "citations": [
-          "fixture:gs1-digital-link"
+          "fixture:gs1-digital-link-v2"
         ],
         "latency_ms": 113,
         "cost_usd": 0
@@ -297,7 +297,7 @@
       "repeat_actual": {
         "answer": "A GS1 Digital Link URI encodes identifiers and qualifiers to resolve product information resources.",
         "citations": [
-          "fixture:gs1-digital-link"
+          "fixture:gs1-digital-link-v2"
         ],
         "latency_ms": 112,
         "cost_usd": 0
@@ -356,12 +356,12 @@
       "id": "RAG-EVAL-0005-V2",
       "query": "What does strict no-console mean in ISA? (operational baseline fixture 5)",
       "expected_citations": [
-        "fixture:logging-policy"
+        "fixture:logging-policy-v2"
       ],
       "actual": {
         "answer": "ISA forbids Node console usage in core code and routes logs through server logger wiring.",
         "citations": [
-          "fixture:logging-policy"
+          "fixture:logging-policy-v2"
         ],
         "latency_ms": 178,
         "cost_usd": 0
@@ -369,7 +369,7 @@
       "repeat_actual": {
         "answer": "ISA forbids Node console usage in core code and routes logs through server logger wiring.",
         "citations": [
-          "fixture:logging-policy"
+          "fixture:logging-policy-v2"
         ],
         "latency_ms": 178,
         "cost_usd": 0
