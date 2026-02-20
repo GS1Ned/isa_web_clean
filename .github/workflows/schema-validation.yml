@@ -107,29 +107,30 @@ jobs:
           fi
 
           echo "Validating dataset registry JSON against dataset registry schema (draft-2020-12)..."
-          npm exec --yes --package=ajv@8 --package=ajv-formats@3 -- node - <<'NODE'
-          const fs = require("fs");
-          const Ajv2020 = require("ajv/dist/2020").default;
-          const addFormats = require("ajv-formats");
+          python3 -m pip install --quiet jsonschema==4.21.1
+          python3 - <<'PY'
+          import json
+          import sys
+          from jsonschema import Draft202012Validator
 
-          const schemaPath = "data/metadata/dataset_registry.schema.json";
-          const dataPath = "data/metadata/dataset_registry.json";
-          const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
-          const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+          schema_path = "data/metadata/dataset_registry.schema.json"
+          data_path = "data/metadata/dataset_registry.json"
 
-          const ajv = new Ajv2020({ strict: false, allErrors: true });
-          addFormats(ajv);
-          const validate = ajv.compile(schema);
-          const valid = validate(data);
+          with open(schema_path, "r", encoding="utf-8") as f:
+              schema = json.load(f)
+          with open(data_path, "r", encoding="utf-8") as f:
+              data = json.load(f)
 
-          if (!valid) {
-            console.error("STOP=dataset_registry_contract_invalid");
-            console.error(JSON.stringify(validate.errors, null, 2));
-            process.exit(1);
-          }
+          try:
+              Draft202012Validator.check_schema(schema)
+              Draft202012Validator(schema).validate(data)
+          except Exception as exc:
+              print("STOP=dataset_registry_contract_invalid")
+              print(str(exc))
+              sys.exit(1)
 
-          console.log("DONE=dataset_registry_contract_valid");
-          NODE
+          print("DONE=dataset_registry_contract_valid")
+          PY
 
       - name: Report validation results
         if: always()
