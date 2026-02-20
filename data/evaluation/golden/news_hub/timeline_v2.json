@@ -1,0 +1,383 @@
+{
+  "dataset_id": "news_timeline_v2",
+  "source_of_truth": [
+    "server/news-sources.ts",
+    "server/news-event-processor.test.ts",
+    "server/news-deduplicator.ts"
+  ],
+  "reference_time_utc": "2025-12-16T13:30:00Z",
+  "sources": [
+    {
+      "id": "eurlex-oj",
+      "type": "EU_OFFICIAL",
+      "enabled": true
+    },
+    {
+      "id": "eu-commission-environment",
+      "type": "EU_OFFICIAL",
+      "enabled": true
+    },
+    {
+      "id": "ec-circular-economy",
+      "type": "EU_OFFICIAL",
+      "enabled": true
+    },
+    {
+      "id": "efrag-sustainability",
+      "type": "EU_OFFICIAL",
+      "enabled": true
+    },
+    {
+      "id": "gs1-nl-news",
+      "type": "GS1_OFFICIAL",
+      "enabled": true
+    },
+    {
+      "id": "gs1-eu-updates",
+      "type": "GS1_OFFICIAL",
+      "enabled": true
+    }
+  ],
+  "raw_articles": [
+    {
+      "id": "raw-001",
+      "sourceId": "eu-commission-environment",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T07:50:00Z",
+      "title": "The EU Parliament has formally adopted the Corporate Sustainability Due Diligence Directive (CSDDD).",
+      "classification_expected": {
+        "eventType": "ADOPTION",
+        "primaryRegulation": "CSDDD"
+      },
+      "classification_predicted": {
+        "eventType": "ADOPTION",
+        "primaryRegulation": "CSDDD"
+      },
+      "dedup_key": "CSDDD_ADOPTION_2025-Q4",
+      "processing_latency_ms": 420
+    },
+    {
+      "id": "raw-002",
+      "sourceId": "eurlex-oj",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T08:05:00Z",
+      "title": "Formal adoption of CSDDD confirmed in the Official Journal.",
+      "classification_expected": {
+        "eventType": "ADOPTION",
+        "primaryRegulation": "CSDDD"
+      },
+      "classification_predicted": {
+        "eventType": "ADOPTION",
+        "primaryRegulation": "CSDDD"
+      },
+      "dedup_key": "CSDDD_ADOPTION_2025-Q4",
+      "processing_latency_ms": 510
+    },
+    {
+      "id": "raw-003",
+      "sourceId": "efrag-sustainability",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T08:40:00Z",
+      "title": "EFRAG has published new FAQ guidance on ESRS implementation for CSRD reporting.",
+      "classification_expected": {
+        "eventType": "GUIDANCE_PUBLICATION",
+        "primaryRegulation": "CSRD"
+      },
+      "classification_predicted": {
+        "eventType": "GUIDANCE_PUBLICATION",
+        "primaryRegulation": "CSRD"
+      },
+      "dedup_key": "CSRD_GUIDANCE_PUBLICATION_2025-Q4",
+      "processing_latency_ms": 610
+    },
+    {
+      "id": "raw-004",
+      "sourceId": "ec-circular-economy",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T09:00:00Z",
+      "title": "The European Commission has announced that the ESPR delegated acts will be delayed by 18 months.",
+      "classification_expected": {
+        "eventType": "POSTPONEMENT",
+        "primaryRegulation": "ESPR"
+      },
+      "classification_predicted": {
+        "eventType": "POSTPONEMENT",
+        "primaryRegulation": "ESPR"
+      },
+      "dedup_key": "ESPR_POSTPONEMENT_2025-Q4",
+      "processing_latency_ms": 690
+    },
+    {
+      "id": "raw-005",
+      "sourceId": "gs1-nl-news",
+      "sourceType": "GS1_OFFICIAL",
+      "publishedAt": "2025-12-16T09:15:00Z",
+      "title": "GS1 implementation update on ESRS mapping enablement.",
+      "classification_expected": {
+        "eventType": "GUIDANCE_PUBLICATION",
+        "primaryRegulation": "ESRS"
+      },
+      "classification_predicted": {
+        "eventType": "GUIDANCE_PUBLICATION",
+        "primaryRegulation": "ESRS"
+      },
+      "dedup_key": "ESRS_GUIDANCE_PUBLICATION_2025-Q4",
+      "processing_latency_ms": 480
+    },
+    {
+      "id": "raw-006",
+      "sourceId": "gs1-eu-updates",
+      "sourceType": "GS1_OFFICIAL",
+      "publishedAt": "2025-12-16T09:35:00Z",
+      "title": "Draft proposal submitted for new sustainability data exchange guidance.",
+      "classification_expected": {
+        "eventType": "PROPOSAL",
+        "primaryRegulation": "CSRD"
+      },
+      "classification_predicted": {
+        "eventType": "PROPOSAL",
+        "primaryRegulation": "CSRD"
+      },
+      "dedup_key": "CSRD_PROPOSAL_2025-Q4",
+      "processing_latency_ms": 530
+    },
+    {
+      "id": "raw-007",
+      "sourceId": "eu-commission-environment",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T10:00:00Z",
+      "title": "Trilogue negotiations conclude with political agreement on packaging timelines.",
+      "classification_expected": {
+        "eventType": "POLITICAL_AGREEMENT",
+        "primaryRegulation": "PPWR"
+      },
+      "classification_predicted": {
+        "eventType": "POLITICAL_AGREEMENT",
+        "primaryRegulation": "PPWR"
+      },
+      "dedup_key": "PPWR_POLITICAL_AGREEMENT_2025-Q4",
+      "processing_latency_ms": 505
+    },
+    {
+      "id": "raw-008",
+      "sourceId": "eurlex-oj",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T10:15:00Z",
+      "title": "New requirements applicable from 2026 for traceability declarations.",
+      "classification_expected": {
+        "eventType": "ENFORCEMENT_START",
+        "primaryRegulation": "EUDR"
+      },
+      "classification_predicted": {
+        "eventType": "ENFORCEMENT_START",
+        "primaryRegulation": "EUDR"
+      },
+      "dedup_key": "EUDR_ENFORCEMENT_START_2025-Q4",
+      "processing_latency_ms": 455
+    },
+    {
+      "id": "raw-009",
+      "sourceId": "efrag-sustainability",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T10:40:00Z",
+      "title": "Commission publishes draft proposal for phased ESRS implementation clarifications.",
+      "classification_expected": {
+        "eventType": "PROPOSAL",
+        "primaryRegulation": "CSRD"
+      },
+      "classification_predicted": {
+        "eventType": "PROPOSAL",
+        "primaryRegulation": "CSRD"
+      },
+      "dedup_key": "CSRD_PROPOSAL_2025-Q4",
+      "processing_latency_ms": 560
+    },
+    {
+      "id": "raw-010",
+      "sourceId": "gs1-nl-news",
+      "sourceType": "GS1_OFFICIAL",
+      "publishedAt": "2025-12-16T11:00:00Z",
+      "title": "Implementation delayed until 2027 for selected delegated acts.",
+      "classification_expected": {
+        "eventType": "POSTPONEMENT",
+        "primaryRegulation": "ESPR"
+      },
+      "classification_predicted": {
+        "eventType": "POSTPONEMENT",
+        "primaryRegulation": "ESPR"
+      },
+      "dedup_key": "ESPR_POSTPONEMENT_2025-Q4",
+      "processing_latency_ms": 590
+    },
+    {
+      "id": "raw-v2-001",
+      "sourceId": "eu-commission-environment",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T08:10:00.000Z",
+      "title": "The EU Parliament has formally adopted the Corporate Sustainability Due Diligence Directive (CSDDD).",
+      "classification_expected": {
+        "eventType": "ADOPTION",
+        "primaryRegulation": "CSDDD"
+      },
+      "classification_predicted": {
+        "eventType": "ADOPTION",
+        "primaryRegulation": "CSDDD"
+      },
+      "dedup_key": "CSDDD_ADOPTION_2025-Q4",
+      "processing_latency_ms": 455
+    },
+    {
+      "id": "raw-v2-002",
+      "sourceId": "eurlex-oj",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T08:25:00.000Z",
+      "title": "Formal adoption of CSDDD confirmed in the Official Journal.",
+      "classification_expected": {
+        "eventType": "ADOPTION",
+        "primaryRegulation": "CSDDD"
+      },
+      "classification_predicted": {
+        "eventType": "ADOPTION",
+        "primaryRegulation": "CSDDD"
+      },
+      "dedup_key": "CSDDD_ADOPTION_2025-Q4_FOLLOWUP",
+      "processing_latency_ms": 545
+    },
+    {
+      "id": "raw-v2-003",
+      "sourceId": "efrag-sustainability",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T09:00:00.000Z",
+      "title": "EFRAG has published new FAQ guidance on ESRS implementation for CSRD reporting.",
+      "classification_expected": {
+        "eventType": "GUIDANCE_PUBLICATION",
+        "primaryRegulation": "CSRD"
+      },
+      "classification_predicted": {
+        "eventType": "GUIDANCE_PUBLICATION",
+        "primaryRegulation": "CSRD"
+      },
+      "dedup_key": "CSRD_GUIDANCE_PUBLICATION_2025-Q4",
+      "processing_latency_ms": 645
+    },
+    {
+      "id": "raw-v2-004",
+      "sourceId": "ec-circular-economy",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T09:20:00.000Z",
+      "title": "The European Commission has announced that the ESPR delegated acts will be delayed by 18 months.",
+      "classification_expected": {
+        "eventType": "POSTPONEMENT",
+        "primaryRegulation": "ESPR"
+      },
+      "classification_predicted": {
+        "eventType": "POSTPONEMENT",
+        "primaryRegulation": "ESPR"
+      },
+      "dedup_key": "ESPR_POSTPONEMENT_2025-Q4_FOLLOWUP",
+      "processing_latency_ms": 725
+    },
+    {
+      "id": "raw-v2-005",
+      "sourceId": "gs1-nl-news",
+      "sourceType": "GS1_OFFICIAL",
+      "publishedAt": "2025-12-16T09:35:00.000Z",
+      "title": "GS1 implementation update on ESRS mapping enablement.",
+      "classification_expected": {
+        "eventType": "GUIDANCE_PUBLICATION",
+        "primaryRegulation": "ESRS"
+      },
+      "classification_predicted": {
+        "eventType": "GUIDANCE_PUBLICATION",
+        "primaryRegulation": "ESRS"
+      },
+      "dedup_key": "ESRS_GUIDANCE_PUBLICATION_2025-Q4",
+      "processing_latency_ms": 515
+    },
+    {
+      "id": "raw-v2-006",
+      "sourceId": "gs1-eu-updates",
+      "sourceType": "GS1_OFFICIAL",
+      "publishedAt": "2025-12-16T09:55:00.000Z",
+      "title": "Draft proposal submitted for new sustainability data exchange guidance.",
+      "classification_expected": {
+        "eventType": "PROPOSAL",
+        "primaryRegulation": "CSRD"
+      },
+      "classification_predicted": {
+        "eventType": "PROPOSAL",
+        "primaryRegulation": "CSRD"
+      },
+      "dedup_key": "CSRD_PROPOSAL_2025-Q4_FOLLOWUP",
+      "processing_latency_ms": 565
+    },
+    {
+      "id": "raw-v2-007",
+      "sourceId": "eu-commission-environment",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T10:20:00.000Z",
+      "title": "Trilogue negotiations conclude with political agreement on packaging timelines.",
+      "classification_expected": {
+        "eventType": "POLITICAL_AGREEMENT",
+        "primaryRegulation": "PPWR"
+      },
+      "classification_predicted": {
+        "eventType": "POLITICAL_AGREEMENT",
+        "primaryRegulation": "PPWR"
+      },
+      "dedup_key": "PPWR_POLITICAL_AGREEMENT_2025-Q4",
+      "processing_latency_ms": 540
+    },
+    {
+      "id": "raw-v2-008",
+      "sourceId": "eurlex-oj",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T10:35:00.000Z",
+      "title": "New requirements applicable from 2026 for traceability declarations.",
+      "classification_expected": {
+        "eventType": "ENFORCEMENT_START",
+        "primaryRegulation": "EUDR"
+      },
+      "classification_predicted": {
+        "eventType": "ENFORCEMENT_START",
+        "primaryRegulation": "EUDR"
+      },
+      "dedup_key": "EUDR_ENFORCEMENT_START_2025-Q4_FOLLOWUP",
+      "processing_latency_ms": 490
+    },
+    {
+      "id": "raw-v2-009",
+      "sourceId": "efrag-sustainability",
+      "sourceType": "EU_OFFICIAL",
+      "publishedAt": "2025-12-16T11:00:00.000Z",
+      "title": "Commission publishes draft proposal for phased ESRS implementation clarifications.",
+      "classification_expected": {
+        "eventType": "PROPOSAL",
+        "primaryRegulation": "CSRD"
+      },
+      "classification_predicted": {
+        "eventType": "PROPOSAL",
+        "primaryRegulation": "CSRD"
+      },
+      "dedup_key": "CSRD_PROPOSAL_2025-Q4",
+      "processing_latency_ms": 595
+    },
+    {
+      "id": "raw-v2-010",
+      "sourceId": "gs1-nl-news",
+      "sourceType": "GS1_OFFICIAL",
+      "publishedAt": "2025-12-16T11:20:00.000Z",
+      "title": "Implementation delayed until 2027 for selected delegated acts.",
+      "classification_expected": {
+        "eventType": "POSTPONEMENT",
+        "primaryRegulation": "ESPR"
+      },
+      "classification_predicted": {
+        "eventType": "POSTPONEMENT",
+        "primaryRegulation": "ESPR"
+      },
+      "dedup_key": "ESPR_POSTPONEMENT_2025-Q4_FOLLOWUP",
+      "processing_latency_ms": 625
+    }
+  ]
+}

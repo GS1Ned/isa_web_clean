@@ -1,0 +1,312 @@
+{
+  "baseline_id": "isa-capability-baseline-v2-candidate",
+  "generated_at": "2026-02-20T15:08:04.570Z",
+  "stage": "stage_a",
+  "source_eval_run_id": "local-stage-a-2",
+  "source_eval_generated_at": "2026-02-20T15:07:45.045Z",
+  "notes": "Weekly baseline candidate generated from latest unified ISA capability evaluation. Requires manual review and approval before replacing canonical baseline.",
+  "metrics": {
+    "kb.ingestion.correctness": 1,
+    "kb.metadata.completeness": 1,
+    "kb.chunk.quality": 1,
+    "kb.linking.density": 1,
+    "kb.lifecycle.governance": 1,
+    "kb.contract.adherence": 1,
+    "kb.integration.completeness": 1,
+    "kb.latency.p95_ms": 180,
+    "kb.latency.measurement_mode_runtime": 0,
+    "catalog.metadata.completeness": 1,
+    "catalog.authority.tier_correctness": 1,
+    "catalog.verification.currency_days": 371,
+    "catalog.lifecycle.state_correctness": 1,
+    "catalog.contract.adherence": 1,
+    "catalog.integration.completeness": 0.1333,
+    "catalog.latency.p95_ms": 220,
+    "catalog.latency.measurement_mode_runtime": 0,
+    "esrs.mapping.precision": 1,
+    "esrs.mapping.coverage": 1,
+    "esrs.mapping.explainability_presence": 1,
+    "esrs.mapping.authority_correctness": 1,
+    "esrs.mapping.contract.adherence": 1,
+    "esrs.mapping.integration.completeness": 1,
+    "esrs.mapping.latency.p95_ms": 120,
+    "esrs.mapping.latency.measurement_mode_runtime": 0,
+    "news.freshness.median_minutes": 145,
+    "news.source.coverage_ratio": 1,
+    "news.duplicate.rate": 0.3,
+    "news.classification.f1_macro": 1,
+    "news.contract.adherence": 1,
+    "news.integration.completeness": 1,
+    "news.latency.p95_ms": 690,
+    "news.latency.measurement_mode_runtime": 0,
+    "advisory.evidence.coverage": 1,
+    "advisory.recommendation.structure_score": 1,
+    "advisory.gap_detection.f1": 1,
+    "advisory.authority.propagation": 1,
+    "advisory.contract.adherence": 1,
+    "advisory.integration.completeness": 1,
+    "advisory.latency.p95_ms": 0,
+    "advisory.latency.measurement_mode_runtime": 1,
+    "ask.citation.presence": 1,
+    "ask.citation.validity": 1,
+    "ask.source.diversity": 1,
+    "ask.abstention.correctness": 1,
+    "ask.answer.completeness": 1,
+    "ask.contract.adherence": 1,
+    "ask.integration.completeness": 1,
+    "ask.latency.p95_ms": 170,
+    "ask.latency.measurement_mode_runtime": 0
+  },
+  "metric_meta": {
+    "kb.ingestion.correctness": {
+      "capability": "KNOWLEDGE_BASE",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "kb.metadata.completeness": {
+      "capability": "KNOWLEDGE_BASE",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "kb.chunk.quality": {
+      "capability": "KNOWLEDGE_BASE",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "kb.linking.density": {
+      "capability": "KNOWLEDGE_BASE",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "kb.lifecycle.governance": {
+      "capability": "KNOWLEDGE_BASE",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "kb.contract.adherence": {
+      "capability": "KNOWLEDGE_BASE",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "kb.integration.completeness": {
+      "capability": "KNOWLEDGE_BASE",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "kb.latency.p95_ms": {
+      "capability": "KNOWLEDGE_BASE",
+      "fixture_version": "v1",
+      "measurement_mode": "synthetic"
+    },
+    "kb.latency.measurement_mode_runtime": {
+      "capability": "KNOWLEDGE_BASE",
+      "fixture_version": "v1",
+      "measurement_mode": "synthetic"
+    },
+    "catalog.metadata.completeness": {
+      "capability": "CATALOG",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "catalog.authority.tier_correctness": {
+      "capability": "CATALOG",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "catalog.verification.currency_days": {
+      "capability": "CATALOG",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "catalog.lifecycle.state_correctness": {
+      "capability": "CATALOG",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "catalog.contract.adherence": {
+      "capability": "CATALOG",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "catalog.integration.completeness": {
+      "capability": "CATALOG",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "catalog.latency.p95_ms": {
+      "capability": "CATALOG",
+      "fixture_version": "v1",
+      "measurement_mode": "synthetic"
+    },
+    "catalog.latency.measurement_mode_runtime": {
+      "capability": "CATALOG",
+      "fixture_version": "v1",
+      "measurement_mode": "synthetic"
+    },
+    "esrs.mapping.precision": {
+      "capability": "ESRS_MAPPING",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "esrs.mapping.coverage": {
+      "capability": "ESRS_MAPPING",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "esrs.mapping.explainability_presence": {
+      "capability": "ESRS_MAPPING",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "esrs.mapping.authority_correctness": {
+      "capability": "ESRS_MAPPING",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "esrs.mapping.contract.adherence": {
+      "capability": "ESRS_MAPPING",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "esrs.mapping.integration.completeness": {
+      "capability": "ESRS_MAPPING",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "esrs.mapping.latency.p95_ms": {
+      "capability": "ESRS_MAPPING",
+      "fixture_version": "v1",
+      "measurement_mode": "synthetic"
+    },
+    "esrs.mapping.latency.measurement_mode_runtime": {
+      "capability": "ESRS_MAPPING",
+      "fixture_version": "v1",
+      "measurement_mode": "synthetic"
+    },
+    "news.freshness.median_minutes": {
+      "capability": "NEWS_HUB",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "news.source.coverage_ratio": {
+      "capability": "NEWS_HUB",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "news.duplicate.rate": {
+      "capability": "NEWS_HUB",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "news.classification.f1_macro": {
+      "capability": "NEWS_HUB",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "news.contract.adherence": {
+      "capability": "NEWS_HUB",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "news.integration.completeness": {
+      "capability": "NEWS_HUB",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "news.latency.p95_ms": {
+      "capability": "NEWS_HUB",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "news.latency.measurement_mode_runtime": {
+      "capability": "NEWS_HUB",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "advisory.evidence.coverage": {
+      "capability": "ADVISORY",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "advisory.recommendation.structure_score": {
+      "capability": "ADVISORY",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "advisory.gap_detection.f1": {
+      "capability": "ADVISORY",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "advisory.authority.propagation": {
+      "capability": "ADVISORY",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "advisory.contract.adherence": {
+      "capability": "ADVISORY",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "advisory.integration.completeness": {
+      "capability": "ADVISORY",
+      "fixture_version": "v1",
+      "measurement_mode": "runtime"
+    },
+    "advisory.latency.p95_ms": {
+      "capability": "ADVISORY",
+      "fixture_version": "v1",
+      "measurement_mode": "runtime"
+    },
+    "advisory.latency.measurement_mode_runtime": {
+      "capability": "ADVISORY",
+      "fixture_version": "v1",
+      "measurement_mode": "runtime"
+    },
+    "ask.citation.presence": {
+      "capability": "ASK_ISA",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "ask.citation.validity": {
+      "capability": "ASK_ISA",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "ask.source.diversity": {
+      "capability": "ASK_ISA",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "ask.abstention.correctness": {
+      "capability": "ASK_ISA",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "ask.answer.completeness": {
+      "capability": "ASK_ISA",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "ask.contract.adherence": {
+      "capability": "ASK_ISA",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "ask.integration.completeness": {
+      "capability": "ASK_ISA",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "ask.latency.p95_ms": {
+      "capability": "ASK_ISA",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    },
+    "ask.latency.measurement_mode_runtime": {
+      "capability": "ASK_ISA",
+      "fixture_version": "v1",
+      "measurement_mode": "fixture"
+    }
+  }
+}
