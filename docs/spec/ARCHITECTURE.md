@@ -1,607 +1,227 @@
 # ISA System Architecture
-## Unified Technical Architecture for All Capabilities
+## Canonical CURRENT/TARGET Contract
 
-**Version:** 2.0.0  
-**Created:** 2026-02-12  
+**Version:** 3.1.0  
+**Last Updated:** 2026-02-20  
 **Status:** AUTHORITATIVE  
-**Purpose:** Single source of truth for ISA's system-wide architecture
+**Purpose:** Single canonical architecture contract for one CURRENT state and one TARGET state
 
 ---
 
-## System Overview
+## 1. Canonical Precedence And Reconciliation
 
-ISA (Intelligent Standards Architect) is a sustainability compliance intelligence platform built on a modular capability architecture. The system connects EU ESG regulations to GS1 standards through AI-powered analysis, structured knowledge graphs, and automated news aggregation.
+**FACT [EV-ARCH-001, EV-ARCH-002, EV-ARCH-003]:** Canonical precedence for system architecture decisions is:
+1. `docs/governance/_root/ISA_GOVERNANCE.md`
+2. `docs/agent/AGENT_MAP.md`
+3. `docs/spec/ARCHITECTURE.md` (this document)
+4. `docs/spec/ESRS_MAPPING/isa-core-architecture.md` (supplemental only)
+5. Capability runtime contracts:
+   - `docs/spec/ASK_ISA/RUNTIME_CONTRACT.md`
+   - `docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md`
+   - `docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md`
+   - `docs/spec/CATALOG/RUNTIME_CONTRACT.md`
+   - `docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md`
+   - `docs/spec/ADVISORY/RUNTIME_CONTRACT.md`
+6. Code truth (`server/routers.ts`, `drizzle/schema*.ts`, `client/src/App.tsx`)
 
-### Core Capabilities
-
-1. **ASK_ISA** - RAG-powered Q&A with mandatory citations
-2. **NEWS_HUB** - Automated news aggregation and AI enrichment
-3. **KNOWLEDGE_BASE** - Corpus ingestion and semantic search
-4. **CATALOG** - Regulation and standards catalog
-5. **ESRS_MAPPING** - GS1-to-ESRS mapping engine
-6. **ADVISORY** - Versioned advisory report generation
-
-### Technology Stack
-
-- **Frontend**: React 19 + TypeScript 5.9.3 + Tailwind CSS 4 + shadcn/ui
-- **Backend**: Express 4 + tRPC 11 + Node.js 22.13.0
-- **Database**: Drizzle ORM + MySQL/TiDB Cloud
-- **AI/ML**: OpenAI GPT-4 + text-embedding-3-small
-- **Infrastructure**: Manus hosting + GitHub + Playwright
+**FACT [EV-ARCH-006]:** `docs/spec/ESRS_MAPPING/isa-core-architecture.md` is explicitly supplemental and non-canonical for system CURRENT/TARGET.
 
 ---
 
-## System Architecture Diagram
+## 2. CURRENT State (Canonical, As-Built)
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         CLIENT LAYER                             │
-│  React 19 + TypeScript + Tailwind CSS + shadcn/ui + Wouter     │
-└────────────────────────┬────────────────────────────────────────┘
-                         │ tRPC Client (Type-Safe RPC)
-┌────────────────────────┴────────────────────────────────────────┐
-│                         API LAYER                                │
-│              Express 4 + tRPC 11 + Manus OAuth                  │
-├─────────────────────────────────────────────────────────────────┤
-│  ASK_ISA    NEWS_HUB    KNOWLEDGE_BASE    CATALOG    ESRS_MAPPING    ADVISORY  │
-│  Router     Router      Services          Router     Router          Router    │
-└────────────────────────┬────────────────────────────────────────┘
-                         │ Drizzle ORM
-┌────────────────────────┴────────────────────────────────────────┐
-│                      DATA LAYER                                  │
-│                   MySQL/TiDB Cloud                              │
-│  ┌──────────┬──────────┬──────────┬──────────┬──────────┐     │
-│  │regulations│standards │esrs_data │hub_news  │knowledge │     │
-│  │          │          │points    │          │embeddings│     │
-│  └──────────┴──────────┴──────────┴──────────┴──────────┘     │
-└────────────────────────┬────────────────────────────────────────┘
-                         │
-┌────────────────────────┴────────────────────────────────────────┐
-│                    EXTERNAL SERVICES                             │
-│  ┌──────────────┬──────────────┬──────────────┐               │
-│  │ Manus Forge  │  Playwright  │  EUR-Lex     │               │
-│  │ (OpenAI API) │  (Scraping)  │  (Regulatory)│               │
-│  └──────────────┴──────────────┴──────────────┘               │
-└─────────────────────────────────────────────────────────────────┘
-```
+### 2.1 Verified Runtime Shape
+
+**FACT [EV-ARCH-004]:** Top-level runtime capability surfaces are defined by `appRouter` in `server/routers.ts`.
+
+**FACT [EV-ARCH-009]:** Client route entrypoint is `client/src/App.tsx`.
+
+**FACT [EV-ARCH-007]:** As-built dependency graph source is `docs/evidence/EXEC_GRAPH.mmd`.
+
+### 2.2 Six Capability Surfaces (Current Ownership)
+
+| Capability | Owned Top-Level Router Surfaces | Primary Runtime Modules | Owned Core Tables |
+|---|---|---|---|
+| `ASK_ISA` | `askISA`, `askISAV2`, `evaluation` | `server/routers/ask-isa.ts`, `server/routers/ask-isa-v2.ts`, `server/routers/evaluation.ts` | `qa_conversations`, `qa_messages`, `ask_isa_feedback`, `rag_traces`, `evaluation_results` |
+| `NEWS_HUB` | `hub`, `newsAdmin`, `cron`, `scraperHealth`, `pipelineObservability`, `regulatoryChangeLog` | `server/routers/hub.ts`, `server/news-admin-router.ts`, `server/routers/cron.ts`, `server/routers/scraper-health.ts`, `server/routers/pipeline-observability.ts`, `server/routers/regulatory-change-log.ts` | `hub_news`, `hub_news_history`, `news_recommendations`, `scraper_executions`, `scraper_health_summary`, `pipeline_execution_log`, `regulatory_change_log`, `regulatory_events` |
+| `KNOWLEDGE_BASE` | `citationAdmin` | `server/routers/citation-admin.ts`, `server/db-knowledge.ts`, `server/db-knowledge-vector.ts`, `server/hybrid-search.ts`, `server/embedding.ts` | `knowledge_embeddings`, `sources`, `source_chunks`, `ingest_item_provenance` |
+| `CATALOG` | `regulations`, `standards`, `gs1Standards`, `standardsDirectory`, `esrs`, `dutchInitiatives`, `datasetRegistry`, `governanceDocuments`, `gs1Attributes`, `gs1nlAttributes` | `server/routers/regulations.ts`, `server/routers/standards.ts`, `server/gs1-standards-router.ts`, `server/routers/standards-directory.ts`, `server/routers/dataset-registry.ts`, `server/routers/governance-documents.ts`, `server/routers/gs1-attributes.ts`, `server/routers/gs1nl-attributes.ts`, `server/routers.ts` | `regulations`, `gs1_standards`, `esrs_datapoints`, `dutch_initiatives`, `regulation_standard_mappings`, `dataset_registry`, `governance_documents`, `gs1_attributes`, `gs1_web_vocabulary` |
+| `ESRS_MAPPING` | `esrsGs1Mapping`, `esrsRoadmap`, `gapAnalyzer`, `attributeRecommender` | `server/routers/esrs-gs1-mapping.ts`, `server/routers/esrs-roadmap.ts`, `server/routers/gap-analyzer.ts`, `server/routers/attribute-recommender.ts` | `gs1_esrs_mappings`, `gs1_attribute_esrs_mapping`, `regulation_esrs_mappings`, `mapping_feedback`, `esg_gs1_mappings` |
+| `ADVISORY` | `advisory`, `advisoryReports`, `advisoryDiff`, `esgArtefacts` | `server/routers/advisory.ts`, `server/routers/advisory-reports.ts`, `server/routers/advisory-diff.ts`, `server/routers/esg-artefacts.ts` | `advisory_reports`, `advisory_report_versions` |
+
+**FACT [EV-ARCH-003]:** Canonical capability set is exactly `ASK_ISA`, `NEWS_HUB`, `KNOWLEDGE_BASE`, `CATALOG`, `ESRS_MAPPING`, and `ADVISORY`.
+
+### 2.3 Shared Platform Layer (Promoted)
+
+**FACT [EV-ARCH-005, EV-ARCH-012]:** Cross-cutting surfaces are owned by `SHARED_PLATFORM` in the manifest contract (`system`, `auth`, `user`, `analytics`, `contact`, `export`, `onboarding`, `insights`, `monitoring`, `coverageAnalytics`, `observability`, `dataQuality`, `productionMonitoring`, `errorTracking`, `performanceTracking`, `webhookConfig`).
 
 ---
 
-## Capability Architecture
+## 3. TARGET State (Canonical)
 
-### ASK_ISA
+### 3.1 Target Design
 
-**Purpose**: Answer user questions via RAG with mandatory citations
+**TARGET:** `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json` is the authoritative ownership contract.
 
-**Components**:
-- `server/routers/ask-isa.ts` - tRPC router
-- `server/_core/embedding.ts` - Embedding generation
-- `server/hybrid-search.ts` - Semantic + keyword search
-- `client/src/pages/AskISA.tsx` - UI
+**TARGET:** Every router/table/schema/contract surface has one owner capability or `SHARED_PLATFORM` owner.
 
-**Data Flow**:
-1. User submits question
-2. Query embedding generated (text-embedding-3-small)
-3. Hybrid search retrieves top-5 chunks (semantic + BM25)
-4. LLM generates answer with citations (GPT-4)
-5. Response stored in conversation history
+**TARGET:** Any cross-capability concept without strong single-owner justification is promoted to `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`.
 
-**Database Tables**:
-- `knowledge_embeddings` (155 chunks)
-- `qa_conversations`
-- `qa_messages`
+**TARGET:** Drift between repository reality and manifest is remediated or explicitly logged as a `CURRENT->TARGET` delta row.
 
-**External Dependencies**:
-- Manus Forge API (embeddings + LLM)
+**TARGET:** Completion uses weighted validation confidence plus delta closure gate, not binary gate status alone.
+
+### 3.2 Target Selection Heuristic (Applied)
+
+1. Preserve governance invariants from `docs/governance/_root/ISA_GOVERNANCE.md`.
+2. Minimize cross-capability coupling.
+3. Maximize evidence traceability.
+4. Minimize structural churn in existing router APIs.
 
 ---
 
-### NEWS_HUB
+## 4. CURRENT -> TARGET Delta Table (Completion Gate)
 
-**Purpose**: Aggregate and enrich ESG news from 7 sources
+Completion gate rule: every row must be `ACCEPTED` or `BLOCKED_WITH_MITIGATION`.
 
-**Components**:
-- `server/news-admin-router.ts` - Admin API
-- `server/news-pipeline-config.ts` - Pipeline configuration
-- `server/news-scraper.ts` - Playwright-based scraping
-- `server/news-ai-processor.ts` - AI enrichment
-- `client/src/pages/NewsHub.tsx` - UI
-
-**Data Flow**:
-1. Cron job triggers daily at 02:00 UTC
-2. Playwright scrapes 7 sources (EUR-Lex, EFRAG, GS1)
-3. Articles deduplicated by URL hash
-4. AI enrichment: regulation tagging, GS1 impact, sectors
-5. Articles stored with enrichment metadata
-
-**Database Tables**:
-- `hub_news` (news articles)
-- `hub_news_history` (change tracking)
-- `scraper_executions` (health monitoring)
-- `scraper_health_summary` (24h metrics)
-
-**External Dependencies**:
-- Playwright (web scraping)
-- Manus Forge API (AI enrichment)
-- EUR-Lex, EFRAG, GS1 websites
+| Delta ID | Delta Area | Acceptance Criteria | Status | Mitigation / Note | Confidence Impact |
+|---|---|---|---|---|---|
+| `DELTA-01` | Canonical system CURRENT/TARGET source | Only this file defines system CURRENT and TARGET | `ACCEPTED` | Supplemental file downgraded to non-canonical | `+0.08` |
+| `DELTA-02` | Capability ownership normalization | Router/table/schema/contract surfaces mapped to one owner or shared platform | `ACCEPTED` | Enforced in `CAPABILITY_MANIFEST.json` evidence/status sections | `+0.10` |
+| `DELTA-03` | Shared primitive promotion | Cross-capability concepts promoted to primitive dictionary | `ACCEPTED` | Enforced in `PRIMITIVE_DICTIONARY.json` evidence refs | `+0.08` |
+| `DELTA-04` | Multi-router module normalization | Multi-capability routers are split, sub-owned, or shared-promoted | `BLOCKED_WITH_MITIGATION` | Sub-surface ownership is explicit; physical splits deferred | `-0.09` |
+| `DELTA-05` | Validation confidence model | Weighted pass/fail/unknown with limitation annotations | `ACCEPTED` | Enforced in `MINIMAL_VALIDATION_BUNDLE.json` | `+0.10` |
+| `DELTA-06` | Operational execution registry | Registry checkpoint required for phase transitions and DONE threshold | `ACCEPTED` | Enforced in `EXECUTION_STATE.json` | `+0.09` |
+| `DELTA-07` | Repo-manifest drift handling | Drift remediated or recorded as explicit delta row | `ACCEPTED` | Manifest authority + evidence pointers enforced | `+0.06` |
+| `DELTA-08` | Validation limitations | Known gate limitations explicitly documented and weighted | `ACCEPTED` | Maintained in validation bundle results | `-0.07` |
 
 ---
 
-### KNOWLEDGE_BASE
+## 5. Six Capability Boundaries (No Overlap, No Gap)
 
-**Purpose**: Manage knowledge embeddings for semantic search
+**FACT [EV-ARCH-003]:** Canonical six-capability definition is anchored by `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`.
 
-**Components**:
-- `server/db-knowledge.ts` - Database helpers
-- `server/_core/embedding.ts` - Embedding generation
-- `server/services/corpus-ingestion/` - Ingestion pipeline
-- `client/src/pages/AdminKnowledgeBase.tsx` - Admin UI
+**FACT [EV-ARCH-004]:** Ownership derivation source for top-level runtime surfaces is `server/routers.ts`.
 
-**Data Flow**:
-1. Admin triggers KB generation
-2. Source data fetched (regulations, standards, ESRS, initiatives)
-3. Content chunked (max 2000 chars)
-4. Embeddings generated (text-embedding-3-small)
-5. Chunks deduplicated by SHA-256 hash
-6. Stored in `knowledge_embeddings`
+**FACT [EV-ARCH-013, EV-ARCH-014]:** Table ownership derivation source is `drizzle/schema.ts` plus supplemental schema files (for example `drizzle/schema_corpus_governance.ts`) that define `mysqlTable(...)` exports.
 
-**Database Tables**:
-- `knowledge_embeddings` (155 chunks)
-- `regulations` (38 EU regulations)
-- `gs1_standards` (60+ standards)
-- `esrs_datapoints` (1,184 datapoints)
-- `dutch_initiatives` (10 initiatives)
-
-**External Dependencies**:
-- Manus Forge API (embeddings)
+**FACT [EV-ARCH-010, EV-ARCH-011]:** Machine-readable ownership and overlap/gap coverage are maintained in `CAPABILITY_MANIFEST.json` and `CAPABILITY_GRAPH.json`.
 
 ---
 
-### CATALOG
+## 6. Authoritative Machine-Readable Contracts
 
-**Purpose**: Regulation and standards catalog with filtering
+Canonical architecture contracts:
 
-**Components**:
-- `server/routers/catalog.ts` - tRPC router
-- `client/src/pages/HubRegulations.tsx` - Regulations UI
-- `client/src/pages/HubStandards.tsx` - Standards UI
-- `data/` - Dataset files
+- `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
+- `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
+- `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
+- `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`
 
-**Data Flow**:
-1. User browses catalog
-2. Filters applied (regulation type, sector, date)
-3. Results fetched from database
-4. Detail pages show ESRS mappings, news, timelines
+Supporting execution/governance artifacts:
 
-**Database Tables**:
-- `regulations` (38 regulations)
-- `gs1_standards` (60+ standards)
-- `esrs_datapoints` (1,184 datapoints)
-- `regulation_esrs_mappings` (450+ mappings)
+- `docs/planning/refactoring/EXECUTION_STATE.json`
+- `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`
+- `docs/spec/CONFLICT_REGISTER.md`
+- `docs/governance/EVIDENCE_INDEX.md` (research-output index, not architecture FACT pointer contract)
 
-**External Dependencies**:
-- None (static data)
+**FACT [EV-ARCH-008]:** Conflict tracking canonical source is `docs/spec/CONFLICT_REGISTER.md`.
 
 ---
 
-### ESRS_MAPPING
+## 7. Shared Primitives Contract
 
-**Purpose**: GS1-to-ESRS mapping engine with AI-assisted analysis
+Shared primitives are governed by `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`.
 
-**Components**:
-- `server/gs1-mapping-engine.ts` - Mapping logic
-- `server/ingest/INGEST-03_esrs_datapoints.ts` - ESRS ingestion
-- `client/src/pages/AdminESRSMapping.tsx` - Admin UI
-
-**Data Flow**:
-1. ESRS datapoints ingested from EFRAG IG3
-2. AI generates mappings to GS1 standards
-3. Mappings scored by relevance (0-10)
-4. Admin reviews and verifies mappings
-5. Mappings stored with reasoning
-
-**Database Tables**:
-- `esrs_datapoints` (1,184 datapoints)
-- `gs1_standards` (60+ standards)
-- `regulation_esrs_mappings` (450+ mappings)
-- `gs1_esrs_mappings` (GS1 Europe white paper)
-
-**External Dependencies**:
-- Manus Forge API (mapping generation)
+Minimum promoted primitives:
+- Identity and access control
+- Dataset provenance
+- Citation and evidence chain
+- Regulation/standard/ESRS canonical entities
+- LLM inference contract
+- Retrieval and embeddings
+- Scheduling and orchestration
+- Observability and telemetry
 
 ---
 
-### ADVISORY
+## 8. Manifest Authority And Drift Prevention
 
-**Purpose**: Generate versioned advisory reports with full provenance
+**Rule 1:** Manifest is authoritative for capability ownership.
 
-**Components**:
-- `server/routers/advisory.ts` - tRPC router
-- `server/advisory-generator.ts` - Report generation
-- `server/advisory-diff.ts` - Diff computation
-- `scripts/validate_advisory_schema.cjs` - Schema validation
+**Rule 2:** Repo mismatch is a drift event.
 
-**Data Flow**:
-1. Admin triggers advisory generation
-2. Data aggregated from all capabilities
-3. LLM generates structured report (GPT-4)
-4. Report validated against schema
-5. Diff computed vs. previous version
-6. Report stored with governance metadata
+**Rule 3:** Drift must be remediated in the same change set or recorded as an explicit `CURRENT->TARGET` blocked row with mitigation and confidence impact.
 
-**Database Tables**:
-- `advisory_reports` (2 versions)
-- `advisory_report_versions` (version history)
-- `dataset_registry` (provenance tracking)
-
-**External Dependencies**:
-- Manus Forge API (report generation)
+**Rule 4:** Shared platform ownership is valid when no single capability owner is defensible.
 
 ---
 
-## Data Model
+## 9. Minimal Validation Bundle And Confidence Model
 
-### Core Entities
-
-```typescript
-// Regulations
-interface Regulation {
-  id: number;
-  celexId: string;
-  title: string;
-  description: string;
-  regulationType: 'CSRD' | 'ESRS' | 'DPP' | 'EUDR' | 'ESPR' | 'PPWR' | 'OTHER';
-  effectiveDate: Date;
-  sourceUrl: string;
-}
-
-// GS1 Standards
-interface GS1Standard {
-  id: number;
-  standardCode: string;
-  standardName: string;
-  description: string;
-  category: string;
-  referenceUrl: string;
-}
-
-// ESRS Datapoints
-interface ESRSDatapoint {
-  id: number;
-  code: string;
-  esrsStandard: string;
-  disclosureRequirement: string;
-  name: string;
-  dataType: string;
-  conditional: boolean;
-  voluntary: boolean;
-}
-
-// News Articles
-interface HubNews {
-  id: number;
-  title: string;
-  summary: string;
-  newsType: 'NEW_LAW' | 'AMENDMENT' | 'ENFORCEMENT' | 'GUIDANCE' | 'PROPOSAL';
-  relatedRegulationIds: number[];
-  regulationTags: string[];
-  gs1ImpactTags: string[];
-  sectorTags: string[];
-  publishedDate: Date;
-}
-
-// Knowledge Embeddings
-interface KnowledgeEmbedding {
-  id: number;
-  sourceType: 'regulation' | 'standard' | 'esrs_datapoint' | 'dutch_initiative';
-  sourceId: number;
-  content: string;
-  contentHash: string;
-  embedding: number[]; // 1536-dim vector
-  title: string;
-  url: string;
-}
-```
-
-### Relationships
-
-```
-regulations (1) ──< (N) regulation_esrs_mappings (N) >── (1) esrs_datapoints
-regulations (1) ──< (N) hub_news.relatedRegulationIds (array)
-regulations (1) ──< (N) knowledge_embeddings (sourceType='regulation')
-gs1_standards (1) ──< (N) knowledge_embeddings (sourceType='standard')
-esrs_datapoints (1) ──< (N) knowledge_embeddings (sourceType='esrs_datapoint')
-```
-
----
-
-## Integration Contracts
-
-### Inter-Capability Dependencies
-
-```
-ASK_ISA depends on:
-  - KNOWLEDGE_BASE (embeddings for retrieval)
-  - CATALOG (regulation/standard metadata)
-
-NEWS_HUB depends on:
-  - CATALOG (regulation tagging)
-  - ESRS_MAPPING (GS1 impact analysis)
-
-KNOWLEDGE_BASE depends on:
-  - CATALOG (source data)
-  - ESRS_MAPPING (ESRS datapoints)
-
-CATALOG depends on:
-  - None (standalone)
-
-ESRS_MAPPING depends on:
-  - CATALOG (regulations, standards)
-
-ADVISORY depends on:
-  - ALL capabilities (data aggregation)
-```
-
-### Shared Data Models
-
-All capabilities share:
-- `regulations` table
-- `gs1_standards` table
-- `esrs_datapoints` table
-- `users` table (authentication)
-
-### Event Contracts
-
-No event-driven architecture currently. All interactions are synchronous via tRPC.
-
-### API Contracts
-
-All capabilities expose tRPC procedures:
-- Type-safe with Zod validation
-- Authenticated via Manus OAuth
-- Rate-limited (100 req/user/hour)
-
----
-
-## Infrastructure
-
-### Hosting
-
-- **Platform**: Manus Cloud
-- **Environment**: Production + Staging
-- **Deployment**: GitHub Actions CI/CD
-
-### Database
-
-- **Provider**: TiDB Cloud (MySQL-compatible)
-- **Connection Pool**: 10 connections
-- **SSL/TLS**: Required
-- **Backups**: Automated daily
-
-### Authentication
-
-- **Provider**: Manus OAuth
-- **Flow**: Authorization Code + PKCE
-- **Tokens**: JWT with 1-hour expiry
-- **Roles**: user, admin
-
-### Monitoring
-
-- **Logs**: Manus platform logs
-- **Metrics**: Custom tRPC middleware
-- **Alerts**: Scraper health monitoring
-- **Observability**: Pipeline execution logs
-
----
-
-## Security
-
-### Authentication & Authorization
-
-- All endpoints require Manus OAuth
-- Admin endpoints require `role='admin'`
-- Rate limiting: 100 requests/user/hour
-- CORS: Restricted to allowed origins
-
-### Data Protection
-
-- Database: SSL/TLS encryption in transit
-- Secrets: Environment variables (not in Git)
-- API Keys: Manus Forge API key (encrypted)
-- User Data: GDPR-compliant (EU hosting)
-
-### Input Validation
-
-- All tRPC inputs validated with Zod schemas
-- SQL injection: Prevented by Drizzle ORM
-- XSS: React auto-escaping + CSP headers
-- CSRF: SameSite cookies + CORS
-
----
-
-## Performance
-
-### Response Times
-
-- **ASK_ISA**: <5s (90th percentile)
-- **NEWS_HUB**: <2s (catalog browsing)
-- **CATALOG**: <1s (list queries)
-- **ESRS_MAPPING**: <3s (mapping queries)
-- **ADVISORY**: Async (background generation)
-
-### Scalability
-
-- **Database**: TiDB auto-scaling
-- **API**: Horizontal scaling via Manus
-- **Caching**: None currently (future: Redis)
-- **CDN**: Manus CDN for static assets
-
-### Optimization
-
-- Database indexes on all foreign keys
-- Embedding search: Top-K retrieval (K=5)
-- News pipeline: Batch processing
-- Advisory generation: Async jobs
-
----
-
-## Deployment
-
-### Build Process
+### 9.1 Validation Commands
 
 ```bash
-# Frontend
-cd client && pnpm build  # Vite → dist/client/
-
-# Backend
-pnpm build  # esbuild → dist/index.js
-
-# Combined
-pnpm build  # Builds both
-```
-
-### Deployment Steps
-
-1. Run tests: `pnpm test`
-2. Build: `pnpm build`
-3. Push to GitHub
-4. CI/CD triggers deployment
-5. Manus deploys to production
-6. Smoke tests run automatically
-
-### Environment Variables
-
-Required:
-- `DATABASE_URL` - TiDB connection string
-- `OPENAI_API_KEY` - Manus Forge API key
-- `MANUS_OAUTH_CLIENT_ID` - OAuth client ID
-- `MANUS_OAUTH_CLIENT_SECRET` - OAuth secret
-- `CRON_SECRET` - Cron job authentication
-
----
-
-## Operational Procedures
-
-### Daily Operations
-
-- **02:00 UTC**: News pipeline runs (automated)
-- **Daily**: Scraper health monitoring
-- **Weekly**: Knowledge base regeneration (manual)
-- **Monthly**: Advisory report generation (manual)
-
-### Monitoring
-
-- **Scraper Health**: 100% target, 95% acceptable
-- **API Uptime**: 99.9% target
-- **Database**: Connection pool monitoring
-- **Errors**: Logged to Manus platform
-
-### Incident Response
-
-1. Check Manus platform logs
-2. Review scraper health dashboard
-3. Verify database connectivity
-4. Check external API status (OpenAI)
-5. Escalate to Manus support if needed
-
----
-
-## Development Workflow
-
-### Local Development
-
-```bash
-# Install dependencies
-pnpm install
-
-# Start dev server (frontend + backend)
-pnpm dev
-
-# Run tests
-pnpm test
-
-# Type check
+python3 scripts/validate_planning_and_traceability.py
 pnpm check
-
-# Format code
-pnpm format
+bash scripts/gates/no-console-gate.sh
+bash scripts/gates/security-secrets-scan.sh
+bash scripts/gates/slo-policy-check.sh /tmp/slo-policy-check.current.json
+bash scripts/gates/observability-contract.sh /tmp/observability.current.json
+bash scripts/gates/security-gate.sh /tmp/security.current.json
+bash scripts/gates/canonical-docs-allowlist.sh
+bash scripts/gates/doc-code-validator.sh --canonical-only
 ```
 
-### Testing Strategy
+### 9.2 Confidence Formula
 
-- **Unit Tests**: Business logic, utilities
-- **Integration Tests**: tRPC routers, database
-- **E2E Tests**: None currently (future)
-- **Coverage**: 90.1% (517/574 passing)
+`confidence = sum(weight_i * signal_i)` where:
+- `signal_i = 1.0` for pass
+- `signal_i = 0.0` for fail
+- `signal_i = 0.3` for unknown
 
-### Code Quality
+### 9.3 DONE Gate
 
-- **TypeScript**: Strict mode enabled
-- **Linting**: ESLint + Prettier
-- **Formatting**: Prettier 3.6.2
-- **Commits**: Conventional commits
+**FACT [EV-VAL-003]:** Current aggregate weighted validation confidence is `0.83`.
 
----
+- `done_confidence_threshold = 0.75`
+- `delta_rows_terminal_required = true`
+- If threshold or delta-terminal conditions are not met, status must be `DONE_WITH_LIMITATIONS` (or DONE remains not complete).
 
-## Future Architecture Considerations
+### 9.4 Current Validation Limitations (Evidence-Backed)
 
-### Planned Enhancements
+**FACT [EV-VAL-001]:** `observability_contract` currently reports `unknown` and contributes partial confidence due logging coverage below threshold.
 
-1. **Caching Layer**: Redis for API responses
-2. **Event Bus**: Kafka for async workflows
-3. **Search**: Elasticsearch for full-text search
-4. **Analytics**: Dedicated analytics database
-5. **CDN**: CloudFront for static assets
+**FACT [EV-VAL-002]:** `security_gate` currently reports `unknown` and contributes partial confidence because dependency scanning timed out.
 
-### Scalability Roadmap
+**FACT [EV-VAL-004]:** Canonical doc-code validation passes in `--canonical-only` mode.
 
-1. **Phase 1**: Horizontal API scaling (current)
-2. **Phase 2**: Database read replicas
-3. **Phase 3**: Microservices decomposition
-4. **Phase 4**: Event-driven architecture
-
-### Technical Debt
-
-- No caching layer (all queries hit database)
-- No async job queue (advisory generation blocks)
-- No full-text search (limited to SQL LIKE)
-- No E2E tests (manual testing only)
-- Limited observability (no APM)
+**FACT [EV-VAL-005]:** Canonical docs allowlist pass is deterministic on tracked files; local untracked noise is warning-only by policy.
 
 ---
 
-## Appendix: Technology Decisions
+## 10. Production Readiness Roadmap (Architecture-Convergence Scope)
 
-### Why tRPC?
-
-- Type-safe API without code generation
-- Automatic TypeScript inference
-- Built-in Zod validation
-- Excellent DX for full-stack TypeScript
-
-### Why Drizzle ORM?
-
-- Type-safe SQL queries
-- Zero runtime overhead
-- Excellent TypeScript support
-- MySQL/TiDB compatibility
-
-### Why TiDB?
-
-- MySQL-compatible (easy migration)
-- Horizontal scalability
-- ACID transactions
-- Managed service (low ops burden)
-
-### Why Manus Hosting?
-
-- Integrated OAuth
-- Built-in CI/CD
-- EU data residency
-- Low operational overhead
+1. Enforce manifest ownership and evidence drift checks in CI.
+2. Resolve blocked multi-router physical splits incrementally with non-breaking sub-surface ownership.
+3. Reduce canonical doc-code drift first; keep global backlog visible but non-blocking for canonical gate.
+4. Upgrade security and observability gates from partial/unknown to deterministic checks.
 
 ---
 
-**Document Status**: AUTHORITATIVE  
-**Last Updated**: 2026-02-12  
-**Next Review**: After Phase 3 completion
+## 11. Evidence Pointer Contract
+
+Architecture FACT claims must reference IDs in:
+- `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`
+
+Primary architecture evidence IDs:
+- `EV-ARCH-001` through `EV-ARCH-014`
+- `EV-CAP-*` (capability router/table/module ownership)
+- `EV-SHARED-*` (shared platform ownership)
+- `EV-P-*` (shared primitive derivation)
+
+---
+
+**Document Status:** AUTHORITATIVE  
+**Supersedes:** prior competing system-level CURRENT/TARGET claims in lower-precedence docs  
+**Next Review:** on next capability-boundary, shared-primitive, or evidence-drift event
