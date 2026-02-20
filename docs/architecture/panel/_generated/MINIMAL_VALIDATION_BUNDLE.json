@@ -53,10 +53,10 @@
   "results": [
     {
       "id": "planning_validator",
-      "status": "pass",
-      "signal": 1.0,
-      "contribution": 0.1,
-      "limitation": "None observed."
+      "status": "fail",
+      "signal": 0.0,
+      "contribution": 0.0,
+      "limitation": "Canonical planning validator fails due non-canonical planning files under docs/planning/merge."
     },
     {
       "id": "ts_check",
@@ -67,10 +67,10 @@
     },
     {
       "id": "no_console_gate",
-      "status": "pass",
-      "signal": 1.0,
-      "contribution": 0.1,
-      "limitation": "Scope-limited gate by design."
+      "status": "fail",
+      "signal": 0.0,
+      "contribution": 0.0,
+      "limitation": "Forbidden console usage remains in scripts/copilot/automerge_prs.sh."
     },
     {
       "id": "secrets_scan",
@@ -88,17 +88,17 @@
     },
     {
       "id": "observability_contract",
-      "status": "unknown",
-      "signal": 0.3,
-      "contribution": 0.036,
-      "limitation": "Structured logging coverage below threshold (50.9% < 80%)."
+      "status": "pass",
+      "signal": 1.0,
+      "contribution": 0.12,
+      "limitation": "Runtime-scoped coverage passes threshold; gate does not prove end-to-end trace completeness."
     },
     {
       "id": "security_gate",
-      "status": "unknown",
-      "signal": 0.3,
-      "contribution": 0.036,
-      "limitation": "Dependency scan timed out after 45s; secret scan and authz static checks executed."
+      "status": "fail",
+      "signal": 0.0,
+      "contribution": 0.0,
+      "limitation": "Deterministic security gate fails due dependency policy violations."
     },
     {
       "id": "canonical_docs_allowlist",
@@ -116,10 +116,10 @@
     }
   ],
   "aggregate": {
-    "confidence_score": 0.832,
-    "rounded_confidence_score": 0.83,
+    "confidence_score": 0.68,
+    "rounded_confidence_score": 0.68,
     "formula": "sum(weight_i * signal_i)",
-    "status_interpretation": "high confidence for canonical architecture convergence with explicit operational limitations"
+    "status_interpretation": "below DONE threshold due failing planning, no-console, and security controls"
   },
   "completion_gate": {
     "done_confidence_threshold": 0.75,

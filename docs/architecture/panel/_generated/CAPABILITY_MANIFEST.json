@@ -750,14 +750,15 @@
         "gs1nlAttributes"
       ],
       "router_modules": [
-        "server/routers/regulations.ts",
-        "server/routers/standards.ts",
         "server/gs1-standards-router.ts",
-        "server/routers/standards-directory.ts",
         "server/routers/dataset-registry.ts",
+        "server/routers/esrs.ts",
         "server/routers/governance-documents.ts",
         "server/routers/gs1-attributes.ts",
-        "server/routers/gs1nl-attributes.ts"
+        "server/routers/gs1nl-attributes.ts",
+        "server/routers/regulations.ts",
+        "server/routers/standards-directory.ts",
+        "server/routers/standards.ts"
       ],
       "owned_tables": [
         "regulations",
@@ -798,71 +799,71 @@
           {
             "surface": "regulations",
             "path": "server/routers.ts",
-            "line_start": 71,
-            "line_end": 71,
+            "line_start": 72,
+            "line_end": 72,
             "evidence_id": "EV-CAP-CAT-ROUTER-REGULATIONS"
           },
           {
             "surface": "standards",
             "path": "server/routers.ts",
-            "line_start": 72,
-            "line_end": 72,
+            "line_start": 73,
+            "line_end": 73,
             "evidence_id": "EV-CAP-CAT-ROUTER-STANDARDS"
           },
           {
             "surface": "gs1Standards",
             "path": "server/routers.ts",
-            "line_start": 326,
-            "line_end": 326,
+            "line_start": 327,
+            "line_end": 327,
             "evidence_id": "EV-CAP-CAT-ROUTER-GS1STANDARDS"
           },
           {
             "surface": "standardsDirectory",
             "path": "server/routers.ts",
-            "line_start": 698,
-            "line_end": 698,
+            "line_start": 563,
+            "line_end": 563,
             "evidence_id": "EV-CAP-CAT-ROUTER-STANDARDSDIRECTORY"
           },
           {
             "surface": "esrs",
             "path": "server/routers.ts",
-            "line_start": 411,
-            "line_end": 547,
+            "line_start": 412,
+            "line_end": 412,
             "evidence_id": "EV-CAP-CAT-ROUTER-ESRS"
           },
           {
             "surface": "dutchInitiatives",
             "path": "server/routers.ts",
-            "line_start": 649,
-            "line_end": 682,
+            "line_start": 514,
+            "line_end": 547,
             "evidence_id": "EV-CAP-CAT-ROUTER-DUTCHINITIATIVES"
           },
           {
             "surface": "datasetRegistry",
             "path": "server/routers.ts",
-            "line_start": 619,
-            "line_end": 619,
+            "line_start": 484,
+            "line_end": 484,
             "evidence_id": "EV-CAP-CAT-ROUTER-DATASETREGISTRY"
           },
           {
             "surface": "governanceDocuments",
             "path": "server/routers.ts",
-            "line_start": 629,
-            "line_end": 629,
+            "line_start": 494,
+            "line_end": 494,
             "evidence_id": "EV-CAP-CAT-ROUTER-GOVERNANCEDOCUMENTS"
           },
           {
             "surface": "gs1Attributes",
             "path": "server/routers.ts",
-            "line_start": 572,
-            "line_end": 572,
+            "line_start": 437,
+            "line_end": 437,
             "evidence_id": "EV-CAP-CAT-ROUTER-GS1ATTRIBUTES"
           },
           {
             "surface": "gs1nlAttributes",
             "path": "server/routers.ts",
-            "line_start": 577,
-            "line_end": 577,
+            "line_start": 442,
+            "line_end": 442,
             "evidence_id": "EV-CAP-CAT-ROUTER-GS1NLATTRIBUTES"
           }
         ],
@@ -989,17 +990,17 @@
             "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GS1NL_ATTRIBUTES_TS"
           },
           {
-            "module_path": "server/routers.ts",
-            "path": "server/routers.ts",
-            "line_start": 411,
-            "line_end": 547,
-            "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_TS"
+            "module_path": "server/routers/esrs.ts",
+            "path": "server/routers/esrs.ts",
+            "line_start": 1,
+            "line_end": 140,
+            "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_ESRS_TS"
           },
           {
             "module_path": "server/routers.ts",
             "path": "server/routers.ts",
-            "line_start": 649,
-            "line_end": 682,
+            "line_start": 514,
+            "line_end": 547,
             "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_TS"
           }
         ]
@@ -1153,7 +1154,7 @@
             "mitigation_if_blocked": null
           },
           {
-            "module_path": "server/routers.ts",
+            "module_path": "server/routers/esrs.ts",
             "status": "CURRENT",
             "delta_id_if_blocked": null,
             "mitigation_if_blocked": null
@@ -1216,29 +1217,29 @@
           {
             "surface": "esrsGs1Mapping",
             "path": "server/routers.ts",
-            "line_start": 634,
-            "line_end": 634,
+            "line_start": 499,
+            "line_end": 499,
             "evidence_id": "EV-CAP-MAP-ROUTER-ESRSGS1MAPPING"
           },
           {
             "surface": "esrsRoadmap",
             "path": "server/routers.ts",
-            "line_start": 639,
-            "line_end": 639,
+            "line_start": 504,
+            "line_end": 504,
             "evidence_id": "EV-CAP-MAP-ROUTER-ESRSROADMAP"
           },
           {
             "surface": "gapAnalyzer",
             "path": "server/routers.ts",
-            "line_start": 712,
-            "line_end": 712,
+            "line_start": 577,
+            "line_end": 577,
             "evidence_id": "EV-CAP-MAP-ROUTER-GAPANALYZER"
           },
           {
             "surface": "attributeRecommender",
             "path": "server/routers.ts",
-            "line_start": 722,
-            "line_end": 722,
+            "line_start": 587,
+            "line_end": 587,
             "evidence_id": "EV-CAP-MAP-ROUTER-ATTRIBUTERECOMMENDER"
           }
         ],
@@ -1436,29 +1437,29 @@
           {
             "surface": "advisory",
             "path": "server/routers.ts",
-            "line_start": 592,
-            "line_end": 592,
+            "line_start": 457,
+            "line_end": 457,
             "evidence_id": "EV-CAP-ADV-ROUTER-ADVISORY"
           },
           {
             "surface": "advisoryReports",
             "path": "server/routers.ts",
-            "line_start": 624,
-            "line_end": 624,
+            "line_start": 489,
+            "line_end": 489,
             "evidence_id": "EV-CAP-ADV-ROUTER-ADVISORYREPORTS"
           },
           {
             "surface": "advisoryDiff",
             "path": "server/routers.ts",
-            "line_start": 644,
-            "line_end": 644,
+            "line_start": 509,
+            "line_end": 509,
             "evidence_id": "EV-CAP-ADV-ROUTER-ADVISORYDIFF"
           },
           {
             "surface": "esgArtefacts",
             "path": "server/routers.ts",
-            "line_start": 728,
-            "line_end": 728,
+            "line_start": 593,
+            "line_end": 593,
             "evidence_id": "EV-CAP-ADV-ROUTER-ESGARTEFACTS"
           }
         ],
