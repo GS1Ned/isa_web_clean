@@ -213,6 +213,14 @@ python3 scripts/gates/manifest-ownership-drift.py
 
 **FACT [EV-VAL-005]:** Canonical docs allowlist pass is deterministic on tracked files; local untracked noise is warning-only by policy.
 
+### 9.5 Tiered CI Policy
+
+**FACT [EV-ARCH-015]:** Tiered CI execution contract is defined in `.github/workflows/tiered-tests.yml`.
+
+- `Tier 0` (blocking): typecheck + critical gates.
+- `Tier 1` (blocking): stable unit/integration test execution.
+- `Tier 2` (non-blocking): quarantine diagnostics that remain visible but do not block merges.
+
 ---
 
 ## 10. Production Readiness Roadmap (Architecture-Convergence Scope)
@@ -230,7 +238,7 @@ Architecture FACT claims must reference IDs in:
 - `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`
 
 Primary architecture evidence IDs:
-- `EV-ARCH-001` through `EV-ARCH-014`
+- `EV-ARCH-001` through `EV-ARCH-015`
 - `EV-CAP-*` (capability router/table/module ownership)
 - `EV-SHARED-*` (shared platform ownership)
 - `EV-P-*` (shared primitive derivation)

@@ -1422,6 +1422,15 @@
       "line_end": 354,
       "evidence_type": "schema_truth",
       "confidence": 1
+    },
+    {
+      "id": "EV-ARCH-015",
+      "claim": "Tiered CI policy is defined in .github/workflows/tiered-tests.yml.",
+      "path": ".github/workflows/tiered-tests.yml",
+      "line_start": 1,
+      "line_end": 128,
+      "evidence_type": "ci_policy_contract",
+      "confidence": 1
     }
   ],
   "capability_derivation": {
