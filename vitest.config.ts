@@ -12,7 +12,6 @@ process.env.ISA_TEST_SILENT ||= "true";
 
 const dbDependentTests = [
   "server/alert-system.test.ts",
-  "server/admin-analytics.test.ts",
   "server/cellar-ingestion-integration.test.ts",
   "server/coverage-analytics.test.ts",
   "server/data-quality.test.ts",
@@ -29,13 +28,9 @@ const dbDependentTests = [
   "server/news-health-monitor.test.ts",
   "server/news-pipeline-db-integration.test.ts",
   "server/news-pipeline.test.ts",
-  "server/observability.test.ts",
-  "server/onboarding.test.ts",
   "server/regulatory-change-log.test.ts",
   "server/regulation-esrs-mapper.test.ts",
-  "server/run-first-ingestion.test.ts",
   "server/ingest/INGEST-03_esrs_datapoints.test.ts",
-  "server/mapping-feedback.test.ts",
   "server/routers/advisory-reports.test.ts",
   "server/routers/dataset-registry.test.ts",
   "server/routers/gs1-attributes-multi-sector.test.ts",

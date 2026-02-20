@@ -35,8 +35,3 @@ server/routers/scraper-health.test.ts | owner=@isa-platform | expires=2026-04-30
 server/routers/standards-directory.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
 server/standards-directory.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
 server/test-helpers/db-test-utils.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
-server/admin-analytics.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=tier1_stability_quarantine
-server/mapping-feedback.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=tier1_stability_quarantine
-server/observability.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=tier1_stability_quarantine
-server/onboarding.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=tier1_stability_quarantine
-server/run-first-ingestion.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=tier1_stability_quarantine
