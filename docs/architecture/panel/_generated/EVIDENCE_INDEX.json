@@ -4,7 +4,7 @@
     "generated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "c61fb8f"
+      "commit": "a6ac820"
     },
     "contract_version": "2.0.0"
   },
@@ -1353,7 +1353,7 @@
     },
     {
       "id": "EV-VAL-003",
-      "claim": "Aggregate weighted confidence is 0.68 with DONE threshold set to 0.75.",
+      "claim": "Aggregate weighted confidence is 0.88 with DONE threshold set to 0.75.",
       "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
       "line_start": 136,
       "line_end": 146,
@@ -1364,8 +1364,8 @@
       "id": "EV-VAL-004",
       "claim": "Canonical doc-code validator passes in canonical-only mode.",
       "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
-      "line_start": 92,
-      "line_end": 97,
+      "line_start": 115,
+      "line_end": 119,
       "evidence_type": "validation_result",
       "confidence": 1
     },

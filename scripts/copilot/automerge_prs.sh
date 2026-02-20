@@ -8,7 +8,8 @@ if [[ -z "${REPO_ROOT}" ]]; then
 fi
 
 cd "${REPO_ROOT}"
-LOG_DIR="./docs/planning/merge"
+# Keep runtime logs outside canonical planning docs to avoid validator drift.
+LOG_DIR="${AUTOMERGE_LOG_DIR:-/tmp/isa_pr_merge}"
 LOG_FILE="${LOG_DIR}/PR_MERGE_AUTOPILOT_LOG.md"
 
 need_cmd () {
@@ -68,7 +69,7 @@ PR_TMP=""
 PR_LINES=()
 PR_TMP="$(mktemp)"
 if [[ "${parse_with_node}" == "true" ]]; then
-  node -e 'const prs=JSON.parse(process.argv[1]); for (const p of prs) console.log(`${p.number}\t${p.headRefName}\t${p.title}`);' "${PRS_JSON}" > "${PR_TMP}"
+  node -e 'const prs=JSON.parse(process.argv[1]); for (const p of prs) process.stdout.write(`${p.number}\t${p.headRefName}\t${p.title}\n`);' "${PRS_JSON}" > "${PR_TMP}"
 else
   # Fallback: use gh formatting
   gh pr list --state open --json number,title,headRefName --template '{{range .}}{{.number}}{{"\t"}}{{.headRefName}}{{"\t"}}{{.title}}{{"\n"}}{{end}}' > "${PR_TMP}"

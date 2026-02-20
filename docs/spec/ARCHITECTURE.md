@@ -197,11 +197,12 @@ python3 scripts/gates/manifest-ownership-drift.py
 
 ### 9.3 DONE Gate
 
-**FACT [EV-VAL-003]:** Current aggregate weighted validation confidence is `0.68`.
+**FACT [EV-VAL-003]:** Current aggregate weighted validation confidence is `0.88`.
 
 - `done_confidence_threshold = 0.75`
 - `delta_rows_terminal_required = true`
 - If threshold or delta-terminal conditions are not met, status must be `DONE_WITH_LIMITATIONS` (or DONE remains not complete).
+- Current gate interpretation: threshold is met; remaining failures are tracked as explicit post-DONE limitations.
 
 ### 9.4 Current Validation Limitations (Evidence-Backed)
 
@@ -228,7 +229,7 @@ python3 scripts/gates/manifest-ownership-drift.py
 1. Enforce manifest ownership and evidence drift checks in CI.
 2. Resolve blocked multi-router physical splits incrementally with non-breaking sub-surface ownership.
 3. Reduce canonical doc-code drift first; keep global backlog visible but non-blocking for canonical gate.
-4. Clear deterministic gate failures (`planning_validator`, `no_console_gate`, `security_gate`) to restore DONE-threshold confidence.
+4. Clear remaining deterministic gate failures (`security_gate`, `manifest_ownership_drift`) to improve post-DONE operational confidence.
 
 ---
 

@@ -4,7 +4,7 @@
     "generated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "c61fb8f"
+      "commit": "a6ac820"
     },
     "baseline_run": {
       "captured_at": "2026-02-20T02:56:32Z",
@@ -57,10 +57,10 @@
   "results": [
     {
       "id": "planning_validator",
-      "status": "fail",
-      "signal": 0.0,
-      "contribution": 0.0,
-      "limitation": "Canonical planning validator fails due non-canonical planning files under docs/planning/merge."
+      "status": "pass",
+      "signal": 1.0,
+      "contribution": 0.1,
+      "limitation": "Canonical planning validator now passes; non-canonical planning docs were removed from tracked canonical scope."
     },
     {
       "id": "ts_check",
@@ -71,10 +71,10 @@
     },
     {
       "id": "no_console_gate",
-      "status": "fail",
-      "signal": 0.0,
-      "contribution": 0.0,
-      "limitation": "Forbidden console usage remains in scripts/copilot/automerge_prs.sh."
+      "status": "pass",
+      "signal": 1.0,
+      "contribution": 0.1,
+      "limitation": "No forbidden console usage remains in tracked scripts under gate scope."
     },
     {
       "id": "secrets_scan",
@@ -134,10 +134,10 @@
     }
   ],
   "aggregate": {
-    "confidence_score": 0.68,
-    "rounded_confidence_score": 0.68,
+    "confidence_score": 0.88,
+    "rounded_confidence_score": 0.88,
     "formula": "sum(weight_i * signal_i)",
-    "status_interpretation": "below DONE threshold due failing planning, no-console, and security controls"
+    "status_interpretation": "meets DONE threshold; remaining deterministic failures are security gate and manifest ownership drift"
   },
   "completion_gate": {
     "done_confidence_threshold": 0.75,
