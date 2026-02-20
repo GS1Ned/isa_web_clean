@@ -59,7 +59,10 @@ if [[ -n "$quarantine_file" ]]; then
     line="${line%%#*}"
     line="$(printf '%s' "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
     [[ -z "$line" ]] && continue
-    quarantine_patterns+=("${line%%|*}")
+    pattern="${line%%|*}"
+    pattern="$(printf '%s' "$pattern" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+    [[ -z "$pattern" ]] && continue
+    quarantine_patterns+=("$pattern")
   done < "$quarantine_file"
 fi
 

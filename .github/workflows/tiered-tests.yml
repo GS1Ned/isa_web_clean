@@ -100,6 +100,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run stable CI tests
+        env:
+          DATABASE_URL: ""
         run: |
           set -euo pipefail
           bash scripts/run-ci-tests.sh \
@@ -142,6 +144,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run quarantine diagnostics
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           set -euo pipefail
           bash scripts/run-ci-tests.sh \

@@ -64,7 +64,9 @@ fi
 if [[ "$quarantine_only" == "true" ]]; then
   unit_cmd+=(--quarantine-only)
 fi
-if ! "${unit_cmd[@]}"; then
+if "${unit_cmd[@]}"; then
+  unit_status=0
+else
   unit_status=$?
 fi
 
@@ -79,7 +81,9 @@ fi
 if [[ "$quarantine_only" == "true" ]]; then
   integration_cmd+=(--quarantine-only)
 fi
-if ! "${integration_cmd[@]}"; then
+if "${integration_cmd[@]}"; then
+  integration_status=0
+else
   integration_status=$?
 fi
 
