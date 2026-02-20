@@ -310,8 +310,8 @@
         ]
       }
     ],
-    "next_deterministic_task": "T-015 make reliability/perf smoke gates deterministic",
-    "last_validated_at": "2026-02-20T05:47:24Z",
+    "next_deterministic_task": "T-016 normalize benchmark evidence dates and validator policy",
+    "last_validated_at": "2026-02-20T05:49:20Z",
     "patch_group_checkpoints": [
       {
         "patch_group": "PG-00",
@@ -370,6 +370,19 @@
           "manifest_ownership_drift": "pass",
           "canonical_contract_drift": "pass",
           "doc_code_validator_canonical": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-05",
+        "validated_at": "2026-02-20T05:49:20Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "reliability_smoke": "pass",
+          "perf_smoke": "pass",
+          "security_gate": "pass",
+          "canonical_contract_drift": "pass",
+          "doc_code_validator_canonical": "pass",
+          "planning_validator": "pass"
         }
       }
     ],

@@ -187,6 +187,8 @@ bash scripts/gates/canonical-docs-allowlist.sh
 bash scripts/gates/doc-code-validator.sh --canonical-only
 bash scripts/gates/canonical-contract-drift.sh
 python3 scripts/gates/manifest-ownership-drift.py
+bash scripts/gates/reliability-smoke.sh /tmp/reliability.current.json
+bash scripts/gates/perf-smoke.sh /tmp/perf.current.json
 ```
 
 ### 9.2 Confidence Formula
@@ -210,6 +212,8 @@ python3 scripts/gates/manifest-ownership-drift.py
 **FACT [EV-VAL-001]:** `observability_contract` currently reports `pass` with runtime-scoped coverage at threshold.
 
 **FACT [EV-VAL-002]:** `security_gate` currently reports `pass` under deterministic timeout-fail semantics with `critical` blocking severity.
+
+Security ratchet policy: `critical`-only blocking remains temporary; promotion to include `high` blocking is tracked in `docs/planning/BACKLOG.csv` (`SEC-001`) and must follow advisory remediation burn-down.
 
 **FACT [EV-VAL-004]:** Canonical doc-code validation passes in `--canonical-only` mode.
 
