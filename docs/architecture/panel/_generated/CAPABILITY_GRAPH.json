@@ -1,0 +1,550 @@
+{
+  "meta": {
+    "generated_at": "2026-02-20",
+    "model": "codex-5.3",
+    "repo_ref": {
+      "branch": "strict-no-console",
+      "commit": "70bde42",
+      "evidence_index_paths": [
+        "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
+      ]
+    }
+  },
+  "shared_primitives": [
+    {
+      "id": "P-001",
+      "name": "IdentityAccessControl",
+      "description": "Authentication, session, and authorization primitives.",
+      "authoritative_paths": [
+        "server/_core/oauth.ts",
+        "server/_core/trpc.ts",
+        "server/routers.ts"
+      ]
+    },
+    {
+      "id": "P-002",
+      "name": "DatasetProvenance",
+      "description": "Dataset metadata and verification lineage primitives.",
+      "authoritative_paths": [
+        "data/metadata/dataset_registry.json",
+        "server/routers/dataset-registry.ts",
+        "drizzle/schema.ts"
+      ]
+    },
+    {
+      "id": "P-003",
+      "name": "CitationEvidenceChain",
+      "description": "Citation validation and fact/inference transparency primitives.",
+      "authoritative_paths": [
+        "server/citation-validation.ts",
+        "server/claim-citation-verifier.ts",
+        "docs/governance/_root/ISA_GOVERNANCE.md"
+      ]
+    },
+    {
+      "id": "P-004",
+      "name": "RetrievalEmbeddings",
+      "description": "Embedding and hybrid retrieval primitives for grounded responses.",
+      "authoritative_paths": [
+        "server/embedding.ts",
+        "server/db-knowledge-vector.ts",
+        "server/hybrid-search.ts"
+      ]
+    },
+    {
+      "id": "P-005",
+      "name": "ObservabilityTelemetry",
+      "description": "Common logging, trace, and gate-level telemetry primitives.",
+      "authoritative_paths": [
+        "server/_core/logger-wiring.ts",
+        "server/_core/trace-id.ts",
+        "scripts/gates/observability-contract.sh"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "ASK_ISA",
+      "name": "Ask ISA",
+      "description": "Question answering and policy-aware response generation.",
+      "primary_user_value": "Grounded answers with citations and confidence markers.",
+      "owned_data": [
+        {
+          "name": "Q&A conversations",
+          "schema_or_contract_path": "drizzle/schema.ts",
+          "notes": "qa_conversations and qa_messages"
+        },
+        {
+          "name": "Ask ISA feedback and evaluation traces",
+          "schema_or_contract_path": "drizzle/schema_ask_isa_feedback.ts",
+          "notes": "includes evaluation outcomes via corpus governance schema"
+        }
+      ],
+      "interfaces": {
+        "inputs": [
+          {
+            "name": "askISA router surface",
+            "type": "api",
+            "contract_path": "server/routers/ask-isa.ts"
+          },
+          {
+            "name": "askISAV2 router surface",
+            "type": "api",
+            "contract_path": "server/routers/ask-isa-v2.ts"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Grounded answer payload",
+            "type": "artifact",
+            "contract_path": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+          }
+        ]
+      },
+      "depends_on": [
+        "KNOWLEDGE_BASE",
+        "CATALOG"
+      ],
+      "provides_to": [
+        "ADVISORY"
+      ],
+      "uses_shared_primitives": [
+        "P-001",
+        "P-003",
+        "P-004",
+        "P-005"
+      ],
+      "evidence_refs": [
+        "EV-CAP-ASK-ROUTER-ASKISA",
+        "EV-CAP-ASK-ROUTER-ASKISAV2",
+        "EV-CAP-ASK-ROUTER-EVALUATION",
+        "EV-CAP-ASK-TABLE-QA_CONVERSATIONS",
+        "EV-CAP-ASK-TABLE-QA_MESSAGES",
+        "EV-CAP-ASK-TABLE-ASK_ISA_FEEDBACK",
+        "EV-CAP-ASK-TABLE-RAG_TRACES",
+        "EV-CAP-ASK-TABLE-EVALUATION_RESULTS",
+        "EV-CAP-ASK-MODULE-SERVER_ROUTERS_ASK_ISA_TS",
+        "EV-CAP-ASK-MODULE-SERVER_ROUTERS_ASK_ISA_V2_TS",
+        "EV-CAP-ASK-MODULE-SERVER_ROUTERS_EVALUATION_TS"
+      ]
+    },
+    {
+      "id": "NEWS_HUB",
+      "name": "News Hub",
+      "description": "News ingestion, enrichment, and source health monitoring.",
+      "primary_user_value": "Current regulatory news with operational transparency.",
+      "owned_data": [
+        {
+          "name": "News corpus",
+          "schema_or_contract_path": "drizzle/schema_news_hub.ts",
+          "notes": "hub_news and hub_news_history"
+        },
+        {
+          "name": "Pipeline execution and scraper health",
+          "schema_or_contract_path": "drizzle/schema_scraper_health.ts",
+          "notes": "scraper_executions and scraper_health_summary"
+        }
+      ],
+      "interfaces": {
+        "inputs": [
+          {
+            "name": "newsAdmin and cron router surfaces",
+            "type": "api",
+            "contract_path": "server/news-admin-router.ts"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Hub news feed and recommendations",
+            "type": "api",
+            "contract_path": "server/routers/hub.ts"
+          }
+        ]
+      },
+      "depends_on": [
+        "CATALOG",
+        "ESRS_MAPPING"
+      ],
+      "provides_to": [
+        "ADVISORY"
+      ],
+      "uses_shared_primitives": [
+        "P-001",
+        "P-002",
+        "P-005"
+      ],
+      "evidence_refs": [
+        "EV-CAP-NEWS-ROUTER-HUB",
+        "EV-CAP-NEWS-ROUTER-NEWSADMIN",
+        "EV-CAP-NEWS-ROUTER-CRON",
+        "EV-CAP-NEWS-ROUTER-SCRAPERHEALTH",
+        "EV-CAP-NEWS-ROUTER-PIPELINEOBSERVABILITY",
+        "EV-CAP-NEWS-ROUTER-REGULATORYCHANGELOG",
+        "EV-CAP-NEWS-TABLE-HUB_NEWS",
+        "EV-CAP-NEWS-TABLE-HUB_NEWS_HISTORY",
+        "EV-CAP-NEWS-TABLE-NEWS_RECOMMENDATIONS",
+        "EV-CAP-NEWS-TABLE-SCRAPER_EXECUTIONS",
+        "EV-CAP-NEWS-TABLE-SCRAPER_HEALTH_SUMMARY",
+        "EV-CAP-NEWS-TABLE-PIPELINE_EXECUTION_LOG",
+        "EV-CAP-NEWS-TABLE-REGULATORY_CHANGE_LOG",
+        "EV-CAP-NEWS-TABLE-REGULATORY_EVENTS",
+        "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_HUB_TS",
+        "EV-CAP-NEWS-MODULE-SERVER_NEWS_ADMIN_ROUTER_TS",
+        "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_CRON_TS",
+        "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_SCRAPER_HEALTH_TS",
+        "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_PIPELINE_OBSERVABILITY_TS",
+        "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_REGULATORY_CHANGE_LOG_TS"
+      ]
+    },
+    {
+      "id": "KNOWLEDGE_BASE",
+      "name": "Knowledge Base",
+      "description": "Corpus, embeddings, and retrieval substrate.",
+      "primary_user_value": "Reusable semantic context for all intelligence capabilities.",
+      "owned_data": [
+        {
+          "name": "Knowledge embeddings",
+          "schema_or_contract_path": "drizzle/schema.ts",
+          "notes": "knowledge_embeddings"
+        },
+        {
+          "name": "Corpus governance records",
+          "schema_or_contract_path": "drizzle/schema_corpus_governance.ts",
+          "notes": "sources and source_chunks"
+        }
+      ],
+      "interfaces": {
+        "inputs": [
+          {
+            "name": "Citation administration surface",
+            "type": "api",
+            "contract_path": "server/routers/citation-admin.ts"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Retrieval vectors and context chunks",
+            "type": "artifact",
+            "contract_path": "server/db-knowledge-vector.ts"
+          }
+        ]
+      },
+      "depends_on": [
+        "CATALOG"
+      ],
+      "provides_to": [
+        "ASK_ISA",
+        "ESRS_MAPPING",
+        "ADVISORY"
+      ],
+      "uses_shared_primitives": [
+        "P-002",
+        "P-003",
+        "P-004",
+        "P-005"
+      ],
+      "evidence_refs": [
+        "EV-CAP-KB-ROUTER-CITATIONADMIN",
+        "EV-CAP-KB-TABLE-KNOWLEDGE_EMBEDDINGS",
+        "EV-CAP-KB-TABLE-SOURCES",
+        "EV-CAP-KB-TABLE-SOURCE_CHUNKS",
+        "EV-CAP-KB-TABLE-INGEST_ITEM_PROVENANCE",
+        "EV-CAP-KB-MODULE-SERVER_ROUTERS_CITATION_ADMIN_TS",
+        "EV-CAP-KB-MODULE-SERVER_DB_KNOWLEDGE_TS",
+        "EV-CAP-KB-MODULE-SERVER_DB_KNOWLEDGE_VECTOR_TS",
+        "EV-CAP-KB-MODULE-SERVER_HYBRID_SEARCH_TS",
+        "EV-CAP-KB-MODULE-SERVER_EMBEDDING_TS"
+      ]
+    },
+    {
+      "id": "CATALOG",
+      "name": "Catalog",
+      "description": "Canonical regulation, standards, and governance registry layer.",
+      "primary_user_value": "Deterministic source-of-record data for all capability consumers.",
+      "owned_data": [
+        {
+          "name": "Regulations, standards, and ESRS datapoints",
+          "schema_or_contract_path": "drizzle/schema.ts",
+          "notes": "regulations, gs1_standards, esrs_datapoints"
+        },
+        {
+          "name": "Dataset and governance registries",
+          "schema_or_contract_path": "drizzle/schema_dataset_registry.ts",
+          "notes": "dataset_registry and governance_documents"
+        }
+      ],
+      "interfaces": {
+        "inputs": [
+          {
+            "name": "Catalog router surfaces",
+            "type": "api",
+            "contract_path": "server/routers/regulations.ts"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Regulation/standard lookup APIs",
+            "type": "api",
+            "contract_path": "server/routers/standards-directory.ts"
+          }
+        ]
+      },
+      "depends_on": [],
+      "provides_to": [
+        "ASK_ISA",
+        "NEWS_HUB",
+        "KNOWLEDGE_BASE",
+        "ESRS_MAPPING",
+        "ADVISORY"
+      ],
+      "uses_shared_primitives": [
+        "P-001",
+        "P-002",
+        "P-005"
+      ],
+      "evidence_refs": [
+        "EV-CAP-CAT-ROUTER-REGULATIONS",
+        "EV-CAP-CAT-ROUTER-STANDARDS",
+        "EV-CAP-CAT-ROUTER-GS1STANDARDS",
+        "EV-CAP-CAT-ROUTER-STANDARDSDIRECTORY",
+        "EV-CAP-CAT-ROUTER-ESRS",
+        "EV-CAP-CAT-ROUTER-DUTCHINITIATIVES",
+        "EV-CAP-CAT-ROUTER-DATASETREGISTRY",
+        "EV-CAP-CAT-ROUTER-GOVERNANCEDOCUMENTS",
+        "EV-CAP-CAT-ROUTER-GS1ATTRIBUTES",
+        "EV-CAP-CAT-ROUTER-GS1NLATTRIBUTES",
+        "EV-CAP-CAT-TABLE-REGULATIONS",
+        "EV-CAP-CAT-TABLE-GS1_STANDARDS",
+        "EV-CAP-CAT-TABLE-ESRS_DATAPOINTS",
+        "EV-CAP-CAT-TABLE-DUTCH_INITIATIVES",
+        "EV-CAP-CAT-TABLE-REGULATION_STANDARD_MAPPINGS",
+        "EV-CAP-CAT-TABLE-DATASET_REGISTRY",
+        "EV-CAP-CAT-TABLE-GOVERNANCE_DOCUMENTS",
+        "EV-CAP-CAT-TABLE-GS1_ATTRIBUTES",
+        "EV-CAP-CAT-TABLE-GS1_WEB_VOCABULARY",
+        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_REGULATIONS_TS",
+        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_STANDARDS_TS",
+        "EV-CAP-CAT-MODULE-SERVER_GS1_STANDARDS_ROUTER_TS",
+        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_STANDARDS_DIRECTORY_TS",
+        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_DATASET_REGISTRY_TS",
+        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GOVERNANCE_DOCUMENTS_TS",
+        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GS1_ATTRIBUTES_TS",
+        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GS1NL_ATTRIBUTES_TS",
+        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_TS",
+        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_TS"
+      ]
+    },
+    {
+      "id": "ESRS_MAPPING",
+      "name": "ESRS Mapping",
+      "description": "Mapping and compliance analysis between GS1 and ESRS surfaces.",
+      "primary_user_value": "Traceable mapping coverage, gaps, and roadmap recommendations.",
+      "owned_data": [
+        {
+          "name": "GS1-ESRS mapping tables",
+          "schema_or_contract_path": "drizzle/schema_gs1_esrs_mappings.ts",
+          "notes": "gs1_esrs_mappings and gs1_attribute_esrs_mapping"
+        },
+        {
+          "name": "Regulation mapping feedback",
+          "schema_or_contract_path": "drizzle/schema.ts",
+          "notes": "regulation_esrs_mappings and mapping_feedback"
+        }
+      ],
+      "interfaces": {
+        "inputs": [
+          {
+            "name": "Mapping router surfaces",
+            "type": "api",
+            "contract_path": "server/routers/esrs-gs1-mapping.ts"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Roadmap and gap analysis outputs",
+            "type": "api",
+            "contract_path": "server/routers/gap-analyzer.ts"
+          }
+        ]
+      },
+      "depends_on": [
+        "CATALOG",
+        "KNOWLEDGE_BASE"
+      ],
+      "provides_to": [
+        "NEWS_HUB",
+        "ADVISORY"
+      ],
+      "uses_shared_primitives": [
+        "P-003",
+        "P-004",
+        "P-005"
+      ],
+      "evidence_refs": [
+        "EV-CAP-MAP-ROUTER-ESRSGS1MAPPING",
+        "EV-CAP-MAP-ROUTER-ESRSROADMAP",
+        "EV-CAP-MAP-ROUTER-GAPANALYZER",
+        "EV-CAP-MAP-ROUTER-ATTRIBUTERECOMMENDER",
+        "EV-CAP-MAP-TABLE-GS1_ESRS_MAPPINGS",
+        "EV-CAP-MAP-TABLE-GS1_ATTRIBUTE_ESRS_MAPPING",
+        "EV-CAP-MAP-TABLE-REGULATION_ESRS_MAPPINGS",
+        "EV-CAP-MAP-TABLE-MAPPING_FEEDBACK",
+        "EV-CAP-MAP-TABLE-ESG_GS1_MAPPINGS",
+        "EV-CAP-MAP-MODULE-SERVER_ROUTERS_ESRS_GS1_MAPPING_TS",
+        "EV-CAP-MAP-MODULE-SERVER_ROUTERS_ESRS_ROADMAP_TS",
+        "EV-CAP-MAP-MODULE-SERVER_ROUTERS_GAP_ANALYZER_TS",
+        "EV-CAP-MAP-MODULE-SERVER_ROUTERS_ATTRIBUTE_RECOMMENDER_TS"
+      ]
+    },
+    {
+      "id": "ADVISORY",
+      "name": "Advisory",
+      "description": "Versioned reporting and diff surfaces over ISA capability outputs.",
+      "primary_user_value": "Actionable advisory outputs with provenance and version history.",
+      "owned_data": [
+        {
+          "name": "Advisory report documents",
+          "schema_or_contract_path": "drizzle/schema_advisory_reports.ts",
+          "notes": "advisory_reports"
+        },
+        {
+          "name": "Advisory report versions",
+          "schema_or_contract_path": "drizzle/schema_advisory_reports.ts",
+          "notes": "advisory_report_versions"
+        }
+      ],
+      "interfaces": {
+        "inputs": [
+          {
+            "name": "Advisory router surfaces",
+            "type": "api",
+            "contract_path": "server/routers/advisory-reports.ts"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Advisory reports and diff outputs",
+            "type": "artifact",
+            "contract_path": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+          }
+        ]
+      },
+      "depends_on": [
+        "ASK_ISA",
+        "NEWS_HUB",
+        "KNOWLEDGE_BASE",
+        "CATALOG",
+        "ESRS_MAPPING"
+      ],
+      "provides_to": [],
+      "uses_shared_primitives": [
+        "P-001",
+        "P-002",
+        "P-003",
+        "P-005"
+      ],
+      "evidence_refs": [
+        "EV-CAP-ADV-ROUTER-ADVISORY",
+        "EV-CAP-ADV-ROUTER-ADVISORYREPORTS",
+        "EV-CAP-ADV-ROUTER-ADVISORYDIFF",
+        "EV-CAP-ADV-ROUTER-ESGARTEFACTS",
+        "EV-CAP-ADV-TABLE-ADVISORY_REPORTS",
+        "EV-CAP-ADV-TABLE-ADVISORY_REPORT_VERSIONS",
+        "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ADVISORY_TS",
+        "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ADVISORY_REPORTS_TS",
+        "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ADVISORY_DIFF_TS",
+        "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ESG_ARTEFACTS_TS"
+      ]
+    }
+  ],
+  "flows": [
+    {
+      "from": "CATALOG",
+      "to": "KNOWLEDGE_BASE",
+      "name": "Corpus source feed",
+      "type": "artifact",
+      "contract_path": "server/db-knowledge.ts"
+    },
+    {
+      "from": "KNOWLEDGE_BASE",
+      "to": "ASK_ISA",
+      "name": "Retrieval context feed",
+      "type": "artifact",
+      "contract_path": "server/db-knowledge-vector.ts"
+    },
+    {
+      "from": "CATALOG",
+      "to": "NEWS_HUB",
+      "name": "Regulation tagging reference",
+      "type": "artifact",
+      "contract_path": "server/routers/hub.ts"
+    },
+    {
+      "from": "ESRS_MAPPING",
+      "to": "NEWS_HUB",
+      "name": "Compliance impact enrichment",
+      "type": "api",
+      "contract_path": "server/routers/esrs-gs1-mapping.ts"
+    },
+    {
+      "from": "ASK_ISA",
+      "to": "ADVISORY",
+      "name": "Query intelligence consumption",
+      "type": "artifact",
+      "contract_path": "server/routers/advisory.ts"
+    },
+    {
+      "from": "NEWS_HUB",
+      "to": "ADVISORY",
+      "name": "News and change aggregation",
+      "type": "artifact",
+      "contract_path": "server/routers/advisory.ts"
+    },
+    {
+      "from": "ESRS_MAPPING",
+      "to": "ADVISORY",
+      "name": "Mapping and gap synthesis",
+      "type": "artifact",
+      "contract_path": "server/routers/advisory-reports.ts"
+    }
+  ],
+  "coverage_validation": {
+    "exactly_six_capabilities": true,
+    "full_scope_covered": true,
+    "gaps": [],
+    "overlaps": [],
+    "notes": "Top-level router ownership normalized through CAPABILITY_MANIFEST with SHARED_PLATFORM fallback; conflicts tracked canonically in docs/spec/CONFLICT_REGISTER.md."
+  },
+  "derivation_sources": [
+    {
+      "path": "server/routers.ts",
+      "line_start": 54,
+      "line_end": 748,
+      "purpose": "Top-level router surface derivation"
+    },
+    {
+      "path": "drizzle/schema.ts",
+      "line_start": 1,
+      "line_end": 2183,
+      "purpose": "Table ownership derivation base"
+    },
+    {
+      "path": "drizzle/schema_corpus_governance.ts",
+      "line_start": 1,
+      "line_end": 355,
+      "purpose": "Supplemental schema ownership derivation"
+    },
+    {
+      "path": "docs/architecture/panel/_generated/EVIDENCE_INDEX.json",
+      "line_start": 1,
+      "line_end": 1635,
+      "purpose": "Evidence pointer contract"
+    },
+    {
+      "path": "docs/spec/CONFLICT_REGISTER.md",
+      "line_start": 1,
+      "line_end": 40,
+      "purpose": "Canonical conflict authority"
+    }
+  ]
+}

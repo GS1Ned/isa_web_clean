@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "generated_at": "2026-02-20",
+    "generated_by": "codex-5.3",
+    "repo_ref": {
+      "branch": "strict-no-console",
+      "commit": "70bde42"
+    }
+  },
+  "bundle": {
+    "preflight_and_action_commands": [
+      "python3 scripts/validate_planning_and_traceability.py",
+      "pnpm check",
+      "bash scripts/gates/no-console-gate.sh",
+      "bash scripts/gates/security-secrets-scan.sh",
+      "bash scripts/gates/slo-policy-check.sh /tmp/slo-policy-check.current.json",
+      "bash scripts/gates/observability-contract.sh /tmp/observability.current.json",
+      "bash scripts/gates/security-gate.sh /tmp/security.current.json",
+      "bash scripts/gates/canonical-docs-allowlist.sh",
+      "bash scripts/gates/doc-code-validator.sh --canonical-only"
+    ]
+  },
+  "weights": {
+    "planning_validator": 0.1,
+    "ts_check": 0.15,
+    "no_console_gate": 0.1,
+    "secrets_scan": 0.1,
+    "slo_policy": 0.08,
+    "observability_contract": 0.12,
+    "security_gate": 0.12,
+    "canonical_docs_allowlist": 0.1,
+    "doc_code_validator": 0.13
+  },
+  "results": [
+    {
+      "id": "planning_validator",
+      "status": "pass",
+      "signal": 1.0,
+      "contribution": 0.1,
+      "limitation": "None observed."
+    },
+    {
+      "id": "ts_check",
+      "status": "pass",
+      "signal": 1.0,
+      "contribution": 0.15,
+      "limitation": "Type safety only; no runtime behavior guarantee."
+    },
+    {
+      "id": "no_console_gate",
+      "status": "pass",
+      "signal": 1.0,
+      "contribution": 0.1,
+      "limitation": "Scope-limited gate by design."
+    },
+    {
+      "id": "secrets_scan",
+      "status": "pass",
+      "signal": 1.0,
+      "contribution": 0.1,
+      "limitation": "Heuristic scan only; cannot prove absence of all secret forms."
+    },
+    {
+      "id": "slo_policy",
+      "status": "pass",
+      "signal": 1.0,
+      "contribution": 0.08,
+      "limitation": "Validates policy presence, not runtime SLO enforcement."
+    },
+    {
+      "id": "observability_contract",
+      "status": "unknown",
+      "signal": 0.3,
+      "contribution": 0.036,
+      "limitation": "Structured logging coverage below threshold (50.9% < 80%)."
+    },
+    {
+      "id": "security_gate",
+      "status": "unknown",
+      "signal": 0.3,
+      "contribution": 0.036,
+      "limitation": "Dependency scan timed out after 45s; secret scan and authz static checks executed."
+    },
+    {
+      "id": "canonical_docs_allowlist",
+      "status": "pass",
+      "signal": 1.0,
+      "contribution": 0.1,
+      "limitation": "Deterministic tracked-file checks pass; untracked local noise is warning-only by policy."
+    },
+    {
+      "id": "doc_code_validator",
+      "status": "pass",
+      "signal": 1.0,
+      "contribution": 0.13,
+      "limitation": "Canonical-scope mode passes; global legacy backlog remains outside canonical gate."
+    }
+  ],
+  "aggregate": {
+    "confidence_score": 0.832,
+    "rounded_confidence_score": 0.83,
+    "formula": "sum(weight_i * signal_i)",
+    "status_interpretation": "high confidence for canonical architecture convergence with explicit operational limitations"
+  },
+  "completion_gate": {
+    "done_confidence_threshold": 0.75,
+    "delta_rows_terminal_required": true,
+    "below_threshold_status": "DONE_WITH_LIMITATIONS"
+  }
+}

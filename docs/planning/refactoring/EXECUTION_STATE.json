@@ -1,0 +1,207 @@
+{
+  "meta": {
+    "updated_at": "2026-02-20",
+    "updated_by": "codex-5.3",
+    "repo_ref": {
+      "branch": "strict-no-console",
+      "commit": "70bde42"
+    }
+  },
+  "registry_version": "1.1.0",
+  "current_phase": "DONE",
+  "phase_order": [
+    "PASS_1_DISCOVERY",
+    "PASS_2_DOC_CODE_RECONCILIATION",
+    "PASS_3_CURRENT_TARGET_DELTA",
+    "PASS_4_CAPABILITY_DERIVATION",
+    "PASS_5_SHARED_PRIMITIVES",
+    "PASS_6_REPO_REFINEMENT_PLAN",
+    "PASS_7_EXECUTE_VALIDATE_LOOP",
+    "DONE"
+  ],
+  "phases": [
+    {
+      "id": "PASS_1_DISCOVERY",
+      "status": "COMPLETE",
+      "depends_on": [],
+      "outputs": [
+        "Canonical anchor discovery",
+        "Validation command inventory",
+        "Router/schema surface inventory"
+      ],
+      "evidence_paths": [
+        "docs/governance/_root/ISA_GOVERNANCE.md",
+        "docs/agent/AGENT_MAP.md",
+        "docs/spec/ARCHITECTURE.md",
+        "server/routers.ts",
+        "drizzle/schema.ts"
+      ],
+      "unresolved_issues": [
+        "Legacy doc drift outside canonical architecture scope"
+      ],
+      "confidence": 0.84
+    },
+    {
+      "id": "PASS_2_DOC_CODE_RECONCILIATION",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_1_DISCOVERY"
+      ],
+      "outputs": [
+        "Canonical architecture source reconciled",
+        "Supplemental architecture source downgraded"
+      ],
+      "evidence_paths": [
+        "docs/spec/ARCHITECTURE.md",
+        "docs/spec/ESRS_MAPPING/isa-core-architecture.md"
+      ],
+      "unresolved_issues": [
+        "Repository-wide non-canonical doc-code backlog remains"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "id": "PASS_3_CURRENT_TARGET_DELTA",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_2_DOC_CODE_RECONCILIATION"
+      ],
+      "outputs": [
+        "Single CURRENT section",
+        "Single TARGET section",
+        "Delta table with terminal row statuses"
+      ],
+      "evidence_paths": [
+        "docs/spec/ARCHITECTURE.md"
+      ],
+      "unresolved_issues": [
+        "DELTA-04 remains BLOCKED_WITH_MITIGATION (physical multi-router split deferred)"
+      ],
+      "confidence": 0.82
+    },
+    {
+      "id": "PASS_4_CAPABILITY_DERIVATION",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_3_CURRENT_TARGET_DELTA"
+      ],
+      "outputs": [
+        "Six capability boundaries derived",
+        "Per-capability evidence and ownership status mapping"
+      ],
+      "evidence_paths": [
+        "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json",
+        "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
+      ],
+      "unresolved_issues": [],
+      "confidence": 0.86
+    },
+    {
+      "id": "PASS_5_SHARED_PRIMITIVES",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_4_CAPABILITY_DERIVATION"
+      ],
+      "outputs": [
+        "Primitive dictionary with line-ranged evidence refs",
+        "Ownership justification for non-shared owner-layer primitives"
+      ],
+      "evidence_paths": [
+        "docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json",
+        "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
+      ],
+      "unresolved_issues": [],
+      "confidence": 0.84
+    },
+    {
+      "id": "PASS_6_REPO_REFINEMENT_PLAN",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_5_SHARED_PRIMITIVES"
+      ],
+      "outputs": [
+        "No-parallel-artifact reconciliation",
+        "Manifest authority enforcement updates",
+        "Canonical doc validation strategy updates"
+      ],
+      "evidence_paths": [
+        "docs/spec/ARCHITECTURE.md",
+        "docs/agent/AGENT_MAP.md",
+        "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
+        "scripts/gates/doc-code-validator.sh",
+        "scripts/gates/canonical-docs-allowlist.sh"
+      ],
+      "unresolved_issues": [
+        "Physical module split work remains deferred per DELTA-04"
+      ],
+      "confidence": 0.79
+    },
+    {
+      "id": "PASS_7_EXECUTE_VALIDATE_LOOP",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_6_REPO_REFINEMENT_PLAN"
+      ],
+      "outputs": [
+        "Corrective hardening patch set applied",
+        "Validation bundle rerun with canonical-scope doc-code checks",
+        "Confidence recomputed from weighted signals"
+      ],
+      "evidence_paths": [
+        "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
+        "scripts/gates/doc-code-validator.sh",
+        "scripts/gates/canonical-docs-allowlist.sh"
+      ],
+      "unresolved_issues": [
+        "scripts/gates/observability-contract.sh reports unknown: structured logging coverage below threshold (50.9% < 80%)",
+        "scripts/gates/security-gate.sh reports unknown: dependency scan timed out after 45s"
+      ],
+      "confidence": 0.83
+    },
+    {
+      "id": "DONE",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_7_EXECUTE_VALIDATE_LOOP"
+      ],
+      "outputs": [
+        "Single canonical CURRENT and TARGET state maintained",
+        "Six-capability manifest evidence-backed",
+        "Shared primitive contract evidence-backed",
+        "Threshold-based completion gate enforced"
+      ],
+      "evidence_paths": [
+        "docs/spec/ARCHITECTURE.md",
+        "docs/architecture/panel/_generated/EVIDENCE_INDEX.json",
+        "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json",
+        "docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json",
+        "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json",
+        "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
+      ],
+      "unresolved_issues": [
+        "Observability gate remains unknown due coverage threshold gap",
+        "Security gate remains unknown due dependency scan timeout",
+        "DELTA-04 remains blocked with mitigation by design"
+      ],
+      "confidence": 0.83
+    }
+  ],
+  "transition_rules": {
+    "require_checkpoint_write": true,
+    "require_dependency_satisfaction": true,
+    "unresolved_issues_reduce_confidence": true
+  },
+  "completion_gate": {
+    "delta_rows_terminal_required": true,
+    "aggregate_validation_confidence_required": true,
+    "done_confidence_threshold": 0.75,
+    "below_threshold_status": "DONE_WITH_LIMITATIONS"
+  },
+  "done_decision": {
+    "aggregate_validation_confidence": 0.83,
+    "delta_rows_terminal": true,
+    "threshold_met": true,
+    "result_status": "COMPLETE",
+    "rationale": "Confidence meets threshold (0.83 >= 0.75) and all delta rows are terminal (ACCEPTED or BLOCKED_WITH_MITIGATION)."
+  }
+}
