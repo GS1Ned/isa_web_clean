@@ -3,8 +3,8 @@
     "generated_at": "2026-02-20",
     "model": "codex-5.3",
     "repo_ref": {
-      "branch": "strict-no-console",
-      "commit": "70bde42",
+      "branch": "main",
+      "commit": "089a619",
       "evidence_index_paths": [
         "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
       ]

@@ -3,8 +3,8 @@
     "generated_at": "2026-02-20",
     "generated_by": "codex-5.3",
     "repo_ref": {
-      "branch": "strict-no-console",
-      "commit": "70bde42"
+      "branch": "main",
+      "commit": "089a619"
     },
     "baseline_run": {
       "captured_at": "2026-02-20T02:56:32Z",
