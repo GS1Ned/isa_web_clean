@@ -34,6 +34,8 @@ function main() {
         capability: capability.capability,
         fixture_version: metric.fixture_version || capability.fixture_version || "v0",
         measurement_mode: metric.measurement_mode || "fixture",
+        runtime_probe_id: metric.runtime_probe_id || null,
+        runtime_probe_samples: Number(metric.runtime_probe_samples || 0),
       };
     }
   }

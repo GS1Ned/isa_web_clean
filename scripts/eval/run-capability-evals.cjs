@@ -249,6 +249,8 @@ async function main() {
         fixture_path: metric.fixture_path,
         fixture_version: metric.fixture_version || fixtureVersion,
         measurement_mode: metric.measurement_mode || "fixture",
+        runtime_probe_id: metric.runtime_probe_id,
+        runtime_probe_samples: metric.runtime_probe_samples,
         contract_path: evaluated.contractPath,
         provenance: {
           registry_path: options.registry,

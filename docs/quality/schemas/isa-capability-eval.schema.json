@@ -132,6 +132,8 @@
                   "type": "string",
                   "enum": ["runtime", "fixture", "synthetic"]
                 },
+                "runtime_probe_id": { "type": "string" },
+                "runtime_probe_samples": { "type": "integer", "minimum": 1 },
                 "contract_path": { "type": "string" },
                 "provenance": { "type": "object" }
               }
