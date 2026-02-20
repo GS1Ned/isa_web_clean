@@ -107,6 +107,7 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
   }
 
   async function warn(warnMsg: unknown, meta?: unknown) {
+    if (silent) return crypto.randomUUID();
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
     const traceId = (metaObj as any).traceId ?? getRequestTraceId() ?? crypto.randomUUID();
     const metaOut = { ...metaObj, traceId };
