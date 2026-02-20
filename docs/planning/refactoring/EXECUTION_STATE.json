@@ -4,11 +4,11 @@
     "updated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "d4f1af0"
+      "commit": "e1e287398835f2c40474f105e6042028dfd0924d"
     }
   },
   "registry_version": "1.1.0",
-  "current_phase": "DONE",
+  "current_phase": "PASS_7_EXECUTE_VALIDATE_LOOP",
   "phase_order": [
     "PASS_1_DISCOVERY",
     "PASS_2_DOC_CODE_RECONCILIATION",
@@ -138,7 +138,7 @@
     },
     {
       "id": "PASS_7_EXECUTE_VALIDATE_LOOP",
-      "status": "COMPLETE",
+      "status": "IN_PROGRESS",
       "depends_on": [
         "PASS_6_REPO_REFINEMENT_PLAN"
       ],
@@ -164,13 +164,17 @@
         "scripts/gates/canonical-docs-allowlist.sh"
       ],
       "unresolved_issues": [
-        "Dependency audit still reports non-blocking high-severity advisories under current critical-only blocking policy"
+        "DELTA-04B closure pending (T-013)",
+        "Dataset registry/schema reconciliation pending (T-011)",
+        "Dependency audit still reports non-blocking high-severity advisories under current critical-only blocking policy",
+        "PG-01 canonical metadata refresh and queue alignment in progress",
+        "Runtime contract factual hardening pending (T-004..T-009)"
       ],
       "confidence": 0.93
     },
     {
       "id": "DONE",
-      "status": "COMPLETE",
+      "status": "NOT_STARTED",
       "depends_on": [
         "PASS_7_EXECUTE_VALIDATE_LOOP"
       ],
@@ -192,7 +196,7 @@
         "DELTA-04B remains blocked with mitigation by design",
         "Security high-severity advisory backlog remains open under non-blocking policy"
       ],
-      "confidence": 1.0
+      "confidence": 0
     }
   ],
   "transition_rules": {
@@ -207,11 +211,11 @@
     "below_threshold_status": "DONE_WITH_LIMITATIONS"
   },
   "done_decision": {
-    "aggregate_validation_confidence": 1.0,
-    "delta_rows_terminal": true,
-    "threshold_met": true,
-    "result_status": "DONE",
-    "rationale": "All validation bundle checks pass under deterministic policy thresholds with delta rows in terminal status; remaining risks are tracked as non-blocking backlog items."
+    "aggregate_validation_confidence": null,
+    "delta_rows_terminal": false,
+    "threshold_met": false,
+    "result_status": "IN_PROGRESS",
+    "rationale": "Production-readiness convergence run reopened; DONE decision will be recomputed after PG-07 final validation."
   },
   "continuation_run": {
     "started_at": "2026-02-20T05:38:25Z",
@@ -314,8 +318,8 @@
         ]
       }
     ],
-    "next_deterministic_task": "T-001 refresh canonical repo_ref metadata",
-    "last_validated_at": "2026-02-20T05:38:25Z",
+    "next_deterministic_task": "T-004 normalize runtime contracts across six capabilities",
+    "last_validated_at": "2026-02-20T05:39:48Z",
     "patch_group_checkpoints": [
       {
         "patch_group": "PG-00",
@@ -334,8 +338,19 @@
           "canonical_contract_drift": "fail:1",
           "manifest_ownership_drift": "pass"
         }
+      },
+      {
+        "patch_group": "PG-01",
+        "validated_at": "2026-02-20T05:39:48Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "canonical_contract_drift": "pass",
+          "doc_code_validator_canonical": "pass",
+          "planning_validator": "pass"
+        }
       }
-    ]
+    ],
+    "reopened_at": "2026-02-20T05:39:12Z"
   },
   "continuation_run_history": [
     {
