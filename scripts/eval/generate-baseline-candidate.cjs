@@ -26,19 +26,27 @@ function main() {
   const evaluation = readJson(options.evalPath);
 
   const metrics = {};
+  const metricMeta = {};
   for (const capability of evaluation.capabilities || []) {
     for (const metric of capability.metrics || []) {
       metrics[metric.metric_id] = metric.value;
+      metricMeta[metric.metric_id] = {
+        capability: capability.capability,
+        fixture_version: metric.fixture_version || capability.fixture_version || "v0",
+        measurement_mode: metric.measurement_mode || "fixture",
+      };
     }
   }
 
   const candidate = {
     baseline_id: options.baselineId,
     generated_at: new Date().toISOString(),
+    stage: evaluation.stage || "stage_a",
     source_eval_run_id: evaluation.run_id,
     source_eval_generated_at: evaluation.generated_at,
     notes: "Weekly baseline candidate generated from latest unified ISA capability evaluation. Requires manual review and approval before replacing canonical baseline.",
     metrics,
+    metric_meta: metricMeta,
   };
 
   writeJson(options.outPath, candidate);

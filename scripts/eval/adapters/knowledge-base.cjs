@@ -6,6 +6,7 @@ const {
   safeDiv,
   clamp01,
   latencyNorm,
+  selectDatasetByPrefix,
 } = require("../lib/common.cjs");
 
 const CHECKSUM_RE = /^[a-f0-9]{64}$/;
@@ -16,9 +17,9 @@ function hasValue(value) {
 }
 
 async function evaluate(context) {
-  const { registryEntry, thresholdsByMetric } = context;
-  const corpusDataset = registryEntry.datasets.find((d) => d.id === "kb_corpus_slice_v1");
-  const metadataDataset = registryEntry.datasets.find((d) => d.id === "kb_metadata_gold_v1");
+  const { registryEntry, datasets, thresholdsByMetric, fixtureVersion } = context;
+  const corpusDataset = selectDatasetByPrefix(datasets, "kb_corpus_slice_");
+  const metadataDataset = selectDatasetByPrefix(datasets, "kb_metadata_gold_");
 
   const corpusRows = readJsonl(corpusDataset.path);
   const metadataGold = readJson(metadataDataset.path);
@@ -74,7 +75,29 @@ async function evaluate(context) {
       ? 1
       : 0;
 
+  const contractAdherence = Number(
+    avg([
+      ingestionCorrectness,
+      metadataCompleteness,
+      lifecycleGovernance,
+    ]).toFixed(4)
+  );
+  const integrationCompleteness = Number(
+    safeDiv(
+      corpusRows.filter(
+        (row) =>
+          Array.isArray(row.intended_use) &&
+          row.intended_use.includes("RAG") &&
+          typeof row.source_manifest === "string" &&
+          row.source_manifest.trim().length > 0
+      ).length,
+      corpusRows.length,
+      0
+    ).toFixed(4)
+  );
+
   const latencyP95Ms = 180;
+  const latencyMeasurementMode = "synthetic";
 
   const metrics = [
     {
@@ -84,6 +107,8 @@ async function evaluate(context) {
       kind: "correctness",
       value: Number(ingestionCorrectness.toFixed(4)),
       fixture_path: corpusDataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: metadataDataset.id,
@@ -92,6 +117,8 @@ async function evaluate(context) {
       kind: "coverage",
       value: Number(metadataCompleteness.toFixed(4)),
       fixture_path: metadataDataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: corpusDataset.id,
@@ -100,6 +127,8 @@ async function evaluate(context) {
       kind: "correctness",
       value: Number(chunkQuality.toFixed(4)),
       fixture_path: corpusDataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: corpusDataset.id,
@@ -108,6 +137,8 @@ async function evaluate(context) {
       kind: "explainability",
       value: Number(linkingDensity.toFixed(4)),
       fixture_path: corpusDataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: metadataDataset.id,
@@ -116,6 +147,28 @@ async function evaluate(context) {
       kind: "authority",
       value: Number(lifecycleGovernance.toFixed(4)),
       fixture_path: metadataDataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
+    },
+    {
+      dataset_id: metadataDataset.id,
+      metric_id: "kb.contract.adherence",
+      dimension: "contract adherence",
+      kind: "contract_adherence",
+      value: contractAdherence,
+      fixture_path: metadataDataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
+    },
+    {
+      dataset_id: corpusDataset.id,
+      metric_id: "kb.integration.completeness",
+      dimension: "integration completeness",
+      kind: "integration_completeness",
+      value: integrationCompleteness,
+      fixture_path: corpusDataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
     },
     {
       dataset_id: corpusDataset.id,
@@ -124,6 +177,18 @@ async function evaluate(context) {
       kind: "latency",
       value: latencyP95Ms,
       fixture_path: corpusDataset.path,
+      measurement_mode: latencyMeasurementMode,
+      fixture_version: fixtureVersion,
+    },
+    {
+      dataset_id: corpusDataset.id,
+      metric_id: "kb.latency.measurement_mode_runtime",
+      dimension: "latency measurement mode runtime",
+      kind: "integration_completeness",
+      value: latencyMeasurementMode === "runtime" ? 1 : 0,
+      fixture_path: corpusDataset.path,
+      measurement_mode: latencyMeasurementMode,
+      fixture_version: fixtureVersion,
     },
   ];
 
@@ -133,17 +198,25 @@ async function evaluate(context) {
     coverage: Number(metadataCompleteness.toFixed(4)),
     explainability: Number(linkingDensity.toFixed(4)),
     authority: Number(lifecycleGovernance.toFixed(4)),
+    contract_adherence: contractAdherence,
+    integration_completeness: integrationCompleteness,
     latency_norm: Number(latencyNorm(latencyP95Ms, latencyThreshold).toFixed(4)),
   };
 
+  const syntheticLatencyCount = metrics.filter(
+    (metric) => metric.kind === "latency" && metric.measurement_mode === "synthetic"
+  ).length;
+
   return {
     capability: "KNOWLEDGE_BASE",
-    datasetIds: registryEntry.datasets.map((d) => d.id),
+    datasetIds: datasets.map((d) => d.id),
+    fixtureVersion,
     sampleCount: corpusRows.length + 1,
-    minimumSamples: registryEntry.datasets.reduce((sum, d) => sum + Number(d.minimum_samples || 0), 0),
+    minimumSamples: datasets.reduce((sum, d) => sum + Number(d.minimum_samples || 0), 0),
     contractPath: registryEntry.contract_path,
     metrics,
     rollups,
+    syntheticLatencyCount,
   };
 }
 

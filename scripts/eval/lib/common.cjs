@@ -56,14 +56,24 @@ function latencyNorm(latencyMs, thresholdMs) {
   return clamp01(1 - latencyMs / thresholdMs);
 }
 
-function computeCapabilityScore(rollups, weights) {
+function computeCapabilityScore(rollups, weights, options = {}) {
+  const correctness = Number(rollups.correctness || 0);
+  const coverage = Number(rollups.coverage || 0);
+  const explainability = Number(rollups.explainability || 0);
+  const authority = Number(rollups.authority || 0);
+  const contractAdherence = Number(rollups.contract_adherence || 0);
+  const integrationCompleteness = Number(rollups.integration_completeness || 0);
+  const latencyNormValue = Number(rollups.latency_norm || 0);
   const total =
-    rollups.correctness * weights.correctness +
-    rollups.coverage * weights.coverage +
-    rollups.explainability * weights.explainability +
-    rollups.authority * weights.authority +
-    rollups.latency_norm * weights.latency_norm;
-  return clamp01(total);
+    correctness * Number(weights.correctness || 0) +
+    coverage * Number(weights.coverage || 0) +
+    explainability * Number(weights.explainability || 0) +
+    authority * Number(weights.authority || 0) +
+    contractAdherence * Number(weights.contract_adherence || 0) +
+    integrationCompleteness * Number(weights.integration_completeness || 0) +
+    latencyNormValue * Number(weights.latency_norm || 0);
+  const syntheticPenalty = Number(options.syntheticPenalty || 0);
+  return clamp01(total - syntheticPenalty);
 }
 
 function scoreGrade(score) {
@@ -86,6 +96,24 @@ function daysSince(value, nowMs) {
   return Math.floor((nowMs - ts) / (24 * 60 * 60 * 1000));
 }
 
+function datasetVersionFromId(datasetId) {
+  const match = String(datasetId || "").match(/_v(\d+)$/i);
+  return match ? Number(match[1]) : 0;
+}
+
+function selectDatasetByPrefix(datasets, prefix) {
+  const matches = (datasets || []).filter((dataset) => String(dataset.id || "").startsWith(prefix));
+  if (!matches.length) {
+    throw new Error(`Missing dataset for prefix: ${prefix}`);
+  }
+  return [...matches].sort((left, right) => datasetVersionFromId(right.id) - datasetVersionFromId(left.id))[0];
+}
+
+function inferFixtureVersion(datasetIds) {
+  const highest = (datasetIds || []).reduce((max, id) => Math.max(max, datasetVersionFromId(id)), 0);
+  return highest > 0 ? `v${highest}` : "v0";
+}
+
 module.exports = {
   readJson,
   readJsonl,
@@ -100,4 +128,7 @@ module.exports = {
   computeCapabilityScore,
   scoreGrade,
   daysSince,
+  datasetVersionFromId,
+  selectDatasetByPrefix,
+  inferFixtureVersion,
 };
