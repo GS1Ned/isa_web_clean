@@ -1,0 +1,56 @@
+name: Security Gate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "scripts/gates/security-gate.sh"
+      - "scripts/gates/security-secrets-scan.sh"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/security-gate.yml"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/gates/security-gate.sh"
+      - "scripts/gates/security-secrets-scan.sh"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/security-gate.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  security-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.0"
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm@10.4.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run deterministic security gate
+        env:
+          SECURITY_AUDIT_TIMEOUT_SEC: "180"
+          SECURITY_AUDIT_LEVEL: "high"
+          SECURITY_AUDIT_BLOCKING_LEVELS: "critical"
+        run: |
+          set -euo pipefail
+          bash scripts/gates/security-gate.sh test-results/ci/security-gate.ci.json
+
+      - name: Upload security gate artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-gate-report
+          path: test-results/ci/security-gate.ci.json

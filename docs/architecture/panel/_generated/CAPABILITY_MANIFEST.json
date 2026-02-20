@@ -3,8 +3,8 @@
     "generated_at": "2026-02-20",
     "generated_by": "codex-5.3",
     "repo_ref": {
-      "branch": "strict-no-console",
-      "commit": "70bde42"
+      "branch": "main",
+      "commit": "1593554"
     }
   },
   "status": "AUTHORITATIVE_CONTRACT",
@@ -750,14 +750,15 @@
         "gs1nlAttributes"
       ],
       "router_modules": [
-        "server/routers/regulations.ts",
-        "server/routers/standards.ts",
         "server/gs1-standards-router.ts",
-        "server/routers/standards-directory.ts",
         "server/routers/dataset-registry.ts",
+        "server/routers/esrs.ts",
         "server/routers/governance-documents.ts",
         "server/routers/gs1-attributes.ts",
-        "server/routers/gs1nl-attributes.ts"
+        "server/routers/gs1nl-attributes.ts",
+        "server/routers/regulations.ts",
+        "server/routers/standards-directory.ts",
+        "server/routers/standards.ts"
       ],
       "owned_tables": [
         "regulations",
@@ -798,71 +799,71 @@
           {
             "surface": "regulations",
             "path": "server/routers.ts",
-            "line_start": 71,
-            "line_end": 71,
+            "line_start": 72,
+            "line_end": 72,
             "evidence_id": "EV-CAP-CAT-ROUTER-REGULATIONS"
           },
           {
             "surface": "standards",
             "path": "server/routers.ts",
-            "line_start": 72,
-            "line_end": 72,
+            "line_start": 73,
+            "line_end": 73,
             "evidence_id": "EV-CAP-CAT-ROUTER-STANDARDS"
           },
           {
             "surface": "gs1Standards",
             "path": "server/routers.ts",
-            "line_start": 326,
-            "line_end": 326,
+            "line_start": 327,
+            "line_end": 327,
             "evidence_id": "EV-CAP-CAT-ROUTER-GS1STANDARDS"
           },
           {
             "surface": "standardsDirectory",
             "path": "server/routers.ts",
-            "line_start": 698,
-            "line_end": 698,
+            "line_start": 563,
+            "line_end": 563,
             "evidence_id": "EV-CAP-CAT-ROUTER-STANDARDSDIRECTORY"
           },
           {
             "surface": "esrs",
             "path": "server/routers.ts",
-            "line_start": 411,
-            "line_end": 547,
+            "line_start": 412,
+            "line_end": 412,
             "evidence_id": "EV-CAP-CAT-ROUTER-ESRS"
           },
           {
             "surface": "dutchInitiatives",
             "path": "server/routers.ts",
-            "line_start": 649,
-            "line_end": 682,
+            "line_start": 514,
+            "line_end": 547,
             "evidence_id": "EV-CAP-CAT-ROUTER-DUTCHINITIATIVES"
           },
           {
             "surface": "datasetRegistry",
             "path": "server/routers.ts",
-            "line_start": 619,
-            "line_end": 619,
+            "line_start": 484,
+            "line_end": 484,
             "evidence_id": "EV-CAP-CAT-ROUTER-DATASETREGISTRY"
           },
           {
             "surface": "governanceDocuments",
             "path": "server/routers.ts",
-            "line_start": 629,
-            "line_end": 629,
+            "line_start": 494,
+            "line_end": 494,
             "evidence_id": "EV-CAP-CAT-ROUTER-GOVERNANCEDOCUMENTS"
           },
           {
             "surface": "gs1Attributes",
             "path": "server/routers.ts",
-            "line_start": 572,
-            "line_end": 572,
+            "line_start": 437,
+            "line_end": 437,
             "evidence_id": "EV-CAP-CAT-ROUTER-GS1ATTRIBUTES"
           },
           {
             "surface": "gs1nlAttributes",
             "path": "server/routers.ts",
-            "line_start": 577,
-            "line_end": 577,
+            "line_start": 442,
+            "line_end": 442,
             "evidence_id": "EV-CAP-CAT-ROUTER-GS1NLATTRIBUTES"
           }
         ],
@@ -989,17 +990,17 @@
             "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GS1NL_ATTRIBUTES_TS"
           },
           {
-            "module_path": "server/routers.ts",
-            "path": "server/routers.ts",
-            "line_start": 411,
-            "line_end": 547,
-            "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_TS"
+            "module_path": "server/routers/esrs.ts",
+            "path": "server/routers/esrs.ts",
+            "line_start": 1,
+            "line_end": 140,
+            "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_ESRS_TS"
           },
           {
             "module_path": "server/routers.ts",
             "path": "server/routers.ts",
-            "line_start": 649,
-            "line_end": 682,
+            "line_start": 514,
+            "line_end": 547,
             "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_TS"
           }
         ]
@@ -1153,7 +1154,7 @@
             "mitigation_if_blocked": null
           },
           {
-            "module_path": "server/routers.ts",
+            "module_path": "server/routers/esrs.ts",
             "status": "CURRENT",
             "delta_id_if_blocked": null,
             "mitigation_if_blocked": null
@@ -1216,29 +1217,29 @@
           {
             "surface": "esrsGs1Mapping",
             "path": "server/routers.ts",
-            "line_start": 634,
-            "line_end": 634,
+            "line_start": 499,
+            "line_end": 499,
             "evidence_id": "EV-CAP-MAP-ROUTER-ESRSGS1MAPPING"
           },
           {
             "surface": "esrsRoadmap",
             "path": "server/routers.ts",
-            "line_start": 639,
-            "line_end": 639,
+            "line_start": 504,
+            "line_end": 504,
             "evidence_id": "EV-CAP-MAP-ROUTER-ESRSROADMAP"
           },
           {
             "surface": "gapAnalyzer",
             "path": "server/routers.ts",
-            "line_start": 712,
-            "line_end": 712,
+            "line_start": 577,
+            "line_end": 577,
             "evidence_id": "EV-CAP-MAP-ROUTER-GAPANALYZER"
           },
           {
             "surface": "attributeRecommender",
             "path": "server/routers.ts",
-            "line_start": 722,
-            "line_end": 722,
+            "line_start": 587,
+            "line_end": 587,
             "evidence_id": "EV-CAP-MAP-ROUTER-ATTRIBUTERECOMMENDER"
           }
         ],
@@ -1436,29 +1437,29 @@
           {
             "surface": "advisory",
             "path": "server/routers.ts",
-            "line_start": 592,
-            "line_end": 592,
+            "line_start": 457,
+            "line_end": 457,
             "evidence_id": "EV-CAP-ADV-ROUTER-ADVISORY"
           },
           {
             "surface": "advisoryReports",
             "path": "server/routers.ts",
-            "line_start": 624,
-            "line_end": 624,
+            "line_start": 489,
+            "line_end": 489,
             "evidence_id": "EV-CAP-ADV-ROUTER-ADVISORYREPORTS"
           },
           {
             "surface": "advisoryDiff",
             "path": "server/routers.ts",
-            "line_start": 644,
-            "line_end": 644,
+            "line_start": 509,
+            "line_end": 509,
             "evidence_id": "EV-CAP-ADV-ROUTER-ADVISORYDIFF"
           },
           {
             "surface": "esgArtefacts",
             "path": "server/routers.ts",
-            "line_start": 728,
-            "line_end": 728,
+            "line_start": 593,
+            "line_end": 593,
             "evidence_id": "EV-CAP-ADV-ROUTER-ESGARTEFACTS"
           }
         ],
@@ -1775,6 +1776,98 @@
         "surface": "webhookConfig",
         "status": "CURRENT"
       }
+    ],
+    "owned_tables": [
+      "alert_cooldowns",
+      "alert_history",
+      "attribute_regulation_mappings",
+      "cbv_vocabularies",
+      "compliance_evidence",
+      "compliance_roadmaps",
+      "compliance_scores",
+      "contacts",
+      "critical_event_acknowledgments",
+      "critical_event_alerts",
+      "critical_events",
+      "critical_tracking_events",
+      "cron_execution_logs",
+      "cte_kde_mappings",
+      "ctes",
+      "data_category_standard_mappings",
+      "digital_link_types",
+      "dpp_identification_rules",
+      "dpp_identifier_components",
+      "dpp_product_categories",
+      "epcis_batch_jobs",
+      "epcis_event_templates",
+      "epcis_events",
+      "error_log",
+      "esg_atomic_requirements",
+      "esg_corpus",
+      "esg_data_categories",
+      "esg_data_requirements",
+      "esg_obligations",
+      "esrs_xbrl_concepts",
+      "eudr_geolocation",
+      "gdsn_class_attributes",
+      "gdsn_classes",
+      "gdsn_validation_rules",
+      "golden_qa_pairs",
+      "gs1_attribute_code_lists",
+      "gs1_code_lists",
+      "gs1_eu_carbon_footprint_attributes",
+      "gs1_eu_carbon_footprint_code_lists",
+      "gs1_local_code_lists",
+      "gs1_validation_rules",
+      "gs1_webvoc_properties",
+      "gs1_webvoc_terms",
+      "hub_resources",
+      "ingestion_logs",
+      "initiative_regulation_mappings",
+      "initiative_standard_mappings",
+      "kdes",
+      "notification_preferences",
+      "performance_log",
+      "raw_cbv_vocabularies",
+      "raw_ctes_kdes",
+      "raw_digital_link_types",
+      "raw_dpp_identification_rules",
+      "raw_dpp_identifier_components",
+      "raw_esrs_datapoints",
+      "raw_gdsn_class_attributes",
+      "raw_gdsn_classes",
+      "raw_gdsn_validation_rules",
+      "regulation_data_category_mappings",
+      "regulatory_change_alerts",
+      "remediation_progress",
+      "remediation_steps",
+      "remediation_templates",
+      "risk_remediation_plans",
+      "roadmap_actions",
+      "roadmap_activity_log",
+      "roadmap_approvals",
+      "roadmap_comments",
+      "roadmap_dependencies",
+      "roadmap_milestones",
+      "roadmap_templates",
+      "score_history",
+      "score_milestones",
+      "scoring_benchmarks",
+      "supply_chain_analytics",
+      "supply_chain_edges",
+      "supply_chain_nodes",
+      "supply_chain_risks",
+      "team_roadmap_access",
+      "template_actions",
+      "template_milestones",
+      "template_usage",
+      "user_alerts",
+      "user_analyses",
+      "user_preferences",
+      "user_saved_items",
+      "users",
+      "webhook_configuration",
+      "webhook_delivery_history"
     ]
   },
   "surface_registry": {

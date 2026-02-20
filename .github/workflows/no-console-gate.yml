@@ -2,9 +2,9 @@ name: No Console Gate
 
 on:
   pull_request:
-    branches: [main, strict-no-console]
+    branches: [main]
   push:
-    branches: [main, strict-no-console]
+    branches: [main]
 
 jobs:
   no-console:
@@ -16,4 +16,3 @@ jobs:
         run: |
           set -euo pipefail
           bash scripts/gates/no-console-gate.sh
-

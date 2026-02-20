@@ -261,3 +261,37 @@ RECOMMENDATION
     - `test-results/ci/`
   - change_outline: Add a small set of deterministic evaluation inputs and expected outputs (JSON) with schema validation; integrate into CI as a fast regression gate.
   - no_console_strategy: Evaluation harness should write machine-readable artifacts to disk and use `serverLogger` only for structured failure reporting.
+
+---
+
+## Phase 6A - Capability Rubric Mapping (2026-02-20)
+
+FACT
+- Benchmarking now requires five dimensions per capability:
+  - `reliability`, `security`, `observability`, `data_provenance`, `evaluation_quality`
+- Evidence for each mapped practice must include:
+  - source URL, retrieval UTC date, capability mapping, and verification method (`gate`, `test`, or `artifact`).
+
+RECOMMENDATION
+- Primary emphasis by capability:
+  - `ASK_ISA`: evaluation_quality, observability, security
+  - `NEWS_HUB`: reliability, observability, data_provenance
+  - `KNOWLEDGE_BASE`: data_provenance, security, observability
+  - `CATALOG`: data_provenance, reliability, security
+  - `ESRS_MAPPING`: evaluation_quality, data_provenance, reliability
+  - `ADVISORY`: reliability, security, observability
+
+---
+
+## Phase 6B - Capability External Comparisons to Backlog (2026-02-20)
+
+FACT
+- `benchmarks.json` now contains `capability_findings` with 3 external references per capability, copyable practices, minimum implementation set, and proof method mappings.
+
+RECOMMENDATION
+- `ASK_ISA` -> backlog `BENCH-001`: fixture-based eval governance and trace-quality artifacts.
+- `NEWS_HUB` -> backlog `BENCH-002`: ingestion idempotency/retry hardening plus observability artifacts.
+- `KNOWLEDGE_BASE` -> backlog `BENCH-003`: provenance-first ingestion validation and retrieval fixtures.
+- `CATALOG` -> backlog `BENCH-004`: full schema-table ownership coverage and catalog artifact schema gates.
+- `ESRS_MAPPING` -> backlog `BENCH-005`: deterministic mapping eval fixtures with traceable confidence outputs.
+- `ADVISORY` -> backlog `BENCH-006`: advisory artifact versioning/diff governance with CI contract checks.

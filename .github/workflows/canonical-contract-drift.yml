@@ -1,0 +1,49 @@
+name: Canonical Contract Drift
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json"
+      - "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json"
+      - "docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json"
+      - "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
+      - "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
+      - "docs/planning/refactoring/EXECUTION_STATE.json"
+      - "scripts/gates/canonical-contract-drift.sh"
+      - "scripts/gates/manifest-ownership-drift.py"
+      - ".github/workflows/canonical-contract-drift.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json"
+      - "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json"
+      - "docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json"
+      - "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
+      - "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
+      - "docs/planning/refactoring/EXECUTION_STATE.json"
+      - "scripts/gates/canonical-contract-drift.sh"
+      - "scripts/gates/manifest-ownership-drift.py"
+      - ".github/workflows/canonical-contract-drift.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-contract-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Validate canonical contract repo_ref freshness
+        run: |
+          set -euo pipefail
+          bash scripts/gates/canonical-contract-drift.sh
+
+      - name: Validate manifest ownership drift (routers/tables)
+        run: |
+          set -euo pipefail
+          python3 scripts/gates/manifest-ownership-drift.py

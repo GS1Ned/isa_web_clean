@@ -1,7 +1,7 @@
 {
   "version": "2026-02-15",
   "repo": "GS1Ned/isa_web_clean",
-  "branch": "strict-no-console",
+  "branch": "main",
   "candidates": [
     {
       "name": "SigNoz/signoz",
@@ -1108,6 +1108,304 @@
         }
       ],
       "last_verified_date": "2026-02-15"
+    }
+  ],
+  "capability_rubric": {
+    "dimensions": [
+      {
+        "id": "reliability",
+        "description": "SLO/error-budget alignment, retry/backoff, idempotency, and deterministic failure handling."
+      },
+      {
+        "id": "security",
+        "description": "Dependency/security policy enforcement, authz boundaries, and secret hygiene."
+      },
+      {
+        "id": "observability",
+        "description": "Structured logging, traceability, and actionable telemetry coverage."
+      },
+      {
+        "id": "data_provenance",
+        "description": "Lineage, source attribution, and reproducible dataset/version references."
+      },
+      {
+        "id": "evaluation_quality",
+        "description": "Deterministic fixtures, benchmark repeatability, and quality signal governance."
+      }
+    ],
+    "scoring_scale": {
+      "0": "absent",
+      "1": "ad_hoc",
+      "2": "defined",
+      "3": "automated"
+    },
+    "capability_focus": [
+      {
+        "capability": "ASK_ISA",
+        "priority_dimensions": [
+          "evaluation_quality",
+          "observability",
+          "security"
+        ]
+      },
+      {
+        "capability": "NEWS_HUB",
+        "priority_dimensions": [
+          "reliability",
+          "observability",
+          "data_provenance"
+        ]
+      },
+      {
+        "capability": "KNOWLEDGE_BASE",
+        "priority_dimensions": [
+          "data_provenance",
+          "security",
+          "observability"
+        ]
+      },
+      {
+        "capability": "CATALOG",
+        "priority_dimensions": [
+          "data_provenance",
+          "reliability",
+          "security"
+        ]
+      },
+      {
+        "capability": "ESRS_MAPPING",
+        "priority_dimensions": [
+          "evaluation_quality",
+          "data_provenance",
+          "reliability"
+        ]
+      },
+      {
+        "capability": "ADVISORY",
+        "priority_dimensions": [
+          "reliability",
+          "security",
+          "observability"
+        ]
+      }
+    ],
+    "evidence_requirements": {
+      "source_url_required": true,
+      "retrieval_utc_required": true,
+      "capability_mapping_required": true,
+      "verification_method_required": true
+    }
+  },
+  "capability_findings": [
+    {
+      "id": "CF-ASK-001",
+      "capability": "ASK_ISA",
+      "references": [
+        {
+          "url": "https://github.com/langfuse/langfuse",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/openai/evals",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/trpc/trpc",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        }
+      ],
+      "copyable_practices": [
+        "Version deterministic QA/evaluation fixtures in-repo.",
+        "Attach trace identifiers to every model invocation and retrieval step.",
+        "Use typed API boundary contracts for evaluator and caller surfaces."
+      ],
+      "minimum_implementation_set": [
+        "Create capability-scoped Ask ISA eval fixtures and expected outputs.",
+        "Persist RAG trace quality metrics with deterministic schema validation.",
+        "Add CI gate that replays fixture queries and verifies stable scoring."
+      ],
+      "verification_method": [
+        "gate: scripts/gates/doc-code-validator.sh --canonical-only",
+        "test: server/routers/__tests__/capability-heartbeat.test.ts",
+        "artifact: test-results/ci/*.json"
+      ],
+      "manifest_link": "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json#ASK_ISA",
+      "backlog_id": "BENCH-001"
+    },
+    {
+      "id": "CF-NEWS-001",
+      "capability": "NEWS_HUB",
+      "references": [
+        {
+          "url": "https://github.com/temporalio/sdk-typescript",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/SigNoz/signoz",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/Helicone/helicone",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        }
+      ],
+      "copyable_practices": [
+        "Use bounded retries + idempotency keys for ingestion jobs.",
+        "Publish pipeline observability artifacts per CI run.",
+        "Separate migration/operational checks into dedicated workflows."
+      ],
+      "minimum_implementation_set": [
+        "Define idempotency key contract for news ingestion write paths.",
+        "Emit ingestion run artifact with source coverage and failure taxonomy.",
+        "Gate ingestion reliability against deterministic retry and timeout policy."
+      ],
+      "verification_method": [
+        "gate: bash scripts/gates/observability-contract.sh /tmp/observability.current.json",
+        "gate: bash scripts/gates/slo-policy-check.sh /tmp/slo-policy-check.current.json",
+        "artifact: test-results/ci/slo-policy-check.json"
+      ],
+      "manifest_link": "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json#NEWS_HUB",
+      "backlog_id": "BENCH-002"
+    },
+    {
+      "id": "CF-KB-001",
+      "capability": "KNOWLEDGE_BASE",
+      "references": [
+        {
+          "url": "https://github.com/colinhacks/zod",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/drizzle-team/drizzle-orm",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/langfuse/langfuse",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        }
+      ],
+      "copyable_practices": [
+        "Enforce strict schema validation at ingest-to-embedding boundary.",
+        "Track provenance and verification timestamps as first-class fields.",
+        "Use deterministic fixture traces for retrieval quality regressions."
+      ],
+      "minimum_implementation_set": [
+        "Add schema checks for chunk/provenance writes in ingestion pipeline.",
+        "Require provenance fields in all knowledge import paths.",
+        "Add fixture-backed retrieval quality tests for citation admin surface."
+      ],
+      "verification_method": [
+        "gate: python3 scripts/validate_planning_and_traceability.py",
+        "test: server/routers/__tests__/capability-heartbeat.test.ts",
+        "artifact: docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json"
+      ],
+      "manifest_link": "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json#KNOWLEDGE_BASE",
+      "backlog_id": "BENCH-003"
+    },
+    {
+      "id": "CF-CAT-001",
+      "capability": "CATALOG",
+      "references": [
+        {
+          "url": "https://github.com/ajv-validator/ajv",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/drizzle-team/drizzle-orm",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/cli/cli",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        }
+      ],
+      "copyable_practices": [
+        "Validate generated catalog contracts against JSON schema in CI.",
+        "Keep typed table ownership contracts explicit and queryable.",
+        "Treat dataset documentation as interface with strict index hygiene."
+      ],
+      "minimum_implementation_set": [
+        "Expand table ownership mapping to cover all schema tables.",
+        "Add CI check for schema-to-manifest table ownership completeness.",
+        "Define canonical dataset artifact schema and validation gate."
+      ],
+      "verification_method": [
+        "gate: python3 scripts/gates/manifest-ownership-drift.py",
+        "gate: bash scripts/gates/canonical-contract-drift.sh",
+        "artifact: docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
+      ],
+      "manifest_link": "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json#CATALOG",
+      "backlog_id": "BENCH-004"
+    },
+    {
+      "id": "CF-MAP-001",
+      "capability": "ESRS_MAPPING",
+      "references": [
+        {
+          "url": "https://github.com/trpc/trpc",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/open-telemetry/opentelemetry-js",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/openai/evals",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        }
+      ],
+      "copyable_practices": [
+        "Publish typed mapping contracts for confidence-bearing outputs.",
+        "Instrument mapping calls with traceable confidence markers.",
+        "Use deterministic benchmark prompts for mapping quality checks."
+      ],
+      "minimum_implementation_set": [
+        "Add fixed mapping evaluation fixtures with expected confidence tiers.",
+        "Capture mapping trace metadata in structured logs/artifacts.",
+        "Bind mapping API outputs to schema-validated contract snapshots."
+      ],
+      "verification_method": [
+        "test: server/routers/__tests__/capability-heartbeat.test.ts",
+        "gate: bash scripts/gates/doc-code-validator.sh --canonical-only",
+        "artifact: docs/architecture/panel/_generated/CAPABILITY_GRAPH.json"
+      ],
+      "manifest_link": "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json#ESRS_MAPPING",
+      "backlog_id": "BENCH-005"
+    },
+    {
+      "id": "CF-ADV-001",
+      "capability": "ADVISORY",
+      "references": [
+        {
+          "url": "https://github.com/semantic-release/semantic-release",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/SigNoz/signoz",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        },
+        {
+          "url": "https://github.com/cli/cli",
+          "retrieved_utc": "2026-02-20T00:00:00Z"
+        }
+      ],
+      "copyable_practices": [
+        "Version advisory outputs and automate release-note style diffs.",
+        "Treat advisory artifacts as immutable, auditable release outputs.",
+        "Use explicit contributor/review playbooks for report updates."
+      ],
+      "minimum_implementation_set": [
+        "Add advisory artifact versioning policy with deterministic diff generation.",
+        "Add CI check for advisory schema + change-log completeness.",
+        "Link advisory release metadata to capability manifest evidence pointers."
+      ],
+      "verification_method": [
+        "gate: bash scripts/gates/canonical-docs-allowlist.sh",
+        "test: server/routers/__tests__/capability-heartbeat.test.ts",
+        "artifact: docs/spec/ADVISORY/ISA_CORE_CONTRACT.md"
+      ],
+      "manifest_link": "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json#ADVISORY",
+      "backlog_id": "BENCH-006"
     }
   ]
 }

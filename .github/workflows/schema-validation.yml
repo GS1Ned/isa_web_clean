@@ -2,7 +2,7 @@ name: Schema Validation
 
 on:
   push:
-    branches: [main, strict-no-console]
+    branches: [main]
     paths:
       - 'test-results/ci/**/*.json'
       - 'docs/evidence/_generated/**/*.json'
@@ -12,7 +12,7 @@ on:
       - 'docs/research/oss-benchmarks/2026-02-15/**/*.md'
       - 'scripts/validate_oss_benchmarks_2026_02_15.sh'
   pull_request:
-    branches: [main, strict-no-console]
+    branches: [main]
     paths:
       - 'test-results/ci/**/*.json'
       - 'docs/evidence/_generated/**/*.json'

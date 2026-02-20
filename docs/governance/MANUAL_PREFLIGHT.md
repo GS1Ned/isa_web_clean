@@ -84,3 +84,14 @@ Record in PR description:
 - head_sha
 - files changed
 - any deviations from checklist and why
+
+## 10. Tiered Test Policy (CI-Parity)
+Run in this order:
+- Tier 0 (blocking): `pnpm check` plus critical gates (`no-console`, `security-secrets-scan`, `slo-policy-check`, `observability-contract`, `security-gate`, `canonical-docs-allowlist`, `doc-code-validator --canonical-only`)
+- Tier 1 (blocking): `bash scripts/run-ci-tests.sh --report-dir test-results/ci --quarantine-file config/testing/vitest.quarantine.txt`
+- Tier 2 (non-blocking diagnostics): `bash scripts/run-ci-tests.sh --report-dir test-results/ci-quarantine --quarantine-file config/testing/vitest.quarantine.txt --quarantine-only`
+
+PASS if:
+- Tier 0 passes
+- Tier 1 passes
+- Tier 2 results are recorded for follow-up (failure is allowed but must be visible)

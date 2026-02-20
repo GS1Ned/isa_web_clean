@@ -45,7 +45,7 @@
 | `ASK_ISA` | `askISA`, `askISAV2`, `evaluation` | `server/routers/ask-isa.ts`, `server/routers/ask-isa-v2.ts`, `server/routers/evaluation.ts` | `qa_conversations`, `qa_messages`, `ask_isa_feedback`, `rag_traces`, `evaluation_results` |
 | `NEWS_HUB` | `hub`, `newsAdmin`, `cron`, `scraperHealth`, `pipelineObservability`, `regulatoryChangeLog` | `server/routers/hub.ts`, `server/news-admin-router.ts`, `server/routers/cron.ts`, `server/routers/scraper-health.ts`, `server/routers/pipeline-observability.ts`, `server/routers/regulatory-change-log.ts` | `hub_news`, `hub_news_history`, `news_recommendations`, `scraper_executions`, `scraper_health_summary`, `pipeline_execution_log`, `regulatory_change_log`, `regulatory_events` |
 | `KNOWLEDGE_BASE` | `citationAdmin` | `server/routers/citation-admin.ts`, `server/db-knowledge.ts`, `server/db-knowledge-vector.ts`, `server/hybrid-search.ts`, `server/embedding.ts` | `knowledge_embeddings`, `sources`, `source_chunks`, `ingest_item_provenance` |
-| `CATALOG` | `regulations`, `standards`, `gs1Standards`, `standardsDirectory`, `esrs`, `dutchInitiatives`, `datasetRegistry`, `governanceDocuments`, `gs1Attributes`, `gs1nlAttributes` | `server/routers/regulations.ts`, `server/routers/standards.ts`, `server/gs1-standards-router.ts`, `server/routers/standards-directory.ts`, `server/routers/dataset-registry.ts`, `server/routers/governance-documents.ts`, `server/routers/gs1-attributes.ts`, `server/routers/gs1nl-attributes.ts`, `server/routers.ts` | `regulations`, `gs1_standards`, `esrs_datapoints`, `dutch_initiatives`, `regulation_standard_mappings`, `dataset_registry`, `governance_documents`, `gs1_attributes`, `gs1_web_vocabulary` |
+| `CATALOG` | `regulations`, `standards`, `gs1Standards`, `standardsDirectory`, `esrs`, `dutchInitiatives`, `datasetRegistry`, `governanceDocuments`, `gs1Attributes`, `gs1nlAttributes` | `server/routers/regulations.ts`, `server/routers/standards.ts`, `server/gs1-standards-router.ts`, `server/routers/standards-directory.ts`, `server/routers/dataset-registry.ts`, `server/routers/governance-documents.ts`, `server/routers/gs1-attributes.ts`, `server/routers/gs1nl-attributes.ts`, `server/routers/esrs.ts`, `server/routers.ts` | `regulations`, `gs1_standards`, `esrs_datapoints`, `dutch_initiatives`, `regulation_standard_mappings`, `dataset_registry`, `governance_documents`, `gs1_attributes`, `gs1_web_vocabulary` |
 | `ESRS_MAPPING` | `esrsGs1Mapping`, `esrsRoadmap`, `gapAnalyzer`, `attributeRecommender` | `server/routers/esrs-gs1-mapping.ts`, `server/routers/esrs-roadmap.ts`, `server/routers/gap-analyzer.ts`, `server/routers/attribute-recommender.ts` | `gs1_esrs_mappings`, `gs1_attribute_esrs_mapping`, `regulation_esrs_mappings`, `mapping_feedback`, `esg_gs1_mappings` |
 | `ADVISORY` | `advisory`, `advisoryReports`, `advisoryDiff`, `esgArtefacts` | `server/routers/advisory.ts`, `server/routers/advisory-reports.ts`, `server/routers/advisory-diff.ts`, `server/routers/esg-artefacts.ts` | `advisory_reports`, `advisory_report_versions` |
 
@@ -89,7 +89,8 @@ Completion gate rule: every row must be `ACCEPTED` or `BLOCKED_WITH_MITIGATION`.
 | `DELTA-01` | Canonical system CURRENT/TARGET source | Only this file defines system CURRENT and TARGET | `ACCEPTED` | Supplemental file downgraded to non-canonical | `+0.08` |
 | `DELTA-02` | Capability ownership normalization | Router/table/schema/contract surfaces mapped to one owner or shared platform | `ACCEPTED` | Enforced in `CAPABILITY_MANIFEST.json` evidence/status sections | `+0.10` |
 | `DELTA-03` | Shared primitive promotion | Cross-capability concepts promoted to primitive dictionary | `ACCEPTED` | Enforced in `PRIMITIVE_DICTIONARY.json` evidence refs | `+0.08` |
-| `DELTA-04` | Multi-router module normalization | Multi-capability routers are split, sub-owned, or shared-promoted | `BLOCKED_WITH_MITIGATION` | Sub-surface ownership is explicit; physical splits deferred | `-0.09` |
+| `DELTA-04A` | Multi-router module normalization (pilot) | At least one mixed router surface is physically extracted without API break | `ACCEPTED` | `esrs` moved from inline `server/routers.ts` to `server/routers/esrs.ts` while preserving `appRouter.esrs` key | `+0.05` |
+| `DELTA-04B` | Multi-router module normalization (remaining scope) | Remaining mixed router surfaces are split, sub-owned, or shared-promoted | `BLOCKED_WITH_MITIGATION` | Sub-surface ownership is explicit; remaining physical splits deferred and tracked in execution registry | `-0.09` |
 | `DELTA-05` | Validation confidence model | Weighted pass/fail/unknown with limitation annotations | `ACCEPTED` | Enforced in `MINIMAL_VALIDATION_BUNDLE.json` | `+0.10` |
 | `DELTA-06` | Operational execution registry | Registry checkpoint required for phase transitions and DONE threshold | `ACCEPTED` | Enforced in `EXECUTION_STATE.json` | `+0.09` |
 | `DELTA-07` | Repo-manifest drift handling | Drift remediated or recorded as explicit delta row | `ACCEPTED` | Manifest authority + evidence pointers enforced | `+0.06` |
@@ -117,6 +118,18 @@ Canonical architecture contracts:
 - `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
 - `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
 - `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`
+
+Canonical contract set lock for the 2026-02-20 cleanup program:
+
+- `docs/spec/ARCHITECTURE.md`
+- `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
+- `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
+- `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
+- `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
+- `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`
+- `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`
+- `docs/spec/CONFLICT_REGISTER.md`
+- `docs/planning/refactoring/EXECUTION_STATE.json`
 
 Supporting execution/governance artifacts:
 
@@ -171,6 +184,8 @@ bash scripts/gates/observability-contract.sh /tmp/observability.current.json
 bash scripts/gates/security-gate.sh /tmp/security.current.json
 bash scripts/gates/canonical-docs-allowlist.sh
 bash scripts/gates/doc-code-validator.sh --canonical-only
+bash scripts/gates/canonical-contract-drift.sh
+python3 scripts/gates/manifest-ownership-drift.py
 ```
 
 ### 9.2 Confidence Formula
@@ -182,21 +197,32 @@ bash scripts/gates/doc-code-validator.sh --canonical-only
 
 ### 9.3 DONE Gate
 
-**FACT [EV-VAL-003]:** Current aggregate weighted validation confidence is `0.83`.
+**FACT [EV-VAL-003]:** Current aggregate weighted validation confidence is `1.00`.
 
 - `done_confidence_threshold = 0.75`
 - `delta_rows_terminal_required = true`
 - If threshold or delta-terminal conditions are not met, status must be `DONE_WITH_LIMITATIONS` (or DONE remains not complete).
+- Current gate interpretation: threshold is met; remaining failures are tracked as explicit post-DONE limitations.
 
 ### 9.4 Current Validation Limitations (Evidence-Backed)
 
-**FACT [EV-VAL-001]:** `observability_contract` currently reports `unknown` and contributes partial confidence due logging coverage below threshold.
+**FACT [EV-VAL-001]:** `observability_contract` currently reports `pass` with runtime-scoped coverage at threshold.
 
-**FACT [EV-VAL-002]:** `security_gate` currently reports `unknown` and contributes partial confidence because dependency scanning timed out.
+**FACT [EV-VAL-002]:** `security_gate` currently reports `pass` under deterministic timeout-fail semantics with `critical` blocking severity.
 
 **FACT [EV-VAL-004]:** Canonical doc-code validation passes in `--canonical-only` mode.
 
 **FACT [EV-VAL-005]:** Canonical docs allowlist pass is deterministic on tracked files; local untracked noise is warning-only by policy.
+
+**FACT [EV-VAL-006]:** `manifest_ownership_drift` currently reports `pass` with zero missing/duplicate router or table ownership entries.
+
+### 9.5 Tiered CI Policy
+
+**FACT [EV-ARCH-015]:** Tiered CI execution contract is defined in `.github/workflows/tiered-tests.yml`.
+
+- `Tier 0` (blocking): typecheck + critical gates.
+- `Tier 1` (blocking): stable unit/integration test execution excluding patterns listed in `config/testing/vitest.quarantine.txt`.
+- `Tier 2` (non-blocking): quarantine-only diagnostics using `scripts/run-ci-tests.sh --quarantine-only` with artifact upload.
 
 ---
 
@@ -205,7 +231,7 @@ bash scripts/gates/doc-code-validator.sh --canonical-only
 1. Enforce manifest ownership and evidence drift checks in CI.
 2. Resolve blocked multi-router physical splits incrementally with non-breaking sub-surface ownership.
 3. Reduce canonical doc-code drift first; keep global backlog visible but non-blocking for canonical gate.
-4. Upgrade security and observability gates from partial/unknown to deterministic checks.
+4. Reduce non-blocking high-severity dependency advisory backlog while preserving deterministic security gate behavior.
 
 ---
 
@@ -215,7 +241,7 @@ Architecture FACT claims must reference IDs in:
 - `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`
 
 Primary architecture evidence IDs:
-- `EV-ARCH-001` through `EV-ARCH-014`
+- `EV-ARCH-001` through `EV-ARCH-015`
 - `EV-CAP-*` (capability router/table/module ownership)
 - `EV-SHARED-*` (shared platform ownership)
 - `EV-P-*` (shared primitive derivation)

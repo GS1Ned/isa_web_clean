@@ -3,8 +3,8 @@
     "generated_at": "2026-02-20",
     "model": "codex-5.3",
     "repo_ref": {
-      "branch": "strict-no-console",
-      "commit": "70bde42",
+      "branch": "main",
+      "commit": "1593554",
       "evidence_index_paths": [
         "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
       ]
@@ -330,7 +330,7 @@
         "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GOVERNANCE_DOCUMENTS_TS",
         "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GS1_ATTRIBUTES_TS",
         "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GS1NL_ATTRIBUTES_TS",
-        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_TS",
+        "EV-CAP-CAT-MODULE-SERVER_ROUTERS_ESRS_TS",
         "EV-CAP-CAT-MODULE-SERVER_ROUTERS_TS"
       ]
     },

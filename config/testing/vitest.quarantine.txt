@@ -1,0 +1,10 @@
+# Canonical Vitest quarantine list.
+# One test-file glob pattern per line.
+# Optional metadata can follow after "|" and is ignored by runner scripts.
+# Format:
+# <glob> | owner=<team_or_handle> | expires=<YYYY-MM-DD> | reason=<short_reason>
+#
+# Example:
+# server/routers/__tests__/flaky-example.test.ts | owner=@isa-platform | expires=2026-03-31 | reason=intermittent_db_race
+#
+# No quarantined test files are registered yet.
