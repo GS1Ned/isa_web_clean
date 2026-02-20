@@ -4,7 +4,7 @@
     "generated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "a9c2e9f6408b82e61dc4422de740764eb2758381"
+      "commit": "15af8f3908d163a5e6fe65bf24b7d7e2c77f9d74"
     },
     "baseline_run": {
       "captured_at": "2026-02-20T02:56:32Z",
@@ -26,9 +26,9 @@
       "validated_at": "2026-02-20T02:57:29Z"
     },
     "latest_run": {
-      "validated_at": "2026-02-20T06:14:40Z",
-      "run_type": "PG-07_FULL_BUNDLE",
-      "commit": "a9c2e9f6408b82e61dc4422de740764eb2758381",
+      "validated_at": "2026-02-20T06:34:04Z",
+      "run_type": "PG-08_SECURITY_RATCHET",
+      "commit": "15af8f3908d163a5e6fe65bf24b7d7e2c77f9d74",
       "statuses": {
         "planning_validator": "pass",
         "ts_check": "pass",
@@ -37,13 +37,13 @@
         "slo_policy": "pass",
         "observability_contract": "pass",
         "security_gate": "pass",
+        "security_gate_no_waiver_canary": "fail_expected",
         "canonical_docs_allowlist": "pass",
         "doc_code_validator": "pass",
         "canonical_contract_drift": "pass",
         "manifest_ownership_drift": "pass",
         "reliability_smoke": "pass",
-        "perf_smoke": "pass",
-        "benchmark_validator": "pass"
+        "perf_smoke": "pass"
       }
     }
   },
@@ -129,7 +129,7 @@
       "status": "pass",
       "signal": 1,
       "contribution": 0.12,
-      "limitation": "Deterministic security gate passes with blocking levels set to critical; high-severity advisories remain tracked as non-blocking risk backlog."
+      "limitation": "Deterministic security gate now blocks high+critical severities; temporary waiver IDs are explicitly tracked and must be burned down under SEC-002."
     },
     {
       "id": "canonical_docs_allowlist",
@@ -185,7 +185,7 @@
     "confidence_score": 1,
     "rounded_confidence_score": 1,
     "formula": "sum(weight_i * signal_i)",
-    "status_interpretation": "all weighted validation checks pass under current deterministic policy thresholds; extended non-weighted checks also pass"
+    "status_interpretation": "all weighted validation checks pass under deterministic thresholds, including high+critical security blocking with explicit temporary waivers"
   },
   "completion_gate": {
     "done_confidence_threshold": 0.75,

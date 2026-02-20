@@ -16,14 +16,27 @@ TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 START_TS=$(date +%s)
 AUDIT_TIMEOUT_SEC="${SECURITY_AUDIT_TIMEOUT_SEC:-180}"
 AUDIT_LEVEL="${SECURITY_AUDIT_LEVEL:-high}"
-BLOCKING_LEVELS_RAW="${SECURITY_AUDIT_BLOCKING_LEVELS:-critical}"
+BLOCKING_LEVELS_RAW="${SECURITY_AUDIT_BLOCKING_LEVELS:-high,critical}"
+if [[ "${SECURITY_AUDIT_WAIVER_IDS+x}" == "x" ]]; then
+    WAIVER_IDS_RAW="${SECURITY_AUDIT_WAIVER_IDS}"
+else
+    WAIVER_IDS_RAW="GHSA-4R6H-8V6P-XVW6,GHSA-5PGG-2G8V-P4X9,GHSA-3PPC-4F35-3M26"
+fi
 
 BLOCKING_LEVELS_NORMALIZED="$(echo "$BLOCKING_LEVELS_RAW" | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
 if [[ -z "$BLOCKING_LEVELS_NORMALIZED" ]]; then
-    BLOCKING_LEVELS_NORMALIZED="critical"
+    BLOCKING_LEVELS_NORMALIZED="high,critical"
 fi
 IFS=',' read -r -a BLOCKING_LEVELS <<< "$BLOCKING_LEVELS_NORMALIZED"
 BLOCKING_LEVELS_EFFECTIVE="$(IFS=,; echo "${BLOCKING_LEVELS[*]}")"
+
+WAIVER_IDS_NORMALIZED="$(echo "$WAIVER_IDS_RAW" | tr '[:lower:]' '[:upper:]' | tr -d ' ')"
+WAIVER_IDS=()
+WAIVER_IDS_EFFECTIVE=""
+if [[ -n "$WAIVER_IDS_NORMALIZED" ]]; then
+    IFS=',' read -r -a WAIVER_IDS <<< "$WAIVER_IDS_NORMALIZED"
+    WAIVER_IDS_EFFECTIVE="$(IFS=,; echo "${WAIVER_IDS[*]}")"
+fi
 
 SECRET_SCAN_EXECUTED=false
 SECRETS_FOUND=0
@@ -36,6 +49,9 @@ MODERATE_VULNS=0
 LOW_VULNS=0
 INFO_VULNS=0
 BLOCKING_VULNS=0
+WAIVED_BLOCKING_VULNS=0
+ENFORCED_BLOCKING_VULNS=0
+WAIVER_HITS_JSON="[]"
 
 FAILURES=()
 
@@ -83,6 +99,14 @@ if command -v pnpm &> /dev/null; then
     for level in "${BLOCKING_LEVELS[@]}"; do
         if ! [[ "$level" =~ ^(info|low|moderate|high|critical)$ ]]; then
             FAILURES+=("SECURITY_AUDIT_BLOCKING_LEVELS contains unsupported value: $level")
+        fi
+    done
+    for waiver_id in "${WAIVER_IDS[@]-}"; do
+        if [[ -z "$waiver_id" ]]; then
+            continue
+        fi
+        if ! [[ "$waiver_id" =~ ^GHSA-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$ ]]; then
+            FAILURES+=("SECURITY_AUDIT_WAIVER_IDS contains invalid advisory id: $waiver_id")
         fi
     done
 
@@ -137,8 +161,8 @@ PY
     fi
 
     if [[ "$DEPENDENCY_SCAN_EXECUTED" == "true" ]] && [[ -s "${AUDIT_FILE:-}" ]]; then
-        # pnpm emits JSON lines; use the final object's metadata as canonical summary.
-        if jq -s -e 'length > 0 and (.[-1].metadata.vulnerabilities != null)' "$AUDIT_FILE" >/dev/null 2>&1; then
+        # pnpm emits JSON lines; use the final object's metadata for counts and advisories for waiver matching.
+        if jq -s -e 'length > 0 and (.[-1].advisories != null) and (.[-1].metadata.vulnerabilities != null)' "$AUDIT_FILE" >/dev/null 2>&1; then
             CRITICAL_VULNS=$(jq -s -r '.[-1].metadata.vulnerabilities.critical // 0' "$AUDIT_FILE")
             HIGH_VULNS=$(jq -s -r '.[-1].metadata.vulnerabilities.high // 0' "$AUDIT_FILE")
             MODERATE_VULNS=$(jq -s -r '.[-1].metadata.vulnerabilities.moderate // 0' "$AUDIT_FILE")
@@ -156,8 +180,33 @@ PY
                 esac
             done
 
-            if [[ "$BLOCKING_VULNS" -gt 0 ]]; then
-                FAILURES+=("Dependency audit found $BLOCKING_VULNS blocking vulnerabilities for levels [$BLOCKING_LEVELS_EFFECTIVE] (critical=$CRITICAL_VULNS, high=$HIGH_VULNS, moderate=$MODERATE_VULNS, low=$LOW_VULNS, info=$INFO_VULNS)")
+            BLOCKING_LEVELS_JSON=$(printf '%s\n' "${BLOCKING_LEVELS[@]}" | jq -R . | jq -s .)
+            WAIVER_IDS_JSON=$(printf '%s\n' "${WAIVER_IDS[@]-}" | sed '/^$/d' | jq -R . | jq -s .)
+            WAIVER_HITS_JSON=$(jq -s -c \
+                --argjson levels "$BLOCKING_LEVELS_JSON" \
+                --argjson waivers "$WAIVER_IDS_JSON" '
+                [.[-1].advisories[]?
+                  | . as $adv
+                  | (($adv.github_advisory_id // "") | ascii_upcase) as $id
+                  | select(($levels | index($adv.severity // "")) != null)
+                  | select(($waivers | index($id)) != null)
+                  | {
+                      advisory_id: $id,
+                      module: ($adv.module_name // "unknown"),
+                      severity: ($adv.severity // "unknown"),
+                      finding_count: (($adv.findings // []) | length),
+                      url: ($adv.url // "")
+                    }
+                ]' "$AUDIT_FILE")
+
+            WAIVED_BLOCKING_VULNS=$(jq -r '[.[] | (.finding_count // 0)] | add // 0' <<< "$WAIVER_HITS_JSON")
+            ENFORCED_BLOCKING_VULNS=$((BLOCKING_VULNS - WAIVED_BLOCKING_VULNS))
+            if [[ "$ENFORCED_BLOCKING_VULNS" -lt 0 ]]; then
+                ENFORCED_BLOCKING_VULNS=0
+            fi
+
+            if [[ "$ENFORCED_BLOCKING_VULNS" -gt 0 ]]; then
+                FAILURES+=("Dependency audit found $ENFORCED_BLOCKING_VULNS enforced blocking vulnerabilities for levels [$BLOCKING_LEVELS_EFFECTIVE] after waivers [$WAIVER_IDS_EFFECTIVE] (blocking_total=$BLOCKING_VULNS, waived=$WAIVED_BLOCKING_VULNS, critical=$CRITICAL_VULNS, high=$HIGH_VULNS, moderate=$MODERATE_VULNS, low=$LOW_VULNS, info=$INFO_VULNS)")
             fi
         else
             FAILURES+=("Dependency audit output was not parseable JSON")
@@ -208,7 +257,10 @@ cat > "$OUTPUT_FILE" << EOF
       "moderate_vulns": $MODERATE_VULNS,
       "low_vulns": $LOW_VULNS,
       "info_vulns": $INFO_VULNS,
-      "blocking_vulns": $BLOCKING_VULNS
+      "blocking_vulns": $BLOCKING_VULNS,
+      "waived_blocking_vulns": $WAIVED_BLOCKING_VULNS,
+      "enforced_blocking_vulns": $ENFORCED_BLOCKING_VULNS,
+      "waiver_hits": $WAIVER_HITS_JSON
     }
   },
   "thresholds": {
@@ -217,6 +269,7 @@ cat > "$OUTPUT_FILE" << EOF
     "audit_timeout_sec": $AUDIT_TIMEOUT_SEC,
     "audit_level": "$AUDIT_LEVEL",
     "blocking_levels": "$BLOCKING_LEVELS_EFFECTIVE",
+    "waiver_ids": "$WAIVER_IDS_EFFECTIVE",
     "blocking_vulns_max": 0
   },
   "unknowns": [],

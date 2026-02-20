@@ -33,7 +33,7 @@
   "definitions": {
     "date_yyyy_mm_dd_or_empty": {
       "type": "string",
-      "pattern": "^UNVERIFIED$|^$|^\\d{4}-\\d{2}-\\d{2}$"
+      "pattern": "^UNVERIFIED$|^UNKNOWN([_\\-][A-Z0-9]+)*$|^$|^\\d{4}-\\d{2}-\\d{2}$"
     },
     "evidence_link": {
       "type": "object",

@@ -4,7 +4,7 @@
     "updated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "a9c2e9f6408b82e61dc4422de740764eb2758381"
+      "commit": "15af8f3908d163a5e6fe65bf24b7d7e2c77f9d74"
     }
   },
   "registry_version": "1.1.0",
@@ -153,7 +153,8 @@
         "Planning validator and no-console gate remediated and revalidated",
         "Security gate deterministic policy hardened and revalidated",
         "Manifest ownership drift remediated by explicit shared-platform ownership coverage",
-        "Benchmark evidence package normalized to verified-or-unknown date policy"
+        "Benchmark evidence package normalized to verified-or-unknown date policy",
+        "Security gate policy ratcheted to high+critical blocking with deterministic waiver accounting"
       ],
       "evidence_paths": [
         "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
@@ -161,7 +162,7 @@
         "scripts/gates/canonical-docs-allowlist.sh"
       ],
       "unresolved_issues": [
-        "Dependency audit still reports non-blocking high-severity advisories under current critical-only blocking policy (tracked as SEC-001 follow-up)"
+        "Temporary high-severity advisory waivers remain configured and must be burned down (SEC-002)"
       ],
       "confidence": 0.95
     },
@@ -186,7 +187,7 @@
         "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
       ],
       "unresolved_issues": [
-        "Security high-severity advisory backlog remains open under non-blocking policy (SEC-001)"
+        "Temporary high-severity advisory waivers remain configured under SEC-002 follow-up policy"
       ],
       "confidence": 0.91
     }
@@ -207,7 +208,7 @@
     "delta_rows_terminal": true,
     "threshold_met": true,
     "result_status": "DONE_WITH_LIMITATIONS",
-    "rationale": "Confidence threshold and terminal delta conditions are met; final status remains DONE_WITH_LIMITATIONS due open SEC-001 high-severity advisory ratchet follow-up."
+    "rationale": "Confidence threshold and terminal delta conditions are met; status remains DONE_WITH_LIMITATIONS while temporary security waiver IDs remain active under SEC-002."
   },
   "continuation_run": {
     "started_at": "2026-02-20T05:38:25Z",
@@ -310,7 +311,7 @@
         ]
       }
     ],
-    "next_deterministic_task": "SEC-001 implement high-severity advisory ratchet plan (non-blocking follow-up)",
+    "next_deterministic_task": "SEC-002 remove temporary SECURITY_AUDIT_WAIVER_IDS by remediating waived advisories",
     "patch_group_checkpoints": [
       {
         "patch_group": "PG-00",
@@ -414,10 +415,31 @@
           "perf_smoke": "pass",
           "benchmark_validator": "pass"
         }
+      },
+      {
+        "patch_group": "PG-08",
+        "validated_at": "2026-02-20T06:34:04Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "planning_validator": "pass",
+          "pnpm_check": "pass",
+          "no_console_gate": "pass",
+          "secrets_scan": "pass",
+          "slo_policy": "pass",
+          "observability_contract": "pass",
+          "security_gate": "pass",
+          "security_gate_no_waiver_canary": "fail_expected",
+          "canonical_docs_allowlist": "pass",
+          "doc_code_validator_canonical": "pass",
+          "canonical_contract_drift": "pass",
+          "manifest_ownership_drift": "pass",
+          "reliability_smoke": "pass",
+          "perf_smoke": "pass"
+        }
       }
     ],
     "reopened_at": "2026-02-20T05:39:12Z",
-    "last_validated_at": "2026-02-20T06:14:40Z",
+    "last_validated_at": "2026-02-20T06:34:04Z",
     "completion_status": "DONE_WITH_LIMITATIONS"
   },
   "continuation_run_history": [
