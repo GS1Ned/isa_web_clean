@@ -106,11 +106,31 @@ jobs:
             exit 1
           fi
 
-          echo "Validating dataset registry JSON against dataset registry schema..."
-          ajv validate \
-            -s data/metadata/dataset_registry.schema.json \
-            -d data/metadata/dataset_registry.json \
-            --strict=false || exit 1
+          echo "Validating dataset registry JSON against dataset registry schema (draft-2020-12)..."
+          python3 -m pip install --quiet jsonschema==4.21.1
+          python3 - <<'PY'
+          import json
+          import sys
+          from jsonschema import Draft202012Validator
+
+          schema_path = "data/metadata/dataset_registry.schema.json"
+          data_path = "data/metadata/dataset_registry.json"
+
+          with open(schema_path, "r", encoding="utf-8") as f:
+              schema = json.load(f)
+          with open(data_path, "r", encoding="utf-8") as f:
+              data = json.load(f)
+
+          try:
+              Draft202012Validator.check_schema(schema)
+              Draft202012Validator(schema).validate(data)
+          except Exception as exc:
+              print("STOP=dataset_registry_contract_invalid")
+              print(str(exc))
+              sys.exit(1)
+
+          print("DONE=dataset_registry_contract_valid")
+          PY
 
       - name: Report validation results
         if: always()
