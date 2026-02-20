@@ -118,6 +118,18 @@ Canonical architecture contracts:
 - `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
 - `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`
 
+Canonical contract set lock for the 2026-02-20 cleanup program:
+
+- `docs/spec/ARCHITECTURE.md`
+- `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
+- `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
+- `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
+- `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
+- `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`
+- `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`
+- `docs/spec/CONFLICT_REGISTER.md`
+- `docs/planning/refactoring/EXECUTION_STATE.json`
+
 Supporting execution/governance artifacts:
 
 - `docs/planning/refactoring/EXECUTION_STATE.json`
