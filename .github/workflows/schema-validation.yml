@@ -107,7 +107,7 @@ jobs:
           fi
 
           echo "Validating dataset registry JSON against dataset registry schema (draft-2020-12)..."
-          npx -y -p ajv@8 -p ajv-formats@3 node - <<'NODE'
+          npm exec --yes --package=ajv@8 --package=ajv-formats@3 -- node - <<'NODE'
           const fs = require("fs");
           const Ajv2020 = require("ajv/dist/2020").default;
           const addFormats = require("ajv-formats");
