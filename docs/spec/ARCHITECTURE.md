@@ -189,6 +189,7 @@ bash scripts/gates/canonical-contract-drift.sh
 python3 scripts/gates/manifest-ownership-drift.py
 bash scripts/gates/reliability-smoke.sh /tmp/reliability.current.json
 bash scripts/gates/perf-smoke.sh /tmp/perf.current.json
+bash scripts/validate_oss_benchmarks_2026_02_15.sh
 ```
 
 ### 9.2 Confidence Formula
@@ -205,7 +206,7 @@ bash scripts/gates/perf-smoke.sh /tmp/perf.current.json
 - `done_confidence_threshold = 0.75`
 - `delta_rows_terminal_required = true`
 - If threshold or delta-terminal conditions are not met, status must be `DONE_WITH_LIMITATIONS` (or DONE remains not complete).
-- Current gate interpretation: threshold is met; remaining failures are tracked as explicit post-DONE limitations.
+- Current gate interpretation: threshold is met; remaining limitations are tracked as explicit post-DONE follow-up items.
 
 ### 9.4 Current Validation Limitations (Evidence-Backed)
 

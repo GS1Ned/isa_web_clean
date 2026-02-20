@@ -489,7 +489,7 @@
     "model": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "7961d538a7780aa8aaf645b88e681ea3c48a6129",
+      "commit": "a9c2e9f6408b82e61dc4422de740764eb2758381",
       "evidence_index_paths": [
         "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
       ]

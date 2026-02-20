@@ -1588,7 +1588,7 @@
     },
     {
       "claim": "Manifest ownership drift check reports pass with full router/table ownership coverage and no duplicates.",
-      "confidence": 1.0,
+      "confidence": 1,
       "evidence_type": "validation_result",
       "id": "EV-VAL-006",
       "line_end": 134,
@@ -1602,7 +1602,7 @@
     "generated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "7961d538a7780aa8aaf645b88e681ea3c48a6129"
+      "commit": "a9c2e9f6408b82e61dc4422de740764eb2758381"
     }
   },
   "primitive_derivation": {
