@@ -185,6 +185,7 @@ bash scripts/gates/security-gate.sh /tmp/security.current.json
 bash scripts/gates/canonical-docs-allowlist.sh
 bash scripts/gates/doc-code-validator.sh --canonical-only
 bash scripts/gates/canonical-contract-drift.sh
+python3 scripts/gates/manifest-ownership-drift.py
 ```
 
 ### 9.2 Confidence Formula

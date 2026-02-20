@@ -11,6 +11,7 @@ on:
       - "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
       - "docs/planning/refactoring/EXECUTION_STATE.json"
       - "scripts/gates/canonical-contract-drift.sh"
+      - "scripts/gates/manifest-ownership-drift.py"
       - ".github/workflows/canonical-contract-drift.yml"
   push:
     branches: [main]
@@ -22,6 +23,7 @@ on:
       - "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
       - "docs/planning/refactoring/EXECUTION_STATE.json"
       - "scripts/gates/canonical-contract-drift.sh"
+      - "scripts/gates/manifest-ownership-drift.py"
       - ".github/workflows/canonical-contract-drift.yml"
   workflow_dispatch: {}
 
@@ -40,3 +42,8 @@ jobs:
         run: |
           set -euo pipefail
           bash scripts/gates/canonical-contract-drift.sh
+
+      - name: Validate manifest ownership drift (routers/tables)
+        run: |
+          set -euo pipefail
+          python3 scripts/gates/manifest-ownership-drift.py
