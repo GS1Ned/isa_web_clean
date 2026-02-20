@@ -151,7 +151,8 @@
         "Tiered CI policy integrated (Tier 0/1 blocking, Tier 2 non-blocking)",
         "Quarantine controls integrated for unit/integration runner scripts",
         "Capability heartbeat smoke tests integrated across all six capabilities",
-        "Capability benchmark rubric and evidence requirements normalized"
+        "Capability benchmark rubric and evidence requirements normalized",
+        "Benchmark findings converted to capability-linked backlog rows (BENCH-001..BENCH-006)"
       ],
       "evidence_paths": [
         "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
@@ -242,7 +243,7 @@
       "docs/spec/CONFLICT_REGISTER.md",
       "docs/planning/refactoring/EXECUTION_STATE.json"
     ],
-    "last_validated_at": "2026-02-20T03:39:23Z",
+    "last_validated_at": "2026-02-20T03:41:42Z",
     "canonical_contract_set_locked": true,
     "canonical_contract_set_locked_at": "2026-02-20T02:57:52Z",
     "canonical_contract_set_lock_commit": "9925f1a",
@@ -483,6 +484,24 @@
       {
         "patch_group": "PG-06A",
         "validated_at": "2026-02-20T03:39:23Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "planning_validator": "fail:1",
+          "pnpm_check": "pass",
+          "no_console_gate": "fail:1",
+          "secrets_scan": "pass",
+          "slo_policy": "pass",
+          "observability_contract": "pass",
+          "security_gate": "fail:1",
+          "canonical_docs_allowlist": "pass",
+          "doc_code_validator_canonical": "pass",
+          "canonical_contract_drift": "fail:1",
+          "manifest_ownership_drift": "fail:1"
+        }
+      },
+      {
+        "patch_group": "PG-06B",
+        "validated_at": "2026-02-20T03:41:42Z",
         "validation_bundle_version": "V2",
         "statuses": {
           "planning_validator": "fail:1",

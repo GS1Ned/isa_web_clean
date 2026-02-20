@@ -42,6 +42,13 @@ Last verified date: 2026-02-15
   - explicit capability mapping (`ASK_ISA`, `NEWS_HUB`, `KNOWLEDGE_BASE`, `CATALOG`, `ESRS_MAPPING`, `ADVISORY`)
   - verification method (`gate`, `test`, or `artifact`)
 
+## PHASE 6B CONVERSION CONTRACT (2026-02-20 Refresh)
+- For each capability, select 3-5 external references and extract:
+  - copyable practices
+  - minimum implementation set
+  - proof method mapping (`gate`/`test`/`artifact`)
+- Every converted finding must map to one executable backlog row in `docs/planning/BACKLOG.csv`.
+
 ---
 
 ## Steps Executed (Setup -> Baseline -> Discovery -> Validation -> Forensics -> Synthesis -> Validation)
