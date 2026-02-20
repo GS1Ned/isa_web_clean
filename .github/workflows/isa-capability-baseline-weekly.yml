@@ -86,12 +86,21 @@ jobs:
 
       - name: Publish manual review summary
         run: |
+          FIXTURE_VERSIONS="unknown"
+          BLOCKING_METRICS="unknown"
+          if [[ -f "test-results/ci/isa-capability-eval.json" ]]; then
+            FIXTURE_VERSIONS="$(jq -r '[.capabilities[] | "\(.capability)=\(.fixture_version // "unknown")"] | join(", ")' test-results/ci/isa-capability-eval.json)"
+            BLOCKING_METRICS="$(jq -r '[.capabilities[].metrics[] | select(.status=="fail" and .enforcement=="fail") | "\(.capability):\(.metric_id)=\(.value)"] | if length==0 then "none" else join("; ") end' test-results/ci/isa-capability-eval.json)"
+          fi
           {
             echo "## Weekly ISA Baseline Candidate";
             echo "";
             echo "A new baseline candidate artifact was generated.";
             echo "";
             echo "- Stage: \`${{ github.event.inputs.stage || 'stage_a' }}\`";
+            echo "- Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}";
+            echo "- Fixture versions: ${FIXTURE_VERSIONS}";
+            echo "- Blocking metrics: ${BLOCKING_METRICS}";
             echo "Manual review is required before replacing canonical baseline:";
             echo "1. Inspect isa-capability-eval + isa-drift-report artifacts.";
             echo "2. Confirm drift status (current outcome: ${{ steps.drift.outcome }}).";
