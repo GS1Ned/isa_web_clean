@@ -232,7 +232,7 @@
       "docs/spec/CONFLICT_REGISTER.md",
       "docs/planning/refactoring/EXECUTION_STATE.json"
     ],
-    "last_validated_at": "2026-02-20T03:03:00Z",
+    "last_validated_at": "2026-02-20T03:04:39Z",
     "canonical_contract_set_locked": true,
     "canonical_contract_set_locked_at": "2026-02-20T02:57:52Z",
     "canonical_contract_set_lock_commit": "9925f1a",
@@ -336,6 +336,22 @@
       {
         "patch_group": "PG-02B.2",
         "validated_at": "2026-02-20T03:03:00Z",
+        "validation_bundle_version": "V1",
+        "statuses": {
+          "planning_validator": "fail:1",
+          "pnpm_check": "pass",
+          "no_console_gate": "fail:1",
+          "secrets_scan": "pass",
+          "slo_policy": "pass",
+          "observability_contract": "pass",
+          "security_gate": "fail:1",
+          "canonical_docs_allowlist": "pass",
+          "doc_code_validator_canonical": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-03A",
+        "validated_at": "2026-02-20T03:04:39Z",
         "validation_bundle_version": "V1",
         "statuses": {
           "planning_validator": "fail:1",
