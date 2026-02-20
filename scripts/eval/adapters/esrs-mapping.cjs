@@ -6,6 +6,7 @@ const {
   latencyNorm,
   selectDatasetByPrefix,
 } = require("../lib/common.cjs");
+const { measureRuntimeProbe } = require("../lib/runtime-probes.cjs");
 
 async function evaluate(context) {
   const { registryEntry, datasets, thresholdsByMetric, fixtureVersion } = context;
@@ -52,8 +53,22 @@ async function evaluate(context) {
     ).toFixed(4)
   );
 
-  const latencyP95Ms = 120;
-  const latencyMeasurementMode = "synthetic";
+  const latencyProbe = await measureRuntimeProbe({
+    probeId: "esrs.adapter.compute.v1",
+    fn: () => {
+      let checksum = 0;
+      for (const row of rows) {
+        checksum += Number(Boolean(row.gs1Attribute));
+        checksum += Number(typeof row.rationale === "string" && row.rationale.length > 20);
+        checksum += Number(typeof row.sourceAuthority === "string" && row.sourceAuthority.length > 0);
+        checksum += Array.isArray(row.sectors) ? row.sectors.length : 0;
+      }
+      return checksum;
+    },
+  });
+
+  const latencyP95Ms = latencyProbe.p95_ms;
+  const latencyMeasurementMode = latencyProbe.measurement_mode;
 
   const metrics = [
     {
@@ -125,6 +140,8 @@ async function evaluate(context) {
       fixture_path: dataset.path,
       measurement_mode: latencyMeasurementMode,
       fixture_version: fixtureVersion,
+      runtime_probe_id: latencyProbe.runtime_probe_id,
+      runtime_probe_samples: latencyProbe.samples,
     },
     {
       dataset_id: dataset.id,
@@ -135,6 +152,8 @@ async function evaluate(context) {
       fixture_path: dataset.path,
       measurement_mode: latencyMeasurementMode,
       fixture_version: fixtureVersion,
+      runtime_probe_id: latencyProbe.runtime_probe_id,
+      runtime_probe_samples: latencyProbe.samples,
     },
   ];
 
