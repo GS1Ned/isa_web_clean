@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "enforcement_mode": "advisory-first",
+  "weights": {
+    "correctness": 0.4,
+    "coverage": 0.2,
+    "explainability": 0.15,
+    "authority": 0.15,
+    "latency_norm": 0.1
+  },
+  "metrics": {
+    "kb.ingestion.correctness": { "op": ">=", "value": 0.9, "enforcement": "warn" },
+    "kb.metadata.completeness": { "op": ">=", "value": 0.95, "enforcement": "warn" },
+    "kb.chunk.quality": { "op": ">=", "value": 0.9, "enforcement": "warn" },
+    "kb.linking.density": { "op": ">=", "value": 0.8, "enforcement": "warn" },
+    "kb.lifecycle.governance": { "op": ">=", "value": 0.9, "enforcement": "warn" },
+    "kb.latency.p95_ms": { "op": "<=", "value": 5000, "enforcement": "warn" },
+
+    "catalog.metadata.completeness": { "op": ">=", "value": 0.9, "enforcement": "warn" },
+    "catalog.authority.tier_correctness": { "op": ">=", "value": 0.85, "enforcement": "warn" },
+    "catalog.verification.currency_days": { "op": "<=", "value": 730, "enforcement": "warn" },
+    "catalog.lifecycle.state_correctness": { "op": ">=", "value": 0.9, "enforcement": "warn" },
+    "catalog.latency.p95_ms": { "op": "<=", "value": 5000, "enforcement": "warn" },
+
+    "esrs.mapping.precision": { "op": ">=", "value": 0.85, "enforcement": "warn" },
+    "esrs.mapping.coverage": { "op": ">=", "value": 0.8, "enforcement": "warn" },
+    "esrs.mapping.explainability_presence": { "op": ">=", "value": 0.9, "enforcement": "warn" },
+    "esrs.mapping.authority_correctness": { "op": ">=", "value": 0.85, "enforcement": "warn" },
+    "esrs.mapping.latency.p95_ms": { "op": "<=", "value": 5000, "enforcement": "warn" },
+
+    "news.freshness.median_minutes": { "op": "<=", "value": 1440, "enforcement": "warn" },
+    "news.source.coverage_ratio": { "op": ">=", "value": 0.6, "enforcement": "warn" },
+    "news.duplicate.rate": { "op": "<=", "value": 0.35, "enforcement": "warn" },
+    "news.classification.f1_macro": { "op": ">=", "value": 0.7, "enforcement": "warn" },
+    "news.latency.p95_ms": { "op": "<=", "value": 5000, "enforcement": "warn" },
+
+    "advisory.evidence.coverage": { "op": ">=", "value": 0.95, "enforcement": "fail" },
+    "advisory.recommendation.structure_score": { "op": ">=", "value": 0.9, "enforcement": "fail" },
+    "advisory.gap_detection.f1": { "op": ">=", "value": 0.9, "enforcement": "fail" },
+    "advisory.authority.propagation": { "op": ">=", "value": 0.85, "enforcement": "fail" },
+    "advisory.latency.p95_ms": { "op": "<=", "value": 5000, "enforcement": "fail" },
+
+    "ask.citation.presence": { "op": ">=", "value": 0.9, "enforcement": "warn" },
+    "ask.citation.validity": { "op": ">=", "value": 0.8, "enforcement": "warn" },
+    "ask.source.diversity": { "op": ">=", "value": 0.5, "enforcement": "warn" },
+    "ask.abstention.correctness": { "op": ">=", "value": 0.9, "enforcement": "warn" },
+    "ask.answer.completeness": { "op": ">=", "value": 0.8, "enforcement": "warn" },
+    "ask.latency.p95_ms": { "op": "<=", "value": 5000, "enforcement": "warn" }
+  }
+}

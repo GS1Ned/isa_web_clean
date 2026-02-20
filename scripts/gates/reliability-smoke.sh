@@ -49,6 +49,26 @@ if [[ ${#FAIL_REASONS[@]} -gt 0 ]]; then
   STATUS="fail"
 fi
 
+CAPABILITY_EVAL_BLOCK="null"
+if [[ -f "test-results/ci/isa-capability-eval.json" ]]; then
+  DRIFT_STATUS="unknown"
+  if [[ -f "test-results/ci/isa-drift-report.json" ]]; then
+    DRIFT_STATUS="$(jq -r '.status // "unknown"' test-results/ci/isa-drift-report.json 2>/dev/null || echo "unknown")"
+  fi
+
+  CAPABILITY_EVAL_BLOCK="$(
+    jq -c --arg drift "$DRIFT_STATUS" '{
+      run_id: .run_id,
+      generated_at: .generated_at,
+      status: .status,
+      isa_quality_score: (.isa_quality_score.value // 0),
+      blocking_failures: (.summary.blocking_failures // 0),
+      warning_failures: (.summary.warning_failures // 0),
+      drift_status: $drift
+    }' test-results/ci/isa-capability-eval.json
+  )"
+fi
+
 if [[ ${#FAIL_REASONS[@]} -gt 0 ]]; then
   FAIL_REASONS_JSON=$(printf '%s\n' "${FAIL_REASONS[@]}" | jq -R . | jq -s .)
 else
@@ -80,6 +100,7 @@ cat > "$OUTPUT_FILE" << EOF
     "news_pipeline_success_rate_min": 0.95,
     "news_freshness_hours_max": 24
   },
+  "capability_eval": $CAPABILITY_EVAL_BLOCK,
   "unknowns": [],
   "fail_reasons": $FAIL_REASONS_JSON
 }

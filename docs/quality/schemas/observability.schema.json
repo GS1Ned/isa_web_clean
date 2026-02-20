@@ -54,6 +54,17 @@
     "unknowns": {
       "type": "array",
       "items": {"type": "string"}
+    },
+    "capability_eval": {
+      "type": "object",
+      "required": ["run_id", "metrics_emitted", "capabilities_covered"],
+      "properties": {
+        "run_id": {"type": "string"},
+        "generated_at": {"type": "string", "format": "date-time"},
+        "metrics_emitted": {"type": "integer", "minimum": 0},
+        "capabilities_covered": {"type": "integer", "minimum": 0},
+        "status": {"type": "string", "enum": ["pass", "fail"]}
+      }
     }
   }
 }

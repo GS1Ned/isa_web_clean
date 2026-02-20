@@ -17,6 +17,7 @@ function parseArgs() {
   const options = {
     fixtures: "data/metadata/rag_eval_fixtures_v1.json",
     out: "test-results/ci/rag-eval.json",
+    datasetId: "ask_isa_golden_v1",
     limit: null,
     dryRun: false,
   };
@@ -29,6 +30,9 @@ function parseArgs() {
         break;
       case "--out":
         options.out = args[++i];
+        break;
+      case "--dataset-id":
+        options.datasetId = args[++i];
         break;
       case "--limit":
         options.limit = Number.parseInt(args[++i] || "", 10);
@@ -143,6 +147,7 @@ async function main() {
     perCase.push({
       id: String(c.id || "UNKNOWN"),
       grounded,
+      citation_count: actualCitations.length,
       citation_precision: Number(precision.toFixed(4)),
       citation_recall: Number(recall.toFixed(4)),
       answer_consistency: consistent,
@@ -183,6 +188,8 @@ async function main() {
 
   const report = {
     timestamp: new Date().toISOString(),
+    evaluation_mode: "fixture-first",
+    dataset_id: opts.datasetId,
     query_count: n,
     metrics,
     thresholds,
@@ -205,4 +212,3 @@ main().catch((e) => {
   cliErr("STOP=unhandled_error:%s", String(e));
   process.exit(1);
 });
-

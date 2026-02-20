@@ -154,6 +154,19 @@ if [[ ${#FAIL_REASONS[@]} -gt 0 ]]; then
     STATUS="fail"
 fi
 
+CAPABILITY_EVAL_BLOCK="null"
+if [[ -f "test-results/ci/isa-capability-eval.json" ]]; then
+    CAPABILITY_EVAL_BLOCK="$(
+        jq -c '{
+          run_id: .run_id,
+          generated_at: .generated_at,
+          status: .status,
+          metrics_emitted: (.summary.total_metrics // 0),
+          capabilities_covered: ((.capabilities | length) // 0)
+        }' test-results/ci/isa-capability-eval.json
+    )"
+fi
+
 if [[ ${#FAIL_REASONS[@]} -gt 0 ]]; then
     FAIL_REASONS_JSON=$(printf '%s\n' "${FAIL_REASONS[@]}" | jq -R . | jq -s .)
 else
@@ -184,6 +197,7 @@ cat > "$OUTPUT_FILE" << EOF
   "thresholds": {
     "structured_logging_coverage_min": 80
   },
+  "capability_eval": $CAPABILITY_EVAL_BLOCK,
   "unknowns": [],
   "fail_reasons": $FAIL_REASONS_JSON
 }
