@@ -261,3 +261,22 @@ RECOMMENDATION
     - `test-results/ci/`
   - change_outline: Add a small set of deterministic evaluation inputs and expected outputs (JSON) with schema validation; integrate into CI as a fast regression gate.
   - no_console_strategy: Evaluation harness should write machine-readable artifacts to disk and use `serverLogger` only for structured failure reporting.
+
+---
+
+## Phase 6A - Capability Rubric Mapping (2026-02-20)
+
+FACT
+- Benchmarking now requires five dimensions per capability:
+  - `reliability`, `security`, `observability`, `data_provenance`, `evaluation_quality`
+- Evidence for each mapped practice must include:
+  - source URL, retrieval UTC date, capability mapping, and verification method (`gate`, `test`, or `artifact`).
+
+RECOMMENDATION
+- Primary emphasis by capability:
+  - `ASK_ISA`: evaluation_quality, observability, security
+  - `NEWS_HUB`: reliability, observability, data_provenance
+  - `KNOWLEDGE_BASE`: data_provenance, security, observability
+  - `CATALOG`: data_provenance, reliability, security
+  - `ESRS_MAPPING`: evaluation_quality, data_provenance, reliability
+  - `ADVISORY`: reliability, security, observability

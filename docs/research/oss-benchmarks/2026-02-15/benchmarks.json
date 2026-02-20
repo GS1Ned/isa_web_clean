@@ -1,7 +1,7 @@
 {
   "version": "2026-02-15",
   "repo": "GS1Ned/isa_web_clean",
-  "branch": "strict-no-console",
+  "branch": "main",
   "candidates": [
     {
       "name": "SigNoz/signoz",
@@ -1109,5 +1109,91 @@
       ],
       "last_verified_date": "2026-02-15"
     }
-  ]
+  ],
+  "capability_rubric": {
+    "dimensions": [
+      {
+        "id": "reliability",
+        "description": "SLO/error-budget alignment, retry/backoff, idempotency, and deterministic failure handling."
+      },
+      {
+        "id": "security",
+        "description": "Dependency/security policy enforcement, authz boundaries, and secret hygiene."
+      },
+      {
+        "id": "observability",
+        "description": "Structured logging, traceability, and actionable telemetry coverage."
+      },
+      {
+        "id": "data_provenance",
+        "description": "Lineage, source attribution, and reproducible dataset/version references."
+      },
+      {
+        "id": "evaluation_quality",
+        "description": "Deterministic fixtures, benchmark repeatability, and quality signal governance."
+      }
+    ],
+    "scoring_scale": {
+      "0": "absent",
+      "1": "ad_hoc",
+      "2": "defined",
+      "3": "automated"
+    },
+    "capability_focus": [
+      {
+        "capability": "ASK_ISA",
+        "priority_dimensions": [
+          "evaluation_quality",
+          "observability",
+          "security"
+        ]
+      },
+      {
+        "capability": "NEWS_HUB",
+        "priority_dimensions": [
+          "reliability",
+          "observability",
+          "data_provenance"
+        ]
+      },
+      {
+        "capability": "KNOWLEDGE_BASE",
+        "priority_dimensions": [
+          "data_provenance",
+          "security",
+          "observability"
+        ]
+      },
+      {
+        "capability": "CATALOG",
+        "priority_dimensions": [
+          "data_provenance",
+          "reliability",
+          "security"
+        ]
+      },
+      {
+        "capability": "ESRS_MAPPING",
+        "priority_dimensions": [
+          "evaluation_quality",
+          "data_provenance",
+          "reliability"
+        ]
+      },
+      {
+        "capability": "ADVISORY",
+        "priority_dimensions": [
+          "reliability",
+          "security",
+          "observability"
+        ]
+      }
+    ],
+    "evidence_requirements": {
+      "source_url_required": true,
+      "retrieval_utc_required": true,
+      "capability_mapping_required": true,
+      "verification_method_required": true
+    }
+  }
 }

@@ -29,6 +29,19 @@ Last verified date: 2026-02-15
   2. Re-running the GitHub searches and metadata extraction.
   3. Re-running the validator script: `bash scripts/validate_oss_benchmarks_2026_02_15.sh`.
 
+## PHASE 6A RUBRIC CONTRACT (2026-02-20 Refresh)
+- Capability rubric dimensions (required for each benchmarked capability):
+  1. `reliability` (SLO/error-budget alignment, retry/idempotency patterns)
+  2. `security` (dependency policy, authz posture, secret hygiene)
+  3. `observability` (structured logs, traces, actionable telemetry)
+  4. `data_provenance` (source traceability, lineage, reproducibility)
+  5. `evaluation_quality` (deterministic fixtures, quality/eval governance)
+- Evidence requirements (mandatory):
+  - source URL
+  - retrieval UTC date
+  - explicit capability mapping (`ASK_ISA`, `NEWS_HUB`, `KNOWLEDGE_BASE`, `CATALOG`, `ESRS_MAPPING`, `ADVISORY`)
+  - verification method (`gate`, `test`, or `artifact`)
+
 ---
 
 ## Steps Executed (Setup -> Baseline -> Discovery -> Validation -> Forensics -> Synthesis -> Validation)
@@ -101,4 +114,3 @@ Last verified date: 2026-02-15
 
 8. Validation (hard gate)
    - Create and run: `scripts/validate_oss_benchmarks_2026_02_15.sh`
-
