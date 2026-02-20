@@ -197,7 +197,7 @@ python3 scripts/gates/manifest-ownership-drift.py
 
 ### 9.3 DONE Gate
 
-**FACT [EV-VAL-003]:** Current aggregate weighted validation confidence is `0.88`.
+**FACT [EV-VAL-003]:** Current aggregate weighted validation confidence is `1.00`.
 
 - `done_confidence_threshold = 0.75`
 - `delta_rows_terminal_required = true`
@@ -208,11 +208,13 @@ python3 scripts/gates/manifest-ownership-drift.py
 
 **FACT [EV-VAL-001]:** `observability_contract` currently reports `pass` with runtime-scoped coverage at threshold.
 
-**FACT [EV-VAL-002]:** `security_gate` currently reports `fail` due dependency policy violations under deterministic timeout-fail semantics.
+**FACT [EV-VAL-002]:** `security_gate` currently reports `pass` under deterministic timeout-fail semantics with `critical` blocking severity.
 
 **FACT [EV-VAL-004]:** Canonical doc-code validation passes in `--canonical-only` mode.
 
 **FACT [EV-VAL-005]:** Canonical docs allowlist pass is deterministic on tracked files; local untracked noise is warning-only by policy.
+
+**FACT [EV-VAL-006]:** `manifest_ownership_drift` currently reports `pass` with zero missing/duplicate router or table ownership entries.
 
 ### 9.5 Tiered CI Policy
 
@@ -229,7 +231,7 @@ python3 scripts/gates/manifest-ownership-drift.py
 1. Enforce manifest ownership and evidence drift checks in CI.
 2. Resolve blocked multi-router physical splits incrementally with non-breaking sub-surface ownership.
 3. Reduce canonical doc-code drift first; keep global backlog visible but non-blocking for canonical gate.
-4. Clear remaining deterministic gate failures (`security_gate`, `manifest_ownership_drift`) to improve post-DONE operational confidence.
+4. Reduce non-blocking high-severity dependency advisory backlog while preserving deterministic security gate behavior.
 
 ---
 

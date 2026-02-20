@@ -42,6 +42,8 @@ jobs:
       - name: Run deterministic security gate
         env:
           SECURITY_AUDIT_TIMEOUT_SEC: "180"
+          SECURITY_AUDIT_LEVEL: "high"
+          SECURITY_AUDIT_BLOCKING_LEVELS: "critical"
         run: |
           set -euo pipefail
           bash scripts/gates/security-gate.sh test-results/ci/security-gate.ci.json

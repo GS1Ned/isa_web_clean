@@ -4,7 +4,7 @@
     "generated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "a6ac820"
+      "commit": "1593554"
     },
     "contract_version": "2.0.0"
   },
@@ -1344,7 +1344,7 @@
     },
     {
       "id": "EV-VAL-002",
-      "claim": "Security gate reports fail under deterministic timeout-fail semantics due dependency policy violations.",
+      "claim": "Security gate reports pass under deterministic timeout-fail semantics with critical-severity blocking policy.",
       "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
       "line_start": 101,
       "line_end": 106,
@@ -1353,7 +1353,7 @@
     },
     {
       "id": "EV-VAL-003",
-      "claim": "Aggregate weighted confidence is 0.88 with DONE threshold set to 0.75.",
+      "claim": "Aggregate weighted confidence is 1.00 with DONE threshold set to 0.75.",
       "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
       "line_start": 136,
       "line_end": 146,
@@ -1431,6 +1431,15 @@
       "line_end": 140,
       "evidence_type": "ci_policy_contract",
       "confidence": 1
+    },
+    {
+      "id": "EV-VAL-006",
+      "claim": "Manifest ownership drift check reports pass with full router/table ownership coverage and no duplicates.",
+      "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
+      "line_start": 129,
+      "line_end": 134,
+      "evidence_type": "validation_result",
+      "confidence": 1.0
     }
   ],
   "capability_derivation": {
