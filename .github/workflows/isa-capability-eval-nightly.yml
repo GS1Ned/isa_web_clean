@@ -31,6 +31,15 @@ jobs:
         with:
           node-version: "22.13.0"
 
+      - name: Resolve stage and drift baseline
+        id: baseline
+        run: |
+          set -euo pipefail
+          STAGE="${{ github.event.inputs.stage || 'stage_a' }}"
+          BASELINE_PATH="$(node scripts/eval/resolve-baseline-path.cjs --stage "$STAGE")"
+          echo "stage=$STAGE" >> "$GITHUB_OUTPUT"
+          echo "baseline_path=$BASELINE_PATH" >> "$GITHUB_OUTPUT"
+
       - name: Restore drift history cache
         id: restore-history
         uses: actions/cache/restore@v4
@@ -46,7 +55,7 @@ jobs:
           node scripts/eval/run-capability-evals.cjs \
             --registry data/evaluation/golden/registry.json \
             --thresholds docs/quality/thresholds/isa-capability-thresholds.json \
-            --stage "${{ github.event.inputs.stage || 'stage_a' }}" \
+            --stage "${{ steps.baseline.outputs.stage }}" \
             --out-json test-results/ci/isa-capability-eval.json \
             --run-id nightly-${{ github.run_id }}
 
@@ -65,7 +74,7 @@ jobs:
           set -euo pipefail
           node scripts/eval/drift-detect.cjs \
             --eval test-results/ci/isa-capability-eval.json \
-            --baseline data/evaluation/baselines/isa-capability-baseline.json \
+            --baseline "${{ steps.baseline.outputs.baseline_path }}" \
             --history test-results/ci/isa-capability-eval-history.json \
             --out test-results/ci/isa-drift-report.json
 
@@ -81,7 +90,8 @@ jobs:
           {
             echo "## Nightly Capability Eval";
             echo "";
-            echo "- Stage: `${{ github.event.inputs.stage || 'stage_a' }}`";
+            echo "- Stage: `${{ steps.baseline.outputs.stage }}`";
+            echo "- Baseline path: `${{ steps.baseline.outputs.baseline_path }}`";
             echo "- Threshold assertion outcome: `${{ steps.assert.outcome }}`";
             echo "- Drift detection outcome: `${{ steps.drift.outcome }}`";
             echo "- Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}";

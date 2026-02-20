@@ -46,7 +46,7 @@ function main() {
     stage: evaluation.stage || "stage_a",
     source_eval_run_id: evaluation.run_id,
     source_eval_generated_at: evaluation.generated_at,
-    notes: "Weekly baseline candidate generated from latest unified ISA capability evaluation. Requires manual review and approval before replacing canonical baseline.",
+    notes: "Weekly baseline candidate generated from latest unified ISA capability evaluation. Requires manual review and approval before replacing the stage-specific canonical baseline.",
     metrics,
     metric_meta: metricMeta,
   };
