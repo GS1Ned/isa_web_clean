@@ -3,7 +3,8 @@ set -euo pipefail
 
 # Canonical Contract Drift Gate
 # Ensures canonical machine-readable contracts are refreshed against current repo state.
-# Commit matching allows HEAD or HEAD^ to support pre-commit generation semantics.
+# Commit matching allows HEAD/parents to support pre-commit generation semantics
+# and pull_request merge refs.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
@@ -19,14 +20,11 @@ fi
 
 HEAD_FULL="$(git rev-parse HEAD)"
 HEAD_SHORT="$(git rev-parse --short HEAD)"
-PARENT_FULL="$(git rev-parse HEAD^ 2>/dev/null || true)"
-PARENT_SHORT=""
-if [[ -n "$PARENT_FULL" ]]; then
-  PARENT_SHORT="$(git rev-parse --short HEAD^)"
-fi
 
 EXPECTED_BRANCH="${CANONICAL_EXPECTED_BRANCH:-}"
-if [[ -n "${GITHUB_REF_NAME:-}" ]]; then
+if [[ -n "${GITHUB_BASE_REF:-}" ]]; then
+  EXPECTED_BRANCH="${GITHUB_BASE_REF#refs/heads/}"
+elif [[ -n "${GITHUB_REF_NAME:-}" ]]; then
   EXPECTED_BRANCH="${GITHUB_REF_NAME#refs/heads/}"
 fi
 if [[ -z "$EXPECTED_BRANCH" ]]; then
@@ -42,9 +40,36 @@ CANONICAL_CONTRACT_FILES=(
   "docs/planning/refactoring/EXECUTION_STATE.json"
 )
 
-EXPECTED_COMMITS="$HEAD_SHORT"
-if [[ -n "$PARENT_SHORT" ]]; then
-  EXPECTED_COMMITS="$HEAD_SHORT|$PARENT_SHORT"
+expected_commit_values=()
+
+add_expected_commit () {
+  local ref="$1"
+  local full=""
+  local short=""
+  full="$(git rev-parse "$ref" 2>/dev/null || true)"
+  if [[ -z "$full" ]]; then
+    return
+  fi
+  short="$(git rev-parse --short "$ref" 2>/dev/null || true)"
+  expected_commit_values+=("$full")
+  if [[ -n "$short" ]]; then
+    expected_commit_values+=("$short")
+  fi
+}
+
+# Always allow current commit and direct parent.
+add_expected_commit "HEAD"
+add_expected_commit "HEAD^"
+
+# On pull_request merge refs, allow second parent (PR head) and its parent if available.
+if [[ -n "${GITHUB_BASE_REF:-}" ]]; then
+  add_expected_commit "HEAD^2"
+  add_expected_commit "HEAD^2^"
+fi
+
+EXPECTED_COMMITS="$(printf '%s\n' "${expected_commit_values[@]}" | awk 'NF' | sort -u | paste -sd'|' -)"
+if [[ -z "$EXPECTED_COMMITS" ]]; then
+  EXPECTED_COMMITS="$HEAD_SHORT"
 fi
 
 violations=0
@@ -72,14 +97,12 @@ for file in "${CANONICAL_CONTRACT_FILES[@]}"; do
   fi
 
   commit_ok=false
-  if [[ "$repo_commit" == "$HEAD_FULL" || "$repo_commit" == "$HEAD_SHORT" ]]; then
-    commit_ok=true
-  fi
-  if [[ -n "$PARENT_FULL" ]]; then
-    if [[ "$repo_commit" == "$PARENT_FULL" || "$repo_commit" == "$PARENT_SHORT" ]]; then
+  for expected in "${expected_commit_values[@]}"; do
+    if [[ "$repo_commit" == "$expected" ]]; then
       commit_ok=true
+      break
     fi
-  fi
+  done
 
   if [[ "$commit_ok" == false ]]; then
     details+=("$file :: commit mismatch (expected one of $EXPECTED_COMMITS, found=$repo_commit)")

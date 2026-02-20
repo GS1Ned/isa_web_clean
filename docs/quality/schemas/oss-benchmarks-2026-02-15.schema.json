@@ -21,6 +21,13 @@
     "action_plan": {
       "type": "array",
       "items": { "$ref": "#/definitions/action_plan_item" }
+    },
+    "capability_rubric": {
+      "$ref": "#/definitions/capability_rubric"
+    },
+    "capability_findings": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/capability_finding" }
     }
   },
   "definitions": {
@@ -180,6 +187,113 @@
         "no_console_compliance": { "type": "string" },
         "evidence": { "type": "array", "items": { "$ref": "#/definitions/evidence_link" } },
         "last_verified_date": { "type": "string", "const": "2026-02-15" }
+      }
+    },
+    "capability_rubric_dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "capability_focus_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capability", "priority_dimensions"],
+      "properties": {
+        "capability": {
+          "type": "string",
+          "enum": ["ASK_ISA", "NEWS_HUB", "KNOWLEDGE_BASE", "CATALOG", "ESRS_MAPPING", "ADVISORY"]
+        },
+        "priority_dimensions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "capability_rubric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimensions", "scoring_scale", "capability_focus", "evidence_requirements"],
+      "properties": {
+        "dimensions": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/capability_rubric_dimension" }
+        },
+        "scoring_scale": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "capability_focus": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/capability_focus_item" }
+        },
+        "evidence_requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_url_required",
+            "retrieval_utc_required",
+            "capability_mapping_required",
+            "verification_method_required"
+          ],
+          "properties": {
+            "source_url_required": { "type": "boolean" },
+            "retrieval_utc_required": { "type": "boolean" },
+            "capability_mapping_required": { "type": "boolean" },
+            "verification_method_required": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "capability_finding_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "retrieved_utc"],
+      "properties": {
+        "url": { "type": "string", "minLength": 1 },
+        "retrieved_utc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "capability_finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "capability",
+        "references",
+        "copyable_practices",
+        "minimum_implementation_set",
+        "verification_method",
+        "manifest_link",
+        "backlog_id"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "capability": {
+          "type": "string",
+          "enum": ["ASK_ISA", "NEWS_HUB", "KNOWLEDGE_BASE", "CATALOG", "ESRS_MAPPING", "ADVISORY"]
+        },
+        "references": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/capability_finding_reference" }
+        },
+        "copyable_practices": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "minimum_implementation_set": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "verification_method": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "manifest_link": { "type": "string", "minLength": 1 },
+        "backlog_id": { "type": "string", "minLength": 1 }
       }
     }
   }
