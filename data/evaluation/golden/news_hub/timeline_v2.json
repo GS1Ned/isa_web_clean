@@ -223,7 +223,7 @@
         "eventType": "ADOPTION",
         "primaryRegulation": "CSDDD"
       },
-      "dedup_key": "CSDDD_ADOPTION_2025-Q4",
+      "dedup_key": "CSDDD_ADOPTION_2025-Q4_SUPP_A",
       "processing_latency_ms": 455
     },
     {
@@ -257,7 +257,7 @@
         "eventType": "GUIDANCE_PUBLICATION",
         "primaryRegulation": "CSRD"
       },
-      "dedup_key": "CSRD_GUIDANCE_PUBLICATION_2025-Q4",
+      "dedup_key": "CSRD_GUIDANCE_PUBLICATION_2025-Q4_SUPP_A",
       "processing_latency_ms": 645
     },
     {
@@ -359,7 +359,7 @@
         "eventType": "PROPOSAL",
         "primaryRegulation": "CSRD"
       },
-      "dedup_key": "CSRD_PROPOSAL_2025-Q4",
+      "dedup_key": "CSRD_PROPOSAL_2025-Q4_SUPP_A",
       "processing_latency_ms": 595
     },
     {
