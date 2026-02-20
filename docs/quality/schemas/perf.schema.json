@@ -55,10 +55,15 @@
       "required": ["run_id", "latency_p95_ms", "status"],
       "properties": {
         "run_id": {"type": "string"},
+        "stage": {"type": "string", "enum": ["stage_a", "stage_b", "stage_c"]},
         "status": {"type": "string", "enum": ["pass", "fail"]},
         "latency_p95_ms": {
           "type": "object",
           "additionalProperties": {"type": "number", "minimum": 0}
+        },
+        "latency_measurement_mode": {
+          "type": "object",
+          "additionalProperties": {"type": "string", "enum": ["runtime", "fixture", "synthetic"]}
         },
         "generated_at": {"type": "string", "format": "date-time"}
       }

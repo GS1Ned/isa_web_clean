@@ -3,7 +3,17 @@ name: ISA Capability Baseline Candidate Weekly
 on:
   schedule:
     - cron: "30 3 * * 1"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Evaluation stage"
+        required: false
+        default: "stage_a"
+        type: choice
+        options:
+          - stage_a
+          - stage_b
+          - stage_c
 
 permissions:
   contents: read
@@ -34,6 +44,7 @@ jobs:
           node scripts/eval/run-capability-evals.cjs \
             --registry data/evaluation/golden/registry.json \
             --thresholds docs/quality/thresholds/isa-capability-thresholds.json \
+            --stage "${{ github.event.inputs.stage || 'stage_a' }}" \
             --out-json test-results/ci/isa-capability-eval.json \
             --run-id weekly-${{ github.run_id }}
 
@@ -80,6 +91,7 @@ jobs:
             echo "";
             echo "A new baseline candidate artifact was generated.";
             echo "";
+            echo "- Stage: \`${{ github.event.inputs.stage || 'stage_a' }}\`";
             echo "Manual review is required before replacing canonical baseline:";
             echo "1. Inspect isa-capability-eval + isa-drift-report artifacts.";
             echo "2. Confirm drift status (current outcome: ${{ steps.drift.outcome }}).";

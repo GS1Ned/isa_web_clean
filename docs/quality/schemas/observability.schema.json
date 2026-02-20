@@ -61,8 +61,13 @@
       "properties": {
         "run_id": {"type": "string"},
         "generated_at": {"type": "string", "format": "date-time"},
+        "stage": {"type": "string", "enum": ["stage_a", "stage_b", "stage_c"]},
         "metrics_emitted": {"type": "integer", "minimum": 0},
         "capabilities_covered": {"type": "integer", "minimum": 0},
+        "fixture_versions": {
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        },
         "status": {"type": "string", "enum": ["pass", "fail"]}
       }
     }

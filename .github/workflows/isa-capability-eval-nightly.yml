@@ -3,7 +3,17 @@ name: ISA Capability Eval Nightly
 on:
   schedule:
     - cron: "17 2 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Evaluation stage"
+        required: false
+        default: "stage_a"
+        type: choice
+        options:
+          - stage_a
+          - stage_b
+          - stage_c
 
 permissions:
   contents: read
@@ -36,6 +46,7 @@ jobs:
           node scripts/eval/run-capability-evals.cjs \
             --registry data/evaluation/golden/registry.json \
             --thresholds docs/quality/thresholds/isa-capability-thresholds.json \
+            --stage "${{ github.event.inputs.stage || 'stage_a' }}" \
             --out-json test-results/ci/isa-capability-eval.json \
             --run-id nightly-${{ github.run_id }}
 
@@ -57,6 +68,18 @@ jobs:
             --baseline data/evaluation/baselines/isa-capability-baseline.json \
             --history test-results/ci/isa-capability-eval-history.json \
             --out test-results/ci/isa-drift-report.json
+
+      - name: Publish nightly capability summary
+        if: always()
+        run: |
+          {
+            echo "## Nightly Capability Eval";
+            echo "";
+            echo "- Stage: `${{ github.event.inputs.stage || 'stage_a' }}`";
+            echo "- Threshold assertion outcome: `${{ steps.assert.outcome }}`";
+            echo "- Drift detection outcome: `${{ steps.drift.outcome }}`";
+            echo "- Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}";
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload nightly capability artifacts
         if: always()
