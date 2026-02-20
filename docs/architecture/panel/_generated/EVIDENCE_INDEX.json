@@ -1428,7 +1428,7 @@
       "claim": "Tiered CI policy is defined in .github/workflows/tiered-tests.yml.",
       "path": ".github/workflows/tiered-tests.yml",
       "line_start": 1,
-      "line_end": 128,
+      "line_end": 140,
       "evidence_type": "ci_policy_contract",
       "confidence": 1
     }

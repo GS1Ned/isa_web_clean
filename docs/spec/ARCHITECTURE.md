@@ -218,8 +218,8 @@ python3 scripts/gates/manifest-ownership-drift.py
 **FACT [EV-ARCH-015]:** Tiered CI execution contract is defined in `.github/workflows/tiered-tests.yml`.
 
 - `Tier 0` (blocking): typecheck + critical gates.
-- `Tier 1` (blocking): stable unit/integration test execution.
-- `Tier 2` (non-blocking): quarantine diagnostics that remain visible but do not block merges.
+- `Tier 1` (blocking): stable unit/integration test execution excluding patterns listed in `config/testing/vitest.quarantine.txt`.
+- `Tier 2` (non-blocking): quarantine-only diagnostics using `scripts/run-ci-tests.sh --quarantine-only` with artifact upload.
 
 ---
 

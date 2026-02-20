@@ -10,6 +10,7 @@ on:
       - "scripts/run-unit-tests.sh"
       - "scripts/run-integration-tests.sh"
       - "scripts/run-ci-tests.sh"
+      - "config/testing/vitest.quarantine.txt"
       - "scripts/gates/no-console-gate.sh"
       - "scripts/gates/security-secrets-scan.sh"
       - "scripts/gates/slo-policy-check.sh"
@@ -27,6 +28,7 @@ on:
       - "scripts/run-unit-tests.sh"
       - "scripts/run-integration-tests.sh"
       - "scripts/run-ci-tests.sh"
+      - "config/testing/vitest.quarantine.txt"
       - "scripts/gates/no-console-gate.sh"
       - "scripts/gates/security-secrets-scan.sh"
       - "scripts/gates/slo-policy-check.sh"
@@ -93,7 +95,9 @@ jobs:
       - name: Run stable CI tests
         run: |
           set -euo pipefail
-          bash scripts/run-ci-tests.sh --report-dir test-results/ci
+          bash scripts/run-ci-tests.sh \
+            --report-dir test-results/ci \
+            --quarantine-file config/testing/vitest.quarantine.txt
 
       - name: Upload Tier 1 reports
         if: always()
@@ -125,4 +129,14 @@ jobs:
       - name: Run quarantine diagnostics
         run: |
           set -euo pipefail
-          pnpm vitest run --testNamePattern "\\[quarantine\\]" --passWithNoTests --reporter=verbose
+          bash scripts/run-ci-tests.sh \
+            --report-dir test-results/ci-quarantine \
+            --quarantine-file config/testing/vitest.quarantine.txt \
+            --quarantine-only
+
+      - name: Upload Tier 2 reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tier2-quarantine-test-results
+          path: test-results/ci-quarantine
