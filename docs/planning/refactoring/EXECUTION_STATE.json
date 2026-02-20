@@ -4,7 +4,7 @@
     "updated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "e1e287398835f2c40474f105e6042028dfd0924d"
+      "commit": "7961d538a7780aa8aaf645b88e681ea3c48a6129"
     }
   },
   "registry_version": "1.1.0",
@@ -74,9 +74,7 @@
       "evidence_paths": [
         "docs/spec/ARCHITECTURE.md"
       ],
-      "unresolved_issues": [
-        "DELTA-04B remains BLOCKED_WITH_MITIGATION (remaining physical multi-router splits deferred after DELTA-04A pilot acceptance)"
-      ],
+      "unresolved_issues": [],
       "confidence": 0.82
     },
     {
@@ -131,9 +129,7 @@
         "scripts/gates/doc-code-validator.sh",
         "scripts/gates/canonical-docs-allowlist.sh"
       ],
-      "unresolved_issues": [
-        "Physical module split work remains deferred per DELTA-04B"
-      ],
+      "unresolved_issues": [],
       "confidence": 0.79
     },
     {
@@ -164,7 +160,6 @@
         "scripts/gates/canonical-docs-allowlist.sh"
       ],
       "unresolved_issues": [
-        "DELTA-04B closure pending (T-013)",
         "Dependency audit still reports non-blocking high-severity advisories under current critical-only blocking policy",
         "PG-01 canonical metadata refresh and queue alignment in progress"
       ],
@@ -191,7 +186,6 @@
         "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
       ],
       "unresolved_issues": [
-        "DELTA-04B remains blocked with mitigation by design",
         "Security high-severity advisory backlog remains open under non-blocking policy"
       ],
       "confidence": 0
@@ -316,8 +310,8 @@
         ]
       }
     ],
-    "next_deterministic_task": "T-013 close DELTA-04B via dutchInitiatives router extraction",
-    "last_validated_at": "2026-02-20T05:44:28Z",
+    "next_deterministic_task": "T-015 make reliability/perf smoke gates deterministic",
+    "last_validated_at": "2026-02-20T05:47:24Z",
     "patch_group_checkpoints": [
       {
         "patch_group": "PG-00",
@@ -364,6 +358,18 @@
           "dataset_registry_schema_validation": "pass",
           "advisory_health_probe": "pass",
           "planning_validator": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-04",
+        "validated_at": "2026-02-20T05:47:24Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "pnpm_check": "pass",
+          "capability_heartbeat": "pass",
+          "manifest_ownership_drift": "pass",
+          "canonical_contract_drift": "pass",
+          "doc_code_validator_canonical": "pass"
         }
       }
     ],

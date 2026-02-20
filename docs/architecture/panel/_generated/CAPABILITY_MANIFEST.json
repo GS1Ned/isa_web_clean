@@ -4,7 +4,7 @@
     "generated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "e1e287398835f2c40474f105e6042028dfd0924d"
+      "commit": "7961d538a7780aa8aaf645b88e681ea3c48a6129"
     }
   },
   "status": "AUTHORITATIVE_CONTRACT",
@@ -752,6 +752,7 @@
       "router_modules": [
         "server/gs1-standards-router.ts",
         "server/routers/dataset-registry.ts",
+        "server/routers/dutch-initiatives.ts",
         "server/routers/esrs.ts",
         "server/routers/governance-documents.ts",
         "server/routers/gs1-attributes.ts",
@@ -834,8 +835,8 @@
           {
             "surface": "dutchInitiatives",
             "path": "server/routers.ts",
-            "line_start": 514,
-            "line_end": 547,
+            "line_start": 515,
+            "line_end": 515,
             "evidence_id": "EV-CAP-CAT-ROUTER-DUTCHINITIATIVES"
           },
           {
@@ -997,11 +998,11 @@
             "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_ESRS_TS"
           },
           {
-            "module_path": "server/routers.ts",
-            "path": "server/routers.ts",
-            "line_start": 514,
-            "line_end": 547,
-            "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_TS"
+            "module_path": "server/routers/dutch-initiatives.ts",
+            "path": "server/routers/dutch-initiatives.ts",
+            "line_start": 4,
+            "line_end": 37,
+            "evidence_id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_DUTCH_INITIATIVES_TS"
           }
         ]
       },
@@ -1160,7 +1161,7 @@
             "mitigation_if_blocked": null
           },
           {
-            "module_path": "server/routers.ts",
+            "module_path": "server/routers/dutch-initiatives.ts",
             "status": "CURRENT",
             "delta_id_if_blocked": null,
             "mitigation_if_blocked": null
