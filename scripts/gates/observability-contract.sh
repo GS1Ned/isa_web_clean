@@ -2,20 +2,18 @@
 set -euo pipefail
 
 # Observability Contract Check
-# Verifies logging, tracing, and metrics infrastructure
+# Deterministic pass/fail verification for logging, tracing, and metrics infrastructure
 
 OUTPUT_FILE="${1:-test-results/ci/observability.json}"
 mkdir -p "$(dirname "$OUTPUT_FILE")"
 
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-# Check for structured logging
 STRUCTURED_LOGGING=false
 LOGGING_COVERAGE=0
 
 if [[ -f "server/_core/logger-wiring.ts" ]]; then
     STRUCTURED_LOGGING=true
-    # Estimate coverage by counting logger imports
     TOTAL_TS_FILES=$(find server -name "*.ts" -not -name "*.test.ts" | wc -l | tr -d ' ')
     FILES_WITH_LOGGER=$(grep -r "serverLogger" server --include="*.ts" --exclude="*.test.ts" | cut -d: -f1 | sort -u | wc -l | tr -d ' ')
     if [[ $TOTAL_TS_FILES -gt 0 ]]; then
@@ -35,43 +33,36 @@ if grep -r "metrics\|prometheus\|statsd" server --include="*.ts" &> /dev/null; t
     METRICS_COLLECTION=true
 fi
 
-UNKNOWNS=()
+FAIL_REASONS=()
+if [[ "$STRUCTURED_LOGGING" == "false" ]]; then
+    FAIL_REASONS+=("Structured logging wiring not found (server/_core/logger-wiring.ts missing)")
+fi
 if [[ "$TRACE_PROPAGATION" == "false" ]]; then
-    UNKNOWNS+=("No distributed tracing implementation found")
+    FAIL_REASONS+=("No distributed tracing signal found in server TypeScript sources")
 fi
 if [[ "$METRICS_COLLECTION" == "false" ]]; then
-    UNKNOWNS+=("No metrics collection infrastructure found")
+    FAIL_REASONS+=("No metrics collection signal found in server TypeScript sources")
 fi
 
-if ! command -v bc &> /dev/null; then
-    UNKNOWNS+=("bc not available for numeric threshold comparison")
-fi
-
-LOGGING_AT_TARGET=false
-if command -v bc &> /dev/null; then
-    if [[ $(echo "$LOGGING_COVERAGE >= 80" | bc -l) -eq 1 ]]; then
-        LOGGING_AT_TARGET=true
-    else
-        UNKNOWNS+=("Structured logging coverage below threshold (${LOGGING_COVERAGE}% < 80%)")
+if ! command -v awk &> /dev/null; then
+    FAIL_REASONS+=("awk not available for numeric threshold comparison")
+elif [[ "$STRUCTURED_LOGGING" == "true" ]]; then
+    if [[ $(awk "BEGIN {print ($LOGGING_COVERAGE >= 80) ? 1 : 0}") -ne 1 ]]; then
+        FAIL_REASONS+=("Structured logging coverage below threshold (${LOGGING_COVERAGE}% < 80%)")
     fi
 fi
 
-STATUS="unknown"
-if [[ "$STRUCTURED_LOGGING" == "false" ]]; then
+STATUS="pass"
+if [[ ${#FAIL_REASONS[@]} -gt 0 ]]; then
     STATUS="fail"
-elif [[ "$LOGGING_AT_TARGET" == "true" ]] && [[ ${#UNKNOWNS[@]} -eq 0 ]]; then
-    STATUS="pass"
-else
-    STATUS="unknown"
 fi
 
-if [[ ${#UNKNOWNS[@]} -gt 0 ]]; then
-    UNKNOWNS_JSON=$(printf '%s\n' "${UNKNOWNS[@]}" | jq -R . | jq -s .)
+if [[ ${#FAIL_REASONS[@]} -gt 0 ]]; then
+    FAIL_REASONS_JSON=$(printf '%s\n' "${FAIL_REASONS[@]}" | jq -R . | jq -s .)
 else
-    UNKNOWNS_JSON="[]"
+    FAIL_REASONS_JSON="[]"
 fi
 
-# Generate JSON report
 cat > "$OUTPUT_FILE" << EOF
 {
   "meta": {
@@ -93,7 +84,8 @@ cat > "$OUTPUT_FILE" << EOF
   "thresholds": {
     "structured_logging_coverage_min": 80
   },
-  "unknowns": $UNKNOWNS_JSON
+  "unknowns": [],
+  "fail_reasons": $FAIL_REASONS_JSON
 }
 EOF
 
@@ -101,7 +93,7 @@ echo "Observability report written to $OUTPUT_FILE"
 echo "Status: $STATUS"
 echo "Logging coverage: ${LOGGING_COVERAGE}%"
 
-if [[ "$STATUS" == "fail" ]]; then
+if [[ "$STATUS" != "pass" ]]; then
     exit 1
 fi
 
