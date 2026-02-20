@@ -28,8 +28,8 @@
     "smoke": "bash scripts/smoke.sh"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.693.0",
-    "@aws-sdk/s3-request-presigner": "^3.693.0",
+    "@aws-sdk/client-s3": "^3.994.0",
+    "@aws-sdk/s3-request-presigner": "^3.994.0",
     "@hookform/resolvers": "^5.2.2",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.69.0",
@@ -65,11 +65,11 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tanstack/react-query": "^5.90.2",
-    "@trpc/client": "^11.6.0",
-    "@trpc/react-query": "^11.6.0",
-    "@trpc/server": "^11.6.0",
+    "@trpc/client": "^11.10.0",
+    "@trpc/react-query": "^11.10.0",
+    "@trpc/server": "^11.10.0",
     "@types/leaflet": "^1.9.21",
-    "axios": "^1.12.2",
+    "axios": "^1.13.5",
     "cheerio": "^1.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -82,7 +82,7 @@
     "exceljs": "^4.4.0",
     "express": "^4.21.2",
     "express-rate-limit": "^8.2.1",
-    "fast-xml-parser": "^5.3.2",
+    "fast-xml-parser": "^5.3.6",
     "framer-motion": "^12.23.22",
     "helmet": "^8.1.0",
     "input-otp": "^1.4.2",
@@ -121,7 +121,7 @@
     "@builder.io/vite-plugin-jsx-loc": "^0.1.1",
     "@cspell/dict-en-gb": "^5.0.20",
     "@tailwindcss/typography": "^0.5.15",
-    "@tailwindcss/vite": "^4.1.3",
+    "@tailwindcss/vite": "^4.2.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -145,7 +145,7 @@
     "jsdom": "^27.3.0",
     "markdownlint-cli": "^0.47.0",
     "playwright": "^1.57.0",
-    "pnpm": "^10.15.1",
+    "pnpm": "^10.30.1",
     "postcss": "^8.4.47",
     "prettier": "^3.6.2",
     "tailwindcss": "^4.1.14",
@@ -156,13 +156,16 @@
     "vite-plugin-manus-runtime": "^0.0.56",
     "vitest": "^2.1.4"
   },
-  "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
+  "packageManager": "pnpm@10.30.1",
   "pnpm": {
     "patchedDependencies": {
       "wouter@3.7.1": "patches/wouter@3.7.1.patch"
     },
     "overrides": {
-      "tailwindcss>nanoid": "3.3.7"
+      "tailwindcss>nanoid": "3.3.7",
+      "qs": "6.14.2",
+      "tar": "7.5.9",
+      "markdownlint-cli>minimatch": "10.2.1"
     },
     "onlyBuiltDependencies": [
       "better-sqlite3"
