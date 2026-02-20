@@ -4,7 +4,7 @@
     "generated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "089a619"
+      "commit": "c61fb8f"
     },
     "baseline_run": {
       "captured_at": "2026-02-20T02:56:32Z",
@@ -120,10 +120,10 @@
     },
     {
       "id": "canonical_contract_drift",
-      "status": "fail",
-      "signal": 0.0,
+      "status": "pass",
+      "signal": 1.0,
       "contribution": 0.0,
-      "limitation": "Canonical contract repo_ref metadata does not yet match current commit window (HEAD or HEAD^)."
+      "limitation": "Passes with HEAD/HEAD^ freshness rule; requires refresh commit after each canonical contract update."
     },
     {
       "id": "manifest_ownership_drift",
