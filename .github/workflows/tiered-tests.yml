@@ -18,7 +18,13 @@ on:
       - "scripts/gates/security-gate.sh"
       - "scripts/gates/canonical-docs-allowlist.sh"
       - "scripts/gates/doc-code-validator.sh"
+      - "scripts/eval/**"
       - ".github/workflows/tiered-tests.yml"
+      - "docs/quality/thresholds/**"
+      - "docs/quality/schemas/isa-capability-eval.schema.json"
+      - "docs/quality/schemas/isa-drift-report.schema.json"
+      - "data/evaluation/**"
+      - "data/advisories/**"
   push:
     branches: [main]
     paths:
@@ -36,7 +42,13 @@ on:
       - "scripts/gates/security-gate.sh"
       - "scripts/gates/canonical-docs-allowlist.sh"
       - "scripts/gates/doc-code-validator.sh"
+      - "scripts/eval/**"
       - ".github/workflows/tiered-tests.yml"
+      - "docs/quality/thresholds/**"
+      - "docs/quality/schemas/isa-capability-eval.schema.json"
+      - "docs/quality/schemas/isa-drift-report.schema.json"
+      - "data/evaluation/**"
+      - "data/advisories/**"
   workflow_dispatch: {}
 
 permissions:
@@ -116,6 +128,29 @@ jobs:
             --reporter=verbose \
             --reporter=json \
             --outputFile test-results/ci/capability-heartbeat.json
+
+      - name: Run unified ISA capability evaluation (fixture-first)
+        run: |
+          set -euo pipefail
+          node scripts/eval/run-capability-evals.cjs \
+            --registry data/evaluation/golden/registry.json \
+            --thresholds docs/quality/thresholds/isa-capability-thresholds.json \
+            --out-json test-results/ci/isa-capability-eval.json
+
+      - name: Assert capability thresholds (advisory-first)
+        run: |
+          set -euo pipefail
+          node scripts/eval/assert-capability-thresholds.cjs \
+            --in test-results/ci/isa-capability-eval.json
+
+      - name: Run capability drift detection
+        run: |
+          set -euo pipefail
+          node scripts/eval/drift-detect.cjs \
+            --eval test-results/ci/isa-capability-eval.json \
+            --baseline data/evaluation/baselines/isa-capability-baseline.json \
+            --history test-results/ci/isa-capability-eval-history.json \
+            --out test-results/ci/isa-drift-report.json
 
       - name: Upload Tier 1 reports
         if: always()

@@ -1,0 +1,43 @@
+{
+  "baseline_id": "isa-capability-baseline-v1",
+  "generated_at": "2026-02-20T00:00:00Z",
+  "metrics": {
+    "kb.ingestion.correctness": 1.0,
+    "kb.metadata.completeness": 1.0,
+    "kb.chunk.quality": 1.0,
+    "kb.linking.density": 1.0,
+    "kb.lifecycle.governance": 1.0,
+    "kb.latency.p95_ms": 180,
+
+    "catalog.metadata.completeness": 1.0,
+    "catalog.authority.tier_correctness": 1.0,
+    "catalog.verification.currency_days": 360,
+    "catalog.lifecycle.state_correctness": 0.8333,
+    "catalog.latency.p95_ms": 220,
+
+    "esrs.mapping.precision": 1.0,
+    "esrs.mapping.coverage": 1.0,
+    "esrs.mapping.explainability_presence": 1.0,
+    "esrs.mapping.authority_correctness": 1.0,
+    "esrs.mapping.latency.p95_ms": 120,
+
+    "news.freshness.median_minutes": 150,
+    "news.source.coverage_ratio": 0.67,
+    "news.duplicate.rate": 0.2,
+    "news.classification.f1_macro": 0.9,
+    "news.latency.p95_ms": 690,
+
+    "advisory.evidence.coverage": 1.0,
+    "advisory.recommendation.structure_score": 1.0,
+    "advisory.gap_detection.f1": 1.0,
+    "advisory.authority.propagation": 0.9,
+    "advisory.latency.p95_ms": 180,
+
+    "ask.citation.presence": 1.0,
+    "ask.citation.validity": 1.0,
+    "ask.source.diversity": 1.0,
+    "ask.abstention.correctness": 1.0,
+    "ask.answer.completeness": 1.0,
+    "ask.latency.p95_ms": 160
+  }
+}

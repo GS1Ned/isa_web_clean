@@ -3,7 +3,11 @@
   "$id": "https://isa.gs1nl.org/schemas/reliability.schema.json",
   "title": "ISA Reliability Metrics",
   "type": "object",
-  "required": ["meta", "status", "metrics", "thresholds"],
+  "required": ["meta", "status", "thresholds"],
+  "anyOf": [
+    {"required": ["metrics"]},
+    {"required": ["checks"]}
+  ],
   "properties": {
     "meta": {
       "type": "object",
@@ -24,6 +28,15 @@
         "news_freshness_hours": {"type": "number", "minimum": 0}
       }
     },
+    "checks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "pass": {"type": "boolean"}
+        }
+      }
+    },
     "thresholds": {
       "type": "object",
       "required": ["ask_isa_success_rate_min", "news_pipeline_success_rate_min", "news_freshness_hours_max"],
@@ -36,6 +49,19 @@
     "unknowns": {
       "type": "array",
       "items": {"type": "string"}
+    },
+    "capability_eval": {
+      "type": "object",
+      "required": ["run_id", "status", "isa_quality_score"],
+      "properties": {
+        "run_id": {"type": "string"},
+        "generated_at": {"type": "string", "format": "date-time"},
+        "status": {"type": "string", "enum": ["pass", "fail"]},
+        "isa_quality_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "blocking_failures": {"type": "integer", "minimum": 0},
+        "warning_failures": {"type": "integer", "minimum": 0},
+        "drift_status": {"type": "string", "enum": ["unknown", "pass", "warn", "fail"]}
+      }
     }
   }
 }

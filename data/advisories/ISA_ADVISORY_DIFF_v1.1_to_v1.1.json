@@ -1,0 +1,102 @@
+{
+  "metadata": {
+    "comparisonDate": "2026-02-20T12:10:44.400Z",
+    "version1": {
+      "advisoryId": "ISA_ADVISORY_v1.1",
+      "version": "1.1",
+      "publicationDate": null
+    },
+    "version2": {
+      "advisoryId": "ISA_ADVISORY_v1.1",
+      "version": "1.1",
+      "publicationDate": null
+    }
+  },
+  "coverageDeltas": {
+    "totalMappings": {
+      "v1.1": 13,
+      "delta": 0
+    },
+    "confidenceTransitions": {
+      "missing_to_partial": 0,
+      "missing_to_direct": 0,
+      "partial_to_direct": 0,
+      "direct_to_partial": 0,
+      "partial_to_missing": 0,
+      "direct_to_missing": 0
+    },
+    "confidenceDistribution": {
+      "v1.1": {
+        "direct": 13,
+        "partial": 0,
+        "missing": 0
+      }
+    },
+    "coverageRate": {
+      "v1.1": 1
+    },
+    "coverageImprovement": 0,
+    "newMappings": 0,
+    "removedMappings": 0
+  },
+  "gapLifecycle": {
+    "totalGaps": {
+      "v1.1": 0,
+      "delta": 0
+    },
+    "gapsClosed": 0,
+    "newGaps": 0,
+    "severityChanges": 0,
+    "severityDistribution": {
+      "v1.1": {
+        "critical": 0,
+        "moderate": 0,
+        "low-priority": 0
+      }
+    },
+    "closedGaps": [],
+    "newGapsDetails": [],
+    "severityChangeDetails": []
+  },
+  "recommendationLifecycle": {
+    "totalRecommendations": {
+      "v1.1": 3,
+      "delta": 0
+    },
+    "implemented": 0,
+    "newRecommendations": 0,
+    "timeframeChanges": 0,
+    "timeframeDistribution": {
+      "v1.1": {
+        "3-6 months": 1,
+        "6-12 months": 1,
+        "12-18 months": 1
+      }
+    },
+    "implementedDetails": [],
+    "newRecommendationsDetails": [],
+    "timeframeChangeDetails": []
+  },
+  "traceabilityDeltas": {
+    "datasetRegistryVersion": {
+      "v1.1": null,
+      "changed": false
+    },
+    "sourceArtifactChanges": {
+      "advisoryMarkdown": false,
+      "datasetRegistry": false,
+      "schema": false
+    },
+    "anySourceArtifactChanged": false
+  },
+  "compositeMetrics": {
+    "overallProgressScore": 0,
+    "componentScores": {
+      "coverage": 0,
+      "gapClosure": 0,
+      "recommendationImplementation": 0
+    },
+    "regressionDetected": false,
+    "regressions": []
+  }
+}

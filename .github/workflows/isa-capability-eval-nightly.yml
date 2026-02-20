@@ -1,0 +1,125 @@
+name: ISA Capability Eval Nightly
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  nightly-capability-eval:
+    name: Nightly Capability Evaluation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.0"
+
+      - name: Restore drift history cache
+        id: restore-history
+        uses: actions/cache/restore@v4
+        with:
+          path: test-results/ci/isa-capability-eval-history.json
+          key: isa-capability-history-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            isa-capability-history-${{ github.ref_name }}-
+
+      - name: Run unified capability evaluation
+        run: |
+          set -euo pipefail
+          node scripts/eval/run-capability-evals.cjs \
+            --registry data/evaluation/golden/registry.json \
+            --thresholds docs/quality/thresholds/isa-capability-thresholds.json \
+            --out-json test-results/ci/isa-capability-eval.json \
+            --run-id nightly-${{ github.run_id }}
+
+      - name: Assert advisory-first thresholds
+        id: assert
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node scripts/eval/assert-capability-thresholds.cjs \
+            --in test-results/ci/isa-capability-eval.json
+
+      - name: Detect capability drift
+        id: drift
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node scripts/eval/drift-detect.cjs \
+            --eval test-results/ci/isa-capability-eval.json \
+            --baseline data/evaluation/baselines/isa-capability-baseline.json \
+            --history test-results/ci/isa-capability-eval-history.json \
+            --out test-results/ci/isa-drift-report.json
+
+      - name: Upload nightly capability artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-capability-eval
+          path: |
+            test-results/ci/isa-capability-eval.json
+            test-results/ci/isa-drift-report.json
+            test-results/ci/isa-capability-eval-history.json
+
+      - name: Save drift history cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: test-results/ci/isa-capability-eval-history.json
+          key: isa-capability-history-${{ github.ref_name }}-${{ github.run_id }}
+
+      - name: Create quality regression issue
+        if: steps.assert.outcome == 'failure' || steps.drift.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const date = new Date().toISOString().slice(0, 10);
+            const title = `quality-regression: nightly capability eval failed (${date})`;
+
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: 'quality-regression' });
+            } catch {
+              await github.rest.issues.createLabel({
+                owner,
+                repo,
+                name: 'quality-regression',
+                color: 'd73a4a',
+                description: 'Nightly ISA quality regression requiring triage',
+              });
+            }
+
+            await github.rest.issues.create({
+              owner,
+              repo,
+              title,
+              labels: ['quality-regression'],
+              body: [
+                'Nightly ISA capability evaluation reported a blocking regression or major drift.',
+                '',
+                `- Workflow run: ${runUrl}`,
+                `- Threshold assertion outcome: ${{ steps.assert.outcome }}`,
+                `- Drift detection outcome: ${{ steps.drift.outcome }}`,
+                '',
+                'Required follow-up:',
+                '1. Classify as INTEGRATE_NOW / RESOLVE_NOW / DROP_NOW.',
+                '2. Attach evidence from artifacts.',
+                '3. Open remediation PR with governance traceability.',
+              ].join('\n'),
+            });
+
+      - name: Fail job on nightly regression
+        if: steps.assert.outcome == 'failure' || steps.drift.outcome == 'failure'
+        run: |
+          set -euo pipefail
+          echo "STOP=nightly_capability_regression"
+          exit 1

@@ -1,0 +1,87 @@
+name: ISA Capability Baseline Candidate Weekly
+
+on:
+  schedule:
+    - cron: "30 3 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  weekly-baseline-candidate:
+    name: Weekly Baseline Candidate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.0"
+
+      - name: Restore drift history cache
+        uses: actions/cache/restore@v4
+        with:
+          path: test-results/ci/isa-capability-eval-history.json
+          key: isa-capability-history-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            isa-capability-history-${{ github.ref_name }}-
+
+      - name: Run unified capability evaluation
+        run: |
+          set -euo pipefail
+          node scripts/eval/run-capability-evals.cjs \
+            --registry data/evaluation/golden/registry.json \
+            --thresholds docs/quality/thresholds/isa-capability-thresholds.json \
+            --out-json test-results/ci/isa-capability-eval.json \
+            --run-id weekly-${{ github.run_id }}
+
+      - name: Detect capability drift
+        id: drift
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node scripts/eval/drift-detect.cjs \
+            --eval test-results/ci/isa-capability-eval.json \
+            --baseline data/evaluation/baselines/isa-capability-baseline.json \
+            --history test-results/ci/isa-capability-eval-history.json \
+            --out test-results/ci/isa-drift-report.json
+
+      - name: Generate baseline candidate artifact
+        run: |
+          set -euo pipefail
+          node scripts/eval/generate-baseline-candidate.cjs \
+            --eval test-results/ci/isa-capability-eval.json \
+            --out test-results/ci/isa-capability-baseline-candidate.json \
+            --id isa-capability-baseline-candidate-weekly-${{ github.run_number }}
+
+      - name: Upload weekly baseline artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-capability-baseline-candidate
+          path: |
+            test-results/ci/isa-capability-eval.json
+            test-results/ci/isa-drift-report.json
+            test-results/ci/isa-capability-eval-history.json
+            test-results/ci/isa-capability-baseline-candidate.json
+
+      - name: Save drift history cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: test-results/ci/isa-capability-eval-history.json
+          key: isa-capability-history-${{ github.ref_name }}-${{ github.run_id }}
+
+      - name: Publish manual review summary
+        run: |
+          {
+            echo "## Weekly ISA Baseline Candidate";
+            echo "";
+            echo "A new baseline candidate artifact was generated.";
+            echo "";
+            echo "Manual review is required before replacing canonical baseline:";
+            echo "1. Inspect isa-capability-eval + isa-drift-report artifacts.";
+            echo "2. Confirm drift status (current outcome: ${{ steps.drift.outcome }}).";
+            echo "3. Update data/evaluation/baselines/isa-capability-baseline.json only via reviewed PR.";
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -48,6 +48,27 @@ if [[ ${#FAIL_REASONS[@]} -gt 0 ]]; then
   STATUS="fail"
 fi
 
+CAPABILITY_EVAL_BLOCK="null"
+if [[ -f "test-results/ci/isa-capability-eval.json" ]]; then
+  CAPABILITY_EVAL_BLOCK="$(
+    jq -c '{
+      run_id: .run_id,
+      generated_at: .generated_at,
+      status: .status,
+      latency_p95_ms: (
+        .capabilities
+        | map({
+            key: .capability,
+            value: (
+              (.metrics[] | select(.metric_id | test("latency\\.p95_ms$")) | .value) // 0
+            )
+          })
+        | from_entries
+      )
+    }' test-results/ci/isa-capability-eval.json
+  )"
+fi
+
 if [[ ${#FAIL_REASONS[@]} -gt 0 ]]; then
   FAIL_REASONS_JSON=$(printf '%s\n' "${FAIL_REASONS[@]}" | jq -R . | jq -s .)
 else
@@ -79,6 +100,7 @@ cat > "$OUTPUT_FILE" << EOF
     "catalog_p99_latency_ms_max": 1000,
     "db_query_p95_ms_max": 500
   },
+  "capability_eval": $CAPABILITY_EVAL_BLOCK,
   "unknowns": [],
   "fail_reasons": $FAIL_REASONS_JSON
 }

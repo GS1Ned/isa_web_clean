@@ -26,6 +26,16 @@ import { assembleAskISAPrompt } from "../prompts/ask_isa";
 import { verifyResponseClaims } from "../claim-citation-verifier";
 import { calculateAuthorityScore } from "../authority-model";
 import { saveEvaluationReport, getAllEvaluationReports, getLatestEvaluationReport, compareReports } from "../evaluation-history";
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
+
+const CAPABILITY_EVAL_ARTIFACT = join(process.cwd(), "test-results", "ci", "isa-capability-eval.json");
+const CAPABILITY_DRIFT_ARTIFACT = join(process.cwd(), "test-results", "ci", "isa-drift-report.json");
+
+function readArtifactIfPresent<T>(artifactPath: string): T | null {
+  if (!existsSync(artifactPath)) return null;
+  return JSON.parse(readFileSync(artifactPath, "utf8")) as T;
+}
 
 /**
  * Run a single test case against Ask ISA
@@ -314,6 +324,79 @@ export const evaluationRouter = router({
     
     return getAllEvaluationReports();
   }),
+
+  /**
+   * Get latest unified capability evaluation summary (all ISA capabilities)
+   */
+  getCapabilityEvaluationSummary: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user?.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Only admins can view evaluation history",
+      });
+    }
+
+    const evalArtifact = readArtifactIfPresent<{
+      run_id?: string;
+      generated_at?: string;
+      isa_quality_score?: { value?: number; grade?: string; confidence?: string };
+      capabilities?: Array<{
+        capability: string;
+        status: string;
+        capability_score: { value: number; grade: string };
+      }>;
+      summary?: {
+        total_metrics: number;
+        fail: number;
+        blocking_failures: number;
+        warning_failures: number;
+      };
+      status?: string;
+    }>(CAPABILITY_EVAL_ARTIFACT);
+
+    const driftArtifact = readArtifactIfPresent<{
+      status?: string;
+      summary?: { major?: number; minor?: number; none?: number };
+    }>(CAPABILITY_DRIFT_ARTIFACT);
+
+    if (!evalArtifact) {
+      return {
+        available: false,
+        reason: `Artifact not found: ${CAPABILITY_EVAL_ARTIFACT}`,
+      };
+    }
+
+    return {
+      available: true,
+      runId: evalArtifact.run_id ?? null,
+      generatedAt: evalArtifact.generated_at ?? null,
+      isaQualityScore: evalArtifact.isa_quality_score ?? null,
+      status: evalArtifact.status ?? "unknown",
+      summary: evalArtifact.summary ?? null,
+      capabilities: evalArtifact.capabilities ?? [],
+      drift: driftArtifact ?? {
+        status: "unknown",
+        summary: { major: 0, minor: 0, none: 0 },
+      },
+    };
+  }),
+
+  /**
+   * Get raw capability evaluation + drift artifacts.
+   */
+  getCapabilityEvaluationArtifacts: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user?.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Only admins can view evaluation history",
+      });
+    }
+
+    return {
+      capabilityEval: readArtifactIfPresent(CAPABILITY_EVAL_ARTIFACT),
+      driftReport: readArtifactIfPresent(CAPABILITY_DRIFT_ARTIFACT),
+    };
+  }),
   
   /**
    * Get latest evaluation report
@@ -326,7 +409,33 @@ export const evaluationRouter = router({
       });
     }
     
-    return getLatestEvaluationReport();
+    const latestAskIsaReport = await getLatestEvaluationReport();
+    const capabilityEval = readArtifactIfPresent<{
+      run_id?: string;
+      generated_at?: string;
+      isa_quality_score?: { value?: number; grade?: string; confidence?: string };
+      summary?: unknown;
+      status?: string;
+    }>(CAPABILITY_EVAL_ARTIFACT);
+    const driftReport = readArtifactIfPresent<{
+      status?: string;
+      summary?: unknown;
+    }>(CAPABILITY_DRIFT_ARTIFACT);
+
+    return {
+      askIsa: latestAskIsaReport,
+      capabilityEvaluation: capabilityEval
+        ? {
+            runId: capabilityEval.run_id ?? null,
+            generatedAt: capabilityEval.generated_at ?? null,
+            isaQualityScore: capabilityEval.isa_quality_score ?? null,
+            summary: capabilityEval.summary ?? null,
+            status: capabilityEval.status ?? "unknown",
+          }
+        : null,
+      driftStatus: driftReport?.status ?? "unknown",
+      driftSummary: driftReport?.summary ?? null,
+    };
   }),
   
   /**

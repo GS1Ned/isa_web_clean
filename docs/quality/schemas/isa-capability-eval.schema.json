@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/isa-capability-eval.schema.json",
+  "title": "ISA Unified Capability Evaluation",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generated_at",
+    "run_id",
+    "capabilities",
+    "isa_quality_score",
+    "summary",
+    "status"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "run_id": { "type": "string" },
+    "mode": { "type": "string" },
+    "enforcement_mode": { "type": "string" },
+    "registry_path": { "type": "string" },
+    "thresholds_path": { "type": "string" },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "capability",
+          "dataset_ids",
+          "sample_count",
+          "minimum_samples",
+          "confidence",
+          "contract_path",
+          "metric_rollups",
+          "capability_score",
+          "metrics",
+          "status"
+        ],
+        "properties": {
+          "capability": {
+            "type": "string",
+            "enum": [
+              "KNOWLEDGE_BASE",
+              "CATALOG",
+              "ESRS_MAPPING",
+              "NEWS_HUB",
+              "ADVISORY",
+              "ASK_ISA"
+            ]
+          },
+          "dataset_ids": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "sample_count": { "type": "integer", "minimum": 0 },
+          "minimum_samples": { "type": "integer", "minimum": 0 },
+          "confidence": { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW"] },
+          "contract_path": { "type": "string" },
+          "metric_rollups": {
+            "type": "object",
+            "required": ["correctness", "coverage", "explainability", "authority", "latency_norm"],
+            "properties": {
+              "correctness": { "type": "number", "minimum": 0, "maximum": 1 },
+              "coverage": { "type": "number", "minimum": 0, "maximum": 1 },
+              "explainability": { "type": "number", "minimum": 0, "maximum": 1 },
+              "authority": { "type": "number", "minimum": 0, "maximum": 1 },
+              "latency_norm": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          },
+          "capability_score": {
+            "type": "object",
+            "required": ["value", "grade"],
+            "properties": {
+              "value": { "type": "number", "minimum": 0, "maximum": 1 },
+              "grade": { "type": "string", "enum": ["A", "B", "C", "D"] }
+            }
+          },
+          "metrics": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "run_id",
+                "capability",
+                "dataset_id",
+                "metric_id",
+                "value",
+                "threshold",
+                "threshold_op",
+                "enforcement",
+                "status",
+                "timestamp_utc",
+                "fixture_path",
+                "contract_path"
+              ],
+              "properties": {
+                "run_id": { "type": "string" },
+                "capability": { "type": "string" },
+                "dataset_id": { "type": "string" },
+                "metric_id": { "type": "string" },
+                "dimension": { "type": "string" },
+                "kind": { "type": "string" },
+                "value": { "type": "number" },
+                "threshold": { "type": "number" },
+                "threshold_op": { "type": "string", "enum": [">=", "<="] },
+                "enforcement": { "type": "string", "enum": ["warn", "fail"] },
+                "status": { "type": "string", "enum": ["pass", "fail"] },
+                "timestamp_utc": { "type": "string", "format": "date-time" },
+                "fixture_path": { "type": "string" },
+                "contract_path": { "type": "string" },
+                "provenance": { "type": "object" }
+              }
+            }
+          },
+          "status": { "type": "string", "enum": ["pass", "warn", "fail"] }
+        }
+      }
+    },
+    "isa_quality_score": {
+      "type": "object",
+      "required": ["value", "grade", "confidence"],
+      "properties": {
+        "value": { "type": "number", "minimum": 0, "maximum": 1 },
+        "grade": { "type": "string", "enum": ["A", "B", "C", "D"] },
+        "confidence": { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW"] }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "total_metrics",
+        "pass",
+        "fail",
+        "blocking_failures",
+        "warning_failures"
+      ],
+      "properties": {
+        "total_metrics": { "type": "integer", "minimum": 0 },
+        "pass": { "type": "integer", "minimum": 0 },
+        "fail": { "type": "integer", "minimum": 0 },
+        "blocking_failures": { "type": "integer", "minimum": 0 },
+        "warning_failures": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "status": { "type": "string", "enum": ["pass", "fail"] },
+    "drift_status": { "type": "string", "enum": ["unknown", "none", "minor", "major"] }
+  }
+}
