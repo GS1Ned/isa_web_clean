@@ -2,7 +2,9 @@
 set -euo pipefail
 
 # Canonical Docs Allowlist Gate
-# Enforces that no new docs are created outside the canonical allowlist
+# Enforces canonical doc policy and forbidden file hygiene.
+# Deterministic CI behavior: fail only on forbidden tracked files.
+# Local untracked forbidden files are warning-only.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
@@ -20,14 +22,33 @@ fi
 
 VIOLATIONS=0
 
-# Check for forbidden patterns
-echo "Checking for forbidden patterns..."
-FORBIDDEN=$(find . -path "./node_modules" -prune -o -path "./.git" -prune -o \( -path "*/__MACOSX/*" -o -name ".DS_Store" -o -name "Thumbs.db" -o -name "*.swp" -o -name "*~" \) -print 2>/dev/null || true)
+echo "Checking tracked files for forbidden patterns..."
+TRACKED_FORBIDDEN=$(git ls-files | grep -E '(^|/)(__MACOSX/|\.DS_Store$|Thumbs\.db$|[^/]+\.swp$|[^/]+~$)' || true)
 
-if [[ -n "$FORBIDDEN" ]]; then
-    echo "❌ FAIL: Forbidden files found:"
-    echo "$FORBIDDEN"
-    VIOLATIONS=$((VIOLATIONS + $(echo "$FORBIDDEN" | wc -l)))
+if [[ -n "$TRACKED_FORBIDDEN" ]]; then
+    echo "❌ FAIL: Forbidden tracked files found:"
+    echo "$TRACKED_FORBIDDEN"
+    VIOLATIONS=$((VIOLATIONS + $(echo "$TRACKED_FORBIDDEN" | wc -l | tr -d ' ')))
+fi
+
+echo ""
+echo "Checking untracked local filesystem noise (warning-only)..."
+LOCAL_FORBIDDEN=$(find . \
+    -path "./node_modules" -prune -o \
+    -path "./.git" -prune -o \
+    \( -path "*/__MACOSX/*" -o -name ".DS_Store" -o -name "Thumbs.db" -o -name "*.swp" -o -name "*~" \) \
+    -print 2>/dev/null | sed 's#^\./##' || true)
+
+if [[ -n "$LOCAL_FORBIDDEN" ]]; then
+    if [[ -n "$TRACKED_FORBIDDEN" ]]; then
+        UNTRACKED_FORBIDDEN=$(printf '%s\n' "$LOCAL_FORBIDDEN" | grep -vxFf <(printf '%s\n' "$TRACKED_FORBIDDEN") || true)
+    else
+        UNTRACKED_FORBIDDEN="$LOCAL_FORBIDDEN"
+    fi
+    if [[ -n "${UNTRACKED_FORBIDDEN:-}" ]]; then
+        echo "⚠️  WARNING: Untracked forbidden files present locally (non-blocking):"
+        echo "$UNTRACKED_FORBIDDEN"
+    fi
 fi
 
 # Check for new docs outside allowlist (simplified check)
@@ -57,13 +78,13 @@ fi
 
 echo ""
 echo "=== Gate Summary ==="
-echo "Forbidden files: $VIOLATIONS"
+echo "Forbidden tracked files: $VIOLATIONS"
 
 if [[ $VIOLATIONS -gt 0 ]]; then
     echo "❌ Canonical docs allowlist gate FAILED"
     echo ""
     echo "Action required:"
-    echo "1. Remove forbidden files (__MACOSX, .DS_Store, etc.)"
+    echo "1. Remove forbidden tracked files (__MACOSX, .DS_Store, etc.)"
     echo "2. Add .gitignore entries to prevent reintroduction"
     exit 1
 fi

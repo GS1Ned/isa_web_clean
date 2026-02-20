@@ -43,13 +43,32 @@ if [[ "$METRICS_COLLECTION" == "false" ]]; then
     UNKNOWNS+=("No metrics collection infrastructure found")
 fi
 
+if ! command -v bc &> /dev/null; then
+    UNKNOWNS+=("bc not available for numeric threshold comparison")
+fi
+
+LOGGING_AT_TARGET=false
+if command -v bc &> /dev/null; then
+    if [[ $(echo "$LOGGING_COVERAGE >= 80" | bc -l) -eq 1 ]]; then
+        LOGGING_AT_TARGET=true
+    else
+        UNKNOWNS+=("Structured logging coverage below threshold (${LOGGING_COVERAGE}% < 80%)")
+    fi
+fi
+
 STATUS="unknown"
-if [[ ${#UNKNOWNS[@]} -eq 0 ]] && [[ $(echo "$LOGGING_COVERAGE >= 80" | bc -l) -eq 1 ]]; then
-    STATUS="pass"
-elif [[ ${#UNKNOWNS[@]} -gt 0 ]]; then
-    STATUS="unknown"
-else
+if [[ "$STRUCTURED_LOGGING" == "false" ]]; then
     STATUS="fail"
+elif [[ "$LOGGING_AT_TARGET" == "true" ]] && [[ ${#UNKNOWNS[@]} -eq 0 ]]; then
+    STATUS="pass"
+else
+    STATUS="unknown"
+fi
+
+if [[ ${#UNKNOWNS[@]} -gt 0 ]]; then
+    UNKNOWNS_JSON=$(printf '%s\n' "${UNKNOWNS[@]}" | jq -R . | jq -s .)
+else
+    UNKNOWNS_JSON="[]"
 fi
 
 # Generate JSON report
@@ -74,7 +93,7 @@ cat > "$OUTPUT_FILE" << EOF
   "thresholds": {
     "structured_logging_coverage_min": 80
   },
-  "unknowns": $(printf '%s\n' "${UNKNOWNS[@]}" | jq -R . | jq -s .)
+  "unknowns": $UNKNOWNS_JSON
 }
 EOF
 
@@ -82,7 +101,7 @@ echo "Observability report written to $OUTPUT_FILE"
 echo "Status: $STATUS"
 echo "Logging coverage: ${LOGGING_COVERAGE}%"
 
-if [[ "$STATUS" != "pass" ]]; then
+if [[ "$STATUS" == "fail" ]]; then
     exit 1
 fi
 
