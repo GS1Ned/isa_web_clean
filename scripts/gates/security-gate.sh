@@ -6,12 +6,15 @@ set -euo pipefail
 # Status semantics:
 # - pass: all required checks executed and no blocking findings
 # - fail: executed checks found blocking issues
-# - unknown: one or more checks could not be deterministically executed (non-blocking)
+# Deterministic policy:
+# - timeout and execution-precondition failures are FAIL
 
 OUTPUT_FILE="${1:-test-results/ci/security-gate.json}"
 mkdir -p "$(dirname "$OUTPUT_FILE")"
 
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+START_TS=$(date +%s)
+AUDIT_TIMEOUT_SEC="${SECURITY_AUDIT_TIMEOUT_SEC:-180}"
 
 SECRET_SCAN_EXECUTED=false
 SECRETS_FOUND=0
@@ -20,7 +23,6 @@ AUTHZ_TESTS_PASSED=false
 DEPENDENCY_SCAN_EXECUTED=false
 CRITICAL_VULNS=0
 
-UNKNOWNS=()
 FAILURES=()
 
 # 1) Secret scanning (deterministic via repo gate)
@@ -33,7 +35,7 @@ if [[ -x "scripts/gates/security-secrets-scan.sh" ]]; then
         FAILURES+=("Secret scan detected potential secrets (see scripts/gates/security-secrets-scan.sh output)")
     fi
 else
-    UNKNOWNS+=("security-secrets-scan.sh not executable or missing")
+    FAILURES+=("security-secrets-scan.sh not executable or missing")
 fi
 
 # 2) Authorization guardrail signal (deterministic static check)
@@ -55,25 +57,29 @@ fi
 
 # 3) Dependency vulnerability scan (best-effort deterministic execution)
 if command -v pnpm &> /dev/null; then
-    DEPENDENCY_SCAN_EXECUTED=true
     AUDIT_FILE="/tmp/security-audit.json"
     AUDIT_ERR="/tmp/security-audit.err"
 
+    if ! [[ "$AUDIT_TIMEOUT_SEC" =~ ^[0-9]+$ ]]; then
+        FAILURES+=("SECURITY_AUDIT_TIMEOUT_SEC must be numeric, got: $AUDIT_TIMEOUT_SEC")
+    fi
+
     # pnpm audit can hang in constrained environments; bound runtime for determinism.
     if command -v timeout &> /dev/null; then
-        if timeout 45s pnpm audit --audit-level high --json > "$AUDIT_FILE" 2> "$AUDIT_ERR"; then
-            :
+        if timeout "${AUDIT_TIMEOUT_SEC}s" pnpm audit --audit-level high --json > "$AUDIT_FILE" 2> "$AUDIT_ERR"; then
+            DEPENDENCY_SCAN_EXECUTED=true
         else
             AUDIT_EXIT=$?
-            if [[ "$AUDIT_EXIT" -eq 124 ]]; then
-                UNKNOWNS+=("Dependency scan timed out after 45s")
-                DEPENDENCY_SCAN_EXECUTED=false
+            if [[ "$AUDIT_EXIT" -eq 124 || "$AUDIT_EXIT" -eq 137 ]]; then
+                FAILURES+=("Dependency scan timed out after ${AUDIT_TIMEOUT_SEC}s")
+            else
+                FAILURES+=("Dependency scan command failed with exit code ${AUDIT_EXIT}")
             fi
         fi
     else
         if command -v python3 &> /dev/null; then
             set +e
-            python3 - "$AUDIT_FILE" "$AUDIT_ERR" << 'PY'
+            python3 - "$AUDIT_FILE" "$AUDIT_ERR" "$AUDIT_TIMEOUT_SEC" << 'PY'
 import subprocess
 import sys
 from pathlib import Path
@@ -86,7 +92,7 @@ try:
         ["pnpm", "audit", "--audit-level", "high", "--json"],
         capture_output=True,
         text=True,
-        timeout=45,
+        timeout=int(sys.argv[3]),
         check=False,
     )
     audit_file.write_text(proc.stdout or "")
@@ -99,17 +105,19 @@ except subprocess.TimeoutExpired as exc:
 PY
             AUDIT_EXIT=$?
             set -e
-            if [[ "$AUDIT_EXIT" -eq 124 ]]; then
-                UNKNOWNS+=("Dependency scan timed out after 45s")
-                DEPENDENCY_SCAN_EXECUTED=false
+            if [[ "$AUDIT_EXIT" -eq 0 ]]; then
+                DEPENDENCY_SCAN_EXECUTED=true
+            elif [[ "$AUDIT_EXIT" -eq 124 ]]; then
+                FAILURES+=("Dependency scan timed out after ${AUDIT_TIMEOUT_SEC}s")
+            else
+                FAILURES+=("Dependency scan command failed with exit code ${AUDIT_EXIT}")
             fi
         else
-            UNKNOWNS+=("No timeout utility and no python3 fallback for dependency scan timeout")
-            DEPENDENCY_SCAN_EXECUTED=false
+            FAILURES+=("No timeout utility and no python3 fallback for dependency scan timeout control")
         fi
     fi
 
-    if [[ "$DEPENDENCY_SCAN_EXECUTED" == "true" ]] && [[ -s "$AUDIT_FILE" ]]; then
+    if [[ "$DEPENDENCY_SCAN_EXECUTED" == "true" ]] && [[ -s "${AUDIT_FILE:-}" ]]; then
         if jq empty "$AUDIT_FILE" >/dev/null 2>&1; then
             CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' "$AUDIT_FILE" 2>/dev/null || echo 0)
             HIGH=$(jq '.metadata.vulnerabilities.high // 0' "$AUDIT_FILE" 2>/dev/null || echo 0)
@@ -118,30 +126,20 @@ PY
                 FAILURES+=("Dependency audit found $CRITICAL_VULNS high/critical vulnerabilities")
             fi
         else
-            UNKNOWNS+=("Dependency audit output was not parseable JSON")
+            FAILURES+=("Dependency audit output was not parseable JSON")
             DEPENDENCY_SCAN_EXECUTED=false
         fi
-    elif [[ "$DEPENDENCY_SCAN_EXECUTED" == "true" ]]; then
-        UNKNOWNS+=("Dependency audit produced no output")
+    elif [[ "$DEPENDENCY_SCAN_EXECUTED" == "true" ]] && [[ ! -s "${AUDIT_FILE:-}" ]]; then
+        FAILURES+=("Dependency audit produced no output")
         DEPENDENCY_SCAN_EXECUTED=false
     fi
 else
-    UNKNOWNS+=("pnpm not available for dependency scanning")
+    FAILURES+=("pnpm not available for dependency scanning")
 fi
 
-STATUS="unknown"
+STATUS="pass"
 if [[ ${#FAILURES[@]} -gt 0 ]]; then
     STATUS="fail"
-elif [[ "$SECRET_SCAN_EXECUTED" == "true" ]] && [[ "$AUTHZ_TESTS_EXECUTED" == "true" ]] && [[ "$AUTHZ_TESTS_PASSED" == "true" ]] && [[ "$DEPENDENCY_SCAN_EXECUTED" == "true" ]] && [[ ${#UNKNOWNS[@]} -eq 0 ]]; then
-    STATUS="pass"
-else
-    STATUS="unknown"
-fi
-
-if [[ ${#UNKNOWNS[@]} -gt 0 ]]; then
-    UNKNOWNS_JSON=$(printf '%s\n' "${UNKNOWNS[@]}" | jq -R . | jq -s .)
-else
-    UNKNOWNS_JSON="[]"
 fi
 
 if [[ ${#FAILURES[@]} -gt 0 ]]; then
@@ -149,12 +147,15 @@ if [[ ${#FAILURES[@]} -gt 0 ]]; then
 else
     FAILURES_JSON="[]"
 fi
+END_TS=$(date +%s)
+DURATION_SEC=$((END_TS - START_TS))
 
 # Generate JSON report
 cat > "$OUTPUT_FILE" << EOF
 {
   "meta": {
-    "generated_at": "$TIMESTAMP"
+    "generated_at": "$TIMESTAMP",
+    "duration_sec": $DURATION_SEC
   },
   "status": "$STATUS",
   "checks": {
@@ -173,17 +174,18 @@ cat > "$OUTPUT_FILE" << EOF
   },
   "thresholds": {
     "secret_leaks_max": 0,
-    "critical_vulns_max": 0
+    "critical_vulns_max": 0,
+    "audit_timeout_sec": $AUDIT_TIMEOUT_SEC
   },
-  "unknowns": $UNKNOWNS_JSON,
+  "unknowns": [],
   "failures": $FAILURES_JSON
 }
 EOF
 
 echo "Security gate report written to $OUTPUT_FILE"
-echo "Status: $STATUS (${#UNKNOWNS[@]} unknowns, ${#FAILURES[@]} failures)"
+echo "Status: $STATUS (${#FAILURES[@]} failures)"
 
-if [[ "$STATUS" == "fail" ]]; then
+if [[ "$STATUS" != "pass" ]]; then
     exit 1
 fi
 
