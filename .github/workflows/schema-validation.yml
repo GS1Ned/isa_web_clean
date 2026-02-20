@@ -8,6 +8,8 @@ on:
       - 'docs/evidence/_generated/**/*.json'
       - 'docs/architecture/panel/_generated/**/*.json'
       - 'docs/quality/schemas/**/*.schema.json'
+      - 'data/metadata/dataset_registry.json'
+      - 'data/metadata/dataset_registry.schema.json'
       - 'docs/research/oss-benchmarks/2026-02-15/**/*.json'
       - 'docs/research/oss-benchmarks/2026-02-15/**/*.md'
       - 'scripts/validate_oss_benchmarks_2026_02_15.sh'
@@ -18,6 +20,8 @@ on:
       - 'docs/evidence/_generated/**/*.json'
       - 'docs/architecture/panel/_generated/**/*.json'
       - 'docs/quality/schemas/**/*.schema.json'
+      - 'data/metadata/dataset_registry.json'
+      - 'data/metadata/dataset_registry.schema.json'
       - 'docs/research/oss-benchmarks/2026-02-15/**/*.json'
       - 'docs/research/oss-benchmarks/2026-02-15/**/*.md'
       - 'scripts/validate_oss_benchmarks_2026_02_15.sh'
@@ -89,6 +93,24 @@ jobs:
 
           echo "Running OSS benchmarks validator script..."
           bash scripts/validate_oss_benchmarks_2026_02_15.sh
+
+      - name: Validate dataset registry contract
+        run: |
+          set -euo pipefail
+          if [ ! -f "data/metadata/dataset_registry.json" ]; then
+            echo "STOP=missing_dataset_registry_json"
+            exit 1
+          fi
+          if [ ! -f "data/metadata/dataset_registry.schema.json" ]; then
+            echo "STOP=missing_dataset_registry_schema"
+            exit 1
+          fi
+
+          echo "Validating dataset registry JSON against dataset registry schema..."
+          ajv validate \
+            -s data/metadata/dataset_registry.schema.json \
+            -d data/metadata/dataset_registry.json \
+            --strict=false || exit 1
 
       - name: Report validation results
         if: always()

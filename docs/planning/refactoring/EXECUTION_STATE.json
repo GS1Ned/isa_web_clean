@@ -165,7 +165,6 @@
       ],
       "unresolved_issues": [
         "DELTA-04B closure pending (T-013)",
-        "Dataset registry/schema reconciliation pending (T-011)",
         "Dependency audit still reports non-blocking high-severity advisories under current critical-only blocking policy",
         "PG-01 canonical metadata refresh and queue alignment in progress"
       ],
@@ -317,8 +316,8 @@
         ]
       }
     ],
-    "next_deterministic_task": "T-011 reconcile dataset registry contract and CI schema validation",
-    "last_validated_at": "2026-02-20T05:42:21Z",
+    "next_deterministic_task": "T-013 close DELTA-04B via dutchInitiatives router extraction",
+    "last_validated_at": "2026-02-20T05:44:28Z",
     "patch_group_checkpoints": [
       {
         "patch_group": "PG-00",
@@ -354,6 +353,16 @@
         "validation_bundle_version": "V2",
         "statuses": {
           "doc_code_validator_canonical": "pass",
+          "planning_validator": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-03",
+        "validated_at": "2026-02-20T05:44:28Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "dataset_registry_schema_validation": "pass",
+          "advisory_health_probe": "pass",
           "planning_validator": "pass"
         }
       }

@@ -17,7 +17,7 @@ fi
 echo "Checking dataset registry..."
 EXPECTED_DATASETS=15
 if [ -f "data/metadata/dataset_registry.json" ]; then
-    DATASET_COUNT=$(jq '.datasets | length' data/metadata/dataset_registry.json 2>/dev/null || echo "0")
+    DATASET_COUNT=$(jq 'if (.datasets | type) == "array" then (.datasets | length) elif (.newDatasets | type) == "array" and (.registeredStandards | type) == "array" then ((.newDatasets | length) + (.registeredStandards | length)) else 0 end' data/metadata/dataset_registry.json 2>/dev/null || echo "0")
     echo "✅ Dataset registry valid ($DATASET_COUNT datasets)"
 else
     echo "⚠️  Dataset registry not found"
