@@ -36,6 +36,8 @@ echo "Checking untracked local filesystem noise (warning-only)..."
 LOCAL_FORBIDDEN=$(find . \
     -path "./node_modules" -prune -o \
     -path "./.git" -prune -o \
+    -path "./dist" -prune -o \
+    -path "./test-results" -prune -o \
     \( -path "*/__MACOSX/*" -o -name ".DS_Store" -o -name "Thumbs.db" -o -name "*.swp" -o -name "*~" \) \
     -print 2>/dev/null | sed 's#^\./##' || true)
 
@@ -46,8 +48,12 @@ if [[ -n "$LOCAL_FORBIDDEN" ]]; then
         UNTRACKED_FORBIDDEN="$LOCAL_FORBIDDEN"
     fi
     if [[ -n "${UNTRACKED_FORBIDDEN:-}" ]]; then
+        UNTRACKED_COUNT=$(printf '%s\n' "$UNTRACKED_FORBIDDEN" | wc -l | tr -d ' ')
         echo "⚠️  WARNING: Untracked forbidden files present locally (non-blocking):"
-        echo "$UNTRACKED_FORBIDDEN"
+        printf '%s\n' "$UNTRACKED_FORBIDDEN" | head -n 40
+        if [[ "$UNTRACKED_COUNT" -gt 40 ]]; then
+            echo "... and $((UNTRACKED_COUNT - 40)) more"
+        fi
     fi
 fi
 
@@ -55,24 +61,28 @@ fi
 echo ""
 echo "Checking for docs outside canonical allowlist..."
 
-# Find all .md files in docs/ (excluding generated and node_modules)
-NEW_DOCS=$(find docs -name "*.md" \
-    -not -path "*/node_modules/*" \
-    -not -path "*/_generated/*" \
-    -not -path "*/planning/*" \
-    -not -path "*/governance/*" \
-    -not -path "*/architecture/panel/*" \
-    -not -path "*/sre/*" \
-    -not -path "*/quality/*" \
-    -not -path "*/spec/*/RUNTIME_CONTRACT.md" \
-    -not -name "INDEX.md" \
-    -not -name "REPO_MAP.md" \
-    -not -name "README.md" \
-    2>/dev/null | grep -v "isa-core-architecture.md\|ISA_CORE_CONTRACT.md" || true)
+# Candidate docs are newly added docs only:
+# - Added in latest commit (if available)
+# - Untracked in current worktree
+ADDED_DOCS_HEAD=""
+if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
+    ADDED_DOCS_HEAD=$(git diff --name-only --diff-filter=A HEAD^ HEAD | grep -E '^docs/.*\.md$' || true)
+fi
+ADDED_DOCS_WORKTREE=$(git ls-files --others --exclude-standard | grep -E '^docs/.*\.md$' || true)
+
+NEW_DOCS=$(printf '%s\n%s\n' "$ADDED_DOCS_HEAD" "$ADDED_DOCS_WORKTREE" \
+    | sed '/^$/d' \
+    | sort -u \
+    | grep -vE '(^docs/.*/_generated/|^docs/planning/|^docs/governance/|^docs/architecture/panel/|^docs/sre/|^docs/quality/|/RUNTIME_CONTRACT\.md$|/INDEX\.md$|/README\.md$|/REPO_MAP\.md$|isa-core-architecture\.md$|ISA_CORE_CONTRACT\.md$)' \
+    || true)
 
 if [[ -n "$NEW_DOCS" ]]; then
+    NEW_DOCS_COUNT=$(printf '%s\n' "$NEW_DOCS" | wc -l | tr -d ' ')
     echo "⚠️  WARNING: Potential non-canonical docs found (manual review required):"
-    echo "$NEW_DOCS"
+    printf '%s\n' "$NEW_DOCS" | head -n 60
+    if [[ "$NEW_DOCS_COUNT" -gt 60 ]]; then
+        echo "... and $((NEW_DOCS_COUNT - 60)) more"
+    fi
     # Don't fail on this yet, just warn
 fi
 

@@ -186,9 +186,9 @@ export const roadmapExportRouter = router({
       const { tmpdir } = await import("os");
       const { join } = await import("path");
       const { randomBytes } = await import("crypto");
-      const { exec } = await import("child_process");
+      const { execFile } = await import("child_process");
       const { promisify } = await import("util");
-      const execAsync = promisify(exec);
+      const execFileAsync = promisify(execFile);
 
       const tempId = randomBytes(8).toString("hex");
       const mdPath = join(tmpdir(), `roadmap-${tempId}.md`);
@@ -198,7 +198,7 @@ export const roadmapExportRouter = router({
         await writeFile(mdPath, markdown, "utf-8");
 
         // Convert to PDF using manus-md-to-pdf
-        await execAsync(`manus-md-to-pdf ${mdPath} ${pdfPath}`);
+        await execFileAsync("manus-md-to-pdf", [mdPath, pdfPath]);
 
         // Read PDF file
         const { readFile } = await import("fs/promises");

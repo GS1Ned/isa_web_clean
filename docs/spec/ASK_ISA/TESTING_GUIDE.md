@@ -474,7 +474,7 @@ if not (repo / ".git").exists():
 
 required = [
     "docs/spec/ASK_ISA.md",
-    "docs/spec/ASK_ISA/ASK_ISA_RUNTIME_CONTRACT.md",
+    "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
     "server/prompts/ask_isa/index.ts",
     "docs/planning/NEXT_ACTIONS.json",
 ]
@@ -491,7 +491,7 @@ print("verified_files=" + ",".join(required))
 
 ```bash
 # Run smoke test
-pnpm tsx scripts/probe/ask_isa_smoke.py
+python3 scripts/probe/ask_isa_smoke.py
 
 # Expected output:
 # SMOKE_OK

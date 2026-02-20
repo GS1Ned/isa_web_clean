@@ -48,3 +48,8 @@ url = "https://developers.openai.com/mcp"
 [mcp_servers.github]
 url = "https://api.githubcopilot.com/mcp/"
 bearer_token_env_var = "GH_TOKEN"
+
+[mcp_servers.sequential-thinking]
+command = "pnpm"
+args = ["-s", "dlx", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
+cwd = "."

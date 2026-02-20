@@ -238,3 +238,73 @@ RECOMMENDATION
   - Define naming conventions for workflows and scripts.
 - No-console compliance:
   - Docs avoid examples with console methods.
+
+---
+
+## 2026-02-20 Benchmark-to-Dataset Promotion Guardrails (In-Place)
+
+Last verified date: 2026-02-20
+
+### FACT
+- This package now includes a deterministic conversion policy from OSS benchmark findings to ISA dataset candidates.
+- Conversion is blocked unless authority/provenance/license checks pass.
+
+### INTERPRETATION
+- OSS evidence is high-value for engineering strategy but high-risk as a primary compliance source.
+- Promotion failures should default to `WATCH` or `OUT` to preserve governance integrity.
+
+### RECOMMENDATION
+- Apply the promotion pipeline below for every benchmark-derived candidate before it enters the authoritative backlog.
+
+### Promotion pipeline and gates
+
+| stage | required checks | fail outcome | pass outcome |
+| --- | --- | --- | --- |
+| Stage 1: provenance lock | repo, commit, paths, file hashes captured | DROP_NOW (insufficient reproducibility) | proceed |
+| Stage 2: authority linkage | at least one tier 1-4 authoritative upstream URL | WATCH (await linkage) | proceed |
+| Stage 3: license review | SPDX/terms identified and compatible | OUT (license block) | proceed |
+| Stage 4: security and safety | no secret/malware/privacy red flags in sampled artifacts | OUT (safety block) | proceed |
+| Stage 5: capability mapping | explicit impact map across six capabilities | RESOLVE_NOW (missing mapping) | candidate may enter backlog |
+
+### Required promotion record
+
+| field | required | allowed values |
+| --- | --- | --- |
+| `candidate_id` | yes | string |
+| `source_class` | yes | `OSS_SUPPORTIVE` |
+| `authority_tier` | yes | `5` at discovery time |
+| `provenance_link_to_authority` | yes | URL or `UNKNOWN` |
+| `license_status` | yes | `COMPATIBLE`, `INCOMPATIBLE`, `UNKNOWN` |
+| `security_review` | yes | `PASS`, `FAIL`, `UNKNOWN` |
+| `scope_decision` | yes | `IN`, `OUT`, `WATCH` |
+| `rationale` | yes | concise justification |
+| `last_verified_date` | yes | `2026-02-20` |
+
+### De-dup and mirror handling for promoted candidates
+
+- Canonical ID key: `normalized(authoritative_url) + normalized(dataset_or_schema_name)`.
+- If multiple OSS repos mirror one authoritative source:
+  - keep one canonical supportive record,
+  - mark others as mirrors,
+  - never count mirrors as independent evidence.
+
+### Safe retrieval recipe (minimum)
+
+```yaml
+retrieval_recipe:
+  repo: owner/name
+  default_branch: main
+  commit: <sha>
+  files:
+    - path: <path>
+      sha: <blob_sha>
+  license: <spdx_or_UNKNOWN>
+  authoritative_link: <url_or_UNKNOWN>
+  last_verified_date: 2026-02-20
+```
+
+### Anti-goals for benchmark-derived promotion
+- no private repository access
+- no credential harvesting
+- no license-violating redistribution
+- no unsupported claims without authority-tier corroboration

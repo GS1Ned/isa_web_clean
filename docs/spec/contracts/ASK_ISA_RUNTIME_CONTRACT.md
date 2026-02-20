@@ -3,4 +3,4 @@
 This file exists for backwards-compatible references.
 
 Canonical location:
-- `docs/spec/ASK_ISA/ASK_ISA_RUNTIME_CONTRACT.md`
+- `docs/spec/ASK_ISA/RUNTIME_CONTRACT.md`

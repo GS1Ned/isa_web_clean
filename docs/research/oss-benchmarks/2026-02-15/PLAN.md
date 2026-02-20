@@ -121,3 +121,42 @@ Last verified date: 2026-02-15
 
 8. Validation (hard gate)
    - Create and run: `scripts/validate_oss_benchmarks_2026_02_15.sh`
+
+---
+
+## 2026-02-20 Supportive-Only Crosswalk (In-Place)
+
+Last verified date: 2026-02-20
+
+### FACT
+- OSS benchmark artifacts are now explicitly constrained to supportive-only usage for dataset discovery.
+- No benchmark finding is authoritative by itself; each item must link to tier 1-4 sources before promotion.
+
+### INTERPRETATION
+- Existing benchmark evidence remains useful for implementation patterns and operational heuristics.
+- Governance risk is concentrated in provenance/licensing drift when OSS findings are promoted without authoritative corroboration.
+
+### RECOMMENDATION
+- Treat this benchmark package as a feeder for `WATCH` candidates by default, then promote only via authoritative confirmation gates.
+
+### Supportive-only handoff contract
+
+| benchmark_output | allowed_use | required_authoritative_corroboration | promotion_gate |
+| --- | --- | --- | --- |
+| external repo patterns | implementation inspiration | tier 1-4 source URL proving legal/standards basis | authority-link gate |
+| schemas/examples in OSS repos | parser/testing bootstrap only | official schema/spec endpoint or legal reference | schema-provenance gate |
+| release/commit recency signals | maintenance heuristic | none (advisory only) | cannot promote alone |
+| README claims | hypothesis generation | direct authoritative source verification | claim-verification gate |
+
+### Deterministic handoff record format (to deep-research addendum)
+
+| field | required | notes |
+| --- | --- | --- |
+| `repo` | yes | `owner/name` |
+| `commit` | yes | pinned sha |
+| `paths_and_hashes` | yes | at least one key file + blob sha |
+| `license` | yes | SPDX id or `UNKNOWN` |
+| `provenance_link_to_authority` | yes | at least one tier 1-4 URL |
+| `supportive_score` | yes | rubric-defined |
+| `disposition` | yes | `WATCH` or `OUT` by default |
+| `last_verified_date` | yes | must be `2026-02-20` for this run |

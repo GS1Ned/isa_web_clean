@@ -3,7 +3,7 @@
  * Tests for serverLogger functionality
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { serverLoggerFactory } from "./server-logger";
 
 type EnvOverrides = Record<string, string | undefined>;
@@ -43,6 +43,8 @@ const nonSilentBaseEnv: EnvOverrides = {
   VITEST: "false",
   NODE_ENV: "development",
 };
+
+const originalSilent = process.env.ISA_TEST_SILENT;
 
 describe("serverLogger", () => {
   beforeEach(() => {

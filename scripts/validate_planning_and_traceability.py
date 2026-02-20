@@ -17,10 +17,18 @@ allowed_planning_prefixes = (
     "docs/planning/refactoring/",
 )
 
+ignored_planning_basenames = {
+    ".DS_Store",
+    "Thumbs.db",
+    "desktop.ini",
+}
+
 planning_dir = pathlib.Path("docs/planning")
 if planning_dir.exists():
     for p in sorted(planning_dir.rglob("*")):
         if p.is_dir():
+            continue
+        if p.name in ignored_planning_basenames or p.name.startswith("._"):
             continue
         rel = p.as_posix()
         if rel.startswith("docs/planning/work-packages/"):

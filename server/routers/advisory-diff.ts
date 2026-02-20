@@ -9,7 +9,7 @@ import { z } from "zod";
 import { router, publicProcedure } from "../_core/trpc";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
-import { execSync } from "child_process";
+import { execFileSync } from "child_process";
 import { serverLogger } from "../_core/logger-wiring";
 
 export const advisoryDiffRouter = router({
@@ -43,7 +43,7 @@ export const advisoryDiffRouter = router({
         const scriptPath = join(process.cwd(), "scripts", "compute_advisory_diff.cjs");
         
         try {
-          execSync(`node ${scriptPath} ${version1} ${version2}`, {
+          execFileSync("node", [scriptPath, version1, version2], {
             cwd: process.cwd(),
             stdio: "pipe",
           });
