@@ -99,6 +99,15 @@ jobs:
             --report-dir test-results/ci \
             --quarantine-file config/testing/vitest.quarantine.txt
 
+      - name: Run capability heartbeat smokes
+        run: |
+          set -euo pipefail
+          pnpm vitest run \
+            server/routers/__tests__/capability-heartbeat.test.ts \
+            --reporter=verbose \
+            --reporter=json \
+            --outputFile test-results/ci/capability-heartbeat.json
+
       - name: Upload Tier 1 reports
         if: always()
         uses: actions/upload-artifact@v4
