@@ -95,6 +95,7 @@ Completion gate rule: every row must be `ACCEPTED` or `BLOCKED_WITH_MITIGATION`.
 | `DELTA-06` | Operational execution registry | Registry checkpoint required for phase transitions and DONE threshold | `ACCEPTED` | Enforced in `EXECUTION_STATE.json` | `+0.09` |
 | `DELTA-07` | Repo-manifest drift handling | Drift remediated or recorded as explicit delta row | `ACCEPTED` | Manifest authority + evidence pointers enforced | `+0.06` |
 | `DELTA-08` | Validation limitations | Known gate limitations explicitly documented and weighted | `ACCEPTED` | Maintained in validation bundle results | `-0.07` |
+| `DELTA-09` | Runtime contract factual hardening | Six capability runtime contracts are evidence-backed, non-DRAFT, and path-valid | `ACCEPTED` | Enforced across `docs/spec/*/RUNTIME_CONTRACT.md` under canonical doc-code validation | `+0.07` |
 
 ---
 
@@ -230,7 +231,7 @@ python3 scripts/gates/manifest-ownership-drift.py
 
 1. Enforce manifest ownership and evidence drift checks in CI.
 2. Resolve blocked multi-router physical splits incrementally with non-breaking sub-surface ownership.
-3. Reduce canonical doc-code drift first; keep global backlog visible but non-blocking for canonical gate.
+3. Keep six capability runtime contracts evidence-backed and synchronized with router/table ownership contracts.
 4. Reduce non-blocking high-severity dependency advisory backlog while preserving deterministic security gate behavior.
 
 ---

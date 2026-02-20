@@ -1,145 +1,74 @@
 ---
 DOC_TYPE: SPEC
 CAPABILITY: CATALOG
-COMPONENT: registry
-FUNCTION_LABEL: "Catalog regulations and standards"
+COMPONENT: runtime
+FUNCTION_LABEL: "Canonical registries for regulations, standards and datasets"
 OWNER: gs1ned-isa
 STATUS: active
-LAST_VERIFIED: 2026-02-12
-VERIFICATION_METHOD: manual
+LAST_VERIFIED: 2026-02-20
+VERIFICATION_METHOD: repo-evidence
 ---
 
 # CATALOG Runtime Contract
 
-## Purpose
-Catalog regulations and standards
+## Canonical Role
+CATALOG is the source-of-record capability for regulation, standards, ESRS datapoint, initiative, and dataset registry surfaces.
 
-## Entry Points
+## Runtime Surfaces (Code Truth)
+<!-- EVIDENCE:implementation:server/routers.ts -->
+- Top-level `appRouter` surfaces: `regulations`, `standards`, `gs1Standards`, `standardsDirectory`, `esrs`, `dutchInitiatives`, `datasetRegistry`, `governanceDocuments`, `gs1Attributes`, `gs1nlAttributes`.
+- Modules:
+  - `server/routers/regulations.ts`
+  - `server/routers/standards.ts`
+  - `server/gs1-standards-router.ts`
+  - `server/routers/standards-directory.ts`
+  - `server/routers/esrs.ts`
+  - `server/routers/dataset-registry.ts`
+  - `server/routers/governance-documents.ts`
+  - `server/routers/gs1-attributes.ts`
+  - `server/routers/gs1nl-attributes.ts`
 
-<!-- EVIDENCE:implementation:server/routers/standards-directory.ts -->
-### API Endpoints (tRPC)
-- `server/gs1-standards-router.ts` <!-- EVIDENCE:implementation:server/gs1-standards-router.ts -->
-- `server/routers/standards-directory.test.ts`
-- `server/routers/standards-directory.ts` <!-- EVIDENCE:implementation:server/routers/standards-directory.ts -->
+## Data Surfaces (Ownership Contract)
+<!-- EVIDENCE:implementation:docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json -->
+- Owned tables:
+  - `regulations`
+  - `gs1_standards`
+  - `esrs_datapoints`
+  - `dutch_initiatives`
+  - `regulation_standard_mappings`
+  - `dataset_registry`
+  - `governance_documents`
+  - `gs1_attributes`
+  - `gs1_web_vocabulary`
+- Schema anchors:
+  - `drizzle/schema.ts`
+  - `drizzle/schema_dataset_registry.ts`
+  - `drizzle/schema_governance_documents.ts`
 
-### Services
-- `server/check-regulations.ts`
-- `server/gs1-benelux-parser.ts`
-- `server/gs1-diy-parser.ts`
+## Input / Output Contract (Current)
+- Inputs: typed query/filter parameters for catalog retrieval and administrative updates for dataset/governance entries.
+- Outputs: typed registry payloads from catalog routers.
+- Field-level payload definitions remain code-truth in tRPC router procedures.
 
-### UI Components
-- `client/src/pages/CompareRegulations.tsx`
-- `client/src/pages/DatasetRegistry.tsx`
-- `client/src/pages/HubRegulations.tsx`
+## Verification
+<!-- EVIDENCE:implementation:scripts/probe/catalog_health.sh -->
+- Smoke probe: `scripts/probe/catalog_health.sh`
+- Tests:
+  - `server/routers/dataset-registry.test.ts`
+  - `server/routers/standards-directory.test.ts`
+  - `server/routers/__tests__/capability-heartbeat.test.ts`
+- Canonical gate alignment:
+  - `bash scripts/gates/doc-code-validator.sh --canonical-only`
+  - `python3 scripts/gates/manifest-ownership-drift.py`
 
-## Inputs/Outputs
-
-### Inputs
-**Catalog Queries (tRPC procedures)**
-- `getRegulations()` - List all regulations
-- `getStandards()` - List all GS1 standards
-- `getESRSDatapoints()` - List ESRS datapoints
-- `getDutchInitiatives()` - List national programs
-
-### Outputs
-**Regulation**
-```typescript
-{
-  id: number,
-  title: string,
-  description: string,
-  category: string,
-  status: string,
-  applicability: string[],
-  relatedStandards: number[]
-}
-```
-
-**Standard**
-```typescript
-{
-  id: number,
-  name: string,
-  description: string,
-  type: string,
-  relatedRegulations: number[]
-}
-```
-
-## Invariants
-
-1. **Coverage**: 38 EU regulations, 60+ GS1 standards, 1,184 ESRS datapoints, 10 Dutch initiatives
-2. **Bidirectional Links**: Regulations ↔ Standards mappings maintained
-3. **AI Descriptions**: All items have AI-enhanced descriptions
-4. **Filtering**: Support category, status, applicability filters
-5. **Search**: Full-text search across all catalog items
-
-## Failure Modes
-
-### Observable Signals
-- **Empty Catalog**: No data in database
-- **Broken Links**: Regulation-Standard mappings invalid
-- **Query Timeout**: Database query exceeds 5s
-
-### Recovery Procedures
-- **Empty Catalog**: Trigger data ingestion
-- **Broken Links**: Regenerate mappings
-- **Query Timeout**: Add database indexes, optimize query
-
-## Data Dependencies
-
-### Database Tables
-- `regulations` - 38 EU regulations
-- `gs1_standards` - 60+ standards
-- `esrs_datapoints` - 1,184 datapoints
-- `dutch_initiatives` - 10 programs
-- `regulation_standard_mappings` - Bidirectional links
-
-### External APIs
-- None (read-only from database)
-
-## Security/Secrets
-
-### Required Secrets
-- `DATABASE_URL` - TiDB connection
-
-### Authentication
-- **Public Read**: Catalog browsing requires Manus OAuth
-- **Admin Write**: Data updates restricted to admin role
-
-## Verification Methods
-
-### Smoke Test
-- **Location**: `scripts/probe/catalog_health.sh`
-- **Status**: ⏳ Planned
-- **Frequency**: After data ingestion
-- **Coverage**: Record counts, link integrity, search functionality
-
-### Integration Tests
-- **Location**: `server/routers/catalog.test.ts`
-- **Coverage**: CRUD operations, filtering, search, mappings
-- **Framework**: Vitest
-- **Status**: 90%+ passing
-
-### Manual Verification
-- **UI Pages**: `/hub/regulations`, `/hub/standards`, `/hub/esrs-datapoints`
-- **Metrics**: 38 regulations, 60+ standards, 1,184 ESRS datapoints, 10 initiatives
-- Status: ⏳ To be created
-
-### Integration Tests
-- (To be documented)
+## Operational Unknowns
+- Production data volume growth limits and query SLAs are UNKNOWN from repository-only evidence.
+- External source refresh SLAs for upstream registries are UNKNOWN from repository-only evidence.
 
 ## Evidence
+<!-- EVIDENCE:implementation:server/routers/regulations.ts -->
+<!-- EVIDENCE:implementation:server/routers/standards.ts -->
+<!-- EVIDENCE:implementation:server/routers/dataset-registry.ts -->
+<!-- EVIDENCE:implementation:server/gs1-standards-router.ts -->
 
-<!-- EVIDENCE:requirement:docs/planning/refactoring/FILE_INVENTORY.json -->
-- Phase 0 Inventory: 34 files classified as CATALOG
-<!-- EVIDENCE:implementation:server/routers/standards-directory.ts -->
-- Code entrypoints: 9 identified
-<!-- EVIDENCE:decision:docs/planning/refactoring/QUALITY_SCORECARDS.json -->
-- Quality grade: C (70/100)
-
----
-
-**Contract Status:** DRAFT  
-**Completeness:** ~30% (skeleton only, needs detailed analysis)  
-**Next Steps:** Analyze code to populate all sections
+**Contract Status:** CURRENT_EVIDENCE_BACKED

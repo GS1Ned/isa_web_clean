@@ -167,8 +167,7 @@
         "DELTA-04B closure pending (T-013)",
         "Dataset registry/schema reconciliation pending (T-011)",
         "Dependency audit still reports non-blocking high-severity advisories under current critical-only blocking policy",
-        "PG-01 canonical metadata refresh and queue alignment in progress",
-        "Runtime contract factual hardening pending (T-004..T-009)"
+        "PG-01 canonical metadata refresh and queue alignment in progress"
       ],
       "confidence": 0.93
     },
@@ -318,8 +317,8 @@
         ]
       }
     ],
-    "next_deterministic_task": "T-004 normalize runtime contracts across six capabilities",
-    "last_validated_at": "2026-02-20T05:39:48Z",
+    "next_deterministic_task": "T-011 reconcile dataset registry contract and CI schema validation",
+    "last_validated_at": "2026-02-20T05:42:21Z",
     "patch_group_checkpoints": [
       {
         "patch_group": "PG-00",
@@ -345,6 +344,15 @@
         "validation_bundle_version": "V2",
         "statuses": {
           "canonical_contract_drift": "pass",
+          "doc_code_validator_canonical": "pass",
+          "planning_validator": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-02",
+        "validated_at": "2026-02-20T05:42:21Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
           "doc_code_validator_canonical": "pass",
           "planning_validator": "pass"
         }
