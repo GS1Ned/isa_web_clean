@@ -145,7 +145,8 @@
       "outputs": [
         "Corrective hardening patch set applied",
         "Validation bundle rerun with canonical-scope doc-code checks",
-        "Confidence recomputed from weighted signals"
+        "Confidence recomputed from weighted signals",
+        "Canonical contract drift gate integrated into validation bundle"
       ],
       "evidence_paths": [
         "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
@@ -154,7 +155,8 @@
       ],
       "unresolved_issues": [
         "scripts/gates/no-console-gate.sh fails due remaining console usage in scripts/copilot/automerge_prs.sh",
-        "scripts/gates/security-gate.sh fails due dependency policy violations"
+        "scripts/gates/security-gate.sh fails due dependency policy violations",
+        "scripts/gates/canonical-contract-drift.sh fails due stale repo_ref commit metadata in canonical contracts"
       ],
       "confidence": 0.68
     },
@@ -181,6 +183,7 @@
       "unresolved_issues": [
         "No-console gate remains failing until console usage is removed from scripts/copilot/automerge_prs.sh",
         "Security gate remains failing until dependency policy violations are remediated",
+        "Canonical contract metadata drift remains failing until repo_ref.commit is refreshed across canonical contracts",
         "DELTA-04B remains blocked with mitigation by design"
       ],
       "confidence": 0.68
@@ -209,7 +212,7 @@
     "base_branch": "main",
     "base_commit": "86a5f9a",
     "working_branch": "hardening/2026-02-20-cleanup-benchmark-buildout",
-    "validation_bundle_version": "V1",
+    "validation_bundle_version": "V2",
     "baseline_validation_status": {
       "planning_validator": "fail:1",
       "pnpm_check": "pass",
@@ -232,7 +235,7 @@
       "docs/spec/CONFLICT_REGISTER.md",
       "docs/planning/refactoring/EXECUTION_STATE.json"
     ],
-    "last_validated_at": "2026-02-20T03:21:08Z",
+    "last_validated_at": "2026-02-20T03:24:29Z",
     "canonical_contract_set_locked": true,
     "canonical_contract_set_locked_at": "2026-02-20T02:57:52Z",
     "canonical_contract_set_lock_commit": "9925f1a",
@@ -379,6 +382,23 @@
           "security_gate": "fail:1",
           "canonical_docs_allowlist": "pass",
           "doc_code_validator_canonical": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-04A",
+        "validated_at": "2026-02-20T03:24:29Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "planning_validator": "fail:1",
+          "pnpm_check": "pass",
+          "no_console_gate": "fail:1",
+          "secrets_scan": "pass",
+          "slo_policy": "pass",
+          "observability_contract": "pass",
+          "security_gate": "fail:1",
+          "canonical_docs_allowlist": "pass",
+          "doc_code_validator_canonical": "pass",
+          "canonical_contract_drift": "fail:1"
         }
       }
     ]

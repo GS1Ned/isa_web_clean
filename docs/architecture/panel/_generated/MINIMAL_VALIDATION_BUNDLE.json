@@ -36,7 +36,8 @@
       "bash scripts/gates/observability-contract.sh /tmp/observability.current.json",
       "bash scripts/gates/security-gate.sh /tmp/security.current.json",
       "bash scripts/gates/canonical-docs-allowlist.sh",
-      "bash scripts/gates/doc-code-validator.sh --canonical-only"
+      "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "bash scripts/gates/canonical-contract-drift.sh"
     ]
   },
   "weights": {
@@ -48,7 +49,8 @@
     "observability_contract": 0.12,
     "security_gate": 0.12,
     "canonical_docs_allowlist": 0.1,
-    "doc_code_validator": 0.13
+    "doc_code_validator": 0.13,
+    "canonical_contract_drift": 0.0
   },
   "results": [
     {
@@ -113,6 +115,13 @@
       "signal": 1.0,
       "contribution": 0.13,
       "limitation": "Canonical-scope mode passes; global legacy backlog remains outside canonical gate."
+    },
+    {
+      "id": "canonical_contract_drift",
+      "status": "fail",
+      "signal": 0.0,
+      "contribution": 0.0,
+      "limitation": "Canonical contract repo_ref metadata does not yet match current commit window (HEAD or HEAD^)."
     }
   ],
   "aggregate": {

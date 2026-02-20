@@ -184,6 +184,7 @@ bash scripts/gates/observability-contract.sh /tmp/observability.current.json
 bash scripts/gates/security-gate.sh /tmp/security.current.json
 bash scripts/gates/canonical-docs-allowlist.sh
 bash scripts/gates/doc-code-validator.sh --canonical-only
+bash scripts/gates/canonical-contract-drift.sh
 ```
 
 ### 9.2 Confidence Formula

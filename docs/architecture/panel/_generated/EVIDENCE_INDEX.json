@@ -1337,8 +1337,8 @@
       "id": "EV-VAL-001",
       "claim": "Observability contract check reports pass with runtime-scoped coverage meeting threshold.",
       "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
-      "line_start": 90,
-      "line_end": 95,
+      "line_start": 92,
+      "line_end": 97,
       "evidence_type": "validation_result",
       "confidence": 1
     },
@@ -1346,8 +1346,8 @@
       "id": "EV-VAL-002",
       "claim": "Security gate reports fail under deterministic timeout-fail semantics due dependency policy violations.",
       "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
-      "line_start": 97,
-      "line_end": 102,
+      "line_start": 99,
+      "line_end": 104,
       "evidence_type": "validation_result",
       "confidence": 1
     },
@@ -1355,8 +1355,8 @@
       "id": "EV-VAL-003",
       "claim": "Aggregate weighted confidence is 0.68 with DONE threshold set to 0.75.",
       "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
-      "line_start": 118,
-      "line_end": 128,
+      "line_start": 127,
+      "line_end": 137,
       "evidence_type": "validation_result",
       "confidence": 1
     },
