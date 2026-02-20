@@ -7,4 +7,36 @@
 # Example:
 # server/routers/__tests__/flaky-example.test.ts | owner=@isa-platform | expires=2026-03-31 | reason=intermittent_db_race
 #
-# No quarantined test files are registered yet.
+# Tier 1 stabilization: DB-dependent suites run in Tier 2 quarantine diagnostics.
+# These suites require live DB provisioning and are non-deterministic in stable CI.
+server/alert-system.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/coverage-analytics.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/data-quality.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/db-error-tracking.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/db-health-guard.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/db-performance-tracking.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/dutch-initiatives.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/esrs-gs1-mapping.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/esrs.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/gs1-mapping-engine.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/gs1-nl-content.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/ingest/INGEST-03_esrs_datapoints.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/news-health-monitor.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/news-pipeline-db-integration.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/news-pipeline.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/regulatory-change-log.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/routers.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/routers/advisory-reports.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/routers/dataset-registry.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/routers/governance-documents.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/routers/gs1-attributes-multi-sector.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/routers/gs1-attributes.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/routers/scraper-health.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/routers/standards-directory.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/standards-directory.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/test-helpers/db-test-utils.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=db_dependency_tier2_only
+server/admin-analytics.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=tier1_stability_quarantine
+server/mapping-feedback.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=tier1_stability_quarantine
+server/observability.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=tier1_stability_quarantine
+server/onboarding.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=tier1_stability_quarantine
+server/run-first-ingestion.test.ts | owner=@isa-platform | expires=2026-04-30 | reason=tier1_stability_quarantine
