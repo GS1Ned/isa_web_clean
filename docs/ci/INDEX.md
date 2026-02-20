@@ -47,6 +47,11 @@ Active:
   - Local:
     - Install AJV CLI: `npm i -g ajv-cli`
     - Run `ajv validate -s <schema> -d <artifact> --strict=false` for each artifact.
+- Capability eval baseline policy (nightly/weekly workflows):
+  - `stage_a`: `data/evaluation/baselines/isa-capability-baseline.json`
+  - `stage_b`: `data/evaluation/baselines/isa-capability-baseline-stage_b.json`
+  - `stage_c`: fallback to `stage_a` until a dedicated stage_c baseline exists
+  - Resolution helper: `node scripts/eval/resolve-baseline-path.cjs --stage <stage>`
 - `validate-docs.yml`
   - Trigger: any PR, and pushes to `main`.
   - Purpose: validate planning/traceability rules (repo governance).
