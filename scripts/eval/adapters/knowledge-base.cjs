@@ -8,6 +8,7 @@ const {
   latencyNorm,
   selectDatasetByPrefix,
 } = require("../lib/common.cjs");
+const { measureRuntimeProbe } = require("../lib/runtime-probes.cjs");
 
 const CHECKSUM_RE = /^[a-f0-9]{64}$/;
 
@@ -96,8 +97,23 @@ async function evaluate(context) {
     ).toFixed(4)
   );
 
-  const latencyP95Ms = 180;
-  const latencyMeasurementMode = "synthetic";
+  const latencyProbe = await measureRuntimeProbe({
+    probeId: "kb.adapter.compute.v1",
+    fn: () => {
+      let linkedUses = 0;
+      let completeFields = 0;
+      for (const row of corpusRows) {
+        linkedUses += Array.isArray(row.intended_use) ? row.intended_use.length : 0;
+        for (const field of requiredFields) {
+          if (hasValue(row[field])) completeFields += 1;
+        }
+      }
+      return linkedUses + completeFields;
+    },
+  });
+
+  const latencyP95Ms = latencyProbe.p95_ms;
+  const latencyMeasurementMode = latencyProbe.measurement_mode;
 
   const metrics = [
     {
@@ -179,6 +195,8 @@ async function evaluate(context) {
       fixture_path: corpusDataset.path,
       measurement_mode: latencyMeasurementMode,
       fixture_version: fixtureVersion,
+      runtime_probe_id: latencyProbe.runtime_probe_id,
+      runtime_probe_samples: latencyProbe.samples,
     },
     {
       dataset_id: corpusDataset.id,
@@ -189,6 +207,8 @@ async function evaluate(context) {
       fixture_path: corpusDataset.path,
       measurement_mode: latencyMeasurementMode,
       fixture_version: fixtureVersion,
+      runtime_probe_id: latencyProbe.runtime_probe_id,
+      runtime_probe_samples: latencyProbe.samples,
     },
   ];
 
