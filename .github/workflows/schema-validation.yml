@@ -106,11 +106,30 @@ jobs:
             exit 1
           fi
 
-          echo "Validating dataset registry JSON against dataset registry schema..."
-          ajv validate \
-            -s data/metadata/dataset_registry.schema.json \
-            -d data/metadata/dataset_registry.json \
-            --strict=false || exit 1
+          echo "Validating dataset registry JSON against dataset registry schema (draft-2020-12)..."
+          npx -y -p ajv@8 -p ajv-formats@3 node - <<'NODE'
+          const fs = require("fs");
+          const Ajv2020 = require("ajv/dist/2020").default;
+          const addFormats = require("ajv-formats");
+
+          const schemaPath = "data/metadata/dataset_registry.schema.json";
+          const dataPath = "data/metadata/dataset_registry.json";
+          const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+          const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+
+          const ajv = new Ajv2020({ strict: false, allErrors: true });
+          addFormats(ajv);
+          const validate = ajv.compile(schema);
+          const valid = validate(data);
+
+          if (!valid) {
+            console.error("STOP=dataset_registry_contract_invalid");
+            console.error(JSON.stringify(validate.errors, null, 2));
+            process.exit(1);
+          }
+
+          console.log("DONE=dataset_registry_contract_valid");
+          NODE
 
       - name: Report validation results
         if: always()
