@@ -2,7 +2,7 @@ name: rag-eval-fixtures
 
 on:
   pull_request:
-    branches: [ main, strict-no-console ]
+    branches: [ main ]
     paths:
       - "data/metadata/rag_eval_fixtures_v1.json"
       - "scripts/run-rag-evaluation-fixtures.cjs"
@@ -38,4 +38,3 @@ jobs:
             -s docs/quality/schemas/rag-eval.schema.json \
             -d test-results/ci/rag-eval.json \
             --strict=false
-

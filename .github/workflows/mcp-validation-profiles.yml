@@ -2,7 +2,7 @@ name: mcp-validation-profiles
 
 on:
   pull_request:
-    branches: [strict-no-console, main]
+    branches: [main]
     paths:
       - ".codex/config.toml"
       - ".amazonq/**"

@@ -24,10 +24,10 @@ if ! gh auth status >/dev/null 2>&1; then
   exit 1
 fi
 
-# Determine default branch from remote; fallback to strict-no-console
+# Determine default branch from remote; fallback to main
 DEFAULT_BRANCH="$(git remote show origin 2>/dev/null | sed -n 's/.*HEAD branch: //p' | tr -d ' ')"
 if [[ -z "${DEFAULT_BRANCH}" ]]; then
-  DEFAULT_BRANCH="strict-no-console"
+  DEFAULT_BRANCH="main"
 fi
 
 echo "Using default branch: ${DEFAULT_BRANCH}"
