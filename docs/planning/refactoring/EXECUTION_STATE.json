@@ -203,5 +203,35 @@
     "threshold_met": true,
     "result_status": "COMPLETE",
     "rationale": "Confidence meets threshold (0.83 >= 0.75) and all delta rows are terminal (ACCEPTED or BLOCKED_WITH_MITIGATION)."
+  },
+  "continuation_run": {
+    "started_at": "2026-02-20T02:56:32Z",
+    "base_branch": "main",
+    "base_commit": "86a5f9a",
+    "working_branch": "hardening/2026-02-20-cleanup-benchmark-buildout",
+    "validation_bundle_version": "V1",
+    "baseline_validation_status": {
+      "planning_validator": "fail:1",
+      "pnpm_check": "pass",
+      "no_console_gate": "fail:1",
+      "secrets_scan": "pass",
+      "slo_policy": "pass",
+      "observability_contract": "pass",
+      "security_gate": "fail:1",
+      "canonical_docs_allowlist": "pass",
+      "doc_code_validator_canonical": "pass"
+    },
+    "canonical_contract_set": [
+      "docs/spec/ARCHITECTURE.md",
+      "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
+      "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json",
+      "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json",
+      "docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json",
+      "docs/architecture/panel/_generated/EVIDENCE_INDEX.json",
+      "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
+      "docs/spec/CONFLICT_REGISTER.md",
+      "docs/planning/refactoring/EXECUTION_STATE.json"
+    ],
+    "last_validated_at": "2026-02-20T02:57:29Z"
   }
 }

@@ -5,6 +5,25 @@
     "repo_ref": {
       "branch": "strict-no-console",
       "commit": "70bde42"
+    },
+    "baseline_run": {
+      "captured_at": "2026-02-20T02:56:32Z",
+      "base_branch": "main",
+      "base_commit": "86a5f9a",
+      "working_branch": "hardening/2026-02-20-cleanup-benchmark-buildout",
+      "validation_bundle_version": "V1",
+      "status_summary": {
+        "planning_validator": "fail:1",
+        "pnpm_check": "pass",
+        "no_console_gate": "fail:1",
+        "secrets_scan": "pass",
+        "slo_policy": "pass",
+        "observability_contract": "pass",
+        "security_gate": "fail:1",
+        "canonical_docs_allowlist": "pass",
+        "doc_code_validator_canonical": "pass"
+      },
+      "validated_at": "2026-02-20T02:57:29Z"
     }
   },
   "bundle": {
