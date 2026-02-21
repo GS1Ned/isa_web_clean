@@ -11,6 +11,11 @@ import { getDb } from '../../db';
 import { sql } from 'drizzle-orm';
 import { createHash } from 'crypto';
 import { serverLogger } from '../../_core/logger-wiring';
+import {
+  extractCanonicalFactsFromChunk,
+  persistCanonicalFacts,
+  type CanonicalFactRecord,
+} from '../canonical-facts';
 
 // ============================================================================
 // Types
@@ -368,12 +373,13 @@ export async function ingestDocument(
   serverLogger.info(`[Ingestion] Processing ${chunks.length} chunks`);
   
   let chunksCreated = 0;
+  const extractedFacts: CanonicalFactRecord[] = [];
   
   for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i];
     const contentHash = createHash('sha256').update(chunk.content).digest('hex');
     
-    await db.execute(sql`
+    const [chunkInsertResult] = await db.execute(sql`
       INSERT INTO source_chunks (
         source_id, chunk_index, chunk_type, section_path, heading,
         content, content_hash, char_start, char_end, version
@@ -383,11 +389,24 @@ export async function ingestDocument(
         ${chunk.charStart || null}, ${chunk.charEnd || null}, ${source.version || null}
       )
     `);
+    const sourceChunkId = (chunkInsertResult as any).insertId;
+    const chunkFacts = extractCanonicalFactsFromChunk({
+      sourceId,
+      sourceChunkId,
+      contentHash,
+      title: chunk.heading || source.name,
+      content: chunk.content,
+    });
+    extractedFacts.push(...chunkFacts);
     
     chunksCreated++;
   }
   
   serverLogger.info(`[Ingestion] Created ${chunksCreated} chunks`);
+  if (extractedFacts.length > 0) {
+    await persistCanonicalFacts(extractedFacts);
+    serverLogger.info(`[Ingestion] Persisted ${extractedFacts.length} canonical facts`);
+  }
   
   // Generate embeddings if requested
   let embeddingsGenerated = 0;
