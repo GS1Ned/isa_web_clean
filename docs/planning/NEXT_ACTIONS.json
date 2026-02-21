@@ -12,10 +12,10 @@
     {
       "id": "PR2-0003",
       "priority": "P1",
-      "status": "READY",
+      "status": "PARKED",
       "capability": "Meta",
       "title": "Security waiver burn-down: remove temporary advisory waivers from high-severity gate policy (SEC-002)",
-      "next_action": "Remediate or replace dependencies behind temporary waiver IDs and remove SECURITY_AUDIT_WAIVER_IDS from gate defaults and CI workflows.",
+      "next_action": "PARKED during ISA implementation-only mode. Resume security waiver burn-down after ISA v2 (Phase A-D) maturity declaration and controlled unpause.",
       "acceptance_criteria": "security-gate passes with SECURITY_AUDIT_BLOCKING_LEVELS=high,critical and empty waiver IDs; architecture/backlog updated.",
       "evidence_links": [
         "scripts/gates/security-gate.sh",
@@ -29,7 +29,9 @@
       "source_plan": "ISA Production Readiness Convergence Plan (2026-02-20)",
       "task_refs": [
         "SEC-002"
-      ]
+      ],
+      "parked_reason": "implementation-only mode: eval/drift/baseline/stage-readiness/security-waiver burn-down paused",
+      "parked_at_utc": "2026-02-21T17:48:15.447Z"
     },
     {
       "id": "PR2-0002",
@@ -286,6 +288,6 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-02-20T06:27:36Z"
+    "last_updated_at_utc": "2026-02-21T17:48:15.452Z"
   }
 }

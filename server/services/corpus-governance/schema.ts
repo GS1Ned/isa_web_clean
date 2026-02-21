@@ -70,6 +70,10 @@ export const sources = mysqlTable('sources', {
   
   // Authority & Trust (1=highest, 5=lowest)
   authorityLevel: int('authority_level').notNull(),
+  authorityTier: varchar('authority_tier', { length: 64 }),
+  licenseType: varchar('license_type', { length: 64 }),
+  publicationStatus: varchar('publication_status', { length: 64 }),
+  immutableUri: varchar('immutable_uri', { length: 1024 }),
   publisher: varchar('publisher', { length: 255 }),
   publisherUrl: varchar('publisher_url', { length: 512 }),
   

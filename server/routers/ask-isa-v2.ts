@@ -14,6 +14,9 @@ import { invokeLLM } from "../_core/llm";
 import { serverLogger } from "../_core/logger-wiring";
 import { getDb } from "../db";
 import { sql, eq, and, desc, like, inArray } from "drizzle-orm";
+import { validateCitations } from "../citation-validation";
+import { AbstentionReasonCode } from "../services/rag-tracing/failure-taxonomy";
+import { findCanonicalFactsForQuery } from "../services/canonical-facts";
 
 // Types for enhanced search
 interface KnowledgeEmbeddingResult {
@@ -56,6 +59,70 @@ interface GapAnalysisResult {
     recommendation: string;
   }>;
   recommendations: string[];
+}
+
+const VERSION_SCOPED_URI_PATTERN = /(\/eli\/|\/v?\d+\.\d+(?:\.\d+)?(?:\/|$)|\/\d{4}(?:-\d{2})?(?:\/|$))/i;
+
+function hasVersionScopedUri(url?: string | null): boolean {
+  return typeof url === 'string' && VERSION_SCOPED_URI_PATTERN.test(url);
+}
+
+function authorityWeight(authorityLevel?: string | null): number {
+  switch ((authorityLevel || 'unknown').toLowerCase()) {
+    case 'binding':
+    case 'official':
+      return 0.2;
+    case 'authoritative':
+    case 'regulatory':
+      return 0.15;
+    case 'industry':
+      return 0.1;
+    case 'guidance':
+      return 0.05;
+    default:
+      return 0;
+  }
+}
+
+function retrievalPriorityScore(result: KnowledgeEmbeddingResult): number {
+  const versionBoost = hasVersionScopedUri(result.url) ? 0.05 : 0;
+  return (result.similarity || 0) + authorityWeight(result.authorityLevel) + versionBoost;
+}
+
+function buildExplainersFromFacts(facts: Array<{
+  subject: string;
+  predicate: string;
+  objectValue: string;
+  evidenceKey: string;
+  factType: string;
+}>): {
+  whatIsIt: string | null;
+  whenToUse: string | null;
+  howToValidate: string;
+  whatChanged: string | null;
+  relatedStandards: string[];
+} {
+  const primary = facts[0];
+  const lifecycle = facts.find((fact) => fact.factType === "lifecycle_status");
+  const relatedStandards = Array.from(
+    new Set(
+      facts
+        .filter((fact) => fact.factType === "standard_reference")
+        .map((fact) => fact.objectValue)
+    )
+  ).slice(0, 6);
+
+  return {
+    whatIsIt: primary ? `${primary.subject} ${primary.predicate} ${primary.objectValue}` : null,
+    whenToUse: relatedStandards.length > 0
+      ? `Use this guidance when your question touches ${relatedStandards.join(", ")}.`
+      : null,
+    howToValidate: primary
+      ? `Validate against citation evidence key ${primary.evidenceKey} and the linked source URL.`
+      : "Validate against the cited source URLs and evidence keys.",
+    whatChanged: lifecycle ? `${lifecycle.subject} lifecycle status: ${lifecycle.objectValue}.` : null,
+    relatedStandards,
+  };
 }
 
 /**
@@ -425,9 +492,48 @@ export const askISAV2Router = router({
         }
 
         // Step 2: Search knowledge embeddings
-        const searchResults = await searchKnowledgeEmbeddings(queryEmbedding, {
+        const searchResultsRaw = await searchKnowledgeEmbeddings(queryEmbedding, {
           limit: 8,
         });
+        const searchResults = [...searchResultsRaw].sort(
+          (a, b) => retrievalPriorityScore(b) - retrievalPriorityScore(a)
+        );
+        const validatedSources = await validateCitations(
+          searchResults.map(r => ({
+            id: r.id,
+            title: r.title,
+            url: r.url || undefined,
+            similarity: r.similarity,
+          }))
+        );
+        const canonicalFacts = await findCanonicalFactsForQuery(question, 8);
+        const canonicalFactsForOutput = canonicalFacts.map((fact) => ({
+          id: fact.id,
+          sourceId: fact.sourceId,
+          sourceChunkId: fact.sourceChunkId,
+          evidenceKey: fact.evidenceKey,
+          factType: fact.factType,
+          subject: fact.subject,
+          predicate: fact.predicate,
+          objectValue: fact.objectValue,
+          confidence: fact.confidence,
+        }));
+        const hasEvidenceCitation = validatedSources.some(v => typeof v.evidenceKey === "string" && v.evidenceKey.length > 0);
+        if (!hasEvidenceCitation) {
+          return {
+            answer: "I cannot provide a compliance-grade answer because no verifiable evidence citations are available.",
+            sources: [],
+            abstained: true,
+            abstentionReason: AbstentionReasonCode.SPECULATION_REQUIRED,
+            factsUsed: canonicalFactsForOutput.length > 0,
+            facts: canonicalFactsForOutput,
+            explainers: buildExplainersFromFacts(canonicalFactsForOutput),
+            uncertainty: canonicalFactsForOutput.length > 0
+              ? null
+              : "Canonical facts are not available for this query; no answer was generated.",
+            gapAnalysis: null,
+          };
+        }
 
         // Step 3: Get gap analysis if requested
         let gapAnalysis: GapAnalysisResult | null = null;
@@ -444,6 +550,15 @@ export const askISAV2Router = router({
 
 Context:
 ${contextParts.join('\n\n')}`;
+        if (canonicalFactsForOutput.length > 0) {
+          const factsContext = canonicalFactsForOutput
+            .slice(0, 6)
+            .map((fact, index) =>
+              `[Fact ${index + 1}] ${fact.subject} ${fact.predicate} ${fact.objectValue} (evidenceKey: ${fact.evidenceKey})`
+            )
+            .join('\\n');
+          systemPrompt += `\\n\\nCanonical facts (with provenance):\\n${factsContext}`;
+        }
 
         if (gapAnalysis) {
           systemPrompt += `\n\nGap Analysis for ${gapAnalysis.regulation}:
@@ -465,14 +580,25 @@ ${contextParts.join('\n\n')}`;
 
         return {
           answer,
-          sources: searchResults.map(r => ({
-            id: r.id,
-            title: r.title,
-            sourceType: r.sourceType,
-            authorityLevel: r.authorityLevel,
-            similarity: Math.round(r.similarity * 100),
-            url: r.url,
-          })),
+          sources: searchResults.map((r, index) => {
+            const validated = validatedSources[index];
+            return {
+              id: r.id,
+              title: r.title,
+              sourceType: r.sourceType,
+              authorityLevel: r.authorityLevel,
+              similarity: Math.round(r.similarity * 100),
+              url: r.url,
+              evidenceKey: validated?.evidenceKey ?? null,
+              evidenceKeyReason: validated?.evidenceKeyReason ?? "chunk_not_found",
+            };
+          }),
+          factsUsed: canonicalFactsForOutput.length > 0,
+          facts: canonicalFactsForOutput,
+          explainers: buildExplainersFromFacts(canonicalFactsForOutput),
+          uncertainty: canonicalFactsForOutput.length > 0
+            ? null
+            : "No canonical facts were found for this query; response is based on document retrieval only.",
           gapAnalysis: gapAnalysis ? {
             regulation: gapAnalysis.regulation,
             coveragePercentage: gapAnalysis.coveragePercentage,

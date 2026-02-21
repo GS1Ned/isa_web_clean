@@ -11,6 +11,11 @@ import { getDb } from '../../db';
 import { sql } from 'drizzle-orm';
 import { createHash } from 'crypto';
 import { serverLogger } from '../../_core/logger-wiring';
+import {
+  extractCanonicalFactsFromChunk,
+  persistCanonicalFacts,
+  type CanonicalFactRecord,
+} from '../canonical-facts';
 
 // ============================================================================
 // Types
@@ -44,6 +49,10 @@ export interface IngestionSourceInput {
   externalId: string;
   sourceType: SourceType;
   authorityLevel: number;
+  authorityTier?: string;
+  licenseType?: string;
+  publicationStatus?: string;
+  immutableUri?: string;
   publisher?: string;
   publisherUrl?: string;
   version?: string;
@@ -96,6 +105,21 @@ export const AuthorityLevelByType: Record<SourceType, number> = {
   'news_article': 5,
   'third_party_analysis': 4,
 };
+
+function deriveAuthorityTierFromUrl(url?: string | null): string {
+  if (!url) return 'UNKNOWN';
+  try {
+    const hostname = new URL(url).hostname.toLowerCase();
+    if (hostname === 'eur-lex.europa.eu') return 'EU';
+    if (hostname === 'ref.gs1.org' || hostname === 'gs1.org' || hostname === 'www.gs1.org') {
+      return 'GS1_Global';
+    }
+    if (/^gs1[a-z0-9-]*\.org$/.test(hostname)) return 'GS1_MO';
+    return 'UNKNOWN';
+  } catch {
+    return 'UNKNOWN';
+  }
+}
 
 // ============================================================================
 // Content Chunking
@@ -300,15 +324,19 @@ export async function ingestDocument(
   }
   
   // Create new source
+  const authorityTier = source.authorityTier || deriveAuthorityTierFromUrl(source.officialUrl || source.publisherUrl);
+  const publicationStatus = source.publicationStatus || 'UNKNOWN';
   const [insertResult] = await db.execute(sql`
     INSERT INTO sources (
       name, acronym, external_id, source_type, authority_level,
+      authority_tier, license_type, publication_status, immutable_uri,
       publisher, publisher_url, version, publication_date, effective_date,
       expiration_date, official_url, archive_url, status, description,
       sector, language, created_by
     ) VALUES (
       ${source.name}, ${source.acronym || null}, ${source.externalId},
       ${source.sourceType}, ${source.authorityLevel},
+      ${authorityTier}, ${source.licenseType || null}, ${publicationStatus}, ${source.immutableUri || null},
       ${source.publisher || null}, ${source.publisherUrl || null},
       ${source.version || null}, ${source.publicationDate?.toISOString() || null},
       ${source.effectiveDate?.toISOString() || null}, ${source.expirationDate?.toISOString() || null},
@@ -345,12 +373,13 @@ export async function ingestDocument(
   serverLogger.info(`[Ingestion] Processing ${chunks.length} chunks`);
   
   let chunksCreated = 0;
+  const extractedFacts: CanonicalFactRecord[] = [];
   
   for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i];
     const contentHash = createHash('sha256').update(chunk.content).digest('hex');
     
-    await db.execute(sql`
+    const [chunkInsertResult] = await db.execute(sql`
       INSERT INTO source_chunks (
         source_id, chunk_index, chunk_type, section_path, heading,
         content, content_hash, char_start, char_end, version
@@ -360,11 +389,24 @@ export async function ingestDocument(
         ${chunk.charStart || null}, ${chunk.charEnd || null}, ${source.version || null}
       )
     `);
+    const sourceChunkId = (chunkInsertResult as any).insertId;
+    const chunkFacts = extractCanonicalFactsFromChunk({
+      sourceId,
+      sourceChunkId,
+      contentHash,
+      title: chunk.heading || source.name,
+      content: chunk.content,
+    });
+    extractedFacts.push(...chunkFacts);
     
     chunksCreated++;
   }
   
   serverLogger.info(`[Ingestion] Created ${chunksCreated} chunks`);
+  if (extractedFacts.length > 0) {
+    await persistCanonicalFacts(extractedFacts);
+    serverLogger.info(`[Ingestion] Persisted ${extractedFacts.length} canonical facts`);
+  }
   
   // Generate embeddings if requested
   let embeddingsGenerated = 0;

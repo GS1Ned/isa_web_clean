@@ -92,10 +92,20 @@ export async function validateCitations(
     isDeprecated: boolean;
     needsVerification: boolean;
     deprecationReason?: string;
+    evidenceKey: string | null;
+    evidenceKeyReason?: "ok" | "missing_content_hash" | "chunk_not_found" | "db_unavailable";
   }>
 > {
   const db = await getDb();
-  if (!db) return sources.map(s => ({ ...s, isDeprecated: false, needsVerification: false }));
+  if (!db) {
+    return sources.map(s => ({
+      ...s,
+      isDeprecated: false,
+      needsVerification: false,
+      evidenceKey: null,
+      evidenceKeyReason: "db_unavailable" as const,
+    }));
+  }
 
   try {
     const { knowledgeEmbeddings } = await import("../drizzle/schema");
@@ -113,10 +123,14 @@ export async function validateCitations(
             ...source,
             isDeprecated: false,
             needsVerification: true,
+            evidenceKey: null,
+            evidenceKeyReason: "chunk_not_found" as const,
           };
         }
 
         const chunk = chunks[0];
+        const contentHash = chunk.contentHash || null;
+        const evidenceKey = contentHash ? `ke:${source.id}:${contentHash}` : null;
 
         // Check verification age
         let needsVerif = false;
@@ -138,6 +152,8 @@ export async function validateCitations(
           isDeprecated: chunk.isDeprecated === 1,
           needsVerification: needsVerif,
           deprecationReason: chunk.deprecationReason || undefined,
+          evidenceKey,
+          evidenceKeyReason: contentHash ? "ok" as const : "missing_content_hash" as const,
         };
       })
     );
@@ -145,7 +161,13 @@ export async function validateCitations(
     return validatedSources;
   } catch (error) {
     serverLogger.error("[Citation] Failed to validate citations:", error);
-    return sources.map(s => ({ ...s, isDeprecated: false, needsVerification: false }));
+    return sources.map(s => ({
+      ...s,
+      isDeprecated: false,
+      needsVerification: false,
+      evidenceKey: null,
+      evidenceKeyReason: "db_unavailable" as const,
+    }));
   }
 }
 

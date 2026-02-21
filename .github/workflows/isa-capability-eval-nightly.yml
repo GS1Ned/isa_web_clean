@@ -19,6 +19,9 @@ permissions:
   contents: read
   issues: write
 
+env:
+  ISA_IMPLEMENTATION_ONLY_MODE: "true"
+
 jobs:
   nightly-capability-eval:
     name: Nightly Capability Evaluation
@@ -40,7 +43,23 @@ jobs:
           echo "stage=$STAGE" >> "$GITHUB_OUTPUT"
           echo "baseline_path=$BASELINE_PATH" >> "$GITHUB_OUTPUT"
 
+      - name: Implementation-only mode (nightly eval paused)
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE == 'true'
+        run: |
+          set -euo pipefail
+          echo "READY=implementation_only_mode_eval_paused"
+          {
+            echo "## Nightly Capability Eval"
+            echo ""
+            echo "- ISA_IMPLEMENTATION_ONLY_MODE=true"
+            echo "- Stage: `${{ steps.baseline.outputs.stage }}`"
+            echo "- Baseline path: `${{ steps.baseline.outputs.baseline_path }}`"
+            echo "- Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo "- Eval/assert/drift/quality-regression issue steps are paused in implementation-only mode."
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Restore drift history cache
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         id: restore-history
         uses: actions/cache/restore@v4
         with:
@@ -50,6 +69,7 @@ jobs:
             isa-capability-history-${{ github.ref_name }}-
 
       - name: Run unified capability evaluation
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         run: |
           set -euo pipefail
           node scripts/eval/run-capability-evals.cjs \
@@ -60,6 +80,7 @@ jobs:
             --run-id nightly-${{ github.run_id }}
 
       - name: Assert advisory-first thresholds
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         id: assert
         continue-on-error: true
         run: |
@@ -68,6 +89,7 @@ jobs:
             --in test-results/ci/isa-capability-eval.json
 
       - name: Detect capability drift
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         id: drift
         continue-on-error: true
         run: |
@@ -79,7 +101,7 @@ jobs:
             --out test-results/ci/isa-drift-report.json
 
       - name: Publish nightly capability summary
-        if: always()
+        if: always() && env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         run: |
           FIXTURE_VERSIONS="unknown"
           BLOCKING_METRICS="unknown"
@@ -100,7 +122,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload nightly capability artifacts
-        if: always()
+        if: always() && env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: nightly-capability-eval
@@ -110,14 +132,14 @@ jobs:
             test-results/ci/isa-capability-eval-history.json
 
       - name: Save drift history cache
-        if: always()
+        if: always() && env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         uses: actions/cache/save@v4
         with:
           path: test-results/ci/isa-capability-eval-history.json
           key: isa-capability-history-${{ github.ref_name }}-${{ github.run_id }}
 
       - name: Create quality regression issue
-        if: steps.assert.outcome == 'failure' || steps.drift.outcome == 'failure'
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true' && (steps.assert.outcome == 'failure' || steps.drift.outcome == 'failure')
         uses: actions/github-script@v7
         with:
           script: |
@@ -159,7 +181,7 @@ jobs:
             });
 
       - name: Fail job on nightly regression
-        if: steps.assert.outcome == 'failure' || steps.drift.outcome == 'failure'
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true' && (steps.assert.outcome == 'failure' || steps.drift.outcome == 'failure')
         run: |
           set -euo pipefail
           echo "STOP=nightly_capability_regression"

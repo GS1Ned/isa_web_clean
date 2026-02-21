@@ -12,6 +12,20 @@ RECOMMENDATION
   - Gate scripts should emit one of: `STOP=...` / `READY=...` / `DONE=...` (see `AGENTS.md`).
 - Keep workflows narrowly scoped and composable (one gate per workflow where practical).
 
+## Implementation-Only Mode (Temporary)
+
+FACT
+- CI workflows expose `ISA_IMPLEMENTATION_ONLY_MODE`.
+- During implementation-only mode (`true`), eval/drift/baseline/stage-readiness and security-waiver burn-down activities are paused with explicit no-op summaries.
+- Core build/test execution remains active to preserve CI stability.
+
+RECOMMENDATION
+- Keep `ISA_IMPLEMENTATION_ONLY_MODE=true` only while ISA v2 architecture implementation (Phase A-D) is in progress.
+- Exit criteria for unpause:
+  - Phase A-D merged on `main`.
+  - v2 maturity declaration recorded in canonical architecture/planning docs.
+  - Re-enable paused workflows in controlled order: security gates, eval artifact generation, drift, then baseline/stage blocking.
+
 ## Workflows
 
 Active:

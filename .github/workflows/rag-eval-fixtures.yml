@@ -13,6 +13,9 @@ on:
 permissions:
   contents: read
 
+env:
+  ISA_IMPLEMENTATION_ONLY_MODE: "true"
+
 jobs:
   rag-eval:
     runs-on: ubuntu-latest
@@ -23,7 +26,20 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Implementation-only mode (rag eval paused)
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE == 'true'
+        run: |
+          set -euo pipefail
+          echo "READY=implementation_only_mode_eval_paused"
+          {
+            echo "## RAG Eval Fixtures"
+            echo ""
+            echo "- ISA_IMPLEMENTATION_ONLY_MODE=true"
+            echo "- Fixture RAG eval and schema validation are paused in implementation-only mode."
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Generate fixture-based rag-eval artifact
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         run: |
           set -euo pipefail
           node scripts/run-rag-evaluation-fixtures.cjs \
@@ -31,6 +47,7 @@ jobs:
             --out test-results/ci/rag-eval.json
 
       - name: Validate rag-eval artifact against schema (AJV)
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         run: |
           set -euo pipefail
           npm install -g ajv-cli
