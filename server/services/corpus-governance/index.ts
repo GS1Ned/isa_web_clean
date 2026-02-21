@@ -39,6 +39,21 @@ export const AuthorityLevel = {
 
 export type AuthorityLevelType = typeof AuthorityLevel[keyof typeof AuthorityLevel];
 
+function deriveAuthorityTierFromUrl(url?: string | null): string {
+  if (!url) return 'UNKNOWN';
+  try {
+    const hostname = new URL(url).hostname.toLowerCase();
+    if (hostname === 'eur-lex.europa.eu') return 'EU';
+    if (hostname === 'ref.gs1.org' || hostname === 'gs1.org' || hostname === 'www.gs1.org') {
+      return 'GS1_Global';
+    }
+    if (/^gs1[a-z0-9-]*\.org$/.test(hostname)) return 'GS1_MO';
+    return 'UNKNOWN';
+  } catch {
+    return 'UNKNOWN';
+  }
+}
+
 // ============================================================================
 // Source Management
 // ============================================================================
@@ -49,8 +64,14 @@ export type AuthorityLevelType = typeof AuthorityLevel[keyof typeof AuthorityLev
 export async function createSource(source: NewSource): Promise<Source> {
   const db = await getDb();
   if (!db) throw new Error('Database connection not available');
-  
-  const result = await db.insert(sources).values(source);
+
+  const sourceWithDefaults = {
+    ...source,
+    authorityTier: source.authorityTier || deriveAuthorityTierFromUrl(source.officialUrl || source.publisherUrl),
+    publicationStatus: source.publicationStatus || 'UNKNOWN',
+  };
+
+  const result = await db.insert(sources).values(sourceWithDefaults);
   const insertId = (result as any)[0]?.insertId;
   const [created] = await db.select().from(sources).where(eq(sources.id, insertId));
   return created;
@@ -109,8 +130,17 @@ export async function getSourcesByType(sourceType: Source['sourceType']): Promis
 export async function updateSource(id: number, updates: Partial<NewSource>): Promise<Source | undefined> {
   const db = await getDb();
   if (!db) return undefined;
-  
-  await db.update(sources).set(updates).where(eq(sources.id, id));
+
+  const derivedAuthorityTier = updates.authorityTier
+    || ((updates.officialUrl || updates.publisherUrl)
+      ? deriveAuthorityTierFromUrl(updates.officialUrl || updates.publisherUrl)
+      : undefined);
+  const updatesWithDefaults = {
+    ...updates,
+    ...(derivedAuthorityTier ? { authorityTier: derivedAuthorityTier } : {}),
+  };
+
+  await db.update(sources).set(updatesWithDefaults).where(eq(sources.id, id));
   return getSourceById(id);
 }
 

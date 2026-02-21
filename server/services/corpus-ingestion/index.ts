@@ -44,6 +44,10 @@ export interface IngestionSourceInput {
   externalId: string;
   sourceType: SourceType;
   authorityLevel: number;
+  authorityTier?: string;
+  licenseType?: string;
+  publicationStatus?: string;
+  immutableUri?: string;
   publisher?: string;
   publisherUrl?: string;
   version?: string;
@@ -96,6 +100,21 @@ export const AuthorityLevelByType: Record<SourceType, number> = {
   'news_article': 5,
   'third_party_analysis': 4,
 };
+
+function deriveAuthorityTierFromUrl(url?: string | null): string {
+  if (!url) return 'UNKNOWN';
+  try {
+    const hostname = new URL(url).hostname.toLowerCase();
+    if (hostname === 'eur-lex.europa.eu') return 'EU';
+    if (hostname === 'ref.gs1.org' || hostname === 'gs1.org' || hostname === 'www.gs1.org') {
+      return 'GS1_Global';
+    }
+    if (/^gs1[a-z0-9-]*\.org$/.test(hostname)) return 'GS1_MO';
+    return 'UNKNOWN';
+  } catch {
+    return 'UNKNOWN';
+  }
+}
 
 // ============================================================================
 // Content Chunking
@@ -300,15 +319,19 @@ export async function ingestDocument(
   }
   
   // Create new source
+  const authorityTier = source.authorityTier || deriveAuthorityTierFromUrl(source.officialUrl || source.publisherUrl);
+  const publicationStatus = source.publicationStatus || 'UNKNOWN';
   const [insertResult] = await db.execute(sql`
     INSERT INTO sources (
       name, acronym, external_id, source_type, authority_level,
+      authority_tier, license_type, publication_status, immutable_uri,
       publisher, publisher_url, version, publication_date, effective_date,
       expiration_date, official_url, archive_url, status, description,
       sector, language, created_by
     ) VALUES (
       ${source.name}, ${source.acronym || null}, ${source.externalId},
       ${source.sourceType}, ${source.authorityLevel},
+      ${authorityTier}, ${source.licenseType || null}, ${publicationStatus}, ${source.immutableUri || null},
       ${source.publisher || null}, ${source.publisherUrl || null},
       ${source.version || null}, ${source.publicationDate?.toISOString() || null},
       ${source.effectiveDate?.toISOString() || null}, ${source.expirationDate?.toISOString() || null},

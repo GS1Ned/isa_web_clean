@@ -11,6 +11,21 @@ import {
   getDatasetStats,
 } from "../db-dataset-registry";
 
+function deriveAuthorityTierFromSourceUrl(url?: string): string {
+  if (!url) return "UNKNOWN";
+  try {
+    const hostname = new URL(url).hostname.toLowerCase();
+    if (hostname === "eur-lex.europa.eu") return "EU";
+    if (hostname === "ref.gs1.org" || hostname === "gs1.org" || hostname === "www.gs1.org") {
+      return "GS1_Global";
+    }
+    if (/^gs1[a-z0-9-]*\.org$/.test(hostname)) return "GS1_MO";
+    return "UNKNOWN";
+  } catch {
+    return "UNKNOWN";
+  }
+}
+
 /**
  * Dataset Registry Router
  * 
@@ -78,6 +93,10 @@ export const datasetRegistryRouter = router({
           "OTHER",
         ]),
         source: z.string(),
+        authorityTier: z.string().optional(),
+        licenseType: z.string().optional(),
+        publicationStatus: z.string().optional(),
+        immutableUri: z.string().optional(),
         format: z.enum(["JSON", "CSV", "XML", "XLSX", "PDF", "API", "OTHER"]),
         version: z.string().optional(),
         recordCount: z.number().optional(),
@@ -97,9 +116,12 @@ export const datasetRegistryRouter = router({
         throw new Error("Admin access required");
       }
 
+      const authorityTier = input.authorityTier || deriveAuthorityTierFromSourceUrl(input.source);
       return await createDataset({
         ...input,
-        sourceUrl: input.source,
+        authorityTier,
+        publicationStatus: input.publicationStatus || "UNKNOWN",
+        immutableUri: input.immutableUri || null,
       });
     }),
 
@@ -135,6 +157,11 @@ export const datasetRegistryRouter = router({
         name: z.string().optional(),
         description: z.string().optional(),
         version: z.string().optional(),
+        source: z.string().optional(),
+        authorityTier: z.string().optional(),
+        licenseType: z.string().optional(),
+        publicationStatus: z.string().optional(),
+        immutableUri: z.string().optional(),
         recordCount: z.number().optional(),
         downloadUrl: z.string().optional(),
         apiEndpoint: z.string().optional(),
@@ -150,6 +177,11 @@ export const datasetRegistryRouter = router({
       }
 
       const { id, ...updates } = input;
-      return await updateDataset(id, updates as any);
+      const authorityTier = updates.authorityTier || deriveAuthorityTierFromSourceUrl(updates.source || updates.downloadUrl || updates.apiEndpoint);
+      return await updateDataset(id, {
+        ...updates,
+        authorityTier,
+        ...(updates.publicationStatus ? { publicationStatus: updates.publicationStatus } : {}),
+      } as any);
     }),
 });
