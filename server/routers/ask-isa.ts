@@ -88,6 +88,18 @@ import {
   type EvidenceChunk 
 } from "../services/evidence-analysis";
 
+const VERSION_SCOPED_URI_PATTERN = /(\/eli\/|\/v?\d+\.\d+(?:\.\d+)?(?:\/|$)|\/\d{4}(?:-\d{2})?(?:\/|$))/i;
+
+function hasVersionScopedUri(url?: string | null): boolean {
+  return typeof url === "string" && VERSION_SCOPED_URI_PATTERN.test(url);
+}
+
+function retrievalPriorityScore(result: HybridSearchResult): number {
+  const authorityComponent = (result.authorityScore || 0) * 0.2;
+  const versionScopedBoost = hasVersionScopedUri(result.url) ? 0.05 : 0;
+  return (result.hybridScore || 0) + authorityComponent + versionScopedBoost;
+}
+
 export const askISARouter = router({
   /**
    * Ask a question and get AI-generated answer with sources
@@ -165,12 +177,15 @@ export const askISARouter = router({
         // This combines semantic understanding with keyword matching for better retrieval
         // Sector filter boosts relevance of sector-specific content
         const retrievalStartTime = Date.now();
-        const hybridResults = await hybridSearch(question, {
+        const hybridResultsRaw = await hybridSearch(question, {
           vectorWeight: 0.7,
           bm25Weight: 0.3,
           limit: sector === "all" ? 5 : 8, // Fetch more results when filtering by sector
           sectorFilter: sector !== "all" ? sector : undefined,
         });
+        const hybridResults = [...hybridResultsRaw].sort(
+          (a, b) => retrievalPriorityScore(b) - retrievalPriorityScore(a)
+        );
         const retrievalLatencyMs = Date.now() - retrievalStartTime;
         
         // Record retrieval in trace
@@ -199,6 +214,17 @@ export const askISARouter = router({
             conversationId: conversationId || null,
           };
         }
+
+        // Validate citation provenance metadata early so both abstain and answer
+        // paths return consistent citation contracts.
+        const validatedSources = await validateCitations(
+          relevantResults.map(r => ({
+            id: r.id,
+            title: r.title,
+            url: r.url,
+            similarity: r.similarity,
+          }))
+        );
 
         // Step 1.5: Analyze evidence sufficiency (Hard Abstention Policy - Gate 2.2)
         const evidenceChunks: EvidenceChunk[] = hybridResults.map(r => ({
@@ -239,12 +265,20 @@ export const askISARouter = router({
           
           return {
             answer: abstentionMessage,
-            sources: relevantResults.map(r => ({
-              id: r.id,
-              type: r.type,
-              title: r.title,
-              url: r.url,
-              similarity: Math.round(r.similarity * 100),
+            sources: validatedSources.map((source, index) => ({
+              id: source.id,
+              type: relevantResults[index]?.type || "regulation",
+              title: source.title,
+              url: source.url,
+              similarity: Math.round(source.similarity * 100),
+              datasetId: source.datasetId,
+              datasetVersion: source.datasetVersion,
+              lastVerifiedDate: source.lastVerifiedDate,
+              isDeprecated: source.isDeprecated,
+              needsVerification: source.needsVerification,
+              deprecationReason: source.deprecationReason,
+              evidenceKey: source.evidenceKey,
+              evidenceKeyReason: source.evidenceKeyReason,
             })),
             conversationId: conversationId || null,
             queryType,
@@ -351,16 +385,34 @@ export const askISARouter = router({
         const citationValidation = validateCitationFormat(answer);
         const confidence = calculateConfidence(relevantResults.length);
 
-        // Step 6.5: Validate citation provenance and deprecation status
-        const validatedSources = await validateCitations(
-          relevantResults.map(r => ({
-            id: r.id,
-            title: r.title,
-            url: r.url,
-            similarity: r.similarity,
-          }))
-        );
+        // Retrieval-as-protocol fail-safe: no valid citations means abstain.
+        if (!citationValidation.valid) {
+          const abstentionAnswer =
+            "I cannot provide a compliance-grade answer because required citations are missing or invalid. Please refine the question.";
+          trace.recordAbstention(AbstentionReasonCode.SPECULATION_REQUIRED);
+          await trace.complete();
+          return {
+            answer: abstentionAnswer,
+            sources: validatedSources.map((source, index) => ({
+              id: source.id,
+              type: hybridResults[index]?.type || "regulation",
+              title: source.title,
+              url: source.url,
+              similarity: Math.round(source.similarity * 100),
+              evidenceKey: source.evidenceKey,
+              evidenceKeyReason: source.evidenceKeyReason,
+            })),
+            conversationId: finalConversationId,
+            queryType: classification.type,
+            confidence: { level: "low" as const, score: 0 },
+            citationValid: false,
+            missingCitations: citationValidation.missingElements,
+            abstained: true,
+            abstentionReason: AbstentionReasonCode.SPECULATION_REQUIRED,
+          };
+        }
 
+        // Step 6.5: Validate citation provenance and deprecation status
         // Step 7: Programmatic verification (v2.0 modular prompt system)
         const verification = verifyAskISAResponse(
           answer,
@@ -410,6 +462,8 @@ export const askISARouter = router({
               isDeprecated: source.isDeprecated,
               needsVerification: source.needsVerification,
               deprecationReason: source.deprecationReason,
+              evidenceKey: source.evidenceKey,
+              evidenceKeyReason: source.evidenceKeyReason,
               // Authority information
               authorityLevel: hybridResult?.authorityLevel || 'industry' as AuthorityLevel,
               authorityScore: hybridResult?.authorityScore || 0.5,
@@ -509,6 +563,8 @@ export const askISARouter = router({
             similarity: s.similarity,
             authorityLevel: s.authorityLevel,
             authorityScore: s.authorityScore,
+            evidenceKey: s.evidenceKey,
+            evidenceKeyReason: s.evidenceKeyReason,
           })),
           confidence,
           claimVerification: {

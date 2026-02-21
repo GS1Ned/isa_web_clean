@@ -14,6 +14,8 @@ import { invokeLLM } from "../_core/llm";
 import { serverLogger } from "../_core/logger-wiring";
 import { getDb } from "../db";
 import { sql, eq, and, desc, like, inArray } from "drizzle-orm";
+import { validateCitations } from "../citation-validation";
+import { AbstentionReasonCode } from "../services/rag-tracing/failure-taxonomy";
 
 // Types for enhanced search
 interface KnowledgeEmbeddingResult {
@@ -56,6 +58,34 @@ interface GapAnalysisResult {
     recommendation: string;
   }>;
   recommendations: string[];
+}
+
+const VERSION_SCOPED_URI_PATTERN = /(\/eli\/|\/v?\d+\.\d+(?:\.\d+)?(?:\/|$)|\/\d{4}(?:-\d{2})?(?:\/|$))/i;
+
+function hasVersionScopedUri(url?: string | null): boolean {
+  return typeof url === 'string' && VERSION_SCOPED_URI_PATTERN.test(url);
+}
+
+function authorityWeight(authorityLevel?: string | null): number {
+  switch ((authorityLevel || 'unknown').toLowerCase()) {
+    case 'binding':
+    case 'official':
+      return 0.2;
+    case 'authoritative':
+    case 'regulatory':
+      return 0.15;
+    case 'industry':
+      return 0.1;
+    case 'guidance':
+      return 0.05;
+    default:
+      return 0;
+  }
+}
+
+function retrievalPriorityScore(result: KnowledgeEmbeddingResult): number {
+  const versionBoost = hasVersionScopedUri(result.url) ? 0.05 : 0;
+  return (result.similarity || 0) + authorityWeight(result.authorityLevel) + versionBoost;
 }
 
 /**
@@ -425,9 +455,30 @@ export const askISAV2Router = router({
         }
 
         // Step 2: Search knowledge embeddings
-        const searchResults = await searchKnowledgeEmbeddings(queryEmbedding, {
+        const searchResultsRaw = await searchKnowledgeEmbeddings(queryEmbedding, {
           limit: 8,
         });
+        const searchResults = [...searchResultsRaw].sort(
+          (a, b) => retrievalPriorityScore(b) - retrievalPriorityScore(a)
+        );
+        const validatedSources = await validateCitations(
+          searchResults.map(r => ({
+            id: r.id,
+            title: r.title,
+            url: r.url || undefined,
+            similarity: r.similarity,
+          }))
+        );
+        const hasEvidenceCitation = validatedSources.some(v => typeof v.evidenceKey === "string" && v.evidenceKey.length > 0);
+        if (!hasEvidenceCitation) {
+          return {
+            answer: "I cannot provide a compliance-grade answer because no verifiable evidence citations are available.",
+            sources: [],
+            abstained: true,
+            abstentionReason: AbstentionReasonCode.SPECULATION_REQUIRED,
+            gapAnalysis: null,
+          };
+        }
 
         // Step 3: Get gap analysis if requested
         let gapAnalysis: GapAnalysisResult | null = null;
@@ -465,14 +516,19 @@ ${contextParts.join('\n\n')}`;
 
         return {
           answer,
-          sources: searchResults.map(r => ({
-            id: r.id,
-            title: r.title,
-            sourceType: r.sourceType,
-            authorityLevel: r.authorityLevel,
-            similarity: Math.round(r.similarity * 100),
-            url: r.url,
-          })),
+          sources: searchResults.map((r, index) => {
+            const validated = validatedSources[index];
+            return {
+              id: r.id,
+              title: r.title,
+              sourceType: r.sourceType,
+              authorityLevel: r.authorityLevel,
+              similarity: Math.round(r.similarity * 100),
+              url: r.url,
+              evidenceKey: validated?.evidenceKey ?? null,
+              evidenceKeyReason: validated?.evidenceKeyReason ?? "chunk_not_found",
+            };
+          }),
           gapAnalysis: gapAnalysis ? {
             regulation: gapAnalysis.regulation,
             coveragePercentage: gapAnalysis.coveragePercentage,
