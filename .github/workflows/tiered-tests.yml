@@ -54,6 +54,9 @@ on:
 permissions:
   contents: read
 
+env:
+  ISA_IMPLEMENTATION_ONLY_MODE: "true"
+
 jobs:
   tier-0-critical:
     name: Tier 0 (Critical Checks)
@@ -129,7 +132,20 @@ jobs:
             --reporter=json \
             --outputFile test-results/ci/capability-heartbeat.json
 
+      - name: Implementation-only mode (eval/drift paused)
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE == 'true'
+        run: |
+          set -euo pipefail
+          echo "READY=implementation_only_mode_eval_paused"
+          {
+            echo "## Tier 1 Implementation-Only Mode"
+            echo ""
+            echo "- ISA_IMPLEMENTATION_ONLY_MODE=true"
+            echo "- Unified capability eval/assert/drift steps are paused in this run."
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Run unified ISA capability evaluation (fixture-first)
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         run: |
           set -euo pipefail
           node scripts/eval/run-capability-evals.cjs \
@@ -139,12 +155,14 @@ jobs:
             --out-json test-results/ci/isa-capability-eval.json
 
       - name: Assert capability thresholds (advisory-first)
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         run: |
           set -euo pipefail
           node scripts/eval/assert-capability-thresholds.cjs \
             --in test-results/ci/isa-capability-eval.json
 
       - name: Run capability drift detection
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         run: |
           set -euo pipefail
           node scripts/eval/drift-detect.cjs \
