@@ -10,7 +10,7 @@ function deriveAuthorityTierFromSourceUrl(url?: string): string {
     if (hostname === "ref.gs1.org" || hostname === "gs1.org" || hostname === "www.gs1.org") {
       return "GS1_Global";
     }
-    if (/^gs1[a-z0-9-]*\.org$/.test(hostname)) return "GS1_MO";
+    if (/^gs1[a-z0-9-]*\.(org|nl|eu)$/.test(hostname)) return "GS1_MO";
     return "UNKNOWN";
   } catch {
     return "UNKNOWN";

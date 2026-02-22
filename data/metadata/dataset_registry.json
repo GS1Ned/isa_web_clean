@@ -8,6 +8,8 @@
       "ref.gs1.org": "GS1_Global",
       "gs1.org": "GS1_Global",
       "gs1*.org": "GS1_MO",
+      "gs1*.nl": "GS1_MO",
+      "gs1*.eu": "GS1_MO",
       "eur-lex.europa.eu": "EU"
     },
     "publicationStatusDefault": "UNKNOWN",
