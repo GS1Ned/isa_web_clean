@@ -1,6 +1,6 @@
 # Repository Tree
 
-Generated on: 2026-02-16T04:51:48Z
+Generated on: 2026-02-23T04:50:32Z
 
 ```
 .
@@ -25,15 +25,25 @@ Generated on: 2026-02-16T04:51:48Z
 │   └── workflows
 │       ├── ask-isa-runtime-smoke.yml
 │       ├── ask-isa-smoke.yml
+│       ├── canonical-contract-drift.yml
 │       ├── catalogue-checks.yml.disabled
 │       ├── console-check.yml.disabled
 │       ├── generate-embeddings-optimized.yml.disabled
 │       ├── generate-embeddings.yml.disabled
 │       ├── iron-gate.yml.disabled
+│       ├── isa-capability-baseline-weekly.yml
+│       ├── isa-capability-eval-nightly.yml
+│       ├── mcp-validation-profiles.yml
+│       ├── no-console-gate.yml
 │       ├── q-branch-ci.yml
+│       ├── rag-eval-fixtures.yml
 │       ├── refactoring-validation.yml
+│       ├── release-artifacts.yml
 │       ├── repo-tree.yml
 │       ├── schema-validation.yml
+│       ├── security-gate.yml
+│       ├── security-secrets-scan.yml
+│       ├── tiered-tests.yml
 │       ├── update-gs1-efrag-catalogue.yml.disabled
 │       └── validate-docs.yml
 ├── .gitignore
@@ -45,8 +55,11 @@ Generated on: 2026-02-16T04:51:48Z
 ├── .prettierrc
 ├── .vscode
 │   └── mcp.json
+├── 00_AUTONOMY_SETUP_INDEX.md
 ├── AGENTS.md
 ├── AGENT_START_HERE.md
+├── CODEOWNERS
+├── COPILOT_LAUNCH.txt
 ├── EU_ESG_to_GS1_Mapping_v1.1
 │   ├── CHANGELOG.md
 │   ├── DOCUMENT_VALUE_SCORECARD.md
@@ -79,12 +92,11 @@ Generated on: 2026-02-16T04:51:48Z
 │       ├── consistency_report.txt
 │       └── placeholder_scan.txt
 ├── ISA_MAP.md
+├── QUICK_START.md
 ├── README.md
 ├── REPO_TREE.md
+├── SETUP_COMPLETE.md
 ├── _golden_gate_roadmaps_move_map.json
-├── artifacts
-│   └── archives
-│       └── EFRAGIG3ListofESRSDataPoints(1)(1).xlsx
 ├── client
 │   ├── index.html
 │   ├── public
@@ -118,6 +130,7 @@ Generated on: 2026-02-16T04:51:48Z
 │       │   ├── GS1AttributesPanelEnhanced.tsx
 │       │   ├── GS1ImpactBadge.tsx
 │       │   ├── GapAnalysisPanel.tsx
+│       │   ├── LatestNewsPanel.test.tsx
 │       │   ├── LatestNewsPanel.tsx
 │       │   ├── ManusDialog.tsx
 │       │   ├── Map.tsx
@@ -126,6 +139,7 @@ Generated on: 2026-02-16T04:51:48Z
 │       │   ├── NewsCardCompact.tsx
 │       │   ├── NewsCardSkeleton.tsx
 │       │   ├── NewsRecommendationCard.tsx
+│       │   ├── NewsTimeline.test.tsx
 │       │   ├── NewsTimeline.test.tsx.disabled
 │       │   ├── NewsTimeline.tsx
 │       │   ├── NewsTimelineItem.tsx
@@ -134,6 +148,7 @@ Generated on: 2026-02-16T04:51:48Z
 │       │   ├── RecommendedResources.tsx
 │       │   ├── RegulationTimeline.tsx
 │       │   ├── SectorFilter.tsx
+│       │   ├── WebhookConfiguration.test.tsx
 │       │   ├── WebhookConfiguration.tsx
 │       │   ├── charts
 │       │   │   ├── DurationTrendChart.tsx
@@ -320,8 +335,10 @@ Generated on: 2026-02-16T04:51:48Z
 │   ├── governance
 │   │   ├── canonical_docs_allowlist.json
 │   │   └── golden-gate.policy.json
-│   └── isa-catalogue
-│       └── policy.json
+│   ├── isa-catalogue
+│   │   └── policy.json
+│   └── testing
+│       └── vitest.quarantine.txt
 ├── cspell.json
 ├── data
 │   ├── DATASET_METADATA.md
@@ -329,6 +346,7 @@ Generated on: 2026-02-16T04:51:48Z
 │   ├── advisories
 │   │   ├── ISA_ADVISORY_DIFF_v1.0_to_v1.0.json
 │   │   ├── ISA_ADVISORY_DIFF_v1.0_to_v1.1.json
+│   │   ├── ISA_ADVISORY_DIFF_v1.1_to_v1.1.json
 │   │   ├── ISA_ADVISORY_v1.0.json
 │   │   ├── ISA_ADVISORY_v1.0.summary.json
 │   │   ├── ISA_ADVISORY_v1.1.json
@@ -354,6 +372,33 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── ctes_and_kdes.json
 │   │   ├── dpp_identification_rules.json
 │   │   └── dpp_identifier_components.json
+│   ├── evaluation
+│   │   ├── baselines
+│   │   │   ├── isa-capability-baseline-stage_b.json
+│   │   │   ├── isa-capability-baseline-v2-candidate.json
+│   │   │   └── isa-capability-baseline.json
+│   │   └── golden
+│   │       ├── advisory
+│   │       │   ├── scenarios_v1.json
+│   │       │   └── scenarios_v2.json
+│   │       ├── ask_isa
+│   │       │   ├── questions_v1.json
+│   │       │   └── questions_v2.json
+│   │       ├── catalog
+│   │       │   ├── records_v1.json
+│   │       │   └── records_v2.json
+│   │       ├── esrs_mapping
+│   │       │   ├── mappings_v1.jsonl
+│   │       │   └── mappings_v2.jsonl
+│   │       ├── knowledge_base
+│   │       │   ├── corpus_slice_v1.jsonl
+│   │       │   ├── corpus_slice_v2.jsonl
+│   │       │   ├── metadata_gold_v1.json
+│   │       │   └── metadata_gold_v2.json
+│   │       ├── news_hub
+│   │       │   ├── timeline_v1.json
+│   │       │   └── timeline_v2.json
+│   │       └── registry.json
 │   ├── gdm_combined_models.csv
 │   ├── gs1
 │   │   └── gdsn
@@ -393,7 +438,8 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── dataset_registry_v1.3.0_DRAFT.json
 │   │   ├── external_repos_archive2.json
 │   │   ├── gs1_ref_bundle_registry.json
-│   │   └── gs1_style_guide_registry.json
+│   │   ├── gs1_style_guide_registry.json
+│   │   └── rag_eval_fixtures_v1.json
 │   └── standards
 │       ├── gs1-eu
 │       │   └── gdsn
@@ -506,30 +552,23 @@ Generated on: 2026-02-16T04:51:48Z
 │   │       ├── REPO_TIGHT_V5_COMPLETION.md
 │   │       └── _generated
 │   │           ├── ARCHITECTURE_SCORECARD.json
+│   │           ├── CAPABILITY_GRAPH.json
+│   │           ├── CAPABILITY_MANIFEST.json
+│   │           ├── EVIDENCE_INDEX.json
 │   │           ├── INBOUND_LINKS.json
+│   │           ├── MINIMAL_VALIDATION_BUNDLE.json
+│   │           ├── PRIMITIVE_DICTIONARY.json
 │   │           └── REF_INDEX.json
 │   ├── autonomous-session-2025-12-17-critical-events.md
+│   ├── ci
+│   │   └── INDEX.md
 │   ├── datasets-catalog.schema.json
 │   ├── decisions
 │   │   ├── CONFLICTS_PLAN_DECISIONS_2026-02-10.md
 │   │   └── DECISION_LOG.md
 │   ├── eurlex_research.md
 │   ├── evidence
-│   │   ├── EXEC_GRAPH.mmd
-│   │   └── generated
-│   │       ├── _generated
-│   │       │   ├── CATALOGUE_ENTRYPOINTS_STATUS.json
-│   │       │   ├── CENSUS.json
-│   │       │   ├── DOCSET_MAP.csv
-│   │       │   ├── GS1_EFRAG_CATALOGUE.csv
-│   │       │   ├── GS1_EFRAG_CATALOGUE.json
-│   │       │   └── isa_catalogue_latest
-│   │       │       ├── files
-│   │       │       └── summary.json
-│   │       └── inventory
-│   │           ├── INVENTORY_AFTER.csv
-│   │           ├── INVENTORY_BEFORE.csv
-│   │           └── INVENTORY_FINAL.csv
+│   │   └── EXEC_GRAPH.mmd
 │   ├── governance
 │   │   ├── CREDENTIALS_VERIFICATION.md
 │   │   ├── CRITICAL_FILES_CANDIDATES.md
@@ -592,6 +631,7 @@ Generated on: 2026-02-16T04:51:48Z
 │   │       ├── COMPLETION_SUMMARY.md
 │   │       ├── CONTRACT_COMPLETENESS.json
 │   │       ├── EVIDENCE_MARKERS.json
+│   │       ├── EXECUTION_STATE.json
 │   │       ├── EXECUTION_SUMMARY.md
 │   │       ├── FILE_INVENTORY.json
 │   │       ├── FINAL_STATUS_REPORT.md
@@ -616,21 +656,28 @@ Generated on: 2026-02-16T04:51:48Z
 │   │       ├── SESSION_2026-02-12_SUMMARY.md
 │   │       └── V3_COMPLETION_SUMMARY.md
 │   ├── quality
-│   │   └── schemas
-│   │       ├── architecture-scorecard.schema.json
-│   │       ├── catalogue.schema.json
-│   │       ├── error-budget-status.schema.json
-│   │       ├── governance.schema.json
-│   │       ├── observability.schema.json
-│   │       ├── perf.schema.json
-│   │       ├── rag-eval.schema.json
-│   │       ├── reliability.schema.json
-│   │       ├── security-gate.schema.json
-│   │       ├── slo-policy-check.schema.json
-│   │       └── test-summary.schema.json
+│   │   ├── schemas
+│   │   │   ├── architecture-scorecard.schema.json
+│   │   │   ├── catalogue.schema.json
+│   │   │   ├── error-budget-status.schema.json
+│   │   │   ├── governance.schema.json
+│   │   │   ├── isa-capability-eval.schema.json
+│   │   │   ├── isa-drift-report.schema.json
+│   │   │   ├── observability.schema.json
+│   │   │   ├── oss-benchmarks-2026-02-15.schema.json
+│   │   │   ├── perf.schema.json
+│   │   │   ├── rag-eval.schema.json
+│   │   │   ├── reliability.schema.json
+│   │   │   ├── security-gate.schema.json
+│   │   │   ├── slo-policy-check.schema.json
+│   │   │   └── test-summary.schema.json
+│   │   └── thresholds
+│   │       └── isa-capability-thresholds.json
 │   ├── reference
 │   │   ├── ISA_DEVELOPMENT_RUBRIC.md
 │   │   └── REPO_ASSESSMENT_HOWTO.md
+│   ├── releases
+│   │   └── ARTIFACT_VERSIONING.md
 │   ├── research
 │   │   ├── isa-deep-research
 │   │   │   └── 2026-02-15
@@ -838,6 +885,7 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   └── ux-user-journey.md
 │   ├── sre
 │   │   ├── ERROR_BUDGET_POLICY.md
+│   │   ├── OTEL.md
 │   │   ├── SLO_CATALOG.md
 │   │   └── _generated
 │   │       └── error_budget_status.json
@@ -883,6 +931,9 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── .gitkeep
 │   │   ├── 0015_ultimate_dataset_registry.sql
 │   │   ├── 0016_add_regulatory_tracking_columns.sql
+│   │   ├── 0017_add_ingest_item_provenance.sql
+│   │   ├── 0018_add_asr_authority_fields.sql
+│   │   ├── 0019_add_canonical_facts_store.sql
 │   │   ├── _root
 │   │   │   └── manual_ingest_02_04_05_06.sql
 │   │   ├── _server
@@ -908,33 +959,6 @@ Generated on: 2026-02-16T04:51:48Z
 │   └── schema_scraper_health.ts
 ├── drizzle.config.ts
 ├── isa-archive
-│   ├── INDEX.md
-│   ├── backlog
-│   │   └── 20260206T194201Z
-│   │       ├── backlog_export.csv
-│   │       ├── backlog_export.json
-│   │       └── backlog_export_summary.txt
-│   ├── cleanup
-│   │   ├── 20260206T190526Z
-│   │   │   ├── cleanup_report.json
-│   │   │   └── cleanup_report.md
-│   │   ├── 20260206T191106Z
-│   │   │   ├── move_plan.json
-│   │   │   ├── move_plan.md
-│   │   │   ├── safe_move_plan.json
-│   │   │   ├── safe_move_plan.md
-│   │   │   ├── safe_move_plan_v2.json
-│   │   │   ├── safe_move_plan_v2.md
-│   │   │   ├── safe_move_plan_v3.json
-│   │   │   ├── safe_move_plan_v3.md
-│   │   │   ├── safe_move_plan_v4.json
-│   │   │   └── safe_move_plan_v4.md
-│   │   ├── 20260206T191857Z
-│   │   │   ├── safe_move_plan_v5.json
-│   │   │   └── safe_move_plan_v5.md
-│   │   └── 20260206T192047Z
-│   │       ├── safe_move_plan_v6.json
-│   │       └── safe_move_plan_v6.md
 │   ├── docs
 │   │   ├── _benchmarks
 │   │   │   ├── ISA_EXTERNAL_BENCHMARK_NOTES_v1.md
@@ -1043,122 +1067,36 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── VALIDATION_SUMMARY.md
 │   │   ├── evaluation-governance-reproducibility.md
 │   │   └── forge_vars_where_used.md
-│   ├── manus-tasks
-│   │   └── docs__research__manus_research_findings.md
-│   ├── next-step-scan
-│   │   └── repo_scan_summary.txt
-│   ├── phase-reports
-│   │   ├── CHATGPT_DELEGATION_PHASE1.md
-│   │   ├── CURRENCY_DISCLOSURE.md
-│   │   ├── DATASET_INVENTORY.md
-│   │   ├── DOCUMENTATION_INVENTORY.md
-│   │   ├── ISA_GS1_ARTIFACT_INVENTORY.md
-│   │   ├── ISA_TODO_MANUAL_COMPLETION.md
-│   │   ├── NEWS_HUB_PHASE4-6_SUMMARY.md
-│   │   ├── PHASE_9_CLAIMS_SANITIZATION_REPORT.md
-│   │   ├── PHASE_9_COMPLETION_REPORT.md
-│   │   ├── PHASE_9_DOCUMENTATION_INVENTORY.md
-│   │   ├── PROJECT_INVENTORY.md
-│   │   └── todo_phase44_update.txt
-│   ├── planning
-│   │   ├── _root
-│   │   │   └── 20260206T210620Z
-│   │   │       └── docs
-│   │   │           └── planning
-│   │   └── roadmaps
-│   │       └── 20260206T202410Z
-│   │           └── docs
-│   │               └── planning
-│   ├── reports
-│   │   ├── AUDIT_FINDINGS.md
-│   │   ├── DATA_FILE_VERIFICATION_REPORT.md
-│   │   ├── DIAGNOSTIC_REPORT.md
-│   │   ├── MONITORING_TESTS.md
-│   │   ├── NEEDS_USER_UPLOAD.md
-│   │   ├── PROJECT_SIZE_CLEANUP.md
-│   │   ├── ROOT_CAUSE_DIAGNOSTIC_REPORT.md
-│   │   ├── STABILIZATION_REPORT_2026-01-04.md
-│   │   ├── TIMELINE_VISUALIZATION_SUMMARY.md
-│   │   ├── data__standards__gs1-nl__benelux-datasource__v3.1.33__202311-ld-gs1das-toelichting-op-velden-123_aug25.pdf
-│   │   ├── docs__research__GS1_NL_FASHION_SECTOR.md
-│   │   ├── research__ASK_ISA_ANALYSIS_REPORT.md
-│   │   ├── research__ASK_ISA_CLAIM_VERIFICATION_TEST.md
-│   │   ├── research__ASK_ISA_FINAL_TEST_RESULTS.md
-│   │   ├── research__ASK_ISA_FRONTEND_TEST_RESULTS.md
-│   │   ├── research__ASK_ISA_IMPLEMENTATION_PLAN.md
-│   │   ├── research__ASK_ISA_IMPROVED_VERIFICATION_TEST.md
-│   │   ├── research__ASK_ISA_OPTIMIZATION_COMPLETENESS_ANALYSIS.md
-│   │   ├── research__rag_best_practices_research.md
-│   │   ├── tasks__BATCH_01_SUMMARY.md
-│   │   ├── tasks__CHATGPT_WORK_PLAN.md
-│   │   ├── tasks__INGESTION_MASTER_PROMPT_FOR_CHATGPT.md
-│   │   ├── tasks__TASK_SPEC_TEMPLATE.md
-│   │   ├── tasks__batch_01__README.md
-│   │   ├── tasks__for_chatgpt__CGPT-01_esrs_to_gs1_mapping.md
-│   │   ├── tasks__for_chatgpt__CGPT-02_gpc_to_gs1_mapping.md
-│   │   ├── tasks__for_chatgpt__CGPT-03_news_timeline_component.md
-│   │   ├── tasks__for_chatgpt__CGPT-05_digital_link_utils.md
-│   │   ├── tasks__for_chatgpt__CGPT-13_esrs_coverage_gap_analysis.md
-│   │   ├── tasks__for_chatgpt__CGPT-15_user_guide.md
-│   │   ├── tasks__for_chatgpt__CGPT-17_data_quality_validation.md
-│   │   ├── tasks__for_chatgpt__INGEST-01_gdm_attributes.md
-│   │   ├── tasks__for_chatgpt__INGEST-02_gdsn_current.md
-│   │   ├── tasks__for_chatgpt__INGEST-03_esrs_datapoints.md
-│   │   ├── tasks__for_chatgpt__INGEST-04_ctes_kdes.md
-│   │   ├── tasks__for_chatgpt__INGEST-05_dpp_identification.md
-│   │   ├── tasks__for_chatgpt__INGEST-06_cbv_vocabularies.md
-│   │   ├── tasks__for_chatgpt___CHATGPT_INSTRUCTIONS.md
-│   │   ├── test-failure-analysis.md
-│   │   ├── test-results__phase-7-frontend-integration-test.md
-│   │   ├── test-results__phase-8-roadmap-generator-test.md
-│   │   └── timeline-test-results.md
-│   ├── roadmaps
-│   │   ├── ISA_AUTONOMOUS_ROADMAP_V1.md
-│   │   ├── ISA_DEPLOYMENT_AND_ROADMAP.md
-│   │   ├── ISA_DEVELOPMENT_ROADMAP_TO_FINAL_PRODUCT.md
-│   │   ├── ISA_Development_Roadmap_2026.md
-│   │   ├── ISA_POC_ROADMAP.md
-│   │   ├── ISA_Strategic_Roadmap.md
-│   │   ├── ISA_VISUAL_BRANDING_ROADMAP.md
-│   │   ├── governance
-│   │   │   └── ISA_DEVELOPMENT_ROADMAP.md
-│   │   └── spec
-│   │       └── roadmap-evolution.md
-│   ├── server
-│   │   ├── ask-isa-enhanced.ts
-│   │   ├── automated-cellar-sync.ts
-│   │   ├── cellar-connector.test.ts
-│   │   ├── cellar-connector.ts
-│   │   ├── cellar-diagnostic.test.ts
-│   │   ├── cellar-ingestion-integration.test.ts
-│   │   ├── cellar-ingestion-router.ts
-│   │   ├── cellar-normalizer.test.ts
-│   │   ├── cellar-normalizer.ts
-│   │   ├── epcis-integration.test.ts
-│   │   ├── epcis-router.ts
-│   │   ├── epcis-ui.test.ts
-│   │   ├── epcis-xml-parser.ts
-│   │   ├── eudr-analyzer.ts
-│   │   ├── generate-all-embeddings-optimized.ts
-│   │   ├── generate-all-embeddings-v2.ts
-│   │   ├── generate-all-embeddings.ts
-│   │   ├── news-sources-phase3.ts
-│   │   ├── routers
-│   │   │   ├── batch-epcis.ts
-│   │   │   ├── benchmarking.ts
-│   │   │   ├── collaboration.ts
-│   │   │   ├── impact-simulator.ts
-│   │   │   ├── remediation.ts
-│   │   │   ├── stakeholder-dashboard.ts
-│   │   │   └── template-analytics.ts
-│   │   └── services
-│   │       └── ab-testing
-│   │           └── index.ts
-│   └── traceability-clean
-│       └── 20260206T194827Z
-│           ├── TRACEABILITY_MATRIX.cleaned.csv
-│           ├── traceability_clean_report.json
-│           └── traceability_clean_report.md
+│   └── server
+│       ├── ask-isa-enhanced.ts
+│       ├── automated-cellar-sync.ts
+│       ├── cellar-connector.test.ts
+│       ├── cellar-connector.ts
+│       ├── cellar-diagnostic.test.ts
+│       ├── cellar-ingestion-integration.test.ts
+│       ├── cellar-ingestion-router.ts
+│       ├── cellar-normalizer.test.ts
+│       ├── cellar-normalizer.ts
+│       ├── epcis-integration.test.ts
+│       ├── epcis-router.ts
+│       ├── epcis-ui.test.ts
+│       ├── epcis-xml-parser.ts
+│       ├── eudr-analyzer.ts
+│       ├── generate-all-embeddings-optimized.ts
+│       ├── generate-all-embeddings-v2.ts
+│       ├── generate-all-embeddings.ts
+│       ├── news-sources-phase3.ts
+│       ├── routers
+│       │   ├── batch-epcis.ts
+│       │   ├── benchmarking.ts
+│       │   ├── collaboration.ts
+│       │   ├── impact-simulator.ts
+│       │   ├── remediation.ts
+│       │   ├── stakeholder-dashboard.ts
+│       │   └── template-analytics.ts
+│       └── services
+│           └── ab-testing
+│               └── index.ts
 ├── isa_map.json
 ├── ops
 │   └── cron
@@ -1182,6 +1120,9 @@ Generated on: 2026-02-16T04:51:48Z
 │   ├── check-columns.ts
 │   ├── check-db-status.ts
 │   ├── check-env.js
+│   ├── compute_advisory_diff.cjs
+│   ├── copilot
+│   │   └── automerge_prs.sh
 │   ├── create-dutch-initiatives-tables.sql
 │   ├── create-esrs-tables.ts
 │   ├── cron-generate-embeddings.sh
@@ -1205,15 +1146,35 @@ Generated on: 2026-02-16T04:51:48Z
 │   ├── docs
 │   │   └── ref_index.ts
 │   ├── env-check.ts
+│   ├── eval
+│   │   ├── adapters
+│   │   │   ├── advisory.cjs
+│   │   │   ├── ask-isa.cjs
+│   │   │   ├── catalog.cjs
+│   │   │   ├── esrs-mapping.cjs
+│   │   │   ├── knowledge-base.cjs
+│   │   │   └── news-hub.cjs
+│   │   ├── assert-capability-thresholds.cjs
+│   │   ├── drift-detect.cjs
+│   │   ├── generate-baseline-candidate.cjs
+│   │   ├── lib
+│   │   │   ├── common.cjs
+│   │   │   └── runtime-probes.cjs
+│   │   ├── resolve-baseline-path.cjs
+│   │   └── run-capability-evals.cjs
 │   ├── extract_advisory_v1.py
 │   ├── gates
+│   │   ├── canonical-contract-drift.sh
 │   │   ├── canonical-docs-allowlist.sh
 │   │   ├── doc-code-validator.sh
 │   │   ├── governance-gate.sh
+│   │   ├── manifest-ownership-drift.py
+│   │   ├── no-console-gate.sh
 │   │   ├── observability-contract.sh
 │   │   ├── perf-smoke.sh
 │   │   ├── reliability-smoke.sh
 │   │   ├── security-gate.sh
+│   │   ├── security-secrets-scan.sh
 │   │   ├── slo-policy-check.sh
 │   │   └── validate-proof-artifacts.sh
 │   ├── generate-api-docs.ts
@@ -1263,12 +1224,14 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── score_contract_completeness.py
 │   │   ├── semantic_validator.py
 │   │   └── validate_gates.sh
+│   ├── release-artifacts.sh
 │   ├── run-all-ingestion.ts
 │   ├── run-ci-tests.sh
 │   ├── run-esrs-ingest.ts
 │   ├── run-integration-tests.sh
 │   ├── run-migration-simple.ts
 │   ├── run-migration.ts
+│   ├── run-rag-evaluation-fixtures.cjs
 │   ├── run-rag-evaluation.cjs
 │   ├── run-unit-tests.sh
 │   ├── seed-golden-qa-pairs.cjs
@@ -1285,6 +1248,7 @@ Generated on: 2026-02-16T04:51:48Z
 │   ├── validate_gs1_efrag_catalogue.py
 │   ├── validate_isa_deep_research_2026_02_15.sh
 │   ├── validate_mcp_agent_readiness.sh
+│   ├── validate_mcp_connectivity.sh
 │   ├── validate_oss_benchmarks_2026_02_15.sh
 │   ├── validate_planning_and_traceability.py
 │   ├── validate_specs.py
@@ -1313,11 +1277,15 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── map.ts
 │   │   ├── notification.ts
 │   │   ├── oauth.ts
+│   │   ├── otel.ts
 │   │   ├── performance-monitoring.ts
 │   │   ├── rate-limit.ts
+│   │   ├── request-context.ts
 │   │   ├── sdk.ts
 │   │   ├── security-headers.ts
 │   │   ├── systemRouter.ts
+│   │   ├── trace-id.test.ts
+│   │   ├── trace-id.ts
 │   │   ├── trpc.ts
 │   │   ├── types
 │   │   │   ├── cookie.d.ts
@@ -1429,7 +1397,10 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── INGEST-03_esrs_datapoints_README.md
 │   │   ├── INGEST-04_ctes_kdes.ts
 │   │   ├── INGEST-05_dpp_rules.ts
-│   │   └── INGEST-06_cbv_digital_link.ts
+│   │   ├── INGEST-06_cbv_digital_link.ts
+│   │   └── _core
+│   │       ├── provenance.test.ts
+│   │       └── provenance.ts
 │   ├── ingest-gs1-nl-complete.ts
 │   ├── ingest-gs1-standards.ts
 │   ├── ingest-validation-rules.ts
@@ -1514,6 +1485,8 @@ Generated on: 2026-02-16T04:51:48Z
 │   ├── router-error-tracking.ts
 │   ├── router-performance-tracking.ts
 │   ├── routers
+│   │   ├── __tests__
+│   │   │   └── capability-heartbeat.test.ts
 │   │   ├── admin-templates.ts
 │   │   ├── advisory-diff.ts
 │   │   ├── advisory-reports.test.ts
@@ -1530,9 +1503,11 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── cron.ts
 │   │   ├── dataset-registry.test.ts
 │   │   ├── dataset-registry.ts
+│   │   ├── dutch-initiatives.ts
 │   │   ├── esg-artefacts.ts
 │   │   ├── esrs-gs1-mapping.ts
 │   │   ├── esrs-roadmap.ts
+│   │   ├── esrs.ts
 │   │   ├── evaluation.ts
 │   │   ├── executive-analytics.ts
 │   │   ├── gap-analyzer.ts
@@ -1542,12 +1517,15 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── gs1-attributes.test.ts
 │   │   ├── gs1-attributes.ts
 │   │   ├── gs1nl-attributes.ts
+│   │   ├── hub.ts
+│   │   ├── insights.ts
 │   │   ├── monitoring.ts
 │   │   ├── notification-preferences.ts
 │   │   ├── observability.ts
 │   │   ├── pipeline-observability.ts
 │   │   ├── production-monitoring.ts
 │   │   ├── realtime.ts
+│   │   ├── regulations.ts
 │   │   ├── regulatory-change-log.ts
 │   │   ├── roadmap-export.ts
 │   │   ├── roadmap.ts
@@ -1556,8 +1534,11 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── scraper-health.ts
 │   │   ├── standards-directory.test.ts
 │   │   ├── standards-directory.ts
-│   │   └── templates.ts
+│   │   ├── standards.ts
+│   │   ├── templates.ts
+│   │   └── user.ts
 │   ├── routers-data-quality.ts
+│   ├── routers-shape.test.ts
 │   ├── routers-webhook-config.ts
 │   ├── routers.test.ts
 │   ├── routers.ts
@@ -1574,6 +1555,8 @@ Generated on: 2026-02-16T04:51:48Z
 │   ├── seed-production-regulations.mjs
 │   ├── services
 │   │   ├── authority-scoring
+│   │   │   └── index.ts
+│   │   ├── canonical-facts
 │   │   │   └── index.ts
 │   │   ├── corpus-governance
 │   │   │   ├── index.ts
@@ -1602,6 +1585,7 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   ├── api-mocks-dryrun.test.ts
 │   │   ├── api-mocks.test.ts
 │   │   ├── api-mocks.ts
+│   │   ├── db-test-utils.insert-id.test.ts
 │   │   ├── db-test-utils.test.ts
 │   │   └── db-test-utils.ts
 │   ├── test-utils
@@ -1627,7 +1611,6 @@ Generated on: 2026-02-16T04:51:48Z
 │   │   └── advisory-output.schema.json
 │   └── types.ts
 ├── test-results
-│   ├── ask-isa-mapping-test.md
 │   └── ci
 │       ├── governance.json
 │       ├── observability.json
@@ -1641,5 +1624,5 @@ Generated on: 2026-02-16T04:51:48Z
 ├── vitest.config.ts
 └── vitest.setup.ts
 
-199 directories, 1438 files
+187 directories, 1433 files
 ```
