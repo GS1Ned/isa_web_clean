@@ -12,6 +12,10 @@
 import type { RawNewsItem } from "../news-fetcher";
 import { NEWS_SOURCES } from "../news-sources";
 import { serverLogger } from "../_core/logger-wiring";
+import {
+  browserLaunchArgs,
+  isBrowserAutomationAllowed,
+} from "../security/browser-automation-policy";
 
 
 /**
@@ -19,10 +23,17 @@ import { serverLogger } from "../_core/logger-wiring";
  * Returns empty array if Playwright is unavailable (deployment environment)
  */
 export async function scrapeGreenDealZorg(): Promise<RawNewsItem[]> {
+  if (!isBrowserAutomationAllowed("greendeal-playwright")) {
+    return [];
+  }
+
   try {
     // Dynamic import to handle optional Playwright dependency
     const playwright = await import("playwright");
-    const browser = await playwright.chromium.launch({ headless: true });
+    const browser = await playwright.chromium.launch({
+      headless: true,
+      args: browserLaunchArgs(),
+    });
     const context = await browser.newContext();
     const page = await context.newPage();
 

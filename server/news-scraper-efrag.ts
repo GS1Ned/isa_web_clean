@@ -1,4 +1,8 @@
 import { serverLogger } from "./_core/logger-wiring";
+import {
+  browserLaunchArgs,
+  isBrowserAutomationAllowed,
+} from "./security/browser-automation-policy";
 
 /**
  * EFRAG News Playwright Scraper
@@ -29,6 +33,10 @@ async function getPlaywright() {
  * Scrape EFRAG sustainability reporting news
  */
 export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
+  if (!isBrowserAutomationAllowed("efrag-playwright")) {
+    return [];
+  }
+
   // Check if Playwright is available
   const playwright = await getPlaywright();
   if (!playwright) {
@@ -42,7 +50,7 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
     serverLogger.info("[EFRAG Scraper] Launching browser...");
     browser = await playwright.chromium.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: browserLaunchArgs(),
     });
 
     const context = await browser.newContext();
@@ -155,6 +163,10 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
 export async function scrapeEFRAGArticleDetail(
   url: string
 ): Promise<string | null> {
+  if (!isBrowserAutomationAllowed("efrag-playwright-detail")) {
+    return null;
+  }
+
   // Check if Playwright is available
   const playwright = await getPlaywright();
   if (!playwright) {
@@ -167,7 +179,7 @@ export async function scrapeEFRAGArticleDetail(
   try {
     browser = await playwright.chromium.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: browserLaunchArgs(),
     });
 
     const context = await browser.newContext();

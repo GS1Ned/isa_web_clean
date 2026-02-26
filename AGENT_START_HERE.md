@@ -153,7 +153,7 @@ bash scripts/dev/local-doctor.sh
 - Policy envelope: `config/governance/openclaw_policy_envelope.json`
 - Exec lane policy: `config/openclaw/exec-lane.policy.json` (enforced by `bash scripts/openclaw-safe-exec.sh ...`)
 - Skills quarantine allowlist: `config/openclaw/skills-allowlist.json` (`openclaw-skill-admit.sh` / `openclaw-skill-install.sh`)
-- Browser fallback policy: `config/openclaw/browser.policy.json` (enforced in `server/news-scraper-playwright.ts`)
+- Browser fallback policy: `config/openclaw/browser.policy.json` (enforced via `server/security/browser-automation-policy.ts` across browser-based scrapers)
 - No-secrets validation path: `bash scripts/openclaw-validate-no-secrets.sh`
 - Runbook: `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
 

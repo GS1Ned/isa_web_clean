@@ -34,6 +34,7 @@ For cron/webhook-style calls:
 - Mode is `fallback_only`.
 - Explicit opt-in required via `OPENCLAW_BROWSER_FALLBACK_ALLOWED=1`.
 - Unsafe launch flags remain blocked by default.
+- Runtime enforcement entrypoint: `server/security/browser-automation-policy.ts`.
 
 ## Skills Governance
 - New skills must pass static admission (`openclaw-skill-admit.sh`).
