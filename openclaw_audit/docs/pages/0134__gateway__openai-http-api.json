@@ -1,0 +1,24 @@
+{
+  "url": "https://docs.openclaw.ai/gateway/openai-http-api",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:54.486Z",
+  "section": "gateway",
+  "title": "OpenAI Chat Completions - OpenClaw",
+  "h1": [
+    "OpenAI Chat Completions",
+    "​ OpenAI Chat Completions (HTTP)"
+  ],
+  "h2": [
+    "​ Authentication",
+    "​ Choosing an agent",
+    "​ Enabling the endpoint",
+    "​ Disabling the endpoint",
+    "​ Session behavior",
+    "​ Streaming (SSE)",
+    "​ Examples"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "OpenAI Chat Completions - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Protocols and APIs OpenAI Chat Completions Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Gateway Gateway Runbook Configuration and operations Security and sandboxing Protocols and APIs Gateway Protocol Bridge Protocol OpenAI Chat Completions Tools Invoke API CLI Backends Local Models Networking and discovery Remote access ",
+  "content": "OpenAI Chat Completions - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Protocols and APIs OpenAI Chat Completions Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Gateway Gateway Runbook Configuration and operations Security and sandboxing Protocols and APIs Gateway Protocol Bridge Protocol OpenAI Chat Completions Tools Invoke API CLI Backends Local Models Networking and discovery Remote access Remote Access Remote Gateway Setup Tailscale Security Formal Verification (Security Models) Web interfaces Web Control UI Dashboard WebChat TUI On this page OpenAI Chat Completions (HTTP) Authentication Choosing an agent Enabling the endpoint Disabling the endpoint Session behavior Streaming (SSE) Examples Protocols and APIs OpenAI Chat Completions ​ OpenAI Chat Completions (HTTP) OpenClaw’s Gateway can serve a small OpenAI-compatible Chat Completions endpoint. This endpoint is disabled by default . Enable it in config first. POST /v1/chat/completions Same port as the Gateway (WS + HTTP multiplex): http://<gateway-host>:<port>/v1/chat/completions Under the hood, requests are executed as a normal Gateway agent run (same codepath as openclaw agent ), so routing/permissions/config match your Gateway. ​ Authentication Uses the Gateway auth configuration. Send a bearer token: Authorization: Bearer <token> Notes: When gateway.auth.mode=\"token\" , use gateway.auth.token (or OPENCLAW_GATEWAY_TOKEN ). When gateway.auth.mode=\"password\" , use gateway.auth.password (or OPENCLAW_GATEWAY_PASSWORD ). If gateway.auth.rateLimit is configured and too many auth failures occur, the endpoint returns 429 with Retry-After . ​ Choosing an agent No custom headers required: encode the agent id in the OpenAI model field: model: \"openclaw:<agentId>\" (example: \"openclaw:main\" , \"openclaw:beta\" ) model: \"agent:<agentId>\" (alias) Or target a specific OpenClaw agent by header: x-openclaw-agent-id: <agentId> (default: main ) Advanced: x-openclaw-session-key: <sessionKey> to fully control session routing. ​ Enabling the endpoint Set gateway.http.endpoints.chatCompletions.enabled to true : Copy { gateway : { http : { endpoints : { chatCompletions : { enabled : true } , } , } , } , } ​ Disabling the endpoint Set gateway.http.endpoints.chatCompletions.enabled to false : Copy { gateway : { http : { endpoints : { chatCompletions : { enabled : false } , } , } , } , } ​ Session behavior By default the endpoint is stateless per request (a new session key is generated each call). If the request includes an OpenAI user string, the Gateway derives a stable session key from it, so repeated calls can share an agent session. ​ Streaming (SSE) Set stream: true to receive Server-Sent Events (SSE): Content-Type: text/event-stream Each event line is data: <json> Stream ends with data: [DONE] ​ Examples Non-streaming: Copy curl -sS http://127.0.0.1:18789/v1/chat/completions \\ -H &#x27;Authorization: Bearer YOUR_TOKEN&#x27; \\ -H &#x27;Content-Type: application/json&#x27; \\ -H &#x27;x-openclaw-agent-id: main&#x27; \\ -d &#x27;{ \"model\": \"openclaw\", \"messages\": [{\"role\":\"user\",\"content\":\"hi\"}] }&#x27; Streaming: Copy curl -N http://127.0.0.1:18789/v1/chat/completions \\ -H &#x27;Authorization: Bearer YOUR_TOKEN&#x27; \\ -H &#x27;Content-Type: application/json&#x27; \\ -H &#x27;x-openclaw-agent-id: main&#x27; \\ -d &#x27;{ \"model\": \"openclaw\", \"stream\": true, \"messages\": [{\"role\":\"user\",\"content\":\"hi\"}] }&#x27; Bridge Protocol Tools Invoke API ⌘ I Powered by"
+}

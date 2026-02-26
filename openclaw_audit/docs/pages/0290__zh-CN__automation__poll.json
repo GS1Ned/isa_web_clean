@@ -1,0 +1,22 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/automation/poll",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.319Z",
+  "section": "zh-CN",
+  "title": "投票 - OpenClaw",
+  "h1": [
+    "投票",
+    "​ 投票"
+  ],
+  "h2": [
+    "​ 支持的渠道",
+    "​ CLI",
+    "​ Gateway 网关 RPC",
+    "​ 渠道差异",
+    "​ 智能体工具（Message）"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "投票 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 自动化 投票 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 工具 内置工具 Lobster LLM 任务 Exec 工具 Web 工具 apply_patch 工具 提升模式 思考级别 表情回应 浏览器 浏览器（OpenClaw 托管） 浏览器登录 Chrome 扩展 浏览器故障排除 代理协作 Agent Send 子智能体 多智能体沙箱与工具 技能 斜杠命令 Skills Skills 配置 ClawHub 插件 扩展 Voice Call 插件 Zalo Personal 插件 自动化 Hooks 定时任务 定时任务与心跳对比 自动化故障排查 Webhooks Gmail PubSub 投票 认证监控 媒体与设备 节点 节点故障排查 图像和媒体支持 音频与语音消息 相机捕获 Talk 模式 语音唤醒 位置命令 在此页面 投票 支持的渠道 CLI Gateway 网关 RPC",
+  "content": "投票 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 自动化 投票 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 工具 内置工具 Lobster LLM 任务 Exec 工具 Web 工具 apply_patch 工具 提升模式 思考级别 表情回应 浏览器 浏览器（OpenClaw 托管） 浏览器登录 Chrome 扩展 浏览器故障排除 代理协作 Agent Send 子智能体 多智能体沙箱与工具 技能 斜杠命令 Skills Skills 配置 ClawHub 插件 扩展 Voice Call 插件 Zalo Personal 插件 自动化 Hooks 定时任务 定时任务与心跳对比 自动化故障排查 Webhooks Gmail PubSub 投票 认证监控 媒体与设备 节点 节点故障排查 图像和媒体支持 音频与语音消息 相机捕获 Talk 模式 语音唤醒 位置命令 在此页面 投票 支持的渠道 CLI Gateway 网关 RPC 渠道差异 智能体工具（Message） 自动化 投票 ​ 投票 ​ 支持的渠道 WhatsApp（Web 渠道） Discord MS Teams（Adaptive Cards） ​ CLI 复制 # WhatsApp openclaw message poll --target +15555550123 \\ --poll-question \"Lunch today?\" --poll-option \"Yes\" --poll-option \"No\" --poll-option \"Maybe\" openclaw message poll --target 123456789@g.us \\ --poll-question \"Meeting time?\" --poll-option \"10am\" --poll-option \"2pm\" --poll-option \"4pm\" --poll-multi # Discord openclaw message poll --channel discord --target channel:123456789 \\ --poll-question \"Snack?\" --poll-option \"Pizza\" --poll-option \"Sushi\" openclaw message poll --channel discord --target channel:123456789 \\ --poll-question \"Plan?\" --poll-option \"A\" --poll-option \"B\" --poll-duration-hours 48 # MS Teams openclaw message poll --channel msteams --target conversation:19:abc@thread.tacv2 \\ --poll-question \"Lunch?\" --poll-option \"Pizza\" --poll-option \"Sushi\" 选项： --channel ： whatsapp （默认）、 discord 或 msteams --poll-multi ：允许选择多个选项 --poll-duration-hours ：仅限 Discord（省略时默认为 24） ​ Gateway 网关 RPC 方法： poll 参数： to （字符串，必需） question （字符串，必需） options （字符串数组，必需） maxSelections （数字，可选） durationHours （数字，可选） channel （字符串，可选，默认： whatsapp ） idempotencyKey （字符串，必需） ​ 渠道差异 WhatsApp：2-12 个选项， maxSelections 必须在选项数量范围内，忽略 durationHours 。 Discord：2-10 个选项， durationHours 限制在 1-768 小时之间（默认 24）。 maxSelections > 1 启用多选；Discord 不支持严格的选择数量限制。 MS Teams：Adaptive Card 投票（由 OpenClaw 管理）。无原生投票 API； durationHours 被忽略。 ​ 智能体工具（Message） 使用 message 工具的 poll 操作（ to 、 pollQuestion 、 pollOption ，可选 pollMulti 、 pollDurationHours 、 channel ）。 注意：Discord 没有”恰好选择 N 个”模式； pollMulti 映射为多选。 Teams 投票以 Adaptive Cards 形式渲染，需要 Gateway 网关保持在线 以将投票记录到 ~/.openclaw/msteams-polls.json 。 Gmail PubSub 认证监控 ⌘ I 技术支持"
+}

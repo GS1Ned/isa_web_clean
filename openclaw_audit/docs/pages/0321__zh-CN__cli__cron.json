@@ -1,0 +1,18 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/cli/cron",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.472Z",
+  "section": "zh-CN",
+  "title": "cron - OpenClaw",
+  "h1": [
+    "cron",
+    "​ openclaw cron"
+  ],
+  "h2": [
+    "​ 常见编辑"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "cron - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation CLI 命令 cron 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOU",
+  "content": "cron - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation CLI 命令 cron 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOUL TOOLS USER 技术参考 向导参考 Token 使用与成本 概念内部机制 TypeBox Markdown 格式化 输入指示器 使用量跟踪 时区 项目 致谢 发布说明 RELEASING 测试 实验性功能 新手引导和配置协议 Cron Add 加固 Telegram 允许列表加固 工作区记忆研究 模型配置探索 在此页面 openclaw cron 常见编辑 CLI 命令 cron ​ openclaw cron 管理 Gateway 网关调度器的 cron 作业。 相关内容： Cron 作业： Cron 作业 提示：运行 openclaw cron --help 查看完整的命令集。 说明：隔离式 cron add 任务默认使用 --announce 投递摘要。使用 --no-deliver 仅内部运行。 --deliver 仍作为 --announce 的弃用别名保留。 说明：一次性（ --at ）任务成功后默认删除。使用 --keep-after-run 保留。 ​ 常见编辑 更新投递设置而不更改消息： 复制 openclaw cron edit < job-i d > --announce --channel telegram --to \"123456789\" 为隔离的作业禁用投递： 复制 openclaw cron edit < job-i d > --no-deliver configure dashboard ⌘ I 技术支持"
+}

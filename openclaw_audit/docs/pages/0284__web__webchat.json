@@ -1,0 +1,23 @@
+{
+  "url": "https://docs.openclaw.ai/web/webchat",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.281Z",
+  "section": "web",
+  "title": "WebChat - OpenClaw",
+  "h1": [
+    "WebChat",
+    "​ WebChat (Gateway WebSocket UI)"
+  ],
+  "h2": [
+    "​ What it is",
+    "​ Quick start",
+    "​ How it works (behavior)",
+    "​ Control UI agents tools panel",
+    "​ Remote use",
+    "​ Configuration reference (WebChat)"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "WebChat - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Web interfaces WebChat Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Gateway Gateway Runbook Configuration and operations Security and sandboxing Protocols and APIs Networking and discovery Remote access Remote Access Remote Gateway Setup Tailscale Security Formal Verification (Security Models) Web interfaces Web Control UI Dashboard WebC",
+  "content": "WebChat - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Web interfaces WebChat Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Gateway Gateway Runbook Configuration and operations Security and sandboxing Protocols and APIs Networking and discovery Remote access Remote Access Remote Gateway Setup Tailscale Security Formal Verification (Security Models) Web interfaces Web Control UI Dashboard WebChat TUI On this page WebChat (Gateway WebSocket UI) What it is Quick start How it works (behavior) Control UI agents tools panel Remote use Configuration reference (WebChat) Web interfaces WebChat ​ WebChat (Gateway WebSocket UI) Status: the macOS/iOS SwiftUI chat UI talks directly to the Gateway WebSocket. ​ What it is A native chat UI for the gateway (no embedded browser and no local static server). Uses the same sessions and routing rules as other channels. Deterministic routing: replies always go back to WebChat. ​ Quick start Start the gateway. Open the WebChat UI (macOS/iOS app) or the Control UI chat tab. Ensure gateway auth is configured (required by default, even on loopback). ​ How it works (behavior) The UI connects to the Gateway WebSocket and uses chat.history , chat.send , and chat.inject . chat.history is bounded for stability: Gateway may truncate long text fields, omit heavy metadata, and replace oversized entries with [chat.history omitted: message too large] . chat.inject appends an assistant note directly to the transcript and broadcasts it to the UI (no agent run). Aborted runs can keep partial assistant output visible in the UI. Gateway persists aborted partial assistant text into transcript history when buffered output exists, and marks those entries with abort metadata. History is always fetched from the gateway (no local file watching). If the gateway is unreachable, WebChat is read-only. ​ Control UI agents tools panel The Control UI /agents Tools panel fetches a runtime catalog via tools.catalog and labels each tool as core or plugin:<id> (plus optional for optional plugin tools). If tools.catalog is unavailable, the panel falls back to a built-in static list. The panel edits profile and override config, but effective runtime access still follows policy precedence ( allow / deny , per-agent and provider/channel overrides). ​ Remote use Remote mode tunnels the gateway WebSocket over SSH/Tailscale. You do not need to run a separate WebChat server. ​ Configuration reference (WebChat) Full configuration: Configuration Channel options: No dedicated webchat.* block. WebChat uses the gateway endpoint + auth settings below. Related global options: gateway.port , gateway.bind : WebSocket host/port. gateway.auth.mode , gateway.auth.token , gateway.auth.password : WebSocket auth (token/password). gateway.auth.mode: \"trusted-proxy\" : reverse-proxy auth for browser clients (see Trusted Proxy Auth ). gateway.remote.url , gateway.remote.token , gateway.remote.password : remote gateway target. session.* : session storage and main key defaults. Dashboard TUI ⌘ I Powered by"
+}

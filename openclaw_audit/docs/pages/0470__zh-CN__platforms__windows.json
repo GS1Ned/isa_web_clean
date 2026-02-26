@@ -1,0 +1,23 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/platforms/windows",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.077Z",
+  "section": "zh-CN",
+  "title": "Windows (WSL2) - OpenClaw",
+  "h1": [
+    "Windows (WSL2)",
+    "​ Windows (WSL2)"
+  ],
+  "h2": [
+    "​ 安装（WSL2）",
+    "​ Gateway 网关",
+    "​ Gateway 网关服务安装（CLI）",
+    "​ 高级：通过 LAN 暴露 WSL 服务（portproxy）",
+    "​ WSL2 分步安装",
+    "​ Windows 配套应用"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Windows (WSL2) - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 平台概览 Windows (WSL2) 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 平台概览 平台 macOS 应用 Linux 应用 Windows (WSL2) Android 应用 iOS 应用 macOS 配套应用 macOS 开发设置 菜单栏 语音唤醒 语音浮层 WebChat Canvas Gateway 网关生命周期 健康检查 菜单栏图标 macOS 日志 macOS 权限 远程控制 macOS 签名 macOS 发布 macOS 上的 Gateway 网关 macOS IPC Skills Peekaboo Bridge 在此页面 Windows (WSL2) 安装（WSL2） Gateway 网关 Gateway 网关服务安装（CLI） 高级：通过 LAN 暴露 WSL 服务（portproxy） WSL2 分步安装 1）安装 WSL2 +",
+  "content": "Windows (WSL2) - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 平台概览 Windows (WSL2) 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 平台概览 平台 macOS 应用 Linux 应用 Windows (WSL2) Android 应用 iOS 应用 macOS 配套应用 macOS 开发设置 菜单栏 语音唤醒 语音浮层 WebChat Canvas Gateway 网关生命周期 健康检查 菜单栏图标 macOS 日志 macOS 权限 远程控制 macOS 签名 macOS 发布 macOS 上的 Gateway 网关 macOS IPC Skills Peekaboo Bridge 在此页面 Windows (WSL2) 安装（WSL2） Gateway 网关 Gateway 网关服务安装（CLI） 高级：通过 LAN 暴露 WSL 服务（portproxy） WSL2 分步安装 1）安装 WSL2 + Ubuntu 2）启用 systemd（Gateway 网关安装所需） 3）安装 OpenClaw（在 WSL 内） Windows 配套应用 平台概览 Windows (WSL2) ​ Windows (WSL2) Windows 上的 OpenClaw 推荐 通过 WSL2 （推荐 Ubuntu）。CLI + Gateway 网关在 Linux 内运行，这保持了运行时的一致性并使工具兼容性大大提高（Node/Bun/pnpm、Linux 二进制文件、Skills）。原生 Windows 可能更棘手。WSL2 给你完整的 Linux 体验——一条命令安装： wsl --install 。 原生 Windows 配套应用已在计划中。 ​ 安装（WSL2） 入门指南 （在 WSL 内使用） 安装和更新 官方 WSL2 指南（Microsoft）： https://learn.microsoft.com/windows/wsl/install ​ Gateway 网关 Gateway 网关操作手册 配置 ​ Gateway 网关服务安装（CLI） 在 WSL2 内： 复制 openclaw onboard --install-daemon 或： 复制 openclaw gateway install 或： 复制 openclaw configure 出现提示时选择 Gateway service 。 修复/迁移： 复制 openclaw doctor ​ 高级：通过 LAN 暴露 WSL 服务（portproxy） WSL 有自己的虚拟网络。如果另一台机器需要访问 在 WSL 内 运行的服务（SSH、本地 TTS 服务器或 Gateway 网关），你必须将 Windows 端口转发到当前的 WSL IP。WSL IP 在重启后会改变，因此你可能需要刷新转发规则。 示例（以 管理员身份 运行 PowerShell）： 复制 $Distro = \"Ubuntu-24.04\" $ListenPort = 2222 $TargetPort = 22 $WslIp = (wsl - d $Distro -- hostname - I).Trim().Split( \" \" )[ 0 ] if ( -not $WslIp) { throw \"WSL IP not found.\" } netsh interface portproxy add v4tov4 listenaddress = 0.0 . 0.0 listenport = $ListenPort ` connectaddress = $WslIp connectport = $TargetPort 允许端口通过 Windows 防火墙（一次性）： 复制 New-NetFirewallRule - DisplayName \"WSL SSH $ListenPort\" - Direction Inbound ` - Protocol TCP - LocalPort $ListenPort - Action Allow 在 WSL 重启后刷新 portproxy： 复制 netsh interface portproxy delete v4tov4 listenport = $ListenPort listenaddress = 0.0 . 0.0 | Out-Null netsh interface portproxy add v4tov4 listenport = $ListenPort listenaddress = 0.0 . 0.0 ` connectaddress = $WslIp connectport = $TargetPort | Out-Null 注意事项： 从另一台机器 SSH 目标是 Windows 主机 IP （示例： ssh user@windows-host -p 2222 ）。 远程节点必须指向 可访问的 Gateway 网关 URL（不是 127.0.0.1 ）；使用 openclaw status --all 确认。 使用 listenaddress=0.0.0.0 进行 LAN 访问； 127.0.0.1 仅保持本地访问。 如果你想自动化，注册一个计划任务在登录时运行刷新步骤。 ​ WSL2 分步安装 ​ 1）安装 WSL2 + Ubuntu 打开 PowerShell（管理员）： 复制 wsl -- install # Or pick a distro explicitly: wsl -- list -- online wsl -- install - d Ubuntu - 24.04 如果 Windows 要求则重启。 ​ 2）启用 systemd（Gateway 网关安装所需） 在你的 WSL 终端中： 复制 sudo tee /etc/wsl.conf > /dev/null << &#x27;EOF&#x27; [boot] systemd=true EOF 然后从 PowerShell： 复制 wsl -- shutdown 重新打开 Ubuntu，然后验证： 复制 systemctl --user status ​ 3）安装 OpenClaw（在 WSL 内） 在 WSL 内按照 Linux 入门指南流程： 复制 git clone https://github.com/openclaw/openclaw.git cd openclaw pnpm install pnpm ui:build # auto-installs UI deps on first run pnpm build openclaw onboard 完整指南： 入门指南 ​ Windows 配套应用 我们还没有 Windows 配套应用。如果你想让它实现，欢迎贡献。 Linux 应用 Android 应用 ⌘ I 技术支持"
+}

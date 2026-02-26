@@ -1,0 +1,16 @@
+{
+  "url": "https://docs.openclaw.ai/help",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:54.578Z",
+  "section": "help",
+  "title": "Help - OpenClaw",
+  "h1": [
+    "Help",
+    "​ Help"
+  ],
+  "h2": [],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Help - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Help Help Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Help Help Troubleshooting FAQ Community OpenClaw Lore Environment and debugging Environment Variables Debugging Testing Scripts Node runtime Node.js Compaction internals Session Management Deep Dive Developer setup Setup Contributing CI Pipeline Docs meta Docs Hubs Docs directory On thi",
+  "content": "Help - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Help Help Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Help Help Troubleshooting FAQ Community OpenClaw Lore Environment and debugging Environment Variables Debugging Testing Scripts Node runtime Node.js Compaction internals Session Management Deep Dive Developer setup Setup Contributing CI Pipeline Docs meta Docs Hubs Docs directory On this page Help Help Help ​ Help If you want a quick “get unstuck” flow, start here: Troubleshooting: Start here Install sanity (Node/npm/PATH): Install Gateway issues: Gateway troubleshooting Logs: Logging and Gateway logging Repairs: Doctor If you’re looking for conceptual questions (not “something broke”): FAQ (concepts) Troubleshooting ⌘ I Powered by"
+}

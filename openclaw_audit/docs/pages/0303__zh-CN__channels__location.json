@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/channels/location",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.360Z",
+  "section": "zh-CN",
+  "title": "渠道位置解析 - OpenClaw",
+  "h1": [
+    "渠道位置解析",
+    "​ 渠道位置解析"
+  ],
+  "h2": [
+    "​ 文本格式",
+    "​ 上下文字段",
+    "​ 渠道说明"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "渠道位置解析 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 配置 渠道位置解析 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 聊天渠道 消息平台 WhatsApp Telegram Discord Slack 飞书 Google Chat Mattermost Signal iMessage Microsoft Teams LINE Matrix Zalo Zalo Personal 配置 配对 群组消息 群组 广播群组 渠道路由 渠道位置解析 渠道故障排除 在此页面 渠道位置解析 文本格式 上下文字段 渠道说明 配置 渠道位置解析 ​ 渠道位置解析 OpenClaw 将聊天渠道中分享的位置标准化为： 附加到入站消息体的可读文本，以及 自动回复上下文负载中的结构化字段。 目前支持： Telegram （位置图钉 + 地点 + 实时位置） WhatsApp （locationMessage + liveLocationMessag",
+  "content": "渠道位置解析 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 配置 渠道位置解析 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 聊天渠道 消息平台 WhatsApp Telegram Discord Slack 飞书 Google Chat Mattermost Signal iMessage Microsoft Teams LINE Matrix Zalo Zalo Personal 配置 配对 群组消息 群组 广播群组 渠道路由 渠道位置解析 渠道故障排除 在此页面 渠道位置解析 文本格式 上下文字段 渠道说明 配置 渠道位置解析 ​ 渠道位置解析 OpenClaw 将聊天渠道中分享的位置标准化为： 附加到入站消息体的可读文本，以及 自动回复上下文负载中的结构化字段。 目前支持： Telegram （位置图钉 + 地点 + 实时位置） WhatsApp （locationMessage + liveLocationMessage） Matrix （ m.location 配合 geo_uri ） ​ 文本格式 位置以友好的行格式呈现，不带括号： 图钉： 📍 48.858844, 2.294351 ±12m 命名地点： 📍 Eiffel Tower — Champ de Mars, Paris (48.858844, 2.294351 ±12m) 实时分享： 🛰 Live location: 48.858844, 2.294351 ±12m 如果渠道包含标题/评论，会附加在下一行： 复制 📍 48.858844, 2.294351 ±12m Meet here ​ 上下文字段 当存在位置信息时，以下字段会被添加到 ctx 中： LocationLat （数字） LocationLon （数字） LocationAccuracy （数字，米；可选） LocationName （字符串；可选） LocationAddress （字符串；可选） LocationSource （ pin | place | live ） LocationIsLive （布尔值） ​ 渠道说明 Telegram ：地点映射到 LocationName/LocationAddress ；实时位置使用 live_period 。 WhatsApp ： locationMessage.comment 和 liveLocationMessage.caption 作为标题行附加。 Matrix ： geo_uri 解析为图钉位置；忽略海拔高度， LocationIsLive 始终为 false。 渠道路由 渠道故障排除 ⌘ I 技术支持"
+}

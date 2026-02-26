@@ -1,0 +1,21 @@
+{
+  "url": "https://docs.openclaw.ai/concepts/typing-indicators",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:51.685Z",
+  "section": "concepts",
+  "title": "Typing Indicators - OpenClaw",
+  "h1": [
+    "Typing Indicators",
+    "​ Typing indicators"
+  ],
+  "h2": [
+    "​ Defaults",
+    "​ Modes",
+    "​ Configuration",
+    "​ Notes"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Typing Indicators - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Concept internals Typing Indicators Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help CLI commands CLI Reference acp agent agents approvals browser channels clawbot completion config configure cron daemon dashboard devices directory dns docs doctor gateway health hooks logs memory message models node nodes onboard pairing plugins qr",
+  "content": "Typing Indicators - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Concept internals Typing Indicators Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help CLI commands CLI Reference acp agent agents approvals browser channels clawbot completion config configure cron daemon dashboard devices directory dns docs doctor gateway health hooks logs memory message models node nodes onboard pairing plugins qr reset Sandbox CLI security sessions setup skills status system tui uninstall update voicecall webhooks RPC and API RPC Adapters Device Model Database Templates Default AGENTS.md AGENTS.md Template BOOT.md Template BOOTSTRAP.md Template HEARTBEAT.md Template IDENTITY SOUL.md Template TOOLS.md Template USER Technical reference Wizard Reference Token Use and Costs Prompt Caching grammY Concept internals TypeBox Markdown Formatting Typing Indicators Usage Tracking Timezones Project Credits Release notes Release Checklist Tests Experiments Onboarding and Config Protocol Workspace Memory Research Model Config Exploration On this page Typing indicators Defaults Modes Configuration Notes Concept internals Typing Indicators ​ Typing indicators Typing indicators are sent to the chat channel while a run is active. Use agents.defaults.typingMode to control when typing starts and typingIntervalSeconds to control how often it refreshes. ​ Defaults When agents.defaults.typingMode is unset , OpenClaw keeps the legacy behavior: Direct chats : typing starts immediately once the model loop begins. Group chats with a mention : typing starts immediately. Group chats without a mention : typing starts only when message text begins streaming. Heartbeat runs : typing is disabled. ​ Modes Set agents.defaults.typingMode to one of: never — no typing indicator, ever. instant — start typing as soon as the model loop begins , even if the run later returns only the silent reply token. thinking — start typing on the first reasoning delta (requires reasoningLevel: \"stream\" for the run). message — start typing on the first non-silent text delta (ignores the NO_REPLY silent token). Order of “how early it fires”: never → message → thinking → instant ​ Configuration Copy { agent : { typingMode : \"thinking\" , typingIntervalSeconds : 6 , } , } You can override mode or cadence per session: Copy { session : { typingMode : \"message\" , typingIntervalSeconds : 4 , } , } ​ Notes message mode won’t show typing for silent-only replies (e.g. the NO_REPLY token used to suppress output). thinking only fires if the run streams reasoning ( reasoningLevel: \"stream\" ). If the model doesn’t emit reasoning deltas, typing won’t start. Heartbeats never show typing, regardless of mode. typingIntervalSeconds controls the refresh cadence , not the start time. The default is 6 seconds. Markdown Formatting Usage Tracking ⌘ I Powered by"
+}

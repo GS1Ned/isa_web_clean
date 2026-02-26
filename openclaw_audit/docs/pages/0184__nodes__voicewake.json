@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/nodes/voicewake",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.436Z",
+  "section": "nodes",
+  "title": "Voice Wake - OpenClaw",
+  "h1": [
+    "Voice Wake",
+    "​ Voice Wake (Global Wake Words)"
+  ],
+  "h2": [
+    "​ Storage (Gateway host)",
+    "​ Protocol",
+    "​ Client behavior"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Voice Wake - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Media and devices Voice Wake Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Tools Built-in tools Lobster LLM Task Exec Tool Web Tools apply_patch Tool Elevated Mode Thinking Levels Reactions Browser Browser (OpenClaw-managed) Browser Login Chrome Extension Browser Troubleshooting Agent coordination Agent Send Sub-Agents ACP Age",
+  "content": "Voice Wake - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Media and devices Voice Wake Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Tools Built-in tools Lobster LLM Task Exec Tool Web Tools apply_patch Tool Elevated Mode Thinking Levels Reactions Browser Browser (OpenClaw-managed) Browser Login Chrome Extension Browser Troubleshooting Agent coordination Agent Send Sub-Agents ACP Agents Multi-Agent Sandbox & Tools Skills Slash Commands Skills Skills Config ClawHub Plugins Extensions Community plugins Voice Call Plugin Zalo Personal Plugin Automation Hooks Cron Jobs Cron vs Heartbeat Automation Troubleshooting Webhooks Gmail PubSub Polls Auth Monitoring Media and devices Nodes Node Troubleshooting Image and Media Support Audio and Voice Notes Camera Capture Talk Mode Voice Wake Location Command On this page Voice Wake (Global Wake Words) Storage (Gateway host) Protocol Methods Events Client behavior macOS app iOS node Android node Media and devices Voice Wake ​ Voice Wake (Global Wake Words) OpenClaw treats wake words as a single global list owned by the Gateway . There are no per-node custom wake words . Any node/app UI may edit the list; changes are persisted by the Gateway and broadcast to everyone. Each device still keeps its own Voice Wake enabled/disabled toggle (local UX + permissions differ). ​ Storage (Gateway host) Wake words are stored on the gateway machine at: ~/.openclaw/settings/voicewake.json Shape: Copy { \"triggers\" : [ \"openclaw\" , \"claude\" , \"computer\" ] , \"updatedAtMs\" : 1730000000000 } ​ Protocol ​ Methods voicewake.get → { triggers: string[] } voicewake.set with params { triggers: string[] } → { triggers: string[] } Notes: Triggers are normalized (trimmed, empties dropped). Empty lists fall back to defaults. Limits are enforced for safety (count/length caps). ​ Events voicewake.changed payload { triggers: string[] } Who receives it: All WebSocket clients (macOS app, WebChat, etc.) All connected nodes (iOS/Android), and also on node connect as an initial “current state” push. ​ Client behavior ​ macOS app Uses the global list to gate VoiceWakeRuntime triggers. Editing “Trigger words” in Voice Wake settings calls voicewake.set and then relies on the broadcast to keep other clients in sync. ​ iOS node Uses the global list for VoiceWakeManager trigger detection. Editing Wake Words in Settings calls voicewake.set (over the Gateway WS) and also keeps local wake-word detection responsive. ​ Android node Exposes a Wake Words editor in Settings. Calls voicewake.set over the Gateway WS so edits sync everywhere. Talk Mode Location Command ⌘ I Powered by"
+}

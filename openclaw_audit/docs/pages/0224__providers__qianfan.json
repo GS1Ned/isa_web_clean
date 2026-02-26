@@ -1,0 +1,21 @@
+{
+  "url": "https://docs.openclaw.ai/providers/qianfan",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.656Z",
+  "section": "providers",
+  "title": "Qianfan - OpenClaw",
+  "h1": [
+    "Qianfan",
+    "​ Qianfan Provider Guide"
+  ],
+  "h2": [
+    "​ Prerequisites",
+    "​ Getting Your API Key",
+    "​ CLI setup",
+    "​ Related Documentation"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Qianfan - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Providers Qianfan Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Synthetic Qianfan ",
+  "content": "Qianfan - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Providers Qianfan Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Synthetic Qianfan On this page Qianfan Provider Guide Prerequisites Getting Your API Key CLI setup Related Documentation Providers Qianfan ​ Qianfan Provider Guide Qianfan is Baidu’s MaaS platform, provides a unified API that routes requests to many models behind a single endpoint and API key. It is OpenAI-compatible, so most OpenAI SDKs work by switching the base URL. ​ Prerequisites A Baidu Cloud account with Qianfan API access An API key from the Qianfan console OpenClaw installed on your system ​ Getting Your API Key Visit the Qianfan Console Create a new application or select an existing one Generate an API key (format: bce-v3/ALTAK-... ) Copy the API key for use with OpenClaw ​ CLI setup Copy openclaw onboard --auth-choice qianfan-api-key ​ Related Documentation OpenClaw Configuration Model Providers Agent Setup Qianfan API Documentation Synthetic ⌘ I Powered by"
+}

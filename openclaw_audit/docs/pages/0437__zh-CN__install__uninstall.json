@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/install/uninstall",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.929Z",
+  "section": "zh-CN",
+  "title": "卸载 - OpenClaw",
+  "h1": [
+    "卸载",
+    "​ 卸载"
+  ],
+  "h2": [
+    "​ 简单方式（CLI 仍已安装）",
+    "​ 手动服务移除（CLI 未安装）",
+    "​ 普通安装 vs 源码检出"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "卸载 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 维护 卸载 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 安装概览 安装 安装器内部机制 安装方式 Docker Nix Ansible Bun（实验性） 维护 更新 迁移指南 卸载 托管与部署 Fly.io Hetzner GCP macOS 虚拟机 exe.dev 在 Railway 上部署 在 Render 上部署 在 Northflank 上部署 高级 开发渠道 在此页面 卸载 简单方式（CLI 仍已安装） 手动服务移除（CLI 未安装） macOS（launchd） Linux（systemd 用户单元） Windows（计划任务） 普通安装 vs 源码检出 普通安装（install.sh / npm / pnpm / bun） 源码检出（git clone） 维护 卸载 ​ 卸载 两种方式： 如果 openclaw 仍已安装，使用 简单方式 。 如果 CLI 已删除但服务",
+  "content": "卸载 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 维护 卸载 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 安装概览 安装 安装器内部机制 安装方式 Docker Nix Ansible Bun（实验性） 维护 更新 迁移指南 卸载 托管与部署 Fly.io Hetzner GCP macOS 虚拟机 exe.dev 在 Railway 上部署 在 Render 上部署 在 Northflank 上部署 高级 开发渠道 在此页面 卸载 简单方式（CLI 仍已安装） 手动服务移除（CLI 未安装） macOS（launchd） Linux（systemd 用户单元） Windows（计划任务） 普通安装 vs 源码检出 普通安装（install.sh / npm / pnpm / bun） 源码检出（git clone） 维护 卸载 ​ 卸载 两种方式： 如果 openclaw 仍已安装，使用 简单方式 。 如果 CLI 已删除但服务仍在运行，使用 手动服务移除 。 ​ 简单方式（CLI 仍已安装） 推荐：使用内置卸载程序： 复制 openclaw uninstall 非交互式（自动化 / npx）： 复制 openclaw uninstall --all --yes --non-interactive npx -y openclaw uninstall --all --yes --non-interactive 手动步骤（效果相同）： 停止 Gateway 网关服务： 复制 openclaw gateway stop 卸载 Gateway 网关服务（launchd/systemd/schtasks）： 复制 openclaw gateway uninstall 删除状态 + 配置： 复制 rm -rf \"${OPENCLAW_STATE_DIR :- $HOME / .openclaw}\" 如果你将 OPENCLAW_CONFIG_PATH 设置为状态目录外的自定义位置，也请删除该文件。 删除你的工作区（可选，移除智能体文件）： 复制 rm -rf ~/.openclaw/workspace 移除 CLI 安装（选择你使用的那个）： 复制 npm rm -g openclaw pnpm remove -g openclaw bun remove -g openclaw 如果你安装了 macOS 应用： 复制 rm -rf /Applications/OpenClaw.app 注意事项： 如果你使用了配置文件（ --profile / OPENCLAW_PROFILE ），对每个状态目录重复步骤 3（默认为 ~/.openclaw-<profile> ）。 在远程模式下，状态目录位于 Gateway 网关主机 上，因此也需要在那里运行步骤 1-4。 ​ 手动服务移除（CLI 未安装） 如果 Gateway 网关服务持续运行但 openclaw 缺失，请使用此方法。 ​ macOS（launchd） 默认标签是 bot.molt.gateway （或 bot.molt.<profile> ；旧版 com.openclaw.* 可能仍然存在）： 复制 launchctl bootout gui/ $UID /bot.molt.gateway rm -f ~/Library/LaunchAgents/bot.molt.gateway.plist 如果你使用了配置文件，请将标签和 plist 名称替换为 bot.molt.<profile> 。如果存在任何旧版 com.openclaw.* plist，请将其移除。 ​ Linux（systemd 用户单元） 默认单元名称是 openclaw-gateway.service （或 openclaw-gateway-<profile>.service ）： 复制 systemctl --user disable --now openclaw-gateway.service rm -f ~/.config/systemd/user/openclaw-gateway.service systemctl --user daemon-reload ​ Windows（计划任务） 默认任务名称是 OpenClaw Gateway （或 OpenClaw Gateway (<profile>) ）。 任务脚本位于你的状态目录下。 复制 schtasks / Delete / F / TN \"OpenClaw Gateway\" Remove-Item - Force \"$ env: USERPROFILE\\.openclaw\\gateway.cmd\" 如果你使用了配置文件，请删除匹配的任务名称和 ~\\.openclaw-<profile>\\gateway.cmd 。 ​ 普通安装 vs 源码检出 ​ 普通安装（install.sh / npm / pnpm / bun） 如果你使用了 https://openclaw.ai/install.sh 或 install.ps1 ，CLI 是通过 npm install -g openclaw@latest 安装的。 使用 npm rm -g openclaw 移除（或 pnpm remove -g / bun remove -g ，如果你是用那种方式安装的）。 ​ 源码检出（git clone） 如果你从仓库检出运行（ git clone + openclaw ... / bun run openclaw ... ）： 在删除仓库 之前 卸载 Gateway 网关服务（使用上面的简单方式或手动服务移除）。 删除仓库目录。 按上述方式移除状态 + 工作区。 迁移指南 Fly.io ⌘ I 技术支持"
+}

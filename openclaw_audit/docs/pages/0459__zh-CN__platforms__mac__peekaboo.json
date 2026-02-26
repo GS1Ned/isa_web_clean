@@ -1,0 +1,23 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/platforms/mac/peekaboo",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.038Z",
+  "section": "zh-CN",
+  "title": "Peekaboo Bridge - OpenClaw",
+  "h1": [
+    "Peekaboo Bridge",
+    "​ Peekaboo Bridge（macOS UI 自动化）"
+  ],
+  "h2": [
+    "​ 这是什么（以及不是什么）",
+    "​ 启用桥接",
+    "​ 客户端发现顺序",
+    "​ 安全与权限",
+    "​ 快照行为（自动化）",
+    "​ 故障排除"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Peekaboo Bridge - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation macOS 配套应用 Peekaboo Bridge 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 平台概览 平台 macOS 应用 Linux 应用 Windows (WSL2) Android 应用 iOS 应用 macOS 配套应用 macOS 开发设置 菜单栏 语音唤醒 语音浮层 WebChat Canvas Gateway 网关生命周期 健康检查 菜单栏图标 macOS 日志 macOS 权限 远程控制 macOS 签名 macOS 发布 macOS 上的 Gateway 网关 macOS IPC Skills Peekaboo Bridge 在此页面 Peekaboo Bridge（macOS UI 自动化） 这是什么（以及不是什么） 启用桥接 客户端发现顺序 安全与权限 快照行为（自动化） 故障排除 macOS 配套应用 Peekaboo Br",
+  "content": "Peekaboo Bridge - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation macOS 配套应用 Peekaboo Bridge 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 平台概览 平台 macOS 应用 Linux 应用 Windows (WSL2) Android 应用 iOS 应用 macOS 配套应用 macOS 开发设置 菜单栏 语音唤醒 语音浮层 WebChat Canvas Gateway 网关生命周期 健康检查 菜单栏图标 macOS 日志 macOS 权限 远程控制 macOS 签名 macOS 发布 macOS 上的 Gateway 网关 macOS IPC Skills Peekaboo Bridge 在此页面 Peekaboo Bridge（macOS UI 自动化） 这是什么（以及不是什么） 启用桥接 客户端发现顺序 安全与权限 快照行为（自动化） 故障排除 macOS 配套应用 Peekaboo Bridge ​ Peekaboo Bridge（macOS UI 自动化） OpenClaw 可以将 PeekabooBridge 作为本地的、权限感知的 UI 自动化代理进行托管。这使得 peekaboo CLI 能够驱动 UI 自动化，同时复用 macOS 应用的 TCC 权限。 ​ 这是什么（以及不是什么） 宿主 ：OpenClaw.app 可以作为 PeekabooBridge 宿主。 客户端 ：使用 peekaboo CLI（无需单独的 openclaw ui ... 界面）。 界面 ：视觉叠加层保留在 Peekaboo.app 中；OpenClaw 只是一个轻量代理宿主。 ​ 启用桥接 在 macOS 应用中： 设置 → 启用 Peekaboo Bridge 启用后，OpenClaw 会启动一个本地 UNIX 套接字服务器。如果禁用，宿主会停止， peekaboo 将回退到其他可用宿主。 ​ 客户端发现顺序 Peekaboo 客户端通常按以下顺序尝试宿主： Peekaboo.app（完整用户体验） Claude.app（如已安装） OpenClaw.app（轻量代理） 使用 peekaboo bridge status --verbose 查看当前活跃的宿主及使用的套接字路径。你可以通过以下方式覆盖： 复制 export PEEKABOO_BRIDGE_SOCKET = /path/to/bridge.sock ​ 安全与权限 桥接会验证 调用方的代码签名 ；强制执行 TeamID 白名单（Peekaboo 宿主 TeamID + OpenClaw 应用 TeamID）。 请求在约 10 秒后超时。 如果缺少所需权限，桥接会返回清晰的错误信息，而不是启动系统设置。 ​ 快照行为（自动化） 快照存储在内存中，并在短暂窗口期后自动过期。如果需要更长的保留时间，请从客户端重新捕获。 ​ 故障排除 如果 peekaboo 报告”bridge client is not authorized”，请确保客户端已正确签名，或仅在 调试 模式下使用 PEEKABOO_ALLOW_UNSIGNED_SOCKET_CLIENTS=1 运行宿主。 如果未找到宿主，请打开其中一个宿主应用（Peekaboo.app 或 OpenClaw.app）并确认已授予权限。 Skills ⌘ I 技术支持"
+}

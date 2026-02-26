@@ -1,0 +1,56 @@
+graph TD
+  OC_GATEWAY[OpenClaw Gateway]
+  OC_EXEC[OpenClaw Exec/apply_patch/elevated]
+  OC_AUTOMATION[OpenClaw Hooks/Cron/Webhooks]
+  OC_SKILLS[OpenClaw Skills/ClawHub/Plugins]
+  OC_BROWSER[OpenClaw Browser]
+  OC_PROTOCOL[OpenClaw Protocols/APIs]
+  OC_SECURITY[OpenClaw Security/Sandbox]
+  OC_UI[OpenClaw Dashboard/WebChat/TUI]
+
+  ISA_CATALOG[ISA CATALOG]
+  ISA_KB[ISA KNOWLEDGE_BASE]
+  ISA_ASK[ISA ASK_ISA]
+  ISA_NEWS[ISA NEWS_HUB]
+  ISA_MAP[ISA ESRS_MAPPING]
+  ISA_ADV[ISA ADVISORY]
+  ISA_GOV[ISA Governance/Security Gates]
+  ISA_OPS[ISA Ops/SLO]
+  ISA_HITL[ISA HITL Approvals]
+
+  OC_GATEWAY -->|enables| ISA_OPS
+  OC_GATEWAY -->|complements| ISA_NEWS
+  OC_GATEWAY -->|complements| ISA_ASK
+
+  OC_EXEC -->|depends on| ISA_HITL
+  OC_EXEC -->|depends on| ISA_GOV
+  OC_EXEC -->|enables| ISA_ADV
+
+  OC_AUTOMATION -->|enables| ISA_NEWS
+  OC_AUTOMATION -->|enables| ISA_ADV
+  OC_AUTOMATION -->|depends on| ISA_GOV
+
+  OC_SKILLS -->|conflicts with (if unvetted)| ISA_GOV
+  OC_SKILLS -->|depends on| ISA_HITL
+  OC_SKILLS -->|complements| ISA_NEWS
+
+  OC_BROWSER -->|complements| ISA_NEWS
+  OC_BROWSER -->|depends on| ISA_GOV
+
+  OC_PROTOCOL -->|enables| ISA_ASK
+  OC_PROTOCOL -->|enables| ISA_ADV
+
+  OC_SECURITY -->|enables| ISA_GOV
+  OC_SECURITY -->|enables| ISA_HITL
+
+  OC_UI -->|complements| ISA_OPS
+  OC_UI -->|complements| ISA_ADV
+
+  ISA_CATALOG -->|enables| ISA_KB
+  ISA_KB -->|enables| ISA_ASK
+  ISA_CATALOG -->|enables| ISA_NEWS
+  ISA_CATALOG -->|enables| ISA_MAP
+  ISA_ASK -->|enables| ISA_ADV
+  ISA_NEWS -->|enables| ISA_ADV
+  ISA_MAP -->|enables| ISA_ADV
+

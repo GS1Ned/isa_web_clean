@@ -1,0 +1,19 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/reference/device-models",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.220Z",
+  "section": "zh-CN",
+  "title": "设备型号数据库 - OpenClaw",
+  "h1": [
+    "设备型号数据库",
+    "​ 设备型号数据库（友好名称）"
+  ],
+  "h2": [
+    "​ 数据来源",
+    "​ 更新数据库"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "设备型号数据库 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation RPC 与 API 设备型号数据库 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDE",
+  "content": "设备型号数据库 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation RPC 与 API 设备型号数据库 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOUL TOOLS USER 技术参考 向导参考 Token 使用与成本 概念内部机制 TypeBox Markdown 格式化 输入指示器 使用量跟踪 时区 项目 致谢 发布说明 RELEASING 测试 实验性功能 新手引导和配置协议 Cron Add 加固 Telegram 允许列表加固 工作区记忆研究 模型配置探索 在此页面 设备型号数据库（友好名称） 数据来源 更新数据库 RPC 与 API 设备型号数据库 ​ 设备型号数据库（友好名称） macOS 配套应用通过将 Apple 型号标识符（例如 iPad16,6 、 Mac16,6 ）映射为人类可读的名称，在 实例 UI 中显示友好的 Apple 设备型号名称。 该映射以 JSON 形式内置于： apps/macos/Sources/OpenClaw/Resources/DeviceModels/ ​ 数据来源 我们目前内置的映射来自 MIT 许可的仓库： kyle-seongwoo-jun/apple-device-identifiers 为保持构建的确定性，JSON 文件固定到特定的上游提交（记录在 apps/macos/Sources/OpenClaw/Resources/DeviceModels/NOTICE.md 中）。 ​ 更新数据库 选择要固定的上游提交（iOS 和 macOS 各一个）。 更新 apps/macos/Sources/OpenClaw/Resources/DeviceModels/NOTICE.md 中的提交哈希。 重新下载固定到这些提交的 JSON 文件： 复制 IOS_COMMIT = \"<commit sha for ios-device-identifiers.json>\" MAC_COMMIT = \"<commit sha for mac-device-identifiers.json>\" curl -fsSL \"https://raw.githubusercontent.com/kyle-seongwoo-jun/apple-device-identifiers/${IOS_COMMIT}/ios-device-identifiers.json\" \\ -o apps/macos/Sources/OpenClaw/Resources/DeviceModels/ios-device-identifiers.json curl -fsSL \"https://raw.githubusercontent.com/kyle-seongwoo-jun/apple-device-identifiers/${MAC_COMMIT}/mac-device-identifiers.json\" \\ -o apps/macos/Sources/OpenClaw/Resources/DeviceModels/mac-device-identifiers.json 确保 apps/macos/Sources/OpenClaw/Resources/DeviceModels/LICENSE.apple-device-identifiers.txt 仍与上游一致（如果上游许可证发生变更，请替换该文件）。 验证 macOS 应用能够正常构建（无警告）： 复制 swift build --package-path apps/macos RPC 适配器 AGENTS.default ⌘ I 技术支持"
+}

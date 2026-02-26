@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/providers/vercel-ai-gateway",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.191Z",
+  "section": "zh-CN",
+  "title": "Vercel AI Gateway - OpenClaw",
+  "h1": [
+    "Vercel AI Gateway",
+    "​ Vercel AI Gateway"
+  ],
+  "h2": [
+    "​ 快速开始",
+    "​ 非交互式示例",
+    "​ 环境变量说明"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Vercel AI Gateway - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 提供商 Vercel AI Gateway 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 模型提供商 模型提供商快速入门 模型概念 模型 CLI 配置 模型提供商 模型故障转移 提供商 Anthropic OpenAI OpenRouter Amazon Bedrock Vercel AI Gateway Moonshot AI MiniMax OpenCode Zen GLM 模型 Z.AI Synthetic 千帆（Qianfan） 在此页面 Vercel AI Gateway 快速开始 非交互式示例 环境变量说明 提供商 Vercel AI Gateway ​ Vercel AI Gateway Vercel AI Gateway 提供了一个统一的 API，通过单一端点访问数百个模型。 提供商： vercel-ai-gateway 认证： A",
+  "content": "Vercel AI Gateway - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 提供商 Vercel AI Gateway 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 模型提供商 模型提供商快速入门 模型概念 模型 CLI 配置 模型提供商 模型故障转移 提供商 Anthropic OpenAI OpenRouter Amazon Bedrock Vercel AI Gateway Moonshot AI MiniMax OpenCode Zen GLM 模型 Z.AI Synthetic 千帆（Qianfan） 在此页面 Vercel AI Gateway 快速开始 非交互式示例 环境变量说明 提供商 Vercel AI Gateway ​ Vercel AI Gateway Vercel AI Gateway 提供了一个统一的 API，通过单一端点访问数百个模型。 提供商： vercel-ai-gateway 认证： AI_GATEWAY_API_KEY API：兼容 Anthropic Messages ​ 快速开始 设置 API 密钥（推荐：为 Gateway 网关存储它）： 复制 openclaw onboard --auth-choice ai-gateway-api-key 设置默认模型： 复制 { agents : { defaults : { model : { primary : \"vercel-ai-gateway/anthropic/claude-opus-4.5\" } , } , } , } ​ 非交互式示例 复制 openclaw onboard --non-interactive \\ --mode local \\ --auth-choice ai-gateway-api-key \\ --ai-gateway-api-key \"$AI_GATEWAY_API_KEY\" ​ 环境变量说明 如果 Gateway 网关作为守护进程运行（launchd/systemd），请确保 AI_GATEWAY_API_KEY 对该进程可用（例如，在 ~/.openclaw/.env 中或通过 env.shellEnv ）。 Amazon Bedrock Moonshot AI ⌘ I 技术支持"
+}

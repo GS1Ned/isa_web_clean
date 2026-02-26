@@ -1,0 +1,21 @@
+{
+  "url": "https://docs.openclaw.ai/gateway/health",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:54.412Z",
+  "section": "gateway",
+  "title": "Health Checks - OpenClaw",
+  "h1": [
+    "Health Checks",
+    "​ Health Checks (CLI)"
+  ],
+  "h2": [
+    "​ Quick checks",
+    "​ Deep diagnostics",
+    "​ When something fails",
+    "​ Dedicated “health” command"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Health Checks - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Configuration and operations Health Checks Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Gateway Gateway Runbook Configuration and operations Configuration Configuration Reference Configuration Examples Authentication Trusted proxy auth Health Checks Heartbeat Doctor Logging Gateway Lock Background Exec and Process Tool Multiple Gat",
+  "content": "Health Checks - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Configuration and operations Health Checks Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Gateway Gateway Runbook Configuration and operations Configuration Configuration Reference Configuration Examples Authentication Trusted proxy auth Health Checks Heartbeat Doctor Logging Gateway Lock Background Exec and Process Tool Multiple Gateways Troubleshooting Security and sandboxing Protocols and APIs Networking and discovery Remote access Remote Access Remote Gateway Setup Tailscale Security Formal Verification (Security Models) Web interfaces Web Control UI Dashboard WebChat TUI On this page Health Checks (CLI) Quick checks Deep diagnostics When something fails Dedicated “health” command Configuration and operations Health Checks ​ Health Checks (CLI) Short guide to verify channel connectivity without guessing. ​ Quick checks openclaw status — local summary: gateway reachability/mode, update hint, linked channel auth age, sessions + recent activity. openclaw status --all — full local diagnosis (read-only, color, safe to paste for debugging). openclaw status --deep — also probes the running Gateway (per-channel probes when supported). openclaw health --json — asks the running Gateway for a full health snapshot (WS-only; no direct Baileys socket). Send /status as a standalone message in WhatsApp/WebChat to get a status reply without invoking the agent. Logs: tail /tmp/openclaw/openclaw-*.log and filter for web-heartbeat , web-reconnect , web-auto-reply , web-inbound . ​ Deep diagnostics Creds on disk: ls -l ~/.openclaw/credentials/whatsapp/<accountId>/creds.json (mtime should be recent). Session store: ls -l ~/.openclaw/agents/<agentId>/sessions/sessions.json (path can be overridden in config). Count and recent recipients are surfaced via status . Relink flow: openclaw channels logout && openclaw channels login --verbose when status codes 409–515 or loggedOut appear in logs. (Note: the QR login flow auto-restarts once for status 515 after pairing.) ​ When something fails logged out or status 409–515 → relink with openclaw channels logout then openclaw channels login . Gateway unreachable → start it: openclaw gateway --port 18789 (use --force if the port is busy). No inbound messages → confirm linked phone is online and the sender is allowed ( channels.whatsapp.allowFrom ); for group chats, ensure allowlist + mention rules match ( channels.whatsapp.groups , agents.list[].groupChat.mentionPatterns ). ​ Dedicated “health” command openclaw health --json asks the running Gateway for its health snapshot (no direct channel sockets from the CLI). It reports linked creds/auth age when available, per-channel probe summaries, session-store summary, and a probe duration. It exits non-zero if the Gateway is unreachable or the probe fails/timeouts. Use --timeout <ms> to override the 10s default. Trusted proxy auth Heartbeat ⌘ I Powered by"
+}

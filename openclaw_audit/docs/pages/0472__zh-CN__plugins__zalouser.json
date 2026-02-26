@@ -1,0 +1,24 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/plugins/zalouser",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.112Z",
+  "section": "zh-CN",
+  "title": "Zalo Personal 插件 - OpenClaw",
+  "h1": [
+    "Zalo Personal 插件",
+    "​ Zalo Personal（插件）"
+  ],
+  "h2": [
+    "​ 命名",
+    "​ 运行位置",
+    "​ 安装",
+    "​ 前置条件：zca-cli",
+    "​ 配置",
+    "​ CLI",
+    "​ 智能体工具"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Zalo Personal 插件 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 扩展 Zalo Personal 插件 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 工具 内置工具 Lobster LLM 任务 Exec 工具 Web 工具 apply_patch 工具 提升模式 思考级别 表情回应 浏览器 浏览器（OpenClaw 托管） 浏览器登录 Chrome 扩展 浏览器故障排除 代理协作 Agent Send 子智能体 多智能体沙箱与工具 技能 斜杠命令 Skills Skills 配置 ClawHub 插件 扩展 Voice Call 插件 Zalo Personal 插件 自动化 Hooks 定时任务 定时任务与心跳对比 自动化故障排查 Webhooks Gmail PubSub 投票 认证监控 媒体与设备 节点 节点故障排查 图像和媒体支持 音频与语音消息 相机捕获 Talk 模式 语音唤醒 位置命令 在此页面 ",
+  "content": "Zalo Personal 插件 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 扩展 Zalo Personal 插件 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 工具 内置工具 Lobster LLM 任务 Exec 工具 Web 工具 apply_patch 工具 提升模式 思考级别 表情回应 浏览器 浏览器（OpenClaw 托管） 浏览器登录 Chrome 扩展 浏览器故障排除 代理协作 Agent Send 子智能体 多智能体沙箱与工具 技能 斜杠命令 Skills Skills 配置 ClawHub 插件 扩展 Voice Call 插件 Zalo Personal 插件 自动化 Hooks 定时任务 定时任务与心跳对比 自动化故障排查 Webhooks Gmail PubSub 投票 认证监控 媒体与设备 节点 节点故障排查 图像和媒体支持 音频与语音消息 相机捕获 Talk 模式 语音唤醒 位置命令 在此页面 Zalo Personal（插件） 命名 运行位置 安装 选项 A：从 npm 安装 选项 B：从本地文件夹安装（开发） 前置条件：zca-cli 配置 CLI 智能体工具 扩展 Zalo Personal 插件 ​ Zalo Personal（插件） 通过插件为 OpenClaw 提供 Zalo Personal 支持，使用 zca-cli 自动化普通 Zalo 用户账户。 警告： 非官方自动化可能导致账户被暂停/封禁。使用风险自负。 ​ 命名 渠道 id 是 zalouser ，以明确表示这是自动化 个人 Zalo 用户账户 （非官方）。我们保留 zalo 用于潜在的未来官方 Zalo API 集成。 ​ 运行位置 此插件 在 Gateway 网关进程内 运行。 如果你使用远程 Gateway 网关，请在 运行 Gateway 网关的机器 上安装/配置它，然后重启 Gateway 网关。 ​ 安装 ​ 选项 A：从 npm 安装 复制 openclaw plugins install @openclaw/zalouser 之后重启 Gateway 网关。 ​ 选项 B：从本地文件夹安装（开发） 复制 openclaw plugins install ./extensions/zalouser cd ./extensions/zalouser && pnpm install 之后重启 Gateway 网关。 ​ 前置条件：zca-cli Gateway 网关机器必须在 PATH 中有 zca ： 复制 zca --version ​ 配置 渠道配置位于 channels.zalouser 下（不是 plugins.entries.* ）： 复制 { channels : { zalouser : { enabled : true , dmPolicy : \"pairing\" , } , } , } ​ CLI 复制 openclaw channels login --channel zalouser openclaw channels logout --channel zalouser openclaw channels status --probe openclaw message send --channel zalouser --target < threadI d > --message \"Hello from OpenClaw\" openclaw directory peers list --channel zalouser --query \"name\" ​ 智能体工具 工具名称： zalouser 操作： send 、 image 、 link 、 friends 、 groups 、 me 、 status Voice Call 插件 Hooks ⌘ I 技术支持"
+}

@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/help/scripts",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:54.572Z",
+  "section": "help",
+  "title": "Scripts - OpenClaw",
+  "h1": [
+    "Scripts",
+    "​ Scripts"
+  ],
+  "h2": [
+    "​ Conventions",
+    "​ Auth monitoring scripts",
+    "​ When adding scripts"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Scripts - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Environment and debugging Scripts Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Help Help Troubleshooting FAQ Community OpenClaw Lore Environment and debugging Environment Variables Debugging Testing Scripts Node runtime Node.js Compaction internals Session Management Deep Dive Developer setup Setup Contributing CI Pipeline Docs meta Docs",
+  "content": "Scripts - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Environment and debugging Scripts Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Help Help Troubleshooting FAQ Community OpenClaw Lore Environment and debugging Environment Variables Debugging Testing Scripts Node runtime Node.js Compaction internals Session Management Deep Dive Developer setup Setup Contributing CI Pipeline Docs meta Docs Hubs Docs directory On this page Scripts Conventions Auth monitoring scripts When adding scripts Environment and debugging Scripts ​ Scripts The scripts/ directory contains helper scripts for local workflows and ops tasks. Use these when a task is clearly tied to a script; otherwise prefer the CLI. ​ Conventions Scripts are optional unless referenced in docs or release checklists. Prefer CLI surfaces when they exist (example: auth monitoring uses openclaw models status --check ). Assume scripts are host‑specific; read them before running on a new machine. ​ Auth monitoring scripts Auth monitoring scripts are documented here: /automation/auth-monitoring ​ When adding scripts Keep scripts focused and documented. Add a short entry in the relevant doc (or create one if missing). Testing Node.js ⌘ I Powered by"
+}

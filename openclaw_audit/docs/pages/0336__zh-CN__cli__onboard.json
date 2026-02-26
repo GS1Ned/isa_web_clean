@@ -1,0 +1,18 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/cli/onboard",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.506Z",
+  "section": "zh-CN",
+  "title": "onboard - OpenClaw",
+  "h1": [
+    "onboard",
+    "​ openclaw onboard"
+  ],
+  "h2": [
+    "​ 示例"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "onboard - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation CLI 命令 onboard 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTI",
+  "content": "onboard - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation CLI 命令 onboard 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOUL TOOLS USER 技术参考 向导参考 Token 使用与成本 概念内部机制 TypeBox Markdown 格式化 输入指示器 使用量跟踪 时区 项目 致谢 发布说明 RELEASING 测试 实验性功能 新手引导和配置协议 Cron Add 加固 Telegram 允许列表加固 工作区记忆研究 模型配置探索 在此页面 openclaw onboard 示例 CLI 命令 onboard ​ openclaw onboard 交互式新手引导向导（本地或远程 Gateway 网关设置）。 相关内容： 向导指南： 新手引导 ​ 示例 复制 openclaw onboard openclaw onboard --flow quickstart openclaw onboard --flow manual openclaw onboard --mode remote --remote-url ws://gateway-host:18789 流程说明： quickstart ：最少提示，自动生成 Gateway 网关令牌。 manual ：完整的端口/绑定/认证提示（ advanced 的别名）。 最快开始聊天： openclaw dashboard （控制 UI，无需渠道设置）。 nodes pairing ⌘ I 技术支持"
+}

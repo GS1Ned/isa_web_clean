@@ -1,0 +1,24 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/cli/directory",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.475Z",
+  "section": "zh-CN",
+  "title": "directory - OpenClaw",
+  "h1": [
+    "directory",
+    "​ openclaw directory"
+  ],
+  "h2": [
+    "​ 通用参数",
+    "​ 说明",
+    "​ 将结果用于 message send",
+    "​ ID 格式（按渠道）",
+    "​ Self（“我”）",
+    "​ Peers（联系人/用户）",
+    "​ 群组"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "directory - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation CLI 命令 directory 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT ID",
+  "content": "directory - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation CLI 命令 directory 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOUL TOOLS USER 技术参考 向导参考 Token 使用与成本 概念内部机制 TypeBox Markdown 格式化 输入指示器 使用量跟踪 时区 项目 致谢 发布说明 RELEASING 测试 实验性功能 新手引导和配置协议 Cron Add 加固 Telegram 允许列表加固 工作区记忆研究 模型配置探索 在此页面 openclaw directory 通用参数 说明 将结果用于 message send ID 格式（按渠道） Self（“我”） Peers（联系人/用户） 群组 CLI 命令 directory ​ openclaw directory 对支持目录功能的渠道进行查找（联系人/对等方、群组和”我”）。 ​ 通用参数 --channel <name> ：渠道 ID/别名（配置了多个渠道时为必填；仅配置一个渠道时自动选择） --account <id> ：账号 ID（默认：渠道默认账号） --json ：输出 JSON 格式 ​ 说明 directory 用于帮助你查找可粘贴到其他命令中的 ID（特别是 openclaw message send --target ... ）。 对于许多渠道，结果来源于配置（允许列表/已配置的群组），而非实时的提供商目录。 默认输出为以制表符分隔的 id （有时包含 name ）；脚本中请使用 --json 。 ​ 将结果用于 message send 复制 openclaw directory peers list --channel slack --query \"U0\" openclaw message send --channel slack --target user:U012ABCDEF --message \"hello\" ​ ID 格式（按渠道） WhatsApp： +15551234567 （私聊）， 1234567890-1234567890@g.us （群组） Telegram： @username 或数字聊天 ID；群组为数字 ID Slack： user:U… 和 channel:C… Discord： user:<id> 和 channel:<id> Matrix（插件）： user:@user:server 、 room:!roomId:server 或 #alias:server Microsoft Teams（插件）： user:<id> 和 conversation:<id> Zalo（插件）：用户 ID（Bot API） Zalo Personal / zalouser （插件）：来自 zca 的会话 ID（私聊/群组）（ me 、 friend list 、 group list ） ​ Self（“我”） 复制 openclaw directory self --channel zalouser ​ Peers（联系人/用户） 复制 openclaw directory peers list --channel zalouser openclaw directory peers list --channel zalouser --query \"name\" openclaw directory peers list --channel zalouser --limit 50 ​ 群组 复制 openclaw directory groups list --channel zalouser openclaw directory groups list --channel zalouser --query \"work\" openclaw directory groups members --channel zalouser --group-id < i d > dashboard dns ⌘ I 技术支持"
+}

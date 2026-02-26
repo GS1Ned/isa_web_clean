@@ -1,0 +1,22 @@
+{
+  "url": "https://docs.openclaw.ai/concepts/retry",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:51.640Z",
+  "section": "concepts",
+  "title": "Retry Policy - OpenClaw",
+  "h1": [
+    "Retry Policy",
+    "​ Retry policy"
+  ],
+  "h2": [
+    "​ Goals",
+    "​ Defaults",
+    "​ Behavior",
+    "​ Configuration",
+    "​ Notes"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Retry Policy - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Messages and delivery Retry Policy Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Fundamentals Gateway Architecture Agent Runtime Agent Loop System Prompt Context Agent Workspace OAuth Bootstrapping Bootstrapping Sessions and memory Session Management Sessions Session Pruning Session Tools Memory Compaction Multi-agent Multi-Agent Rou",
+  "content": "Retry Policy - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Messages and delivery Retry Policy Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Fundamentals Gateway Architecture Agent Runtime Agent Loop System Prompt Context Agent Workspace OAuth Bootstrapping Bootstrapping Sessions and memory Session Management Sessions Session Pruning Session Tools Memory Compaction Multi-agent Multi-Agent Routing Presence Messages and delivery Messages Streaming and Chunking Retry Policy Command Queue On this page Retry policy Goals Defaults Behavior Discord Telegram Configuration Notes Messages and delivery Retry Policy ​ Retry policy ​ Goals Retry per HTTP request, not per multi-step flow. Preserve ordering by retrying only the current step. Avoid duplicating non-idempotent operations. ​ Defaults Attempts: 3 Max delay cap: 30000 ms Jitter: 0.1 (10 percent) Provider defaults: Telegram min delay: 400 ms Discord min delay: 500 ms ​ Behavior ​ Discord Retries only on rate-limit errors (HTTP 429). Uses Discord retry_after when available, otherwise exponential backoff. ​ Telegram Retries on transient errors (429, timeout, connect/reset/closed, temporarily unavailable). Uses retry_after when available, otherwise exponential backoff. Markdown parse errors are not retried; they fall back to plain text. ​ Configuration Set retry policy per provider in ~/.openclaw/openclaw.json : Copy { channels : { telegram : { retry : { attempts : 3 , minDelayMs : 400 , maxDelayMs : 30000 , jitter : 0.1 , } , } , discord : { retry : { attempts : 3 , minDelayMs : 500 , maxDelayMs : 30000 , jitter : 0.1 , } , } , } , } ​ Notes Retries apply per request (message send, media upload, reaction, poll, sticker). Composite flows do not retry completed steps. Streaming and Chunking Command Queue ⌘ I Powered by"
+}

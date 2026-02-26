@@ -3,6 +3,7 @@ Status: CANONICAL
 
 ## Canonical Chain
 - Entrypoint (top-level only): `AGENT_START_HERE.md`
+- Host ↔ VM OpenClaw workflow (canonical): `AGENT_START_HERE.md#host--vm-openclaw-workflow-canonical`
 - Agent map (this file): `docs/agent/AGENT_MAP.md`
 - Docs index: `docs/INDEX.md`
 - Execution queue (single source of next work): `docs/planning/NEXT_ACTIONS.json`

@@ -1,0 +1,25 @@
+{
+  "url": "https://docs.openclaw.ai/ja-JP/start/getting-started",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.400Z",
+  "section": "ja-JP",
+  "title": "はじめに - OpenClaw",
+  "h1": [
+    "はじめに",
+    "​ はじめに"
+  ],
+  "h2": [
+    "​ 前提条件",
+    "​ クイックセットアップ（CLI）",
+    "​ オプションの確認と追加機能",
+    "​ さらに詳しく",
+    "オンボーディングウィザード（詳細）",
+    "macOSアプリのオンボーディング",
+    "​ 完了後の状態",
+    "​ 次のステップ"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "はじめに - OpenClaw メインコンテンツへスキップ OpenClaw home page 日本語 検索... ⌘ K GitHub Releases 検索... Navigation 初回セットアップ はじめに はじめに 概要 OpenClaw 初回セットアップ はじめに Wizard (CLI) このページの内容 はじめに 前提条件 クイックセットアップ（CLI） オプションの確認と追加機能 さらに詳しく 完了後の状態 次のステップ 初回セットアップ はじめに ​ はじめに 目標：ゼロから最小限のセットアップで最初の動作するチャットを実現する。 最速のチャット方法：Control UIを開く（チャンネル設定は不要）。 openclaw dashboard を実行してブラウザでチャットするか、 Gatewayホスト で http://127.0.0.1:18789/ を開きます。 ドキュメント： Dashboard と Control UI 。 ​ 前提条件 Node 22以降 不明な場合は node --version でNodeのバージョンを確認してください。 ​ クイック",
+  "content": "はじめに - OpenClaw メインコンテンツへスキップ OpenClaw home page 日本語 検索... ⌘ K GitHub Releases 検索... Navigation 初回セットアップ はじめに はじめに 概要 OpenClaw 初回セットアップ はじめに Wizard (CLI) このページの内容 はじめに 前提条件 クイックセットアップ（CLI） オプションの確認と追加機能 さらに詳しく 完了後の状態 次のステップ 初回セットアップ はじめに ​ はじめに 目標：ゼロから最小限のセットアップで最初の動作するチャットを実現する。 最速のチャット方法：Control UIを開く（チャンネル設定は不要）。 openclaw dashboard を実行してブラウザでチャットするか、 Gatewayホスト で http://127.0.0.1:18789/ を開きます。 ドキュメント： Dashboard と Control UI 。 ​ 前提条件 Node 22以降 不明な場合は node --version でNodeのバージョンを確認してください。 ​ クイックセットアップ（CLI） 1 OpenClawをインストール（推奨） macOS/Linux Windows (PowerShell) コピー curl -fsSL https://openclaw.ai/install.sh | bash コピー iwr - useb https: // openclaw.ai / install.ps1 | iex その他のインストール方法と要件： インストール 。 2 オンボーディングウィザードを実行 コピー openclaw onboard --install-daemon ウィザードは認証、Gateway設定、およびオプションのチャンネルを構成します。 詳細は オンボーディングウィザード を参照してください。 3 Gatewayを確認 サービスをインストールした場合、すでに実行されているはずです： コピー openclaw gateway status 4 Control UIを開く コピー openclaw dashboard Control UIが読み込まれれば、Gatewayは使用可能な状態です。 ​ オプションの確認と追加機能 Gatewayをフォアグラウンドで実行 クイックテストやトラブルシューティングに便利です。 コピー openclaw gateway --port 18789 テストメッセージを送信 構成済みのチャンネルが必要です。 コピー openclaw message send --target +15555550123 --message \"Hello from OpenClaw\" ​ さらに詳しく オンボーディングウィザード（詳細） 完全なCLIウィザードリファレンスと高度なオプション。 macOSアプリのオンボーディング macOSアプリの初回実行フロー。 ​ 完了後の状態 実行中のGateway 構成済みの認証 Control UIアクセスまたは接続済みのチャンネル ​ 次のステップ DMの安全性と承認： ペアリング さらにチャンネルを接続： チャンネル 高度なワークフローとソースからのビルド： セットアップ OpenClaw Wizard (CLI) ⌘ I Powered by"
+}

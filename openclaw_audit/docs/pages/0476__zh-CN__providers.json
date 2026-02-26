@@ -1,0 +1,22 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/providers",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.117Z",
+  "section": "zh-CN",
+  "title": "模型提供商 - OpenClaw",
+  "h1": [
+    "模型提供商",
+    "​ 模型提供商"
+  ],
+  "h2": [
+    "​ 亮点：Venice（Venice AI）",
+    "​ 快速开始",
+    "​ 提供商文档",
+    "​ 转录提供商",
+    "​ 社区工具"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "模型提供商 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 概览 模型提供商 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 模型提供商 模型提供商快速入门 模型概念 模型 CLI 配置 模型提供商 模型故障转移 提供商 Anthropic OpenAI OpenRouter Amazon Bedrock Vercel AI Gateway Moonshot AI MiniMax OpenCode Zen GLM 模型 Z.AI Synthetic 千帆（Qianfan） 在此页面 模型提供商 亮点：Venice（Venice AI） 快速开始 提供商文档 转录提供商 社区工具 概览 模型提供商 ​ 模型提供商 OpenClaw 可以使用许多 LLM 提供商。选择一个提供商，进行认证，然后将默认模型设置为 provider/model 。 正在寻找聊天渠道文档（WhatsApp/Telegram/Discord/Slack/Matt",
+  "content": "模型提供商 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 概览 模型提供商 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 模型提供商 模型提供商快速入门 模型概念 模型 CLI 配置 模型提供商 模型故障转移 提供商 Anthropic OpenAI OpenRouter Amazon Bedrock Vercel AI Gateway Moonshot AI MiniMax OpenCode Zen GLM 模型 Z.AI Synthetic 千帆（Qianfan） 在此页面 模型提供商 亮点：Venice（Venice AI） 快速开始 提供商文档 转录提供商 社区工具 概览 模型提供商 ​ 模型提供商 OpenClaw 可以使用许多 LLM 提供商。选择一个提供商，进行认证，然后将默认模型设置为 provider/model 。 正在寻找聊天渠道文档（WhatsApp/Telegram/Discord/Slack/Mattermost（插件）等）？参见 渠道 。 ​ 亮点：Venice（Venice AI） Venice 是我们推荐的 Venice AI 设置，用于隐私优先的推理，并可选择使用 Opus 处理困难任务。 默认： venice/llama-3.3-70b 最佳综合： venice/claude-opus-45 （Opus 仍然是最强的） 参见 Venice AI 。 ​ 快速开始 与提供商进行认证（通常通过 openclaw onboard ）。 设置默认模型： 复制 { agents : { defaults : { model : { primary : \"anthropic/claude-opus-4-5\" } } } , } ​ 提供商文档 OpenAI（API + Codex） Anthropic（API + Claude Code CLI） Qwen（OAuth） OpenRouter Vercel AI Gateway Moonshot AI（Kimi + Kimi Coding） OpenCode Zen Amazon Bedrock Z.AI Xiaomi GLM 模型 MiniMax Venice（Venice AI，注重隐私） Ollama（本地模型） ​ 转录提供商 Deepgram（音频转录） ​ 社区工具 Claude Max API Proxy - 将 Claude Max/Pro 订阅作为 OpenAI 兼容的 API 端点使用 有关完整的提供商目录（xAI、Groq、Mistral 等）和高级配置， 参见 模型提供商 。 模型提供商快速入门 ⌘ I 技术支持"
+}

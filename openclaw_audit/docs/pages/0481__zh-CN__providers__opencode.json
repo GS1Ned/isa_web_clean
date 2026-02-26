@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/providers/opencode",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.144Z",
+  "section": "zh-CN",
+  "title": "OpenCode Zen - OpenClaw",
+  "h1": [
+    "OpenCode Zen",
+    "​ OpenCode Zen"
+  ],
+  "h2": [
+    "​ CLI 设置",
+    "​ 配置片段",
+    "​ 注意事项"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "OpenCode Zen - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 提供商 OpenCode Zen 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 模型提供商 模型提供商快速入门 模型概念 模型 CLI 配置 模型提供商 模型故障转移 提供商 Anthropic OpenAI OpenRouter Amazon Bedrock Vercel AI Gateway Moonshot AI MiniMax OpenCode Zen GLM 模型 Z.AI Synthetic 千帆（Qianfan） 在此页面 OpenCode Zen CLI 设置 配置片段 注意事项 提供商 OpenCode Zen ​ OpenCode Zen OpenCode Zen 是由 OpenCode 团队推荐的一组 精选模型列表 ，适用于编程智能体。它是一个可选的托管模型访问路径，使用 API 密钥和 opencode 提供商。Zen 目前处于测试阶",
+  "content": "OpenCode Zen - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 提供商 OpenCode Zen 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 模型提供商 模型提供商快速入门 模型概念 模型 CLI 配置 模型提供商 模型故障转移 提供商 Anthropic OpenAI OpenRouter Amazon Bedrock Vercel AI Gateway Moonshot AI MiniMax OpenCode Zen GLM 模型 Z.AI Synthetic 千帆（Qianfan） 在此页面 OpenCode Zen CLI 设置 配置片段 注意事项 提供商 OpenCode Zen ​ OpenCode Zen OpenCode Zen 是由 OpenCode 团队推荐的一组 精选模型列表 ，适用于编程智能体。它是一个可选的托管模型访问路径，使用 API 密钥和 opencode 提供商。Zen 目前处于测试阶段。 ​ CLI 设置 复制 openclaw onboard --auth-choice opencode-zen # 或非交互式 openclaw onboard --opencode-zen-api-key \"$OPENCODE_API_KEY\" ​ 配置片段 复制 { env : { OPENCODE_API_KEY : \"sk-...\" } , agents : { defaults : { model : { primary : \"opencode/claude-opus-4-5\" } } } , } ​ 注意事项 也支持 OPENCODE_ZEN_API_KEY 。 你需要登录 Zen，添加账单信息，然后复制你的 API 密钥。 OpenCode Zen 按请求计费；详情请查看 OpenCode 控制台。 MiniMax GLM 模型 ⌘ I 技术支持"
+}

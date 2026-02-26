@@ -1,0 +1,19 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/cli/doctor",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.471Z",
+  "section": "zh-CN",
+  "title": "doctor - OpenClaw",
+  "h1": [
+    "doctor",
+    "​ openclaw doctor"
+  ],
+  "h2": [
+    "​ 示例",
+    "​ macOS： launchctl 环境变量覆盖"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "doctor - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation CLI 命令 doctor 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY",
+  "content": "doctor - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation CLI 命令 doctor 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOUL TOOLS USER 技术参考 向导参考 Token 使用与成本 概念内部机制 TypeBox Markdown 格式化 输入指示器 使用量跟踪 时区 项目 致谢 发布说明 RELEASING 测试 实验性功能 新手引导和配置协议 Cron Add 加固 Telegram 允许列表加固 工作区记忆研究 模型配置探索 在此页面 openclaw doctor 示例 macOS：launchctl 环境变量覆盖 CLI 命令 doctor ​ openclaw doctor Gateway 网关和渠道的健康检查 + 快速修复。 相关内容： 故障排除： 故障排除 安全审计： 安全 ​ 示例 复制 openclaw doctor openclaw doctor --repair openclaw doctor --deep 注意事项： 交互式提示（如钥匙串/OAuth 修复）仅在 stdin 是 TTY 且 未 设置 --non-interactive 时运行。无头运行（cron、Telegram、无终端）将跳过提示。 --fix （ --repair 的别名）会将备份写入 ~/.openclaw/openclaw.json.bak ，并删除未知的配置键，同时列出每个删除项。 ​ macOS： launchctl 环境变量覆盖 如果你之前运行过 launchctl setenv OPENCLAW_GATEWAY_TOKEN ... （或 ...PASSWORD ），该值会覆盖你的配置文件，并可能导致持续的”未授权”错误。 复制 launchctl getenv OPENCLAW_GATEWAY_TOKEN launchctl getenv OPENCLAW_GATEWAY_PASSWORD launchctl unsetenv OPENCLAW_GATEWAY_TOKEN launchctl unsetenv OPENCLAW_GATEWAY_PASSWORD docs gateway ⌘ I 技术支持"
+}

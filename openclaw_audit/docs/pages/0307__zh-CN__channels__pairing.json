@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/channels/pairing",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.394Z",
+  "section": "zh-CN",
+  "title": "配对 - OpenClaw",
+  "h1": [
+    "配对",
+    "​ 配对"
+  ],
+  "h2": [
+    "​ 1）私信配对（入站聊天访问）",
+    "​ 2）节点设备配对（iOS/Android/macOS/无头节点）",
+    "​ 相关文档"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "配对 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 配置 配对 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 聊天渠道 消息平台 WhatsApp Telegram Discord Slack 飞书 Google Chat Mattermost Signal iMessage Microsoft Teams LINE Matrix Zalo Zalo Personal 配置 配对 群组消息 群组 广播群组 渠道路由 渠道位置解析 渠道故障排除 在此页面 配对 1）私信配对（入站聊天访问） 批准发送者 状态存储位置 2）节点设备配对（iOS/Android/macOS/无头节点） 批准节点设备 状态存储位置 说明 相关文档 配置 配对 ​ 配对 “配对”是 OpenClaw 的显式 所有者批准 步骤。它用于两个地方： 私信配对 （谁被允许与机器人对话） 节点配对 （哪些设备/节点被允许加入 Gateway 网关网络） 安全上下文：",
+  "content": "配对 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 配置 配对 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 聊天渠道 消息平台 WhatsApp Telegram Discord Slack 飞书 Google Chat Mattermost Signal iMessage Microsoft Teams LINE Matrix Zalo Zalo Personal 配置 配对 群组消息 群组 广播群组 渠道路由 渠道位置解析 渠道故障排除 在此页面 配对 1）私信配对（入站聊天访问） 批准发送者 状态存储位置 2）节点设备配对（iOS/Android/macOS/无头节点） 批准节点设备 状态存储位置 说明 相关文档 配置 配对 ​ 配对 “配对”是 OpenClaw 的显式 所有者批准 步骤。它用于两个地方： 私信配对 （谁被允许与机器人对话） 节点配对 （哪些设备/节点被允许加入 Gateway 网关网络） 安全上下文： 安全 ​ 1）私信配对（入站聊天访问） 当渠道配置为私信策略 pairing 时，未知发送者会收到一个短代码，他们的消息 不会被处理 ，直到你批准。 默认私信策略记录在： 安全 配对代码： 8 个字符，大写，无歧义字符（ 0O1I ）。 1 小时后过期 。机器人仅在创建新请求时发送配对消息（大约每个发送者每小时一次）。 待处理的私信配对请求默认上限为 每个渠道 3 个 ；在一个过期或被批准之前，额外的请求将被忽略。 ​ 批准发送者 复制 openclaw pairing list telegram openclaw pairing approve telegram < COD E > 支持的渠道： telegram 、 whatsapp 、 signal 、 imessage 、 discord 、 slack 。 ​ 状态存储位置 存储在 ~/.openclaw/credentials/ 下： 待处理请求： <channel>-pairing.json 已批准允许列表存储： <channel>-allowFrom.json 将这些视为敏感信息（它们控制对你助手的访问）。 ​ 2）节点设备配对（iOS/Android/macOS/无头节点） 节点作为 role: node 的 设备 连接到 Gateway 网关。Gateway 网关创建一个必须被批准的设备配对请求。 ​ 批准节点设备 复制 openclaw devices list openclaw devices approve < requestI d > openclaw devices reject < requestI d > ​ 状态存储位置 存储在 ~/.openclaw/devices/ 下： pending.json （短期；待处理请求会过期） paired.json （已配对设备 + 令牌） ​ 说明 旧版 node.pair.* API（CLI： openclaw nodes pending/approve ）是一个单独的 Gateway 网关拥有的配对存储。WS 节点仍然需要设备配对。 ​ 相关文档 安全模型 + 提示注入： 安全 安全更新（运行 doctor）： 更新 渠道配置： Telegram： Telegram WhatsApp： WhatsApp Signal： Signal iMessage： iMessage Discord： Discord Slack： Slack Zalo Personal 群组消息 ⌘ I 技术支持"
+}

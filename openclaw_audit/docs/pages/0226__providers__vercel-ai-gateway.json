@@ -1,0 +1,21 @@
+{
+  "url": "https://docs.openclaw.ai/providers/vercel-ai-gateway",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.702Z",
+  "section": "providers",
+  "title": "Vercel AI Gateway - OpenClaw",
+  "h1": [
+    "Vercel AI Gateway",
+    "​ Vercel AI Gateway"
+  ],
+  "h2": [
+    "​ Quick start",
+    "​ Non-interactive example",
+    "​ Environment note",
+    "​ Model ID shorthand"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Vercel AI Gateway - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Providers Vercel AI Gateway Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.A",
+  "content": "Vercel AI Gateway - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Providers Vercel AI Gateway Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Synthetic Qianfan On this page Vercel AI Gateway Quick start Non-interactive example Environment note Model ID shorthand Providers Vercel AI Gateway ​ Vercel AI Gateway The Vercel AI Gateway provides a unified API to access hundreds of models through a single endpoint. Provider: vercel-ai-gateway Auth: AI_GATEWAY_API_KEY API: Anthropic Messages compatible ​ Quick start Set the API key (recommended: store it for the Gateway): Copy openclaw onboard --auth-choice ai-gateway-api-key Set a default model: Copy { agents : { defaults : { model : { primary : \"vercel-ai-gateway/anthropic/claude-opus-4.6\" } , } , } , } ​ Non-interactive example Copy openclaw onboard --non-interactive \\ --mode local \\ --auth-choice ai-gateway-api-key \\ --ai-gateway-api-key \"$AI_GATEWAY_API_KEY\" ​ Environment note If the Gateway runs as a daemon (launchd/systemd), make sure AI_GATEWAY_API_KEY is available to that process (for example, in ~/.openclaw/.env or via env.shellEnv ). ​ Model ID shorthand OpenClaw accepts Vercel Claude shorthand model refs and normalizes them at runtime: vercel-ai-gateway/claude-opus-4.6 -> vercel-ai-gateway/anthropic/claude-opus-4.6 vercel-ai-gateway/opus-4.6 -> vercel-ai-gateway/anthropic/claude-opus-4-6 Amazon Bedrock Moonshot AI ⌘ I Powered by"
+}

@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/providers/openrouter",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.141Z",
+  "section": "zh-CN",
+  "title": "OpenRouter - OpenClaw",
+  "h1": [
+    "OpenRouter",
+    "​ OpenRouter"
+  ],
+  "h2": [
+    "​ CLI 设置",
+    "​ 配置片段",
+    "​ 注意事项"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "OpenRouter - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 提供商 OpenRouter 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 模型提供商 模型提供商快速入门 模型概念 模型 CLI 配置 模型提供商 模型故障转移 提供商 Anthropic OpenAI OpenRouter Amazon Bedrock Vercel AI Gateway Moonshot AI MiniMax OpenCode Zen GLM 模型 Z.AI Synthetic 千帆（Qianfan） 在此页面 OpenRouter CLI 设置 配置片段 注意事项 提供商 OpenRouter ​ OpenRouter OpenRouter 提供了一个 统一 API ，通过单一端点和 API 密钥将请求路由到多种模型。它兼容 OpenAI，因此大多数 OpenAI SDK 只需切换 base URL 即可使用。 ​ CLI 设置 复制 o",
+  "content": "OpenRouter - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 提供商 OpenRouter 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 模型提供商 模型提供商快速入门 模型概念 模型 CLI 配置 模型提供商 模型故障转移 提供商 Anthropic OpenAI OpenRouter Amazon Bedrock Vercel AI Gateway Moonshot AI MiniMax OpenCode Zen GLM 模型 Z.AI Synthetic 千帆（Qianfan） 在此页面 OpenRouter CLI 设置 配置片段 注意事项 提供商 OpenRouter ​ OpenRouter OpenRouter 提供了一个 统一 API ，通过单一端点和 API 密钥将请求路由到多种模型。它兼容 OpenAI，因此大多数 OpenAI SDK 只需切换 base URL 即可使用。 ​ CLI 设置 复制 openclaw onboard --auth-choice apiKey --token-provider openrouter --token \"$OPENROUTER_API_KEY\" ​ 配置片段 复制 { env : { OPENROUTER_API_KEY : \"sk-or-...\" } , agents : { defaults : { model : { primary : \"openrouter/anthropic/claude-sonnet-4-5\" } , } , } , } ​ 注意事项 模型引用格式为 openrouter/<provider>/<model> 。 更多模型/提供商选项，请参阅 模型提供商 。 OpenRouter 底层使用 Bearer 令牌和你的 API 密钥进行认证。 OpenAI Amazon Bedrock ⌘ I 技术支持"
+}

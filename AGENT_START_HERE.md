@@ -1,7 +1,7 @@
 # ISA — Agent Entry Point
 
 **Purpose:** Single canonical orientation for any AI agent or developer working on ISA.
-**Last Updated:** 2026-02-14
+**Last Updated:** 2026-02-25
 
 ---
 
@@ -115,6 +115,57 @@ bash scripts/dev/local-doctor.sh
 - If needed, convert with:
   - `openssl pkcs8 -topk8 -nocrypt -in key.pem -out key.pkcs8.pem`
 - If storing in `.env`, keep it single-line with `\\n` escapes and quote it so `bash` can `source .env` safely.
+
+---
+
+## Host ↔ VM OpenClaw Workflow (Canonical)
+
+**Current SSOT policy (effective 2026-02-25):**
+- Host workspace is primary for editing.
+- Git remote `origin` remains canonical history SSOT.
+- Host push is disabled by default (mirror mode).
+- VM is execution/runtime target for OpenClaw and infrastructure checks.
+
+**Responsibilities**
+- Host:
+  - Edit code/docs, run local checks, and run VM helper scripts from this repo.
+  - Keep secrets in local `.env` only; never commit `.env`.
+- VM:
+  - Run OpenClaw (`status`, `doctor`, `dashboard`) and host-invoked validation probes.
+  - Keep OpenClaw runtime state in `/root/.openclaw/*`.
+
+**SSH contract (non-interactive automation-safe)**
+- Preferred host alias: `ISA_VM_HOST` (or `VM_SSH_HOST`).
+- Required env pointers: `VM_REPO_PATH`, `VM_ENV_PATH`.
+- Agent forwarding preferred for VM-side GitHub checks (no private key copy to VM).
+- Scripted SSH behavior should include `BatchMode=yes` and `StrictHostKeyChecking=accept-new`.
+
+**OpenClaw UI tunnel workflow**
+- Local forward: `127.0.0.1:18789` (host) -> `127.0.0.1:18789` (VM).
+- Canonical script: `bash scripts/openclaw-tunnel.sh [up|status|down]`.
+- One-command host launcher (tunnel + dashboard URL + browser open): `bash scripts/openclaw-ui.sh` (headless mode: `bash scripts/openclaw-ui.sh --no-open`).
+- Dashboard URL (headless-safe): run on VM via:
+  - `bash scripts/vm-run.sh scripts/openclaw-dashboard-url.sh`
+  - Under the hood this uses `openclaw dashboard --no-open`.
+
+**Secrets and env placement**
+- `.env` is local-only and must never be committed.
+- `.env.example` contains variable names/placeholders only.
+- `OPENCLAW_GATEWAY_TOKEN` policy: VM-only secret, authoritative in VM OpenClaw config/env (not in repo markdown, not printed in logs).
+
+**OpenClaw env precedence (highest -> lowest)**
+1. Process environment.
+2. `.env` in current working directory (does not override existing env vars).
+3. Global `~/.openclaw/.env` / `$OPENCLAW_STATE_DIR/.env` (does not override existing env vars).
+4. `env` block in `~/.openclaw/openclaw.json` (applies only when missing).
+
+**Future VM-primary cutover (not active yet)**
+- Prerequisites:
+  - Branch protection on `main` verified and documented.
+  - Host mirror guardrails automated.
+  - VM bootstrap/status/doctor/dashboard scripts fully green end-to-end.
+  - SSH known-host + agent forwarding checks proven non-interactive.
+  - Canonical docs/tasks updated with cutover date + rollback plan.
 
 ---
 

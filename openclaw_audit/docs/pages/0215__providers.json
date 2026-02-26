@@ -1,0 +1,22 @@
+{
+  "url": "https://docs.openclaw.ai/providers",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.629Z",
+  "section": "providers",
+  "title": "Model Providers - OpenClaw",
+  "h1": [
+    "Model Providers",
+    "​ Model Providers"
+  ],
+  "h2": [
+    "​ Highlight: Venice (Venice AI)",
+    "​ Quick start",
+    "​ Provider docs",
+    "​ Transcription providers",
+    "​ Community tools"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Model Providers - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Overview Model Providers Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Syn",
+  "content": "Model Providers - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Overview Model Providers Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Synthetic Qianfan On this page Model Providers Highlight: Venice (Venice AI) Quick start Provider docs Transcription providers Community tools Overview Model Providers ​ Model Providers OpenClaw can use many LLM providers. Pick a provider, authenticate, then set the default model as provider/model . Looking for chat channel docs (WhatsApp/Telegram/Discord/Slack/Mattermost (plugin)/etc.)? See Channels . ​ Highlight: Venice (Venice AI) Venice is our recommended Venice AI setup for privacy-first inference with an option to use Opus for hard tasks. Default: venice/llama-3.3-70b Best overall: venice/claude-opus-45 (Opus remains the strongest) See Venice AI . ​ Quick start Authenticate with the provider (usually via openclaw onboard ). Set the default model: Copy { agents : { defaults : { model : { primary : \"anthropic/claude-opus-4-6\" } } } , } ​ Provider docs OpenAI (API + Codex) Anthropic (API + Claude Code CLI) Qwen (OAuth) OpenRouter LiteLLM (unified gateway) Vercel AI Gateway Together AI Cloudflare AI Gateway Moonshot AI (Kimi + Kimi Coding) Mistral OpenCode Zen Amazon Bedrock Z.AI Xiaomi GLM models MiniMax Venice (Venice AI, privacy-focused) Hugging Face (Inference) Ollama (local models) vLLM (local models) Qianfan NVIDIA ​ Transcription providers Deepgram (audio transcription) ​ Community tools Claude Max API Proxy - Use Claude Max/Pro subscription as an OpenAI-compatible API endpoint For the full provider catalog (xAI, Groq, Mistral, etc.) and advanced configuration, see Model providers . Model Provider Quickstart ⌘ I Powered by"
+}
