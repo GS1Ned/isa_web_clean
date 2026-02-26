@@ -26,6 +26,7 @@
 ### Governance
 - **Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
 - **Agent Map (Canonical):** `docs/agent/AGENT_MAP.md`
+- **OpenClaw Policy Envelope Runbook:** `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
 - **Canonical Docs Allowlist:** `config/governance/canonical_docs_allowlist.json`
 - **Planning Index:** `docs/planning/INDEX.md`
 - **Next Actions:** `docs/planning/NEXT_ACTIONS.json`
@@ -65,5 +66,5 @@
 ---
 
 **Document Status:** Canonical Index  
-**Last Updated:** 2026-02-13  
+**Last Updated:** 2026-02-26  
 **Maintainer:** ISA Repository Steward

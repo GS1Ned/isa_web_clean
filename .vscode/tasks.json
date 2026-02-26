@@ -26,6 +26,12 @@
       "problemMatcher": []
     },
     {
+      "label": "ISA: VM OpenClaw Bootstrap",
+      "type": "shell",
+      "command": "bash scripts/vm-run.sh scripts/openclaw-bootstrap.sh",
+      "problemMatcher": []
+    },
+    {
       "label": "ISA: VM OpenClaw Status",
       "type": "shell",
       "command": "bash scripts/vm-run.sh scripts/openclaw-status.sh",
@@ -41,6 +47,12 @@
       "label": "ISA: VM Dashboard URL",
       "type": "shell",
       "command": "bash scripts/vm-run.sh scripts/openclaw-dashboard-url.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: OpenClaw Validate (No Secrets)",
+      "type": "shell",
+      "command": "bash scripts/openclaw-validate-no-secrets.sh",
       "problemMatcher": []
     },
     {
@@ -63,9 +75,11 @@
         "ISA: Env Validate",
         "ISA: Env Sync VM",
         "ISA: OpenClaw Tunnel",
+        "ISA: VM OpenClaw Bootstrap",
         "ISA: VM OpenClaw Status",
         "ISA: VM OpenClaw Doctor",
-        "ISA: VM Dashboard URL"
+        "ISA: VM Dashboard URL",
+        "ISA: OpenClaw Validate (No Secrets)"
       ],
       "command": "bash scripts/openclaw-tunnel.sh status",
       "problemMatcher": []

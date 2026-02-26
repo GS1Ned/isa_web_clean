@@ -51,6 +51,17 @@ const groups: VarGroup[] = [
     vars: [{ name: "CRON_SECRET", required: false }],
   },
   {
+    name: "OpenClaw policy",
+    vars: [
+      { name: "OPENCLAW_AUTOMATION_STRICT_MODE", required: false },
+      { name: "OPENCLAW_AUTOMATION_KILL_SWITCH", required: false },
+      { name: "OPENCLAW_AUTOMATION_MAX_SKEW_SECONDS", required: false },
+      { name: "OPENCLAW_POLICY_ENVELOPE_PATH", required: false },
+      { name: "OPENCLAW_BROWSER_POLICY_PATH", required: false },
+      { name: "OPENCLAW_BROWSER_FALLBACK_ALLOWED", required: false },
+    ],
+  },
+  {
     name: "Email",
     vars: [
       { name: "SENDGRID_API_KEY", required: false },
