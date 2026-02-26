@@ -275,7 +275,8 @@ async function writePolicyDecisionAudit(
   category: AutomationFailureCategory,
   strictMode: boolean
 ): Promise<void> {
-  if (process.env.NODE_ENV === "test" || parseBoolean(process.env.OPENCLAW_AUTOMATION_DISABLE_DB_AUDIT) === true) {
+  const isTestRuntime = process.env.NODE_ENV === "test" || process.env.VITEST !== undefined;
+  if (isTestRuntime || parseBoolean(process.env.OPENCLAW_AUTOMATION_DISABLE_DB_AUDIT) === true) {
     return;
   }
 
@@ -309,7 +310,8 @@ async function reserveIdempotencyKey(
   const key = request.idempotencyKey;
   if (!key) return;
 
-  if (process.env.NODE_ENV === "test" || parseBoolean(process.env.OPENCLAW_AUTOMATION_DISABLE_DB_AUDIT) === true) {
+  const isTestRuntime = process.env.NODE_ENV === "test" || process.env.VITEST !== undefined;
+  if (isTestRuntime || parseBoolean(process.env.OPENCLAW_AUTOMATION_DISABLE_DB_AUDIT) === true) {
     return;
   }
 

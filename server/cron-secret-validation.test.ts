@@ -3,9 +3,26 @@
  * Validates that CRON_SECRET is set and cron endpoints work correctly
  */
 
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, beforeAll, afterAll, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { Context } from "./_core/context";
+
+vi.mock("./news-cron-scheduler", () => ({
+  dailyNewsIngestion: vi.fn().mockResolvedValue({
+    success: true,
+    fetched: 0,
+    inserted: 0,
+    skipped: 0,
+    errors: [],
+    duration: 42,
+  }),
+  weeklyNewsArchival: vi.fn().mockResolvedValue({
+    success: true,
+    archived: 0,
+    errors: [],
+    duration: 42,
+  }),
+}));
 
 // Mock context
 const mockContext: Context = {
