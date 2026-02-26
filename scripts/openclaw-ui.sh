@@ -64,8 +64,10 @@ cat >"$TMP_FETCH_SCRIPT" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [ -f /root/.openclaw/dashboard-url.latest ]; then
-  cat /root/.openclaw/dashboard-url.latest
+DASHBOARD_URL_FILE="${HOME:-/root}/.openclaw/dashboard-url.latest"
+
+if [ -f "$DASHBOARD_URL_FILE" ]; then
+  cat "$DASHBOARD_URL_FILE"
   exit 0
 fi
 
