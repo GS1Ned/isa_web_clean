@@ -14,6 +14,17 @@
     "require_timestamp_in_strict_mode": true,
     "require_signature_in_strict_mode": true
   },
+  "runtime": {
+    "primary_mode": "vm_only",
+    "allow_host_local_gateway": false,
+    "status_script_default_target": "vm",
+    "ui_launcher_script": "scripts/openclaw-ui.sh"
+  },
+  "network": {
+    "reverse_proxy_exposure": false,
+    "require_trusted_proxies_when_exposed": true,
+    "trusted_proxies_script": "scripts/openclaw-trusted-proxies.sh"
+  },
   "artifacts": {
     "exec_lane_policy": "config/openclaw/exec-lane.policy.json",
     "skills_allowlist": "config/openclaw/skills-allowlist.json",

@@ -36,6 +36,18 @@ For cron/webhook-style calls:
 - Unsafe launch flags remain blocked by default.
 - Runtime enforcement entrypoint: `server/security/browser-automation-policy.ts`.
 
+## Runtime Mode Decision
+- Canonical mode: `vm_only`.
+- Host scripts delegate runtime operations to VM by default.
+- Host-local runtime is optional and must be explicit (`--target host` or `--local`).
+
+## Reverse Proxy Decision
+- Default: no reverse proxy exposure (`OPENCLAW_REVERSE_PROXY_EXPOSURE=0`).
+- If exposure is planned, set explicit trusted proxies before use:
+  - `OPENCLAW_REVERSE_PROXY_EXPOSURE=1`
+  - `bash scripts/openclaw-trusted-proxies.sh apply --proxies \"<CIDR1>,<CIDR2>\"`
+  - Re-validate with `bash scripts/openclaw-trusted-proxies.sh status` and `openclaw status --deep`.
+
 ## Skills Governance
 - New skills must pass static admission (`openclaw-skill-admit.sh`).
 - Installation is restricted to approved allowlist entries.
@@ -49,6 +61,7 @@ bash scripts/openclaw-validate-no-secrets.sh
 ```
 
 This validates policy files/gates and checks command outputs for secret leakage patterns.
+When `OPENCLAW_REVERSE_PROXY_EXPOSURE=1`, validation also checks trusted proxies state.
 
 ## CI Integration
 Tier 0 enforces:
@@ -61,3 +74,6 @@ Tier 0 enforces:
 - Do not store token values in repo docs.
 - Keep VM-only OpenClaw secrets in VM runtime state (`/root/.openclaw/*`) or VM env.
 - Use host scripts to run deterministic checks and keep host↔VM sync Git-only.
+- ISA UI development bootstrap:
+  - `bash scripts/openclaw-isa-dev-start.sh`
+  - Initial prompt file: `docs/agent/OPENCLAW_UI_DEV_PROMPT_STARTER.md`

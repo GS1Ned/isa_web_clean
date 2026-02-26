@@ -125,6 +125,7 @@ bash scripts/dev/local-doctor.sh
 - Git remote `origin` remains canonical history SSOT.
 - Host push is disabled by default (mirror mode).
 - VM is execution/runtime target for OpenClaw and infrastructure checks.
+- Runtime mode is explicitly `vm_only` (default via `OPENCLAW_RUNTIME_MODE=vm_only`).
 
 **Responsibilities**
 - Host:
@@ -144,7 +145,12 @@ bash scripts/dev/local-doctor.sh
 - Local forward: `127.0.0.1:18789` (host) -> `127.0.0.1:18789` (VM).
 - Canonical script: `bash scripts/openclaw-tunnel.sh [up|status|down]`.
 - One-command host launcher (tunnel + dashboard URL + browser open): `bash scripts/openclaw-ui.sh` (headless mode: `bash scripts/openclaw-ui.sh --no-open`).
+- One-command ISA dev start (validation + UI): `bash scripts/openclaw-isa-dev-start.sh` (optional: `--skip-validate`, `--no-open`).
 - VM bootstrap/health gate (gateway install+start+cleanup): `bash scripts/vm-run.sh scripts/openclaw-bootstrap.sh`.
+- Status/doctor default to VM runtime in `vm_only` mode:
+  - `bash scripts/openclaw-status.sh`
+  - `bash scripts/openclaw-doctor.sh`
+  - Host-local override: add `--target host` or `--local`.
 - Dashboard URL (headless-safe): run on VM via:
   - `bash scripts/vm-run.sh scripts/openclaw-dashboard-url.sh`
   - Under the hood this uses `openclaw dashboard --no-open`.
@@ -156,6 +162,7 @@ bash scripts/dev/local-doctor.sh
 - Browser fallback policy: `config/openclaw/browser.policy.json` (enforced via `server/security/browser-automation-policy.ts` across browser-based scrapers)
 - No-secrets validation path: `bash scripts/openclaw-validate-no-secrets.sh`
 - Runbook: `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
+- Reverse-proxy trusted proxies helper: `bash scripts/openclaw-trusted-proxies.sh [status|apply|clear]`
 
 **Secrets and env placement**
 - `.env` is local-only and must never be committed.
