@@ -18,7 +18,7 @@ on_err() {
 }
 trap on_err ERR
 
-for cmd in jq shasum tar date; do
+for cmd in jq shasum date find sort; do
   if ! command -v "$cmd" >/dev/null 2>&1; then
     echo "STOP=missing_command name=${cmd}"
     exit 1
@@ -47,11 +47,34 @@ if [ ! -f "$ALLOWLIST_PATH" ]; then
 fi
 
 SKILL_NAME="$(basename "$SKILL_PATH")"
-CHECKSUM="$(tar -cf - -C "$SKILL_PATH" . | shasum -a 256 | awk '{print $1}')"
+compute_skill_checksum() {
+  local path="$1"
+  local manifest_file
+  manifest_file="$(mktemp /tmp/openclaw_skill_manifest.XXXXXX)"
+  (
+    cd "$path"
+    find . -type f ! -path './.git/*' ! -path './node_modules/*' | LC_ALL=C sort | while IFS= read -r file; do
+      [ -z "$file" ] && continue
+      rel="${file#./}"
+      file_hash="$(shasum -a 256 "$file" | awk '{print $1}')"
+      printf '%s  %s\n' "$file_hash" "$rel"
+    done
+  ) > "$manifest_file"
+  shasum -a 256 "$manifest_file" | awk '{print $1}'
+  rm -f "$manifest_file"
+}
+
+CHECKSUM="$(compute_skill_checksum "$SKILL_PATH")"
 
 ENTRY_JSON="$(jq -c --arg checksum "$CHECKSUM" --arg name "$SKILL_NAME" '.entries[]? | select(.checksum_sha256 == $checksum and .name == $name and .status == "approved")' "$ALLOWLIST_PATH" | head -n 1)"
 if [ -z "$ENTRY_JSON" ]; then
   echo "STOP=skill_not_allowlisted name=${SKILL_NAME} checksum=${CHECKSUM}"
+  exit 1
+fi
+
+ENTRY_SCOPE="$(printf '%s' "$ENTRY_JSON" | jq -r '.scope // ""')"
+if ! printf '%s' "$ENTRY_SCOPE" | grep -Eiq '(quarantine|local)'; then
+  echo "STOP=skill_scope_not_quarantine_compatible scope=${ENTRY_SCOPE}"
   exit 1
 fi
 
@@ -81,6 +104,7 @@ jq -nc \
   --arg installed_at "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
   --arg source "$(printf '%s' "$ENTRY_JSON" | jq -r '.source')" \
   '{name:$name, checksum_sha256:$checksum, source:$source, installed_at:$installed_at, profile:"quarantine"}' > "$MANIFEST_PATH"
+chmod 600 "$MANIFEST_PATH"
 
 echo "READY=skill_installed_quarantine name=${SKILL_NAME} path=${DEST_DIR}"
 echo "DONE=openclaw_skill_install_complete"
