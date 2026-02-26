@@ -1,4 +1,4 @@
-import { mysqlTable, index, int, varchar, text, timestamp, mysqlEnum, json, decimal, float, tinyint } from "drizzle-orm/mysql-core"
+import { mysqlTable, index, uniqueIndex, int, varchar, text, timestamp, mysqlEnum, json, decimal, float, tinyint } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 export const advisoryReportVersions = mysqlTable("advisory_report_versions", {
@@ -2225,3 +2225,48 @@ export type InsertEsgDataRequirement = typeof esgDataRequirements.$inferInsert;
 
 export type EsgGs1Mapping = typeof esgGs1Mappings.$inferSelect;
 export type InsertEsgGs1Mapping = typeof esgGs1Mappings.$inferInsert;
+
+// ============================================================================
+// OpenClaw automation governance controls
+// ============================================================================
+
+export const automationRequestLedger = mysqlTable("automation_request_ledger", {
+	id: int().autoincrement().notNull(),
+	source: varchar({ length: 128 }).notNull(),
+	idempotencyKey: varchar("idempotency_key", { length: 191 }).notNull(),
+	requestTimestamp: timestamp("request_timestamp", { mode: 'string' }),
+	signature: varchar({ length: 255 }),
+	actor: varchar({ length: 255 }),
+	traceId: varchar("trace_id", { length: 128 }),
+	decision: mysqlEnum(['allow','deny']).default('allow').notNull(),
+	reasonCode: varchar("reason_code", { length: 128 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	uniqueIndex("automation_request_ledger_source_key_uq").on(table.source, table.idempotencyKey),
+	index("automation_request_ledger_created_at_idx").on(table.createdAt),
+	index("automation_request_ledger_trace_id_idx").on(table.traceId),
+]);
+
+export const policyActionAudit = mysqlTable("policy_action_audit", {
+	id: int().autoincrement().notNull(),
+	source: varchar({ length: 128 }).notNull(),
+	actor: varchar({ length: 255 }),
+	traceId: varchar("trace_id", { length: 128 }),
+	decision: mysqlEnum(['allow','deny']).notNull(),
+	reasonCode: varchar("reason_code", { length: 128 }).notNull(),
+	category: mysqlEnum(['transient','config','permission','logic']).notNull(),
+	strictMode: tinyint("strict_mode").default(0).notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("policy_action_audit_source_idx").on(table.source),
+	index("policy_action_audit_decision_idx").on(table.decision),
+	index("policy_action_audit_trace_id_idx").on(table.traceId),
+	index("policy_action_audit_created_at_idx").on(table.createdAt),
+]);
+
+export type AutomationRequestLedger = typeof automationRequestLedger.$inferSelect;
+export type InsertAutomationRequestLedger = typeof automationRequestLedger.$inferInsert;
+export type PolicyActionAudit = typeof policyActionAudit.$inferSelect;
+export type InsertPolicyActionAudit = typeof policyActionAudit.$inferInsert;

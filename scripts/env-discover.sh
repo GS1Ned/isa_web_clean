@@ -53,7 +53,7 @@ const keyRegex = /'([A-Z0-9_]+)'/g;
 const out = new Set();
 let m;
 while ((m = keyRegex.exec(match[1])) !== null) out.add(m[1]);
-for (const key of [...out].sort()) console.log(key);
+for (const key of [...out].sort()) process.stdout.write(`${key}\n`);
 NODE
 
 ACTION="extract_env_check_groups"
@@ -64,7 +64,7 @@ const keyRegex = /name:\s*"([A-Z0-9_]+)"/g;
 const out = new Set();
 let m;
 while ((m = keyRegex.exec(src)) !== null) out.add(m[1]);
-for (const key of [...out].sort()) console.log(key);
+for (const key of [...out].sort()) process.stdout.write(`${key}\n`);
 NODE
 
 ACTION="extract_registry"
@@ -72,7 +72,7 @@ node - <<'NODE' >"$TMP_DIR/registry.keys"
 const fs = require('fs');
 const data = JSON.parse(fs.readFileSync('docs/governance/planning_artifacts/ENV_KEY_REGISTRY.json', 'utf8'));
 const out = new Set((data.keys || []).map((k) => k.key_name).filter(Boolean));
-for (const key of [...out].sort()) console.log(key);
+for (const key of [...out].sort()) process.stdout.write(`${key}\n`);
 NODE
 
 echo "READY=env_discover_inputs_loaded"

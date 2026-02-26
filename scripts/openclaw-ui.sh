@@ -49,6 +49,11 @@ REMOTE_PORT="${OPENCLAW_GATEWAY_PORT:-18789}"
 ACTION="tunnel_up"
 bash scripts/openclaw-tunnel.sh up
 
+if [ -f "scripts/openclaw-bootstrap.sh" ]; then
+  ACTION="vm_gateway_bootstrap"
+  bash scripts/vm-run.sh scripts/openclaw-bootstrap.sh >/dev/null
+fi
+
 TMP_FETCH_SCRIPT="$(mktemp /tmp/openclaw_vm_dashboard_fetch.XXXXXX.sh)"
 cleanup() {
   rm -f "$TMP_FETCH_SCRIPT"

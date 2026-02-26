@@ -61,4 +61,30 @@ ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new "$
    if [ -f \"$VM_ENV_FILE\" ]; then echo READY=vm_env_path_exists; else echo STOP=vm_env_path_missing; exit 1; fi; \
    if command -v openclaw >/dev/null 2>&1; then echo READY=openclaw_cli_present; else echo STOP=openclaw_cli_missing; exit 1; fi"
 
+ACTION="vm_gateway_probe"
+ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new "$VM_HOST" \
+  "set -euo pipefail; \
+   cd \"$VM_REPO\"; \
+   if [ -x \"scripts/openclaw-bootstrap.sh\" ]; then \
+     bash scripts/openclaw-bootstrap.sh --check-only; \
+   else \
+     status=\"\$(openclaw gateway status 2>&1 || true)\"; \
+     printf '%s\n' \"\$status\"; \
+     if printf '%s' \"\$status\" | grep -Eiq 'not loaded|not installed|not running|inactive'; then \
+       echo STOP=gateway_not_healthy; \
+       exit 1; \
+     fi; \
+   fi"
+
+ACTION="vm_dashboard_url_probe"
+ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new "$VM_HOST" \
+  "set -euo pipefail; \
+   cd \"$VM_REPO\"; \
+   if [ -x \"scripts/openclaw-dashboard-url.sh\" ]; then \
+     bash scripts/openclaw-dashboard-url.sh; \
+   else \
+     echo STOP=dashboard_url_script_missing; \
+     exit 1; \
+   fi" | sed -E 's@([?#&](token|auth|key|session)=)[^&# ]+@\1***REDACTED***@Ig; s@(/token/)[^/?# ]+@\1***REDACTED***@Ig'
+
 echo "DONE=env_validate_complete"

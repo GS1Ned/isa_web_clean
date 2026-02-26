@@ -3,7 +3,7 @@
  * Tests for news ingestion and archival cron endpoints
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, beforeAll, afterAll } from "vitest";
 import { appRouter } from "./routers";
 import type { Context } from "./_core/context";
 
@@ -33,8 +33,22 @@ vi.mock("./news-cron-scheduler", () => ({
 }));
 
 describe("Cron Router", () => {
+  const ORIGINAL_CRON_SECRET = process.env.CRON_SECRET;
+  const ORIGINAL_STRICT_MODE = process.env.OPENCLAW_AUTOMATION_STRICT_MODE;
+  const TEST_CRON_SECRET = "test-cron-secret-12345678901234567890123456789012";
+
+  beforeAll(() => {
+    process.env.CRON_SECRET = process.env.CRON_SECRET || TEST_CRON_SECRET;
+    process.env.OPENCLAW_AUTOMATION_STRICT_MODE = "0";
+  });
+
+  afterAll(() => {
+    process.env.CRON_SECRET = ORIGINAL_CRON_SECRET;
+    process.env.OPENCLAW_AUTOMATION_STRICT_MODE = ORIGINAL_STRICT_MODE;
+  });
+
   const caller = appRouter.createCaller(mockContext);
-  const VALID_SECRET = process.env.CRON_SECRET || "change-me-in-production";
+  const VALID_SECRET = process.env.CRON_SECRET || TEST_CRON_SECRET;
 
   describe("health", () => {
     it("should return health status without authentication", async () => {

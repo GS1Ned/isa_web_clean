@@ -3,9 +3,26 @@
  * Validates that CRON_SECRET is set and cron endpoints work correctly
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll, afterAll, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { Context } from "./_core/context";
+
+vi.mock("./news-cron-scheduler", () => ({
+  dailyNewsIngestion: vi.fn().mockResolvedValue({
+    success: true,
+    fetched: 0,
+    inserted: 0,
+    skipped: 0,
+    errors: [],
+    duration: 42,
+  }),
+  weeklyNewsArchival: vi.fn().mockResolvedValue({
+    success: true,
+    archived: 0,
+    errors: [],
+    duration: 42,
+  }),
+}));
 
 // Mock context
 const mockContext: Context = {
@@ -15,6 +32,20 @@ const mockContext: Context = {
 };
 
 describe("CRON_SECRET Validation", () => {
+  const ORIGINAL_CRON_SECRET = process.env.CRON_SECRET;
+  const ORIGINAL_STRICT_MODE = process.env.OPENCLAW_AUTOMATION_STRICT_MODE;
+  const TEST_CRON_SECRET = "test-cron-secret-12345678901234567890123456789012";
+
+  beforeAll(() => {
+    process.env.CRON_SECRET = process.env.CRON_SECRET || TEST_CRON_SECRET;
+    process.env.OPENCLAW_AUTOMATION_STRICT_MODE = "0";
+  });
+
+  afterAll(() => {
+    process.env.CRON_SECRET = ORIGINAL_CRON_SECRET;
+    process.env.OPENCLAW_AUTOMATION_STRICT_MODE = ORIGINAL_STRICT_MODE;
+  });
+
   const caller = appRouter.createCaller(mockContext);
 
   it("should have CRON_SECRET environment variable set", () => {

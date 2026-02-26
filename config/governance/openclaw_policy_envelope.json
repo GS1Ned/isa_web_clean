@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "enforcement": {
+    "mode": "fail_closed",
+    "allow_dev_bypass": true
+  },
+  "automation": {
+    "strict_mode_production": true,
+    "strict_mode_env_var": "OPENCLAW_AUTOMATION_STRICT_MODE",
+    "allow_insecure_dev_bypass_env_var": "OPENCLAW_AUTOMATION_ALLOW_INSECURE_DEV_BYPASS",
+    "kill_switch_env_var": "OPENCLAW_AUTOMATION_KILL_SWITCH",
+    "max_clock_skew_seconds": 300,
+    "require_idempotency_key_in_strict_mode": true,
+    "require_timestamp_in_strict_mode": true,
+    "require_signature_in_strict_mode": true
+  },
+  "artifacts": {
+    "exec_lane_policy": "config/openclaw/exec-lane.policy.json",
+    "skills_allowlist": "config/openclaw/skills-allowlist.json",
+    "browser_policy": "config/openclaw/browser.policy.json"
+  }
+}

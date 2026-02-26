@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "mode": "fallback_only",
+  "require_explicit_opt_in_env": "OPENCLAW_BROWSER_FALLBACK_ALLOWED",
+  "allow_unsafe_launch_flags": false,
+  "unsafe_launch_flags_env": "OPENCLAW_BROWSER_ALLOW_UNSAFE_FLAGS",
+  "prohibited_actions": [
+    "autonomous_login_submission",
+    "unchecked_file_downloads",
+    "background_navigation_without_user_intent"
+  ]
+}

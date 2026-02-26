@@ -144,9 +144,18 @@ bash scripts/dev/local-doctor.sh
 - Local forward: `127.0.0.1:18789` (host) -> `127.0.0.1:18789` (VM).
 - Canonical script: `bash scripts/openclaw-tunnel.sh [up|status|down]`.
 - One-command host launcher (tunnel + dashboard URL + browser open): `bash scripts/openclaw-ui.sh` (headless mode: `bash scripts/openclaw-ui.sh --no-open`).
+- VM bootstrap/health gate (gateway install+start+cleanup): `bash scripts/vm-run.sh scripts/openclaw-bootstrap.sh`.
 - Dashboard URL (headless-safe): run on VM via:
   - `bash scripts/vm-run.sh scripts/openclaw-dashboard-url.sh`
   - Under the hood this uses `openclaw dashboard --no-open`.
+
+**OpenClaw governance controls (canonical)**
+- Policy envelope: `config/governance/openclaw_policy_envelope.json`
+- Exec lane policy: `config/openclaw/exec-lane.policy.json` (enforced by `bash scripts/openclaw-safe-exec.sh ...`)
+- Skills quarantine allowlist: `config/openclaw/skills-allowlist.json` (`openclaw-skill-admit.sh` / `openclaw-skill-install.sh`)
+- Browser fallback policy: `config/openclaw/browser.policy.json` (enforced in `server/news-scraper-playwright.ts`)
+- No-secrets validation path: `bash scripts/openclaw-validate-no-secrets.sh`
+- Runbook: `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
 
 **Secrets and env placement**
 - `.env` is local-only and must never be committed.
