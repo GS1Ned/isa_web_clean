@@ -1,6 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
 import { serverLogger } from "./_core/logger-wiring";
+import {
+  browserLaunchArgs,
+  isBrowserAutomationAllowed,
+} from "./security/browser-automation-policy";
 
 /**
  * Production Web Scraper using Playwright
@@ -18,62 +20,12 @@ export interface ScrapedArticle {
   imageUrl?: string;
 }
 
-interface BrowserPolicy {
-  mode?: string;
-  require_explicit_opt_in_env?: string;
-  allow_unsafe_launch_flags?: boolean;
-  unsafe_launch_flags_env?: string;
-}
-
-function parseBoolean(value: string | undefined): boolean {
-  if (!value) return false;
-  return ["1", "true", "yes", "on"].includes(value.trim().toLowerCase());
-}
-
-function loadBrowserPolicy(): BrowserPolicy {
-  const policyPath =
-    process.env.OPENCLAW_BROWSER_POLICY_PATH ||
-    path.join(process.cwd(), "config/openclaw/browser.policy.json");
-
-  try {
-    return JSON.parse(fs.readFileSync(policyPath, "utf8")) as BrowserPolicy;
-  } catch (error) {
-    serverLogger.warn("[Playwright Scraper] Browser policy unreadable; defaulting to deny");
-    return { mode: "disabled", allow_unsafe_launch_flags: false };
-  }
-}
-
 function canUseBrowserAutomation(): boolean {
-  const policy = loadBrowserPolicy();
-  const mode = process.env.OPENCLAW_BROWSER_POLICY_MODE || policy.mode || "disabled";
-
-  if (mode === "disabled") {
-    serverLogger.info("[Playwright Scraper] Browser automation disabled by policy");
-    return false;
-  }
-
-  if (mode === "fallback_only") {
-    const optInEnv = policy.require_explicit_opt_in_env || "OPENCLAW_BROWSER_FALLBACK_ALLOWED";
-    if (!parseBoolean(process.env[optInEnv])) {
-      serverLogger.info(
-        `[Playwright Scraper] Browser fallback blocked (set ${optInEnv}=1 for explicit opt-in)`
-      );
-      return false;
-    }
-    return true;
-  }
-
-  // Any undefined mode falls back to disabled.
-  serverLogger.warn(`[Playwright Scraper] Unknown browser policy mode: ${mode}`);
-  return false;
+  return isBrowserAutomationAllowed("gs1-nl-playwright");
 }
 
 function launchArgs(): string[] {
-  const policy = loadBrowserPolicy();
-  const unsafeEnv = policy.unsafe_launch_flags_env || "OPENCLAW_BROWSER_ALLOW_UNSAFE_FLAGS";
-  const unsafeAllowed =
-    policy.allow_unsafe_launch_flags === true && parseBoolean(process.env[unsafeEnv]);
-  return unsafeAllowed ? ["--no-sandbox", "--disable-setuid-sandbox"] : [];
+  return browserLaunchArgs();
 }
 
 // Dynamically import Playwright (optional dependency)

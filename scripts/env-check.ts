@@ -58,7 +58,9 @@ const groups: VarGroup[] = [
       { name: "OPENCLAW_AUTOMATION_MAX_SKEW_SECONDS", required: false },
       { name: "OPENCLAW_POLICY_ENVELOPE_PATH", required: false },
       { name: "OPENCLAW_BROWSER_POLICY_PATH", required: false },
+      { name: "OPENCLAW_BROWSER_POLICY_MODE", required: false },
       { name: "OPENCLAW_BROWSER_FALLBACK_ALLOWED", required: false },
+      { name: "OPENCLAW_BROWSER_ALLOW_UNSAFE_FLAGS", required: false },
     ],
   },
   {

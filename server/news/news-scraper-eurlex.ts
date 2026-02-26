@@ -11,6 +11,10 @@
 import type { RawNewsItem } from '../news-fetcher';
 import { NEWS_SOURCES } from '../news-sources';
 import { serverLogger } from "../_core/logger-wiring";
+import {
+  browserLaunchArgs,
+  isBrowserAutomationAllowed,
+} from "../security/browser-automation-policy";
 
 
 // Dynamic import for Playwright to handle deployment without browser
@@ -36,6 +40,10 @@ export interface EURLexArticle {
  * Scrape EUR-Lex Official Journal L series for recent legislation
  */
 export async function scrapeEURLexOfficialJournal(): Promise<EURLexArticle[]> {
+  if (!isBrowserAutomationAllowed("eurlex-playwright")) {
+    return [];
+  }
+
   const playwright = await getPlaywright();
   if (!playwright) {
     return [];
@@ -46,7 +54,10 @@ export async function scrapeEURLexOfficialJournal(): Promise<EURLexArticle[]> {
   
   try {
     serverLogger.info('[EUR-Lex Scraper] Launching browser...');
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({
+      headless: true,
+      args: browserLaunchArgs(),
+    });
     const context = await browser.newContext({
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     });

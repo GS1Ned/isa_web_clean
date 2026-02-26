@@ -8,6 +8,10 @@ import { chromium, type Browser } from "playwright";
 import type { RawNewsItem } from "../news-fetcher";
 import { NEWS_SOURCES } from "../news-sources";
 import { serverLogger } from "../_core/logger-wiring";
+import {
+  browserLaunchArgs,
+  isBrowserAutomationAllowed,
+} from "../security/browser-automation-policy";
 
 const GS1_EU_NEWS_URL = "https://gs1.eu/news/";
 const GS1_EU_SOURCE = NEWS_SOURCES.find(s => s.id === "gs1-eu-updates")!;
@@ -16,13 +20,17 @@ const GS1_EU_SOURCE = NEWS_SOURCES.find(s => s.id === "gs1-eu-updates")!;
  * Scrape GS1 Europe news listing page
  */
 export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
+  if (!isBrowserAutomationAllowed("gs1-eu-playwright")) {
+    return [];
+  }
+
   let browser: Browser | null = null;
 
   try {
     serverLogger.info("[GS1 EU Scraper] Launching browser...");
     browser = await chromium.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: browserLaunchArgs(),
     });
 
     const context = await browser.newContext({
@@ -187,12 +195,16 @@ export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
 export async function scrapeGS1EUArticleDetail(
   url: string
 ): Promise<string | null> {
+  if (!isBrowserAutomationAllowed("gs1-eu-playwright-detail")) {
+    return null;
+  }
+
   let browser: Browser | null = null;
 
   try {
     browser = await chromium.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: browserLaunchArgs(),
     });
 
     const context = await browser.newContext({

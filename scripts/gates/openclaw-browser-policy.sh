@@ -24,4 +24,36 @@ jq -e '
   exit 1
 }
 
+for required_action in \
+  autonomous_login_submission \
+  unchecked_file_downloads \
+  background_navigation_without_user_intent; do
+  if ! jq -e --arg action "$required_action" '.prohibited_actions | index($action) != null' "$FILE" >/dev/null; then
+    echo "❌ FAIL: browser policy missing prohibited action: $required_action"
+    exit 1
+  fi
+done
+
+SCRAPER_FILES=(
+  "server/news-scraper-playwright.ts"
+  "server/news-scraper-efrag.ts"
+  "server/news/news-scraper-gs1eu.ts"
+  "server/news/news-scraper-greendeal.ts"
+  "server/news/news-scraper-zes.ts"
+  "server/news/news-scraper-eurlex.ts"
+)
+
+for scraper in "${SCRAPER_FILES[@]}"; do
+  if ! rg -n "isBrowserAutomationAllowed|browserLaunchArgs" "$scraper" >/dev/null 2>&1; then
+    echo "❌ FAIL: browser policy helper missing in $scraper"
+    exit 1
+  fi
+done
+
+if rg -n -- "--no-sandbox|--disable-setuid-sandbox" \
+  "${SCRAPER_FILES[@]}" >/dev/null 2>&1; then
+  echo "❌ FAIL: browser scrapers must not hardcode unsafe launch flags"
+  exit 1
+fi
+
 echo "✅ OpenClaw browser policy gate PASSED"
