@@ -59,6 +59,7 @@ This file is the only top-level entrypoint for agent onboarding.
 
 - **Next actions:** `docs/planning/NEXT_ACTIONS.json`
 - **Backlog:** `docs/planning/BACKLOG.csv`
+- **Current READY item:** `BENCH-001` — ASK_ISA fixture replay gate and schema-validated evaluation artifact (promoted from `BACKLOG.csv`, source ref `BENCH-001`)
 
 ---
 
