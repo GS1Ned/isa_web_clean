@@ -18,7 +18,7 @@ on_err() {
 }
 trap on_err ERR
 
-for cmd in jq shasum tar date; do
+for cmd in jq shasum date find sort rg; do
   if ! command -v "$cmd" >/dev/null 2>&1; then
     echo "STOP=missing_command name=${cmd}"
     exit 1
@@ -74,6 +74,33 @@ if [ ! -e "$SKILL_PATH" ]; then
   exit 1
 fi
 
+validate_source_format() {
+  local source="$1"
+  [[ "$source" =~ ^(https://.+|ssh://.+|git@.+|file://.+|local://.+|github:[^[:space:]]+/.+)$ ]]
+}
+
+compute_skill_checksum() {
+  local path="$1"
+  if [ -d "$path" ]; then
+    local manifest_file
+    manifest_file="$(mktemp /tmp/openclaw_skill_manifest.XXXXXX)"
+    (
+      cd "$path"
+      find . -type f ! -path './.git/*' ! -path './node_modules/*' | LC_ALL=C sort | while IFS= read -r file; do
+        [ -z "$file" ] && continue
+        local rel file_hash
+        rel="${file#./}"
+        file_hash="$(shasum -a 256 "$file" | awk '{print $1}')"
+        printf '%s  %s\n' "$file_hash" "$rel"
+      done
+    ) > "$manifest_file"
+    shasum -a 256 "$manifest_file" | awk '{print $1}'
+    rm -f "$manifest_file"
+  else
+    shasum -a 256 "$path" | awk '{print $1}'
+  fi
+}
+
 SKILL_NAME="$(basename "$SKILL_PATH")"
 if [ -d "$SKILL_PATH" ] && [ ! -f "$SKILL_PATH/SKILL.md" ]; then
   echo "STOP=skill_metadata_missing file=SKILL.md"
@@ -81,10 +108,21 @@ if [ -d "$SKILL_PATH" ] && [ ! -f "$SKILL_PATH/SKILL.md" ]; then
 fi
 
 if [ -d "$SKILL_PATH" ]; then
-  CHECKSUM="$(tar -cf - -C "$SKILL_PATH" . | shasum -a 256 | awk '{print $1}')"
-else
-  CHECKSUM="$(shasum -a 256 "$SKILL_PATH" | awk '{print $1}')"
+  if find "$SKILL_PATH" -type l | head -n 1 | grep -q .; then
+    echo "STOP=skill_symlink_not_allowed"
+    exit 1
+  fi
+
+  if rg -n -I \
+    -g '!*.png' -g '!*.jpg' -g '!*.jpeg' -g '!*.gif' -g '!*.webp' -g '!*.ico' \
+    '(OPENROUTER_API_KEY|BEGIN [A-Z ]*PRIVATE KEY|sk-[A-Za-z0-9_-]{12,}|Bearer[[:space:]]+[A-Za-z0-9._=-]{16,})' \
+    "$SKILL_PATH" >/dev/null 2>&1; then
+    echo "STOP=skill_secret_like_content_detected"
+    exit 1
+  fi
 fi
+
+CHECKSUM="$(compute_skill_checksum "$SKILL_PATH")"
 
 if jq -e --arg checksum "$CHECKSUM" '.entries[]? | select(.checksum_sha256 == $checksum)' "$ALLOWLIST_PATH" >/dev/null; then
   echo "READY=skill_already_allowlisted name=${SKILL_NAME} checksum=${CHECKSUM}"
@@ -92,9 +130,24 @@ if jq -e --arg checksum "$CHECKSUM" '.entries[]? | select(.checksum_sha256 == $c
   exit 0
 fi
 
+if [ -n "$SOURCE" ] && ! validate_source_format "$SOURCE"; then
+  echo "STOP=invalid_source_format"
+  exit 1
+fi
+
 if [ "$APPROVE" -eq 1 ]; then
   if [ -z "$SOURCE" ] || [ -z "$REVIEWER" ]; then
     echo "STOP=approve_requires_source_and_reviewer"
+    exit 1
+  fi
+  if ! validate_source_format "$SOURCE"; then
+    echo "STOP=invalid_source_format"
+    exit 1
+  fi
+
+  EXISTING_APPROVED_CHECKSUM="$(jq -r --arg name "$SKILL_NAME" '.entries[]? | select(.name == $name and .status == "approved") | .checksum_sha256' "$ALLOWLIST_PATH" | head -n 1)"
+  if [ -n "$EXISTING_APPROVED_CHECKSUM" ] && [ "$EXISTING_APPROVED_CHECKSUM" != "$CHECKSUM" ]; then
+    echo "STOP=skill_name_conflict_existing_approved name=${SKILL_NAME}"
     exit 1
   fi
 
