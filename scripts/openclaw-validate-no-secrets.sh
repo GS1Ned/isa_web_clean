@@ -102,6 +102,11 @@ run_and_check exec_policy bash scripts/gates/openclaw-exec-policy.sh
 run_and_check skills_allowlist bash scripts/gates/openclaw-skills-allowlist.sh
 run_and_check browser_policy bash scripts/gates/openclaw-browser-policy.sh
 
+if [ "${OPENCLAW_REVERSE_PROXY_EXPOSURE:-0}" = "1" ] && [ -x "scripts/openclaw-trusted-proxies.sh" ]; then
+  ACTION="trusted_proxies_status"
+  run_and_check trusted_proxies_status bash scripts/openclaw-trusted-proxies.sh status
+fi
+
 RUNTIME_TARGET="${OPENCLAW_VALIDATE_RUNTIME_TARGET:-auto}"
 case "$RUNTIME_TARGET" in
   auto)

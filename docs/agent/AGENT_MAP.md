@@ -37,6 +37,7 @@ Status: CANONICAL
 - IRON protocol: `docs/governance/IRON_PROTOCOL.md`
 - Research-output evidence index (distinct from architecture evidence contract): `docs/governance/EVIDENCE_INDEX.md`
 - OpenClaw policy envelope runbook: `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
+- OpenClaw UI ISA prompt starter: `docs/agent/OPENCLAW_UI_DEV_PROMPT_STARTER.md`
 
 ## Default Documentation Mode
 - Integrate useful outcomes into existing canonical docs.

@@ -34,11 +34,42 @@ jq -e '
   exit 1
 }
 
+jq -e '
+  .runtime.primary_mode == "vm_only"
+  and (.runtime.allow_host_local_gateway == false)
+  and (.runtime.status_script_default_target == "vm")
+  and (.runtime.ui_launcher_script | type == "string")
+' "$FILE" >/dev/null || {
+  echo "❌ FAIL: runtime policy must enforce vm_only mode"
+  exit 1
+}
+
+jq -e '
+  (.network.reverse_proxy_exposure | type == "boolean")
+  and (.network.require_trusted_proxies_when_exposed == true)
+  and (.network.trusted_proxies_script | type == "string")
+' "$FILE" >/dev/null || {
+  echo "❌ FAIL: network policy fields invalid"
+  exit 1
+}
+
 for artifact in $(jq -r '.artifacts[]' "$FILE"); do
   if [[ ! -f "$artifact" ]]; then
     echo "❌ FAIL: Referenced policy artifact missing: $artifact"
     exit 1
   fi
 done
+
+RUNTIME_UI_SCRIPT="$(jq -r '.runtime.ui_launcher_script' "$FILE")"
+if [[ ! -f "$RUNTIME_UI_SCRIPT" ]]; then
+  echo "❌ FAIL: Referenced runtime UI launcher missing: $RUNTIME_UI_SCRIPT"
+  exit 1
+fi
+
+TRUSTED_PROXIES_SCRIPT="$(jq -r '.network.trusted_proxies_script' "$FILE")"
+if [[ ! -f "$TRUSTED_PROXIES_SCRIPT" ]]; then
+  echo "❌ FAIL: Referenced trusted-proxies script missing: $TRUSTED_PROXIES_SCRIPT"
+  exit 1
+fi
 
 echo "✅ OpenClaw policy envelope gate PASSED"

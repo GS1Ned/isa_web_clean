@@ -50,9 +50,21 @@
       "problemMatcher": []
     },
     {
+      "label": "ISA: OpenClaw Trusted Proxies Status",
+      "type": "shell",
+      "command": "bash scripts/openclaw-trusted-proxies.sh status",
+      "problemMatcher": []
+    },
+    {
       "label": "ISA: OpenClaw Validate (No Secrets)",
       "type": "shell",
       "command": "bash scripts/openclaw-validate-no-secrets.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: OpenClaw ISA Dev Start",
+      "type": "shell",
+      "command": "bash scripts/openclaw-isa-dev-start.sh",
       "problemMatcher": []
     },
     {
