@@ -38,14 +38,53 @@ if [ -z "$VM_REPO" ]; then
 fi
 
 FORWARD_AGENT=0
-if [ "${1:-}" = "--forward-agent" ]; then
-  FORWARD_AGENT=1
-  shift
+COMMAND_MODE=0
+INLINE_COMMAND=""
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --forward-agent)
+      FORWARD_AGENT=1
+      shift
+      ;;
+    --command)
+      COMMAND_MODE=1
+      shift
+      if [ "$#" -lt 1 ]; then
+        echo "STOP=usage vm-run.sh [--forward-agent] [--command '<cmd>' | <remote-script> [args...]]"
+        exit 1
+      fi
+      INLINE_COMMAND="$1"
+      shift
+      break
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+if [ "$COMMAND_MODE" -eq 0 ] && [ "$#" -lt 1 ]; then
+  echo "STOP=usage vm-run.sh [--forward-agent] [--command '<cmd>' | <remote-script> [args...]]"
+  exit 1
 fi
 
-if [ "$#" -lt 1 ]; then
-  echo "STOP=usage vm-run.sh [--forward-agent] <remote-script> [args...]"
-  exit 1
+SSH_ARGS=(-o BatchMode=yes -o StrictHostKeyChecking=accept-new)
+if [ "$FORWARD_AGENT" -eq 1 ]; then
+  SSH_ARGS=(-A "${SSH_ARGS[@]}")
+fi
+
+if [ "$COMMAND_MODE" -eq 1 ]; then
+  if [ "$#" -gt 0 ]; then
+    echo "STOP=usage vm-run.sh [--forward-agent] [--command '<cmd>' | <remote-script> [args...]]"
+    exit 1
+  fi
+  ACTION="remote_exec_command"
+  echo "READY=vm_run host=${VM_HOST} mode=command"
+  REMOTE_CMD="set -euo pipefail; cd $(printf '%q' "$VM_REPO"); bash -lc $(printf '%q' "$INLINE_COMMAND")"
+  ssh "${SSH_ARGS[@]}" "$VM_HOST" "$REMOTE_CMD"
+  echo "DONE=vm_run_complete"
+  exit 0
 fi
 
 REMOTE_SCRIPT="$1"
@@ -57,11 +96,6 @@ if [[ "$REMOTE_SCRIPT" = /* ]]; then
 else
   REMOTE_SCRIPT_PATH="$VM_REPO/$REMOTE_SCRIPT"
   LOCAL_SCRIPT_PATH="$REPO_ROOT/$REMOTE_SCRIPT"
-fi
-
-SSH_ARGS=(-o BatchMode=yes -o StrictHostKeyChecking=accept-new)
-if [ "$FORWARD_AGENT" -eq 1 ]; then
-  SSH_ARGS=(-A "${SSH_ARGS[@]}")
 fi
 
 REMOTE_CMD="set -euo pipefail; cd $(printf '%q' "$VM_REPO");"
@@ -76,12 +110,27 @@ CHECK_CMD="set -euo pipefail; cd $(printf '%q' "$VM_REPO"); [ -f $(printf '%q' "
 if ssh "${SSH_ARGS[@]}" "$VM_HOST" "$CHECK_CMD" >/dev/null 2>&1; then
   ssh "${SSH_ARGS[@]}" "$VM_HOST" "$REMOTE_CMD"
 elif [ -f "$LOCAL_SCRIPT_PATH" ]; then
-  STREAM_CMD="set -euo pipefail; cd $(printf '%q' "$VM_REPO"); bash -s"
-  for arg in "$@"; do
-    STREAM_CMD+=" $(printf '%q' "$arg")"
-  done
+  REMOTE_TMP="/tmp/isa_vm_run_$(basename "$REMOTE_SCRIPT_PATH").$$.$RANDOM.sh"
   echo "READY=vm_run_stream_local_script script=$(basename "$REMOTE_SCRIPT")"
-  ssh "${SSH_ARGS[@]}" "$VM_HOST" "$STREAM_CMD" < "$LOCAL_SCRIPT_PATH"
+  ACTION="remote_stage_local_script"
+  ssh "${SSH_ARGS[@]}" "$VM_HOST" \
+    "set -euo pipefail; cat > $(printf '%q' "$REMOTE_TMP"); chmod 700 $(printf '%q' "$REMOTE_TMP")" \
+    < "$LOCAL_SCRIPT_PATH"
+  STAGED_CMD="set -euo pipefail; cd $(printf '%q' "$VM_REPO"); bash $(printf '%q' "$REMOTE_TMP")"
+  for arg in "$@"; do
+    STAGED_CMD+=" $(printf '%q' "$arg")"
+  done
+  ACTION="remote_exec_staged_script"
+  set +e
+  ssh "${SSH_ARGS[@]}" "$VM_HOST" "$STAGED_CMD"
+  STAGED_EXIT="$?"
+  set -e
+  ACTION="remote_cleanup_staged_script"
+  ssh "${SSH_ARGS[@]}" "$VM_HOST" "set -euo pipefail; rm -f $(printf '%q' "$REMOTE_TMP")" >/dev/null 2>&1 || true
+  if [ "$STAGED_EXIT" -ne 0 ]; then
+    echo "STOP=failed action=remote_exec_staged_script exit=${STAGED_EXIT}"
+    exit "$STAGED_EXIT"
+  fi
 else
   echo "STOP=remote_script_missing"
   exit 1

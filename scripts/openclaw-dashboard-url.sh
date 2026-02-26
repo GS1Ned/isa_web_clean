@@ -38,7 +38,7 @@ fi
 
 if [ "$TOKENIZED" -eq 1 ]; then
   ACTION="dashboard_url_store_secure"
-  URL_FILE="${OPENCLAW_DASHBOARD_URL_FILE:-/root/.openclaw/dashboard-url.latest}"
+  URL_FILE="${OPENCLAW_DASHBOARD_URL_FILE:-${HOME:-/root}/.openclaw/dashboard-url.latest}"
   umask 077
   mkdir -p "$(dirname "$URL_FILE")"
   printf '%s\n' "$URL" > "$URL_FILE"
