@@ -2,6 +2,8 @@
 
 ## Start Here
 
+**Top-level Agent Entrypoint:** `AGENT_START_HERE.md`
+**Host ↔ VM OpenClaw Workflow:** `AGENT_START_HERE.md#host--vm-openclaw-workflow-canonical`
 **Agent Map (Canonical):** `docs/agent/AGENT_MAP.md`
 **MCP Policy (Canonical):** `docs/agent/MCP_POLICY.md`
 **MCP Recipes (Canonical):** `docs/agent/MCP_RECIPES.md`

@@ -1,0 +1,74 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ISA: Env Discover",
+      "type": "shell",
+      "command": "bash scripts/env-discover.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: Env Validate",
+      "type": "shell",
+      "command": "bash scripts/env-validate.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: Env Sync VM",
+      "type": "shell",
+      "command": "bash scripts/env-sync-vm.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: OpenClaw Tunnel",
+      "type": "shell",
+      "command": "bash scripts/openclaw-tunnel.sh up",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: VM OpenClaw Status",
+      "type": "shell",
+      "command": "bash scripts/vm-run.sh scripts/openclaw-status.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: VM OpenClaw Doctor",
+      "type": "shell",
+      "command": "bash scripts/vm-run.sh scripts/openclaw-doctor.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: VM Dashboard URL",
+      "type": "shell",
+      "command": "bash scripts/vm-run.sh scripts/openclaw-dashboard-url.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: Docker Up (ISA stub)",
+      "type": "shell",
+      "command": "bash scripts/docker-up.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: Docker Down (ISA stub)",
+      "type": "shell",
+      "command": "bash scripts/docker-down.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "ISA: OpenClaw E2E Validate",
+      "type": "shell",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "ISA: Env Validate",
+        "ISA: Env Sync VM",
+        "ISA: OpenClaw Tunnel",
+        "ISA: VM OpenClaw Status",
+        "ISA: VM OpenClaw Doctor",
+        "ISA: VM Dashboard URL"
+      ],
+      "command": "bash scripts/openclaw-tunnel.sh status",
+      "problemMatcher": []
+    }
+  ]
+}

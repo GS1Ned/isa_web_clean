@@ -28,23 +28,33 @@
 - Make minimal, reviewable commits with governance-grade messages.
 - Prefer small diffs; avoid refactors unless necessary for the task.
 
-## Tooling: MCP (Agent-Ready)
-- Canonical policy: `docs/agent/MCP_POLICY.md`
-- Canonical recipes: `docs/agent/MCP_RECIPES.md`
-- Default behavior:
-  - Use `filesystem` + `git` MCP servers for any repo-truth claim or edit.
-  - Use `fetch` + `github` MCP servers for external evidence and OSS patterns (record URLs + UTC dates).
-  - Use `playwright` MCP server for UI/DOM repro and JS-rendered sources.
-
-## Documentation Hygiene (Global)
-- Use integrate-first mode for all work, not only MCP.
-- Do not create ad-hoc report artifacts by default.
-- Classify findings as `INTEGRATE_NOW`, `RESOLVE_NOW`, or `DROP_NOW` per `docs/agent/MCP_POLICY.md`.
-- Resolve uncertainty in the same run or drop it; do not commit unresolved documentation claims.
-- Run `python scripts/validate_planning_and_traceability.py` before finalizing doc-heavy changes.
-
-## ISA-specific
-<!-- EVIDENCE:requirement:data/metadata/dataset_registry.json -->
-<!-- EVIDENCE:constraint:docs/DATASETS_CATALOG.md -->
-- Prefer authoritative sources for regulatory/standards facts (EU institutions, GS1, official specs).
-- If currency cannot be verified live, state it explicitly and downgrade confidence.
+## Workspace authority and synchronization (Host ↔ VM ↔ GitHub)
+- Canonical SSOT for repository history is the Git remote `origin` (GitHub).
+- Current workspace authority (effective 2026-02-25): host repo is the primary editing workspace. VM is the runtime/execution target for OpenClaw operations.
+- Default working mode:
+  - Edit on host.
+  - Run OpenClaw and VM-specific checks through repo scripts over SSH.
+  - Sync host ↔ VM via Git only. Do not rsync/zip-copy working trees between environments.
+- Host guardrails:
+  - Host push remains disabled by default (mirror mode). Any exception must be explicit and temporary.
+  - Host pulls must be fast-forward only.
+- VM guardrails:
+  - VM is execution-first for OpenClaw and infrastructure checks.
+  - If editing on VM is explicitly required: run `git status` then `git pull --ff-only` before edits; keep commits small; push to `origin`; mirror on host via `git pull --ff-only`.
+- SSH access contract (for scripts and agents):
+  - SSH alias: `ISA_VM_HOST` (recommended `isa-openclaw-vm`)
+  - VM repo path: `VM_REPO_PATH`
+  - VM env path: `VM_ENV_PATH`
+  - Key path: `ISA_VM_SSH_KEY`
+  - Automation should use non-interactive host key behavior (`StrictHostKeyChecking=accept-new`).
+- Agent forwarding is preferred for VM Git operations to avoid copying private keys to the VM.
+- OpenClaw runtime contract:
+  - UI tunnel: `127.0.0.1:18789` (host) -> `127.0.0.1:18789` (VM).
+  - VM state/config location: `/root/.openclaw/*`.
+  - `OPENCLAW_GATEWAY_TOKEN` remains VM-only secret, authoritative in `/root/.openclaw/openclaw.json` (or VM env). Never store token values in repo docs.
+- Future VM-primary cutover prerequisites (not active yet):
+  - Branch protection and merge controls for `main` verified and documented.
+  - Host mirror guardrails automated (prevent local host commit/push except explicit temporary override).
+  - VM bootstrap + doctor path fully green via repo scripts.
+  - SSH known-host and agent-forwarding checks pass non-interactively in automation.
+  - Canonical docs/tasks/scripts updated with cutover date and rollback path.

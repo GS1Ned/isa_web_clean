@@ -8,8 +8,8 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 import { format as utilFormat } from "node:util";
-const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
-const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+const cliOut = (...args: string[]) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args: unknown[]) => process.stderr.write(`${utilFormat(...args)}\n`);
 
 
 const REPO_ROOT = process.cwd();
