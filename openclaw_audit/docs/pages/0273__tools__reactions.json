@@ -1,0 +1,16 @@
+{
+  "url": "https://docs.openclaw.ai/tools/reactions",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:57.500Z",
+  "section": "tools",
+  "title": "Reactions - OpenClaw",
+  "h1": [
+    "Reactions",
+    "​ Reaction tooling"
+  ],
+  "h2": [],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Reactions - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Built-in tools Reactions Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Tools Built-in tools Lobster LLM Task Exec Tool Web Tools apply_patch Tool Elevated Mode Thinking Levels Reactions Browser Browser (OpenClaw-managed) Browser Login Chrome Extension Browser Troubleshooting Agent coordination Agent Send Sub-Agents ACP Agents M",
+  "content": "Reactions - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Built-in tools Reactions Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Tools Built-in tools Lobster LLM Task Exec Tool Web Tools apply_patch Tool Elevated Mode Thinking Levels Reactions Browser Browser (OpenClaw-managed) Browser Login Chrome Extension Browser Troubleshooting Agent coordination Agent Send Sub-Agents ACP Agents Multi-Agent Sandbox & Tools Skills Slash Commands Skills Skills Config ClawHub Plugins Extensions Community plugins Voice Call Plugin Zalo Personal Plugin Automation Hooks Cron Jobs Cron vs Heartbeat Automation Troubleshooting Webhooks Gmail PubSub Polls Auth Monitoring Media and devices Nodes Node Troubleshooting Image and Media Support Audio and Voice Notes Camera Capture Talk Mode Voice Wake Location Command On this page Reaction tooling Built-in tools Reactions ​ Reaction tooling Shared reaction semantics across channels: emoji is required when adding a reaction. emoji=\"\" removes the bot’s reaction(s) when supported. remove: true removes the specified emoji when supported (requires emoji ). Channel notes: Discord/Slack : empty emoji removes all of the bot’s reactions on the message; remove: true removes just that emoji. Google Chat : empty emoji removes the app’s reactions on the message; remove: true removes just that emoji. Telegram : empty emoji removes the bot’s reactions; remove: true also removes reactions but still requires a non-empty emoji for tool validation. WhatsApp : empty emoji removes the bot reaction; remove: true maps to empty emoji (still requires emoji ). Signal : inbound reaction notifications emit system events when channels.signal.reactionNotifications is enabled. Thinking Levels Browser (OpenClaw-managed) ⌘ I Powered by"
+}

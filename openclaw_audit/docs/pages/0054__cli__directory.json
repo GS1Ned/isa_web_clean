@@ -1,0 +1,24 @@
+{
+  "url": "https://docs.openclaw.ai/cli/directory",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:51.438Z",
+  "section": "cli",
+  "title": "directory - OpenClaw",
+  "h1": [
+    "directory",
+    "​ openclaw directory"
+  ],
+  "h2": [
+    "​ Common flags",
+    "​ Notes",
+    "​ Using results with message send",
+    "​ ID formats (by channel)",
+    "​ Self (“me”)",
+    "​ Peers (contacts/users)",
+    "​ Groups"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "directory - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation CLI commands directory Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help CLI commands CLI Reference acp agent agents approvals browser channels clawbot completion config configure cron daemon dashboard devices directory dns docs doctor gateway health hooks logs memory message models node nodes onboard pairing plugins qr reset Sandbox CLI se",
+  "content": "directory - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation CLI commands directory Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help CLI commands CLI Reference acp agent agents approvals browser channels clawbot completion config configure cron daemon dashboard devices directory dns docs doctor gateway health hooks logs memory message models node nodes onboard pairing plugins qr reset Sandbox CLI security sessions setup skills status system tui uninstall update voicecall webhooks RPC and API RPC Adapters Device Model Database Templates Default AGENTS.md AGENTS.md Template BOOT.md Template BOOTSTRAP.md Template HEARTBEAT.md Template IDENTITY SOUL.md Template TOOLS.md Template USER Technical reference Wizard Reference Token Use and Costs Prompt Caching grammY Concept internals TypeBox Markdown Formatting Typing Indicators Usage Tracking Timezones Project Credits Release notes Release Checklist Tests Experiments Onboarding and Config Protocol Workspace Memory Research Model Config Exploration On this page openclaw directory Common flags Notes Using results with message send ID formats (by channel) Self (“me”) Peers (contacts/users) Groups CLI commands directory ​ openclaw directory Directory lookups for channels that support it (contacts/peers, groups, and “me”). ​ Common flags --channel <name> : channel id/alias (required when multiple channels are configured; auto when only one is configured) --account <id> : account id (default: channel default) --json : output JSON ​ Notes directory is meant to help you find IDs you can paste into other commands (especially openclaw message send --target ... ). For many channels, results are config-backed (allowlists / configured groups) rather than a live provider directory. Default output is id (and sometimes name ) separated by a tab; use --json for scripting. ​ Using results with message send Copy openclaw directory peers list --channel slack --query \"U0\" openclaw message send --channel slack --target user:U012ABCDEF --message \"hello\" ​ ID formats (by channel) WhatsApp: +15551234567 (DM), 1234567890-1234567890@g.us (group) Telegram: @username or numeric chat id; groups are numeric ids Slack: user:U… and channel:C… Discord: user:<id> and channel:<id> Matrix (plugin): user:@user:server , room:!roomId:server , or #alias:server Microsoft Teams (plugin): user:<id> and conversation:<id> Zalo (plugin): user id (Bot API) Zalo Personal / zalouser (plugin): thread id (DM/group) from zca ( me , friend list , group list ) ​ Self (“me”) Copy openclaw directory self --channel zalouser ​ Peers (contacts/users) Copy openclaw directory peers list --channel zalouser openclaw directory peers list --channel zalouser --query \"name\" openclaw directory peers list --channel zalouser --limit 50 ​ Groups Copy openclaw directory groups list --channel zalouser openclaw directory groups list --channel zalouser --query \"work\" openclaw directory groups members --channel zalouser --group-id < i d > devices dns ⌘ I Powered by"
+}

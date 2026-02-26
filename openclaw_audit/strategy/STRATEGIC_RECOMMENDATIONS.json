@@ -1,0 +1,179 @@
+{
+  "generated_at": "2026-02-26T12:20:42.755Z",
+  "scoring_scale": {
+    "0": "Misaligned with ISA constraints",
+    "4": "Experimental or high effort with uncertain ROI",
+    "7": "Strong value with moderate guardrails/integration effort",
+    "10": "Directly accelerates ISA goal with low incremental risk"
+  },
+  "recommendations": [
+    {
+      "rank": 1,
+      "horizon": "immediate",
+      "title": "Adopt OpenClaw Gateway + health/logging surfaces as ISA sandboxed operations substrate",
+      "alignment_score": 9,
+      "opportunities": [
+        "Deterministic operational entrypoint for automation and incident triage",
+        "Unified health/doctor/log patterns usable across ASK_ISA and NEWS_HUB operations"
+      ],
+      "safeguards": [
+        "Bind gateway to trusted network paths only",
+        "Enforce trusted proxy auth and service tokens",
+        "Add ISA SLO probes and immutable audit logging"
+      ],
+      "dependencies": [
+        "ISA ops runbooks",
+        "Service account + secret rotation policy",
+        "Health-check wiring to existing SLO catalog"
+      ],
+      "mapped_workpackages": [
+        "NEWS_HUB",
+        "ASK_ISA",
+        "Meta/Ops"
+      ]
+    },
+    {
+      "rank": 2,
+      "horizon": "immediate",
+      "title": "Introduce policy-guarded exec/apply_patch lane for controlled remediation workflows",
+      "alignment_score": 8,
+      "opportunities": [
+        "Automate bounded maintenance tasks and advisory evidence regeneration",
+        "Reduce toil in repeatable compliance update operations"
+      ],
+      "safeguards": [
+        "Default-deny command classes",
+        "Human approval for elevated and filesystem-write operations",
+        "Snapshot + rollback procedure before mutating steps"
+      ],
+      "dependencies": [
+        "Approval policy service",
+        "Execution audit ledger",
+        "Command allowlist schema"
+      ],
+      "mapped_workpackages": [
+        "ADVISORY",
+        "Meta/Security"
+      ]
+    },
+    {
+      "rank": 3,
+      "horizon": "immediate",
+      "title": "Use hooks/cron/webhooks for governed NEWS_HUB and ADVISORY refresh loops",
+      "alignment_score": 8,
+      "opportunities": [
+        "Continuous ingestion and periodic advisory diff generation",
+        "Event-driven updates reduce manual orchestration load"
+      ],
+      "safeguards": [
+        "Signed webhook validation",
+        "Idempotency keys and replay protection",
+        "Automation kill switch and backoff policies"
+      ],
+      "dependencies": [
+        "Job scheduler observability",
+        "Event schema contracts",
+        "Failure classification and retry runbooks"
+      ],
+      "mapped_workpackages": [
+        "NEWS_HUB",
+        "ADVISORY",
+        "Meta/Ops"
+      ]
+    },
+    {
+      "rank": 4,
+      "horizon": "longer_term",
+      "title": "Treat skills/plugins ecosystem as quarantined acceleration lane, not production default",
+      "alignment_score": 6,
+      "opportunities": [
+        "Fast prototyping for niche connectors and operators",
+        "Community innovation leverage"
+      ],
+      "safeguards": [
+        "Curated allowlist only",
+        "Static + behavioral scanning before install",
+        "Sandbox profile per skill with minimal tool scope"
+      ],
+      "dependencies": [
+        "Internal skill registry mirror",
+        "Provenance metadata policy",
+        "Security review checklist"
+      ],
+      "mapped_workpackages": [
+        "Meta/Security",
+        "Optional connectors"
+      ]
+    },
+    {
+      "rank": 5,
+      "horizon": "longer_term",
+      "title": "Adopt browser automation only for fallback evidence capture and exception handling",
+      "alignment_score": 5,
+      "opportunities": [
+        "Recover data from systems without stable APIs",
+        "Operator-assisted incident debugging"
+      ],
+      "safeguards": [
+        "Ephemeral browser sessions",
+        "Credential vault integration",
+        "No autonomous irreversible browser actions without approval"
+      ],
+      "dependencies": [
+        "UI automation standards",
+        "Session lifecycle management",
+        "PII redaction in captures"
+      ],
+      "mapped_workpackages": [
+        "NEWS_HUB exception handling",
+        "Ops tooling"
+      ]
+    },
+    {
+      "rank": 6,
+      "horizon": "isa_specific_extension",
+      "title": "Build ISA Policy Envelope for OpenClaw actions (formalizable invariants + gate tests)",
+      "alignment_score": 9,
+      "opportunities": [
+        "Translate governance doctrine into machine-enforced controls",
+        "Create repeatable compliance posture for autonomous actions"
+      ],
+      "safeguards": [
+        "Invariant tests for no-secret-leak, no-unauthorized-write, citation-required outputs",
+        "Capability-bound policy map",
+        "Automated drift detection against baseline configs"
+      ],
+      "dependencies": [
+        "Policy schema + parser",
+        "CI gate integration",
+        "Versioned control artifacts"
+      ],
+      "mapped_workpackages": [
+        "All capabilities + Meta/Governance"
+      ]
+    }
+  ],
+  "experimentation_paths": [
+    {
+      "id": "exp-01",
+      "title": "Sandboxed gateway pilot for NEWS_HUB ingestion loops",
+      "benchmark": "MTTR for failed ingestion jobs, false-positive alert rate, evidence completeness",
+      "success_criteria": ">=30% reduction in manual intervention and complete audit trace on each job",
+      "rollback": "Disable hook/cron set, revert to manual trigger scripts"
+    },
+    {
+      "id": "exp-02",
+      "title": "Controlled exec lane for advisory regeneration",
+      "benchmark": "Time-to-generate advisory diff pack, policy-violation rate",
+      "success_criteria": "No unauthorized commands, deterministic artifact set across reruns",
+      "rollback": "Revert to current scripted/manual advisory generation path"
+    },
+    {
+      "id": "exp-03",
+      "title": "Skill quarantine trial with signed allowlist",
+      "benchmark": "Integration velocity vs. security review overhead",
+      "success_criteria": "No policy breaches; review SLA under 1 business day per candidate skill",
+      "rollback": "Block community skill installs; preserve only internal curated skills"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "url": "https://docs.openclaw.ai/ja-JP/start/wizard",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.401Z",
+  "section": "ja-JP",
+  "title": "オンボーディングウィザード（CLI） - OpenClaw",
+  "h1": [
+    "オンボーディングウィザード（CLI）",
+    "​ オンボーディングウィザード（CLI）"
+  ],
+  "h2": [
+    "​ クイックスタート vs 詳細設定",
+    "​ CLIオンボーディングの詳細",
+    "CLIリファレンス",
+    "自動化とスクリプト",
+    "​ よく使うフォローアップコマンド",
+    "​ 関連ドキュメント"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "オンボーディングウィザード（CLI） - OpenClaw メインコンテンツへスキップ OpenClaw home page 日本語 検索... ⌘ K GitHub Releases 検索... Navigation 初回セットアップ オンボーディングウィザード（CLI） はじめに 概要 OpenClaw 初回セットアップ はじめに Wizard (CLI) このページの内容 オンボーディングウィザード（CLI） クイックスタート vs 詳細設定 CLIオンボーディングの詳細 よく使うフォローアップコマンド 関連ドキュメント 初回セットアップ オンボーディングウィザード（CLI） ​ オンボーディングウィザード（CLI） CLIオンボーディングウィザードは、macOS、Linux、Windows（WSL2経由）でOpenClawをセットアップする際の推奨パスです。ローカルGatewayまたはリモートGateway接続に加えて、ワークスペースのデフォルト設定、チャンネル、Skillsを構成します。 コピー openclaw onboard 最速で初回チャットを開始する方法：Contro",
+  "content": "オンボーディングウィザード（CLI） - OpenClaw メインコンテンツへスキップ OpenClaw home page 日本語 検索... ⌘ K GitHub Releases 検索... Navigation 初回セットアップ オンボーディングウィザード（CLI） はじめに 概要 OpenClaw 初回セットアップ はじめに Wizard (CLI) このページの内容 オンボーディングウィザード（CLI） クイックスタート vs 詳細設定 CLIオンボーディングの詳細 よく使うフォローアップコマンド 関連ドキュメント 初回セットアップ オンボーディングウィザード（CLI） ​ オンボーディングウィザード（CLI） CLIオンボーディングウィザードは、macOS、Linux、Windows（WSL2経由）でOpenClawをセットアップする際の推奨パスです。ローカルGatewayまたはリモートGateway接続に加えて、ワークスペースのデフォルト設定、チャンネル、Skillsを構成します。 コピー openclaw onboard 最速で初回チャットを開始する方法：Control UI を開きます（チャンネル設定は不要）。 openclaw dashboard を実行してブラウザでチャットできます。ドキュメント： Dashboard 。 ​ クイックスタート vs 詳細設定 ウィザードは クイックスタート （デフォルト設定）と 詳細設定 （完全な制御）のどちらかを選択して開始します。 クイックスタート（デフォルト設定） 詳細設定（完全な制御） loopback上のローカルGateway 既存のワークスペースまたはデフォルトワークスペース Gatewayポート 18789 Gateway認証トークンは自動生成（loopback上でも生成されます） Tailscale公開はオフ TelegramとWhatsAppのDMはデフォルトで許可リスト（電話番号の入力を求められる場合があります） モード、ワークスペース、Gateway、チャンネル、デーモン、Skillsの完全なプロンプトフローを表示 ​ CLIオンボーディングの詳細 CLIリファレンス ローカルおよびリモートフローの完全な説明、認証とモデルマトリックス、設定出力、ウィザードRPC、signal-cliの動作。 自動化とスクリプト 非対話式オンボーディングのレシピと自動化された agents add の例。 ​ よく使うフォローアップコマンド コピー openclaw configure openclaw agents add < nam e > --json は非対話モードを意味しません。スクリプトでは --non-interactive を使用してください。 推奨：エージェントが web_search を使用できるように、Brave Search APIキーを設定してください（ web_fetch はキーなしで動作します）。最も簡単な方法： openclaw configure --section web を実行すると tools.web.search.apiKey が保存されます。ドキュメント： Webツール 。 ​ 関連ドキュメント CLIコマンドリファレンス： openclaw onboard macOSアプリのオンボーディング： オンボーディング エージェント初回起動の手順： エージェントブートストラップ はじめに ⌘ I Powered by"
+}

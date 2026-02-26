@@ -1,0 +1,24 @@
+{
+  "url": "https://docs.openclaw.ai/concepts/features",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:51.596Z",
+  "section": "concepts",
+  "title": "Features - OpenClaw",
+  "h1": [
+    "Features"
+  ],
+  "h2": [
+    "​ Highlights",
+    "Channels",
+    "Plugins",
+    "Routing",
+    "Media",
+    "Apps and UI",
+    "Mobile nodes",
+    "​ Full list"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Features - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Core concepts Features Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Home OpenClaw Overview Showcase Core concepts Features First steps Getting Started Onboarding Overview Onboarding: CLI Onboarding: macOS App Guides Personal Assistant Setup On this page Highlights Full list Core concepts Features ​ Highlights Channels WhatsApp, Telegram",
+  "content": "Features - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Core concepts Features Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Home OpenClaw Overview Showcase Core concepts Features First steps Getting Started Onboarding Overview Onboarding: CLI Onboarding: macOS App Guides Personal Assistant Setup On this page Highlights Full list Core concepts Features ​ Highlights Channels WhatsApp, Telegram, Discord, and iMessage with a single Gateway. Plugins Add Mattermost and more with extensions. Routing Multi-agent routing with isolated sessions. Media Images, audio, and documents in and out. Apps and UI Web Control UI and macOS companion app. Mobile nodes iOS and Android nodes with Canvas support. ​ Full list WhatsApp integration via WhatsApp Web (Baileys) Telegram bot support (grammY) Discord bot support (channels.discord.js) Mattermost bot support (plugin) iMessage integration via local imsg CLI (macOS) Agent bridge for Pi in RPC mode with tool streaming Streaming and chunking for long responses Multi-agent routing for isolated sessions per workspace or sender Subscription auth for Anthropic and OpenAI via OAuth Sessions: direct chats collapse into shared main ; groups are isolated Group chat support with mention based activation Media support for images, audio, and documents Optional voice note transcription hook WebChat and macOS menu bar app iOS node with pairing and Canvas surface Android node with pairing, Canvas, chat, and camera Legacy Claude, Codex, Gemini, and Opencode paths have been removed. Pi is the only coding agent path. Showcase Getting Started ⌘ I Powered by"
+}

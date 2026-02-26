@@ -1,0 +1,21 @@
+{
+  "url": "https://docs.openclaw.ai/cli/approvals",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:51.388Z",
+  "section": "cli",
+  "title": "approvals - OpenClaw",
+  "h1": [
+    "approvals",
+    "​ openclaw approvals"
+  ],
+  "h2": [
+    "​ Common commands",
+    "​ Replace approvals from a file",
+    "​ Allowlist helpers",
+    "​ Notes"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "approvals - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation CLI commands approvals Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help CLI commands CLI Reference acp agent agents approvals browser channels clawbot completion config configure cron daemon dashboard devices directory dns docs doctor gateway health hooks logs memory message models node nodes onboard pairing plugins qr reset Sandbox CLI se",
+  "content": "approvals - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation CLI commands approvals Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help CLI commands CLI Reference acp agent agents approvals browser channels clawbot completion config configure cron daemon dashboard devices directory dns docs doctor gateway health hooks logs memory message models node nodes onboard pairing plugins qr reset Sandbox CLI security sessions setup skills status system tui uninstall update voicecall webhooks RPC and API RPC Adapters Device Model Database Templates Default AGENTS.md AGENTS.md Template BOOT.md Template BOOTSTRAP.md Template HEARTBEAT.md Template IDENTITY SOUL.md Template TOOLS.md Template USER Technical reference Wizard Reference Token Use and Costs Prompt Caching grammY Concept internals TypeBox Markdown Formatting Typing Indicators Usage Tracking Timezones Project Credits Release notes Release Checklist Tests Experiments Onboarding and Config Protocol Workspace Memory Research Model Config Exploration On this page openclaw approvals Common commands Replace approvals from a file Allowlist helpers Notes CLI commands approvals ​ openclaw approvals Manage exec approvals for the local host , gateway host , or a node host . By default, commands target the local approvals file on disk. Use --gateway to target the gateway, or --node to target a specific node. Related: Exec approvals: Exec approvals Nodes: Nodes ​ Common commands Copy openclaw approvals get openclaw approvals get --node < id | name | ip > openclaw approvals get --gateway ​ Replace approvals from a file Copy openclaw approvals set --file ./exec-approvals.json openclaw approvals set --node < id | name | ip > --file ./exec-approvals.json openclaw approvals set --gateway --file ./exec-approvals.json ​ Allowlist helpers Copy openclaw approvals allowlist add \"~/Projects/**/bin/rg\" openclaw approvals allowlist add --agent main --node < id | name | ip > \"/usr/bin/uptime\" openclaw approvals allowlist add --agent \"*\" \"/usr/bin/uname\" openclaw approvals allowlist remove \"~/Projects/**/bin/rg\" ​ Notes --node uses the same resolver as openclaw nodes (id, name, ip, or id prefix). --agent defaults to \"*\" , which applies to all agents. The node host must advertise system.execApprovals.get/set (macOS app or headless node host). Approvals files are stored per host at ~/.openclaw/exec-approvals.json . agents browser ⌘ I Powered by"
+}

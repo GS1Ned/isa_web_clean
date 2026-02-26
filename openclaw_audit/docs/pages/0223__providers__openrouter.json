@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/providers/openrouter",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.655Z",
+  "section": "providers",
+  "title": "OpenRouter - OpenClaw",
+  "h1": [
+    "OpenRouter",
+    "​ OpenRouter"
+  ],
+  "h2": [
+    "​ CLI setup",
+    "​ Config snippet",
+    "​ Notes"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "OpenRouter - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Providers OpenRouter Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Synthetic Qi",
+  "content": "OpenRouter - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Providers OpenRouter Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Synthetic Qianfan On this page OpenRouter CLI setup Config snippet Notes Providers OpenRouter ​ OpenRouter OpenRouter provides a unified API that routes requests to many models behind a single endpoint and API key. It is OpenAI-compatible, so most OpenAI SDKs work by switching the base URL. ​ CLI setup Copy openclaw onboard --auth-choice apiKey --token-provider openrouter --token \"$OPENROUTER_API_KEY\" ​ Config snippet Copy { env : { OPENROUTER_API_KEY : \"sk-or-...\" } , agents : { defaults : { model : { primary : \"openrouter/anthropic/claude-sonnet-4-5\" } , } , } , } ​ Notes Model refs are openrouter/<provider>/<model> . For more model/provider options, see /concepts/model-providers . OpenRouter uses a Bearer token with your API key under the hood. OpenAI Litellm ⌘ I Powered by"
+}

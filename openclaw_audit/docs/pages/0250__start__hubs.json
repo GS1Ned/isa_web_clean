@@ -1,0 +1,30 @@
+{
+  "url": "https://docs.openclaw.ai/start/hubs",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.851Z",
+  "section": "start",
+  "title": "Docs Hubs - OpenClaw",
+  "h1": [
+    "Docs Hubs",
+    "​ Docs hubs"
+  ],
+  "h2": [
+    "​ Start here",
+    "​ Installation + updates",
+    "​ Core concepts",
+    "​ Providers + ingress",
+    "​ Gateway + operations",
+    "​ Tools + automation",
+    "​ Nodes, media, voice",
+    "​ Platforms",
+    "​ macOS companion app (advanced)",
+    "​ Workspace + templates",
+    "​ Experiments (exploratory)",
+    "​ Project",
+    "​ Testing + release"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Docs Hubs - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Docs meta Docs Hubs Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Help Help Troubleshooting FAQ Community OpenClaw Lore Environment and debugging Environment Variables Debugging Testing Scripts Node runtime Node.js Compaction internals Session Management Deep Dive Developer setup Setup Contributing CI Pipeline Docs meta Docs Hubs Docs d",
+  "content": "Docs Hubs - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Docs meta Docs Hubs Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Help Help Troubleshooting FAQ Community OpenClaw Lore Environment and debugging Environment Variables Debugging Testing Scripts Node runtime Node.js Compaction internals Session Management Deep Dive Developer setup Setup Contributing CI Pipeline Docs meta Docs Hubs Docs directory On this page Docs hubs Start here Installation + updates Core concepts Providers + ingress Gateway + operations Tools + automation Nodes, media, voice Platforms macOS companion app (advanced) Workspace + templates Experiments (exploratory) Project Testing + release Docs meta Docs Hubs ​ Docs hubs If you are new to OpenClaw, start with Getting Started . Use these hubs to discover every page, including deep dives and reference docs that don’t appear in the left nav. ​ Start here Index Getting Started Quick start Onboarding Wizard Setup Dashboard (local Gateway) Help Docs directory Configuration Configuration examples OpenClaw assistant Showcase Lore ​ Installation + updates Docker Nix Updating / rollback Bun workflow (experimental) ​ Core concepts Architecture Features Network hub Agent runtime Agent workspace Memory Agent loop Streaming + chunking Multi-agent routing Compaction Sessions Sessions (alias) Session pruning Session tools Queue Slash commands RPC adapters TypeBox schemas Timezone handling Presence Discovery + transports Bonjour Channel routing Groups Group messages Model failover OAuth ​ Providers + ingress Chat channels hub Model providers hub WhatsApp Telegram Telegram (grammY notes) Slack Discord Mattermost (plugin) Signal BlueBubbles (iMessage) iMessage (legacy) Location parsing WebChat Webhooks Gmail Pub/Sub ​ Gateway + operations Gateway runbook Network model Gateway pairing Gateway lock Background process Health Heartbeat Doctor Logging Sandboxing Dashboard Control UI Remote access Remote gateway README Tailscale Security Troubleshooting ​ Tools + automation Tools surface OpenProse CLI reference Exec tool Elevated mode Cron jobs Cron vs Heartbeat Thinking + verbose Models Sub-agents Agent send CLI Terminal UI Browser control Browser (Linux troubleshooting) Polls ​ Nodes, media, voice Nodes overview Camera Images Audio Location command Voice wake Talk mode ​ Platforms Platforms overview macOS iOS Android Windows (WSL2) Linux Web surfaces ​ macOS companion app (advanced) macOS dev setup macOS menu bar macOS voice wake macOS voice overlay macOS WebChat macOS Canvas macOS child process macOS health macOS icon macOS logging macOS permissions macOS remote macOS signing macOS release macOS gateway (launchd) macOS XPC macOS skills macOS Peekaboo ​ Workspace + templates Skills ClawHub Skills config Default AGENTS Templates: AGENTS Templates: BOOTSTRAP Templates: HEARTBEAT Templates: IDENTITY Templates: SOUL Templates: TOOLS Templates: USER ​ Experiments (exploratory) Onboarding config protocol Research: memory Model config exploration ​ Project Credits ​ Testing + release Testing Release checklist Device models CI Pipeline Docs directory ⌘ I Powered by"
+}

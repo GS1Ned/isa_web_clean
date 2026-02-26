@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/reference/test",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.251Z",
+  "section": "zh-CN",
+  "title": "测试 - OpenClaw",
+  "h1": [
+    "测试",
+    "​ 测试"
+  ],
+  "h2": [
+    "​ 模型延迟基准测试（本地密钥）",
+    "​ 新手引导 E2E（Docker）",
+    "​ QR 导入冒烟测试（Docker）"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "测试 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 发布说明 测试 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOUL TOOL",
+  "content": "测试 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 发布说明 测试 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOUL TOOLS USER 技术参考 向导参考 Token 使用与成本 概念内部机制 TypeBox Markdown 格式化 输入指示器 使用量跟踪 时区 项目 致谢 发布说明 RELEASING 测试 实验性功能 新手引导和配置协议 Cron Add 加固 Telegram 允许列表加固 工作区记忆研究 模型配置探索 在此页面 测试 模型延迟基准测试（本地密钥） 新手引导 E2E（Docker） QR 导入冒烟测试（Docker） 发布说明 测试 ​ 测试 完整测试套件（测试集、实时测试、Docker）： 测试 pnpm test:force ：终止任何占用默认控制端口的遗留 Gateway 网关进程，然后使用隔离的 Gateway 网关端口运行完整的 Vitest 套件，这样服务器测试不会与正在运行的实例冲突。当之前的 Gateway 网关运行占用了端口 18789 时使用此命令。 pnpm test:coverage ：使用 V8 覆盖率运行 Vitest。全局阈值为 70% 的行/分支/函数/语句覆盖率。覆盖率排除了集成密集型入口点（CLI 连接、gateway/telegram 桥接、webchat 静态服务器），以保持目标集中在可单元测试的逻辑上。 pnpm test:e2e ：运行 Gateway 网关端到端冒烟测试（多实例 WS/HTTP/节点配对）。 pnpm test:live ：运行提供商实时测试（minimax/zai）。需要 API 密钥和 LIVE=1 （或提供商特定的 *_LIVE_TEST=1 ）才能取消跳过。 ​ 模型延迟基准测试（本地密钥） 脚本： scripts/bench-model.ts 用法： source ~/.profile && pnpm tsx scripts/bench-model.ts --runs 10 可选环境变量： MINIMAX_API_KEY 、 MINIMAX_BASE_URL 、 MINIMAX_MODEL 、 ANTHROPIC_API_KEY 默认提示词：“Reply with a single word: ok. No punctuation or extra text.” 上次运行（2025-12-31，20 次）： minimax 中位数 1279ms（最小 1114，最大 2431） opus 中位数 2454ms（最小 1224，最大 3170） ​ 新手引导 E2E（Docker） Docker 是可选的；这仅用于容器化的新手引导冒烟测试。 在干净的 Linux 容器中完整的冷启动流程： 复制 scripts/e2e/onboard-docker.sh 此脚本通过伪终端驱动交互式向导，验证配置/工作区/会话文件，然后启动 Gateway 网关并运行 openclaw health 。 ​ QR 导入冒烟测试（Docker） 确保 qrcode-terminal 在 Docker 中的 Node 22+ 下加载： 复制 pnpm test:docker:qr RELEASING 新手引导和配置协议 ⌘ I 技术支持"
+}

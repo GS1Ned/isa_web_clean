@@ -1,0 +1,21 @@
+{
+  "url": "https://docs.openclaw.ai/platforms/mac/logging",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.507Z",
+  "section": "platforms",
+  "title": "macOS Logging - OpenClaw",
+  "h1": [
+    "macOS Logging",
+    "​ Logging (macOS)"
+  ],
+  "h2": [
+    "​ Rolling diagnostics file log (Debug pane)",
+    "​ Unified logging private data on macOS",
+    "​ Enable for OpenClaw ( ai.openclaw )",
+    "​ Disable after debugging"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "macOS Logging - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation macOS companion app macOS Logging Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Platforms overview Platforms macOS App Linux App Windows (WSL2) Android App iOS App macOS companion app macOS Dev Setup Menu Bar Voice Wake Voice Overlay WebChat Canvas Gateway Lifecycle Health Checks Menu Bar Icon macOS Logging macOS Permissions Remote ",
+  "content": "macOS Logging - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation macOS companion app macOS Logging Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Platforms overview Platforms macOS App Linux App Windows (WSL2) Android App iOS App macOS companion app macOS Dev Setup Menu Bar Voice Wake Voice Overlay WebChat Canvas Gateway Lifecycle Health Checks Menu Bar Icon macOS Logging macOS Permissions Remote Control macOS Signing macOS Release Gateway on macOS macOS IPC Skills Peekaboo Bridge On this page Logging (macOS) Rolling diagnostics file log (Debug pane) Unified logging private data on macOS Enable for OpenClaw (ai.openclaw) Disable after debugging macOS companion app macOS Logging ​ Logging (macOS) ​ Rolling diagnostics file log (Debug pane) OpenClaw routes macOS app logs through swift-log (unified logging by default) and can write a local, rotating file log to disk when you need a durable capture. Verbosity: Debug pane → Logs → App logging → Verbosity Enable: Debug pane → Logs → App logging → “Write rolling diagnostics log (JSONL)” Location: ~/Library/Logs/OpenClaw/diagnostics.jsonl (rotates automatically; old files are suffixed with .1 , .2 , …) Clear: Debug pane → Logs → App logging → “Clear” Notes: This is off by default . Enable only while actively debugging. Treat the file as sensitive; don’t share it without review. ​ Unified logging private data on macOS Unified logging redacts most payloads unless a subsystem opts into privacy -off . Per Peter’s write-up on macOS logging privacy shenanigans (2025) this is controlled by a plist in /Library/Preferences/Logging/Subsystems/ keyed by the subsystem name. Only new log entries pick up the flag, so enable it before reproducing an issue. ​ Enable for OpenClaw ( ai.openclaw ) Write the plist to a temp file first, then install it atomically as root: Copy cat << &#x27;EOF&#x27; > /tmp/ai.openclaw.plist <?xml version=\"1.0\" encoding=\"UTF-8\"?> <!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"> <plist version=\"1.0\"> <dict> <key>DEFAULT-OPTIONS</key> <dict> <key>Enable-Private-Data</key> <true/> </dict> </dict> </plist> EOF sudo install -m 644 -o root -g wheel /tmp/ai.openclaw.plist /Library/Preferences/Logging/Subsystems/ai.openclaw.plist No reboot is required; logd notices the file quickly, but only new log lines will include private payloads. View the richer output with the existing helper, e.g. ./scripts/clawlog.sh --category WebChat --last 5m . ​ Disable after debugging Remove the override: sudo rm /Library/Preferences/Logging/Subsystems/ai.openclaw.plist . Optionally run sudo log config --reload to force logd to drop the override immediately. Remember this surface can include phone numbers and message bodies; keep the plist in place only while you actively need the extra detail. Menu Bar Icon macOS Permissions ⌘ I Powered by"
+}

@@ -1,0 +1,30 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/start/hubs",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.278Z",
+  "section": "zh-CN",
+  "title": "文档导航中心 - OpenClaw",
+  "h1": [
+    "文档导航中心",
+    "​ 文档导航中心"
+  ],
+  "h2": [
+    "​ 从这里开始",
+    "​ 安装 + 更新",
+    "​ 核心概念",
+    "​ 提供商 + 入口",
+    "​ Gateway 网关 + 运维",
+    "​ 工具 + 自动化",
+    "​ 节点、媒体、语音",
+    "​ 平台",
+    "​ macOS 配套应用（高级）",
+    "​ 工作区 + 模板",
+    "​ 实验（探索性）",
+    "​ 项目",
+    "​ 测试 + 发布"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "文档导航中心 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 文档元信息 文档导航中心 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 帮助 帮助 故障排除 常见问题 社区 OpenClaw 传说 环境与调试 环境变量 调试 测试 脚本 Node 运行时 Node.js 压缩机制内部参考 会话管理深入了解 开发者设置 设置 文档元信息 文档导航中心 文档目录 在此页面 文档导航中心 从这里开始 安装 + 更新 核心概念 提供商 + 入口 Gateway 网关 + 运维 工具 + 自动化 节点、媒体、语音 平台 macOS 配套应用（高级） 工作区 + 模板 实验（探索性） 项目 测试 + 发布 文档元信息 文档导航中心 ​ 文档导航中心 使用这些导航中心发现每一个页面，包括深入解析和参考文档——它们不一定出现在左侧导航栏中。 ​ 从这里开始 索引 入门指南 快速开始 新手引导 向导 安装配置 仪表盘（本地 Gateway 网关） 帮助 文",
+  "content": "文档导航中心 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 文档元信息 文档导航中心 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 帮助 帮助 故障排除 常见问题 社区 OpenClaw 传说 环境与调试 环境变量 调试 测试 脚本 Node 运行时 Node.js 压缩机制内部参考 会话管理深入了解 开发者设置 设置 文档元信息 文档导航中心 文档目录 在此页面 文档导航中心 从这里开始 安装 + 更新 核心概念 提供商 + 入口 Gateway 网关 + 运维 工具 + 自动化 节点、媒体、语音 平台 macOS 配套应用（高级） 工作区 + 模板 实验（探索性） 项目 测试 + 发布 文档元信息 文档导航中心 ​ 文档导航中心 使用这些导航中心发现每一个页面，包括深入解析和参考文档——它们不一定出现在左侧导航栏中。 ​ 从这里开始 索引 入门指南 快速开始 新手引导 向导 安装配置 仪表盘（本地 Gateway 网关） 帮助 文档目录 配置 配置示例 OpenClaw 助手 展示 背景故事 ​ 安装 + 更新 Docker Nix 更新 / 回滚 Bun 工作流（实验性） ​ 核心概念 架构 功能 网络中心 智能体运行时 智能体工作区 记忆 智能体循环 流式传输 + 分块 多智能体路由 压缩 会话 会话（别名） 会话修剪 会话工具 队列 斜杠命令 RPC 适配器 TypeBox 模式 时区处理 在线状态 设备发现 + 传输协议 Bonjour 渠道路由 群组 群组消息 模型故障转移 OAuth ​ 提供商 + 入口 聊天渠道中心 模型提供商中心 WhatsApp Telegram Telegram（grammY 注意事项） Slack Discord Mattermost （插件） Signal BlueBubbles (iMessage) iMessage（旧版） 位置解析 WebChat Webhooks Gmail Pub/Sub ​ Gateway 网关 + 运维 Gateway 网关运维手册 网络模型 Gateway 网关配对 Gateway 网关锁 后台进程 健康检查 心跳 Doctor 日志 沙箱隔离 仪表盘 控制界面 远程访问 远程 Gateway 网关 README Tailscale 安全 故障排除 ​ 工具 + 自动化 工具概览 OpenProse CLI 参考 Exec 工具 提权模式 定时任务 定时任务 vs 心跳 思考 + 详细输出 模型 子智能体 Agent send CLI 终端界面 浏览器控制 浏览器（Linux 故障排除） 轮询 ​ 节点、媒体、语音 节点概览 摄像头 图片 音频 位置命令 语音唤醒 对话模式 ​ 平台 平台概览 macOS iOS Android Windows (WSL2) Linux Web 界面 ​ macOS 配套应用（高级） macOS 开发环境配置 macOS 菜单栏 macOS 语音唤醒 macOS 语音悬浮窗 macOS WebChat macOS Canvas macOS 子进程 macOS 健康检查 macOS 图标 macOS 日志 macOS 权限 macOS 远程 macOS 签名 macOS 发布 macOS Gateway 网关 (launchd) macOS XPC macOS Skills macOS Peekaboo ​ 工作区 + 模板 Skills ClawHub Skills 配置 默认 AGENTS 模板：AGENTS 模板：BOOTSTRAP 模板：HEARTBEAT 模板：IDENTITY 模板：SOUL 模板：TOOLS 模板：USER ​ 实验（探索性） 新手引导配置协议 定时任务加固笔记 群组策略加固笔记 研究：记忆 模型配置探索 ​ 项目 致谢 ​ 测试 + 发布 测试 发布检查清单 设备型号 设置 文档目录 ⌘ I 技术支持"
+}

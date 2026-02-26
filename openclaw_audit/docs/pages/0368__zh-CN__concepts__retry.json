@@ -1,0 +1,22 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/concepts/retry",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.662Z",
+  "section": "zh-CN",
+  "title": "重试策略 - OpenClaw",
+  "h1": [
+    "重试策略",
+    "​ 重试策略"
+  ],
+  "h2": [
+    "​ 目标",
+    "​ 默认值",
+    "​ 行为",
+    "​ 配置",
+    "​ 注意事项"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "重试策略 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 消息与投递 重试策略 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 基础 Gateway 网关架构 智能体运行时 智能体循环 系统提示词 上下文 智能体工作区 OAuth 引导 引导 会话与记忆 会话管理 会话 Session pruning 会话工具 记忆 压缩 多代理 多智能体路由 在线状态 消息与投递 消息 流式传输和分块 重试策略 命令队列 在此页面 重试策略 目标 默认值 行为 Discord Telegram 配置 注意事项 消息与投递 重试策略 ​ 重试策略 ​ 目标 按 HTTP 请求重试，而非按多步骤流程重试。 通过仅重试当前步骤来保持顺序。 避免重复执行非幂等操作。 ​ 默认值 尝试次数：3 最大延迟上限：30000 毫秒 抖动：0.1（10%） 提供商默认值： Telegram 最小延迟：400 毫秒 Discord 最小延迟：500 毫秒 ​ 行为 ​ D",
+  "content": "重试策略 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 消息与投递 重试策略 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 基础 Gateway 网关架构 智能体运行时 智能体循环 系统提示词 上下文 智能体工作区 OAuth 引导 引导 会话与记忆 会话管理 会话 Session pruning 会话工具 记忆 压缩 多代理 多智能体路由 在线状态 消息与投递 消息 流式传输和分块 重试策略 命令队列 在此页面 重试策略 目标 默认值 行为 Discord Telegram 配置 注意事项 消息与投递 重试策略 ​ 重试策略 ​ 目标 按 HTTP 请求重试，而非按多步骤流程重试。 通过仅重试当前步骤来保持顺序。 避免重复执行非幂等操作。 ​ 默认值 尝试次数：3 最大延迟上限：30000 毫秒 抖动：0.1（10%） 提供商默认值： Telegram 最小延迟：400 毫秒 Discord 最小延迟：500 毫秒 ​ 行为 ​ Discord 仅在速率限制错误（HTTP 429）时重试。 可用时使用 Discord retry_after ，否则使用指数退避。 ​ Telegram 在瞬态错误时重试（429、超时、连接/重置/关闭、暂时不可用）。 可用时使用 retry_after ，否则使用指数退避。 Markdown 解析错误不会重试；会回退为纯文本。 ​ 配置 在 ~/.openclaw/openclaw.json 中按提供商设置重试策略： 复制 { channels : { telegram : { retry : { attempts : 3 , minDelayMs : 400 , maxDelayMs : 30000 , jitter : 0.1 , } , } , discord : { retry : { attempts : 3 , minDelayMs : 500 , maxDelayMs : 30000 , jitter : 0.1 , } , } , } , } ​ 注意事项 重试按请求应用（消息发送、媒体上传、表情回应、投票、贴纸）。 组合流程不会重试已完成的步骤。 流式传输和分块 命令队列 ⌘ I 技术支持"
+}

@@ -1,0 +1,16 @@
+{
+  "url": "https://docs.openclaw.ai/concepts/sessions",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:51.639Z",
+  "section": "concepts",
+  "title": "Sessions - OpenClaw",
+  "h1": [
+    "Sessions",
+    "​ Sessions"
+  ],
+  "h2": [],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Sessions - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Sessions and memory Sessions Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Fundamentals Gateway Architecture Agent Runtime Agent Loop System Prompt Context Agent Workspace OAuth Bootstrapping Bootstrapping Sessions and memory Session Management Sessions Session Pruning Session Tools Memory Compaction Multi-agent Multi-Agent Routing Prese",
+  "content": "Sessions - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Sessions and memory Sessions Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Fundamentals Gateway Architecture Agent Runtime Agent Loop System Prompt Context Agent Workspace OAuth Bootstrapping Bootstrapping Sessions and memory Session Management Sessions Session Pruning Session Tools Memory Compaction Multi-agent Multi-Agent Routing Presence Messages and delivery Messages Streaming and Chunking Retry Policy Command Queue On this page Sessions Sessions and memory Sessions ​ Sessions Canonical session management docs live in Session management . Session Management Session Pruning ⌘ I Powered by"
+}

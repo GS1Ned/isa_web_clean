@@ -1,0 +1,18 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/cli/configure",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.432Z",
+  "section": "zh-CN",
+  "title": "configure - OpenClaw",
+  "h1": [
+    "configure",
+    "​ openclaw configure"
+  ],
+  "h2": [
+    "​ 示例"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "configure - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation CLI 命令 configure 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT ID",
+  "content": "configure - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation CLI 命令 configure 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOUL TOOLS USER 技术参考 向导参考 Token 使用与成本 概念内部机制 TypeBox Markdown 格式化 输入指示器 使用量跟踪 时区 项目 致谢 发布说明 RELEASING 测试 实验性功能 新手引导和配置协议 Cron Add 加固 Telegram 允许列表加固 工作区记忆研究 模型配置探索 在此页面 openclaw configure 示例 CLI 命令 configure ​ openclaw configure 用于设置凭证、设备和智能体默认值的交互式提示。 注意： 模型 部分现在包含一个用于 agents.defaults.models 允许列表的多选项（显示在 /model 和模型选择器中的内容）。 提示：不带子命令的 openclaw config 会打开相同的向导。使用 openclaw config get|set|unset 进行非交互式编辑。 相关内容： Gateway 网关配置参考： 配置 Config CLI： Config 注意事项： 选择 Gateway 网关运行位置始终会更新 gateway.mode 。如果这是你唯一需要的，可以不选择其他部分直接选择”继续”。 面向渠道的服务（Slack/Discord/Matrix/Microsoft Teams）在设置期间会提示输入频道/房间允许列表。你可以输入名称或 ID；向导会尽可能将名称解析为 ID。 ​ 示例 复制 openclaw configure openclaw configure --section models --section channels channels cron ⌘ I 技术支持"
+}

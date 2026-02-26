@@ -1,0 +1,19 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/help/troubleshooting",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.860Z",
+  "section": "zh-CN",
+  "title": "故障排除 - OpenClaw",
+  "h1": [
+    "故障排除",
+    "​ 故障排除"
+  ],
+  "h2": [
+    "​ 最初的六十秒",
+    "​ 常见的“它坏了”情况"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "故障排除 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 帮助 故障排除 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 帮助 帮助 故障排除 常见问题 社区 OpenClaw 传说 环境与调试 环境变量 调试 测试 脚本 Node 运行时 Node.js 压缩机制内部参考 会话管理深入了解 开发者设置 设置 文档元信息 文档导航中心 文档目录 在此页面 故障排除 最初的六十秒 常见的“它坏了”情况 openclaw: command not found 安装程序失败（或你需要完整日志） Gateway 网关“unauthorized”、无法连接或持续重连 控制 UI 在 HTTP 上失败（需要设备身份） docs.openclaw.ai 显示 SSL 错误（Comcast/Xfinity） 服务显示运行中，但 RPC 探测失败 模型/认证失败（速率限制、账单、“all models failed”） /model 显示 model no",
+  "content": "故障排除 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 帮助 故障排除 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 帮助 帮助 故障排除 常见问题 社区 OpenClaw 传说 环境与调试 环境变量 调试 测试 脚本 Node 运行时 Node.js 压缩机制内部参考 会话管理深入了解 开发者设置 设置 文档元信息 文档导航中心 文档目录 在此页面 故障排除 最初的六十秒 常见的“它坏了”情况 openclaw: command not found 安装程序失败（或你需要完整日志） Gateway 网关“unauthorized”、无法连接或持续重连 控制 UI 在 HTTP 上失败（需要设备身份） docs.openclaw.ai 显示 SSL 错误（Comcast/Xfinity） 服务显示运行中，但 RPC 探测失败 模型/认证失败（速率限制、账单、“all models failed”） /model 显示 model not allowed 提交问题时 帮助 故障排除 ​ 故障排除 ​ 最初的六十秒 按顺序运行这些命令： 复制 openclaw status openclaw status --all openclaw gateway probe openclaw logs --follow openclaw doctor 如果 Gateway 网关可达，进行深度探测： 复制 openclaw status --deep ​ 常见的“它坏了”情况 ​ openclaw: command not found 几乎总是 Node/npm PATH 问题。从这里开始： 安装（Node/npm PATH 安装完整性检查） ​ 安装程序失败（或你需要完整日志） 以详细模式重新运行安装程序以查看完整跟踪和 npm 输出： 复制 curl -fsSL https://openclaw.ai/install.sh | bash -s -- --verbose 对于 beta 安装： 复制 curl -fsSL https://openclaw.ai/install.sh | bash -s -- --beta --verbose 你也可以设置 OPENCLAW_VERBOSE=1 代替标志。 ​ Gateway 网关“unauthorized”、无法连接或持续重连 Gateway 网关故障排除 Gateway 网关认证 ​ 控制 UI 在 HTTP 上失败（需要设备身份） Gateway 网关故障排除 控制 UI ​ docs.openclaw.ai 显示 SSL 错误（Comcast/Xfinity） 一些 Comcast/Xfinity 连接通过 Xfinity Advanced Security 阻止 docs.openclaw.ai 。 禁用 Advanced Security 或将 docs.openclaw.ai 添加到允许列表，然后重试。 Xfinity Advanced Security 帮助： https://www.xfinity.com/support/articles/using-xfinity-xfi-advanced-security 快速检查：尝试移动热点或 VPN 以确认这是 ISP 级别的过滤 ​ 服务显示运行中，但 RPC 探测失败 Gateway 网关故障排除 后台进程/服务 ​ 模型/认证失败（速率限制、账单、“all models failed”） 模型 OAuth / 认证概念 ​ /model 显示 model not allowed 这通常意味着 agents.defaults.models 配置为允许列表。当它非空时，只能选择那些提供商/模型键。 检查允许列表： openclaw config get agents.defaults.models 添加你想要的模型（或清除允许列表）然后重试 /model 使用 /models 浏览允许的提供商/模型 ​ 提交问题时 粘贴一份安全报告： 复制 openclaw status --all 如果可以的话，包含来自 openclaw logs --follow 的相关日志尾部。 帮助 常见问题 ⌘ I 技术支持"
+}

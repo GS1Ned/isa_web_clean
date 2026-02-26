@@ -1,0 +1,22 @@
+{
+  "url": "https://docs.openclaw.ai/platforms/mac/child-process",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.516Z",
+  "section": "platforms",
+  "title": "Gateway Lifecycle - OpenClaw",
+  "h1": [
+    "Gateway Lifecycle",
+    "​ Gateway lifecycle on macOS"
+  ],
+  "h2": [
+    "​ Default behavior (launchd)",
+    "​ Unsigned dev builds",
+    "​ Attach-only mode",
+    "​ Remote mode",
+    "​ Why we prefer launchd"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Gateway Lifecycle - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation macOS companion app Gateway Lifecycle Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Platforms overview Platforms macOS App Linux App Windows (WSL2) Android App iOS App macOS companion app macOS Dev Setup Menu Bar Voice Wake Voice Overlay WebChat Canvas Gateway Lifecycle Health Checks Menu Bar Icon macOS Logging macOS Permissions",
+  "content": "Gateway Lifecycle - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation macOS companion app Gateway Lifecycle Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Platforms overview Platforms macOS App Linux App Windows (WSL2) Android App iOS App macOS companion app macOS Dev Setup Menu Bar Voice Wake Voice Overlay WebChat Canvas Gateway Lifecycle Health Checks Menu Bar Icon macOS Logging macOS Permissions Remote Control macOS Signing macOS Release Gateway on macOS macOS IPC Skills Peekaboo Bridge On this page Gateway lifecycle on macOS Default behavior (launchd) Unsigned dev builds Attach-only mode Remote mode Why we prefer launchd macOS companion app Gateway Lifecycle ​ Gateway lifecycle on macOS The macOS app manages the Gateway via launchd by default and does not spawn the Gateway as a child process. It first tries to attach to an already‑running Gateway on the configured port; if none is reachable, it enables the launchd service via the external openclaw CLI (no embedded runtime). This gives you reliable auto‑start at login and restart on crashes. Child‑process mode (Gateway spawned directly by the app) is not in use today. If you need tighter coupling to the UI, run the Gateway manually in a terminal. ​ Default behavior (launchd) The app installs a per‑user LaunchAgent labeled ai.openclaw.gateway (or ai.openclaw.<profile> when using --profile / OPENCLAW_PROFILE ; legacy com.openclaw.* is supported). When Local mode is enabled, the app ensures the LaunchAgent is loaded and starts the Gateway if needed. Logs are written to the launchd gateway log path (visible in Debug Settings). Common commands: Copy launchctl kickstart -k gui/ $UID /ai.openclaw.gateway launchctl bootout gui/ $UID /ai.openclaw.gateway Replace the label with ai.openclaw.<profile> when running a named profile. ​ Unsigned dev builds scripts/restart-mac.sh --no-sign is for fast local builds when you don’t have signing keys. To prevent launchd from pointing at an unsigned relay binary, it: Writes ~/.openclaw/disable-launchagent . Signed runs of scripts/restart-mac.sh clear this override if the marker is present. To reset manually: Copy rm ~/.openclaw/disable-launchagent ​ Attach-only mode To force the macOS app to never install or manage launchd , launch it with --attach-only (or --no-launchd ). This sets ~/.openclaw/disable-launchagent , so the app only attaches to an already running Gateway. You can toggle the same behavior in Debug Settings. ​ Remote mode Remote mode never starts a local Gateway. The app uses an SSH tunnel to the remote host and connects over that tunnel. ​ Why we prefer launchd Auto‑start at login. Built‑in restart/KeepAlive semantics. Predictable logs and supervision. If a true child‑process mode is ever needed again, it should be documented as a separate, explicit dev‑only mode. Canvas Health Checks ⌘ I Powered by"
+}

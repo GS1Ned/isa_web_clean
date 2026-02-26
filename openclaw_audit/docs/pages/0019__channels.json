@@ -1,0 +1,19 @@
+{
+  "url": "https://docs.openclaw.ai/channels",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:51.287Z",
+  "section": "channels",
+  "title": "Chat Channels - OpenClaw",
+  "h1": [
+    "Chat Channels",
+    "​ Chat Channels"
+  ],
+  "h2": [
+    "​ Supported channels",
+    "​ Notes"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Chat Channels - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Overview Chat Channels Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Chat Channels Messaging platforms WhatsApp Telegram Discord IRC Slack Feishu Google Chat Mattermost Signal iMessage BlueBubbles Microsoft Teams Synology Chat LINE Matrix Nextcloud Talk Nostr Tlon Twitch Zalo Zalo Personal Configuration Pairing Group Messag",
+  "content": "Chat Channels - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Overview Chat Channels Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Chat Channels Messaging platforms WhatsApp Telegram Discord IRC Slack Feishu Google Chat Mattermost Signal iMessage BlueBubbles Microsoft Teams Synology Chat LINE Matrix Nextcloud Talk Nostr Tlon Twitch Zalo Zalo Personal Configuration Pairing Group Messages Groups Broadcast Groups Channel Routing Channel Location Parsing Channel Troubleshooting On this page Chat Channels Supported channels Notes Overview Chat Channels ​ Chat Channels OpenClaw can talk to you on any chat app you already use. Each channel connects via the Gateway. Text is supported everywhere; media and reactions vary by channel. ​ Supported channels WhatsApp — Most popular; uses Baileys and requires QR pairing. Telegram — Bot API via grammY; supports groups. Discord — Discord Bot API + Gateway; supports servers, channels, and DMs. IRC — Classic IRC servers; channels + DMs with pairing/allowlist controls. Slack — Bolt SDK; workspace apps. Feishu — Feishu/Lark bot via WebSocket (plugin, installed separately). Google Chat — Google Chat API app via HTTP webhook. Mattermost — Bot API + WebSocket; channels, groups, DMs (plugin, installed separately). Signal — signal-cli; privacy-focused. BlueBubbles — Recommended for iMessage ; uses the BlueBubbles macOS server REST API with full feature support (edit, unsend, effects, reactions, group management — edit currently broken on macOS 26 Tahoe). iMessage (legacy) — Legacy macOS integration via imsg CLI (deprecated, use BlueBubbles for new setups). Microsoft Teams — Bot Framework; enterprise support (plugin, installed separately). Synology Chat — Synology NAS Chat via outgoing+incoming webhooks (plugin, installed separately). LINE — LINE Messaging API bot (plugin, installed separately). Nextcloud Talk — Self-hosted chat via Nextcloud Talk (plugin, installed separately). Matrix — Matrix protocol (plugin, installed separately). Nostr — Decentralized DMs via NIP-04 (plugin, installed separately). Tlon — Urbit-based messenger (plugin, installed separately). Twitch — Twitch chat via IRC connection (plugin, installed separately). Zalo — Zalo Bot API; Vietnam’s popular messenger (plugin, installed separately). Zalo Personal — Zalo personal account via QR login (plugin, installed separately). WebChat — Gateway WebChat UI over WebSocket. ​ Notes Channels can run simultaneously; configure multiple and OpenClaw will route per chat. Fastest setup is usually Telegram (simple bot token). WhatsApp requires QR pairing and stores more state on disk. Group behavior varies by channel; see Groups . DM pairing and allowlists are enforced for safety; see Security . Telegram internals: grammY notes . Troubleshooting: Channel troubleshooting . Model providers are documented separately; see Model Providers . WhatsApp ⌘ I Powered by"
+}

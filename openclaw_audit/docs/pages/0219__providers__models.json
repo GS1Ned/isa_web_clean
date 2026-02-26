@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/providers/models",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.624Z",
+  "section": "providers",
+  "title": "Model Provider Quickstart - OpenClaw",
+  "h1": [
+    "Model Provider Quickstart",
+    "​ Model Providers"
+  ],
+  "h2": [
+    "​ Highlight: Venice (Venice AI)",
+    "​ Quick start (two steps)",
+    "​ Supported providers (starter set)"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Model Provider Quickstart - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Overview Model Provider Quickstart Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen",
+  "content": "Model Provider Quickstart - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Overview Model Provider Quickstart Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Synthetic Qianfan On this page Model Providers Highlight: Venice (Venice AI) Quick start (two steps) Supported providers (starter set) Overview Model Provider Quickstart ​ Model Providers OpenClaw can use many LLM providers. Pick one, authenticate, then set the default model as provider/model . ​ Highlight: Venice (Venice AI) Venice is our recommended Venice AI setup for privacy-first inference with an option to use Opus for the hardest tasks. Default: venice/llama-3.3-70b Best overall: venice/claude-opus-45 (Opus remains the strongest) See Venice AI . ​ Quick start (two steps) Authenticate with the provider (usually via openclaw onboard ). Set the default model: Copy { agents : { defaults : { model : { primary : \"anthropic/claude-opus-4-6\" } } } , } ​ Supported providers (starter set) OpenAI (API + Codex) Anthropic (API + Claude Code CLI) OpenRouter Vercel AI Gateway Cloudflare AI Gateway Moonshot AI (Kimi + Kimi Coding) Mistral Synthetic OpenCode Zen Z.AI GLM models MiniMax Venice (Venice AI) Amazon Bedrock Qianfan For the full provider catalog (xAI, Groq, Mistral, etc.) and advanced configuration, see Model providers . Model Providers Models CLI ⌘ I Powered by"
+}

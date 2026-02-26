@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/providers/glm",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.627Z",
+  "section": "providers",
+  "title": "GLM Models - OpenClaw",
+  "h1": [
+    "GLM Models",
+    "​ GLM models"
+  ],
+  "h2": [
+    "​ CLI setup",
+    "​ Config snippet",
+    "​ Notes"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "GLM Models - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Providers GLM Models Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Synthetic Qi",
+  "content": "GLM Models - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Providers GLM Models Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Synthetic Qianfan On this page GLM models CLI setup Config snippet Notes Providers GLM Models ​ GLM models GLM is a model family (not a company) available through the Z.AI platform. In OpenClaw, GLM models are accessed via the zai provider and model IDs like zai/glm-5 . ​ CLI setup Copy openclaw onboard --auth-choice zai-api-key ​ Config snippet Copy { env : { ZAI_API_KEY : \"sk-...\" } , agents : { defaults : { model : { primary : \"zai/glm-5\" } } } , } ​ Notes GLM versions and availability can change; check Z.AI’s docs for the latest. Example model IDs include glm-5 , glm-4.7 , and glm-4.6 . For provider details, see /providers/zai . OpenCode Zen Z.AI ⌘ I Powered by"
+}

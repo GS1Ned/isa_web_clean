@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/concepts/usage-tracking",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.698Z",
+  "section": "zh-CN",
+  "title": "使用量跟踪 - OpenClaw",
+  "h1": [
+    "使用量跟踪",
+    "​ 使用量跟踪"
+  ],
+  "h2": [
+    "​ 功能简介",
+    "​ 展示位置",
+    "​ 提供商及凭据"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "使用量跟踪 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 概念内部机制 使用量跟踪 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY S",
+  "content": "使用量跟踪 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 概念内部机制 使用量跟踪 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOUL TOOLS USER 技术参考 向导参考 Token 使用与成本 概念内部机制 TypeBox Markdown 格式化 输入指示器 使用量跟踪 时区 项目 致谢 发布说明 RELEASING 测试 实验性功能 新手引导和配置协议 Cron Add 加固 Telegram 允许列表加固 工作区记忆研究 模型配置探索 在此页面 使用量跟踪 功能简介 展示位置 提供商及凭据 概念内部机制 使用量跟踪 ​ 使用量跟踪 ​ 功能简介 直接从提供商的使用量端点拉取使用量/配额数据。 不提供估算费用；仅展示提供商报告的时间窗口数据。 ​ 展示位置 聊天中的 /status ：包含会话 token 数和估算费用的表情符号丰富的状态卡片（仅限 API 密钥）。当可用时，会显示 当前模型提供商 的使用量。 聊天中的 /usage off|tokens|full ：每次响应的使用量页脚（OAuth 仅显示 token 数）。 聊天中的 /usage cost ：从 OpenClaw 会话日志汇总的本地费用摘要。 CLI： openclaw status --usage 打印完整的按提供商分类的详细信息。 CLI： openclaw channels list 在提供商配置旁打印相同的使用量快照（使用 --no-usage 跳过）。 macOS 菜单栏：上下文菜单下的”使用量”部分（仅在可用时显示）。 ​ 提供商及凭据 Anthropic (Claude) ：认证配置中的 OAuth 令牌。 GitHub Copilot ：认证配置中的 OAuth 令牌。 Gemini CLI ：认证配置中的 OAuth 令牌。 Antigravity ：认证配置中的 OAuth 令牌。 OpenAI Codex ：认证配置中的 OAuth 令牌（存在时使用 accountId）。 MiniMax ：API 密钥（编程计划密钥； MINIMAX_CODE_PLAN_KEY 或 MINIMAX_API_KEY ）；使用 5 小时编程计划时间窗口。 z.ai ：通过环境变量/配置/认证存储提供的 API 密钥。 如果没有匹配的 OAuth/API 凭据，使用量信息将被隐藏。 输入指示器 时区 ⌘ I 技术支持"
+}

@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/providers/zai",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.184Z",
+  "section": "zh-CN",
+  "title": "Z.AI - OpenClaw",
+  "h1": [
+    "Z.AI",
+    "​ Z.AI"
+  ],
+  "h2": [
+    "​ CLI 设置",
+    "​ 配置片段",
+    "​ 注意事项"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Z.AI - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 提供商 Z.AI 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 模型提供商 模型提供商快速入门 模型概念 模型 CLI 配置 模型提供商 模型故障转移 提供商 Anthropic OpenAI OpenRouter Amazon Bedrock Vercel AI Gateway Moonshot AI MiniMax OpenCode Zen GLM 模型 Z.AI Synthetic 千帆（Qianfan） 在此页面 Z.AI CLI 设置 配置片段 注意事项 提供商 Z.AI ​ Z.AI Z.AI 是 GLM 模型的 API 平台。它为 GLM 提供 REST API，并使用 API 密钥进行身份验证。请在 Z.AI 控制台中创建你的 API 密钥。OpenClaw 通过 zai 提供商配合 Z.AI API 密钥使用。 ​ CLI 设置 复制 openclaw o",
+  "content": "Z.AI - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 提供商 Z.AI 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 概览 模型提供商 模型提供商快速入门 模型概念 模型 CLI 配置 模型提供商 模型故障转移 提供商 Anthropic OpenAI OpenRouter Amazon Bedrock Vercel AI Gateway Moonshot AI MiniMax OpenCode Zen GLM 模型 Z.AI Synthetic 千帆（Qianfan） 在此页面 Z.AI CLI 设置 配置片段 注意事项 提供商 Z.AI ​ Z.AI Z.AI 是 GLM 模型的 API 平台。它为 GLM 提供 REST API，并使用 API 密钥进行身份验证。请在 Z.AI 控制台中创建你的 API 密钥。OpenClaw 通过 zai 提供商配合 Z.AI API 密钥使用。 ​ CLI 设置 复制 openclaw onboard --auth-choice zai-api-key # 或非交互式 openclaw onboard --zai-api-key \"$ZAI_API_KEY\" ​ 配置片段 复制 { env : { ZAI_API_KEY : \"sk-...\" } , agents : { defaults : { model : { primary : \"zai/glm-4.7\" } } } , } ​ 注意事项 GLM 模型以 zai/<model> 的形式提供（例如： zai/glm-4.7 ）。 参阅 /providers/glm 了解模型系列概览。 Z.AI 使用 Bearer 认证方式配合你的 API 密钥。 GLM 模型 Synthetic ⌘ I 技术支持"
+}

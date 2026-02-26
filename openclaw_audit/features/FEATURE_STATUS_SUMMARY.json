@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-02-26T11:24:04.856Z",
+  "categoryCount": 76,
+  "counts": {
+    "CONFIRMED": 76,
+    "PARTIAL": 0,
+    "UNVERIFIED": 0
+  },
+  "outputs": {
+    "featureMatrix": "openclaw_audit/features/FEATURE_MATRIX.md",
+    "cliCommands": "openclaw_audit/cli/CLI_COMMANDS.md",
+    "configReference": "openclaw_audit/config/CONFIG_REFERENCE.md",
+    "security": "openclaw_audit/security/SECURITY_AND_SANDBOXING.md",
+    "network": "openclaw_audit/network/NETWORK_AND_GATEWAY.md",
+    "apis": "openclaw_audit/protocols/APIS.md",
+    "useCases": "openclaw_audit/use_cases/USE_CASES.md"
+  }
+}

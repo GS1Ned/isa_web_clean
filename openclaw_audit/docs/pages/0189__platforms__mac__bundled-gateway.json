@@ -1,0 +1,21 @@
+{
+  "url": "https://docs.openclaw.ai/platforms/mac/bundled-gateway",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.468Z",
+  "section": "platforms",
+  "title": "Gateway on macOS - OpenClaw",
+  "h1": [
+    "Gateway on macOS",
+    "​ Gateway on macOS (external launchd)"
+  ],
+  "h2": [
+    "​ Install the CLI (required for local mode)",
+    "​ Launchd (Gateway as LaunchAgent)",
+    "​ Version compatibility",
+    "​ Smoke check"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Gateway on macOS - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation macOS companion app Gateway on macOS Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Platforms overview Platforms macOS App Linux App Windows (WSL2) Android App iOS App macOS companion app macOS Dev Setup Menu Bar Voice Wake Voice Overlay WebChat Canvas Gateway Lifecycle Health Checks Menu Bar Icon macOS Logging macOS Permissions R",
+  "content": "Gateway on macOS - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation macOS companion app Gateway on macOS Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Platforms overview Platforms macOS App Linux App Windows (WSL2) Android App iOS App macOS companion app macOS Dev Setup Menu Bar Voice Wake Voice Overlay WebChat Canvas Gateway Lifecycle Health Checks Menu Bar Icon macOS Logging macOS Permissions Remote Control macOS Signing macOS Release Gateway on macOS macOS IPC Skills Peekaboo Bridge On this page Gateway on macOS (external launchd) Install the CLI (required for local mode) Launchd (Gateway as LaunchAgent) Version compatibility Smoke check macOS companion app Gateway on macOS ​ Gateway on macOS (external launchd) OpenClaw.app no longer bundles Node/Bun or the Gateway runtime. The macOS app expects an external openclaw CLI install, does not spawn the Gateway as a child process, and manages a per‑user launchd service to keep the Gateway running (or attaches to an existing local Gateway if one is already running). ​ Install the CLI (required for local mode) You need Node 22+ on the Mac, then install openclaw globally: Copy npm install -g openclaw@ < versio n > The macOS app’s Install CLI button runs the same flow via npm/pnpm (bun not recommended for Gateway runtime). ​ Launchd (Gateway as LaunchAgent) Label: ai.openclaw.gateway (or ai.openclaw.<profile> ; legacy com.openclaw.* may remain) Plist location (per‑user): ~/Library/LaunchAgents/ai.openclaw.gateway.plist (or ~/Library/LaunchAgents/ai.openclaw.<profile>.plist ) Manager: The macOS app owns LaunchAgent install/update in Local mode. The CLI can also install it: openclaw gateway install . Behavior: “OpenClaw Active” enables/disables the LaunchAgent. App quit does not stop the gateway (launchd keeps it alive). If a Gateway is already running on the configured port, the app attaches to it instead of starting a new one. Logging: launchd stdout/err: /tmp/openclaw/openclaw-gateway.log ​ Version compatibility The macOS app checks the gateway version against its own version. If they’re incompatible, update the global CLI to match the app version. ​ Smoke check Copy openclaw --version OPENCLAW_SKIP_CHANNELS = 1 \\ OPENCLAW_SKIP_CANVAS_HOST=1 \\ openclaw gateway --port 18999 --bind loopback Then: Copy openclaw gateway call health --url ws://127.0.0.1:18999 --timeout 3000 macOS Release macOS IPC ⌘ I Powered by"
+}

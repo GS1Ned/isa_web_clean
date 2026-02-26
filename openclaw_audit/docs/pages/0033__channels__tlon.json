@@ -1,0 +1,23 @@
+{
+  "url": "https://docs.openclaw.ai/channels/tlon",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:51.352Z",
+  "section": "channels",
+  "title": "Tlon - OpenClaw",
+  "h1": [
+    "Tlon",
+    "​ Tlon (plugin)"
+  ],
+  "h2": [
+    "​ Plugin required",
+    "​ Setup",
+    "​ Group channels",
+    "​ Access control",
+    "​ Delivery targets (CLI/cron)",
+    "​ Notes"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Tlon - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Messaging platforms Tlon Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Chat Channels Messaging platforms WhatsApp Telegram Discord IRC Slack Feishu Google Chat Mattermost Signal iMessage BlueBubbles Microsoft Teams Synology Chat LINE Matrix Nextcloud Talk Nostr Tlon Twitch Zalo Zalo Personal Configuration Pairing Group Messages Grou",
+  "content": "Tlon - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Messaging platforms Tlon Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Chat Channels Messaging platforms WhatsApp Telegram Discord IRC Slack Feishu Google Chat Mattermost Signal iMessage BlueBubbles Microsoft Teams Synology Chat LINE Matrix Nextcloud Talk Nostr Tlon Twitch Zalo Zalo Personal Configuration Pairing Group Messages Groups Broadcast Groups Channel Routing Channel Location Parsing Channel Troubleshooting On this page Tlon (plugin) Plugin required Setup Group channels Access control Delivery targets (CLI/cron) Notes Messaging platforms Tlon ​ Tlon (plugin) Tlon is a decentralized messenger built on Urbit. OpenClaw connects to your Urbit ship and can respond to DMs and group chat messages. Group replies require an @ mention by default and can be further restricted via allowlists. Status: supported via plugin. DMs, group mentions, thread replies, and text-only media fallback (URL appended to caption). Reactions, polls, and native media uploads are not supported. ​ Plugin required Tlon ships as a plugin and is not bundled with the core install. Install via CLI (npm registry): Copy openclaw plugins install @openclaw/tlon Local checkout (when running from a git repo): Copy openclaw plugins install ./extensions/tlon Details: Plugins ​ Setup Install the Tlon plugin. Gather your ship URL and login code. Configure channels.tlon . Restart the gateway. DM the bot or mention it in a group channel. Minimal config (single account): Copy { channels : { tlon : { enabled : true , ship : \"~sampel-palnet\" , url : \"https://your-ship-host\" , code : \"lidlut-tabwed-pillex-ridrup\" , } , } , } Private/LAN ship URLs (advanced): By default, OpenClaw blocks private/internal hostnames and IP ranges for this plugin (SSRF hardening). If your ship URL is on a private network (for example http://192.168.1.50:8080 or http://localhost:8080 ), you must explicitly opt in: Copy { channels : { tlon : { allowPrivateNetwork : true , } , } , } ​ Group channels Auto-discovery is enabled by default. You can also pin channels manually: Copy { channels : { tlon : { groupChannels : [ \"chat/~host-ship/general\" , \"chat/~host-ship/support\" ] , } , } , } Disable auto-discovery: Copy { channels : { tlon : { autoDiscoverChannels : false , } , } , } ​ Access control DM allowlist (empty = allow all): Copy { channels : { tlon : { dmAllowlist : [ \"~zod\" , \"~nec\" ] , } , } , } Group authorization (restricted by default): Copy { channels : { tlon : { defaultAuthorizedShips : [ \"~zod\" ] , authorization : { channelRules : { \"chat/~host-ship/general\" : { mode : \"restricted\" , allowedShips : [ \"~zod\" , \"~nec\" ] , } , \"chat/~host-ship/announcements\" : { mode : \"open\" , } , } , } , } , } , } ​ Delivery targets (CLI/cron) Use these with openclaw message send or cron delivery: DM: ~sampel-palnet or dm/~sampel-palnet Group: chat/~host-ship/channel or group:~host-ship/channel ​ Notes Group replies require a mention (e.g. ~your-bot-ship ) to respond. Thread replies: if the inbound message is in a thread, OpenClaw replies in-thread. Media: sendMedia falls back to text + URL (no native upload). Nostr Twitch ⌘ I Powered by"
+}

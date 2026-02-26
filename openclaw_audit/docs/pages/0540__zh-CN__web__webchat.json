@@ -1,0 +1,22 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/web/webchat",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:59.436Z",
+  "section": "zh-CN",
+  "title": "WebChat - OpenClaw",
+  "h1": [
+    "WebChat",
+    "​ WebChat（Gateway 网关 WebSocket UI）"
+  ],
+  "h2": [
+    "​ 它是什么",
+    "​ 快速开始",
+    "​ 工作原理（行为）",
+    "​ 远程使用",
+    "​ 配置参考（WebChat）"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "WebChat - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation Web 界面 WebChat 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 网关 Gateway 网关运行手册 配置与运维 安全与沙箱 协议与 API 网络与发现 远程访问 远程访问 远程 Gateway 网关设置 Tailscale 安全 形式化验证（安全模型） Web 界面 Web 控制 UI 仪表板 WebChat TUI 在此页面 WebChat（Gateway 网关 WebSocket UI） 它是什么 快速开始 工作原理（行为） 远程使用 配置参考（WebChat） Web 界面 WebChat ​ WebChat（Gateway 网关 WebSocket UI） 状态：macOS/iOS SwiftUI 聊天 UI 直接与 Gateway 网关 WebSocket 通信。 ​ 它是什么 Gateway 网关的原生聊天 UI（无嵌入式浏览器，无本地静态服务器）。",
+  "content": "WebChat - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation Web 界面 WebChat 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 网关 Gateway 网关运行手册 配置与运维 安全与沙箱 协议与 API 网络与发现 远程访问 远程访问 远程 Gateway 网关设置 Tailscale 安全 形式化验证（安全模型） Web 界面 Web 控制 UI 仪表板 WebChat TUI 在此页面 WebChat（Gateway 网关 WebSocket UI） 它是什么 快速开始 工作原理（行为） 远程使用 配置参考（WebChat） Web 界面 WebChat ​ WebChat（Gateway 网关 WebSocket UI） 状态：macOS/iOS SwiftUI 聊天 UI 直接与 Gateway 网关 WebSocket 通信。 ​ 它是什么 Gateway 网关的原生聊天 UI（无嵌入式浏览器，无本地静态服务器）。 使用与其他渠道相同的会话和路由规则。 确定性路由：回复始终返回到 WebChat。 ​ 快速开始 启动 Gateway 网关。 打开 WebChat UI（macOS/iOS 应用）或控制 UI 聊天标签页。 确保已配置 Gateway 网关认证（默认需要，即使在 loopback 上）。 ​ 工作原理（行为） UI 连接到 Gateway 网关 WebSocket 并使用 chat.history 、 chat.send 和 chat.inject 。 chat.inject 直接将助手注释追加到转录并广播到 UI（无智能体运行）。 历史记录始终从 Gateway 网关获取（无本地文件监听）。 如果 Gateway 网关不可达，WebChat 为只读模式。 ​ 远程使用 远程模式通过 SSH/Tailscale 隧道传输 Gateway 网关 WebSocket。 你不需要运行单独的 WebChat 服务器。 ​ 配置参考（WebChat） 完整配置： 配置 渠道选项： 没有专用的 webchat.* 块。WebChat 使用下面的 Gateway 网关端点 + 认证设置。 相关的全局选项： gateway.port 、 gateway.bind ：WebSocket 主机/端口。 gateway.auth.mode 、 gateway.auth.token 、 gateway.auth.password ：WebSocket 认证。 gateway.remote.url 、 gateway.remote.token 、 gateway.remote.password ：远程 Gateway 网关目标。 session.* ：会话存储和主键默认值。 仪表板 TUI ⌘ I 技术支持"
+}

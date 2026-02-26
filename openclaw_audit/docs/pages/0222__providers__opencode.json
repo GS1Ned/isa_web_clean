@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/providers/opencode",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.662Z",
+  "section": "providers",
+  "title": "OpenCode Zen - OpenClaw",
+  "h1": [
+    "OpenCode Zen",
+    "​ OpenCode Zen"
+  ],
+  "h2": [
+    "​ CLI setup",
+    "​ Config snippet",
+    "​ Notes"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "OpenCode Zen - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Providers OpenCode Zen Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Syntheti",
+  "content": "OpenCode Zen - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Providers OpenCode Zen Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Model Providers Model Provider Quickstart Model concepts Models CLI Configuration Model Providers Model Failover Providers Anthropic OpenAI OpenRouter Litellm Amazon Bedrock Vercel AI Gateway Moonshot AI Mistral MiniMax OpenCode Zen GLM Models Z.AI Synthetic Qianfan On this page OpenCode Zen CLI setup Config snippet Notes Providers OpenCode Zen ​ OpenCode Zen OpenCode Zen is a curated list of models recommended by the OpenCode team for coding agents. It is an optional, hosted model access path that uses an API key and the opencode provider. Zen is currently in beta. ​ CLI setup Copy openclaw onboard --auth-choice opencode-zen # or non-interactive openclaw onboard --opencode-zen-api-key \"$OPENCODE_API_KEY\" ​ Config snippet Copy { env : { OPENCODE_API_KEY : \"sk-...\" } , agents : { defaults : { model : { primary : \"opencode/claude-opus-4-6\" } } } , } ​ Notes OPENCODE_ZEN_API_KEY is also supported. You sign in to Zen, add billing details, and copy your API key. OpenCode Zen bills per request; check the OpenCode dashboard for details. MiniMax GLM Models ⌘ I Powered by"
+}

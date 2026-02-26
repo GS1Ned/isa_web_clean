@@ -1,0 +1,22 @@
+{
+  "url": "https://docs.openclaw.ai/zh-CN/experiments/plans/group-policy-hardening",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:58.697Z",
+  "section": "zh-CN",
+  "title": "Telegram 允许列表加固 - OpenClaw",
+  "h1": [
+    "Telegram 允许列表加固",
+    "​ Telegram 允许列表加固"
+  ],
+  "h2": [
+    "​ 摘要",
+    "​ 更改内容",
+    "​ 示例",
+    "​ 为什么重要",
+    "​ 相关文档"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Telegram 允许列表加固 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 实验性功能 Telegram 允许列表加固 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP H",
+  "content": "Telegram 允许列表加固 - OpenClaw 跳转到主要内容 OpenClaw home page 简体中文 搜索... ⌘ K GitHub Releases 搜索... Navigation 实验性功能 Telegram 允许列表加固 快速开始 安装 消息渠道 代理 工具 模型 平台 网关与运维 参考 帮助 CLI 命令 CLI 参考 agent agents approvals browser channels configure cron dashboard directory dns docs doctor gateway health hooks logs memory message models nodes onboard pairing plugins reset 沙箱 CLI security sessions setup skills status system tui uninstall update voicecall RPC 与 API RPC 适配器 设备型号数据库 模板 AGENTS.default AGENTS BOOT BOOTSTRAP HEARTBEAT IDENTITY SOUL TOOLS USER 技术参考 向导参考 Token 使用与成本 概念内部机制 TypeBox Markdown 格式化 输入指示器 使用量跟踪 时区 项目 致谢 发布说明 RELEASING 测试 实验性功能 新手引导和配置协议 Cron Add 加固 Telegram 允许列表加固 工作区记忆研究 模型配置探索 在此页面 Telegram 允许列表加固 摘要 更改内容 示例 为什么重要 相关文档 实验性功能 Telegram 允许列表加固 ​ Telegram 允许列表加固 日期 ：2026-01-05 状态 ：已完成 PR ：#216 ​ 摘要 Telegram 允许列表现在不区分大小写地接受 telegram: 和 tg: 前缀，并容忍意外的空白。这使入站允许列表检查与出站发送规范化保持一致。 ​ 更改内容 前缀 telegram: 和 tg: 被同等对待（不区分大小写）。 允许列表条目会被修剪；空条目会被忽略。 ​ 示例 以下所有形式都被接受为同一 ID： telegram:123456 TG:123456 tg:123456 ​ 为什么重要 从日志或聊天 ID 复制/粘贴通常会包含前缀和空白。规范化可避免在决定是否在私信或群组中响应时出现误判。 ​ 相关文档 群聊 Telegram 提供商 Cron Add 加固 工作区记忆研究 ⌘ I 技术支持"
+}

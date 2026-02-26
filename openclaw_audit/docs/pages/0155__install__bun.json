@@ -1,0 +1,22 @@
+{
+  "url": "https://docs.openclaw.ai/install/bun",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:54.570Z",
+  "section": "install",
+  "title": "Bun (Experimental) - OpenClaw",
+  "h1": [
+    "Bun (Experimental)",
+    "​ Bun (experimental)"
+  ],
+  "h2": [
+    "​ Status",
+    "​ Install",
+    "​ Build / Test (Bun)",
+    "​ Bun lifecycle scripts (blocked by default)",
+    "​ Caveats"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Bun (Experimental) - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Other install methods Bun (Experimental) Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Install overview Install Installer Internals Other install methods Docker Podman Nix Ansible Bun (Experimental) Maintenance Updating Migration Guide Uninstall Hosting and deployment Fly.io Hetzner GCP macOS VMs exe.dev Deploy on Railway Deplo",
+  "content": "Bun (Experimental) - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Other install methods Bun (Experimental) Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Install overview Install Installer Internals Other install methods Docker Podman Nix Ansible Bun (Experimental) Maintenance Updating Migration Guide Uninstall Hosting and deployment Fly.io Hetzner GCP macOS VMs exe.dev Deploy on Railway Deploy on Render Deploy on Northflank Advanced Development Channels On this page Bun (experimental) Status Install Build / Test (Bun) Bun lifecycle scripts (blocked by default) Caveats Other install methods Bun (Experimental) ​ Bun (experimental) Goal: run this repo with Bun (optional, not recommended for WhatsApp/Telegram) without diverging from pnpm workflows. ⚠️ Not recommended for Gateway runtime (WhatsApp/Telegram bugs). Use Node for production. ​ Status Bun is an optional local runtime for running TypeScript directly ( bun run … , bun --watch … ). pnpm is the default for builds and remains fully supported (and used by some docs tooling). Bun cannot use pnpm-lock.yaml and will ignore it. ​ Install Default: Copy bun install Note: bun.lock / bun.lockb are gitignored, so there’s no repo churn either way. If you want no lockfile writes : Copy bun install --no-save ​ Build / Test (Bun) Copy bun run build bun run vitest run ​ Bun lifecycle scripts (blocked by default) Bun may block dependency lifecycle scripts unless explicitly trusted ( bun pm untrusted / bun pm trust ). For this repo, the commonly blocked scripts are not required: @whiskeysockets/baileys preinstall : checks Node major >= 20 (we run Node 22+). protobufjs postinstall : emits warnings about incompatible version schemes (no build artifacts). If you hit a real runtime issue that requires these scripts, trust them explicitly: Copy bun pm trust @whiskeysockets/baileys protobufjs ​ Caveats Some scripts still hardcode pnpm (e.g. docs:build , ui:* , protocol:check ). Run those via pnpm for now. Ansible Updating ⌘ I Powered by"
+}

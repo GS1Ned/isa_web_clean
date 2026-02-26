@@ -1,0 +1,16 @@
+{
+  "url": "https://docs.openclaw.ai/cli/status",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:51.514Z",
+  "section": "cli",
+  "title": "status - OpenClaw",
+  "h1": [
+    "status",
+    "​ openclaw status"
+  ],
+  "h2": [],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "status - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation CLI commands status Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help CLI commands CLI Reference acp agent agents approvals browser channels clawbot completion config configure cron daemon dashboard devices directory dns docs doctor gateway health hooks logs memory message models node nodes onboard pairing plugins qr reset Sandbox CLI security",
+  "content": "status - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation CLI commands status Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help CLI commands CLI Reference acp agent agents approvals browser channels clawbot completion config configure cron daemon dashboard devices directory dns docs doctor gateway health hooks logs memory message models node nodes onboard pairing plugins qr reset Sandbox CLI security sessions setup skills status system tui uninstall update voicecall webhooks RPC and API RPC Adapters Device Model Database Templates Default AGENTS.md AGENTS.md Template BOOT.md Template BOOTSTRAP.md Template HEARTBEAT.md Template IDENTITY SOUL.md Template TOOLS.md Template USER Technical reference Wizard Reference Token Use and Costs Prompt Caching grammY Concept internals TypeBox Markdown Formatting Typing Indicators Usage Tracking Timezones Project Credits Release notes Release Checklist Tests Experiments Onboarding and Config Protocol Workspace Memory Research Model Config Exploration On this page openclaw status CLI commands status ​ openclaw status Diagnostics for channels + sessions. Copy openclaw status openclaw status --all openclaw status --deep openclaw status --usage Notes: --deep runs live probes (WhatsApp Web + Telegram + Discord + Google Chat + Slack + Signal). Output includes per-agent session stores when multiple agents are configured. Overview includes Gateway + node host service install/runtime status when available. Overview includes update channel + git SHA (for source checkouts). Update info surfaces in the Overview; if an update is available, status prints a hint to run openclaw update (see Updating ). skills system ⌘ I Powered by"
+}

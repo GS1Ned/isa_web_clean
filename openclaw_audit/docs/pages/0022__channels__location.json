@@ -1,0 +1,20 @@
+{
+  "url": "https://docs.openclaw.ai/channels/location",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:51.321Z",
+  "section": "channels",
+  "title": "Channel Location Parsing - OpenClaw",
+  "h1": [
+    "Channel Location Parsing",
+    "​ Channel location parsing"
+  ],
+  "h2": [
+    "​ Text formatting",
+    "​ Context fields",
+    "​ Channel notes"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Channel Location Parsing - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Configuration Channel Location Parsing Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Chat Channels Messaging platforms WhatsApp Telegram Discord IRC Slack Feishu Google Chat Mattermost Signal iMessage BlueBubbles Microsoft Teams Synology Chat LINE Matrix Nextcloud Talk Nostr Tlon Twitch Zalo Zalo Personal Configu",
+  "content": "Channel Location Parsing - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Configuration Channel Location Parsing Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Chat Channels Messaging platforms WhatsApp Telegram Discord IRC Slack Feishu Google Chat Mattermost Signal iMessage BlueBubbles Microsoft Teams Synology Chat LINE Matrix Nextcloud Talk Nostr Tlon Twitch Zalo Zalo Personal Configuration Pairing Group Messages Groups Broadcast Groups Channel Routing Channel Location Parsing Channel Troubleshooting On this page Channel location parsing Text formatting Context fields Channel notes Configuration Channel Location Parsing ​ Channel location parsing OpenClaw normalizes shared locations from chat channels into: human-readable text appended to the inbound body, and structured fields in the auto-reply context payload. Currently supported: Telegram (location pins + venues + live locations) WhatsApp (locationMessage + liveLocationMessage) Matrix ( m.location with geo_uri ) ​ Text formatting Locations are rendered as friendly lines without brackets: Pin: 📍 48.858844, 2.294351 ±12m Named place: 📍 Eiffel Tower — Champ de Mars, Paris (48.858844, 2.294351 ±12m) Live share: 🛰 Live location: 48.858844, 2.294351 ±12m If the channel includes a caption/comment, it is appended on the next line: Copy 📍 48.858844, 2.294351 ±12m Meet here ​ Context fields When a location is present, these fields are added to ctx : LocationLat (number) LocationLon (number) LocationAccuracy (number, meters; optional) LocationName (string; optional) LocationAddress (string; optional) LocationSource ( pin | place | live ) LocationIsLive (boolean) ​ Channel notes Telegram : venues map to LocationName/LocationAddress ; live locations use live_period . WhatsApp : locationMessage.comment and liveLocationMessage.caption are appended as the caption line. Matrix : geo_uri is parsed as a pin location; altitude is ignored and LocationIsLive is always false. Channel Routing Channel Troubleshooting ⌘ I Powered by"
+}

@@ -1,0 +1,24 @@
+{
+  "url": "https://docs.openclaw.ai/plugins/zalouser",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.580Z",
+  "section": "plugins",
+  "title": "Zalo Personal Plugin - OpenClaw",
+  "h1": [
+    "Zalo Personal Plugin",
+    "​ Zalo Personal (plugin)"
+  ],
+  "h2": [
+    "​ Naming",
+    "​ Where it runs",
+    "​ Install",
+    "​ Prerequisite: zca-cli",
+    "​ Config",
+    "​ CLI",
+    "​ Agent tool"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Zalo Personal Plugin - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Extensions Zalo Personal Plugin Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Tools Built-in tools Lobster LLM Task Exec Tool Web Tools apply_patch Tool Elevated Mode Thinking Levels Reactions Browser Browser (OpenClaw-managed) Browser Login Chrome Extension Browser Troubleshooting Agent coordination Agent Send Sub-A",
+  "content": "Zalo Personal Plugin - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Extensions Zalo Personal Plugin Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Tools Built-in tools Lobster LLM Task Exec Tool Web Tools apply_patch Tool Elevated Mode Thinking Levels Reactions Browser Browser (OpenClaw-managed) Browser Login Chrome Extension Browser Troubleshooting Agent coordination Agent Send Sub-Agents ACP Agents Multi-Agent Sandbox & Tools Skills Slash Commands Skills Skills Config ClawHub Plugins Extensions Community plugins Voice Call Plugin Zalo Personal Plugin Automation Hooks Cron Jobs Cron vs Heartbeat Automation Troubleshooting Webhooks Gmail PubSub Polls Auth Monitoring Media and devices Nodes Node Troubleshooting Image and Media Support Audio and Voice Notes Camera Capture Talk Mode Voice Wake Location Command On this page Zalo Personal (plugin) Naming Where it runs Install Option A: install from npm Option B: install from a local folder (dev) Prerequisite: zca-cli Config CLI Agent tool Extensions Zalo Personal Plugin ​ Zalo Personal (plugin) Zalo Personal support for OpenClaw via a plugin, using zca-cli to automate a normal Zalo user account. Warning: Unofficial automation may lead to account suspension/ban. Use at your own risk. ​ Naming Channel id is zalouser to make it explicit this automates a personal Zalo user account (unofficial). We keep zalo reserved for a potential future official Zalo API integration. ​ Where it runs This plugin runs inside the Gateway process . If you use a remote Gateway, install/configure it on the machine running the Gateway , then restart the Gateway. ​ Install ​ Option A: install from npm Copy openclaw plugins install @openclaw/zalouser Restart the Gateway afterwards. ​ Option B: install from a local folder (dev) Copy openclaw plugins install ./extensions/zalouser cd ./extensions/zalouser && pnpm install Restart the Gateway afterwards. ​ Prerequisite: zca-cli The Gateway machine must have zca on PATH : Copy zca --version ​ Config Channel config lives under channels.zalouser (not plugins.entries.* ): Copy { channels : { zalouser : { enabled : true , dmPolicy : \"pairing\" , } , } , } ​ CLI Copy openclaw channels login --channel zalouser openclaw channels logout --channel zalouser openclaw channels status --probe openclaw message send --channel zalouser --target < threadI d > --message \"Hello from OpenClaw\" openclaw directory peers list --channel zalouser --query \"name\" ​ Agent tool Tool name: zalouser Actions: send , image , link , friends , groups , me , status Voice Call Plugin Hooks ⌘ I Powered by"
+}

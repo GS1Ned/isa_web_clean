@@ -1,0 +1,267 @@
+{
+  "generated_at": "2026-02-26T12:20:42.755Z",
+  "evidence": {
+    "openclaw_audit_feature_matrix": "openclaw_audit/features/FEATURE_MATRIX.md",
+    "isa_integration_contracts": "docs/spec/INTEGRATION_CONTRACTS.md",
+    "isa_runtime_contracts": [
+      "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+      "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+      "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+      "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+      "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+      "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+    ],
+    "governance": "docs/governance/_root/ISA_GOVERNANCE.md"
+  },
+  "nodes": [
+    {
+      "id": "oc_gateway",
+      "type": "openclaw_subsystem",
+      "label": "Gateway + Runbook"
+    },
+    {
+      "id": "oc_exec",
+      "type": "openclaw_tool",
+      "label": "Exec + apply_patch + elevated"
+    },
+    {
+      "id": "oc_automation",
+      "type": "openclaw_subsystem",
+      "label": "Hooks + Cron + Webhooks + Heartbeat"
+    },
+    {
+      "id": "oc_skills",
+      "type": "openclaw_subsystem",
+      "label": "Skills + ClawHub + Plugins"
+    },
+    {
+      "id": "oc_browser",
+      "type": "openclaw_tool",
+      "label": "Browser automation + extension relay"
+    },
+    {
+      "id": "oc_protocol",
+      "type": "openclaw_subsystem",
+      "label": "Protocols/APIs + agent coordination"
+    },
+    {
+      "id": "oc_security",
+      "type": "openclaw_subsystem",
+      "label": "Sandbox/security/auth controls"
+    },
+    {
+      "id": "oc_ui",
+      "type": "openclaw_subsystem",
+      "label": "Dashboard/WebChat/TUI/Control UI"
+    },
+    {
+      "id": "isa_catalog",
+      "type": "isa_capability",
+      "label": "CATALOG"
+    },
+    {
+      "id": "isa_kb",
+      "type": "isa_capability",
+      "label": "KNOWLEDGE_BASE"
+    },
+    {
+      "id": "isa_ask",
+      "type": "isa_capability",
+      "label": "ASK_ISA"
+    },
+    {
+      "id": "isa_news",
+      "type": "isa_capability",
+      "label": "NEWS_HUB"
+    },
+    {
+      "id": "isa_mapping",
+      "type": "isa_capability",
+      "label": "ESRS_MAPPING"
+    },
+    {
+      "id": "isa_advisory",
+      "type": "isa_capability",
+      "label": "ADVISORY"
+    },
+    {
+      "id": "isa_gov",
+      "type": "isa_control",
+      "label": "Governance + Security Gates"
+    },
+    {
+      "id": "isa_ops",
+      "type": "isa_control",
+      "label": "Ops/SLO/Observability"
+    },
+    {
+      "id": "isa_hitl",
+      "type": "isa_control",
+      "label": "Human-in-the-loop approvals"
+    }
+  ],
+  "edges": [
+    {
+      "from": "oc_gateway",
+      "to": "isa_ops",
+      "relation": "enables",
+      "notes": "Deterministic runtime health, restart, and diagnostics surfaces."
+    },
+    {
+      "from": "oc_gateway",
+      "to": "isa_news",
+      "relation": "complements",
+      "notes": "Supports continuous ingestion/service checks."
+    },
+    {
+      "from": "oc_gateway",
+      "to": "isa_ask",
+      "relation": "complements",
+      "notes": "Provides stable runtime host for ASK_ISA endpoints."
+    },
+    {
+      "from": "oc_exec",
+      "to": "isa_hitl",
+      "relation": "depends on",
+      "notes": "Requires strict approval and policy gating before privileged actions."
+    },
+    {
+      "from": "oc_exec",
+      "to": "isa_gov",
+      "relation": "depends on",
+      "notes": "Must be constrained by governance and audit controls."
+    },
+    {
+      "from": "oc_exec",
+      "to": "isa_advisory",
+      "relation": "enables",
+      "notes": "Automated remediation and evidence-producing workflows."
+    },
+    {
+      "from": "oc_automation",
+      "to": "isa_news",
+      "relation": "enables",
+      "notes": "Schedule-driven ingestion, checks, and event pipelines."
+    },
+    {
+      "from": "oc_automation",
+      "to": "isa_advisory",
+      "relation": "enables",
+      "notes": "Regular diff/report refresh with traceable job runs."
+    },
+    {
+      "from": "oc_automation",
+      "to": "isa_gov",
+      "relation": "depends on",
+      "notes": "Automation governance and kill-switches are required."
+    },
+    {
+      "from": "oc_skills",
+      "to": "isa_gov",
+      "relation": "conflicts with",
+      "notes": "Third-party skills introduce supply-chain and policy risk without allowlists."
+    },
+    {
+      "from": "oc_skills",
+      "to": "isa_hitl",
+      "relation": "depends on",
+      "notes": "Install/exec of non-core skills should be operator-approved."
+    },
+    {
+      "from": "oc_skills",
+      "to": "isa_news",
+      "relation": "complements",
+      "notes": "Can accelerate niche connectors if sandboxed."
+    },
+    {
+      "from": "oc_browser",
+      "to": "isa_news",
+      "relation": "complements",
+      "notes": "Fallback web capture and troubleshooting workflows."
+    },
+    {
+      "from": "oc_browser",
+      "to": "isa_gov",
+      "relation": "depends on",
+      "notes": "Needs strict credential/session handling and audit trails."
+    },
+    {
+      "from": "oc_protocol",
+      "to": "isa_ask",
+      "relation": "enables",
+      "notes": "Agent decomposition and controlled orchestration patterns."
+    },
+    {
+      "from": "oc_protocol",
+      "to": "isa_advisory",
+      "relation": "enables",
+      "notes": "Multi-step orchestration for report generation pipelines."
+    },
+    {
+      "from": "oc_security",
+      "to": "isa_gov",
+      "relation": "enables",
+      "notes": "Maps to security gate policy and sandbox guarantees."
+    },
+    {
+      "from": "oc_security",
+      "to": "isa_hitl",
+      "relation": "enables",
+      "notes": "Supports policy-driven escalation and review points."
+    },
+    {
+      "from": "oc_ui",
+      "to": "isa_ops",
+      "relation": "complements",
+      "notes": "Operator surfaces for status, logs, and incident response."
+    },
+    {
+      "from": "oc_ui",
+      "to": "isa_advisory",
+      "relation": "complements",
+      "notes": "Useful for review workflows, but not core delivery substrate."
+    },
+    {
+      "from": "isa_catalog",
+      "to": "isa_kb",
+      "relation": "enables",
+      "notes": "Per ISA integration contract: CATALOG foundation."
+    },
+    {
+      "from": "isa_kb",
+      "to": "isa_ask",
+      "relation": "enables",
+      "notes": "RAG substrate dependency."
+    },
+    {
+      "from": "isa_catalog",
+      "to": "isa_news",
+      "relation": "enables",
+      "notes": "Regulation metadata tagging."
+    },
+    {
+      "from": "isa_catalog",
+      "to": "isa_mapping",
+      "relation": "enables",
+      "notes": "Mapping context source-of-record."
+    },
+    {
+      "from": "isa_ask",
+      "to": "isa_advisory",
+      "relation": "enables",
+      "notes": "Usage/query artifacts feed advisory aggregation."
+    },
+    {
+      "from": "isa_news",
+      "to": "isa_advisory",
+      "relation": "enables",
+      "notes": "Recent developments feed advisory outputs."
+    },
+    {
+      "from": "isa_mapping",
+      "to": "isa_advisory",
+      "relation": "enables",
+      "notes": "Mapping quality/stats feed advisory outputs."
+    }
+  ]
+}

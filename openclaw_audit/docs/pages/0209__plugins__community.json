@@ -1,0 +1,22 @@
+{
+  "url": "https://docs.openclaw.ai/plugins/community",
+  "fetchedAt": "2026-02-26T11:21:21.224Z",
+  "sitemapLastmod": "2026-02-26T10:00:55.584Z",
+  "section": "plugins",
+  "title": "Community plugins - OpenClaw",
+  "h1": [
+    "Community plugins",
+    "​ Community plugins"
+  ],
+  "h2": [
+    "​ Required for listing",
+    "​ How to submit",
+    "​ Review bar",
+    "​ Candidate format",
+    "​ Listed plugins"
+  ],
+  "statusCode": 200,
+  "status": "CONFIRMED",
+  "snippet": "Community plugins - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Extensions Community plugins Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Tools Built-in tools Lobster LLM Task Exec Tool Web Tools apply_patch Tool Elevated Mode Thinking Levels Reactions Browser Browser (OpenClaw-managed) Browser Login Chrome Extension Browser Troubleshooting Agent coordination Agent Send Sub-Agents ",
+  "content": "Community plugins - OpenClaw Skip to main content OpenClaw home page English Search... ⌘ K GitHub Releases Search... Navigation Extensions Community plugins Get started Install Channels Agents Tools Models Platforms Gateway & Ops Reference Help Overview Tools Built-in tools Lobster LLM Task Exec Tool Web Tools apply_patch Tool Elevated Mode Thinking Levels Reactions Browser Browser (OpenClaw-managed) Browser Login Chrome Extension Browser Troubleshooting Agent coordination Agent Send Sub-Agents ACP Agents Multi-Agent Sandbox & Tools Skills Slash Commands Skills Skills Config ClawHub Plugins Extensions Community plugins Voice Call Plugin Zalo Personal Plugin Automation Hooks Cron Jobs Cron vs Heartbeat Automation Troubleshooting Webhooks Gmail PubSub Polls Auth Monitoring Media and devices Nodes Node Troubleshooting Image and Media Support Audio and Voice Notes Camera Capture Talk Mode Voice Wake Location Command On this page Community plugins Required for listing How to submit Review bar Candidate format Listed plugins Extensions Community plugins ​ Community plugins This page tracks high-quality community-maintained plugins for OpenClaw. We accept PRs that add community plugins here when they meet the quality bar. ​ Required for listing Plugin package is published on npmjs (installable via openclaw plugins install <npm-spec> ). Source code is hosted on GitHub (public repository). Repository includes setup/use docs and an issue tracker. Plugin has a clear maintenance signal (active maintainer, recent updates, or responsive issue handling). ​ How to submit Open a PR that adds your plugin to this page with: Plugin name npm package name GitHub repository URL One-line description Install command ​ Review bar We prefer plugins that are useful, documented, and safe to operate. Low-effort wrappers, unclear ownership, or unmaintained packages may be declined. ​ Candidate format Use this format when adding entries: Plugin Name — short description npm: @scope/package repo: https://github.com/org/repo install: openclaw plugins install @scope/package ​ Listed plugins WeChat — Connect OpenClaw to WeChat personal accounts via WeChatPadPro (iPad protocol). Supports text, image, and file exchange with keyword-triggered conversations. npm: @icesword760/openclaw-wechat repo: https://github.com/icesword0760/openclaw-wechat install: openclaw plugins install @icesword760/openclaw-wechat Plugins Voice Call Plugin ⌘ I Powered by"
+}
