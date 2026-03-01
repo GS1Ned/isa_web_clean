@@ -1,5 +1,321 @@
 {
-  "version": "1.0.0",
+  "entries": [
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "addf85acd869b4084507241b1ce3f9357ed9e77c4dd4a31a51e4ad15fcd785e0",
+      "name": "1password",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/1password",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "2e094a41827918aeeb212d2b52bfe12c3fcadbe443d6d5dabdb596338c33bcfc",
+      "name": "apple-notes",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/apple-notes",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "55b32e32d4f824b92f1d0c264d315df66e15297ccd07afd3d849f8fbcc92b57b",
+      "name": "apple-reminders",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/apple-reminders",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "b3e822ab09e9283d01e2c021a603a5212187c545fd797e671e617d79dae09330",
+      "name": "bear-notes",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/bear-notes",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "a6cca0c49f67f0aa40cd95b6e44e3210b7857551b30217a022777d94954e228f",
+      "name": "blogwatcher",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/blogwatcher",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "f2d81136171331f1a160e6714c7de07a6ac1c2846de98c77b4a1b7bf9e0de555",
+      "name": "blucli",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/blucli",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "173c8ad20cd0a39d797b0d55b9d9a6a746f562b2949afc812ff4e6488eda7483",
+      "name": "bluebubbles",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/bluebubbles",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "8019c4529f6d4d07c036af003a5e532514c71dac7145b6f7d0e52022ab5eacb8",
+      "name": "camsnap",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/camsnap",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "c73b5d419cc8387255747c55c1abd16de63113772ca0603a2377775bd197ac13",
+      "name": "canvas",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/canvas",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "05d354086733976ab09b79d13f29081e5cefbcb584580fc5144cbea4ca2b9691",
+      "name": "clawhub",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/clawhub",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "a2bd06033a52fd964f321c4be340a3df30ee14da6c5856af4a4f57ea3c809acc",
+      "name": "cleanup-specialist",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.codex/skills/cleanup-specialist",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "f4b377a211818ed2d72c76d179bdee5aae200f2f89a641dcbb0f2170585ec1e5",
+      "name": "coding-agent",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/coding-agent",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "5d7e5afcd678b2fb32473ab581f72bd91e2687a4d12ea6d1273aa7530e087d8a",
+      "name": "discord",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/discord",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "26f0c23cb0bce54341e638342828dd708270ff5547bbb1ebc3d6041b7ee103bb",
+      "name": "eightctl",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/eightctl",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "cfc22551f9e2475b44994456e7100ae87b270f3b5cf0655342149b37b7e0c8a2",
+      "name": "find-skills",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.agents/skills/find-skills",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "1bd0faf51b1b57e8a7529c8568508699d645fbcc18d97b76d797356a6ebeb50a",
+      "name": "gemini",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/gemini",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "a00b56a02e7808ec136fd597acc85fe193d9aac37e5ebe8b6bd9d3f7a01b2cff",
+      "name": "gh-issues",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gh-issues",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "31a0307c8657674d0513423ceaf8c0b13cd231918f8077465ec90f6f0b36876d",
+      "name": "gifgrep",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gifgrep",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "914b327a9a8e61dd4eb209219a17388bc696bd594389d3debbf76a0725aa11d4",
+      "name": "github",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/github",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "373dfdd7442f3e11c05d80ef20a7eef7787c52a2de4f9e04781790cfd99570d6",
+      "name": "gog",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gog",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "8f9272cc556be4871e1032d9d3af55d9ab1f6c9471f15b92b6a966d60e5729dc",
+      "name": "goplaces",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/goplaces",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "bfdd642b671181d14934b10e69d26eea5921f971f3fad7a3458dae3ee090375b",
+      "name": "healthcheck",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/healthcheck",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "5ae5948db15031eaa2f21da9956006f64a9a1a9102054c097181bf8806746fdc",
+      "name": "himalaya",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/himalaya",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "304a2cb6f94863d6b2c88e68e56fe2c6b5a287aa28c3661b68fe2be2a1aec4f3",
+      "name": "imsg",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/imsg",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "32dd29d67edefe99e77c997928860b3feffee6e7885714b4ef431a0a6e07c13b",
+      "name": "mcporter",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/mcporter",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "4b3a4078cb5b9b945139260d193c129f00f989e52123fc59e5405fe741a5615b",
+      "name": "model-usage",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/model-usage",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "0c3b5b2cd0a73ea5e2066f050985224d227f06982505548b15089aba1fc8ae05",
+      "name": "nano-banana-pro",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/nano-banana-pro",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "c11e683e939ef1a0bf0d898c789654a4cc1f344913e8ed038cd5f03224fd38e2",
+      "name": "nano-pdf",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/nano-pdf",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "d5e9738addd7615fdf1fa10067cc0bf4b59fff7a7f89ffe30000b13d9c6a885c",
+      "name": "notion",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/notion",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "f493dd9d0be43d793a3333c0926bc37efa53e839acdc20d0b1c16706297b2053",
+      "name": "obsidian",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/obsidian",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "95f2de240fde3318fbd39faf80dded09faa8ab2404d9597a7ae09f60a78f8c66",
+      "name": "openai-image-gen",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-image-gen",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "9914e172935221d1ba9829d81c8c9e5cb57c67371884c23c4ee6f7233d973937",
+      "name": "openai-whisper",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-whisper",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "50d3e2d65342bd9525ebd1be2501225d2fbe9ead04c0cbaba0358f67b7fb015f",
+      "name": "openai-whisper-api",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-whisper-api",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "fd64f041940ebb37fa0fbfffc8201b0919df39bb5b7b15e044adb89ccc699d80",
+      "name": "openrouter-typescript-sdk",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.agents/skills/openrouter-typescript-sdk",
+      "status": "approved"
+    },
+    {
+      "approval_date": "2026-03-01",
+      "checksum_sha256": "839267bfedda97434e5fbd1fc8aa1d77f2b0744496c27c74cf7c39ba44c91408",
+      "name": "slack",
+      "reviewer": "isa-kernel-sync",
+      "scope": "quarantine-local",
+      "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/slack",
+      "status": "approved"
+    }
+  ],
   "quarantine_install_dir": "~/.openclaw/skills-quarantine",
-  "entries": []
+  "version": "1.1.0"
 }

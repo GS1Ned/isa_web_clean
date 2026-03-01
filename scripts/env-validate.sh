@@ -25,6 +25,12 @@ for cmd in node pnpm ssh; do
   fi
 done
 
+VM_SSH_WRAPPER="scripts/vm/isa_vm_ssh.sh"
+if [ ! -x "$VM_SSH_WRAPPER" ]; then
+  echo "STOP=vm_ssh_wrapper_missing"
+  exit 1
+fi
+
 if [ ! -f ".env" ]; then
   echo "STOP=.env_missing"
   exit 1
@@ -55,14 +61,14 @@ ACTION="env_check_ts"
 pnpm run env:check
 
 ACTION="vm_connectivity_probe"
-ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new "$VM_HOST" \
+bash "$VM_SSH_WRAPPER" exec --command \
   "set -euo pipefail; \
    if [ -d \"$VM_REPO\" ]; then echo READY=vm_repo_path_exists; else echo STOP=vm_repo_path_missing; exit 1; fi; \
    if [ -f \"$VM_ENV_FILE\" ]; then echo READY=vm_env_path_exists; else echo STOP=vm_env_path_missing; exit 1; fi; \
    if command -v openclaw >/dev/null 2>&1; then echo READY=openclaw_cli_present; else echo STOP=openclaw_cli_missing; exit 1; fi"
 
 ACTION="vm_gateway_probe"
-ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new "$VM_HOST" \
+bash "$VM_SSH_WRAPPER" exec --command \
   "set -euo pipefail; \
    cd \"$VM_REPO\"; \
    if [ -x \"scripts/openclaw-bootstrap.sh\" ]; then \
@@ -77,7 +83,7 @@ ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new "$
    fi"
 
 ACTION="vm_dashboard_url_probe"
-ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new "$VM_HOST" \
+bash "$VM_SSH_WRAPPER" exec --command \
   "set -euo pipefail; \
    cd \"$VM_REPO\"; \
    if [ -x \"scripts/openclaw-dashboard-url.sh\" ]; then \

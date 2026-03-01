@@ -25,6 +25,12 @@ for cmd in ssh scp awk comm sort; do
   fi
 done
 
+VM_SSH_WRAPPER="scripts/vm/isa_vm_ssh.sh"
+if [ ! -x "$VM_SSH_WRAPPER" ]; then
+  echo "STOP=vm_ssh_wrapper_missing"
+  exit 1
+fi
+
 if [ ! -f ".env" ]; then
   echo "STOP=.env_missing"
   exit 1
@@ -58,7 +64,7 @@ ACTION="copy_env_to_vm"
 scp -q -o BatchMode=yes -o StrictHostKeyChecking=accept-new .env "${VM_HOST}:${TMP_REMOTE}"
 
 ACTION="install_env_on_vm"
-ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new "$VM_HOST" \
+bash "$VM_SSH_WRAPPER" exec --command \
   "set -euo pipefail; \
    install -m 600 \"$TMP_REMOTE\" \"$VM_ENV_FILE\"; \
    rm -f \"$TMP_REMOTE\"; \
@@ -66,7 +72,7 @@ ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new "$
 
 ACTION="compare_key_names"
 LC_ALL=C awk -F= '/^[A-Za-z_][A-Za-z0-9_]*=/{print $1}' .env | tr -d '\r' | sed 's/[[:space:]]*$//' | sed '/^$/d' | LC_ALL=C sort -u >"$TMP_DIR/local.keys"
-ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new "$VM_HOST" \
+bash "$VM_SSH_WRAPPER" exec --quiet --command \
   "LC_ALL=C awk -F= '/^[A-Za-z_][A-Za-z0-9_]*=/{print \$1}' \"$VM_ENV_FILE\" | tr -d '\\r' | sed 's/[[:space:]]*$//' | sed '/^$/d' | LC_ALL=C sort -u" >"$TMP_DIR/remote.keys"
 
 LC_ALL=C comm -23 "$TMP_DIR/local.keys" "$TMP_DIR/remote.keys" >"$TMP_DIR/local_only.keys"
