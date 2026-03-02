@@ -23,6 +23,12 @@ if ! command -v ssh >/dev/null 2>&1; then
   exit 1
 fi
 
+VM_SSH_WRAPPER="scripts/vm/isa_vm_ssh.sh"
+if [ ! -x "$VM_SSH_WRAPPER" ]; then
+  echo "STOP=vm_ssh_wrapper_missing"
+  exit 1
+fi
+
 if [ -f ".env" ]; then
   ACTION="load_env"
   set -a
@@ -44,7 +50,7 @@ REMOTE_PORT="${OPENCLAW_GATEWAY_PORT:-18789}"
 SOCKET_PATH="${OPENCLAW_TUNNEL_SOCKET:-/tmp/isa_openclaw_tunnel.sock}"
 
 ssh_check() {
-  ssh -S "$SOCKET_PATH" -O check "$VM_HOST" >/dev/null 2>&1
+  bash "$VM_SSH_WRAPPER" master-check --quiet --socket "$SOCKET_PATH" >/dev/null 2>&1
 }
 
 port_listening() {
@@ -66,12 +72,9 @@ case "$MODE" in
 
     trap - ERR
     set +e
-    ssh -fN -M -S "$SOCKET_PATH" \
-      -o BatchMode=yes \
-      -o ExitOnForwardFailure=yes \
-      -o StrictHostKeyChecking=accept-new \
-      -L "${LOCAL_BIND_HOST}:${LOCAL_PORT}:${REMOTE_BIND_HOST}:${REMOTE_PORT}" \
-      "$VM_HOST"
+    bash "$VM_SSH_WRAPPER" tunnel-up --quiet \
+      --socket "$SOCKET_PATH" \
+      --local-forward "${LOCAL_BIND_HOST}:${LOCAL_PORT}:${REMOTE_BIND_HOST}:${REMOTE_PORT}"
     SSH_EXIT="$?"
     set -e
     trap on_err ERR
@@ -100,7 +103,7 @@ case "$MODE" in
   down)
     ACTION="tunnel_down"
     if ssh_check; then
-      ssh -S "$SOCKET_PATH" -O exit "$VM_HOST" >/dev/null 2>&1 || true
+      bash "$VM_SSH_WRAPPER" master-exit --quiet --socket "$SOCKET_PATH" >/dev/null 2>&1 || true
       rm -f "$SOCKET_PATH" || true
       echo "DONE=openclaw_tunnel_down"
     else

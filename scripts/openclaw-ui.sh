@@ -54,7 +54,7 @@ if [ -f "scripts/openclaw-bootstrap.sh" ]; then
   bash scripts/vm-run.sh scripts/openclaw-bootstrap.sh >/dev/null
 fi
 
-TMP_FETCH_SCRIPT="$(mktemp /tmp/openclaw_vm_dashboard_fetch.XXXXXX.sh)"
+TMP_FETCH_SCRIPT="$(mktemp /tmp/openclaw_vm_dashboard_fetch.XXXXXX)"
 cleanup() {
   rm -f "$TMP_FETCH_SCRIPT"
 }

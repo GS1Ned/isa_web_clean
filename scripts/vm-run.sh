@@ -74,6 +74,12 @@ if [ "$FORWARD_AGENT" -eq 1 ]; then
   SSH_ARGS=(-A "${SSH_ARGS[@]}")
 fi
 
+VM_SSH_WRAPPER="scripts/vm/isa_vm_ssh.sh"
+if [ ! -x "$VM_SSH_WRAPPER" ]; then
+  echo "STOP=vm_ssh_wrapper_missing"
+  exit 1
+fi
+
 if [ "$COMMAND_MODE" -eq 1 ]; then
   if [ "$#" -gt 0 ]; then
     echo "STOP=usage vm-run.sh [--forward-agent] [--command '<cmd>' | <remote-script> [args...]]"
@@ -82,7 +88,11 @@ if [ "$COMMAND_MODE" -eq 1 ]; then
   ACTION="remote_exec_command"
   echo "READY=vm_run host=${VM_HOST} mode=command"
   REMOTE_CMD="set -euo pipefail; cd $(printf '%q' "$VM_REPO"); bash -lc $(printf '%q' "$INLINE_COMMAND")"
-  ssh "${SSH_ARGS[@]}" "$VM_HOST" "$REMOTE_CMD"
+  if [ "$FORWARD_AGENT" -eq 1 ]; then
+    bash "$VM_SSH_WRAPPER" exec --forward-agent --command "$REMOTE_CMD"
+  else
+    bash "$VM_SSH_WRAPPER" exec --command "$REMOTE_CMD"
+  fi
   echo "DONE=vm_run_complete"
   exit 0
 fi
@@ -107,26 +117,36 @@ done
 ACTION="remote_exec"
 echo "READY=vm_run host=${VM_HOST} script=$(basename "$REMOTE_SCRIPT")"
 CHECK_CMD="set -euo pipefail; cd $(printf '%q' "$VM_REPO"); [ -f $(printf '%q' "$REMOTE_SCRIPT_PATH") ]"
-if ssh "${SSH_ARGS[@]}" "$VM_HOST" "$CHECK_CMD" >/dev/null 2>&1; then
-  ssh "${SSH_ARGS[@]}" "$VM_HOST" "$REMOTE_CMD"
+if bash "$VM_SSH_WRAPPER" exec --quiet --command "$CHECK_CMD" >/dev/null 2>&1; then
+  if [ "$FORWARD_AGENT" -eq 1 ]; then
+    bash "$VM_SSH_WRAPPER" exec --forward-agent --command "$REMOTE_CMD"
+  else
+    bash "$VM_SSH_WRAPPER" exec --command "$REMOTE_CMD"
+  fi
 elif [ -f "$LOCAL_SCRIPT_PATH" ]; then
   REMOTE_TMP="/tmp/isa_vm_run_$(basename "$REMOTE_SCRIPT_PATH").$$.$RANDOM.sh"
   echo "READY=vm_run_stream_local_script script=$(basename "$REMOTE_SCRIPT")"
   ACTION="remote_stage_local_script"
-  ssh "${SSH_ARGS[@]}" "$VM_HOST" \
-    "set -euo pipefail; cat > $(printf '%q' "$REMOTE_TMP"); chmod 700 $(printf '%q' "$REMOTE_TMP")" \
-    < "$LOCAL_SCRIPT_PATH"
+  if [ "$FORWARD_AGENT" -eq 1 ]; then
+    bash "$VM_SSH_WRAPPER" exec --forward-agent --stdin-file "$LOCAL_SCRIPT_PATH" --command "set -euo pipefail; cat > $(printf '%q' "$REMOTE_TMP"); chmod 700 $(printf '%q' "$REMOTE_TMP")"
+  else
+    bash "$VM_SSH_WRAPPER" exec --stdin-file "$LOCAL_SCRIPT_PATH" --command "set -euo pipefail; cat > $(printf '%q' "$REMOTE_TMP"); chmod 700 $(printf '%q' "$REMOTE_TMP")"
+  fi
   STAGED_CMD="set -euo pipefail; cd $(printf '%q' "$VM_REPO"); bash $(printf '%q' "$REMOTE_TMP")"
   for arg in "$@"; do
     STAGED_CMD+=" $(printf '%q' "$arg")"
   done
   ACTION="remote_exec_staged_script"
   set +e
-  ssh "${SSH_ARGS[@]}" "$VM_HOST" "$STAGED_CMD"
+  if [ "$FORWARD_AGENT" -eq 1 ]; then
+    bash "$VM_SSH_WRAPPER" exec --forward-agent --command "$STAGED_CMD"
+  else
+    bash "$VM_SSH_WRAPPER" exec --command "$STAGED_CMD"
+  fi
   STAGED_EXIT="$?"
   set -e
   ACTION="remote_cleanup_staged_script"
-  ssh "${SSH_ARGS[@]}" "$VM_HOST" "set -euo pipefail; rm -f $(printf '%q' "$REMOTE_TMP")" >/dev/null 2>&1 || true
+  bash "$VM_SSH_WRAPPER" exec --quiet --command "set -euo pipefail; rm -f $(printf '%q' "$REMOTE_TMP")" >/dev/null 2>&1 || true
   if [ "$STAGED_EXIT" -ne 0 ]; then
     echo "STOP=failed action=remote_exec_staged_script exit=${STAGED_EXIT}"
     exit "$STAGED_EXIT"
