@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "evidence": {
+      "documented_keys": [
+        "agents.defaults.heartbeat",
+        "agents.defaults.workspace",
+        "tools.profile"
+      ],
+      "note": "Cron and memory tuning are applied via CLI/runtime setup because matching config keys were not proven from local docs during this run."
+    },
+    "intent": "ISA autonomy lab template",
+    "runtime_mode_hint": "vm_only"
+  },
+  "agents": {
+    "defaults": {
+      "heartbeat": {
+        "every": "30m",
+        "suppressToolErrorWarnings": true
+      },
+      "workspace": "docs/agent/_runtime"
+    }
+  },
+  "tools": {
+    "profile": "full"
+  },
+  "TBD_UNVERIFIED": {
+    "agents": {
+      "defaults": {
+        "repoRoot": {
+          "intended_source": "repo root detected by scripts/openclaw-isa-autonomy-setup.sh"
+        }
+      }
+    },
+    "cron": {
+      "enabled": true,
+      "jobs_managed_via_cli": [
+        {
+          "name": "isa-hourly-reflect",
+          "schedule": "every 1h"
+        },
+        {
+          "name": "isa-nightly-maintenance",
+          "schedule": "0 3 * * * Europe/Amsterdam"
+        }
+      ]
+    },
+    "memory": {
+      "compaction": true,
+      "enabled": true,
+      "flush_behavior": "detect-and-apply-via-runtime-if-supported"
+    },
+    "timezone": "Europe/Amsterdam"
+  }
+}

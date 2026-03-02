@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-03-02T09:08:09Z",
+  "runtime_mode": "vm_only",
+  "openclaw": true,
+  "doctor_cmd": "openclaw doctor",
+  "skills_list_cmd": "openclaw skills list",
+  "skills_check_cmd": "openclaw skills check --json",
+  "skills_install_cmd": null,
+  "skills_update_all_cmd": null,
+  "project_skills_cli": "npx -y skills",
+  "project_skills_add_cmd": "npx -y skills add",
+  "project_skills_update_all_cmd": "npx -y skills update",
+  "security_audit_cmd": "openclaw security audit --json",
+  "update_status_cmd": "openclaw update status --json",
+  "hooks_list_cmd": "openclaw hooks list",
+  "hooks_check_cmd": "openclaw hooks check",
+  "cron_status_cmd": "openclaw cron status --json",
+  "cron_list_cmd": "openclaw cron list --json",
+  "cron_add_cmd": "openclaw cron add",
+  "cron_edit_cmd": "openclaw cron edit",
+  "memory_status_cmd": "openclaw memory status --json",
+  "dashboard_cmd": "openclaw dashboard --no-open",
+  "dashboard_url_file": "/root/.openclaw/dashboard-url.latest",
+  "openclaw_config_path": "/root/.openclaw/openclaw.json",
+  "vm_exec_wrapper": "bash scripts/vm/isa_vm_ssh.sh exec --command",
+  "fallback_suggestions": {
+    "skills_install_cmd": "Use project skill installs via npx skills add or rely on VM built-in OpenClaw skills",
+    "cron_jobs": "Use openclaw cron add/edit on the VM when OPENCLAW_RUNTIME_MODE=vm_only",
+    "template_apply_target": "Apply config/openclaw/openclaw.isa-lab.template.json to the VM path from .env.example when ready"
+  }
+}
