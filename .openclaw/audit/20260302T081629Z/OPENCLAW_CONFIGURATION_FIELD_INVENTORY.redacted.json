@@ -1,0 +1,5036 @@
+[
+  {
+    "path": "export OPENROUTER_API_KEY",
+    "source": "host:~/.openclaw/env.sh",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "cost_control.enforce_budget",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_control.max_monthly_usd",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 500
+  },
+  {
+    "path": "cost_control.max_request_usd",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 5
+  },
+  {
+    "path": "cost_control.soft_alert_threshold_usd",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 250
+  },
+  {
+    "path": "cost_control.track_by_model",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.api.entrypoint",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "isa_cost_optimizer.middleware_api:app"
+  },
+  {
+    "path": "cost_optimization_stack.api.framework",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "fastapi"
+  },
+  {
+    "path": "cost_optimization_stack.api.routes.health",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/health"
+  },
+  {
+    "path": "cost_optimization_stack.api.routes.optimize",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/optimize"
+  },
+  {
+    "path": "cost_optimization_stack.api.transport",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "in_process"
+  },
+  {
+    "path": "cost_optimization_stack.cache.backend",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "json_file"
+  },
+  {
+    "path": "cost_optimization_stack.cache.deterministic_ordering",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.cache.key_algorithm",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "cost_optimization_stack.cache.path",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime/deterministic_cache.json"
+  },
+  {
+    "path": "cost_optimization_stack.concurrency_governor.enabled",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.concurrency_governor.max_in_flight",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 4
+  },
+  {
+    "path": "cost_optimization_stack.concurrency_governor.overflow_action",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "raise_429"
+  },
+  {
+    "path": "cost_optimization_stack.context_compression.algorithm",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "cosine_similarity"
+  },
+  {
+    "path": "cost_optimization_stack.context_compression.deduplicate",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.context_compression.enabled",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.context_compression.similarity_threshold",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "float",
+    "value": 0.92
+  },
+  {
+    "path": "cost_optimization_stack.embedding_cache.enabled",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.embedding_cache.path",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime/embedding_cache.json"
+  },
+  {
+    "path": "cost_optimization_stack.embedding_cache.reuse_threshold",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "float",
+    "value": 0.92
+  },
+  {
+    "path": "cost_optimization_stack.enabled",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.escalation.enabled",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.escalation.quality_floors.balanced",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "float",
+    "value": 0.9
+  },
+  {
+    "path": "cost_optimization_stack.escalation.quality_floors.economy",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "float",
+    "value": 0.85
+  },
+  {
+    "path": "cost_optimization_stack.escalation.quality_floors.premium",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "float",
+    "value": 0.95
+  },
+  {
+    "path": "cost_optimization_stack.escalation.tier_order[0]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "economy"
+  },
+  {
+    "path": "cost_optimization_stack.escalation.tier_order[1]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "balanced"
+  },
+  {
+    "path": "cost_optimization_stack.escalation.tier_order[2]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "premium"
+  },
+  {
+    "path": "cost_optimization_stack.escalation.trigger_conditions[0]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "invalid_json"
+  },
+  {
+    "path": "cost_optimization_stack.escalation.trigger_conditions[1]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "quality_below_floor"
+  },
+  {
+    "path": "cost_optimization_stack.json_repair.enabled",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.json_repair.repair_before_retry",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.json_repair.strict_canonical_output",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.retry_controller.enabled",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.retry_controller.max_attempts",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 2
+  },
+  {
+    "path": "cost_optimization_stack.runtime_dir",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime"
+  },
+  {
+    "path": "cost_optimization_stack.sla_controller.breach_action",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "promote_tier"
+  },
+  {
+    "path": "cost_optimization_stack.sla_controller.enabled",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "cost_optimization_stack.sla_controller.tier_thresholds.balanced",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 5000
+  },
+  {
+    "path": "cost_optimization_stack.sla_controller.tier_thresholds.economy",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 8000
+  },
+  {
+    "path": "cost_optimization_stack.sla_controller.tier_thresholds.premium",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 3000
+  },
+  {
+    "path": "cost_optimization_stack.token_controller.default_token_cap",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "cost_optimization_stack.token_controller.enabled",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "cost_optimization_stack.token_controller.overflow_action",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "cost_optimization_stack.version",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "1.0.0"
+  },
+  {
+    "path": "failure_classification.categories[0]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "dependency"
+  },
+  {
+    "path": "failure_classification.categories[1]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "permission"
+  },
+  {
+    "path": "failure_classification.categories[2]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "malformed_json"
+  },
+  {
+    "path": "failure_classification.categories[3]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "missing_runtime"
+  },
+  {
+    "path": "failure_classification.categories[4]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "invalid_scoring"
+  },
+  {
+    "path": "failure_classification.categories[5]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "router_offline"
+  },
+  {
+    "path": "failure_classification.retryable[0]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "dependency"
+  },
+  {
+    "path": "failure_classification.retryable[1]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "router_offline"
+  },
+  {
+    "path": "failure_classification.terminal[0]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "permission"
+  },
+  {
+    "path": "failure_classification.terminal[1]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "malformed_json"
+  },
+  {
+    "path": "failure_classification.terminal[2]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "invalid_scoring"
+  },
+  {
+    "path": "fallback.escalation_strategy[0]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "retry_dynamic_optimizer"
+  },
+  {
+    "path": "fallback.escalation_strategy[1]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "fallback_to_provider_priority"
+  },
+  {
+    "path": "fallback.escalation_strategy[2]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "drop_to_safe_skill_allowlist_only"
+  },
+  {
+    "path": "fallback.escalation_strategy[3]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "require_manual_operator_review"
+  },
+  {
+    "path": "fallback.max_retries",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 2
+  },
+  {
+    "path": "fallback.safe_mode",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "read_only_governed"
+  },
+  {
+    "path": "governance.artifact_dir",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/kernel/runs/20260301T175140Z/artifacts"
+  },
+  {
+    "path": "governance.artifact_hashing",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "governance.change_control",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "policy_review_required"
+  },
+  {
+    "path": "governance.evidence_enforcement",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "governance.evidence_required",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "governance.immutable_artifacts",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "governance.policy_version",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "isa-ucpk-2026-03-01-cost-optimization-stack-v1"
+  },
+  {
+    "path": "governance.run_id",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "20260301T175140Z"
+  },
+  {
+    "path": "logging.audit_trail",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "logging.destinations[0]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "stdout"
+  },
+  {
+    "path": "logging.destinations[1]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": ".openclaw/logs/control-plane-audit.jsonl"
+  },
+  {
+    "path": "logging.file_path",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/kernel/runs/20260301T175140Z/logs/openclaw_control_plane.log"
+  },
+  {
+    "path": "logging.level",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "info"
+  },
+  {
+    "path": "logging.log_to_file",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "logging.redact_secrets",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "logging.structured",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "metadata.compatibility",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "isa-unified-control-plane-kernel"
+  },
+  {
+    "path": "metadata.repo_root",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean"
+  },
+  {
+    "path": "metadata.secret_free",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "metadata.today_iso8601",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "2026-03-01"
+  },
+  {
+    "path": "mode",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "deterministic"
+  },
+  {
+    "path": "model_router.cost_optimization_stack.enabled",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "model_router.cost_optimization_stack.entrypoint",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "isa_cost_optimizer.middleware_api:app"
+  },
+  {
+    "path": "model_router.cost_optimization_stack.health_path",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/health"
+  },
+  {
+    "path": "model_router.cost_optimization_stack.mode",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "pre_router_middleware"
+  },
+  {
+    "path": "model_router.cost_optimization_stack.optimize_path",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/optimize"
+  },
+  {
+    "path": "model_router.cost_optimization_stack.runtime_dir",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime"
+  },
+  {
+    "path": "model_router.cost_tracking",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "model_router.default_model",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "openrouter/moonshotai/kimi-k2.5"
+  },
+  {
+    "path": "model_router.deterministic_selection",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "model_router.dynamic_optimizer_endpoint",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "http://localhost:8090/select"
+  },
+  {
+    "path": "model_router.endpoint",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "http://127.0.0.1:8090/select"
+  },
+  {
+    "path": "model_router.fallback_models",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "list",
+    "value": []
+  },
+  {
+    "path": "model_router.health",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "http://127.0.0.1:8090/health"
+  },
+  {
+    "path": "model_router.max_tokens_per_call",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "model_router.provider_priority[0]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "openrouter"
+  },
+  {
+    "path": "model_router.provider_priority[1]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "openai"
+  },
+  {
+    "path": "model_router.provider_priority[2]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "anthropic"
+  },
+  {
+    "path": "model_router.provider_priority[3]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "gemini"
+  },
+  {
+    "path": "model_router.request_timeout_ms",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 1500
+  },
+  {
+    "path": "model_router.strategy",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "isa_dynamic_optimizer_http"
+  },
+  {
+    "path": "runtime.config_integrity_required",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "runtime.integrity_flags[0]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "secret_free_config"
+  },
+  {
+    "path": "runtime.integrity_flags[1]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "deterministic_key_ordering"
+  },
+  {
+    "path": "runtime.integrity_flags[2]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "skill_allowlist_enforced"
+  },
+  {
+    "path": "runtime.integrity_flags[3]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "router_endpoint_validated"
+  },
+  {
+    "path": "runtime.process_restart_policy",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "manual_or_supervised_only"
+  },
+  {
+    "path": "runtime.profile_scope",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "isa_unified_control_plane_kernel"
+  },
+  {
+    "path": "runtime.sandbox_mode",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "off"
+  },
+  {
+    "path": "safety.allow_destructive_fs",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": false
+  },
+  {
+    "path": "safety.allow_shell",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": false
+  },
+  {
+    "path": "safety.network_install_requires_review",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "safety.restrict_root_execution",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "safety.workspace_write_requires_approval",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "skill_policy.allowed_categories[0]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "orchestration"
+  },
+  {
+    "path": "skill_policy.allowed_categories[1]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "execution"
+  },
+  {
+    "path": "skill_policy.allowed_categories[2]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "cognition"
+  },
+  {
+    "path": "skill_policy.allowed_categories[3]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "integration"
+  },
+  {
+    "path": "skill_policy.allowed_categories[4]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "infrastructure"
+  },
+  {
+    "path": "skill_policy.allowed_categories[5]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "data"
+  },
+  {
+    "path": "skill_policy.allowed_categories[6]",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "governance"
+  },
+  {
+    "path": "skill_policy.allowlist_mode",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "skill_policy.auto_install",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": false
+  },
+  {
+    "path": "skill_policy.dependency_repair_mode",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "proposal_only"
+  },
+  {
+    "path": "skill_policy.untrusted_sources",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "deny"
+  },
+  {
+    "path": "slas.latency_thresholds_ms.p50",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 3000
+  },
+  {
+    "path": "slas.latency_thresholds_ms.p95",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 8000
+  },
+  {
+    "path": "slas.latency_thresholds_ms.p99",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 15000
+  },
+  {
+    "path": "slas.router_timeout_ms",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 1500
+  },
+  {
+    "path": "slas.skill_resolution_timeout_ms",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "int",
+    "value": 2000
+  },
+  {
+    "path": "telemetry.collect_metrics",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "telemetry.disable_secret_capture",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "telemetry.export_json_metrics",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "telemetry.router_observability",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "version",
+    "source": "repo:.openclaw/control-plane.json",
+    "type": "str",
+    "value": "1.0.0"
+  },
+  {
+    "path": "alias",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "ISA Agentic Coding (Kimi K2.5)"
+  },
+  {
+    "path": "best_for[0]",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "agentic coding"
+  },
+  {
+    "path": "best_for[1]",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "visual or multimodal coding"
+  },
+  {
+    "path": "best_for[2]",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "autonomous tool orchestration"
+  },
+  {
+    "path": "best_for[3]",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "complex multi-step implementation"
+  },
+  {
+    "path": "better_options_when[0]",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "price-performance matters more than autonomy"
+  },
+  {
+    "path": "better_options_when[1]",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "the workload is mostly text plus tools"
+  },
+  {
+    "path": "better_options_when[2]",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "the task is long-context research rather than agentic coding"
+  },
+  {
+    "path": "cost_benefit",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "Worth the premium when autonomous tool behavior and coding agency matter. Not the best default for routine governed work."
+  },
+  {
+    "path": "cost_profile",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "premium_agentic"
+  },
+  {
+    "path": "matched_terms",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "list",
+    "value": []
+  },
+  {
+    "path": "model",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "openrouter/moonshotai/kimi-k2.5"
+  },
+  {
+    "path": "selected_route_id",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "agentic_coding_multimodal"
+  },
+  {
+    "path": "selection_reason",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "default_route_no_keyword_match"
+  },
+  {
+    "path": "ui_action",
+    "source": "repo:.openclaw/launcher/last_model_route.json",
+    "type": "str",
+    "value": "Select 'ISA Agentic Coding (Kimi K2.5)' in the OpenClaw UI model picker."
+  },
+  {
+    "path": "artifacts.browser_policy",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "config/openclaw/browser.policy.json"
+  },
+  {
+    "path": "artifacts.exec_lane_policy",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "config/openclaw/exec-lane.policy.json"
+  },
+  {
+    "path": "artifacts.model_routing_policy",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "config/openclaw/model-routing.policy.json"
+  },
+  {
+    "path": "artifacts.skills_allowlist",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "config/openclaw/skills-allowlist.json"
+  },
+  {
+    "path": "automation.allow_insecure_dev_bypass_env_var",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "OPENCLAW_AUTOMATION_ALLOW_INSECURE_DEV_BYPASS"
+  },
+  {
+    "path": "automation.kill_switch_env_var",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "OPENCLAW_AUTOMATION_KILL_SWITCH"
+  },
+  {
+    "path": "automation.max_clock_skew_seconds",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "int",
+    "value": 300
+  },
+  {
+    "path": "automation.require_idempotency_key_in_strict_mode",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "automation.require_signature_in_strict_mode",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "automation.require_timestamp_in_strict_mode",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "automation.strict_mode_env_var",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "OPENCLAW_AUTOMATION_STRICT_MODE"
+  },
+  {
+    "path": "automation.strict_mode_production",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "enforcement.allow_dev_bypass",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "enforcement.mode",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "fail_closed"
+  },
+  {
+    "path": "network.require_trusted_proxies_when_exposed",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "network.reverse_proxy_exposure",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "bool",
+    "value": false
+  },
+  {
+    "path": "network.trusted_proxies_script",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "scripts/openclaw-trusted-proxies.sh"
+  },
+  {
+    "path": "runtime.allow_host_local_gateway",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "bool",
+    "value": false
+  },
+  {
+    "path": "runtime.primary_mode",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "vm_only"
+  },
+  {
+    "path": "runtime.status_script_default_target",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "vm"
+  },
+  {
+    "path": "runtime.ui_launcher_script",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "scripts/openclaw-ui.sh"
+  },
+  {
+    "path": "version",
+    "source": "repo:config/governance/openclaw_policy_envelope.json",
+    "type": "str",
+    "value": "1.0.0"
+  },
+  {
+    "path": "allow_unsafe_launch_flags",
+    "source": "repo:config/openclaw/browser.policy.json",
+    "type": "bool",
+    "value": false
+  },
+  {
+    "path": "mode",
+    "source": "repo:config/openclaw/browser.policy.json",
+    "type": "str",
+    "value": "fallback_only"
+  },
+  {
+    "path": "prohibited_actions[0]",
+    "source": "repo:config/openclaw/browser.policy.json",
+    "type": "str",
+    "value": "autonomous_login_submission"
+  },
+  {
+    "path": "prohibited_actions[1]",
+    "source": "repo:config/openclaw/browser.policy.json",
+    "type": "str",
+    "value": "unchecked_file_downloads"
+  },
+  {
+    "path": "prohibited_actions[2]",
+    "source": "repo:config/openclaw/browser.policy.json",
+    "type": "str",
+    "value": "background_navigation_without_user_intent"
+  },
+  {
+    "path": "require_explicit_opt_in_env",
+    "source": "repo:config/openclaw/browser.policy.json",
+    "type": "str",
+    "value": "OPENCLAW_BROWSER_FALLBACK_ALLOWED"
+  },
+  {
+    "path": "unsafe_launch_flags_env",
+    "source": "repo:config/openclaw/browser.policy.json",
+    "type": "str",
+    "value": "OPENCLAW_BROWSER_ALLOW_UNSAFE_FLAGS"
+  },
+  {
+    "path": "version",
+    "source": "repo:config/openclaw/browser.policy.json",
+    "type": "str",
+    "value": "1.0.0"
+  },
+  {
+    "path": "allow_rules[0].class",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "read_only"
+  },
+  {
+    "path": "allow_rules[0].name",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "allow_git_read_only"
+  },
+  {
+    "path": "allow_rules[0].pattern",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "^git[[:space:]]+(status|log|diff|show|branch|remote|fetch|pull([[:space:]]+--ff-only)?)([[:space:]]|$)"
+  },
+  {
+    "path": "allow_rules[0].requires_approval",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "bool",
+    "value": false
+  },
+  {
+    "path": "allow_rules[1].class",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "read_only"
+  },
+  {
+    "path": "allow_rules[1].name",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "allow_repo_checks"
+  },
+  {
+    "path": "allow_rules[1].pattern",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "^(pnpm[[:space:]]+(check|test-unit|test|run[[:space:]]+env:check)|node[[:space:]]+scripts/check-env\\.js|bash[[:space:]]+scripts/gates/[A-Za-z0-9._/-]+)([[:space:]]|$)"
+  },
+  {
+    "path": "allow_rules[1].requires_approval",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "bool",
+    "value": false
+  },
+  {
+    "path": "allow_rules[2].class",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "system_mutation"
+  },
+  {
+    "path": "allow_rules[2].name",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "allow_safe_build_commands"
+  },
+  {
+    "path": "allow_rules[2].pattern",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "^(pnpm[[:space:]]+install|pnpm[[:space:]]+build)([[:space:]]|$)"
+  },
+  {
+    "path": "allow_rules[2].requires_approval",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "approval_required_classes[0]",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "filesystem_write"
+  },
+  {
+    "path": "approval_required_classes[1]",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "network_write"
+  },
+  {
+    "path": "approval_required_classes[2]",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "system_mutation"
+  },
+  {
+    "path": "audit_log_path",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "logs/policy/exec-lane-audit.jsonl"
+  },
+  {
+    "path": "default_decision",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "deny"
+  },
+  {
+    "path": "deny_patterns[0]",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "(^|[[:space:]])rm[[:space:]]+-rf([[:space:]]|$)"
+  },
+  {
+    "path": "deny_patterns[1]",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "(^|[[:space:]])git[[:space:]]+reset[[:space:]]+--hard([[:space:]]|$)"
+  },
+  {
+    "path": "deny_patterns[2]",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "(^|[[:space:]])git[[:space:]]+checkout[[:space:]]+--([[:space:]]|$)"
+  },
+  {
+    "path": "deny_patterns[3]",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "(^|[[:space:]])mkfs([[:space:]]|$)"
+  },
+  {
+    "path": "deny_patterns[4]",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "(^|[[:space:]])shutdown([[:space:]]|$)"
+  },
+  {
+    "path": "deny_patterns[5]",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "(^|[[:space:]])reboot([[:space:]]|$)"
+  },
+  {
+    "path": "require_manual_approval_env",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "OPENCLAW_SAFE_EXEC_APPROVED"
+  },
+  {
+    "path": "version",
+    "source": "repo:config/openclaw/exec-lane.policy.json",
+    "type": "str",
+    "value": "1.0.0"
+  },
+  {
+    "path": "defaults.alias",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "ISA Agentic Coding (Kimi K2.5)"
+  },
+  {
+    "path": "defaults.model",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "openrouter/moonshotai/kimi-k2.5"
+  },
+  {
+    "path": "defaults.route_id",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "agentic_coding_multimodal"
+  },
+  {
+    "path": "mode",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "operational_assisted_routing"
+  },
+  {
+    "path": "router.default_route_id",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "agentic_coding_multimodal"
+  },
+  {
+    "path": "router.helper_script",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "scripts/openclaw-model-route.sh"
+  },
+  {
+    "path": "router.selection_method",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "deterministic_profile_keyword_router"
+  },
+  {
+    "path": "router.ui_selection_mode",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "manual_alias_switch_after_helper_output"
+  },
+  {
+    "path": "routes[0].alias",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "ISA Free Sandbox (Trinity Large Preview)"
+  },
+  {
+    "path": "routes[0].avoid_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "production SLAs"
+  },
+  {
+    "path": "routes[0].avoid_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "high-stakes regulated outputs"
+  },
+  {
+    "path": "routes[0].avoid_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "quality-sensitive final passes"
+  },
+  {
+    "path": "routes[0].best_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "zero-cost experimentation"
+  },
+  {
+    "path": "routes[0].best_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "prompt prototyping"
+  },
+  {
+    "path": "routes[0].best_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "non-critical agent-harness tests"
+  },
+  {
+    "path": "routes[0].best_for[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "creative ideation"
+  },
+  {
+    "path": "routes[0].better_options_when[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "the task is production-critical"
+  },
+  {
+    "path": "routes[0].better_options_when[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "governed automation reliability matters"
+  },
+  {
+    "path": "routes[0].better_options_when[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "you need stronger long-context or multimodal performance"
+  },
+  {
+    "path": "routes[0].cost_benefit",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "Best when cost must be zero. Lowest barrier to experimentation, but lower trust for production use."
+  },
+  {
+    "path": "routes[0].cost_profile",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "free"
+  },
+  {
+    "path": "routes[0].id",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "free_sandbox_exploration"
+  },
+  {
+    "path": "routes[0].match_any[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "free"
+  },
+  {
+    "path": "routes[0].match_any[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "free tier"
+  },
+  {
+    "path": "routes[0].match_any[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "no budget"
+  },
+  {
+    "path": "routes[0].match_any[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "zero budget"
+  },
+  {
+    "path": "routes[0].match_any[4]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "sandbox"
+  },
+  {
+    "path": "routes[0].match_any[5]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "prototype"
+  },
+  {
+    "path": "routes[0].match_any[6]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "cheap experiment"
+  },
+  {
+    "path": "routes[0].match_any[7]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "trial run"
+  },
+  {
+    "path": "routes[0].match_any[8]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "draft only"
+  },
+  {
+    "path": "routes[0].model",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "openrouter/arcee-ai/trinity-large-preview:free"
+  },
+  {
+    "path": "routes[0].priority",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "int",
+    "value": 10
+  },
+  {
+    "path": "routes[0].task_profiles[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "free_sandbox"
+  },
+  {
+    "path": "routes[0].task_profiles[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "prototype"
+  },
+  {
+    "path": "routes[0].task_profiles[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "zero_budget"
+  },
+  {
+    "path": "routes[1].alias",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "ISA Controlled Productivity (MiniMax M2.5)"
+  },
+  {
+    "path": "routes[1].avoid_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "fully autonomous tool-choice flows"
+  },
+  {
+    "path": "routes[1].avoid_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "strict schema reliability without caller-side validation"
+  },
+  {
+    "path": "routes[1].avoid_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "tasks where DeepSeek already covers the need more cheaply"
+  },
+  {
+    "path": "routes[1].best_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "office and productivity workflows"
+  },
+  {
+    "path": "routes[1].best_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "controlled tool paths"
+  },
+  {
+    "path": "routes[1].best_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "parallel-tool business automations"
+  },
+  {
+    "path": "routes[1].best_for[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "document and spreadsheet operations"
+  },
+  {
+    "path": "routes[1].better_options_when[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "you need stronger autonomous agentic behavior"
+  },
+  {
+    "path": "routes[1].better_options_when[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "the task is mostly coding and repository work"
+  },
+  {
+    "path": "routes[1].better_options_when[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "you need much larger context windows"
+  },
+  {
+    "path": "routes[1].cost_benefit",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "Pays off when the workload resembles office productivity automation. Less attractive as a generic coding default."
+  },
+  {
+    "path": "routes[1].cost_profile",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "midrange_productivity"
+  },
+  {
+    "path": "routes[1].id",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "controlled_productivity_automation"
+  },
+  {
+    "path": "routes[1].match_any[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "spreadsheet"
+  },
+  {
+    "path": "routes[1].match_any[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "excel"
+  },
+  {
+    "path": "routes[1].match_any[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "powerpoint"
+  },
+  {
+    "path": "routes[1].match_any[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "word document"
+  },
+  {
+    "path": "routes[1].match_any[4]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "office workflow"
+  },
+  {
+    "path": "routes[1].match_any[5]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "business ops"
+  },
+  {
+    "path": "routes[1].match_any[6]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "controlled automation"
+  },
+  {
+    "path": "routes[1].match_any[7]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "parallel tool"
+  },
+  {
+    "path": "routes[1].match_any[8]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "constrained tool path"
+  },
+  {
+    "path": "routes[1].match_any[9]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "productivity suite"
+  },
+  {
+    "path": "routes[1].model",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "openrouter/minimax/minimax-m2.5"
+  },
+  {
+    "path": "routes[1].priority",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "int",
+    "value": 40
+  },
+  {
+    "path": "routes[1].task_profiles[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "office_productivity"
+  },
+  {
+    "path": "routes[1].task_profiles[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "controlled_automation"
+  },
+  {
+    "path": "routes[1].task_profiles[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "parallel_tool_calls"
+  },
+  {
+    "path": "routes[2].alias",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "ISA Agentic Coding (Kimi K2.5)"
+  },
+  {
+    "path": "routes[2].avoid_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "strict latency ceilings"
+  },
+  {
+    "path": "routes[2].avoid_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "strict cost ceilings"
+  },
+  {
+    "path": "routes[2].avoid_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "short routine tasks"
+  },
+  {
+    "path": "routes[2].best_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "agentic coding"
+  },
+  {
+    "path": "routes[2].best_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "visual or multimodal coding"
+  },
+  {
+    "path": "routes[2].best_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "autonomous tool orchestration"
+  },
+  {
+    "path": "routes[2].best_for[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "complex multi-step implementation"
+  },
+  {
+    "path": "routes[2].better_options_when[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "price-performance matters more than autonomy"
+  },
+  {
+    "path": "routes[2].better_options_when[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "the workload is mostly text plus tools"
+  },
+  {
+    "path": "routes[2].better_options_when[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "the task is long-context research rather than agentic coding"
+  },
+  {
+    "path": "routes[2].cost_benefit",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "Worth the premium when autonomous tool behavior and coding agency matter. Not the best default for routine governed work."
+  },
+  {
+    "path": "routes[2].cost_profile",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "premium_agentic"
+  },
+  {
+    "path": "routes[2].id",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "agentic_coding_multimodal"
+  },
+  {
+    "path": "routes[2].match_any[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "agentic coding"
+  },
+  {
+    "path": "routes[2].match_any[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "visual coding"
+  },
+  {
+    "path": "routes[2].match_any[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "tool autonomy"
+  },
+  {
+    "path": "routes[2].match_any[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "multi-step tool workflow"
+  },
+  {
+    "path": "routes[2].match_any[4]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "autonomous tools"
+  },
+  {
+    "path": "routes[2].match_any[5]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "complex orchestration"
+  },
+  {
+    "path": "routes[2].match_any[6]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "planner"
+  },
+  {
+    "path": "routes[2].match_any[7]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "tool calling"
+  },
+  {
+    "path": "routes[2].match_any[8]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "agent swarm"
+  },
+  {
+    "path": "routes[2].match_any[9]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "multimodal coding"
+  },
+  {
+    "path": "routes[2].model",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "openrouter/moonshotai/kimi-k2.5"
+  },
+  {
+    "path": "routes[2].priority",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "int",
+    "value": 70
+  },
+  {
+    "path": "routes[2].task_profiles[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "agentic_coding"
+  },
+  {
+    "path": "routes[2].task_profiles[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "visual_coding"
+  },
+  {
+    "path": "routes[2].task_profiles[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "tool_autonomy"
+  },
+  {
+    "path": "routes[3].alias",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "ISA Long Context Research (Grok 4.1 Fast)"
+  },
+  {
+    "path": "routes[3].avoid_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "short tasks"
+  },
+  {
+    "path": "routes[3].avoid_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "strict cost minimization when DeepSeek already fits"
+  },
+  {
+    "path": "routes[3].avoid_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "tasks that do not need long context"
+  },
+  {
+    "path": "routes[3].best_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "very large context tasks"
+  },
+  {
+    "path": "routes[3].best_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "large repo and multi-document comparisons"
+  },
+  {
+    "path": "routes[3].best_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "research workflows"
+  },
+  {
+    "path": "routes[3].best_for[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "broad workspace analysis"
+  },
+  {
+    "path": "routes[3].better_options_when[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "163k context is enough and cost-performance matters more"
+  },
+  {
+    "path": "routes[3].better_options_when[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "the task is multimodal document reasoning rather than long-context text reasoning"
+  },
+  {
+    "path": "routes[3].cost_benefit",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "One of the strongest value choices when context size changes the problem. Expensive only if the long window is unnecessary."
+  },
+  {
+    "path": "routes[3].cost_profile",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "high_value_long_context"
+  },
+  {
+    "path": "routes[3].id",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "long_context_research"
+  },
+  {
+    "path": "routes[3].match_any[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "long context"
+  },
+  {
+    "path": "routes[3].match_any[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "large context"
+  },
+  {
+    "path": "routes[3].match_any[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "many files"
+  },
+  {
+    "path": "routes[3].match_any[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "many documents"
+  },
+  {
+    "path": "routes[3].match_any[4]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "compare all"
+  },
+  {
+    "path": "routes[3].match_any[5]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "deep research"
+  },
+  {
+    "path": "routes[3].match_any[6]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "keep everything in context"
+  },
+  {
+    "path": "routes[3].match_any[7]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "big repo"
+  },
+  {
+    "path": "routes[3].match_any[8]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "huge prompt"
+  },
+  {
+    "path": "routes[3].match_any[9]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "broad comparison"
+  },
+  {
+    "path": "routes[3].model",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "openrouter/x-ai/grok-4.1-fast"
+  },
+  {
+    "path": "routes[3].priority",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "int",
+    "value": 90
+  },
+  {
+    "path": "routes[3].task_profiles[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "long_context"
+  },
+  {
+    "path": "routes[3].task_profiles[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "deep_research"
+  },
+  {
+    "path": "routes[3].task_profiles[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "large_workspace"
+  },
+  {
+    "path": "routes[4].alias",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "ISA Governed Default (DeepSeek V3.2)"
+  },
+  {
+    "path": "routes[4].avoid_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "tasks that truly need 1M+ context"
+  },
+  {
+    "path": "routes[4].avoid_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "tasks that need premium multimodal reasoning"
+  },
+  {
+    "path": "routes[4].avoid_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "tasks where Kimi's agency is the main requirement"
+  },
+  {
+    "path": "routes[4].best_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "default ISA development sessions"
+  },
+  {
+    "path": "routes[4].best_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "governed tool use"
+  },
+  {
+    "path": "routes[4].best_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "structured extraction"
+  },
+  {
+    "path": "routes[4].best_for[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "general coding and implementation"
+  },
+  {
+    "path": "routes[4].better_options_when[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "long-context needs dominate"
+  },
+  {
+    "path": "routes[4].better_options_when[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "multimodal document reasoning dominates"
+  },
+  {
+    "path": "routes[4].better_options_when[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "agentic coding autonomy dominates"
+  },
+  {
+    "path": "routes[4].cost_benefit",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "Best overall cost-versus-performance default for ISA text-plus-tool workflows."
+  },
+  {
+    "path": "routes[4].cost_profile",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "best_general_value"
+  },
+  {
+    "path": "routes[4].id",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "general_governed_tooling"
+  },
+  {
+    "path": "routes[4].match_any[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "default"
+  },
+  {
+    "path": "routes[4].match_any[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "general coding"
+  },
+  {
+    "path": "routes[4].match_any[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "implement"
+  },
+  {
+    "path": "routes[4].match_any[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "refactor"
+  },
+  {
+    "path": "routes[4].match_any[4]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "structured output"
+  },
+  {
+    "path": "routes[4].match_any[5]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "json schema"
+  },
+  {
+    "path": "routes[4].match_any[6]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "extract"
+  },
+  {
+    "path": "routes[4].match_any[7]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "repo work"
+  },
+  {
+    "path": "routes[4].match_any[8]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "tool use"
+  },
+  {
+    "path": "routes[4].match_any[9]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "governed automation"
+  },
+  {
+    "path": "routes[4].match_any[10]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "balanced"
+  },
+  {
+    "path": "routes[4].match_any[11]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "cost effective"
+  },
+  {
+    "path": "routes[4].model",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "openrouter/deepseek/deepseek-v3.2"
+  },
+  {
+    "path": "routes[4].priority",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "int",
+    "value": 100
+  },
+  {
+    "path": "routes[4].task_profiles[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "default"
+  },
+  {
+    "path": "routes[4].task_profiles[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "governed_tooling"
+  },
+  {
+    "path": "routes[4].task_profiles[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "coding"
+  },
+  {
+    "path": "routes[4].task_profiles[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "structured_extraction"
+  },
+  {
+    "path": "routes[5].alias",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "ISA Premium Multimodal Docs (Gemini 3.1 Pro Preview)"
+  },
+  {
+    "path": "routes[5].avoid_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "routine coding and extraction"
+  },
+  {
+    "path": "routes[5].avoid_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "budget-sensitive repetitive work"
+  },
+  {
+    "path": "routes[5].avoid_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "cases where DeepSeek or Grok already fit"
+  },
+  {
+    "path": "routes[5].best_for[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "complex multimodal tasks"
+  },
+  {
+    "path": "routes[5].best_for[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "long document and PDF analysis"
+  },
+  {
+    "path": "routes[5].best_for[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "premium reasoning over mixed media"
+  },
+  {
+    "path": "routes[5].best_for[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "high-end planning with 1M context"
+  },
+  {
+    "path": "routes[5].better_options_when[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "the task is ordinary text-plus-tool work"
+  },
+  {
+    "path": "routes[5].better_options_when[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "cost sensitivity is high"
+  },
+  {
+    "path": "routes[5].better_options_when[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "long-context text tasks do not require multimodal richness"
+  },
+  {
+    "path": "routes[5].cost_benefit",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "Highest-cost option here. Use only when multimodal or premium document reasoning benefits justify the spend."
+  },
+  {
+    "path": "routes[5].cost_profile",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "premium_multimodal"
+  },
+  {
+    "path": "routes[5].id",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "premium_multimodal_documents"
+  },
+  {
+    "path": "routes[5].match_any[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "pdf"
+  },
+  {
+    "path": "routes[5].match_any[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "document reasoning"
+  },
+  {
+    "path": "routes[5].match_any[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "multimodal"
+  },
+  {
+    "path": "routes[5].match_any[3]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "audio"
+  },
+  {
+    "path": "routes[5].match_any[4]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "video"
+  },
+  {
+    "path": "routes[5].match_any[5]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "image"
+  },
+  {
+    "path": "routes[5].match_any[6]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "code execution"
+  },
+  {
+    "path": "routes[5].match_any[7]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "function calling"
+  },
+  {
+    "path": "routes[5].match_any[8]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "1m context"
+  },
+  {
+    "path": "routes[5].match_any[9]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "complex planning"
+  },
+  {
+    "path": "routes[5].match_any[10]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "google gemini"
+  },
+  {
+    "path": "routes[5].model",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "openrouter/google/gemini-3.1-pro-preview"
+  },
+  {
+    "path": "routes[5].priority",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "int",
+    "value": 80
+  },
+  {
+    "path": "routes[5].task_profiles[0]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "multimodal"
+  },
+  {
+    "path": "routes[5].task_profiles[1]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "pdf_documents"
+  },
+  {
+    "path": "routes[5].task_profiles[2]",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "premium_reasoning"
+  },
+  {
+    "path": "runtime_note.current_runtime_pinned_default",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "openrouter/moonshotai/kimi-k2.5"
+  },
+  {
+    "path": "runtime_note.note",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "The helper makes routing operational before the OpenClaw runtime itself supports ISA-semantic auto-switching."
+  },
+  {
+    "path": "selection_scope",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "isa_openclaw_ui_sessions"
+  },
+  {
+    "path": "version",
+    "source": "repo:config/openclaw/model-routing.policy.json",
+    "type": "str",
+    "value": "2.0.0"
+  },
+  {
+    "path": "entries[0].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[0].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "addf85acd869b4084507241b1ce3f9357ed9e77c4dd4a31a51e4ad15fcd785e0"
+  },
+  {
+    "path": "entries[0].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "1password"
+  },
+  {
+    "path": "entries[0].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[0].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[0].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/1password"
+  },
+  {
+    "path": "entries[0].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[1].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[1].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2e094a41827918aeeb212d2b52bfe12c3fcadbe443d6d5dabdb596338c33bcfc"
+  },
+  {
+    "path": "entries[1].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "apple-notes"
+  },
+  {
+    "path": "entries[1].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[1].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[1].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/apple-notes"
+  },
+  {
+    "path": "entries[1].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[2].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[2].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "55b32e32d4f824b92f1d0c264d315df66e15297ccd07afd3d849f8fbcc92b57b"
+  },
+  {
+    "path": "entries[2].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "apple-reminders"
+  },
+  {
+    "path": "entries[2].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[2].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[2].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/apple-reminders"
+  },
+  {
+    "path": "entries[2].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[3].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[3].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "b3e822ab09e9283d01e2c021a603a5212187c545fd797e671e617d79dae09330"
+  },
+  {
+    "path": "entries[3].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "bear-notes"
+  },
+  {
+    "path": "entries[3].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[3].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[3].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/bear-notes"
+  },
+  {
+    "path": "entries[3].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[4].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[4].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "a6cca0c49f67f0aa40cd95b6e44e3210b7857551b30217a022777d94954e228f"
+  },
+  {
+    "path": "entries[4].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "blogwatcher"
+  },
+  {
+    "path": "entries[4].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[4].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[4].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/blogwatcher"
+  },
+  {
+    "path": "entries[4].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[5].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[5].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "f2d81136171331f1a160e6714c7de07a6ac1c2846de98c77b4a1b7bf9e0de555"
+  },
+  {
+    "path": "entries[5].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "blucli"
+  },
+  {
+    "path": "entries[5].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[5].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[5].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/blucli"
+  },
+  {
+    "path": "entries[5].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[6].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[6].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "173c8ad20cd0a39d797b0d55b9d9a6a746f562b2949afc812ff4e6488eda7483"
+  },
+  {
+    "path": "entries[6].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "bluebubbles"
+  },
+  {
+    "path": "entries[6].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[6].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[6].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/bluebubbles"
+  },
+  {
+    "path": "entries[6].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[7].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[7].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "8019c4529f6d4d07c036af003a5e532514c71dac7145b6f7d0e52022ab5eacb8"
+  },
+  {
+    "path": "entries[7].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "camsnap"
+  },
+  {
+    "path": "entries[7].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[7].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[7].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/camsnap"
+  },
+  {
+    "path": "entries[7].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[8].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[8].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "c73b5d419cc8387255747c55c1abd16de63113772ca0603a2377775bd197ac13"
+  },
+  {
+    "path": "entries[8].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "canvas"
+  },
+  {
+    "path": "entries[8].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[8].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[8].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/canvas"
+  },
+  {
+    "path": "entries[8].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[9].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[9].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "05d354086733976ab09b79d13f29081e5cefbcb584580fc5144cbea4ca2b9691"
+  },
+  {
+    "path": "entries[9].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "clawhub"
+  },
+  {
+    "path": "entries[9].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[9].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[9].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/clawhub"
+  },
+  {
+    "path": "entries[9].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[10].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[10].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "a2bd06033a52fd964f321c4be340a3df30ee14da6c5856af4a4f57ea3c809acc"
+  },
+  {
+    "path": "entries[10].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "cleanup-specialist"
+  },
+  {
+    "path": "entries[10].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[10].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[10].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.codex/skills/cleanup-specialist"
+  },
+  {
+    "path": "entries[10].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[11].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[11].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "f4b377a211818ed2d72c76d179bdee5aae200f2f89a641dcbb0f2170585ec1e5"
+  },
+  {
+    "path": "entries[11].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "coding-agent"
+  },
+  {
+    "path": "entries[11].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[11].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[11].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/coding-agent"
+  },
+  {
+    "path": "entries[11].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[12].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[12].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "5d7e5afcd678b2fb32473ab581f72bd91e2687a4d12ea6d1273aa7530e087d8a"
+  },
+  {
+    "path": "entries[12].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "discord"
+  },
+  {
+    "path": "entries[12].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[12].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[12].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/discord"
+  },
+  {
+    "path": "entries[12].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[13].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[13].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "26f0c23cb0bce54341e638342828dd708270ff5547bbb1ebc3d6041b7ee103bb"
+  },
+  {
+    "path": "entries[13].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "eightctl"
+  },
+  {
+    "path": "entries[13].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[13].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[13].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/eightctl"
+  },
+  {
+    "path": "entries[13].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[14].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[14].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "cfc22551f9e2475b44994456e7100ae87b270f3b5cf0655342149b37b7e0c8a2"
+  },
+  {
+    "path": "entries[14].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "find-skills"
+  },
+  {
+    "path": "entries[14].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[14].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[14].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.agents/skills/find-skills"
+  },
+  {
+    "path": "entries[14].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[15].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[15].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "1bd0faf51b1b57e8a7529c8568508699d645fbcc18d97b76d797356a6ebeb50a"
+  },
+  {
+    "path": "entries[15].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "gemini"
+  },
+  {
+    "path": "entries[15].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[15].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[15].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/gemini"
+  },
+  {
+    "path": "entries[15].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[16].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[16].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "a00b56a02e7808ec136fd597acc85fe193d9aac37e5ebe8b6bd9d3f7a01b2cff"
+  },
+  {
+    "path": "entries[16].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "gh-issues"
+  },
+  {
+    "path": "entries[16].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[16].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[16].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gh-issues"
+  },
+  {
+    "path": "entries[16].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[17].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[17].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "31a0307c8657674d0513423ceaf8c0b13cd231918f8077465ec90f6f0b36876d"
+  },
+  {
+    "path": "entries[17].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "gifgrep"
+  },
+  {
+    "path": "entries[17].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[17].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[17].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gifgrep"
+  },
+  {
+    "path": "entries[17].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[18].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[18].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "914b327a9a8e61dd4eb209219a17388bc696bd594389d3debbf76a0725aa11d4"
+  },
+  {
+    "path": "entries[18].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "github"
+  },
+  {
+    "path": "entries[18].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[18].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[18].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/github"
+  },
+  {
+    "path": "entries[18].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[19].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[19].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "373dfdd7442f3e11c05d80ef20a7eef7787c52a2de4f9e04781790cfd99570d6"
+  },
+  {
+    "path": "entries[19].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "gog"
+  },
+  {
+    "path": "entries[19].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[19].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[19].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gog"
+  },
+  {
+    "path": "entries[19].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[20].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[20].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "8f9272cc556be4871e1032d9d3af55d9ab1f6c9471f15b92b6a966d60e5729dc"
+  },
+  {
+    "path": "entries[20].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "goplaces"
+  },
+  {
+    "path": "entries[20].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[20].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[20].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/goplaces"
+  },
+  {
+    "path": "entries[20].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[21].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[21].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "bfdd642b671181d14934b10e69d26eea5921f971f3fad7a3458dae3ee090375b"
+  },
+  {
+    "path": "entries[21].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "healthcheck"
+  },
+  {
+    "path": "entries[21].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[21].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[21].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/healthcheck"
+  },
+  {
+    "path": "entries[21].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[22].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[22].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "5ae5948db15031eaa2f21da9956006f64a9a1a9102054c097181bf8806746fdc"
+  },
+  {
+    "path": "entries[22].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "himalaya"
+  },
+  {
+    "path": "entries[22].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[22].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[22].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/himalaya"
+  },
+  {
+    "path": "entries[22].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[23].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[23].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "304a2cb6f94863d6b2c88e68e56fe2c6b5a287aa28c3661b68fe2be2a1aec4f3"
+  },
+  {
+    "path": "entries[23].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "imsg"
+  },
+  {
+    "path": "entries[23].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[23].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[23].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/imsg"
+  },
+  {
+    "path": "entries[23].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[24].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[24].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "32dd29d67edefe99e77c997928860b3feffee6e7885714b4ef431a0a6e07c13b"
+  },
+  {
+    "path": "entries[24].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "mcporter"
+  },
+  {
+    "path": "entries[24].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[24].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[24].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/mcporter"
+  },
+  {
+    "path": "entries[24].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[25].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[25].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "4b3a4078cb5b9b945139260d193c129f00f989e52123fc59e5405fe741a5615b"
+  },
+  {
+    "path": "entries[25].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "model-usage"
+  },
+  {
+    "path": "entries[25].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[25].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[25].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/model-usage"
+  },
+  {
+    "path": "entries[25].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[26].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[26].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "0c3b5b2cd0a73ea5e2066f050985224d227f06982505548b15089aba1fc8ae05"
+  },
+  {
+    "path": "entries[26].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "nano-banana-pro"
+  },
+  {
+    "path": "entries[26].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[26].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[26].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/nano-banana-pro"
+  },
+  {
+    "path": "entries[26].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[27].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[27].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "c11e683e939ef1a0bf0d898c789654a4cc1f344913e8ed038cd5f03224fd38e2"
+  },
+  {
+    "path": "entries[27].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "nano-pdf"
+  },
+  {
+    "path": "entries[27].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[27].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[27].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/nano-pdf"
+  },
+  {
+    "path": "entries[27].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[28].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[28].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "d5e9738addd7615fdf1fa10067cc0bf4b59fff7a7f89ffe30000b13d9c6a885c"
+  },
+  {
+    "path": "entries[28].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "notion"
+  },
+  {
+    "path": "entries[28].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[28].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[28].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/notion"
+  },
+  {
+    "path": "entries[28].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[29].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[29].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "f493dd9d0be43d793a3333c0926bc37efa53e839acdc20d0b1c16706297b2053"
+  },
+  {
+    "path": "entries[29].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "obsidian"
+  },
+  {
+    "path": "entries[29].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[29].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[29].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/obsidian"
+  },
+  {
+    "path": "entries[29].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[30].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[30].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "95f2de240fde3318fbd39faf80dded09faa8ab2404d9597a7ae09f60a78f8c66"
+  },
+  {
+    "path": "entries[30].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "openai-image-gen"
+  },
+  {
+    "path": "entries[30].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[30].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[30].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-image-gen"
+  },
+  {
+    "path": "entries[30].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[31].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[31].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "9914e172935221d1ba9829d81c8c9e5cb57c67371884c23c4ee6f7233d973937"
+  },
+  {
+    "path": "entries[31].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "openai-whisper"
+  },
+  {
+    "path": "entries[31].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[31].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[31].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-whisper"
+  },
+  {
+    "path": "entries[31].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[32].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[32].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "50d3e2d65342bd9525ebd1be2501225d2fbe9ead04c0cbaba0358f67b7fb015f"
+  },
+  {
+    "path": "entries[32].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "openai-whisper-api"
+  },
+  {
+    "path": "entries[32].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[32].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[32].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-whisper-api"
+  },
+  {
+    "path": "entries[32].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[33].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[33].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "fd64f041940ebb37fa0fbfffc8201b0919df39bb5b7b15e044adb89ccc699d80"
+  },
+  {
+    "path": "entries[33].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "openrouter-typescript-sdk"
+  },
+  {
+    "path": "entries[33].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[33].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[33].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.agents/skills/openrouter-typescript-sdk"
+  },
+  {
+    "path": "entries[33].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[34].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[34].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "b21b9adae3d7e44da99a4cfe1f7fced773ed76d125f3270e08b2154d7ce7b3cd"
+  },
+  {
+    "path": "entries[34].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "session-logs"
+  },
+  {
+    "path": "entries[34].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[34].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[34].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/session-logs"
+  },
+  {
+    "path": "entries[34].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[35].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[35].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "985f4dcf881516613e919ed5fad3a52bc1f78ccd6de8949b43c18a6bb4482e98"
+  },
+  {
+    "path": "entries[35].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "skill-creator"
+  },
+  {
+    "path": "entries[35].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[35].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[35].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/skill-creator"
+  },
+  {
+    "path": "entries[35].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[36].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[36].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "839267bfedda97434e5fbd1fc8aa1d77f2b0744496c27c74cf7c39ba44c91408"
+  },
+  {
+    "path": "entries[36].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "slack"
+  },
+  {
+    "path": "entries[36].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[36].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[36].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/slack"
+  },
+  {
+    "path": "entries[36].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[37].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[37].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "8d0079a980fe5f5f59397b93c1935af7aa2f47fc741291a14125bcb0ef8997a6"
+  },
+  {
+    "path": "entries[37].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "tmux"
+  },
+  {
+    "path": "entries[37].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[37].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[37].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/tmux"
+  },
+  {
+    "path": "entries[37].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "entries[38].approval_date",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "2026-03-02"
+  },
+  {
+    "path": "entries[38].checksum_sha256",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "c9e3ae14602bff5991680aa2023275b29f039eb2b5e59d80658f18be38df00a0"
+  },
+  {
+    "path": "entries[38].name",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "weather"
+  },
+  {
+    "path": "entries[38].reviewer",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "isa-kernel-sync"
+  },
+  {
+    "path": "entries[38].scope",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "quarantine-local"
+  },
+  {
+    "path": "entries[38].source",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/weather"
+  },
+  {
+    "path": "entries[38].status",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "approved"
+  },
+  {
+    "path": "quarantine_install_dir",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "~/.openclaw/skills-quarantine"
+  },
+  {
+    "path": "version",
+    "source": "repo:config/openclaw/skills-allowlist.json",
+    "type": "str",
+    "value": "1.1.0"
+  },
+  {
+    "path": "GITHUB_TOKEN",
+    "source": "vm:/root/.openclaw/.env",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "OPENROUTER_API_KEY",
+    "source": "vm:/root/.openclaw/.env",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "version",
+    "source": "vm:/root/.openclaw/agents/main/agent/auth-profiles.json",
+    "type": "int",
+    "value": 1
+  },
+  {
+    "path": "jobs",
+    "source": "vm:/root/.openclaw/cron/jobs.json",
+    "type": "list",
+    "value": []
+  },
+  {
+    "path": "version",
+    "source": "vm:/root/.openclaw/cron/jobs.json",
+    "type": "int",
+    "value": 1
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.approvedAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "int",
+    "value": 1772100705901
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.approvedScopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.admin"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.approvedScopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.approvals"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.approvedScopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.pairing"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.clientId",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "openclaw-control-ui"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.clientMode",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "webchat"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.createdAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "int",
+    "value": 1772100705901
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.deviceId",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.platform",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "MacIntel"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.publicKey",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.role",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.roles[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.scopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.admin"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.scopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.approvals"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.scopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.pairing"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.tokens.operator.createdAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.tokens.operator.lastUsedAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.tokens.operator.role",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.tokens.operator.scopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.tokens.operator.scopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.tokens.operator.scopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a.tokens.operator.token",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.approvedAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "int",
+    "value": 1772101150616
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.approvedScopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.read"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.approvedScopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.admin"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.approvedScopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.write"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.approvedScopes[3]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.approvals"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.approvedScopes[4]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.pairing"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.clientId",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "cli"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.clientMode",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "cli"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.createdAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "int",
+    "value": 1772101146160
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.deviceId",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.platform",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "linux"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.publicKey",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.role",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.roles[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.scopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.read"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.scopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.admin"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.scopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.write"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.scopes[3]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.approvals"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.scopes[4]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.pairing"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.tokens.operator.createdAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.tokens.operator.role",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.tokens.operator.rotatedAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.tokens.operator.scopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.tokens.operator.scopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.tokens.operator.scopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.tokens.operator.scopes[3]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.tokens.operator.scopes[4]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3.tokens.operator.token",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.approvedAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "int",
+    "value": 1772058911617
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.approvedScopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.admin"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.approvedScopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.approvals"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.approvedScopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.pairing"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.clientId",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "openclaw-control-ui"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.clientMode",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "webchat"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.createdAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "int",
+    "value": 1772058911617
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.deviceId",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.platform",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "MacIntel"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.publicKey",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.role",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.roles[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.scopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.admin"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.scopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.approvals"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.scopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.pairing"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.tokens.operator.createdAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.tokens.operator.lastUsedAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.tokens.operator.role",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.tokens.operator.scopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.tokens.operator.scopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.tokens.operator.scopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6.tokens.operator.token",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.approvedAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "int",
+    "value": 1772021298037
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.approvedScopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.admin"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.approvedScopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.approvals"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.approvedScopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.pairing"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.clientId",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "openclaw-control-ui"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.clientMode",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "webchat"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.createdAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "int",
+    "value": 1772021298037
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.deviceId",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.platform",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "MacIntel"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.publicKey",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.role",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.roles[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.scopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.admin"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.scopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.approvals"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.scopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.pairing"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.tokens.operator.createdAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.tokens.operator.lastUsedAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.tokens.operator.role",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.tokens.operator.scopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.tokens.operator.scopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.tokens.operator.scopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157.tokens.operator.token",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.approvedAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "int",
+    "value": 1772069632315
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.approvedScopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.admin"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.approvedScopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.approvals"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.approvedScopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.pairing"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.clientId",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "openclaw-control-ui"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.clientMode",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "webchat"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.createdAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "int",
+    "value": 1772069632315
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.deviceId",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.platform",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "MacIntel"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.publicKey",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.role",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.roles[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.scopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.admin"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.scopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.approvals"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.scopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "operator.pairing"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.tokens.operator.createdAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.tokens.operator.lastUsedAtMs",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.tokens.operator.role",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.tokens.operator.scopes[0]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.tokens.operator.scopes[1]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.tokens.operator.scopes[2]",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927.tokens.operator.token",
+    "source": "vm:/root/.openclaw/devices/paired.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "socket.path",
+    "source": "vm:/root/.openclaw/exec-approvals.json",
+    "type": "str",
+    "value": "/root/.openclaw/exec-approvals.sock"
+  },
+  {
+    "path": "socket.token",
+    "source": "vm:/root/.openclaw/exec-approvals.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "version",
+    "source": "vm:/root/.openclaw/exec-approvals.json",
+    "type": "int",
+    "value": 1
+  },
+  {
+    "path": "createdAtMs",
+    "source": "vm:/root/.openclaw/identity/device.json",
+    "type": "int",
+    "value": 1771965923269
+  },
+  {
+    "path": "deviceId",
+    "source": "vm:/root/.openclaw/identity/device.json",
+    "type": "str",
+    "value": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3"
+  },
+  {
+    "path": "privateKeyPem",
+    "source": "vm:/root/.openclaw/identity/device.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "publicKeyPem",
+    "source": "vm:/root/.openclaw/identity/device.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "version",
+    "source": "vm:/root/.openclaw/identity/device.json",
+    "type": "int",
+    "value": 1
+  },
+  {
+    "path": "agents.defaults.model.fallbacks",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "list",
+    "value": []
+  },
+  {
+    "path": "agents.defaults.model.primary",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "openrouter/moonshotai/kimi-k2.5"
+  },
+  {
+    "path": "agents.defaults.models.openrouter/anthropic/claude-sonnet-4.alias",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "ISA Premium Coding (Claude Sonnet 4)"
+  },
+  {
+    "path": "agents.defaults.models.openrouter/deepseek/deepseek-v3.2.alias",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "ISA Dev Balanced (DeepSeek V3.2)"
+  },
+  {
+    "path": "agents.defaults.models.openrouter/google/gemini-2.5-flash.alias",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "ISA Long Context Quality (Gemini 2.5 Flash)"
+  },
+  {
+    "path": "agents.defaults.models.openrouter/google/gemini-2.5-flash-lite.alias",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "ISA Fast 1M (Gemini 2.5 Flash Lite)"
+  },
+  {
+    "path": "agents.defaults.models.openrouter/minimax/minimax-m2.5.alias",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "ISA Controlled Tool Budget (MiniMax M2.5)"
+  },
+  {
+    "path": "agents.defaults.models.openrouter/moonshotai/kimi-k2.5.alias",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "ISA Fixed Default (Kimi K2.5)"
+  },
+  {
+    "path": "agents.defaults.models.openrouter/x-ai/grok-4.1-fast.alias",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "ISA Tool Fast 2M (Grok 4.1 Fast)"
+  },
+  {
+    "path": "agents.defaults.sandbox.mode",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "off"
+  },
+  {
+    "path": "agents.defaults.workspace",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "/root/.openclaw/workspace"
+  },
+  {
+    "path": "approvals.exec.enabled",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "commands.native",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "auto"
+  },
+  {
+    "path": "commands.nativeSkills",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "auto"
+  },
+  {
+    "path": "commands.ownerDisplay",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "raw"
+  },
+  {
+    "path": "commands.restart",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "env.shellEnv.enabled",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "env.vars.OPENROUTER_API_KEY",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "gateway.auth.mode",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "token"
+  },
+  {
+    "path": "gateway.auth.token",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "***REDACTED***"
+  },
+  {
+    "path": "gateway.bind",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "loopback"
+  },
+  {
+    "path": "gateway.mode",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "local"
+  },
+  {
+    "path": "gateway.port",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "int",
+    "value": 18789
+  },
+  {
+    "path": "gateway.tailscale.mode",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "off"
+  },
+  {
+    "path": "gateway.tailscale.resetOnExit",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "bool",
+    "value": false
+  },
+  {
+    "path": "meta.lastTouchedAt",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "2026-02-27T21:05:13.968Z"
+  },
+  {
+    "path": "meta.lastTouchedVersion",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "2026.2.26"
+  },
+  {
+    "path": "session.dmScope",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "per-channel-peer"
+  },
+  {
+    "path": "tools.agentToAgent.enabled",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "path": "tools.deny[0]",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "group:web"
+  },
+  {
+    "path": "tools.deny[1]",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "browser"
+  },
+  {
+    "path": "wizard.lastRunAt",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "2026-02-26T01:41:02.099Z"
+  },
+  {
+    "path": "wizard.lastRunCommand",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "onboard"
+  },
+  {
+    "path": "wizard.lastRunMode",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "local"
+  },
+  {
+    "path": "wizard.lastRunVersion",
+    "source": "vm:/root/.openclaw/openclaw.json",
+    "type": "str",
+    "value": "2026.2.24"
+  }
+]
