@@ -1,0 +1,1536 @@
+{
+  "audit_artifacts": {
+    "configuration_field_inventory": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/audit/20260302T081629Z/OPENCLAW_CONFIGURATION_FIELD_INVENTORY.redacted.json",
+    "configuration_snapshot": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/audit/20260302T081629Z/OPENCLAW_CONFIGURATION_SNAPSHOT.redacted.json",
+    "unused_conflicting_shadowed_report": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/audit/20260302T081702Z/OPENCLAW_UNUSED_CONFLICTING_SHADOWED_REPORT.md",
+    "unused_conflicting_shadowed_summary": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/audit/20260302T081702Z/OPENCLAW_UNUSED_CONFLICTING_SHADOWED_SUMMARY.json",
+    "unused_conflicting_shadowed_table": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/audit/20260302T081702Z/OPENCLAW_UNUSED_CONFLICTING_SHADOWED_TABLE.json"
+  },
+  "generated_at": "2026-03-02T08:17:32Z",
+  "host_layer": {
+    "files": {
+      "env.sh": {
+        "content": "export OPENROUTER_API_KEY=***REDACTED***\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/.openclaw/env.sh"
+      },
+      "openclaw-ui-dev-launcher-fast.sh": {
+        "content": "#!/usr/bin/env bash\nset -euo pipefail\nexport PATH=\"/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH:-}\"\nREPO='/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean'\nROUTE_DIR=\"$REPO/.openclaw/launcher\"\nMODEL_JSON=\"$ROUTE_DIR/last_model_route.json\"\nMODEL_MD=\"$ROUTE_DIR/last_model_route.md\"\nSKILL_JSON=\"$ROUTE_DIR/last_skill_route.json\"\nSKILL_MD=\"$ROUTE_DIR/last_skill_route.md\"\nTASK_FILE=\"$ROUTE_DIR/last_task_summary.txt\"\nSESSION_BRIEF=\"$ROUTE_DIR/last_openclaw_session_brief.md\"\ncd \"$REPO\"\nmkdir -p \"$ROUTE_DIR\"\n\nUSE_LAST_ROUTE=\"${OPENCLAW_LAUNCHER_USE_LAST_ROUTE:-0}\"\nROUTE_MODE_CHOICE=\"${OPENCLAW_LAUNCHER_ROUTE_MODE:-}\"\nwhile [[ $# -gt 0 ]]; do\n  case \"$1\" in\n    --use-last-route) USE_LAST_ROUTE=\"1\"; shift ;;\n    *) echo \"Unknown argument: $1\" >&2; exit 1 ;;\n  esac\ndone\n\nTASK_INPUT=\"${ISA_MODEL_ROUTE_TASK:-}\"\nLAST_ROUTE_ID=\"\"\nif [[ \"$USE_LAST_ROUTE\" == \"1\" && -f \"$MODEL_JSON\" ]]; then\n  LAST_ROUTE_ID=\"$(jq -r '.selected_route_id // empty' \"$MODEL_JSON\" 2>/dev/null || true)\"\nfi\nif [[ \"$USE_LAST_ROUTE\" != \"1\" && -z \"$TASK_INPUT\" && -z \"$ROUTE_MODE_CHOICE\" && \"${OPENCLAW_LAUNCHER_NONINTERACTIVE:-0}\" != \"1\" ]] && command -v osascript >/dev/null 2>&1; then\n  ROUTE_MODE_CHOICE=\"$(osascript <<'APPLESCRIPT'\ntry\n  display dialog \"Choose how OpenClaw should select routing before startup.\" buttons {\"Reuse last route\", \"New route\"} default button \"New route\"\n  return button returned of result\non error\n  return \"\"\nend try\nAPPLESCRIPT\n)\"\nfi\nif [[ \"$ROUTE_MODE_CHOICE\" == \"Reuse last route\" ]]; then\n  USE_LAST_ROUTE=\"1\"\n  [[ -f \"$MODEL_JSON\" ]] && LAST_ROUTE_ID=\"$(jq -r '.selected_route_id // empty' \"$MODEL_JSON\" 2>/dev/null || true)\"\n  [[ -z \"$TASK_INPUT\" && -f \"$TASK_FILE\" ]] && TASK_INPUT=\"$(cat \"$TASK_FILE\")\"\nfi\nif [[ -n \"$TASK_INPUT\" ]]; then\n  printf '%s' \"$TASK_INPUT\" > \"$TASK_FILE\"\n  bash scripts/openclaw-model-route.sh --task \"$TASK_INPUT\" --json --clipboard > \"$MODEL_JSON\"\nelif [[ -n \"$LAST_ROUTE_ID\" ]]; then\n  bash scripts/openclaw-model-route.sh --profile \"$LAST_ROUTE_ID\" --json --clipboard > \"$MODEL_JSON\"\nelif [[ \"${OPENCLAW_LAUNCHER_NONINTERACTIVE:-0}\" != \"1\" ]] && command -v osascript >/dev/null 2>&1; then\n  TASK_INPUT=\"$(osascript <<'APPLESCRIPT'\ntry\n  display dialog \"Describe the task so ISA can suggest the best model and skills before the UI opens.\" default answer \"\" buttons {\"Continue\"} default button \"Continue\"\n  return text returned of result\non error\n  return \"\"\nend try\nAPPLESCRIPT\n)\"\n  if [[ -n \"$TASK_INPUT\" ]]; then\n    printf '%s' \"$TASK_INPUT\" > \"$TASK_FILE\"\n    bash scripts/openclaw-model-route.sh --task \"$TASK_INPUT\" --json --clipboard > \"$MODEL_JSON\"\n  else\n    bash scripts/openclaw-model-route.sh --default --json --clipboard > \"$MODEL_JSON\"\n  fi\nelse\n  bash scripts/openclaw-model-route.sh --default --json --clipboard > \"$MODEL_JSON\"\nfi\n\nif [[ -n \"$TASK_INPUT\" ]]; then\n  bash scripts/openclaw-skill-route.sh --task \"$TASK_INPUT\" --json > \"$SKILL_JSON\"\nelse\n  bash scripts/openclaw-skill-route.sh --default --json > \"$SKILL_JSON\"\nfi\n\npython3 - \"$MODEL_JSON\" \"$MODEL_MD\" \"$SKILL_JSON\" \"$SKILL_MD\" \"$SESSION_BRIEF\" \"$TASK_FILE\" <<'PY'\nimport json, pathlib, sys\nmodel_src = pathlib.Path(sys.argv[1])\nmodel_md = pathlib.Path(sys.argv[2])\nskill_src = pathlib.Path(sys.argv[3])\nskill_md = pathlib.Path(sys.argv[4])\nsession_md = pathlib.Path(sys.argv[5])\ntask_file = pathlib.Path(sys.argv[6])\nmodel = json.loads(model_src.read_text())\nskill = json.loads(skill_src.read_text())\ntask = task_file.read_text().strip() if task_file.exists() else \"\"\nmatched = \", \".join(model.get(\"matched_terms\") or []) or \"none\"\nmodel_body = f\"\"\"# OpenClaw Model Proposal\n\nSuggested alias: `{model['alias']}`\nModel id: `{model['model']}`\nSelection reason: `{model['selection_reason']}`\nMatched terms: `{matched}`\nCost profile: `{model['cost_profile']}`\n\nBest for:\n\"\"\" + \"\\n\".join(f\"- {x}\" for x in model.get(\"best_for\", [])) + \"\"\"\n\nBetter options when:\n\"\"\" + \"\\n\".join(f\"- {x}\" for x in model.get(\"better_options_when\", [])) + f\"\"\"\n\nCost vs benefit:\n- {model['cost_benefit']}\n\nUI action:\n- {model['ui_action']}\n\"\"\"\nmodel_md.write_text(model_body, encoding='utf-8')\nready = skill.get('ready_skills', [])\nunavailable = skill.get('unavailable_skills', [])\nskill_body = f\"\"\"# OpenClaw Skill Proposal\n\nSelected route: `{skill['alias']}`\nSelection reason: `{skill['selection_reason']}`\n\nReady skills:\n\"\"\" + (\"\\n\".join(f\"- {x}\" for x in ready) if ready else \"- none\") + \"\"\"\n\nUnavailable skills:\n\"\"\" + (\"\\n\".join(f\"- {item['name']}\" for item in unavailable) if unavailable else \"- none\") + \"\"\"\n\nBest for:\n\"\"\" + \"\\n\".join(f\"- {x}\" for x in skill.get('best_for', [])) + \"\"\"\n\nWorkflow guidance:\n\"\"\" + \"\\n\".join(f\"- {x}\" for x in skill.get('workflow_guidance', [])) + \"\"\"\n\"\"\"\nskill_md.write_text(skill_body, encoding='utf-8')\nstarter = [\n    \"You are operating inside the ISA repository.\",\n    \"Mode: evidence-first, deterministic steps, no secrets in output.\",\n]\nif task:\n    starter.append(f\"Task summary: {task}\")\nif ready:\n    starter.append(\"Use these ready OpenClaw skills autonomously when they add value and fit the task scope:\")\n    starter.extend(f\"- {x}\" for x in ready)\nif unavailable:\n    starter.append(\"Do not rely on these unavailable skills in this session:\")\n    starter.extend(f\"- {item['name']}\" for item in unavailable)\nstarter.append(\"Selected model alias:\")\nstarter.append(f\"- {model['alias']}\")\nstarter.append(\"Workflow guidance:\")\nstarter.extend(f\"- {x}\" for x in skill.get('workflow_guidance', []))\nsession_body = \"# OpenClaw Session Brief\\n\\n```text\\n\" + \"\\n\".join(starter) + \"\\n```\\n\"\nsession_md.write_text(session_body, encoding='utf-8')\nPY\n\nROUTE_ALIAS=\"$(jq -r '.alias' \"$MODEL_JSON\")\"\necho \"READY=route_mode_selected mode=${ROUTE_MODE_CHOICE:-auto_default}\"\n[[ \"${OPENCLAW_LAUNCHER_SKIP_OPEN:-0}\" != \"1\" ]] && command -v open >/dev/null 2>&1 && { open \"$MODEL_MD\"; open \"$SKILL_MD\"; open \"$SESSION_BRIEF\"; }\n[[ \"${OPENCLAW_LAUNCHER_SKIP_START:-0}\" != \"1\" ]] && bash scripts/openclaw-isa-dev-start.sh --skip-validate\nif [[ -n \"$ROUTE_ALIAS\" ]] && command -v pbcopy >/dev/null 2>&1; then\n  printf '%s' \"$ROUTE_ALIAS\" | pbcopy\n  echo \"READY=model_alias_copied_to_clipboard alias=$ROUTE_ALIAS\"\nfi\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/.local/bin/openclaw-ui-dev-launcher-fast.sh"
+      },
+      "openclaw-ui-dev-launcher.sh": {
+        "content": "#!/usr/bin/env bash\nset -euo pipefail\nexport PATH=\"/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH:-}\"\nREPO='/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean'\nROUTE_DIR=\"$REPO/.openclaw/launcher\"\nMODEL_JSON=\"$ROUTE_DIR/last_model_route.json\"\nMODEL_MD=\"$ROUTE_DIR/last_model_route.md\"\nSKILL_JSON=\"$ROUTE_DIR/last_skill_route.json\"\nSKILL_MD=\"$ROUTE_DIR/last_skill_route.md\"\nTASK_FILE=\"$ROUTE_DIR/last_task_summary.txt\"\nSESSION_BRIEF=\"$ROUTE_DIR/last_openclaw_session_brief.md\"\ncd \"$REPO\"\nmkdir -p \"$ROUTE_DIR\"\n\nUSE_LAST_ROUTE=\"${OPENCLAW_LAUNCHER_USE_LAST_ROUTE:-0}\"\nROUTE_MODE_CHOICE=\"${OPENCLAW_LAUNCHER_ROUTE_MODE:-}\"\nwhile [[ $# -gt 0 ]]; do\n  case \"$1\" in\n    --use-last-route) USE_LAST_ROUTE=\"1\"; shift ;;\n    *) echo \"Unknown argument: $1\" >&2; exit 1 ;;\n  esac\ndone\n\nTASK_INPUT=\"${ISA_MODEL_ROUTE_TASK:-}\"\nLAST_ROUTE_ID=\"\"\nif [[ \"$USE_LAST_ROUTE\" == \"1\" && -f \"$MODEL_JSON\" ]]; then\n  LAST_ROUTE_ID=\"$(jq -r '.selected_route_id // empty' \"$MODEL_JSON\" 2>/dev/null || true)\"\nfi\nif [[ \"$USE_LAST_ROUTE\" != \"1\" && -z \"$TASK_INPUT\" && -z \"$ROUTE_MODE_CHOICE\" && \"${OPENCLAW_LAUNCHER_NONINTERACTIVE:-0}\" != \"1\" ]] && command -v osascript >/dev/null 2>&1; then\n  ROUTE_MODE_CHOICE=\"$(osascript <<'APPLESCRIPT'\ntry\n  display dialog \"Choose how OpenClaw should select routing before startup.\" buttons {\"Reuse last route\", \"New route\"} default button \"New route\"\n  return button returned of result\non error\n  return \"\"\nend try\nAPPLESCRIPT\n)\"\nfi\nif [[ \"$ROUTE_MODE_CHOICE\" == \"Reuse last route\" ]]; then\n  USE_LAST_ROUTE=\"1\"\n  [[ -f \"$MODEL_JSON\" ]] && LAST_ROUTE_ID=\"$(jq -r '.selected_route_id // empty' \"$MODEL_JSON\" 2>/dev/null || true)\"\n  [[ -z \"$TASK_INPUT\" && -f \"$TASK_FILE\" ]] && TASK_INPUT=\"$(cat \"$TASK_FILE\")\"\nfi\nif [[ -n \"$TASK_INPUT\" ]]; then\n  printf '%s' \"$TASK_INPUT\" > \"$TASK_FILE\"\n  bash scripts/openclaw-model-route.sh --task \"$TASK_INPUT\" --json --clipboard > \"$MODEL_JSON\"\nelif [[ -n \"$LAST_ROUTE_ID\" ]]; then\n  bash scripts/openclaw-model-route.sh --profile \"$LAST_ROUTE_ID\" --json --clipboard > \"$MODEL_JSON\"\nelif [[ \"${OPENCLAW_LAUNCHER_NONINTERACTIVE:-0}\" != \"1\" ]] && command -v osascript >/dev/null 2>&1; then\n  TASK_INPUT=\"$(osascript <<'APPLESCRIPT'\ntry\n  display dialog \"Describe the task so ISA can suggest the best model and skills before the UI opens.\" default answer \"\" buttons {\"Continue\"} default button \"Continue\"\n  return text returned of result\non error\n  return \"\"\nend try\nAPPLESCRIPT\n)\"\n  if [[ -n \"$TASK_INPUT\" ]]; then\n    printf '%s' \"$TASK_INPUT\" > \"$TASK_FILE\"\n    bash scripts/openclaw-model-route.sh --task \"$TASK_INPUT\" --json --clipboard > \"$MODEL_JSON\"\n  else\n    bash scripts/openclaw-model-route.sh --default --json --clipboard > \"$MODEL_JSON\"\n  fi\nelse\n  bash scripts/openclaw-model-route.sh --default --json --clipboard > \"$MODEL_JSON\"\nfi\n\nif [[ -n \"$TASK_INPUT\" ]]; then\n  bash scripts/openclaw-skill-route.sh --task \"$TASK_INPUT\" --json > \"$SKILL_JSON\"\nelse\n  bash scripts/openclaw-skill-route.sh --default --json > \"$SKILL_JSON\"\nfi\n\npython3 - \"$MODEL_JSON\" \"$MODEL_MD\" \"$SKILL_JSON\" \"$SKILL_MD\" \"$SESSION_BRIEF\" \"$TASK_FILE\" <<'PY'\nimport json, pathlib, sys\nmodel_src = pathlib.Path(sys.argv[1])\nmodel_md = pathlib.Path(sys.argv[2])\nskill_src = pathlib.Path(sys.argv[3])\nskill_md = pathlib.Path(sys.argv[4])\nsession_md = pathlib.Path(sys.argv[5])\ntask_file = pathlib.Path(sys.argv[6])\nmodel = json.loads(model_src.read_text())\nskill = json.loads(skill_src.read_text())\ntask = task_file.read_text().strip() if task_file.exists() else \"\"\nmatched = \", \".join(model.get(\"matched_terms\") or []) or \"none\"\nmodel_body = f\"\"\"# OpenClaw Model Proposal\n\nSuggested alias: `{model['alias']}`\nModel id: `{model['model']}`\nSelection reason: `{model['selection_reason']}`\nMatched terms: `{matched}`\nCost profile: `{model['cost_profile']}`\n\nBest for:\n\"\"\" + \"\\n\".join(f\"- {x}\" for x in model.get(\"best_for\", [])) + \"\"\"\n\nBetter options when:\n\"\"\" + \"\\n\".join(f\"- {x}\" for x in model.get(\"better_options_when\", [])) + f\"\"\"\n\nCost vs benefit:\n- {model['cost_benefit']}\n\nUI action:\n- {model['ui_action']}\n\"\"\"\nmodel_md.write_text(model_body, encoding='utf-8')\nready = skill.get('ready_skills', [])\nunavailable = skill.get('unavailable_skills', [])\nskill_body = f\"\"\"# OpenClaw Skill Proposal\n\nSelected route: `{skill['alias']}`\nSelection reason: `{skill['selection_reason']}`\n\nReady skills:\n\"\"\" + (\"\\n\".join(f\"- {x}\" for x in ready) if ready else \"- none\") + \"\"\"\n\nUnavailable skills:\n\"\"\" + (\"\\n\".join(f\"- {item['name']}\" for item in unavailable) if unavailable else \"- none\") + \"\"\"\n\nBest for:\n\"\"\" + \"\\n\".join(f\"- {x}\" for x in skill.get('best_for', [])) + \"\"\"\n\nWorkflow guidance:\n\"\"\" + \"\\n\".join(f\"- {x}\" for x in skill.get('workflow_guidance', [])) + \"\"\"\n\"\"\"\nskill_md.write_text(skill_body, encoding='utf-8')\nstarter = [\n    \"You are operating inside the ISA repository.\",\n    \"Mode: evidence-first, deterministic steps, no secrets in output.\",\n]\nif task:\n    starter.append(f\"Task summary: {task}\")\nif ready:\n    starter.append(\"Use these ready OpenClaw skills autonomously when they add value and fit the task scope:\")\n    starter.extend(f\"- {x}\" for x in ready)\nif unavailable:\n    starter.append(\"Do not rely on these unavailable skills in this session:\")\n    starter.extend(f\"- {item['name']}\" for item in unavailable)\nstarter.append(\"Selected model alias:\")\nstarter.append(f\"- {model['alias']}\")\nstarter.append(\"Workflow guidance:\")\nstarter.extend(f\"- {x}\" for x in skill.get('workflow_guidance', []))\nsession_body = \"# OpenClaw Session Brief\\n\\n```text\\n\" + \"\\n\".join(starter) + \"\\n```\\n\"\nsession_md.write_text(session_body, encoding='utf-8')\nPY\n\nROUTE_ALIAS=\"$(jq -r '.alias' \"$MODEL_JSON\")\"\necho \"READY=route_mode_selected mode=${ROUTE_MODE_CHOICE:-auto_default}\"\n[[ \"${OPENCLAW_LAUNCHER_SKIP_OPEN:-0}\" != \"1\" ]] && command -v open >/dev/null 2>&1 && { open \"$MODEL_MD\"; open \"$SKILL_MD\"; open \"$SESSION_BRIEF\"; }\n[[ \"${OPENCLAW_LAUNCHER_SKIP_START:-0}\" != \"1\" ]] && bash scripts/openclaw-isa-dev-start.sh\nif [[ -n \"$ROUTE_ALIAS\" ]] && command -v pbcopy >/dev/null 2>&1; then\n  printf '%s' \"$ROUTE_ALIAS\" | pbcopy\n  echo \"READY=model_alias_copied_to_clipboard alias=$ROUTE_ALIAS\"\nfi\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/.local/bin/openclaw-ui-dev-launcher.sh"
+      }
+    }
+  },
+  "purpose": "Redacted external analysis export for OpenClaw configuration, runtime setup, governance, routing, launcher behavior, skills, plugins, tools, permissions, and integration state.",
+  "repo_layer": {
+    "files": {
+      ".github/workflows/tiered-tests.yml": {
+        "content": "name: Tiered Tests\n\non:\n  pull_request:\n    branches: [main]\n    paths:\n      - \"server/**\"\n      - \"client/**\"\n      - \"shared/**\"\n      - \"scripts/run-unit-tests.sh\"\n      - \"scripts/run-integration-tests.sh\"\n      - \"scripts/run-ci-tests.sh\"\n      - \"config/testing/vitest.quarantine.txt\"\n      - \"scripts/gates/no-console-gate.sh\"\n      - \"scripts/gates/security-secrets-scan.sh\"\n      - \"scripts/gates/slo-policy-check.sh\"\n      - \"scripts/gates/observability-contract.sh\"\n      - \"scripts/gates/security-gate.sh\"\n      - \"scripts/gates/canonical-docs-allowlist.sh\"\n      - \"scripts/gates/doc-code-validator.sh\"\n      - \"scripts/gates/openclaw-policy-envelope.sh\"\n      - \"scripts/gates/openclaw-exec-policy.sh\"\n      - \"scripts/gates/openclaw-skills-allowlist.sh\"\n      - \"scripts/gates/openclaw-browser-policy.sh\"\n      - \"scripts/gates/openclaw-model-routing-policy.sh\"\n      - \"scripts/openclaw-*.sh\"\n      - \"scripts/eval/**\"\n      - \".github/workflows/tiered-tests.yml\"\n      - \"config/openclaw/**\"\n      - \"config/governance/openclaw_policy_envelope.json\"\n      - \"docs/governance/OPENCLAW_POLICY_ENVELOPE.md\"\n      - \"docs/governance/OPENCLAW_MODEL_ROUTING_POLICY.md\"\n      - \"docs/quality/thresholds/**\"\n      - \"docs/quality/schemas/isa-capability-eval.schema.json\"\n      - \"docs/quality/schemas/isa-drift-report.schema.json\"\n      - \"data/evaluation/**\"\n      - \"data/advisories/**\"\n  push:\n    branches: [main]\n    paths:\n      - \"server/**\"\n      - \"client/**\"\n      - \"shared/**\"\n      - \"scripts/run-unit-tests.sh\"\n      - \"scripts/run-integration-tests.sh\"\n      - \"scripts/run-ci-tests.sh\"\n      - \"config/testing/vitest.quarantine.txt\"\n      - \"scripts/gates/no-console-gate.sh\"\n      - \"scripts/gates/security-secrets-scan.sh\"\n      - \"scripts/gates/slo-policy-check.sh\"\n      - \"scripts/gates/observability-contract.sh\"\n      - \"scripts/gates/security-gate.sh\"\n      - \"scripts/gates/canonical-docs-allowlist.sh\"\n      - \"scripts/gates/doc-code-validator.sh\"\n      - \"scripts/gates/openclaw-policy-envelope.sh\"\n      - \"scripts/gates/openclaw-exec-policy.sh\"\n      - \"scripts/gates/openclaw-skills-allowlist.sh\"\n      - \"scripts/gates/openclaw-browser-policy.sh\"\n      - \"scripts/gates/openclaw-model-routing-policy.sh\"\n      - \"scripts/openclaw-*.sh\"\n      - \"scripts/eval/**\"\n      - \".github/workflows/tiered-tests.yml\"\n      - \"config/openclaw/**\"\n      - \"config/governance/openclaw_policy_envelope.json\"\n      - \"docs/governance/OPENCLAW_POLICY_ENVELOPE.md\"\n      - \"docs/governance/OPENCLAW_MODEL_ROUTING_POLICY.md\"\n      - \"docs/quality/thresholds/**\"\n      - \"docs/quality/schemas/isa-capability-eval.schema.json\"\n      - \"docs/quality/schemas/isa-drift-report.schema.json\"\n      - \"data/evaluation/**\"\n      - \"data/advisories/**\"\n  workflow_dispatch: {}\n\npermissions:\n  contents: read\n\nenv:\n  ISA_IMPLEMENTATION_ONLY_MODE: \"true\"\n\njobs:\n  tier-0-critical:\n    name: Tier 0 (Critical Checks)\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n\n      - uses: actions/setup-node@v4\n        with:\n          node-version: \"22.13.0\"\n\n      - name: Install pnpm\n        run: npm install -g pnpm@10.4.1\n\n      - name: Install dependencies\n        run: pnpm install --frozen-lockfile\n\n      - name: Install observability gate tooling\n        run: |\n          set -euo pipefail\n          sudo apt-get update\n          sudo apt-get install -y ripgrep\n\n      - name: Typecheck\n        run: pnpm check\n\n      - name: Critical gates\n        env:\n          SECURITY_AUDIT_BLOCKING_LEVELS: \"high,critical\"\n          SECURITY_AUDIT_WAIVER_IDS: \"GHSA-4R6H-8V6P-XVW6,GHSA-5PGG-2G8V-P4X9,GHSA-3PPC-4F35-3M26\"\n        run: |\n          set -euo pipefail\n          bash scripts/gates/no-console-gate.sh\n          bash scripts/gates/security-secrets-scan.sh\n          bash scripts/gates/slo-policy-check.sh /tmp/slo-policy-check.ci.json\n          bash scripts/gates/observability-contract.sh /tmp/observability.ci.json\n          bash scripts/gates/security-gate.sh /tmp/security.ci.json\n          bash scripts/gates/canonical-docs-allowlist.sh\n          bash scripts/gates/doc-code-validator.sh --canonical-only\n          bash scripts/gates/openclaw-policy-envelope.sh\n          bash scripts/gates/openclaw-exec-policy.sh\n          bash scripts/gates/openclaw-skills-allowlist.sh\n          bash scripts/gates/openclaw-browser-policy.sh\n          bash scripts/gates/openclaw-model-routing-policy.sh\n\n  tier-1-stable:\n    name: Tier 1 (Stable Unit/Integration)\n    needs: tier-0-critical\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n\n      - uses: actions/setup-node@v4\n        with:\n          node-version: \"22.13.0\"\n\n      - name: Install pnpm\n        run: npm install -g pnpm@10.4.1\n\n      - name: Install dependencies\n        run: pnpm install --frozen-lockfile\n\n      - name: Run stable CI tests\n        env:\n          DATABASE_URL: \"\"\n        run: |\n          set -euo pipefail\n          bash scripts/run-ci-tests.sh \\\n            --report-dir test-results/ci \\\n            --quarantine-file config/testing/vitest.quarantine.txt\n\n      - name: Run capability heartbeat smokes\n        run: |\n          set -euo pipefail\n          pnpm vitest run \\\n            server/routers/__tests__/capability-heartbeat.test.ts \\\n            --reporter=verbose \\\n            --reporter=json \\\n            --outputFile test-results/ci/capability-heartbeat.json\n\n      - name: Implementation-only mode (eval/drift paused)\n        if: env.ISA_IMPLEMENTATION_ONLY_MODE == 'true'\n        run: |\n          set -euo pipefail\n          echo \"READY=implementation_only_mode_eval_paused\"\n          {\n            echo \"## Tier 1 Implementation-Only Mode\"\n            echo \"\"\n            echo \"- ISA_IMPLEMENTATION_ONLY_MODE=true\"\n            echo \"- Unified capability eval/assert/drift steps are paused in this run.\"\n          } >> \"$GITHUB_STEP_SUMMARY\"\n\n      - name: Run unified ISA capability evaluation (fixture-first)\n        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'\n        run: |\n          set -euo pipefail\n          node scripts/eval/run-capability-evals.cjs \\\n            --registry data/evaluation/golden/registry.json \\\n            --thresholds docs/quality/thresholds/isa-capability-thresholds.json \\\n            --stage stage_a \\\n            --out-json test-results/ci/isa-capability-eval.json\n\n      - name: Assert capability thresholds (advisory-first)\n        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'\n        run: |\n          set -euo pipefail\n          node scripts/eval/assert-capability-thresholds.cjs \\\n            --in test-results/ci/isa-capability-eval.json\n\n      - name: Run capability drift detection\n        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'\n        run: |\n          set -euo pipefail\n          node scripts/eval/drift-detect.cjs \\\n            --eval test-results/ci/isa-capability-eval.json \\\n            --baseline data/evaluation/baselines/isa-capability-baseline.json \\\n            --history test-results/ci/isa-capability-eval-history.json \\\n            --out test-results/ci/isa-drift-report.json\n\n      - name: Upload Tier 1 reports\n        if: always()\n        uses: actions/upload-artifact@v4\n        with:\n          name: tier1-test-results\n          path: test-results/ci\n\n  tier-2-quarantine:\n    name: Tier 2 (Quarantine Diagnostics, Non-Blocking)\n    needs: tier-1-stable\n    if: always()\n    continue-on-error: true\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n\n      - uses: actions/setup-node@v4\n        with:\n          node-version: \"22.13.0\"\n\n      - name: Install pnpm\n        run: npm install -g pnpm@10.4.1\n\n      - name: Install dependencies\n        run: pnpm install --frozen-lockfile\n\n      - name: Run quarantine diagnostics\n        env:\n          DATABASE_URL: ${{ secrets.DATABASE_URL }}\n        run: |\n          set -euo pipefail\n          bash scripts/run-ci-tests.sh \\\n            --report-dir test-results/ci-quarantine \\\n            --quarantine-file config/testing/vitest.quarantine.txt \\\n            --quarantine-only\n\n      - name: Upload Tier 2 reports\n        if: always()\n        uses: actions/upload-artifact@v4\n        with:\n          name: tier2-quarantine-test-results\n          path: test-results/ci-quarantine\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.github/workflows/tiered-tests.yml"
+      },
+      ".openclaw/control-plane.json": {
+        "content": {
+          "cost_control": {
+            "enforce_budget": true,
+            "max_monthly_usd": 500,
+            "max_request_usd": 5,
+            "soft_alert_threshold_usd": 250,
+            "track_by_model": true
+          },
+          "cost_optimization_stack": {
+            "api": {
+              "entrypoint": "isa_cost_optimizer.middleware_api:app",
+              "framework": "fastapi",
+              "routes": {
+                "health": "/health",
+                "optimize": "/optimize"
+              },
+              "transport": "in_process"
+            },
+            "cache": {
+              "backend": "json_file",
+              "deterministic_ordering": true,
+              "key_algorithm": "sha256",
+              "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime/deterministic_cache.json"
+            },
+            "concurrency_governor": {
+              "enabled": true,
+              "max_in_flight": 4,
+              "overflow_action": "raise_429"
+            },
+            "context_compression": {
+              "algorithm": "cosine_similarity",
+              "deduplicate": true,
+              "enabled": true,
+              "similarity_threshold": 0.92
+            },
+            "embedding_cache": {
+              "enabled": true,
+              "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime/embedding_cache.json",
+              "reuse_threshold": 0.92
+            },
+            "enabled": true,
+            "escalation": {
+              "enabled": true,
+              "quality_floors": {
+                "balanced": 0.9,
+                "economy": 0.85,
+                "premium": 0.95
+              },
+              "tier_order": [
+                "economy",
+                "balanced",
+                "premium"
+              ],
+              "trigger_conditions": [
+                "invalid_json",
+                "quality_below_floor"
+              ]
+            },
+            "json_repair": {
+              "enabled": true,
+              "repair_before_retry": true,
+              "strict_canonical_output": true
+            },
+            "retry_controller": {
+              "enabled": true,
+              "max_attempts": 2
+            },
+            "runtime_dir": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime",
+            "sla_controller": {
+              "breach_action": "promote_tier",
+              "enabled": true,
+              "tier_thresholds": {
+                "balanced": 5000,
+                "economy": 8000,
+                "premium": 3000
+              }
+            },
+            "token_controller": {
+              "default_token_cap": 4096,
+              "enabled": true,
+              "overflow_action": "truncate"
+            },
+            "version": "1.0.0"
+          },
+          "failure_classification": {
+            "categories": [
+              "dependency",
+              "permission",
+              "malformed_json",
+              "missing_runtime",
+              "invalid_scoring",
+              "router_offline"
+            ],
+            "retryable": [
+              "dependency",
+              "router_offline"
+            ],
+            "terminal": [
+              "permission",
+              "malformed_json",
+              "invalid_scoring"
+            ]
+          },
+          "fallback": {
+            "escalation_strategy": [
+              "retry_dynamic_optimizer",
+              "fallback_to_provider_priority",
+              "drop_to_safe_skill_allowlist_only",
+              "require_manual_operator_review"
+            ],
+            "max_retries": 2,
+            "safe_mode": "read_only_governed"
+          },
+          "governance": {
+            "artifact_dir": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/kernel/runs/20260301T175140Z/artifacts",
+            "artifact_hashing": true,
+            "change_control": "policy_review_required",
+            "evidence_enforcement": true,
+            "evidence_required": true,
+            "immutable_artifacts": true,
+            "policy_version": "isa-ucpk-2026-03-01-cost-optimization-stack-v1",
+            "run_id": "20260301T175140Z"
+          },
+          "logging": {
+            "audit_trail": true,
+            "destinations": [
+              "stdout",
+              ".openclaw/logs/control-plane-audit.jsonl"
+            ],
+            "file_path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/kernel/runs/20260301T175140Z/logs/openclaw_control_plane.log",
+            "level": "info",
+            "log_to_file": true,
+            "redact_secrets": true,
+            "structured": true
+          },
+          "metadata": {
+            "compatibility": "isa-unified-control-plane-kernel",
+            "repo_root": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean",
+            "secret_free": true,
+            "today_iso8601": "2026-03-01"
+          },
+          "mode": "deterministic",
+          "model_router": {
+            "cost_optimization_stack": {
+              "enabled": true,
+              "entrypoint": "isa_cost_optimizer.middleware_api:app",
+              "health_path": "/health",
+              "mode": "pre_router_middleware",
+              "optimize_path": "/optimize",
+              "runtime_dir": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime"
+            },
+            "cost_tracking": true,
+            "default_model": "openrouter/moonshotai/kimi-k2.5",
+            "deterministic_selection": true,
+            "dynamic_optimizer_endpoint": "http://localhost:8090/select",
+            "endpoint": "http://127.0.0.1:8090/select",
+            "fallback_models": [],
+            "health": "http://127.0.0.1:8090/health",
+            "max_tokens_per_call": 16000,
+            "provider_priority": [
+              "openrouter",
+              "openai",
+              "anthropic",
+              "gemini"
+            ],
+            "request_timeout_ms": 1500,
+            "strategy": "isa_dynamic_optimizer_http"
+          },
+          "runtime": {
+            "config_integrity_required": true,
+            "integrity_flags": [
+              "secret_free_config",
+              "deterministic_key_ordering",
+              "skill_allowlist_enforced",
+              "router_endpoint_validated"
+            ],
+            "process_restart_policy": "manual_or_supervised_only",
+            "profile_scope": "isa_unified_control_plane_kernel",
+            "sandbox_mode": "off"
+          },
+          "safety": {
+            "allow_destructive_fs": false,
+            "allow_shell": false,
+            "network_install_requires_review": true,
+            "restrict_root_execution": true,
+            "workspace_write_requires_approval": true
+          },
+          "skill_policy": {
+            "allowed_categories": [
+              "orchestration",
+              "execution",
+              "cognition",
+              "integration",
+              "infrastructure",
+              "data",
+              "governance"
+            ],
+            "allowlist_mode": true,
+            "auto_install": false,
+            "dependency_repair_mode": "proposal_only",
+            "untrusted_sources": "deny"
+          },
+          "slas": {
+            "latency_thresholds_ms": {
+              "p50": 3000,
+              "p95": 8000,
+              "p99": 15000
+            },
+            "router_timeout_ms": 1500,
+            "skill_resolution_timeout_ms": 2000
+          },
+          "telemetry": {
+            "collect_metrics": true,
+            "disable_secret_capture": true,
+            "export_json_metrics": true,
+            "router_observability": true
+          },
+          "version": "1.0.0"
+        },
+        "exists": true,
+        "format": "json",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/control-plane.json"
+      },
+      ".openclaw/launcher/last_model_route.json": {
+        "content": {
+          "alias": "ISA Agentic Coding (Kimi K2.5)",
+          "best_for": [
+            "agentic coding",
+            "visual or multimodal coding",
+            "autonomous tool orchestration",
+            "complex multi-step implementation"
+          ],
+          "better_options_when": [
+            "price-performance matters more than autonomy",
+            "the workload is mostly text plus tools",
+            "the task is long-context research rather than agentic coding"
+          ],
+          "cost_benefit": "Worth the premium when autonomous tool behavior and coding agency matter. Not the best default for routine governed work.",
+          "cost_profile": "premium_agentic",
+          "matched_terms": [],
+          "model": "openrouter/moonshotai/kimi-k2.5",
+          "selected_route_id": "agentic_coding_multimodal",
+          "selection_reason": "default_route_no_keyword_match",
+          "ui_action": "Select 'ISA Agentic Coding (Kimi K2.5)' in the OpenClaw UI model picker."
+        },
+        "exists": true,
+        "format": "json",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/launcher/last_model_route.json"
+      },
+      "AGENTS.md": {
+        "content": "# ISA \u2014 Agent Instructions (Canonical)\n\n<!-- EVIDENCE:requirement:docs/governance/_root/ISA_GOVERNANCE.md -->\n<!-- EVIDENCE:constraint:AGENTS.md -->\n## Non-negotiables (evidence-first)\n- Repo contents are the only source of truth. Documentation is a claim unless backed by code/config/tests.\n- Label outputs explicitly as: FACT / INTERPRETATION / RECOMMENDATION.\n- No secrets in code, logs, prompts, or commits.\n\n## Autonomy & safety\n<!-- EVIDENCE:constraint:scripts/refactor/validate_gates.sh -->\n<!-- EVIDENCE:decision:docs/governance/MANUAL_PREFLIGHT.md -->\n- Prefer deterministic, reproducible steps.\n- Never run destructive commands unless explicitly required; if required, print a safe alternative first.\n- Prefer CI-compatible solutions; avoid local-only assumptions.\n\n## Terminal execution (blind-paste safe)\n- When providing terminal actions: deliver exactly one pasteable block that writes a script to /tmp/*.sh and executes `bash /tmp/*.sh`.\n- Script must:\n  - `set -euo pipefail`\n  - include PREFLIGHT + ACTION in the same run\n  - emit one of: STOP=... / READY=... / DONE=...\n\n## Repo workflow\n<!-- EVIDENCE:requirement:.github/PULL_REQUEST_TEMPLATE.md -->\n<!-- EVIDENCE:constraint:docs/governance/PLANNING_POLICY.md -->\n- Do not commit to the default branch.\n- Make minimal, reviewable commits with governance-grade messages.\n- Prefer small diffs; avoid refactors unless necessary for the task.\n\n## Workspace authority and synchronization (Host \u2194 VM \u2194 GitHub)\n- Canonical SSOT for repository history is the Git remote `origin` (GitHub).\n- Current workspace authority (effective 2026-02-25): host repo is the primary editing workspace. VM is the runtime/execution target for OpenClaw operations.\n- Default working mode:\n  - Edit on host.\n  - Run OpenClaw and VM-specific checks through repo scripts over SSH.\n  - Sync host \u2194 VM via Git only. Do not rsync/zip-copy working trees between environments.\n- Host guardrails:\n  - Host push remains disabled by default (mirror mode). Any exception must be explicit and temporary.\n  - Host pulls must be fast-forward only.\n- VM guardrails:\n  - VM is execution-first for OpenClaw and infrastructure checks.\n  - If editing on VM is explicitly required: run `git status` then `git pull --ff-only` before edits; keep commits small; push to `origin`; mirror on host via `git pull --ff-only`.\n- SSH access contract (for scripts and agents):\n  - SSH alias: `ISA_VM_HOST` (recommended `isa-openclaw-vm`)\n  - VM repo path: `VM_REPO_PATH`\n  - VM env path: `VM_ENV_PATH`\n  - Key path: `ISA_VM_SSH_KEY`\n  - Automation should use non-interactive host key behavior (`StrictHostKeyChecking=accept-new`).\n- Agent forwarding is preferred for VM Git operations to avoid copying private keys to the VM.\n- OpenClaw runtime contract:\n  - UI tunnel: `127.0.0.1:18789` (host) -> `127.0.0.1:18789` (VM).\n  - VM state/config location: `/root/.openclaw/*`.\n  - `OPENCLAW_GATEWAY_TOKEN` remains VM-only secret, authoritative in `/root/.openclaw/openclaw.json` (or VM env). Never store token values in repo docs.\n- Future VM-primary cutover prerequisites (not active yet):\n  - Branch protection and merge controls for `main` verified and documented.\n  - Host mirror guardrails automated (prevent local host commit/push except explicit temporary override).\n  - VM bootstrap + doctor path fully green via repo scripts.\n  - SSH known-host and agent-forwarding checks pass non-interactively in automation.\n  - Canonical docs/tasks/scripts updated with cutover date and rollback path.\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/AGENTS.md"
+      },
+      "config/governance/openclaw_policy_envelope.json": {
+        "content": {
+          "artifacts": {
+            "browser_policy": "config/openclaw/browser.policy.json",
+            "exec_lane_policy": "config/openclaw/exec-lane.policy.json",
+            "model_routing_policy": "config/openclaw/model-routing.policy.json",
+            "skills_allowlist": "config/openclaw/skills-allowlist.json"
+          },
+          "automation": {
+            "allow_insecure_dev_bypass_env_var": "OPENCLAW_AUTOMATION_ALLOW_INSECURE_DEV_BYPASS",
+            "kill_switch_env_var": "OPENCLAW_AUTOMATION_KILL_SWITCH",
+            "max_clock_skew_seconds": 300,
+            "require_idempotency_key_in_strict_mode": true,
+            "require_signature_in_strict_mode": true,
+            "require_timestamp_in_strict_mode": true,
+            "strict_mode_env_var": "OPENCLAW_AUTOMATION_STRICT_MODE",
+            "strict_mode_production": true
+          },
+          "enforcement": {
+            "allow_dev_bypass": true,
+            "mode": "fail_closed"
+          },
+          "network": {
+            "require_trusted_proxies_when_exposed": true,
+            "reverse_proxy_exposure": false,
+            "trusted_proxies_script": "scripts/openclaw-trusted-proxies.sh"
+          },
+          "runtime": {
+            "allow_host_local_gateway": false,
+            "primary_mode": "vm_only",
+            "status_script_default_target": "vm",
+            "ui_launcher_script": "scripts/openclaw-ui.sh"
+          },
+          "version": "1.0.0"
+        },
+        "exists": true,
+        "format": "json",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/config/governance/openclaw_policy_envelope.json"
+      },
+      "config/openclaw/browser.policy.json": {
+        "content": {
+          "allow_unsafe_launch_flags": false,
+          "mode": "fallback_only",
+          "prohibited_actions": [
+            "autonomous_login_submission",
+            "unchecked_file_downloads",
+            "background_navigation_without_user_intent"
+          ],
+          "require_explicit_opt_in_env": "OPENCLAW_BROWSER_FALLBACK_ALLOWED",
+          "unsafe_launch_flags_env": "OPENCLAW_BROWSER_ALLOW_UNSAFE_FLAGS",
+          "version": "1.0.0"
+        },
+        "exists": true,
+        "format": "json",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/config/openclaw/browser.policy.json"
+      },
+      "config/openclaw/exec-lane.policy.json": {
+        "content": {
+          "allow_rules": [
+            {
+              "class": "read_only",
+              "name": "allow_git_read_only",
+              "pattern": "^git[[:space:]]+(status|log|diff|show|branch|remote|fetch|pull([[:space:]]+--ff-only)?)([[:space:]]|$)",
+              "requires_approval": false
+            },
+            {
+              "class": "read_only",
+              "name": "allow_repo_checks",
+              "pattern": "^(pnpm[[:space:]]+(check|test-unit|test|run[[:space:]]+env:check)|node[[:space:]]+scripts/check-env\\.js|bash[[:space:]]+scripts/gates/[A-Za-z0-9._/-]+)([[:space:]]|$)",
+              "requires_approval": false
+            },
+            {
+              "class": "system_mutation",
+              "name": "allow_safe_build_commands",
+              "pattern": "^(pnpm[[:space:]]+install|pnpm[[:space:]]+build)([[:space:]]|$)",
+              "requires_approval": true
+            }
+          ],
+          "approval_required_classes": [
+            "filesystem_write",
+            "network_write",
+            "system_mutation"
+          ],
+          "audit_log_path": "logs/policy/exec-lane-audit.jsonl",
+          "default_decision": "deny",
+          "deny_patterns": [
+            "(^|[[:space:]])rm[[:space:]]+-rf([[:space:]]|$)",
+            "(^|[[:space:]])git[[:space:]]+reset[[:space:]]+--hard([[:space:]]|$)",
+            "(^|[[:space:]])git[[:space:]]+checkout[[:space:]]+--([[:space:]]|$)",
+            "(^|[[:space:]])mkfs([[:space:]]|$)",
+            "(^|[[:space:]])shutdown([[:space:]]|$)",
+            "(^|[[:space:]])reboot([[:space:]]|$)"
+          ],
+          "require_manual_approval_env": "OPENCLAW_SAFE_EXEC_APPROVED",
+          "version": "1.0.0"
+        },
+        "exists": true,
+        "format": "json",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/config/openclaw/exec-lane.policy.json"
+      },
+      "config/openclaw/model-routing.policy.json": {
+        "content": {
+          "defaults": {
+            "alias": "ISA Agentic Coding (Kimi K2.5)",
+            "model": "openrouter/moonshotai/kimi-k2.5",
+            "route_id": "agentic_coding_multimodal"
+          },
+          "mode": "operational_assisted_routing",
+          "router": {
+            "default_route_id": "agentic_coding_multimodal",
+            "helper_script": "scripts/openclaw-model-route.sh",
+            "selection_method": "deterministic_profile_keyword_router",
+            "ui_selection_mode": "manual_alias_switch_after_helper_output"
+          },
+          "routes": [
+            {
+              "alias": "ISA Free Sandbox (Trinity Large Preview)",
+              "avoid_for": [
+                "production SLAs",
+                "high-stakes regulated outputs",
+                "quality-sensitive final passes"
+              ],
+              "best_for": [
+                "zero-cost experimentation",
+                "prompt prototyping",
+                "non-critical agent-harness tests",
+                "creative ideation"
+              ],
+              "better_options_when": [
+                "the task is production-critical",
+                "governed automation reliability matters",
+                "you need stronger long-context or multimodal performance"
+              ],
+              "cost_benefit": "Best when cost must be zero. Lowest barrier to experimentation, but lower trust for production use.",
+              "cost_profile": "free",
+              "id": "free_sandbox_exploration",
+              "match_any": [
+                "free",
+                "free tier",
+                "no budget",
+                "zero budget",
+                "sandbox",
+                "prototype",
+                "cheap experiment",
+                "trial run",
+                "draft only"
+              ],
+              "model": "openrouter/arcee-ai/trinity-large-preview:free",
+              "priority": 10,
+              "task_profiles": [
+                "free_sandbox",
+                "prototype",
+                "zero_budget"
+              ]
+            },
+            {
+              "alias": "ISA Controlled Productivity (MiniMax M2.5)",
+              "avoid_for": [
+                "fully autonomous tool-choice flows",
+                "strict schema reliability without caller-side validation",
+                "tasks where DeepSeek already covers the need more cheaply"
+              ],
+              "best_for": [
+                "office and productivity workflows",
+                "controlled tool paths",
+                "parallel-tool business automations",
+                "document and spreadsheet operations"
+              ],
+              "better_options_when": [
+                "you need stronger autonomous agentic behavior",
+                "the task is mostly coding and repository work",
+                "you need much larger context windows"
+              ],
+              "cost_benefit": "Pays off when the workload resembles office productivity automation. Less attractive as a generic coding default.",
+              "cost_profile": "midrange_productivity",
+              "id": "controlled_productivity_automation",
+              "match_any": [
+                "spreadsheet",
+                "excel",
+                "powerpoint",
+                "word document",
+                "office workflow",
+                "business ops",
+                "controlled automation",
+                "parallel tool",
+                "constrained tool path",
+                "productivity suite"
+              ],
+              "model": "openrouter/minimax/minimax-m2.5",
+              "priority": 40,
+              "task_profiles": [
+                "office_productivity",
+                "controlled_automation",
+                "parallel_tool_calls"
+              ]
+            },
+            {
+              "alias": "ISA Agentic Coding (Kimi K2.5)",
+              "avoid_for": [
+                "strict latency ceilings",
+                "strict cost ceilings",
+                "short routine tasks"
+              ],
+              "best_for": [
+                "agentic coding",
+                "visual or multimodal coding",
+                "autonomous tool orchestration",
+                "complex multi-step implementation"
+              ],
+              "better_options_when": [
+                "price-performance matters more than autonomy",
+                "the workload is mostly text plus tools",
+                "the task is long-context research rather than agentic coding"
+              ],
+              "cost_benefit": "Worth the premium when autonomous tool behavior and coding agency matter. Not the best default for routine governed work.",
+              "cost_profile": "premium_agentic",
+              "id": "agentic_coding_multimodal",
+              "match_any": [
+                "agentic coding",
+                "visual coding",
+                "tool autonomy",
+                "multi-step tool workflow",
+                "autonomous tools",
+                "complex orchestration",
+                "planner",
+                "tool calling",
+                "agent swarm",
+                "multimodal coding"
+              ],
+              "model": "openrouter/moonshotai/kimi-k2.5",
+              "priority": 70,
+              "task_profiles": [
+                "agentic_coding",
+                "visual_coding",
+                "tool_autonomy"
+              ]
+            },
+            {
+              "alias": "ISA Long Context Research (Grok 4.1 Fast)",
+              "avoid_for": [
+                "short tasks",
+                "strict cost minimization when DeepSeek already fits",
+                "tasks that do not need long context"
+              ],
+              "best_for": [
+                "very large context tasks",
+                "large repo and multi-document comparisons",
+                "research workflows",
+                "broad workspace analysis"
+              ],
+              "better_options_when": [
+                "163k context is enough and cost-performance matters more",
+                "the task is multimodal document reasoning rather than long-context text reasoning"
+              ],
+              "cost_benefit": "One of the strongest value choices when context size changes the problem. Expensive only if the long window is unnecessary.",
+              "cost_profile": "high_value_long_context",
+              "id": "long_context_research",
+              "match_any": [
+                "long context",
+                "large context",
+                "many files",
+                "many documents",
+                "compare all",
+                "deep research",
+                "keep everything in context",
+                "big repo",
+                "huge prompt",
+                "broad comparison"
+              ],
+              "model": "openrouter/x-ai/grok-4.1-fast",
+              "priority": 90,
+              "task_profiles": [
+                "long_context",
+                "deep_research",
+                "large_workspace"
+              ]
+            },
+            {
+              "alias": "ISA Governed Default (DeepSeek V3.2)",
+              "avoid_for": [
+                "tasks that truly need 1M+ context",
+                "tasks that need premium multimodal reasoning",
+                "tasks where Kimi's agency is the main requirement"
+              ],
+              "best_for": [
+                "default ISA development sessions",
+                "governed tool use",
+                "structured extraction",
+                "general coding and implementation"
+              ],
+              "better_options_when": [
+                "long-context needs dominate",
+                "multimodal document reasoning dominates",
+                "agentic coding autonomy dominates"
+              ],
+              "cost_benefit": "Best overall cost-versus-performance default for ISA text-plus-tool workflows.",
+              "cost_profile": "best_general_value",
+              "id": "general_governed_tooling",
+              "match_any": [
+                "default",
+                "general coding",
+                "implement",
+                "refactor",
+                "structured output",
+                "json schema",
+                "extract",
+                "repo work",
+                "tool use",
+                "governed automation",
+                "balanced",
+                "cost effective"
+              ],
+              "model": "openrouter/deepseek/deepseek-v3.2",
+              "priority": 100,
+              "task_profiles": [
+                "default",
+                "governed_tooling",
+                "coding",
+                "structured_extraction"
+              ]
+            },
+            {
+              "alias": "ISA Premium Multimodal Docs (Gemini 3.1 Pro Preview)",
+              "avoid_for": [
+                "routine coding and extraction",
+                "budget-sensitive repetitive work",
+                "cases where DeepSeek or Grok already fit"
+              ],
+              "best_for": [
+                "complex multimodal tasks",
+                "long document and PDF analysis",
+                "premium reasoning over mixed media",
+                "high-end planning with 1M context"
+              ],
+              "better_options_when": [
+                "the task is ordinary text-plus-tool work",
+                "cost sensitivity is high",
+                "long-context text tasks do not require multimodal richness"
+              ],
+              "cost_benefit": "Highest-cost option here. Use only when multimodal or premium document reasoning benefits justify the spend.",
+              "cost_profile": "premium_multimodal",
+              "id": "premium_multimodal_documents",
+              "match_any": [
+                "pdf",
+                "document reasoning",
+                "multimodal",
+                "audio",
+                "video",
+                "image",
+                "code execution",
+                "function calling",
+                "1m context",
+                "complex planning",
+                "google gemini"
+              ],
+              "model": "openrouter/google/gemini-3.1-pro-preview",
+              "priority": 80,
+              "task_profiles": [
+                "multimodal",
+                "pdf_documents",
+                "premium_reasoning"
+              ]
+            }
+          ],
+          "runtime_note": {
+            "current_runtime_pinned_default": "openrouter/moonshotai/kimi-k2.5",
+            "note": "The helper makes routing operational before the OpenClaw runtime itself supports ISA-semantic auto-switching."
+          },
+          "selection_scope": "isa_openclaw_ui_sessions",
+          "version": "2.0.0"
+        },
+        "exists": true,
+        "format": "json",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/config/openclaw/model-routing.policy.json"
+      },
+      "config/openclaw/skills-allowlist.json": {
+        "content": {
+          "entries": [
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "addf85acd869b4084507241b1ce3f9357ed9e77c4dd4a31a51e4ad15fcd785e0",
+              "name": "1password",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/1password",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "2e094a41827918aeeb212d2b52bfe12c3fcadbe443d6d5dabdb596338c33bcfc",
+              "name": "apple-notes",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/apple-notes",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "55b32e32d4f824b92f1d0c264d315df66e15297ccd07afd3d849f8fbcc92b57b",
+              "name": "apple-reminders",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/apple-reminders",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "b3e822ab09e9283d01e2c021a603a5212187c545fd797e671e617d79dae09330",
+              "name": "bear-notes",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/bear-notes",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "a6cca0c49f67f0aa40cd95b6e44e3210b7857551b30217a022777d94954e228f",
+              "name": "blogwatcher",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/blogwatcher",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "f2d81136171331f1a160e6714c7de07a6ac1c2846de98c77b4a1b7bf9e0de555",
+              "name": "blucli",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/blucli",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "173c8ad20cd0a39d797b0d55b9d9a6a746f562b2949afc812ff4e6488eda7483",
+              "name": "bluebubbles",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/bluebubbles",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "8019c4529f6d4d07c036af003a5e532514c71dac7145b6f7d0e52022ab5eacb8",
+              "name": "camsnap",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/camsnap",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "c73b5d419cc8387255747c55c1abd16de63113772ca0603a2377775bd197ac13",
+              "name": "canvas",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/canvas",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "05d354086733976ab09b79d13f29081e5cefbcb584580fc5144cbea4ca2b9691",
+              "name": "clawhub",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/clawhub",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "a2bd06033a52fd964f321c4be340a3df30ee14da6c5856af4a4f57ea3c809acc",
+              "name": "cleanup-specialist",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.codex/skills/cleanup-specialist",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "f4b377a211818ed2d72c76d179bdee5aae200f2f89a641dcbb0f2170585ec1e5",
+              "name": "coding-agent",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/coding-agent",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "5d7e5afcd678b2fb32473ab581f72bd91e2687a4d12ea6d1273aa7530e087d8a",
+              "name": "discord",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/discord",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "26f0c23cb0bce54341e638342828dd708270ff5547bbb1ebc3d6041b7ee103bb",
+              "name": "eightctl",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/eightctl",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "cfc22551f9e2475b44994456e7100ae87b270f3b5cf0655342149b37b7e0c8a2",
+              "name": "find-skills",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.agents/skills/find-skills",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "1bd0faf51b1b57e8a7529c8568508699d645fbcc18d97b76d797356a6ebeb50a",
+              "name": "gemini",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/gemini",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "a00b56a02e7808ec136fd597acc85fe193d9aac37e5ebe8b6bd9d3f7a01b2cff",
+              "name": "gh-issues",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gh-issues",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "31a0307c8657674d0513423ceaf8c0b13cd231918f8077465ec90f6f0b36876d",
+              "name": "gifgrep",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gifgrep",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "914b327a9a8e61dd4eb209219a17388bc696bd594389d3debbf76a0725aa11d4",
+              "name": "github",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/github",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "373dfdd7442f3e11c05d80ef20a7eef7787c52a2de4f9e04781790cfd99570d6",
+              "name": "gog",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gog",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "8f9272cc556be4871e1032d9d3af55d9ab1f6c9471f15b92b6a966d60e5729dc",
+              "name": "goplaces",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/goplaces",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "bfdd642b671181d14934b10e69d26eea5921f971f3fad7a3458dae3ee090375b",
+              "name": "healthcheck",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/healthcheck",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "5ae5948db15031eaa2f21da9956006f64a9a1a9102054c097181bf8806746fdc",
+              "name": "himalaya",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/himalaya",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "304a2cb6f94863d6b2c88e68e56fe2c6b5a287aa28c3661b68fe2be2a1aec4f3",
+              "name": "imsg",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/imsg",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "32dd29d67edefe99e77c997928860b3feffee6e7885714b4ef431a0a6e07c13b",
+              "name": "mcporter",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/mcporter",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "4b3a4078cb5b9b945139260d193c129f00f989e52123fc59e5405fe741a5615b",
+              "name": "model-usage",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/model-usage",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "0c3b5b2cd0a73ea5e2066f050985224d227f06982505548b15089aba1fc8ae05",
+              "name": "nano-banana-pro",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/nano-banana-pro",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "c11e683e939ef1a0bf0d898c789654a4cc1f344913e8ed038cd5f03224fd38e2",
+              "name": "nano-pdf",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/nano-pdf",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "d5e9738addd7615fdf1fa10067cc0bf4b59fff7a7f89ffe30000b13d9c6a885c",
+              "name": "notion",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/notion",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "f493dd9d0be43d793a3333c0926bc37efa53e839acdc20d0b1c16706297b2053",
+              "name": "obsidian",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/obsidian",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "95f2de240fde3318fbd39faf80dded09faa8ab2404d9597a7ae09f60a78f8c66",
+              "name": "openai-image-gen",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-image-gen",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "9914e172935221d1ba9829d81c8c9e5cb57c67371884c23c4ee6f7233d973937",
+              "name": "openai-whisper",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-whisper",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "50d3e2d65342bd9525ebd1be2501225d2fbe9ead04c0cbaba0358f67b7fb015f",
+              "name": "openai-whisper-api",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-whisper-api",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "fd64f041940ebb37fa0fbfffc8201b0919df39bb5b7b15e044adb89ccc699d80",
+              "name": "openrouter-typescript-sdk",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.agents/skills/openrouter-typescript-sdk",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "b21b9adae3d7e44da99a4cfe1f7fced773ed76d125f3270e08b2154d7ce7b3cd",
+              "name": "session-logs",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/session-logs",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "985f4dcf881516613e919ed5fad3a52bc1f78ccd6de8949b43c18a6bb4482e98",
+              "name": "skill-creator",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/skill-creator",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "839267bfedda97434e5fbd1fc8aa1d77f2b0744496c27c74cf7c39ba44c91408",
+              "name": "slack",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/slack",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "8d0079a980fe5f5f59397b93c1935af7aa2f47fc741291a14125bcb0ef8997a6",
+              "name": "tmux",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/tmux",
+              "status": "approved"
+            },
+            {
+              "approval_date": "2026-03-02",
+              "checksum_sha256": "c9e3ae14602bff5991680aa2023275b29f039eb2b5e59d80658f18be38df00a0",
+              "name": "weather",
+              "reviewer": "isa-kernel-sync",
+              "scope": "quarantine-local",
+              "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/weather",
+              "status": "approved"
+            }
+          ],
+          "quarantine_install_dir": "~/.openclaw/skills-quarantine",
+          "version": "1.1.0"
+        },
+        "exists": true,
+        "format": "json",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/config/openclaw/skills-allowlist.json"
+      },
+      "docs/agent/OPENCLAW_UI_MODEL_QUICK_REFERENCE.md": {
+        "content": "# OpenClaw UI Model Quick Reference\nStatus: CANONICAL\n\n## Operational Default\n- Use `ISA Agentic Coding (Kimi K2.5)` as the launcher and runtime-aligned default.\n- Model id: `openrouter/moonshotai/kimi-k2.5`\n- Reason: matches the current VM runtime-pinned default and avoids default-route drift between launcher policy and gateway runtime.\n- Switch to `ISA Governed Default (DeepSeek V3.2)` when cost-versus-performance matters more than agentic behavior.\n\n## Route Before You Start\n- Run `bash scripts/openclaw-model-route.sh --task \"your task summary\" --clipboard` and use the returned alias in the OpenClaw UI model picker.\n- If you already know the task class, run `bash scripts/openclaw-model-route.sh --profile <route_id>`.\n- To reuse the previous launcher choice without a new prompt:\n  - CLI launcher: `~/.local/bin/openclaw-ui-dev-launcher-fast.sh --use-last-route`\n  - Env toggle for app/automation: `OPENCLAW_LAUNCHER_USE_LAST_ROUTE=1`\n\n## Route Map\n- `ISA Agentic Coding (Kimi K2.5)`\n  - Best for: agentic coding, multimodal coding, autonomous multi-step tool workflows.\n  - Better option exists when: you want a cheaper general default or the task is not strongly agentic.\n- `ISA Governed Default (DeepSeek V3.2)`\n  - Best for: normal coding, implementation, extraction, governed tool use.\n  - Better option exists when: you need huge context, premium multimodal reasoning, or stronger agentic coding behavior.\n- `ISA Long Context Research (Grok 4.1 Fast)`\n  - Best for: very large repo or multi-document context, research, broad comparisons.\n  - Better option exists when: DeepSeek already fits and cost matters more.\n- `ISA Controlled Productivity (MiniMax M2.5)`\n  - Best for: office-style workflows, constrained automation, spreadsheet/document tool paths.\n  - Better option exists when: the task is mostly repository coding or needs stronger autonomy.\n- `ISA Premium Multimodal Docs (Gemini 3.1 Pro Preview)`\n  - Best for: PDFs, multimodal inputs, long document reasoning, premium planning.\n  - Better option exists when: the task is routine, text-only, or budget-sensitive.\n- `ISA Free Sandbox (Trinity Large Preview)`\n  - Best for: no-cost experiments, prompt prototyping, non-critical sandboxing.\n  - Better option exists when: the output matters operationally.\n\n## Runtime Note\n- The current OpenClaw runtime may still be pinned differently for compatibility.\n- The route helper is the canonical selector before each UI session.\n\n## Canonical Policy\n- Routing policy: `config/openclaw/model-routing.policy.json`\n- Governance runbook: `docs/governance/OPENCLAW_MODEL_ROUTING_POLICY.md`\n- Route helper: `scripts/openclaw-model-route.sh`\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/docs/agent/OPENCLAW_UI_MODEL_QUICK_REFERENCE.md"
+      },
+      "docs/governance/OPENCLAW_MODEL_ROUTING_POLICY.md": {
+        "content": "# OpenClaw Model Routing Policy\n\nStatus: CANONICAL\n\n## Purpose\nThis policy defines the ISA-recommended model selection map for OpenClaw UI sessions that run through OpenRouter.\n\n## Scope\n- Applies to ISA development sessions launched through the OpenClaw UI.\n- Applies to manual model choice and future router automation.\n- Does not override OpenClaw runtime safety controls, sandbox policy, or exec/browser policy.\n\n## Canonical Artifact\n- Policy file: `config/openclaw/model-routing.policy.json`\n\n## Current Operating Mode\n- Current status: operational assisted routing.\n- OpenClaw itself still does not inspect prompt semantics and auto-switch models.\n- ISA now makes routing operational through a deterministic helper:\n  - `scripts/openclaw-model-route.sh`\n- The helper reads the canonical policy, classifies the task, and returns the route alias and model to select in the UI.\n\n## Current Defaults\n- Operational default route: `ISA Agentic Coding (Kimi K2.5)`\n- Runtime pinned compatibility model: `openrouter/moonshotai/kimi-k2.5`\n- UI quick reference: `docs/agent/OPENCLAW_UI_MODEL_QUICK_REFERENCE.md`\n\n## Route Summary\n\n| Route ID | Alias | Use When | Avoid When |\n|---|---|---|---|\n| `agentic_coding_multimodal` | `ISA Agentic Coding (Kimi K2.5)` | Agentic coding, multimodal coding, autonomous multi-step tool workflows | Routine cost-sensitive work or non-agentic tasks |\n| `general_governed_tooling` | `ISA Governed Default (DeepSeek V3.2)` | Governed text-plus-tool work, coding, extraction, balanced cost-performance | True long-context, premium multimodal, or strongly agentic coding tasks |\n| `long_context_research` | `ISA Long Context Research (Grok 4.1 Fast)` | Very large context, large repo or multi-document comparisons, research | Short routine tasks or cases where DeepSeek already fits |\n| `controlled_productivity_automation` | `ISA Controlled Productivity (MiniMax M2.5)` | Spreadsheet/document-heavy productivity automation, constrained tool paths | Generic repo coding or strongly autonomous flows |\n| `premium_multimodal_documents` | `ISA Premium Multimodal Docs (Gemini 3.1 Pro Preview)` | PDFs, multimodal reasoning, premium document-heavy planning | Routine text-only or budget-sensitive work |\n| `free_sandbox_exploration` | `ISA Free Sandbox (Trinity Large Preview)` | No-cost experiments and prototypes | Production or high-stakes outputs |\n\n## Operational Guidance\n- Default to `agentic_coding_multimodal` to stay aligned with the current VM runtime default.\n- Switch to `general_governed_tooling` when the task is normal governed engineering work and cost-performance matters more than agentic behavior.\n- Run the helper before a new UI session:\n  - `bash scripts/openclaw-model-route.sh --task \"your task summary\"`\n- For deterministic scripted flows, use explicit profiles:\n  - `bash scripts/openclaw-model-route.sh --profile general_governed_tooling`\n- Prefer the cheapest route that still matches the task\u2019s risk, context, and modality needs.\n- For regulated or evidence-sensitive work, prefer explicit route selection over provider `auto`.\n\n## Practical Selection Rules\n1. If you want the runtime-aligned default or the task is agentic or multimodal coding, use Kimi.\n2. If the task is routine ISA engineering or governed automation, use DeepSeek.\n3. If the task is context-heavy research or broad comparison, use Grok.\n4. If the task is office-productivity automation with constrained tools, use MiniMax.\n5. If the task is premium multimodal or document-heavy reasoning, use Gemini 3.1.\n6. If the task is just a sandbox or zero-budget experiment, use Trinity free.\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/docs/governance/OPENCLAW_MODEL_ROUTING_POLICY.md"
+      },
+      "isa_cost_optimizer/middleware_api.py": {
+        "content": "from __future__ import annotations\n\nimport json\nimport os\nfrom pathlib import Path\nfrom typing import Any\n\nfrom fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel, Field\n\nfrom .cache import DeterministicCache\nfrom .concurrency_governor import ConcurrencyGovernor, ConcurrencyOverflowError\nfrom .context_compressor import ContextCompressor\nfrom .embedding_cache import EmbeddingCache\nfrom .escalation_engine import EscalationDecision, EscalationEngine\nfrom .retry_controller import RetryController\nfrom .sla_controller import SLADecision, SLAController\nfrom .token_controller import TokenBudgetResult, TokenController\n\nDEFAULT_RUNTIME_DIR = Path(__file__).resolve().parent / \"runtime\"\nDEFAULT_RUNTIME_DIR.mkdir(parents=True, exist_ok=True)\n\n\ndef _repo_root() -> Path:\n    return Path(__file__).resolve().parent.parent\n\n\ndef _default_control_plane_path() -> Path:\n    env_path = os.environ.get(\"OPENCLAW_CONTROL_PLANE\")\n    if env_path:\n        return Path(env_path).expanduser()\n    return _repo_root() / \".openclaw\" / \"control-plane.json\"\n\n\ndef _load_control_plane_config(control_plane_path: Path | None = None) -> dict[str, Any]:\n    path = control_plane_path or _default_control_plane_path()\n    if not path.exists():\n        return {}\n    raw = json.loads(path.read_text(encoding=\"utf-8\"))\n    return raw if isinstance(raw, dict) else {}\n\n\ndef _stack_config(control_plane: dict[str, Any]) -> dict[str, Any]:\n    raw = control_plane.get(\"cost_optimization_stack\", {})\n    return raw if isinstance(raw, dict) else {}\n\n\ndef _resolve_runtime_dir(runtime_dir: Path | None, stack_settings: dict[str, Any]) -> Path:\n    if runtime_dir is not None:\n        return runtime_dir\n    configured = stack_settings.get(\"runtime_dir\")\n    if isinstance(configured, str) and configured.strip():\n        return Path(configured).expanduser()\n    return DEFAULT_RUNTIME_DIR\n\n\nclass MiddlewareRequest(BaseModel):\n    request_id: str = Field(min_length=1)\n    prompt: str = Field(min_length=1)\n    contexts: list[str] = Field(default_factory=list)\n    current_tier: str = Field(default=\"economy\")\n    expect_json: bool = False\n    quality_score: float = Field(default=1.0, ge=0.0, le=1.0)\n    response_text: str = \"\"\n    latency_ms: int = Field(default=0, ge=0)\n    token_cap: int = Field(default=4096, ge=1)\n\n\nclass EscalationSummary(BaseModel):\n    current_tier: str\n    next_tier: str\n    escalated: bool\n    reason: str\n\n\nclass SLASummary(BaseModel):\n    current_tier: str\n    next_tier: str\n    switched: bool\n    reason: str\n    threshold_ms: int\n    observed_latency_ms: int\n\n\nclass TokenSummary(BaseModel):\n    original_tokens: int\n    capped_tokens: int\n    token_cap: int\n    truncated: bool\n\n\nclass MiddlewareResponse(BaseModel):\n    request_id: str\n    cache_hit: bool\n    cache_key: str\n    compressed_contexts: list[str]\n    dropped_context_count: int\n    embedding_reused: bool\n    json_repaired: bool\n    json_valid: bool\n    repaired_response: str | None\n    retry_attempts: int\n    escalation: EscalationSummary\n    sla: SLASummary\n    token_status: TokenSummary\n    effective_prompt: str\n\n\nclass CostOptimizationMiddleware:\n    def __init__(self, runtime_dir: Path | None = None, settings: dict[str, Any] | None = None) -> None:\n        stack_settings = settings or {}\n        root = _resolve_runtime_dir(runtime_dir, stack_settings)\n        root.mkdir(parents=True, exist_ok=True)\n        similarity_threshold = float(stack_settings.get(\"similarity_threshold\", 0.92))\n        quality_floors = stack_settings.get(\"quality_floors\")\n        tier_thresholds = stack_settings.get(\"tier_thresholds\")\n        max_in_flight = int(stack_settings.get(\"max_in_flight\", 4))\n\n        self.cache = DeterministicCache(root / \"deterministic_cache.json\")\n        self.embedding_cache = EmbeddingCache(similarity_threshold, root / \"embedding_cache.json\")\n        self.context_compressor = ContextCompressor(similarity_threshold, self.embedding_cache)\n        self.escalation_engine = EscalationEngine(quality_floors=quality_floors if isinstance(quality_floors, dict) else None)\n        self.retry_controller = RetryController(max_attempts=2)\n        self.sla_controller = SLAController(tier_thresholds=tier_thresholds if isinstance(tier_thresholds, dict) else None)\n        self.concurrency_governor = ConcurrencyGovernor(max_in_flight=max_in_flight)\n        self.token_controller = TokenController()\n        self.runtime_dir = root\n        self.settings = {\n            \"max_in_flight\": max_in_flight,\n            \"similarity_threshold\": similarity_threshold,\n            \"tier_thresholds\": self.sla_controller.tier_thresholds,\n            \"quality_floors\": self.escalation_engine.quality_floors,\n        }\n\n    def _cache_payload(self, request: MiddlewareRequest) -> dict[str, object]:\n        return {\n            \"contexts\": request.contexts,\n            \"current_tier\": request.current_tier,\n            \"expect_json\": request.expect_json,\n            \"prompt\": request.prompt,\n            \"request_id\": request.request_id,\n            \"response_text\": request.response_text,\n            \"token_cap\": request.token_cap,\n        }\n\n    def _build_response(\n        self,\n        request: MiddlewareRequest,\n        cache_key: str,\n        cache_hit: bool,\n        compressed_contexts: list[str],\n        embedding_reused: bool,\n        retry_attempts: int,\n        json_valid: bool,\n        json_repaired: bool,\n        repaired_response: str | None,\n        escalation: EscalationDecision,\n        sla: SLADecision,\n        token_status: TokenBudgetResult,\n    ) -> MiddlewareResponse:\n        return MiddlewareResponse(\n            request_id=request.request_id,\n            cache_hit=cache_hit,\n            cache_key=cache_key,\n            compressed_contexts=compressed_contexts,\n            dropped_context_count=max(0, len(request.contexts) - len(compressed_contexts)),\n            embedding_reused=embedding_reused,\n            json_repaired=json_repaired,\n            json_valid=json_valid,\n            repaired_response=repaired_response,\n            retry_attempts=retry_attempts,\n            escalation=EscalationSummary(**escalation.__dict__),\n            sla=SLASummary(**sla.__dict__),\n            token_status=TokenSummary(**token_status.__dict__),\n            effective_prompt=token_status.text,\n        )\n\n    def process(self, request: MiddlewareRequest) -> MiddlewareResponse:\n        self.concurrency_governor.acquire_or_raise(request.request_id)\n        try:\n            cache_key = self.cache.key_for(self._cache_payload(request))\n            cached = self.cache.get_by_key(cache_key)\n            if cached is not None:\n                cached_payload = dict(cached)\n                cached_payload[\"cache_hit\"] = True\n                return MiddlewareResponse(**cached_payload)\n\n            compression = self.context_compressor.compress(request.contexts)\n            embedding_reused = self.embedding_cache.find_reuse(request.prompt) is not None\n            self.embedding_cache.get_or_create(request.prompt)\n            token_status = self.token_controller.enforce(request.prompt, request.token_cap)\n            retry_outcome = self.retry_controller.execute(\n                lambda _attempt: request.response_text,\n                require_json=request.expect_json,\n            )\n            json_valid = retry_outcome.final_json_valid if request.expect_json else True\n            repaired_response = retry_outcome.final_output if json_valid and request.expect_json else None\n            escalation = self.escalation_engine.decide(\n                current_tier=request.current_tier,\n                quality_score=request.quality_score,\n                json_valid=json_valid,\n                attempts_used=retry_outcome.attempt_count,\n                max_attempts=self.retry_controller.max_attempts,\n            )\n            sla = self.sla_controller.decide(request.current_tier, request.latency_ms)\n            response = self._build_response(\n                request=request,\n                cache_key=cache_key,\n                cache_hit=False,\n                compressed_contexts=compression.kept_contexts,\n                embedding_reused=embedding_reused,\n                retry_attempts=retry_outcome.attempt_count,\n                json_valid=json_valid,\n                json_repaired=retry_outcome.repair_applied,\n                repaired_response=repaired_response,\n                escalation=escalation,\n                sla=sla,\n                token_status=token_status,\n            )\n            self.cache.set_by_key(cache_key, response.model_dump(mode=\"json\"))\n            return response\n        finally:\n            self.concurrency_governor.release(request.request_id)\n\n\ndef create_middleware(\n    runtime_dir: Path | None = None,\n    control_plane_path: Path | None = None,\n) -> CostOptimizationMiddleware:\n    control_plane = _load_control_plane_config(control_plane_path)\n    stack_settings = _stack_config(control_plane)\n    return CostOptimizationMiddleware(runtime_dir=runtime_dir, settings=stack_settings)\n\n\nmiddleware = create_middleware()\napp = FastAPI(title=\"ISA Cost Optimization Stack\", version=\"1.0.0\")\n\n\n@app.get(\"/health\")\ndef health() -> dict[str, object]:\n    return {\"ok\": True, \"service\": \"isa_cost_optimizer\"}\n\n\n@app.post(\"/optimize\", response_model=MiddlewareResponse)\ndef optimize(request: MiddlewareRequest) -> MiddlewareResponse:\n    try:\n        return middleware.process(request)\n    except ConcurrencyOverflowError as exc:\n        raise HTTPException(status_code=429, detail=str(exc)) from exc\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/middleware_api.py"
+      },
+      "isa_cost_optimizer/pyproject.toml": {
+        "content": "[tool.pytest.ini_options]\naddopts = \"-q\"\ntestpaths = [\"isa_cost_optimizer/tests\"]\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/pyproject.toml"
+      },
+      "isa_cost_optimizer/requirements.txt": {
+        "content": "fastapi==0.135.0\nhttpx==0.28.1\npytest==8.4.2\npytest-cov==7.0.0\nruff==0.14.0\nuvicorn==0.41.0\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/requirements.txt"
+      },
+      "isa_router/policy.json": {
+        "content": {
+          "_meta": {
+            "generated_at": "2026-03-01T17:51:43Z",
+            "managed_by": "isa_kernel"
+          },
+          "allowed_providers": [
+            "openrouter",
+            "openai",
+            "anthropic",
+            "gemini"
+          ],
+          "budget": {
+            "daily_limit_usd": 200,
+            "per_call_limit_usd": 5
+          },
+          "max_tokens_per_call": 16000,
+          "quality_thresholds": {
+            "CODE_AUDIT": 0.78,
+            "EXTRACTION": 0.75,
+            "RAG_QA": 0.7,
+            "REG_MAPPING": 0.8,
+            "SUMMARIZATION": 0.65
+          }
+        },
+        "exists": true,
+        "format": "json",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_router/policy.json"
+      },
+      "isa_router/requirements.txt": {
+        "content": "fastapi==0.135.0\nuvicorn==0.41.0\npydantic==2.12.5\nrequests==2.32.5\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_router/requirements.txt"
+      },
+      "isa_router/start_router.sh": {
+        "content": "#!/usr/bin/env bash\nset -euo pipefail\ncd \"$(dirname \"$0\")\"\nsource .venv/bin/activate\nexec uvicorn router:APP --host \"127.0.0.1\" --port \"8090\"\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_router/start_router.sh"
+      },
+      "isa_router/weights.json": {
+        "content": {
+          "_meta": {
+            "generated_at": "2026-03-01T17:51:43Z",
+            "managed_by": "isa_kernel"
+          },
+          "cost": 0.4,
+          "latency": 0.2,
+          "quality": 0.3,
+          "risk": 0.1
+        },
+        "exists": true,
+        "format": "json",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_router/weights.json"
+      },
+      "scripts/openclaw-isa-dev-start.sh": {
+        "content": "#!/usr/bin/env bash\nset -euo pipefail\n\necho \"PREFLIGHT=openclaw_isa_dev_start\"\n\nREPO_ROOT=\"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/..\" && pwd)\"\ncd \"$REPO_ROOT\"\n\nACTION=\"\"\non_err() {\n  local exit_code=\"$?\"\n  if [ -n \"$ACTION\" ]; then\n    echo \"STOP=failed action=${ACTION} exit=${exit_code}\"\n  else\n    echo \"STOP=failed exit=${exit_code}\"\n  fi\n  exit \"$exit_code\"\n}\ntrap on_err ERR\n\nSKIP_VALIDATE=0\nNO_OPEN=0\n\nwhile [ \"$#\" -gt 0 ]; do\n  case \"$1\" in\n    --skip-validate)\n      SKIP_VALIDATE=1\n      ;;\n    --no-open)\n      NO_OPEN=1\n      ;;\n    *)\n      echo \"STOP=usage openclaw-isa-dev-start.sh [--skip-validate] [--no-open]\"\n      exit 1\n      ;;\n  esac\n  shift\ndone\n\nif [ \"$SKIP_VALIDATE\" -eq 0 ]; then\n  ACTION=\"validate_no_secrets\"\n  bash scripts/openclaw-validate-no-secrets.sh\nelse\n  echo \"READY=no_secrets_validation_skipped\"\nfi\n\nACTION=\"openclaw_ui\"\nif [ \"$NO_OPEN\" -eq 1 ]; then\n  bash scripts/openclaw-ui.sh --no-open\nelse\n  bash scripts/openclaw-ui.sh\nfi\n\nPROMPT_FILE=\"docs/agent/OPENCLAW_UI_DEV_PROMPT_STARTER.md\"\nQUICK_REFERENCE_FILE=\"docs/agent/OPENCLAW_UI_MODEL_QUICK_REFERENCE.md\"\nif [ \"$NO_OPEN\" -eq 0 ] && command -v open >/dev/null 2>&1; then\n  ACTION=\"open_supporting_docs\"\n  open \"$PROMPT_FILE\"\n  open \"$QUICK_REFERENCE_FILE\"\nfi\necho \"READY=isa_openclaw_dev_prompt_file path=${PROMPT_FILE}\"\necho \"READY=isa_openclaw_model_quick_reference_file path=${QUICK_REFERENCE_FILE}\"\necho \"DONE=openclaw_isa_dev_start_complete\"\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/scripts/openclaw-isa-dev-start.sh"
+      },
+      "scripts/openclaw-model-route.sh": {
+        "content": "#!/usr/bin/env bash\nset -euo pipefail\n\nPOLICY_FILE=\"${OPENCLAW_MODEL_ROUTING_POLICY_PATH:-config/openclaw/model-routing.policy.json}\"\n\nusage() {\n  cat <<'EOF'\nUsage:\n  bash scripts/openclaw-model-route.sh --task \"task summary\" [--json] [--clipboard]\n  bash scripts/openclaw-model-route.sh --profile <route_id> [--json] [--clipboard]\n  bash scripts/openclaw-model-route.sh --default [--json] [--clipboard]\nEOF\n}\n\nTASK_TEXT=\"\"\nPROFILE_ID=\"\"\nJSON_OUT=\"0\"\nDEFAULT_ONLY=\"0\"\nCLIPBOARD=\"0\"\n\nwhile [[ $# -gt 0 ]]; do\n  case \"$1\" in\n    --task)\n      TASK_TEXT=\"${2:-}\"\n      shift 2\n      ;;\n    --profile)\n      PROFILE_ID=\"${2:-}\"\n      shift 2\n      ;;\n    --json)\n      JSON_OUT=\"1\"\n      shift\n      ;;\n    --default)\n      DEFAULT_ONLY=\"1\"\n      shift\n      ;;\n    --clipboard)\n      CLIPBOARD=\"1\"\n      shift\n      ;;\n    -h|--help)\n      usage\n      exit 0\n      ;;\n    *)\n      echo \"Unknown argument: $1\" >&2\n      usage >&2\n      exit 1\n      ;;\n  esac\ndone\n\nif [[ ! -f \"$POLICY_FILE\" ]]; then\n  echo \"Missing policy file: $POLICY_FILE\" >&2\n  exit 1\nfi\n\nRESULT=\"$(python3 - \"$POLICY_FILE\" \"$TASK_TEXT\" \"$PROFILE_ID\" \"$JSON_OUT\" \"$DEFAULT_ONLY\" <<'PY'\nimport json\nimport sys\n\npolicy_path, task_text, profile_id, json_out, default_only = sys.argv[1:]\npolicy = json.loads(open(policy_path, \"r\", encoding=\"utf-8\").read())\n\ntask_text_l = task_text.lower().strip()\nroutes = policy[\"routes\"]\ndefault_route_id = policy[\"router\"][\"default_route_id\"]\n\ndef route_by_id(route_id: str):\n    for route in routes:\n        if route[\"id\"] == route_id:\n            return route\n    raise SystemExit(f\"Unknown route id: {route_id}\")\n\ndef score_route(route):\n    raw_score = 0\n    matched = []\n    for term in route.get(\"match_any\", []):\n        term_l = term.lower()\n        if term_l and term_l in task_text_l:\n            raw_score += 1\n            matched.append(term)\n    score = raw_score\n    if route[\"id\"] == default_route_id:\n        score += 0.25\n    return raw_score, score, matched\n\nif profile_id:\n    selected = route_by_id(profile_id)\n    matched_terms = []\n    reason = \"explicit_profile\"\nelif default_only == \"1\" or not task_text_l:\n    selected = route_by_id(default_route_id)\n    matched_terms = []\n    reason = \"default_route\"\nelse:\n    scored = []\n    for route in routes:\n        raw_score, score, matched_terms = score_route(route)\n        scored.append((raw_score, score, route[\"priority\"], route[\"id\"], matched_terms, route))\n    scored.sort(key=lambda x: (-x[1], -x[2], x[3]))\n    top = scored[0]\n    if top[0] <= 0:\n        selected = route_by_id(default_route_id)\n        matched_terms = []\n        reason = \"default_route_no_keyword_match\"\n    else:\n        selected = top[5]\n        matched_terms = top[4]\n        reason = \"keyword_match\"\n\nresult = {\n    \"selected_route_id\": selected[\"id\"],\n    \"alias\": selected[\"alias\"],\n    \"model\": selected[\"model\"],\n    \"cost_profile\": selected[\"cost_profile\"],\n    \"best_for\": selected[\"best_for\"],\n    \"better_options_when\": selected[\"better_options_when\"],\n    \"cost_benefit\": selected[\"cost_benefit\"],\n    \"selection_reason\": reason,\n    \"matched_terms\": matched_terms,\n    \"ui_action\": f\"Select '{selected['alias']}' in the OpenClaw UI model picker.\"\n}\n\nif json_out == \"1\":\n    print(json.dumps(result, indent=2))\nelse:\n    print(f\"ROUTE_ID={result['selected_route_id']}\")\n    print(f\"ALIAS={result['alias']}\")\n    print(f\"MODEL={result['model']}\")\n    print(f\"SELECTION_REASON={result['selection_reason']}\")\n    if matched_terms:\n        print(f\"MATCHED_TERMS={','.join(matched_terms)}\")\n    else:\n        print(\"MATCHED_TERMS=\")\n    print(f\"UI_ACTION={result['ui_action']}\")\nPY\n)\"\n\nif [[ \"$CLIPBOARD\" == \"1\" ]]; then\n  ALIAS_VALUE=\"$(python3 -c 'import json,sys,re; s=sys.stdin.read(); print(json.loads(s)[\"alias\"] if s.lstrip().startswith(\"{\") else next((line.split(\"=\",1)[1] for line in s.splitlines() if line.startswith(\"ALIAS=\")), \"\"))' <<<\"$RESULT\")\"\n  if [[ -n \"$ALIAS_VALUE\" ]] && command -v pbcopy >/dev/null 2>&1; then\n    printf '%s' \"$ALIAS_VALUE\" | pbcopy\n  fi\nfi\n\nprintf '%s\\n' \"$RESULT\"\n",
+        "exists": true,
+        "format": "text",
+        "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/scripts/openclaw-model-route.sh"
+      }
+    }
+  },
+  "repo_root": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean",
+  "runtime_ssot": "vm:/root/.openclaw/openclaw.json",
+  "runtime_status": {
+    "git_branch": {
+      "command": "git branch --show-current",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "feat/bench-001-sync-from-vm\n"
+    },
+    "git_status_short": {
+      "command": "git status --short",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": " M .github/workflows/tiered-tests.yml\n M config/governance/openclaw_policy_envelope.json\n M config/openclaw/skills-allowlist.json\n M docs/agent/AGENT_MAP.md\n M docs/agent/OPENCLAW_UI_DEV_PROMPT_STARTER.md\n M docs/governance/OPENCLAW_POLICY_ENVELOPE.md\n M scripts/openclaw-isa-dev-start.sh\n M scripts/openclaw-sync-skills-allowlist.sh\n M scripts/openclaw-validate-no-secrets.sh\n?? .agents/\n?? .coverage\n?? .openclaw/\n?? TOP_40_ISA_OPTIMAL_SKILLS.json\n?? config/openclaw/model-routing.policy.json\n?? config/openclaw/skill-routing.policy.json\n?? docs/agent/OPENCLAW_UI_MODEL_QUICK_REFERENCE.md\n?? docs/agent/OPENCLAW_UI_SKILL_QUICK_REFERENCE.md\n?? docs/governance/OPENCLAW_MODEL_ROUTING_POLICY.md\n?? docs/governance/openclaw/OPENCLAW_SKILLS_ENABLEMENT_PLAN.md\n?? isa_cost_optimizer/\n?? isa_router/\n?? scripts/gates/openclaw-model-routing-policy.sh\n?? scripts/openclaw-enable-core-skills.sh\n?? scripts/openclaw-model-route.sh\n?? scripts/openclaw-skill-route.sh\n?? scripts/openclaw-skill-stack-validate.sh\n?? skills-lock.json\n?? skills/\n"
+    },
+    "openclaw_hooks_list_vm": {
+      "command": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/scripts/vm/isa_vm_ssh.sh exec --quiet --command <redacted-command>",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "Hooks (4/4 ready)\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Status   \u2502 Hook                 \u2502 Description                                                       \u2502 Source        \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 \u2713 ready  \u2502 \ud83d\ude80 boot-md            \u2502 Run BOOT.md on gateway startup                                    \u2502 openclaw-     \u2502\n\u2502          \u2502                      \u2502                                                                   \u2502 bundled       \u2502\n\u2502 \u2713 ready  \u2502 \ud83d\udcce bootstrap-extra-   \u2502 Inject additional workspace bootstrap files via glob/path         \u2502 openclaw-     \u2502\n\u2502          \u2502 files                \u2502 patterns                                                          \u2502 bundled       \u2502\n\u2502 \u2713 ready  \u2502 \ud83d\udcdd command-logger     \u2502 Log all command events to a centralized audit file                \u2502 openclaw-     \u2502\n\u2502          \u2502                      \u2502                                                                   \u2502 bundled       \u2502\n\u2502 \u2713 ready  \u2502 \ud83d\udcbe session-memory     \u2502 Save session context to memory when /new or /reset command is     \u2502 openclaw-     \u2502\n\u2502          \u2502                      \u2502 issued                                                            \u2502 bundled       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+    },
+    "openclaw_models_status_vm": {
+      "command": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/scripts/vm/isa_vm_ssh.sh exec --quiet --command <redacted-command>",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "Config        : ~/.openclaw/openclaw.json\nAgent dir     : ~/.openclaw/agents/main/agent\nDefault       : openrouter/moonshotai/kimi-k2.5\nFallbacks (0) : -\nImage model   : -\nImage fallbacks (0): -\nAliases (7)   : ISA Premium Coding (Claude Sonnet 4) -> openrouter/anthropic/claude-sonnet-4, ISA Dev Balanced (DeepSeek V3.2) -> openrouter/deepseek/deepseek-v3.2, ISA Long Context Quality (Gemini 2.5 Flash) -> openrouter/google/gemini-2.5-flash, ISA Fast 1M (Gemini 2.5 Flash Lite) -> openrouter/google/gemini-2.5-flash-lite, ISA Controlled Tool Budget (MiniMax M2.5) -> openrouter/minimax/minimax-m2.5, ISA Fixed Default (Kimi K2.5) -> openrouter/moonshotai/kimi-k2.5, ISA Tool Fast 2M (Grok 4.1 Fast) -> openrouter/x-ai/grok-4.1-fast\nConfigured models (7): openrouter/anthropic/claude-sonnet-4, openrouter/deepseek/deepseek-v3.2, openrouter/google/gemini-2.5-flash, openrouter/google/gemini-2.5-flash-lite, openrouter/minimax/minimax-m2.5, openrouter/moonshotai/kimi-k2.5, openrouter/x-ai/grok-4.1-fast\n\nAuth overview\nAuth store    : ~/.openclaw/agents/main/agent/auth-profiles.json\nShell env     : on\nProviders w/ OAuth/tokens (0): -\n- github-copilot effective=env:github_p...P0y3z9AN | env=github_p...P0y3z9AN | source=env: GITHUB_TOKEN\n- openrouter effective=env:sk-or-v1...baeedd0c | env=sk-or-v1...baeedd0c | source=env: OPENROUTER_API_KEY\n\nOAuth/token status\n- none\n"
+    },
+    "openclaw_plugins_list_vm": {
+      "command": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/scripts/vm/isa_vm_ssh.sh exec --quiet --command <redacted-command>",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "Plugins (4/37 loaded)\nSource roots:\n  stock: /usr/lib/node_modules/openclaw/extensions\n\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Name         \u2502 ID       \u2502 Status   \u2502 Source                                                             \u2502 Version   \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 ACPX Runtime \u2502 acpx     \u2502 disabled \u2502 stock:acpx/index.ts                                                \u2502 2026.2.26 \u2502\n\u2502              \u2502          \u2502          \u2502 ACP runtime backend powered by a pinned plugin-local acpx CLI.     \u2502           \u2502\n\u2502 @openclaw/   \u2502 bluebubb \u2502 disabled \u2502 stock:bluebubbles/index.ts                                         \u2502 2026.2.26 \u2502\n\u2502 bluebubbles  \u2502 les      \u2502          \u2502 OpenClaw BlueBubbles channel plugin                                \u2502           \u2502\n\u2502 @openclaw/   \u2502 copilot- \u2502 disabled \u2502 stock:copilot-proxy/index.ts                                       \u2502 2026.2.26 \u2502\n\u2502 copilot-     \u2502 proxy    \u2502          \u2502 OpenClaw Copilot Proxy provider plugin                             \u2502           \u2502\n\u2502 proxy        \u2502          \u2502          \u2502                                                                    \u2502           \u2502\n\u2502 Device       \u2502 device-  \u2502 loaded   \u2502 stock:device-pair/index.ts                                         \u2502           \u2502\n\u2502 Pairing      \u2502 pair     \u2502          \u2502 Generate setup codes and approve device pairing requests.          \u2502           \u2502\n\u2502 @openclaw/   \u2502 diagnost \u2502 disabled \u2502 stock:diagnostics-otel/index.ts                                    \u2502 2026.2.26 \u2502\n\u2502 diagnostics- \u2502 ics-otel \u2502          \u2502 OpenClaw diagnostics OpenTelemetry exporter                        \u2502           \u2502\n\u2502 otel         \u2502          \u2502          \u2502                                                                    \u2502           \u2502\n\u2502 @openclaw/   \u2502 discord  \u2502 disabled \u2502 stock:discord/index.ts                                             \u2502 2026.2.26 \u2502\n\u2502 discord      \u2502          \u2502          \u2502 OpenClaw Discord channel plugin                                    \u2502           \u2502\n\u2502 @openclaw/   \u2502 feishu   \u2502 disabled \u2502 stock:feishu/index.ts                                              \u2502 2026.2.26 \u2502\n\u2502 feishu       \u2502          \u2502          \u2502 OpenClaw Feishu/Lark channel plugin (community maintained by       \u2502           \u2502\n\u2502              \u2502          \u2502          \u2502 @m1heng)                                                           \u2502           \u2502\n\u2502 @openclaw/   \u2502 google-  \u2502 disabled \u2502 stock:google-gemini-cli-auth/index.ts                              \u2502 2026.2.26 \u2502\n\u2502 google-      \u2502 gemini-  \u2502          \u2502 OpenClaw Gemini CLI OAuth provider plugin                          \u2502           \u2502\n\u2502 gemini-cli-  \u2502 cli-auth \u2502          \u2502                                                                    \u2502           \u2502\n\u2502 auth         \u2502          \u2502          \u2502                                                                    \u2502           \u2502\n\u2502 @openclaw/   \u2502 googlech \u2502 disabled \u2502 stock:googlechat/index.ts                                          \u2502 2026.2.26 \u2502\n\u2502 googlechat   \u2502 at       \u2502          \u2502 OpenClaw Google Chat channel plugin                                \u2502           \u2502\n\u2502 @openclaw/   \u2502 imessage \u2502 disabled \u2502 stock:imessage/index.ts                                            \u2502 2026.2.26 \u2502\n\u2502 imessage     \u2502          \u2502          \u2502 OpenClaw iMessage channel plugin                                   \u2502           \u2502\n\u2502 @openclaw/   \u2502 irc      \u2502 disabled \u2502 stock:irc/index.ts                                                 \u2502 2026.2.26 \u2502\n\u2502 irc          \u2502          \u2502          \u2502 OpenClaw IRC channel plugin                                        \u2502           \u2502\n\u2502 @openclaw/   \u2502 line     \u2502 disabled \u2502 stock:line/index.ts                                                \u2502 2026.2.26 \u2502\n\u2502 line         \u2502          \u2502          \u2502 OpenClaw LINE channel plugin                                       \u2502           \u2502\n\u2502 LLM Task     \u2502 llm-task \u2502 disabled \u2502 stock:llm-task/index.ts                                            \u2502 2026.2.26 \u2502\n\u2502              \u2502          \u2502          \u2502 Generic JSON-only LLM tool for structured tasks callable from      \u2502           \u2502\n\u2502              \u2502          \u2502          \u2502 workflows.                                                         \u2502           \u2502\n\u2502 Lobster      \u2502 lobster  \u2502 disabled \u2502 stock:lobster/index.ts                                             \u2502 2026.2.26 \u2502\n\u2502              \u2502          \u2502          \u2502 Typed workflow tool with resumable approvals.                      \u2502           \u2502\n\u2502 @openclaw/   \u2502 matrix   \u2502 disabled \u2502 stock:matrix/index.ts                                              \u2502 2026.2.26 \u2502\n\u2502 matrix       \u2502          \u2502          \u2502 OpenClaw Matrix channel plugin                                     \u2502           \u2502\n\u2502 @openclaw/   \u2502 mattermo \u2502 disabled \u2502 stock:mattermost/index.ts                                          \u2502 2026.2.26 \u2502\n\u2502 mattermost   \u2502 st       \u2502          \u2502 OpenClaw Mattermost channel plugin                                 \u2502           \u2502\n\u2502 Memory       \u2502 memory-  \u2502 loaded   \u2502 stock:memory-core/index.ts                                         \u2502 2026.2.26 \u2502\n\u2502 (Core)       \u2502 core     \u2502          \u2502 File-backed memory search tools and CLI                            \u2502           \u2502\n\u2502 @openclaw/   \u2502 memory-  \u2502 disabled \u2502 stock:memory-lancedb/index.ts                                      \u2502 2026.2.26 \u2502\n\u2502 memory-      \u2502 lancedb  \u2502          \u2502 OpenClaw LanceDB-backed long-term memory plugin with auto-recall/  \u2502           \u2502\n\u2502 lancedb      \u2502          \u2502          \u2502 capture                                                            \u2502           \u2502\n\u2502 @openclaw/   \u2502 minimax- \u2502 disabled \u2502 stock:minimax-portal-auth/index.ts                                 \u2502 2026.2.26 \u2502\n\u2502 minimax-     \u2502 portal-  \u2502          \u2502 OpenClaw MiniMax Portal OAuth provider plugin                      \u2502           \u2502\n\u2502 portal-auth  \u2502 auth     \u2502          \u2502                                                                    \u2502           \u2502\n\u2502 @openclaw/   \u2502 msteams  \u2502 disabled \u2502 stock:msteams/index.ts                                             \u2502 2026.2.26 \u2502\n\u2502 msteams      \u2502          \u2502          \u2502 OpenClaw Microsoft Teams channel plugin                            \u2502           \u2502\n\u2502 @openclaw/   \u2502 nextclou \u2502 disabled \u2502 stock:nextcloud-talk/index.ts                                      \u2502 2026.2.26 \u2502\n\u2502 nextcloud-   \u2502 d-talk   \u2502          \u2502 OpenClaw Nextcloud Talk channel plugin                             \u2502           \u2502\n\u2502 talk         \u2502          \u2502          \u2502                                                                    \u2502           \u2502\n\u2502 @openclaw/   \u2502 nostr    \u2502 disabled \u2502 stock:nostr/index.ts                                               \u2502 2026.2.26 \u2502\n\u2502 nostr        \u2502          \u2502          \u2502 OpenClaw Nostr channel plugin for NIP-04 encrypted DMs             \u2502           \u2502\n\u2502 OpenProse    \u2502 open-    \u2502 disabled \u2502 stock:open-prose/index.ts                                          \u2502 2026.2.26 \u2502\n\u2502              \u2502 prose    \u2502          \u2502 OpenProse VM skill pack with a /prose slash command.               \u2502           \u2502\n\u2502 Phone        \u2502 phone-   \u2502 loaded   \u2502 stock:phone-control/index.ts                                       \u2502           \u2502\n\u2502 Control      \u2502 control  \u2502          \u2502 Arm/disarm high-risk phone node commands (camera/screen/writes)    \u2502           \u2502\n\u2502              \u2502          \u2502          \u2502 with an optional auto-expiry.                                      \u2502           \u2502\n\u2502 qwen-portal- \u2502          \u2502 disabled \u2502 stock:qwen-portal-auth/index.ts                                    \u2502           \u2502\n\u2502 auth         \u2502          \u2502          \u2502                                                                    \u2502           \u2502\n\u2502 @openclaw/   \u2502 signal   \u2502 disabled \u2502 stock:signal/index.ts                                              \u2502 2026.2.26 \u2502\n\u2502 signal       \u2502          \u2502          \u2502 OpenClaw Signal channel plugin                                     \u2502           \u2502\n\u2502 @openclaw/   \u2502 slack    \u2502 disabled \u2502 stock:slack/index.ts                                               \u2502 2026.2.26 \u2502\n\u2502 slack        \u2502          \u2502          \u2502 OpenClaw Slack channel plugin                                      \u2502           \u2502\n\u2502 @openclaw/   \u2502 synology \u2502 disabled \u2502 stock:synology-chat/index.ts                                       \u2502 2026.2.26 \u2502\n\u2502 synology-    \u2502 -chat    \u2502          \u2502 Synology Chat channel plugin for OpenClaw                          \u2502           \u2502\n\u2502 chat         \u2502          \u2502          \u2502                                                                    \u2502           \u2502\n\u2502 Talk Voice   \u2502 talk-    \u2502 loaded   \u2502 stock:talk-voice/index.ts                                          \u2502           \u2502\n\u2502              \u2502 voice    \u2502          \u2502 Manage Talk voice selection (list/set).                            \u2502           \u2502\n\u2502 @openclaw/   \u2502 telegram \u2502 disabled \u2502 stock:telegram/index.ts                                            \u2502 2026.2.26 \u2502\n\u2502 telegram     \u2502          \u2502          \u2502 OpenClaw Telegram channel plugin                                   \u2502           \u2502\n\u2502 Thread       \u2502 thread-  \u2502 disabled \u2502 stock:thread-ownership/index.ts                                    \u2502           \u2502\n\u2502 Ownership    \u2502 ownershi \u2502          \u2502 Prevents multiple agents from responding in the same Slack thread. \u2502           \u2502\n\u2502              \u2502 p        \u2502          \u2502  Uses HTTP calls to the slack-forwarder ownership API.             \u2502           \u2502\n\u2502 @openclaw/   \u2502 tlon     \u2502 disabled \u2502 stock:tlon/index.ts                                                \u2502 2026.2.26 \u2502\n\u2502 tlon         \u2502          \u2502          \u2502 OpenClaw Tlon/Urbit channel plugin                                 \u2502           \u2502\n\u2502 @openclaw/   \u2502 twitch   \u2502 disabled \u2502 stock:twitch/index.ts                                              \u2502 2026.2.26 \u2502\n\u2502 twitch       \u2502          \u2502          \u2502 OpenClaw Twitch channel plugin                                     \u2502           \u2502\n\u2502 @openclaw/   \u2502 voice-   \u2502 disabled \u2502 stock:voice-call/index.ts                                          \u2502 2026.2.26 \u2502\n\u2502 voice-call   \u2502 call     \u2502          \u2502 OpenClaw voice-call plugin                                         \u2502           \u2502\n\u2502 @openclaw/   \u2502 whatsapp \u2502 disabled \u2502 stock:whatsapp/index.ts                                            \u2502 2026.2.26 \u2502\n\u2502 whatsapp     \u2502          \u2502          \u2502 OpenClaw WhatsApp channel plugin                                   \u2502           \u2502\n\u2502 @openclaw/   \u2502 zalo     \u2502 disabled \u2502 stock:zalo/index.ts                                                \u2502 2026.2.26 \u2502\n\u2502 zalo         \u2502          \u2502          \u2502 OpenClaw Zalo channel plugin                                       \u2502           \u2502\n\u2502 @openclaw/   \u2502 zalouser \u2502 disabled \u2502 stock:zalouser/index.ts                                            \u2502 2026.2.26 \u2502\n\u2502 zalouser     \u2502          \u2502          \u2502 OpenClaw Zalo Personal Account plugin via zca-cli                  \u2502           \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+    },
+    "openclaw_skills_list_vm": {
+      "command": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/scripts/vm/isa_vm_ssh.sh exec --quiet --command <redacted-command>",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "Skills (10/51 ready)\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Status    \u2502 Skill            \u2502 Description                                                       \u2502 Source           \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 \u2717 missing \u2502 \ud83d\udd10 1password      \u2502 Set up and use 1Password CLI (op). Use when installing the CLI,   \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 enabling desktop app integration, signing in (single or multi-    \u2502                  \u2502\n\u2502           \u2502                  \u2502 account), or reading/injecting/running secrets via op.            \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udcdd apple-notes    \u2502 Manage Apple Notes via the `memo` CLI on macOS (create, view,     \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 edit, delete, search, move, and export notes). Use when a user    \u2502                  \u2502\n\u2502           \u2502                  \u2502 asks OpenClaw to add a note, list notes, search notes, or manage  \u2502                  \u2502\n\u2502           \u2502                  \u2502 note folders.                                                     \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \u23f0 apple-         \u2502 Manage Apple Reminders via remindctl CLI (list, add, edit,        \u2502 openclaw-bundled \u2502\n\u2502           \u2502 reminders        \u2502 complete, delete). Supports lists, date filters, and JSON/plain   \u2502                  \u2502\n\u2502           \u2502                  \u2502 output.                                                           \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udc3b bear-notes     \u2502 Create, search, and manage Bear notes via grizzly CLI.            \u2502 openclaw-bundled \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udcf0 blogwatcher    \u2502 Monitor blogs and RSS/Atom feeds for updates using the            \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 blogwatcher CLI.                                                  \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83e\uded0 blucli         \u2502 BluOS CLI (blu) for discovery, playback, grouping, and volume.    \u2502 openclaw-bundled \u2502\n\u2502 \u2717 missing \u2502 \ud83e\udee7 bluebubbles    \u2502 Use when you need to send or manage iMessages via BlueBubbles     \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 (recommended iMessage integration). Calls go through the generic  \u2502                  \u2502\n\u2502           \u2502                  \u2502 message tool with channel=\"bluebubbles\".                          \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udcf8 camsnap        \u2502 Capture frames or clips from RTSP/ONVIF cameras.                  \u2502 openclaw-bundled \u2502\n\u2502 \u2713 ready   \u2502 \ud83d\udce6 clawhub        \u2502 Use the ClawHub CLI to search, install, update, and publish       \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 agent skills from clawhub.com. Use when you need to fetch new     \u2502                  \u2502\n\u2502           \u2502                  \u2502 skills on the fly, sync installed skills to latest or a specific  \u2502                  \u2502\n\u2502           \u2502                  \u2502 version, or publish new/updated skill folders with the npm-       \u2502                  \u2502\n\u2502           \u2502                  \u2502 installed clawhub CLI.                                            \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83e\udde9 coding-agent   \u2502 Delegate coding tasks to Codex, Claude Code, or Pi agents via     \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 background process. Use when: (1) building/creating new features  \u2502                  \u2502\n\u2502           \u2502                  \u2502 or apps, (2) reviewing PRs (spawn in temp dir), (3) refactoring   \u2502                  \u2502\n\u2502           \u2502                  \u2502 large codebases, (4) iterative coding that needs file             \u2502                  \u2502\n\u2502           \u2502                  \u2502 exploration. NOT for: simple one-liner fixes (just edit),         \u2502                  \u2502\n\u2502           \u2502                  \u2502 reading code (use read tool), thread-bound ACP harness requests   \u2502                  \u2502\n\u2502           \u2502                  \u2502 in chat (for example spawn/run Codex or Claude Code in a Discord  \u2502                  \u2502\n\u2502           \u2502                  \u2502 thread; use sessions_spawn with runtime:\"acp\"), or any work in ~/ \u2502                  \u2502\n\u2502           \u2502                  \u2502 clawd workspace (never spawn agents here). Requires a bash tool   \u2502                  \u2502\n\u2502           \u2502                  \u2502 that supports pty:true.                                           \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83c\udfae discord        \u2502 Discord ops via the message tool (channel=discord).               \u2502 openclaw-bundled \u2502\n\u2502 \u2717 missing \u2502 \ud83c\udf9b\ufe0f eightctl      \u2502 Control Eight Sleep pods (status, temperature, alarms,            \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 schedules).                                                       \u2502                  \u2502\n\u2502 \u2713 ready   \u2502 \u264a\ufe0f gemini        \u2502 Gemini CLI for one-shot Q&A, summaries, and generation.           \u2502 openclaw-bundled \u2502\n\u2502 \u2713 ready   \u2502 \ud83d\udce6 gh-issues      \u2502 Fetch GitHub issues, spawn sub-agents to implement fixes and      \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 open PRs, then monitor and address PR review comments. Usage: /   \u2502                  \u2502\n\u2502           \u2502                  \u2502 gh-issues [owner/repo] [--label bug] [--limit 5] [--milestone v1. \u2502                  \u2502\n\u2502           \u2502                  \u2502 0] [--assignee @me] [--fork user/repo] [--watch] [--interval 5]   \u2502                  \u2502\n\u2502           \u2502                  \u2502 [--reviews-only] [--cron] [--dry-run] [--model glm-5] [--notify-  \u2502                  \u2502\n\u2502           \u2502                  \u2502 channel -1002381931352]                                           \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83e\uddf2 gifgrep        \u2502 Search GIF providers with CLI/TUI, download results, and extract  \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 stills/sheets.                                                    \u2502                  \u2502\n\u2502 \u2713 ready   \u2502 \ud83d\udc19 github         \u2502 GitHub operations via `gh` CLI: issues, PRs, CI runs, code        \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 review, API queries. Use when: (1) checking PR status or CI, (2)  \u2502                  \u2502\n\u2502           \u2502                  \u2502 creating/commenting on issues, (3) listing/filtering PRs or       \u2502                  \u2502\n\u2502           \u2502                  \u2502 issues, (4) viewing run logs. NOT for: complex web UI             \u2502                  \u2502\n\u2502           \u2502                  \u2502 interactions requiring manual browser flows (use browser tooling  \u2502                  \u2502\n\u2502           \u2502                  \u2502 when available), bulk operations across many repos (script with   \u2502                  \u2502\n\u2502           \u2502                  \u2502 gh api), or when gh auth is not configured.                       \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83c\udfae gog            \u2502 Google Workspace CLI for Gmail, Calendar, Drive, Contacts,        \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 Sheets, and Docs.                                                 \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udccd goplaces       \u2502 Query Google Places API (New) via the goplaces CLI for text       \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 search, place details, resolve, and reviews. Use for human-       \u2502                  \u2502\n\u2502           \u2502                  \u2502 friendly place lookup or JSON output for scripts.                 \u2502                  \u2502\n\u2502 \u2713 ready   \u2502 \ud83d\udce6 healthcheck    \u2502 Host security hardening and risk-tolerance configuration for      \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 OpenClaw deployments. Use when a user asks for security audits,   \u2502                  \u2502\n\u2502           \u2502                  \u2502 firewall/SSH/update hardening, risk posture, exposure review,     \u2502                  \u2502\n\u2502           \u2502                  \u2502 OpenClaw cron scheduling for periodic checks, or version status   \u2502                  \u2502\n\u2502           \u2502                  \u2502 checks on a machine running OpenClaw (laptop, workstation, Pi,    \u2502                  \u2502\n\u2502           \u2502                  \u2502 VPS).                                                             \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udce7 himalaya       \u2502 CLI to manage emails via IMAP/SMTP. Use `himalaya` to list,       \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 read, write, reply, forward, search, and organize emails from     \u2502                  \u2502\n\u2502           \u2502                  \u2502 the terminal. Supports multiple accounts and message composition  \u2502                  \u2502\n\u2502           \u2502                  \u2502 with MML (MIME Meta Language).                                    \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udce8 imsg           \u2502 iMessage/SMS CLI for listing chats, history, and sending          \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 messages via Messages.app.                                        \u2502                  \u2502\n\u2502 \u2713 ready   \u2502 \ud83d\udce6 mcporter       \u2502 Use the mcporter CLI to list, configure, auth, and call MCP       \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 servers/tools directly (HTTP or stdio), including ad-hoc          \u2502                  \u2502\n\u2502           \u2502                  \u2502 servers, config edits, and CLI/type generation.                   \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udcca model-usage    \u2502 Use CodexBar CLI local cost usage to summarize per-model usage    \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 for Codex or Claude, including the current (most recent) model    \u2502                  \u2502\n\u2502           \u2502                  \u2502 or a full model breakdown. Trigger when asked for model-level     \u2502                  \u2502\n\u2502           \u2502                  \u2502 usage/cost data from codexbar, or when you need a scriptable per- \u2502                  \u2502\n\u2502           \u2502                  \u2502 model summary from codexbar cost JSON.                            \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83c\udf4c nano-banana-   \u2502 Generate or edit images via Gemini 3 Pro Image (Nano Banana Pro). \u2502 openclaw-bundled \u2502\n\u2502           \u2502 pro              \u2502                                                                   \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udcc4 nano-pdf       \u2502 Edit PDFs with natural-language instructions using the nano-pdf   \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 CLI.                                                              \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udcdd notion         \u2502 Notion API for creating and managing pages, databases, and        \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 blocks.                                                           \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udc8e obsidian       \u2502 Work with Obsidian vaults (plain Markdown notes) and automate     \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 via obsidian-cli.                                                 \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\uddbc\ufe0f openai-image- \u2502 Batch-generate images via OpenAI Images API. Random prompt        \u2502 openclaw-bundled \u2502\n\u2502           \u2502 gen              \u2502 sampler + `index.html` gallery.                                   \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83c\udf99\ufe0f openai-       \u2502 Local speech-to-text with the Whisper CLI (no API key).           \u2502 openclaw-bundled \u2502\n\u2502           \u2502 whisper          \u2502                                                                   \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \u2601\ufe0f openai-       \u2502 Transcribe audio via OpenAI Audio Transcriptions API (Whisper).   \u2502 openclaw-bundled \u2502\n\u2502           \u2502 whisper-api      \u2502                                                                   \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udca1 openhue        \u2502 Control Philips Hue lights and scenes via the OpenHue CLI.        \u2502 openclaw-bundled \u2502\n\u2502 \u2717 missing \u2502 \ud83e\uddff oracle         \u2502 Best practices for using the oracle CLI (prompt + file bundling,  \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 engines, sessions, and file attachment patterns).                 \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udef5 ordercli       \u2502 Foodora-only CLI for checking past orders and active order        \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 status (Deliveroo WIP).                                           \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udc40 peekaboo       \u2502 Capture and automate macOS UI with the Peekaboo CLI.              \u2502 openclaw-bundled \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udde3\ufe0f sag           \u2502 ElevenLabs text-to-speech with mac-style say UX.                  \u2502 openclaw-bundled \u2502\n\u2502 \u2713 ready   \u2502 \ud83d\udcdc session-logs   \u2502 Search and analyze your own session logs (older/parent            \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 conversations) using jq.                                          \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udde3\ufe0f sherpa-onnx-  \u2502 Local text-to-speech via sherpa-onnx (offline, no cloud)          \u2502 openclaw-bundled \u2502\n\u2502           \u2502 tts              \u2502                                                                   \u2502                  \u2502\n\u2502 \u2713 ready   \u2502 \ud83d\udce6 skill-creator  \u2502 Create or update AgentSkills. Use when designing, structuring,    \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 or packaging skills with scripts, references, and assets.         \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udcac slack          \u2502 Use when you need to control Slack from OpenClaw via the slack    \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 tool, including reacting to messages or pinning/unpinning items   \u2502                  \u2502\n\u2502           \u2502                  \u2502 in Slack channels or DMs.                                         \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83c\udf0a songsee        \u2502 Generate spectrograms and feature-panel visualizations from       \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 audio with the songsee CLI.                                       \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udd0a sonoscli       \u2502 Control Sonos speakers (discover/status/play/volume/group).       \u2502 openclaw-bundled \u2502\n\u2502 \u2717 missing \u2502 \ud83c\udfb5 spotify-player \u2502 Terminal Spotify playback/search via spogo (preferred) or         \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 spotify_player.                                                   \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83e\uddfe summarize      \u2502 Summarize or extract text/transcripts from URLs, podcasts, and    \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 local files (great fallback for \u201ctranscribe this YouTube/video\u201d). \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \u2705 things-mac     \u2502 Manage Things 3 via the `things` CLI on macOS (add/update         \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 projects+todos via URL scheme; read/search/list from the local    \u2502                  \u2502\n\u2502           \u2502                  \u2502 Things database). Use when a user asks OpenClaw to add a task to  \u2502                  \u2502\n\u2502           \u2502                  \u2502 Things, list inbox/today/upcoming, search tasks, or inspect       \u2502                  \u2502\n\u2502           \u2502                  \u2502 projects/areas/tags.                                              \u2502                  \u2502\n\u2502 \u2713 ready   \u2502 \ud83e\uddf5 tmux           \u2502 Remote-control tmux sessions for interactive CLIs by sending      \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 keystrokes and scraping pane output.                              \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udccb trello         \u2502 Manage Trello boards, lists, and cards via the Trello REST API.   \u2502 openclaw-bundled \u2502\n\u2502 \u2717 missing \u2502 \ud83c\udf9e\ufe0f video-frames  \u2502 Extract frames or short clips from videos using ffmpeg.           \u2502 openclaw-bundled \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udcde voice-call     \u2502 Start voice calls via the OpenClaw voice-call plugin.             \u2502 openclaw-bundled \u2502\n\u2502 \u2717 missing \u2502 \ud83d\udcf1 wacli          \u2502 Send WhatsApp messages to other people or search/sync WhatsApp    \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 history via the wacli CLI (not for normal user chats).            \u2502                  \u2502\n\u2502 \u2713 ready   \u2502 \ud83c\udf24\ufe0f weather       \u2502 Get current weather and forecasts via wttr.in or Open-Meteo. Use  \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 when: user asks about weather, temperature, or forecasts for any  \u2502                  \u2502\n\u2502           \u2502                  \u2502 location. NOT for: historical weather data, severe weather        \u2502                  \u2502\n\u2502           \u2502                  \u2502 alerts, or detailed meteorological analysis. No API key needed.   \u2502                  \u2502\n\u2502 \u2717 missing \u2502 \ud835\udd4f xurl           \u2502 A CLI tool for making authenticated requests to the X (Twitter)   \u2502 openclaw-bundled \u2502\n\u2502           \u2502                  \u2502 API. Use this skill when you need to post tweets, reply, quote,   \u2502                  \u2502\n\u2502           \u2502                  \u2502 search, read posts, manage followers, send DMs, upload media, or  \u2502                  \u2502\n\u2502           \u2502                  \u2502 interact with any X API v2 endpoint.                              \u2502                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\nTip: use `npx clawhub` to search, install, and sync skills.\n"
+    },
+    "openclaw_status_deep_vm": {
+      "command": "bash scripts/openclaw-status.sh --deep --target vm",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "PREFLIGHT=openclaw_status\nREADY=openclaw_status_delegate_vm host=isa-openclaw-vm\nPREFLIGHT=vm_run\nREADY=vm_run host=isa-openclaw-vm script=openclaw-status.sh\nREADY=vm_run_stream_local_script script=openclaw-status.sh\nREADY=isa_vm_ssh_exec host=isa-openclaw-vm\nDONE=isa_vm_ssh_exec_complete\nREADY=isa_vm_ssh_exec host=isa-openclaw-vm\nPREFLIGHT=openclaw_status\nService: systemd (enabled)\nFile logs: /tmp/openclaw/openclaw-2026-03-02.log\nCommand: /usr/bin/node /usr/lib/node_modules/openclaw/dist/index.js gateway --port 18789\nService file: ~/.config/systemd/user/openclaw-gateway.service\nService env: OPENCLAW_STATE_DIR=/root/.openclaw OPENCLAW_CONFIG_PATH=/root/.openclaw/openclaw.json OPENCLAW_GATEWAY_PORT=18789\n\nConfig (cli): ~/.openclaw/openclaw.json\nConfig (service): ~/.openclaw/openclaw.json\n\nGateway: bind=loopback (127.0.0.1), port=18789 (service args)\nProbe target: ws://127.0.0.1:18789\nDashboard: http://127.0.0.1:18789/\nProbe note: Loopback-only gateway; only local clients can connect.\n\nRuntime: running (pid 307971, state active, sub running, last exit 0, reason 0)\nRPC probe: ok\n\nListening: 127.0.0.1:18789\nTroubles: run openclaw status\nTroubleshooting: https://docs.openclaw.ai/troubleshooting\nOpenClaw status\n\nOverview\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Item            \u2502 Value                                                                                             \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 Dashboard       \u2502 http://127.0.0.1:18789/                                                                           \u2502\n\u2502 OS              \u2502 linux 6.8.0-90-generic (x64) \u00b7 node 22.22.0                                                       \u2502\n\u2502 Tailscale       \u2502 off                                                                                               \u2502\n\u2502 Channel         \u2502 stable (default)                                                                                  \u2502\n\u2502 Update          \u2502 available \u00b7 pnpm \u00b7 npm update 2026.3.1                                                            \u2502\n\u2502 Gateway         \u2502 local \u00b7 ws://127.0.0.1:18789 (local loopback) \u00b7 reachable 20ms \u00b7 auth token \u00b7 isa-openclaw-vm     \u2502\n\u2502                 \u2502 (89.167.104.170) app 2026.2.25 linux 6.8.0-90-generic                                             \u2502\n\u2502 Gateway service \u2502 systemd installed \u00b7 enabled \u00b7 running (pid 307971, state active)                                  \u2502\n\u2502 Node service    \u2502 systemd not installed                                                                             \u2502\n\u2502 Agents          \u2502 1 \u00b7 1 bootstrap file present \u00b7 sessions 1 \u00b7 default main active 6m ago                            \u2502\n\u2502 Memory          \u2502 0 files \u00b7 0 chunks \u00b7 sources memory \u00b7 plugin memory-core \u00b7 vector unknown \u00b7 fts ready \u00b7 cache on  \u2502\n\u2502                 \u2502 (0)                                                                                               \u2502\n\u2502 Probes          \u2502 enabled                                                                                           \u2502\n\u2502 Events          \u2502 none                                                                                              \u2502\n\u2502 Heartbeat       \u2502 30m (main)                                                                                        \u2502\n\u2502 Last heartbeat  \u2502 none                                                                                              \u2502\n\u2502 Sessions        \u2502 1 active \u00b7 default moonshotai/kimi-k2.5 (200k ctx) \u00b7 ~/.openclaw/agents/main/sessions/sessions.   \u2502\n\u2502                 \u2502 json                                                                                              \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\nSecurity audit\nSummary: 0 critical \u00b7 1 warn \u00b7 1 info\n  WARN Reverse proxy headers are not trusted\n    gateway.bind is loopback and gateway.trustedProxies is empty. If you expose the Control UI through a reverse proxy, configure trusted proxies so local-client c\u2026\n    Fix: Set gateway.trustedProxies to your proxy IPs or keep the Control UI local-only.\nFull report: openclaw security audit\nDeep probe: openclaw security audit --deep\n\nChannels\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Channel  \u2502 Enabled \u2502 State  \u2502 Detail                                                                                \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\nSessions\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Key                                       \u2502 Kind   \u2502 Age     \u2502 Model                \u2502 Tokens                        \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 agent:main:main                           \u2502 direct \u2502 6m ago  \u2502 moonshotai/kimi-k2.5 \u2502 9.8k/262k (4%) \u00b7 \ud83d\uddc4\ufe0f 9% cached \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\nHealth\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Item     \u2502 Status    \u2502 Detail                                                                                       \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 Gateway  \u2502 reachable \u2502 0ms                                                                                          \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\nFAQ: https://docs.openclaw.ai/faq\nTroubleshooting: https://docs.openclaw.ai/troubleshooting\n\nUpdate available (npm 2026.3.1). Run: openclaw update\n\nNext steps:\n  Need to share?      openclaw status --all\n  Need to debug live? openclaw logs --follow\n  Need to test channels? openclaw status --deep\nDONE=openclaw_status_complete\nDONE=isa_vm_ssh_exec_complete\nDONE=vm_run_complete\nDONE=openclaw_status_complete\n"
+    }
+  },
+  "skills": {
+    "agents_md_declared_skills": "# ISA \u2014 Agent Instructions (Canonical)\n\n<!-- EVIDENCE:requirement:docs/governance/_root/ISA_GOVERNANCE.md -->\n<!-- EVIDENCE:constraint:AGENTS.md -->\n## Non-negotiables (evidence-first)\n- Repo contents are the only source of truth. Documentation is a claim unless backed by code/config/tests.\n- Label outputs explicitly as: FACT / INTERPRETATION / RECOMMENDATION.\n- No secrets in code, logs, prompts, or commits.\n\n## Autonomy & safety\n<!-- EVIDENCE:constraint:scripts/refactor/validate_gates.sh -->\n<!-- EVIDENCE:decision:docs/governance/MANUAL_PREFLIGHT.md -->\n- Prefer deterministic, reproducible steps.\n- Never run destructive commands unless explicitly required; if required, print a safe alternative first.\n- Prefer CI-compatible solutions; avoid local-only assumptions.\n\n## Terminal execution (blind-paste safe)\n- When providing terminal actions: deliver exactly one pasteable block that writes a script to /tmp/*.sh and executes `bash /tmp/*.sh`.\n- Script must:\n  - `set -euo pipefail`\n  - include PREFLIGHT + ACTION in the same run\n  - emit one of: STOP=... / READY=... / DONE=...\n\n## Repo workflow\n<!-- EVIDENCE:requirement:.github/PULL_REQUEST_TEMPLATE.md -->\n<!-- EVIDENCE:constraint:docs/governance/PLANNING_POLICY.md -->\n- Do not commit to the default branch.\n- Make minimal, reviewable commits with governance-grade messages.\n- Prefer small diffs; avoid refactors unless necessary for the task.\n\n## Workspace authority and synchronization (Host \u2194 VM \u2194 GitHub)\n- Canonical SSOT for repository history is the Git remote `origin` (GitHub).\n- Current workspace authority (effective 2026-02-25): host repo is the primary editing workspace. VM is the runtime/execution target for OpenClaw operations.\n- Default working mode:\n  - Edit on host.\n  - Run OpenClaw and VM-specific checks through repo scripts over SSH.\n  - Sync host \u2194 VM via Git only. Do not rsync/zip-copy working trees between environments.\n- Host guardrails:\n  - Host push remains disabled by default (mirror mode). Any exception must be explicit and temporary.\n  - Host pulls must be fast-forward only.\n- VM guardrails:\n  - VM is execution-first for OpenClaw and infrastructure checks.\n  - If editing on VM is explicitly required: run `git status` then `git pull --ff-only` before edits; keep commits small; push to `origin`; mirror on host via `git pull --ff-only`.\n- SSH access contract (for scripts and agents):\n  - SSH alias: `ISA_VM_HOST` (recommended `isa-openclaw-vm`)\n  - VM repo path: `VM_REPO_PATH`\n  - VM env path: `VM_ENV_PATH`\n  - Key path: `ISA_VM_SSH_KEY`\n  - Automation should use non-interactive host key behavior (`StrictHostKeyChecking=accept-new`).\n- Agent forwarding is preferred for VM Git operations to avoid copying private keys to the VM.\n- OpenClaw runtime contract:\n  - UI tunnel: `127.0.0.1:18789` (host) -> `127.0.0.1:18789` (VM).\n  - VM state/config location: `/root/.openclaw/*`.\n  - `OPENCLAW_GATEWAY_TOKEN` remains VM-only secret, authoritative in `/root/.openclaw/openclaw.json` (or VM env). Never store token values in repo docs.\n- Future VM-primary cutover prerequisites (not active yet):\n  - Branch protection and merge controls for `main` verified and documented.\n  - Host mirror guardrails automated (prevent local host commit/push except explicit temporary override).\n  - VM bootstrap + doctor path fully green via repo scripts.\n  - SSH known-host and agent-forwarding checks pass non-interactively in automation.\n  - Canonical docs/tasks/scripts updated with cutover date and rollback path.\n"
+  },
+  "vm_layer": {
+    "auth_profiles": {
+      "content": {
+        "lastGood": {},
+        "profiles": {},
+        "usageStats": {},
+        "version": 1
+      },
+      "exit_code": 0,
+      "format": "json",
+      "path": "/root/.openclaw/agents/main/agent/auth-profiles.json"
+    },
+    "cron_jobs": {
+      "content": {
+        "jobs": [],
+        "version": 1
+      },
+      "exit_code": 0,
+      "format": "json",
+      "path": "/root/.openclaw/cron/jobs.json"
+    },
+    "devices_paired": {
+      "content": {
+        "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a": {
+          "approvedAtMs": 1772100705901,
+          "approvedScopes": [
+            "operator.admin",
+            "operator.approvals",
+            "operator.pairing"
+          ],
+          "clientId": "openclaw-control-ui",
+          "clientMode": "webchat",
+          "createdAtMs": 1772100705901,
+          "deviceId": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a",
+          "platform": "MacIntel",
+          "publicKey": "b6R7gklMH0BOyLbfd29y0fGj7VDHrXoXUQy_Ivbt1js",
+          "role": "operator",
+          "roles": [
+            "operator"
+          ],
+          "scopes": [
+            "operator.admin",
+            "operator.approvals",
+            "operator.pairing"
+          ],
+          "tokens": {
+            "operator": {
+              "createdAtMs": 1772100705901,
+              "lastUsedAtMs": 1772295345550,
+              "role": "operator",
+              "scopes": [
+                "operator.admin",
+                "operator.approvals",
+                "operator.pairing"
+              ],
+              "token": "***REDACTED***"
+            }
+          }
+        },
+        "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3": {
+          "approvedAtMs": 1772101150616,
+          "approvedScopes": [
+            "operator.read",
+            "operator.admin",
+            "operator.write",
+            "operator.approvals",
+            "operator.pairing"
+          ],
+          "clientId": "gateway-client",
+          "clientMode": "backend",
+          "createdAtMs": 1772101146160,
+          "deviceId": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3",
+          "platform": "linux",
+          "publicKey": "-u53ahOiBT3FNqL_gc0064frlobP0Z3yX3j8coR-VkI",
+          "role": "operator",
+          "roles": [
+            "operator"
+          ],
+          "scopes": [
+            "operator.read",
+            "operator.admin",
+            "operator.write",
+            "operator.approvals",
+            "operator.pairing"
+          ],
+          "tokens": {
+            "operator": {
+              "createdAtMs": 1772101146160,
+              "role": "operator",
+              "rotatedAtMs": 1772101150616,
+              "scopes": [
+                "operator.admin",
+                "operator.approvals",
+                "operator.pairing",
+                "operator.read",
+                "operator.write"
+              ],
+              "token": "***REDACTED***"
+            }
+          }
+        },
+        "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6": {
+          "approvedAtMs": 1772058911617,
+          "approvedScopes": [
+            "operator.admin",
+            "operator.approvals",
+            "operator.pairing"
+          ],
+          "clientId": "openclaw-control-ui",
+          "clientMode": "webchat",
+          "createdAtMs": 1772058911617,
+          "deviceId": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6",
+          "platform": "MacIntel",
+          "publicKey": "aEpbUEdUhu8tZbDvgz9tffCUiLDa_MbUY8V142kyUUo",
+          "role": "operator",
+          "roles": [
+            "operator"
+          ],
+          "scopes": [
+            "operator.admin",
+            "operator.approvals",
+            "operator.pairing"
+          ],
+          "tokens": {
+            "operator": {
+              "createdAtMs": 1772058911617,
+              "lastUsedAtMs": 1772227054628,
+              "role": "operator",
+              "scopes": [
+                "operator.admin",
+                "operator.approvals",
+                "operator.pairing"
+              ],
+              "token": "***REDACTED***"
+            }
+          }
+        },
+        "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157": {
+          "approvedAtMs": 1772021298037,
+          "approvedScopes": [
+            "operator.admin",
+            "operator.approvals",
+            "operator.pairing"
+          ],
+          "clientId": "openclaw-control-ui",
+          "clientMode": "webchat",
+          "createdAtMs": 1772021298037,
+          "deviceId": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157",
+          "platform": "MacIntel",
+          "publicKey": "5hhnpqTssFdpJOhAwGfx5JTpLS19OURuRBp15E-_zsQ",
+          "role": "operator",
+          "roles": [
+            "operator"
+          ],
+          "scopes": [
+            "operator.admin",
+            "operator.approvals",
+            "operator.pairing"
+          ],
+          "tokens": {
+            "operator": {
+              "createdAtMs": 1772021298037,
+              "lastUsedAtMs": 1772439222132,
+              "role": "operator",
+              "scopes": [
+                "operator.admin",
+                "operator.approvals",
+                "operator.pairing"
+              ],
+              "token": "***REDACTED***"
+            }
+          }
+        },
+        "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927": {
+          "approvedAtMs": 1772069632315,
+          "approvedScopes": [
+            "operator.admin",
+            "operator.approvals",
+            "operator.pairing"
+          ],
+          "clientId": "openclaw-control-ui",
+          "clientMode": "webchat",
+          "createdAtMs": 1772069632315,
+          "deviceId": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927",
+          "platform": "MacIntel",
+          "publicKey": "Inyfega1upkjl0zdzowK7-cGCE8gjQTyPV-AQGR1gBo",
+          "role": "operator",
+          "roles": [
+            "operator"
+          ],
+          "scopes": [
+            "operator.admin",
+            "operator.approvals",
+            "operator.pairing"
+          ],
+          "tokens": {
+            "operator": {
+              "createdAtMs": 1772069632315,
+              "lastUsedAtMs": 1772126907277,
+              "role": "operator",
+              "scopes": [
+                "operator.admin",
+                "operator.approvals",
+                "operator.pairing"
+              ],
+              "token": "***REDACTED***"
+            }
+          }
+        }
+      },
+      "exit_code": 0,
+      "format": "json",
+      "path": "/root/.openclaw/devices/paired.json"
+    },
+    "exec_approvals": {
+      "content": {
+        "agents": {},
+        "defaults": {},
+        "socket": {
+          "path": "/root/.openclaw/exec-approvals.sock",
+          "token": "***REDACTED***"
+        },
+        "version": 1
+      },
+      "exit_code": 0,
+      "format": "json",
+      "path": "/root/.openclaw/exec-approvals.json"
+    },
+    "identity_device": {
+      "content": {
+        "createdAtMs": 1771965923269,
+        "deviceId": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3",
+        "privateKeyPem": "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIHN6Ja6+Ty4vXb8ibXdhl9gyTlddYBfX/e1sxhp2V9ld\n-----END PRIVATE KEY-----\n",
+        "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA+u53ahOiBT3FNqL/gc0064frlobP0Z3yX3j8coR+VkI=\n-----END PUBLIC KEY-----\n",
+        "version": 1
+      },
+      "exit_code": 0,
+      "format": "json",
+      "path": "/root/.openclaw/identity/device.json"
+    },
+    "openclaw_json": {
+      "content": {
+        "agents": {
+          "defaults": {
+            "model": {
+              "fallbacks": [],
+              "primary": "openrouter/moonshotai/kimi-k2.5"
+            },
+            "models": {
+              "openrouter/anthropic/claude-sonnet-4": {
+                "alias": "ISA Premium Coding (Claude Sonnet 4)"
+              },
+              "openrouter/deepseek/deepseek-v3.2": {
+                "alias": "ISA Dev Balanced (DeepSeek V3.2)"
+              },
+              "openrouter/google/gemini-2.5-flash": {
+                "alias": "ISA Long Context Quality (Gemini 2.5 Flash)"
+              },
+              "openrouter/google/gemini-2.5-flash-lite": {
+                "alias": "ISA Fast 1M (Gemini 2.5 Flash Lite)"
+              },
+              "openrouter/minimax/minimax-m2.5": {
+                "alias": "ISA Controlled Tool Budget (MiniMax M2.5)"
+              },
+              "openrouter/moonshotai/kimi-k2.5": {
+                "alias": "ISA Fixed Default (Kimi K2.5)"
+              },
+              "openrouter/x-ai/grok-4.1-fast": {
+                "alias": "ISA Tool Fast 2M (Grok 4.1 Fast)"
+              }
+            },
+            "sandbox": {
+              "mode": "off"
+            },
+            "workspace": "/root/.openclaw/workspace"
+          }
+        },
+        "approvals": {
+          "exec": {
+            "enabled": true
+          }
+        },
+        "auth": "***REDACTED***",
+        "commands": {
+          "native": "auto",
+          "nativeSkills": "auto",
+          "ownerDisplay": "raw",
+          "restart": true
+        },
+        "env": {
+          "shellEnv": {
+            "enabled": true
+          },
+          "vars": {
+            "OPENROUTER_API_KEY": "***REDACTED***"
+          }
+        },
+        "gateway": {
+          "auth": "***REDACTED***",
+          "bind": "loopback",
+          "mode": "local",
+          "port": 18789,
+          "tailscale": {
+            "mode": "off",
+            "resetOnExit": false
+          }
+        },
+        "meta": {
+          "lastTouchedAt": "2026-02-27T21:05:13.968Z",
+          "lastTouchedVersion": "2026.2.26"
+        },
+        "session": {
+          "dmScope": "per-channel-peer"
+        },
+        "tools": {
+          "agentToAgent": {
+            "enabled": true
+          },
+          "deny": [
+            "group:web",
+            "browser"
+          ]
+        },
+        "wizard": {
+          "lastRunAt": "2026-02-26T01:41:02.099Z",
+          "lastRunCommand": "onboard",
+          "lastRunMode": "local",
+          "lastRunVersion": "2026.2.24"
+        }
+      },
+      "exit_code": 0,
+      "format": "json",
+      "path": "/root/.openclaw/openclaw.json"
+    },
+    "vm_env": {
+      "content": "GITHUB_TOKEN=***REDACTED***\nOPENROUTER_API_KEY=***REDACTED***\n",
+      "exit_code": 0,
+      "format": "text",
+      "path": "/root/.openclaw/.env"
+    }
+  },
+  "vm_wrapper_self_test": {
+    "heredoc_probe": {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "456"
+    },
+    "python_probe": {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "123"
+    }
+  }
+}

@@ -1,0 +1,200 @@
+[
+  {
+    "classification": "shadowed_duplicate_secret",
+    "effective": false,
+    "evidence": "Active provider auth is VM-side, not host-side.",
+    "field": "host:~/.openclaw/env.sh.OPENROUTER_API_KEY",
+    "recommended_change": "Remove or minimize host-side duplicate provider secret if host runtime is not authoritative.",
+    "risk": "medium",
+    "source": "host env"
+  },
+  {
+    "classification": "effective",
+    "effective": true,
+    "evidence": "isa_cost_optimizer/middleware_api.py reads cost_optimization_stack from .openclaw/control-plane.json.",
+    "field": "repo:.openclaw/control-plane.json.cost_optimization_stack.*",
+    "recommended_change": "Keep synchronized with isa_cost_optimizer middleware tests and runtime expectations.",
+    "risk": "low",
+    "source": "repo control-plane"
+  },
+  {
+    "classification": "shadowed_metadata",
+    "effective": false,
+    "evidence": "VM runtime default is read from /root/.openclaw/openclaw.json.",
+    "field": "repo:.openclaw/control-plane.json.model_router.default_model",
+    "recommended_change": "Do not treat this as the OpenClaw runtime default; VM agents.defaults.model.primary remains authoritative.",
+    "risk": "medium",
+    "source": "repo control-plane"
+  },
+  {
+    "classification": "shadowed_metadata_aligned",
+    "effective": false,
+    "evidence": "control-plane fallback_models=[], vm fallbacks=[]",
+    "field": "repo:.openclaw/control-plane.json.model_router.fallback_models",
+    "recommended_change": "Keep aligned with VM runtime fallbacks.",
+    "risk": "low",
+    "source": "repo control-plane"
+  },
+  {
+    "classification": "effective",
+    "effective": true,
+    "evidence": "server/security/automation-auth.ts reads the policy envelope.",
+    "field": "repo:config/governance/openclaw_policy_envelope.json.automation.*",
+    "recommended_change": "Keep aligned with server/security/automation-auth.ts and production env flags.",
+    "risk": "medium",
+    "source": "repo governance policy"
+  },
+  {
+    "classification": "effective",
+    "effective": true,
+    "evidence": "Current runtime contract is VM-first.",
+    "field": "repo:config/governance/openclaw_policy_envelope.json.runtime.primary_mode",
+    "recommended_change": "Keep VM-only unless host-gateway support is intentionally implemented and validated.",
+    "risk": "low",
+    "source": "repo governance policy"
+  },
+  {
+    "classification": "shadowed_by_stronger_runtime_deny",
+    "effective": true,
+    "evidence": "VM tools.deny includes group:web and browser.",
+    "field": "repo:config/openclaw/browser.policy.json.mode",
+    "recommended_change": "Keep as defense-in-depth, but document that VM tools.deny already blocks browser and web at the gateway.",
+    "risk": "low",
+    "source": "repo browser policy"
+  },
+  {
+    "classification": "effective_script_scope_only",
+    "effective": true,
+    "evidence": "scripts/openclaw-safe-exec.sh reads this policy.",
+    "field": "repo:config/openclaw/exec-lane.policy.json.*",
+    "recommended_change": "Treat as wrapper-policy only; do not assume native OpenClaw runtime enforcement.",
+    "risk": "medium",
+    "source": "repo exec policy"
+  },
+  {
+    "classification": "effective_launcher_scope_aligned",
+    "effective": true,
+    "evidence": "routing defaults.model=openrouter/moonshotai/kimi-k2.5, vm primary=openrouter/moonshotai/kimi-k2.5",
+    "field": "repo:config/openclaw/model-routing.policy.json.defaults.model",
+    "recommended_change": "Keep launcher default aligned with VM runtime default.",
+    "risk": "low",
+    "source": "repo routing policy"
+  },
+  {
+    "classification": "effective_launcher_scope_only",
+    "effective": true,
+    "evidence": "scripts/openclaw-model-route.sh and launcher wrappers use this file.",
+    "field": "repo:config/openclaw/model-routing.policy.json.routes[*]",
+    "recommended_change": "Keep using for launcher-assisted routing, but do not present it as automatic runtime model switching.",
+    "risk": "medium",
+    "source": "repo routing policy"
+  },
+  {
+    "classification": "effective",
+    "effective": true,
+    "evidence": "scripts/openclaw-skill-admit.sh and scripts/openclaw-skill-install.sh read this file.",
+    "field": "repo:config/openclaw/skills-allowlist.json.entries",
+    "recommended_change": "Keep entries reviewed and checksum-pinned.",
+    "risk": "low",
+    "source": "repo skills allowlist"
+  },
+  {
+    "classification": "effective_state",
+    "effective": true,
+    "evidence": "Launcher wrappers read .openclaw/launcher/last_model_route.json.",
+    "field": "repo:.openclaw/launcher/last_model_route.json.selected_route_id",
+    "recommended_change": "Safe to keep; it drives reuse-last-route launcher behavior.",
+    "risk": "low",
+    "source": "repo launcher state"
+  },
+  {
+    "classification": "effective",
+    "effective": true,
+    "evidence": "openclaw models status reports the VM default model.",
+    "field": "vm:/root/.openclaw/openclaw.json.agents.defaults.model.primary",
+    "recommended_change": "This is the authoritative default model; align UI/router policy with it or change it deliberately here.",
+    "risk": "medium",
+    "source": "vm runtime"
+  },
+  {
+    "classification": "effective_empty",
+    "effective": true,
+    "evidence": "VM runtime fallbacks currently determine actual failover behavior.",
+    "field": "vm:/root/.openclaw/openclaw.json.agents.defaults.model.fallbacks",
+    "recommended_change": "Add fallbacks if runtime resilience matters, or keep empty and remove conflicting fallback declarations elsewhere.",
+    "risk": "medium",
+    "source": "vm runtime"
+  },
+  {
+    "classification": "effective",
+    "effective": true,
+    "evidence": "Current policy posture depends on these denies.",
+    "field": "vm:/root/.openclaw/openclaw.json.tools.deny",
+    "recommended_change": "Retain unless you intentionally reopen browser/web capabilities and revalidate governance.",
+    "risk": "low",
+    "source": "vm runtime"
+  },
+  {
+    "classification": "effective",
+    "effective": true,
+    "evidence": "Gateway is running loopback-only.",
+    "field": "vm:/root/.openclaw/openclaw.json.gateway.bind",
+    "recommended_change": "Keep loopback unless remote exposure is required; if exposed, configure trustedProxies.",
+    "risk": "low",
+    "source": "vm runtime"
+  },
+  {
+    "classification": "effective_sensitive",
+    "effective": true,
+    "evidence": "Gateway auth mode is token.",
+    "field": "vm:/root/.openclaw/openclaw.json.gateway.auth.token",
+    "recommended_change": "Keep VM-only; never duplicate in repo or host artifacts.",
+    "risk": "high",
+    "source": "vm runtime"
+  },
+  {
+    "classification": "effective_sensitive",
+    "effective": true,
+    "evidence": "Provider auth resolves from env OPENROUTER_API_KEY.",
+    "field": "vm:/root/.openclaw/openclaw.json.env.vars.OPENROUTER_API_KEY",
+    "recommended_change": "Keep in VM runtime only; avoid host duplication unless host-runtime use is required.",
+    "risk": "high",
+    "source": "vm runtime"
+  },
+  {
+    "classification": "effective_empty",
+    "effective": true,
+    "evidence": "auth.profiles is empty in current VM runtime.",
+    "field": "vm:/root/.openclaw/openclaw.json.auth.profiles",
+    "recommended_change": "Keep empty if env-based auth remains the standard.",
+    "risk": "low",
+    "source": "vm runtime"
+  },
+  {
+    "classification": "effective_sensitive",
+    "effective": true,
+    "evidence": "VM exec approvals socket config contains token material.",
+    "field": "vm:/root/.openclaw/exec-approvals.json.socket.token",
+    "recommended_change": "Treat as secret runtime socket credential; do not export or mirror.",
+    "risk": "high",
+    "source": "vm exec approvals"
+  },
+  {
+    "classification": "effective_sensitive",
+    "effective": true,
+    "evidence": "Paired devices file contains operator device tokens.",
+    "field": "vm:/root/.openclaw/devices/paired.json.tokens.*",
+    "recommended_change": "Rotate and prune stale operator device tokens if not actively needed; keep strictly VM-local.",
+    "risk": "high",
+    "source": "vm device pairing state"
+  },
+  {
+    "classification": "effective_empty",
+    "effective": true,
+    "evidence": "cron/jobs.json contains jobs=[].",
+    "field": "vm:/root/.openclaw/cron/jobs.json.jobs",
+    "recommended_change": "No change unless scheduled automation is intended; current state has no jobs configured.",
+    "risk": "low",
+    "source": "vm cron state"
+  }
+]

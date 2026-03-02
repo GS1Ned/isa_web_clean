@@ -1,0 +1,19 @@
+{
+  "conflicting_items": [],
+  "generated_at": "2026-03-02T08:17:32Z",
+  "high_risk_items": [
+    "vm:/root/.openclaw/openclaw.json.gateway.auth.token",
+    "vm:/root/.openclaw/openclaw.json.env.vars.OPENROUTER_API_KEY",
+    "vm:/root/.openclaw/exec-approvals.json.socket.token",
+    "vm:/root/.openclaw/devices/paired.json.tokens.*"
+  ],
+  "repo_root": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean",
+  "runtime_ssot": "vm:/root/.openclaw/openclaw.json",
+  "shadowed_items": [
+    "host:~/.openclaw/env.sh.OPENROUTER_API_KEY",
+    "repo:.openclaw/control-plane.json.model_router.default_model",
+    "repo:.openclaw/control-plane.json.model_router.fallback_models",
+    "repo:config/openclaw/browser.policy.json.mode"
+  ],
+  "unused_items": []
+}
