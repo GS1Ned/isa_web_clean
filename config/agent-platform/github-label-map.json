@@ -1,0 +1,60 @@
+{
+  "schema_version": "2026-03-03",
+  "capabilities": {
+    "ASK_ISA": "capability:ask-isa",
+    "NEWS_HUB": "capability:news-hub",
+    "KNOWLEDGE_BASE": "capability:knowledge-base",
+    "CATALOG": "capability:catalog",
+    "ESRS_MAPPING": "capability:esrs-mapping",
+    "ADVISORY": "capability:advisory"
+  },
+  "work_types": {
+    "feature": "type:feature",
+    "bugfix": "type:bugfix",
+    "refactor": "type:refactor",
+    "docs": "type:docs",
+    "deploy": "type:deploy"
+  },
+  "phases": {
+    "plan": "phase:plan",
+    "implement": "phase:implement",
+    "validate": "phase:validate",
+    "deploy_ready": "phase:deploy-ready",
+    "deployed": "phase:deployed"
+  },
+  "executors": {
+    "openclaw_vm": "executor:openclaw",
+    "gemini_vscode": "executor:gemini",
+    "codex_host": "executor:codex",
+    "manus_platform": "executor:manus"
+  },
+  "validators": {
+    "openclaw_vm": "validator:openclaw",
+    "codex_host": "validator:codex",
+    "github_checks_and_user": "validator:github-ci",
+    "manus_platform_and_github_ci": "validator:manus-github-ci"
+  },
+  "lanes": {
+    "none": "lane:none",
+    "scm_only": "lane:scm-only",
+    "app_dev": "lane:app-dev",
+    "vm_runtime": "lane:vm-runtime",
+    "platform_prod": "lane:platform-prod"
+  },
+  "evaluation_stages": {
+    "stage_a": "baseline:stage-a",
+    "stage_b": "baseline:stage-b",
+    "stage_c": "baseline:stage-c"
+  },
+  "validation_labels": {
+    "local_preflight": "validation:local-preflight",
+    "ci": "validation:ci",
+    "capability_eval": "validation:capability-eval",
+    "manus": "validation:manus"
+  },
+  "deployment_labels": {
+    "required": "deploy:required",
+    "manus": "deploy:manus",
+    "complete": "deploy:complete"
+  }
+}

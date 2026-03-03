@@ -1,5 +1,11 @@
 # ISA Agent Collaboration Architecture
 
+Status: HISTORICAL REFERENCE ONLY
+
+Current canonical operating model:
+- `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
+- `docs/governance/ISA_AGENT_HANDOFF_PROTOCOL.md`
+
 **Version:** 1.0  
 **Last Updated:** December 11, 2025  
 **Primary Agent:** Manus (development environment owner)  

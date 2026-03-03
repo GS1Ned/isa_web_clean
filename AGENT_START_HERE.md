@@ -1,5 +1,24 @@
 # ISA — Agent Entry Point
 
+---
+
+## ⚠️ Important: Development Environment Update ⚠️
+
+**As of 2026-02-25, the development workflow has changed.**
+
+Use one of these canonical entry paths:
+1. `bash scripts/openclaw-isa-dev-start.sh`
+   - Starts the VM-side OpenClaw path and UI tunnel.
+2. `bash scripts/dev/launch-isa-vscode.sh`
+   - Prepares the trusted host-side VS Code + Gemini + Codex lane.
+   - Default lane is `scm-only`; use `--lane app-dev` only when runtime secrets are needed.
+
+The old `pnpm dev` command is not sufficient on its own for the OpenClaw-integrated VM workflow. It remains part of local app runs after the appropriate host lane is prepared.
+
+For more details, please see the [Host ↔ VM OpenClaw Workflow](#host--vm-openclaw-workflow-canonical) section below.
+
+---
+
 **Purpose:** Single canonical orientation for any AI agent or developer working on ISA.
 **Last Updated:** 2026-02-25
 
@@ -26,7 +45,17 @@ This file is the only top-level entrypoint for agent onboarding.
 | Execution Queue (Canonical) | `docs/planning/NEXT_ACTIONS.json` | Single source of next work |
 | Governance Root (Canonical) | `docs/governance/_root/ISA_GOVERNANCE.md` | Governance principles and rules |
 | Manual Preflight (Canonical) | `docs/governance/MANUAL_PREFLIGHT.md` | Deterministic preflight checks |
+| Document Status Model (Canonical) | `docs/governance/DOCUMENT_STATUS_MODEL.md` | Meaning of canonical/current/target/historical |
+| Agent Platform Operating Model (Canonical) | `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md` | Role split between OpenClaw, Gemini, Codex, GitHub, Manus, host and VM |
+| Capability Delivery Workflow (Canonical) | `docs/governance/ISA_CAPABILITY_DELIVERY_WORKFLOW.md` | Capability build-to-deploy workflow and label mapping |
 | Repository Map (Support) | `docs/REPO_MAP.md` | Evidence-bound repository structure map |
+
+## Document Status Rule
+
+- `CANONICAL` means the document is authoritative for its scope.
+- It does not automatically mean "target state".
+- System-level current and target truth live explicitly in `docs/spec/ARCHITECTURE.md`.
+- See `docs/governance/DOCUMENT_STATUS_MODEL.md`.
 
 ---
 

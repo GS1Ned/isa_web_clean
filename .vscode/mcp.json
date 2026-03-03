@@ -1,27 +1,33 @@
 {
-  "inputs": [
-    {
-      "id": "github_token",
-      "type": "promptString",
-      "description": "GitHub token (fine-grained PAT recommended) with repo read/write as needed"
-    }
-  ],
   "servers": {
     "filesystem": {
       "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "${workspaceFolder}"]
+      "command": "pnpm",
+      "args": ["-s", "dlx", "@modelcontextprotocol/server-filesystem@2026.1.14", "."]
     },
-    "github": {
+    "git": {
       "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": { "GITHUB_TOKEN": "${input:github_token}" }
+      "command": "pnpm",
+      "args": ["-s", "dlx", "@cyanheads/git-mcp-server@2.8.4"]
+    },
+    "fetch": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["-s", "dlx", "@lmcc-dev/mult-fetch-mcp-server@1.3.2"]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["-s", "dlx", "@playwright/mcp@0.0.68"]
+    },
+    "openai_docs": {
+      "type": "http",
+      "url": "https://developers.openai.com/mcp"
     },
     "sequential-thinking": {
       "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "command": "pnpm",
+      "args": ["-s", "dlx", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
     }
   }
 }

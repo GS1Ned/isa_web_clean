@@ -1,0 +1,41 @@
+# ISA managed Codex user configuration template.
+# Render or merge this into ~/.codex/config.toml without overwriting unrelated user settings.
+# Secret-bearing values must be injected outside the repo.
+
+profile = "fast-iterate"
+web_search = "disabled"
+
+[profiles.fast-iterate]
+web_search = "disabled"
+
+[profiles.deep-review]
+web_search = "live"
+
+# BEGIN ISA MANAGED MCP SECTION
+[mcp_servers.filesystem]
+command = "pnpm"
+args = ["-s", "dlx", "@modelcontextprotocol/server-filesystem@2026.1.14", "."]
+
+[mcp_servers.git]
+command = "pnpm"
+args = ["-s", "dlx", "@cyanheads/git-mcp-server@2.8.4"]
+
+[mcp_servers.fetch]
+command = "pnpm"
+args = ["-s", "dlx", "@lmcc-dev/mult-fetch-mcp-server@1.3.2"]
+
+[mcp_servers.playwright]
+command = "pnpm"
+args = ["-s", "dlx", "@playwright/mcp@0.0.68"]
+
+[mcp_servers.openai_docs]
+url = "https://developers.openai.com/mcp"
+
+[mcp_servers.github]
+url = "https://api.githubcopilot.com/mcp/"
+bearer_token_env_var = "GH_TOKEN"
+
+[mcp_servers.sequential-thinking]
+command = "pnpm"
+args = ["-s", "dlx", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
+# END ISA MANAGED MCP SECTION

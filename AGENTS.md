@@ -27,6 +27,7 @@
 - Do not commit to the default branch.
 - Make minimal, reviewable commits with governance-grade messages.
 - Prefer small diffs; avoid refactors unless necessary for the task.
+- MCP usage must follow `docs/agent/MCP_POLICY.md` and `docs/agent/MCP_RECIPES.md`.
 
 ## Workspace authority and synchronization (Host ↔ VM ↔ GitHub)
 - Canonical SSOT for repository history is the Git remote `origin` (GitHub).
