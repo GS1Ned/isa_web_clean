@@ -7,6 +7,10 @@
 import { getDb } from "./db";
 import { eq } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
+import {
+  buildKnowledgeEvidenceKey,
+  doesKnowledgeChunkNeedVerification,
+} from "./knowledge-provenance";
 
 
 /**
@@ -54,16 +58,7 @@ export async function needsVerification(chunkId: number): Promise<boolean> {
 
     const chunk = chunks[0];
 
-    // No verification date = needs verification
-    if (!chunk.lastVerifiedDate) return true;
-
-    // Check if >90 days old
-    const verifiedDate = new Date(chunk.lastVerifiedDate);
-    const now = new Date();
-    const daysSinceVerification =
-      (now.getTime() - verifiedDate.getTime()) / (1000 * 60 * 60 * 24);
-
-    return daysSinceVerification > 90;
+    return doesKnowledgeChunkNeedVerification(chunk.lastVerifiedDate);
   } catch (error) {
     serverLogger.error("[Citation] Failed to check verification status:", error);
     return false;
@@ -129,20 +124,10 @@ export async function validateCitations(
         }
 
         const chunk = chunks[0];
-        const contentHash = chunk.contentHash || null;
-        const evidenceKey = contentHash ? `ke:${source.id}:${contentHash}` : null;
-
-        // Check verification age
-        let needsVerif = false;
-        if (!chunk.lastVerifiedDate) {
-          needsVerif = true;
-        } else {
-          const verifiedDate = new Date(chunk.lastVerifiedDate);
-          const now = new Date();
-          const daysSinceVerification =
-            (now.getTime() - verifiedDate.getTime()) / (1000 * 60 * 60 * 24);
-          needsVerif = daysSinceVerification > 90;
-        }
+        const { evidenceKey, evidenceKeyReason } = buildKnowledgeEvidenceKey(
+          source.id,
+          chunk.contentHash || null
+        );
 
         return {
           ...source,
@@ -150,10 +135,12 @@ export async function validateCitations(
           datasetVersion: chunk.datasetVersion || undefined,
           lastVerifiedDate: chunk.lastVerifiedDate || undefined,
           isDeprecated: chunk.isDeprecated === 1,
-          needsVerification: needsVerif,
+          needsVerification: doesKnowledgeChunkNeedVerification(
+            chunk.lastVerifiedDate
+          ),
           deprecationReason: chunk.deprecationReason || undefined,
           evidenceKey,
-          evidenceKeyReason: contentHash ? "ok" as const : "missing_content_hash" as const,
+          evidenceKeyReason,
         };
       })
     );

@@ -1,23 +1,61 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "=== Knowledge Base Health Check ==="
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
-# Check 1: Knowledge chunks exist
-echo "Checking knowledge chunks..."
-EXPECTED_CHUNKS=155
-# TODO: Query database for knowledge_embeddings count
-echo "✅ $EXPECTED_CHUNKS+ knowledge chunks exist"
+echo "PREFLIGHT=knowledge_base_health"
 
-# Check 2: All source types covered
-echo "Checking source type coverage..."
-# TODO: Verify regulations, standards, ESRS, initiatives all present
-echo "✅ All source types covered (regulations, standards, ESRS, initiatives)"
+for path in \
+  "${REPO_ROOT}/drizzle/schema.ts" \
+  "${REPO_ROOT}/server/db-knowledge-vector.ts" \
+  "${REPO_ROOT}/server/hybrid-search.ts" \
+  "${REPO_ROOT}/server/citation-validation.ts" \
+  "${REPO_ROOT}/server/knowledge-provenance.ts" \
+  "${REPO_ROOT}/server/routers/citation-admin.ts" \
+  "${REPO_ROOT}/server/routers/ask-isa.ts" \
+  "${REPO_ROOT}/docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md" \
+  "${REPO_ROOT}/server/knowledge-provenance.test.ts"
+do
+  if [[ ! -f "${path}" ]]; then
+    echo "STOP=missing_required_file:${path}"
+    exit 1
+  fi
+done
 
-# Check 3: No duplicate content hashes
-echo "Checking for duplicates..."
-# TODO: Query for duplicate content_hash values
-echo "✅ No duplicate content hashes found"
+if ! command -v rg >/dev/null 2>&1; then
+  echo "STOP=rg_not_found"
+  exit 1
+fi
 
-echo ""
-echo "✅ All Knowledge Base checks passed"
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "STOP=pnpm_not_found"
+  exit 1
+fi
+
+echo "READY=knowledge_base_repo_evidence"
+
+rg -n "contentHash: varchar|datasetId: varchar|datasetVersion: varchar|lastVerifiedDate: timestamp|isDeprecated: tinyint" \
+  "${REPO_ROOT}/drizzle/schema.ts" >/dev/null
+
+rg -n "export async function vectorSearchKnowledge|knowledgeEmbeddings|contentHash|datasetId|datasetVersion|lastVerifiedDate" \
+  "${REPO_ROOT}/server/db-knowledge-vector.ts" >/dev/null
+
+rg -n "export async function hybridSearch|authorityLevel|authorityScore" \
+  "${REPO_ROOT}/server/hybrid-search.ts" >/dev/null
+
+rg -n "buildKnowledgeEvidenceKey|doesKnowledgeChunkNeedVerification|evidenceKeyReason|datasetId: chunk.datasetId|datasetVersion: chunk.datasetVersion|lastVerifiedDate: chunk.lastVerifiedDate" \
+  "${REPO_ROOT}/server/citation-validation.ts" >/dev/null
+
+rg -n "doesKnowledgeChunkNeedVerification" \
+  "${REPO_ROOT}/server/routers/citation-admin.ts" >/dev/null
+
+rg -n "evidenceKey: source.evidenceKey|needsVerification: source.needsVerification|lastVerifiedDate: source.lastVerifiedDate" \
+  "${REPO_ROOT}/server/routers/ask-isa.ts" >/dev/null
+
+rg -n "Retrieval And Citation Substrate Expectations|ke:<chunkId>:<contentHash>|older than 90 days" \
+  "${REPO_ROOT}/docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md" >/dev/null
+
+pnpm exec vitest run server/knowledge-provenance.test.ts --no-coverage
+
+echo "DONE=knowledge_base_health"

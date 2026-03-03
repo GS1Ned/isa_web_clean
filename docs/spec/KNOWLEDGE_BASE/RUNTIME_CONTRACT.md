@@ -40,11 +40,27 @@ KNOWLEDGE_BASE provides ingestion-governed corpus storage, embeddings, and retri
 - Outputs: retrieval-ready vectors/chunks and provenance-linked corpus artifacts.
 - Exact payload shapes remain code-truth in tRPC routers and service modules.
 
+## Retrieval And Citation Substrate Expectations
+<!-- EVIDENCE:implementation:drizzle/schema.ts -->
+<!-- EVIDENCE:implementation:server/citation-validation.ts -->
+<!-- EVIDENCE:implementation:server/knowledge-provenance.ts -->
+- `knowledge_embeddings` remains the current retrieval-ready chunk substrate for stage-a ASK_ISA work.
+- Retrieval/citation paths must preserve these provenance fields on knowledge chunks:
+  - `contentHash`
+  - `datasetId`
+  - `datasetVersion`
+  - `lastVerifiedDate`
+  - `isDeprecated`
+- Citation validation must emit canonical evidence keys in the form `ke:<chunkId>:<contentHash>` whenever `contentHash` is present.
+- Citation validation must mark `needsVerification=true` when `lastVerifiedDate` is missing, invalid, or older than 90 days.
+- Admin verification workflows and retrieval validation must use the same verification-window rule so downstream ASK_ISA citation behavior stays aligned.
+
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/knowledge_base_health.sh -->
 - Smoke probe: `scripts/probe/knowledge_base_health.sh`
 - Tests:
   - `server/embedding.test.ts`
+  - `server/knowledge-provenance.test.ts`
   - `server/routers/__tests__/capability-heartbeat.test.ts`
 - Canonical gate alignment:
   - `bash scripts/gates/doc-code-validator.sh --canonical-only`
