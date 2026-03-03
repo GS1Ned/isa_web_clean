@@ -82,16 +82,25 @@ describe("Retry Logic", () => {
       .mockRejectedValueOnce(new Error("Fail 1"))
       .mockResolvedValue("success");
 
-    const startTime = Date.now();
-    await retryWithBackoff(
-      operation,
-      { maxAttempts: 2, initialDelayMs: 100, jitterMs: 0 },
-      "test"
-    );
-    const duration = Date.now() - startTime;
+    const setTimeoutSpy = vi.spyOn(globalThis, "setTimeout");
+    let retryDelayCall:
+      | [handler: TimerHandler, timeout?: number, ...args: unknown[]]
+      | undefined;
 
-    // Should wait at least 100ms (initial delay) between attempts
-    expect(duration).toBeGreaterThanOrEqual(100);
+    try {
+      await retryWithBackoff(
+        operation,
+        { maxAttempts: 2, initialDelayMs: 100, jitterMs: 0 },
+        "test"
+      );
+      retryDelayCall = setTimeoutSpy.mock.calls.find(
+        ([, delay]) => typeof delay === "number"
+      );
+    } finally {
+      setTimeoutSpy.mockRestore();
+    }
+
+    expect(retryDelayCall?.[1]).toBeGreaterThanOrEqual(100);
     expect(operation).toHaveBeenCalledTimes(2);
   });
 });
