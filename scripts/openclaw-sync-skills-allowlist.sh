@@ -89,6 +89,20 @@ for row in kernel_rows:
     if name:
         kernel_by_name.setdefault(name, []).append(row)
 
+EXTRA_CORE_SKILLS = ['session-logs', 'skill-creator', 'tmux', 'weather']
+
+def find_host_skill_path(name: str):
+    roots = [
+        Path.home() / '.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills',
+        Path('/opt/homebrew/lib/node_modules/openclaw/skills'),
+        Path('/usr/local/lib/node_modules/openclaw/skills'),
+    ]
+    for root in roots:
+        cand = root / name
+        if cand.exists():
+            return cand
+    return None
+
 selected = {}
 for row in rows:
     name = row.get('skill_name') or row.get('name')
@@ -115,6 +129,13 @@ for row in rows:
         if current is None or candidate['rank'] < current['rank']:
             selected[key] = candidate
             current = candidate
+
+for extra_name in EXTRA_CORE_SKILLS:
+    selected.setdefault(extra_name, {
+        'name': extra_name,
+        'path': find_host_skill_path(extra_name),
+        'rank': path_rank(str(find_host_skill_path(extra_name))) if find_host_skill_path(extra_name) is not None else (100, extra_name),
+    })
 
 entries = []
 for name in sorted(selected):

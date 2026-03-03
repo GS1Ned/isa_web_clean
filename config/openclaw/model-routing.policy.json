@@ -1,0 +1,309 @@
+{
+  "version": "2.1.0",
+  "mode": "operational_assisted_routing",
+  "selection_scope": "isa_openclaw_ui_sessions",
+  "router": {
+    "helper_script": "scripts/openclaw-model-route.sh",
+    "selection_method": "deterministic_profile_keyword_router",
+    "default_route_id": "general_governed_tooling",
+    "ui_selection_mode": "manual_alias_switch_after_helper_output"
+  },
+  "runtime_note": {
+    "current_runtime_pinned_default": "openrouter/deepseek/deepseek-v3.2",
+    "note": "The helper is aligned with the VM runtime default and only emits aliases that are configured in the live OpenClaw UI model picker."
+  },
+  "defaults": {
+    "route_id": "general_governed_tooling",
+    "alias": "ISA Dev Balanced (DeepSeek V3.2)",
+    "model": "openrouter/deepseek/deepseek-v3.2"
+  },
+  "routes": [
+    {
+      "id": "controlled_productivity_automation",
+      "alias": "ISA Controlled Tool Budget (MiniMax M2.5)",
+      "model": "openrouter/minimax/minimax-m2.5",
+      "priority": 40,
+      "cost_profile": "midrange_productivity",
+      "task_profiles": [
+        "office_productivity",
+        "controlled_automation",
+        "parallel_tool_calls"
+      ],
+      "match_any": [
+        "spreadsheet",
+        "excel",
+        "powerpoint",
+        "word document",
+        "office workflow",
+        "business ops",
+        "controlled automation",
+        "parallel tool",
+        "constrained tool path",
+        "productivity suite"
+      ],
+      "best_for": [
+        "office and productivity workflows",
+        "controlled tool paths",
+        "parallel-tool business automations",
+        "document and spreadsheet operations"
+      ],
+      "better_options_when": [
+        "you need stronger autonomous agentic behavior",
+        "the task is mostly coding and repository work",
+        "you need much larger context windows"
+      ],
+      "avoid_for": [
+        "fully autonomous tool-choice flows",
+        "strict schema reliability without caller-side validation",
+        "tasks where DeepSeek already covers the need more cheaply"
+      ],
+      "cost_benefit": "Pays off when the workload resembles office productivity automation. Less attractive as a generic coding default."
+    },
+    {
+      "id": "fast_interactive_turns",
+      "alias": "ISA Fast 1M (Gemini 2.5 Flash Lite)",
+      "model": "openrouter/google/gemini-2.5-flash-lite",
+      "priority": 55,
+      "cost_profile": "low_latency_interactive",
+      "task_profiles": [
+        "interactive_chat",
+        "rapid_iteration",
+        "triage"
+      ],
+      "match_any": [
+        "fast",
+        "snappy",
+        "quick reply",
+        "low latency",
+        "rapid iteration",
+        "triage",
+        "lightweight",
+        "interactive",
+        "flash lite",
+        "fast prompt"
+      ],
+      "best_for": [
+        "rapid back-and-forth chats",
+        "triage and first-pass answers",
+        "short iterations that should feel responsive",
+        "fast UI sessions with moderate context"
+      ],
+      "better_options_when": [
+        "the task becomes tool-heavy or multi-step",
+        "higher quality reasoning matters more than latency",
+        "you need stronger code generation quality"
+      ],
+      "avoid_for": [
+        "final-pass critical outputs",
+        "complex autonomous tool planning",
+        "very broad long-context synthesis"
+      ],
+      "cost_benefit": "Best latency-first route in the configured set. Use when responsiveness matters more than maximum reasoning depth."
+    },
+    {
+      "id": "agentic_coding_multimodal",
+      "alias": "ISA Fixed Default (Kimi K2.5)",
+      "model": "openrouter/moonshotai/kimi-k2.5",
+      "priority": 80,
+      "cost_profile": "premium_agentic",
+      "task_profiles": [
+        "agentic_coding",
+        "visual_coding",
+        "tool_autonomy"
+      ],
+      "match_any": [
+        "agentic coding",
+        "visual coding",
+        "tool autonomy",
+        "multi-step tool workflow",
+        "autonomous tools",
+        "complex orchestration",
+        "planner",
+        "tool calling",
+        "agent swarm",
+        "multimodal coding"
+      ],
+      "best_for": [
+        "agentic coding",
+        "visual or multimodal coding",
+        "autonomous tool orchestration",
+        "complex multi-step implementation"
+      ],
+      "better_options_when": [
+        "price-performance matters more than autonomy",
+        "the workload is mostly text plus tools",
+        "the task is long-context research rather than agentic coding"
+      ],
+      "avoid_for": [
+        "strict latency ceilings",
+        "strict cost ceilings",
+        "short routine tasks"
+      ],
+      "cost_benefit": "Worth the premium when autonomous tool behavior and coding agency matter. Not the best default for routine governed work."
+    },
+    {
+      "id": "premium_coding_quality",
+      "alias": "ISA Premium Coding (Claude Sonnet 4)",
+      "model": "openrouter/anthropic/claude-sonnet-4",
+      "priority": 65,
+      "cost_profile": "premium_coding_quality",
+      "task_profiles": [
+        "quality_coding",
+        "code_review",
+        "difficult_refactor"
+      ],
+      "match_any": [
+        "code review",
+        "hard refactor",
+        "difficult bug",
+        "quality pass",
+        "sonnet",
+        "careful implementation",
+        "high confidence code",
+        "deep debugging"
+      ],
+      "best_for": [
+        "high-confidence coding passes",
+        "careful reviews and refactors",
+        "difficult debugging where quality beats speed",
+        "final implementation polish"
+      ],
+      "better_options_when": [
+        "latency matters more than quality",
+        "the task is mostly research or document synthesis",
+        "a cheaper balanced route is good enough"
+      ],
+      "avoid_for": [
+        "speed-first chat sessions",
+        "background heartbeats or lightweight automation",
+        "cost-sensitive repetitive work"
+      ],
+      "cost_benefit": "Best reserved for cases where code quality and careful reasoning outweigh response speed."
+    },
+    {
+      "id": "premium_multimodal_documents",
+      "alias": "ISA Long Context Quality (Gemini 2.5 Flash)",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "priority": 70,
+      "cost_profile": "quality_multimodal_context",
+      "task_profiles": [
+        "multimodal",
+        "pdf_documents",
+        "long_context_quality"
+      ],
+      "match_any": [
+        "pdf",
+        "document reasoning",
+        "multimodal",
+        "audio",
+        "video",
+        "image",
+        "slides",
+        "spec pack",
+        "gemini flash",
+        "large brief"
+      ],
+      "best_for": [
+        "longer documents and PDF-heavy work",
+        "mixed text and image reasoning",
+        "quality-focused multimodal planning",
+        "contexts where the faster lite model is too shallow"
+      ],
+      "better_options_when": [
+        "the task is ordinary text-plus-tool work",
+        "latency sensitivity is high",
+        "a lighter default route already fits"
+      ],
+      "avoid_for": [
+        "routine coding and extraction",
+        "budget-sensitive repetitive work",
+        "simple chat turns that do not need multimodal depth"
+      ],
+      "cost_benefit": "Use when you need more context quality or multimodal strength than the fast lane can provide, without jumping straight to the slowest premium route."
+    },
+    {
+      "id": "long_context_research",
+      "alias": "ISA Tool Fast 2M (Grok 4.1 Fast)",
+      "model": "openrouter/x-ai/grok-4.1-fast",
+      "priority": 90,
+      "cost_profile": "high_value_long_context",
+      "task_profiles": [
+        "long_context",
+        "deep_research",
+        "large_workspace"
+      ],
+      "match_any": [
+        "long context",
+        "large context",
+        "many files",
+        "many documents",
+        "compare all",
+        "deep research",
+        "keep everything in context",
+        "big repo",
+        "huge prompt",
+        "broad comparison"
+      ],
+      "best_for": [
+        "very large context tasks",
+        "large repo and multi-document comparisons",
+        "research workflows",
+        "broad workspace analysis"
+      ],
+      "better_options_when": [
+        "163k context is enough and cost-performance matters more",
+        "the task is multimodal document reasoning rather than long-context text reasoning"
+      ],
+      "avoid_for": [
+        "short tasks",
+        "strict cost minimization when DeepSeek already fits",
+        "tasks that do not need long context"
+      ],
+      "cost_benefit": "One of the strongest value choices when context size changes the problem. Expensive only if the long window is unnecessary."
+    },
+    {
+      "id": "general_governed_tooling",
+      "alias": "ISA Dev Balanced (DeepSeek V3.2)",
+      "model": "openrouter/deepseek/deepseek-v3.2",
+      "priority": 100,
+      "cost_profile": "best_general_value",
+      "task_profiles": [
+        "default",
+        "governed_tooling",
+        "coding",
+        "structured_extraction"
+      ],
+      "match_any": [
+        "default",
+        "general coding",
+        "implement",
+        "refactor",
+        "structured output",
+        "json schema",
+        "extract",
+        "repo work",
+        "tool use",
+        "governed automation",
+        "balanced",
+        "cost effective"
+      ],
+      "best_for": [
+        "default ISA development sessions",
+        "governed tool use",
+        "structured extraction",
+        "general coding and implementation"
+      ],
+      "better_options_when": [
+        "long-context needs dominate",
+        "multimodal document reasoning dominates",
+        "agentic coding autonomy dominates"
+      ],
+      "avoid_for": [
+        "tasks that truly need 1M+ context",
+        "tasks that need premium multimodal reasoning",
+        "tasks where Kimi's agency is the main requirement"
+      ],
+      "cost_benefit": "Best overall cost-versus-performance default for ISA text-plus-tool workflows."
+    }
+  ]
+}

@@ -28,6 +28,7 @@
   "artifacts": {
     "exec_lane_policy": "config/openclaw/exec-lane.policy.json",
     "skills_allowlist": "config/openclaw/skills-allowlist.json",
-    "browser_policy": "config/openclaw/browser.policy.json"
+    "browser_policy": "config/openclaw/browser.policy.json",
+    "model_routing_policy": "config/openclaw/model-routing.policy.json"
   }
 }

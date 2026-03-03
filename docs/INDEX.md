@@ -9,6 +9,9 @@
 **MCP Recipes (Canonical):** `docs/agent/MCP_RECIPES.md`
 **Architecture SSOT:** `docs/spec/ARCHITECTURE.md`
 **Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
+**Document Status Model:** `docs/governance/DOCUMENT_STATUS_MODEL.md`
+**Agent Platform Operating Model:** `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
+**Capability Delivery Workflow:** `docs/governance/ISA_CAPABILITY_DELIVERY_WORKFLOW.md`
 **Repository Map:** `docs/REPO_MAP.md`
 
 ## Core Documentation
@@ -25,7 +28,11 @@
 
 ### Governance
 - **Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
+- **Document Status Model:** `docs/governance/DOCUMENT_STATUS_MODEL.md`
 - **Agent Map (Canonical):** `docs/agent/AGENT_MAP.md`
+- **Agent Platform Operating Model:** `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
+- **Agent Handoff Protocol:** `docs/governance/ISA_AGENT_HANDOFF_PROTOCOL.md`
+- **Capability Delivery Workflow:** `docs/governance/ISA_CAPABILITY_DELIVERY_WORKFLOW.md`
 - **OpenClaw Policy Envelope Runbook:** `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
 - **Canonical Docs Allowlist:** `config/governance/canonical_docs_allowlist.json`
 - **Planning Index:** `docs/planning/INDEX.md`

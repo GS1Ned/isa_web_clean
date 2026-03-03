@@ -8,7 +8,7 @@
     "git": {
       "type": "stdio",
       "command": "pnpm",
-      "args": ["-s", "dlx", "@cyanheads/git-mcp-server@2.8.4"],
+      "args": ["-s", "dlx", "@cyanheads/git-mcp-server@2.8.4", "."],
       "env": {
         "MCP_LOG_LEVEL": "error"
       }

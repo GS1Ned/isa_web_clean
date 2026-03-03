@@ -52,5 +52,12 @@ else
 fi
 
 PROMPT_FILE="docs/agent/OPENCLAW_UI_DEV_PROMPT_STARTER.md"
+QUICK_REFERENCE_FILE="docs/agent/OPENCLAW_UI_MODEL_QUICK_REFERENCE.md"
+if [ "$NO_OPEN" -eq 0 ] && command -v open >/dev/null 2>&1; then
+  ACTION="open_supporting_docs"
+  open "$PROMPT_FILE"
+  open "$QUICK_REFERENCE_FILE"
+fi
 echo "READY=isa_openclaw_dev_prompt_file path=${PROMPT_FILE}"
+echo "READY=isa_openclaw_model_quick_reference_file path=${QUICK_REFERENCE_FILE}"
 echo "DONE=openclaw_isa_dev_start_complete"

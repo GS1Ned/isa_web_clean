@@ -103,9 +103,10 @@ Edit `RUN_CONFIG.json` to adjust synthesis parameters:
 
 1. **Authority Spine Precedence:** Documents in `primary_authority_spine` have highest precedence
 2. **CURRENT vs ULTIMATE:** Specs reflect CURRENT (as-built) state; ULTIMATE documents are excluded
-3. **Traceability:** Every claim must trace to a source document
-4. **Conflict Resolution:** Use `CONFLICT_REGISTER.md` to track and resolve conflicts
-5. **Audit Provenance:** All audit claims and deliverables MUST include repository reference (name, branch, commit hash) as per `docs/governance/AUDIT_EXECUTION_MODE.md`.
+3. **Canonical is Scope Authority:** `CANONICAL` means the document is authoritative for its scope, not automatically that it describes only target state. See `docs/governance/DOCUMENT_STATUS_MODEL.md`.
+4. **Traceability:** Every claim must trace to a source document
+5. **Conflict Resolution:** Use `CONFLICT_REGISTER.md` to track and resolve conflicts
+6. **Audit Provenance:** All audit claims and deliverables MUST include repository reference (name, branch, commit hash) as per `docs/governance/AUDIT_EXECUTION_MODE.md`.
 
 ## CI Integration
 

@@ -159,6 +159,17 @@ docs/evidence/_generated/
 # Generated reports
 reports/
 test-results/unit.json
+.coverage
+
+# Local OpenClaw runtime artifacts (host-only; not canonical repo truth)
+.openclaw/backups/
+.openclaw/kernel/
+.openclaw/launcher/
+.openclaw/environment_snapshot.json
+.openclaw/integrity_manifest.json
+.openclaw/metadata.json
+.openclaw/cost_optimization_verification.json
+.openclaw/isa_cost_optimizer_coverage.json
 
 # Local helper script copies
 isa_rca_bundle.sh

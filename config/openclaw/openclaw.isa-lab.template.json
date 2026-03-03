@@ -2,53 +2,33 @@
   "_meta": {
     "evidence": {
       "documented_keys": [
+        "agents.defaults.model",
         "agents.defaults.heartbeat",
         "agents.defaults.workspace",
         "tools.profile"
       ],
-      "note": "Cron and memory tuning are applied via CLI/runtime setup because matching config keys were not proven from local docs during this run."
+      "note": "This template mirrors the VM dev profile that was applied on 2026-03-03. Keep runtime-only secrets out of repo templates."
     },
-    "intent": "ISA autonomy lab template",
-    "runtime_mode_hint": "vm_only"
+    "intent": "ISA OpenClaw dev profile template",
+    "profile": "default",
+    "runtime_mode_hint": "vm_execution_host_editing"
   },
   "agents": {
     "defaults": {
+      "model": {
+        "primary": "openrouter/deepseek/deepseek-v3.2",
+        "fallbacks": [
+          "openrouter/minimax/minimax-m2.5"
+        ]
+      },
       "heartbeat": {
         "every": "30m",
         "suppressToolErrorWarnings": true
       },
-      "workspace": "docs/agent/_runtime"
+      "workspace": "/root/isa_web_clean"
     }
   },
   "tools": {
-    "profile": "full"
-  },
-  "TBD_UNVERIFIED": {
-    "agents": {
-      "defaults": {
-        "repoRoot": {
-          "intended_source": "repo root detected by scripts/openclaw-isa-autonomy-setup.sh"
-        }
-      }
-    },
-    "cron": {
-      "enabled": true,
-      "jobs_managed_via_cli": [
-        {
-          "name": "isa-hourly-reflect",
-          "schedule": "every 1h"
-        },
-        {
-          "name": "isa-nightly-maintenance",
-          "schedule": "0 3 * * * Europe/Amsterdam"
-        }
-      ]
-    },
-    "memory": {
-      "compaction": true,
-      "enabled": true,
-      "flush_behavior": "detect-and-apply-via-runtime-if-supported"
-    },
-    "timezone": "Europe/Amsterdam"
+    "profile": "coding"
   }
 }
