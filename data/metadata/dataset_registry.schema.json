@@ -20,6 +20,9 @@
     "generatedBy": {
       "type": "string"
     },
+    "asrMetadataDefaults": {
+      "$ref": "#/$defs/asrMetadataDefaults"
+    },
     "notes": {
       "type": "string"
     },
@@ -69,6 +72,27 @@
     }
   ],
   "$defs": {
+    "asrMetadataDefaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "authorityTierByDomain": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "publicationStatusDefault": {
+          "type": "string",
+          "minLength": 1
+        },
+        "immutableUriPolicy": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
     "changelogEntry": {
       "type": "object",
       "additionalProperties": true,
