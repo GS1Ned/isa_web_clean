@@ -9,7 +9,7 @@ Scope: ISA repository development (code, docs, governance, refactors, research u
 
 ## Server Catalog (SSOT)
 Notes:
-- `where_configured` refers to repo-checked config files: `.codex/config.toml`, `.amazonq/default.json`, `.mcp.json`, optional `.vscode/mcp.json`.
+- `where_configured` refers to the shared configuration surface for each tool. For Codex, repo-checked `.codex/config.toml` only carries workspace defaults; managed MCP/auth entries are rendered to `~/.codex/config.toml`.
 - `billing` is best-effort and must be treated as `unknown` unless confirmed.
 - Evidence logging is required when MCP output is used to justify a claim, or when MCP actions modify repo state.
 - Optional servers are intentionally not configured by default: `context7`, `firecrawl`, `db`.
@@ -69,7 +69,7 @@ Redaction rules:
 
 ## Rollout (Repo-Level vs User-Level)
 Repo-checked (shared defaults):
-- `.codex/config.toml` (Codex CLI + VS Code extension)
+- `.codex/config.toml` (Codex workspace defaults only; not the secret-bearing MCP authority)
 - `.amazonq/default.json` and `.amazonq/rules/*.md` (Amazon Q in IDE)
 - `.mcp.json` (Claude Code)
 - `.vscode/mcp.json` (optional workspace discovery)
@@ -88,8 +88,8 @@ Token handling requirements:
 
 ## Verification Checklist (Per Tool)
 Codex (CLI + VS Code):
-1. Confirm `.codex/config.toml` is picked up in this repo.
-2. Confirm MCP servers list includes: `filesystem`, `git`, `fetch`, `playwright`, `openai_docs`, `github`.
+1. Confirm repo `.codex/config.toml` still only defines shared workspace defaults.
+2. Confirm managed user config `~/.codex/config.toml` includes: `filesystem`, `git`, `fetch`, `playwright`, `openai_docs`, `github`.
 3. Run `bash scripts/validate_mcp_connectivity.sh` for runtime connectivity checks.
 
 Amazon Q (VS Code):
