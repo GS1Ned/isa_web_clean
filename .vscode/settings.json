@@ -1,0 +1,19 @@
+{
+  "chat.agent.enabled": true,
+  "chat.agent.maxRequests": 15,
+  // ISA's primary autonomous VS Code agents are Gemini Code Assist and Codex.
+  // Keep Copilot outside the formal agent lane until the broader fabric is rendered.
+  "github.copilot.chat.agent.runTasks": false,
+  "github.copilot.chat.agent.autoFix": false,
+  "chat.tools.autoApprove": false,
+  "chat.mcp.discovery.enabled": {
+    "claude-desktop": true,
+    "windsurf": true,
+    "cursor-global": true,
+    "cursor-workspace": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "chatgpt.commentCodeLensEnabled": true
+}
