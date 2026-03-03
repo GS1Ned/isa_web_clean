@@ -1,29 +1,71 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "=== Catalog Health Check ==="
+echo "PREFLIGHT=catalog_health"
 
-# Check 1: Record counts
-echo "Checking catalog record counts..."
-EXPECTED_REGULATIONS=38
-EXPECTED_STANDARDS=60
-EXPECTED_ESRS=1184
-EXPECTED_INITIATIVES=10
-# TODO: Query database for actual counts
-echo "✅ Regulations: $EXPECTED_REGULATIONS"
-echo "✅ Standards: $EXPECTED_STANDARDS+"
-echo "✅ ESRS Datapoints: $EXPECTED_ESRS"
-echo "✅ Dutch Initiatives: $EXPECTED_INITIATIVES"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$REPO_ROOT"
 
-# Check 2: Bidirectional mappings valid
-echo "Checking bidirectional mappings..."
-# TODO: Verify regulation_standard_mappings integrity
-echo "✅ Bidirectional mappings valid"
+require_file() {
+  local path="$1"
+  [[ -f "$path" ]] || {
+    echo "STOP=missing_required_file path=$path"
+    exit 1
+  }
+}
 
-# Check 3: Search index operational
-echo "Checking search functionality..."
-# TODO: Test basic search query
-echo "✅ Search index operational"
+require_pattern() {
+  local pattern="$1"
+  local path="$2"
+  rg -q --fixed-strings "$pattern" "$path" || {
+    echo "STOP=missing_expected_pattern path=$path pattern=$pattern"
+    exit 1
+  }
+}
 
-echo ""
-echo "✅ All Catalog checks passed"
+required_files=(
+  "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+  "server/catalog-authority.ts"
+  "server/catalog-authority.test.ts"
+  "server/db-dataset-registry.ts"
+  "server/routers/dataset-registry.ts"
+  "server/routers/standards-directory.ts"
+  "server/routers/standards-directory.test.ts"
+  "drizzle/schema_dataset_registry.ts"
+)
+
+for path in "${required_files[@]}"; do
+  require_file "$path"
+done
+
+echo "READY=required_files"
+
+require_pattern "authorityTier" "drizzle/schema_dataset_registry.ts"
+require_pattern "publicationStatus" "drizzle/schema_dataset_registry.ts"
+require_pattern "immutableUri" "drizzle/schema_dataset_registry.ts"
+require_pattern "lastVerifiedAt" "drizzle/schema_dataset_registry.ts"
+require_pattern "laneStatus" "drizzle/schema_dataset_registry.ts"
+
+require_pattern "deriveCatalogAuthorityTierFromUrl" "server/db-dataset-registry.ts"
+require_pattern "deriveCatalogAuthorityTierFromUrl" "server/routers/dataset-registry.ts"
+require_pattern "authorityTier: z.string().optional()" "server/routers/dataset-registry.ts"
+require_pattern "publicationStatus: z.string().optional()" "server/routers/dataset-registry.ts"
+require_pattern "immutableUri: z.string().optional()" "server/routers/dataset-registry.ts"
+
+echo "READY=dataset_registry_authority_contract"
+
+require_pattern "authoritativeSourceUrl" "server/routers/standards-directory.ts"
+require_pattern "datasetIdentifier" "server/routers/standards-directory.ts"
+require_pattern "lastVerifiedDate" "server/routers/standards-directory.ts"
+require_pattern "should include transparency metadata" "server/routers/standards-directory.test.ts"
+
+echo "READY=standards_directory_transparency_contract"
+
+require_pattern "## Authority Metadata Expectations" "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+require_pattern "server/catalog-authority.ts" "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+
+echo "READY=runtime_contract_alignment"
+
+pnpm exec vitest run server/catalog-authority.test.ts --no-coverage
+
+echo "DONE=catalog_health_ok repo_root=$REPO_ROOT"

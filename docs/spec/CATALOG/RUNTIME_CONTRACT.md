@@ -50,10 +50,25 @@ CATALOG is the source-of-record capability for regulation, standards, ESRS datap
 - Outputs: typed registry payloads from catalog routers.
 - Field-level payload definitions remain code-truth in tRPC router procedures.
 
+## Authority Metadata Expectations
+- Dataset registry create/update flows must preserve or derive these governance-critical fields:
+  - `authorityTier`
+  - `publicationStatus`
+  - `immutableUri`
+  - source locator field from `source`, `downloadUrl`, or `apiEndpoint`
+  - `lastVerifiedDate`
+- Standards directory detail responses must expose these transparency fields:
+  - `authoritativeSourceUrl`
+  - `datasetIdentifier`
+  - `lastVerifiedDate`
+- Canonical derivation helper for dataset authority tier:
+  - `server/catalog-authority.ts`
+
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/catalog_health.sh -->
 - Smoke probe: `scripts/probe/catalog_health.sh`
 - Tests:
+  - `server/catalog-authority.test.ts`
   - `server/routers/dataset-registry.test.ts`
   - `server/routers/standards-directory.test.ts`
   - `server/routers/__tests__/capability-heartbeat.test.ts`
