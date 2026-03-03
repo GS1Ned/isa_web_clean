@@ -30,12 +30,12 @@
   "contextFilePolicy": {
     "primary": [
       "AGENTS.md",
-      "GEMINI.md",
       "docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md",
+      "docs/governance/ISA_AGENT_HANDOFF_PROTOCOL.md",
       "docs/agent/MCP_POLICY.md"
     ],
     "avoidDuplication": true,
-    "notes": "GEMINI.md must remain a thin adapter and not duplicate canonical policy."
+    "notes": "Point Gemini at canonical ISA docs directly; avoid repo-local adapter files that drift from policy."
   },
   "comments": [
     "This file is a repo-side ISA template, not the final raw Gemini settings file.",
