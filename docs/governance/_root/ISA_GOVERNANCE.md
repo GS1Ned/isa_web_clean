@@ -39,7 +39,7 @@ All AI-generated content must include mandatory citations:
 <!-- EVIDENCE:constraint:server/routers/ask-isa.ts -->
 **Requirement:** All Ask ISA responses, advisory reports, and AI-generated mappings must include citations.
 
-<!-- EVIDENCE:implementation:.git/config -->
+<!-- EVIDENCE:implementation:.git -->
 ### 3. Version Control
 All changes must be tracked in Git with conventional commits:
 - **Commit Format:** `<type>: <description>` (feat, fix, docs, refactor, test, chore, data)
