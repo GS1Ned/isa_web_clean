@@ -1,0 +1,102 @@
+[
+  {
+    "workflow_step": "capability_plan",
+    "phase": "plan",
+    "task_class": "repo_analysis",
+    "default_work_types": ["feature", "bugfix", "refactor", "docs"],
+    "default_executor": "openclaw_vm",
+    "default_validator": "openclaw_vm",
+    "secret_lane": "none",
+    "required_labels": [
+      "phase:plan",
+      "executor:openclaw",
+      "validator:openclaw",
+      "lane:none"
+    ],
+    "notes": "Use for architecture impact analysis, capability scoping, and issue framing before implementation."
+  },
+  {
+    "workflow_step": "capability_implement_fast",
+    "phase": "implement",
+    "task_class": "local_feature_implementation",
+    "default_work_types": ["feature", "bugfix"],
+    "default_executor": "gemini_vscode",
+    "default_validator": "codex_host",
+    "secret_lane": "scm_only",
+    "required_labels": [
+      "phase:implement",
+      "executor:gemini",
+      "validator:codex",
+      "lane:scm-only"
+    ],
+    "notes": "Default host-lane path for issue-scoped capability changes that do not need app secrets."
+  },
+  {
+    "workflow_step": "capability_implement_deep",
+    "phase": "implement",
+    "task_class": "deep_refactor_or_debug_loop",
+    "default_work_types": ["refactor"],
+    "default_executor": "codex_host",
+    "default_validator": "openclaw_vm",
+    "secret_lane": "scm_only",
+    "required_labels": [
+      "phase:implement",
+      "executor:codex",
+      "validator:openclaw",
+      "lane:scm-only"
+    ],
+    "notes": "Use for broad refactors, difficult debug loops, or large cross-file capability changes."
+  },
+  {
+    "workflow_step": "capability_validate_runtime",
+    "phase": "validate",
+    "task_class": "local_app_dev_with_runtime_secrets",
+    "default_work_types": ["feature", "bugfix", "refactor"],
+    "default_executor": "codex_host",
+    "default_validator": "openclaw_vm",
+    "secret_lane": "app_dev",
+    "required_labels": [
+      "phase:validate",
+      "executor:codex",
+      "validator:openclaw",
+      "lane:app-dev",
+      "validation:local-preflight"
+    ],
+    "notes": "Use when the capability requires local DB/provider secrets for runtime validation."
+  },
+  {
+    "workflow_step": "capability_validate_ci",
+    "phase": "validate",
+    "task_class": "github_issue_pr_ops",
+    "default_work_types": ["feature", "bugfix", "refactor", "docs"],
+    "default_executor": "openclaw_vm",
+    "default_validator": "github_checks_and_user",
+    "secret_lane": "scm_only",
+    "required_labels": [
+      "phase:validate",
+      "executor:openclaw",
+      "validator:github-ci",
+      "lane:scm-only",
+      "validation:ci"
+    ],
+    "notes": "Use once a capability branch is in PR and CI is the main validation surface."
+  },
+  {
+    "workflow_step": "capability_deploy_handoff",
+    "phase": "deploy_ready",
+    "task_class": "manus_platform_or_deploy_work",
+    "default_work_types": ["deploy"],
+    "default_executor": "manus_platform",
+    "default_validator": "manus_platform_and_github_ci",
+    "secret_lane": "platform_prod",
+    "required_labels": [
+      "phase:deploy-ready",
+      "executor:manus",
+      "validator:manus-github-ci",
+      "lane:platform-prod",
+      "deploy:required",
+      "deploy:manus"
+    ],
+    "notes": "Use when a capability is ready to cross the production platform boundary."
+  }
+]

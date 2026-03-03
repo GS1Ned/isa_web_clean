@@ -32,11 +32,16 @@ Status: CANONICAL
 
 ## Governance Anchors
 - Governance root: `docs/governance/_root/ISA_GOVERNANCE.md`
+- Document status model: `docs/governance/DOCUMENT_STATUS_MODEL.md`
 - Manual preflight checklist: `docs/governance/MANUAL_PREFLIGHT.md`
 - Planning policy: `docs/governance/PLANNING_POLICY.md`
 - IRON protocol: `docs/governance/IRON_PROTOCOL.md`
+- Agent platform operating model: `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
+- Agent handoff protocol: `docs/governance/ISA_AGENT_HANDOFF_PROTOCOL.md`
+- Capability delivery workflow: `docs/governance/ISA_CAPABILITY_DELIVERY_WORKFLOW.md`
 - Research-output evidence index (distinct from architecture evidence contract): `docs/governance/EVIDENCE_INDEX.md`
 - OpenClaw policy envelope runbook: `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
+- OpenClaw UI model quick reference: `docs/agent/OPENCLAW_UI_MODEL_QUICK_REFERENCE.md`
 - OpenClaw UI ISA prompt starter: `docs/agent/OPENCLAW_UI_DEV_PROMPT_STARTER.md`
 
 ## Default Documentation Mode
