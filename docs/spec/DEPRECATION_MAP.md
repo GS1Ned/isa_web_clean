@@ -65,7 +65,7 @@
 | `./docs/ASK_ISA_QUERY_LIBRARY_v1.md` | catalogue-source-registry.md | active | — | Core source |
 | `./docs/CHANGELOG_FOR_CHATGPT.md` | agent-prompt-governance.md | archived | — | Historical reference |
 | `./docs/CHATGPT_INTEGRATION_CONTRACT.md` | agent-prompt-governance.md | active | — | Core source |
-| `./docs/CHATGPT_INTEGRATION_WORKFLOW.md` | ux-user-journey.md | active | — | Core source |
+| `./docs/CHATGPT_INTEGRATION_WORKFLOW.md` | ux-user-journey.md | archived | — | Historical reference |
 | `./docs/CHATGPT_OPTIMIZATION_EVALUATION.md` | agent-prompt-governance.md | active | — | Core source |
 | `./docs/CHATGPT_WORK_PARCEL_02_ASK_ISA_EXPANSION.md` | agent-prompt-governance.md | active | — | Core source |
 | `./docs/CLEANUP_REPORT.md` | catalogue-source-registry.md | active | — | Core source |
