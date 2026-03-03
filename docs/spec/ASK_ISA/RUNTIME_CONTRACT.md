@@ -44,10 +44,21 @@ ASK_ISA provides grounded question answering with citation-oriented responses ov
 - Outputs: answer payloads with citation-aware grounding metadata and evaluation artifacts.
 - Response field-level shape is code-truth in router implementations; this document does not assert an independent divergent schema.
 
+## Stage-A Validation Expectations
+<!-- EVIDENCE:implementation:server/routers/ask-isa.ts -->
+<!-- EVIDENCE:implementation:server/ask-isa-stage-a.ts -->
+<!-- EVIDENCE:implementation:server/routers/evaluation.ts -->
+- Stage-a ASK_ISA answers must include valid `[Source N]` citations aligned with provided sources.
+- Stage-a ASK_ISA answers must have at least one evidence-backed source with a non-empty `evidenceKey`.
+- Stage-a ASK_ISA answers must abstain when citation or verification checks fail, rather than returning the raw generated answer.
+- Stage-a ASK_ISA answer completeness is currently enforced with a minimum 100-character floor plus claim-verification checks.
+- Evaluation runs must apply the same stage-a gate so offline quality reporting does not overstate runtime readiness.
+
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/ask_isa_smoke.py -->
 - Smoke probe: `scripts/probe/ask_isa_smoke.py`
 - Tests:
+  - `server/ask-isa-stage-a.test.ts`
   - `server/ask-isa-guardrails.test.ts`
   - `server/routers/__tests__/capability-heartbeat.test.ts`
 - Canonical gate alignment:

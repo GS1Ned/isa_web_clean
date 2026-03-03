@@ -52,10 +52,13 @@ import {
 import {
   classifyQuery,
   generateRefusalMessage,
-  validateCitations as validateCitationFormat,
   calculateConfidence,
 } from "../ask-isa-guardrails";
 import { validateCitations } from "../citation-validation";
+import {
+  ASK_ISA_STAGE_A_ABSTENTION_MESSAGE,
+  validateAskISAStageAAnswer,
+} from "../ask-isa-stage-a";
 import { serverLogger } from "../_core/logger-wiring";
 
 import {
@@ -346,7 +349,7 @@ export const askISARouter = router({
             ? answerContent
             : "Sorry, I could not generate an answer.";
 
-        // Step 4: Store conversation if needed
+        // Step 4: Prepare conversation persistence if needed
         let finalConversationId: number | undefined = conversationId;
 
         if (!finalConversationId) {
@@ -358,8 +361,18 @@ export const askISARouter = router({
           finalConversationId = conversation?.id || undefined;
         }
 
-        // Step 5: Store messages
-        if (finalConversationId) {
+        async function persistConversation(
+          answerText: string,
+          sources: Array<{
+            id: number;
+            type: string;
+            title: string;
+            url?: string;
+            similarity: number;
+          }>
+        ) {
+          if (!finalConversationId) return;
+
           await addQAMessage({
             conversationId: finalConversationId,
             role: "user",
@@ -369,55 +382,21 @@ export const askISARouter = router({
           await addQAMessage({
             conversationId: finalConversationId,
             role: "assistant",
-            content: answer,
-            sources: relevantResults.map(result => ({
-              id: result.id,
-              type: result.type,
-              title: result.title,
-              url: result.url,
-              similarity: result.similarity,
-            })),
-            retrievedChunks: relevantResults.length,
+            content: answerText,
+            sources,
+            retrievedChunks: sources.length,
           });
         }
 
-        // Step 6: Validate citations and calculate confidence
-        const citationValidation = validateCitationFormat(answer);
+        // Step 5: Validate citations and calculate confidence
         const confidence = calculateConfidence(relevantResults.length);
-
-        // Retrieval-as-protocol fail-safe: no valid citations means abstain.
-        if (!citationValidation.valid) {
-          const abstentionAnswer =
-            "I cannot provide a compliance-grade answer because required citations are missing or invalid. Please refine the question.";
-          trace.recordAbstention(AbstentionReasonCode.SPECULATION_REQUIRED);
-          await trace.complete();
-          return {
-            answer: abstentionAnswer,
-            sources: validatedSources.map((source, index) => ({
-              id: source.id,
-              type: hybridResults[index]?.type || "regulation",
-              title: source.title,
-              url: source.url,
-              similarity: Math.round(source.similarity * 100),
-              evidenceKey: source.evidenceKey,
-              evidenceKeyReason: source.evidenceKeyReason,
-            })),
-            conversationId: finalConversationId,
-            queryType: classification.type,
-            confidence: { level: "low" as const, score: 0 },
-            citationValid: false,
-            missingCitations: citationValidation.missingElements,
-            abstained: true,
-            abstentionReason: AbstentionReasonCode.SPECULATION_REQUIRED,
-          };
-        }
 
         // Step 6.5: Validate citation provenance and deprecation status
         // Step 7: Programmatic verification (v2.0 modular prompt system)
         const verification = verifyAskISAResponse(
           answer,
           relevantResults,
-          confidence.score
+          Math.max(0, Math.min(1, relevantResults.length / 3))
         );
 
         if (!verification.passed) {
@@ -446,34 +425,76 @@ export const askISARouter = router({
           }))
         );
 
-        const response = {
+        const responseSources = validatedSources.map((source, index) => {
+          const hybridResult = hybridResults[index];
+          return {
+            id: source.id,
+            type: hybridResult?.type || 'regulation',
+            title: source.title,
+            url: source.url,
+            similarity: Math.round(source.similarity * 100),
+            datasetId: source.datasetId,
+            datasetVersion: source.datasetVersion,
+            lastVerifiedDate: source.lastVerifiedDate,
+            isDeprecated: source.isDeprecated,
+            needsVerification: source.needsVerification,
+            deprecationReason: source.deprecationReason,
+            evidenceKey: source.evidenceKey,
+            evidenceKeyReason: source.evidenceKeyReason,
+            authorityLevel: hybridResult?.authorityLevel || 'industry' as AuthorityLevel,
+            authorityScore: hybridResult?.authorityScore || 0.5,
+          };
+        });
+
+        const stageAValidation = validateAskISAStageAAnswer({
           answer,
-          sources: validatedSources.map((source, index) => {
-            const hybridResult = hybridResults[index];
-            return {
+          sourceCount: relevantResults.length,
+          evidenceReadySourceCount: validatedSources.filter(
+            source => typeof source.evidenceKey === "string" && source.evidenceKey.length > 0
+          ).length,
+          claimVerification: claimVerificationResult,
+        });
+
+        if (!stageAValidation.passed) {
+          serverLogger.warn("[AskISA] Stage-A validation failed:", stageAValidation.issues);
+          if (stageAValidation.warnings.length > 0) {
+            serverLogger.warn("[AskISA] Stage-A validation warnings:", stageAValidation.warnings);
+          }
+
+          await persistConversation(
+            ASK_ISA_STAGE_A_ABSTENTION_MESSAGE,
+            responseSources.map(source => ({
               id: source.id,
-              type: hybridResult?.type || 'regulation',
+              type: source.type,
               title: source.title,
               url: source.url,
-              similarity: Math.round(source.similarity * 100),
-              datasetId: source.datasetId,
-              datasetVersion: source.datasetVersion,
-              lastVerifiedDate: source.lastVerifiedDate,
-              isDeprecated: source.isDeprecated,
-              needsVerification: source.needsVerification,
-              deprecationReason: source.deprecationReason,
-              evidenceKey: source.evidenceKey,
-              evidenceKeyReason: source.evidenceKeyReason,
-              // Authority information
-              authorityLevel: hybridResult?.authorityLevel || 'industry' as AuthorityLevel,
-              authorityScore: hybridResult?.authorityScore || 0.5,
-            };
-          }),
+              similarity: source.similarity,
+            }))
+          );
+
+          trace.recordAbstention(AbstentionReasonCode.SPECULATION_REQUIRED);
+          await trace.complete();
+          return {
+            answer: ASK_ISA_STAGE_A_ABSTENTION_MESSAGE,
+            sources: responseSources,
+            conversationId: finalConversationId,
+            queryType: classification.type,
+            confidence: { level: "low" as const, score: 0 },
+            citationValid: false,
+            missingCitations: stageAValidation.issues,
+            abstained: true,
+            abstentionReason: AbstentionReasonCode.SPECULATION_REQUIRED,
+          };
+        }
+
+        const response = {
+          answer,
+          sources: responseSources,
           conversationId: finalConversationId,
           queryType: classification.type,
           confidence,
-          citationValid: citationValidation.valid,
-          missingCitations: citationValidation.missingElements,
+          citationValid: stageAValidation.citationValid,
+          missingCitations: stageAValidation.missingCitations,
           // Overall authority assessment
           authority: authorityScore,
           // Claim-citation verification
@@ -551,6 +572,17 @@ export const askISARouter = router({
 
         // Complete the trace
         await trace.complete();
+
+        await persistConversation(
+          answer,
+          responseSources.map(source => ({
+            id: source.id,
+            type: source.type,
+            title: source.title,
+            url: source.url,
+            similarity: source.similarity,
+          }))
+        );
 
         // Cache the response for future queries
         cacheResponse(question, {
