@@ -7,18 +7,18 @@
         "agents.defaults.workspace",
         "tools.profile"
       ],
-      "note": "This template mirrors the VM dev profile that was applied on 2026-03-03. Keep runtime-only secrets out of repo templates."
+      "note": "This template mirrors the VM isa-research profile prepared on 2026-03-03. Keep runtime-only secrets out of repo templates."
     },
-    "intent": "ISA OpenClaw dev profile template",
-    "profile": "default",
+    "intent": "ISA OpenClaw research profile template",
+    "profile": "isa-research",
     "runtime_mode_hint": "vm_execution_host_editing"
   },
   "agents": {
     "defaults": {
       "model": {
-        "primary": "openrouter/deepseek/deepseek-v3.2",
+        "primary": "openrouter/x-ai/grok-4.1-fast",
         "fallbacks": [
-          "openrouter/minimax/minimax-m2.5"
+          "openrouter/deepseek/deepseek-v3.2"
         ]
       },
       "heartbeat": {

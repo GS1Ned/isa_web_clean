@@ -10,6 +10,7 @@ This runbook defines the enforced controls for ISA OpenClaw usage in regulated e
 - Exec lane: `config/openclaw/exec-lane.policy.json`
 - Skills allowlist: `config/openclaw/skills-allowlist.json`
 - Browser policy: `config/openclaw/browser.policy.json`
+- Model routing policy: `config/openclaw/model-routing.policy.json`
 
 ## Enforcement Model
 - Fail-closed by default.
@@ -35,6 +36,12 @@ For cron/webhook-style calls:
 - Explicit opt-in required via `OPENCLAW_BROWSER_FALLBACK_ALLOWED=1`.
 - Unsafe launch flags remain blocked by default.
 - Runtime enforcement entrypoint: `server/security/browser-automation-policy.ts`.
+
+## Model Routing Policy
+- Current mode is advisory/manual selection only.
+- Default route is the configured primary model plus ordered fallbacks.
+- ISA-specific model selection guidance lives in `config/openclaw/model-routing.policy.json`.
+- Canonical runbook: `docs/governance/OPENCLAW_MODEL_ROUTING_POLICY.md`.
 
 ## Runtime Mode Decision
 - Canonical mode: `vm_only`.
@@ -69,6 +76,7 @@ Tier 0 enforces:
 - `scripts/gates/openclaw-exec-policy.sh`
 - `scripts/gates/openclaw-skills-allowlist.sh`
 - `scripts/gates/openclaw-browser-policy.sh`
+- `scripts/gates/openclaw-model-routing-policy.sh`
 
 ## Operational Notes
 - Do not store token values in repo docs.

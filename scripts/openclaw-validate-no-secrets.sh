@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH:-}"
+
 echo "PREFLIGHT=openclaw_validate_no_secrets"
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -101,6 +103,7 @@ run_and_check policy_envelope bash scripts/gates/openclaw-policy-envelope.sh
 run_and_check exec_policy bash scripts/gates/openclaw-exec-policy.sh
 run_and_check skills_allowlist bash scripts/gates/openclaw-skills-allowlist.sh
 run_and_check browser_policy bash scripts/gates/openclaw-browser-policy.sh
+run_and_check model_routing_policy bash scripts/gates/openclaw-model-routing-policy.sh
 
 if [ "${OPENCLAW_REVERSE_PROXY_EXPOSURE:-0}" = "1" ] && [ -x "scripts/openclaw-trusted-proxies.sh" ]; then
   ACTION="trusted_proxies_status"
