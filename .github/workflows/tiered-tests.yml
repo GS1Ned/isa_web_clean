@@ -22,12 +22,14 @@ on:
       - "scripts/gates/openclaw-exec-policy.sh"
       - "scripts/gates/openclaw-skills-allowlist.sh"
       - "scripts/gates/openclaw-browser-policy.sh"
+      - "scripts/gates/openclaw-model-routing-policy.sh"
       - "scripts/openclaw-*.sh"
       - "scripts/eval/**"
       - ".github/workflows/tiered-tests.yml"
       - "config/openclaw/**"
       - "config/governance/openclaw_policy_envelope.json"
       - "docs/governance/OPENCLAW_POLICY_ENVELOPE.md"
+      - "docs/governance/OPENCLAW_MODEL_ROUTING_POLICY.md"
       - "docs/quality/thresholds/**"
       - "docs/quality/schemas/isa-capability-eval.schema.json"
       - "docs/quality/schemas/isa-drift-report.schema.json"
@@ -54,12 +56,14 @@ on:
       - "scripts/gates/openclaw-exec-policy.sh"
       - "scripts/gates/openclaw-skills-allowlist.sh"
       - "scripts/gates/openclaw-browser-policy.sh"
+      - "scripts/gates/openclaw-model-routing-policy.sh"
       - "scripts/openclaw-*.sh"
       - "scripts/eval/**"
       - ".github/workflows/tiered-tests.yml"
       - "config/openclaw/**"
       - "config/governance/openclaw_policy_envelope.json"
       - "docs/governance/OPENCLAW_POLICY_ENVELOPE.md"
+      - "docs/governance/OPENCLAW_MODEL_ROUTING_POLICY.md"
       - "docs/quality/thresholds/**"
       - "docs/quality/schemas/isa-capability-eval.schema.json"
       - "docs/quality/schemas/isa-drift-report.schema.json"
@@ -116,6 +120,7 @@ jobs:
           bash scripts/gates/openclaw-exec-policy.sh
           bash scripts/gates/openclaw-skills-allowlist.sh
           bash scripts/gates/openclaw-browser-policy.sh
+          bash scripts/gates/openclaw-model-routing-policy.sh
 
   tier-1-stable:
     name: Tier 1 (Stable Unit/Integration)

@@ -1,0 +1,150 @@
+{
+  "version": "1.0.0",
+  "router": {
+    "mode": "operational_assisted_routing",
+    "helper_script": "scripts/openclaw-skill-route.sh",
+    "default_route_id": "general_assist"
+  },
+  "core_verified_skills": [
+    "clawhub",
+    "gh-issues",
+    "github",
+    "healthcheck",
+    "mcporter",
+    "session-logs",
+    "skill-creator",
+    "tmux",
+    "weather"
+  ],
+  "routes": [
+    {
+      "id": "skill_lifecycle",
+      "alias": "ISA Skill Lifecycle",
+      "priority": 100,
+      "match_any": ["skill", "skills", "clawhub", "install", "update", "publish", "sync", "search skill", "new skill"],
+      "preferred_skills": ["clawhub", "skill-creator"],
+      "supporting_skills": ["session-logs"],
+      "best_for": [
+        "skill discovery",
+        "skill installation and updates",
+        "skill authoring and maintenance"
+      ],
+      "workflow_guidance": [
+        "Use clawhub first for search, explore, install, update, and sync actions.",
+        "Use skill-creator when the task turns into creating or restructuring a skill.",
+        "Use session-logs when prior executions or past agent behavior are relevant evidence."
+      ]
+    },
+    {
+      "id": "github_delivery",
+      "alias": "ISA GitHub Delivery",
+      "priority": 95,
+      "match_any": ["github", "issue", "issues", "pull request", "pr", "review", "ci", "workflow", "actions", "release", "repo"],
+      "preferred_skills": ["github", "gh-issues"],
+      "supporting_skills": ["session-logs"],
+      "best_for": [
+        "GitHub issue and PR operations",
+        "CI status and workflow inspection",
+        "delivery follow-through"
+      ],
+      "workflow_guidance": [
+        "Use github for direct repository, PR, issue, and workflow interactions.",
+        "Use gh-issues when the task is issue-driven execution or PR follow-up.",
+        "Use session-logs if prior agent actions need to be checked before acting."
+      ]
+    },
+    {
+      "id": "mcp_tooling",
+      "alias": "ISA MCP Tooling",
+      "priority": 90,
+      "match_any": ["mcp", "model context protocol", "tool schema", "server config", "generate-cli", "emit-ts", "oauth", "tool call", "server tool"],
+      "preferred_skills": ["mcporter"],
+      "supporting_skills": ["clawhub"],
+      "best_for": [
+        "MCP server inspection",
+        "tool schema discovery",
+        "generated CLI and TypeScript client flows"
+      ],
+      "workflow_guidance": [
+        "Use mcporter first to inspect, authenticate, call, or generate MCP tooling.",
+        "Use clawhub if the task requires bringing in additional skill support after inspection."
+      ]
+    },
+    {
+      "id": "operational_health",
+      "alias": "ISA Operational Health",
+      "priority": 85,
+      "match_any": ["health", "doctor", "hardening", "security", "exposure", "audit", "status", "memory", "logs", "risk posture"],
+      "preferred_skills": ["healthcheck", "session-logs"],
+      "supporting_skills": [],
+      "best_for": [
+        "runtime health checks",
+        "security posture review",
+        "session evidence and log inspection"
+      ],
+      "workflow_guidance": [
+        "Use healthcheck for hardening, exposure review, and machine posture checks.",
+        "Use session-logs when history or prior actions are part of the evidence chain."
+      ]
+    },
+    {
+      "id": "terminal_recovery",
+      "alias": "ISA Terminal Recovery",
+      "priority": 80,
+      "match_any": ["tmux", "terminal", "session", "pane", "interactive", "reconnect", "resume shell"],
+      "preferred_skills": ["tmux"],
+      "supporting_skills": ["session-logs"],
+      "best_for": [
+        "interactive terminal control",
+        "recovering or inspecting long-running panes"
+      ],
+      "workflow_guidance": [
+        "Use tmux for interactive session control and pane scraping.",
+        "Use session-logs if the task depends on prior shell activity evidence."
+      ]
+    },
+    {
+      "id": "weather_lookup",
+      "alias": "ISA Weather",
+      "priority": 70,
+      "match_any": ["weather", "forecast", "temperature", "rain", "wind"],
+      "preferred_skills": ["weather"],
+      "supporting_skills": [],
+      "best_for": [
+        "weather lookups and simple forecasts"
+      ],
+      "workflow_guidance": [
+        "Use weather for direct forecast and current-condition queries."
+      ]
+    },
+    {
+      "id": "gemini_cli",
+      "alias": "ISA Gemini CLI",
+      "priority": 60,
+      "match_any": ["gemini cli", "gemini command", "gemini auth", "gemini prompt"],
+      "preferred_skills": ["gemini"],
+      "supporting_skills": [],
+      "best_for": [
+        "Gemini CLI specific tasks"
+      ],
+      "workflow_guidance": [
+        "Only use gemini when its CLI is actually authenticated and functional in the current runtime."
+      ]
+    },
+    {
+      "id": "general_assist",
+      "alias": "ISA General Skill Assist",
+      "priority": 10,
+      "match_any": [],
+      "preferred_skills": [],
+      "supporting_skills": ["healthcheck", "session-logs"],
+      "best_for": [
+        "general ISA assistance when no strong skill pattern matches"
+      ],
+      "workflow_guidance": [
+        "Do not force a skill when the task does not benefit from one.",
+        "Use healthcheck or session-logs opportunistically when they add evidence or operational value."
+      ]
+    }
+  ]
+}

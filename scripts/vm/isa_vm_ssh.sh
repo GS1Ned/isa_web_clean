@@ -107,25 +107,40 @@ if [ "$FORWARD_AGENT" -eq 1 ]; then
   SSH_BASE=(-A "${SSH_BASE[@]}")
 fi
 
+emit_filtered_ssh_stderr() {
+  local stderr_file="$1"
+  [ -s "$stderr_file" ] || return 0
+
+  if grep -Ev '^(Connection closed by .+ port [0-9]+|Shared connection to .+ closed\.|Connection to .+ closed\.)$' "$stderr_file" >&2; then
+    return 0
+  fi
+}
+
 retry_exec() {
   local attempt rc
   local backoff="$BACKOFF_BASE"
+  local stderr_file
   attempt=1
+  stderr_file="$(mktemp /tmp/isa_vm_ssh.stderr.XXXXXX)"
+  trap 'rm -f "$stderr_file"' RETURN
   while :; do
     set +e
     if [ -n "$STDIN_FILE" ]; then
-      "${SSH_BASE[@]}" "$@" < "$STDIN_FILE"
+      "${SSH_BASE[@]}" -T "$@" < "$STDIN_FILE" 2>"$stderr_file"
     else
-      "${SSH_BASE[@]}" "$@"
+      "${SSH_BASE[@]}" -T "$@" 2>"$stderr_file"
     fi
     rc=$?
     set -e
     if [ "$rc" -eq 0 ]; then
+      emit_filtered_ssh_stderr "$stderr_file"
       return 0
     fi
     if [ "$attempt" -ge "$RETRIES" ]; then
+      cat "$stderr_file" >&2
       return "$rc"
     fi
+    : > "$stderr_file"
     sleep "$backoff"
     backoff=$((backoff * 2))
     attempt=$((attempt + 1))
@@ -182,14 +197,19 @@ case "$SUBCOMMAND" in
       exit 1
     fi
     log_ready "READY=isa_vm_ssh_tunnel_up host=$VM_HOST local_forward=$LOCAL_FORWARD"
+    local_stderr_file="$(mktemp /tmp/isa_vm_ssh.stderr.XXXXXX)"
     set +e
-    "${SSH_BASE[@]}" -fN -M -S "$SOCKET_PATH" -o ExitOnForwardFailure=yes -L "$LOCAL_FORWARD" "$VM_HOST"
+    "${SSH_BASE[@]}" -fN -M -S "$SOCKET_PATH" -o ExitOnForwardFailure=yes -L "$LOCAL_FORWARD" "$VM_HOST" 2>"$local_stderr_file"
     rc=$?
     set -e
     if [ "$rc" -eq 0 ]; then
+      emit_filtered_ssh_stderr "$local_stderr_file"
+      rm -f "$local_stderr_file"
       log_ready "DONE=isa_vm_ssh_tunnel_up"
       exit 0
     fi
+    cat "$local_stderr_file" >&2
+    rm -f "$local_stderr_file"
     echo "STOP=vm_ssh_tunnel_failed host=$VM_HOST exit=$rc"
     exit "$rc"
     ;;
