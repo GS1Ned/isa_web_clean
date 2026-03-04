@@ -1,5 +1,5 @@
 {
-  "date": "20260304T000000Z",
+  "date": "20260304T100623Z",
   "status": "CANONICAL",
   "schema_version": "1.0",
   "execution_rules": {
@@ -71,6 +71,143 @@
       "source_plan": "ISA technical documentation canon and synthesized target architecture (2026-03-04)",
       "task_refs": [
         "ARCH-CHANGE-INTELLIGENCE"
+      ]
+    },
+    {
+      "id": "ISA2-0004",
+      "priority": "P0",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Stand up the decision-quality gold set and benchmark harness for ESRS_MAPPING, ASK_ISA, and ADVISORY",
+      "next_action": "Convert the research synthesis into an initial gold set, rubric set, and schema-validated evaluation harness so ISA can measure mapping correctness, advisory quality, and evidence-bound answer quality before further feature expansion.",
+      "acceptance_criteria": "A first decision-grade benchmark suite exists with gold-set categories, executable fixtures, and schema-validated result artifacts for ESRS mapping, advisory outputs, and grounded Q&A.",
+      "evidence_links": [
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
+        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+        "drizzle/schema_corpus_governance.ts",
+        "data/metadata/rag_eval_fixtures_v1.json"
+      ],
+      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-03-04T10:06:23Z",
+      "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
+      "task_refs": [
+        "RES-001",
+        "BENCH-001",
+        "BENCH-005",
+        "BENCH-006"
+      ]
+    },
+    {
+      "id": "ISA2-0005",
+      "priority": "P1",
+      "status": "READY",
+      "capability": "ESRS_MAPPING",
+      "title": "Formalize the confidence and abstention contract for ESRS_MAPPING outputs and downstream ADVISORY packaging",
+      "next_action": "Define how confidence score, confidence basis, uncertainty class, abstention, and review thresholds are represented so decision artifacts become decision-grade rather than merely plausible.",
+      "acceptance_criteria": "ESRS_MAPPING and ADVISORY expose a stable confidence contract with explicit evidence basis, uncertainty handling, and review/escalation semantics backed by code and tests.",
+      "evidence_links": [
+        "docs/spec/ARCHITECTURE.md",
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
+        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md"
+      ],
+      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-03-04T10:06:23Z",
+      "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
+      "task_refs": [
+        "RES-002",
+        "BENCH-005",
+        "BENCH-006"
+      ]
+    },
+    {
+      "id": "ISA2-0006",
+      "priority": "P1",
+      "status": "READY",
+      "capability": "KNOWLEDGE_BASE",
+      "title": "Automate provenance verification and citation integrity gates across CATALOG and KNOWLEDGE_BASE",
+      "next_action": "Move from provenance metadata being merely present to provenance verification being enforced through content-hash, verification timestamp, source authenticity, and citation-integrity checks.",
+      "acceptance_criteria": "Ingest and retrieval paths enforce strong provenance fields and citation-integrity checks, with deterministic verification artifacts that downstream capabilities can trust.",
+      "evidence_links": [
+        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+        "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+        "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+        "server/services/canonical-facts/index.ts"
+      ],
+      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-03-04T10:06:23Z",
+      "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
+      "task_refs": [
+        "RES-003",
+        "BENCH-003"
+      ]
+    },
+    {
+      "id": "ISA2-0007",
+      "priority": "P1",
+      "status": "READY",
+      "capability": "NEWS_HUB",
+      "title": "Model regulatory events, deadline extraction, and downstream advisory triggers in NEWS_HUB",
+      "next_action": "Define and implement a regulatory event primitive that distinguishes authoritative change, guidance, consultation, enforcement, and supporting news so NEWS_HUB can trigger downstream roadmap and advisory updates.",
+      "acceptance_criteria": "NEWS_HUB exposes a typed event model with deadline and significance fields that can drive change-intelligence surfaces and downstream advisory triggers.",
+      "evidence_links": [
+        "docs/spec/ARCHITECTURE.md",
+        "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+        "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json",
+        "docs/spec/NEWS_HUB/ISA_NEWSHUB_TARGET_DESIGN.md"
+      ],
+      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-03-04T10:06:23Z",
+      "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
+      "task_refs": [
+        "RES-004",
+        "BENCH-002"
+      ]
+    },
+    {
+      "id": "ISA2-0008",
+      "priority": "P1",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Operationalize OpenTelemetry spans, SLO artifacts, and regression alerts for evidence-backed ISA flows",
+      "next_action": "Turn the existing SLO and telemetry docs into real runtime instrumentation and regression signaling for ASK_ISA, NEWS_HUB, ESRS_MAPPING, and ADVISORY-critical paths.",
+      "acceptance_criteria": "Decision, retrieval, and change-intelligence paths emit actionable telemetry; SLO artifacts and regression alerts are backed by real runtime signals rather than draft-only docs.",
+      "evidence_links": [
+        "docs/sre/SLO_CATALOG.md",
+        "docs/sre/OTEL.md",
+        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+        "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+      ],
+      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-03-04T10:06:23Z",
+      "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
+      "task_refs": [
+        "RES-005",
+        "BENCH-002",
+        "BENCH-005"
+      ]
+    },
+    {
+      "id": "ISA2-0009",
+      "priority": "P2",
+      "status": "READY",
+      "capability": "CATALOG",
+      "title": "Prioritize authoritative source expansion for EFRAG taxonomy, EU regulatory feeds, and GS1 Digital Link where ingestion leverage is highest",
+      "next_action": "Use authority, machine-readability, and maintenance burden to select the next highest-leverage ingest targets instead of expanding data sources opportunistically.",
+      "acceptance_criteria": "A small, reviewable source-expansion slice is chosen and justified against authority, ingestibility, maintenance burden, and expected impact on mapping or change-intelligence quality.",
+      "evidence_links": [
+        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+        "docs/spec/ADVISORY/efrag_xbrl_research.md",
+        "docs/spec/CATALOG/DATASETS_CATALOG.md",
+        "docs/spec/CATALOG/GS1_DOCUMENTS_DATASETS_ANALYSIS.md"
+      ],
+      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-03-04T10:06:23Z",
+      "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
+      "task_refs": [
+        "RES-006"
       ]
     },
     {
@@ -352,6 +489,6 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-03-04T00:00:00Z"
+    "last_updated_at_utc": "2026-03-04T10:06:23Z"
   }
 }
