@@ -16,6 +16,7 @@ import {
 import { generateReportHtmlForPdf } from "../advisory-report-export";
 import { EsrsDecisionArtifactsSchema } from "../esrs-decision-artifacts.js";
 import { resolveVersionDecisionArtifacts } from "../advisory-report-versioning.js";
+import { buildDecisionArtifactDiffSummary } from "../advisory-report-decision-diff.js";
 
 /**
  * Advisory Reports Router
@@ -83,7 +84,18 @@ export const advisoryReportsRouter = router({
   versions: publicProcedure
     .input(z.object({ reportId: z.number() }))
     .query(async ({ input }) => {
-      return await getReportVersions(input.reportId);
+      const [sourceReport, versions] = await Promise.all([
+        getAdvisoryReportById(input.reportId),
+        getReportVersions(input.reportId),
+      ]);
+
+      return versions.map(version => ({
+        ...version,
+        decisionArtifactDiff: buildDecisionArtifactDiffSummary({
+          currentArtifacts: sourceReport?.decisionArtifacts,
+          snapshotArtifacts: version.decisionArtifacts,
+        }),
+      }));
     }),
 
   /**
