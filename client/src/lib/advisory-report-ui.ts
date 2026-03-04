@@ -1,3 +1,5 @@
+import type { DecisionArtifactCardData } from "@/components/DecisionArtifactCard";
+
 export type AdvisoryBadgeVariant = "default" | "secondary" | "destructive" | "outline";
 
 export interface AdvisoryBadgeTone {
@@ -15,6 +17,15 @@ export function formatDecisionArtifactCount(count: number) {
 
 export function formatAdvisoryVersionLabel(version: string) {
   return version.startsWith("v") ? version : `v${version}`;
+}
+
+export function formatAdvisoryTimestamp(value?: string | Date | null) {
+  if (!value) {
+    return "N/A";
+  }
+
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? "N/A" : date.toLocaleString();
 }
 
 export function formatDecisionArtifactConfidenceDelta(value: number | null) {
@@ -38,6 +49,27 @@ export function getDecisionArtifactDiffTone(hasChanges: boolean): AdvisoryBadgeT
     variant: "secondary",
     className: "bg-emerald-100 text-emerald-800 border-transparent",
   };
+}
+
+export function isDecisionArtifactCardData(value: unknown): value is DecisionArtifactCardData {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    typeof (value as DecisionArtifactCardData).artifactVersion === "string" &&
+    typeof (value as DecisionArtifactCardData).artifactType === "string" &&
+    typeof (value as DecisionArtifactCardData).capability === "string" &&
+    typeof (value as DecisionArtifactCardData).confidence?.level === "string" &&
+    typeof (value as DecisionArtifactCardData).confidence?.score === "number" &&
+    typeof (value as DecisionArtifactCardData).confidence?.basis === "string"
+  );
+}
+
+export function normalizeDecisionArtifacts(value: unknown): DecisionArtifactCardData[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter(isDecisionArtifactCardData);
 }
 
 export function getAdvisoryReviewStatusTone(status: string): AdvisoryBadgeTone {

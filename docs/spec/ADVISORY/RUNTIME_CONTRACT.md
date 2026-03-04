@@ -5,7 +5,7 @@ COMPONENT: runtime
 FUNCTION_LABEL: "Advisory report generation, diffing and artifact governance"
 OWNER: gs1ned-isa
 STATUS: active
-LAST_VERIFIED: 2026-02-20
+LAST_VERIFIED: 2026-03-04
 VERIFICATION_METHOD: repo-evidence
 ---
 
@@ -37,7 +37,7 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
 - Outputs: advisory report payloads, version metadata, and diff artifacts.
 - `advisory_reports` records may persist additive upstream `decisionArtifacts` envelopes from `ESRS_MAPPING` for downstream export, review, and traceability.
 - `advisory_report_versions` snapshots may persist the same additive `decisionArtifacts` envelopes so version history preserves the decision-core evidence available at the time the snapshot was created.
-- The advisory compare surface may prefer `advisory_reports` plus `advisory_report_versions` snapshot-backed `decisionArtifactDiff` summaries over legacy file-based advisory diff JSON when snapshot-backed data exists.
+- Advisory diff and compare surfaces may prefer `advisory_reports` plus `advisory_report_versions` snapshot-backed `decisionArtifactDiff` summaries over legacy file-based advisory diff JSON when snapshot-backed data exists.
 - Human-readable advisory export layers may serialise additive upstream `decisionArtifact` envelopes from `ESRS_MAPPING` without replacing the underlying capability-specific payload.
 - Field-level payload shape remains code-truth in ADVISORY router procedures.
 
