@@ -9,25 +9,36 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, CheckCircle2, Filter, Search, XCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { buildAdvisoryExplorerModel } from "@/lib/advisory-explorer";
+import {
+  buildAdvisoryExplorerInventory,
+  buildAdvisoryExplorerModel,
+  EXPLORER_ALL_FILTER_VALUE,
+  formatExplorerFilterLabel,
+  fromExplorerSelectValue,
+  toExplorerSelectValue,
+} from "@/lib/advisory-explorer";
 
-type ConfidenceLevel = "direct" | "partial" | "missing" | undefined;
-type SeverityLevel = "critical" | "moderate" | "low-priority" | undefined;
-type TimeframeLevel = "short-term" | "medium-term" | "long-term" | undefined;
-type SectorType = "DIY" | "FMCG" | "Healthcare" | "All" | undefined;
+type ExplorerFilterValue = string | undefined;
 
 export default function AdvisoryExplorer() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedSector, setSelectedSector] = useState<SectorType>(undefined);
-  const [selectedRegulation, setSelectedRegulation] = useState<string | undefined>(undefined);
-  const [selectedConfidence, setSelectedConfidence] = useState<ConfidenceLevel>(undefined);
-  const [selectedSeverity, setSelectedSeverity] = useState<SeverityLevel>(undefined);
-  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeframeLevel>(undefined);
+  const [selectedSector, setSelectedSector] = useState<ExplorerFilterValue>(undefined);
+  const [selectedRegulation, setSelectedRegulation] = useState<ExplorerFilterValue>(undefined);
+  const [selectedConfidence, setSelectedConfidence] = useState<ExplorerFilterValue>(undefined);
+  const [selectedSeverity, setSelectedSeverity] = useState<ExplorerFilterValue>(undefined);
+  const [selectedTimeframe, setSelectedTimeframe] = useState<ExplorerFilterValue>(undefined);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const { data: advisory, isLoading } = trpc.advisory.getFull.useQuery();
   const explorerModel = buildAdvisoryExplorerModel(advisory);
+  const explorerInventory = buildAdvisoryExplorerInventory(explorerModel);
+  const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+
+  const handleOptionalFilterChange =
+    (setter: (value: ExplorerFilterValue) => void) => (value: string) => {
+      setter(fromExplorerSelectValue(value));
+    };
 
   // Filter by search query (client-side)
   const filteredMappings = explorerModel.mappings.filter(m => {
@@ -44,9 +55,9 @@ export default function AdvisoryExplorer() {
     }
 
     return (
-      searchQuery === "" ||
-      m.regulationDatapoint.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.gs1Attribute?.toLowerCase().includes(searchQuery.toLowerCase())
+      normalizedSearchQuery === "" ||
+      m.regulationDatapoint.toLowerCase().includes(normalizedSearchQuery) ||
+      m.gs1Attribute?.toLowerCase().includes(normalizedSearchQuery)
     );
   });
 
@@ -64,9 +75,9 @@ export default function AdvisoryExplorer() {
     }
 
     return (
-      searchQuery === "" ||
-      g.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      g.description.toLowerCase().includes(searchQuery.toLowerCase())
+      normalizedSearchQuery === "" ||
+      g.title.toLowerCase().includes(normalizedSearchQuery) ||
+      g.description.toLowerCase().includes(normalizedSearchQuery)
     );
   });
 
@@ -76,9 +87,9 @@ export default function AdvisoryExplorer() {
     }
 
     return (
-      searchQuery === "" ||
-      r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.description.toLowerCase().includes(searchQuery.toLowerCase())
+      normalizedSearchQuery === "" ||
+      r.title.toLowerCase().includes(normalizedSearchQuery) ||
+      r.description.toLowerCase().includes(normalizedSearchQuery)
     );
   });
 
@@ -139,16 +150,20 @@ export default function AdvisoryExplorer() {
             {/* Sector */}
             <div>
               <label className="text-sm font-medium mb-2 block">Sector</label>
-              <Select value={selectedSector} onValueChange={(v) => setSelectedSector(v as SectorType)}>
+              <Select
+                value={toExplorerSelectValue(selectedSector)}
+                onValueChange={handleOptionalFilterChange(setSelectedSector)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="All sectors" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="undefined">All sectors</SelectItem>
-                  <SelectItem value="DIY">DIY</SelectItem>
-                  <SelectItem value="FMCG">FMCG</SelectItem>
-                  <SelectItem value="Healthcare">Healthcare</SelectItem>
-                  <SelectItem value="All">All (cross-sector)</SelectItem>
+                  <SelectItem value={EXPLORER_ALL_FILTER_VALUE}>All sectors</SelectItem>
+                  {explorerInventory.sectors.map((sector) => (
+                    <SelectItem key={sector} value={sector}>
+                      {formatExplorerFilterLabel(sector)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -156,19 +171,20 @@ export default function AdvisoryExplorer() {
             {/* Regulation */}
             <div>
               <label className="text-sm font-medium mb-2 block">Regulation</label>
-              <Select value={selectedRegulation} onValueChange={setSelectedRegulation}>
+              <Select
+                value={toExplorerSelectValue(selectedRegulation)}
+                onValueChange={handleOptionalFilterChange(setSelectedRegulation)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="All regulations" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="undefined">All regulations</SelectItem>
-                  <SelectItem value="ESRS E1">ESRS E1</SelectItem>
-                  <SelectItem value="ESRS E2">ESRS E2</SelectItem>
-                  <SelectItem value="ESRS E3">ESRS E3</SelectItem>
-                  <SelectItem value="ESRS E4">ESRS E4</SelectItem>
-                  <SelectItem value="ESRS E5">ESRS E5</SelectItem>
-                  <SelectItem value="EUDR">EUDR</SelectItem>
-                  <SelectItem value="DPP">DPP</SelectItem>
+                  <SelectItem value={EXPLORER_ALL_FILTER_VALUE}>All regulations</SelectItem>
+                  {explorerInventory.regulations.map((regulation) => (
+                    <SelectItem key={regulation} value={regulation}>
+                      {formatExplorerFilterLabel(regulation)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -176,15 +192,20 @@ export default function AdvisoryExplorer() {
             {/* Confidence (Mappings tab) */}
             <div>
               <label className="text-sm font-medium mb-2 block">Confidence</label>
-              <Select value={selectedConfidence} onValueChange={(v) => setSelectedConfidence(v as ConfidenceLevel)}>
+              <Select
+                value={toExplorerSelectValue(selectedConfidence)}
+                onValueChange={handleOptionalFilterChange(setSelectedConfidence)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="All levels" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="undefined">All levels</SelectItem>
-                  <SelectItem value="direct">Direct</SelectItem>
-                  <SelectItem value="partial">Partial</SelectItem>
-                  <SelectItem value="missing">Missing</SelectItem>
+                  <SelectItem value={EXPLORER_ALL_FILTER_VALUE}>All levels</SelectItem>
+                  {explorerInventory.confidenceLevels.map((confidenceLevel) => (
+                    <SelectItem key={confidenceLevel} value={confidenceLevel}>
+                      {formatExplorerFilterLabel(confidenceLevel)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -192,15 +213,20 @@ export default function AdvisoryExplorer() {
             {/* Severity (Gaps tab) */}
             <div>
               <label className="text-sm font-medium mb-2 block">Gap Severity</label>
-              <Select value={selectedSeverity} onValueChange={(v) => setSelectedSeverity(v as SeverityLevel)}>
+              <Select
+                value={toExplorerSelectValue(selectedSeverity)}
+                onValueChange={handleOptionalFilterChange(setSelectedSeverity)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="All severities" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="undefined">All severities</SelectItem>
-                  <SelectItem value="critical">Critical</SelectItem>
-                  <SelectItem value="moderate">Moderate</SelectItem>
-                  <SelectItem value="low-priority">Low Priority</SelectItem>
+                  <SelectItem value={EXPLORER_ALL_FILTER_VALUE}>All severities</SelectItem>
+                  {explorerInventory.gapSeverities.map((gapSeverity) => (
+                    <SelectItem key={gapSeverity} value={gapSeverity}>
+                      {formatExplorerFilterLabel(gapSeverity)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -208,15 +234,20 @@ export default function AdvisoryExplorer() {
             {/* Timeframe (Recommendations tab) */}
             <div>
               <label className="text-sm font-medium mb-2 block">Timeframe</label>
-              <Select value={selectedTimeframe} onValueChange={(v) => setSelectedTimeframe(v as TimeframeLevel)}>
+              <Select
+                value={toExplorerSelectValue(selectedTimeframe)}
+                onValueChange={handleOptionalFilterChange(setSelectedTimeframe)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="All timeframes" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="undefined">All timeframes</SelectItem>
-                  <SelectItem value="short-term">Short-term</SelectItem>
-                  <SelectItem value="medium-term">Medium-term</SelectItem>
-                  <SelectItem value="long-term">Long-term</SelectItem>
+                  <SelectItem value={EXPLORER_ALL_FILTER_VALUE}>All timeframes</SelectItem>
+                  {explorerInventory.recommendationTimeframes.map((timeframe) => (
+                    <SelectItem key={timeframe} value={timeframe}>
+                      {formatExplorerFilterLabel(timeframe)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -276,7 +307,7 @@ export default function AdvisoryExplorer() {
                       mapping.confidence === "partial" ? "bg-yellow-600" :
                       ""
                     }>
-                      {mapping.confidence}
+                      {formatExplorerFilterLabel(mapping.confidence)}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -330,7 +361,7 @@ export default function AdvisoryExplorer() {
                     } className={
                       gap.category === "moderate" ? "bg-orange-600" : ""
                     }>
-                      {gap.category}
+                      {formatExplorerFilterLabel(gap.category)}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -375,7 +406,7 @@ export default function AdvisoryExplorer() {
                       rec.timeframe === "medium-term" ? "bg-blue-600" :
                       ""
                     }>
-                      {rec.timeframe}
+                      {formatExplorerFilterLabel(rec.timeframe)}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -424,7 +455,7 @@ export default function AdvisoryExplorer() {
                         selectedItem.confidence === "partial" ? "secondary" :
                         "destructive"
                       }>
-                        {selectedItem.confidence}
+                        {formatExplorerFilterLabel(selectedItem.confidence)}
                       </Badge>
                     </div>
                     <div>
@@ -450,7 +481,7 @@ export default function AdvisoryExplorer() {
                         selectedItem.category === "moderate" ? "default" :
                         "secondary"
                       }>
-                        {selectedItem.category}
+                        {formatExplorerFilterLabel(selectedItem.category)}
                       </Badge>
                     </div>
                     <div>
@@ -465,7 +496,7 @@ export default function AdvisoryExplorer() {
                   <>
                     <div>
                       <h4 className="font-semibold mb-1">Timeframe</h4>
-                      <Badge>{selectedItem.timeframe}</Badge>
+                      <Badge>{formatExplorerFilterLabel(selectedItem.timeframe)}</Badge>
                     </div>
                     <div>
                       <h4 className="font-semibold mb-1">Category</h4>
