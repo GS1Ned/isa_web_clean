@@ -3,6 +3,11 @@
  * Phase 1 Enhancement: Generate professional Markdown reports from analysis results
  */
 
+import type {
+  EsrsAttributeRecommendationDecisionArtifact,
+  EsrsGapAnalysisDecisionArtifact,
+} from "./esrs-decision-artifacts";
+
 // Database operations use in-memory storage for demo
 
 // =============================================================================
@@ -18,7 +23,9 @@ export interface GapAnalysisReportInput {
   companyName?: string;
   preparedFor?: string;
   preparedBy?: string;
-  gapAnalysisResult: any;
+  gapAnalysisResult: any & {
+    decisionArtifact?: EsrsGapAnalysisDecisionArtifact;
+  };
 }
 
 export interface AttributeRecommendationReportInput {
@@ -30,7 +37,71 @@ export interface AttributeRecommendationReportInput {
   companyName?: string;
   preparedFor?: string;
   preparedBy?: string;
-  recommendationResult: any;
+  recommendationResult: any & {
+    decisionArtifact?: EsrsAttributeRecommendationDecisionArtifact;
+  };
+}
+
+function formatDecisionSummaryLabel(key: string) {
+  return key
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (match) => match.toUpperCase());
+}
+
+function formatDecisionSummaryValue(value: unknown) {
+  if (Array.isArray(value)) {
+    return value.length === 0 ? "None" : value.join(", ");
+  }
+
+  if (typeof value === "boolean") {
+    return value ? "Yes" : "No";
+  }
+
+  if (value == null || value === "") {
+    return "N/A";
+  }
+
+  return String(value);
+}
+
+function appendDecisionArtifactSection(
+  lines: string[],
+  artifact?: EsrsGapAnalysisDecisionArtifact | EsrsAttributeRecommendationDecisionArtifact,
+) {
+  if (!artifact) {
+    return;
+  }
+
+  lines.push("## Decision artifact");
+  lines.push("");
+  lines.push("This section captures the stable ESRS_MAPPING decision-core envelope used by downstream UI and delivery consumers.");
+  lines.push("");
+  lines.push(`- **Capability:** ${artifact.capability}`);
+  lines.push(`- **Artifact Type:** ${artifact.artifactType}`);
+  lines.push(`- **Artifact Version:** ${artifact.artifactVersion}`);
+  lines.push(`- **Confidence Level:** ${artifact.confidence.level}`);
+  lines.push(`- **Confidence Score:** ${Math.round(artifact.confidence.score * 100)}%`);
+  lines.push(`- **Confidence Basis:** ${artifact.confidence.basis}`);
+  lines.push("");
+
+  const summaryEntries = Object.entries(artifact.summary ?? {});
+  if (summaryEntries.length > 0) {
+    lines.push("### Decision summary");
+    lines.push("");
+    lines.push("| Field | Value |");
+    lines.push("|-------|-------|");
+    for (const [key, value] of summaryEntries) {
+      lines.push(`| ${formatDecisionSummaryLabel(key)} | ${formatDecisionSummaryValue(value)} |`);
+    }
+    lines.push("");
+  }
+
+  lines.push("### Evidence sources");
+  lines.push("");
+  lines.push(`- **Code Paths:** ${(artifact.evidence.codePaths || []).join(", ") || "N/A"}`);
+  lines.push(`- **Data Sources:** ${(artifact.evidence.dataSources || []).join(", ") || "N/A"}`);
+  lines.push("");
 }
 
 // =============================================================================
@@ -97,6 +168,8 @@ export function generateGapAnalysisMarkdown(input: GapAnalysisReportInput): stri
     }
     lines.push('');
   }
+
+  appendDecisionArtifactSection(lines, gapAnalysisResult?.decisionArtifact);
 
   // Detailed Findings
   if (includeDetailedFindings) {
@@ -264,6 +337,8 @@ export function generateAttributeRecommendationMarkdown(input: AttributeRecommen
     lines.push(`| Estimated Implementation Effort | ${recommendationResult?.summary?.estimatedImplementationEffort || 'Medium'} |`);
     lines.push('');
   }
+
+  appendDecisionArtifactSection(lines, recommendationResult?.decisionArtifact);
 
   // Detailed Recommendations
   if (includeDetailedFindings) {
