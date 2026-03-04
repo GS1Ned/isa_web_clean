@@ -1,4 +1,5 @@
 const {
+  readJson,
   readJsonl,
   avg,
   safeDiv,
@@ -11,7 +12,10 @@ const { measureRuntimeProbe } = require("../lib/runtime-probes.cjs");
 async function evaluate(context) {
   const { registryEntry, datasets, thresholdsByMetric, fixtureVersion } = context;
   const dataset = selectDatasetByPrefix(datasets, "esrs_mapping_gold_");
+  const negativeDataset = selectDatasetByPrefix(datasets, "esrs_mapping_negative_");
   const rows = readJsonl(dataset.path);
+  const negativePayload = readJson(negativeDataset.path);
+  const negativeCases = Array.isArray(negativePayload.cases) ? negativePayload.cases : [];
 
   const precision = safeDiv(
     rows.filter((row) => {
@@ -36,6 +40,27 @@ async function evaluate(context) {
     rows.filter((row) => String(row.sourceAuthority || "").toLowerCase().includes("gs1")).length,
     rows.length,
     0
+  );
+
+  const negativeCaseCoverage = Number(
+    safeDiv(
+      negativeCases.filter((row) => {
+        return (
+          row?.expectedOutcome === "no_mapping" &&
+          row?.actualOutcome === "no_mapping" &&
+          typeof row?.rationale === "string" &&
+          row.rationale.trim().length > 20 &&
+          typeof row?.sourceAuthority === "string" &&
+          row.sourceAuthority.trim().length > 0 &&
+          typeof row?.source_file === "string" &&
+          row.source_file.trim().length > 0 &&
+          Array.isArray(row?.sectors) &&
+          row.sectors.length > 0
+        );
+      }).length,
+      negativeCases.length,
+      0
+    ).toFixed(4)
   );
 
   const contractAdherence = Number(avg([precision, explainability, authority]).toFixed(4));
@@ -112,6 +137,16 @@ async function evaluate(context) {
       fixture_version: fixtureVersion,
     },
     {
+      dataset_id: negativeDataset.id,
+      metric_id: "esrs.mapping.negative_case_coverage",
+      dimension: "negative case coverage",
+      kind: "coverage",
+      value: negativeCaseCoverage,
+      fixture_path: negativeDataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
+    },
+    {
       dataset_id: dataset.id,
       metric_id: "esrs.mapping.contract.adherence",
       dimension: "contract adherence",
@@ -160,7 +195,7 @@ async function evaluate(context) {
   const latencyThreshold = thresholdsByMetric["esrs.mapping.latency.p95_ms"].value;
   const rollups = {
     correctness: Number(precision.toFixed(4)),
-    coverage: Number(coverage.toFixed(4)),
+    coverage: Number(avg([coverage, negativeCaseCoverage]).toFixed(4)),
     explainability: Number(explainability.toFixed(4)),
     authority: Number(authority.toFixed(4)),
     contract_adherence: contractAdherence,
@@ -174,9 +209,9 @@ async function evaluate(context) {
 
   return {
     capability: "ESRS_MAPPING",
-    datasetIds: [dataset.id],
+    datasetIds: [dataset.id, negativeDataset.id],
     fixtureVersion,
-    sampleCount: rows.length,
+    sampleCount: rows.length + negativeCases.length,
     minimumSamples: datasets.reduce((sum, d) => sum + Number(d.minimum_samples || 0), 0),
     contractPath: registryEntry.contract_path,
     metrics,

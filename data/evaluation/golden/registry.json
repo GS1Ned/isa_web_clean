@@ -79,9 +79,9 @@
       "enforcement": "warn",
       "contract_path": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
       "fixture_tiers": {
-        "stage_a": ["esrs_mapping_gold_v1"],
-        "stage_b": ["esrs_mapping_gold_v2"],
-        "stage_c": ["esrs_mapping_gold_v2"]
+        "stage_a": ["esrs_mapping_gold_v1", "esrs_mapping_negative_v1"],
+        "stage_b": ["esrs_mapping_gold_v2", "esrs_mapping_negative_v2"],
+        "stage_c": ["esrs_mapping_gold_v2", "esrs_mapping_negative_v2"]
       },
       "datasets": [
         {
@@ -96,6 +96,20 @@
           "path": "data/evaluation/golden/esrs_mapping/mappings_v2.jsonl",
           "format": "jsonl",
           "minimum_samples": 27,
+          "source": "data/advisories/ISA_ADVISORY_v1.1.json"
+        },
+        {
+          "id": "esrs_mapping_negative_v1",
+          "path": "data/evaluation/golden/esrs_mapping/negative_cases_v1.json",
+          "format": "json",
+          "minimum_samples": 4,
+          "source": "data/advisories/ISA_ADVISORY_v1.1.json"
+        },
+        {
+          "id": "esrs_mapping_negative_v2",
+          "path": "data/evaluation/golden/esrs_mapping/negative_cases_v2.json",
+          "format": "json",
+          "minimum_samples": 8,
           "source": "data/advisories/ISA_ADVISORY_v1.1.json"
         }
       ]
