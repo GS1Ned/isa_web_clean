@@ -1,6 +1,6 @@
 # ISA v1.0 Hardening Complete: Provenance, Traceability, and Advisory API
 
-> Historical reference only. Use the canonical advisory runtime contract and current codepaths as authority for active advisory APIs and data flows.
+> Historical reference only. Use the canonical advisory runtime contract and current codepaths as authority for active advisory APIs and data flows. The API surface inventory below records the v1 hardening state, not the current active UI/runtime path split.
 
 **Date:** December 14, 2025  
 **Phase:** ISA v1.0 Hardening  

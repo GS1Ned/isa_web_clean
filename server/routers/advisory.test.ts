@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { appRouter } from "../routers";
 import type { Context } from "../_core/context";
+import { normalizeAdvisoryVersionTag } from "../advisory-legacy-compat";
 
 const mockContext: Context = {
   user: null,
@@ -59,8 +60,13 @@ describe("advisory router", () => {
     const regulations = await caller.advisory.getRegulations();
     const sectorModels = await caller.advisory.getSectorModels();
 
-    expect(regulations.total).toBeGreaterThanOrEqual(0);
+    expect(regulations.total).toBeGreaterThan(0);
     expect(Array.isArray(regulations.regulations)).toBe(true);
+    expect(
+      regulations.regulations.some((regulation: any) =>
+        String(regulation?.name ?? regulation?.id ?? "").includes("ESRS E1"),
+      ),
+    ).toBe(true);
     expect(sectorModels.total).toBeGreaterThanOrEqual(0);
     expect(Array.isArray(sectorModels.sectorModels)).toBe(true);
   });
@@ -103,5 +109,18 @@ describe("advisory router", () => {
     expect(diff.gapLifecycle).toBeDefined();
     expect(diff.recommendationLifecycle).toBeDefined();
     expect(diff.snapshotBacked).toBeDefined();
+  });
+
+  it("serves the active advisory summary from the normalized current version", async () => {
+    const caller = appRouter.createCaller(mockContext);
+    const overview = await caller.advisory.getOverview();
+    const activeVersion = normalizeAdvisoryVersionTag(String(overview.summary.version));
+
+    const summary = await caller.advisoryDiff.getAdvisorySummary({
+      version: activeVersion,
+    });
+
+    expect(summary.version).toBe(overview.summary.version);
+    expect(summary.advisoryId).toBe(overview.summary.advisoryId);
   });
 });

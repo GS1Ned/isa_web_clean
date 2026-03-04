@@ -252,7 +252,7 @@ Alert message if metadata fails to load.
 2. **`getSummary()`**
    - Returns: normalized advisory summary
    - Caching: advisory read-model
-   - Use case: compatibility surface for summary-first consumers
+   - Use case: compatibility surface for summary-first consumers; active product UIs should prefer `getOverview()`
 
 3. **`getFull()`**
    - Returns: normalized full advisory payload
@@ -262,12 +262,13 @@ Alert message if metadata fails to load.
 4. **`getMetadata()`**
    - Returns: normalized advisory metadata
    - Caching: advisory read-model
-   - Use case: compatibility surface for metadata-specific consumers
+   - Use case: compatibility surface for metadata-specific consumers; active product UIs should prefer `getOverview()`
 
 5. **Legacy section endpoints**
    - `getMappings()`, `getGaps()`, `getRecommendations()`, `getRegulations()`, `getSectorModels()`
    - Return: compatibility projections from the normalized advisory read model
    - Use case: backward compatibility while older consumers migrate; active Explorer surfaces should prefer `getFull()` plus client-side normalized filter inventories
+   - Current active product UIs do not call these endpoints directly
 
 6. **Hub surfaces**
    - `HubEsrsGs1Mappings` uses `getOverview()` for coverage/summary state and `getFull()` for detailed mapping and gap exploration

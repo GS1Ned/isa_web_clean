@@ -11,42 +11,9 @@ import { buildAdvisoryReadModel } from "../advisory-read-model";
 import { computeAdvisoryDiffPayload } from "../advisory-diff-runtime";
 import { buildAdvisoryOverview } from "../advisory-overview";
 import {
-  normalizeAdvisoryVersionTag,
-} from "../advisory-legacy-compat";
-
-function toLegacyMappingShape(mapping: any) {
-  return {
-    ...mapping,
-    mappingId: mapping?.mappingId ?? mapping?.id,
-    regulationDatapoint: mapping?.regulationDatapoint ?? mapping?.topic,
-    title: mapping?.title ?? mapping?.topic,
-    datasetReferences: Array.isArray(mapping?.datasetReferences) ? mapping.datasetReferences : [],
-  };
-}
-
-function toLegacyGapShape(gap: any) {
-  return {
-    ...gap,
-    gapId: gap?.gapId ?? gap?.id,
-    title: gap?.title ?? gap?.topic,
-    category: gap?.category ?? gap?.severity,
-    affectedSectors: Array.isArray(gap?.affectedSectors) ? gap.affectedSectors : gap?.sectors ?? ["All"],
-    datasetReferences: Array.isArray(gap?.datasetReferences) ? gap.datasetReferences : [],
-  };
-}
-
-function toLegacyRecommendationShape(recommendation: any, index: number) {
-  return {
-    ...recommendation,
-    recommendationId:
-      recommendation?.recommendationId ??
-      recommendation?.id ??
-      `REC-${String(index + 1).padStart(3, "0")}`,
-    datasetReferences: Array.isArray(recommendation?.datasetReferences)
-      ? recommendation.datasetReferences
-      : [],
-  };
-}
+  buildAdvisoryCompatibilityPayloads,
+  filterAdvisoryCompatibilityPayloads,
+} from "../advisory-compat";
 
 export const advisoryRouter = router({
   /**
@@ -61,8 +28,8 @@ export const advisoryRouter = router({
     )
     .query(async ({ input }) =>
       computeAdvisoryDiffPayload(
-        normalizeAdvisoryVersionTag(input.version1),
-        normalizeAdvisoryVersionTag(input.version2),
+        input.version1,
+        input.version2,
       ),
     ),
 
@@ -100,34 +67,12 @@ export const advisoryRouter = router({
     )
     .query(async ({ input }) => {
       const readModel = await buildAdvisoryReadModel();
-      let mappings = Array.isArray(readModel.advisory.mappingResults)
-        ? readModel.advisory.mappingResults.map(toLegacyMappingShape)
-        : [];
-
-      // Filter by sector
-      if (input.sector) {
-        mappings = mappings.filter((m: any) =>
-          m.sectors?.includes(input.sector) || m.sectors?.includes("All")
-        );
-      }
-
-      // Filter by regulation
-      if (input.regulation) {
-        mappings = mappings.filter((m: any) =>
-          m.regulationStandard === input.regulation
-        );
-      }
-
-      // Filter by confidence
-      if (input.confidence) {
-        mappings = mappings.filter((m: any) =>
-          m.confidence === input.confidence
-        );
-      }
+      const payloads = buildAdvisoryCompatibilityPayloads(readModel.advisory);
+      const filtered = filterAdvisoryCompatibilityPayloads(payloads, input);
 
       return {
-        total: mappings.length,
-        mappings,
+        total: filtered.mappings.length,
+        mappings: filtered.mappings,
       };
     }),
 
@@ -143,25 +88,12 @@ export const advisoryRouter = router({
     )
     .query(async ({ input }) => {
       const readModel = await buildAdvisoryReadModel();
-      let gaps = Array.isArray(readModel.advisory.gapAnalysis)
-        ? readModel.advisory.gapAnalysis.map(toLegacyGapShape)
-        : [];
-
-      // Filter by severity
-      if (input.severity) {
-        gaps = gaps.filter((g: any) => g.category === input.severity);
-      }
-
-      // Filter by sector
-      if (input.sector) {
-        gaps = gaps.filter((g: any) =>
-          g.affectedSectors.includes(input.sector) || g.affectedSectors.includes("All")
-        );
-      }
+      const payloads = buildAdvisoryCompatibilityPayloads(readModel.advisory);
+      const filtered = filterAdvisoryCompatibilityPayloads(payloads, input);
 
       return {
-        total: gaps.length,
-        gaps,
+        total: filtered.gaps.length,
+        gaps: filtered.gaps,
       };
     }),
 
@@ -178,34 +110,12 @@ export const advisoryRouter = router({
     )
     .query(async ({ input }) => {
       const readModel = await buildAdvisoryReadModel();
-      let recommendations = Array.isArray(readModel.advisory.recommendations)
-        ? readModel.advisory.recommendations.map(toLegacyRecommendationShape)
-        : [];
-
-      // Filter by timeframe
-      if (input.timeframe) {
-        recommendations = recommendations.filter((r: any) =>
-          r.timeframe === input.timeframe
-        );
-      }
-
-      // Filter by category
-      if (input.category) {
-        recommendations = recommendations.filter((r: any) =>
-          r.category === input.category
-        );
-      }
-
-      // Filter by implementation status
-      if (input.implementationStatus) {
-        recommendations = recommendations.filter((r: any) =>
-          r.implementationStatus === input.implementationStatus
-        );
-      }
+      const payloads = buildAdvisoryCompatibilityPayloads(readModel.advisory);
+      const filtered = filterAdvisoryCompatibilityPayloads(payloads, input);
 
       return {
-        total: recommendations.length,
-        recommendations,
+        total: filtered.recommendations.length,
+        recommendations: filtered.recommendations,
       };
     }),
 
@@ -214,12 +124,10 @@ export const advisoryRouter = router({
    */
   getRegulations: publicProcedure.query(async () => {
     const readModel = await buildAdvisoryReadModel();
-    const regulations = Array.isArray(readModel.advisory.regulationsCovered)
-      ? readModel.advisory.regulationsCovered
-      : [];
+    const payloads = buildAdvisoryCompatibilityPayloads(readModel.advisory);
     return {
-      total: regulations.length,
-      regulations,
+      total: payloads.regulations.length,
+      regulations: payloads.regulations,
     };
   }),
 
@@ -228,12 +136,10 @@ export const advisoryRouter = router({
    */
   getSectorModels: publicProcedure.query(async () => {
     const readModel = await buildAdvisoryReadModel();
-    const sectorModels = Array.isArray(readModel.advisory.sectorModelsCovered)
-      ? readModel.advisory.sectorModelsCovered
-      : [];
+    const payloads = buildAdvisoryCompatibilityPayloads(readModel.advisory);
     return {
-      total: sectorModels.length,
-      sectorModels,
+      total: payloads.sectorModels.length,
+      sectorModels: payloads.sectorModels,
     };
   }),
 

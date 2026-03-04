@@ -12,8 +12,8 @@ import {
   getAdvisorySummaryPayload,
 } from "../advisory-diff-runtime";
 import {
-  listAdvisoryVersionsWithSnapshots,
-} from "../advisory-legacy-compat";
+  listCompatibilityAdvisoryVersions,
+} from "../advisory-diff-compat";
 
 export const advisoryDiffRouter = router({
   /**
@@ -32,7 +32,7 @@ export const advisoryDiffRouter = router({
    * List available advisory versions
    */
   listVersions: publicProcedure.query(async () => {
-    return await listAdvisoryVersionsWithSnapshots();
+    return await listCompatibilityAdvisoryVersions();
   }),
 
   /**
