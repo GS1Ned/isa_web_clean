@@ -65,6 +65,18 @@ describe("advisory router", () => {
     expect(Array.isArray(sectorModels.sectorModels)).toBe(true);
   });
 
+  it("serves an overview bundle for active advisory UI surfaces", async () => {
+    const caller = appRouter.createCaller(mockContext);
+
+    const result = await caller.advisory.getOverview();
+
+    expect(result.summary).toBeDefined();
+    expect(result.metadata).toBeDefined();
+    expect(result.summary.version).toBeDefined();
+    expect(result.metadata.advisoryId).toBeDefined();
+    expect(result.latestReport == null || typeof result.latestReport.id === "number").toBe(true);
+  });
+
   it("keeps advisory.getDiff aligned with the snapshot-aware diff runtime", async () => {
     const caller = appRouter.createCaller(mockContext);
 

@@ -62,6 +62,22 @@ export async function getAdvisoryReportById(id: number) {
 }
 
 /**
+ * Get the latest advisory report by generated date.
+ */
+export async function getLatestAdvisoryReport() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const results = await db
+    .select()
+    .from(advisoryReports)
+    .orderBy(desc(advisoryReports.generatedDate))
+    .limit(1);
+
+  return results[0] || null;
+}
+
+/**
  * Create a new advisory report
  */
 export async function createAdvisoryReport(data: typeof advisoryReports.$inferInsert) {

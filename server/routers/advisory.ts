@@ -9,6 +9,7 @@ import { router, publicProcedure } from "../_core/trpc";
 import { z } from "zod";
 import { buildAdvisoryReadModel } from "../advisory-read-model";
 import { computeAdvisoryDiffPayload } from "../advisory-diff-runtime";
+import { getLatestAdvisoryReport } from "../db-advisory-reports";
 import {
   normalizeAdvisoryVersionTag,
 } from "../advisory-legacy-compat";
@@ -71,6 +72,28 @@ export const advisoryRouter = router({
   getSummary: publicProcedure.query(async () => {
     const readModel = await buildAdvisoryReadModel();
     return readModel.summary;
+  }),
+
+  /**
+   * Get a normalized advisory overview bundle for active UI surfaces.
+   */
+  getOverview: publicProcedure.query(async () => {
+    const readModel = await buildAdvisoryReadModel();
+
+    try {
+      const latestReport = await getLatestAdvisoryReport();
+      return {
+        summary: readModel.summary,
+        metadata: readModel.metadata,
+        latestReport,
+      };
+    } catch {
+      return {
+        summary: readModel.summary,
+        metadata: readModel.metadata,
+        latestReport: null,
+      };
+    }
   }),
 
   /**
