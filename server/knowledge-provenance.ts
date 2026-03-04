@@ -7,23 +7,40 @@
 
 export const KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS = 90;
 
+export type KnowledgeVerificationReason =
+  | "ok"
+  | "missing_last_verified_date"
+  | "invalid_last_verified_date"
+  | "stale_last_verified_date";
+
 export type KnowledgeEvidenceKeyReason =
   | "ok"
   | "missing_content_hash";
+
+export function getKnowledgeVerificationReason(
+  lastVerifiedDate?: string | null,
+  now: Date = new Date()
+): KnowledgeVerificationReason {
+  if (!lastVerifiedDate) return "missing_last_verified_date";
+
+  const verifiedDate = new Date(lastVerifiedDate);
+  if (Number.isNaN(verifiedDate.getTime())) return "invalid_last_verified_date";
+
+  const daysSinceVerification =
+    (now.getTime() - verifiedDate.getTime()) / (1000 * 60 * 60 * 24);
+
+  if (daysSinceVerification > KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS) {
+    return "stale_last_verified_date";
+  }
+
+  return "ok";
+}
 
 export function doesKnowledgeChunkNeedVerification(
   lastVerifiedDate?: string | null,
   now: Date = new Date()
 ): boolean {
-  if (!lastVerifiedDate) return true;
-
-  const verifiedDate = new Date(lastVerifiedDate);
-  if (Number.isNaN(verifiedDate.getTime())) return true;
-
-  const daysSinceVerification =
-    (now.getTime() - verifiedDate.getTime()) / (1000 * 60 * 60 * 24);
-
-  return daysSinceVerification > KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS;
+  return getKnowledgeVerificationReason(lastVerifiedDate, now) !== "ok";
 }
 
 export function buildKnowledgeEvidenceKey(
