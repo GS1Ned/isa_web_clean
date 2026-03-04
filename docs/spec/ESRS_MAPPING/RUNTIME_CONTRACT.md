@@ -37,8 +37,8 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 
 ## Input / Output Contract (Current)
 - Inputs: typed mapping, roadmap and recommendation requests via ESRS_MAPPING tRPC procedures.
-- Outputs: mapping records, gap-analysis outputs and recommendation payloads.
-- Gap analysis and attribute recommendation outputs expose an additive `decisionArtifact` envelope with stable `artifactVersion`, `artifactType`, `subject`, `confidence`, `evidence`, and `summary` fields for downstream consumption.
+- Outputs: mapping records, roadmap outputs, gap-analysis outputs and recommendation payloads.
+- Roadmap, gap analysis, and attribute recommendation outputs expose an additive `decisionArtifact` envelope with stable `artifactVersion`, `artifactType`, `subject`, `confidence`, `evidence`, and `summary` fields for downstream consumption.
 - Field-level payloads remain code-truth in router implementations.
 
 ## Verification
@@ -46,6 +46,7 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 - Smoke probe: `scripts/probe/esrs_mapping_health.sh`
 - Tests:
   - `server/gs1-mapping-engine.test.ts`
+  - `server/routers/esrs-roadmap.test.ts`
   - `server/routers/__tests__/capability-heartbeat.test.ts`
 - Canonical gate alignment:
   - `bash scripts/gates/doc-code-validator.sh --canonical-only`

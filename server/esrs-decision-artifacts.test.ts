@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildAttributeRecommendationDecisionArtifact,
   buildGapAnalysisDecisionArtifact,
+  buildRoadmapDecisionArtifact,
 } from './esrs-decision-artifacts.js';
 
 describe('ESRS decision artifacts', () => {
@@ -56,5 +57,27 @@ describe('ESRS decision artifacts', () => {
       'recycledContentPercentage',
     ]);
     expect(artifact.evidence.dataSources).toContain('ATTRIBUTE_METADATA');
+  });
+
+  it('builds a stable roadmap decision artifact', () => {
+    const artifact = buildRoadmapDecisionArtifact({
+      generatedAt: '2026-03-04T12:00:00.000Z',
+      sector: 'electronics',
+      companySize: 'large',
+      esrsRequirements: ['ESRS E1', 'ESRS E5'],
+      phaseCount: 4,
+      criticalPhaseCount: 1,
+      quickWinCount: 1,
+      mappingCount: 12,
+      topPhaseIds: ['phase-1', 'phase-2', 'phase-3'],
+      mode: 'llm',
+      basis: 'LLM roadmap synthesis grounded in 12 relevant mappings.',
+    });
+
+    expect(artifact.artifactType).toBe('roadmap');
+    expect(artifact.capability).toBe('ESRS_MAPPING');
+    expect(artifact.confidence.level).toBe('high');
+    expect(artifact.summary.mappingCount).toBe(12);
+    expect(artifact.summary.topPhaseIds).toEqual(['phase-1', 'phase-2', 'phase-3']);
   });
 });
