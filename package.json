@@ -162,10 +162,13 @@
       "wouter@3.7.1": "patches/wouter@3.7.1.patch"
     },
     "overrides": {
+      "rollup": "4.59.0",
+      "glob>minimatch": "3.1.4",
+      "readdir-glob>minimatch": "5.1.8",
       "tailwindcss>nanoid": "3.3.7",
       "qs": "6.14.2",
       "tar": "7.5.9",
-      "markdownlint-cli>minimatch": "10.2.1"
+      "markdownlint-cli>minimatch": "10.2.3"
     },
     "onlyBuiltDependencies": [
       "better-sqlite3"

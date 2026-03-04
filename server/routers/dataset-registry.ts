@@ -10,21 +10,7 @@ import {
   getDatasetsNeedingVerification,
   getDatasetStats,
 } from "../db-dataset-registry";
-
-function deriveAuthorityTierFromSourceUrl(url?: string): string {
-  if (!url) return "UNKNOWN";
-  try {
-    const hostname = new URL(url).hostname.toLowerCase();
-    if (hostname === "eur-lex.europa.eu") return "EU";
-    if (hostname === "ref.gs1.org" || hostname === "gs1.org" || hostname === "www.gs1.org") {
-      return "GS1_Global";
-    }
-    if (/^gs1[a-z0-9-]*\.(org|nl|eu)$/.test(hostname)) return "GS1_MO";
-    return "UNKNOWN";
-  } catch {
-    return "UNKNOWN";
-  }
-}
+import { deriveCatalogAuthorityTierFromUrl } from "../catalog-authority";
 
 /**
  * Dataset Registry Router
@@ -116,7 +102,7 @@ export const datasetRegistryRouter = router({
         throw new Error("Admin access required");
       }
 
-      const authorityTier = input.authorityTier || deriveAuthorityTierFromSourceUrl(input.source);
+      const authorityTier = input.authorityTier || deriveCatalogAuthorityTierFromUrl(input.source);
       return await createDataset({
         ...input,
         authorityTier,
@@ -177,7 +163,7 @@ export const datasetRegistryRouter = router({
       }
 
       const { id, ...updates } = input;
-      const authorityTier = updates.authorityTier || deriveAuthorityTierFromSourceUrl(updates.source || updates.downloadUrl || updates.apiEndpoint);
+      const authorityTier = updates.authorityTier || deriveCatalogAuthorityTierFromUrl(updates.source || updates.downloadUrl || updates.apiEndpoint);
       return await updateDataset(id, {
         ...updates,
         authorityTier,

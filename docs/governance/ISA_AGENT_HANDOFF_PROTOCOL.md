@@ -13,6 +13,12 @@ Define how OpenClaw, Gemini Code Assist, Codex, GitHub, Manus, and the host/VM w
 - Handoff artifact root: `docs/planning/agent-handoffs/`
 - Collaboration truth: GitHub issue, PR, and branch artifacts
 
+## Handoff Artifact Directory
+- `docs/planning/agent-handoffs/` stores machine-readable handoff artifacts generated from the ISA routing matrix.
+- Do not add narrative README files under `docs/planning/`; keep explanation here and keep the directory artifact-only.
+- Primary commands:
+  - `bash scripts/dev/resolve-agent-task-routing.sh --task-class <task_class>`
+  - `bash scripts/dev/create-agent-handoff.sh --task-class <task_class> --title "<title>" --issue <n> --branch <name> --summary "<summary>"`
 ## Required Inputs
 - `task_class`
 - short `title`

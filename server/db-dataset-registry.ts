@@ -1,21 +1,7 @@
 import { getDb } from "./db";
 import { datasetRegistry } from "../drizzle/schema";
 import { eq, and, desc, sql, isNotNull } from "drizzle-orm";
-
-function deriveAuthorityTierFromSourceUrl(url?: string): string {
-  if (!url) return "UNKNOWN";
-  try {
-    const hostname = new URL(url).hostname.toLowerCase();
-    if (hostname === "eur-lex.europa.eu") return "EU";
-    if (hostname === "ref.gs1.org" || hostname === "gs1.org" || hostname === "www.gs1.org") {
-      return "GS1_Global";
-    }
-    if (/^gs1[a-z0-9-]*\.(org|nl|eu)$/.test(hostname)) return "GS1_MO";
-    return "UNKNOWN";
-  } catch {
-    return "UNKNOWN";
-  }
-}
+import { deriveCatalogAuthorityTierFromUrl } from "./catalog-authority";
 
 /**
  * Get all datasets with optional filtering
@@ -85,7 +71,7 @@ export async function createDataset(data: typeof datasetRegistry.$inferInsert) {
   const sourceUrl = (data as any).source || (data as any).sourceUrl || (data as any).downloadUrl || (data as any).apiEndpoint;
   const [result] = await db.insert(datasetRegistry).values({
     ...data,
-    authorityTier: (data as any).authorityTier || deriveAuthorityTierFromSourceUrl(sourceUrl),
+    authorityTier: (data as any).authorityTier || deriveCatalogAuthorityTierFromUrl(sourceUrl),
     publicationStatus: (data as any).publicationStatus || "UNKNOWN",
     immutableUri: (data as any).immutableUri ?? null,
   } as any);
@@ -125,7 +111,7 @@ export async function updateDataset(
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   const sourceUrl = (updates as any).source || (updates as any).sourceUrl || (updates as any).downloadUrl || (updates as any).apiEndpoint;
-  const authorityTier = (updates as any).authorityTier || (sourceUrl ? deriveAuthorityTierFromSourceUrl(sourceUrl) : undefined);
+  const authorityTier = (updates as any).authorityTier || (sourceUrl ? deriveCatalogAuthorityTierFromUrl(sourceUrl) : undefined);
   const result = await db
     .update(datasetRegistry)
     .set({
