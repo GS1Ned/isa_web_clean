@@ -123,8 +123,14 @@ describe("governanceDocuments router", () => {
       expect(result).toHaveProperty("byDocumentType");
       expect(result).toHaveProperty("byCategory");
       expect(result).toHaveProperty("byStatus");
+      expect(result).toHaveProperty("verificationCountsByReason");
+      expect(result).toHaveProperty("verificationFreshnessBuckets");
+      expect(result).toHaveProperty("oldestVerificationAgeDays");
+      expect(result).toHaveProperty("medianVerificationAgeDays");
       expect(typeof result.total).toBe("number");
       expect(Array.isArray(result.byDocumentType)).toBe(true);
+      expect(typeof result.verificationCountsByReason.ok).toBe("number");
+      expect(typeof result.verificationFreshnessBuckets.fresh).toBe("number");
     });
   });
 
@@ -357,6 +363,9 @@ describe("governanceDocuments router", () => {
       expect(retrieved).toBeDefined();
       expect(retrieved?.documentCode).toBe(uniqueCode);
       expect(retrieved?.title).toBe("Code Lookup Test");
+      expect(retrieved?.needsVerification).toBe(true);
+      expect(retrieved?.verificationReason).toBe("missing_last_verified_date");
+      expect(retrieved?.verificationFreshnessBucket).toBe("unknown");
 
       // Clean up
       const db = await getDb();
@@ -400,6 +409,36 @@ describe("governanceDocuments router", () => {
       });
 
       expect(Array.isArray(result)).toBe(true);
+    });
+  });
+
+  describe("verification posture projection", () => {
+    it("projects current verification posture after document verification", async () => {
+      const ctx = createAdminContext();
+      const caller = appRouter.createCaller(ctx);
+
+      const createResult = await caller.governanceDocuments.create({
+        title: "Verified Governance Document",
+        documentType: "GS1_STANDARD" as const,
+        category: "IDENTIFICATION" as const,
+        url: "https://test.gs1.org/verified-doc",
+      });
+
+      const docId = Number(createResult.insertId);
+
+      try {
+        await caller.governanceDocuments.updateVerification({ id: docId });
+        const document = await caller.governanceDocuments.getById({ id: docId });
+        expect(document?.needsVerification).toBe(false);
+        expect(document?.verificationReason).toBe("ok");
+        expect(document?.verificationFreshnessBucket).toBe("fresh");
+        expect(document?.verificationAgeDays).toBeGreaterThanOrEqual(0);
+      } finally {
+        const db = await getDb();
+        if (db) {
+          await db.delete(governanceDocuments).where({ id: docId } as any);
+        }
+      }
     });
   });
 });

@@ -3,6 +3,10 @@ import {
   governanceDocuments,
 } from "../drizzle/schema";
 import { eq, and, desc, sql, like, or, InferSelectModel } from "drizzle-orm";
+import {
+  summarizeVerificationPosture,
+  withVerificationPosture,
+} from "./verification-posture";
 
 type GovernanceDocument = InferSelectModel<typeof governanceDocuments>;
 
@@ -54,7 +58,7 @@ export async function getGovernanceDocuments(filters?: {
   }
 
   const results = await query.orderBy(desc(governanceDocuments.publishedDate));
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -70,7 +74,7 @@ export async function getGovernanceDocumentById(id: number) {
     .where(eq(governanceDocuments.id, id))
     .limit(1);
   
-  return results[0] || null;
+  return results[0] ? withVerificationPosture(results[0]) : null;
 }
 
 /**
@@ -86,7 +90,7 @@ export async function getGovernanceDocumentByCode(documentCode: string) {
     .where(eq(governanceDocuments.documentCode, documentCode))
     .limit(1);
   
-  return results[0] || null;
+  return results[0] ? withVerificationPosture(results[0]) : null;
 }
 
 /**
@@ -164,7 +168,7 @@ export async function getDocumentsNeedingVerification() {
     )
     .orderBy(governanceDocuments.lastVerifiedDate);
   
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -201,12 +205,24 @@ export async function getGovernanceDocumentStats() {
     })
     .from(governanceDocuments)
     .groupBy(governanceDocuments.status);
+
+  const verificationDates = await db
+    .select({
+      lastVerifiedDate: governanceDocuments.lastVerifiedDate,
+    })
+    .from(governanceDocuments);
+
+  const verificationSummary = summarizeVerificationPosture(verificationDates);
   
   return {
     total: totalCount[0]?.count || 0,
     byDocumentType,
     byCategory,
     byStatus,
+    verificationCountsByReason: verificationSummary.countsByReason,
+    verificationFreshnessBuckets: verificationSummary.freshnessBuckets,
+    oldestVerificationAgeDays: verificationSummary.oldestVerificationAgeDays,
+    medianVerificationAgeDays: verificationSummary.medianVerificationAgeDays,
   };
 }
 
@@ -230,7 +246,7 @@ export async function searchGovernanceDocuments(searchTerm: string) {
     )
     .orderBy(desc(governanceDocuments.publishedDate));
   
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -250,7 +266,7 @@ export async function getDocumentsByRegulationIds(regulationIds: number[]) {
     )
     .orderBy(desc(governanceDocuments.publishedDate));
   
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -270,5 +286,5 @@ export async function getDocumentsByStandardIds(standardIds: number[]) {
     )
     .orderBy(desc(governanceDocuments.publishedDate));
   
-  return results;
+  return results.map(withVerificationPosture);
 }
