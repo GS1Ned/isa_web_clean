@@ -129,6 +129,25 @@ export const advisoryReportVersions = mysqlTable(
     reportId: int("reportId").notNull(), // Reference to advisoryReports.id
     version: varchar("version", { length: 32 }).notNull(),
     content: text("content").notNull(),
+    decisionArtifacts: json("decisionArtifacts").$type<
+      Array<{
+        artifactVersion: string;
+        artifactType: string;
+        capability: string;
+        generatedAt: string;
+        subject: Record<string, unknown>;
+        confidence: {
+          level: string;
+          score: number;
+          basis: string;
+        };
+        evidence: {
+          codePaths: string[];
+          dataSources: string[];
+        };
+        summary: Record<string, unknown>;
+      }>
+    >(),
     changeLog: text("changeLog"), // What changed in this version
     createdBy: varchar("createdBy", { length: 255 }),
     createdAt: timestamp("createdAt").defaultNow().notNull(),

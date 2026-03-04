@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { appRouter } from "../routers";
 import type { TrpcContext } from "../_core/context";
 import { getDb } from "../db";
-import { advisoryReports } from "../../drizzle/schema";
+import { advisoryReports, advisoryReportVersions } from "../../drizzle/schema";
 import type { EsrsDecisionArtifact } from "../esrs-decision-artifacts";
 
 const mockDecisionArtifacts: EsrsDecisionArtifact[] = [
@@ -391,6 +391,7 @@ describe("advisoryReports router", () => {
         reportType: "REGULATION_IMPACT" as const,
         content: "Version 1.0.0 content",
         version: "1.0.0",
+        decisionArtifacts: mockDecisionArtifacts,
       });
 
       const reportId = Number(createResult.insertId);
@@ -408,8 +409,83 @@ describe("advisoryReports router", () => {
       // Clean up
       const db = await getDb();
       if (db) {
+        const versions = await db
+          .select()
+          .from(advisoryReportVersions)
+          .where({ reportId } as any);
+
+        expect(versions).toHaveLength(1);
+        expect((versions[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.artifactType).toBe("gap_analysis");
+
+        await db.delete(advisoryReportVersions).where({ reportId } as any);
         await db.delete(advisoryReports).where({ id: reportId } as any);
       }
+    });
+
+    it("allows explicit version decision artifacts to override the source report snapshot", async () => {
+      const ctx = createAdminContext();
+      const caller = appRouter.createCaller(ctx);
+
+      const createResult = await caller.advisoryReports.create({
+        title: "Version Override Test Report",
+        reportType: "REGULATION_IMPACT" as const,
+        content: "Version 1.0.0 content",
+        version: "1.0.0",
+        decisionArtifacts: mockDecisionArtifacts,
+      });
+
+      const reportId = Number(createResult.insertId);
+      const overrideArtifacts: EsrsDecisionArtifact[] = [
+        {
+          ...mockDecisionArtifacts[0],
+          artifactType: "roadmap",
+          summary: {
+            phaseCount: 3,
+            criticalPhaseCount: 1,
+            quickWinCount: 1,
+            mappingCount: 8,
+            topPhaseIds: ["phase-1"],
+          },
+          subject: {
+            sector: "Retail",
+            companySize: "large",
+            esrsRequirements: ["ESRS E1"],
+          },
+        } as EsrsDecisionArtifact,
+      ];
+
+      await caller.advisoryReports.createVersion({
+        reportId,
+        version: "1.1.0",
+        content: "Version 1.1.0 content",
+        decisionArtifacts: overrideArtifacts,
+      });
+
+      const db = await getDb();
+      if (db) {
+        const versions = await db
+          .select()
+          .from(advisoryReportVersions)
+          .where({ reportId } as any);
+
+        expect((versions[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.artifactType).toBe("roadmap");
+
+        await db.delete(advisoryReportVersions).where({ reportId } as any);
+        await db.delete(advisoryReports).where({ id: reportId } as any);
+      }
+    });
+
+    it("rejects version creation when the source report does not exist", async () => {
+      const ctx = createAdminContext();
+      const caller = appRouter.createCaller(ctx);
+
+      await expect(
+        caller.advisoryReports.createVersion({
+          reportId: 999999,
+          version: "1.1.0",
+          content: "Missing source report",
+        }),
+      ).rejects.toThrow("Report not found");
     });
 
     it("rejects non-admin from creating version", async () => {

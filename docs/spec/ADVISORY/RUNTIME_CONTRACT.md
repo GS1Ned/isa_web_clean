@@ -36,6 +36,7 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
 - Inputs: advisory generation/diff procedure inputs and report selection/version criteria.
 - Outputs: advisory report payloads, version metadata, and diff artifacts.
 - `advisory_reports` records may persist additive upstream `decisionArtifacts` envelopes from `ESRS_MAPPING` for downstream export, review, and traceability.
+- `advisory_report_versions` snapshots may persist the same additive `decisionArtifacts` envelopes so version history preserves the decision-core evidence available at the time the snapshot was created.
 - Human-readable advisory export layers may serialise additive upstream `decisionArtifact` envelopes from `ESRS_MAPPING` without replacing the underlying capability-specific payload.
 - Field-level payload shape remains code-truth in ADVISORY router procedures.
 
@@ -45,6 +46,7 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
 - Tests:
   - `server/routers/advisory-reports.test.ts`
   - `server/advisory-report-export.test.ts`
+  - `server/advisory-report-versioning.test.ts`
   - `server/routers/__tests__/capability-heartbeat.test.ts`
 - Method guidance:
   - `docs/spec/ADVISORY/ADVISORY_METHOD.md`
