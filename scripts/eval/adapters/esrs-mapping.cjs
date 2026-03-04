@@ -77,6 +77,14 @@ async function evaluate(context) {
   );
   const negativeNoMappingCount = negativeCases.filter((row) => row?.actualOutcome === "no_mapping").length;
   const noMappingShare = Number(safeDiv(negativeNoMappingCount, negativeCases.length, 0).toFixed(4));
+  const totalDecisionCases = rows.length + negativeCases.length;
+  const decisionGradeCount = directCount;
+  const reviewRequiredCount = partialCount;
+  const insufficientEvidenceCount = negativeNoMappingCount;
+  const reviewRecommendedCount = reviewRequiredCount + insufficientEvidenceCount;
+  const analystReviewCount = reviewRequiredCount;
+  const humanReviewRequiredCount = insufficientEvidenceCount;
+  const noEscalationCount = decisionGradeCount;
   const positiveRegulationBreakdown = countBy(rows.map((row) => row.regulationStandard));
   const negativeRegulationBreakdown = countBy(negativeCases.map((row) => row.regulationStandard));
 
@@ -248,6 +256,27 @@ async function evaluate(context) {
       regulation_breakdown: {
         positive: positiveRegulationBreakdown,
         negative: negativeRegulationBreakdown,
+      },
+      decision_posture: {
+        total_case_count: totalDecisionCases,
+        decision_grade_count: decisionGradeCount,
+        review_required_count: reviewRequiredCount,
+        insufficient_evidence_count: insufficientEvidenceCount,
+        review_recommended_count: reviewRecommendedCount,
+        none_escalation_count: noEscalationCount,
+        analyst_review_count: analystReviewCount,
+        human_review_required_count: humanReviewRequiredCount,
+        decision_grade_share: Number(safeDiv(decisionGradeCount, totalDecisionCases, 0).toFixed(4)),
+        review_required_share: Number(safeDiv(reviewRequiredCount, totalDecisionCases, 0).toFixed(4)),
+        insufficient_evidence_share: Number(
+          safeDiv(insufficientEvidenceCount, totalDecisionCases, 0).toFixed(4)
+        ),
+        review_recommended_share: Number(
+          safeDiv(reviewRecommendedCount, totalDecisionCases, 0).toFixed(4)
+        ),
+        human_review_required_share: Number(
+          safeDiv(humanReviewRequiredCount, totalDecisionCases, 0).toFixed(4)
+        ),
       },
     },
   };

@@ -54,12 +54,13 @@ KNOWLEDGE_BASE provides ingestion-governed corpus storage, embeddings, and retri
 - Citation validation must emit canonical evidence keys in the form `ke:<chunkId>:<contentHash>` whenever `contentHash` is present.
 - Citation validation must mark `needsVerification=true` when `lastVerifiedDate` is missing, invalid, or older than 90 days.
 - Citation validation now exposes a canonical `verificationReason` in `{ok, missing_last_verified_date, invalid_last_verified_date, stale_last_verified_date}` whenever chunk metadata is available, so downstream review and UI tooling can avoid inventing their own provenance semantics.
-- Citation-admin surfaces may expose additive verification posture summaries and `verificationAgeDays` fields derived from the same canonical verification helper, so admin review flows stay aligned with retrieval-time provenance semantics.
+- Citation-admin surfaces may expose additive verification posture summaries, `verificationAgeDays`, `freshnessBuckets`, and aggregate age stats derived from the same canonical verification helper, so admin review flows stay aligned with retrieval-time provenance semantics.
 - Admin verification workflows and retrieval validation must use the same verification-window rule so downstream ASK_ISA citation behavior stays aligned.
 
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/knowledge_base_health.sh -->
 - Smoke probe: `scripts/probe/knowledge_base_health.sh`
+- Verification posture gate: `scripts/gates/knowledge-verification-posture.sh`
 - Tests:
   - `server/embedding.test.ts`
   - `server/knowledge-provenance.test.ts`

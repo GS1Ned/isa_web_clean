@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/knowledge-verification-posture.schema.json",
+  "title": "ISA Knowledge Verification Posture",
+  "type": "object",
+  "required": ["meta", "status", "checks", "summary"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["generated_at"],
+      "properties": {
+        "generated_at": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": true
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "fail"]
+    },
+    "checks": {
+      "type": "object",
+      "required": [
+        "citation_validation_contract",
+        "citation_admin_summary_surface",
+        "ask_isa_surface",
+        "knowledge_base_contract",
+        "ask_isa_contract"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "required": ["pass"],
+        "properties": {
+          "pass": { "type": "boolean" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "verification_reasons_exposed",
+        "verification_age_exposed",
+        "freshness_buckets_exposed",
+        "aggregate_age_stats_exposed"
+      ],
+      "properties": {
+        "verification_reasons_exposed": { "type": "boolean" },
+        "verification_age_exposed": { "type": "boolean" },
+        "freshness_buckets_exposed": { "type": "boolean" },
+        "aggregate_age_stats_exposed": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "fail_reasons": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

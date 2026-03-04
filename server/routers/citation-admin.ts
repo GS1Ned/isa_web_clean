@@ -13,6 +13,7 @@ import {
 } from "../citation-validation";
 import {
   getKnowledgeVerificationStatus,
+  summarizeKnowledgeVerificationPosture,
   type KnowledgeVerificationReason,
 } from "../knowledge-provenance";
 import { getDb } from "../db";
@@ -220,8 +221,7 @@ export const citationAdminRouter = router({
 
     if (!db) {
       return {
-        totalChecked: 0,
-        needsVerificationCount: 0,
+        ...summarizeKnowledgeVerificationPosture([]),
         countsByReason: emptyCounts,
       };
     }
@@ -236,28 +236,21 @@ export const citationAdminRouter = router({
         .from(knowledgeEmbeddings)
         .where(eq(knowledgeEmbeddings.isDeprecated, 0));
 
-      const countsByReason = chunks.reduce<Record<KnowledgeVerificationReason, number>>(
-        (acc, chunk) => {
-          const reason = getKnowledgeVerificationStatus(chunk.lastVerifiedDate).reason;
-          acc[reason] += 1;
-          return acc;
-        },
-        { ...emptyCounts },
+      const summary = summarizeKnowledgeVerificationPosture(
+        chunks.map((chunk) => chunk.lastVerifiedDate)
       );
 
       return {
-        totalChecked: chunks.length,
-        needsVerificationCount:
-          countsByReason.missing_last_verified_date +
-          countsByReason.invalid_last_verified_date +
-          countsByReason.stale_last_verified_date,
-        countsByReason,
+        ...summary,
+        countsByReason: {
+          ...emptyCounts,
+          ...summary.countsByReason,
+        },
       };
     } catch (error) {
       serverLogger.error("[CitationAdmin] Failed to summarize verification status:", error);
       return {
-        totalChecked: 0,
-        needsVerificationCount: 0,
+        ...summarizeKnowledgeVerificationPosture([]),
         countsByReason: emptyCounts,
       };
     }

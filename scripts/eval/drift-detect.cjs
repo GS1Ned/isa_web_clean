@@ -128,6 +128,7 @@ function buildCapabilityProfile(capabilityMeta) {
   if (!capabilityMeta) return null;
 
   const benchmarkMix = benchmarkMixForCapabilityMeta(capabilityMeta);
+  const decisionPosture = capabilityMeta?.diagnostics?.decision_posture || null;
   return {
     dataset_ids: normalizeDatasetIds(capabilityMeta.dataset_ids),
     sample_count: Number(capabilityMeta.sample_count || 0),
@@ -143,6 +144,31 @@ function buildCapabilityProfile(capabilityMeta) {
           direct_case_share: Number(benchmarkMix.direct_case_share || 0),
           partial_case_share: Number(benchmarkMix.partial_case_share || 0),
           no_mapping_case_share: Number(benchmarkMix.no_mapping_case_share || 0),
+        }
+      : null,
+    decision_posture: decisionPosture
+      ? {
+          total_case_count: Number(decisionPosture.total_case_count || 0),
+          decision_grade_count: Number(decisionPosture.decision_grade_count || 0),
+          review_required_count: Number(decisionPosture.review_required_count || 0),
+          insufficient_evidence_count: Number(decisionPosture.insufficient_evidence_count || 0),
+          review_recommended_count: Number(decisionPosture.review_recommended_count || 0),
+          none_escalation_count: Number(decisionPosture.none_escalation_count || 0),
+          analyst_review_count: Number(decisionPosture.analyst_review_count || 0),
+          human_review_required_count: Number(
+            decisionPosture.human_review_required_count || 0
+          ),
+          decision_grade_share: Number(decisionPosture.decision_grade_share || 0),
+          review_required_share: Number(decisionPosture.review_required_share || 0),
+          insufficient_evidence_share: Number(
+            decisionPosture.insufficient_evidence_share || 0
+          ),
+          review_recommended_share: Number(
+            decisionPosture.review_recommended_share || 0
+          ),
+          human_review_required_share: Number(
+            decisionPosture.human_review_required_share || 0
+          ),
         }
       : null,
   };

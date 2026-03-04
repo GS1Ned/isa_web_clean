@@ -63,6 +63,12 @@ describe("citationAdmin router", () => {
     expect(result.countsByReason).toHaveProperty("missing_last_verified_date");
     expect(result.countsByReason).toHaveProperty("invalid_last_verified_date");
     expect(result.countsByReason).toHaveProperty("stale_last_verified_date");
+    expect(result.freshnessBuckets).toHaveProperty("fresh");
+    expect(result.freshnessBuckets).toHaveProperty("aging");
+    expect(result.freshnessBuckets).toHaveProperty("stale");
+    expect(result.freshnessBuckets).toHaveProperty("unknown");
+    expect(result).toHaveProperty("oldestVerificationAgeDays");
+    expect(result).toHaveProperty("medianVerificationAgeDays");
   });
 
   it("returns verification reasons for chunks needing verification", async () => {

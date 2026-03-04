@@ -6,7 +6,9 @@ import {
   getKnowledgeVerificationAgeDays,
   doesKnowledgeChunkNeedVerification,
   getKnowledgeVerificationReason,
+  getKnowledgeVerificationFreshnessBucket,
   getKnowledgeVerificationStatus,
+  summarizeKnowledgeVerificationPosture,
 } from "./knowledge-provenance";
 
 describe("knowledge provenance", () => {
@@ -95,6 +97,69 @@ describe("knowledge provenance", () => {
         needsVerification: false,
         reason: "ok",
         verificationAgeDays: 11,
+      });
+    });
+  });
+
+  describe("getKnowledgeVerificationFreshnessBucket", () => {
+    const now = new Date("2026-03-03T12:00:00.000Z");
+
+    it("classifies recent verification as fresh", () => {
+      expect(getKnowledgeVerificationFreshnessBucket("2026-02-20T00:00:00.000Z", now)).toBe(
+        "fresh"
+      );
+    });
+
+    it("classifies healthy but older verification as aging", () => {
+      expect(getKnowledgeVerificationFreshnessBucket("2025-12-15T00:00:00.000Z", now)).toBe(
+        "aging"
+      );
+    });
+
+    it("classifies stale verification as stale", () => {
+      expect(getKnowledgeVerificationFreshnessBucket("2025-10-31T00:00:00.000Z", now)).toBe(
+        "stale"
+      );
+    });
+
+    it("classifies missing or invalid verification as unknown", () => {
+      expect(getKnowledgeVerificationFreshnessBucket(undefined, now)).toBe("unknown");
+      expect(getKnowledgeVerificationFreshnessBucket("not-a-date", now)).toBe("unknown");
+    });
+  });
+
+  describe("summarizeKnowledgeVerificationPosture", () => {
+    const now = new Date("2026-03-03T12:00:00.000Z");
+
+    it("summarizes reasons, buckets, and age stats consistently", () => {
+      expect(
+        summarizeKnowledgeVerificationPosture(
+          [
+            "2026-02-20T00:00:00.000Z",
+            "2025-12-15T00:00:00.000Z",
+            "2025-10-31T00:00:00.000Z",
+            undefined,
+            "not-a-date",
+          ],
+          now
+        )
+      ).toEqual({
+        totalChecked: 5,
+        needsVerificationCount: 3,
+        countsByReason: {
+          ok: 2,
+          missing_last_verified_date: 1,
+          invalid_last_verified_date: 1,
+          stale_last_verified_date: 1,
+        },
+        freshnessBuckets: {
+          fresh: 1,
+          aging: 1,
+          stale: 1,
+          unknown: 2,
+        },
+        oldestVerificationAgeDays: 123,
+        medianVerificationAgeDays: 78,
       });
     });
   });
