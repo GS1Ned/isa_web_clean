@@ -8,6 +8,8 @@
  * Key Design Principle: Clear epistemic markers distinguish facts from inferences.
  */
 
+import type { EsrsGapAnalysisDecisionArtifact } from './esrs-decision-artifacts.js';
+
 // =============================================================================
 // EPISTEMIC STATUS TYPES
 // =============================================================================
@@ -139,6 +141,9 @@ export interface GapAnalysisResult {
     uncertainCount: number;
     overallConfidence: ConfidenceLevel;
   };
+
+  // Stable downstream envelope for the decision core
+  decisionArtifact: EsrsGapAnalysisDecisionArtifact;
 }
 
 // =============================================================================

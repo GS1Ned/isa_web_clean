@@ -32,6 +32,7 @@ import {
   SECTOR_ESRS_RELEVANCE,
   COMPANY_SIZE_THRESHOLDS,
 } from '../gap-reasoning.js';
+import { buildGapAnalysisDecisionArtifact } from '../esrs-decision-artifacts.js';
 
 // =============================================================================
 // INPUT SCHEMAS
@@ -244,6 +245,30 @@ async function performGapAnalysis(input: GapAnalysisInput): Promise<GapAnalysisR
   const coveragePercentage = totalRequirements > 0 
     ? Math.round((coveredCount / totalRequirements) * 100) 
     : 0;
+
+  const overallEpistemic = {
+    factCount: epistemicMarkers.filter(m => m.status === 'fact').length,
+    inferenceCount: epistemicMarkers.filter(m => m.status === 'inference').length,
+    uncertainCount: epistemicMarkers.filter(m => m.status === 'uncertain').length,
+    overallConfidence: calculateOverallConfidence(epistemicMarkers),
+  };
+
+  const decisionArtifact = buildGapAnalysisDecisionArtifact({
+    generatedAt: timestamp,
+    sector: input.sector,
+    companySize: input.companySize,
+    targetRegulations: input.targetRegulations,
+    totalRequirements,
+    coveragePercentage,
+    criticalGapCount: criticalGaps.length,
+    highGapCount: highGaps.length,
+    remediationPathCount: remediationPaths.length,
+    criticalGapIds: criticalGaps.map((gap) => gap.id),
+    factCount: overallEpistemic.factCount,
+    inferenceCount: overallEpistemic.inferenceCount,
+    uncertainCount: overallEpistemic.uncertainCount,
+    overallConfidence: overallEpistemic.overallConfidence,
+  });
   
   return {
     input,
@@ -260,12 +285,8 @@ async function performGapAnalysis(input: GapAnalysisInput): Promise<GapAnalysisR
     mediumGaps,
     lowGaps,
     remediationPaths,
-    overallEpistemic: {
-      factCount: epistemicMarkers.filter(m => m.status === 'fact').length,
-      inferenceCount: epistemicMarkers.filter(m => m.status === 'inference').length,
-      uncertainCount: epistemicMarkers.filter(m => m.status === 'uncertain').length,
-      overallConfidence: calculateOverallConfidence(epistemicMarkers),
-    },
+    overallEpistemic,
+    decisionArtifact,
   };
 }
 

@@ -4,6 +4,10 @@
  */
 
 import { createFactMarker, createInferenceMarker, createUncertainMarker, type EpistemicMarker } from './gap-reasoning.js';
+import {
+  buildAttributeRecommendationDecisionArtifact,
+  type EsrsAttributeRecommendationDecisionArtifact,
+} from './esrs-decision-artifacts.js';
 
 // =============================================================================
 // TYPES
@@ -53,6 +57,7 @@ export interface AttributeRecommendationResult {
   };
   epistemic: EpistemicMarker;
   generatedAt: string;
+  decisionArtifact: EsrsAttributeRecommendationDecisionArtifact;
 }
 
 // =============================================================================
@@ -552,6 +557,21 @@ export async function generateAttributeRecommendations(
       ? createInferenceMarker('Recommendations based on sector analysis', 'medium')
       : createUncertainMarker('Recommendations based on general best practices', 'low');
 
+  const generatedAt = new Date().toISOString();
+  const decisionArtifact = buildAttributeRecommendationDecisionArtifact({
+    generatedAt,
+    sector: input.sector,
+    companySize: input.companySize,
+    targetRegulations,
+    totalRecommendations: recommendations.length,
+    highConfidenceCount: highCount,
+    regulationsCovered,
+    topRecommendationIds: recommendations.map((recommendation) => recommendation.attributeId),
+    recommendationScores: recommendations.map((recommendation) => recommendation.confidenceScore),
+    overallConfidence: overallEpistemic.confidence,
+    overallBasis: overallEpistemic.basis,
+  });
+
   return {
     input,
     recommendations,
@@ -564,6 +584,7 @@ export async function generateAttributeRecommendations(
       estimatedImplementationEffort: avgEffort >= 2.5 ? 'High' : avgEffort >= 1.5 ? 'Medium' : 'Low',
     },
     epistemic: overallEpistemic,
-    generatedAt: new Date().toISOString(),
+    generatedAt,
+    decisionArtifact,
   };
 }
