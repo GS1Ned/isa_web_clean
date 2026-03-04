@@ -6,6 +6,7 @@
 import { createFactMarker, createInferenceMarker, createUncertainMarker, type EpistemicMarker } from './gap-reasoning.js';
 import {
   buildAttributeRecommendationDecisionArtifact,
+  scoreToDecisionArtifactConfidenceLevel,
   type EsrsAttributeRecommendationDecisionArtifact,
 } from './esrs-decision-artifacts.js';
 
@@ -438,12 +439,6 @@ function calculateConfidenceScore(
   return Math.min(score, 1.0);
 }
 
-function getConfidenceLevel(score: number): 'high' | 'medium' | 'low' {
-  if (score >= 0.7) return 'high';
-  if (score >= 0.4) return 'medium';
-  return 'low';
-}
-
 function generateRationale(
   attributeId: string,
   sector: string,
@@ -490,7 +485,7 @@ export async function generateAttributeRecommendations(
   const scoredAttrs = candidateAttrs.map(attrId => {
     const metadata = ATTRIBUTE_METADATA[attrId];
     const confidenceScore = calculateConfidenceScore(attrId, sector, targetRegulations);
-    const confidenceLevel = getConfidenceLevel(confidenceScore);
+    const confidenceLevel = scoreToDecisionArtifactConfidenceLevel(confidenceScore);
 
     const regulatoryRelevance: RegulatoryRelevance[] = [];
     if (metadata && targetRegulations.length > 0) {

@@ -162,14 +162,29 @@ describe('Confidence Scoring', () => {
     });
 
     for (const rec of result.recommendations) {
-      if (rec.confidenceScore >= 0.7) {
+      if (rec.confidenceScore >= 0.75) {
         expect(rec.confidenceLevel).toBe('high');
-      } else if (rec.confidenceScore >= 0.4) {
+      } else if (rec.confidenceScore >= 0.5) {
         expect(rec.confidenceLevel).toBe('medium');
       } else {
         expect(rec.confidenceLevel).toBe('low');
       }
     }
+  });
+
+  it('keeps recommendation confidence bands aligned with decision artifact confidence semantics', async () => {
+    const result = await generateAttributeRecommendations({
+      sector: 'Retail',
+      targetRegulations: ['CSRD', 'DPP'],
+    });
+
+    expect(result.decisionArtifact.confidence.level).toBe(
+      result.decisionArtifact.confidence.score >= 0.75
+        ? 'high'
+        : result.decisionArtifact.confidence.score >= 0.5
+          ? 'medium'
+          : 'low'
+    );
   });
 
   it('should have confidence scores between 0 and 1', async () => {

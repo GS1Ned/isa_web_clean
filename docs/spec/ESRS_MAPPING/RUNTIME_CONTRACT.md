@@ -39,6 +39,7 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 - Inputs: typed mapping, roadmap and recommendation requests via ESRS_MAPPING tRPC procedures.
 - Outputs: mapping records, gap-analysis outputs and recommendation payloads.
 - Field-level payloads remain code-truth in router implementations.
+- Runtime confidence semantics are currently aligned across attribute recommendations and ESRS decision artefacts: `high >= 0.75`, `medium >= 0.50`, else `low`.
 
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/esrs_mapping_health.sh -->
