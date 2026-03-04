@@ -44,6 +44,17 @@
       "type": "array",
       "items": { "type": "string" }
     },
+    "capability_transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["capability", "reason"],
+        "properties": {
+          "capability": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
     "metrics": {
       "type": "array",
       "items": {
@@ -72,6 +83,7 @@
           "measurement_mode": { "type": "string", "enum": ["runtime", "fixture", "synthetic"] },
           "comparison_mode": { "type": "string", "enum": ["stage+fixture_version", "transition"] },
           "transition": { "type": "boolean" },
+          "transition_reason": { "type": ["string", "null"] },
           "kind": { "type": "string" },
           "direction": { "type": "string", "enum": ["score", "latency"] }
         }
