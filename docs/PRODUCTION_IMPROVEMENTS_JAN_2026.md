@@ -162,7 +162,7 @@ const result = await measurePerformance(
 **Key Highlights:**
 - Minimal data collection (only necessary for service provision)
 - Clear explanation of user rights under GDPR
-- Transparent disclosure of third-party services (Manus, TiDB, OpenAI)
+- Transparent disclosure of third-party services (Manus, managed database provider, OpenAI)
 - 90-day retention after account deletion
 - SSL/TLS encryption and security measures
 

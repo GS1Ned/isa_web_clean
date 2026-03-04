@@ -1023,7 +1023,7 @@ However, ISA's current user base (small, early adopters) tolerates moderate perf
 **Partially Implemented:**
 
 ISA currently uses:
-- **Modern stack:** React 19, tRPC, Drizzle ORM, MySQL/TiDB (reasonable performance out-of-box)
+- **Modern stack:** React 19, tRPC, Drizzle ORM, MySQL-compatible relational DB (reasonable performance out-of-box)
 - **Database indexing:** Some indexes exist (primary keys, foreign keys)
 - **CDN:** Static assets served via Manus platform CDN
 

@@ -26,7 +26,7 @@
 - TypeScript 5.9.3
 - React 19 + Tailwind CSS 4
 - tRPC 11 (type-safe RPC)
-- Drizzle ORM (MySQL/TiDB)
+- Drizzle ORM (MySQL-compatible relational DB)
 - Vitest (testing)
 
 ### Core Interfaces Frozen

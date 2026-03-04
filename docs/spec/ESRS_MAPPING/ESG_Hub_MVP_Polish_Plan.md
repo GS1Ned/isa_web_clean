@@ -570,7 +570,7 @@ This document outlines a focused 3-day execution plan to transform the ISA ESG H
 
 - **Frontend:** React 19, Tailwind CSS 4, shadcn/ui, Wouter routing
 - **Backend:** Express 4, tRPC 11, Drizzle ORM
-- **Database:** TiDB (MySQL-compatible)
+- **Database:** MySQL-compatible relational DB
 - **Authentication:** Manus OAuth
 - **Caching:** Redis (to be implemented Day 3)
 - **Monitoring:** Built-in error logging, uptime checks
