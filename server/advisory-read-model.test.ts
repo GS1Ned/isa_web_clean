@@ -24,6 +24,9 @@ describe("advisory-read-model", () => {
     expect(Array.isArray(result.advisory.gapAnalysis)).toBe(true);
     expect(result.advisory.gapAnalysis[0]).toHaveProperty("id");
     expect(result.advisory.gapAnalysis[0]).toHaveProperty("severity");
+    expect(Array.isArray(result.advisory.recommendations)).toBe(true);
+    expect(result.advisory.recommendations[0]).toHaveProperty("recommendationId");
+    expect(result.advisory.recommendations[0]).toHaveProperty("timeframe");
   });
 
   it("exposes migration-aware metadata", async () => {
