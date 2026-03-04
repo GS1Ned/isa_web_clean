@@ -45,7 +45,7 @@ export const datasetRegistryRouter = router({
     }),
 
   /**
-   * Get datasets needing verification (90+ days old or never verified)
+   * Get datasets needing verification (outside the shared verification window or never verified)
    */
   needingVerification: publicProcedure
     .query(async () => {

@@ -66,7 +66,7 @@ export const governanceDocumentsRouter = router({
     }),
 
   /**
-   * Get documents needing verification (90+ days old or never verified)
+   * Get documents needing verification (outside the shared verification window or never verified)
    */
   needingVerification: publicProcedure
     .query(async () => {

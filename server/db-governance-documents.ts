@@ -3,6 +3,7 @@ import {
   governanceDocuments,
 } from "../drizzle/schema";
 import { eq, and, desc, sql, like, or, InferSelectModel } from "drizzle-orm";
+import { KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS } from "./knowledge-provenance";
 import {
   summarizeVerificationPosture,
   withVerificationPosture,
@@ -148,14 +149,16 @@ export async function updateDocumentVerification(
 }
 
 /**
- * Get documents needing verification (older than 90 days or never verified)
+ * Get documents needing verification (outside the shared verification window or never verified)
  */
 export async function getDocumentsNeedingVerification() {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
-  const ninetyDaysAgo = new Date();
-  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+  const verificationCutoff = new Date();
+  verificationCutoff.setDate(
+    verificationCutoff.getDate() - KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS
+  );
   
   const results = await db
     .select()
@@ -163,7 +166,7 @@ export async function getDocumentsNeedingVerification() {
     .where(
       and(
         eq(governanceDocuments.status, "PUBLISHED"),
-        sql`(${governanceDocuments.lastVerifiedDate} IS NULL OR ${governanceDocuments.lastVerifiedDate} < ${ninetyDaysAgo})`
+        sql`(${governanceDocuments.lastVerifiedDate} IS NULL OR ${governanceDocuments.lastVerifiedDate} < ${verificationCutoff})`
       )
     )
     .orderBy(governanceDocuments.lastVerifiedDate);
