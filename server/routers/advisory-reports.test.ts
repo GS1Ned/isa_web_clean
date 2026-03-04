@@ -20,6 +20,7 @@ const mockDecisionArtifacts: EsrsDecisionArtifact[] = [
       level: "medium",
       score: 0.67,
       basis: "Coverage analysis across mapped requirements.",
+      reviewRecommended: true,
     },
     evidence: {
       codePaths: ["server/routers/gap-analyzer.ts"],

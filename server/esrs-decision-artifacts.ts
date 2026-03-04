@@ -6,6 +6,7 @@ export interface DecisionArtifactConfidence {
   level: DecisionArtifactConfidenceLevel;
   score: number;
   basis: string;
+  reviewRecommended: boolean;
 }
 
 export interface DecisionArtifactEvidence {
@@ -80,6 +81,7 @@ export const DecisionArtifactConfidenceSchema = z.object({
   level: z.enum(["high", "medium", "low"]),
   score: z.number().min(0).max(1),
   basis: z.string(),
+  reviewRecommended: z.boolean(),
 });
 
 export const DecisionArtifactEvidenceSchema = z.object({
@@ -207,6 +209,7 @@ export function buildDecisionArtifactConfidence(input: {
     level,
     score,
     basis: input.basis,
+    reviewRecommended: level !== "high",
   };
 }
 

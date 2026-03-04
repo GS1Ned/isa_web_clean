@@ -17,6 +17,7 @@ describe("DecisionArtifactCard", () => {
             level: "high",
             score: 0.82,
             basis: "Roadmap grounded in mapped ESRS requirements.",
+            reviewRecommended: false,
           },
           evidence: {
             codePaths: ["server/routers/esrs-roadmap.ts"],
@@ -34,7 +35,9 @@ describe("DecisionArtifactCard", () => {
     expect(screen.queryByText("Decision Artifact")).not.toBeNull();
     expect(screen.queryByText("ESRS_MAPPING")).not.toBeNull();
     expect(screen.queryByText(/high 82%/i)).not.toBeNull();
+    expect(screen.queryByText(/Ready for routine use/i)).not.toBeNull();
     expect(screen.queryByText("Roadmap grounded in mapped ESRS requirements.")).not.toBeNull();
+    expect(screen.queryByText(/routine downstream use acceptable/i)).not.toBeNull();
     expect(screen.queryByText("4")).not.toBeNull();
     expect(screen.queryByText("phase-1, phase-2")).not.toBeNull();
     expect(screen.queryByText("server/routers/esrs-roadmap.ts")).not.toBeNull();

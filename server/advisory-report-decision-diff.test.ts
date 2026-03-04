@@ -18,6 +18,7 @@ const currentArtifacts: EsrsDecisionArtifact[] = [
       level: "high",
       score: 0.82,
       basis: "Coverage improved after current mapping refresh.",
+      reviewRecommended: false,
     },
     evidence: {
       codePaths: ["server/routers/gap-analyzer.ts"],
@@ -45,6 +46,7 @@ const currentArtifacts: EsrsDecisionArtifact[] = [
       level: "medium",
       score: 0.64,
       basis: "Recommendation coverage based on current attribute model.",
+      reviewRecommended: true,
     },
     evidence: {
       codePaths: ["server/attribute-recommender.ts"],
@@ -66,6 +68,7 @@ const snapshotArtifacts: EsrsDecisionArtifact[] = [
       level: "medium",
       score: 0.58,
       basis: "Older snapshot before latest mapping update.",
+      reviewRecommended: true,
     },
     summary: {
       totalRequirements: 14,
@@ -90,6 +93,7 @@ const snapshotArtifacts: EsrsDecisionArtifact[] = [
       level: "medium",
       score: 0.61,
       basis: "Snapshot roadmap.",
+      reviewRecommended: true,
     },
     evidence: {
       codePaths: ["server/routers/esrs-roadmap.ts"],

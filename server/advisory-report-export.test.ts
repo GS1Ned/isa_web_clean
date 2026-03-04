@@ -80,6 +80,7 @@ const mockGapAnalysisResult = {
       level: 'medium',
       score: 0.68,
       basis: 'Coverage analysis across mapped requirements.',
+      reviewRecommended: true,
     },
     evidence: {
       codePaths: ['server/routers/gap-analyzer.ts'],
@@ -163,6 +164,7 @@ const mockRecommendationResult = {
       level: 'high',
       score: 0.76,
       basis: 'Recommendations derived from sector and regulation mappings.',
+      reviewRecommended: false,
     },
     evidence: {
       codePaths: ['server/attribute-recommender.ts'],

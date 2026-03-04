@@ -84,6 +84,7 @@ function appendDecisionArtifactSection(
   lines.push(`- **Confidence Level:** ${artifact.confidence.level}`);
   lines.push(`- **Confidence Score:** ${Math.round(artifact.confidence.score * 100)}%`);
   lines.push(`- **Confidence Basis:** ${artifact.confidence.basis}`);
+  lines.push(`- **Review Recommended:** ${artifact.confidence.reviewRecommended ? "Yes" : "No"}`);
   lines.push("");
 
   const summaryEntries = Object.entries(artifact.summary ?? {});
@@ -146,6 +147,7 @@ export function renderDecisionArtifactsHtml(artifacts?: EsrsDecisionArtifact[]):
           <p style="margin: 0 0 8px 0;"><strong>Version:</strong> ${artifact.artifactVersion}</p>
           <p style="margin: 0 0 8px 0;"><strong>Confidence:</strong> ${artifact.confidence.level} (${Math.round(artifact.confidence.score * 100)}%)</p>
           <p style="margin: 0 0 8px 0;"><strong>Basis:</strong> ${artifact.confidence.basis}</p>
+          <p style="margin: 0 0 8px 0;"><strong>Review Recommended:</strong> ${artifact.confidence.reviewRecommended ? "Yes" : "No"}</p>
           <p style="margin: 0 0 8px 0;"><strong>Evidence:</strong> ${(artifact.evidence.dataSources || []).join(", ") || "N/A"}</p>
           <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 12px;">
             <thead>

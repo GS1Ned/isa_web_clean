@@ -52,6 +52,7 @@ describe("advisory-report-ui", () => {
             level: "high",
             score: 0.92,
             basis: "Backed by current mappings",
+            reviewRecommended: false,
           },
         },
         { invalid: true },
