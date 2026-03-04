@@ -590,6 +590,7 @@ ${contextParts.join('\n\n')}`;
               similarity: Math.round(r.similarity * 100),
               url: r.url,
               lastVerifiedDate: validated?.lastVerifiedDate,
+              verificationAgeDays: validated?.verificationAgeDays,
               needsVerification: validated?.needsVerification ?? false,
               verificationReason: validated?.verificationReason,
               evidenceKey: validated?.evidenceKey ?? null,

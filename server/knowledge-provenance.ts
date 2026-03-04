@@ -17,6 +17,26 @@ export type KnowledgeEvidenceKeyReason =
   | "ok"
   | "missing_content_hash";
 
+export interface KnowledgeVerificationStatus {
+  needsVerification: boolean;
+  reason: KnowledgeVerificationReason;
+  verificationAgeDays: number | null;
+}
+
+export function getKnowledgeVerificationAgeDays(
+  lastVerifiedDate?: string | null,
+  now: Date = new Date()
+): number | null {
+  if (!lastVerifiedDate) return null;
+
+  const verifiedDate = new Date(lastVerifiedDate);
+  if (Number.isNaN(verifiedDate.getTime())) return null;
+
+  return Math.floor(
+    (now.getTime() - verifiedDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
+}
+
 export function getKnowledgeVerificationReason(
   lastVerifiedDate?: string | null,
   now: Date = new Date()
@@ -36,11 +56,25 @@ export function getKnowledgeVerificationReason(
   return "ok";
 }
 
+export function getKnowledgeVerificationStatus(
+  lastVerifiedDate?: string | null,
+  now: Date = new Date()
+): KnowledgeVerificationStatus {
+  const reason = getKnowledgeVerificationReason(lastVerifiedDate, now);
+  const verificationAgeDays = getKnowledgeVerificationAgeDays(lastVerifiedDate, now);
+
+  return {
+    reason,
+    verificationAgeDays,
+    needsVerification: reason !== "ok",
+  };
+}
+
 export function doesKnowledgeChunkNeedVerification(
   lastVerifiedDate?: string | null,
   now: Date = new Date()
 ): boolean {
-  return getKnowledgeVerificationReason(lastVerifiedDate, now) !== "ok";
+  return getKnowledgeVerificationStatus(lastVerifiedDate, now).needsVerification;
 }
 
 export function buildKnowledgeEvidenceKey(

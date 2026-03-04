@@ -11,7 +11,10 @@ import {
   markChunkDeprecated,
   updateVerificationDate,
 } from "../citation-validation";
-import { doesKnowledgeChunkNeedVerification } from "../knowledge-provenance";
+import {
+  getKnowledgeVerificationStatus,
+  type KnowledgeVerificationReason,
+} from "../knowledge-provenance";
 import { getDb } from "../db";
 import { eq } from "drizzle-orm";
 import { serverLogger } from "../_core/logger-wiring";
@@ -177,9 +180,17 @@ export const citationAdminRouter = router({
           .where(eq(knowledgeEmbeddings.isDeprecated, 0))
           .limit(input.limit);
 
-        const needsVerification = chunks.filter(chunk =>
-          doesKnowledgeChunkNeedVerification(chunk.lastVerifiedDate)
-        );
+        const needsVerification = chunks
+          .map((chunk) => {
+            const verification = getKnowledgeVerificationStatus(chunk.lastVerifiedDate);
+            return {
+              ...chunk,
+              needsVerification: verification.needsVerification,
+              verificationReason: verification.reason,
+              verificationAgeDays: verification.verificationAgeDays,
+            };
+          })
+          .filter((chunk) => chunk.needsVerification);
 
         return needsVerification;
       } catch (error) {
@@ -187,4 +198,68 @@ export const citationAdminRouter = router({
         return [];
       }
     }),
+
+  /**
+   * Summarize verification posture for citation-backed knowledge chunks.
+   */
+  getVerificationSummary: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Only admins can view verification status",
+      });
+    }
+
+    const db = await getDb();
+    const emptyCounts: Record<KnowledgeVerificationReason, number> = {
+      ok: 0,
+      missing_last_verified_date: 0,
+      invalid_last_verified_date: 0,
+      stale_last_verified_date: 0,
+    };
+
+    if (!db) {
+      return {
+        totalChecked: 0,
+        needsVerificationCount: 0,
+        countsByReason: emptyCounts,
+      };
+    }
+
+    try {
+      const { knowledgeEmbeddings } = await import("../../drizzle/schema");
+
+      const chunks = await db
+        .select({
+          lastVerifiedDate: knowledgeEmbeddings.lastVerifiedDate,
+        })
+        .from(knowledgeEmbeddings)
+        .where(eq(knowledgeEmbeddings.isDeprecated, 0));
+
+      const countsByReason = chunks.reduce<Record<KnowledgeVerificationReason, number>>(
+        (acc, chunk) => {
+          const reason = getKnowledgeVerificationStatus(chunk.lastVerifiedDate).reason;
+          acc[reason] += 1;
+          return acc;
+        },
+        { ...emptyCounts },
+      );
+
+      return {
+        totalChecked: chunks.length,
+        needsVerificationCount:
+          countsByReason.missing_last_verified_date +
+          countsByReason.invalid_last_verified_date +
+          countsByReason.stale_last_verified_date,
+        countsByReason,
+      };
+    } catch (error) {
+      serverLogger.error("[CitationAdmin] Failed to summarize verification status:", error);
+      return {
+        totalChecked: 0,
+        needsVerificationCount: 0,
+        countsByReason: emptyCounts,
+      };
+    }
+  }),
 });

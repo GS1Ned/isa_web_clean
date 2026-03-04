@@ -74,6 +74,7 @@ interface Message {
     datasetId?: string;
     datasetVersion?: string;
     lastVerifiedDate?: string;
+    verificationAgeDays?: number | null;
     isDeprecated?: boolean;
     needsVerification?: boolean;
     verificationReason?: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date";
@@ -497,6 +498,15 @@ export default function AskISA() {
       default:
         return "Verification details unavailable";
     }
+  };
+
+  const getVerificationAgeLabel = (
+    ageDays?: Message["sources"][number]["verificationAgeDays"]
+  ) => {
+    if (typeof ageDays !== "number") return null;
+    if (ageDays <= 0) return "verified today";
+    if (ageDays === 1) return "verified 1 day ago";
+    return `verified ${ageDays} days ago`;
   };
 
   const getSourceTypeLabel = (type?: string) => {
@@ -1209,7 +1219,12 @@ export default function AskISA() {
                                         <Badge
                                           variant="outline"
                                           className="text-xs text-yellow-700 dark:text-yellow-400"
-                                          title={getVerificationReasonLabel(source.verificationReason)}
+                                          title={[
+                                            getVerificationReasonLabel(source.verificationReason),
+                                            getVerificationAgeLabel(source.verificationAgeDays),
+                                          ]
+                                            .filter(Boolean)
+                                            .join(" • ")}
                                         >
                                           ⚠️ Needs verification
                                         </Badge>
@@ -1386,6 +1401,9 @@ export default function AskISA() {
                       <p className="text-sm text-muted-foreground">
                         This source should be verified before relying on it for compliance decisions.{" "}
                         {getVerificationReasonLabel(previewSource.verificationReason)}.
+                        {getVerificationAgeLabel(previewSource.verificationAgeDays)
+                          ? ` Last known verification: ${getVerificationAgeLabel(previewSource.verificationAgeDays)}.`
+                          : ""}
                       </p>
                     </div>
                   </div>
