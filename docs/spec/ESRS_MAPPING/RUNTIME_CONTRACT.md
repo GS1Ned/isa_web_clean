@@ -38,6 +38,7 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 ## Input / Output Contract (Current)
 - Inputs: typed mapping, roadmap and recommendation requests via ESRS_MAPPING tRPC procedures.
 - Outputs: mapping records, gap-analysis outputs and recommendation payloads.
+- Gap analysis and attribute recommendation outputs expose an additive `decisionArtifact` envelope with stable `artifactVersion`, `artifactType`, `subject`, `confidence`, `evidence`, and `summary` fields for downstream consumption.
 - Field-level payloads remain code-truth in router implementations.
 
 ## Verification
@@ -51,7 +52,7 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
   - `python3 scripts/gates/manifest-ownership-drift.py`
 
 ## Operational Unknowns
-- Runtime confidence calibration policy for mapping outputs is UNKNOWN from repository-only evidence.
+- Roadmap-generation confidence calibration policy remains UNKNOWN from repository-only evidence.
 - Production workload and latency SLOs for mapping-heavy requests are UNKNOWN from repository-only evidence.
 
 ## Evidence

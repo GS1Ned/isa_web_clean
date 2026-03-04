@@ -129,6 +129,20 @@ describe('Attribute Recommender Engine', () => {
       expect(['fact', 'inference', 'uncertain']).toContain(result.epistemic.status);
     });
 
+    it('should expose a stable decision artifact envelope', async () => {
+      const result = await generateAttributeRecommendations({
+        sector: 'Retail',
+        targetRegulations: ['CSRD', 'DPP'],
+      });
+
+      expect(result.decisionArtifact).toBeDefined();
+      expect(result.decisionArtifact.artifactType).toBe('attribute_recommendation');
+      expect(result.decisionArtifact.capability).toBe('ESRS_MAPPING');
+      expect(result.decisionArtifact.summary.topRecommendationIds[0]).toBe(
+        result.recommendations[0]?.attributeId
+      );
+    });
+
     it('should limit recommendations to top 20', async () => {
       const result = await generateAttributeRecommendations({
         sector: 'Manufacturing',
