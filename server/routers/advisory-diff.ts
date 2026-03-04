@@ -11,6 +11,11 @@ import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import { execFileSync } from "child_process";
 import { serverLogger } from "../_core/logger-wiring";
+import {
+  listAdvisoryVersionsWithSnapshots,
+  loadLegacyAdvisorySummary,
+  normalizeAdvisoryVersionTag,
+} from "../advisory-legacy-compat";
 
 export const advisoryDiffRouter = router({
   /**
@@ -25,12 +30,14 @@ export const advisoryDiffRouter = router({
     )
     .query(async ({ input }) => {
       const { version1, version2 } = input;
+      const normalizedVersion1 = normalizeAdvisoryVersionTag(version1);
+      const normalizedVersion2 = normalizeAdvisoryVersionTag(version2);
 
       // Check if diff file already exists
       const advisoriesDir = join(process.cwd(), "data", "advisories");
       const diffFilePath = join(
         advisoriesDir,
-        `ISA_ADVISORY_DIFF_${version1}_to_${version2}.json`
+        `ISA_ADVISORY_DIFF_${normalizedVersion1}_to_${normalizedVersion2}.json`
       );
 
       let diffData: any;
@@ -43,7 +50,7 @@ export const advisoryDiffRouter = router({
         const scriptPath = join(process.cwd(), "scripts", "compute_advisory_diff.cjs");
         
         try {
-          execFileSync("node", [scriptPath, version1, version2], {
+          execFileSync("node", [scriptPath, normalizedVersion1, normalizedVersion2], {
             cwd: process.cwd(),
             stdio: "pipe",
           });
@@ -71,22 +78,7 @@ export const advisoryDiffRouter = router({
    * List available advisory versions
    */
   listVersions: publicProcedure.query(async () => {
-    const advisoriesDir = join(process.cwd(), "data", "advisories");
-    const files = require("fs").readdirSync(advisoriesDir);
-
-    const versions = files
-      .filter((f: string) => f.match(/^ISA_ADVISORY_v\d+\.\d+\.json$/))
-      .map((f: string) => {
-        const match = f.match(/v(\d+\.\d+)/);
-        return match ? match[1] : null;
-      })
-      .filter(Boolean)
-      .sort();
-
-    return versions.map((v: string) => ({
-      version: `v${v}`,
-      label: `ISA Advisory v${v}`,
-    }));
+    return await listAdvisoryVersionsWithSnapshots();
   }),
 
   /**
@@ -95,17 +87,6 @@ export const advisoryDiffRouter = router({
   getAdvisorySummary: publicProcedure
     .input(z.object({ version: z.string().regex(/^v\d+\.\d+$/) }))
     .query(async ({ input }) => {
-      const summaryPath = join(
-        process.cwd(),
-        "data",
-        "advisories",
-        `ISA_ADVISORY_${input.version}.summary.json`
-      );
-
-      if (!existsSync(summaryPath)) {
-        throw new Error(`Summary not found for ${input.version}`);
-      }
-
-      return JSON.parse(readFileSync(summaryPath, "utf8"));
+      return loadLegacyAdvisorySummary(input.version);
     }),
 });

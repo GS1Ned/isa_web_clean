@@ -35,6 +35,7 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
 ## Input / Output Contract (Current)
 - Inputs: advisory generation/diff procedure inputs and report selection/version criteria.
 - Outputs: advisory report payloads, version metadata, and diff artifacts.
+- `advisoryDiff.listVersions` may return a merged migration-era version inventory that combines legacy file-backed advisory versions with snapshot-backed versions discovered from `advisory_reports` and `advisory_report_versions`.
 - `advisory_reports` records may persist additive upstream `decisionArtifacts` envelopes from `ESRS_MAPPING` for downstream export, review, and traceability.
 - `advisory_report_versions` snapshots may persist the same additive `decisionArtifacts` envelopes so version history preserves the decision-core evidence available at the time the snapshot was created.
 - Advisory diff and compare surfaces may prefer `advisory_reports` plus `advisory_report_versions` snapshot-backed `decisionArtifactDiff` summaries over legacy file-based advisory diff JSON when snapshot-backed data exists.
