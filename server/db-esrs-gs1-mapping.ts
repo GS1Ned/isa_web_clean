@@ -1,11 +1,87 @@
 /**
  * Database Helper Functions for ESRS-GS1 Mapping
- * 
+ *
  * Provides data access layer for ESRS-GS1 compliance mapping queries.
+ * E-03: Applies confidence decay to mappings whose source material is stale or
+ * whose underlying regulation has been flagged for re-verification.
  */
 
 import { getDb } from './db.js';
 import { sql } from 'drizzle-orm';
+
+// ---------------------------------------------------------------------------
+// E-03: Confidence decay helpers
+// ---------------------------------------------------------------------------
+
+type ConfidenceLevel = 'high' | 'medium' | 'low';
+
+interface ConfidenceDecayResult {
+  effectiveConfidence: ConfidenceLevel;
+  decayReason: string | null;
+}
+
+const DECAY_90_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
+const DECAY_180_DAYS_MS = 180 * 24 * 60 * 60 * 1000;
+
+/**
+ * Computes an effective confidence level that may be lower than the stored
+ * confidence when the source material is stale or the regulation is flagged
+ * for verification.
+ *
+ * @param confidence - Original stored confidence level
+ * @param sourceDateStr - ISO date string of the source document (nullable)
+ * @param regulationNeedsVerification - Whether any linked regulation is flagged
+ */
+function computeEffectiveConfidence(
+  confidence: string,
+  sourceDateStr: string | null | undefined,
+  regulationNeedsVerification: boolean = false
+): ConfidenceDecayResult {
+  const base = (confidence || 'low') as ConfidenceLevel;
+  const reasons: string[] = [];
+
+  let decayed = base;
+
+  if (sourceDateStr) {
+    const ageDays = Date.now() - new Date(sourceDateStr).getTime();
+    if (ageDays >= DECAY_180_DAYS_MS) {
+      if (decayed === 'high') decayed = 'low';
+      else if (decayed === 'medium') decayed = 'low';
+      reasons.push('source_age_180d');
+    } else if (ageDays >= DECAY_90_DAYS_MS) {
+      if (decayed === 'high') decayed = 'medium';
+      reasons.push('source_age_90d');
+    }
+  }
+
+  if (regulationNeedsVerification) {
+    if (decayed === 'high') decayed = 'medium';
+    reasons.push('regulation_needs_verification');
+  }
+
+  return {
+    effectiveConfidence: decayed,
+    decayReason: reasons.length > 0 ? reasons.join(', ') : null,
+  };
+}
+
+/**
+ * Applies confidence decay to an array of mapping rows returned from the DB.
+ * Expects rows that may have `confidence` and `source_date` fields.
+ */
+function applyDecayToRows<T extends Record<string, unknown>>(
+  rows: T[],
+  regulationNeedsVerification: boolean = false
+): (T & ConfidenceDecayResult)[] {
+  return rows.map((row) => {
+    const { effectiveConfidence, decayReason } = computeEffectiveConfidence(
+      row.confidence as string,
+      row.source_date as string | null,
+      regulationNeedsVerification
+    );
+    return { ...row, effectiveConfidence, decayReason };
+  });
+}
 
 /**
  * Get all GS1-ESRS data point mappings
@@ -13,9 +89,9 @@ import { sql } from 'drizzle-orm';
 export async function getAllEsrsGs1Mappings() {
   const db = await getDb();
   if (!db) throw new Error('Database not available');
-  
+
   const result = await db.execute(sql`
-    SELECT 
+    SELECT
       mapping_id,
       level,
       esrs_standard,
@@ -31,8 +107,8 @@ export async function getAllEsrsGs1Mappings() {
     FROM gs1_esrs_mappings
     ORDER BY esrs_standard, mapping_id
   `);
-  
-  return result[0];
+
+  return applyDecayToRows((result[0] as Record<string, unknown>[]));
 }
 
 /**
@@ -41,24 +117,39 @@ export async function getAllEsrsGs1Mappings() {
 export async function getEsrsGs1MappingsByStandard(esrs_standard: string) {
   const db = await getDb();
   if (!db) throw new Error('Database not available');
-  
+
   const result = await db.execute(sql`
-    SELECT 
-      mapping_id,
-      level,
-      esrs_standard,
-      esrs_standard as esrsStandard,
-      esrs_topic,
-      data_point_name,
-      short_name,
-      definition,
-      gs1_relevance
-    FROM gs1_esrs_mappings
-    WHERE esrs_standard = ${esrs_standard}
-    ORDER BY mapping_id
+    SELECT
+      m.mapping_id,
+      m.level,
+      m.esrs_standard,
+      m.esrs_standard as esrsStandard,
+      m.esrs_topic,
+      m.data_point_name,
+      m.short_name,
+      m.definition,
+      m.gs1_relevance,
+      m.source_date,
+      COALESCE(MAX(r.needs_verification), 0) as regulation_needs_verification
+    FROM gs1_esrs_mappings m
+    LEFT JOIN regulation_esrs_mappings rem ON rem.esrs_datapoint_id LIKE CONCAT(m.esrs_standard, '%')
+    LEFT JOIN regulations r ON r.id = rem.regulation_id
+    WHERE m.esrs_standard = ${esrs_standard}
+    GROUP BY m.mapping_id, m.level, m.esrs_standard, m.esrs_topic, m.data_point_name,
+             m.short_name, m.definition, m.gs1_relevance, m.source_date
+    ORDER BY m.mapping_id
   `);
-  
-  return result[0];
+
+  const rows = result[0] as Record<string, unknown>[];
+  return rows.map((row) => {
+    const regulationNeedsVerification = Boolean(row.regulation_needs_verification);
+    const { effectiveConfidence, decayReason } = computeEffectiveConfidence(
+      row.confidence as string,
+      row.source_date as string | null,
+      regulationNeedsVerification
+    );
+    return { ...row, effectiveConfidence, decayReason };
+  });
 }
 
 /**
@@ -67,9 +158,9 @@ export async function getEsrsGs1MappingsByStandard(esrs_standard: string) {
 export async function getGs1AttributesForEsrsMapping(esrsMappingId: number) {
   const db = await getDb();
   if (!db) throw new Error('Database not available');
-  
+
   const result = await db.execute(sql`
-    SELECT 
+    SELECT
       a.id,
       a.gs1_attribute_id,
       a.gs1_attribute_name,
@@ -79,14 +170,29 @@ export async function getGs1AttributesForEsrsMapping(esrsMappingId: number) {
       m.short_name as esrs_short_name,
       m.esrs_standard,
       m.esrs_standard as esrsStandard,
-      m.esrs_topic
+      m.esrs_topic,
+      m.source_date,
+      COALESCE(MAX(r.needs_verification), 0) as regulation_needs_verification
     FROM gs1_attribute_esrs_mapping a
     JOIN gs1_esrs_mappings m ON a.esrs_mapping_id = m.mapping_id
+    LEFT JOIN regulation_esrs_mappings rem ON rem.esrs_datapoint_id LIKE CONCAT(m.esrs_standard, '%')
+    LEFT JOIN regulations r ON r.id = rem.regulation_id
     WHERE a.esrs_mapping_id = ${esrsMappingId}
+    GROUP BY a.id, a.gs1_attribute_id, a.gs1_attribute_name, a.mapping_type,
+             a.mapping_notes, a.confidence, m.short_name, m.esrs_standard,
+             m.esrs_topic, m.source_date
     ORDER BY a.confidence DESC, a.gs1_attribute_name
   `);
-  
-  return result[0];
+
+  const rows = result[0] as Record<string, unknown>[];
+  return rows.map((row) => {
+    const { effectiveConfidence, decayReason } = computeEffectiveConfidence(
+      row.confidence as string,
+      row.source_date as string | null,
+      Boolean(row.regulation_needs_verification)
+    );
+    return { ...row, effectiveConfidence, decayReason };
+  });
 }
 
 /**
