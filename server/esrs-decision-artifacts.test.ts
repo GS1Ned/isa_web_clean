@@ -26,6 +26,8 @@ describe('ESRS decision artifacts', () => {
     expect(confidence.score).toBe(0.83);
     expect(confidence.basis).toBe('Mixed evidence basis');
     expect(confidence.reviewRecommended).toBe(true);
+    expect(confidence.uncertaintyClass).toBe('review_required');
+    expect(confidence.escalationAction).toBe('analyst_review');
   });
 
   it('builds a stable gap-analysis decision artifact', () => {
@@ -50,6 +52,7 @@ describe('ESRS decision artifacts', () => {
     expect(artifact.capability).toBe('ESRS_MAPPING');
     expect(artifact.confidence.level).toBe('medium');
     expect(artifact.confidence.reviewRecommended).toBe(true);
+    expect(artifact.confidence.uncertaintyClass).toBe('review_required');
     expect(artifact.confidence.score).toBeGreaterThan(0);
     expect(artifact.summary.criticalGapIds).toEqual(['gap-1', 'gap-2', 'gap-3']);
     expect(artifact.evidence.dataSources).toContain('gs1_esrs_mappings');
@@ -74,6 +77,8 @@ describe('ESRS decision artifacts', () => {
     expect(artifact.capability).toBe('ESRS_MAPPING');
     expect(artifact.confidence.level).toBe('high');
     expect(artifact.confidence.reviewRecommended).toBe(false);
+    expect(artifact.confidence.uncertaintyClass).toBe('decision_grade');
+    expect(artifact.confidence.escalationAction).toBe('none');
     expect(artifact.confidence.score).toBeCloseTo(0.77, 2);
     expect(artifact.summary.topRecommendationIds).toEqual([
       'productCarbonFootprint',
@@ -101,7 +106,20 @@ describe('ESRS decision artifacts', () => {
     expect(artifact.capability).toBe('ESRS_MAPPING');
     expect(artifact.confidence.level).toBe('high');
     expect(artifact.confidence.reviewRecommended).toBe(false);
+    expect(artifact.confidence.uncertaintyClass).toBe('decision_grade');
     expect(artifact.summary.mappingCount).toBe(12);
     expect(artifact.summary.topPhaseIds).toEqual(['phase-1', 'phase-2', 'phase-3']);
+  });
+
+  it('marks low-confidence artifacts as insufficient evidence with human review required', () => {
+    const confidence = buildDecisionArtifactConfidence({
+      rawScore: 0.22,
+      basis: 'Sparse and weak evidence basis',
+    });
+
+    expect(confidence.level).toBe('low');
+    expect(confidence.reviewRecommended).toBe(true);
+    expect(confidence.uncertaintyClass).toBe('insufficient_evidence');
+    expect(confidence.escalationAction).toBe('human_review_required');
   });
 });

@@ -85,6 +85,12 @@ function appendDecisionArtifactSection(
   lines.push(`- **Confidence Score:** ${Math.round(artifact.confidence.score * 100)}%`);
   lines.push(`- **Confidence Basis:** ${artifact.confidence.basis}`);
   lines.push(`- **Review Recommended:** ${artifact.confidence.reviewRecommended ? "Yes" : "No"}`);
+  if (artifact.confidence.uncertaintyClass) {
+    lines.push(`- **Uncertainty Class:** ${artifact.confidence.uncertaintyClass}`);
+  }
+  if (artifact.confidence.escalationAction) {
+    lines.push(`- **Escalation Action:** ${artifact.confidence.escalationAction}`);
+  }
   lines.push("");
 
   const summaryEntries = Object.entries(artifact.summary ?? {});
@@ -148,6 +154,8 @@ export function renderDecisionArtifactsHtml(artifacts?: EsrsDecisionArtifact[]):
           <p style="margin: 0 0 8px 0;"><strong>Confidence:</strong> ${artifact.confidence.level} (${Math.round(artifact.confidence.score * 100)}%)</p>
           <p style="margin: 0 0 8px 0;"><strong>Basis:</strong> ${artifact.confidence.basis}</p>
           <p style="margin: 0 0 8px 0;"><strong>Review Recommended:</strong> ${artifact.confidence.reviewRecommended ? "Yes" : "No"}</p>
+          ${artifact.confidence.uncertaintyClass ? `<p style="margin: 0 0 8px 0;"><strong>Uncertainty Class:</strong> ${artifact.confidence.uncertaintyClass}</p>` : ""}
+          ${artifact.confidence.escalationAction ? `<p style="margin: 0 0 8px 0;"><strong>Escalation Action:</strong> ${artifact.confidence.escalationAction}</p>` : ""}
           <p style="margin: 0 0 8px 0;"><strong>Evidence:</strong> ${(artifact.evidence.dataSources || []).join(", ") || "N/A"}</p>
           <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 12px;">
             <thead>

@@ -56,7 +56,7 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
   - `python3 scripts/gates/manifest-ownership-drift.py`
 
 ## Operational Notes
-- Current decision artefacts expose heuristic confidence with a stable contract: `confidence.level` in `{high, medium, low}`, `confidence.score` in `[0,1]`, `confidence.basis` as a human-readable explanation, and additive `confidence.reviewRecommended` to flag non-high-confidence outputs for downstream review.
+- Current decision artefacts expose heuristic confidence with a stable contract: `confidence.level` in `{high, medium, low}`, `confidence.score` in `[0,1]`, `confidence.basis` as a human-readable explanation, additive `confidence.reviewRecommended` to flag non-high-confidence outputs for downstream review, and additive `confidence.uncertaintyClass` / `confidence.escalationAction` fields so downstream delivery layers do not invent their own review thresholds.
 - Current score banding is conservative and evidence-backed in code: `high >= 0.75`, `medium >= 0.50`, else `low`.
 
 ## Operational Unknowns

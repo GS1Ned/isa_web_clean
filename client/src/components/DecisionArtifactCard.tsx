@@ -22,6 +22,8 @@ export interface DecisionArtifactCardData {
     score: number;
     basis: string;
     reviewRecommended?: boolean;
+    uncertaintyClass?: string;
+    escalationAction?: string;
   };
   evidence?: {
     codePaths?: string[];
@@ -72,6 +74,14 @@ function getConfidenceTone(level: string) {
   }
 }
 
+function formatConfidenceMeta(value?: string) {
+  if (!value) return null;
+
+  return value
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (match) => match.toUpperCase());
+}
+
 export function DecisionArtifactCard({
   artifact,
   title = "Decision Artifact",
@@ -102,6 +112,11 @@ export function DecisionArtifactCard({
               <CheckCircle2 className="mr-1 h-3 w-3" />
               {artifact.confidence.level} {Math.round(artifact.confidence.score * 100)}%
             </Badge>
+            {artifact.confidence.uncertaintyClass ? (
+              <Badge variant="outline">
+                {formatConfidenceMeta(artifact.confidence.uncertaintyClass)}
+              </Badge>
+            ) : null}
             <Badge variant={artifact.confidence.reviewRecommended ? "secondary" : "outline"}>
               {artifact.confidence.reviewRecommended ? "Review recommended" : "Ready for routine use"}
             </Badge>
@@ -136,6 +151,11 @@ export function DecisionArtifactCard({
           <p className="mt-2 text-xs font-medium text-blue-900">
             Review: {artifact.confidence.reviewRecommended ? "recommended before downstream sign-off" : "routine downstream use acceptable"}
           </p>
+          {artifact.confidence.escalationAction ? (
+            <p className="mt-1 text-xs text-blue-900">
+              Escalation: {formatConfidenceMeta(artifact.confidence.escalationAction)}
+            </p>
+          ) : null}
         </div>
 
         {summaryEntries.length > 0 && (
