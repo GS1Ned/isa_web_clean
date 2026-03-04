@@ -1,15 +1,19 @@
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, CheckCircle2, FileText, Hash, Shield } from "lucide-react";
+import { Link } from "wouter";
 
 function formatMetadataValue(value: unknown) {
   return value == null ? "N/A" : String(value);
 }
 
 export default function AdvisoryTraceability() {
-  const { data: metadata, isLoading } = trpc.advisory.getMetadata.useQuery();
+  const { data: overview, isLoading } = trpc.advisory.getOverview.useQuery();
+  const metadata = overview?.metadata;
+  const latestReport = overview?.latestReport;
 
   if (isLoading) {
     return (
@@ -116,6 +120,46 @@ export default function AdvisoryTraceability() {
                 {metadata.traceabilityStatus}
               </Badge>
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {latestReport && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Latest Persisted Advisory Report</CardTitle>
+            <CardDescription>
+              Latest delivery-layer report linked to the current advisory read model.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 flex-1">
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Report ID</label>
+                <p className="text-lg font-mono">{latestReport.id}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Version</label>
+                <p className="text-lg font-mono">{formatMetadataValue(latestReport.version)}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Review Status</label>
+                <Badge variant="outline" className="mt-1">
+                  {formatMetadataValue(latestReport.reviewStatus)}
+                </Badge>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Generated</label>
+                <p className="text-sm">
+                  {latestReport.generatedDate
+                    ? new Date(latestReport.generatedDate).toLocaleString()
+                    : "N/A"}
+                </p>
+              </div>
+            </div>
+            <Button asChild variant="outline">
+              <Link href={`/advisory-reports/${latestReport.id}`}>Open report</Link>
+            </Button>
           </CardContent>
         </Card>
       )}

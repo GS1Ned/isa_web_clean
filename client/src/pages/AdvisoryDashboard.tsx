@@ -7,7 +7,9 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 
 export default function AdvisoryDashboard() {
-  const { data: summary, isLoading } = trpc.advisory.getSummary.useQuery();
+  const { data: overview, isLoading } = trpc.advisory.getOverview.useQuery();
+  const summary = overview?.summary;
+  const latestReport = overview?.latestReport;
 
   if (isLoading) {
     return (
@@ -239,6 +241,14 @@ export default function AdvisoryDashboard() {
             View Traceability
           </Button>
         </Link>
+        {latestReport && (
+          <Link href={`/advisory-reports/${latestReport.id}`}>
+            <Button size="lg" variant="outline">
+              <Database className="h-4 w-4 mr-2" />
+              View Latest Report
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );

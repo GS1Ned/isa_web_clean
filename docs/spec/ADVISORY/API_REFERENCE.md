@@ -110,6 +110,7 @@ Shared input/output shapes are defined in `shared/`. Use these modules alongside
 | `advisory.getGaps` | Query | protected | [AdvisoryGetGapsInput](#type-advisory-getgaps) | [AdvisoryGetGapsOutput](#type-advisory-getgaps) |
 | `advisory.getMappings` | Query | protected | [AdvisoryGetMappingsInput](#type-advisory-getmappings) | [AdvisoryGetMappingsOutput](#type-advisory-getmappings) |
 | `advisory.getMetadata` | Query | protected | [AdvisoryGetMetadataInput](#type-advisory-getmetadata) | [AdvisoryGetMetadataOutput](#type-advisory-getmetadata) |
+| `advisory.getOverview` | Query | protected | [AdvisoryGetOverviewInput](#type-advisory-getoverview) | [AdvisoryGetOverviewOutput](#type-advisory-getoverview) |
 | `advisory.getRecommendations` | Query | protected | [AdvisoryGetRecommendationsInput](#type-advisory-getrecommendations) | [AdvisoryGetRecommendationsOutput](#type-advisory-getrecommendations) |
 | `advisory.getRegulations` | Query | protected | [AdvisoryGetRegulationsInput](#type-advisory-getregulations) | [AdvisoryGetRegulationsOutput](#type-advisory-getregulations) |
 | `advisory.getSectorModels` | Query | protected | [AdvisoryGetSectorModelsInput](#type-advisory-getsectormodels) | [AdvisoryGetSectorModelsOutput](#type-advisory-getsectormodels) |
@@ -1526,6 +1527,46 @@ null
 import { trpc } from "../client/src/lib/trpc";
 
 const result: AdvisoryGetMetadataOutput = await trpc.advisory.getMetadata.query();
+```
+
+### advisory.getOverview
+
+- **Router:** `advisory`
+- **Procedure:** `getOverview`
+- **Type:** Query
+- **Auth:** protected
+
+#### Type Definitions
+
+<a id="type-advisory-getoverview"></a>
+```ts
+import type { AppRouter } from "../server/routers";
+import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+
+type AdvisoryGetOverviewInput = inferRouterInputs<AppRouter>["advisory"]["getOverview"];
+type AdvisoryGetOverviewOutput = inferRouterOutputs<AppRouter>["advisory"]["getOverview"];
+```
+
+#### Example Request
+
+```json
+null
+```
+
+#### Example Response
+
+```json
+{
+  "data": "<AdvisoryGetOverviewOutput>"
+}
+```
+
+#### Example Client Usage
+
+```ts
+import { trpc } from "../client/src/lib/trpc";
+
+const result: AdvisoryGetOverviewOutput = await trpc.advisory.getOverview.query();
 ```
 
 ### advisory.getRecommendations
