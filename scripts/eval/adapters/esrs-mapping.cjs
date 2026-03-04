@@ -9,6 +9,14 @@ const {
 } = require("../lib/common.cjs");
 const { measureRuntimeProbe } = require("../lib/runtime-probes.cjs");
 
+function countBy(values) {
+  return values.reduce((acc, value) => {
+    const key = String(value || "UNKNOWN");
+    acc[key] = Number(acc[key] || 0) + 1;
+    return acc;
+  }, {});
+}
+
 async function evaluate(context) {
   const { registryEntry, datasets, thresholdsByMetric, fixtureVersion } = context;
   const dataset = selectDatasetByPrefix(datasets, "esrs_mapping_gold_");
@@ -42,6 +50,11 @@ async function evaluate(context) {
     0
   );
 
+  const directCount = rows.filter((row) => String(row.confidence || "").toLowerCase() === "direct").length;
+  const partialCount = rows.filter((row) => String(row.confidence || "").toLowerCase() === "partial").length;
+  const directShare = Number(safeDiv(directCount, rows.length, 0).toFixed(4));
+  const partialShare = Number(safeDiv(partialCount, rows.length, 0).toFixed(4));
+
   const negativeCaseCoverage = Number(
     safeDiv(
       negativeCases.filter((row) => {
@@ -62,6 +75,10 @@ async function evaluate(context) {
       0
     ).toFixed(4)
   );
+  const negativeNoMappingCount = negativeCases.filter((row) => row?.actualOutcome === "no_mapping").length;
+  const noMappingShare = Number(safeDiv(negativeNoMappingCount, negativeCases.length, 0).toFixed(4));
+  const positiveRegulationBreakdown = countBy(rows.map((row) => row.regulationStandard));
+  const negativeRegulationBreakdown = countBy(negativeCases.map((row) => row.regulationStandard));
 
   const contractAdherence = Number(avg([precision, explainability, authority]).toFixed(4));
   const integrationCompleteness = Number(
@@ -217,6 +234,22 @@ async function evaluate(context) {
     metrics,
     rollups,
     syntheticLatencyCount,
+    diagnostics: {
+      benchmark_mix: {
+        positive_case_count: rows.length,
+        negative_case_count: negativeCases.length,
+        direct_case_count: directCount,
+        partial_case_count: partialCount,
+        no_mapping_case_count: negativeNoMappingCount,
+        direct_case_share: directShare,
+        partial_case_share: partialShare,
+        no_mapping_case_share: noMappingShare,
+      },
+      regulation_breakdown: {
+        positive: positiveRegulationBreakdown,
+        negative: negativeRegulationBreakdown,
+      },
+    },
   };
 }
 
