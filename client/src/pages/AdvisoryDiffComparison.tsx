@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { format } from "date-fns";
 import { Link } from "wouter";
 import {
   ArrowRight,
@@ -13,10 +12,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import {
-  DecisionArtifactCard,
-  type DecisionArtifactCardData,
-} from "@/components/DecisionArtifactCard";
+import { DecisionArtifactCard } from "@/components/DecisionArtifactCard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -35,10 +31,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  formatAdvisoryTimestamp,
   formatAdvisoryVersionLabel,
   formatDecisionArtifactConfidenceDelta,
   formatDecisionArtifactCount,
   getDecisionArtifactDiffTone,
+  normalizeDecisionArtifacts,
 } from "@/lib/advisory-report-ui";
 import { trpc } from "@/lib/trpc";
 
@@ -48,38 +46,6 @@ import { trpc } from "@/lib/trpc";
  * Compares persisted advisory report snapshots against the current report state.
  * Uses advisory_reports + advisory_report_versions instead of legacy file-based JSON diffs.
  */
-
-function isDecisionArtifactCardData(value: unknown): value is DecisionArtifactCardData {
-  return (
-    !!value &&
-    typeof value === "object" &&
-    typeof (value as DecisionArtifactCardData).artifactVersion === "string" &&
-    typeof (value as DecisionArtifactCardData).artifactType === "string" &&
-    typeof (value as DecisionArtifactCardData).capability === "string" &&
-    typeof (value as DecisionArtifactCardData).confidence?.level === "string" &&
-    typeof (value as DecisionArtifactCardData).confidence?.score === "number" &&
-    typeof (value as DecisionArtifactCardData).confidence?.basis === "string"
-  );
-}
-
-function normalizeDecisionArtifacts(value: unknown) {
-  if (!Array.isArray(value)) {
-    return [] as DecisionArtifactCardData[];
-  }
-
-  return value.filter(isDecisionArtifactCardData);
-}
-
-function formatTimestamp(value?: string | Date | null) {
-  if (!value) {
-    return "N/A";
-  }
-
-  const date = value instanceof Date ? value : new Date(value);
-  return Number.isNaN(date.getTime())
-    ? "N/A"
-    : format(date, "MMMM d, yyyy 'at' HH:mm");
-}
 
 function renderArtifactTypeBadges(
   values: string[],
@@ -275,7 +241,7 @@ export default function AdvisoryDiffComparison() {
                 </div>
                 <div className="mt-2 font-medium flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
-                  {formatTimestamp(selectedReport.generatedDate)}
+                  {formatAdvisoryTimestamp(selectedReport.generatedDate)}
                 </div>
               </div>
               <div className="rounded-lg border bg-muted/20 p-4">
@@ -352,7 +318,7 @@ export default function AdvisoryDiffComparison() {
                         Snapshot Created
                       </div>
                       <div className="mt-2 font-medium">
-                        {formatTimestamp(selectedSnapshot.createdAt)}
+                        {formatAdvisoryTimestamp(selectedSnapshot.createdAt)}
                       </div>
                     </div>
                     <div className="rounded-lg border p-4">

@@ -1,518 +1,498 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Skeleton } from "@/components/ui/skeleton";
-import { 
-  TrendingUp, 
-  AlertTriangle, 
-  CheckCircle2, 
-  XCircle,
-  ArrowRight,
-  FileText
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "wouter";
+import {
+  Calendar,
+  Eye,
+  FileSearch,
+  GitCompare,
+  Layers3,
+  Loader2,
+  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 
-interface AdvisoryDiffData {
-  metadata: {
-    comparisonDate: string;
-    version1: {
-      advisoryId: string;
-      version: string;
-      publicationDate: string;
-    };
-    version2: {
-      advisoryId: string;
-      version: string;
-      publicationDate: string;
-    };
-  };
-  coverageDeltas: {
-    totalMappings: {
-      "v1.0": number;
-      "v1.1"?: number;
-      delta: number;
-    };
-    confidenceTransitions: {
-      missing_to_partial: number;
-      missing_to_direct: number;
-      partial_to_direct: number;
-      direct_to_partial: number;
-      partial_to_missing: number;
-      direct_to_missing: number;
-    };
-    confidenceDistribution: {
-      "v1.0": {
-        direct: number;
-        partial: number;
-        missing: number;
-      };
-      "v1.1"?: {
-        direct: number;
-        partial: number;
-        missing: number;
-      };
-    };
-    coverageRate: {
-      "v1.0": number;
-      "v1.1"?: number;
-    };
-    coverageImprovement: number;
-    newMappings: number;
-    removedMappings: number;
-  };
-  gapLifecycle: {
-    totalGaps: {
-      "v1.0": number;
-      "v1.1"?: number;
-      delta: number;
-    };
-    gapsClosed: number;
-    newGaps: number;
-    severityChanges: number;
-    severityDistribution: {
-      "v1.0": {
-        critical: number;
-        moderate: number;
-        "low-priority": number;
-      };
-      "v1.1"?: {
-        critical: number;
-        moderate: number;
-        "low-priority": number;
-      };
-    };
-    closedGaps: any[];
-    newGapsDetails: any[];
-    severityChangeDetails: any[];
-  };
-  recommendationLifecycle: {
-    totalRecommendations: {
-      "v1.0": number;
-      "v1.1"?: number;
-      delta: number;
-    };
-    implemented: number;
-    newRecommendations: number;
-    timeframeChanges: number;
-    timeframeDistribution: {
-      "v1.0": {
-        "short-term": number;
-        "medium-term": number;
-        "long-term": number;
-      };
-      "v1.1"?: {
-        "short-term": number;
-        "medium-term": number;
-        "long-term": number;
-      };
-    };
-    implementedDetails: any[];
-    newRecommendationsDetails: any[];
-    timeframeChangeDetails: any[];
-  };
-  compositeMetrics: {
-    overallProgressScore: number;
-    componentScores: {
-      coverage: number;
-      gapClosure: number;
-      recommendationImplementation: number;
-    };
-    regressionDetected: boolean;
-    regressions: any[];
-  };
+import { DecisionArtifactCard } from "@/components/DecisionArtifactCard";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  formatAdvisoryEnumLabel,
+  formatAdvisoryTimestamp,
+  formatAdvisoryVersionLabel,
+  formatDecisionArtifactConfidenceDelta,
+  formatDecisionArtifactCount,
+  getAdvisoryLaneStatusTone,
+  getAdvisoryPublicationStatusTone,
+  getAdvisoryReviewStatusTone,
+  getDecisionArtifactDiffTone,
+  normalizeDecisionArtifacts,
+} from "@/lib/advisory-report-ui";
+import { trpc } from "@/lib/trpc";
+
+function renderArtifactTypeBadges(
+  values: string[],
+  variant: "outline" | "secondary" | "destructive",
+) {
+  if (values.length === 0) {
+    return <span className="text-muted-foreground">None</span>;
+  }
+
+  return values.map(value => (
+    <Badge key={value} variant={variant}>
+      {value}
+    </Badge>
+  ));
 }
 
 export default function AdvisoryDiff() {
-  const [version1] = useState("v1.0");
-  const [version2] = useState("v1.0");
-  
-  const { data: diffData, isLoading: loading, error } = trpc.advisory.getDiff.useQuery({
-    version1,
-    version2,
-  });
+  const [selectedReportId, setSelectedReportId] = useState("");
+  const [selectedSnapshotId, setSelectedSnapshotId] = useState("");
 
-  if (loading) {
-    return (
-      <div className="container py-8 max-w-7xl">
-        <div className="space-y-6">
-          <Skeleton className="h-12 w-96" />
-          <Skeleton className="h-32 w-full" />
-          <div className="grid gap-6 md:grid-cols-2">
-            <Skeleton className="h-48" />
-            <Skeleton className="h-48" />
-          </div>
-          <Skeleton className="h-64 w-full" />
-        </div>
-      </div>
-    );
-  }
+  const reportsQuery = trpc.advisoryReports.list.useQuery();
+  const reports = reportsQuery.data ?? [];
 
-  if (error) {
-    return (
-      <div className="container py-8 max-w-7xl">
-        <Alert variant="destructive">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>{error.message || "Failed to load advisory diff data"}</AlertDescription>
-        </Alert>
-      </div>
-    );
-  }
-  
-  if (!diffData) {
-    return (
-      <div className="container py-8 max-w-7xl">
-        <Alert>
-          <AlertDescription>No diff data available</AlertDescription>
-        </Alert>
-      </div>
-    );
-  }
+  const versionsQuery = trpc.advisoryReports.versions.useQuery(
+    { reportId: Number(selectedReportId) },
+    { enabled: Number(selectedReportId) > 0 },
+  );
+  const versions = versionsQuery.data ?? [];
 
-  const { metadata, coverageDeltas, gapLifecycle, recommendationLifecycle, compositeMetrics } = diffData as AdvisoryDiffData;
+  useEffect(() => {
+    if (!selectedReportId && reports.length > 0) {
+      setSelectedReportId(String(reports[0].id));
+    }
+  }, [reports, selectedReportId]);
+
+  useEffect(() => {
+    if (versions.length === 0) {
+      if (selectedSnapshotId) {
+        setSelectedSnapshotId("");
+      }
+      return;
+    }
+
+    if (!versions.some(version => String(version.id) === selectedSnapshotId)) {
+      setSelectedSnapshotId(String(versions[0].id));
+    }
+  }, [selectedSnapshotId, versions]);
+
+  const selectedReport = useMemo(
+    () => reports.find(report => String(report.id) === selectedReportId) ?? null,
+    [reports, selectedReportId],
+  );
+
+  const selectedSnapshot = useMemo(
+    () => versions.find(version => String(version.id) === selectedSnapshotId) ?? null,
+    [selectedSnapshotId, versions],
+  );
+
+  const currentArtifacts = normalizeDecisionArtifacts(selectedReport?.decisionArtifacts);
+  const snapshotArtifacts = normalizeDecisionArtifacts(selectedSnapshot?.decisionArtifacts);
+  const currentArtifact = currentArtifacts[0] ?? null;
+  const snapshotArtifact = snapshotArtifacts[0] ?? null;
+  const diffSummary = selectedSnapshot?.decisionArtifactDiff ?? null;
+
+  const reviewTone = selectedReport
+    ? getAdvisoryReviewStatusTone(selectedReport.reviewStatus)
+    : null;
+  const publicationTone = selectedReport
+    ? getAdvisoryPublicationStatusTone(selectedReport.publicationStatus)
+    : null;
+  const laneTone = selectedReport ? getAdvisoryLaneStatusTone(selectedReport.laneStatus) : null;
+  const diffTone = getDecisionArtifactDiffTone(Boolean(diffSummary?.hasChanges));
 
   return (
-    <div className="container py-8 max-w-7xl">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-3">
-          <h1 className="text-3xl font-bold">Advisory Diff Analysis</h1>
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-              <CheckCircle2 className="h-3 w-3 mr-1" />
-              {metadata.version1.version}
-            </Badge>
-            <ArrowRight className="h-4 w-4 text-muted-foreground" />
-            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-              <CheckCircle2 className="h-3 w-3 mr-1" />
-              {metadata.version2.version}
-            </Badge>
+    <div className="container mx-auto py-8 max-w-7xl space-y-6">
+      <div>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-3 rounded-lg bg-gradient-to-br from-slate-800 to-slate-600">
+            <GitCompare className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold">Advisory Diff Overview</h1>
+            <p className="text-muted-foreground mt-1">
+              Snapshot-backed drift overview for current advisory reports versus persisted
+              advisory report versions.
+            </p>
           </div>
         </div>
-        <p className="text-muted-foreground">
-          Governance-grade comparison of ISA advisory versions
-        </p>
       </div>
 
-      {/* Version Comparison Header */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3">
-            <FileText className="w-5 h-5" />
-            Version Comparison
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center gap-6">
-            <div className="text-center">
-              <div className="text-sm text-muted-foreground">From</div>
-              <div className="text-2xl font-bold">{metadata.version1.version}</div>
-              <div className="text-sm text-muted-foreground">{metadata.version1.publicationDate}</div>
-            </div>
-            <ArrowRight className="w-8 h-8 text-muted-foreground" />
-            <div className="text-center">
-              <div className="text-sm text-muted-foreground">To</div>
-              <div className="text-2xl font-bold">{metadata.version2.version}</div>
-              <div className="text-sm text-muted-foreground">{metadata.version2.publicationDate}</div>
-            </div>
-          </div>
-          <div className="mt-4 text-center text-sm text-muted-foreground">
-            Comparison performed: {new Date(metadata.comparisonDate).toLocaleString()}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Overall Progress Score */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Overall Progress Score</CardTitle>
-          <CardDescription>
-            Composite metric measuring advisory evolution quality
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-4">
-            <div className="text-5xl font-bold">
-              {compositeMetrics.overallProgressScore.toFixed(1)}%
-            </div>
-            {compositeMetrics.regressionDetected && (
-              <Alert variant="destructive" className="flex-1">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription>
-                  Regression detected: {compositeMetrics.regressions.length} issue(s)
-                </AlertDescription>
-              </Alert>
-            )}
-            {!compositeMetrics.regressionDetected && compositeMetrics.overallProgressScore === 0 && (
-              <Alert className="flex-1">
-                <AlertDescription>
-                  No changes detected between versions
-                </AlertDescription>
-              </Alert>
-            )}
-          </div>
-          <div className="grid grid-cols-3 gap-4 mt-6">
-            <div>
-              <div className="text-sm text-muted-foreground">Coverage</div>
-              <div className="text-2xl font-bold">{compositeMetrics.componentScores.coverage.toFixed(1)}%</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Gap Closure</div>
-              <div className="text-2xl font-bold">{compositeMetrics.componentScores.gapClosure.toFixed(1)}%</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Recommendations</div>
-              <div className="text-2xl font-bold">{compositeMetrics.componentScores.recommendationImplementation.toFixed(1)}%</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Coverage Deltas */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" />
-            Coverage Deltas
-          </CardTitle>
-          <CardDescription>
-            Changes in regulation-to-standard mapping coverage
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Summary Stats */}
-          <div className="grid grid-cols-4 gap-4">
-            <div>
-              <div className="text-sm text-muted-foreground">Total Mappings</div>
-              <div className="text-2xl font-bold">
-                {coverageDeltas.totalMappings["v1.0"]}
-                {coverageDeltas.totalMappings.delta !== 0 && (
-                  <span className={`text-base ml-2 ${coverageDeltas.totalMappings.delta > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {coverageDeltas.totalMappings.delta > 0 ? '+' : ''}{coverageDeltas.totalMappings.delta}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Coverage Rate</div>
-              <div className="text-2xl font-bold">
-                {(coverageDeltas.coverageRate["v1.0"] * 100).toFixed(1)}%
-                {coverageDeltas.coverageImprovement !== 0 && (
-                  <span className={`text-base ml-2 ${coverageDeltas.coverageImprovement > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {coverageDeltas.coverageImprovement > 0 ? '+' : ''}{(coverageDeltas.coverageImprovement * 100).toFixed(1)}%
-                  </span>
-                )}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">New Mappings</div>
-              <div className="text-2xl font-bold text-green-600">
-                {coverageDeltas.newMappings}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Removed Mappings</div>
-              <div className="text-2xl font-bold text-red-600">
-                {coverageDeltas.removedMappings}
-              </div>
-            </div>
-          </div>
-
-          {/* Confidence Transitions */}
-          <div>
-            <h4 className="font-semibold mb-3">Confidence Transitions</h4>
-            <div className="grid grid-cols-3 gap-3">
-              {/* Improvements */}
-              <div className="space-y-2">
-                <div className="text-sm font-medium text-green-600">Improvements</div>
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span>Missing → Partial</span>
-                    <Badge variant="secondary">{coverageDeltas.confidenceTransitions.missing_to_partial}</Badge>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Missing → Direct</span>
-                    <Badge variant="secondary">{coverageDeltas.confidenceTransitions.missing_to_direct}</Badge>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Partial → Direct</span>
-                    <Badge variant="secondary">{coverageDeltas.confidenceTransitions.partial_to_direct}</Badge>
-                  </div>
-                </div>
-              </div>
-
-              {/* Regressions */}
-              <div className="space-y-2">
-                <div className="text-sm font-medium text-red-600">Regressions</div>
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span>Direct → Partial</span>
-                    <Badge variant="secondary">{coverageDeltas.confidenceTransitions.direct_to_partial}</Badge>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Partial → Missing</span>
-                    <Badge variant="secondary">{coverageDeltas.confidenceTransitions.partial_to_missing}</Badge>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Direct → Missing</span>
-                    <Badge variant="secondary">{coverageDeltas.confidenceTransitions.direct_to_missing}</Badge>
-                  </div>
-                </div>
-              </div>
-
-              {/* Distribution */}
-              <div className="space-y-2">
-                <div className="text-sm font-medium">Current Distribution</div>
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span>Direct</span>
-                    <Badge variant="secondary">{coverageDeltas.confidenceDistribution["v1.0"].direct}</Badge>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Partial</span>
-                    <Badge variant="secondary">{coverageDeltas.confidenceDistribution["v1.0"].partial}</Badge>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Missing</span>
-                    <Badge variant="secondary">{coverageDeltas.confidenceDistribution["v1.0"].missing}</Badge>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Gap Lifecycle */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5" />
-            Gap Lifecycle
-          </CardTitle>
-          <CardDescription>
-            Evolution of identified gaps and their severity
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-4 gap-4">
-            <div>
-              <div className="text-sm text-muted-foreground">Total Gaps</div>
-              <div className="text-2xl font-bold">
-                {gapLifecycle.totalGaps["v1.0"]}
-                {gapLifecycle.totalGaps.delta !== 0 && (
-                  <span className={`text-base ml-2 ${gapLifecycle.totalGaps.delta < 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {gapLifecycle.totalGaps.delta > 0 ? '+' : ''}{gapLifecycle.totalGaps.delta}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Gaps Closed</div>
-              <div className="text-2xl font-bold text-green-600 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5" />
-                {gapLifecycle.gapsClosed}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">New Gaps</div>
-              <div className="text-2xl font-bold text-red-600 flex items-center gap-2">
-                <XCircle className="w-5 h-5" />
-                {gapLifecycle.newGaps}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Severity Changes</div>
-              <div className="text-2xl font-bold">
-                {gapLifecycle.severityChanges}
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-3">Severity Distribution</h4>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="flex justify-between text-sm">
-                <span>Critical</span>
-                <Badge variant="destructive">{gapLifecycle.severityDistribution["v1.0"].critical}</Badge>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Moderate</span>
-                <Badge variant="secondary">{gapLifecycle.severityDistribution["v1.0"].moderate}</Badge>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Low Priority</span>
-                <Badge variant="outline">{gapLifecycle.severityDistribution["v1.0"]["low-priority"]}</Badge>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Recommendation Lifecycle */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="w-5 h-5" />
-            Recommendation Lifecycle
-          </CardTitle>
+          <CardTitle>Select a report and snapshot</CardTitle>
           <CardDescription>
-            Evolution of strategic recommendations
+            This overview replaces the legacy static diff JSON flow with persisted
+            `advisory_reports` and `advisory_report_versions`.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-4 gap-4">
-            <div>
-              <div className="text-sm text-muted-foreground">Total Recommendations</div>
-              <div className="text-2xl font-bold">
-                {recommendationLifecycle.totalRecommendations["v1.0"]}
-                {recommendationLifecycle.totalRecommendations.delta !== 0 && (
-                  <span className={`text-base ml-2 ${recommendationLifecycle.totalRecommendations.delta > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {recommendationLifecycle.totalRecommendations.delta > 0 ? '+' : ''}{recommendationLifecycle.totalRecommendations.delta}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Implemented</div>
-              <div className="text-2xl font-bold text-green-600 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5" />
-                {recommendationLifecycle.implemented}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">New Recommendations</div>
-              <div className="text-2xl font-bold text-blue-600">
-                {recommendationLifecycle.newRecommendations}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Timeframe Changes</div>
-              <div className="text-2xl font-bold">
-                {recommendationLifecycle.timeframeChanges}
-              </div>
-            </div>
+        <CardContent className="grid gap-4 md:grid-cols-[1.4fr_1.4fr_auto]">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Report</label>
+            <Select value={selectedReportId} onValueChange={setSelectedReportId}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select advisory report" />
+              </SelectTrigger>
+              <SelectContent>
+                {reports.map(report => (
+                  <SelectItem key={report.id} value={String(report.id)}>
+                    {report.title} ({formatAdvisoryVersionLabel(report.version)})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          <div>
-            <h4 className="font-semibold mb-3">Timeframe Distribution</h4>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="flex justify-between text-sm">
-                <span>Short-term</span>
-                <Badge variant="secondary">{recommendationLifecycle.timeframeDistribution["v1.0"]["short-term"]}</Badge>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Medium-term</span>
-                <Badge variant="secondary">{recommendationLifecycle.timeframeDistribution["v1.0"]["medium-term"]}</Badge>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Long-term</span>
-                <Badge variant="secondary">{recommendationLifecycle.timeframeDistribution["v1.0"]["long-term"]}</Badge>
-              </div>
-            </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Snapshot version</label>
+            <Select
+              value={selectedSnapshotId}
+              onValueChange={setSelectedSnapshotId}
+              disabled={!selectedReportId || versionsQuery.isLoading || versions.length === 0}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder={versionsQuery.isLoading ? "Loading snapshots..." : "Select snapshot"}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {versions.map(version => (
+                  <SelectItem key={version.id} value={String(version.id)}>
+                    {formatAdvisoryVersionLabel(version.version)} snapshot
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex items-end">
+            <Button asChild variant="outline" disabled={!selectedReport}>
+              <Link href={selectedReport ? `/advisory-reports/${selectedReport.id}` : "/advisory-reports"}>
+                <Eye className="h-4 w-4 mr-2" />
+                View report
+              </Link>
+            </Button>
           </div>
         </CardContent>
       </Card>
+
+      {reportsQuery.isLoading && (
+        <Card>
+          <CardContent className="py-8">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              Loading advisory reports...
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {!reportsQuery.isLoading && reports.length === 0 && (
+        <Alert>
+          <AlertDescription>
+            No advisory reports are available yet. Persist reports before using the diff overview.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {selectedReport && (
+        <div className="space-y-6">
+          <Card>
+            <CardHeader className="space-y-4">
+              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="outline">
+                      {formatAdvisoryEnumLabel(selectedReport.reportType)}
+                    </Badge>
+                    {reviewTone && (
+                      <Badge variant={reviewTone.variant} className={reviewTone.className}>
+                        {formatAdvisoryEnumLabel(selectedReport.reviewStatus)}
+                      </Badge>
+                    )}
+                    {publicationTone && (
+                      <Badge variant={publicationTone.variant} className={publicationTone.className}>
+                        {formatAdvisoryEnumLabel(selectedReport.publicationStatus)}
+                      </Badge>
+                    )}
+                    {laneTone && (
+                      <Badge variant={laneTone.variant} className={laneTone.className}>
+                        {formatAdvisoryEnumLabel(selectedReport.laneStatus)}
+                      </Badge>
+                    )}
+                    <Badge variant="secondary">
+                      {formatDecisionArtifactCount(currentArtifacts.length)}
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-2xl">{selectedReport.title}</CardTitle>
+                  <CardDescription>
+                    Start with the latest snapshot-backed drift summary, then drill into the full
+                    compare or report detail surfaces.
+                  </CardDescription>
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  <Button asChild variant="outline">
+                    <Link href="/advisory/compare">
+                      <GitCompare className="h-4 w-4 mr-2" />
+                      Full compare
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline">
+                    <Link href={`/advisory-reports/${selectedReport.id}`}>
+                      <FileSearch className="h-4 w-4 mr-2" />
+                      Report detail
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <div className="rounded-lg border bg-muted/20 p-4">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Current report
+                </div>
+                <div className="mt-2 font-medium">
+                  {formatAdvisoryVersionLabel(selectedReport.version)}
+                </div>
+              </div>
+              <div className="rounded-lg border bg-muted/20 p-4">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Snapshot
+                </div>
+                <div className="mt-2 font-medium">
+                  {selectedSnapshot
+                    ? formatAdvisoryVersionLabel(selectedSnapshot.version)
+                    : "No snapshot"}
+                </div>
+              </div>
+              <div className="rounded-lg border bg-muted/20 p-4">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Generated
+                </div>
+                <div className="mt-2 flex items-center gap-2 font-medium">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  {formatAdvisoryTimestamp(selectedReport.generatedDate)}
+                </div>
+              </div>
+              <div className="rounded-lg border bg-muted/20 p-4">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Snapshot created
+                </div>
+                <div className="mt-2 flex items-center gap-2 font-medium">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  {formatAdvisoryTimestamp(selectedSnapshot?.createdAt)}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {!selectedSnapshot && (
+            <Alert>
+              <AlertDescription>
+                This report does not have any persisted snapshots yet. Create a report version to
+                enable snapshot-backed diffing.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {selectedSnapshot && diffSummary && (
+            <div className="grid gap-6 xl:grid-cols-[1.2fr_1fr]">
+              <Card>
+                <CardHeader>
+                  <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <Sparkles className="h-5 w-5 text-blue-600" />
+                        Decision Artifact Drift
+                      </CardTitle>
+                      <CardDescription>
+                        Current report versus persisted snapshot, using the stored
+                        `decisionArtifactDiff` summary.
+                      </CardDescription>
+                    </div>
+                    <Badge variant={diffTone.variant} className={diffTone.className}>
+                      {diffSummary.hasChanges ? "Changes detected" : "No changes detected"}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-5">
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="rounded-lg border bg-muted/20 p-4">
+                      <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Changed types
+                      </div>
+                      <div className="mt-2 text-3xl font-semibold">
+                        {diffSummary.changedArtifactTypes.length}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border bg-muted/20 p-4">
+                      <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Added types
+                      </div>
+                      <div className="mt-2 text-3xl font-semibold">
+                        {diffSummary.addedArtifactTypes.length}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border bg-muted/20 p-4">
+                      <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Removed types
+                      </div>
+                      <div className="mt-2 text-3xl font-semibold">
+                        {diffSummary.removedArtifactTypes.length}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border bg-muted/20 p-4">
+                      <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Avg confidence delta
+                      </div>
+                      <div className="mt-2 text-3xl font-semibold">
+                        {formatDecisionArtifactConfidenceDelta(
+                          diffSummary.averageConfidenceDelta ?? null,
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="rounded-lg border p-4 space-y-2">
+                      <div className="text-sm font-medium">Added artifact types</div>
+                      <div className="flex flex-wrap gap-2">
+                        {renderArtifactTypeBadges(diffSummary.addedArtifactTypes, "secondary")}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border p-4 space-y-2">
+                      <div className="text-sm font-medium">Removed artifact types</div>
+                      <div className="flex flex-wrap gap-2">
+                        {renderArtifactTypeBadges(diffSummary.removedArtifactTypes, "destructive")}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border p-4 space-y-2">
+                      <div className="text-sm font-medium">Changed artifact types</div>
+                      <div className="flex flex-wrap gap-2">
+                        {renderArtifactTypeBadges(diffSummary.changedArtifactTypes, "outline")}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border p-4 space-y-2">
+                      <div className="text-sm font-medium">Confidence drift</div>
+                      <div className="flex flex-wrap gap-2">
+                        {renderArtifactTypeBadges(
+                          diffSummary.confidenceChangedArtifactTypes,
+                          "outline",
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <ShieldCheck className="h-5 w-5 text-emerald-600" />
+                    Snapshot provenance
+                  </CardTitle>
+                  <CardDescription>
+                    Both sides of this overview come from persisted advisory report surfaces.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="rounded-lg border bg-muted/20 p-4">
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                      Current artifacts
+                    </div>
+                    <div className="mt-2 font-medium">
+                      {formatDecisionArtifactCount(currentArtifacts.length)}
+                    </div>
+                  </div>
+                  <div className="rounded-lg border bg-muted/20 p-4">
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                      Snapshot artifacts
+                    </div>
+                    <div className="mt-2 font-medium">
+                      {formatDecisionArtifactCount(snapshotArtifacts.length)}
+                    </div>
+                  </div>
+                  <div className="rounded-lg border bg-muted/20 p-4">
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                      Lane
+                    </div>
+                    <div className="mt-2 font-medium">
+                      {formatAdvisoryEnumLabel(selectedReport.laneStatus)}
+                    </div>
+                  </div>
+                  <div className="rounded-lg border bg-muted/20 p-4">
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                      Snapshot age
+                    </div>
+                    <div className="mt-2 font-medium">
+                      {formatAdvisoryTimestamp(selectedSnapshot.createdAt)}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {selectedSnapshot && (
+            <div className="grid gap-6 xl:grid-cols-2">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Layers3 className="h-5 w-5 text-slate-700" />
+                  <h2 className="text-xl font-semibold">Current report artifact preview</h2>
+                </div>
+                {currentArtifact ? (
+                  <DecisionArtifactCard
+                    artifact={currentArtifact}
+                    title="Current report artifact"
+                    description="Representative decision artifact from the current advisory report."
+                  />
+                ) : (
+                  <Alert>
+                    <AlertDescription>
+                      No decision artifacts are stored on the current advisory report.
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Layers3 className="h-5 w-5 text-slate-700" />
+                  <h2 className="text-xl font-semibold">Snapshot artifact preview</h2>
+                </div>
+                {snapshotArtifact ? (
+                  <DecisionArtifactCard
+                    artifact={snapshotArtifact}
+                    title="Persisted snapshot artifact"
+                    description="Representative decision artifact captured in the selected report version."
+                  />
+                ) : (
+                  <Alert>
+                    <AlertDescription>
+                      The selected snapshot does not carry persisted decision artifacts yet.
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

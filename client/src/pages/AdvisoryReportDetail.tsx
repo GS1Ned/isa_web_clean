@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import {
   AlertCircle,
   ArrowLeft,
@@ -14,10 +13,7 @@ import {
 import { Link, useLocation, useRoute } from "wouter";
 
 import { AdvisoryReportPdfExportButton } from "@/components/AdvisoryReportPdfExportButton";
-import {
-  DecisionArtifactCard,
-  type DecisionArtifactCardData,
-} from "@/components/DecisionArtifactCard";
+import { DecisionArtifactCard } from "@/components/DecisionArtifactCard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,12 +21,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   formatAdvisoryEnumLabel,
+  formatAdvisoryTimestamp,
   formatDecisionArtifactCount,
   formatDecisionArtifactConfidenceDelta,
   getAdvisoryLaneStatusTone,
   getDecisionArtifactDiffTone,
   getAdvisoryPublicationStatusTone,
   getAdvisoryReviewStatusTone,
+  normalizeDecisionArtifacts,
 } from "@/lib/advisory-report-ui";
 import { trpc } from "@/lib/trpc";
 
@@ -43,27 +41,6 @@ type ReportFinding = {
 
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every(item => typeof item === "string");
-}
-
-function isDecisionArtifactCardData(value: unknown): value is DecisionArtifactCardData {
-  return (
-    !!value &&
-    typeof value === "object" &&
-    typeof (value as DecisionArtifactCardData).artifactVersion === "string" &&
-    typeof (value as DecisionArtifactCardData).artifactType === "string" &&
-    typeof (value as DecisionArtifactCardData).capability === "string" &&
-    typeof (value as DecisionArtifactCardData).confidence?.level === "string" &&
-    typeof (value as DecisionArtifactCardData).confidence?.score === "number" &&
-    typeof (value as DecisionArtifactCardData).confidence?.basis === "string"
-  );
-}
-
-function normalizeDecisionArtifacts(value: unknown) {
-  if (!Array.isArray(value)) {
-    return [] as DecisionArtifactCardData[];
-  }
-
-  return value.filter(isDecisionArtifactCardData);
 }
 
 function isReportFinding(value: unknown): value is ReportFinding {
@@ -83,17 +60,6 @@ function normalizeFindings(value: unknown) {
   }
 
   return value.filter(isReportFinding);
-}
-
-function formatTimestamp(value?: string | Date | null) {
-  if (!value) {
-    return "N/A";
-  }
-
-  const date = value instanceof Date ? value : new Date(value);
-  return Number.isNaN(date.getTime())
-    ? "N/A"
-    : format(date, "MMMM d, yyyy 'at' HH:mm");
 }
 
 function getSeverityTone(severity: ReportFinding["severity"]) {
@@ -244,7 +210,7 @@ export default function AdvisoryReportDetail() {
             <div className="text-xs uppercase tracking-wide text-muted-foreground">Generated</div>
             <div className="mt-2 flex items-center gap-2 font-medium">
               <Calendar className="h-4 w-4 text-muted-foreground" />
-              {formatTimestamp(report.generatedDate)}
+              {formatAdvisoryTimestamp(report.generatedDate)}
             </div>
           </div>
           <div className="rounded-lg border bg-muted/30 p-4">
@@ -485,7 +451,7 @@ export default function AdvisoryReportDetail() {
                       )}
                     </div>
                     <div className="mt-2 text-sm text-muted-foreground">
-                      Created {formatTimestamp(version.createdAt)}
+                      Created {formatAdvisoryTimestamp(version.createdAt)}
                       {version.createdBy ? ` by ${version.createdBy}` : ""}
                     </div>
                   </div>
