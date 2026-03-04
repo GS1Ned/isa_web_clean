@@ -77,6 +77,19 @@ describe("advisory router", () => {
     expect(result.latestReport == null || typeof result.latestReport.id === "number").toBe(true);
   });
 
+  it("keeps summary and metadata aligned with the overview bundle", async () => {
+    const caller = appRouter.createCaller(mockContext);
+
+    const [overview, summary, metadata] = await Promise.all([
+      caller.advisory.getOverview(),
+      caller.advisory.getSummary(),
+      caller.advisory.getMetadata(),
+    ]);
+
+    expect(summary).toEqual(overview.summary);
+    expect(metadata).toEqual(overview.metadata);
+  });
+
   it("keeps advisory.getDiff aligned with the snapshot-aware diff runtime", async () => {
     const caller = appRouter.createCaller(mockContext);
 

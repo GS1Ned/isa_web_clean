@@ -13,6 +13,7 @@ The ISA Advisory UI provides a minimal, production-ready interface for browsing 
 1. **Advisory Dashboard** – High-level summary stats and coverage metrics
 2. **Advisory Explorer** – Filterable views of mappings, gaps, and recommendations
 3. **Traceability Panel** – Source artifact hashes for integrity verification
+4. **ESRS-GS1 Mapping Hub** – Coverage-first advisory operating surface backed by normalized advisory read-model data
 
 **Design Principles:**
 - **Minimal implementation** – Ship in <1 day with existing API endpoints
@@ -268,17 +269,9 @@ Alert message if metadata fails to load.
    - Return: compatibility projections from the normalized advisory read model
    - Use case: backward compatibility while older consumers migrate
 
-6. **`getRegulations()`**
-   - Returns: List of regulations covered
-   - Use case: Not used in current UI (could be used for regulation filter dropdown)
-
-7. **`getSectorModels()`**
-   - Returns: List of sector models covered
-   - Use case: Not used in current UI (could be used for sector filter dropdown)
-
-8. **`getMetadata()`**
-   - Returns: Advisory metadata + provenance
-   - Use case: Traceability panel
+6. **Hub surfaces**
+   - `HubEsrsGs1Mappings` uses `getOverview()` for coverage/summary state and `getFull()` for detailed mapping and gap exploration
+   - Use case: active capability-facing mapping cockpit
 
 **Access Control:**  
 All endpoints are public (no authentication required).

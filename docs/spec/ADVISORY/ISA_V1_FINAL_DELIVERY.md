@@ -1,5 +1,7 @@
 # ISA v1.0 Final Delivery: Consistency, UI, and Diff Computation
 
+> Historical reference only. Current advisory runtime truth lives in `docs/spec/ADVISORY/RUNTIME_CONTRACT.md`, `docs/spec/ADVISORY/ADVISORY_UI_NOTES.md`, and the canonical architecture chain.
+
 **Date:** December 14, 2025  
 **Delivery Type:** Complete ISA v1.0 Implementation  
 **Status:** ✅ READY FOR PRODUCTION
