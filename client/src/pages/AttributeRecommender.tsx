@@ -44,6 +44,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
+import { DecisionArtifactCard } from "@/components/DecisionArtifactCard";
 
 // Epistemic status badge component
 function EpistemicBadge({ status, confidence }: { status: string; confidence: string }) {
@@ -502,6 +503,12 @@ export default function AttributeRecommender() {
                   </div>
                 </CardContent>
               </Card>
+
+              <DecisionArtifactCard
+                artifact={results.decisionArtifact}
+                title="Decision Core Artifact"
+                description="Stable ESRS_MAPPING recommendation artifact for downstream report, export, and advisory consumers."
+              />
 
               {/* Recommendations List */}
               <Card>
