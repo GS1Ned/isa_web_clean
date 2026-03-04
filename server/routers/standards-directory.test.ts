@@ -259,6 +259,10 @@ describe("Standards Directory Router", () => {
       expect(detail?.authoritativeSourceUrl).toBe("https://www.gs1.org/voc/");
       expect(detail?.datasetIdentifier).toBe("gs1.webvoc.v1.17.0");
       expect(detail?.lastVerifiedDate).toBe("2025-12-13");
+      expect(detail).toHaveProperty("needsVerification");
+      expect(detail).toHaveProperty("verificationReason");
+      expect(detail).toHaveProperty("verificationAgeDays");
+      expect(detail).toHaveProperty("verificationFreshnessBucket");
     });
 
     it("should return detail for GS1 NL attributes (food_hb)", async () => {
@@ -278,6 +282,10 @@ describe("Standards Directory Router", () => {
       expect(detail?.authoritativeSourceUrl).toContain("gs1.nl");
       expect(detail?.datasetIdentifier).toContain("food_hb");
       expect(detail?.lastVerifiedDate).toBe("2025-12-13");
+      expect(detail).toHaveProperty("needsVerification");
+      expect(detail).toHaveProperty("verificationReason");
+      expect(detail).toHaveProperty("verificationAgeDays");
+      expect(detail).toHaveProperty("verificationFreshnessBucket");
     });
 
     it("should return detail for ESRS datapoints", async () => {
@@ -315,7 +323,32 @@ describe("Standards Directory Router", () => {
         expect(detail?.authoritativeSourceUrl).toBe("https://www.efrag.org/lab6");
         expect(detail?.datasetIdentifier).toBe("esrs.datapoints.ig3");
         expect(detail?.lastVerifiedDate).toBe("2025-12-13");
+        expect(detail).toHaveProperty("needsVerification");
+        expect(detail).toHaveProperty("verificationReason");
+        expect(detail).toHaveProperty("verificationAgeDays");
+        expect(detail).toHaveProperty("verificationFreshnessBucket");
       }
+    });
+
+    it("should project missing verification posture for GS1 standards without tracked verification dates", async () => {
+      const ctx = createPublicContext();
+      const caller = appRouter.createCaller(ctx);
+      const list = await caller.standardsDirectory.list({});
+      const standard = list.standards.find((item) => item.sourceType === "gs1_standard");
+
+      if (!standard) {
+        return;
+      }
+
+      const detail = await caller.standardsDirectory.getDetail({
+        id: standard.id,
+      });
+
+      expect(detail.lastVerifiedDate).toBeNull();
+      expect(detail.needsVerification).toBe(true);
+      expect(detail.verificationReason).toBe("missing_last_verified_date");
+      expect(detail.verificationFreshnessBucket).toBe("unknown");
+      expect(detail.verificationAgeDays).toBeNull();
     });
 
     it("should throw error for invalid standard ID", async () => {
