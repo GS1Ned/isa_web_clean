@@ -66,6 +66,8 @@ Active:
   - `stage_b`: `data/evaluation/baselines/isa-capability-baseline-stage_b.json`
   - `stage_c`: fallback to `stage_a` until a dedicated stage_c baseline exists
   - Resolution helper: `node scripts/eval/resolve-baseline-path.cjs --stage <stage>`
+  - Candidate artifact: `test-results/ci/isa-capability-baseline-candidate.json`
+  - Candidate schema: `docs/quality/schemas/isa-capability-baseline.schema.json`
 - `validate-docs.yml`
   - Trigger: any PR, and pushes to `main`.
   - Purpose: validate planning/traceability rules (repo governance).

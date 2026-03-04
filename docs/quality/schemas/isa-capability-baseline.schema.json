@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/isa-capability-baseline.schema.json",
+  "title": "ISA Capability Baseline",
+  "type": "object",
+  "required": [
+    "baseline_id",
+    "generated_at",
+    "stage",
+    "metrics"
+  ],
+  "properties": {
+    "baseline_id": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "stage": { "type": "string", "enum": ["stage_a", "stage_b", "stage_c"] },
+    "source_eval_run_id": { "type": "string" },
+    "source_eval_generated_at": { "type": "string", "format": "date-time" },
+    "notes": { "type": "string" },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": { "type": "number" }
+    },
+    "metric_meta": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "capability",
+          "fixture_version",
+          "measurement_mode",
+          "runtime_probe_id",
+          "runtime_probe_samples"
+        ],
+        "properties": {
+          "capability": { "type": "string" },
+          "fixture_version": { "type": "string" },
+          "measurement_mode": { "type": "string" },
+          "runtime_probe_id": { "type": ["string", "null"] },
+          "runtime_probe_samples": { "type": "integer", "minimum": 0 }
+        },
+        "additionalProperties": true
+      }
+    },
+    "capability_meta": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "dataset_ids",
+          "sample_count",
+          "minimum_samples",
+          "confidence",
+          "diagnostics"
+        ],
+        "properties": {
+          "dataset_ids": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "sample_count": { "type": "integer", "minimum": 0 },
+          "minimum_samples": { "type": "integer", "minimum": 0 },
+          "confidence": { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW"] },
+          "diagnostics": { "type": ["object", "null"] }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}
