@@ -11,6 +11,7 @@ import {
   markChunkDeprecated,
   updateVerificationDate,
 } from "../citation-validation";
+import { doesKnowledgeChunkNeedVerification } from "../knowledge-provenance";
 import { getDb } from "../db";
 import { eq } from "drizzle-orm";
 import { serverLogger } from "../_core/logger-wiring";
@@ -162,10 +163,6 @@ export const citationAdminRouter = router({
       try {
         const { knowledgeEmbeddings } = await import("../../drizzle/schema");
 
-        // Get chunks with no verification date or >90 days old
-        const ninetyDaysAgo = new Date();
-        ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
-
         const chunks = await db
           .select({
             id: knowledgeEmbeddings.id,
@@ -180,12 +177,9 @@ export const citationAdminRouter = router({
           .where(eq(knowledgeEmbeddings.isDeprecated, 0))
           .limit(input.limit);
 
-        // Filter in memory for verification date check
-        const needsVerification = chunks.filter(chunk => {
-          if (!chunk.lastVerifiedDate) return true;
-          const verifiedDate = new Date(chunk.lastVerifiedDate);
-          return verifiedDate < ninetyDaysAgo;
-        });
+        const needsVerification = chunks.filter(chunk =>
+          doesKnowledgeChunkNeedVerification(chunk.lastVerifiedDate)
+        );
 
         return needsVerification;
       } catch (error) {
