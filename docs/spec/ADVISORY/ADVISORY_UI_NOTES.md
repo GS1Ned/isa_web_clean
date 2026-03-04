@@ -102,11 +102,11 @@ Provide filterable, searchable views of all mappings, gaps, and recommendations 
 
 2. **Filters Card**
    - **Search** – Keyword search across all fields (client-side)
-   - **Sector** – Dropdown: All / DIY / FMCG / Healthcare / All (cross-sector)
-   - **Regulation** – Dropdown: All / ESRS E1 / ESRS E2 / ESRS E3 / ESRS E4 / ESRS E5 / EUDR / DPP
-   - **Confidence** – Dropdown: All / Direct / Partial / Missing (for mappings tab)
-   - **Gap Severity** – Dropdown: All / Critical / Moderate / Low Priority (for gaps tab)
-   - **Timeframe** – Dropdown: All / Short-term / Medium-term / Long-term (for recommendations tab)
+   - **Sector** – Dynamic dropdown inventory derived from the normalized advisory read-model payload, with explicit `All sectors` and `All (cross-sector)` handling
+   - **Regulation** – Dynamic dropdown inventory derived from the normalized advisory read-model payload, rather than hardcoded standards lists
+   - **Confidence** – Dynamic dropdown inventory derived from mapping confidence values in the normalized advisory payload
+   - **Gap Severity** – Dynamic dropdown inventory derived from gap categories in the normalized advisory payload
+   - **Timeframe** – Dynamic dropdown inventory derived from recommendation timeframe buckets in the normalized advisory payload
    - **Clear Filters** button
 
 3. **Tabs**
@@ -267,7 +267,7 @@ Alert message if metadata fails to load.
 5. **Legacy section endpoints**
    - `getMappings()`, `getGaps()`, `getRecommendations()`, `getRegulations()`, `getSectorModels()`
    - Return: compatibility projections from the normalized advisory read model
-   - Use case: backward compatibility while older consumers migrate
+   - Use case: backward compatibility while older consumers migrate; active Explorer surfaces should prefer `getFull()` plus client-side normalized filter inventories
 
 6. **Hub surfaces**
    - `HubEsrsGs1Mappings` uses `getOverview()` for coverage/summary state and `getFull()` for detailed mapping and gap exploration
@@ -413,9 +413,9 @@ No UI tests implemented yet. Future tests should cover:
 
 ### Short-Term (1-2 weeks)
 
-1. **Regulation/Sector Filter Dropdowns**
-   - Populate from `trpc.advisory.getRegulations()` and `trpc.advisory.getSectorModels()`
-   - Avoid hardcoding regulation/sector lists
+1. **Explorer Export Functionality**
+   - Export filtered mappings, gaps, and recommendations to CSV/Excel
+   - Preserve the active filter state in exported metadata
 
 2. **Export Functionality**
    - Export filtered results to CSV/Excel

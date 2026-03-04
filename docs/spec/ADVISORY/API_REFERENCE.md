@@ -1624,6 +1624,7 @@ const result: AdvisoryGetRecommendationsOutput = await trpc.advisory.getRecommen
 - **Procedure:** `getRegulations`
 - **Type:** Query
 - **Auth:** protected
+- **Status:** compatibility surface; active Explorer-style UIs should derive filter inventories from `advisory.getFull`
 
 #### Type Definitions
 
@@ -1664,6 +1665,7 @@ const result: AdvisoryGetRegulationsOutput = await trpc.advisory.getRegulations.
 - **Procedure:** `getSectorModels`
 - **Type:** Query
 - **Auth:** protected
+- **Status:** compatibility surface; active Explorer-style UIs should derive filter inventories from `advisory.getFull`
 
 #### Type Definitions
 

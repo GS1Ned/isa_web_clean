@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import {
   buildAdvisoryExplorerModel,
+  buildAdvisoryExplorerInventory,
+  formatExplorerFilterLabel,
+  fromExplorerSelectValue,
+  toExplorerSelectValue,
   normalizeExplorerRecommendation,
 } from "./advisory-explorer";
 
@@ -66,5 +70,54 @@ describe("advisory-explorer", () => {
     );
 
     expect(result.timeframe).toBe("long-term");
+  });
+
+  it("derives explorer filter inventories from the normalized advisory model", () => {
+    const model = buildAdvisoryExplorerModel({
+      mappingResults: [
+        {
+          regulationStandard: "DPP",
+          sectors: ["All"],
+          confidence: "direct",
+        },
+        {
+          regulationStandard: "ESRS E2",
+          sectors: ["Healthcare", "DIY"],
+          confidence: "partial",
+        },
+      ],
+      gapAnalysis: [
+        {
+          category: "critical",
+          affectedSectors: ["FMCG"],
+        },
+      ],
+      recommendations: [
+        {
+          timeframe: "0-3 months",
+        },
+      ],
+    });
+
+    expect(buildAdvisoryExplorerInventory(model)).toEqual({
+      regulations: ["ESRS E2", "DPP"],
+      sectors: ["DIY", "FMCG", "Healthcare", "All"],
+      confidenceLevels: ["direct", "partial"],
+      gapSeverities: ["critical"],
+      recommendationTimeframes: ["short-term"],
+    });
+  });
+
+  it("formats explorer filter labels without losing standards shorthand", () => {
+    expect(formatExplorerFilterLabel("All")).toBe("All (cross-sector)");
+    expect(formatExplorerFilterLabel("low-priority")).toBe("Low Priority");
+    expect(formatExplorerFilterLabel("ESRS E1")).toBe("ESRS E1");
+    expect(formatExplorerFilterLabel("DIY")).toBe("DIY");
+  });
+
+  it("maps select values to and from the explorer all-filter sentinel", () => {
+    expect(toExplorerSelectValue(undefined)).toBe("__all__");
+    expect(fromExplorerSelectValue("__all__")).toBeUndefined();
+    expect(fromExplorerSelectValue("DPP")).toBe("DPP");
   });
 });
