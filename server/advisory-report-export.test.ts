@@ -65,6 +65,34 @@ const mockGapAnalysisResult = {
     uncertainCount: 2,
     overallConfidence: 'medium',
   },
+  decisionArtifact: {
+    artifactVersion: '1.0',
+    artifactType: 'gap_analysis',
+    capability: 'ESRS_MAPPING',
+    generatedAt: '2026-03-04T10:00:00.000Z',
+    subject: {
+      sector: 'Food & Beverage',
+      companySize: 'large',
+      targetRegulations: ['CSRD'],
+    },
+    confidence: {
+      level: 'medium',
+      score: 0.68,
+      basis: 'Coverage analysis across mapped requirements.',
+    },
+    evidence: {
+      codePaths: ['server/routers/gap-analyzer.ts'],
+      dataSources: ['gs1_esrs_mappings'],
+    },
+    summary: {
+      totalRequirements: 50,
+      coveragePercentage: 70,
+      criticalGapCount: 1,
+      highGapCount: 1,
+      remediationPathCount: 1,
+      criticalGapIds: ['gap-1'],
+    },
+  },
 };
 
 // Mock attribute recommendation result
@@ -120,6 +148,32 @@ const mockRecommendationResult = {
     estimatedImplementationEffort: 'Medium',
   },
   epistemic: { status: 'fact', confidence: 'high', basis: 'Database mappings' },
+  decisionArtifact: {
+    artifactVersion: '1.0',
+    artifactType: 'attribute_recommendation',
+    capability: 'ESRS_MAPPING',
+    generatedAt: '2026-03-04T10:00:00.000Z',
+    subject: {
+      sector: 'Retail',
+      companySize: 'medium',
+      targetRegulations: ['CSRD', 'DPP'],
+    },
+    confidence: {
+      level: 'high',
+      score: 0.76,
+      basis: 'Recommendations derived from sector and regulation mappings.',
+    },
+    evidence: {
+      codePaths: ['server/attribute-recommender.ts'],
+      dataSources: ['ATTRIBUTE_METADATA', 'SECTOR_ATTRIBUTES'],
+    },
+    summary: {
+      totalRecommendations: 2,
+      highConfidenceCount: 1,
+      regulationsCovered: ['CSRD', 'DPP'],
+      topRecommendationIds: ['productCarbonFootprint'],
+    },
+  },
 };
 
 describe('Gap Analysis Markdown Generation', () => {
@@ -204,6 +258,19 @@ describe('Gap Analysis Markdown Generation', () => {
     });
 
     expect(markdown).toContain('## Recommended Remediation Paths');
+  });
+
+  it('should include a decision artifact section when present', () => {
+    const markdown = generateGapAnalysisMarkdown({
+      reportType: 'gap_analysis',
+      gapAnalysisResult: mockGapAnalysisResult,
+    });
+
+    expect(markdown).toContain('## Decision artifact');
+    expect(markdown).toContain('**Artifact Type:** gap_analysis');
+    expect(markdown).toContain('Coverage analysis across mapped requirements.');
+    expect(markdown).toContain('| Critical Gap Count | 1 |');
+    expect(markdown).toContain('server/routers/gap-analyzer.ts');
   });
 
   it('should include disclaimer section', () => {
@@ -306,6 +373,19 @@ describe('Attribute Recommendation Markdown Generation', () => {
     });
 
     expect(markdown).toContain('## Disclaimer');
+  });
+
+  it('should include a decision artifact section when present', () => {
+    const markdown = generateAttributeRecommendationMarkdown({
+      reportType: 'attribute_recommendation',
+      recommendationResult: mockRecommendationResult,
+    });
+
+    expect(markdown).toContain('## Decision artifact');
+    expect(markdown).toContain('**Artifact Type:** attribute_recommendation');
+    expect(markdown).toContain('Recommendations derived from sector and regulation mappings.');
+    expect(markdown).toContain('| Top Recommendation Ids | productCarbonFootprint |');
+    expect(markdown).toContain('ATTRIBUTE_METADATA, SECTOR_ATTRIBUTES');
   });
 });
 
