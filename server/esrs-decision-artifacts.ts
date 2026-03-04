@@ -7,6 +7,8 @@ export interface DecisionArtifactConfidence {
   score: number;
   basis: string;
   reviewRecommended: boolean;
+  uncertaintyClass?: 'decision_grade' | 'review_required' | 'insufficient_evidence';
+  escalationAction?: 'none' | 'analyst_review' | 'human_review_required';
 }
 
 export interface DecisionArtifactEvidence {
@@ -82,6 +84,12 @@ export const DecisionArtifactConfidenceSchema = z.object({
   score: z.number().min(0).max(1),
   basis: z.string(),
   reviewRecommended: z.boolean(),
+  uncertaintyClass: z
+    .enum(["decision_grade", "review_required", "insufficient_evidence"])
+    .optional(),
+  escalationAction: z
+    .enum(["none", "analyst_review", "human_review_required"])
+    .optional(),
 });
 
 export const DecisionArtifactEvidenceSchema = z.object({
@@ -210,6 +218,18 @@ export function buildDecisionArtifactConfidence(input: {
     score,
     basis: input.basis,
     reviewRecommended: level !== "high",
+    uncertaintyClass:
+      level === "high"
+        ? "decision_grade"
+        : level === "medium"
+          ? "review_required"
+          : "insufficient_evidence",
+    escalationAction:
+      level === "high"
+        ? "none"
+        : level === "medium"
+          ? "analyst_review"
+          : "human_review_required",
   };
 }
 

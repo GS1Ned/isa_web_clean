@@ -45,6 +45,14 @@ import { CheckCircle2, Library, AlertTriangle, Info } from "lucide-react";
 import { AuthorityBadge, AuthorityScore, AuthorityLegend } from "@/components/AuthorityBadge";
 import { jsPDF } from "jspdf";
 import { useI18n, LanguageSwitcher } from "@/lib/i18n";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  buildAskIsaSourcePostureSummary,
+  getAskIsaVerificationAgeBadgeLabel,
+  getAskIsaVerificationAgeLabel,
+  getAskIsaVerificationReasonBadgeLabel,
+  getAskIsaVerificationReasonLabel,
+} from "@/lib/ask-isa-source-posture";
 
 /**
  * Ask ISA - RAG-Powered Q&A Interface
@@ -74,6 +82,7 @@ interface Message {
     datasetId?: string;
     datasetVersion?: string;
     lastVerifiedDate?: string;
+    verificationAgeDays?: number | null;
     isDeprecated?: boolean;
     needsVerification?: boolean;
     verificationReason?: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date";
@@ -479,23 +488,6 @@ export default function AskISA() {
         return <Lightbulb className="h-4 w-4" />;
       default:
         return <FileText className="h-4 w-4" />;
-    }
-  };
-
-  const getVerificationReasonLabel = (
-    reason?: Message["sources"][number]["verificationReason"]
-  ) => {
-    switch (reason) {
-      case "missing_last_verified_date":
-        return "No verification date recorded";
-      case "invalid_last_verified_date":
-        return "Invalid verification date";
-      case "stale_last_verified_date":
-        return "Verification date is stale";
-      case "ok":
-        return "Verification status OK";
-      default:
-        return "Verification details unavailable";
     }
   };
 
@@ -1079,6 +1071,22 @@ export default function AskISA() {
                               </div>
                             </div>
                           )}
+                          {message.claimVerification?.warnings &&
+                            message.claimVerification.warnings.length > 0 && (
+                              <Alert className="mt-3 border-yellow-500/30 bg-yellow-500/5">
+                                <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                                <AlertDescription className="text-sm">
+                                  <p className="font-medium text-yellow-700 dark:text-yellow-300">
+                                    Verification posture warnings
+                                  </p>
+                                  <ul className="mt-1 list-disc list-inside space-y-1 text-muted-foreground">
+                                    {message.claimVerification.warnings.map((warning, warningIdx) => (
+                                      <li key={warningIdx}>{warning}</li>
+                                    ))}
+                                  </ul>
+                                </AlertDescription>
+                              </Alert>
+                            )}
                           {/* Feedback Buttons */}
                           {user && !message.needsClarification && message.content && (
                             <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/50">
@@ -1147,6 +1155,59 @@ export default function AskISA() {
                           </SelectContent>
                         </Select>
                       </div>
+                      {(() => {
+                        const visibleSources = filterSourcesByAuthority(message.sources);
+                        const posture = buildAskIsaSourcePostureSummary(visibleSources || []);
+                        if (!visibleSources?.length) {
+                          return null;
+                        }
+
+                        const postureTone =
+                          posture.deprecatedCount > 0
+                            ? "border-destructive/30 bg-destructive/5"
+                            : posture.needsVerificationCount > 0
+                              ? "border-yellow-500/30 bg-yellow-500/5"
+                              : "border-muted bg-muted/40";
+
+                        const postureIconClass =
+                          posture.deprecatedCount > 0
+                            ? "text-destructive"
+                            : posture.needsVerificationCount > 0
+                              ? "text-yellow-600"
+                              : "text-muted-foreground";
+
+                        return (
+                          <Alert className={`mb-3 ${postureTone}`}>
+                            {posture.deprecatedCount > 0 || posture.needsVerificationCount > 0 ? (
+                              <AlertTriangle className={`h-4 w-4 ${postureIconClass}`} />
+                            ) : (
+                              <Info className={`h-4 w-4 ${postureIconClass}`} />
+                            )}
+                            <AlertDescription className="text-sm">
+                              {posture.allVerifiedWithinWindow ? (
+                                <>
+                                  Verification posture: all {posture.totalSources} cited sources are within the
+                                  current verification window.
+                                </>
+                              ) : (
+                                <>
+                                  Verification posture: {posture.needsVerificationCount} of {posture.totalSources} cited
+                                  sources need review
+                                  {posture.deprecatedCount > 0
+                                    ? `, and ${posture.deprecatedCount} source${posture.deprecatedCount === 1 ? "" : "s"} ${posture.deprecatedCount === 1 ? "is" : "are"} deprecated`
+                                    : ""}
+                                  . Reasons: {posture.countsByReason.stale_last_verified_date} stale,{" "}
+                                  {posture.countsByReason.missing_last_verified_date} missing date,{" "}
+                                  {posture.countsByReason.invalid_last_verified_date} invalid date.
+                                  {typeof posture.oldestVerificationAgeDays === "number"
+                                    ? ` Oldest known verification: ${posture.oldestVerificationAgeDays} days ago.`
+                                    : ""}
+                                </>
+                              )}
+                            </AlertDescription>
+                          </Alert>
+                        );
+                      })()}
                       <div className="grid gap-2">
                         {filterSourcesByAuthority(message.sources)?.map((source, sourceIdx) => (
                           <Card
@@ -1209,9 +1270,39 @@ export default function AskISA() {
                                         <Badge
                                           variant="outline"
                                           className="text-xs text-yellow-700 dark:text-yellow-400"
-                                          title={getVerificationReasonLabel(source.verificationReason)}
+                                          title={[
+                                            getAskIsaVerificationReasonLabel(source.verificationReason),
+                                            getAskIsaVerificationAgeLabel(source.verificationAgeDays),
+                                          ]
+                                            .filter(Boolean)
+                                            .join(" • ")}
                                         >
                                           ⚠️ Needs verification
+                                        </Badge>
+                                      )}
+                                      {source.needsVerification &&
+                                        !source.isDeprecated &&
+                                        getAskIsaVerificationReasonBadgeLabel(source.verificationReason) && (
+                                          <Badge
+                                            variant="outline"
+                                            className="text-xs"
+                                          >
+                                            {getAskIsaVerificationReasonBadgeLabel(
+                                              source.verificationReason,
+                                            )}
+                                          </Badge>
+                                        )}
+                                      {getAskIsaVerificationAgeBadgeLabel(source.verificationAgeDays) && (
+                                        <Badge
+                                          variant="outline"
+                                          className="text-xs"
+                                          title={getAskIsaVerificationAgeLabel(
+                                            source.verificationAgeDays,
+                                          ) || undefined}
+                                        >
+                                          {getAskIsaVerificationAgeBadgeLabel(
+                                            source.verificationAgeDays,
+                                          )}
                                         </Badge>
                                       )}
                                     </div>
@@ -1385,7 +1476,10 @@ export default function AskISA() {
                       <p className="font-medium text-yellow-600">Needs Verification</p>
                       <p className="text-sm text-muted-foreground">
                         This source should be verified before relying on it for compliance decisions.{" "}
-                        {getVerificationReasonLabel(previewSource.verificationReason)}.
+                        {getAskIsaVerificationReasonLabel(previewSource.verificationReason)}.
+                        {getAskIsaVerificationAgeLabel(previewSource.verificationAgeDays)
+                          ? ` Last known verification: ${getAskIsaVerificationAgeLabel(previewSource.verificationAgeDays)}.`
+                          : ""}
                       </p>
                     </div>
                   </div>

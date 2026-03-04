@@ -11,6 +11,8 @@ export interface AdvisoryReportDecisionArtifactDiffSummary {
   changedArtifactTypes: string[];
   unchangedArtifactTypes: string[];
   confidenceChangedArtifactTypes: string[];
+  uncertaintyChangedArtifactTypes: string[];
+  escalationChangedArtifactTypes: string[];
   averageConfidenceDelta: number | null;
   hasChanges: boolean;
 }
@@ -89,6 +91,8 @@ export function buildDecisionArtifactDiffSummary(input: {
   const changedArtifactTypes: string[] = [];
   const unchangedArtifactTypes: string[] = [];
   const confidenceChangedArtifactTypes: string[] = [];
+  const uncertaintyChangedArtifactTypes: string[] = [];
+  const escalationChangedArtifactTypes: string[] = [];
 
   for (const key of Array.from(currentKeys).filter(candidate => snapshotKeys.has(candidate)).sort()) {
     const currentArtifact = currentByKey.get(key);
@@ -105,6 +109,20 @@ export function buildDecisionArtifactDiffSummary(input: {
 
     if (confidenceChanged) {
       confidenceChangedArtifactTypes.push(currentArtifact.artifactType);
+    }
+
+    if (
+      currentArtifact.confidence.uncertaintyClass !==
+      snapshotArtifact.confidence.uncertaintyClass
+    ) {
+      uncertaintyChangedArtifactTypes.push(currentArtifact.artifactType);
+    }
+
+    if (
+      currentArtifact.confidence.escalationAction !==
+      snapshotArtifact.confidence.escalationAction
+    ) {
+      escalationChangedArtifactTypes.push(currentArtifact.artifactType);
     }
 
     if (getComparableSnapshot(currentArtifact) === getComparableSnapshot(snapshotArtifact)) {
@@ -130,6 +148,8 @@ export function buildDecisionArtifactDiffSummary(input: {
     changedArtifactTypes: compactArtifactTypes(changedArtifactTypes),
     unchangedArtifactTypes: compactArtifactTypes(unchangedArtifactTypes),
     confidenceChangedArtifactTypes: compactArtifactTypes(confidenceChangedArtifactTypes.sort()),
+    uncertaintyChangedArtifactTypes: compactArtifactTypes(uncertaintyChangedArtifactTypes.sort()),
+    escalationChangedArtifactTypes: compactArtifactTypes(escalationChangedArtifactTypes.sort()),
     averageConfidenceDelta,
     hasChanges:
       addedArtifactTypes.length > 0 ||

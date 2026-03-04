@@ -177,6 +177,18 @@ function buildMarkdown(report) {
           `- Benchmark shares: direct=${Number(benchmarkMix.direct_case_share).toFixed(4)}, partial=${Number(benchmarkMix.partial_case_share).toFixed(4)}, no_mapping=${Number(benchmarkMix.no_mapping_case_share).toFixed(4)}`
         );
       }
+      const decisionPosture = capability.diagnostics?.decision_posture;
+      if (decisionPosture) {
+        if (!benchmarkMix) {
+          lines.push(`### ${capability.capability}`);
+        }
+        lines.push(
+          `- Decision posture: decision_grade=${decisionPosture.decision_grade_count}, review_required=${decisionPosture.review_required_count}, insufficient_evidence=${decisionPosture.insufficient_evidence_count}, review_recommended=${decisionPosture.review_recommended_count}, human_review_required=${decisionPosture.human_review_required_count}`
+        );
+        lines.push(
+          `- Decision posture shares: decision_grade=${Number(decisionPosture.decision_grade_share).toFixed(4)}, review_required=${Number(decisionPosture.review_required_share).toFixed(4)}, insufficient_evidence=${Number(decisionPosture.insufficient_evidence_share).toFixed(4)}, review_recommended=${Number(decisionPosture.review_recommended_share).toFixed(4)}, human_review_required=${Number(decisionPosture.human_review_required_share).toFixed(4)}`
+        );
+      }
     }
   }
 

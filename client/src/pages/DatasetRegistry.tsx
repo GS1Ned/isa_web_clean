@@ -6,7 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, CheckCircle2, Database, Download, ExternalLink } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import {
+  getDatasetVerificationBadgeLabel,
+  getDatasetVerificationBadgeVariant,
+  getDatasetVerificationDescription,
+  getDatasetVerificationTitle,
+} from "@/lib/dataset-registry-verification";
 
 /**
  * Dataset Registry Page
@@ -26,36 +31,6 @@ export default function DatasetRegistry() {
   });
 
   const { data: stats } = trpc.datasetRegistry.stats.useQuery();
-
-  const getVerificationStatus = (lastVerifiedDate: string | null) => {
-    if (!lastVerifiedDate) {
-      return { status: "never", color: "destructive", text: "Never verified" };
-    }
-
-    const daysSinceVerification = Math.floor(
-      (Date.now() - new Date(lastVerifiedDate).getTime()) / (1000 * 60 * 60 * 24)
-    );
-
-    if (daysSinceVerification > 90) {
-      return {
-        status: "stale",
-        color: "destructive",
-        text: `Verified ${formatDistanceToNow(new Date(lastVerifiedDate))} ago`,
-      };
-    } else if (daysSinceVerification > 60) {
-      return {
-        status: "warning",
-        color: "warning",
-        text: `Verified ${formatDistanceToNow(new Date(lastVerifiedDate))} ago`,
-      };
-    } else {
-      return {
-        status: "current",
-        color: "success",
-        text: `Verified ${formatDistanceToNow(new Date(lastVerifiedDate))} ago`,
-      };
-    }
-  };
 
   return (
     <div className="container mx-auto py-8 space-y-6">
@@ -79,39 +54,64 @@ export default function DatasetRegistry() {
 
       {/* Statistics */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Datasets</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.total}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Active</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.active}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Verified</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.verified}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Needs Verification</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-destructive">{stats.needsVerification}</div>
-            </CardContent>
-          </Card>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">Total Datasets</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.total}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">Active</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.active}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">Verified</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.verified}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">Needs Verification</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-destructive">{stats.needsVerification}</div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Alert>
+            <AlertDescription className="flex flex-wrap gap-2 items-center">
+              <strong>Verification posture:</strong>
+              <Badge variant="default">
+                Fresh {stats.verificationFreshnessBuckets?.fresh ?? 0}
+              </Badge>
+              <Badge variant="secondary">
+                Aging {stats.verificationFreshnessBuckets?.aging ?? 0}
+              </Badge>
+              <Badge variant="destructive">
+                Stale {stats.verificationFreshnessBuckets?.stale ?? 0}
+              </Badge>
+              <Badge variant="destructive">
+                Unknown {stats.verificationFreshnessBuckets?.unknown ?? 0}
+              </Badge>
+              {typeof stats.oldestVerificationAgeDays === "number" && (
+                <span className="text-muted-foreground">
+                  Oldest verification: {stats.oldestVerificationAgeDays} days
+                </span>
+              )}
+            </AlertDescription>
+          </Alert>
         </div>
       )}
 
@@ -186,8 +186,6 @@ export default function DatasetRegistry() {
         )}
 
         {datasets?.map((dataset) => {
-          const verificationStatus = getVerificationStatus(dataset.lastVerifiedDate);
-
           return (
             <Card key={dataset.id}>
               <CardHeader>
@@ -233,21 +231,35 @@ export default function DatasetRegistry() {
 
                 {/* Verification Status */}
                 <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
-                  {verificationStatus.status === "current" ? (
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                  ) : (
+                  {dataset.needsVerification ? (
                     <AlertCircle className="h-4 w-4 text-destructive" />
+                  ) : (
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
                   )}
                   <div className="flex-1">
-                    <div className="text-sm font-medium">Verification Status</div>
-                    <div className="text-sm text-muted-foreground">{verificationStatus.text}</div>
+                    <div className="text-sm font-medium">
+                      {getDatasetVerificationTitle(dataset.verificationReason)}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {getDatasetVerificationDescription(
+                        dataset.verificationReason,
+                        dataset.verificationAgeDays
+                      )}
+                    </div>
                     {dataset.verifiedBy && (
                       <div className="text-xs text-muted-foreground">by {dataset.verifiedBy}</div>
                     )}
                   </div>
-                  {verificationStatus.status !== "current" && (
+                  <div className="flex items-center gap-2">
+                    <Badge
+                      variant={getDatasetVerificationBadgeVariant(dataset.verificationFreshnessBucket)}
+                    >
+                      {getDatasetVerificationBadgeLabel(dataset.verificationFreshnessBucket)}
+                    </Badge>
+                  {dataset.needsVerification && (
                     <Badge variant="destructive">Action Required</Badge>
                   )}
+                  </div>
                 </div>
 
                 {/* Actions */}

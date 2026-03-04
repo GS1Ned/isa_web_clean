@@ -280,6 +280,10 @@ describe("Standards Directory Router", () => {
       expect(detail).toHaveProperty("authoritativeSourceUrl");
       expect(detail).toHaveProperty("datasetIdentifier");
       expect(detail).toHaveProperty("lastVerifiedDate");
+      expect(detail).toHaveProperty("needsVerification");
+      expect(detail).toHaveProperty("verificationReason");
+      expect(detail).toHaveProperty("verificationAgeDays");
+      expect(detail).toHaveProperty("verificationFreshnessBucket");
       
       // If present, verify types
       if (detail.authoritativeSourceUrl !== null) {
@@ -292,6 +296,28 @@ describe("Standards Directory Router", () => {
       if (detail.lastVerifiedDate !== null) {
         expect(typeof detail.lastVerifiedDate).toBe("string");
       }
+      if (detail.verificationAgeDays !== null) {
+        expect(typeof detail.verificationAgeDays).toBe("number");
+      }
+    });
+
+    it("should project missing verification posture for standards without verification timestamps", async () => {
+      const listResult = await caller.standardsDirectory.list({});
+      const standardId = listResult.standards.find(s => s.sourceType === "gs1_standard")?.id;
+
+      if (!standardId) {
+        return;
+      }
+
+      const detail = await caller.standardsDirectory.getDetail({
+        id: standardId,
+      });
+
+      expect(detail.lastVerifiedDate).toBeNull();
+      expect(detail.needsVerification).toBe(true);
+      expect(detail.verificationReason).toBe("missing_last_verified_date");
+      expect(detail.verificationFreshnessBucket).toBe("unknown");
+      expect(detail.verificationAgeDays).toBeNull();
     });
   });
 

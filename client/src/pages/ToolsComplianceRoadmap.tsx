@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Select,
   SelectContent,
@@ -22,13 +23,18 @@ import {
   Sparkles,
 } from "lucide-react";
 import { DecisionArtifactCard } from "@/components/DecisionArtifactCard";
+import { getDecisionPostureSummary } from "@/lib/esrs-decision-posture";
+import type { inferRouterOutputs } from "@trpc/server";
+import type { AppRouter } from "../../../server/routers";
+
+type RoadmapResult = inferRouterOutputs<AppRouter>["esrsRoadmap"]["generate"];
 
 export default function ToolsComplianceRoadmap() {
   const [selectedSector, setSelectedSector] = useState<string>("");
   const [selectedRequirements, setSelectedRequirements] = useState<string[]>([]);
   const [companySize, setCompanySize] = useState<"sme" | "large">("large");
   const [currentMaturity, setCurrentMaturity] = useState<"beginner" | "intermediate" | "advanced">("beginner");
-  const [generatedRoadmap, setGeneratedRoadmap] = useState<any>(null);
+  const [generatedRoadmap, setGeneratedRoadmap] = useState<RoadmapResult | null>(null);
 
   const { data: sectors } = trpc.esrsRoadmap.getSectors.useQuery();
   const { data: esrsRequirements } = trpc.esrsRoadmap.getEsrsRequirements.useQuery();
@@ -93,6 +99,9 @@ export default function ToolsComplianceRoadmap() {
     acc[phase.timeframe].push(phase);
     return acc;
   }, {});
+  const roadmapPosture = generatedRoadmap
+    ? getDecisionPostureSummary(generatedRoadmap.decisionArtifact.confidence)
+    : null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -275,6 +284,19 @@ export default function ToolsComplianceRoadmap() {
                   title="Decision Core Artifact"
                   description="Stable ESRS_MAPPING roadmap artifact summarizing confidence, evidence, and phase shape."
                 />
+
+                {roadmapPosture ? (
+                  <Alert className={roadmapPosture.className}>
+                    <Sparkles className="h-4 w-4" />
+                    <AlertTitle>{roadmapPosture.title}</AlertTitle>
+                    <AlertDescription>
+                      <p>{roadmapPosture.description}</p>
+                      <p className="mt-1 font-medium">
+                        Recommended next action: {roadmapPosture.badgeLabel}.
+                      </p>
+                    </AlertDescription>
+                  </Alert>
+                ) : null}
 
                 {/* Quick Wins */}
                 {groupedPhases?.quick_win && (

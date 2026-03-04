@@ -24,8 +24,15 @@ import {
   Calendar,
   FileText,
   Link as LinkIcon,
+  ShieldAlert,
 } from "lucide-react";
 import { useRoute, useLocation } from "wouter";
+import {
+  getVerificationBadgeLabel,
+  getVerificationBadgeVariant,
+  getVerificationDescription,
+  getVerificationTitle,
+} from "@/lib/verification-posture";
 
 export function StandardDetail() {
   const [, params] = useRoute("/standards-directory/:id");
@@ -200,6 +207,37 @@ export function StandardDetail() {
                       day: "numeric",
                     })}
                   </p>
+                </div>
+              </div>
+            )}
+
+            {(standard.verificationReason || standard.verificationFreshnessBucket) && (
+              <div className="flex items-start gap-3">
+                <ShieldAlert className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <div>
+                    <p className="text-sm font-medium mb-1">Verification Posture</p>
+                    <div className="flex flex-wrap gap-2">
+                      {standard.verificationFreshnessBucket && (
+                        <Badge variant={getVerificationBadgeVariant(standard.verificationFreshnessBucket)}>
+                          {getVerificationBadgeLabel(standard.verificationFreshnessBucket)}
+                        </Badge>
+                      )}
+                      {standard.verificationReason && standard.verificationReason !== "ok" && (
+                        <Badge variant="outline">
+                          {getVerificationTitle(standard.verificationReason)}
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  {standard.verificationReason && (
+                    <p className="text-sm text-muted-foreground">
+                      {getVerificationDescription(
+                        standard.verificationReason,
+                        standard.verificationAgeDays ?? null
+                      )}
+                    </p>
+                  )}
                 </div>
               </div>
             )}

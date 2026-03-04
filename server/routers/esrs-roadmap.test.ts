@@ -85,6 +85,10 @@ describe("esrsRoadmapRouter", () => {
     expect(result.decisionArtifact.capability).toBe("ESRS_MAPPING");
     expect(result.decisionArtifact.summary.phaseCount).toBe(1);
     expect(result.decisionArtifact.summary.mappingCount).toBe(1);
+    expect(result.decisionArtifact.confidence.level).toBe("medium");
+    expect(result.decisionArtifact.confidence.reviewRecommended).toBe(true);
+    expect(result.decisionArtifact.confidence.uncertaintyClass).toBe("review_required");
+    expect(result.decisionArtifact.confidence.escalationAction).toBe("analyst_review");
   });
 
   it("falls back to a deterministic roadmap and still emits a decision artifact", async () => {
@@ -114,6 +118,9 @@ describe("esrsRoadmapRouter", () => {
     expect(result.phases.length).toBeGreaterThan(0);
     expect(result.decisionArtifact.artifactType).toBe("roadmap");
     expect(result.decisionArtifact.confidence.level).toBe("medium");
+    expect(result.decisionArtifact.confidence.reviewRecommended).toBe(true);
+    expect(result.decisionArtifact.confidence.uncertaintyClass).toBe("review_required");
+    expect(result.decisionArtifact.confidence.escalationAction).toBe("analyst_review");
     expect(result.decisionArtifact.summary.topPhaseIds[0]).toBe("phase-1");
   });
 });

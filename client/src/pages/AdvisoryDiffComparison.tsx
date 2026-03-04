@@ -354,7 +354,7 @@ export default function AdvisoryDiffComparison() {
                   )}
 
                   {diffSummary && (
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
                       <div className="rounded-lg border bg-muted/10 p-4">
                         <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
                           Added In Current
@@ -386,6 +386,28 @@ export default function AdvisoryDiffComparison() {
                         <div className="flex flex-wrap gap-2">
                           {renderArtifactTypeBadges(
                             diffSummary.confidenceChangedArtifactTypes,
+                            "outline",
+                          )}
+                        </div>
+                      </div>
+                      <div className="rounded-lg border bg-muted/10 p-4">
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Uncertainty Drift
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {renderArtifactTypeBadges(
+                            diffSummary.uncertaintyChangedArtifactTypes,
+                            "outline",
+                          )}
+                        </div>
+                      </div>
+                      <div className="rounded-lg border bg-muted/10 p-4">
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Escalation Drift
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {renderArtifactTypeBadges(
+                            diffSummary.escalationChangedArtifactTypes,
                             "outline",
                           )}
                         </div>

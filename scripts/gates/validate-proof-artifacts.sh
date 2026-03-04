@@ -12,9 +12,13 @@ cd "$REPO_ROOT"
 echo "=== ISA Proof Artifact Schema Validation ==="
 echo ""
 
-# Check if ajv-cli is available
-if ! command -v ajv &> /dev/null; then
-    echo "ERROR: ajv-cli not found. Install with: npm install -g ajv-cli"
+AJV_RUNNER=()
+if command -v ajv &> /dev/null; then
+    AJV_RUNNER=(ajv)
+elif command -v npx &> /dev/null; then
+    AJV_RUNNER=(npx --yes ajv-cli)
+else
+    echo "ERROR: ajv-cli or npx not found. Install Node.js tooling with npx or npm install -g ajv-cli"
     exit 1
 fi
 
@@ -35,6 +39,7 @@ ARTIFACTS=(
     "test-results/ci/isa-capability-eval.json:docs/quality/schemas/isa-capability-eval.schema.json"
     "test-results/ci/isa-capability-baseline-candidate.json:docs/quality/schemas/isa-capability-baseline.schema.json"
     "test-results/ci/isa-drift-report.json:docs/quality/schemas/isa-drift-report.schema.json"
+    "test-results/ci/knowledge-verification-posture.json:docs/quality/schemas/knowledge-verification-posture.schema.json"
     "docs/evidence/_generated/catalogue.json:docs/quality/schemas/catalogue.schema.json"
     "docs/sre/_generated/error_budget_status.json:docs/quality/schemas/error-budget-status.schema.json"
     "docs/architecture/panel/_generated/ARCHITECTURE_SCORECARD.json:docs/quality/schemas/architecture-scorecard.schema.json"
@@ -57,7 +62,7 @@ for mapping in "${ARTIFACTS[@]}"; do
     fi
     
     echo "Validating: $artifact"
-    if ajv validate -s "$schema" -d "$artifact" --strict=false 2>&1; then
+    if "${AJV_RUNNER[@]}" validate -s "$schema" -d "$artifact" --strict=false 2>&1; then
         echo "✅ PASS: $artifact"
         PASS_COUNT=$((PASS_COUNT + 1))
     else

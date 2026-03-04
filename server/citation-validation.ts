@@ -9,8 +9,7 @@ import { eq } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 import {
   buildKnowledgeEvidenceKey,
-  doesKnowledgeChunkNeedVerification,
-  getKnowledgeVerificationReason,
+  getKnowledgeVerificationStatus,
 } from "./knowledge-provenance";
 
 
@@ -59,7 +58,7 @@ export async function needsVerification(chunkId: number): Promise<boolean> {
 
     const chunk = chunks[0];
 
-    return doesKnowledgeChunkNeedVerification(chunk.lastVerifiedDate);
+    return getKnowledgeVerificationStatus(chunk.lastVerifiedDate).needsVerification;
   } catch (error) {
     serverLogger.error("[Citation] Failed to check verification status:", error);
     return false;
@@ -85,6 +84,7 @@ export async function validateCitations(
     datasetId?: string;
     datasetVersion?: string;
     lastVerifiedDate?: string;
+    verificationAgeDays?: number | null;
     isDeprecated: boolean;
     needsVerification: boolean;
     verificationReason?: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date";
@@ -130,15 +130,17 @@ export async function validateCitations(
           source.id,
           chunk.contentHash || null
         );
+        const verificationStatus = getKnowledgeVerificationStatus(chunk.lastVerifiedDate);
 
         return {
           ...source,
           datasetId: chunk.datasetId || undefined,
           datasetVersion: chunk.datasetVersion || undefined,
           lastVerifiedDate: chunk.lastVerifiedDate || undefined,
+          verificationAgeDays: verificationStatus.verificationAgeDays,
           isDeprecated: chunk.isDeprecated === 1,
-          needsVerification: doesKnowledgeChunkNeedVerification(chunk.lastVerifiedDate),
-          verificationReason: getKnowledgeVerificationReason(chunk.lastVerifiedDate),
+          needsVerification: verificationStatus.needsVerification,
+          verificationReason: verificationStatus.reason,
           deprecationReason: chunk.deprecationReason || undefined,
           evidenceKey,
           evidenceKeyReason,

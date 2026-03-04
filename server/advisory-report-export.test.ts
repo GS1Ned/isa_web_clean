@@ -81,6 +81,8 @@ const mockGapAnalysisResult = {
       score: 0.68,
       basis: 'Coverage analysis across mapped requirements.',
       reviewRecommended: true,
+      uncertaintyClass: 'review_required',
+      escalationAction: 'analyst_review',
     },
     evidence: {
       codePaths: ['server/routers/gap-analyzer.ts'],
@@ -165,6 +167,8 @@ const mockRecommendationResult = {
       score: 0.76,
       basis: 'Recommendations derived from sector and regulation mappings.',
       reviewRecommended: false,
+      uncertaintyClass: 'decision_grade',
+      escalationAction: 'none',
     },
     evidence: {
       codePaths: ['server/attribute-recommender.ts'],
@@ -272,6 +276,8 @@ describe('Gap Analysis Markdown Generation', () => {
     expect(markdown).toContain('## Decision artifact');
     expect(markdown).toContain('**Artifact Type:** gap_analysis');
     expect(markdown).toContain('Coverage analysis across mapped requirements.');
+    expect(markdown).toContain('**Uncertainty Class:** review_required');
+    expect(markdown).toContain('**Escalation Action:** analyst_review');
     expect(markdown).toContain('| Critical Gap Count | 1 |');
     expect(markdown).toContain('server/routers/gap-analyzer.ts');
   });
@@ -387,6 +393,7 @@ describe('Attribute Recommendation Markdown Generation', () => {
     expect(markdown).toContain('## Decision artifact');
     expect(markdown).toContain('**Artifact Type:** attribute_recommendation');
     expect(markdown).toContain('Recommendations derived from sector and regulation mappings.');
+    expect(markdown).toContain('**Uncertainty Class:** decision_grade');
     expect(markdown).toContain('| Top Recommendation Ids | productCarbonFootprint |');
     expect(markdown).toContain('ATTRIBUTE_METADATA, SECTOR_ATTRIBUTES');
   });
@@ -433,6 +440,8 @@ describe('Decision Artifact HTML Rendering', () => {
     expect(html).toContain('Decision Artifacts');
     expect(html).toContain('gap_analysis');
     expect(html).toContain('attribute_recommendation');
+    expect(html).toContain('review_required');
+    expect(html).toContain('analyst_review');
     expect(html).toContain('Coverage Percentage');
     expect(html).toContain('ATTRIBUTE_METADATA, SECTOR_ATTRIBUTES');
   });

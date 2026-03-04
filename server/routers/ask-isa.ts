@@ -277,6 +277,7 @@ export const askISARouter = router({
               datasetId: source.datasetId,
               datasetVersion: source.datasetVersion,
               lastVerifiedDate: source.lastVerifiedDate,
+              verificationAgeDays: source.verificationAgeDays,
               isDeprecated: source.isDeprecated,
               needsVerification: source.needsVerification,
               verificationReason: source.verificationReason,
@@ -437,6 +438,7 @@ export const askISARouter = router({
             datasetId: source.datasetId,
             datasetVersion: source.datasetVersion,
             lastVerifiedDate: source.lastVerifiedDate,
+            verificationAgeDays: source.verificationAgeDays,
             isDeprecated: source.isDeprecated,
             needsVerification: source.needsVerification,
             verificationReason: source.verificationReason,
@@ -453,6 +455,19 @@ export const askISARouter = router({
           sourceCount: relevantResults.length,
           evidenceReadySourceCount: validatedSources.filter(
             source => typeof source.evidenceKey === "string" && source.evidenceKey.length > 0
+          ).length,
+          verifiedEvidenceSourceCount: validatedSources.filter(
+            source =>
+              typeof source.evidenceKey === "string" &&
+              source.evidenceKey.length > 0 &&
+              !source.needsVerification &&
+              !source.isDeprecated
+          ).length,
+          needsVerificationSourceCount: validatedSources.filter(
+            source => source.needsVerification
+          ).length,
+          deprecatedSourceCount: validatedSources.filter(
+            source => source.isDeprecated
           ).length,
           claimVerification: claimVerificationResult,
         });
@@ -597,6 +612,8 @@ export const askISARouter = router({
             similarity: s.similarity,
             authorityLevel: s.authorityLevel,
             authorityScore: s.authorityScore,
+            lastVerifiedDate: s.lastVerifiedDate,
+            verificationAgeDays: s.verificationAgeDays,
             verificationReason: s.verificationReason,
             evidenceKey: s.evidenceKey,
             evidenceKeyReason: s.evidenceKeyReason,
@@ -607,7 +624,9 @@ export const askISARouter = router({
             totalClaims: claimVerificationResult.totalClaims,
             verifiedClaims: claimVerificationResult.verifiedClaims,
             unverifiedClaims: claimVerificationResult.unverifiedClaims,
-            warnings: claimVerificationResult.warnings,
+            warnings: Array.from(
+              new Set([...claimVerificationResult.warnings, ...stageAValidation.warnings])
+            ),
           },
         });
 

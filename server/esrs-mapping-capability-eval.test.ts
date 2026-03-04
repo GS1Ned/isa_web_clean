@@ -37,5 +37,20 @@ describe("ESRS mapping capability adapter", () => {
     expect(evaluated.diagnostics.benchmark_mix.partial_case_count).toBeGreaterThan(0);
     expect(evaluated.diagnostics.benchmark_mix.no_mapping_case_count).toBe(4);
     expect(evaluated.diagnostics.regulation_breakdown.negative["ESRS S1"]).toBe(2);
+    expect(evaluated.diagnostics.decision_posture.total_case_count).toBe(evaluated.sampleCount);
+    expect(evaluated.diagnostics.decision_posture.decision_grade_count).toBe(
+      evaluated.diagnostics.benchmark_mix.direct_case_count
+    );
+    expect(evaluated.diagnostics.decision_posture.review_required_count).toBe(
+      evaluated.diagnostics.benchmark_mix.partial_case_count
+    );
+    expect(evaluated.diagnostics.decision_posture.insufficient_evidence_count).toBe(
+      evaluated.diagnostics.benchmark_mix.no_mapping_case_count
+    );
+    expect(evaluated.diagnostics.decision_posture.review_recommended_count).toBe(
+      evaluated.diagnostics.decision_posture.review_required_count +
+        evaluated.diagnostics.decision_posture.insufficient_evidence_count
+    );
+    expect(evaluated.diagnostics.decision_posture.human_review_required_share).toBeGreaterThan(0);
   });
 });

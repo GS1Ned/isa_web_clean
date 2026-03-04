@@ -61,8 +61,14 @@ CATALOG is the source-of-record capability for regulation, standards, ESRS datap
   - `authoritativeSourceUrl`
   - `datasetIdentifier`
   - `lastVerifiedDate`
+  - `needsVerification`
+  - `verificationReason`
+  - `verificationAgeDays`
+  - `verificationFreshnessBucket`
 - Canonical derivation helper for dataset authority tier:
   - `server/catalog-authority.ts`
+- Canonical derivation helper for verification posture:
+  - `server/verification-posture.ts`
 
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/catalog_health.sh -->

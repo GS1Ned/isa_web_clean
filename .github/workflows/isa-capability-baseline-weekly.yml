@@ -33,6 +33,14 @@ jobs:
         with:
           node-version: "22.13.0"
 
+      - name: Install proof artifact tooling
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y ripgrep
+          npm install -g ajv-cli
+
       - name: Resolve stage and drift baseline
         id: baseline
         run: |
@@ -98,6 +106,19 @@ jobs:
             --out test-results/ci/isa-capability-baseline-candidate.json \
             --id isa-capability-baseline-candidate-weekly-${{ github.run_number }}
 
+      - name: Build knowledge verification posture artifact
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        run: |
+          set -euo pipefail
+          bash scripts/gates/knowledge-verification-posture.sh \
+            test-results/ci/knowledge-verification-posture.json
+
+      - name: Validate proof artifacts
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        run: |
+          set -euo pipefail
+          bash scripts/gates/validate-proof-artifacts.sh
+
       - name: Upload weekly baseline artifacts
         if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
         uses: actions/upload-artifact@v4
@@ -108,6 +129,7 @@ jobs:
             test-results/ci/isa-drift-report.json
             test-results/ci/isa-capability-eval-history.json
             test-results/ci/isa-capability-baseline-candidate.json
+            test-results/ci/knowledge-verification-posture.json
 
       - name: Save drift history cache
         if: always() && env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'

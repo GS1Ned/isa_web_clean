@@ -17,6 +17,11 @@ import { sql, eq, and, desc, like, inArray } from "drizzle-orm";
 import { validateCitations } from "../citation-validation";
 import { AbstentionReasonCode } from "../services/rag-tracing/failure-taxonomy";
 import { findCanonicalFactsForQuery } from "../services/canonical-facts";
+import { verifyResponseClaims } from "../claim-citation-verifier";
+import {
+  ASK_ISA_STAGE_A_ABSTENTION_MESSAGE,
+  validateAskISAStageAAnswer,
+} from "../ask-isa-stage-a";
 
 // Types for enhanced search
 interface KnowledgeEmbeddingResult {
@@ -577,25 +582,104 @@ ${contextParts.join('\n\n')}`;
         });
 
         const answer = response.choices[0]?.message?.content || 'Unable to generate answer';
+        const claimVerification = verifyResponseClaims(
+          answer,
+          searchResults.map((r) => ({
+            id: r.id,
+            title: r.title,
+            url: r.url,
+            authorityLevel: r.authorityLevel,
+          }))
+        );
+
+        const responseSources = searchResults.map((r, index) => {
+          const validated = validatedSources[index];
+          return {
+            id: r.id,
+            title: r.title,
+            sourceType: r.sourceType,
+            authorityLevel: r.authorityLevel,
+            similarity: Math.round(r.similarity * 100),
+            url: r.url,
+            lastVerifiedDate: validated?.lastVerifiedDate,
+            verificationAgeDays: validated?.verificationAgeDays,
+            needsVerification: validated?.needsVerification ?? false,
+            verificationReason: validated?.verificationReason,
+            isDeprecated: validated?.isDeprecated ?? false,
+            deprecationReason: validated?.deprecationReason,
+            evidenceKey: validated?.evidenceKey ?? null,
+            evidenceKeyReason: validated?.evidenceKeyReason ?? "chunk_not_found",
+          };
+        });
+
+        const stageAValidation = validateAskISAStageAAnswer({
+          answer,
+          sourceCount: searchResults.length,
+          evidenceReadySourceCount: validatedSources.filter(
+            (source) => typeof source.evidenceKey === "string" && source.evidenceKey.length > 0
+          ).length,
+          verifiedEvidenceSourceCount: validatedSources.filter(
+            (source) =>
+              typeof source.evidenceKey === "string" &&
+              source.evidenceKey.length > 0 &&
+              !source.needsVerification &&
+              !source.isDeprecated
+          ).length,
+          needsVerificationSourceCount: validatedSources.filter(
+            (source) => source.needsVerification
+          ).length,
+          deprecatedSourceCount: validatedSources.filter(
+            (source) => source.isDeprecated
+          ).length,
+          claimVerification,
+        });
+
+        if (!stageAValidation.passed) {
+          return {
+            answer: ASK_ISA_STAGE_A_ABSTENTION_MESSAGE,
+            sources: responseSources,
+            abstained: true,
+            abstentionReason: AbstentionReasonCode.SPECULATION_REQUIRED,
+            citationValid: false,
+            missingCitations: stageAValidation.issues,
+            claimVerification: {
+              verificationRate: claimVerification.verificationRate,
+              totalClaims: claimVerification.totalClaims,
+              verifiedClaims: claimVerification.verifiedClaims,
+              unverifiedClaims: claimVerification.unverifiedClaims,
+              warnings: Array.from(
+                new Set([...claimVerification.warnings, ...stageAValidation.warnings])
+              ),
+            },
+            factsUsed: canonicalFactsForOutput.length > 0,
+            facts: canonicalFactsForOutput,
+            explainers: buildExplainersFromFacts(canonicalFactsForOutput),
+            uncertainty: canonicalFactsForOutput.length > 0
+              ? null
+              : "Canonical facts are not available for this query; no answer was generated.",
+            gapAnalysis: gapAnalysis ? {
+              regulation: gapAnalysis.regulation,
+              coveragePercentage: gapAnalysis.coveragePercentage,
+              gapCount: gapAnalysis.gaps.length,
+              recommendations: gapAnalysis.recommendations,
+            } : null,
+          };
+        }
 
         return {
           answer,
-          sources: searchResults.map((r, index) => {
-            const validated = validatedSources[index];
-            return {
-              id: r.id,
-              title: r.title,
-              sourceType: r.sourceType,
-              authorityLevel: r.authorityLevel,
-              similarity: Math.round(r.similarity * 100),
-              url: r.url,
-              lastVerifiedDate: validated?.lastVerifiedDate,
-              needsVerification: validated?.needsVerification ?? false,
-              verificationReason: validated?.verificationReason,
-              evidenceKey: validated?.evidenceKey ?? null,
-              evidenceKeyReason: validated?.evidenceKeyReason ?? "chunk_not_found",
-            };
-          }),
+          sources: responseSources,
+          citationValid: stageAValidation.citationValid,
+          missingCitations: stageAValidation.missingCitations,
+          claimVerification: {
+            verificationRate: claimVerification.verificationRate,
+            totalClaims: claimVerification.totalClaims,
+            verifiedClaims: claimVerification.verifiedClaims,
+            unverifiedClaims: claimVerification.unverifiedClaims,
+            warnings: Array.from(
+              new Set([...claimVerification.warnings, ...stageAValidation.warnings])
+            ),
+          },
           factsUsed: canonicalFactsForOutput.length > 0,
           facts: canonicalFactsForOutput,
           explainers: buildExplainersFromFacts(canonicalFactsForOutput),

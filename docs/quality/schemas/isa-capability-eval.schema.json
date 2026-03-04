@@ -132,6 +132,40 @@
                   }
                 },
                 "additionalProperties": true
+              },
+              "decision_posture": {
+                "type": "object",
+                "required": [
+                  "total_case_count",
+                  "decision_grade_count",
+                  "review_required_count",
+                  "insufficient_evidence_count",
+                  "review_recommended_count",
+                  "none_escalation_count",
+                  "analyst_review_count",
+                  "human_review_required_count",
+                  "decision_grade_share",
+                  "review_required_share",
+                  "insufficient_evidence_share",
+                  "review_recommended_share",
+                  "human_review_required_share"
+                ],
+                "properties": {
+                  "total_case_count": { "type": "integer", "minimum": 0 },
+                  "decision_grade_count": { "type": "integer", "minimum": 0 },
+                  "review_required_count": { "type": "integer", "minimum": 0 },
+                  "insufficient_evidence_count": { "type": "integer", "minimum": 0 },
+                  "review_recommended_count": { "type": "integer", "minimum": 0 },
+                  "none_escalation_count": { "type": "integer", "minimum": 0 },
+                  "analyst_review_count": { "type": "integer", "minimum": 0 },
+                  "human_review_required_count": { "type": "integer", "minimum": 0 },
+                  "decision_grade_share": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "review_required_share": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "insufficient_evidence_share": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "review_recommended_share": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "human_review_required_share": { "type": "number", "minimum": 0, "maximum": 1 }
+                },
+                "additionalProperties": true
               }
             },
             "additionalProperties": true

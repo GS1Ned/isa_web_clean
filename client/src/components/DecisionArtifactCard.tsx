@@ -2,6 +2,10 @@ import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, FileSearch, Info, Scale, Sparkles } from "lucide-react";
+import {
+  formatDecisionPostureLabel,
+  getDecisionPostureSummary,
+} from "@/lib/esrs-decision-posture";
 
 type DecisionArtifactSummaryValue =
   | string
@@ -22,6 +26,8 @@ export interface DecisionArtifactCardData {
     score: number;
     basis: string;
     reviewRecommended?: boolean;
+    uncertaintyClass?: string;
+    escalationAction?: string;
   };
   evidence?: {
     codePaths?: string[];
@@ -85,6 +91,7 @@ export function DecisionArtifactCard({
   const evidence = artifact.evidence ?? {};
   const codePaths = evidence.codePaths ?? [];
   const dataSources = evidence.dataSources ?? [];
+  const postureSummary = getDecisionPostureSummary(artifact.confidence);
 
   return (
     <Card>
@@ -102,6 +109,11 @@ export function DecisionArtifactCard({
               <CheckCircle2 className="mr-1 h-3 w-3" />
               {artifact.confidence.level} {Math.round(artifact.confidence.score * 100)}%
             </Badge>
+            {artifact.confidence.uncertaintyClass ? (
+              <Badge variant="outline">
+                {formatDecisionPostureLabel(artifact.confidence.uncertaintyClass)}
+              </Badge>
+            ) : null}
             <Badge variant={artifact.confidence.reviewRecommended ? "secondary" : "outline"}>
               {artifact.confidence.reviewRecommended ? "Review recommended" : "Ready for routine use"}
             </Badge>
@@ -134,8 +146,13 @@ export function DecisionArtifactCard({
           </div>
           <p className="text-sm text-blue-900">{artifact.confidence.basis}</p>
           <p className="mt-2 text-xs font-medium text-blue-900">
-            Review: {artifact.confidence.reviewRecommended ? "recommended before downstream sign-off" : "routine downstream use acceptable"}
+            Review: {postureSummary.title.toLowerCase()}
           </p>
+          {artifact.confidence.escalationAction ? (
+            <p className="mt-1 text-xs text-blue-900">
+              Escalation: {formatDecisionPostureLabel(artifact.confidence.escalationAction)}
+            </p>
+          ) : null}
         </div>
 
         {summaryEntries.length > 0 && (

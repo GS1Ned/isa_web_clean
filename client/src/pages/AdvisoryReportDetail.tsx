@@ -560,6 +560,40 @@ export default function AdvisoryReportDetail() {
                           )}
                         </div>
                       </div>
+
+                      <div>
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Uncertainty Drift
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {diffSummary.uncertaintyChangedArtifactTypes.length > 0 ? (
+                            diffSummary.uncertaintyChangedArtifactTypes.map((artifactType: string) => (
+                              <Badge key={`${version.id}-uncertainty-${artifactType}`} variant="outline">
+                                {artifactType}
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-muted-foreground">None</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Escalation Drift
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {diffSummary.escalationChangedArtifactTypes.length > 0 ? (
+                            diffSummary.escalationChangedArtifactTypes.map((artifactType: string) => (
+                              <Badge key={`${version.id}-escalation-${artifactType}`} variant="outline">
+                                {artifactType}
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-muted-foreground">None</span>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
