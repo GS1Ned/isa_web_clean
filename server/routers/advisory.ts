@@ -9,7 +9,7 @@ import { router, publicProcedure } from "../_core/trpc";
 import { z } from "zod";
 import { buildAdvisoryReadModel } from "../advisory-read-model";
 import { computeAdvisoryDiffPayload } from "../advisory-diff-runtime";
-import { getLatestAdvisoryReport } from "../db-advisory-reports";
+import { buildAdvisoryOverview } from "../advisory-overview";
 import {
   normalizeAdvisoryVersionTag,
 } from "../advisory-legacy-compat";
@@ -70,31 +70,14 @@ export const advisoryRouter = router({
    * Get advisory summary (fast stats for UI)
    */
   getSummary: publicProcedure.query(async () => {
-    const readModel = await buildAdvisoryReadModel();
-    return readModel.summary;
+    const overview = await buildAdvisoryOverview();
+    return overview.summary;
   }),
 
   /**
    * Get a normalized advisory overview bundle for active UI surfaces.
    */
-  getOverview: publicProcedure.query(async () => {
-    const readModel = await buildAdvisoryReadModel();
-
-    try {
-      const latestReport = await getLatestAdvisoryReport();
-      return {
-        summary: readModel.summary,
-        metadata: readModel.metadata,
-        latestReport,
-      };
-    } catch {
-      return {
-        summary: readModel.summary,
-        metadata: readModel.metadata,
-        latestReport: null,
-      };
-    }
-  }),
+  getOverview: publicProcedure.query(async () => buildAdvisoryOverview()),
 
   /**
    * Get full advisory JSON
@@ -258,7 +241,7 @@ export const advisoryRouter = router({
    * Get advisory metadata
    */
   getMetadata: publicProcedure.query(async () => {
-    const readModel = await buildAdvisoryReadModel();
-    return readModel.metadata;
+    const overview = await buildAdvisoryOverview();
+    return overview.metadata;
   }),
 });
