@@ -83,6 +83,8 @@ describe("advisory-diff-snapshot", () => {
                 score: 0.82,
                 basis: "Current report.",
                 reviewRecommended: false,
+                uncertaintyClass: "decision_grade",
+                escalationAction: "none",
               },
               evidence: {
                 codePaths: ["server/routers/gap-analyzer.ts"],
@@ -125,6 +127,8 @@ describe("advisory-diff-snapshot", () => {
                     score: 0.67,
                     basis: "Snapshot report.",
                     reviewRecommended: true,
+                    uncertaintyClass: "review_required",
+                    escalationAction: "analyst_review",
                   },
                   evidence: {
                     codePaths: ["server/routers/gap-analyzer.ts"],
@@ -159,6 +163,8 @@ describe("advisory-diff-snapshot", () => {
     });
     expect(result.decisionArtifactDiff).toBeDefined();
     expect(result.decisionArtifactDiff.confidenceChangedArtifactTypes).toContain("gap_analysis");
+    expect(result.decisionArtifactDiff.uncertaintyChangedArtifactTypes).toContain("gap_analysis");
+    expect(result.decisionArtifactDiff.escalationChangedArtifactTypes).toContain("gap_analysis");
   });
 
   it("falls back cleanly when no snapshot-backed match exists", () => {

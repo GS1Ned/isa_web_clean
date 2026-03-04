@@ -368,7 +368,7 @@ export default function AdvisoryDiff() {
                     </div>
                   </div>
 
-                  <div className="grid gap-4 md:grid-cols-2">
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     <div className="rounded-lg border p-4 space-y-2">
                       <div className="text-sm font-medium">Added artifact types</div>
                       <div className="flex flex-wrap gap-2">
@@ -392,6 +392,24 @@ export default function AdvisoryDiff() {
                       <div className="flex flex-wrap gap-2">
                         {renderArtifactTypeBadges(
                           diffSummary.confidenceChangedArtifactTypes,
+                          "outline",
+                        )}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border p-4 space-y-2">
+                      <div className="text-sm font-medium">Uncertainty drift</div>
+                      <div className="flex flex-wrap gap-2">
+                        {renderArtifactTypeBadges(
+                          diffSummary.uncertaintyChangedArtifactTypes,
+                          "outline",
+                        )}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border p-4 space-y-2">
+                      <div className="text-sm font-medium">Escalation drift</div>
+                      <div className="flex flex-wrap gap-2">
+                        {renderArtifactTypeBadges(
+                          diffSummary.escalationChangedArtifactTypes,
                           "outline",
                         )}
                       </div>

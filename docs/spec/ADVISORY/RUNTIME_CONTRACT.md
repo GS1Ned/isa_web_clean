@@ -44,6 +44,7 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
 - When current advisory payloads do not carry legacy `regulationsCovered` arrays, `advisory.getRegulations` may derive a compatibility inventory from normalized mapping and gap standards instead of returning an empty list.
 - `advisory.getDiff` remains a compatibility surface and may delegate to the same snapshot-aware runtime used by `advisoryDiff.computeDiff`, rather than loading legacy diff JSON directly.
 - `advisoryDiff.computeDiff` may add additive `snapshotBacked` and `decisionArtifactDiff` fields when a current advisory report plus matching version snapshot exist for the requested advisory versions; otherwise it falls back to the legacy file/script diff result.
+  - `decisionArtifactDiff` may include additive confidence, uncertainty, and escalation drift fields for matching artifact types.
 - `advisoryDiff.getAdvisorySummary` may return the normalized current advisory summary for the active advisory version and fall back to legacy summary files for older requested versions.
 - Legacy diff file/script access remains centralized in shared compatibility helpers rather than spread across routers.
 - `advisory_reports` records may persist additive upstream `decisionArtifacts` envelopes from `ESRS_MAPPING` for downstream export, review, and traceability.

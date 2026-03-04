@@ -19,6 +19,8 @@ const currentArtifacts: EsrsDecisionArtifact[] = [
       score: 0.82,
       basis: "Coverage improved after current mapping refresh.",
       reviewRecommended: false,
+      uncertaintyClass: "decision_grade",
+      escalationAction: "none",
     },
     evidence: {
       codePaths: ["server/routers/gap-analyzer.ts"],
@@ -47,6 +49,8 @@ const currentArtifacts: EsrsDecisionArtifact[] = [
       score: 0.64,
       basis: "Recommendation coverage based on current attribute model.",
       reviewRecommended: true,
+      uncertaintyClass: "review_required",
+      escalationAction: "analyst_review",
     },
     evidence: {
       codePaths: ["server/attribute-recommender.ts"],
@@ -69,6 +73,8 @@ const snapshotArtifacts: EsrsDecisionArtifact[] = [
       score: 0.58,
       basis: "Older snapshot before latest mapping update.",
       reviewRecommended: true,
+      uncertaintyClass: "insufficient_evidence",
+      escalationAction: "human_review_required",
     },
     summary: {
       totalRequirements: 14,
@@ -94,6 +100,8 @@ const snapshotArtifacts: EsrsDecisionArtifact[] = [
       score: 0.61,
       basis: "Snapshot roadmap.",
       reviewRecommended: true,
+      uncertaintyClass: "review_required",
+      escalationAction: "analyst_review",
     },
     evidence: {
       codePaths: ["server/routers/esrs-roadmap.ts"],
@@ -122,6 +130,8 @@ describe("buildDecisionArtifactDiffSummary", () => {
     expect(diff.removedArtifactTypes).toEqual(["roadmap"]);
     expect(diff.changedArtifactTypes).toEqual(["gap_analysis"]);
     expect(diff.confidenceChangedArtifactTypes).toEqual(["gap_analysis"]);
+    expect(diff.uncertaintyChangedArtifactTypes).toEqual(["gap_analysis"]);
+    expect(diff.escalationChangedArtifactTypes).toEqual(["gap_analysis"]);
     expect(diff.unchangedArtifactTypes).toEqual([]);
     expect(diff.averageConfidenceDelta).toBe(0.14);
     expect(diff.hasChanges).toBe(true);
@@ -141,6 +151,8 @@ describe("buildDecisionArtifactDiffSummary", () => {
       changedArtifactTypes: [],
       unchangedArtifactTypes: [],
       confidenceChangedArtifactTypes: [],
+      uncertaintyChangedArtifactTypes: [],
+      escalationChangedArtifactTypes: [],
       averageConfidenceDelta: null,
       hasChanges: false,
     });
