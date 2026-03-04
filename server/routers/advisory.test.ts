@@ -64,4 +64,19 @@ describe("advisory router", () => {
     expect(sectorModels.total).toBeGreaterThanOrEqual(0);
     expect(Array.isArray(sectorModels.sectorModels)).toBe(true);
   });
+
+  it("keeps advisory.getDiff aligned with the snapshot-aware diff runtime", async () => {
+    const caller = appRouter.createCaller(mockContext);
+
+    const diff = await caller.advisory.getDiff({
+      version1: "v1.0",
+      version2: "v1.1",
+    });
+
+    expect(diff.metadata).toBeDefined();
+    expect(diff.coverageDeltas).toBeDefined();
+    expect(diff.gapLifecycle).toBeDefined();
+    expect(diff.recommendationLifecycle).toBeDefined();
+    expect(diff.snapshotBacked).toBeDefined();
+  });
 });

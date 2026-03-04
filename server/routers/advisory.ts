@@ -8,8 +8,8 @@
 import { router, publicProcedure } from "../_core/trpc";
 import { z } from "zod";
 import { buildAdvisoryReadModel } from "../advisory-read-model";
+import { computeAdvisoryDiffPayload } from "../advisory-diff-runtime";
 import {
-  loadLegacyAdvisoryDiff,
   normalizeAdvisoryVersionTag,
 } from "../advisory-legacy-compat";
 
@@ -58,12 +58,12 @@ export const advisoryRouter = router({
         version2: z.string().optional().default("v1.0"),
       })
     )
-    .query(({ input }) => {
-      return loadLegacyAdvisoryDiff(
+    .query(async ({ input }) =>
+      computeAdvisoryDiffPayload(
         normalizeAdvisoryVersionTag(input.version1),
         normalizeAdvisoryVersionTag(input.version2),
-      );
-    }),
+      ),
+    ),
 
   /**
    * Get advisory summary (fast stats for UI)
