@@ -27,7 +27,7 @@ The ISA Advisory UI provides a minimal, production-ready interface for browsing 
 
 **Route:** `/advisory/dashboard`  
 **Component:** `client/src/pages/AdvisoryDashboard.tsx`  
-**Data Source:** `trpc.advisory.getSummary()`
+**Data Source:** `trpc.advisory.getOverview()`
 
 **Purpose:**  
 Provide a high-level overview of ISA v1.0 advisory with key metrics and statistics.
@@ -69,10 +69,11 @@ Provide a high-level overview of ISA v1.0 advisory with key metrics and statisti
 4. **Actions**
    - "Explore Advisory Details" button → `/advisory/explorer`
    - "View Traceability" button → `/advisory/traceability`
+   - "View Latest Report" button → `/advisory-reports/:id` when a persisted report exists
 
 **Data Flow:**
 ```
-AdvisoryDashboard → trpc.advisory.getSummary() → ISA_ADVISORY_v1.0.summary.json
+AdvisoryDashboard → trpc.advisory.getOverview() → normalized advisory summary + latest persisted advisory report
 ```
 
 **Loading State:**  
@@ -87,13 +88,10 @@ Alert message if summary fails to load.
 
 **Route:** `/advisory/explorer`  
 **Component:** `client/src/pages/AdvisoryExplorer.tsx`  
-**Data Sources:**
-- `trpc.advisory.getMappings({ sector?, regulation?, confidence? })`
-- `trpc.advisory.getGaps({ severity?, sector? })`
-- `trpc.advisory.getRecommendations({ timeframe?, category?, implementationStatus? })`
+**Data Source:** `trpc.advisory.getFull()`
 
 **Purpose:**  
-Provide filterable, searchable views of all mappings, gaps, and recommendations with detail modals.
+Provide filterable, searchable views of all mappings, gaps, and recommendations with detail modals, backed by one normalized advisory read-model payload.
 
 **UI Elements:**
 
@@ -149,12 +147,12 @@ Provide filterable, searchable views of all mappings, gaps, and recommendations 
 
 **Data Flow:**
 ```
-AdvisoryExplorer → trpc.advisory.getMappings/getGaps/getRecommendations → ISA_ADVISORY_v1.0.json (filtered)
+AdvisoryExplorer → trpc.advisory.getFull() → normalized advisory read model → client-side explorer filters
 ```
 
 **Filtering Strategy:**
-- **Server-side:** Sector, regulation, confidence, severity, timeframe (via tRPC query params)
-- **Client-side:** Search query (keyword matching)
+- **Server-side:** advisory read-model normalization
+- **Client-side:** Search, sector, regulation, confidence, severity, and timeframe filtering
 
 **Loading State:**  
 Skeleton loaders for each tab during data fetch.
@@ -168,7 +166,7 @@ Skeleton loaders for each tab during data fetch.
 
 **Route:** `/advisory/traceability`  
 **Component:** `client/src/pages/AdvisoryTraceability.tsx`  
-**Data Source:** `trpc.advisory.getMetadata()`
+**Data Source:** `trpc.advisory.getOverview()`
 
 **Purpose:**  
 Provide full provenance and integrity verification for ISA v1.0 advisory.
@@ -187,7 +185,14 @@ Provide full provenance and integrity verification for ISA v1.0 advisory.
    - Author
    - Dataset registry version
 
-3. **Source Artifacts Section**
+3. **Latest Persisted Advisory Report**
+   - Report ID
+   - Report version
+   - Review status
+   - Generated timestamp
+   - Direct link to `/advisory-reports/:id`
+
+4. **Source Artifacts Section**
    - **Advisory Markdown Source** card
      - File path
      - SHA256 hash (monospace, breakable)
@@ -203,7 +208,7 @@ Provide full provenance and integrity verification for ISA v1.0 advisory.
      - SHA256 hash (monospace, breakable)
      - "Integrity verified" checkmark
 
-4. **Analysis Statistics Card**
+5. **Analysis Statistics Card**
    - Total datapoints analyzed
    - Total attributes evaluated
    - Total records used
@@ -211,14 +216,14 @@ Provide full provenance and integrity verification for ISA v1.0 advisory.
    - Sector models covered
    - Total mappings
 
-5. **Verification Instructions Card** (blue info box)
+6. **Verification Instructions Card** (blue info box)
    - Explanation of how to verify integrity
    - Example command: `sha256sum docs/ISA_First_Advisory_Report_GS1NL.md`
    - Note about hash matching requirement
 
 **Data Flow:**
 ```
-AdvisoryTraceability → trpc.advisory.getMetadata() → ISA_ADVISORY_v1.0.json (metadata + sourceArtifacts)
+AdvisoryTraceability → trpc.advisory.getOverview() → normalized advisory metadata + latest persisted advisory report
 ```
 
 **Loading State:**  
@@ -238,30 +243,30 @@ Alert message if metadata fails to load.
 
 **Endpoints:**
 
-1. **`getSummary()`**
-   - Returns: `ISA_ADVISORY_v1.0.summary.json`
-   - Caching: In-memory (loaded once)
-   - Use case: Dashboard stats
+1. **`getOverview()`**
+   - Returns: normalized advisory `summary` + `metadata` + latest persisted advisory report
+   - Caching: advisory read-model plus live report lookup
+   - Use case: Dashboard and Traceability
 
-2. **`getFull()`**
-   - Returns: Full `ISA_ADVISORY_v1.0.json`
-   - Caching: In-memory (loaded once)
-   - Use case: Full advisory download (not used in current UI)
+2. **`getSummary()`**
+   - Returns: normalized advisory summary
+   - Caching: advisory read-model
+   - Use case: compatibility surface for summary-first consumers
 
-3. **`getMappings({ sector?, regulation?, confidence? })`**
-   - Returns: Filtered mapping results
-   - Filters: sector (DIY/FMCG/Healthcare/All), regulation (ESRS E1/E2/etc.), confidence (direct/partial/missing)
-   - Use case: Mappings tab in Explorer
+3. **`getFull()`**
+   - Returns: normalized full advisory payload
+   - Caching: advisory read-model
+   - Use case: Explorer and mapping-hub surfaces
 
-4. **`getGaps({ severity?, sector? })`**
-   - Returns: Filtered gap results
-   - Filters: severity (critical/moderate/low-priority), sector (DIY/FMCG/Healthcare/All)
-   - Use case: Gaps tab in Explorer
+4. **`getMetadata()`**
+   - Returns: normalized advisory metadata
+   - Caching: advisory read-model
+   - Use case: compatibility surface for metadata-specific consumers
 
-5. **`getRecommendations({ timeframe?, category?, implementationStatus? })`**
-   - Returns: Filtered recommendation results
-   - Filters: timeframe (short-term/medium-term/long-term), category, implementationStatus
-   - Use case: Recommendations tab in Explorer
+5. **Legacy section endpoints**
+   - `getMappings()`, `getGaps()`, `getRecommendations()`, `getRegulations()`, `getSectorModels()`
+   - Return: compatibility projections from the normalized advisory read model
+   - Use case: backward compatibility while older consumers migrate
 
 6. **`getRegulations()`**
    - Returns: List of regulations covered
