@@ -7,34 +7,44 @@
 
 import { router, publicProcedure } from "../_core/trpc";
 import { z } from "zod";
-import fs from "fs";
-import path from "path";
 import { buildAdvisoryReadModel } from "../advisory-read-model";
 import {
   loadLegacyAdvisoryDiff,
   normalizeAdvisoryVersionTag,
 } from "../advisory-legacy-compat";
 
-// Load advisory and summary JSON files
-const ADVISORY_VERSION = process.env.ISA_ADVISORY_VERSION || "1.1"; // Default to v1.1
-const ADVISORY_PATH = path.join(process.cwd(), `data/advisories/ISA_ADVISORY_v${ADVISORY_VERSION}.json`);
-const SUMMARY_PATH = path.join(process.cwd(), `data/advisories/ISA_ADVISORY_v${ADVISORY_VERSION}.summary.json`);
-
-let advisoryCache: any = null;
-let summaryCache: any = null;
-
-function loadAdvisory() {
-  if (!advisoryCache) {
-    advisoryCache = JSON.parse(fs.readFileSync(ADVISORY_PATH, "utf8"));
-  }
-  return advisoryCache;
+function toLegacyMappingShape(mapping: any) {
+  return {
+    ...mapping,
+    mappingId: mapping?.mappingId ?? mapping?.id,
+    regulationDatapoint: mapping?.regulationDatapoint ?? mapping?.topic,
+    title: mapping?.title ?? mapping?.topic,
+    datasetReferences: Array.isArray(mapping?.datasetReferences) ? mapping.datasetReferences : [],
+  };
 }
 
-function loadSummary() {
-  if (!summaryCache) {
-    summaryCache = JSON.parse(fs.readFileSync(SUMMARY_PATH, "utf8"));
-  }
-  return summaryCache;
+function toLegacyGapShape(gap: any) {
+  return {
+    ...gap,
+    gapId: gap?.gapId ?? gap?.id,
+    title: gap?.title ?? gap?.topic,
+    category: gap?.category ?? gap?.severity,
+    affectedSectors: Array.isArray(gap?.affectedSectors) ? gap.affectedSectors : gap?.sectors ?? ["All"],
+    datasetReferences: Array.isArray(gap?.datasetReferences) ? gap.datasetReferences : [],
+  };
+}
+
+function toLegacyRecommendationShape(recommendation: any, index: number) {
+  return {
+    ...recommendation,
+    recommendationId:
+      recommendation?.recommendationId ??
+      recommendation?.id ??
+      `REC-${String(index + 1).padStart(3, "0")}`,
+    datasetReferences: Array.isArray(recommendation?.datasetReferences)
+      ? recommendation.datasetReferences
+      : [],
+  };
 }
 
 export const advisoryRouter = router({
@@ -82,14 +92,16 @@ export const advisoryRouter = router({
         confidence: z.enum(["direct", "partial", "missing"]).optional(),
       })
     )
-    .query(({ input }) => {
-      const advisory = loadAdvisory();
-      let mappings = advisory.mappingResults;
+    .query(async ({ input }) => {
+      const readModel = await buildAdvisoryReadModel();
+      let mappings = Array.isArray(readModel.advisory.mappingResults)
+        ? readModel.advisory.mappingResults.map(toLegacyMappingShape)
+        : [];
 
       // Filter by sector
       if (input.sector) {
         mappings = mappings.filter((m: any) =>
-          m.sectors.includes(input.sector) || m.sectors.includes("All")
+          m.sectors?.includes(input.sector) || m.sectors?.includes("All")
         );
       }
 
@@ -123,9 +135,11 @@ export const advisoryRouter = router({
         sector: z.enum(["DIY", "FMCG", "Healthcare", "All"]).optional(),
       })
     )
-    .query(({ input }) => {
-      const advisory = loadAdvisory();
-      let gaps = advisory.gaps;
+    .query(async ({ input }) => {
+      const readModel = await buildAdvisoryReadModel();
+      let gaps = Array.isArray(readModel.advisory.gapAnalysis)
+        ? readModel.advisory.gapAnalysis.map(toLegacyGapShape)
+        : [];
 
       // Filter by severity
       if (input.severity) {
@@ -156,9 +170,11 @@ export const advisoryRouter = router({
         implementationStatus: z.enum(["proposed", "in_progress", "completed", "deferred"]).optional(),
       })
     )
-    .query(({ input }) => {
-      const advisory = loadAdvisory();
-      let recommendations = advisory.recommendations;
+    .query(async ({ input }) => {
+      const readModel = await buildAdvisoryReadModel();
+      let recommendations = Array.isArray(readModel.advisory.recommendations)
+        ? readModel.advisory.recommendations.map(toLegacyRecommendationShape)
+        : [];
 
       // Filter by timeframe
       if (input.timeframe) {
@@ -190,22 +206,28 @@ export const advisoryRouter = router({
   /**
    * Get regulations covered
    */
-  getRegulations: publicProcedure.query(() => {
-    const advisory = loadAdvisory();
+  getRegulations: publicProcedure.query(async () => {
+    const readModel = await buildAdvisoryReadModel();
+    const regulations = Array.isArray(readModel.advisory.regulationsCovered)
+      ? readModel.advisory.regulationsCovered
+      : [];
     return {
-      total: advisory.regulationsCovered.length,
-      regulations: advisory.regulationsCovered,
+      total: regulations.length,
+      regulations,
     };
   }),
 
   /**
    * Get sector models covered
    */
-  getSectorModels: publicProcedure.query(() => {
-    const advisory = loadAdvisory();
+  getSectorModels: publicProcedure.query(async () => {
+    const readModel = await buildAdvisoryReadModel();
+    const sectorModels = Array.isArray(readModel.advisory.sectorModelsCovered)
+      ? readModel.advisory.sectorModelsCovered
+      : [];
     return {
-      total: advisory.sectorModelsCovered.length,
-      sectorModels: advisory.sectorModelsCovered,
+      total: sectorModels.length,
+      sectorModels,
     };
   }),
 
