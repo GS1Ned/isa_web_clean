@@ -46,7 +46,13 @@ import { AuthorityBadge, AuthorityScore, AuthorityLegend } from "@/components/Au
 import { jsPDF } from "jspdf";
 import { useI18n, LanguageSwitcher } from "@/lib/i18n";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { buildAskIsaSourcePostureSummary } from "@/lib/ask-isa-source-posture";
+import {
+  buildAskIsaSourcePostureSummary,
+  getAskIsaVerificationAgeBadgeLabel,
+  getAskIsaVerificationAgeLabel,
+  getAskIsaVerificationReasonBadgeLabel,
+  getAskIsaVerificationReasonLabel,
+} from "@/lib/ask-isa-source-posture";
 
 /**
  * Ask ISA - RAG-Powered Q&A Interface
@@ -483,32 +489,6 @@ export default function AskISA() {
       default:
         return <FileText className="h-4 w-4" />;
     }
-  };
-
-  const getVerificationReasonLabel = (
-    reason?: Message["sources"][number]["verificationReason"]
-  ) => {
-    switch (reason) {
-      case "missing_last_verified_date":
-        return "No verification date recorded";
-      case "invalid_last_verified_date":
-        return "Invalid verification date";
-      case "stale_last_verified_date":
-        return "Verification date is stale";
-      case "ok":
-        return "Verification status OK";
-      default:
-        return "Verification details unavailable";
-    }
-  };
-
-  const getVerificationAgeLabel = (
-    ageDays?: Message["sources"][number]["verificationAgeDays"]
-  ) => {
-    if (typeof ageDays !== "number") return null;
-    if (ageDays <= 0) return "verified today";
-    if (ageDays === 1) return "verified 1 day ago";
-    return `verified ${ageDays} days ago`;
   };
 
   const getSourceTypeLabel = (type?: string) => {
@@ -1275,13 +1255,38 @@ export default function AskISA() {
                                           variant="outline"
                                           className="text-xs text-yellow-700 dark:text-yellow-400"
                                           title={[
-                                            getVerificationReasonLabel(source.verificationReason),
-                                            getVerificationAgeLabel(source.verificationAgeDays),
+                                            getAskIsaVerificationReasonLabel(source.verificationReason),
+                                            getAskIsaVerificationAgeLabel(source.verificationAgeDays),
                                           ]
                                             .filter(Boolean)
                                             .join(" • ")}
                                         >
                                           ⚠️ Needs verification
+                                        </Badge>
+                                      )}
+                                      {source.needsVerification &&
+                                        !source.isDeprecated &&
+                                        getAskIsaVerificationReasonBadgeLabel(source.verificationReason) && (
+                                          <Badge
+                                            variant="outline"
+                                            className="text-xs"
+                                          >
+                                            {getAskIsaVerificationReasonBadgeLabel(
+                                              source.verificationReason,
+                                            )}
+                                          </Badge>
+                                        )}
+                                      {getAskIsaVerificationAgeBadgeLabel(source.verificationAgeDays) && (
+                                        <Badge
+                                          variant="outline"
+                                          className="text-xs"
+                                          title={getAskIsaVerificationAgeLabel(
+                                            source.verificationAgeDays,
+                                          ) || undefined}
+                                        >
+                                          {getAskIsaVerificationAgeBadgeLabel(
+                                            source.verificationAgeDays,
+                                          )}
                                         </Badge>
                                       )}
                                     </div>
@@ -1455,9 +1460,9 @@ export default function AskISA() {
                       <p className="font-medium text-yellow-600">Needs Verification</p>
                       <p className="text-sm text-muted-foreground">
                         This source should be verified before relying on it for compliance decisions.{" "}
-                        {getVerificationReasonLabel(previewSource.verificationReason)}.
-                        {getVerificationAgeLabel(previewSource.verificationAgeDays)
-                          ? ` Last known verification: ${getVerificationAgeLabel(previewSource.verificationAgeDays)}.`
+                        {getAskIsaVerificationReasonLabel(previewSource.verificationReason)}.
+                        {getAskIsaVerificationAgeLabel(previewSource.verificationAgeDays)
+                          ? ` Last known verification: ${getAskIsaVerificationAgeLabel(previewSource.verificationAgeDays)}.`
                           : ""}
                       </p>
                     </div>

@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { buildAskIsaSourcePostureSummary } from "./ask-isa-source-posture";
+import {
+  buildAskIsaSourcePostureSummary,
+  getAskIsaVerificationAgeBadgeLabel,
+  getAskIsaVerificationAgeLabel,
+  getAskIsaVerificationReasonBadgeLabel,
+  getAskIsaVerificationReasonLabel,
+} from "./ask-isa-source-posture";
 
 describe("ask-isa-source-posture", () => {
   it("summarizes mixed verification posture consistently", () => {
@@ -62,5 +68,19 @@ describe("ask-isa-source-posture", () => {
       allVerifiedWithinWindow: true,
       oldestVerificationAgeDays: 7,
     });
+  });
+
+  it("formats verification labels for summaries and compact badges", () => {
+    expect(getAskIsaVerificationReasonLabel("stale_last_verified_date")).toBe(
+      "Verification date is stale",
+    );
+    expect(getAskIsaVerificationReasonBadgeLabel("missing_last_verified_date")).toBe(
+      "Missing date",
+    );
+    expect(getAskIsaVerificationReasonBadgeLabel("ok")).toBeNull();
+    expect(getAskIsaVerificationAgeLabel(3)).toBe("verified 3 days ago");
+    expect(getAskIsaVerificationAgeLabel(0)).toBe("verified today");
+    expect(getAskIsaVerificationAgeBadgeLabel(14)).toBe("14d old");
+    expect(getAskIsaVerificationAgeBadgeLabel(null)).toBeNull();
   });
 });

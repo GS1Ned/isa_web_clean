@@ -20,6 +20,55 @@ export interface AskIsaSourcePostureSummary {
   oldestVerificationAgeDays: number | null;
 }
 
+export function getAskIsaVerificationReasonLabel(
+  reason?: SourceVerificationReason,
+) {
+  switch (reason) {
+    case "missing_last_verified_date":
+      return "No verification date recorded";
+    case "invalid_last_verified_date":
+      return "Invalid verification date";
+    case "stale_last_verified_date":
+      return "Verification date is stale";
+    case "ok":
+      return "Verification status OK";
+    default:
+      return "Verification details unavailable";
+  }
+}
+
+export function getAskIsaVerificationReasonBadgeLabel(
+  reason?: SourceVerificationReason,
+) {
+  switch (reason) {
+    case "missing_last_verified_date":
+      return "Missing date";
+    case "invalid_last_verified_date":
+      return "Invalid date";
+    case "stale_last_verified_date":
+      return "Stale verification";
+    default:
+      return null;
+  }
+}
+
+export function getAskIsaVerificationAgeLabel(
+  ageDays?: number | null,
+) {
+  if (typeof ageDays !== "number") return null;
+  if (ageDays <= 0) return "verified today";
+  if (ageDays === 1) return "verified 1 day ago";
+  return `verified ${ageDays} days ago`;
+}
+
+export function getAskIsaVerificationAgeBadgeLabel(
+  ageDays?: number | null,
+) {
+  if (typeof ageDays !== "number") return null;
+  if (ageDays <= 0) return "Today";
+  return `${ageDays}d old`;
+}
+
 export function buildAskIsaSourcePostureSummary(
   sources: AskIsaSourcePostureSource[] = []
 ): AskIsaSourcePostureSummary {
