@@ -9,6 +9,7 @@ import { router, publicProcedure } from "../_core/trpc";
 import { z } from "zod";
 import fs from "fs";
 import path from "path";
+import { buildAdvisoryReadModel } from "../advisory-read-model";
 import {
   loadLegacyAdvisoryDiff,
   normalizeAdvisoryVersionTag,
@@ -57,15 +58,17 @@ export const advisoryRouter = router({
   /**
    * Get advisory summary (fast stats for UI)
    */
-  getSummary: publicProcedure.query(() => {
-    return loadSummary();
+  getSummary: publicProcedure.query(async () => {
+    const readModel = await buildAdvisoryReadModel();
+    return readModel.summary;
   }),
 
   /**
    * Get full advisory JSON
    */
-  getFull: publicProcedure.query(() => {
-    return loadAdvisory();
+  getFull: publicProcedure.query(async () => {
+    const readModel = await buildAdvisoryReadModel();
+    return readModel.advisory;
   }),
 
   /**
@@ -209,17 +212,8 @@ export const advisoryRouter = router({
   /**
    * Get advisory metadata
    */
-  getMetadata: publicProcedure.query(() => {
-    const advisory = loadAdvisory();
-    return {
-      advisoryId: advisory.advisoryId,
-      version: advisory.version,
-      publicationDate: advisory.publicationDate,
-      generatedAt: advisory.generatedAt,
-      datasetRegistryVersion: advisory.datasetRegistryVersion,
-      author: advisory.author,
-      sourceArtifacts: advisory.sourceArtifacts,
-      metadata: advisory.metadata,
-    };
+  getMetadata: publicProcedure.query(async () => {
+    const readModel = await buildAdvisoryReadModel();
+    return readModel.metadata;
   }),
 });
