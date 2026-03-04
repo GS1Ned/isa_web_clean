@@ -101,7 +101,13 @@ describe("datasetRegistry router", () => {
       expect(result).toHaveProperty("active");
       expect(result).toHaveProperty("verified");
       expect(result).toHaveProperty("needsVerification");
+      expect(result).toHaveProperty("verificationCountsByReason");
+      expect(result).toHaveProperty("verificationFreshnessBuckets");
+      expect(result).toHaveProperty("oldestVerificationAgeDays");
+      expect(result).toHaveProperty("medianVerificationAgeDays");
       expect(typeof result.total).toBe("number");
+      expect(typeof result.verificationCountsByReason.ok).toBe("number");
+      expect(typeof result.verificationFreshnessBuckets.fresh).toBe("number");
     });
   });
 
@@ -298,6 +304,65 @@ describe("datasetRegistry router", () => {
           description: "Should fail",
         })
       ).rejects.toThrow("Admin access required");
+    });
+  });
+
+  describe("verification posture projection", () => {
+    it("projects missing verification posture on new datasets", async () => {
+      const ctx = createAdminContext();
+      const caller = appRouter.createCaller(ctx);
+
+      const createResult = await caller.datasetRegistry.create({
+        name: "Projection Test Dataset",
+        description: "Projection coverage",
+        category: "GS1_STANDARDS" as const,
+        source: "https://test.gs1.org/projection",
+        format: "JSON" as const,
+      });
+
+      const datasetId = Number(createResult.insertId);
+
+      try {
+        const result = await caller.datasetRegistry.getById({ id: datasetId });
+        expect(result?.needsVerification).toBe(true);
+        expect(result?.verificationReason).toBe("missing_last_verified_date");
+        expect(result?.verificationFreshnessBucket).toBe("unknown");
+        expect(result?.verificationAgeDays).toBeNull();
+      } finally {
+        const db = await getDb();
+        if (db) {
+          await db.delete(datasetRegistry).where({ id: datasetId } as any);
+        }
+      }
+    });
+
+    it("projects current verification posture after verification update", async () => {
+      const ctx = createAdminContext();
+      const caller = appRouter.createCaller(ctx);
+
+      const createResult = await caller.datasetRegistry.create({
+        name: "Verified Projection Dataset",
+        description: "Projection coverage after verification",
+        category: "GS1_STANDARDS" as const,
+        source: "https://test.gs1.org/projection-verified",
+        format: "JSON" as const,
+      });
+
+      const datasetId = Number(createResult.insertId);
+
+      try {
+        await caller.datasetRegistry.updateVerification({ id: datasetId });
+        const result = await caller.datasetRegistry.getById({ id: datasetId });
+        expect(result?.needsVerification).toBe(false);
+        expect(result?.verificationReason).toBe("ok");
+        expect(result?.verificationFreshnessBucket).toBe("fresh");
+        expect(result?.verificationAgeDays).toBeGreaterThanOrEqual(0);
+      } finally {
+        const db = await getDb();
+        if (db) {
+          await db.delete(datasetRegistry).where({ id: datasetId } as any);
+        }
+      }
     });
   });
 });

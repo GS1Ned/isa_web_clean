@@ -2,6 +2,10 @@ import { getDb } from "./db";
 import { datasetRegistry } from "../drizzle/schema";
 import { eq, and, desc, sql, isNotNull } from "drizzle-orm";
 import { deriveCatalogAuthorityTierFromUrl } from "./catalog-authority";
+import {
+  summarizeVerificationPosture,
+  withVerificationPosture,
+} from "./verification-posture";
 
 /**
  * Get all datasets with optional filtering
@@ -44,7 +48,7 @@ export async function getDatasets(filters?: {
   }
 
   const results = await query.orderBy(desc(datasetRegistry.updatedAt));
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -59,7 +63,7 @@ export async function getDatasetById(id: number) {
     .where(eq(datasetRegistry.id, id))
     .limit(1);
   
-  return results[0] || null;
+  return results[0] ? withVerificationPosture(results[0]) : null;
 }
 
 /**
@@ -144,7 +148,7 @@ export async function getDatasetsNeedingVerification() {
     )
     .orderBy(datasetRegistry.lastVerifiedDate);
   
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -174,11 +178,23 @@ export async function getDatasetStats() {
     .where(
       sql`(${datasetRegistry.lastVerifiedDate} IS NULL OR ${datasetRegistry.lastVerifiedDate} < DATE_SUB(NOW(), INTERVAL 90 DAY))`
     );
+
+  const verificationDates = await db
+    .select({
+      lastVerifiedDate: datasetRegistry.lastVerifiedDate,
+    })
+    .from(datasetRegistry);
+
+  const verificationSummary = summarizeVerificationPosture(verificationDates);
   
   return {
     total: totalCount[0]?.count || 0,
     active: activeCount[0]?.count || 0,
     verified: verifiedCount[0]?.count || 0,
     needsVerification: needsVerificationCount[0]?.count || 0,
+    verificationCountsByReason: verificationSummary.countsByReason,
+    verificationFreshnessBuckets: verificationSummary.freshnessBuckets,
+    oldestVerificationAgeDays: verificationSummary.oldestVerificationAgeDays,
+    medianVerificationAgeDays: verificationSummary.medianVerificationAgeDays,
   };
 }
