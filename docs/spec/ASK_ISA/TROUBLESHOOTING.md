@@ -731,7 +731,7 @@ pnpm tsx scripts/warm-cache.ts
 
 - OpenAI Status: https://status.openai.com
 - Manus Support: https://support.manus.com
-- TiDB Documentation: https://docs.pingcap.com
+- Active database provider documentation for connection, TLS, and operational troubleshooting
 
 ### Escalation
 

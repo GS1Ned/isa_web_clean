@@ -138,7 +138,7 @@ Map ISA's 12 architecture dimensions to ISO/IEC 25010 product quality characteri
 
 **Coverage:** ⚠️ PARTIAL
 - **Gap:** No explicit portability requirements for multi-cloud or database portability
-- **Rationale:** ISA is tightly coupled to Manus hosting + TiDB; portability is out of scope for MVP
+- **Rationale:** ISA is tightly coupled to Manus hosting + its managed database topology; portability is out of scope for MVP
 - **Status:** ACCEPTED LIMITATION
 
 ---
@@ -154,7 +154,7 @@ Map ISA's 12 architecture dimensions to ISO/IEC 25010 product quality characteri
 | Reliability | D4 | ✅ COMPLETE | Availability, fault tolerance, recovery |
 | Security | D3 | ✅ COMPLETE | AuthN/AuthZ, secrets, audit |
 | Maintainability | D6, D7 | ✅ COMPLETE | Modularity, testability |
-| Portability | D12, D4 | ⚠️ PARTIAL | Limited by Manus/TiDB coupling |
+| Portability | D12, D4 | ⚠️ PARTIAL | Limited by Manus/managed-database coupling |
 
 **Overall Coverage:** 7/8 complete, 1/8 partial (accepted limitation)
 

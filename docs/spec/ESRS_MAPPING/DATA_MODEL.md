@@ -1,7 +1,7 @@
 # ISA Data Model Documentation
 
 **Last Updated:** December 10, 2025  
-**Database:** TiDB (MySQL-compatible)  
+**Database:** MySQL-compatible relational DB  
 **ORM:** Drizzle
 
 ---
@@ -521,7 +521,7 @@ qa_conversations
 
 ### Backup & Recovery
 
-- Daily automated backups via TiDB Cloud
+- Daily automated backups via the active database provider or backup policy
 - Point-in-time recovery available
 - Checkpoint-based rollback for schema changes
 

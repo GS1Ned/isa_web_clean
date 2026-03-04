@@ -175,7 +175,7 @@ Currently seeing persist failures due to SSL connection requirements:
 Error: Connections using insecure transport are prohibited
 ```
 
-**Resolution:** This is a TiDB Cloud infrastructure issue requiring SSL configuration. The logger continues to function and log to console even when persistence fails.
+**Resolution:** This is a managed MySQL-compatible database infrastructure issue requiring SSL configuration. The logger continues to function and log to console even when persistence fails.
 
 ### TypeScript Errors in Seed Files
 A few seed/utility files still have TypeScript errors related to serverLogger call signatures. These are non-critical and don't affect runtime behavior.

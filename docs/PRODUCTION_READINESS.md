@@ -133,7 +133,7 @@ This document tracks ISA's readiness for production deployment. Each category is
 - ✅ Indexes on foreign keys
 - ✅ Indexes on frequently filtered fields (regulationTags, newsType)
 - ✅ Efficient schema design
-- ✅ Auto-scaling (TiDB Serverless)
+- ✅ Auto-scaling available when supported by the active database provider
 
 **Action Items:**
 - [ ] Add CDN for static assets (images, fonts)
@@ -161,7 +161,7 @@ This document tracks ISA's readiness for production deployment. Each category is
 - ⚠️ APM (Application Performance Monitoring) not configured
 
 ### Backup & Recovery
-- ✅ Database backups (TiDB automatic, 7-day retention)
+- ✅ Database backups (provider-managed or self-hosted backup policy, 7-day retention target)
 - ✅ Checkpoint system (instant rollback)
 - ✅ S3 versioning enabled
 - ✅ Disaster recovery plan documented
@@ -177,7 +177,7 @@ This document tracks ISA's readiness for production deployment. Each category is
 
 ### Architecture
 - ✅ Stateless server design
-- ✅ Auto-scaling database (TiDB)
+- ✅ Auto-scaling database where supported by the active provider or topology
 - ✅ Horizontal scaling ready
 - ✅ Efficient data model
 - ✅ Optimized queries

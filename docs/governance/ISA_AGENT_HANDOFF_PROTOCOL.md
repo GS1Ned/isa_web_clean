@@ -19,7 +19,6 @@ Define how OpenClaw, Gemini Code Assist, Codex, GitHub, Manus, and the host/VM w
 - Primary commands:
   - `bash scripts/dev/resolve-agent-task-routing.sh --task-class <task_class>`
   - `bash scripts/dev/create-agent-handoff.sh --task-class <task_class> --title "<title>" --issue <n> --branch <name> --summary "<summary>"`
-
 ## Required Inputs
 - `task_class`
 - short `title`

@@ -702,7 +702,7 @@ Where:
 
 ### External APIs
 - **Manus Forge** (OpenAI-compatible): LLM generation
-- **TiDB Cloud**: Database (MySQL-compatible)
+- **MySQL-compatible relational DB**: Database layer for conversations and grounded knowledge access
 
 ### Database Tables
 - `knowledge_embeddings`: 155 semantic chunks

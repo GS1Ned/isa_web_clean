@@ -172,8 +172,8 @@ If issues arise after deployment:
 ### 8. Scaling Considerations
 
 **Database:**
-- Current: TiDB Serverless (auto-scaling)
-- Upgrade: TiDB Dedicated for >10k users
+- Current: managed MySQL-compatible DB with autoscaling where supported
+- Upgrade: higher-capacity managed topology for >10k users
 - Monitoring: Watch connection pool usage
 
 **Storage:**
@@ -300,7 +300,7 @@ Run via admin interface or tRPC procedure.
 ### Database Backups
 
 **Automatic:**
-- TiDB provides point-in-time recovery
+- Active database provider should provide point-in-time recovery or equivalent restore capability
 - Retention: 7 days (default)
 - No manual setup required
 

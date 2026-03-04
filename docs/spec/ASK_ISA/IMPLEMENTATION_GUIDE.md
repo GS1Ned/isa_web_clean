@@ -25,7 +25,7 @@ This guide provides step-by-step instructions for implementing, extending, and m
 ### Required Tools
 - Node.js 22.13.0
 - pnpm 10.4.1
-- MySQL/TiDB database
+- MySQL-compatible relational database
 - Manus Forge API access
 
 ### Environment Variables

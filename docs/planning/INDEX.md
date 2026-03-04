@@ -72,9 +72,9 @@ GS1 repositories to assess individually:
 30. `https://github.com/gs1/vc-data-model-verifier`
 31. `https://github.com/gs1/WebVoc`
 
-## Database Requirements For TiDB Alternative Market Research
+## Database Requirements For Managed DB Alternative Market Research
 FACT
-- Current target environment migrations are blocked by TiDB quota exhaustion (`usage quota exhausted`).
+- A previous target environment migration path was blocked by managed-provider quota exhaustion (`usage quota exhausted`).
 
 RECOMMENDATION
 - Use the following requirement set for market comparison and shortlist scoring:

@@ -122,7 +122,7 @@
 ### Backend
 
 - **Framework:** Express 4 + tRPC 11
-- **Database:** MySQL/TiDB (Drizzle ORM)
+- **Database:** MySQL-compatible relational DB (Drizzle ORM)
 - **Auth:** Manus OAuth (not yet implemented)
 - **LLM:** OpenAI (chat completions + embeddings)
 - **Storage:** S3 (pre-configured)

@@ -28,7 +28,7 @@ For more details, please see the [Host ↔ VM OpenClaw Workflow](#host--vm-openc
 
 ISA (Intelligent Standards Architect) is a sustainability compliance intelligence platform connecting EU ESG regulations to GS1 standards. It is deployed at `gs1isa.com`.
 
-**Stack:** React 19 + Express 4 + tRPC 11 + Drizzle ORM + TiDB + OpenAI
+**Stack:** React 19 + Express 4 + tRPC 11 + Drizzle ORM + MySQL-compatible relational DB + OpenAI
 
 ---
 
@@ -39,6 +39,8 @@ This file is the only top-level entrypoint for agent onboarding.
 | Document | Path | Purpose |
 | --- | --- | --- |
 | Agent Map (Canonical) | `docs/agent/AGENT_MAP.md` | Canonical navigation map for humans and agents |
+| Technical Documentation Canon (Canonical) | `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md` | Canonical technical document chain and agentic loop |
+| Data Plane Contract (Canonical) | `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` | Shared storage, provenance, retrieval, and engine policy |
 | MCP Policy (Canonical) | `docs/agent/MCP_POLICY.md` | MCP server usage + evidence logging policy |
 | MCP Recipes (Canonical) | `docs/agent/MCP_RECIPES.md` | Step-by-step MCP playbooks for common ISA tasks |
 | Docs Index (Canonical) | `docs/INDEX.md` | Canonical documentation index |
@@ -55,6 +57,7 @@ This file is the only top-level entrypoint for agent onboarding.
 - `CANONICAL` means the document is authoritative for its scope.
 - It does not automatically mean "target state".
 - System-level current and target truth live explicitly in `docs/spec/ARCHITECTURE.md`.
+- Shared storage, provenance, retrieval, and engine policy truth live in `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`.
 - See `docs/governance/DOCUMENT_STATUS_MODEL.md`.
 
 ---
@@ -88,7 +91,7 @@ This file is the only top-level entrypoint for agent onboarding.
 
 - **Next actions:** `docs/planning/NEXT_ACTIONS.json`
 - **Backlog:** `docs/planning/BACKLOG.csv`
-- **Current READY item:** `BENCH-001` — ASK_ISA fixture replay gate and schema-validated evaluation artifact (promoted from `BACKLOG.csv`, source ref `BENCH-001`)
+- **Current READY item:** `ISA2-0001` — promote `ESRS_MAPPING` to the canonical decision core with confidence-calibrated gap analysis and attribute recommendation outputs
 
 ---
 
@@ -136,8 +139,8 @@ bash scripts/dev/local-doctor.sh
 - `GET /health` (overall health, includes DB)
 - `GET /ready` (readiness: env + DB)
 
-**Database TLS note (TiDB Cloud):**
-- TiDB Cloud requires TLS. Set `DATABASE_URL` with an SSL query param (parsed by `server/db-connection.ts`):
+**Database TLS note (managed MySQL-compatible deployments):**
+- Managed remote DBs typically require TLS. Set `DATABASE_URL` with an SSL query param (parsed by `server/db-connection.ts`):
   - `?sslmode=require` or `?ssl=true` or `?ssl-mode=required`
 
 **GitHub App private key note:**

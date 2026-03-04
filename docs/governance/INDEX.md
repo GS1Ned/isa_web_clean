@@ -1,25 +1,24 @@
-# Planning — Index
+# Governance — Index
 
-## Live (canonical)
-- `docs/planning/NEXT_ACTIONS.json` — next actions (single source of next work)
+## Canonical Governance
+- `docs/governance/_root/ISA_GOVERNANCE.md`
+- `docs/governance/DOCUMENT_STATUS_MODEL.md`
+- `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
+- `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
+- `docs/governance/ISA_AGENT_HANDOFF_PROTOCOL.md`
+- `docs/governance/ISA_CAPABILITY_DELIVERY_WORKFLOW.md`
+- `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
+
+## Canonical Planning
+- `docs/planning/NEXT_ACTIONS.json` — single source of next work
 - `docs/planning/BACKLOG.csv` — structured backlog
-- `docs/planning/PROGRAM_PLAN.md` — support narrative (optional, non-canonical)
-## Policy (normative)
-- `docs/planning/PLANNING_POLICY.md`
-- Canon note: `docs/governance/PLANNING_TRACEABILITY_CANON.md`
+- `docs/planning/INDEX.md`
+- `docs/governance/PLANNING_TRACEABILITY_CANON.md`
 
-## Archived
-- Roadmaps: `isa-archive/planning/roadmaps/`
+## Operator Guidance
+- `docs/governance/MANUAL_PREFLIGHT.md`
+- `docs/agent/MCP_POLICY.md`
+- `docs/agent/MCP_RECIPES.md`
 
-## Specs
-- Specs index: docs/spec/INDEX.md
-
-## Canonical planning
-- Next actions: docs/planning/NEXT_ACTIONS.json
-- Structured backlog: docs/planning/BACKLOG.csv
-
-## Deprecated
-- `todo.md` (deprecated): pointer-only file to canonical planning sources
-
-## Manual preflight (NO_GATES)
-- Checklist: docs/governance/MANUAL_PREFLIGHT.md
+## Archive
+- `isa-archive/planning/roadmaps/`

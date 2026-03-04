@@ -1,8 +1,8 @@
 # ISA System Architecture
 ## Canonical CURRENT/TARGET Contract
 
-**Version:** 3.1.0  
-**Last Updated:** 2026-02-20  
+**Version:** 3.2.0  
+**Last Updated:** 2026-03-04  
 **Status:** AUTHORITATIVE  
 **Purpose:** Single canonical architecture contract for one CURRENT state and one TARGET state
 
@@ -14,8 +14,9 @@
 1. `docs/governance/_root/ISA_GOVERNANCE.md`
 2. `docs/agent/AGENT_MAP.md`
 3. `docs/spec/ARCHITECTURE.md` (this document)
-4. `docs/spec/ESRS_MAPPING/isa-core-architecture.md` (supplemental only)
-5. Capability runtime contracts:
+4. `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
+5. `docs/spec/ESRS_MAPPING/isa-core-architecture.md` (supplemental only)
+6. Capability runtime contracts:
    - `docs/spec/ASK_ISA/RUNTIME_CONTRACT.md`
    - `docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md`
    - `docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md`
@@ -71,6 +72,36 @@
 
 **TARGET:** Completion uses weighted validation confidence plus delta closure gate, not binary gate status alone.
 
+### 3.1.1 Synthesized Product Target
+
+**TARGET:** ISA is a GS1-centered actionable compliance advisor, not a generic ESG reporting suite, customer data validation service, or free-form speculative AI chat product.
+
+**TARGET:** The product shape is layered:
+1. `CATALOG` as authority backbone.
+2. `KNOWLEDGE_BASE` as evidence retrieval backbone.
+3. `ESRS_MAPPING` as the decision core for gap analysis, attribute recommendation, roadmap logic, and impact reasoning.
+4. `ASK_ISA` and `NEWS_HUB` as the user operating surface for explanation and regulatory-change intelligence.
+5. `ADVISORY` as the durable stakeholder deliverable layer.
+
+### 3.1.2 Shared Data Plane
+
+**TARGET:** `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` is the canonical contract for the shared data substrate beneath the six capabilities.
+
+**TARGET:** The shared data plane remains vendor-agnostic at the architecture level and is currently implemented as a MySQL-compatible relational core with provenance, retrieval, and evidence-binding layers.
+
+**TARGET:** The primary user-facing operating surface is a compliance cockpit that answers:
+- what changed
+- what applies to this organisation
+- which GS1 actions are now required
+- why those actions are recommended
+- what can be shared with stakeholders
+
+**TARGET:** `ASK_ISA` is an explanation and exploration surface over evidence and decision outputs. It must not outrun the decision core or invent unsupported advisory conclusions.
+
+**TARGET:** `NEWS_HUB` is not a standalone news product. It is the change-intelligence feed that updates compliance priorities and advisory outputs.
+
+**TARGET:** `ADVISORY` owns versioned, shareable outputs such as report artefacts, diffs, and stakeholder-ready summaries.
+
 ### 3.2 Target Selection Heuristic (Applied)
 
 1. Preserve governance invariants from `docs/governance/_root/ISA_GOVERNANCE.md`.
@@ -123,6 +154,7 @@ Canonical architecture contracts:
 Canonical contract set lock for the 2026-02-20 cleanup program:
 
 - `docs/spec/ARCHITECTURE.md`
+- `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
 - `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
 - `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
 - `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`

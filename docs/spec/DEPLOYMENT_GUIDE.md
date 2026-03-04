@@ -21,7 +21,7 @@
 
 - **GitHub**: Write access to `GS1Ned/isa_web_clean`
 - **Manus Platform**: Deployment credentials
-- **TiDB Cloud**: Database connection string
+- **Managed MySQL-compatible DB**: Database connection string
 - **OpenAI API**: Manus Forge API key
 
 ### Environment Variables
@@ -535,7 +535,7 @@ mysql -h <host> -u <user> -p<password> -e "SELECT 1"
 
 **Solution:**
 1. Check DATABASE_URL environment variable
-2. Verify TiDB Cloud status
+2. Verify managed database status
 3. Check connection pool settings
 4. Restart application
 
@@ -605,7 +605,7 @@ curl https://your-app.manus.app/api/trpc/newsHub.getScraperHealth \
 ### Backup Strategy
 
 **Database Backups:**
-- Automated daily backups (TiDB Cloud)
+- Automated daily backups (provider-managed or self-hosted policy)
 - Retention: 7 days
 - Manual backup before major changes
 

@@ -312,7 +312,7 @@ This command generates and applies migrations using Drizzle ORM.
 ### Automatic Backups
 
 **Database:**
-- TiDB provides automatic backups
+- Active database provider should provide automatic backups
 - Retention: 7 days
 - Point-in-time recovery available
 

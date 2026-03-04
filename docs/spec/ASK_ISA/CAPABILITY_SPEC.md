@@ -90,7 +90,7 @@ ASK_ISA is a RAG-powered Q&A system that answers user questions about EU ESG reg
 
 #### External
 - **Manus Forge API** (required): GPT-4 for generation, text-embedding-3-small for embeddings
-- **TiDB Cloud** (required): Database for conversations and knowledge chunks
+- **MySQL-compatible relational DB** (required): Database for conversations and knowledge chunks
 
 ---
 
@@ -270,7 +270,7 @@ interface Source {
 ### Backup/Recovery
 
 **Data Backup:**
-- Conversations: Daily database backup (TiDB)
+- Conversations: Daily database backup via the active database provider or backup policy
 - Knowledge base: Regenerate from source data
 - Cache: In-memory only (no persistence)
 

@@ -91,8 +91,8 @@ Only after P0/P1 are done:
 | Database | Purpose | Has Data? |
 |----------|---------|-----------|
 | Manus-managed (production) | Live site | Yes |
-| TiDB `isa_db` | Original | No (empty) |
-| TiDB `isa_db_fresh` | Clean slate | No (empty) |
+| Legacy managed DB `isa_db` | Original | No (empty) |
+| Legacy managed DB `isa_db_fresh` | Clean slate | No (empty) |
 
 **Key insight:** Production uses a separate Manus-managed database. Local development requires running ingestion scripts.
 

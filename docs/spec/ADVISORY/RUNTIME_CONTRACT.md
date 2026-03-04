@@ -12,7 +12,7 @@ VERIFICATION_METHOD: repo-evidence
 # ADVISORY Runtime Contract
 
 ## Canonical Role
-ADVISORY produces, versions and compares advisory outputs and related ESG artifact surfaces.
+ADVISORY produces, versions and compares advisory outputs and related ESG artefact surfaces. It is the durable stakeholder-deliverable layer that packages the outputs of the other capabilities into shareable reports, diffs, and governed artefacts.
 
 ## Runtime Surfaces (Code Truth)
 <!-- EVIDENCE:implementation:server/routers.ts -->

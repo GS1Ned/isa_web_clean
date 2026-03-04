@@ -167,7 +167,7 @@ ISA baseline architecture score: **6.2/10** across 12 dimensions. Strong governa
 - Maintainability → D6, D7
 
 **Partial (1/8):**
-- Portability → D12, D4 (Manus/TiDB lock-in accepted)
+- Portability → D12, D4 (Manus/managed-database lock-in accepted)
 
 **Evidence:** docs/architecture/panel/ISO25010_MAPPING.md
 

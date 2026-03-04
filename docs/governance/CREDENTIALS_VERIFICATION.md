@@ -1,6 +1,9 @@
 # Credentials Verification Summary
+**Status:** HISTORICAL SNAPSHOT  
+**Historical Note:** Provider-specific connection details in this document reflect the environment observed on 2025-02-09 and must not be used as current architecture authority.
+
 **Date:** 2025-02-09  
-**Status:** ✅ All credentials verified and working
+**Verification Status:** ✅ All credentials verified and working
 
 ## ✅ Verified Credentials
 
@@ -77,7 +80,7 @@ config({ override: true }); // .env file overrides shell env
 
 | Variable | Status | Length | Purpose |
 |----------|--------|--------|---------|
-| DATABASE_URL | ✅ | 140+ | TiDB connection |
+| DATABASE_URL | ✅ | 140+ | Provider-specific DB connection observed at capture time |
 | JWT_SECRET | ✅ | 64 | Session signing |
 | CRON_SECRET | ✅ | 64 | Cron security |
 | OPENAI_API_KEY | ✅ | 100+ | AI services |

@@ -12,7 +12,7 @@ VERIFICATION_METHOD: repo-evidence
 # ASK_ISA Runtime Contract
 
 ## Canonical Role
-ASK_ISA provides grounded question answering with citation-oriented responses over ISA knowledge assets.
+ASK_ISA provides grounded question answering and explanation over ISA knowledge assets, mapping outputs, and advisory artefacts. It is the interactive explanation surface, not the primary decision engine.
 
 ## Runtime Surfaces (Code Truth)
 <!-- EVIDENCE:implementation:server/routers.ts -->

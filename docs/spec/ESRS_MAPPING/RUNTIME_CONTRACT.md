@@ -12,7 +12,7 @@ VERIFICATION_METHOD: repo-evidence
 # ESRS_MAPPING Runtime Contract
 
 ## Canonical Role
-ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap generation, gap analysis and attribute recommendation.
+ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap generation, gap analysis and attribute recommendation. It is the decision core of ISA because it converts evidence and reference data into actionable compliance guidance.
 
 ## Runtime Surfaces (Code Truth)
 <!-- EVIDENCE:implementation:server/routers.ts -->

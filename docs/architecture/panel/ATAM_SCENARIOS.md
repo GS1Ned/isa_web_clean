@@ -156,7 +156,7 @@ Detailed quality attribute scenarios for ISA architecture evaluation, following 
 
 **Stimulus:** Database connection failure during query execution
 
-**Environment:** Production system, TiDB unavailable
+**Environment:** Production system, managed database unavailable
 
 **Response:** System logs error with:
 - Generic error message to user ("Database temporarily unavailable")

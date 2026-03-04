@@ -12,7 +12,7 @@ VERIFICATION_METHOD: repo-evidence
 # NEWS_HUB Runtime Contract
 
 ## Canonical Role
-NEWS_HUB manages regulatory/news ingestion flows, enrichment controls, and operational observability surfaces.
+NEWS_HUB manages regulatory/news ingestion flows, enrichment controls, and operational observability surfaces. In the target product shape it acts as the regulatory change-intelligence feed for the compliance cockpit and advisory updates, not as a standalone media product.
 
 ## Runtime Surfaces (Code Truth)
 <!-- EVIDENCE:implementation:server/routers.ts -->

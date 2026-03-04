@@ -19,7 +19,7 @@ This guide provides step-by-step deployment procedures for the ASK_ISA capabilit
 
 - **Node.js:** 22.13.0
 - **pnpm:** 10.4.1
-- **MySQL/TiDB:** 8.0+ (with vector support)
+- **MySQL-compatible relational DB:** 8.0+ (with vector support where configured)
 - **Manus Hosting:** Production environment access
 
 ### Access Requirements

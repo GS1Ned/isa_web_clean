@@ -20,8 +20,10 @@ Rules:
 
 Canonical document set to use:
 - `docs/agent/AGENT_MAP.md`
+- `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
 - `docs/spec/ARCHITECTURE.md`
 - `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
+- `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
 - `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
 - `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
 - `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
@@ -34,12 +36,21 @@ Canonical document set to use:
 Do not use as architecture authority:
 - `docs/spec/ISA_CAPABILITY_MAP.md`
 - `docs/spec/ESRS_MAPPING/isa-core-architecture.md`
+- `docs/spec/ADVISORY/ARCHITECTURE.md`
+- `docs/spec/ADVISORY/FILE_SYSTEM_MEMORY_ARCHITECTURE.md`
+- `docs/ISA_STRATEGIC_CONTEXT_SYNTHESIS.md`
+- `docs/ISA_STRATEGIC_DISCOVERY_REPORT.md`
+- `docs/ISA_STRATEGIC_EVALUATION_QUALITY_MAPPING.md`
+- `docs/ISA_IMPLEMENTATION_EXECUTION_PLAN.md`
+- `docs/spec/ADVISORY/ISA_FUTURE_DEVELOPMENT_PLAN.md`
 - any newly proposed `TARGET_STATE.md` or `ROADMAP.md`
 - any plan or architecture narrative not linked from the canonical chain above
 
 Target-state interpretation rules:
 - `docs/spec/ARCHITECTURE.md` defines the only canonical CURRENT/TARGET contract.
+- `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md` defines the minimum technical SSOT set and how it fits into the agentic loop.
 - `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md` defines the six canonical capabilities and ownership rule.
+- `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` defines the shared storage, provenance, retrieval, and engine-policy substrate beneath the six capabilities.
 - `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json` is the authoritative ownership contract.
 - `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json` defines shared primitives promoted out of single-capability ownership.
 - `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json` defines cross-capability dependency edges.
