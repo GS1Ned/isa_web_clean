@@ -76,6 +76,7 @@ export const advisoryReports = mysqlTable("advisory_reports", {
 	viewCount: int().default(0),
 	downloadCount: int().default(0),
 	lastAccessedAt: timestamp({ mode: 'string' }),
+	staleSince: timestamp("stale_since", { mode: 'string' }),
 	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
 	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
 },
@@ -1355,6 +1356,7 @@ export const regulations = mysqlTable("regulations", {
 	lastUpdated: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
 	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
 	embedding: json(),
+	needsVerification: tinyint("needs_verification").default(0),
 },
 (table) => [
 	index("regulations_celexId_unique").on(table.celexId),

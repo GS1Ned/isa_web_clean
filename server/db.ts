@@ -1,4 +1,9 @@
 import { eq, desc, sql } from "drizzle-orm";
+import {
+  flagAdvisoryReportsStaleSince,
+  flagRegulationsNeedVerification,
+  isVerificationTriggerState,
+} from "./services/news-impact";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   InsertUser,
@@ -522,6 +527,22 @@ export async function createHubNews(news: {
       sources: news.sources || null,
     });
     const insertId = (result as any).insertId;
+
+    // E-01 + E-02: Propagate news signals into downstream capability state (fire-and-forget).
+    if (news.relatedRegulationIds && news.relatedRegulationIds.length > 0) {
+      const regulationIds = news.relatedRegulationIds;
+      // E-01: Mark advisory reports as stale for affected regulations.
+      flagAdvisoryReportsStaleSince(regulationIds).catch(() => {});
+      // E-02: Flag regulations for re-verification when a high-authority or
+      // enforcement-class signal is detected.
+      const credibilityNum = news.credibilityScore ? parseFloat(String(news.credibilityScore)) : 0;
+      const isHighCredibility = credibilityNum >= 0.8;
+      const hasVerificationState = isVerificationTriggerState((news as any).regulatoryState);
+      if (isHighCredibility || hasVerificationState) {
+        flagRegulationsNeedVerification(regulationIds).catch(() => {});
+      }
+    }
+
     return { id: Number(insertId) };
   } catch (error) {
     serverLogger.error("[Database] Failed to create hub news:", error);
