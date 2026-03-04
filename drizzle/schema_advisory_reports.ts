@@ -48,6 +48,25 @@ export const advisoryReports = mysqlTable(
     targetStandardIds: json("targetStandardIds").$type<number[]>(),
     sectorTags: json("sectorTags").$type<string[]>(),
     gs1ImpactTags: json("gs1ImpactTags").$type<string[]>(),
+    decisionArtifacts: json("decisionArtifacts").$type<
+      Array<{
+        artifactVersion: string;
+        artifactType: string;
+        capability: string;
+        generatedAt: string;
+        subject: Record<string, unknown>;
+        confidence: {
+          level: string;
+          score: number;
+          basis: string;
+        };
+        evidence: {
+          codePaths: string[];
+          dataSources: string[];
+        };
+        summary: Record<string, unknown>;
+      }>
+    >(),
     
     // Generation Metadata
     version: varchar("version", { length: 32 }).notNull(), // e.g., "1.0", "1.1"

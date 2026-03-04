@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type DecisionArtifactConfidenceLevel = 'high' | 'medium' | 'low';
 
 export interface DecisionArtifactConfidence {
@@ -73,6 +75,90 @@ export interface EsrsRoadmapDecisionArtifact {
     topPhaseIds: string[];
   };
 }
+
+export const DecisionArtifactConfidenceSchema = z.object({
+  level: z.enum(["high", "medium", "low"]),
+  score: z.number().min(0).max(1),
+  basis: z.string(),
+});
+
+export const DecisionArtifactEvidenceSchema = z.object({
+  codePaths: z.array(z.string()),
+  dataSources: z.array(z.string()),
+});
+
+export const EsrsGapAnalysisDecisionArtifactSchema = z.object({
+  artifactVersion: z.literal("1.0"),
+  artifactType: z.literal("gap_analysis"),
+  capability: z.literal("ESRS_MAPPING"),
+  generatedAt: z.string(),
+  subject: z.object({
+    sector: z.string(),
+    companySize: z.string(),
+    targetRegulations: z.array(z.string()),
+  }),
+  confidence: DecisionArtifactConfidenceSchema,
+  evidence: DecisionArtifactEvidenceSchema,
+  summary: z.object({
+    totalRequirements: z.number(),
+    coveragePercentage: z.number(),
+    criticalGapCount: z.number(),
+    highGapCount: z.number(),
+    remediationPathCount: z.number(),
+    criticalGapIds: z.array(z.string()),
+  }),
+});
+
+export const EsrsAttributeRecommendationDecisionArtifactSchema = z.object({
+  artifactVersion: z.literal("1.0"),
+  artifactType: z.literal("attribute_recommendation"),
+  capability: z.literal("ESRS_MAPPING"),
+  generatedAt: z.string(),
+  subject: z.object({
+    sector: z.string(),
+    companySize: z.string().optional(),
+    targetRegulations: z.array(z.string()),
+  }),
+  confidence: DecisionArtifactConfidenceSchema,
+  evidence: DecisionArtifactEvidenceSchema,
+  summary: z.object({
+    totalRecommendations: z.number(),
+    highConfidenceCount: z.number(),
+    regulationsCovered: z.array(z.string()),
+    topRecommendationIds: z.array(z.string()),
+  }),
+});
+
+export const EsrsRoadmapDecisionArtifactSchema = z.object({
+  artifactVersion: z.literal("1.0"),
+  artifactType: z.literal("roadmap"),
+  capability: z.literal("ESRS_MAPPING"),
+  generatedAt: z.string(),
+  subject: z.object({
+    sector: z.string(),
+    companySize: z.string(),
+    esrsRequirements: z.array(z.string()),
+  }),
+  confidence: DecisionArtifactConfidenceSchema,
+  evidence: DecisionArtifactEvidenceSchema,
+  summary: z.object({
+    phaseCount: z.number(),
+    criticalPhaseCount: z.number(),
+    quickWinCount: z.number(),
+    mappingCount: z.number(),
+    topPhaseIds: z.array(z.string()),
+  }),
+});
+
+export const EsrsDecisionArtifactSchema = z.union([
+  EsrsGapAnalysisDecisionArtifactSchema,
+  EsrsAttributeRecommendationDecisionArtifactSchema,
+  EsrsRoadmapDecisionArtifactSchema,
+]);
+
+export const EsrsDecisionArtifactsSchema = z.array(EsrsDecisionArtifactSchema);
+
+export type EsrsDecisionArtifact = z.infer<typeof EsrsDecisionArtifactSchema>;
 
 const BASE_CONFIDENCE_SCORE: Record<DecisionArtifactConfidenceLevel, number> = {
   high: 0.85,

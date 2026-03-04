@@ -3,6 +3,38 @@ import { appRouter } from "../routers";
 import type { TrpcContext } from "../_core/context";
 import { getDb } from "../db";
 import { advisoryReports } from "../../drizzle/schema";
+import type { EsrsDecisionArtifact } from "../esrs-decision-artifacts";
+
+const mockDecisionArtifacts: EsrsDecisionArtifact[] = [
+  {
+    artifactVersion: "1.0",
+    artifactType: "gap_analysis",
+    capability: "ESRS_MAPPING",
+    generatedAt: "2026-03-04T12:00:00.000Z",
+    subject: {
+      sector: "Retail",
+      companySize: "large",
+      targetRegulations: ["CSRD"],
+    },
+    confidence: {
+      level: "medium",
+      score: 0.67,
+      basis: "Coverage analysis across mapped requirements.",
+    },
+    evidence: {
+      codePaths: ["server/routers/gap-analyzer.ts"],
+      dataSources: ["gs1_esrs_mappings"],
+    },
+    summary: {
+      totalRequirements: 12,
+      coveragePercentage: 58,
+      criticalGapCount: 2,
+      highGapCount: 3,
+      remediationPathCount: 1,
+      criticalGapIds: ["gap-1"],
+    },
+  },
+];
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
 
@@ -116,6 +148,7 @@ describe("advisoryReports router", () => {
         reportType: "COMPLIANCE_ASSESSMENT" as const,
         content: "# Test Report\n\nThis is a test compliance assessment report.",
         executiveSummary: "Test summary for compliance assessment",
+        decisionArtifacts: mockDecisionArtifacts,
         version: "1.0.0",
       };
 
@@ -206,6 +239,35 @@ describe("advisoryReports router", () => {
         await db.delete(advisoryReports).where({ id: Number(result.insertId) } as any);
       }
     });
+
+    it("persists decision artifacts when provided", async () => {
+      const ctx = createAdminContext();
+      const caller = appRouter.createCaller(ctx);
+
+      const result = await caller.advisoryReports.create({
+        title: "Decision Artifact Persistence Test",
+        reportType: "GAP_ANALYSIS" as const,
+        content: "Testing persisted decision artifacts",
+        version: "1.0.0",
+        decisionArtifacts: mockDecisionArtifacts,
+      });
+
+      const db = await getDb();
+      if (db && result.insertId) {
+        const created = await db
+          .select()
+          .from(advisoryReports)
+          .where({ id: Number(result.insertId) } as any)
+          .limit(1);
+
+        const persistedArtifacts = created[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined;
+
+        expect(Array.isArray(persistedArtifacts)).toBe(true);
+        expect(persistedArtifacts?.[0]?.artifactType).toBe("gap_analysis");
+
+        await db.delete(advisoryReports).where({ id: Number(result.insertId) } as any);
+      }
+    });
   });
 
   describe("update (admin only)", () => {
@@ -228,6 +290,7 @@ describe("advisoryReports router", () => {
         id: reportId,
         content: "Updated content",
         title: "Updated Title",
+        decisionArtifacts: mockDecisionArtifacts,
       });
 
       expect(updateResult).toBeDefined();
@@ -243,6 +306,7 @@ describe("advisoryReports router", () => {
 
         expect(updated[0]?.content).toBe("Updated content");
         expect(updated[0]?.title).toBe("Updated Title");
+        expect((updated[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.artifactType).toBe("gap_analysis");
 
         // Clean up
         await db.delete(advisoryReports).where({ id: reportId } as any);
