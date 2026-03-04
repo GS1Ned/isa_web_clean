@@ -263,6 +263,13 @@ export default function AdvisoryReports() {
                     <FileText className="h-5 w-5" />
                     {report.title}
                   </CardTitle>
+                  {Array.isArray(report.decisionArtifacts) && report.decisionArtifacts.length > 0 && (
+                    <div className="mt-2">
+                      <Badge variant="secondary">
+                        {report.decisionArtifacts.length} decision artifact{report.decisionArtifacts.length === 1 ? "" : "s"}
+                      </Badge>
+                    </div>
+                  )}
                   {report.executiveSummary && (
                     <CardDescription className="mt-2">{report.executiveSummary}</CardDescription>
                   )}

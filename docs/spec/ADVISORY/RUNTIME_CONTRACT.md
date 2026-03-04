@@ -35,6 +35,7 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
 ## Input / Output Contract (Current)
 - Inputs: advisory generation/diff procedure inputs and report selection/version criteria.
 - Outputs: advisory report payloads, version metadata, and diff artifacts.
+- `advisory_reports` records may persist additive upstream `decisionArtifacts` envelopes from `ESRS_MAPPING` for downstream export, review, and traceability.
 - Human-readable advisory export layers may serialise additive upstream `decisionArtifact` envelopes from `ESRS_MAPPING` without replacing the underlying capability-specific payload.
 - Field-level payload shape remains code-truth in ADVISORY router procedures.
 

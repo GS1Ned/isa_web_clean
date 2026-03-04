@@ -26,6 +26,23 @@ export const advisoryReports = mysqlTable("advisory_reports", {
 	targetStandardIds: json(),
 	sectorTags: json(),
 	gs1ImpactTags: json(),
+	decisionArtifacts: json("decisionArtifacts").$type<Array<{
+		artifactVersion: string,
+		artifactType: string,
+		capability: string,
+		generatedAt: string,
+		subject: Record<string, unknown>,
+		confidence: {
+			level: string,
+			score: number,
+			basis: string,
+		},
+		evidence: {
+			codePaths: string[],
+			dataSources: string[],
+		},
+		summary: Record<string, unknown>,
+	}>>(),
 	version: varchar({ length: 32 }).notNull(),
 	generatedDate: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
 	generatedBy: varchar({ length: 255 }),

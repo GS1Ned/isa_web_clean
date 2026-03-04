@@ -4,6 +4,7 @@
  */
 
 import type {
+  EsrsDecisionArtifact,
   EsrsAttributeRecommendationDecisionArtifact,
   EsrsGapAnalysisDecisionArtifact,
 } from "./esrs-decision-artifacts";
@@ -102,6 +103,71 @@ function appendDecisionArtifactSection(
   lines.push(`- **Code Paths:** ${(artifact.evidence.codePaths || []).join(", ") || "N/A"}`);
   lines.push(`- **Data Sources:** ${(artifact.evidence.dataSources || []).join(", ") || "N/A"}`);
   lines.push("");
+}
+
+function formatDecisionArtifactHtmlSummaryValue(value: unknown) {
+  if (Array.isArray(value)) {
+    return value.length === 0 ? "None" : value.join(", ");
+  }
+
+  if (typeof value === "boolean") {
+    return value ? "Yes" : "No";
+  }
+
+  if (value == null || value === "") {
+    return "N/A";
+  }
+
+  return String(value);
+}
+
+export function renderDecisionArtifactsHtml(artifacts?: EsrsDecisionArtifact[]): string {
+  if (!Array.isArray(artifacts) || artifacts.length === 0) {
+    return "";
+  }
+
+  const cards = artifacts
+    .map((artifact) => {
+      const summaryRows = Object.entries(artifact.summary ?? {})
+        .map(
+          ([key, value]) => `
+            <tr>
+              <td style="padding: 4px 8px; border-top: 1px solid #e5e7eb;"><strong>${formatDecisionSummaryLabel(key)}</strong></td>
+              <td style="padding: 4px 8px; border-top: 1px solid #e5e7eb;">${formatDecisionArtifactHtmlSummaryValue(value)}</td>
+            </tr>
+          `,
+        )
+        .join("");
+
+      return `
+        <div style="margin-bottom: 16px; padding: 16px; border: 1px solid #dbeafe; border-radius: 8px; background-color: #eff6ff;">
+          <p style="margin: 0 0 8px 0;"><strong>Artifact:</strong> ${artifact.artifactType}</p>
+          <p style="margin: 0 0 8px 0;"><strong>Capability:</strong> ${artifact.capability}</p>
+          <p style="margin: 0 0 8px 0;"><strong>Version:</strong> ${artifact.artifactVersion}</p>
+          <p style="margin: 0 0 8px 0;"><strong>Confidence:</strong> ${artifact.confidence.level} (${Math.round(artifact.confidence.score * 100)}%)</p>
+          <p style="margin: 0 0 8px 0;"><strong>Basis:</strong> ${artifact.confidence.basis}</p>
+          <p style="margin: 0 0 8px 0;"><strong>Evidence:</strong> ${(artifact.evidence.dataSources || []).join(", ") || "N/A"}</p>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 12px;">
+            <thead>
+              <tr>
+                <th style="text-align: left; padding: 4px 8px; background-color: #dbeafe;">Summary field</th>
+                <th style="text-align: left; padding: 4px 8px; background-color: #dbeafe;">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${summaryRows}
+            </tbody>
+          </table>
+        </div>
+      `;
+    })
+    .join("");
+
+  return `
+    <h2 style="color: #1e40af; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; margin-top: 32px;">Decision Artifacts</h2>
+    <p style="margin-bottom: 16px;">This export includes persisted ESRS_MAPPING decision-core envelopes for downstream review and traceability.</p>
+    ${cards}
+  `;
 }
 
 // =============================================================================
@@ -646,6 +712,14 @@ export async function generateReportHtmlForPdf(reportId: number, options: PdfExp
       }
     }
 
+    const decisionArtifacts = Array.isArray(report.decisionArtifacts)
+      ? report.decisionArtifacts
+      : typeof report.decisionArtifacts === "string"
+        ? JSON.parse(report.decisionArtifacts)
+        : [];
+
+    const decisionArtifactsHtml = renderDecisionArtifactsHtml(decisionArtifacts);
+
     const html = `
 <!DOCTYPE html>
 <html>
@@ -705,6 +779,8 @@ export async function generateReportHtmlForPdf(reportId: number, options: PdfExp
   
   <h2 style="color: #1e40af; border-bottom: 2px solid #3b82f6; padding-bottom: 8px;">Report Content</h2>
   <div>${report.content}</div>
+  
+  ${decisionArtifactsHtml}
   
   ${findingsHtml}
   ${recommendationsHtml}

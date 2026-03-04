@@ -14,6 +14,7 @@ import {
   getReportsByStandardIds,
 } from "../db-advisory-reports";
 import { generateReportHtmlForPdf } from "../advisory-report-export";
+import { EsrsDecisionArtifactsSchema } from "../esrs-decision-artifacts.js";
 
 /**
  * Advisory Reports Router
@@ -116,6 +117,7 @@ export const advisoryReportsRouter = router({
         targetStandardIds: z.array(z.number()).optional(),
         sectorTags: z.array(z.string()).optional(),
         gs1ImpactTags: z.array(z.string()).optional(),
+        decisionArtifacts: EsrsDecisionArtifactsSchema.optional(),
         version: z.string(),
         generationPrompt: z.string().optional(),
         llmModel: z.string().optional(),
@@ -155,6 +157,7 @@ export const advisoryReportsRouter = router({
           })
         ).optional(),
         recommendations: z.array(z.string()).optional(),
+        decisionArtifacts: EsrsDecisionArtifactsSchema.optional(),
         qualityScore: z.number().optional(),
         governanceNotes: z.string().optional(),
       })

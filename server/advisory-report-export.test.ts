@@ -7,6 +7,7 @@ import { describe, it, expect } from 'vitest';
 import {
   generateGapAnalysisMarkdown,
   generateAttributeRecommendationMarkdown,
+  renderDecisionArtifactsHtml,
 } from './advisory-report-export';
 
 // Mock gap analysis result
@@ -417,5 +418,25 @@ describe('Report Formatting', () => {
     });
 
     expect(markdown).toContain('> ');
+  });
+});
+
+describe('Decision Artifact HTML Rendering', () => {
+  it('renders persisted decision artifacts for advisory HTML exports', () => {
+    const html = renderDecisionArtifactsHtml([
+      mockGapAnalysisResult.decisionArtifact,
+      mockRecommendationResult.decisionArtifact,
+    ]);
+
+    expect(html).toContain('Decision Artifacts');
+    expect(html).toContain('gap_analysis');
+    expect(html).toContain('attribute_recommendation');
+    expect(html).toContain('Coverage Percentage');
+    expect(html).toContain('ATTRIBUTE_METADATA, SECTOR_ATTRIBUTES');
+  });
+
+  it('returns empty markup when no persisted decision artifacts exist', () => {
+    expect(renderDecisionArtifactsHtml()).toBe('');
+    expect(renderDecisionArtifactsHtml([])).toBe('');
   });
 });

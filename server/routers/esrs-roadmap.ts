@@ -3,7 +3,10 @@ import { publicProcedure, router } from "../_core/trpc";
 import { invokeLLM } from "../_core/llm";
 import { getAllEsrsGs1Mappings } from "../db-esrs-gs1-mapping";
 import { serverLogger } from "../_core/logger-wiring";
-import { buildRoadmapDecisionArtifact } from "../esrs-decision-artifacts.js";
+import {
+  buildRoadmapDecisionArtifact,
+  EsrsRoadmapDecisionArtifactSchema,
+} from "../esrs-decision-artifacts.js";
 
 
 // ESRS-GS1 Roadmap phase types
@@ -20,38 +23,6 @@ const EsrsRoadmapPhaseSchema = z.object({
   dependencies: z.array(z.string()), // IDs of prerequisite phases
   estimatedEffort: z.string(),
   expectedOutcome: z.string(),
-});
-
-const DecisionArtifactConfidenceSchema = z.object({
-  level: z.enum(["high", "medium", "low"]),
-  score: z.number().min(0).max(1),
-  basis: z.string(),
-});
-
-const DecisionArtifactEvidenceSchema = z.object({
-  codePaths: z.array(z.string()),
-  dataSources: z.array(z.string()),
-});
-
-const EsrsRoadmapDecisionArtifactSchema = z.object({
-  artifactVersion: z.literal("1.0"),
-  artifactType: z.literal("roadmap"),
-  capability: z.literal("ESRS_MAPPING"),
-  generatedAt: z.string(),
-  subject: z.object({
-    sector: z.string(),
-    companySize: z.string(),
-    esrsRequirements: z.array(z.string()),
-  }),
-  confidence: DecisionArtifactConfidenceSchema,
-  evidence: DecisionArtifactEvidenceSchema,
-  summary: z.object({
-    phaseCount: z.number(),
-    criticalPhaseCount: z.number(),
-    quickWinCount: z.number(),
-    mappingCount: z.number(),
-    topPhaseIds: z.array(z.string()),
-  }),
 });
 
 const EsrsRoadmapSchema = z.object({
