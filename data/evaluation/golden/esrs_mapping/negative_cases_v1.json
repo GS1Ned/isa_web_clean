@@ -1,0 +1,46 @@
+{
+  "dataset_id": "esrs_mapping_negative_v1",
+  "notes": "Stage-a negative cases for ESRS to GS1 mapping. These cases verify that the gold set includes explicit no-mapping scenarios instead of only positive or partial matches.",
+  "cases": [
+    {
+      "id": "NEG-S1-LIVING-WAGE",
+      "regulationStandard": "ESRS S1",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Current GS1 product and trading-partner attributes do not directly encode employee living wage evidence or workforce remuneration policy disclosures.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    },
+    {
+      "id": "NEG-S1-COLLECTIVE-BARGAINING",
+      "regulationStandard": "ESRS S1",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Collective bargaining coverage is a labor-relations disclosure and is not represented as a standard GS1 product, logistics, or party master-data attribute.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    },
+    {
+      "id": "NEG-G1-ANTI_CORRUPTION_TRAINING",
+      "regulationStandard": "ESRS G1",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Anti-corruption training completion is a governance-process disclosure and not a direct GS1 attribute in current sector models or WebVoc product vocabularies.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    },
+    {
+      "id": "NEG-S3-COMMUNITY_REMEDIATION",
+      "regulationStandard": "ESRS S3",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Community remediation outcomes and grievance resolution are stakeholder-impact records, not evidence-backed GS1 master-data attributes in the current ISA mapping corpus.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    }
+  ]
+}

@@ -37,25 +37,22 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 
 ## Input / Output Contract (Current)
 - Inputs: typed mapping, roadmap and recommendation requests via ESRS_MAPPING tRPC procedures.
-- Outputs: mapping records, roadmap outputs, gap-analysis outputs and recommendation payloads.
-- Roadmap, gap analysis, and attribute recommendation outputs expose an additive `decisionArtifact` envelope with stable `artifactVersion`, `artifactType`, `subject`, `confidence`, `evidence`, and `summary` fields for downstream consumption.
-- The user operating surface may render the additive `decisionArtifact` envelope directly, but the envelope does not replace the underlying capability-specific payload.
+- Outputs: mapping records, gap-analysis outputs and recommendation payloads.
 - Field-level payloads remain code-truth in router implementations.
 
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/esrs_mapping_health.sh -->
 - Smoke probe: `scripts/probe/esrs_mapping_health.sh`
+- Capability evaluation includes stage-aware positive mapping fixtures plus explicit negative-case coverage fixtures under `data/evaluation/golden/esrs_mapping/*`.
 - Tests:
   - `server/gs1-mapping-engine.test.ts`
-  - `server/routers/esrs-roadmap.test.ts`
   - `server/routers/__tests__/capability-heartbeat.test.ts`
-  - `client/src/components/DecisionArtifactCard.test.tsx`
 - Canonical gate alignment:
   - `bash scripts/gates/doc-code-validator.sh --canonical-only`
   - `python3 scripts/gates/manifest-ownership-drift.py`
 
 ## Operational Unknowns
-- Roadmap-generation confidence calibration policy remains UNKNOWN from repository-only evidence.
+- Runtime confidence calibration policy for mapping outputs is UNKNOWN from repository-only evidence.
 - Production workload and latency SLOs for mapping-heavy requests are UNKNOWN from repository-only evidence.
 
 ## Evidence

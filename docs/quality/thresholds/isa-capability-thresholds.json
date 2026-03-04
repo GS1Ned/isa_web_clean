@@ -47,6 +47,7 @@
 
         "esrs.mapping.precision": { "op": ">=", "value": 0.85, "enforcement": "warn" },
         "esrs.mapping.coverage": { "op": ">=", "value": 0.8, "enforcement": "warn" },
+        "esrs.mapping.negative_case_coverage": { "op": ">=", "value": 0.75, "enforcement": "warn" },
         "esrs.mapping.explainability_presence": { "op": ">=", "value": 0.9, "enforcement": "warn" },
         "esrs.mapping.authority_correctness": { "op": ">=", "value": 0.85, "enforcement": "warn" },
         "esrs.mapping.contract.adherence": { "op": ">=", "value": 0.75, "enforcement": "warn" },
@@ -117,6 +118,7 @@
 
         "esrs.mapping.precision": { "op": ">=", "value": 0.88, "enforcement": "warn" },
         "esrs.mapping.coverage": { "op": ">=", "value": 0.82, "enforcement": "warn" },
+        "esrs.mapping.negative_case_coverage": { "op": ">=", "value": 0.8, "enforcement": "warn" },
         "esrs.mapping.explainability_presence": { "op": ">=", "value": 0.92, "enforcement": "warn" },
         "esrs.mapping.authority_correctness": { "op": ">=", "value": 0.88, "enforcement": "warn" },
         "esrs.mapping.contract.adherence": { "op": ">=", "value": 0.78, "enforcement": "warn" },
@@ -187,6 +189,7 @@
 
         "esrs.mapping.precision": { "op": ">=", "value": 0.9, "enforcement": "warn" },
         "esrs.mapping.coverage": { "op": ">=", "value": 0.85, "enforcement": "warn" },
+        "esrs.mapping.negative_case_coverage": { "op": ">=", "value": 0.85, "enforcement": "warn" },
         "esrs.mapping.explainability_presence": { "op": ">=", "value": 0.94, "enforcement": "warn" },
         "esrs.mapping.authority_correctness": { "op": ">=", "value": 0.9, "enforcement": "warn" },
         "esrs.mapping.contract.adherence": { "op": ">=", "value": 0.82, "enforcement": "warn" },

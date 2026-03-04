@@ -1,0 +1,86 @@
+{
+  "dataset_id": "esrs_mapping_negative_v2",
+  "notes": "Expanded stage-b/stage-c negative cases for ESRS to GS1 mapping. These cases should remain explicit no-mapping outcomes until ISA has evidence-backed structured sources that justify otherwise.",
+  "cases": [
+    {
+      "id": "NEG-S1-LIVING-WAGE",
+      "regulationStandard": "ESRS S1",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Current GS1 product and trading-partner attributes do not directly encode employee living wage evidence or workforce remuneration policy disclosures.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    },
+    {
+      "id": "NEG-S1-COLLECTIVE-BARGAINING",
+      "regulationStandard": "ESRS S1",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Collective bargaining coverage is a labor-relations disclosure and is not represented as a standard GS1 product, logistics, or party master-data attribute.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    },
+    {
+      "id": "NEG-G1-ANTI_CORRUPTION_TRAINING",
+      "regulationStandard": "ESRS G1",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Anti-corruption training completion is a governance-process disclosure and not a direct GS1 attribute in current sector models or WebVoc product vocabularies.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    },
+    {
+      "id": "NEG-S3-COMMUNITY_REMEDIATION",
+      "regulationStandard": "ESRS S3",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Community remediation outcomes and grievance resolution are stakeholder-impact records, not evidence-backed GS1 master-data attributes in the current ISA mapping corpus.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    },
+    {
+      "id": "NEG-S4-CONSUMER_REMEDIATION",
+      "regulationStandard": "ESRS S4",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Consumer remediation resolution and complaint handling outcomes are service or governance records, not currently evidence-backed GS1 core attributes.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    },
+    {
+      "id": "NEG-G1-WHISTLEBLOWING_CASES",
+      "regulationStandard": "ESRS G1",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Whistleblowing case volumes and follow-up actions are compliance-governance records and are not represented as product or master-data fields in current GS1 sources.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    },
+    {
+      "id": "NEG-S2-SUPPLIER_COLLECTIVE_BARGAINING",
+      "regulationStandard": "ESRS S2",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Supplier workforce collective bargaining coverage is not a structured GS1 attribute in the current ISA source set and should remain an explicit no-mapping case.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    },
+    {
+      "id": "NEG-E4-SPECIES_RECOVERY_PLAN",
+      "regulationStandard": "ESRS E4",
+      "expectedOutcome": "no_mapping",
+      "actualOutcome": "no_mapping",
+      "rationale": "Species recovery planning and biodiversity remediation governance are broader environmental management disclosures and not direct GS1 master-data attributes today.",
+      "sourceAuthority": "GS1 NL/Benelux Sector Models",
+      "sectors": ["All"],
+      "source_file": "data/advisories/ISA_ADVISORY_v1.1.json"
+    }
+  ]
+}
