@@ -589,6 +589,9 @@ ${contextParts.join('\n\n')}`;
               authorityLevel: r.authorityLevel,
               similarity: Math.round(r.similarity * 100),
               url: r.url,
+              lastVerifiedDate: validated?.lastVerifiedDate,
+              needsVerification: validated?.needsVerification ?? false,
+              verificationReason: validated?.verificationReason,
               evidenceKey: validated?.evidenceKey ?? null,
               evidenceKeyReason: validated?.evidenceKeyReason ?? "chunk_not_found",
             };

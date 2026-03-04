@@ -78,7 +78,12 @@ describe("advisory-diff-snapshot", () => {
                 companySize: "large",
                 targetRegulations: ["CSRD"],
               },
-              confidence: { level: "high", score: 0.82, basis: "Current report." },
+              confidence: {
+                level: "high",
+                score: 0.82,
+                basis: "Current report.",
+                reviewRecommended: false,
+              },
               evidence: {
                 codePaths: ["server/routers/gap-analyzer.ts"],
                 dataSources: ["gs1_esrs_mappings"],
@@ -115,7 +120,12 @@ describe("advisory-diff-snapshot", () => {
                     companySize: "large",
                     targetRegulations: ["CSRD"],
                   },
-                  confidence: { level: "medium", score: 0.67, basis: "Snapshot report." },
+                  confidence: {
+                    level: "medium",
+                    score: 0.67,
+                    basis: "Snapshot report.",
+                    reviewRecommended: true,
+                  },
                   evidence: {
                     codePaths: ["server/routers/gap-analyzer.ts"],
                     dataSources: ["gs1_esrs_mappings"],

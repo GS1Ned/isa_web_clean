@@ -1,12 +1,33 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  buildDecisionArtifactConfidence,
   buildAttributeRecommendationDecisionArtifact,
   buildGapAnalysisDecisionArtifact,
   buildRoadmapDecisionArtifact,
+  scoreToDecisionArtifactConfidenceLevel,
 } from './esrs-decision-artifacts.js';
 
 describe('ESRS decision artifacts', () => {
+  it('maps confidence scores into stable decision-artifact bands', () => {
+    expect(scoreToDecisionArtifactConfidenceLevel(0.82)).toBe('high');
+    expect(scoreToDecisionArtifactConfidenceLevel(0.72)).toBe('medium');
+    expect(scoreToDecisionArtifactConfidenceLevel(0.35)).toBe('low');
+  });
+
+  it('keeps decision-artifact confidence conservative when preferred and score-derived levels differ', () => {
+    const confidence = buildDecisionArtifactConfidence({
+      preferredLevel: 'medium',
+      rawScore: 0.83,
+      basis: 'Mixed evidence basis',
+    });
+
+    expect(confidence.level).toBe('medium');
+    expect(confidence.score).toBe(0.83);
+    expect(confidence.basis).toBe('Mixed evidence basis');
+    expect(confidence.reviewRecommended).toBe(true);
+  });
+
   it('builds a stable gap-analysis decision artifact', () => {
     const artifact = buildGapAnalysisDecisionArtifact({
       generatedAt: '2026-03-04T12:00:00.000Z',
@@ -28,6 +49,7 @@ describe('ESRS decision artifacts', () => {
     expect(artifact.artifactType).toBe('gap_analysis');
     expect(artifact.capability).toBe('ESRS_MAPPING');
     expect(artifact.confidence.level).toBe('medium');
+    expect(artifact.confidence.reviewRecommended).toBe(true);
     expect(artifact.confidence.score).toBeGreaterThan(0);
     expect(artifact.summary.criticalGapIds).toEqual(['gap-1', 'gap-2', 'gap-3']);
     expect(artifact.evidence.dataSources).toContain('gs1_esrs_mappings');
@@ -51,6 +73,7 @@ describe('ESRS decision artifacts', () => {
     expect(artifact.artifactType).toBe('attribute_recommendation');
     expect(artifact.capability).toBe('ESRS_MAPPING');
     expect(artifact.confidence.level).toBe('high');
+    expect(artifact.confidence.reviewRecommended).toBe(false);
     expect(artifact.confidence.score).toBeCloseTo(0.77, 2);
     expect(artifact.summary.topRecommendationIds).toEqual([
       'productCarbonFootprint',
@@ -77,6 +100,7 @@ describe('ESRS decision artifacts', () => {
     expect(artifact.artifactType).toBe('roadmap');
     expect(artifact.capability).toBe('ESRS_MAPPING');
     expect(artifact.confidence.level).toBe('high');
+    expect(artifact.confidence.reviewRecommended).toBe(false);
     expect(artifact.summary.mappingCount).toBe(12);
     expect(artifact.summary.topPhaseIds).toEqual(['phase-1', 'phase-2', 'phase-3']);
   });

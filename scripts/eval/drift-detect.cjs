@@ -116,6 +116,71 @@ function baselineMetaForMetric(baseline, metricId) {
   return baseline.metric_meta?.[metricId] || {};
 }
 
+function normalizeDatasetIds(datasetIds) {
+  return [...new Set((datasetIds || []).map((value) => String(value).trim()).filter(Boolean))].sort();
+}
+
+function benchmarkMixForCapabilityMeta(capabilityMeta) {
+  return capabilityMeta?.diagnostics?.benchmark_mix || null;
+}
+
+function buildCapabilityProfile(capabilityMeta) {
+  if (!capabilityMeta) return null;
+
+  const benchmarkMix = benchmarkMixForCapabilityMeta(capabilityMeta);
+  return {
+    dataset_ids: normalizeDatasetIds(capabilityMeta.dataset_ids),
+    sample_count: Number(capabilityMeta.sample_count || 0),
+    minimum_samples: Number(capabilityMeta.minimum_samples || 0),
+    confidence: capabilityMeta.confidence || "LOW",
+    benchmark_mix: benchmarkMix
+      ? {
+          positive_case_count: Number(benchmarkMix.positive_case_count || 0),
+          negative_case_count: Number(benchmarkMix.negative_case_count || 0),
+          direct_case_count: Number(benchmarkMix.direct_case_count || 0),
+          partial_case_count: Number(benchmarkMix.partial_case_count || 0),
+          no_mapping_case_count: Number(benchmarkMix.no_mapping_case_count || 0),
+          direct_case_share: Number(benchmarkMix.direct_case_share || 0),
+          partial_case_share: Number(benchmarkMix.partial_case_share || 0),
+          no_mapping_case_share: Number(benchmarkMix.no_mapping_case_share || 0),
+        }
+      : null,
+  };
+}
+
+function capabilityProfileKey(capabilityMeta) {
+  const profile = buildCapabilityProfile(capabilityMeta);
+  return profile ? JSON.stringify(profile) : "null";
+}
+
+function detectCapabilityTransition({ history, baseline, capability, stage, capabilityMeta }) {
+  const currentProfile = buildCapabilityProfile(capabilityMeta);
+  if (!currentProfile) {
+    return { transition: false, reason: null };
+  }
+
+  const currentProfileKey = capabilityProfileKey(capabilityMeta);
+  const baselineCapabilityMeta = baseline.capability_meta?.[capability] || null;
+  const baselineProfileKey = capabilityProfileKey(baselineCapabilityMeta);
+
+  if (baselineCapabilityMeta && baselineProfileKey !== currentProfileKey) {
+    return { transition: true, reason: "benchmark_profile_changed_from_baseline" };
+  }
+
+  const hasPriorDifferentProfile = history.some((run) => {
+    const runStage = run.stage || "stage_a";
+    if (runStage !== stage) return false;
+    const priorCapabilityMeta = run.capability_meta?.[capability] || null;
+    return capabilityProfileKey(priorCapabilityMeta) !== currentProfileKey;
+  });
+
+  if (hasPriorDifferentProfile) {
+    return { transition: true, reason: "benchmark_profile_changed_from_history" };
+  }
+
+  return { transition: false, reason: null };
+}
+
 function main() {
   const options = parseArgs();
   const evaluation = readJson(options.evalPath);
@@ -129,6 +194,16 @@ function main() {
 
   const currentMetricMap = {};
   const currentMetricMeta = {};
+  const currentCapabilityMeta = {};
+  for (const capability of evaluation.capabilities || []) {
+    currentCapabilityMeta[capability.capability] = {
+      dataset_ids: capability.dataset_ids || [],
+      sample_count: Number(capability.sample_count || 0),
+      minimum_samples: Number(capability.minimum_samples || 0),
+      confidence: capability.confidence || "LOW",
+      diagnostics: capability.diagnostics || null,
+    };
+  }
   for (const metric of currentMetrics) {
     currentMetricMap[metric.metric_id] = metric.value;
     currentMetricMeta[metric.metric_id] = {
@@ -146,10 +221,30 @@ function main() {
       stage,
       metrics: currentMetricMap,
       metric_meta: currentMetricMeta,
+      capability_meta: currentCapabilityMeta,
     },
   ];
 
   const driftRows = [];
+  const capabilityTransitions = [];
+  const capabilityTransitionMap = new Map();
+
+  for (const capability of evaluation.capabilities || []) {
+    const transition = detectCapabilityTransition({
+      history,
+      baseline,
+      capability: capability.capability,
+      stage,
+      capabilityMeta: currentCapabilityMeta[capability.capability],
+    });
+    capabilityTransitionMap.set(capability.capability, transition);
+    if (transition.transition) {
+      capabilityTransitions.push({
+        capability: capability.capability,
+        reason: transition.reason,
+      });
+    }
+  }
 
   for (const metric of currentMetrics) {
     const baselineValue = baseline.metrics?.[metric.metric_id];
@@ -176,17 +271,28 @@ function main() {
       stage,
       fixtureVersion
     );
+    const capabilityTransition =
+      capabilityTransitionMap.get(metric.capability) || { transition: false, reason: null };
 
     let drift = "none";
     let direction = metric.threshold_op === "<=" ? "latency" : "score";
     let comparisonMode = "stage+fixture_version";
+    let transitionReason = null;
 
     if (stageMismatch || baselineFixtureMismatch) {
       drift = "transition";
       comparisonMode = "transition";
+      transitionReason = stageMismatch
+        ? "stage_mismatch"
+        : "fixture_version_mismatch_from_baseline";
+    } else if (capabilityTransition.transition) {
+      drift = "transition";
+      comparisonMode = "transition";
+      transitionReason = capabilityTransition.reason;
     } else if (transition && comparableSeries.length < 3) {
       drift = "transition";
       comparisonMode = "transition";
+      transitionReason = "fixture_version_changed_from_history";
     } else {
       const driftInfo = classifyDrift(metric, baselineValue, comparableSeries);
       drift = driftInfo.drift;
@@ -203,6 +309,7 @@ function main() {
       measurement_mode: metric.measurement_mode || "fixture",
       comparison_mode: comparisonMode,
       transition: comparisonMode === "transition",
+      transition_reason: transitionReason,
       current: Number(metric.value.toFixed ? metric.value.toFixed(4) : metric.value),
       baseline: baselineValue,
       delta_pct: Number(deltaPct(metric.value, baselineValue).toFixed(4)),
@@ -223,6 +330,11 @@ function main() {
   if (summary.transition > 0) {
     alerts.push(`transition comparison mode for ${summary.transition} metrics`);
   }
+  if (capabilityTransitions.length > 0) {
+    alerts.push(
+      `capability benchmark/profile transition for ${capabilityTransitions.length} capabilities`
+    );
+  }
 
   const status = summary.major > 0 ? "fail" : summary.minor > 0 ? "warn" : "pass";
 
@@ -236,6 +348,7 @@ function main() {
     summary,
     status,
     alerts,
+    capability_transitions: capabilityTransitions,
     metrics: driftRows,
   };
 
@@ -249,9 +362,17 @@ function main() {
   }
 }
 
-try {
-  main();
-} catch (error) {
-  process.stderr.write(`STOP=isa_drift_detection_error:${String(error?.message || error)}\n`);
-  process.exit(1);
+if (require.main === module) {
+  try {
+    main();
+  } catch (error) {
+    process.stderr.write(`STOP=isa_drift_detection_error:${String(error?.message || error)}\n`);
+    process.exit(1);
+  }
 }
+
+module.exports = {
+  buildCapabilityProfile,
+  capabilityProfileKey,
+  detectCapabilityTransition,
+};

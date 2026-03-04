@@ -52,7 +52,10 @@ ASK_ISA provides a tRPC-based API for RAG-powered question answering with mandat
     lastVerifiedDate?: string,
     isDeprecated?: boolean,
     needsVerification?: boolean,
+    verificationReason?: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date",
     deprecationReason?: string,
+    evidenceKey?: string | null,
+    evidenceKeyReason?: "ok" | "missing_content_hash" | "chunk_not_found" | "db_unavailable",
     authorityLevel: "primary" | "secondary" | "guidance" | "industry" | "reference",
     authorityScore: number                 // 0-1
   }>,

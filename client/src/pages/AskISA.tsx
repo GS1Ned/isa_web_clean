@@ -76,7 +76,10 @@ interface Message {
     lastVerifiedDate?: string;
     isDeprecated?: boolean;
     needsVerification?: boolean;
+    verificationReason?: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date";
     deprecationReason?: string;
+    evidenceKey?: string | null;
+    evidenceKeyReason?: "ok" | "missing_content_hash" | "chunk_not_found" | "db_unavailable";
     authorityLevel?: AuthorityLevel;
     authorityScore?: number;
   }>;
@@ -476,6 +479,23 @@ export default function AskISA() {
         return <Lightbulb className="h-4 w-4" />;
       default:
         return <FileText className="h-4 w-4" />;
+    }
+  };
+
+  const getVerificationReasonLabel = (
+    reason?: Message["sources"][number]["verificationReason"]
+  ) => {
+    switch (reason) {
+      case "missing_last_verified_date":
+        return "No verification date recorded";
+      case "invalid_last_verified_date":
+        return "Invalid verification date";
+      case "stale_last_verified_date":
+        return "Verification date is stale";
+      case "ok":
+        return "Verification status OK";
+      default:
+        return "Verification details unavailable";
     }
   };
 
@@ -1189,7 +1209,7 @@ export default function AskISA() {
                                         <Badge
                                           variant="outline"
                                           className="text-xs text-yellow-700 dark:text-yellow-400"
-                                          title={source.lastVerifiedDate ? `Last verified: ${new Date(source.lastVerifiedDate).toLocaleDateString()}` : 'Not yet verified'}
+                                          title={getVerificationReasonLabel(source.verificationReason)}
                                         >
                                           ⚠️ Needs verification
                                         </Badge>
@@ -1363,7 +1383,10 @@ export default function AskISA() {
                     <AlertTriangle className="h-4 w-4 text-yellow-600" />
                     <div>
                       <p className="font-medium text-yellow-600">Needs Verification</p>
-                      <p className="text-sm text-muted-foreground">This source should be verified before relying on it for compliance decisions.</p>
+                      <p className="text-sm text-muted-foreground">
+                        This source should be verified before relying on it for compliance decisions.{" "}
+                        {getVerificationReasonLabel(previewSource.verificationReason)}.
+                      </p>
                     </div>
                   </div>
                 )}

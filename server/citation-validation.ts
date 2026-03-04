@@ -10,6 +10,7 @@ import { serverLogger } from "./_core/logger-wiring";
 import {
   buildKnowledgeEvidenceKey,
   doesKnowledgeChunkNeedVerification,
+  getKnowledgeVerificationReason,
 } from "./knowledge-provenance";
 
 
@@ -86,6 +87,7 @@ export async function validateCitations(
     lastVerifiedDate?: string;
     isDeprecated: boolean;
     needsVerification: boolean;
+    verificationReason?: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date";
     deprecationReason?: string;
     evidenceKey: string | null;
     evidenceKeyReason?: "ok" | "missing_content_hash" | "chunk_not_found" | "db_unavailable";
@@ -135,9 +137,8 @@ export async function validateCitations(
           datasetVersion: chunk.datasetVersion || undefined,
           lastVerifiedDate: chunk.lastVerifiedDate || undefined,
           isDeprecated: chunk.isDeprecated === 1,
-          needsVerification: doesKnowledgeChunkNeedVerification(
-            chunk.lastVerifiedDate
-          ),
+          needsVerification: doesKnowledgeChunkNeedVerification(chunk.lastVerifiedDate),
+          verificationReason: getKnowledgeVerificationReason(chunk.lastVerifiedDate),
           deprecationReason: chunk.deprecationReason || undefined,
           evidenceKey,
           evidenceKeyReason,

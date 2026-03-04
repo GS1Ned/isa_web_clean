@@ -21,6 +21,7 @@ export interface DecisionArtifactCardData {
     level: string;
     score: number;
     basis: string;
+    reviewRecommended?: boolean;
   };
   evidence?: {
     codePaths?: string[];
@@ -101,6 +102,9 @@ export function DecisionArtifactCard({
               <CheckCircle2 className="mr-1 h-3 w-3" />
               {artifact.confidence.level} {Math.round(artifact.confidence.score * 100)}%
             </Badge>
+            <Badge variant={artifact.confidence.reviewRecommended ? "secondary" : "outline"}>
+              {artifact.confidence.reviewRecommended ? "Review recommended" : "Ready for routine use"}
+            </Badge>
             <Badge variant="secondary">{artifact.artifactType}</Badge>
           </div>
         </div>
@@ -129,6 +133,9 @@ export function DecisionArtifactCard({
             Confidence Basis
           </div>
           <p className="text-sm text-blue-900">{artifact.confidence.basis}</p>
+          <p className="mt-2 text-xs font-medium text-blue-900">
+            Review: {artifact.confidence.reviewRecommended ? "recommended before downstream sign-off" : "routine downstream use acceptable"}
+          </p>
         </div>
 
         {summaryEntries.length > 0 && (

@@ -39,21 +39,28 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 - Inputs: typed mapping, roadmap and recommendation requests via ESRS_MAPPING tRPC procedures.
 - Outputs: mapping records, gap-analysis outputs and recommendation payloads.
 - Field-level payloads remain code-truth in router implementations.
+- Runtime confidence semantics are currently aligned across attribute recommendations and ESRS decision artefacts: `high >= 0.75`, `medium >= 0.50`, else `low`.
 
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/esrs_mapping_health.sh -->
 - Smoke probe: `scripts/probe/esrs_mapping_health.sh`
 - Capability evaluation includes stage-aware positive mapping fixtures plus explicit negative-case coverage fixtures under `data/evaluation/golden/esrs_mapping/*`.
 - ESRS capability evaluation emits benchmark-mix diagnostics for direct, partial, and explicit no-mapping gold-set coverage.
+- Drift detection preserves capability-level benchmark composition metadata so benchmark-profile changes enter transition mode instead of masquerading as pure score drift.
 - Tests:
   - `server/gs1-mapping-engine.test.ts`
+  - `server/isa-capability-drift.test.ts`
   - `server/routers/__tests__/capability-heartbeat.test.ts`
 - Canonical gate alignment:
   - `bash scripts/gates/doc-code-validator.sh --canonical-only`
   - `python3 scripts/gates/manifest-ownership-drift.py`
 
+## Operational Notes
+- Current decision artefacts expose heuristic confidence with a stable contract: `confidence.level` in `{high, medium, low}`, `confidence.score` in `[0,1]`, `confidence.basis` as a human-readable explanation, and additive `confidence.reviewRecommended` to flag non-high-confidence outputs for downstream review.
+- Current score banding is conservative and evidence-backed in code: `high >= 0.75`, `medium >= 0.50`, else `low`.
+
 ## Operational Unknowns
-- Runtime confidence calibration policy for mapping outputs is UNKNOWN from repository-only evidence.
+- External calibration of ESRS mapping confidence against reviewed gold sets remains UNKNOWN from repository-only evidence.
 - Production workload and latency SLOs for mapping-heavy requests are UNKNOWN from repository-only evidence.
 
 ## Evidence

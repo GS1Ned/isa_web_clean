@@ -33,6 +33,7 @@ ARTIFACTS=(
     "test-results/ci/slo-policy-check.json:docs/quality/schemas/slo-policy-check.schema.json"
     "test-results/ci/rag-eval.json:docs/quality/schemas/rag-eval.schema.json"
     "test-results/ci/isa-capability-eval.json:docs/quality/schemas/isa-capability-eval.schema.json"
+    "test-results/ci/isa-capability-baseline-candidate.json:docs/quality/schemas/isa-capability-baseline.schema.json"
     "test-results/ci/isa-drift-report.json:docs/quality/schemas/isa-drift-report.schema.json"
     "docs/evidence/_generated/catalogue.json:docs/quality/schemas/catalogue.schema.json"
     "docs/sre/_generated/error_budget_status.json:docs/quality/schemas/error-budget-status.schema.json"

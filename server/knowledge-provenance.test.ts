@@ -4,6 +4,7 @@ import {
   KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS,
   buildKnowledgeEvidenceKey,
   doesKnowledgeChunkNeedVerification,
+  getKnowledgeVerificationReason,
 } from "./knowledge-provenance";
 
 describe("knowledge provenance", () => {
@@ -33,6 +34,29 @@ describe("knowledge provenance", () => {
 
     it("keeps the verification window fixed at ninety days", () => {
       expect(KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS).toBe(90);
+    });
+  });
+
+  describe("getKnowledgeVerificationReason", () => {
+    const now = new Date("2026-03-03T12:00:00.000Z");
+
+    it("returns a stable reason for missing verification dates", () => {
+      expect(getKnowledgeVerificationReason(undefined, now)).toBe("missing_last_verified_date");
+      expect(getKnowledgeVerificationReason(null, now)).toBe("missing_last_verified_date");
+    });
+
+    it("returns ok for recent verification dates", () => {
+      expect(getKnowledgeVerificationReason("2026-02-20T00:00:00.000Z", now)).toBe("ok");
+    });
+
+    it("returns stale reason for old verification dates", () => {
+      expect(getKnowledgeVerificationReason("2025-10-31T00:00:00.000Z", now)).toBe(
+        "stale_last_verified_date"
+      );
+    });
+
+    it("returns invalid reason for malformed verification dates", () => {
+      expect(getKnowledgeVerificationReason("not-a-date", now)).toBe("invalid_last_verified_date");
     });
   });
 
