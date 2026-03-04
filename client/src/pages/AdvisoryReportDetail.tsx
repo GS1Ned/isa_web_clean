@@ -5,6 +5,7 @@ import {
   Calendar,
   Eye,
   FileText,
+  GitCompare,
   GitBranch,
   Layers3,
   ShieldCheck,
@@ -105,6 +106,15 @@ function getSeverityTone(severity: ReportFinding["severity"]) {
     default:
       return "bg-emerald-100 text-emerald-800 border-emerald-200";
   }
+}
+
+function formatConfidenceDelta(value: number | null) {
+  if (value == null) {
+    return "N/A";
+  }
+
+  const percentage = Math.round(value * 100);
+  return `${percentage > 0 ? "+" : ""}${percentage}%`;
 }
 
 export default function AdvisoryReportDetail() {
@@ -467,6 +477,7 @@ export default function AdvisoryReportDetail() {
 
           {versions?.map(version => {
             const versionArtifacts = normalizeDecisionArtifacts(version.decisionArtifacts);
+            const diffSummary = version.decisionArtifactDiff;
 
             return (
               <div key={version.id} className="rounded-lg border p-4 space-y-3">
@@ -497,6 +508,96 @@ export default function AdvisoryReportDetail() {
                     <span className="text-muted-foreground whitespace-pre-wrap">
                       {version.changeLog}
                     </span>
+                  </div>
+                )}
+
+                {diffSummary && (
+                  <div className="rounded-lg border bg-muted/20 p-3 space-y-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <div className="text-sm font-medium flex items-center gap-2">
+                        <GitCompare className="h-4 w-4 text-slate-600" />
+                        Diff vs current report
+                      </div>
+                      <Badge variant={diffSummary.hasChanges ? "outline" : "secondary"}>
+                        {diffSummary.hasChanges ? "Artifact drift detected" : "No artifact drift"}
+                      </Badge>
+                      <Badge variant="outline">
+                        Confidence delta {formatConfidenceDelta(diffSummary.averageConfidenceDelta)}
+                      </Badge>
+                    </div>
+
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4 text-sm">
+                      <div>
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Added In Current
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {diffSummary.addedArtifactTypes.length > 0 ? (
+                            diffSummary.addedArtifactTypes.map((artifactType: string) => (
+                              <Badge key={`${version.id}-added-${artifactType}`} variant="secondary">
+                                {artifactType}
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-muted-foreground">None</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Removed From Current
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {diffSummary.removedArtifactTypes.length > 0 ? (
+                            diffSummary.removedArtifactTypes.map((artifactType: string) => (
+                              <Badge key={`${version.id}-removed-${artifactType}`} variant="destructive">
+                                {artifactType}
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-muted-foreground">None</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Changed
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {diffSummary.changedArtifactTypes.length > 0 ? (
+                            diffSummary.changedArtifactTypes.map((artifactType: string) => (
+                              <Badge key={`${version.id}-changed-${artifactType}`} variant="outline">
+                                {artifactType}
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-muted-foreground">None</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Confidence Drift
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {diffSummary.confidenceChangedArtifactTypes.length > 0 ? (
+                            diffSummary.confidenceChangedArtifactTypes.map((artifactType: string) => (
+                              <Badge
+                                key={`${version.id}-confidence-${artifactType}`}
+                                variant="outline"
+                              >
+                                {artifactType}
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-muted-foreground">None</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 )}
 
