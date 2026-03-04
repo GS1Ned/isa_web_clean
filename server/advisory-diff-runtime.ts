@@ -3,9 +3,13 @@ import { execFileSync } from "child_process";
 import { join } from "path";
 
 import { serverLogger } from "./_core/logger-wiring";
+import { buildAdvisoryReadModel } from "./advisory-read-model";
 import { getAdvisoryReports, getReportVersions } from "./db-advisory-reports";
 import { enrichAdvisoryDiffWithSnapshot } from "./advisory-diff-snapshot";
-import { normalizeAdvisoryVersionTag } from "./advisory-legacy-compat";
+import {
+  loadLegacyAdvisorySummary,
+  normalizeAdvisoryVersionTag,
+} from "./advisory-legacy-compat";
 
 function loadOrComputeLegacyAdvisoryDiff(version1: string, version2: string) {
   const normalizedVersion1 = normalizeAdvisoryVersionTag(version1);
@@ -84,4 +88,17 @@ export async function computeAdvisoryDiffPayload(version1: string, version2: str
       },
     };
   }
+}
+
+export async function getAdvisorySummaryPayload(version: string) {
+  const normalizedVersion = normalizeAdvisoryVersionTag(version);
+  const readModel = await buildAdvisoryReadModel();
+  const currentSummary = readModel.summary;
+  const currentSummaryVersion = normalizeAdvisoryVersionTag(currentSummary?.version ?? version);
+
+  if (normalizedVersion === currentSummaryVersion) {
+    return currentSummary;
+  }
+
+  return loadLegacyAdvisorySummary(normalizedVersion);
 }
