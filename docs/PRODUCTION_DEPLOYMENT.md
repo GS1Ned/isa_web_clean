@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the production deployment process for the Intelligent Standards Assistant (ISA). ISA is deployed on Replit and uses TiDB Serverless for the database.
+This document describes the production deployment process for the Intelligent Standards Assistant (ISA). ISA is deployed on Replit and uses a managed MySQL-compatible relational database in production.
 
 ## Architecture
 
@@ -13,8 +13,8 @@ This document describes the production deployment process for the Intelligent St
 │                                                              │
 │  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐   │
 │  │   Client     │    │   Server     │    │   Database   │   │
-│  │   (React)    │◄──►│   (Node.js)  │◄──►│   (TiDB)     │   │
-│  │   Vite       │    │   Express    │    │   Serverless │   │
+│  │   (React)    │◄──►│   (Node.js)  │◄──►│   Managed    │   │
+│  │   Vite       │    │   Express    │    │   MySQL DB   │   │
 │  └──────────────┘    └──────────────┘    └──────────────┘   │
 │                              │                               │
 │                              ▼                               │
@@ -32,7 +32,7 @@ The following environment variables must be configured in the production environ
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `DATABASE_URL` | TiDB Serverless connection string | Yes |
+| `DATABASE_URL` | Managed MySQL-compatible DB connection string | Yes |
 | `OPENAI_API_KEY` | OpenAI API key for embeddings and LLM | Yes |
 | `OPENAI_API_BASE` | OpenAI API base URL (optional) | No |
 | `NODE_ENV` | Set to `production` | Yes |

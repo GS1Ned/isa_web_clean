@@ -35,7 +35,7 @@ Sustainability compliance intelligence platform connecting EU ESG regulations to
 - Node.js 22.13.0 + Express 4.21.2
 - tRPC 11.6.0 server
 - Drizzle ORM 0.44.5 + mysql2 3.15.1
-- TiDB (MySQL-compatible)
+- MySQL-compatible relational DB
 - OpenAI API (GPT-4 + text-embedding-3-small)
 - Playwright 1.57.0 (web scraping)
 

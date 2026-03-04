@@ -68,7 +68,7 @@ You are Claude Opus 4.6 running in the Claude Code VS Code extension. Your missi
 
 ### Core Directories
 - `client/` - React 19 frontend (Vite, TypeScript, Tailwind CSS 4, shadcn/ui)
-- `server/` - Express 4 backend (tRPC 11, Drizzle ORM, MySQL/TiDB)
+- `server/` - Express 4 backend (tRPC 11, Drizzle ORM, MySQL-compatible relational DB)
 - `drizzle/` - Database schema and migrations
 - `data/` - Dataset files and metadata (1,184 ESRS datapoints, 60+ GS1 standards)
 - `docs/` - Documentation (governance, planning, specs, quality)
@@ -77,7 +77,7 @@ You are Claude Opus 4.6 running in the Claude Code VS Code extension. Your missi
 
 ### Key Technologies
 - **Frontend:** React 19, TypeScript 5.9.3, Tailwind CSS 4, Wouter routing, tRPC client
-- **Backend:** Node.js 22.13.0, Express 4, tRPC 11, Drizzle ORM, MySQL/TiDB
+- **Backend:** Node.js 22.13.0, Express 4, tRPC 11, Drizzle ORM, MySQL-compatible relational DB
 - **AI/ML:** OpenAI GPT-4 (advisory, Q&A), text-embedding-3-small (semantic search)
 - **Infrastructure:** Manus hosting, GitHub CI/CD, Playwright scraping, Vitest testing
 
@@ -152,7 +152,7 @@ Document in `docs/CLAUDE_CODE_ENV_INVENTORY.md`:
 
 #### 1.3 External Integrations
 List in `docs/CLAUDE_CODE_INTEGRATIONS.md`:
-- **Database:** TiDB (MySQL-compatible), connection pooling, SSL/TLS
+- **Database:** MySQL-compatible relational DB, connection pooling, SSL/TLS
 - **AI/ML:** OpenAI API (GPT-4, text-embedding-3-small), token usage tracking
 - **Web scraping:** Playwright (14 news sources), health monitoring, retry logic
 - **Auth:** Manus OAuth 2.0, session management

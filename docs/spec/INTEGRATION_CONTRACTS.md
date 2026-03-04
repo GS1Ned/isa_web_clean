@@ -319,7 +319,7 @@ trpc.v2.catalog.getRegulations() // with new fields
 
 **Strong Consistency:**
 - All reads within same transaction see same data
-- Database ACID guarantees via TiDB
+- Database ACID guarantees via the active MySQL-compatible relational engine
 
 **Eventual Consistency:**
 - Knowledge base regeneration (manual trigger)
