@@ -22,6 +22,149 @@ import {
   ASK_ISA_STAGE_A_ABSTENTION_MESSAGE,
   validateAskISAStageAAnswer,
 } from "../ask-isa-stage-a";
+import { getEsrsGs1MappingsByStandard } from "../db-esrs-gs1-mapping.js";
+
+// ---------------------------------------------------------------------------
+// E-04: Query intent classification
+// ---------------------------------------------------------------------------
+
+type QueryIntent = 'REGULATORY_CHANGE' | 'GAP_ANALYSIS' | 'ESRS_MAPPING' | 'NEWS_QUERY' | 'GENERAL_QA';
+
+/**
+ * Classifies the user's query intent using fast rule-based matching.
+ * No LLM call — regex only for minimal latency overhead.
+ */
+function classifyQueryIntent(question: string): QueryIntent {
+  if (/what changed|recent(ly)?|latest|updated?|amended|new rule|new regulation/i.test(question)) {
+    return 'REGULATORY_CHANGE';
+  }
+  if (/\bgap\b|coverage|missing|uncovered|not covered|lack(ing)?/i.test(question)) {
+    return 'GAP_ANALYSIS';
+  }
+  if (/\bmap\b|mapping|attribute|gs1\b|gtin\b|gln\b|gs1 attribute/i.test(question)) {
+    return 'ESRS_MAPPING';
+  }
+  if (/\bnews\b|article|announcement|press release/i.test(question)) {
+    return 'NEWS_QUERY';
+  }
+  return 'GENERAL_QA';
+}
+
+// ---------------------------------------------------------------------------
+// E-06: Recent news article retrieval
+// ---------------------------------------------------------------------------
+
+/**
+ * Queries hub_news for high-credibility articles published in the last 30 days
+ * that keyword-match the query. Results are shaped to match KnowledgeEmbeddingResult
+ * so they can be merged seamlessly into the main retrieval set.
+ */
+async function searchRecentNewsArticles(
+  query: string,
+  limit = 4
+): Promise<KnowledgeEmbeddingResult[]> {
+  const db = await getDb();
+  if (!db) return [];
+
+  // Extract up to 3 significant keywords (≥4 chars) from the query.
+  const keywords = query
+    .split(/\s+/)
+    .map((w) => w.replace(/[^a-zA-Z0-9]/g, ''))
+    .filter((w) => w.length >= 4)
+    .slice(0, 3);
+
+  if (keywords.length === 0) return [];
+
+  try {
+    const likeConditions = keywords
+      .map((kw) => `(title LIKE '%${kw}%' OR content LIKE '%${kw}%' OR summary LIKE '%${kw}%')`)
+      .join(' OR ');
+
+    const rows = await db.execute(sql.raw(`
+      SELECT
+        id,
+        title,
+        COALESCE(summary, LEFT(content, 500)) as content,
+        source_url as url,
+        credibility_score,
+        published_date,
+        regulation_tags
+      FROM hub_news
+      WHERE published_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+        AND credibility_score >= 0.7
+        AND (${likeConditions})
+      ORDER BY published_date DESC
+      LIMIT ${limit}
+    `));
+
+    const articles = ((rows as any)[0] || []) as Record<string, unknown>[];
+
+    return articles.map((a, idx) => {
+      const credibility = parseFloat(String(a.credibility_score || 0));
+      const authorityLevel =
+        credibility >= 0.9 ? 'binding' :
+        credibility >= 0.7 ? 'authoritative' :
+        'guidance';
+      return {
+        id: -(idx + 1), // Negative IDs to distinguish from knowledge_embeddings
+        sourceType: 'news',
+        sourceId: Number(a.id),
+        title: String(a.title || ''),
+        content: String(a.content || ''),
+        url: a.url ? String(a.url) : null,
+        authorityLevel,
+        semanticLayer: null,
+        sourceAuthority: null,
+        similarity: credibility * 0.75, // Normalize into [0,1] range
+        publishedDate: a.published_date ? String(a.published_date) : undefined,
+      } as KnowledgeEmbeddingResult & { publishedDate?: string };
+    });
+  } catch (error) {
+    serverLogger.error('[AskISA-v2] Recent news retrieval failed:', error);
+    return [];
+  }
+}
+
+// ---------------------------------------------------------------------------
+// E-05: Inline ESRS-GS1 recommendation extraction
+// ---------------------------------------------------------------------------
+
+const ESRS_CODE_PATTERN = /ESRS\s+([ESAG]\d+(?:-\d+)?)/gi;
+
+/**
+ * Extracts ESRS standard codes mentioned in the LLM answer and fetches the
+ * top GS1 attribute mappings for each, returning them as inline recommendations.
+ */
+async function buildInlineRecommendations(answer: string): Promise<
+  Array<{
+    esrsStandard: string;
+    mappings: Array<{ shortName: string; gs1Relevance: string; effectiveConfidence: string; decayReason: string | null }>;
+  }>
+> {
+  const matches = [...answer.matchAll(ESRS_CODE_PATTERN)];
+  const standards = [...new Set(matches.map((m) => `ESRS ${m[1]}`.toUpperCase()))].slice(0, 3);
+
+  if (standards.length === 0) return [];
+
+  const results = await Promise.all(
+    standards.map(async (standard) => {
+      try {
+        const rows = await getEsrsGs1MappingsByStandard(standard) as Record<string, unknown>[];
+        const top3 = rows.slice(0, 3).map((row) => ({
+          shortName: String(row.short_name || row.data_point_name || ''),
+          gs1Relevance: String(row.gs1_relevance || ''),
+          effectiveConfidence: String(row.effectiveConfidence || row.confidence || 'unknown'),
+          decayReason: row.decayReason ? String(row.decayReason) : null,
+        }));
+        return { esrsStandard: standard, mappings: top3 };
+      } catch {
+        return { esrsStandard: standard, mappings: [] };
+      }
+    })
+  );
+
+  return results.filter((r) => r.mappings.length > 0);
+}
 
 // Types for enhanced search
 interface KnowledgeEmbeddingResult {
@@ -490,17 +633,27 @@ export const askISAV2Router = router({
       const { question, includeGapAnalysis, regulationId } = input;
 
       try {
+        // E-04: Classify query intent before retrieval.
+        const intent = classifyQueryIntent(question);
+
         // Step 1: Generate query embedding
         const queryEmbedding = await generateQueryEmbedding(question);
         if (queryEmbedding.length === 0) {
           return { error: 'Failed to process question' };
         }
 
-        // Step 2: Search knowledge embeddings
-        const searchResultsRaw = await searchKnowledgeEmbeddings(queryEmbedding, {
-          limit: 8,
-        });
-        const searchResults = [...searchResultsRaw].sort(
+        // Step 2: Search knowledge embeddings + E-06 news augmentation.
+        const [searchResultsRaw, newsResults] = await Promise.all([
+          searchKnowledgeEmbeddings(queryEmbedding, { limit: 8 }),
+          // E-06: For change/news intents, fetch recent high-credibility news articles.
+          intent === 'REGULATORY_CHANGE' || intent === 'NEWS_QUERY'
+            ? searchRecentNewsArticles(question, 4)
+            : Promise.resolve([] as KnowledgeEmbeddingResult[]),
+        ]);
+
+        // Prepend news results so they appear first in context when relevant.
+        const combinedResults = [...newsResults, ...searchResultsRaw];
+        const searchResults = [...combinedResults].sort(
           (a, b) => retrievalPriorityScore(b) - retrievalPriorityScore(a)
         );
         const validatedSources = await validateCitations(
@@ -547,9 +700,15 @@ export const askISAV2Router = router({
         }
 
         // Step 4: Build context for LLM
-        const contextParts = searchResults.map((r, i) => 
-          `[Source ${i + 1}] ${r.title}\n${r.content}\nAuthority: ${r.authorityLevel || 'unknown'}`
-        );
+        // E-06: Format news results with their publication date for temporal grounding.
+        const contextParts = searchResults.map((r, i) => {
+          const isNews = r.sourceType === 'news';
+          const dateTag = isNews && (r as any).publishedDate
+            ? ` - ${String((r as any).publishedDate).slice(0, 10)}`
+            : '';
+          const label = isNews ? `[Recent News${dateTag}]` : `[Source ${i + 1}]`;
+          return `${label} ${r.title}\n${r.content}\nAuthority: ${r.authorityLevel || 'unknown'}`;
+        });
 
         let systemPrompt = `You are ISA, the Intelligent Standards Assistant. Answer questions about EU sustainability regulations and GS1 standards based on the provided context.
 
@@ -582,6 +741,10 @@ ${contextParts.join('\n\n')}`;
         });
 
         const answer = response.choices[0]?.message?.content || 'Unable to generate answer';
+
+        // E-05: Build inline ESRS-GS1 recommendations from ESRS codes cited in the answer.
+        const inlineRecommendations = await buildInlineRecommendations(answer);
+
         const claimVerification = verifyResponseClaims(
           answer,
           searchResults.map((r) => ({
@@ -663,6 +826,8 @@ ${contextParts.join('\n\n')}`;
               gapCount: gapAnalysis.gaps.length,
               recommendations: gapAnalysis.recommendations,
             } : null,
+            intent, // E-04
+            inlineRecommendations, // E-05
           };
         }
 
@@ -692,6 +857,8 @@ ${contextParts.join('\n\n')}`;
             gapCount: gapAnalysis.gaps.length,
             recommendations: gapAnalysis.recommendations,
           } : null,
+          intent, // E-04
+          inlineRecommendations, // E-05
         };
       } catch (error) {
         serverLogger.error('[AskISA-v2] Enhanced ask failed:', error);

@@ -304,6 +304,31 @@ export const hubRouter = router({
     }
   }),
 
+  // Get news articles related to a specific regulation
+  getNewsByRegulation: publicProcedure
+    .input(z.object({ regulationId: z.number(), limit: z.number().optional() }))
+    .query(async ({ input }) => {
+      try {
+        const db = await getDb();
+        if (!db) return [];
+
+        const limit = input.limit || 10;
+        const news = await db
+          .select()
+          .from(hubNews)
+          .where(
+            sql`JSON_CONTAINS(${hubNews.relatedRegulationIds}, ${String(input.regulationId)}, '$')`
+          )
+          .orderBy(desc(hubNews.publishedDate))
+          .limit(limit);
+
+        return news;
+      } catch (error) {
+        serverLogger.error("[tRPC] Get news by regulation failed:", error);
+        return [];
+      }
+    }),
+
   // Get event for a specific article
   getEventForArticle: publicProcedure
     .input(z.object({ articleId: z.number() }))
