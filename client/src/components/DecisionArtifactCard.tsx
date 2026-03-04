@@ -2,6 +2,10 @@ import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, FileSearch, Info, Scale, Sparkles } from "lucide-react";
+import {
+  formatDecisionPostureLabel,
+  getDecisionPostureSummary,
+} from "@/lib/esrs-decision-posture";
 
 type DecisionArtifactSummaryValue =
   | string
@@ -74,14 +78,6 @@ function getConfidenceTone(level: string) {
   }
 }
 
-function formatConfidenceMeta(value?: string) {
-  if (!value) return null;
-
-  return value
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, (match) => match.toUpperCase());
-}
-
 export function DecisionArtifactCard({
   artifact,
   title = "Decision Artifact",
@@ -95,6 +91,7 @@ export function DecisionArtifactCard({
   const evidence = artifact.evidence ?? {};
   const codePaths = evidence.codePaths ?? [];
   const dataSources = evidence.dataSources ?? [];
+  const postureSummary = getDecisionPostureSummary(artifact.confidence);
 
   return (
     <Card>
@@ -114,7 +111,7 @@ export function DecisionArtifactCard({
             </Badge>
             {artifact.confidence.uncertaintyClass ? (
               <Badge variant="outline">
-                {formatConfidenceMeta(artifact.confidence.uncertaintyClass)}
+                {formatDecisionPostureLabel(artifact.confidence.uncertaintyClass)}
               </Badge>
             ) : null}
             <Badge variant={artifact.confidence.reviewRecommended ? "secondary" : "outline"}>
@@ -149,11 +146,11 @@ export function DecisionArtifactCard({
           </div>
           <p className="text-sm text-blue-900">{artifact.confidence.basis}</p>
           <p className="mt-2 text-xs font-medium text-blue-900">
-            Review: {artifact.confidence.reviewRecommended ? "recommended before downstream sign-off" : "routine downstream use acceptable"}
+            Review: {postureSummary.title.toLowerCase()}
           </p>
           {artifact.confidence.escalationAction ? (
             <p className="mt-1 text-xs text-blue-900">
-              Escalation: {formatConfidenceMeta(artifact.confidence.escalationAction)}
+              Escalation: {formatDecisionPostureLabel(artifact.confidence.escalationAction)}
             </p>
           ) : null}
         </div>

@@ -59,6 +59,7 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 ## Operational Notes
 - Current decision artefacts expose heuristic confidence with a stable contract: `confidence.level` in `{high, medium, low}`, `confidence.score` in `[0,1]`, `confidence.basis` as a human-readable explanation, additive `confidence.reviewRecommended` to flag non-high-confidence outputs for downstream review, and additive `confidence.uncertaintyClass` / `confidence.escalationAction` fields so downstream delivery layers do not invent their own review thresholds.
 - Current score banding is conservative and evidence-backed in code: `high >= 0.75`, `medium >= 0.50`, else `low`.
+- Active ESRS tool surfaces now consume that same posture contract directly: `client/src/pages/GapAnalyzer.tsx` and `client/src/pages/ToolsComplianceRoadmap.tsx` render explicit downstream review guidance from the stable decision artefact instead of inferring their own review semantics.
 
 ## Operational Unknowns
 - External calibration of ESRS mapping confidence against reviewed gold sets remains UNKNOWN from repository-only evidence.

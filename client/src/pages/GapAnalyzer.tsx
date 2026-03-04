@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import {
   Select,
@@ -41,6 +42,7 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { DecisionArtifactCard } from "@/components/DecisionArtifactCard";
+import { getDecisionPostureSummary } from "@/lib/esrs-decision-posture";
 
 // Epistemic status badge component
 function EpistemicBadge({ status, confidence }: { status: string; confidence: string }) {
@@ -174,6 +176,9 @@ export default function GapAnalyzer() {
   };
 
   const result = analyzeMutation.data;
+  const decisionPosture = result
+    ? getDecisionPostureSummary(result.decisionArtifact.confidence)
+    : null;
 
   // Navigate to Impact Simulator with Core 1 data
   const handleContinueToImpactSimulator = () => {
@@ -462,6 +467,19 @@ export default function GapAnalyzer() {
                   title="Decision Core Artifact"
                   description="Stable ESRS_MAPPING gap-analysis artifact used for downstream explainability and delivery."
                 />
+
+                {decisionPosture ? (
+                  <Alert className={decisionPosture.className}>
+                    <ShieldCheck className="h-4 w-4" />
+                    <AlertTitle>{decisionPosture.title}</AlertTitle>
+                    <AlertDescription>
+                      <p>{decisionPosture.description}</p>
+                      <p className="mt-1 font-medium">
+                        Recommended next action: {decisionPosture.badgeLabel}.
+                      </p>
+                    </AlertDescription>
+                  </Alert>
+                ) : null}
 
                 {/* Gaps by Priority */}
                 {result.criticalGaps.length > 0 && (
