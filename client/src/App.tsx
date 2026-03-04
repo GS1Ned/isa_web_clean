@@ -58,6 +58,7 @@ const AdvisoryTraceability = lazy(() => import("./pages/AdvisoryTraceability")
 );
 const DatasetRegistry = lazy(() => import("./pages/DatasetRegistry"));
 const AdvisoryReports = lazy(() => import("./pages/AdvisoryReports"));
+const AdvisoryReportDetail = lazy(() => import("./pages/AdvisoryReportDetail"));
 const GovernanceDocuments = lazy(() => import("./pages/GovernanceDocuments"));
 const AdminAnalyticsDashboard = lazy(
   () => import("./pages/AdminAnalyticsDashboard")
@@ -212,6 +213,7 @@ function Router() {
       <Route path="/advisory/diff" component={AdvisoryDiff} />
       <Route path="/advisory/compare" component={AdvisoryDiffComparison} />
       <Route path="/dataset-registry" component={DatasetRegistry} />
+      <Route path="/advisory-reports/:id" component={AdvisoryReportDetail} />
       <Route path="/advisory-reports" component={AdvisoryReports} />
       <Route path="/governance-documents" component={GovernanceDocuments} />
       <Route path="/admin/monitoring" component={AdminMonitoring} />
