@@ -45,6 +45,8 @@ import { CheckCircle2, Library, AlertTriangle, Info } from "lucide-react";
 import { AuthorityBadge, AuthorityScore, AuthorityLegend } from "@/components/AuthorityBadge";
 import { jsPDF } from "jspdf";
 import { useI18n, LanguageSwitcher } from "@/lib/i18n";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { buildAskIsaSourcePostureSummary } from "@/lib/ask-isa-source-posture";
 
 /**
  * Ask ISA - RAG-Powered Q&A Interface
@@ -1157,6 +1159,59 @@ export default function AskISA() {
                           </SelectContent>
                         </Select>
                       </div>
+                      {(() => {
+                        const visibleSources = filterSourcesByAuthority(message.sources);
+                        const posture = buildAskIsaSourcePostureSummary(visibleSources || []);
+                        if (!visibleSources?.length) {
+                          return null;
+                        }
+
+                        const postureTone =
+                          posture.deprecatedCount > 0
+                            ? "border-destructive/30 bg-destructive/5"
+                            : posture.needsVerificationCount > 0
+                              ? "border-yellow-500/30 bg-yellow-500/5"
+                              : "border-muted bg-muted/40";
+
+                        const postureIconClass =
+                          posture.deprecatedCount > 0
+                            ? "text-destructive"
+                            : posture.needsVerificationCount > 0
+                              ? "text-yellow-600"
+                              : "text-muted-foreground";
+
+                        return (
+                          <Alert className={`mb-3 ${postureTone}`}>
+                            {posture.deprecatedCount > 0 || posture.needsVerificationCount > 0 ? (
+                              <AlertTriangle className={`h-4 w-4 ${postureIconClass}`} />
+                            ) : (
+                              <Info className={`h-4 w-4 ${postureIconClass}`} />
+                            )}
+                            <AlertDescription className="text-sm">
+                              {posture.allVerifiedWithinWindow ? (
+                                <>
+                                  Verification posture: all {posture.totalSources} cited sources are within the
+                                  current verification window.
+                                </>
+                              ) : (
+                                <>
+                                  Verification posture: {posture.needsVerificationCount} of {posture.totalSources} cited
+                                  sources need review
+                                  {posture.deprecatedCount > 0
+                                    ? `, and ${posture.deprecatedCount} source${posture.deprecatedCount === 1 ? "" : "s"} ${posture.deprecatedCount === 1 ? "is" : "are"} deprecated`
+                                    : ""}
+                                  . Reasons: {posture.countsByReason.stale_last_verified_date} stale,{" "}
+                                  {posture.countsByReason.missing_last_verified_date} missing date,{" "}
+                                  {posture.countsByReason.invalid_last_verified_date} invalid date.
+                                  {typeof posture.oldestVerificationAgeDays === "number"
+                                    ? ` Oldest known verification: ${posture.oldestVerificationAgeDays} days ago.`
+                                    : ""}
+                                </>
+                              )}
+                            </AlertDescription>
+                          </Alert>
+                        );
+                      })()}
                       <div className="grid gap-2">
                         {filterSourcesByAuthority(message.sources)?.map((source, sourceIdx) => (
                           <Card
