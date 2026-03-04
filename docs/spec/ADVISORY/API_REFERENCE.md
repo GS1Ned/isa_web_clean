@@ -116,6 +116,8 @@ Shared input/output shapes are defined in `shared/`. Use these modules alongside
 | `advisory.getSectorModels` | Query | protected | [AdvisoryGetSectorModelsInput](#type-advisory-getsectormodels) | [AdvisoryGetSectorModelsOutput](#type-advisory-getsectormodels) |
 | `advisory.getSummary` | Query | protected | [AdvisoryGetSummaryInput](#type-advisory-getsummary) | [AdvisoryGetSummaryOutput](#type-advisory-getsummary) |
 
+`advisory.getOverview` and `advisory.getFull` are the active read surfaces for current advisory UIs. The remaining advisory section procedures in this block are compatibility surfaces retained for migration-era consumers.
+
 ### advisoryDiff
 
 | Procedure | Type | Auth | Input Type | Output Type |
@@ -123,6 +125,8 @@ Shared input/output shapes are defined in `shared/`. Use these modules alongside
 | `advisoryDiff.computeDiff` | Query | protected | [AdvisoryDiffComputeDiffInput](#type-advisorydiff-computediff) | [AdvisoryDiffComputeDiffOutput](#type-advisorydiff-computediff) |
 | `advisoryDiff.getAdvisorySummary` | Query | protected | [AdvisoryDiffGetAdvisorySummaryInput](#type-advisorydiff-getadvisorysummary) | [AdvisoryDiffGetAdvisorySummaryOutput](#type-advisorydiff-getadvisorysummary) |
 | `advisoryDiff.listVersions` | Query | protected | [AdvisoryDiffListVersionsInput](#type-advisorydiff-listversions) | [AdvisoryDiffListVersionsOutput](#type-advisorydiff-listversions) |
+
+`advisoryDiff.*` remains a compatibility namespace. Active advisory compare and detail surfaces prefer persisted `advisory_reports` plus `advisory_report_versions` data when available.
 
 ### advisoryReports
 
