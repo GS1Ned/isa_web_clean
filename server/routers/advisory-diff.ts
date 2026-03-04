@@ -7,10 +7,12 @@
 
 import { z } from "zod";
 import { router, publicProcedure } from "../_core/trpc";
-import { computeAdvisoryDiffPayload } from "../advisory-diff-runtime";
+import {
+  computeAdvisoryDiffPayload,
+  getAdvisorySummaryPayload,
+} from "../advisory-diff-runtime";
 import {
   listAdvisoryVersionsWithSnapshots,
-  loadLegacyAdvisorySummary,
 } from "../advisory-legacy-compat";
 
 export const advisoryDiffRouter = router({
@@ -38,7 +40,5 @@ export const advisoryDiffRouter = router({
    */
   getAdvisorySummary: publicProcedure
     .input(z.object({ version: z.string().regex(/^v\d+\.\d+$/) }))
-    .query(async ({ input }) => {
-      return loadLegacyAdvisorySummary(input.version);
-    }),
+    .query(async ({ input }) => getAdvisorySummaryPayload(input.version)),
 });
