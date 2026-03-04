@@ -21,6 +21,7 @@ import {
   Download,
   Sparkles,
 } from "lucide-react";
+import { DecisionArtifactCard } from "@/components/DecisionArtifactCard";
 
 export default function ToolsComplianceRoadmap() {
   const [selectedSector, setSelectedSector] = useState<string>("");
@@ -268,6 +269,12 @@ export default function ToolsComplianceRoadmap() {
                     </div>
                   </div>
                 </Card>
+
+                <DecisionArtifactCard
+                  artifact={generatedRoadmap.decisionArtifact}
+                  title="Decision Core Artifact"
+                  description="Stable ESRS_MAPPING roadmap artifact summarizing confidence, evidence, and phase shape."
+                />
 
                 {/* Quick Wins */}
                 {groupedPhases?.quick_win && (

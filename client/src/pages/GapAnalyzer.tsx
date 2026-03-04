@@ -40,6 +40,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
+import { DecisionArtifactCard } from "@/components/DecisionArtifactCard";
 
 // Epistemic status badge component
 function EpistemicBadge({ status, confidence }: { status: string; confidence: string }) {
@@ -455,6 +456,12 @@ export default function GapAnalyzer() {
                     </div>
                   </CardContent>
                 </Card>
+
+                <DecisionArtifactCard
+                  artifact={result.decisionArtifact}
+                  title="Decision Core Artifact"
+                  description="Stable ESRS_MAPPING gap-analysis artifact used for downstream explainability and delivery."
+                />
 
                 {/* Gaps by Priority */}
                 {result.criticalGaps.length > 0 && (
