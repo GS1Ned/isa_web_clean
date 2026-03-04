@@ -13,6 +13,8 @@ allowed_planning = {
 }
 
 allowed_planning_prefixes = (
+    # Support-only handoff artifacts; not a competing planning queue.
+    "docs/planning/agent-handoffs/",
     # Refactoring inventory/artifacts are governed by scripts/refactor/* gates.
     "docs/planning/refactoring/",
 )
