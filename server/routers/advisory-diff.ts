@@ -11,6 +11,8 @@ import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import { execFileSync } from "child_process";
 import { serverLogger } from "../_core/logger-wiring";
+import { getAdvisoryReports, getReportVersions } from "../db-advisory-reports";
+import { enrichAdvisoryDiffWithSnapshot } from "../advisory-diff-snapshot";
 import {
   listAdvisoryVersionsWithSnapshots,
   loadLegacyAdvisorySummary,
@@ -71,7 +73,38 @@ export const advisoryDiffRouter = router({
         }
       }
 
-      return diffData;
+      try {
+        const reports = await getAdvisoryReports();
+        const matchingReports = reports.filter(
+          report => normalizeAdvisoryVersionTag(report.version ?? "") === normalizedVersion2,
+        );
+        const versionsByReportId = new Map(
+          await Promise.all(
+            matchingReports.map(async report => [report.id, await getReportVersions(report.id)] as const),
+          ),
+        );
+
+        return enrichAdvisoryDiffWithSnapshot({
+          diffData,
+          version1: normalizedVersion1,
+          version2: normalizedVersion2,
+          reports: matchingReports,
+          versionsByReportId,
+        });
+      } catch (error: any) {
+        serverLogger.warn("[AdvisoryDiff] Falling back to legacy advisory diff only", {
+          version1,
+          version2,
+          error: String(error?.message ?? error),
+        });
+        return {
+          ...diffData,
+          snapshotBacked: {
+            matched: false,
+            source: "legacy_file_only" as const,
+          },
+        };
+      }
     }),
 
   /**
