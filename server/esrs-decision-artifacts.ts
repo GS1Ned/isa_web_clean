@@ -166,8 +166,48 @@ const BASE_CONFIDENCE_SCORE: Record<DecisionArtifactConfidenceLevel, number> = {
   low: 0.35,
 };
 
+const DECISION_ARTIFACT_CONFIDENCE_BANDS = {
+  high: 0.75,
+  medium: 0.5,
+} as const;
+
 function clampScore(score: number): number {
   return Math.max(0, Math.min(1, Number(score.toFixed(2))));
+}
+
+export function scoreToDecisionArtifactConfidenceLevel(
+  score: number
+): DecisionArtifactConfidenceLevel {
+  const normalized = clampScore(score);
+  if (normalized >= DECISION_ARTIFACT_CONFIDENCE_BANDS.high) return "high";
+  if (normalized >= DECISION_ARTIFACT_CONFIDENCE_BANDS.medium) return "medium";
+  return "low";
+}
+
+function minConfidenceLevel(
+  left: DecisionArtifactConfidenceLevel,
+  right: DecisionArtifactConfidenceLevel
+): DecisionArtifactConfidenceLevel {
+  const order = ["low", "medium", "high"];
+  return order.indexOf(left) <= order.indexOf(right) ? left : right;
+}
+
+export function buildDecisionArtifactConfidence(input: {
+  preferredLevel?: DecisionArtifactConfidenceLevel;
+  rawScore: number;
+  basis: string;
+}): DecisionArtifactConfidence {
+  const score = clampScore(input.rawScore);
+  const derivedLevel = scoreToDecisionArtifactConfidenceLevel(score);
+  const level = input.preferredLevel
+    ? minConfidenceLevel(input.preferredLevel, derivedLevel)
+    : derivedLevel;
+
+  return {
+    level,
+    score,
+    basis: input.basis,
+  };
 }
 
 export function buildGapAnalysisDecisionArtifact(input: {
@@ -202,11 +242,11 @@ export function buildGapAnalysisDecisionArtifact(input: {
       companySize: input.companySize,
       targetRegulations: input.targetRegulations ?? [],
     },
-    confidence: {
-      level: input.overallConfidence,
-      score,
+    confidence: buildDecisionArtifactConfidence({
+      preferredLevel: input.overallConfidence,
+      rawScore: score,
       basis: `Coverage analysis across ${input.totalRequirements} mapped requirements with ${input.factCount} fact markers and ${input.inferenceCount} inferred markers.`,
-    },
+    }),
     evidence: {
       codePaths: [
         'server/routers/gap-analyzer.ts',
@@ -257,11 +297,11 @@ export function buildAttributeRecommendationDecisionArtifact(input: {
       companySize: input.companySize,
       targetRegulations: input.targetRegulations ?? [],
     },
-    confidence: {
-      level: input.overallConfidence,
-      score: clampScore(averageScore),
+    confidence: buildDecisionArtifactConfidence({
+      preferredLevel: input.overallConfidence,
+      rawScore: averageScore,
       basis: input.overallBasis,
-    },
+    }),
     evidence: {
       codePaths: [
         'server/attribute-recommender.ts',
@@ -298,8 +338,7 @@ export function buildRoadmapDecisionArtifact(input: {
   const mappingBoost = Math.min(input.mappingCount / 25, 0.18);
   const phaseShapeBoost = input.phaseCount >= 3 ? 0.08 : 0.03;
   const score = clampScore(baseScore + mappingBoost + phaseShapeBoost);
-  const level: DecisionArtifactConfidenceLevel =
-    score >= 0.7 ? 'high' : score >= 0.45 ? 'medium' : 'low';
+  const level = scoreToDecisionArtifactConfidenceLevel(score);
 
   return {
     artifactVersion: '1.0',
@@ -311,11 +350,11 @@ export function buildRoadmapDecisionArtifact(input: {
       companySize: input.companySize,
       esrsRequirements: input.esrsRequirements,
     },
-    confidence: {
-      level,
-      score,
+    confidence: buildDecisionArtifactConfidence({
+      preferredLevel: level,
+      rawScore: score,
       basis: input.basis,
-    },
+    }),
     evidence: {
       codePaths: [
         'server/routers/esrs-roadmap.ts',

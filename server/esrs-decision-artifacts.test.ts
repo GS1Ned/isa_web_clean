@@ -1,12 +1,32 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  buildDecisionArtifactConfidence,
   buildAttributeRecommendationDecisionArtifact,
   buildGapAnalysisDecisionArtifact,
   buildRoadmapDecisionArtifact,
+  scoreToDecisionArtifactConfidenceLevel,
 } from './esrs-decision-artifacts.js';
 
 describe('ESRS decision artifacts', () => {
+  it('maps confidence scores into stable decision-artifact bands', () => {
+    expect(scoreToDecisionArtifactConfidenceLevel(0.82)).toBe('high');
+    expect(scoreToDecisionArtifactConfidenceLevel(0.72)).toBe('medium');
+    expect(scoreToDecisionArtifactConfidenceLevel(0.35)).toBe('low');
+  });
+
+  it('keeps decision-artifact confidence conservative when preferred and score-derived levels differ', () => {
+    const confidence = buildDecisionArtifactConfidence({
+      preferredLevel: 'medium',
+      rawScore: 0.83,
+      basis: 'Mixed evidence basis',
+    });
+
+    expect(confidence.level).toBe('medium');
+    expect(confidence.score).toBe(0.83);
+    expect(confidence.basis).toBe('Mixed evidence basis');
+  });
+
   it('builds a stable gap-analysis decision artifact', () => {
     const artifact = buildGapAnalysisDecisionArtifact({
       generatedAt: '2026-03-04T12:00:00.000Z',
