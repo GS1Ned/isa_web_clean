@@ -15,6 +15,7 @@ import {
 } from "../db-advisory-reports";
 import { generateReportHtmlForPdf } from "../advisory-report-export";
 import { EsrsDecisionArtifactsSchema } from "../esrs-decision-artifacts.js";
+import { resolveVersionDecisionArtifacts } from "../advisory-report-versioning.js";
 
 /**
  * Advisory Reports Router
@@ -204,6 +205,7 @@ export const advisoryReportsRouter = router({
         reportId: z.number(),
         version: z.string(),
         content: z.string(),
+        decisionArtifacts: EsrsDecisionArtifactsSchema.optional(),
         changeLog: z.string().optional(),
       })
     )
@@ -212,8 +214,14 @@ export const advisoryReportsRouter = router({
         throw new Error("Admin access required");
       }
 
+      const sourceReport = await getAdvisoryReportById(input.reportId);
+
       return await createReportVersion({
         ...input,
+        decisionArtifacts: resolveVersionDecisionArtifacts({
+          requestedArtifacts: input.decisionArtifacts,
+          sourceReport,
+        }),
         createdBy: ctx.user.name || ctx.user.email || "Unknown",
       });
     }),

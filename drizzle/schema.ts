@@ -6,6 +6,23 @@ export const advisoryReportVersions = mysqlTable("advisory_report_versions", {
 	reportId: int().notNull(),
 	version: varchar({ length: 32 }).notNull(),
 	content: text().notNull(),
+	decisionArtifacts: json("decisionArtifacts").$type<Array<{
+		artifactVersion: string,
+		artifactType: string,
+		capability: string,
+		generatedAt: string,
+		subject: Record<string, unknown>,
+		confidence: {
+			level: string,
+			score: number,
+			basis: string,
+		},
+		evidence: {
+			codePaths: string[],
+			dataSources: string[],
+		},
+		summary: Record<string, unknown>,
+	}>>(),
 	changeLog: text(),
 	createdBy: varchar({ length: 255 }),
 	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
