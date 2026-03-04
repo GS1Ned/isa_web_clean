@@ -104,6 +104,28 @@ function normalizeTopRecommendations(full: any, summary: any) {
   }));
 }
 
+function normalizeRecommendations(full: any) {
+  const recommendations = Array.isArray(full?.recommendations) ? full.recommendations : [];
+
+  return recommendations.map((item: any, index: number) => ({
+    ...item,
+    id: item?.id ?? item?.recommendationId ?? `legacy-rec-${index + 1}`,
+    recommendationId:
+      item?.recommendationId ??
+      item?.id ??
+      `REC-${String(index + 1).padStart(3, "0")}`,
+    title: item?.title ?? "Recommendation",
+    description: item?.description ?? "No description available.",
+    timeframe: bucketRecommendationTimeframe(item?.timeframe),
+    category:
+      item?.category ??
+      (item?.priority === "critical" || item?.priority === "high" ? "strategic" : "data_model"),
+    estimatedEffort: item?.estimatedEffort ?? item?.estimatedROI ?? "unknown",
+    implementationStatus: item?.implementationStatus ?? "proposed",
+    datasetReferences: Array.isArray(item?.datasetReferences) ? item.datasetReferences : [],
+  }));
+}
+
 function normalizeGapAnalysis(full: any) {
   if (Array.isArray(full?.gapAnalysis)) {
     return full.gapAnalysis;
@@ -195,7 +217,7 @@ export async function buildAdvisoryReadModel() {
 
   const normalizedMappingResults = normalizeMappingResults(advisory);
   const normalizedGapAnalysis = normalizeGapAnalysis(advisory);
-  const recommendations = Array.isArray(advisory?.recommendations) ? advisory.recommendations : [];
+  const normalizedRecommendations = normalizeRecommendations(advisory);
 
   const mappingCounts =
     summary?.mappingResults?.byConfidence ?? {
@@ -230,7 +252,7 @@ export async function buildAdvisoryReadModel() {
     };
 
   const timeframeCounts = countBy(
-    recommendations.map((item: any) => bucketRecommendationTimeframe(item?.timeframe)),
+    normalizedRecommendations.map((item: any) => item.timeframe),
   );
 
   return {
@@ -263,7 +285,7 @@ export async function buildAdvisoryReadModel() {
         total:
           summary?.recommendations?.total ??
           advisory?.summary?.totalRecommendations ??
-          recommendations.length,
+          normalizedRecommendations.length,
         byTimeframe:
           summary?.recommendations?.byTimeframe ?? {
             "short-term": timeframeCounts["short-term"] ?? 0,
@@ -317,18 +339,22 @@ export async function buildAdvisoryReadModel() {
               ? 0
               : Math.round(
                   ((mappingCounts.direct + mappingCounts.partial) /
-                    normalizedMappingResults.length) *
+            normalizedMappingResults.length) *
                     1000,
                 ) / 10,
         },
       coverageByESRS: normalizeCoverageByEsrs(advisory, summary),
-      topRecommendations: normalizeTopRecommendations(advisory, summary),
+      topRecommendations: normalizeTopRecommendations(
+        { ...advisory, recommendations: normalizedRecommendations },
+        summary,
+      ),
       migrationState,
     },
     advisory: {
       ...advisory,
       mappingResults: normalizedMappingResults,
       gapAnalysis: normalizedGapAnalysis,
+      recommendations: normalizedRecommendations,
       migrationState,
     },
     metadata: {

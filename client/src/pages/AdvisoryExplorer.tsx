@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, CheckCircle2, Filter, Search, XCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { buildAdvisoryExplorerModel } from "@/lib/advisory-explorer";
 
 type ConfidenceLevel = "direct" | "partial" | "missing" | undefined;
 type SeverityLevel = "critical" | "moderate" | "low-priority" | undefined;
@@ -25,40 +26,61 @@ export default function AdvisoryExplorer() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  // Fetch data with filters
-  const { data: mappingsData, isLoading: loadingMappings } = trpc.advisory.getMappings.useQuery({
-    sector: selectedSector,
-    regulation: selectedRegulation,
-    confidence: selectedConfidence,
-  });
-
-  const { data: gapsData, isLoading: loadingGaps } = trpc.advisory.getGaps.useQuery({
-    severity: selectedSeverity,
-    sector: selectedSector,
-  });
-
-  const { data: recommendationsData, isLoading: loadingRecommendations } = trpc.advisory.getRecommendations.useQuery({
-    timeframe: selectedTimeframe,
-  });
+  const { data: advisory, isLoading } = trpc.advisory.getFull.useQuery();
+  const explorerModel = buildAdvisoryExplorerModel(advisory);
 
   // Filter by search query (client-side)
-  const filteredMappings = mappingsData?.mappings.filter((m: typeof mappingsData.mappings[number]) =>
-    searchQuery === "" ||
-    m.regulationDatapoint.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    m.gs1Attribute?.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  const filteredMappings = explorerModel.mappings.filter(m => {
+    if (selectedSector && !m.sectors.includes(selectedSector) && !m.sectors.includes("All")) {
+      return false;
+    }
 
-  const filteredGaps = gapsData?.gaps.filter((g: typeof gapsData.gaps[number]) =>
-    searchQuery === "" ||
-    g.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    g.description.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+    if (selectedRegulation && m.regulationStandard !== selectedRegulation) {
+      return false;
+    }
 
-  const filteredRecommendations = recommendationsData?.recommendations.filter((r: typeof recommendationsData.recommendations[number]) =>
-    searchQuery === "" ||
-    r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    r.description.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+    if (selectedConfidence && m.confidence !== selectedConfidence) {
+      return false;
+    }
+
+    return (
+      searchQuery === "" ||
+      m.regulationDatapoint.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      m.gs1Attribute?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
+  const filteredGaps = explorerModel.gaps.filter(g => {
+    if (selectedSeverity && g.category !== selectedSeverity) {
+      return false;
+    }
+
+    if (
+      selectedSector &&
+      !g.affectedSectors.includes(selectedSector) &&
+      !g.affectedSectors.includes("All")
+    ) {
+      return false;
+    }
+
+    return (
+      searchQuery === "" ||
+      g.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      g.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
+  const filteredRecommendations = explorerModel.recommendations.filter(r => {
+    if (selectedTimeframe && r.timeframe !== selectedTimeframe) {
+      return false;
+    }
+
+    return (
+      searchQuery === "" ||
+      r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      r.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
 
   const clearFilters = () => {
     setSearchQuery("");
@@ -82,7 +104,7 @@ export default function AdvisoryExplorer() {
           <h1 className="text-4xl font-bold">Advisory Explorer</h1>
           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
             <CheckCircle2 className="h-3 w-3 mr-1" />
-            ISA v1.0 Locked
+            ISA v{advisory?.version ?? "1.0"} Locked
           </Badge>
         </div>
         <p className="text-muted-foreground">
@@ -226,7 +248,7 @@ export default function AdvisoryExplorer() {
 
         {/* Mappings Tab */}
         <TabsContent value="mappings" className="space-y-4">
-          {loadingMappings ? (
+          {isLoading ? (
             [...Array(3)].map((_, i) => <Skeleton key={i} className="h-32" />)
           ) : filteredMappings.length === 0 ? (
             <Card>
@@ -279,7 +301,7 @@ export default function AdvisoryExplorer() {
 
         {/* Gaps Tab */}
         <TabsContent value="gaps" className="space-y-4">
-          {loadingGaps ? (
+          {isLoading ? (
             [...Array(3)].map((_, i) => <Skeleton key={i} className="h-32" />)
           ) : filteredGaps.length === 0 ? (
             <Card>
@@ -322,7 +344,7 @@ export default function AdvisoryExplorer() {
 
         {/* Recommendations Tab */}
         <TabsContent value="recommendations" className="space-y-4">
-          {loadingRecommendations ? (
+          {isLoading ? (
             [...Array(3)].map((_, i) => <Skeleton key={i} className="h-32" />)
           ) : filteredRecommendations.length === 0 ? (
             <Card>
