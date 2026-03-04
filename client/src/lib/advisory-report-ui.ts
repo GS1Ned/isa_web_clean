@@ -13,6 +13,33 @@ export function formatDecisionArtifactCount(count: number) {
   return `${count} decision artifact${count === 1 ? "" : "s"}`;
 }
 
+export function formatAdvisoryVersionLabel(version: string) {
+  return version.startsWith("v") ? version : `v${version}`;
+}
+
+export function formatDecisionArtifactConfidenceDelta(value: number | null) {
+  if (value == null) {
+    return "N/A";
+  }
+
+  const percentage = Math.round(value * 100);
+  return `${percentage > 0 ? "+" : ""}${percentage}%`;
+}
+
+export function getDecisionArtifactDiffTone(hasChanges: boolean): AdvisoryBadgeTone {
+  if (hasChanges) {
+    return {
+      variant: "outline",
+      className: "border-amber-300 bg-amber-50 text-amber-900",
+    };
+  }
+
+  return {
+    variant: "secondary",
+    className: "bg-emerald-100 text-emerald-800 border-transparent",
+  };
+}
+
 export function getAdvisoryReviewStatusTone(status: string): AdvisoryBadgeTone {
   switch (status) {
     case "PUBLISHED":

@@ -26,7 +26,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   formatAdvisoryEnumLabel,
   formatDecisionArtifactCount,
+  formatDecisionArtifactConfidenceDelta,
   getAdvisoryLaneStatusTone,
+  getDecisionArtifactDiffTone,
   getAdvisoryPublicationStatusTone,
   getAdvisoryReviewStatusTone,
 } from "@/lib/advisory-report-ui";
@@ -106,15 +108,6 @@ function getSeverityTone(severity: ReportFinding["severity"]) {
     default:
       return "bg-emerald-100 text-emerald-800 border-emerald-200";
   }
-}
-
-function formatConfidenceDelta(value: number | null) {
-  if (value == null) {
-    return "N/A";
-  }
-
-  const percentage = Math.round(value * 100);
-  return `${percentage > 0 ? "+" : ""}${percentage}%`;
 }
 
 export default function AdvisoryReportDetail() {
@@ -518,11 +511,15 @@ export default function AdvisoryReportDetail() {
                         <GitCompare className="h-4 w-4 text-slate-600" />
                         Diff vs current report
                       </div>
-                      <Badge variant={diffSummary.hasChanges ? "outline" : "secondary"}>
+                      <Badge
+                        variant={getDecisionArtifactDiffTone(diffSummary.hasChanges).variant}
+                        className={getDecisionArtifactDiffTone(diffSummary.hasChanges).className}
+                      >
                         {diffSummary.hasChanges ? "Artifact drift detected" : "No artifact drift"}
                       </Badge>
                       <Badge variant="outline">
-                        Confidence delta {formatConfidenceDelta(diffSummary.averageConfidenceDelta)}
+                        Confidence delta{" "}
+                        {formatDecisionArtifactConfidenceDelta(diffSummary.averageConfidenceDelta)}
                       </Badge>
                     </div>
 
