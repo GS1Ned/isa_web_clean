@@ -262,6 +262,24 @@ it("should combine vector and BM25 results using RRF", async () => {
 });
 ```
 
+### Test File: ask-isa-stage-a.test.ts
+
+**Location:** `server/ask-isa-stage-a.test.ts`
+**Coverage:** stage-a citation gate, evidence-backed source requirement, abstention-triggering completeness checks
+
+Use this test file when changing:
+- `server/routers/ask-isa.ts`
+- `server/routers/evaluation.ts`
+- `server/citation-validation.ts`
+- `server/prompts/ask_isa/*`
+
+Expected assertions:
+- valid `[Source N]` answers with evidence-backed sources pass
+- missing source citations fail
+- zero evidence-backed sources fail
+- too-short answers fail stage-a completeness
+- low claim-verification rates fail the stage-a gate
+
 ### Test File: authority-model.test.ts
 
 **Location:** `server/authority-model.test.ts`  

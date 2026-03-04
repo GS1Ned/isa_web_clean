@@ -24,6 +24,8 @@ import { hybridSearch } from "../hybrid-search";
 import { invokeLLM } from "../_core/llm";
 import { assembleAskISAPrompt } from "../prompts/ask_isa";
 import { verifyResponseClaims } from "../claim-citation-verifier";
+import { validateCitations } from "../citation-validation";
+import { validateAskISAStageAAnswer } from "../ask-isa-stage-a";
 import { calculateAuthorityScore } from "../authority-model";
 import { saveEvaluationReport, getAllEvaluationReports, getLatestEvaluationReport, compareReports } from "../evaluation-history";
 import { existsSync, readFileSync } from "fs";
@@ -91,6 +93,24 @@ async function runTestCase(testCase: GoldenSetTestCase): Promise<TestCaseResult>
         content: r.description || "",
       }))
     );
+
+    const validatedSources = await validateCitations(
+      searchResults.map(r => ({
+        id: r.id,
+        title: r.title,
+        url: r.url,
+        similarity: r.hybridScore,
+      }))
+    );
+
+    const stageAValidation = validateAskISAStageAAnswer({
+      answer,
+      sourceCount: relevantChunks.length,
+      evidenceReadySourceCount: validatedSources.filter(
+        source => typeof source.evidenceKey === "string" && source.evidenceKey.length > 0
+      ).length,
+      claimVerification,
+    });
     
     // 7. Build response object
     const response: AskISAResponse = {
@@ -117,7 +137,18 @@ async function runTestCase(testCase: GoldenSetTestCase): Promise<TestCaseResult>
     const duration = Date.now() - startTime;
     
     // 8. Evaluate response
-    return evaluateResponse(testCase, response, duration);
+    const result = evaluateResponse(testCase, response, duration);
+
+    if (!stageAValidation.passed) {
+      result.passed = false;
+      result.score = Math.min(result.score, 0.59);
+      result.issues = Array.from(new Set([...stageAValidation.issues, ...result.issues]));
+      result.warnings = Array.from(
+        new Set([...stageAValidation.warnings, ...result.warnings])
+      );
+    }
+
+    return result;
     
   } catch (error) {
     const duration = Date.now() - startTime;
