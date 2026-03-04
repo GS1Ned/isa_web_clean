@@ -456,6 +456,19 @@ export const askISARouter = router({
           evidenceReadySourceCount: validatedSources.filter(
             source => typeof source.evidenceKey === "string" && source.evidenceKey.length > 0
           ).length,
+          verifiedEvidenceSourceCount: validatedSources.filter(
+            source =>
+              typeof source.evidenceKey === "string" &&
+              source.evidenceKey.length > 0 &&
+              !source.needsVerification &&
+              !source.isDeprecated
+          ).length,
+          needsVerificationSourceCount: validatedSources.filter(
+            source => source.needsVerification
+          ).length,
+          deprecatedSourceCount: validatedSources.filter(
+            source => source.isDeprecated
+          ).length,
           claimVerification: claimVerificationResult,
         });
 
@@ -611,7 +624,9 @@ export const askISARouter = router({
             totalClaims: claimVerificationResult.totalClaims,
             verifiedClaims: claimVerificationResult.verifiedClaims,
             unverifiedClaims: claimVerificationResult.unverifiedClaims,
-            warnings: claimVerificationResult.warnings,
+            warnings: Array.from(
+              new Set([...claimVerificationResult.warnings, ...stageAValidation.warnings])
+            ),
           },
         });
 

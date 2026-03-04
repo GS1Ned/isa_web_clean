@@ -109,6 +109,19 @@ async function runTestCase(testCase: GoldenSetTestCase): Promise<TestCaseResult>
       evidenceReadySourceCount: validatedSources.filter(
         source => typeof source.evidenceKey === "string" && source.evidenceKey.length > 0
       ).length,
+      verifiedEvidenceSourceCount: validatedSources.filter(
+        source =>
+          typeof source.evidenceKey === "string" &&
+          source.evidenceKey.length > 0 &&
+          !source.needsVerification &&
+          !source.isDeprecated
+      ).length,
+      needsVerificationSourceCount: validatedSources.filter(
+        source => source.needsVerification
+      ).length,
+      deprecatedSourceCount: validatedSources.filter(
+        source => source.isDeprecated
+      ).length,
       claimVerification,
     });
     

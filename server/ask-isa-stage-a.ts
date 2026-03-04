@@ -13,6 +13,9 @@ export interface AskISAStageAValidationInput {
   answer: string;
   sourceCount: number;
   evidenceReadySourceCount: number;
+  verifiedEvidenceSourceCount: number;
+  needsVerificationSourceCount: number;
+  deprecatedSourceCount: number;
   claimVerification: Pick<VerificationSummary, "totalClaims" | "verificationRate">;
 }
 
@@ -35,7 +38,15 @@ function normalizeConfidenceFromSourceCount(sourceCount: number): number {
 export function validateAskISAStageAAnswer(
   input: AskISAStageAValidationInput
 ): AskISAStageAValidationResult {
-  const { answer, sourceCount, evidenceReadySourceCount, claimVerification } = input;
+  const {
+    answer,
+    sourceCount,
+    evidenceReadySourceCount,
+    verifiedEvidenceSourceCount,
+    needsVerificationSourceCount,
+    deprecatedSourceCount,
+    claimVerification,
+  } = input;
 
   const sourceCitationValidation = validatePromptCitations(answer, sourceCount);
   const verification = verifyAskISAResponse(
@@ -47,6 +58,14 @@ export function validateAskISAStageAAnswer(
   const missingCitations = [...sourceCitationValidation.issues];
   if (evidenceReadySourceCount < 1) {
     missingCitations.push("No evidence-backed sources are available for stage-a citation output");
+  } else if (verifiedEvidenceSourceCount < 1) {
+    missingCitations.push(
+      "No recently verified evidence-backed sources are available for stage-a citation output"
+    );
+  }
+
+  if (deprecatedSourceCount > 0) {
+    missingCitations.push("Deprecated sources are present in stage-a citation output");
   }
 
   const issues = [...missingCitations, ...verification.issues];
@@ -71,11 +90,18 @@ export function validateAskISAStageAAnswer(
   const normalizedMissingCitations = uniqueStrings(missingCitations);
   const normalizedIssues = uniqueStrings(issues);
 
+  const warnings = [...verification.warnings];
+  if (needsVerificationSourceCount > 0 && verifiedEvidenceSourceCount > 0) {
+    warnings.push(
+      `Some cited sources require refreshed verification (${needsVerificationSourceCount}/${sourceCount})`
+    );
+  }
+
   return {
     passed: normalizedIssues.length === 0,
     citationValid: normalizedMissingCitations.length === 0,
     missingCitations: normalizedMissingCitations,
     issues: normalizedIssues,
-    warnings: uniqueStrings(verification.warnings),
+    warnings: uniqueStrings(warnings),
   };
 }

@@ -1071,6 +1071,22 @@ export default function AskISA() {
                               </div>
                             </div>
                           )}
+                          {message.claimVerification?.warnings &&
+                            message.claimVerification.warnings.length > 0 && (
+                              <Alert className="mt-3 border-yellow-500/30 bg-yellow-500/5">
+                                <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                                <AlertDescription className="text-sm">
+                                  <p className="font-medium text-yellow-700 dark:text-yellow-300">
+                                    Verification posture warnings
+                                  </p>
+                                  <ul className="mt-1 list-disc list-inside space-y-1 text-muted-foreground">
+                                    {message.claimVerification.warnings.map((warning, warningIdx) => (
+                                      <li key={warningIdx}>{warning}</li>
+                                    ))}
+                                  </ul>
+                                </AlertDescription>
+                              </Alert>
+                            )}
                           {/* Feedback Buttons */}
                           {user && !message.needsClarification && message.content && (
                             <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/50">

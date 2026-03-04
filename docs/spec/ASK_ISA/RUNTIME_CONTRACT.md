@@ -50,9 +50,11 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
 <!-- EVIDENCE:implementation:server/routers/evaluation.ts -->
 - Stage-a ASK_ISA answers must include valid `[Source N]` citations aligned with provided sources.
 - Stage-a ASK_ISA answers must have at least one evidence-backed source with a non-empty `evidenceKey`.
+- Stage-a ASK_ISA answers must have at least one recently verified, non-deprecated, evidence-backed source before they can pass as compliance-grade output.
 - Stage-a ASK_ISA answers must abstain when citation or verification checks fail, rather than returning the raw generated answer.
 - Stage-a ASK_ISA answer completeness is currently enforced with a minimum 100-character floor plus claim-verification checks.
 - Source payloads preserve shared provenance review semantics from the citation layer, including `needsVerification`, additive `verificationReason`, additive `verificationAgeDays`, and `evidenceKeyReason`, so ASK_ISA UI and downstream consumers do not invent their own verification taxonomy.
+- When some cited sources still require refreshed verification but the answer remains stage-a passable, ASK_ISA now emits additive warnings rather than inventing silent confidence.
 - Evaluation runs must apply the same stage-a gate so offline quality reporting does not overstate runtime readiness.
 
 ## Verification
