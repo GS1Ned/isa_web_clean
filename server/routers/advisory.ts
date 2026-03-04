@@ -9,6 +9,10 @@ import { router, publicProcedure } from "../_core/trpc";
 import { z } from "zod";
 import fs from "fs";
 import path from "path";
+import {
+  loadLegacyAdvisoryDiff,
+  normalizeAdvisoryVersionTag,
+} from "../advisory-legacy-compat";
 
 // Load advisory and summary JSON files
 const ADVISORY_VERSION = process.env.ISA_ADVISORY_VERSION || "1.1"; // Default to v1.1
@@ -44,16 +48,10 @@ export const advisoryRouter = router({
       })
     )
     .query(({ input }) => {
-      const diffPath = path.join(
-        process.cwd(),
-        `data/advisories/ISA_ADVISORY_DIFF_${input.version1}_to_${input.version2}.json`
+      return loadLegacyAdvisoryDiff(
+        normalizeAdvisoryVersionTag(input.version1),
+        normalizeAdvisoryVersionTag(input.version2),
       );
-      
-      if (!fs.existsSync(diffPath)) {
-        throw new Error(`Diff file not found for ${input.version1} to ${input.version2}`);
-      }
-      
-      return JSON.parse(fs.readFileSync(diffPath, "utf8"));
     }),
 
   /**
