@@ -160,6 +160,26 @@ function buildMarkdown(report) {
       );
   }
 
+  const capabilitiesWithDiagnostics = report.capabilities.filter((capability) => capability.diagnostics);
+  if (capabilitiesWithDiagnostics.length) {
+    lines.push("");
+    lines.push("## Benchmark Diagnostics");
+    lines.push("");
+
+    for (const capability of capabilitiesWithDiagnostics) {
+      const benchmarkMix = capability.diagnostics?.benchmark_mix;
+      if (benchmarkMix) {
+        lines.push(`### ${capability.capability}`);
+        lines.push(
+          `- Benchmark mix: positive=${benchmarkMix.positive_case_count}, negative=${benchmarkMix.negative_case_count}, direct=${benchmarkMix.direct_case_count}, partial=${benchmarkMix.partial_case_count}, no_mapping=${benchmarkMix.no_mapping_case_count}`
+        );
+        lines.push(
+          `- Benchmark shares: direct=${Number(benchmarkMix.direct_case_share).toFixed(4)}, partial=${Number(benchmarkMix.partial_case_share).toFixed(4)}, no_mapping=${Number(benchmarkMix.no_mapping_case_share).toFixed(4)}`
+        );
+      }
+    }
+  }
+
   const failedMetrics = report.capabilities
     .flatMap((capability) => capability.metrics.map((metric) => ({ capability: capability.capability, ...metric })))
     .filter((metric) => metric.status === "fail");
@@ -284,6 +304,7 @@ async function main() {
         value: capabilityScoreValue,
         grade: scoreGrade(capabilityScoreValue),
       },
+      diagnostics: evaluated.diagnostics || null,
       metrics: enrichedMetrics,
       status: capabilityStatus(enrichedMetrics),
     });

@@ -44,6 +44,7 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 <!-- EVIDENCE:implementation:scripts/probe/esrs_mapping_health.sh -->
 - Smoke probe: `scripts/probe/esrs_mapping_health.sh`
 - Capability evaluation includes stage-aware positive mapping fixtures plus explicit negative-case coverage fixtures under `data/evaluation/golden/esrs_mapping/*`.
+- ESRS capability evaluation emits benchmark-mix diagnostics for direct, partial, and explicit no-mapping gold-set coverage.
 - Tests:
   - `server/gs1-mapping-engine.test.ts`
   - `server/routers/__tests__/capability-heartbeat.test.ts`

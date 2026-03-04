@@ -33,5 +33,9 @@ describe("ESRS mapping capability adapter", () => {
     expect(evaluated.datasetIds).toContain("esrs_mapping_negative_v1");
     expect(evaluated.sampleCount).toBeGreaterThan(20);
     expect(evaluated.rollups.coverage).toBeGreaterThanOrEqual(0.9);
+    expect(evaluated.diagnostics.benchmark_mix.direct_case_count).toBeGreaterThan(0);
+    expect(evaluated.diagnostics.benchmark_mix.partial_case_count).toBeGreaterThan(0);
+    expect(evaluated.diagnostics.benchmark_mix.no_mapping_case_count).toBe(4);
+    expect(evaluated.diagnostics.regulation_breakdown.negative["ESRS S1"]).toBe(2);
   });
 });

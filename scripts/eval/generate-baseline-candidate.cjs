@@ -27,7 +27,16 @@ function main() {
 
   const metrics = {};
   const metricMeta = {};
+  const capabilityMeta = {};
   for (const capability of evaluation.capabilities || []) {
+    capabilityMeta[capability.capability] = {
+      dataset_ids: capability.dataset_ids || [],
+      sample_count: Number(capability.sample_count || 0),
+      minimum_samples: Number(capability.minimum_samples || 0),
+      confidence: capability.confidence || "LOW",
+      diagnostics: capability.diagnostics || null,
+    };
+
     for (const metric of capability.metrics || []) {
       metrics[metric.metric_id] = metric.value;
       metricMeta[metric.metric_id] = {
@@ -49,6 +58,7 @@ function main() {
     notes: "Weekly baseline candidate generated from latest unified ISA capability evaluation. Requires manual review and approval before replacing the stage-specific canonical baseline.",
     metrics,
     metric_meta: metricMeta,
+    capability_meta: capabilityMeta,
   };
 
   writeJson(options.outPath, candidate);
