@@ -200,6 +200,15 @@ export function buildAdvisoryCompatibilityPayloads(advisory: AdvisoryReadModelPa
   };
 }
 
+export function deriveAdvisoryCompatibilityCoverage(advisory: AdvisoryReadModelPayload) {
+  const payloads = buildAdvisoryCompatibilityPayloads(advisory);
+
+  return {
+    regulations: payloads.regulations,
+    sectorModels: payloads.sectorModels,
+  };
+}
+
 export function filterAdvisoryCompatibilityPayloads(
   payloads: ReturnType<typeof buildAdvisoryCompatibilityPayloads>,
   filters: AdvisoryCompatibilityFilters,

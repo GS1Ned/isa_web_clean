@@ -12,6 +12,7 @@ describe("advisory-read-model", () => {
     expect(result.summary.recommendations.byTimeframe["short-term"]).toBeTypeOf("number");
     expect(result.summary.stats.totalMappings).toBeTypeOf("number");
     expect(result.summary.statistics.totalMappings).toBeTypeOf("number");
+    expect(result.summary.statistics.regulationsCovered).toBeGreaterThan(0);
     expect(result.summary.migrationState.normalizedVersion).toMatch(/^v\d+\.\d+/);
   });
 
@@ -27,6 +28,8 @@ describe("advisory-read-model", () => {
     expect(Array.isArray(result.advisory.recommendations)).toBe(true);
     expect(result.advisory.recommendations[0]).toHaveProperty("recommendationId");
     expect(result.advisory.recommendations[0]).toHaveProperty("timeframe");
+    expect(Array.isArray(result.advisory.regulationsCovered)).toBe(true);
+    expect(result.advisory.regulationsCovered.length).toBeGreaterThan(0);
   });
 
   it("exposes migration-aware metadata", async () => {
@@ -34,5 +37,6 @@ describe("advisory-read-model", () => {
 
     expect(result.metadata.traceabilityStatus === "complete" || result.metadata.traceabilityStatus === "partial").toBe(true);
     expect(result.metadata.migrationState.snapshotBackedReportCount).toBeTypeOf("number");
+    expect(result.metadata.metadata?.regulationsCovered).not.toBeNull();
   });
 });
