@@ -43,7 +43,7 @@
 | `./EXTERNAL_REFERENCES.md` | evaluation-governance-reproducibility.md | archived | — | Historical reference |
 | `./INGESTION_DELIVERABLES_INDEX.md` | isa-core-architecture.md | active | — | Core source |
 | `./IRON_KNOWLEDGE_MAP.md` | repo-change-control-release.md | active | — | Core source |
-| `./ISA_CAPABILITY_MAP.md` | retrieval-embeddings-grounding.md | active | — | Core source |
+| `./ISA_CAPABILITY_MAP.md` | retrieval-embeddings-grounding.md | archived | — | Historical solution-space reference only |
 | `./ISA_DEVELOPMENT_PLAYBOOK.md` | repo-change-control-release.md | active | — | Core source |
 | `./ISA_GS1_ARTIFACT_INVENTORY.md` | catalogue-source-registry.md | active | — | Core source |
 | `./ISA_STATUS_REPORT_2025-01-11.md` | ux-user-journey.md | archived | — | Historical reference |
@@ -89,13 +89,13 @@
 | `./docs/ISA_FUTURE_DEVELOPMENT_PLAN.md` | roadmap-evolution.md | archived | — | Historical reference |
 | `./docs/ISA_First_Advisory_Report_GS1NL.md` | repo-change-control-release.md | archived | — | Historical reference |
 | `./docs/ISA_GS1_PRE_EXECUTION_PREPARATION.md` | evaluation-governance-reproducibility.md | active | — | Core source |
-| `./docs/ISA_IMPLEMENTATION_EXECUTION_PLAN.md` | evaluation-governance-reproducibility.md | active | — | Core source |
+| `./docs/ISA_IMPLEMENTATION_EXECUTION_PLAN.md` | evaluation-governance-reproducibility.md | archived | — | Historical execution narrative; NEXT_ACTIONS.json is canonical |
 | `./docs/ISA_NEWSHUB_EVOLUTION_SUMMARY.md` | ux-user-journey.md | active | — | Core source |
 | `./docs/ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md` | data-knowledge-model.md | active | — | Core source |
 | `./docs/ISA_PRODUCT_DIMENSIONS_ANALYSIS.md` | ux-user-journey.md | archived | — | Historical reference |
-| `./docs/ISA_STRATEGIC_CONTEXT_SYNTHESIS.md` | isa-core-architecture.md | active | — | Core source |
+| `./docs/ISA_STRATEGIC_CONTEXT_SYNTHESIS.md` | isa-core-architecture.md | archived | — | Historical synthesis; canonical architecture chain supersedes it |
 | `./docs/ISA_STRATEGIC_DISCOVERY_REPORT.md` | ux-user-journey.md | archived | — | Historical reference |
-| `./docs/ISA_STRATEGIC_EVALUATION_QUALITY_MAPPING.md` | evaluation-governance-reproducibility.md | active | — | Core source |
+| `./docs/ISA_STRATEGIC_EVALUATION_QUALITY_MAPPING.md` | evaluation-governance-reproducibility.md | supporting | — | Supplemental feature evaluation, not architecture authority |
 | `./docs/ISA_Strategic_Insights_from_Reports.md` | repo-change-control-release.md | active | — | Core source |
 | `./docs/ISA_Strategic_Roadmap.md` | ux-user-journey.md | archived | — | Historical reference |
 | `./docs/ISA_UX_STRATEGY.md` | ux-user-journey.md | active | — | Core source |

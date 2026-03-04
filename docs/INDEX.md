@@ -5,6 +5,7 @@
 **Top-level Agent Entrypoint:** `AGENT_START_HERE.md`
 **Host ↔ VM OpenClaw Workflow:** `AGENT_START_HERE.md#host--vm-openclaw-workflow-canonical`
 **Agent Map (Canonical):** `docs/agent/AGENT_MAP.md`
+**Technical Documentation Canon:** `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
 **MCP Policy (Canonical):** `docs/agent/MCP_POLICY.md`
 **MCP Recipes (Canonical):** `docs/agent/MCP_RECIPES.md`
 **Architecture SSOT:** `docs/spec/ARCHITECTURE.md`
@@ -16,15 +17,15 @@
 
 ## Core Documentation
 
-### Architecture & Quality
+### Technical Canon
 
+- **Technical Documentation Canon:** `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
 - **Architecture SSOT:** `docs/spec/ARCHITECTURE.md`
-- **Architecture Review:** `docs/architecture/panel/KICKOFF_PACKAGE.md`
-- **ATAM Scenarios:** `docs/architecture/panel/ATAM_SCENARIOS.md`
-- **ATAM Risks:** `docs/architecture/panel/ATAM_RISKS_SENSITIVITIES_TRADEOFFS.md`
-- **ISO/IEC 25010 Mapping:** `docs/architecture/panel/ISO25010_MAPPING.md`
-- **CI Index:** `docs/ci/INDEX.md`
-- **CI Testing Guide:** `docs/CI_TESTING.md`
+- **ISA Core Contract:** `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
+- **Capability Ownership Contract:** `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
+- **Shared Primitive Contract:** `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
+- **Capability Dependency Graph:** `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
+- **Validation Bundle:** `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`
 
 ### Governance
 - **Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
@@ -51,12 +52,14 @@
 - **Error Budget Policy:** `docs/sre/ERROR_BUDGET_POLICY.md`
 - **Error Budget Status:** `docs/sre/_generated/error_budget_status.json`
 
-### Quality & Schemas
-- **Proof Schemas:** `docs/quality/schemas/*.schema.json`
-- **Test Results:** `test-results/ci/*.json`
+### Supplemental Evidence
+- **Architecture Review:** `docs/architecture/panel/KICKOFF_PACKAGE.md`
+- **ATAM Scenarios:** `docs/architecture/panel/ATAM_SCENARIOS.md`
+- **ATAM Risks:** `docs/architecture/panel/ATAM_RISKS_SENSITIVITIES_TRADEOFFS.md`
+- **ISO/IEC 25010 Mapping:** `docs/architecture/panel/ISO25010_MAPPING.md`
 - **Evidence Catalogue:** `docs/evidence/_generated/catalogue.json`
-- **Research: ISA Deep Research (2026-02-15):** `docs/research/isa-deep-research/2026-02-15/`
-- **Research: OSS Benchmarks (2026-02-15):** `docs/research/oss-benchmarks/2026-02-15/`
+- **Proof Schemas:** `docs/quality/schemas/*.schema.json`
+- **Research:** `docs/research/`
 
 ## Planning
 - **Planning Index:** `docs/planning/INDEX.md`
@@ -73,5 +76,5 @@
 ---
 
 **Document Status:** Canonical Index  
-**Last Updated:** 2026-02-26  
+**Last Updated:** 2026-03-04  
 **Maintainer:** ISA Repository Steward

@@ -5,6 +5,7 @@ Status: CANONICAL
 - Entrypoint (top-level only): `AGENT_START_HERE.md`
 - Host ↔ VM OpenClaw workflow (canonical): `AGENT_START_HERE.md#host--vm-openclaw-workflow-canonical`
 - Agent map (this file): `docs/agent/AGENT_MAP.md`
+- Technical documentation canon: `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
 - Docs index: `docs/INDEX.md`
 - Execution queue (single source of next work): `docs/planning/NEXT_ACTIONS.json`
 
@@ -33,6 +34,7 @@ Status: CANONICAL
 ## Governance Anchors
 - Governance root: `docs/governance/_root/ISA_GOVERNANCE.md`
 - Document status model: `docs/governance/DOCUMENT_STATUS_MODEL.md`
+- Technical documentation canon: `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
 - Manual preflight checklist: `docs/governance/MANUAL_PREFLIGHT.md`
 - Planning policy: `docs/governance/PLANNING_POLICY.md`
 - IRON protocol: `docs/governance/IRON_PROTOCOL.md`
@@ -50,8 +52,9 @@ Status: CANONICAL
 - Resolve uncertainty now; do not commit unresolved claims.
 
 ## Execution Procedure (Agent)
-1) Read `docs/planning/NEXT_ACTIONS.json`
-2) Pick the first item with `status=READY`
-3) Implement exactly one scoped change
-4) Run local preflight from `docs/governance/MANUAL_PREFLIGHT.md`
-5) Update item evidence/status and stop
+1) Read `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
+2) Read `docs/planning/NEXT_ACTIONS.json`
+3) Pick the first item with `status=READY`
+4) Implement exactly one scoped change
+5) Run local preflight from `docs/governance/MANUAL_PREFLIGHT.md`
+6) Update item evidence/status and stop
