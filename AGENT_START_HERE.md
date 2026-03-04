@@ -40,6 +40,7 @@ This file is the only top-level entrypoint for agent onboarding.
 | --- | --- | --- |
 | Agent Map (Canonical) | `docs/agent/AGENT_MAP.md` | Canonical navigation map for humans and agents |
 | Technical Documentation Canon (Canonical) | `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md` | Canonical technical document chain and agentic loop |
+| Data Plane Contract (Canonical) | `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` | Shared storage, provenance, retrieval, and engine policy |
 | MCP Policy (Canonical) | `docs/agent/MCP_POLICY.md` | MCP server usage + evidence logging policy |
 | MCP Recipes (Canonical) | `docs/agent/MCP_RECIPES.md` | Step-by-step MCP playbooks for common ISA tasks |
 | Docs Index (Canonical) | `docs/INDEX.md` | Canonical documentation index |
@@ -56,6 +57,7 @@ This file is the only top-level entrypoint for agent onboarding.
 - `CANONICAL` means the document is authoritative for its scope.
 - It does not automatically mean "target state".
 - System-level current and target truth live explicitly in `docs/spec/ARCHITECTURE.md`.
+- Shared storage, provenance, retrieval, and engine policy truth live in `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`.
 - See `docs/governance/DOCUMENT_STATUS_MODEL.md`.
 
 ---

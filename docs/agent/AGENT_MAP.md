@@ -22,6 +22,7 @@ Status: CANONICAL
 - Specs index: `docs/spec/README.md`
 - Core contract: `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
 - Canonical system architecture (CURRENT/TARGET): `docs/spec/ARCHITECTURE.md`
+- Canonical data plane contract: `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
 
 ## Canonical Machine Contracts
 - Capability ownership: `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`

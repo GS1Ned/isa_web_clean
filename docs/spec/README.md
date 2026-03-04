@@ -9,6 +9,7 @@ Last Updated: 2026-03-04
 ## Canonical Technical Specs
 - `docs/spec/ARCHITECTURE.md`
 - `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
+- `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
 - `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
 - `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
 - `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`

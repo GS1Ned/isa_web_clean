@@ -14,6 +14,7 @@ This document defines the minimum canonical technical documentation set for ISA,
 | Navigation | `docs/agent/AGENT_MAP.md` | Entry map for humans and agents |
 | Technical canon | `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md` | Canonical technical document chain and update rules |
 | System contract | `docs/spec/ARCHITECTURE.md` | Single `CURRENT` / `TARGET` architecture contract |
+| Data plane contract | `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` | Shared storage, provenance, retrieval, and engine policy contract |
 | Core capability contract | `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md` | Six-capability model, mission, ownership rule, anti-goals |
 | Ownership contract | `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json` | Capability ownership of routers, tables, modules |
 | Primitive contract | `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json` | Shared primitives promoted out of capability ownership |
@@ -29,17 +30,19 @@ This document defines the minimum canonical technical documentation set for ISA,
 3. `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
 4. `docs/spec/ARCHITECTURE.md`
 5. `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
-6. `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
-7. `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
-8. `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
-9. Relevant `docs/spec/*/RUNTIME_CONTRACT.md`
-10. `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`
-11. `docs/planning/NEXT_ACTIONS.json`
-12. `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
+6. `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
+7. `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
+8. `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
+9. `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
+10. Relevant `docs/spec/*/RUNTIME_CONTRACT.md`
+11. `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`
+12. `docs/planning/NEXT_ACTIONS.json`
+13. `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
 
 ## Relationship Rules
 - `ARCHITECTURE.md` is the only canonical system-level `CURRENT` / `TARGET` contract.
 - `ISA_CORE_CONTRACT.md` defines what ISA is for, what the six capabilities are, and what ISA is not.
+- `ISA_DATA_PLANE_ARCHITECTURE.md` defines the shared storage, provenance, retrieval, and engine-policy substrate. It does not reassign capability ownership or redefine product architecture.
 - `CAPABILITY_MANIFEST.json` wins for ownership disputes.
 - `PRIMITIVE_DICTIONARY.json` wins when a concept is genuinely cross-capability.
 - `CAPABILITY_GRAPH.json` wins for dependency and flow questions.
@@ -64,6 +67,7 @@ flowchart TD
         CANON["TECHNICAL_DOCUMENTATION_CANON.md\nDocument chain and update rules"]
         ARCH["ARCHITECTURE.md\nSystem CURRENT/TARGET"]
         CORE["ISA_CORE_CONTRACT.md\nMission, six capabilities, anti-goals"]
+        DATA["ISA_DATA_PLANE_ARCHITECTURE.md\nShared data-plane contract"]
         MANIFEST["CAPABILITY_MANIFEST.json\nOwnership contract"]
         PRIMS["PRIMITIVE_DICTIONARY.json\nShared primitives"]
         GRAPH["CAPABILITY_GRAPH.json\nDependencies and flows"]
@@ -77,9 +81,11 @@ flowchart TD
     MAP --> CANON
     CANON --> ARCH
     ARCH --> CORE
+    CORE --> DATA
     CORE --> MANIFEST
     CORE --> PRIMS
     CORE --> GRAPH
+    DATA --> RUNTIME
     MANIFEST --> RUNTIME
     PRIMS --> RUNTIME
     GRAPH --> RUNTIME
@@ -126,6 +132,7 @@ flowchart TD
 ## Update Policy
 - Update `ARCHITECTURE.md` when system `CURRENT`, `TARGET`, or deltas change.
 - Update `ISA_CORE_CONTRACT.md` when capability mission, anti-goals, or ownership semantics change.
+- Update `ISA_DATA_PLANE_ARCHITECTURE.md` when shared storage, provenance, retrieval, or engine policy materially changes.
 - Update machine contracts when repo reality changes.
 - Update runtime contracts when a capability surface or owned data shape materially changes.
 - Update `NEXT_ACTIONS.json` whenever the next canonical work item changes.

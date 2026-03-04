@@ -23,6 +23,7 @@ Canonical document set to use:
 - `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
 - `docs/spec/ARCHITECTURE.md`
 - `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
+- `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
 - `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
 - `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
 - `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
@@ -49,6 +50,7 @@ Target-state interpretation rules:
 - `docs/spec/ARCHITECTURE.md` defines the only canonical CURRENT/TARGET contract.
 - `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md` defines the minimum technical SSOT set and how it fits into the agentic loop.
 - `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md` defines the six canonical capabilities and ownership rule.
+- `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` defines the shared storage, provenance, retrieval, and engine-policy substrate beneath the six capabilities.
 - `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json` is the authoritative ownership contract.
 - `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json` defines shared primitives promoted out of single-capability ownership.
 - `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json` defines cross-capability dependency edges.

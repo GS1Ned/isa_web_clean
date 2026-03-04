@@ -6,6 +6,7 @@ Last Updated: 2026-03-04
 - Governance root: `docs/governance/_root/ISA_GOVERNANCE.md`
 - Agent navigation authority: `docs/agent/AGENT_MAP.md`
 - System architecture (CURRENT/TARGET canonical): `docs/spec/ARCHITECTURE.md`
+- Shared data plane contract: `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
 - Capability ownership contract: `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
 - Shared primitive contract: `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
 - Capability graph contract: `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
