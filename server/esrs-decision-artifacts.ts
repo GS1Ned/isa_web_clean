@@ -53,6 +53,27 @@ export interface EsrsAttributeRecommendationDecisionArtifact {
   };
 }
 
+export interface EsrsRoadmapDecisionArtifact {
+  artifactVersion: '1.0';
+  artifactType: 'roadmap';
+  capability: 'ESRS_MAPPING';
+  generatedAt: string;
+  subject: {
+    sector: string;
+    companySize: string;
+    esrsRequirements: string[];
+  };
+  confidence: DecisionArtifactConfidence;
+  evidence: DecisionArtifactEvidence;
+  summary: {
+    phaseCount: number;
+    criticalPhaseCount: number;
+    quickWinCount: number;
+    mappingCount: number;
+    topPhaseIds: string[];
+  };
+}
+
 const BASE_CONFIDENCE_SCORE: Record<DecisionArtifactConfidenceLevel, number> = {
   high: 0.85,
   medium: 0.65,
@@ -170,6 +191,61 @@ export function buildAttributeRecommendationDecisionArtifact(input: {
       highConfidenceCount: input.highConfidenceCount,
       regulationsCovered: input.regulationsCovered,
       topRecommendationIds: input.topRecommendationIds.slice(0, 5),
+    },
+  };
+}
+
+export function buildRoadmapDecisionArtifact(input: {
+  generatedAt: string;
+  sector: string;
+  companySize: string;
+  esrsRequirements: string[];
+  phaseCount: number;
+  criticalPhaseCount: number;
+  quickWinCount: number;
+  mappingCount: number;
+  topPhaseIds: string[];
+  mode: 'llm' | 'fallback';
+  basis: string;
+}): EsrsRoadmapDecisionArtifact {
+  const baseScore = input.mode === 'llm' ? 0.62 : 0.48;
+  const mappingBoost = Math.min(input.mappingCount / 25, 0.18);
+  const phaseShapeBoost = input.phaseCount >= 3 ? 0.08 : 0.03;
+  const score = clampScore(baseScore + mappingBoost + phaseShapeBoost);
+  const level: DecisionArtifactConfidenceLevel =
+    score >= 0.7 ? 'high' : score >= 0.45 ? 'medium' : 'low';
+
+  return {
+    artifactVersion: '1.0',
+    artifactType: 'roadmap',
+    capability: 'ESRS_MAPPING',
+    generatedAt: input.generatedAt,
+    subject: {
+      sector: input.sector,
+      companySize: input.companySize,
+      esrsRequirements: input.esrsRequirements,
+    },
+    confidence: {
+      level,
+      score,
+      basis: input.basis,
+    },
+    evidence: {
+      codePaths: [
+        'server/routers/esrs-roadmap.ts',
+        'server/db-esrs-gs1-mapping.ts',
+      ],
+      dataSources: [
+        'getAllEsrsGs1Mappings',
+        'gs1_esrs_mappings',
+      ],
+    },
+    summary: {
+      phaseCount: input.phaseCount,
+      criticalPhaseCount: input.criticalPhaseCount,
+      quickWinCount: input.quickWinCount,
+      mappingCount: input.mappingCount,
+      topPhaseIds: input.topPhaseIds.slice(0, 5),
     },
   };
 }
