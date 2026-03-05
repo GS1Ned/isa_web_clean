@@ -28,6 +28,11 @@
       "type": "stdio",
       "command": "pnpm",
       "args": ["-s", "dlx", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
     }
   }
 }
