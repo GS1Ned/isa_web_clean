@@ -136,6 +136,7 @@ jobs:
       - name: Critical gates
         env:
           SECURITY_AUDIT_BLOCKING_LEVELS: "high,critical"
+          SECURITY_AUDIT_WAIVER_IDS: ""
         run: |
           set -euo pipefail
           bash scripts/gates/no-console-gate.sh
