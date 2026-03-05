@@ -14,7 +14,7 @@ if rg -n 'dialect:\s*"postgres"' drizzle.config.ts >/dev/null 2>&1; then
   POSTGRES_SWITCH_SIGNAL=1
 fi
 
-if rg -n 'ISA_DB_ENGINE\s*=\s*postgres' .env.example >/dev/null 2>&1; then
+if rg -n 'DB_ENGINE\s*=\s*postgres|ISA_DB_ENGINE\s*=\s*postgres' .env.example >/dev/null 2>&1; then
   POSTGRES_SWITCH_SIGNAL=1
 fi
 

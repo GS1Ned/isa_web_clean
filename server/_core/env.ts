@@ -1,7 +1,16 @@
 /**
  * ISA Environment Configuration with Fail-Fast Validation
- * 
- * Production: Throws error listing missing required variable NAMES
+ *
+ * Canonical engine variable: DB_ENGINE
+ * Legacy alias (backward compat): ISA_DB_ENGINE
+ * Precedence: DB_ENGINE > ISA_DB_ENGINE > default "mysql"
+ *
+ * Validation is engine-aware:
+ *   - Always required: VITE_APP_ID, JWT_SECRET
+ *   - If engine is mysql:    DATABASE_URL     must start with mysql://
+ *   - If engine is postgres: DATABASE_URL_POSTGRES must start with postgres:// or postgresql://
+ *
+ * Production: Throws error listing missing required variable NAMES (never values)
  * Development: Logs warning, exits non-zero if critical vars missing
  * Test: Logs warning, never exits (allows tests to run)
  */
@@ -10,31 +19,43 @@ const isProduction = process.env.NODE_ENV === "production";
 const isTest = process.env.NODE_ENV === "test" || process.env.VITEST === "true";
 const isSilentTest = process.env.ISA_TEST_SILENT === "true" || isTest;
 
-// Required variables that must be present
-const REQUIRED_VARS = ["VITE_APP_ID", "JWT_SECRET", "DATABASE_URL"] as const;
+// Resolve engine FIRST using precedence: DB_ENGINE > ISA_DB_ENGINE > default mysql
+const _rawEngine = process.env.DB_ENGINE || process.env.ISA_DB_ENGINE || "mysql";
+const _resolvedEngine: "mysql" | "postgres" = _rawEngine === "postgres" ? "postgres" : "mysql";
+
+// Engine-specific DB URL variable
+const DB_URL_VAR = _resolvedEngine === "postgres" ? "DATABASE_URL_POSTGRES" : "DATABASE_URL";
+
+// Variables always required regardless of engine
+const ALWAYS_REQUIRED = ["VITE_APP_ID", "JWT_SECRET"] as const;
 
 // Critical variables that cause exit in development if missing
-const CRITICAL_VARS = ["DATABASE_URL", "JWT_SECRET"] as const;
+const CRITICAL_VARS = [DB_URL_VAR, "JWT_SECRET"] as const;
 
 // Common insecure defaults that should be rejected
 const INSECURE_DEFAULTS = ["", "change-me", "secret", "development", "change-me-in-production"];
 
 /**
- * Validate environment variables at startup
- * Only prints variable NAMES, never values
+ * Validate environment variables at startup.
+ * Only prints variable NAMES, never values.
  */
 function validateEnv(): void {
   const missing: string[] = [];
   const invalid: string[] = [];
 
-  // Check required variables
-  for (const varName of REQUIRED_VARS) {
+  // Check always-required variables
+  for (const varName of ALWAYS_REQUIRED) {
     if (!process.env[varName]) {
       missing.push(varName);
     }
   }
 
-  // Validate JWT_SECRET (cookieSecret)
+  // Check engine-specific DB URL
+  if (!process.env[DB_URL_VAR]) {
+    missing.push(DB_URL_VAR);
+  }
+
+  // Validate JWT_SECRET
   const jwtSecret = process.env.JWT_SECRET ?? "";
   if (jwtSecret && jwtSecret.length < 32) {
     invalid.push("JWT_SECRET (must be >= 32 chars, got " + jwtSecret.length + ")");
@@ -43,19 +64,29 @@ function validateEnv(): void {
     invalid.push("JWT_SECRET (using insecure default value)");
   }
 
-  // Validate DATABASE_URL format
-  const dbUrl = process.env.DATABASE_URL ?? "";
-  if (dbUrl && !dbUrl.startsWith("mysql://")) {
-    invalid.push("DATABASE_URL (must start with mysql://)");
-  }
-  if (dbUrl && !/\/[^/?]+(\?|$)/.test(dbUrl)) {
-    invalid.push("DATABASE_URL (must include database name)");
+  // Validate engine-specific DB URL format
+  if (_resolvedEngine === "mysql") {
+    const dbUrl = process.env.DATABASE_URL ?? "";
+    if (dbUrl && !dbUrl.startsWith("mysql://")) {
+      invalid.push("DATABASE_URL (must start with mysql://)");
+    }
+    if (dbUrl && !/\/[^/?]+(\?|$)/.test(dbUrl)) {
+      invalid.push("DATABASE_URL (must include database name)");
+    }
+  } else {
+    const pgUrl = process.env.DATABASE_URL_POSTGRES ?? "";
+    if (pgUrl && !pgUrl.startsWith("postgres://") && !pgUrl.startsWith("postgresql://")) {
+      invalid.push("DATABASE_URL_POSTGRES (must start with postgres:// or postgresql://)");
+    }
+    if (pgUrl && !/\/[^/?]+(\?|$)/.test(pgUrl)) {
+      invalid.push("DATABASE_URL_POSTGRES (must include database name)");
+    }
   }
 
   // Handle validation failures
   if (missing.length > 0 || invalid.length > 0) {
     const errorLines: string[] = [];
-    
+
     if (missing.length > 0) {
       errorLines.push("Missing required environment variables: " + missing.join(", "));
     }
@@ -74,7 +105,7 @@ function validateEnv(): void {
       errorLines.forEach(line => process.stderr.write("  - " + line + "\n"));
 
       // Exit if critical variables are missing (development only)
-      const criticalMissing = missing.filter(v => 
+      const criticalMissing = missing.filter(v =>
         (CRITICAL_VARS as readonly string[]).includes(v)
       );
       if (criticalMissing.length > 0) {
@@ -100,12 +131,12 @@ export const ENV = {
   cookieSecret: process.env.JWT_SECRET ?? "",
   databaseUrl: process.env.DATABASE_URL ?? "",
   /**
-   * DB_ENGINE seam — controls which database adapter getDb() uses.
+   * DB_ENGINE is the canonical engine selector.
+   * ISA_DB_ENGINE is accepted as legacy alias (lower precedence).
+   * Precedence: DB_ENGINE > ISA_DB_ENGINE > default "mysql"
    * Valid values: "mysql" (default) | "postgres"
-   * Set DATABASE_URL_POSTGRES when switching to postgres to avoid contaminating
-   * the legacy DATABASE_URL validation.
    */
-  dbEngine: (process.env.DB_ENGINE === "postgres" ? "postgres" : "mysql") as "mysql" | "postgres",
+  dbEngine: _resolvedEngine,
   databaseUrlPostgres: process.env.DATABASE_URL_POSTGRES ?? "",
   oAuthServerUrl: process.env.OAUTH_SERVER_URL ?? "",
   ownerOpenId: process.env.OWNER_OPEN_ID ?? "",
