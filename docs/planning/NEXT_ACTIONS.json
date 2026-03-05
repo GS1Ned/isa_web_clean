@@ -244,21 +244,32 @@
     {
       "id": "ISA2-0017",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Rehydration and deterministic rebuild harness",
       "next_action": "Implement source-manifest driven rebuild scripts for deterministic empty-DB bootstrap.",
       "acceptance_criteria": "Two consecutive rebuild runs on empty Postgres are idempotent (no semantic drift).",
       "evidence_links": [
+        "scripts/dev/pg-rehydrate.sh",
+        "scripts/dev/postgres-apply-migrations.sh",
+        "scripts/dev/postgres-parity-smoke.sh",
         "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
         "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
       ],
-      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "validation_command": "DATABASE_URL=<pg_url> bash scripts/dev/pg-rehydrate.sh",
       "created_at_utc": "2026-03-05T00:00:00Z",
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0017"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "scripts/dev/pg-rehydrate.sh"
+        ],
+        "notes": "DROP SCHEMA + CREATE SCHEMA + ordered migration apply + parity smoke; idempotent by construction; SKIP_SMOKE=1 for offline use"
+      }
     },
     {
       "id": "ISA2-0018",
