@@ -344,7 +344,7 @@
     {
       "id": "ISA2-0001",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "ESRS_MAPPING",
       "title": "Promote ESRS_MAPPING to the canonical decision core with confidence-calibrated gap analysis and attribute recommendation outputs",
       "next_action": "Formalize the decision-core contract in code and docs so gap analysis and GS1 attribute recommendation become the primary value engine above CATALOG and KNOWLEDGE_BASE.",
@@ -361,7 +361,17 @@
       "source_plan": "ISA technical documentation canon and synthesized target architecture (2026-03-04)",
       "task_refs": [
         "ARCH-DECISION-CORE"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "gate_result": "PASS (doc-code-validator --canonical-only: 0 failures)",
+        "paths": [
+          "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+          "server/db-esrs-gs1-mapping.ts",
+          "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json"
+        ]
+      }
     },
     {
       "id": "ISA2-0002",
