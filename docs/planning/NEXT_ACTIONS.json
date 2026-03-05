@@ -1,5 +1,5 @@
 {
-  "date": "20260305T142726Z",
+  "date": "20260305T144159Z",
   "status": "CANONICAL",
   "schema_version": "1.0",
   "execution_rules": {
@@ -12,10 +12,10 @@
     {
       "id": "RECON-0001",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Reconcile branch divergence and local workspace drift before further ISA2 execution",
-      "next_action": "Run branch/main reconciliation snapshot including local uncommitted drift, local branches ahead of origin/main, worktree health, stash state, and remote branch divergence; reconcile deltas via reviewable PRs before starting new ISA2 batches.",
+      "next_action": "Run periodic reconcile snapshots and keep stale branch divergence bounded via small reconciliation PRs; optionally delete archived remote branches once retention policy allows.",
       "acceptance_criteria": "Remote and local branches ahead of origin/main are either merged, dropped, or assigned a dated reconcile PR; local uncommitted/stash/worktree drift is triaged; canonical queue status matches code on main.",
       "evidence_links": [
         "scripts/dev/reconcile-branch-main-state.sh",
@@ -28,7 +28,24 @@
       "source_plan": "Mainline reconcile slice (2026-03-05)",
       "task_refs": [
         "RECONCILE-001"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T14:41:59Z",
+      "evidence": {
+        "branch": "main",
+        "pr_refs": [
+          "#299",
+          "#300",
+          "#301",
+          "#302",
+          "#303"
+        ],
+        "paths": [
+          "scripts/dev/reconcile-branch-main-state.sh",
+          ".vscode/mcp.json",
+          "docs/planning/NEXT_ACTIONS.json"
+        ],
+        "notes": "Reconcile pipeline executed end-to-end: main fast-forwarded to merged reconcile PRs, local drift triaged, malformed local MCP config fixed, and reconcile snapshot runner hardened to produce deterministic output under dirty-mode. Remaining remote branches ahead of main are explicitly triaged as archival divergence with no required product deltas pending."
+      }
     },
     {
       "id": "ISA2-0010",
@@ -974,10 +991,25 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-03-05T14:27:26Z",
-    "notes": "ISA v2 Phase A-D execution complete. All ISA2 work packages (including ISA2-0003 cockpit change-intelligence closeout and ISA2-0020 Postgres runtime cutover) are DONE. PR2-0003 (security waiver burndown) remains PARKED during implementation-only mode. RECON-DB-ENGINE-001 reconcile slice applied: DB_ENGINE canonicalized, ISA_DB_ENGINE legacy alias wired, engine-aware env validation, templates aligned, ADR gate updated."
+    "last_updated_at_utc": "2026-03-05T14:41:59Z",
+    "notes": "ISA v2 Phase A-D execution complete. All ISA2 work packages (including ISA2-0003 cockpit change-intelligence closeout and ISA2-0020 Postgres runtime cutover) are DONE. PR2-0003 (security waiver burndown) remains PARKED during implementation-only mode. Reconcile line executed across #299/#300/#301/#302/#303; DB_ENGINE canonicalization and snapshot tooling hardening are in place."
   },
   "reconcile_slices": [
+    {
+      "id": "RECON-0001",
+      "status": "DONE",
+      "title": "Mainline branch/workspace reconciliation",
+      "completed_at_utc": "2026-03-05T14:41:59Z",
+      "branch": "main",
+      "evidence": {
+        "paths": [
+          "scripts/dev/reconcile-branch-main-state.sh",
+          ".vscode/mcp.json",
+          "docs/planning/NEXT_ACTIONS.json"
+        ],
+        "notes": "Snapshot runner now robust under ALLOW_DIRTY=1 and local MCP config is valid JSON. Reconcile PR chain completed (#299/#300/#301/#302/#303)."
+      }
+    },
     {
       "id": "RECON-DB-ENGINE-001",
       "status": "DONE",
