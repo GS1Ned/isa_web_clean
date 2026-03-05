@@ -23,6 +23,7 @@ import {
   validateAskISAStageAAnswer,
 } from "../ask-isa-stage-a";
 import { getEsrsGs1MappingsByStandard } from "../db-esrs-gs1-mapping.js";
+import { withSpan } from "../_core/tracer";
 
 // ---------------------------------------------------------------------------
 // E-04: Query intent classification
@@ -633,8 +634,13 @@ export const askISAV2Router = router({
       const { question, includeGapAnalysis, regulationId } = input;
 
       try {
+        return await withSpan('isa.ask_enhanced', {
+          'question.length': question.length,
+          'include_gap_analysis': includeGapAnalysis,
+        }, async (span) => {
         // E-04: Classify query intent before retrieval.
         const intent = classifyQueryIntent(question);
+        span.setAttribute('intent', intent);
 
         // Step 1: Generate query embedding
         const queryEmbedding = await generateQueryEmbedding(question);
@@ -860,6 +866,7 @@ ${contextParts.join('\n\n')}`;
           intent, // E-04
           inlineRecommendations, // E-05
         };
+        }); // end withSpan
       } catch (error) {
         serverLogger.error('[AskISA-v2] Enhanced ask failed:', error);
         return { error: 'Failed to process question' };

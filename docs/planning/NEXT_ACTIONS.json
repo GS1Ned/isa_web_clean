@@ -522,12 +522,14 @@
     {
       "id": "ISA2-0008",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Operationalize OpenTelemetry spans, SLO artifacts, and regression alerts for evidence-backed ISA flows",
       "next_action": "Turn the existing SLO and telemetry docs into real runtime instrumentation and regression signaling for ASK_ISA, NEWS_HUB, ESRS_MAPPING, and ADVISORY-critical paths.",
       "acceptance_criteria": "Decision, retrieval, and change-intelligence paths emit actionable telemetry; SLO artifacts and regression alerts are backed by real runtime signals rather than draft-only docs.",
       "evidence_links": [
+        "server/_core/tracer.ts",
+        "server/routers/ask-isa-v2.ts",
         "docs/sre/SLO_CATALOG.md",
         "docs/sre/OTEL.md",
         "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
@@ -541,7 +543,16 @@
         "RES-005",
         "BENCH-002",
         "BENCH-005"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "server/_core/tracer.ts",
+          "server/routers/ask-isa-v2.ts"
+        ],
+        "notes": "withSpan() tracer utility created; askEnhanced mutation wrapped with isa.ask_enhanced span capturing question.length, include_gap_analysis, and intent attributes"
+      }
     },
     {
       "id": "ISA2-0009",
