@@ -54,6 +54,7 @@ if [[ -n "$LOCAL_FORBIDDEN" ]]; then
         if [[ "$UNTRACKED_COUNT" -gt 40 ]]; then
             echo "... and $((UNTRACKED_COUNT - 40)) more"
         fi
+        echo "Tip: run 'APPLY=1 bash scripts/dev/cleanup-local-forbidden-files.sh' to clean local noise."
     fi
 fi
 
