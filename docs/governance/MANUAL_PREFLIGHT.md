@@ -9,6 +9,10 @@ Purpose: Provide a deterministic “sanity suite” while CI gates are disabled.
 - Working tree is clean (or you explicitly chose stash/discard).
 - You are not making changes on `main` unless explicitly intended.
 
+Optional local noise cleanup (recommended on macOS):
+- Preview: `bash scripts/dev/cleanup-local-forbidden-files.sh`
+- Apply: `APPLY=1 bash scripts/dev/cleanup-local-forbidden-files.sh`
+
 ## 1. Repo & Branch Truth
 Run:
 - `git rev-parse --show-toplevel`
