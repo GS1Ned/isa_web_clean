@@ -4,6 +4,7 @@ Status: CANONICAL
 ## Canonical Planning Anchors
 - Execution queue (single source of next work): `docs/planning/NEXT_ACTIONS.json`
 - Structured backlog (canonical): `docs/planning/BACKLOG.csv`
+- Manual/external execution register: `docs/governance/MANUAL_EXTERNAL_REGISTER.md`
 
 ## Recovery Commands (Archive Tags)
 Restore commands for archived local branches and stashes.
