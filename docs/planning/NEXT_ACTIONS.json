@@ -411,14 +411,15 @@
     {
       "id": "ISA2-0005",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "ESRS_MAPPING",
       "title": "Formalize the confidence and abstention contract for ESRS_MAPPING outputs and downstream ADVISORY packaging",
       "next_action": "Define how confidence score, confidence basis, uncertainty class, abstention, and review thresholds are represented so decision artifacts become decision-grade rather than merely plausible.",
       "acceptance_criteria": "ESRS_MAPPING and ADVISORY expose a stable confidence contract with explicit evidence basis, uncertainty handling, and review/escalation semantics backed by code and tests.",
       "evidence_links": [
-        "docs/spec/ARCHITECTURE.md",
         "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+        "server/db-esrs-gs1-mapping.ts",
+        "server/services/news-impact/index.ts",
         "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
         "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md"
       ],
@@ -429,7 +430,15 @@
         "RES-002",
         "BENCH-005",
         "BENCH-006"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+          "server/db-esrs-gs1-mapping.ts"
+        ]
+      }
     },
     {
       "id": "ISA2-0006",
