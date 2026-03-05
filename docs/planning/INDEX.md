@@ -38,6 +38,9 @@ git stash apply "$TAG"
 ```
 
 ## Preconditions Before Work
+0) Optional local noise cleanup:
+   - `bash scripts/dev/cleanup-local-forbidden-files.sh` (preview)
+   - `APPLY=1 bash scripts/dev/cleanup-local-forbidden-files.sh` (apply)
 1) Confirm branch divergence, local delta, and queue drift snapshot:
    - `ALLOW_DIRTY=1 bash scripts/dev/reconcile-branch-main-state.sh`
 2) Confirm branch and working tree state
