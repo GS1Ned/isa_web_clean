@@ -304,12 +304,13 @@
     {
       "id": "ISA2-0019",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Cutover readiness review",
       "next_action": "Run objective go/no-go review based on journey parity, rebuild reliability, and gate portability.",
       "acceptance_criteria": "Readiness checklist is complete and signed with no unresolved hard-fail parity regressions.",
       "evidence_links": [
+        "docs/spec/READINESS_CHECKLIST.md",
         "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
         "docs/spec/ARCHITECTURE.md",
         "docs/planning/NEXT_ACTIONS.json"
@@ -319,7 +320,15 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0019"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "docs/spec/READINESS_CHECKLIST.md"
+        ],
+        "notes": "GO decision: all Phase A/B/C/CI checks PASS; C2 (security waivers) KNOWN-RISK/PARKED; hard-fail conditions documented; cutover prerequisites for ISA2-0020 enumerated"
+      }
     },
     {
       "id": "ISA2-0020",
@@ -909,6 +918,7 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-03-05T08:45:47Z"
+    "last_updated_at_utc": "2026-03-05T12:00:00Z",
+    "notes": "ISA v2 Phase A-C execution complete. All 13 work packages in run order A1→A2→B1→B2→B4→B5→B6→B3→B7→A3→A4→C1→A5→C2 are DONE or PARKED-with-justification. ISA2-0020 (Postgres cutover) and PR2-0003 (security waiver burndown) remain as post-implementation-mode items."
   }
 }
