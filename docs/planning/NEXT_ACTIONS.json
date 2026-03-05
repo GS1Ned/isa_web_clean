@@ -78,7 +78,7 @@
     {
       "id": "ISA2-0013a",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "capability": "ASK_ISA",
       "title": "Ask ISA Postgres schema subset and migration path",
       "next_action": "Implement Postgres subset for Ask ISA substrate tables with isolated migration history.",
@@ -86,6 +86,7 @@
       "evidence_links": [
         "drizzle_pg/schema.ts",
         "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+        "drizzle_pg/migrations/0001_top3_subset_parity.sql",
         "scripts/dev/postgres-apply-migrations.sh",
         "scripts/dev/postgres-parity-smoke.sh",
         "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
@@ -96,7 +97,18 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0013a"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "feat/isa2-a1-pg-top3-subset",
+        "paths": [
+          "drizzle_pg/schema.ts",
+          "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+          "drizzle_pg/migrations/0001_top3_subset_parity.sql",
+          "scripts/dev/postgres-apply-migrations.sh",
+          "scripts/dev/postgres-parity-smoke.sh"
+        ]
+      }
     },
     {
       "id": "ISA2-0014",
@@ -120,7 +132,7 @@
     {
       "id": "ISA2-0015a",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "capability": "ESRS_MAPPING",
       "title": "ESRS Mapping Postgres schema subset and migration path",
       "next_action": "Implement Postgres subset for mapping and feedback tables while preserving current contracts.",
@@ -128,6 +140,7 @@
       "evidence_links": [
         "drizzle_pg/schema.ts",
         "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+        "drizzle_pg/migrations/0001_top3_subset_parity.sql",
         "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
         "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md"
       ],
@@ -136,7 +149,16 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0015a"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "feat/isa2-a1-pg-top3-subset",
+        "paths": [
+          "drizzle_pg/schema.ts",
+          "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+          "drizzle_pg/migrations/0001_top3_subset_parity.sql"
+        ]
+      }
     },
     {
       "id": "ISA2-0015b",
@@ -160,7 +182,7 @@
     {
       "id": "ISA2-0016",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "capability": "ADVISORY",
       "title": "Advisory parity + normalized filter model",
       "next_action": "Migrate advisory substrate and replace JSON hot-path filtering with normalized join-table access.",
@@ -170,6 +192,8 @@
         "server/services/news-impact/index.ts",
         "drizzle/migrations/0024_add_advisory_target_join_tables.sql",
         "drizzle/schema.ts",
+        "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+        "drizzle_pg/migrations/0001_top3_subset_parity.sql",
         "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
         "docs/spec/INTEGRATION_CONTRACTS.md"
       ],
@@ -178,7 +202,19 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0016"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "feat/isa2-a1-pg-top3-subset",
+        "paths": [
+          "server/services/news-impact/index.ts",
+          "drizzle/migrations/0023_add_staleness_and_verification.sql",
+          "drizzle/migrations/0024_add_advisory_target_join_tables.sql",
+          "drizzle/schema.ts",
+          "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+          "drizzle_pg/migrations/0001_top3_subset_parity.sql"
+        ]
+      }
     },
     {
       "id": "ISA2-0017",
