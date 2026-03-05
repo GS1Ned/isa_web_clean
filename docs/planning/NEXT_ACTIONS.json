@@ -1,5 +1,5 @@
 {
-  "date": "20260305T145000Z",
+  "date": "20260305T142726Z",
   "status": "CANONICAL",
   "schema_version": "1.0",
   "execution_rules": {
@@ -456,10 +456,10 @@
     {
       "id": "ISA2-0003",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "NEWS_HUB",
       "title": "Wire NEWS_HUB into the compliance cockpit as change intelligence instead of a standalone news surface",
-      "next_action": "Expose advisory_reports.stale_since (written by E-01 / flagAdvisoryReportsStaleSince) via the advisory tRPC router and surface a staleness count/badge in the compliance monitoring or advisory dashboard. This is the single remaining gap: E-01 is written server-side but never read by any client surface.",
+      "next_action": "Monitor stale-report volume and escalation behavior in advisory dashboards; calibrate alert thresholds as real NEWS_HUB signal volume grows.",
       "acceptance_criteria": "NEWS_HUB surfaces expose change-intelligence artefacts that can be consumed by dashboard, decision-core, and advisory layers.",
       "evidence_links": [
         "server/services/news-impact/index.ts",
@@ -476,7 +476,24 @@
       "task_refs": [
         "ARCH-CHANGE-INTELLIGENCE"
       ],
-      "traceability_note": "RECON-NEWSHUB-STATUS-002 audit (2026-03-05): Server-side change-intelligence pipeline is complete — E-01 (flagAdvisoryReportsStaleSince) and E-02 (flagRegulationsNeedVerification) are called from createHubNews() in server/db.ts. E-02 needs_verification is surfaced in AskISA.tsx source-posture UI. bulkImportFromNews bridges high-impact news to regulatory_change_log. getNewsByRegulation exposes related news in HubRegulationDetail.tsx. CAPABILITY_GRAPH documents NEWS_HUB → ADVISORY flow. Remaining gap: advisory_reports.stale_since is written by E-01 but no tRPC advisory router exposes it and no dashboard reads it — the compliance-cockpit staleness indicator does not yet exist."
+      "traceability_note": "RECON-NEWSHUB-STATUS-003 closeout (2026-03-05): E-01/E-02 backend propagation was already active. Remaining cockpit gap is now closed: advisoryReports.stats exposes stale counts from advisory_reports.stale_since, AdvisoryReports surfaces stale metrics and per-report stale badges, and AdvisoryDashboard shows change-intelligence staleness badges. NEWS_HUB change signals are now visible in advisory cockpit surfaces.",
+      "completed_at_utc": "2026-03-05T14:26:16Z",
+      "evidence": {
+        "branch": "main",
+        "paths": [
+          "server/db-advisory-reports.ts",
+          "server/routers/advisory-reports.ts",
+          "client/src/pages/AdvisoryDashboard.tsx",
+          "client/src/pages/AdvisoryReports.tsx",
+          "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+        ],
+        "validation": [
+          "pnpm check",
+          "pnpm vitest run server/routers/advisory-reports.test.ts",
+          "bash scripts/gates/doc-code-validator.sh --canonical-only",
+          "python3 scripts/validate_planning_and_traceability.py"
+        ]
+      }
     },
     {
       "id": "ISA2-0004",
@@ -957,8 +974,8 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-03-05T14:00:00Z",
-    "notes": "ISA v2 Phase A-D execution complete. All work packages including ISA2-0020 (Postgres runtime cutover) are DONE. PR2-0003 (security waiver burndown) remains PARKED during implementation-only mode. RECON-DB-ENGINE-001 reconcile slice applied: DB_ENGINE canonicalized, ISA_DB_ENGINE legacy alias wired, engine-aware env validation, templates aligned, ADR gate updated."
+    "last_updated_at_utc": "2026-03-05T14:27:26Z",
+    "notes": "ISA v2 Phase A-D execution complete. All ISA2 work packages (including ISA2-0003 cockpit change-intelligence closeout and ISA2-0020 Postgres runtime cutover) are DONE. PR2-0003 (security waiver burndown) remains PARKED during implementation-only mode. RECON-DB-ENGINE-001 reconcile slice applied: DB_ENGINE canonicalized, ISA_DB_ENGINE legacy alias wired, engine-aware env validation, templates aligned, ADR gate updated."
   },
   "reconcile_slices": [
     {

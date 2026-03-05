@@ -62,7 +62,7 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
 - Advisory diff and compare surfaces may prefer `advisory_reports` plus `advisory_report_versions` snapshot-backed `decisionArtifactDiff` summaries over legacy file-based advisory diff JSON when snapshot-backed data exists.
 - Human-readable advisory export layers may serialise additive upstream `decisionArtifact` envelopes from `ESRS_MAPPING` without replacing the underlying capability-specific payload.
 - Field-level payload shape remains code-truth in ADVISORY router procedures.
-- `advisory_reports.stale_since` (set by `server/services/news-impact/index.ts` when linked regulations receive enforcement/amendment signals) is exposed through the export and diff surfaces so consumers can identify reports that require re-generation against updated regulatory context.
+- `advisory_reports.stale_since` (set by `server/services/news-impact/index.ts` when linked regulations receive enforcement/amendment signals) is surfaced through `advisoryReports.stats`, report-list metadata, and dashboard badges so consumers can identify reports that require re-generation against updated regulatory context.
 
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/advisory_health.sh -->

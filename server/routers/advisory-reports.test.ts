@@ -133,9 +133,11 @@ describe("advisoryReports router", () => {
       expect(result).toHaveProperty("total");
       expect(result).toHaveProperty("byReviewStatus");
       expect(result).toHaveProperty("byPublicationStatus");
+      expect(result).toHaveProperty("stale");
       expect(typeof result.total).toBe("number");
       expect(Array.isArray(result.byReviewStatus)).toBe(true);
       expect(Array.isArray(result.byPublicationStatus)).toBe(true);
+      expect(typeof (result as any).stale?.count).toBe("number");
     });
   });
 
