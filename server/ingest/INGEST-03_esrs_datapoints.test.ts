@@ -11,12 +11,8 @@ import {
   parseVoluntaryFlag
 } from "./INGEST-03_esrs_datapoints";
 
-vi.mock("xlsx", () => {
-  type Sheet = { rows: unknown[][] };
-  interface MockWorkbook {
-    SheetNames: string[];
-    Sheets: Record<string, Sheet>;
-  }
+vi.mock("../_core/excel", () => {
+  const workbook = { id: "mock-workbook" };
   const esrs2Header = [
     "ID",
     "ESRS",
@@ -66,27 +62,18 @@ vi.mock("xlsx", () => {
     "",
     ""
   ];
-  const workbook: MockWorkbook = {
-    SheetNames: ["ESRS 2", "Index", "ESRS E1"],
-    Sheets: {
-      "ESRS 2": { rows: [esrs2Header, esrs2Row1, esrs2Row2] },
-      Index: { rows: [] },
-      "ESRS E1": { rows: [e1Header, e1Row1] }
-    }
+  const rowsBySheet = {
+    "ESRS 2": [esrs2Header, esrs2Row1, esrs2Row2],
+    Index: [] as unknown[][],
+    "ESRS E1": [e1Header, e1Row1],
   };
-  function readFile() {
-    return workbook;
-  }
-  const utils = {
-    sheet_to_json: (sheet: Sheet, _options: unknown) => sheet.rows
-  };
+
   return {
-    default: {
-      readFile,
-      utils
-    },
-    readFile,
-    utils
+    readExcelWorkbook: vi.fn(async () => workbook),
+    getExcelSheetNames: vi.fn(() => ["ESRS 2", "Index", "ESRS E1"]),
+    getExcelWorksheetRows: vi.fn((_workbook: unknown, sheetName: string) => {
+      return (rowsBySheet as Record<string, unknown[][]>)[sheetName] ?? [];
+    }),
   };
 });
 
@@ -211,4 +198,3 @@ describe("INGEST-03: ESRS Datapoints ingestion", () => {
     process.env = originalEnv;
   });
 });
-

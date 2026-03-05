@@ -1,5 +1,5 @@
 {
-  "date": "20260305T144159Z",
+  "date": "20260305T150000Z",
   "status": "CANONICAL",
   "schema_version": "1.0",
   "execution_rules": {
@@ -715,10 +715,10 @@
     {
       "id": "PR2-0003",
       "priority": "P1",
-      "status": "PARKED",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Security waiver burn-down: remove temporary advisory waivers from high-severity gate policy (SEC-002)",
-      "next_action": "PARKED during ISA implementation-only mode. Resume security waiver burn-down after ISA v2 (Phase A-D) maturity declaration and controlled unpause.",
+      "next_action": "Maintain zero-waiver posture by keeping `xlsx` out of dependency graph and enforcing high+critical blocking with empty default waiver set.",
       "acceptance_criteria": "security-gate passes with SECURITY_AUDIT_BLOCKING_LEVELS=high,critical and empty waiver IDs; architecture/backlog updated.",
       "evidence_links": [
         "scripts/gates/security-gate.sh",
@@ -733,8 +733,21 @@
       "task_refs": [
         "SEC-002"
       ],
-      "parked_reason": "implementation-only mode: eval/drift/baseline/stage-readiness/security-waiver burn-down paused",
-      "parked_at_utc": "2026-02-21T17:48:15.447Z"
+      "completed_at_utc": "2026-03-05T15:00:00Z",
+      "evidence": {
+        "branch": "feat/security-waiver-burndown-sec-002",
+        "paths": [
+          "package.json",
+          "pnpm-lock.yaml",
+          "scripts/gates/security-gate.sh",
+          ".github/workflows/security-gate.yml",
+          ".github/workflows/tiered-tests.yml"
+        ],
+        "validation": [
+          "SECURITY_AUDIT_WAIVER_IDS= SECURITY_AUDIT_BLOCKING_LEVELS=high,critical bash scripts/gates/security-gate.sh /tmp/security.no-waiver.current.json"
+        ],
+        "result": "PASS with 0 enforced high/critical vulnerabilities and empty waiver set"
+      }
     },
     {
       "id": "PR2-0002",
@@ -991,8 +1004,8 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-03-05T14:41:59Z",
-    "notes": "ISA v2 Phase A-D execution complete. All ISA2 work packages (including ISA2-0003 cockpit change-intelligence closeout and ISA2-0020 Postgres runtime cutover) are DONE. PR2-0003 (security waiver burndown) remains PARKED during implementation-only mode. Reconcile line executed across #299/#300/#301/#302/#303; DB_ENGINE canonicalization and snapshot tooling hardening are in place."
+    "last_updated_at_utc": "2026-03-05T15:00:00Z",
+    "notes": "ISA v2 Phase A-D execution complete. All ISA2 and PR2 work packages are DONE, including PR2-0003 security waiver burn-down. Reconcile line executed across #299/#300/#301/#302/#303; DB_ENGINE canonicalization and snapshot tooling hardening are in place."
   },
   "reconcile_slices": [
     {

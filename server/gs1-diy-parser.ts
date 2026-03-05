@@ -10,10 +10,10 @@
  * - Validations: Business rules
  */
 
-import XLSX from "xlsx";
 import { getDb } from "./db";
 import { gs1Attributes, gs1AttributeCodeLists } from "../drizzle/schema";
 import { serverLogger } from "./_core/logger-wiring";
+import { getExcelWorksheetRows, readExcelWorkbook } from "./_core/excel";
 
 
 interface ParsedDIYAttribute {
@@ -48,19 +48,12 @@ interface PicklistValue {
 export async function parseFielddefinitionsSheet(
   filePath: string
 ): Promise<ParsedDIYAttribute[]> {
-  const workbook = XLSX.readFile(filePath);
-  const sheet = workbook.Sheets["Fielddefinitions"];
+  const workbook = await readExcelWorkbook(filePath);
+  const data = getExcelWorksheetRows(workbook, "Fielddefinitions", "") as any[][];
 
-  if (!sheet) {
+  if (data.length === 0) {
     throw new Error("Fielddefinitions sheet not found in Excel file");
   }
-
-  // Convert to JSON with header row
-  const data = XLSX.utils.sheet_to_json(sheet, {
-    header: 1,
-    range: 0,
-    defval: "",
-  }) as any[][];
 
   serverLogger.info(`[DIY Parser] Found ${data.length} rows in Fielddefinitions sheet`);
 
@@ -182,19 +175,13 @@ export async function parseFielddefinitionsSheet(
 export async function parsePicklistsSheet(
   filePath: string
 ): Promise<PicklistValue[]> {
-  const workbook = XLSX.readFile(filePath);
-  const sheet = workbook.Sheets["Picklists"];
+  const workbook = await readExcelWorkbook(filePath);
+  const data = getExcelWorksheetRows(workbook, "Picklists", "") as any[][];
 
-  if (!sheet) {
+  if (data.length === 0) {
     serverLogger.info("[DIY Parser] Picklists sheet not found, skipping");
     return [];
   }
-
-  const data = XLSX.utils.sheet_to_json(sheet, {
-    header: 1,
-    range: 0,
-    defval: "",
-  }) as any[][];
 
   serverLogger.info(`[DIY Parser] Found ${data.length} rows in Picklists sheet`);
 

@@ -34,7 +34,7 @@ import {
   Download,
   Search,
 } from "lucide-react";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 
 interface GS1AttributesPanelEnhancedProps {
   regulationId: number;
@@ -131,7 +131,7 @@ export function GS1AttributesPanelEnhanced({
   }, [attributes]);
 
   // Export to Excel
-  const handleExportToExcel = () => {
+  const handleExportToExcel = async () => {
     if (!attributes || !webVocab) return;
 
     // Prepare Data Source Attributes sheet
@@ -157,16 +157,29 @@ export function GS1AttributesPanelEnhanced({
       "EUDR Relevant": term.eudrRelevant ? "Yes" : "No",
     }));
 
-    // Create workbook
-    const wb = XLSX.utils.book_new();
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = "ISA";
+    workbook.created = new Date();
 
-    const wsAttributes = XLSX.utils.json_to_sheet(attributesData);
-    const wsWebVocab = XLSX.utils.json_to_sheet(webVocabData);
+    const addObjectRows = (sheetName: string, rows: Record<string, string | number>[]) => {
+      const worksheet = workbook.addWorksheet(sheetName);
+      if (rows.length === 0) {
+        return;
+      }
+      const headers = Object.keys(rows[0]);
+      worksheet.columns = headers.map((header) => ({
+        header,
+        key: header,
+        width: Math.max(14, header.length + 2),
+      }));
+      rows.forEach((row) => {
+        worksheet.addRow(row);
+      });
+    };
 
-    XLSX.utils.book_append_sheet(wb, wsAttributes, "Data Source Attributes");
-    XLSX.utils.book_append_sheet(wb, wsWebVocab, "Web Vocabulary");
+    addObjectRows("Data Source Attributes", attributesData);
+    addObjectRows("Web Vocabulary", webVocabData);
 
-    // Add metadata sheet
     const metadata = [
       { Field: "Regulation", Value: regulationName },
       { Field: "Export Date", Value: new Date().toLocaleDateString() },
@@ -178,14 +191,21 @@ export function GS1AttributesPanelEnhanced({
       },
       { Field: "Web Vocabulary Terms", Value: webVocab.length },
     ];
-    const wsMetadata = XLSX.utils.json_to_sheet(metadata);
-    XLSX.utils.book_append_sheet(wb, wsMetadata, "Metadata");
+    addObjectRows("Metadata", metadata);
 
-    // Download
-    XLSX.writeFile(
-      wb,
-      `${regulationName.replace(/\s+/g, "_")}_GS1_Compliance_Checklist.xlsx`
-    );
+    const fileName = `${regulationName.replace(/\s+/g, "_")}_GS1_Compliance_Checklist.xlsx`;
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   };
 
   if (attributesLoading || webVocabLoading) {

@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
 import crypto from "node:crypto";
-import XLSX from "xlsx";
 import { eq } from "drizzle-orm";
 import { getDb } from "../db";
 import { esrsDatapoints, rawEsrsDatapoints } from "../../drizzle/schema";
 import { serverLogger } from "../_core/logger-wiring";
+import { getExcelSheetNames, getExcelWorksheetRows, readExcelWorkbook } from "../_core/excel";
 import { recordIngestProvenance, sha256Hex } from "./_core/provenance";
 
 
@@ -102,7 +102,7 @@ export function parseVoluntaryFlag(value: unknown): boolean {
   return true;
 }
 
-function loadWorkbookFile(): XLSX.WorkBook {
+async function loadWorkbookFile() {
   const filePath = path.join(
     process.cwd(),
     "data",
@@ -114,30 +114,23 @@ function loadWorkbookFile(): XLSX.WorkBook {
       `ESRS datapoints Excel file not found at path: ${filePath}`
     );
   }
-  return XLSX.readFile(filePath);
+  return readExcelWorkbook(filePath);
 }
 
 function parseWorkbook(
-  workbook: XLSX.WorkBook,
+  workbook: Awaited<ReturnType<typeof loadWorkbookFile>>,
   verbose: boolean
 ): ParsedEsrsRow[] {
   const parsed: ParsedEsrsRow[] = [];
-  const sheetNames = workbook.SheetNames.filter(
+  const sheetNames = getExcelSheetNames(workbook).filter(
     (name) => name.toLowerCase() !== "index"
   );
   for (const sheetName of sheetNames) {
-    const worksheet = workbook.Sheets[sheetName];
-    if (!worksheet) {
-      if (verbose) {
-        serverLogger.warn(`Sheet ${sheetName} missing in workbook, skipping`);
-      }
-      continue;
-    }
-    const rows = XLSX.utils.sheet_to_json(worksheet, {
-      header: 1,
-      defval: null
-    }) as SheetRow[];
+    const rows = getExcelWorksheetRows(workbook, sheetName, null) as SheetRow[];
     if (rows.length <= 1) {
+      if (verbose) {
+        serverLogger.warn(`Sheet ${sheetName} missing/empty in workbook, skipping`);
+      }
       continue;
     }
     if (verbose) {
@@ -250,7 +243,7 @@ export async function ingestEsrsDatapoints(
       retrievedAt = null;
     }
 
-    const workbook = loadWorkbookFile();
+    const workbook = await loadWorkbookFile();
     const parsedRows = parseWorkbook(workbook, verbose);
     if (parsedRows.length === 0) {
       if (verbose) {
