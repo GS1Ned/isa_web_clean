@@ -22,6 +22,12 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
   - `server/routers/advisory-reports.ts`
   - `server/routers/advisory-diff.ts`
   - `server/routers/esg-artefacts.ts`
+- Server-side advisory deliverable modules:
+  - `server/advisory-report-export.ts` — serialises advisory reports with upstream `decisionArtifacts` envelopes for human-readable export
+  - `server/advisory-report-versioning.ts` — snapshot-backed version lifecycle (create, retrieve, compare)
+  - `server/advisory-report-decision-diff.ts` — decision-artifact diffing including confidence, uncertainty, and escalation drift
+  - `server/advisory-diff-runtime.ts` — snapshot-aware diff runtime with `snapshotBacked` and `decisionArtifactDiff` fields
+  - `server/db-esg-artefacts.ts` — ESG artefact persistence layer
 
 ## Data Surfaces (Ownership Contract)
 <!-- EVIDENCE:implementation:docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json -->
@@ -56,6 +62,7 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
 - Advisory diff and compare surfaces may prefer `advisory_reports` plus `advisory_report_versions` snapshot-backed `decisionArtifactDiff` summaries over legacy file-based advisory diff JSON when snapshot-backed data exists.
 - Human-readable advisory export layers may serialise additive upstream `decisionArtifact` envelopes from `ESRS_MAPPING` without replacing the underlying capability-specific payload.
 - Field-level payload shape remains code-truth in ADVISORY router procedures.
+- `advisory_reports.stale_since` (set by `server/services/news-impact/index.ts` when linked regulations receive enforcement/amendment signals) is exposed through the export and diff surfaces so consumers can identify reports that require re-generation against updated regulatory context.
 
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/advisory_health.sh -->
