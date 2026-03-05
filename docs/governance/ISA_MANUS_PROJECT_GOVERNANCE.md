@@ -139,7 +139,7 @@ Names only — **never values**.
 
 | Name         | Type   | Description                            |
 | ------------ | ------ | -------------------------------------- |
-| DATABASE_URL | Secret | Canonical MySQL-compatible relational DB connection string |
+| DATABASE_URL | Secret | Canonical relational DB connection string (CURRENT mysql-compatible, TARGET postgres/supabase) |
 
 ---
 

@@ -229,12 +229,12 @@ for dir in "${INVENTORY_DIRS[@]}"; do
   fi
 done
 
-# Extract database tables from drizzle/schema.ts
+# Extract database tables from drizzle/schema.ts (mysqlTable/pgTable declarations)
 DB_TABLES=()
 if [[ -f "drizzle/schema.ts" ]]; then
   while IFS= read -r line; do
     DB_TABLES+=("$line")
-  done < <(grep -oE 'export const [a-zA-Z_]+ = mysqlTable' drizzle/schema.ts 2>/dev/null | sed 's/export const //;s/ = mysqlTable//' | sort -u || true)
+  done < <(grep -oE 'export const [a-zA-Z_]+ = (mysqlTable|pgTable)' drizzle/schema.ts 2>/dev/null | sed -E 's/export const //;s/ = (mysqlTable|pgTable)//' | sort -u || true)
 fi
 
 # Count tRPC routers

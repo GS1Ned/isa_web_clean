@@ -83,6 +83,24 @@ function applyDecayToRows<T extends Record<string, unknown>>(
   });
 }
 
+function extractRows(result: unknown): Record<string, unknown>[] {
+  if (Array.isArray(result)) {
+    const maybeRows = result[0];
+    return Array.isArray(maybeRows) ? (maybeRows as Record<string, unknown>[]) : [];
+  }
+
+  if (
+    result &&
+    typeof result === "object" &&
+    "rows" in result &&
+    Array.isArray((result as { rows?: unknown }).rows)
+  ) {
+    return ((result as { rows: unknown[] }).rows ?? []) as Record<string, unknown>[];
+  }
+
+  return [];
+}
+
 /**
  * Get all GS1-ESRS data point mappings
  */
@@ -108,7 +126,7 @@ export async function getAllEsrsGs1Mappings() {
     ORDER BY esrs_standard, mapping_id
   `);
 
-  return applyDecayToRows((result[0] as Record<string, unknown>[]));
+  return applyDecayToRows(extractRows(result));
 }
 
 /**
@@ -140,7 +158,7 @@ export async function getEsrsGs1MappingsByStandard(esrs_standard: string) {
     ORDER BY m.mapping_id
   `);
 
-  const rows = result[0] as Record<string, unknown>[];
+  const rows = extractRows(result);
   return rows.map((row) => {
     const regulationNeedsVerification = Boolean(row.regulation_needs_verification);
     const { effectiveConfidence, decayReason } = computeEffectiveConfidence(
@@ -184,7 +202,7 @@ export async function getGs1AttributesForEsrsMapping(esrsMappingId: number) {
     ORDER BY a.confidence DESC, a.gs1_attribute_name
   `);
 
-  const rows = result[0] as Record<string, unknown>[];
+  const rows = extractRows(result);
   return rows.map((row) => {
     const { effectiveConfidence, decayReason } = computeEffectiveConfidence(
       row.confidence as string,
@@ -219,7 +237,7 @@ export async function getEsrsRequirementsForGs1Attribute(gs1AttributeId: string)
     ORDER BY m.esrs_standard, m.mapping_id
   `);
   
-  return result[0];
+  return extractRows(result);
 }
 
 /**
@@ -245,7 +263,7 @@ export async function getComplianceCoverageSummary() {
     ORDER BY m.esrs_standard
   `);
   
-  return result[0];
+  return extractRows(result);
 }
 
 /**
@@ -270,7 +288,7 @@ export async function getUnmappedEsrsRequirements() {
     ORDER BY m.esrs_standard, m.mapping_id
   `);
   
-  return result[0];
+  return extractRows(result);
 }
 
 /**
@@ -301,7 +319,7 @@ export async function searchEsrsGs1Mappings(keyword: string) {
     ORDER BY m.esrs_standard, m.mapping_id
   `);
   
-  return result[0];
+  return extractRows(result);
 }
 
 /**
@@ -333,7 +351,7 @@ export async function getEsrsGs1MappingStatistics() {
   `);
   
   return {
-    overall: (stats[0] as any)[0],
-    byStandard: standardCoverage[0]
+    overall: extractRows(stats)[0] ?? null,
+    byStandard: extractRows(standardCoverage)
   };
 }

@@ -4,11 +4,260 @@
   "schema_version": "1.0",
   "execution_rules": {
     "single_source_of_next_work": "docs/planning/NEXT_ACTIONS.json",
-    "one_pr_per_item": true,
+    "one_pr_per_item": false,
     "default_validation_command": "(NO_GATES_WINDOW) run local preflight only",
     "evidence_links_must_resolve": true
   },
   "items": [
+    {
+      "id": "ISA2-0010",
+      "priority": "P0",
+      "status": "DONE",
+      "capability": "Meta",
+      "title": "Canon + ADR convergence for Postgres/Supabase target",
+      "next_action": "Converge canonical docs to ADR-0001 and enforce engine-switch governance gates.",
+      "acceptance_criteria": "ADR exists as DECISION_CONFIRMED, canonical docs reference it, and engine-switch without ADR is blocked by gate.",
+      "evidence_links": [
+        "docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md",
+        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+        "docs/spec/ARCHITECTURE.md",
+        "docs/governance/TECHNICAL_DOCUMENTATION_CANON.md",
+        "scripts/gates/db-engine-adr-gate.sh"
+      ],
+      "validation_command": "bash scripts/gates/db-engine-adr-gate.sh && bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ADR-0001",
+        "DB-MIG-P0"
+      ]
+    },
+    {
+      "id": "ISA2-0011",
+      "priority": "P0",
+      "status": "DONE",
+      "capability": "Meta",
+      "title": "Tooling parity foundation (Supabase Local + CI Postgres scaffold)",
+      "next_action": "Add deterministic local bootstrap and CI Postgres parity smoke without runtime cutover.",
+      "acceptance_criteria": "Supabase local bootstrap script exists, CI Postgres parity smoke exists, and DB-only scope guard passes.",
+      "evidence_links": [
+        "scripts/dev/supabase-local-bootstrap.sh",
+        "scripts/dev/postgres-parity-smoke.sh",
+        ".github/workflows/tiered-tests.yml",
+        "scripts/gates/db-only-scope-guard.sh"
+      ],
+      "validation_command": "bash scripts/gates/db-only-scope-guard.sh",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "DB-MIG-P0",
+        "ISA2-0011"
+      ]
+    },
+    {
+      "id": "ISA2-0012",
+      "priority": "P1",
+      "status": "DONE",
+      "capability": "Meta",
+      "title": "Gate portability for mixed dialect table declarations",
+      "next_action": "Ensure ownership drift and inventory gates handle mysqlTable and pgTable during mixed-dialect transition.",
+      "acceptance_criteria": "Manifest ownership drift gate parses mysqlTable and pgTable declarations and stays deterministic.",
+      "evidence_links": [
+        "scripts/gates/manifest-ownership-drift.py",
+        "scripts/iron-inventory.sh",
+        "docs/spec/ARCHITECTURE.md"
+      ],
+      "validation_command": "python3 scripts/gates/manifest-ownership-drift.py",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ISA2-0012",
+        "DB-MIG-GATES"
+      ]
+    },
+    {
+      "id": "ISA2-0013a",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "capability": "ASK_ISA",
+      "title": "Ask ISA Postgres schema subset and migration path",
+      "next_action": "Implement Postgres subset for Ask ISA substrate tables with isolated migration history.",
+      "acceptance_criteria": "Postgres migrations for Ask ISA subset apply on empty DB and smoke data path is queryable.",
+      "evidence_links": [
+        "drizzle_pg/schema.ts",
+        "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+        "scripts/dev/postgres-apply-migrations.sh",
+        "scripts/dev/postgres-parity-smoke.sh",
+        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md"
+      ],
+      "validation_command": "bash scripts/dev/postgres-parity-smoke.sh",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ISA2-0013a"
+      ]
+    },
+    {
+      "id": "ISA2-0014",
+      "priority": "P0",
+      "status": "READY",
+      "capability": "ASK_ISA",
+      "title": "Ask ISA parity gates on Postgres",
+      "next_action": "Enforce citation presence/validity and groundedness thresholds in Postgres parity runs.",
+      "acceptance_criteria": "Ask ISA parity gate shows citation presence=1 and citation validity=1 with non-regressive abstention correctness.",
+      "evidence_links": [
+        "docs/quality/thresholds/isa-capability-thresholds.json",
+        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+      ],
+      "validation_command": "node scripts/eval/assert-capability-thresholds.cjs --in test-results/ci/isa-capability-eval.json",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ISA2-0014"
+      ]
+    },
+    {
+      "id": "ISA2-0015a",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "capability": "ESRS_MAPPING",
+      "title": "ESRS Mapping Postgres schema subset and migration path",
+      "next_action": "Implement Postgres subset for mapping and feedback tables while preserving current contracts.",
+      "acceptance_criteria": "Subset migrations apply and baseline smoke checks for mapping tables pass.",
+      "evidence_links": [
+        "drizzle_pg/schema.ts",
+        "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md"
+      ],
+      "validation_command": "pnpm check",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ISA2-0015a"
+      ]
+    },
+    {
+      "id": "ISA2-0015b",
+      "priority": "P0",
+      "status": "READY",
+      "capability": "ESRS_MAPPING",
+      "title": "ESRS Mapping parity gates on Postgres",
+      "next_action": "Run negative fixture and authority-correctness checks against Postgres parity path.",
+      "acceptance_criteria": "Negative fixtures remain negative and authority correctness is non-regressive against baseline.",
+      "evidence_links": [
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+        "docs/quality/thresholds/isa-capability-thresholds.json"
+      ],
+      "validation_command": "node scripts/eval/assert-capability-thresholds.cjs --in test-results/ci/isa-capability-eval.json",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ISA2-0015b"
+      ]
+    },
+    {
+      "id": "ISA2-0016",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "capability": "ADVISORY",
+      "title": "Advisory parity + normalized filter model",
+      "next_action": "Migrate advisory substrate and replace JSON hot-path filtering with normalized join-table access.",
+      "acceptance_criteria": "Advisory version/retrieval flows stay reproducible and filter queries use join-based indexed paths.",
+      "evidence_links": [
+        "server/db-advisory-reports.ts",
+        "server/services/news-impact/index.ts",
+        "drizzle/migrations/0024_add_advisory_target_join_tables.sql",
+        "drizzle/schema.ts",
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
+        "docs/spec/INTEGRATION_CONTRACTS.md"
+      ],
+      "validation_command": "pnpm check",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ISA2-0016"
+      ]
+    },
+    {
+      "id": "ISA2-0017",
+      "priority": "P1",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Rehydration and deterministic rebuild harness",
+      "next_action": "Implement source-manifest driven rebuild scripts for deterministic empty-DB bootstrap.",
+      "acceptance_criteria": "Two consecutive rebuild runs on empty Postgres are idempotent (no semantic drift).",
+      "evidence_links": [
+        "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+        "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+      ],
+      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ISA2-0017"
+      ]
+    },
+    {
+      "id": "ISA2-0018",
+      "priority": "P1",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "CI parity + limited runtime seam",
+      "next_action": "Keep mysql runtime default while Postgres parity jobs and seam controls prove non-regressive behavior.",
+      "acceptance_criteria": "CI parity jobs are green and parity drift reports are explicit/reproducible.",
+      "evidence_links": [
+        ".github/workflows/tiered-tests.yml",
+        "docs/quality/thresholds/isa-capability-thresholds.json"
+      ],
+      "validation_command": "bash scripts/dev/postgres-parity-smoke.sh",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ISA2-0018"
+      ]
+    },
+    {
+      "id": "ISA2-0019",
+      "priority": "P0",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Cutover readiness review",
+      "next_action": "Run objective go/no-go review based on journey parity, rebuild reliability, and gate portability.",
+      "acceptance_criteria": "Readiness checklist is complete and signed with no unresolved hard-fail parity regressions.",
+      "evidence_links": [
+        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+        "docs/spec/ARCHITECTURE.md",
+        "docs/planning/NEXT_ACTIONS.json"
+      ],
+      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ISA2-0019"
+      ]
+    },
+    {
+      "id": "ISA2-0020",
+      "priority": "P0",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Runtime cutover to Postgres default",
+      "next_action": "Flip runtime default to Postgres after readiness sign-off; retain explicit rollback path.",
+      "acceptance_criteria": "Postgres is default runtime, mysql path is legacy fallback, rollback path is documented and tested.",
+      "evidence_links": [
+        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+        "server/db.ts",
+        "server/db-connection.ts"
+      ],
+      "validation_command": "bash scripts/gates/db-engine-adr-gate.sh",
+      "created_at_utc": "2026-03-05T00:00:00Z",
+      "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
+      "task_refs": [
+        "ISA2-0020"
+      ]
+    },
     {
       "id": "ISA2-0001",
       "priority": "P0",
@@ -489,6 +738,6 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-03-04T10:06:23Z"
+    "last_updated_at_utc": "2026-03-05T08:45:47Z"
   }
 }

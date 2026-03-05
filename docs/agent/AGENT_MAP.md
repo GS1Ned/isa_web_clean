@@ -23,6 +23,7 @@ Status: CANONICAL
 - Core contract: `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
 - Canonical system architecture (CURRENT/TARGET): `docs/spec/ARCHITECTURE.md`
 - Canonical data plane contract: `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
+- Data-plane migration ADR: `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`
 
 ## Canonical Machine Contracts
 - Capability ownership: `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`

@@ -3,7 +3,7 @@
 
 Checks:
 1) Every top-level router surface in server/routers.ts has an owner in CAPABILITY_MANIFEST.
-2) Every mysqlTable(...) name in drizzle/schema*.ts has an owner in CAPABILITY_MANIFEST.
+2) Every runtime table declaration name in drizzle schema files (`mysqlTable(...)` and `pgTable(...)`) has an owner in CAPABILITY_MANIFEST.
 3) No router/table ownership is assigned to multiple owners in manifest registry.
 """
 
@@ -19,10 +19,13 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 ROUTERS_PATH = REPO_ROOT / "server/routers.ts"
 MANIFEST_PATH = REPO_ROOT / "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json"
-SCHEMA_GLOB = str(REPO_ROOT / "drizzle/schema*.ts")
+SCHEMA_GLOBS = [
+    str(REPO_ROOT / "drizzle/schema*.ts"),
+    str(REPO_ROOT / "drizzle_pg/**/*.ts"),
+]
 
 ROUTER_KEY_RE = re.compile(r"^  ([A-Za-z_][A-Za-z0-9_]*)\s*:")
-MYSQL_TABLE_RE = re.compile(r"mysqlTable\(\s*['\"]([A-Za-z0-9_]+)['\"]\s*,")
+TABLE_RE = re.compile(r"(?:mysqlTable|pgTable)\(\s*['\"]([A-Za-z0-9_]+)['\"]\s*,")
 
 
 def read_text(path: Path) -> str:
@@ -40,9 +43,12 @@ def parse_router_surfaces(path: Path) -> set[str]:
 
 def parse_schema_table_names() -> set[str]:
     table_names: set[str] = set()
-    for schema_path in sorted(glob.glob(SCHEMA_GLOB)):
+    schema_paths: set[str] = set()
+    for schema_glob in SCHEMA_GLOBS:
+        schema_paths.update(glob.glob(schema_glob, recursive=True))
+    for schema_path in sorted(schema_paths):
         text = Path(schema_path).read_text(encoding="utf-8")
-        table_names.update(match.group(1) for match in MYSQL_TABLE_RE.finditer(text))
+        table_names.update(match.group(1) for match in TABLE_RE.finditer(text))
     return table_names
 
 
@@ -136,7 +142,7 @@ def main() -> int:
 
     print(f"Status: {status}")
     print(f"Runtime router surfaces parsed: {len(runtime_surfaces)}")
-    print(f"Runtime mysqlTable names parsed: {len(runtime_tables)}")
+    print(f"Runtime table declarations parsed (mysqlTable/pgTable): {len(runtime_tables)}")
     print(f"Manifest surface ownership entries: {len(surface_owner)}")
     print(f"Manifest table ownership entries: {len(table_owner)}")
 

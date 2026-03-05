@@ -10,6 +10,7 @@
 **MCP Recipes (Canonical):** `docs/agent/MCP_RECIPES.md`
 **Architecture SSOT:** `docs/spec/ARCHITECTURE.md`
 **Data Plane Contract:** `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
+**Data Plane ADR:** `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`
 **Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
 **Document Status Model:** `docs/governance/DOCUMENT_STATUS_MODEL.md`
 **Agent Platform Operating Model:** `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
@@ -24,6 +25,7 @@
 - **Architecture SSOT:** `docs/spec/ARCHITECTURE.md`
 - **ISA Core Contract:** `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
 - **Data Plane Contract:** `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
+- **Data Plane ADR:** `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`
 - **Capability Ownership Contract:** `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
 - **Shared Primitive Contract:** `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
 - **Capability Dependency Graph:** `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
@@ -78,5 +80,5 @@
 ---
 
 **Document Status:** Canonical Index  
-**Last Updated:** 2026-03-04  
+**Last Updated:** 2026-03-05  
 **Maintainer:** ISA Repository Steward

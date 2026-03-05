@@ -1,145 +1,126 @@
 Status: CANONICAL
-Last Updated: 2026-03-04
+Last Updated: 2026-03-05
 
 # ISA Data Plane Architecture
 
 ## Purpose
-This document is the canonical technical contract for ISA's shared data plane: storage, provenance, retrieval, and data-plane evolution. It complements `docs/spec/ARCHITECTURE.md` by describing the common substrate beneath the six capabilities without redefining product ownership.
+This is the canonical data-plane contract for ISA: persistence substrate, provenance model, retrieval substrate, migration invariants, and engine-policy semantics across all six capabilities.
 
-## Canonical Authority
+## Canonical Authority Chain
 - Governance root: `docs/governance/_root/ISA_GOVERNANCE.md`
-- Technical documentation canon: `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
-- System architecture (`CURRENT` / `TARGET`): `docs/spec/ARCHITECTURE.md`
-- Core capability contract: `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
+- Technical canon: `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
+- System contract: `docs/spec/ARCHITECTURE.md`
+- Data-plane migration ADR: `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`
 - Ownership contract: `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
-- Shared primitive contract: `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
-- Code truth: `server/db.ts`, `server/db-connection.ts`, `drizzle/schema*.ts`, `server/services/corpus-governance/index.ts`, `server/services/canonical-facts/index.ts`, `data/metadata/dataset_registry.json`
+- Primitive contract: `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
+- Code truth: `server/db.ts`, `server/db-connection.ts`, `drizzle/schema*.ts`, `server/services/corpus-governance/index.ts`, `server/services/canonical-facts/index.ts`
 
-## 1. Current Data Plane (Canonical, As-Built)
+## 1) Current Data Plane (As-Built)
 
 ### 1.1 Relational Core
+**FACT:** Current runtime uses a MySQL-compatible relational core through `drizzle-orm/mysql2` + `mysql2`.
 
-**FACT:** The current runtime uses a MySQL-compatible relational core through `drizzle-orm/mysql2` and `mysql2/promise`.
-
-**FACT:** Primary runtime connection entrypoints are:
+**FACT:** Runtime entrypoints are:
 - `server/db.ts`
 - `server/db-connection.ts`
 
-**FACT:** Canonical relational table definitions are declared in `drizzle/schema.ts` and supplemental `drizzle/schema*.ts` files via `mysqlTable(...)`.
+**FACT:** Current canonical table declarations are in `drizzle/schema*.ts` via `mysqlTable(...)`.
 
-### 1.2 Authority And Provenance Substrate
+**FACT (2026-03-05 tranche):** Parallel Postgres subset declarations now exist in `drizzle_pg/schema.ts` via `pgTable(...)` for top-3 journey migration slices.
 
-**FACT:** `CATALOG` owns the dataset and governance registry surfaces, including `dataset_registry` and related source metadata contracts.
+### 1.2 Authority, Provenance, Evidence
+**FACT:** Provenance/evidence metadata exists in the relational model (`authorityTier`, `licenseType`, `publicationStatus`, `immutableUri`, verification timestamps, content hashes).
 
-**FACT:** `KNOWLEDGE_BASE` owns the retrieval and citation substrate, including `sources`, `source_chunks`, `knowledge_embeddings`, and ingestion provenance tables.
-
-**FACT:** Authority and publication metadata already exist in the relational model, including fields such as:
-- `authorityTier`
-- `licenseType`
-- `publicationStatus`
-- `immutableUri`
-- `lastVerifiedDate` / `lastVerifiedAt`
-
-**FACT:** Content hashing is already part of the current substrate through `contentHash` fields on chunk and embedding records.
-
-**FACT:** Deterministic evidence binding already exists through `evidenceKey = ke:<sourceChunkId>:<contentHash>` in `server/services/canonical-facts/index.ts`.
+**FACT:** Deterministic evidence binding exists through `evidenceKey = ke:<sourceChunkId>:<contentHash>`.
 
 ### 1.3 Retrieval Substrate
+**FACT:** Retrieval is implemented on the shared corpus + embeddings path (`server/db-knowledge.ts`, `server/db-knowledge-vector.ts`, `server/hybrid-search.ts`, `server/embedding.ts`).
 
-**FACT:** The current retrieval path is built on the authoritative corpus and embedding records, with search and retrieval logic in:
-- `server/db-knowledge.ts`
-- `server/db-knowledge-vector.ts`
-- `server/hybrid-search.ts`
-- `server/embedding.ts`
+## 2) Target Data Plane (Confirmed)
 
-**FACT:** The current repo truth supports vector-backed retrieval over the relational corpus. The canonical contract does not currently require a separate production graph store or triplestore.
+### 2.1 Engine Target
+**TARGET:** ISA target engine is Postgres-compatible relational DB with Supabase Postgres as reference managed platform and Supabase Local as local parity runtime.
 
-### 1.4 Capability Persistence On The Shared Core
+**TARGET:** Drizzle remains the ORM.
 
-The shared relational core persists both source-of-truth data and capability outputs:
+**TARGET:** Migration is rebuild + rehydration from authoritative sources plus deterministic regeneration of derived artifacts.
 
-| Capability | Shared data-plane role |
-| --- | --- |
-| `CATALOG` | authoritative registry of regulations, standards, datasets, and governance artefacts |
-| `KNOWLEDGE_BASE` | corpus, chunks, embeddings, provenance, citation substrate |
-| `ESRS_MAPPING` | mapping outputs, confidence, recommendation and roadmap data |
-| `ASK_ISA` | conversations, feedback, traces, grounded explanation outputs |
-| `NEWS_HUB` | change intelligence, pipeline observability, regulatory event history |
-| `ADVISORY` | versioned reports, diffs, and stakeholder deliverables |
+### 2.2 Scope Boundaries (This Migration Line)
+**TARGET (IN):**
+- Postgres engine migration path
+- Supabase Local parity
+- Parallel Postgres migration history (`drizzle_pg/`)
 
-## 2. Target Data Plane (Canonical)
+**TARGET (OUT):**
+- Supabase Auth, Storage, Realtime adoption
+- pgvector-serving/retrieval redesign in this migration line
+- dual-write runtime
 
-### 2.1 Stable Target Shape
-
-**TARGET:** ISA keeps a vendor-agnostic shared data plane with four additive layers:
+### 2.3 Shared-Layer Target Model
 1. Relational authority core
-2. Evidence and provenance layer
-3. Retrieval layer
-4. Optional semantic/graph projection layer
+2. Evidence/provenance layer
+3. Retrieval substrate (contract-preserving)
+4. Optional semantic projection (additive, not required for cutover)
 
-### 2.2 Relational Authority Core
+## 3) Migration Invariants (Merge-Blocking)
 
-**TARGET:** The relational core remains the system of record for:
-- source registry and dataset registry
-- governance documents and lifecycle metadata
-- mapping outputs and recommendation artefacts
-- advisory outputs and operational traces
-- user-facing persisted state that requires transactional guarantees
+1. MySQL migration history is immutable.
+2. Postgres migration history is parallel and isolated.
+3. Ask ISA citation/evidence integrity is non-regressive.
+4. ESRS negative fixtures stay negative.
+5. Upsert/ingest semantics remain idempotent.
+6. Advisory hot filters use normalized relational join paths (not JSON containment as primary hot path).
+7. DB migration line remains DB-only (no required `@supabase/supabase-js` runtime coupling).
 
-### 2.3 Evidence And Provenance Layer
+## 4) Migration Phases (Canonical IDs)
 
-**TARGET:** Every durable ISA claim must be traceable through:
-- source identity
-- authority tier
-- publication status
-- version scope
-- immutable or versioned URI when available
-- content hash or equivalent snapshot identity
-- verification timestamps and verification outcome
-- deterministic evidence keys for downstream citation and auditing
+- `ISA2-0010`: Canon + ADR convergence
+- `ISA2-0011`: Tooling parity foundation
+- `ISA2-0012`: Gate portability for mixed dialects
+- `ISA2-0013a` / `ISA2-0014`: Ask ISA PG subset + parity gates
+- `ISA2-0015a` / `ISA2-0015b`: ESRS mapping PG subset + parity gates
+- `ISA2-0016`: Advisory PG subset + normalized model
+- `ISA2-0017`: Rehydration and deterministic rebuild harness
+- `ISA2-0018`: CI parity + limited runtime seam
+- `ISA2-0019`: Cutover readiness review
+- `ISA2-0020`: Runtime cutover
 
-### 2.4 Retrieval Layer
+### 4.1 Current Implementation Evidence (in-progress slices)
+- `drizzle_pg/schema.ts` (top-3 subset `pgTable(...)` declarations)
+- `drizzle_pg/migrations/0000_isa_top3_subset.sql` (parallel Postgres migration history root)
+- `scripts/dev/postgres-apply-migrations.sh` + `scripts/dev/postgres-parity-smoke.sh` (deterministic local/CI apply + smoke path)
+- `drizzle/migrations/0024_add_advisory_target_join_tables.sql` (CURRENT mysql additive normalization for advisory hot filters)
+- `server/db-advisory-reports.ts` + `server/services/news-impact/index.ts` (join-table hot-path usage with JSON fallback compatibility)
 
-**TARGET:** Retrieval remains a first-class shared primitive built from the authoritative corpus, combining lexical and vector access over evidence-backed source material.
+## 5) Quality Gate Semantics
 
-**TARGET:** Retrieval policy must stay authority-aware, version-aware, and citation-bound. It must not become a free-form answer layer detached from provenance.
+### Top-3 Journey Gates
+- Ask ISA: citation presence/validity mandatory.
+- ESRS Mapping: negative fixtures must not regress to false positives.
+- Advisory: versioned outputs remain reproducible and evidence-linked.
 
-### 2.5 Optional Semantic / Graph Projection
+### Operational Gates
+- Postgres migrations apply deterministically in local/CI.
+- Rebuild harness can construct top-3 journey substrate from authoritative source manifests.
 
-**TARGET:** A graph or semantic projection may be introduced later for canonical facts, typed relations, diffs, and impact analysis.
+## 6) Rehydration Policy
 
-**TARGET:** Any graph layer must remain additive until it is backed by runtime code, validation, and canonical contracts. It is not a current hard dependency.
+**FACT:** TiDB continuity/export is not a dependency.
 
-## 3. Data Plane Principles
+**TARGET:** Authoritative rebuild inputs are source registries and canonical ingestion manifests (EU-Lex/EFRAG/GS1 and related authority set as defined by capability contracts).
 
-- `Authority-first`: higher-authority sources outrank supportive or derivative material.
-- `Evidence-first`: no durable claim without a traceable evidence binding.
-- `Version-first`: facts, mappings, and recommendations must be scoped to version/status where applicable.
-- `Diff-first`: updates and supersession should be treated as first-class events.
-- `Additive-first`: current relational truth is extended by additive metadata and services before any disruptive engine or topology change.
-- `Capability-owned outputs`: product surfaces remain capability-owned even when they share one substrate.
+**TARGET:** Derived artifacts (embeddings/indexes/mapping materializations) are regenerated deterministically and validated by stage-aware eval thresholds.
 
-## 4. Engine Policy
+## 7) Engine Policy Contract
 
-**FACT:** The current codebase is MySQL-compatible.
+**FACT:** Current engine remains MySQL-compatible until cutover readiness is accepted.
 
-**TARGET:** The canonical architecture does not treat TiDB, CockroachDB, YugabyteDB, Neon, or any other engine as an architecture fact unless and until a dedicated migration decision is adopted and implemented.
+**TARGET:** Postgres/Supabase becomes default only after `ISA2-0019` readiness criteria are satisfied.
 
-**TARGET:** Any future engine migration requires a reviewable ADR or equivalent canonical decision artifact that covers:
-- workload fit
-- schema compatibility
-- migration and rollback path
-- validation impact
-- local/dev parity
-- operational ownership
+**TARGET:** Engine switch without ADR-backed governance evidence is blocked by gate.
 
-Until such a decision exists, the canonical term is:
+## 8) Non-Goals
 
-`MySQL-compatible relational DB`
-
-## 5. Non-Goals
-
-- Do not use temporary research files, chat transcripts, or ad hoc prompts as data-plane authority.
-- Do not redefine capability ownership inside the data-plane contract.
-- Do not introduce a mandatory graph/triple-store dependency as a `CURRENT` fact without repo evidence.
-- Do not hardcode a vendor migration target in product or capability docs before the migration contract exists.
+- No architecture authority from ad hoc research notes or chat transcripts.
+- No parallel target-state documents outside canonical chain.
+- No hidden runtime coupling to Supabase platform features outside DB scope.

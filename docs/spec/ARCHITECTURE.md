@@ -1,8 +1,8 @@
 # ISA System Architecture
 ## Canonical CURRENT/TARGET Contract
 
-**Version:** 3.2.0  
-**Last Updated:** 2026-03-04  
+**Version:** 3.2.1  
+**Last Updated:** 2026-03-05  
 **Status:** AUTHORITATIVE  
 **Purpose:** Single canonical architecture contract for one CURRENT state and one TARGET state
 
@@ -15,15 +15,16 @@
 2. `docs/agent/AGENT_MAP.md`
 3. `docs/spec/ARCHITECTURE.md` (this document)
 4. `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
-5. `docs/spec/ESRS_MAPPING/isa-core-architecture.md` (supplemental only)
-6. Capability runtime contracts:
+5. `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md` (data-plane migration decision)
+6. `docs/spec/ESRS_MAPPING/isa-core-architecture.md` (supplemental only)
+7. Capability runtime contracts:
    - `docs/spec/ASK_ISA/RUNTIME_CONTRACT.md`
    - `docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md`
    - `docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md`
    - `docs/spec/CATALOG/RUNTIME_CONTRACT.md`
    - `docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md`
    - `docs/spec/ADVISORY/RUNTIME_CONTRACT.md`
-6. Code truth (`server/routers.ts`, `drizzle/schema*.ts`, `client/src/App.tsx`)
+8. Code truth (`server/routers.ts`, `drizzle/schema*.ts`, `client/src/App.tsx`)
 
 **FACT [EV-ARCH-006]:** `docs/spec/ESRS_MAPPING/isa-core-architecture.md` is explicitly supplemental and non-canonical for system CURRENT/TARGET.
 
@@ -87,7 +88,7 @@
 
 **TARGET:** `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` is the canonical contract for the shared data substrate beneath the six capabilities.
 
-**TARGET:** The shared data plane remains vendor-agnostic at the architecture level and is currently implemented as a MySQL-compatible relational core with provenance, retrieval, and evidence-binding layers.
+**TARGET:** The shared data plane contract is defined in `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` with CURRENT MySQL-compatible runtime and confirmed TARGET Postgres/Supabase migration path under `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`.
 
 **TARGET:** The primary user-facing operating surface is a compliance cockpit that answers:
 - what changed
@@ -136,7 +137,7 @@ Completion gate rule: every row must be `ACCEPTED` or `BLOCKED_WITH_MITIGATION`.
 
 **FACT [EV-ARCH-004]:** Ownership derivation source for top-level runtime surfaces is `server/routers.ts`.
 
-**FACT [EV-ARCH-013, EV-ARCH-014]:** Table ownership derivation source is `drizzle/schema.ts` plus supplemental schema files (for example `drizzle/schema_corpus_governance.ts`) that define `mysqlTable(...)` exports.
+**FACT [EV-ARCH-013, EV-ARCH-014]:** Table ownership derivation source is `drizzle/schema*.ts` table declarations (currently `mysqlTable(...)`, future mixed-dialect `pgTable(...)` included by gate policy).
 
 **FACT [EV-ARCH-010, EV-ARCH-011]:** Machine-readable ownership and overlap/gap coverage are maintained in `CAPABILITY_MANIFEST.json` and `CAPABILITY_GRAPH.json`.
 

@@ -10,8 +10,12 @@
 
 import { getDb } from "../../db";
 import { serverLogger } from "../../_core/logger-wiring";
-import { sql, inArray } from "drizzle-orm";
-import { advisoryReports, regulations } from "../../../drizzle/schema";
+import { sql, inArray, and, isNull } from "drizzle-orm";
+import {
+  advisoryReports,
+  regulations,
+  advisoryReportTargetRegulations,
+} from "../../../drizzle/schema";
 
 /** Regulatory states that warrant flagging regulations for verification. */
 const VERIFICATION_TRIGGER_STATES = new Set([
@@ -29,26 +33,46 @@ const VERIFICATION_TRIGGER_STATES = new Set([
 export async function flagAdvisoryReportsStaleSince(
   regulationIds: number[]
 ): Promise<void> {
-  if (regulationIds.length === 0) return;
+  const normalizedRegulationIds = Array.from(
+    new Set(
+      regulationIds
+        .map((value) => (typeof value === "number" ? value : Number(value)))
+        .filter((value) => Number.isInteger(value) && value > 0)
+    )
+  );
+  if (normalizedRegulationIds.length === 0) return;
 
   const db = await getDb();
   if (!db) return;
 
   try {
-    // For each regulation ID, update advisory reports that target it and are not yet stale.
-    // MySQL JSON_CONTAINS checks if the JSON array contains the given value.
-    for (const regulationId of regulationIds) {
-      await db.execute(
-        sql.raw(`
-          UPDATE advisory_reports
-          SET stale_since = NOW()
-          WHERE stale_since IS NULL
-            AND JSON_CONTAINS(target_regulation_ids, '${regulationId}', '$')
-        `)
+    const linkedReports = await db
+      .selectDistinct({
+        reportId: advisoryReportTargetRegulations.reportId,
+      })
+      .from(advisoryReportTargetRegulations)
+      .where(
+        inArray(
+          advisoryReportTargetRegulations.regulationId,
+          normalizedRegulationIds
+        )
       );
+
+    const reportIds = linkedReports.map((row) => row.reportId);
+    if (reportIds.length > 0) {
+      await db
+        .update(advisoryReports)
+        .set({ staleSince: sql`CURRENT_TIMESTAMP` })
+        .where(
+          and(
+            isNull(advisoryReports.staleSince),
+            inArray(advisoryReports.id, reportIds)
+          )
+        );
     }
-    serverLogger.debug(
-      `[news-impact] Checked advisory staleness for regulation IDs: ${regulationIds.join(", ")}`
+
+    serverLogger.info(
+      `[news-impact] advisory stale check completed: regulations=${normalizedRegulationIds.join(", ")}, reports=${reportIds.length}`
     );
   } catch (error) {
     // Non-blocking: log and continue
@@ -66,7 +90,14 @@ export async function flagAdvisoryReportsStaleSince(
 export async function flagRegulationsNeedVerification(
   regulationIds: number[]
 ): Promise<void> {
-  if (regulationIds.length === 0) return;
+  const normalizedRegulationIds = Array.from(
+    new Set(
+      regulationIds
+        .map((value) => (typeof value === "number" ? value : Number(value)))
+        .filter((value) => Number.isInteger(value) && value > 0)
+    )
+  );
+  if (normalizedRegulationIds.length === 0) return;
 
   const db = await getDb();
   if (!db) return;
@@ -75,10 +106,10 @@ export async function flagRegulationsNeedVerification(
     await db
       .update(regulations)
       .set({ needsVerification: 1 })
-      .where(inArray(regulations.id, regulationIds));
+      .where(inArray(regulations.id, normalizedRegulationIds));
 
-    serverLogger.debug(
-      `[news-impact] Flagged regulations for verification: ${regulationIds.join(", ")}`
+    serverLogger.info(
+      `[news-impact] flagged regulations for verification: ${normalizedRegulationIds.join(", ")}`
     );
   } catch (error) {
     serverLogger.error("[news-impact] Failed to flag regulations for verification:", error);

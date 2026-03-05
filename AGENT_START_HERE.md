@@ -41,6 +41,7 @@ This file is the only top-level entrypoint for agent onboarding.
 | Agent Map (Canonical) | `docs/agent/AGENT_MAP.md` | Canonical navigation map for humans and agents |
 | Technical Documentation Canon (Canonical) | `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md` | Canonical technical document chain and agentic loop |
 | Data Plane Contract (Canonical) | `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` | Shared storage, provenance, retrieval, and engine policy |
+| Data Plane ADR (Canonical) | `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md` | Confirmed Postgres/Supabase target and migration invariants |
 | MCP Policy (Canonical) | `docs/agent/MCP_POLICY.md` | MCP server usage + evidence logging policy |
 | MCP Recipes (Canonical) | `docs/agent/MCP_RECIPES.md` | Step-by-step MCP playbooks for common ISA tasks |
 | Docs Index (Canonical) | `docs/INDEX.md` | Canonical documentation index |
