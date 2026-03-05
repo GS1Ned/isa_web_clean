@@ -1,5 +1,5 @@
 {
-  "date": "20260305T154512Z",
+  "date": "20260305T155031Z",
   "status": "CANONICAL",
   "schema_version": "1.0",
   "execution_rules": {
@@ -752,7 +752,7 @@
     {
       "id": "PR2-0004",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Security zero-waiver enforcement activation: keep high+critical gate strict by default (SEC-003)",
       "next_action": "Run security gate in no-waiver mode on each release train and fail fast on any high/critical advisory until remediated.",
@@ -769,7 +769,23 @@
       "source_plan": "Security posture continuation slice (2026-03-05)",
       "task_refs": [
         "SEC-003"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T15:50:31Z",
+      "evidence": {
+        "branch": "feat/pr2-0004-zero-waiver-enforcement",
+        "paths": [
+          ".github/workflows/security-gate.yml",
+          ".github/workflows/tiered-tests.yml",
+          "docs/spec/ARCHITECTURE.md",
+          "docs/planning/BACKLOG.csv"
+        ],
+        "validation": [
+          "SECURITY_AUDIT_WAIVER_IDS= SECURITY_AUDIT_BLOCKING_LEVELS=high,critical bash scripts/gates/security-gate.sh /tmp/security.zero-waiver.current.json",
+          "bash scripts/gates/doc-code-validator.sh --canonical-only",
+          "python3 scripts/validate_planning_and_traceability.py"
+        ],
+        "result": "PASS; zero-waiver defaults are explicit in security and tiered CI workflows."
+      }
     },
     {
       "id": "PR2-0002",
@@ -1026,8 +1042,8 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-03-05T15:45:12Z",
-    "notes": "ISA v2 Phase A-D execution remains complete and reconciled on main. Security waiver burn-down (PR2-0003/SEC-002) stays DONE; follow-up enforcement slice PR2-0004 (SEC-003) is activated as READY to keep strict zero-waiver high+critical gate posture."
+    "last_updated_at_utc": "2026-03-05T15:50:31Z",
+    "notes": "ISA v2 Phase A-D execution remains complete and reconciled on main. Security waiver burn-down (PR2-0003/SEC-002) and follow-up zero-waiver enforcement activation (PR2-0004/SEC-003) are DONE with explicit empty-waiver defaults in security/tiered CI workflows."
   },
   "reconcile_slices": [
     {
