@@ -104,6 +104,7 @@ done < <(
 ahead_count=0
 echo
 echo "open_remote_branches_ahead_of_origin_main:"
+open_remote_tmp="$(mktemp)"
 for branch in "${REMOTE_BRANCHES[@]}"; do
   if [[ "${branch}" == "origin" ]]; then
     continue
@@ -117,12 +118,47 @@ for branch in "${REMOTE_BRANCHES[@]}"; do
   behind="$(git rev-list --count "origin/${branch}..origin/main")"
 
   if [[ "${ahead}" -gt 0 ]]; then
+    cherry_output="$(git cherry origin/main "origin/${branch}" || true)"
+    unique_plus="$(printf "%s\n" "${cherry_output}" | awk '/^\+/{c++} END{print c+0}')"
+    patch_equiv_minus="$(printf "%s\n" "${cherry_output}" | awk '/^-/{c++} END{print c+0}')"
+
     ahead_count=$((ahead_count + 1))
-    printf " - %s | ahead=%s behind=%s\n" "${branch}" "${ahead}" "${behind}"
+    printf "%08d\t%s | ahead=%s behind=%s unique_plus=%s patch_equiv_minus=%s\n" \
+      "${unique_plus}" "${branch}" "${ahead}" "${behind}" "${unique_plus}" "${patch_equiv_minus}" >> "${open_remote_tmp}"
   fi
 done
 
 if [[ "${ahead_count}" -eq 0 ]]; then
+  echo " - none"
+else
+  sort -r "${open_remote_tmp}" | cut -f2- | sed 's/^/ - /'
+fi
+rm -f "${open_remote_tmp}"
+
+echo
+echo "open_remote_unique_plus_preview:"
+preview_count=0
+for branch in "${REMOTE_BRANCHES[@]}"; do
+  if [[ "${branch}" == "origin" ]]; then
+    continue
+  fi
+  if ! git rev-parse --verify "origin/${branch}" >/dev/null 2>&1; then
+    continue
+  fi
+  ahead="$(git rev-list --count "origin/main..origin/${branch}")"
+  if [[ "${ahead}" -eq 0 ]]; then
+    continue
+  fi
+  cherry_preview="$(git cherry -v origin/main "origin/${branch}" | awk '/^\+/{print $0}' | head -n 3)"
+  unique_plus="$(printf "%s\n" "${cherry_preview}" | awk 'NF{c++} END{print c+0}')"
+  if [[ "${unique_plus}" -eq 0 ]]; then
+    continue
+  fi
+  preview_count=$((preview_count + 1))
+  echo " - ${branch}:"
+  printf "%s\n" "${cherry_preview}" | sed 's/^/   /'
+done
+if [[ "${preview_count}" -eq 0 ]]; then
   echo " - none"
 fi
 
