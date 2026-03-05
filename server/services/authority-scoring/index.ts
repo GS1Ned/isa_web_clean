@@ -390,7 +390,9 @@ export function detectQueryType(question: string): QueryType {
     q.includes('comply') ||
     q.includes('compliance') ||
     q.includes('requirement') ||
+    q.includes('required') ||
     q.includes('mandatory') ||
+    q.includes('shall') ||
     q.includes('must') ||
     q.includes('regulation') ||
     q.includes('legal')
