@@ -20,7 +20,10 @@ if ! git fetch --all --prune >/dev/null 2>&1; then
 fi
 
 if [[ "$#" -gt 0 ]]; then
-  mapfile -t TARGET_BRANCHES < <(printf "%s\n" "$@")
+  TARGET_BRANCHES=()
+  for arg in "$@"; do
+    TARGET_BRANCHES+=("${arg}")
+  done
 else
   TARGET_BRANCHES=(
     "origin/feat/isa2-0001-advisory-backend-final"
