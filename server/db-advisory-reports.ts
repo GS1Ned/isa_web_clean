@@ -5,7 +5,7 @@ import {
   advisoryReportTargetRegulations,
   advisoryReportTargetStandards,
 } from "../drizzle/schema";
-import { eq, and, desc, sql, inArray } from "drizzle-orm";
+import { eq, and, desc, sql, inArray, isNotNull } from "drizzle-orm";
 
 function normalizeIdArray(input: unknown): number[] | undefined {
   if (!Array.isArray(input)) return undefined;
@@ -284,11 +284,19 @@ export async function getAdvisoryReportStats() {
     })
     .from(advisoryReports)
     .groupBy(advisoryReports.publicationStatus);
+
+  const staleCount = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(advisoryReports)
+    .where(isNotNull(advisoryReports.staleSince));
   
   return {
     total: totalCount[0]?.count || 0,
     byReviewStatus,
     byPublicationStatus,
+    stale: {
+      count: staleCount[0]?.count || 0,
+    },
   };
 }
 

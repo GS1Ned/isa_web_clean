@@ -2,14 +2,16 @@ import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AlertCircle, CheckCircle2, Clock, Database, FileText, TrendingUp } from "lucide-react";
+import { AlertCircle, AlertTriangle, CheckCircle2, Clock, Database, FileText, TrendingUp } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 
 export default function AdvisoryDashboard() {
   const { data: overview, isLoading } = trpc.advisory.getOverview.useQuery();
+  const { data: reportStats } = trpc.advisoryReports.stats.useQuery();
   const summary = overview?.summary;
   const latestReport = overview?.latestReport;
+  const staleReportCount = reportStats?.stale?.count ?? 0;
 
   if (isLoading) {
     return (
@@ -49,6 +51,12 @@ export default function AdvisoryDashboard() {
             <CheckCircle2 className="h-3 w-3 mr-1" />
             Locked v{summary.version}
           </Badge>
+          {staleReportCount > 0 && (
+            <Badge variant="destructive">
+              <AlertTriangle className="h-3 w-3 mr-1" />
+              {staleReportCount} stale report{staleReportCount === 1 ? "" : "s"}
+            </Badge>
+          )}
         </div>
         <p className="text-muted-foreground">
           {summary.advisoryId} • Published {summary.publicationDate}
@@ -56,7 +64,7 @@ export default function AdvisoryDashboard() {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
         {/* Coverage Overview */}
         <Card>
           <CardHeader>
@@ -155,6 +163,27 @@ export default function AdvisoryDashboard() {
                   {summary.recommendations.byTimeframe["long-term"]}
                 </Badge>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* NEWS_HUB Staleness Signal */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-amber-600" />
+              Staleness Signal
+            </CardTitle>
+            <CardDescription>NEWS_HUB → ADVISORY propagation</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className={`text-4xl font-bold ${staleReportCount > 0 ? "text-amber-600" : "text-green-600"}`}>
+              {staleReportCount}
+            </div>
+            <div className="mt-4 text-sm text-muted-foreground">
+              {staleReportCount > 0
+                ? "Reports flagged for review due to recent regulatory change signals."
+                : "No stale reports flagged by current change intelligence signals."}
             </div>
           </CardContent>
         </Card>

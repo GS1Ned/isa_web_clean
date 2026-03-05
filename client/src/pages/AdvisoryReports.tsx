@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, FileText, Eye } from "lucide-react";
+import { AlertCircle, AlertTriangle, FileText, Eye } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useLocation } from "wouter";
 import { AdvisoryReportPdfExportButton } from "@/components/AdvisoryReportPdfExportButton";
@@ -56,7 +56,7 @@ export default function AdvisoryReports() {
 
       {/* Statistics */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium">Total Reports</CardTitle>
@@ -93,6 +93,22 @@ export default function AdvisoryReports() {
                   </div>
                 ))}
               </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-amber-600" />
+                Stale Reports
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className={`text-2xl font-bold ${(stats.stale?.count ?? 0) > 0 ? "text-amber-600" : ""}`}>
+                {stats.stale?.count ?? 0}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Marked by NEWS_HUB change signals
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -183,6 +199,11 @@ export default function AdvisoryReports() {
                     )}
                   </div>
                   <div className="flex flex-col gap-2 items-end">
+                    {report.staleSince && (
+                      <Badge variant="destructive">
+                        Stale since {formatDistanceToNow(new Date(report.staleSince))} ago
+                      </Badge>
+                    )}
                     <Badge variant="outline">
                       {formatAdvisoryEnumLabel(report.reportType)}
                     </Badge>
@@ -232,6 +253,16 @@ export default function AdvisoryReports() {
                   </div>
                   <div className="text-2xl font-bold">{Number(report.qualityScore).toFixed(2)}</div>
                 </div>
+              )}
+
+              {report.staleSince && (
+                <Alert>
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription className="text-sm">
+                    <strong>Change signal active:</strong> This report is flagged as stale due to recent
+                    regulatory updates and may require regeneration.
+                  </AlertDescription>
+                </Alert>
               )}
 
               {/* Tags */}
