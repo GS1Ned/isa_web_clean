@@ -256,7 +256,7 @@ def build_markdown_report(
     lines.append("")
     lines.append("## INTERPRETATION")
     lines.append("")
-    lines.append("- The effective runtime config is anchored in `/root/.openclaw/openclaw.json` on the VM.")
+    lines.append("- The tracked repo config is authoritative; `/root/.openclaw/openclaw.json` on the VM is the runtime materialization path.")
     lines.append("- The repository-level `.openclaw/control-plane.json` and `config/openclaw/*.json` files add governance and routing policy, but they do not replace the VM runtime file.")
     lines.append("- Host-local config is minimal; the host currently contributes an OpenRouter environment export and desktop/launcher behavior rather than the primary runtime state.")
     lines.append("")

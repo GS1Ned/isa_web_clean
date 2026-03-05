@@ -73,7 +73,7 @@ def add(field, source, effective, classification, risk, recommended_change, evid
 
 add('host:~/.openclaw/env.sh.OPENROUTER_API_KEY','host env',False,'shadowed_duplicate_secret','medium','Remove or minimize host-side duplicate provider secret if host runtime is not authoritative.','Active provider auth is VM-side, not host-side.')
 add('repo:.openclaw/control-plane.json.cost_optimization_stack.*','repo control-plane',True,'effective','low','Keep synchronized with isa_cost_optimizer middleware tests and runtime expectations.','isa_cost_optimizer/middleware_api.py reads cost_optimization_stack from .openclaw/control-plane.json.')
-add('repo:.openclaw/control-plane.json.model_router.default_model','repo control-plane',False,'shadowed_metadata','medium','Do not treat this as the OpenClaw runtime default; VM agents.defaults.model.primary remains authoritative.','VM runtime default is read from /root/.openclaw/openclaw.json.')
+add('repo:.openclaw/control-plane.json.model_router.default_model','repo control-plane',False,'shadowed_metadata','medium','Do not treat this as the OpenClaw runtime default; repo-tracked template plus VM materialization should define the active default.','Active runtime default is materialized in /root/.openclaw/openclaw.json.')
 cp_fb_class = 'shadowed_metadata_aligned' if cp_model_router.get('fallback_models', []) == vm_fallbacks else 'conflicting'
 cp_fb_risk = 'low' if cp_fb_class.endswith('aligned') else 'medium'
 cp_fb_change = 'Keep aligned with VM runtime fallbacks.' if cp_fb_class.endswith('aligned') else 'Mirror these into VM fallbacks or delete them to avoid false assumptions.'
@@ -92,7 +92,7 @@ allow_class = 'effective_but_empty' if not entries else 'effective'
 allow_change = 'Populate only when quarantine-based skill admission is actually needed; otherwise keep empty and document limited scope.' if not entries else 'Keep entries reviewed and checksum-pinned.'
 add('repo:config/openclaw/skills-allowlist.json.entries','repo skills allowlist',True,allow_class,'low',allow_change,'scripts/openclaw-skill-admit.sh and scripts/openclaw-skill-install.sh read this file.')
 add('repo:.openclaw/launcher/last_model_route.json.selected_route_id','repo launcher state',True,'effective_state','low','Safe to keep; it drives reuse-last-route launcher behavior.','Launcher wrappers read .openclaw/launcher/last_model_route.json.')
-add('vm:/root/.openclaw/openclaw.json.agents.defaults.model.primary','vm runtime',True,'effective','medium','This is the authoritative default model; align UI/router policy with it or change it deliberately here.','openclaw models status reports the VM default model.')
+add('vm:/root/.openclaw/openclaw.json.agents.defaults.model.primary','vm runtime',True,'effective','medium','This is the current materialized default model; align repo templates/UI policy with it or re-apply repo-tracked config deliberately.','openclaw models status reports the VM default model.')
 add('vm:/root/.openclaw/openclaw.json.agents.defaults.model.fallbacks','vm runtime',True,'effective_empty' if not vm_fallbacks else 'effective','medium','Add fallbacks if runtime resilience matters, or keep empty and remove conflicting fallback declarations elsewhere.','VM runtime fallbacks currently determine actual failover behavior.')
 add('vm:/root/.openclaw/openclaw.json.tools.deny','vm runtime',True,'effective','low','Retain unless you intentionally reopen browser/web capabilities and revalidate governance.','Current policy posture depends on these denies.')
 add('vm:/root/.openclaw/openclaw.json.gateway.bind','vm runtime',True,'effective','low','Keep loopback unless remote exposure is required; if exposed, configure trustedProxies.','Gateway is running loopback-only.')
@@ -137,7 +137,8 @@ support = {
 summary = {
     'generated_at': now_iso(),
     'repo_root': str(REPO),
-    'runtime_ssot': 'vm:/root/.openclaw/openclaw.json',
+    'repo_ssot': 'repo:/',
+    'runtime_materialization': 'vm:/root/.openclaw/openclaw.json',
     'high_risk_items': [r['field'] for r in rows if r['risk'] == 'high'],
     'conflicting_items': [r['field'] for r in rows if r['classification'] == 'conflicting'],
     'unused_items': [r['field'] for r in rows if r['classification'].startswith('unused')],
@@ -153,7 +154,8 @@ lines = [
     '',
     f'- Generated at: `{summary["generated_at"]}`',
     f'- Repo root: `{summary["repo_root"]}`',
-    f'- Runtime SSOT: `{summary["runtime_ssot"]}`',
+    f'- Repo SSOT: `{summary["repo_ssot"]}`',
+    f'- Runtime materialization: `{summary["runtime_materialization"]}`',
     '',
     '## FACT',
     '',

@@ -23,6 +23,11 @@ if ! command -v openclaw >/dev/null 2>&1; then
   exit 1
 fi
 
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "STOP=missing_command name=python3"
+  exit 1
+fi
+
 CHECK_ONLY=0
 if [ "${1:-}" = "--check-only" ]; then
   CHECK_ONLY=1
@@ -44,6 +49,105 @@ is_gateway_healthy() {
 sanitize_status() {
   sed -E 's@([?#&](token|auth|key|session)=)[^&# ]+@\1***REDACTED***@Ig; s@(/token/)[^/?# ]+@\1***REDACTED***@Ig'
 }
+
+ensure_control_ui_allowed_origins() {
+  local config_path="${OPENCLAW_CONFIG_PATH:-${HOME}/.openclaw/openclaw.json}"
+  local template_path="config/openclaw/openclaw.isa-lab.template.json"
+  local gateway_port="${OPENCLAW_GATEWAY_PORT:-18789}"
+  local tunnel_port="${OPENCLAW_TUNNEL_LOCAL_PORT:-18789}"
+  python3 - "$config_path" "$template_path" "$gateway_port" "$tunnel_port" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+config_path = Path(sys.argv[1]).expanduser()
+template_path = Path(sys.argv[2])
+ports = []
+for raw in sys.argv[3:]:
+    value = raw.strip()
+    if not value:
+        continue
+    try:
+        port = int(value)
+    except ValueError:
+        continue
+    if 1 <= port <= 65535 and port not in ports:
+        ports.append(port)
+
+desired_origins = []
+if template_path.exists():
+    with template_path.open("r", encoding="utf-8") as handle:
+        template = json.load(handle)
+    configured_origins = (
+        ((template.get("gateway") or {}).get("controlUi") or {}).get("allowedOrigins") or []
+    )
+    if isinstance(configured_origins, list):
+        for value in configured_origins:
+            if isinstance(value, str) and value.strip():
+                desired_origins.append(value.strip())
+
+if not desired_origins:
+    desired_origins = [
+        f"http://{host}:{port}"
+        for host in ("127.0.0.1", "localhost")
+        for port in ports
+    ]
+
+config = {}
+if config_path.exists():
+    with config_path.open("r", encoding="utf-8") as handle:
+        config = json.load(handle)
+
+gateway = config.setdefault("gateway", {})
+control_ui = gateway.setdefault("controlUi", {})
+allowed = control_ui.get("allowedOrigins")
+if not isinstance(allowed, list):
+    allowed = []
+
+merged = []
+seen = set()
+for value in allowed:
+    if not isinstance(value, str):
+        continue
+    trimmed = value.strip()
+    if not trimmed:
+        continue
+    lowered = trimmed.lower()
+    if lowered in seen:
+        continue
+    merged.append(trimmed)
+    seen.add(lowered)
+
+changed = False
+for origin in desired_origins:
+    lowered = origin.lower()
+    if lowered in seen:
+        continue
+    merged.append(origin)
+    seen.add(lowered)
+    changed = True
+
+control_ui["allowedOrigins"] = merged
+config_path.parent.mkdir(parents=True, exist_ok=True)
+with config_path.open("w", encoding="utf-8") as handle:
+    json.dump(config, handle, indent=2)
+    handle.write("\n")
+
+status = "updated" if changed else "unchanged"
+source = f"template:{template_path}" if template_path.exists() else "fallback:loopback_ports"
+print(
+    f"READY=control_ui_allowed_origins_{status} path={config_path} count={len(merged)} source={source}"
+)
+PY
+}
+
+if [ -f "scripts/openclaw-config-apply.sh" ]; then
+  ACTION="apply_repo_tracked_config"
+  bash scripts/openclaw-config-apply.sh --local
+else
+  ACTION="ensure_control_ui_allowed_origins"
+  ensure_control_ui_allowed_origins
+fi
 
 ACTION="gateway_status_initial"
 INITIAL_STATUS="$(openclaw gateway status 2>&1 || true)"

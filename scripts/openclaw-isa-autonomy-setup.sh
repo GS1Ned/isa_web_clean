@@ -187,7 +187,7 @@ m["vm_exec_wrapper"] = "bash scripts/vm/isa_vm_ssh.sh exec --command" if os.envi
 m["fallback_suggestions"] = OrderedDict([
     ("skills_install_cmd", "Use project skill installs via npx skills add or rely on VM built-in OpenClaw skills"),
     ("cron_jobs", "Use openclaw cron add/edit on the VM when OPENCLAW_RUNTIME_MODE=vm_only"),
-    ("template_apply_target", "Apply config/openclaw/openclaw.isa-lab.template.json to the VM path from .env.example when ready"),
+    ("template_apply_target", "bash scripts/openclaw-config-apply.sh --target vm"),
 ])
 with open(out_path, "w", encoding="utf-8") as handle:
     handle.write(json.dumps(m, indent=2))

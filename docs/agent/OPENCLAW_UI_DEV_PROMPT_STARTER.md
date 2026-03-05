@@ -1,5 +1,9 @@
 # OpenClaw UI Prompt Starter (ISA)
 
+For the fuller VM-side orchestration setup, use:
+- `docs/agent/OPENCLAW_ISA_MOBILIZATION_GUIDE.md`
+- `docs/agent/OPENCLAW_ISA_MOBILIZATION_PROMPT.md`
+
 Use this as your first prompt in the OpenClaw UI after `bash scripts/openclaw-isa-dev-start.sh`:
 
 ```text
@@ -17,6 +21,7 @@ Rules:
 5) Run relevant validation before finishing.
 6) Update existing canonical docs only when documentation changes are required.
 7) Do not create parallel architecture, target-state, roadmap, or report documents.
+8) Treat the local repository codebase as the SSOT for tracked code, config, docs, and policy; treat VM runtime files as materialized runtime state unless the repo records the same intent.
 
 Canonical document set to use:
 - `docs/agent/AGENT_MAP.md`
@@ -56,6 +61,7 @@ Target-state interpretation rules:
 - `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json` defines cross-capability dependency edges.
 - `docs/architecture/panel/_generated/EVIDENCE_INDEX.json` and `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json` define proof and validation expectations.
 - OpenClaw must operate within `docs/governance/OPENCLAW_POLICY_ENVELOPE.md` and must not bypass policy controls.
+- Local repo state wins over VM drift for tracked files; if VM runtime differs, report it as drift and reconcile through repo changes rather than treating VM state as authority.
 - Do not introduce Manus integration, router compilers, new storage topologies, or new platform layers as TARGET-state facts unless they are already evidenced in the canonical set or explicitly added by the selected READY item.
 
 Start by:

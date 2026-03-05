@@ -21,9 +21,11 @@ Define the formal role split between OpenClaw, Manus, VS Code and its AI extensi
 ## System Of Record
 - Product and engineering truth: repo files
 - History and collaboration truth: GitHub `origin`
+- Operational SSOT assumption for agents: local repository codebase first
 - Host editing workspace: host repo clone
 - OpenClaw runtime workspace: VM repo clone at `/root/isa_web_clean`
-- VM runtime config truth: `/root/.openclaw/openclaw.json`
+- VM runtime config materialization path: `/root/.openclaw/openclaw.json`
+- VM runtime files are execution state, not architecture/config authority, unless the same change is represented in tracked repo files or is a VM-only secret/runtime fact
 
 ## Canonical Control-Plane Files
 - Master operating model: `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
@@ -130,8 +132,10 @@ Define the formal role split between OpenClaw, Manus, VS Code and its AI extensi
 
 ## Operating Rules
 - Edit on host by default.
+- Treat the local repository as the default source of truth for tracked code, config, docs, and policy.
 - Use OpenClaw on the VM for agentic execution, repo analysis, and longer background tasks.
 - Sync host and VM via Git only.
+- Treat VM runtime config as a deployed/materialized copy of repo-tracked intent plus VM-only secrets.
 - Keep bootstrap files and always-loaded agent docs small to control latency.
 - Persist important decisions into repo docs or tracked memory files, not only into chat history.
 - Use GitHub issues and PRs for cross-platform handoff whenever the work spans tools or time.

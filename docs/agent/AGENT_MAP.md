@@ -12,6 +12,14 @@ Status: CANONICAL
 ## Tooling: MCP
 - Canonical policy: `docs/agent/MCP_POLICY.md`
 - Canonical recipes: `docs/agent/MCP_RECIPES.md`
+- Gemini/Codex bootstrap prompt: `docs/agent/GEMINI_CODEX_BOOTSTRAP_PROMPT.md`
+
+## Tooling: OpenClaw
+- OpenClaw policy envelope: `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
+- OpenClaw model quick reference: `docs/agent/OPENCLAW_UI_MODEL_QUICK_REFERENCE.md`
+- OpenClaw UI prompt starter: `docs/agent/OPENCLAW_UI_DEV_PROMPT_STARTER.md`
+- OpenClaw ISA mobilization guide: `docs/agent/OPENCLAW_ISA_MOBILIZATION_GUIDE.md`
+- OpenClaw ISA mobilization prompt: `docs/agent/OPENCLAW_ISA_MOBILIZATION_PROMPT.md`
 
 ## Planning
 - Planning index: `docs/planning/INDEX.md`
