@@ -5,6 +5,38 @@ Status: CANONICAL
 - Execution queue (single source of next work): `docs/planning/NEXT_ACTIONS.json`
 - Structured backlog (canonical): `docs/planning/BACKLOG.csv`
 
+## Recovery Commands (Archive Tags)
+Restore commands for archived local branches and stashes.
+
+Restore archived local branch tags (`archive/local/*`):
+
+```bash
+git tag --list 'archive/local/*' | sort
+TAG='archive/local/20260305/feat__example-branch'
+BRANCH="${TAG##*/}"
+BRANCH="${BRANCH//__//}"
+git branch "$BRANCH" "$TAG"
+git checkout "$BRANCH"
+```
+
+Restore archived stash tags (`archive/stash/*`):
+
+```bash
+git tag --list 'archive/stash/*' | sort
+TAG='archive/stash/20260305/s00'
+git stash show --stat "$TAG"
+git stash show -p "$TAG"
+git stash store -m "restored from $TAG" "$TAG"
+git stash list
+```
+
+Apply stash tag directly without adding it back to stash stack:
+
+```bash
+TAG='archive/stash/20260305/s00'
+git stash apply "$TAG"
+```
+
 ## Preconditions Before Work
 1) Confirm branch divergence, local delta, and queue drift snapshot:
    - `ALLOW_DIRTY=1 bash scripts/dev/reconcile-branch-main-state.sh`
