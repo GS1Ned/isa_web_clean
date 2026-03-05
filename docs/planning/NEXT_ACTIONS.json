@@ -1,5 +1,5 @@
 {
-  "date": "20260304T100623Z",
+  "date": "20260305T145000Z",
   "status": "CANONICAL",
   "schema_version": "1.0",
   "execution_rules": {
@@ -9,6 +9,27 @@
     "evidence_links_must_resolve": true
   },
   "items": [
+    {
+      "id": "RECON-0001",
+      "priority": "P0",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Reconcile branch divergence and local workspace drift before further ISA2 execution",
+      "next_action": "Run branch/main reconciliation snapshot including local uncommitted drift, local branches ahead of origin/main, worktree health, stash state, and remote branch divergence; reconcile deltas via reviewable PRs before starting new ISA2 batches.",
+      "acceptance_criteria": "Remote and local branches ahead of origin/main are either merged, dropped, or assigned a dated reconcile PR; local uncommitted/stash/worktree drift is triaged; canonical queue status matches code on main.",
+      "evidence_links": [
+        "scripts/dev/reconcile-branch-main-state.sh",
+        "docs/planning/INDEX.md",
+        "docs/planning/NEXT_ACTIONS.json",
+        "docs/spec/ARCHITECTURE.md"
+      ],
+      "validation_command": "ALLOW_DIRTY=1 bash scripts/dev/reconcile-branch-main-state.sh && bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "created_at_utc": "2026-03-05T14:50:00Z",
+      "source_plan": "Mainline reconcile slice (2026-03-05)",
+      "task_refs": [
+        "RECONCILE-001"
+      ]
+    },
     {
       "id": "ISA2-0010",
       "priority": "P0",

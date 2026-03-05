@@ -6,9 +6,11 @@ Status: CANONICAL
 - Structured backlog (canonical): `docs/planning/BACKLOG.csv`
 
 ## Preconditions Before Work
-1) Confirm branch and working tree state
-2) Read first `READY` item in `docs/planning/NEXT_ACTIONS.json`
-3) Run manual preflight checklist: `docs/governance/MANUAL_PREFLIGHT.md`
+1) Confirm branch divergence, local delta, and queue drift snapshot:
+   - `ALLOW_DIRTY=1 bash scripts/dev/reconcile-branch-main-state.sh`
+2) Confirm branch and working tree state
+3) Read first `READY` item in `docs/planning/NEXT_ACTIONS.json`
+4) Run manual preflight checklist: `docs/governance/MANUAL_PREFLIGHT.md`
 
 ## Authority Mapping Policy (Common-Sense)
 FACT
