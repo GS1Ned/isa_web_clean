@@ -47,6 +47,7 @@ For cron/webhook-style calls:
 - Canonical mode: `vm_only`.
 - Host scripts delegate runtime operations to VM by default.
 - Host-local runtime is optional and must be explicit (`--target host` or `--local`).
+- Runtime mode does not change SSOT: tracked repo policy/config remains authoritative; VM runtime state is a materialized execution copy.
 
 ## Reverse Proxy Decision
 - Default: no reverse proxy exposure (`OPENCLAW_REVERSE_PROXY_EXPOSURE=0`).
@@ -80,6 +81,7 @@ Tier 0 enforces:
 
 ## Operational Notes
 - Do not store token values in repo docs.
+- Treat the local repo as the SSOT for tracked OpenClaw policy/config; reconcile VM runtime drift back into repo files before treating it as intended state.
 - Keep VM-only OpenClaw secrets in VM runtime state (`/root/.openclaw/*`) or VM env.
 - Use host scripts to run deterministic checks and keep host↔VM sync Git-only.
 - ISA UI development bootstrap:

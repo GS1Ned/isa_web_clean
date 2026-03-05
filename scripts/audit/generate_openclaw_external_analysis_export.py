@@ -192,7 +192,8 @@ export = {
     'generated_at': now_iso(),
     'repo_root': str(REPO_ROOT),
     'purpose': 'Redacted external analysis export for OpenClaw configuration, runtime setup, governance, routing, launcher behavior, skills, plugins, tools, permissions, and integration state.',
-    'runtime_ssot': 'vm:/root/.openclaw/openclaw.json',
+    'repo_ssot': 'repo:/',
+    'runtime_materialization': 'vm:/root/.openclaw/openclaw.json',
     'host_layer': {
         'files': {p.name if isinstance(p, Path) else Path(p).name: read_path(p if isinstance(p, Path) else REPO_ROOT / p) for p in host_files}
     },
