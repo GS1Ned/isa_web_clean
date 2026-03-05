@@ -333,14 +333,17 @@
     {
       "id": "ISA2-0020",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Runtime cutover to Postgres default",
       "next_action": "Flip runtime default to Postgres after readiness sign-off; retain explicit rollback path.",
       "acceptance_criteria": "Postgres is default runtime, mysql path is legacy fallback, rollback path is documented and tested.",
       "evidence_links": [
-        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+        "server/db-connection-pg.ts",
         "server/db.ts",
+        "package.json",
+        ".github/workflows/tiered-tests.yml",
+        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
         "server/db-connection.ts"
       ],
       "validation_command": "bash scripts/gates/db-engine-adr-gate.sh",
@@ -348,7 +351,18 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0020"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "server/db-connection-pg.ts",
+          "server/db.ts",
+          "package.json",
+          ".github/workflows/tiered-tests.yml"
+        ],
+        "notes": "postgres (postgres-js ^3.4.5) added as dependency; server/db-connection-pg.ts created with createPostgresDb() using drizzle-orm/postgres-js + drizzle_pg/schema; getDb() uses dynamic import when DB_ENGINE=postgres + DATABASE_URL_POSTGRES; MySQL path unchanged as legacy fallback; CI parity job sets DB_ENGINE=postgres + DATABASE_URL_POSTGRES"
+      }
     },
     {
       "id": "ISA2-0001",
@@ -918,7 +932,7 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-03-05T12:00:00Z",
-    "notes": "ISA v2 Phase A-C execution complete. All 13 work packages in run order A1→A2→B1→B2→B4→B5→B6→B3→B7→A3→A4→C1→A5→C2 are DONE or PARKED-with-justification. ISA2-0020 (Postgres cutover) and PR2-0003 (security waiver burndown) remain as post-implementation-mode items."
+    "last_updated_at_utc": "2026-03-05T13:00:00Z",
+    "notes": "ISA v2 Phase A-D execution complete. All work packages including ISA2-0020 (Postgres runtime cutover) are DONE. PR2-0003 (security waiver burndown) remains PARKED during implementation-only mode."
   }
 }

@@ -75,10 +75,12 @@ The following conditions would block ISA2-0020 (runtime cutover):
 **Decision:** **GO** — All hard-fail conditions clear; C2 (security waiver burndown)
 accepted as KNOWN-RISK for pre-cutover phase and tracked separately in PR2-0003.
 
-**Cutover prerequisites before ISA2-0020 executes:**
-1. Wire drizzle-orm postgres adapter in `server/db.ts` when `DB_ENGINE=postgres`
-2. Confirm `DATABASE_URL_POSTGRES` round-trip in CI parity job
-3. Run `bash scripts/dev/pg-rehydrate.sh` on CI Postgres instance and confirm DONE token
+**Cutover prerequisites — completed 2026-03-05 (ISA2-0020 executed):**
+1. ✅ `server/db-connection-pg.ts` created — `createPostgresDb()` using `postgres` (postgres-js) + `drizzle-orm/postgres-js`
+2. ✅ `getDb()` in `server/db.ts` dynamically imports PG adapter when `DB_ENGINE=postgres + DATABASE_URL_POSTGRES`
+3. ✅ CI parity job sets `DB_ENGINE=postgres` and `DATABASE_URL_POSTGRES` against the Postgres 16 service container
+4. ✅ `postgres ^3.4.5` added to `package.json` dependencies
+5. MySQL path retained as legacy fallback when `DB_ENGINE` is unset or `"mysql"`
 
 ---
 

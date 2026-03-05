@@ -268,6 +268,8 @@ jobs:
       - name: Run Postgres parity smoke
         env:
           DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/isa_ci
+          DATABASE_URL_POSTGRES: postgresql://postgres:postgres@127.0.0.1:5432/isa_ci
+          DB_ENGINE: postgres
         run: |
           set -euo pipefail
           bash scripts/dev/postgres-parity-smoke.sh
