@@ -274,12 +274,14 @@
     {
       "id": "ISA2-0018",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "CI parity + limited runtime seam",
       "next_action": "Keep mysql runtime default while Postgres parity jobs and seam controls prove non-regressive behavior.",
       "acceptance_criteria": "CI parity jobs are green and parity drift reports are explicit/reproducible.",
       "evidence_links": [
+        "server/_core/env.ts",
+        "server/db.ts",
         ".github/workflows/tiered-tests.yml",
         "docs/quality/thresholds/isa-capability-thresholds.json"
       ],
@@ -288,7 +290,16 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0018"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "server/_core/env.ts",
+          "server/db.ts"
+        ],
+        "notes": "DB_ENGINE env var seam added: ENV.dbEngine ('mysql'|'postgres'), getDbEngine() exported; MySQL remains default; postgres path logs warning + returns null until ISA2-0020 wires adapter; DATABASE_URL_POSTGRES exported for isolated PG connection string"
+      }
     },
     {
       "id": "ISA2-0019",

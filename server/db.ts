@@ -26,8 +26,27 @@ import { serverLogger } from "./_core/logger-wiring";
 
 let _db: Awaited<ReturnType<typeof drizzle>> | null = null;
 
+/**
+ * Returns the active DB engine identifier.
+ * "mysql"   — default; MySQL2 pool via createMysqlPool()
+ * "postgres" — Postgres path enabled by DB_ENGINE=postgres + DATABASE_URL_POSTGRES
+ *              Full postgres adapter wiring is deferred to ISA2-0020 (cutover).
+ */
+export function getDbEngine(): "mysql" | "postgres" {
+  return ENV.dbEngine;
+}
+
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
+  // DB_ENGINE seam — detect engine before attempting connection.
+  // Postgres path is gated and falls back to null until ISA2-0020 wires the adapter.
+  if (ENV.dbEngine === "postgres") {
+    serverLogger.warn(
+      "[Database] DB_ENGINE=postgres detected — postgres adapter not yet wired; returning null. Set DB_ENGINE=mysql or leave unset to use the MySQL path."
+    );
+    return null;
+  }
+
   if (!_db && process.env.DATABASE_URL) {
     try {
       const pool = createMysqlPool(process.env.DATABASE_URL);
