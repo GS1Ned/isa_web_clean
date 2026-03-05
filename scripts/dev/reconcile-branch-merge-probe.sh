@@ -20,10 +20,12 @@ if ! git fetch --all --prune >/dev/null 2>&1; then
 fi
 
 if [[ "$#" -gt 0 ]]; then
-  mapfile -t TARGET_BRANCHES < <(printf "%s\n" "$@")
+  TARGET_BRANCHES=()
+  for arg in "$@"; do
+    TARGET_BRANCHES+=("${arg}")
+  done
 else
   TARGET_BRANCHES=(
-    "origin/feat/isa2-0001-advisory-backend-final"
     "origin/feat/openclaw-wave1-runtime-hardening"
     "origin/claude/document-news-hub-architecture-3XI12"
   )
@@ -55,15 +57,27 @@ for branch in "${TARGET_BRANCHES[@]}"; do
   git -C "${TMP_WT_DIR}" reset --hard origin/main >/dev/null 2>&1
   git -C "${TMP_WT_DIR}" clean -fd >/dev/null 2>&1
 
-  merge_exit=0
-  if ! git -C "${TMP_WT_DIR}" merge --no-commit --no-ff "${branch}" >/dev/null 2>&1; then
-    merge_exit=$?
-  fi
+  set +e
+  git -C "${TMP_WT_DIR}" merge --no-commit --no-ff "${branch}" >/dev/null 2>&1
+  merge_exit=$?
+  set -e
 
   status="$(git -C "${TMP_WT_DIR}" status --porcelain)"
   conflict_count="$(printf "%s\n" "${status}" | awk '/^(UU|AA|DD|AU|UA|DU|UD) /{c++} END{print c+0}')"
-  staged_count="$(printf "%s\n" "${status}" | awk '/^[ MADRCU][MADRCU] /{c++} END{print c+0}')"
-  unstaged_count="$(printf "%s\n" "${status}" | awk '/^.[MADRCU] /{c++} END{print c+0}')"
+  staged_count="$(
+    printf "%s\n" "${status}" \
+      | awk '{
+          x=substr($0,1,1);
+          if (x != " " && x != "?" && x != "") c++
+        } END{print c+0}'
+  )"
+  unstaged_count="$(
+    printf "%s\n" "${status}" \
+      | awk '{
+          y=substr($0,2,1);
+          if (y != " " && y != "") c++
+        } END{print c+0}'
+  )"
 
   result="clean_no_delta"
   if [[ "${conflict_count}" -gt 0 ]]; then
