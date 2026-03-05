@@ -438,20 +438,24 @@
       "status": "READY",
       "capability": "NEWS_HUB",
       "title": "Wire NEWS_HUB into the compliance cockpit as change intelligence instead of a standalone news surface",
-      "next_action": "Prioritize flows that turn news and regulatory change into updated compliance priorities, deadlines, and downstream advisory triggers.",
+      "next_action": "Expose advisory_reports.stale_since (written by E-01 / flagAdvisoryReportsStaleSince) via the advisory tRPC router and surface a staleness count/badge in the compliance monitoring or advisory dashboard. This is the single remaining gap: E-01 is written server-side but never read by any client surface.",
       "acceptance_criteria": "NEWS_HUB surfaces expose change-intelligence artefacts that can be consumed by dashboard, decision-core, and advisory layers.",
       "evidence_links": [
-        "docs/spec/ARCHITECTURE.md",
-        "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
-        "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json",
-        "docs/spec/NEWS_HUB/ISA_NEWSHUB_TARGET_DESIGN.md"
+        "server/services/news-impact/index.ts",
+        "server/db.ts",
+        "client/src/lib/ask-isa-source-posture.ts",
+        "client/src/pages/AskISA.tsx",
+        "server/routers/regulatory-change-log.ts",
+        "client/src/pages/HubRegulationDetail.tsx",
+        "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json"
       ],
       "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
       "created_at_utc": "2026-03-04T00:00:00Z",
       "source_plan": "ISA technical documentation canon and synthesized target architecture (2026-03-04)",
       "task_refs": [
         "ARCH-CHANGE-INTELLIGENCE"
-      ]
+      ],
+      "traceability_note": "RECON-NEWSHUB-STATUS-002 audit (2026-03-05): Server-side change-intelligence pipeline is complete — E-01 (flagAdvisoryReportsStaleSince) and E-02 (flagRegulationsNeedVerification) are called from createHubNews() in server/db.ts. E-02 needs_verification is surfaced in AskISA.tsx source-posture UI. bulkImportFromNews bridges high-impact news to regulatory_change_log. getNewsByRegulation exposes related news in HubRegulationDetail.tsx. CAPABILITY_GRAPH documents NEWS_HUB → ADVISORY flow. Remaining gap: advisory_reports.stale_since is written by E-01 but no tRPC advisory router exposes it and no dashboard reads it — the compliance-cockpit staleness indicator does not yet exist."
     },
     {
       "id": "ISA2-0004",
