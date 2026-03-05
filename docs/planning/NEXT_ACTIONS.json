@@ -571,12 +571,13 @@
     {
       "id": "ISA2-0009",
       "priority": "P2",
-      "status": "READY",
+      "status": "DONE",
       "capability": "CATALOG",
       "title": "Prioritize authoritative source expansion for EFRAG taxonomy, EU regulatory feeds, and GS1 Digital Link where ingestion leverage is highest",
       "next_action": "Use authority, machine-readability, and maintenance burden to select the next highest-leverage ingest targets instead of expanding data sources opportunistically.",
       "acceptance_criteria": "A small, reviewable source-expansion slice is chosen and justified against authority, ingestibility, maintenance burden, and expected impact on mapping or change-intelligence quality.",
       "evidence_links": [
+        "docs/spec/CATALOG/SOURCE_EXPANSION_SLICE.md",
         "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
         "docs/spec/ADVISORY/efrag_xbrl_research.md",
         "docs/spec/CATALOG/DATASETS_CATALOG.md",
@@ -587,7 +588,15 @@
       "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
       "task_refs": [
         "RES-006"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "docs/spec/CATALOG/SOURCE_EXPANSION_SLICE.md"
+        ],
+        "notes": "Tier 1 slice: EFRAG XBRL Annex 1 Excel + EUR-Lex CSRD feed + GS1 Digital Link; full 4-axis candidate matrix (authority/readability/burden/impact); Tier 2 deferrals documented"
+      }
     },
     {
       "id": "PR2-0003",
