@@ -33,8 +33,14 @@ status_lines="$(git status --porcelain)"
 if [[ -z "${status_lines}" ]]; then
   echo " - clean_working_tree"
 else
-  tracked_changed="$(printf "%s\n" "${status_lines}" | rg -v '^\?\?' | rg -v '^\s*$' | wc -l | tr -d ' ')"
-  untracked_changed="$(printf "%s\n" "${status_lines}" | rg '^\?\?' | wc -l | tr -d ' ')"
+  tracked_changed="$(
+    printf "%s\n" "${status_lines}" \
+      | awk 'substr($0,1,2)!="??" && $0!="" {c++} END{print c+0}'
+  )"
+  untracked_changed="$(
+    printf "%s\n" "${status_lines}" \
+      | awk 'substr($0,1,2)=="??" {c++} END{print c+0}'
+  )"
   echo " - tracked_changed=${tracked_changed}"
   echo " - untracked=${untracked_changed}"
   echo " - sample_paths:"
