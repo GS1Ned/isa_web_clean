@@ -1,4 +1,5 @@
 import { getAdvisoryReports, getReportVersions } from "./db-advisory-reports";
+import { deriveAdvisoryCompatibilityCoverage } from "./advisory-compat";
 import {
   loadLegacyAdvisory,
   loadLegacyAdvisorySummary,
@@ -218,6 +219,12 @@ export async function buildAdvisoryReadModel() {
   const normalizedMappingResults = normalizeMappingResults(advisory);
   const normalizedGapAnalysis = normalizeGapAnalysis(advisory);
   const normalizedRecommendations = normalizeRecommendations(advisory);
+  const compatibilityCoverage = deriveAdvisoryCompatibilityCoverage({
+    ...advisory,
+    mappingResults: normalizedMappingResults,
+    gapAnalysis: normalizedGapAnalysis,
+    recommendations: normalizedRecommendations,
+  });
 
   const mappingCounts =
     summary?.mappingResults?.byConfidence ?? {
@@ -314,10 +321,10 @@ export async function buildAdvisoryReadModel() {
           0,
         regulationsCovered:
           summary?.statistics?.regulationsCovered ??
-          (Array.isArray(advisory?.regulationsCovered) ? advisory.regulationsCovered.length : 0),
+          compatibilityCoverage.regulations.length,
         sectorsCovered:
           summary?.statistics?.sectorsCovered ??
-          (Array.isArray(advisory?.sectorModelsCovered) ? advisory.sectorModelsCovered.length : 0),
+          compatibilityCoverage.sectorModels.length,
         totalMappings:
           summary?.statistics?.totalMappings ??
           summary?.stats?.totalMappings ??
@@ -355,6 +362,8 @@ export async function buildAdvisoryReadModel() {
       mappingResults: normalizedMappingResults,
       gapAnalysis: normalizedGapAnalysis,
       recommendations: normalizedRecommendations,
+      regulationsCovered: compatibilityCoverage.regulations,
+      sectorModelsCovered: compatibilityCoverage.sectorModels,
       migrationState,
     },
     metadata: {
@@ -377,10 +386,10 @@ export async function buildAdvisoryReadModel() {
                 advisory.metadata.totalRecords ?? advisory.metadata.totalRecordsUsed ?? null,
               regulationsCovered:
                 advisory.metadata.regulationsCovered ??
-                (Array.isArray(advisory?.regulationsCovered) ? advisory.regulationsCovered.length : null),
+                compatibilityCoverage.regulations.length,
               sectorsCovered:
                 advisory.metadata.sectorsCovered ??
-                (Array.isArray(advisory?.sectorModelsCovered) ? advisory.sectorModelsCovered.length : null),
+                compatibilityCoverage.sectorModels.length,
               totalMappings: advisory.metadata.totalMappings ?? null,
             },
       traceabilityStatus: advisory?.sourceArtifacts && advisory?.metadata ? "complete" : "partial",
