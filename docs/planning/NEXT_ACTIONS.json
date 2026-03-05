@@ -492,15 +492,15 @@
     {
       "id": "ISA2-0007",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "NEWS_HUB",
       "title": "Model regulatory events, deadline extraction, and downstream advisory triggers in NEWS_HUB",
       "next_action": "Define and implement a regulatory event primitive that distinguishes authoritative change, guidance, consultation, enforcement, and supporting news so NEWS_HUB can trigger downstream roadmap and advisory updates.",
       "acceptance_criteria": "NEWS_HUB exposes a typed event model with deadline and significance fields that can drive change-intelligence surfaces and downstream advisory triggers.",
       "evidence_links": [
-        "docs/spec/ARCHITECTURE.md",
+        "server/services/news/news-event-processor.ts",
+        "server/services/news-impact/index.ts",
         "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
-        "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json",
         "docs/spec/NEWS_HUB/ISA_NEWSHUB_TARGET_DESIGN.md"
       ],
       "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
@@ -509,7 +509,15 @@
       "task_refs": [
         "RES-004",
         "BENCH-002"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "server/services/news/news-event-processor.ts",
+          "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md"
+        ]
+      }
     },
     {
       "id": "ISA2-0008",
