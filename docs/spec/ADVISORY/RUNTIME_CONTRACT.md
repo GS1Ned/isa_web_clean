@@ -37,6 +37,7 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
 - Outputs: advisory report payloads, version metadata, and diff artifacts.
 - `advisoryDiff.listVersions` may return a merged migration-era version inventory that combines legacy file-backed advisory versions with snapshot-backed versions discovered from `advisory_reports` and `advisory_report_versions`.
 - `advisory.getSummary`, `advisory.getFull`, and `advisory.getMetadata` may return normalized legacy advisory read-model payloads so current advisory UIs remain stable across version-shape drift while migration to snapshot-backed advisory reports continues.
+- The normalized advisory read model may inject compatibility `regulationsCovered` and `sectorModelsCovered` inventories when the current advisory artifact no longer carries those legacy arrays explicitly.
 - `advisory.getOverview` may return a normalized `summary` + `metadata` bundle plus the latest persisted advisory report, so active dashboard and traceability surfaces can bridge legacy advisory read-model data with report-backed delivery metadata.
 - Advisory explorer-style mapping, gap, and recommendation surfaces may consume the normalized `advisory.getFull` read-model payload instead of legacy per-section file reads when the client only needs read-only filtered exploration.
 - Advisory explorer-style filter inventories may be derived client-side from the normalized `advisory.getFull` payload, rather than fetched through separate regulation or sector compatibility endpoints.
