@@ -1,5 +1,5 @@
 {
-  "date": "20260305T150000Z",
+  "date": "20260305T154512Z",
   "status": "CANONICAL",
   "schema_version": "1.0",
   "execution_rules": {
@@ -750,6 +750,28 @@
       }
     },
     {
+      "id": "PR2-0004",
+      "priority": "P1",
+      "status": "READY",
+      "capability": "Meta",
+      "title": "Security zero-waiver enforcement activation: keep high+critical gate strict by default (SEC-003)",
+      "next_action": "Run security gate in no-waiver mode on each release train and fail fast on any high/critical advisory until remediated.",
+      "acceptance_criteria": "security-gate passes with SECURITY_AUDIT_BLOCKING_LEVELS=high,critical and empty SECURITY_AUDIT_WAIVER_IDS; tiered/security workflows keep no-waiver defaults; backlog/canon are aligned.",
+      "evidence_links": [
+        "scripts/gates/security-gate.sh",
+        ".github/workflows/security-gate.yml",
+        ".github/workflows/tiered-tests.yml",
+        "docs/planning/BACKLOG.csv",
+        "docs/spec/ARCHITECTURE.md"
+      ],
+      "validation_command": "SECURITY_AUDIT_WAIVER_IDS= SECURITY_AUDIT_BLOCKING_LEVELS=high,critical bash scripts/gates/security-gate.sh /tmp/security.zero-waiver.current.json",
+      "created_at_utc": "2026-03-05T15:45:12Z",
+      "source_plan": "Security posture continuation slice (2026-03-05)",
+      "task_refs": [
+        "SEC-003"
+      ]
+    },
+    {
       "id": "PR2-0002",
       "priority": "P1",
       "status": "DONE",
@@ -1004,8 +1026,8 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-03-05T15:00:00Z",
-    "notes": "ISA v2 Phase A-D execution complete. All ISA2 and PR2 work packages are DONE, including PR2-0003 security waiver burn-down. Reconcile line executed across #299/#300/#301/#302/#303; DB_ENGINE canonicalization and snapshot tooling hardening are in place."
+    "last_updated_at_utc": "2026-03-05T15:45:12Z",
+    "notes": "ISA v2 Phase A-D execution remains complete and reconciled on main. Security waiver burn-down (PR2-0003/SEC-002) stays DONE; follow-up enforcement slice PR2-0004 (SEC-003) is activated as READY to keep strict zero-waiver high+critical gate posture."
   },
   "reconcile_slices": [
     {
