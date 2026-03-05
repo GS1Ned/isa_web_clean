@@ -2,8 +2,58 @@ import { getDb } from "./db";
 import {
   advisoryReports,
   advisoryReportVersions,
+  advisoryReportTargetRegulations,
+  advisoryReportTargetStandards,
 } from "../drizzle/schema";
-import { eq, and, desc, sql } from "drizzle-orm";
+import { eq, and, desc, sql, inArray } from "drizzle-orm";
+
+function normalizeIdArray(input: unknown): number[] | undefined {
+  if (!Array.isArray(input)) return undefined;
+  const values = input
+    .map((value) => (typeof value === "number" ? value : Number(value)))
+    .filter((value) => Number.isInteger(value) && value > 0);
+  return Array.from(new Set(values));
+}
+
+async function syncAdvisoryReportTargets(
+  db: any,
+  reportId: number,
+  targetRegulationIds: unknown,
+  targetStandardIds: unknown
+) {
+  const regulationIds = normalizeIdArray(targetRegulationIds);
+  const standardIds = normalizeIdArray(targetStandardIds);
+
+  if (regulationIds !== undefined) {
+    await db
+      .delete(advisoryReportTargetRegulations)
+      .where(eq(advisoryReportTargetRegulations.reportId, reportId));
+
+    if (regulationIds.length > 0) {
+      await db.insert(advisoryReportTargetRegulations).values(
+        regulationIds.map((regulationId) => ({
+          reportId,
+          regulationId,
+        }))
+      );
+    }
+  }
+
+  if (standardIds !== undefined) {
+    await db
+      .delete(advisoryReportTargetStandards)
+      .where(eq(advisoryReportTargetStandards.reportId, reportId));
+
+    if (standardIds.length > 0) {
+      await db.insert(advisoryReportTargetStandards).values(
+        standardIds.map((standardId) => ({
+          reportId,
+          standardId,
+        }))
+      );
+    }
+  }
+}
 
 /**
  * Get all advisory reports with optional filtering
@@ -83,8 +133,25 @@ export async function getLatestAdvisoryReport() {
 export async function createAdvisoryReport(data: typeof advisoryReports.$inferInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const [result] = await db.insert(advisoryReports).values(data);
-  return result;
+
+  const insertResult = await db.insert(advisoryReports).values(data);
+  const normalizedResult = Array.isArray(insertResult)
+    ? insertResult[0]
+    : insertResult;
+  const insertId = Number(
+    (normalizedResult as any)?.insertId
+  );
+
+  if (Number.isInteger(insertId) && insertId > 0) {
+    await syncAdvisoryReportTargets(
+      db,
+      insertId,
+      data.targetRegulationIds,
+      data.targetStandardIds
+    );
+  }
+
+  return normalizedResult;
 }
 
 /**
@@ -104,6 +171,18 @@ export async function updateAdvisoryReport(
       updatedAt: new Date().toISOString(),
     })
     .where(eq(advisoryReports.id, id));
+
+  if (
+    updates.targetRegulationIds !== undefined ||
+    updates.targetStandardIds !== undefined
+  ) {
+    await syncAdvisoryReportTargets(
+      db,
+      id,
+      updates.targetRegulationIds,
+      updates.targetStandardIds
+    );
+  }
   
   return result;
 }
@@ -221,16 +300,33 @@ export async function getReportsByRegulationIds(regulationIds: number[]) {
   if (!db) throw new Error("Database not available");
   
   if (regulationIds.length === 0) return [];
-  
-  const results = await db
+
+  const normalizedIds = normalizeIdArray(regulationIds) ?? [];
+  if (normalizedIds.length === 0) return [];
+
+  const joined = await db
+    .select({ report: advisoryReports })
+    .from(advisoryReportTargetRegulations)
+    .innerJoin(
+      advisoryReports,
+      eq(advisoryReportTargetRegulations.reportId, advisoryReports.id)
+    )
+    .where(inArray(advisoryReportTargetRegulations.regulationId, normalizedIds))
+    .orderBy(desc(advisoryReports.generatedDate));
+
+  const deduped = Array.from(
+    new Map(joined.map((row: any) => [row.report.id, row.report])).values()
+  );
+  if (deduped.length > 0) return deduped;
+
+  // Legacy fallback while historical rows are being rehydrated into join tables.
+  return await db
     .select()
     .from(advisoryReports)
     .where(
-      sql`JSON_CONTAINS(${advisoryReports.targetRegulationIds}, ${JSON.stringify(regulationIds)})`
+      sql`JSON_CONTAINS(${advisoryReports.targetRegulationIds}, ${JSON.stringify(normalizedIds)})`
     )
     .orderBy(desc(advisoryReports.generatedDate));
-  
-  return results;
 }
 
 /**
@@ -241,14 +337,31 @@ export async function getReportsByStandardIds(standardIds: number[]) {
   if (!db) throw new Error("Database not available");
   
   if (standardIds.length === 0) return [];
-  
-  const results = await db
+
+  const normalizedIds = normalizeIdArray(standardIds) ?? [];
+  if (normalizedIds.length === 0) return [];
+
+  const joined = await db
+    .select({ report: advisoryReports })
+    .from(advisoryReportTargetStandards)
+    .innerJoin(
+      advisoryReports,
+      eq(advisoryReportTargetStandards.reportId, advisoryReports.id)
+    )
+    .where(inArray(advisoryReportTargetStandards.standardId, normalizedIds))
+    .orderBy(desc(advisoryReports.generatedDate));
+
+  const deduped = Array.from(
+    new Map(joined.map((row: any) => [row.report.id, row.report])).values()
+  );
+  if (deduped.length > 0) return deduped;
+
+  // Legacy fallback while historical rows are being rehydrated into join tables.
+  return await db
     .select()
     .from(advisoryReports)
     .where(
-      sql`JSON_CONTAINS(${advisoryReports.targetStandardIds}, ${JSON.stringify(standardIds)})`
+      sql`JSON_CONTAINS(${advisoryReports.targetStandardIds}, ${JSON.stringify(normalizedIds)})`
     )
     .orderBy(desc(advisoryReports.generatedDate));
-  
-  return results;
 }

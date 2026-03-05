@@ -1409,7 +1409,9 @@
       ],
       "owned_tables": [
         "advisory_reports",
-        "advisory_report_versions"
+        "advisory_report_versions",
+        "advisory_report_target_regulations",
+        "advisory_report_target_standards"
       ],
       "schema_paths": [
         "drizzle/schema.ts",
@@ -1478,6 +1480,20 @@
             "line_start": 4,
             "line_end": 4,
             "evidence_id": "EV-CAP-ADV-TABLE-ADVISORY_REPORT_VERSIONS"
+          },
+          {
+            "table": "advisory_report_target_regulations",
+            "path": "drizzle/schema.ts",
+            "line_start": 90,
+            "line_end": 90,
+            "evidence_id": "EV-CAP-ADV-TABLE-ADVISORY_REPORT_TARGET_REGULATIONS"
+          },
+          {
+            "table": "advisory_report_target_standards",
+            "path": "drizzle/schema.ts",
+            "line_start": 105,
+            "line_end": 105,
+            "evidence_id": "EV-CAP-ADV-TABLE-ADVISORY_REPORT_TARGET_STANDARDS"
           }
         ],
         "module_paths_evidence": [
@@ -1539,6 +1555,18 @@
           },
           {
             "table": "advisory_report_versions",
+            "status": "CURRENT",
+            "delta_id_if_blocked": null,
+            "mitigation_if_blocked": null
+          },
+          {
+            "table": "advisory_report_target_regulations",
+            "status": "CURRENT",
+            "delta_id_if_blocked": null,
+            "mitigation_if_blocked": null
+          },
+          {
+            "table": "advisory_report_target_standards",
             "status": "CURRENT",
             "delta_id_if_blocked": null,
             "mitigation_if_blocked": null
@@ -2096,7 +2124,9 @@
       ],
       "ADVISORY": [
         "advisory_reports",
-        "advisory_report_versions"
+        "advisory_report_versions",
+        "advisory_report_target_regulations",
+        "advisory_report_target_standards"
       ],
       "default_owner_for_unassigned_tables": "SHARED_PLATFORM"
     }

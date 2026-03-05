@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Updated: 2026-03-04
+Last Updated: 2026-03-05
 
 # ISA Technical Documentation Canon
 
@@ -15,6 +15,7 @@ This document defines the minimum canonical technical documentation set for ISA,
 | Technical canon | `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md` | Canonical technical document chain and update rules |
 | System contract | `docs/spec/ARCHITECTURE.md` | Single `CURRENT` / `TARGET` architecture contract |
 | Data plane contract | `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` | Shared storage, provenance, retrieval, and engine policy contract |
+| Data-plane decision record | `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md` | Confirmed migration decision and invariants for Postgres/Supabase target |
 | Core capability contract | `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md` | Six-capability model, mission, ownership rule, anti-goals |
 | Ownership contract | `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json` | Capability ownership of routers, tables, modules |
 | Primitive contract | `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json` | Shared primitives promoted out of capability ownership |
@@ -31,13 +32,14 @@ This document defines the minimum canonical technical documentation set for ISA,
 4. `docs/spec/ARCHITECTURE.md`
 5. `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
 6. `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
-7. `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
-8. `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
-9. `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
-10. Relevant `docs/spec/*/RUNTIME_CONTRACT.md`
-11. `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`
-12. `docs/planning/NEXT_ACTIONS.json`
-13. `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
+7. `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`
+8. `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
+9. `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
+10. `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
+11. Relevant `docs/spec/*/RUNTIME_CONTRACT.md`
+12. `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`
+13. `docs/planning/NEXT_ACTIONS.json`
+14. `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
 
 ## Relationship Rules
 - `ARCHITECTURE.md` is the only canonical system-level `CURRENT` / `TARGET` contract.
@@ -82,6 +84,7 @@ flowchart TD
     CANON --> ARCH
     ARCH --> CORE
     CORE --> DATA
+    DATA --> ADR["ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md\nData-plane migration decision/invariants"]
     CORE --> MANIFEST
     CORE --> PRIMS
     CORE --> GRAPH

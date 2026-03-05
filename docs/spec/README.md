@@ -1,7 +1,7 @@
 # ISA Technical Specs
 
 Status: CANONICAL INDEX  
-Last Updated: 2026-03-04
+Last Updated: 2026-03-05
 
 ## Canonical Entry
 - `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
@@ -10,6 +10,7 @@ Last Updated: 2026-03-04
 - `docs/spec/ARCHITECTURE.md`
 - `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
 - `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
+- `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`
 - `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
 - `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
 - `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`

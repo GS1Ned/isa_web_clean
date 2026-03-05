@@ -87,6 +87,36 @@ export const advisoryReports = mysqlTable("advisory_reports", {
 	index("generatedDate_idx").on(table.generatedDate),
 ]);
 
+export const advisoryReportTargetRegulations = mysqlTable("advisory_report_target_regulations", {
+	id: int().autoincrement().notNull(),
+	reportId: int("report_id").notNull(),
+	regulationId: int("regulation_id").notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	uniqueIndex("advisory_report_target_regulations_report_regulation_uq").on(
+		table.reportId,
+		table.regulationId,
+	),
+	index("advisory_report_target_regulations_regulation_id_idx").on(table.regulationId),
+	index("advisory_report_target_regulations_report_id_idx").on(table.reportId),
+]);
+
+export const advisoryReportTargetStandards = mysqlTable("advisory_report_target_standards", {
+	id: int().autoincrement().notNull(),
+	reportId: int("report_id").notNull(),
+	standardId: int("standard_id").notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	uniqueIndex("advisory_report_target_standards_report_standard_uq").on(
+		table.reportId,
+		table.standardId,
+	),
+	index("advisory_report_target_standards_standard_id_idx").on(table.standardId),
+	index("advisory_report_target_standards_report_id_idx").on(table.reportId),
+]);
+
 export const askIsaFeedback = mysqlTable("ask_isa_feedback", {
 	id: int().autoincrement().notNull(),
 	questionId: varchar("question_id", { length: 255 }).notNull(),

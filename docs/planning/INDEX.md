@@ -72,29 +72,15 @@ GS1 repositories to assess individually:
 30. `https://github.com/gs1/vc-data-model-verifier`
 31. `https://github.com/gs1/WebVoc`
 
-## Database Requirements For Managed DB Alternative Market Research
+## Data Plane Migration Canon (Current)
 FACT
-- A previous target environment migration path was blocked by managed-provider quota exhaustion (`usage quota exhausted`).
+- Target data-plane decision is confirmed: `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`.
+- Migration queue is tracked in `docs/planning/NEXT_ACTIONS.json` under `ISA2-0010` through `ISA2-0020`.
+- Scope is DB-only for this line (no Supabase Auth/Storage/Realtime adoption in this tranche).
 
 RECOMMENDATION
-- Use the following requirement set for market comparison and shortlist scoring:
-1. MySQL wire-compatibility sufficient for current Drizzle + migration workflow.
-2. Transaction semantics: ACID with repeatable-read behavior for ingestion/update flows.
-3. Online schema change support with low-lock additive migrations.
-4. Predictable DDL/DML limits for nightly batch ingestion (no hidden hard caps).
-5. Vertical and horizontal scaling options with clear upgrade path.
-6. Read replica support and failover strategy with documented RTO/RPO.
-7. p95 latency SLO support for mixed read/write RAG workloads.
-8. Throughput headroom for ingestion spikes and concurrent Ask ISA queries.
-9. Native backup/restore, PITR, and tested disaster-recovery workflow.
-10. Strong observability: query metrics, slow query logs, audit logs, health APIs.
-11. Security baseline: TLS in transit, encryption at rest, key management support.
-12. Access control: least-privilege roles, service accounts, rotation-friendly credentials.
-13. Network controls: IP allowlists/private networking options for production.
-14. Cost transparency: predictable pricing model, no abrupt quota cliff for baseline workload.
-15. Region availability aligned with EU/NL data locality requirements.
-16. Export portability: logical dump + CDC options to avoid lock-in.
-17. Version lifecycle guarantees and upgrade windows compatible with CI/deploy cadence.
-18. Managed-service operational maturity: SLA, incident history, support responsiveness.
-19. Compatibility with current SQL feature usage in `drizzle/schema*.ts` and migration scripts.
-20. Proven rollback strategy for failed migrations in production-like environments.
+- Execute migration in canonical order:
+1. Canon + ADR convergence (`ISA2-0010`)
+2. Tooling + CI parity foundation (`ISA2-0011`, `ISA2-0012`)
+3. Top-3 journey schema/parity slices (`ISA2-0013a`..`ISA2-0016`)
+4. Rehydration + parity + readiness + cutover (`ISA2-0017`..`ISA2-0020`)

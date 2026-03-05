@@ -10,7 +10,7 @@ Generated: 2026-01-28
 | server/ask-isa-guardrails.ts | Ask ISA query-type + refusal/validation guardrails | server/ask-isa-guardrails.ts:L4-L23 |
 | server/db.ts | DB access layer; CRUD helpers for hub news + regulation mappings | server/db.ts:L456-L480 (createHubNews); L682-L706 (upsertRegulationEsrsMapping) |
 | server/db-knowledge.ts | Knowledge base helpers for Ask ISA; chunk storage + LLM-scored search; QA conversations/messages | server/db-knowledge.ts:L165-L189 (createQAConversation); L75-L99 (searchKnowledgeChunks) |
-| drizzle/schema.ts | Canonical DB schema (97 tables) for drizzle/MySQL | drizzle/schema.ts:L1132-L1164 (qaConversations/qaMessages); L873-L892 (hubNews); L1264-L1283 (regulationEsrsMappings) |
+| drizzle/schema.ts | Canonical runtime DB schema declarations (CURRENT dialect: mysql) | drizzle/schema.ts:L1132-L1164 (qaConversations/qaMessages); L873-L892 (hubNews); L1264-L1283 (regulationEsrsMappings) |
 | server/news-pipeline.ts | News ingestion orchestrator (fetch → dedupe → AI process → store) | server/news-pipeline.ts:L59-L98 |
 | server/news-cron-scheduler.ts | Schedules daily ingestion + weekly archival using runNewsPipeline | server/news-cron-scheduler.ts (imports runNewsPipeline) |
 | server/cron-endpoint.ts | REST cron trigger endpoints (/cron/daily-news-ingestion etc) for external schedulers | server/cron-endpoint.ts (dailyNewsIngestion/weeklyNewsArchival) |

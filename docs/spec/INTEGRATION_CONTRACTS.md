@@ -319,7 +319,7 @@ trpc.v2.catalog.getRegulations() // with new fields
 
 **Strong Consistency:**
 - All reads within same transaction see same data
-- Database ACID guarantees via the active MySQL-compatible relational engine
+- Database ACID guarantees via the active relational engine (CURRENT: MySQL-compatible, TARGET: Postgres/Supabase per ADR-0001)
 
 **Eventual Consistency:**
 - Knowledge base regeneration (manual trigger)
@@ -338,9 +338,13 @@ knowledge_embeddings.sourceId → (regulations|standards|esrs_datapoints).id
 
 **Not Enforced:**
 - `hub_news.relatedRegulationIds` (JSON array, no FK)
-- `advisory_reports.targetRegulationIds` (JSON array, no FK)
+- `advisory_reports.targetRegulationIds` and `advisory_reports.targetStandardIds` (legacy JSON mirrors, no FK)
 
-**Rationale:** JSON arrays don't support foreign keys in MySQL
+**Rationale (CURRENT):** JSON-array denormalization is legacy carry-over.
+**CURRENT HOT-PATH:** advisory filtering uses normalized link tables:
+- `advisory_report_target_regulations(report_id, regulation_id)`
+- `advisory_report_target_standards(report_id, standard_id)`
+**TARGET:** keep JSON mirrors compatibility-only and converge all hot filters on normalized relational joins across mysql+postgres.
 
 ---
 

@@ -9,6 +9,7 @@ import {
   boolean,
   decimal,
   index,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -159,3 +160,45 @@ export const advisoryReportVersions = mysqlTable(
 
 export type AdvisoryReportVersion = typeof advisoryReportVersions.$inferSelect;
 export type InsertAdvisoryReportVersion = typeof advisoryReportVersions.$inferInsert;
+
+/**
+ * Advisory Report Target Regulations (normalized hot-path filter substrate)
+ *
+ * Mirrors JSON targetRegulationIds for performant joins and PG portability.
+ */
+export const advisoryReportTargetRegulations = mysqlTable(
+  "advisory_report_target_regulations",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    reportId: int("report_id").notNull(),
+    regulationId: int("regulation_id").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  table => ({
+    reportRegulationUniqueIdx: uniqueIndex("advisory_report_target_regulations_report_regulation_uq")
+      .on(table.reportId, table.regulationId),
+    regulationIdx: index("advisory_report_target_regulations_regulation_id_idx").on(table.regulationId),
+    reportIdx: index("advisory_report_target_regulations_report_id_idx").on(table.reportId),
+  })
+);
+
+/**
+ * Advisory Report Target Standards (normalized hot-path filter substrate)
+ *
+ * Mirrors JSON targetStandardIds for performant joins and PG portability.
+ */
+export const advisoryReportTargetStandards = mysqlTable(
+  "advisory_report_target_standards",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    reportId: int("report_id").notNull(),
+    standardId: int("standard_id").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  table => ({
+    reportStandardUniqueIdx: uniqueIndex("advisory_report_target_standards_report_standard_uq")
+      .on(table.reportId, table.standardId),
+    standardIdx: index("advisory_report_target_standards_standard_id_idx").on(table.standardId),
+    reportIdx: index("advisory_report_target_standards_report_id_idx").on(table.reportId),
+  })
+);

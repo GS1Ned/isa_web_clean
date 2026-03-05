@@ -7,15 +7,24 @@ on:
       - "server/**"
       - "client/**"
       - "shared/**"
+      - "drizzle/**"
+      - "drizzle_pg/**"
+      - "drizzle.config.ts"
+      - "drizzle.config.pg.ts"
       - "scripts/run-unit-tests.sh"
       - "scripts/run-integration-tests.sh"
       - "scripts/run-ci-tests.sh"
+      - "scripts/dev/postgres-parity-smoke.sh"
+      - "scripts/dev/postgres-apply-migrations.sh"
+      - "scripts/dev/supabase-local-bootstrap.sh"
       - "config/testing/vitest.quarantine.txt"
       - "scripts/gates/no-console-gate.sh"
       - "scripts/gates/security-secrets-scan.sh"
       - "scripts/gates/slo-policy-check.sh"
       - "scripts/gates/observability-contract.sh"
       - "scripts/gates/security-gate.sh"
+      - "scripts/gates/db-engine-adr-gate.sh"
+      - "scripts/gates/db-only-scope-guard.sh"
       - "scripts/gates/canonical-docs-allowlist.sh"
       - "scripts/gates/doc-code-validator.sh"
       - "scripts/gates/openclaw-policy-envelope.sh"
@@ -26,6 +35,12 @@ on:
       - "scripts/openclaw-*.sh"
       - "scripts/eval/**"
       - ".github/workflows/tiered-tests.yml"
+      - ".env.example"
+      - ".env.supabase.example"
+      - "docs/decisions/**"
+      - "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md"
+      - "docs/spec/ARCHITECTURE.md"
+      - "docs/spec/INTEGRATION_CONTRACTS.md"
       - "config/openclaw/**"
       - "config/governance/openclaw_policy_envelope.json"
       - "docs/governance/OPENCLAW_POLICY_ENVELOPE.md"
@@ -41,15 +56,24 @@ on:
       - "server/**"
       - "client/**"
       - "shared/**"
+      - "drizzle/**"
+      - "drizzle_pg/**"
+      - "drizzle.config.ts"
+      - "drizzle.config.pg.ts"
       - "scripts/run-unit-tests.sh"
       - "scripts/run-integration-tests.sh"
       - "scripts/run-ci-tests.sh"
+      - "scripts/dev/postgres-parity-smoke.sh"
+      - "scripts/dev/postgres-apply-migrations.sh"
+      - "scripts/dev/supabase-local-bootstrap.sh"
       - "config/testing/vitest.quarantine.txt"
       - "scripts/gates/no-console-gate.sh"
       - "scripts/gates/security-secrets-scan.sh"
       - "scripts/gates/slo-policy-check.sh"
       - "scripts/gates/observability-contract.sh"
       - "scripts/gates/security-gate.sh"
+      - "scripts/gates/db-engine-adr-gate.sh"
+      - "scripts/gates/db-only-scope-guard.sh"
       - "scripts/gates/canonical-docs-allowlist.sh"
       - "scripts/gates/doc-code-validator.sh"
       - "scripts/gates/openclaw-policy-envelope.sh"
@@ -60,6 +84,12 @@ on:
       - "scripts/openclaw-*.sh"
       - "scripts/eval/**"
       - ".github/workflows/tiered-tests.yml"
+      - ".env.example"
+      - ".env.supabase.example"
+      - "docs/decisions/**"
+      - "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md"
+      - "docs/spec/ARCHITECTURE.md"
+      - "docs/spec/INTEGRATION_CONTRACTS.md"
       - "config/openclaw/**"
       - "config/governance/openclaw_policy_envelope.json"
       - "docs/governance/OPENCLAW_POLICY_ENVELOPE.md"
@@ -114,6 +144,8 @@ jobs:
           bash scripts/gates/slo-policy-check.sh /tmp/slo-policy-check.ci.json
           bash scripts/gates/observability-contract.sh /tmp/observability.ci.json
           bash scripts/gates/security-gate.sh /tmp/security.ci.json
+          bash scripts/gates/db-engine-adr-gate.sh
+          bash scripts/gates/db-only-scope-guard.sh
           bash scripts/gates/canonical-docs-allowlist.sh
           bash scripts/gates/doc-code-validator.sh --canonical-only
           bash scripts/gates/openclaw-policy-envelope.sh
@@ -124,7 +156,9 @@ jobs:
 
   tier-1-stable:
     name: Tier 1 (Stable Unit/Integration)
-    needs: tier-0-critical
+    needs:
+      - tier-0-critical
+      - postgres-parity-foundation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -202,6 +236,41 @@ jobs:
         with:
           name: tier1-test-results
           path: test-results/ci
+
+  postgres-parity-foundation:
+    name: Postgres Parity Foundation
+    needs: tier-0-critical
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: isa_ci
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d isa_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Postgres client
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Run Postgres parity smoke
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/isa_ci
+        run: |
+          set -euo pipefail
+          bash scripts/dev/postgres-parity-smoke.sh
 
   tier-2-quarantine:
     name: Tier 2 (Quarantine Diagnostics, Non-Blocking)

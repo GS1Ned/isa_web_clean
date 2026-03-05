@@ -1,6 +1,7 @@
 # Deprecation Map
 
 **Status:** Phase 3 Synthesis
+**Last Updated:** 2026-03-05
 
 ## Status Legend
 
@@ -145,6 +146,14 @@
 | `./tasks/for_chatgpt/_CHATGPT_INSTRUCTIONS.md` | agent-prompt-governance.md | active | — | Core source |
 | `./timeline-test-results.md` | roadmap-evolution.md | active | — | Core source |
 | `./todo.md` | roadmap-evolution.md | archived | — | Historical reference |
+
+## Data Plane Migration Supersession Notes (2026-03-05)
+
+| Document/Section | New Canonical Authority | Status |
+|----------|--------------------------|--------|
+| `docs/governance/CREDENTIALS_VERIFICATION.md` provider-specific TiDB details | `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md` + `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` | historical-only |
+| `docs/spec/DEPLOYMENT_GUIDE.md` MySQL/TiDB-era runtime instructions | `docs/spec/ARCHITECTURE.md` + `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` + `docs/planning/NEXT_ACTIONS.json` | archived pointer-only |
+| `docs/planning/INDEX.md` old "managed DB alternatives" requirement block | `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md` + `docs/planning/NEXT_ACTIONS.json` (`ISA2-0010..0020`) | superseded |
 
 ## Excluded Documents
 

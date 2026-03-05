@@ -73,7 +73,7 @@ ADDED_DOCS_WORKTREE=$(git ls-files --others --exclude-standard | grep -E '^docs/
 NEW_DOCS=$(printf '%s\n%s\n' "$ADDED_DOCS_HEAD" "$ADDED_DOCS_WORKTREE" \
     | sed '/^$/d' \
     | sort -u \
-    | grep -vE '(^docs/.*/_generated/|^docs/planning/|^docs/governance/|^docs/architecture/panel/|^docs/sre/|^docs/quality/|/RUNTIME_CONTRACT\.md$|/INDEX\.md$|/README\.md$|/REPO_MAP\.md$|isa-core-architecture\.md$|ISA_CORE_CONTRACT\.md$)' \
+    | grep -vE '(^docs/.*/_generated/|^docs/planning/|^docs/governance/|^docs/decisions/|^docs/architecture/panel/|^docs/sre/|^docs/quality/|/RUNTIME_CONTRACT\.md$|/INDEX\.md$|/README\.md$|/REPO_MAP\.md$|isa-core-architecture\.md$|ISA_CORE_CONTRACT\.md$)' \
     || true)
 
 if [[ -n "$NEW_DOCS" ]]; then
