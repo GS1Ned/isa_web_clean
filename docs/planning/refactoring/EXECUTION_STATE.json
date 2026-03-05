@@ -162,7 +162,7 @@
         "scripts/gates/canonical-docs-allowlist.sh"
       ],
       "unresolved_issues": [
-        "Temporary high-severity advisory waivers remain configured and must be burned down (SEC-002)"
+        "Temporary high-severity advisory waivers were burned down (SEC-002 completed)."
       ],
       "confidence": 0.95
     },
@@ -187,7 +187,7 @@
         "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
       ],
       "unresolved_issues": [
-        "Temporary high-severity advisory waivers remain configured under SEC-002 follow-up policy"
+        "Security gate now runs with an empty waiver set under SEC-002 completion policy."
       ],
       "confidence": 0.91
     }
@@ -208,7 +208,7 @@
     "delta_rows_terminal": true,
     "threshold_met": true,
     "result_status": "DONE_WITH_LIMITATIONS",
-    "rationale": "Confidence threshold and terminal delta conditions are met; status remains DONE_WITH_LIMITATIONS while temporary security waiver IDs remain active under SEC-002."
+    "rationale": "Confidence threshold and terminal delta conditions are met; temporary security waiver IDs were removed under SEC-002."
   },
   "continuation_run": {
     "started_at": "2026-02-20T05:38:25Z",
@@ -311,7 +311,7 @@
         ]
       }
     ],
-    "next_deterministic_task": "SEC-002 remove temporary SECURITY_AUDIT_WAIVER_IDS by remediating waived advisories",
+    "next_deterministic_task": "Maintain zero-waiver security posture and keep high+critical blocking mode green in CI.",
     "patch_group_checkpoints": [
       {
         "patch_group": "PG-00",

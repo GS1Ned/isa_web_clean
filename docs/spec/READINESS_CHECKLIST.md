@@ -45,7 +45,7 @@ accepted as KNOWN-RISK before cutover proceeds.
 | # | Check | Status | Evidence |
 |---|-------|--------|----------|
 | C1 | `doc-code-validator.sh --canonical-only` passes with 0 failures | **PASS** | Verified 2026-03-05 |
-| C2 | Security waivers documented with resolution path | **KNOWN-RISK** | ISA2-0003 (PR2-0003) PARKED during implementation-only mode; 3 waivers (GHSA-4R6H-8V6P-XVW6, GHSA-5PGG-2G8V-P4X9, GHSA-3PPC-4F35-3M26) remain active — acceptable for pre-cutover phase |
+| C2 | Security waivers burned down and empty-waiver policy active | **PASS** | `security-gate.sh` default waiver set empty; CI workflows no longer inject waiver IDs; no-waiver gate passes with `SECURITY_AUDIT_BLOCKING_LEVELS=high,critical` |
 
 ## Phase CI — Workflow and Gate Portability
 

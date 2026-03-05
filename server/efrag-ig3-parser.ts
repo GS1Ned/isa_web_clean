@@ -5,11 +5,11 @@
  * the comprehensive list of ESRS datapoints across all 12 standards.
  */
 
-import XLSX from "xlsx";
 import { getDb } from "./db";
 import { esrsDatapoints } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
+import { getExcelSheetNames, getExcelWorksheetRows, readExcelWorkbook } from "./_core/excel";
 
 
 interface IG3Datapoint {
@@ -33,17 +33,20 @@ export async function parseIG3Datapoints(
   serverLogger.info(`\n=== Parsing EFRAG IG3 Datapoints ===`);
   serverLogger.info(`File: ${filePath}`);
 
-  const wb = XLSX.readFile(filePath);
+  const wb = await readExcelWorkbook(filePath);
   const allDatapoints: IG3Datapoint[] = [];
 
   // ESRS standards to parse (skip Index sheet)
-  const esrsSheets = wb.SheetNames.filter(name => name !== "Index");
+  const esrsSheets = getExcelSheetNames(wb).filter(name => name !== "Index");
 
   for (const sheetName of esrsSheets) {
     serverLogger.info(`\nParsing sheet: ${sheetName}...`);
 
-    const sheet = wb.Sheets[sheetName];
-    const data = XLSX.utils.sheet_to_json(sheet, { header: 1 }) as any[][];
+    const data = getExcelWorksheetRows(wb, sheetName, null) as any[][];
+    if (data.length === 0) {
+      serverLogger.info(`  ⚠️  Sheet missing or empty, skipping`);
+      continue;
+    }
 
     // Find header row
     let headerRowIndex = -1;

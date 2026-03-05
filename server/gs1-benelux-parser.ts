@@ -12,10 +12,10 @@
  * - Sheet 5: Change Log
  */
 
-import XLSX from "xlsx";
 import { getDb } from "./db";
 import { gs1Attributes, gs1AttributeCodeLists } from "../drizzle/schema";
 import { serverLogger } from "./_core/logger-wiring";
+import { getExcelWorksheetRows, readExcelWorkbook } from "./_core/excel";
 
 
 interface ParsedAttribute {
@@ -45,19 +45,12 @@ export async function parseAttributesSheet(
   filePath: string,
   sector: "food_hb" | "diy_garden_pet" | "healthcare" | "agriculture"
 ): Promise<ParsedAttribute[]> {
-  const workbook = XLSX.readFile(filePath);
-  const attributesSheet = workbook.Sheets["Attributes"];
+  const workbook = await readExcelWorkbook(filePath);
+  const data = getExcelWorksheetRows(workbook, "Attributes", "") as any[][];
 
-  if (!attributesSheet) {
+  if (data.length === 0) {
     throw new Error("Attributes sheet not found in Excel file");
   }
-
-  // Convert to JSON with header row
-  const data = XLSX.utils.sheet_to_json(attributesSheet, {
-    header: 1,
-    range: 0,
-    defval: "",
-  }) as any[][];
 
   serverLogger.info(
     `[GS1 Benelux Parser] Found ${data.length} rows in Attributes sheet`
@@ -166,19 +159,13 @@ export async function parseAttributesSheet(
 export async function parseCodeListsSheet(
   filePath: string
 ): Promise<CodeListValue[]> {
-  const workbook = XLSX.readFile(filePath);
-  const codeListsSheet = workbook.Sheets["Code Lists"];
+  const workbook = await readExcelWorkbook(filePath);
+  const data = getExcelWorksheetRows(workbook, "Code Lists", "") as any[][];
 
-  if (!codeListsSheet) {
+  if (data.length === 0) {
     serverLogger.info("[GS1 Benelux Parser] Code Lists sheet not found, skipping");
     return [];
   }
-
-  const data = XLSX.utils.sheet_to_json(codeListsSheet, {
-    header: 1,
-    range: 0,
-    defval: "",
-  }) as any[][];
 
   serverLogger.info(
     `[GS1 Benelux Parser] Found ${data.length} rows in Code Lists sheet`
