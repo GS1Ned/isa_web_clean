@@ -272,6 +272,11 @@ jobs:
           set -euo pipefail
           bash scripts/dev/postgres-parity-smoke.sh
 
+      - name: Assert parity eval structure (no live DB required)
+        run: |
+          set -euo pipefail
+          bash scripts/gates/parity-eval-structure-gate.sh
+
   tier-2-quarantine:
     name: Tier 2 (Quarantine Diagnostics, Non-Blocking)
     needs: tier-1-stable

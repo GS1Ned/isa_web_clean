@@ -113,21 +113,33 @@
     {
       "id": "ISA2-0014",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "ASK_ISA",
       "title": "Ask ISA parity gates on Postgres",
       "next_action": "Enforce citation presence/validity and groundedness thresholds in Postgres parity runs.",
       "acceptance_criteria": "Ask ISA parity gate shows citation presence=1 and citation validity=1 with non-regressive abstention correctness.",
       "evidence_links": [
         "docs/quality/thresholds/isa-capability-thresholds.json",
+        "scripts/gates/parity-eval-structure-gate.sh",
+        ".github/workflows/tiered-tests.yml",
         "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
       ],
-      "validation_command": "node scripts/eval/assert-capability-thresholds.cjs --in test-results/ci/isa-capability-eval.json",
+      "validation_command": "bash scripts/gates/parity-eval-structure-gate.sh",
       "created_at_utc": "2026-03-05T00:00:00Z",
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0014"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "scripts/gates/parity-eval-structure-gate.sh",
+          ".github/workflows/tiered-tests.yml",
+          "docs/quality/thresholds/isa-capability-thresholds.json",
+          "data/evaluation/golden/registry.json"
+        ]
+      }
     },
     {
       "id": "ISA2-0015a",
@@ -163,21 +175,34 @@
     {
       "id": "ISA2-0015b",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "ESRS_MAPPING",
       "title": "ESRS Mapping parity gates on Postgres",
       "next_action": "Run negative fixture and authority-correctness checks against Postgres parity path.",
       "acceptance_criteria": "Negative fixtures remain negative and authority correctness is non-regressive against baseline.",
       "evidence_links": [
         "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
-        "docs/quality/thresholds/isa-capability-thresholds.json"
+        "docs/quality/thresholds/isa-capability-thresholds.json",
+        "data/evaluation/golden/esrs_mapping/negative_cases_v1.json",
+        "data/evaluation/golden/esrs_mapping/negative_cases_v2.json",
+        "scripts/gates/parity-eval-structure-gate.sh"
       ],
-      "validation_command": "node scripts/eval/assert-capability-thresholds.cjs --in test-results/ci/isa-capability-eval.json",
+      "validation_command": "bash scripts/gates/parity-eval-structure-gate.sh",
       "created_at_utc": "2026-03-05T00:00:00Z",
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0015b"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "data/evaluation/golden/esrs_mapping/negative_cases_v1.json",
+          "data/evaluation/golden/esrs_mapping/negative_cases_v2.json",
+          "scripts/gates/parity-eval-structure-gate.sh",
+          "docs/quality/thresholds/isa-capability-thresholds.json"
+        ]
+      }
     },
     {
       "id": "ISA2-0016",
