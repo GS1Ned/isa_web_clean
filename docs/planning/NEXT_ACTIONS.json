@@ -458,24 +458,36 @@
     {
       "id": "ISA2-0006",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "KNOWLEDGE_BASE",
       "title": "Automate provenance verification and citation integrity gates across CATALOG and KNOWLEDGE_BASE",
       "next_action": "Move from provenance metadata being merely present to provenance verification being enforced through content-hash, verification timestamp, source authenticity, and citation-integrity checks.",
       "acceptance_criteria": "Ingest and retrieval paths enforce strong provenance fields and citation-integrity checks, with deterministic verification artifacts that downstream capabilities can trust.",
       "evidence_links": [
-        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+        "server/citation-validation.ts",
+        "server/services/canonical-facts/index.ts",
+        "server/routers/citation-admin.ts",
+        "scripts/gates/knowledge-verification-posture.sh",
         "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
-        "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
-        "server/services/canonical-facts/index.ts"
+        "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
       ],
-      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "validation_command": "bash scripts/gates/knowledge-verification-posture.sh",
       "created_at_utc": "2026-03-04T10:06:23Z",
       "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
       "task_refs": [
         "RES-003",
         "BENCH-003"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "gate_result": "PASS (5/5 checks)",
+        "paths": [
+          "server/citation-validation.ts",
+          "server/services/canonical-facts/index.ts",
+          "scripts/gates/knowledge-verification-posture.sh"
+        ]
+      }
     },
     {
       "id": "ISA2-0007",
