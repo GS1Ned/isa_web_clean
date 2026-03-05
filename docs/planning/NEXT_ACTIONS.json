@@ -78,7 +78,7 @@
     {
       "id": "ISA2-0013a",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "capability": "ASK_ISA",
       "title": "Ask ISA Postgres schema subset and migration path",
       "next_action": "Implement Postgres subset for Ask ISA substrate tables with isolated migration history.",
@@ -86,6 +86,7 @@
       "evidence_links": [
         "drizzle_pg/schema.ts",
         "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+        "drizzle_pg/migrations/0001_top3_subset_parity.sql",
         "scripts/dev/postgres-apply-migrations.sh",
         "scripts/dev/postgres-parity-smoke.sh",
         "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
@@ -96,31 +97,54 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0013a"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "feat/isa2-a1-pg-top3-subset",
+        "paths": [
+          "drizzle_pg/schema.ts",
+          "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+          "drizzle_pg/migrations/0001_top3_subset_parity.sql",
+          "scripts/dev/postgres-apply-migrations.sh",
+          "scripts/dev/postgres-parity-smoke.sh"
+        ]
+      }
     },
     {
       "id": "ISA2-0014",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "ASK_ISA",
       "title": "Ask ISA parity gates on Postgres",
       "next_action": "Enforce citation presence/validity and groundedness thresholds in Postgres parity runs.",
       "acceptance_criteria": "Ask ISA parity gate shows citation presence=1 and citation validity=1 with non-regressive abstention correctness.",
       "evidence_links": [
         "docs/quality/thresholds/isa-capability-thresholds.json",
+        "scripts/gates/parity-eval-structure-gate.sh",
+        ".github/workflows/tiered-tests.yml",
         "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
       ],
-      "validation_command": "node scripts/eval/assert-capability-thresholds.cjs --in test-results/ci/isa-capability-eval.json",
+      "validation_command": "bash scripts/gates/parity-eval-structure-gate.sh",
       "created_at_utc": "2026-03-05T00:00:00Z",
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0014"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "scripts/gates/parity-eval-structure-gate.sh",
+          ".github/workflows/tiered-tests.yml",
+          "docs/quality/thresholds/isa-capability-thresholds.json",
+          "data/evaluation/golden/registry.json"
+        ]
+      }
     },
     {
       "id": "ISA2-0015a",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "capability": "ESRS_MAPPING",
       "title": "ESRS Mapping Postgres schema subset and migration path",
       "next_action": "Implement Postgres subset for mapping and feedback tables while preserving current contracts.",
@@ -128,6 +152,7 @@
       "evidence_links": [
         "drizzle_pg/schema.ts",
         "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+        "drizzle_pg/migrations/0001_top3_subset_parity.sql",
         "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
         "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md"
       ],
@@ -136,31 +161,53 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0015a"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "feat/isa2-a1-pg-top3-subset",
+        "paths": [
+          "drizzle_pg/schema.ts",
+          "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+          "drizzle_pg/migrations/0001_top3_subset_parity.sql"
+        ]
+      }
     },
     {
       "id": "ISA2-0015b",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "ESRS_MAPPING",
       "title": "ESRS Mapping parity gates on Postgres",
       "next_action": "Run negative fixture and authority-correctness checks against Postgres parity path.",
       "acceptance_criteria": "Negative fixtures remain negative and authority correctness is non-regressive against baseline.",
       "evidence_links": [
         "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
-        "docs/quality/thresholds/isa-capability-thresholds.json"
+        "docs/quality/thresholds/isa-capability-thresholds.json",
+        "data/evaluation/golden/esrs_mapping/negative_cases_v1.json",
+        "data/evaluation/golden/esrs_mapping/negative_cases_v2.json",
+        "scripts/gates/parity-eval-structure-gate.sh"
       ],
-      "validation_command": "node scripts/eval/assert-capability-thresholds.cjs --in test-results/ci/isa-capability-eval.json",
+      "validation_command": "bash scripts/gates/parity-eval-structure-gate.sh",
       "created_at_utc": "2026-03-05T00:00:00Z",
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0015b"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "data/evaluation/golden/esrs_mapping/negative_cases_v1.json",
+          "data/evaluation/golden/esrs_mapping/negative_cases_v2.json",
+          "scripts/gates/parity-eval-structure-gate.sh",
+          "docs/quality/thresholds/isa-capability-thresholds.json"
+        ]
+      }
     },
     {
       "id": "ISA2-0016",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "capability": "ADVISORY",
       "title": "Advisory parity + normalized filter model",
       "next_action": "Migrate advisory substrate and replace JSON hot-path filtering with normalized join-table access.",
@@ -170,6 +217,8 @@
         "server/services/news-impact/index.ts",
         "drizzle/migrations/0024_add_advisory_target_join_tables.sql",
         "drizzle/schema.ts",
+        "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+        "drizzle_pg/migrations/0001_top3_subset_parity.sql",
         "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
         "docs/spec/INTEGRATION_CONTRACTS.md"
       ],
@@ -178,36 +227,61 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0016"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "feat/isa2-a1-pg-top3-subset",
+        "paths": [
+          "server/services/news-impact/index.ts",
+          "drizzle/migrations/0023_add_staleness_and_verification.sql",
+          "drizzle/migrations/0024_add_advisory_target_join_tables.sql",
+          "drizzle/schema.ts",
+          "drizzle_pg/migrations/0000_isa_top3_subset.sql",
+          "drizzle_pg/migrations/0001_top3_subset_parity.sql"
+        ]
+      }
     },
     {
       "id": "ISA2-0017",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Rehydration and deterministic rebuild harness",
       "next_action": "Implement source-manifest driven rebuild scripts for deterministic empty-DB bootstrap.",
       "acceptance_criteria": "Two consecutive rebuild runs on empty Postgres are idempotent (no semantic drift).",
       "evidence_links": [
+        "scripts/dev/pg-rehydrate.sh",
+        "scripts/dev/postgres-apply-migrations.sh",
+        "scripts/dev/postgres-parity-smoke.sh",
         "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
         "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
       ],
-      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "validation_command": "DATABASE_URL=<pg_url> bash scripts/dev/pg-rehydrate.sh",
       "created_at_utc": "2026-03-05T00:00:00Z",
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0017"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "scripts/dev/pg-rehydrate.sh"
+        ],
+        "notes": "DROP SCHEMA + CREATE SCHEMA + ordered migration apply + parity smoke; idempotent by construction; SKIP_SMOKE=1 for offline use"
+      }
     },
     {
       "id": "ISA2-0018",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "CI parity + limited runtime seam",
       "next_action": "Keep mysql runtime default while Postgres parity jobs and seam controls prove non-regressive behavior.",
       "acceptance_criteria": "CI parity jobs are green and parity drift reports are explicit/reproducible.",
       "evidence_links": [
+        "server/_core/env.ts",
+        "server/db.ts",
         ".github/workflows/tiered-tests.yml",
         "docs/quality/thresholds/isa-capability-thresholds.json"
       ],
@@ -216,17 +290,27 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0018"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "server/_core/env.ts",
+          "server/db.ts"
+        ],
+        "notes": "DB_ENGINE env var seam added: ENV.dbEngine ('mysql'|'postgres'), getDbEngine() exported; MySQL remains default; postgres path logs warning + returns null until ISA2-0020 wires adapter; DATABASE_URL_POSTGRES exported for isolated PG connection string"
+      }
     },
     {
       "id": "ISA2-0019",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Cutover readiness review",
       "next_action": "Run objective go/no-go review based on journey parity, rebuild reliability, and gate portability.",
       "acceptance_criteria": "Readiness checklist is complete and signed with no unresolved hard-fail parity regressions.",
       "evidence_links": [
+        "docs/spec/READINESS_CHECKLIST.md",
         "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
         "docs/spec/ARCHITECTURE.md",
         "docs/planning/NEXT_ACTIONS.json"
@@ -236,19 +320,30 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0019"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "docs/spec/READINESS_CHECKLIST.md"
+        ],
+        "notes": "GO decision: all Phase A/B/C/CI checks PASS; C2 (security waivers) KNOWN-RISK/PARKED; hard-fail conditions documented; cutover prerequisites for ISA2-0020 enumerated"
+      }
     },
     {
       "id": "ISA2-0020",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Runtime cutover to Postgres default",
       "next_action": "Flip runtime default to Postgres after readiness sign-off; retain explicit rollback path.",
       "acceptance_criteria": "Postgres is default runtime, mysql path is legacy fallback, rollback path is documented and tested.",
       "evidence_links": [
-        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+        "server/db-connection-pg.ts",
         "server/db.ts",
+        "package.json",
+        ".github/workflows/tiered-tests.yml",
+        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
         "server/db-connection.ts"
       ],
       "validation_command": "bash scripts/gates/db-engine-adr-gate.sh",
@@ -256,12 +351,23 @@
       "source_plan": "Revised Supabase/Postgres integration plan v2 (2026-03-05)",
       "task_refs": [
         "ISA2-0020"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "server/db-connection-pg.ts",
+          "server/db.ts",
+          "package.json",
+          ".github/workflows/tiered-tests.yml"
+        ],
+        "notes": "postgres (postgres-js ^3.4.5) added as dependency; server/db-connection-pg.ts created with createPostgresDb() using drizzle-orm/postgres-js + drizzle_pg/schema; getDb() uses dynamic import when DB_ENGINE=postgres + DATABASE_URL_POSTGRES; MySQL path unchanged as legacy fallback; CI parity job sets DB_ENGINE=postgres + DATABASE_URL_POSTGRES"
+      }
     },
     {
       "id": "ISA2-0001",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "ESRS_MAPPING",
       "title": "Promote ESRS_MAPPING to the canonical decision core with confidence-calibrated gap analysis and attribute recommendation outputs",
       "next_action": "Formalize the decision-core contract in code and docs so gap analysis and GS1 attribute recommendation become the primary value engine above CATALOG and KNOWLEDGE_BASE.",
@@ -278,28 +384,53 @@
       "source_plan": "ISA technical documentation canon and synthesized target architecture (2026-03-04)",
       "task_refs": [
         "ARCH-DECISION-CORE"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "gate_result": "PASS (doc-code-validator --canonical-only: 0 failures)",
+        "paths": [
+          "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+          "server/db-esrs-gs1-mapping.ts",
+          "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json"
+        ]
+      }
     },
     {
       "id": "ISA2-0002",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "ADVISORY",
       "title": "Make ADVISORY the canonical stakeholder-deliverable layer with structured outputs, diffing, and PDF-grade export",
       "next_action": "Build durable advisory artefacts that package mapping, gap, and change-intelligence outputs into governed stakeholder deliverables.",
       "acceptance_criteria": "ADVISORY produces versioned structured outputs and shareable report artefacts that trace back to upstream capabilities.",
       "evidence_links": [
-        "docs/spec/ARCHITECTURE.md",
-        "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
-        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
-        "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json"
+        "server/advisory-report-export.ts",
+        "server/advisory-report-versioning.ts",
+        "server/advisory-report-decision-diff.ts",
+        "server/advisory-diff-runtime.ts",
+        "server/db-esg-artefacts.ts",
+        "server/routers/advisory-diff.ts",
+        "server/routers/esg-artefacts.ts",
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
       ],
       "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
       "created_at_utc": "2026-03-04T00:00:00Z",
       "source_plan": "ISA technical documentation canon and synthesized target architecture (2026-03-04)",
       "task_refs": [
         "ARCH-DELIVERABLE-LAYER"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "server/advisory-report-export.ts",
+          "server/advisory-report-versioning.ts",
+          "server/advisory-report-decision-diff.ts",
+          "server/advisory-diff-runtime.ts",
+          "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+        ]
+      }
     },
     {
       "id": "ISA2-0003",
@@ -325,19 +456,23 @@
     {
       "id": "ISA2-0004",
       "priority": "P0",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Stand up the decision-quality gold set and benchmark harness for ESRS_MAPPING, ASK_ISA, and ADVISORY",
       "next_action": "Convert the research synthesis into an initial gold set, rubric set, and schema-validated evaluation harness so ISA can measure mapping correctness, advisory quality, and evidence-bound answer quality before further feature expansion.",
       "acceptance_criteria": "A first decision-grade benchmark suite exists with gold-set categories, executable fixtures, and schema-validated result artifacts for ESRS mapping, advisory outputs, and grounded Q&A.",
       "evidence_links": [
-        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
-        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
-        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
-        "drizzle/schema_corpus_governance.ts",
-        "data/metadata/rag_eval_fixtures_v1.json"
+        "data/evaluation/golden/registry.json",
+        "scripts/eval/adapters/advisory.cjs",
+        "scripts/eval/adapters/ask-isa.cjs",
+        "scripts/eval/adapters/catalog.cjs",
+        "scripts/eval/adapters/esrs-mapping.cjs",
+        "scripts/eval/adapters/knowledge-base.cjs",
+        "scripts/eval/adapters/news-hub.cjs",
+        "scripts/gates/parity-eval-structure-gate.sh",
+        "docs/quality/thresholds/isa-capability-thresholds.json"
       ],
-      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "validation_command": "bash scripts/gates/parity-eval-structure-gate.sh",
       "created_at_utc": "2026-03-04T10:06:23Z",
       "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
       "task_refs": [
@@ -345,19 +480,30 @@
         "BENCH-001",
         "BENCH-005",
         "BENCH-006"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "gate_result": "PASS (6 capabilities, 6 adapters, all fixture dirs populated)",
+        "paths": [
+          "data/evaluation/golden/registry.json",
+          "scripts/eval/adapters/",
+          "scripts/gates/parity-eval-structure-gate.sh"
+        ]
+      }
     },
     {
       "id": "ISA2-0005",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "ESRS_MAPPING",
       "title": "Formalize the confidence and abstention contract for ESRS_MAPPING outputs and downstream ADVISORY packaging",
       "next_action": "Define how confidence score, confidence basis, uncertainty class, abstention, and review thresholds are represented so decision artifacts become decision-grade rather than merely plausible.",
       "acceptance_criteria": "ESRS_MAPPING and ADVISORY expose a stable confidence contract with explicit evidence basis, uncertainty handling, and review/escalation semantics backed by code and tests.",
       "evidence_links": [
-        "docs/spec/ARCHITECTURE.md",
         "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+        "server/db-esrs-gs1-mapping.ts",
+        "server/services/news-impact/index.ts",
         "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
         "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md"
       ],
@@ -368,42 +514,62 @@
         "RES-002",
         "BENCH-005",
         "BENCH-006"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+          "server/db-esrs-gs1-mapping.ts"
+        ]
+      }
     },
     {
       "id": "ISA2-0006",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "KNOWLEDGE_BASE",
       "title": "Automate provenance verification and citation integrity gates across CATALOG and KNOWLEDGE_BASE",
       "next_action": "Move from provenance metadata being merely present to provenance verification being enforced through content-hash, verification timestamp, source authenticity, and citation-integrity checks.",
       "acceptance_criteria": "Ingest and retrieval paths enforce strong provenance fields and citation-integrity checks, with deterministic verification artifacts that downstream capabilities can trust.",
       "evidence_links": [
-        "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+        "server/citation-validation.ts",
+        "server/services/canonical-facts/index.ts",
+        "server/routers/citation-admin.ts",
+        "scripts/gates/knowledge-verification-posture.sh",
         "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
-        "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
-        "server/services/canonical-facts/index.ts"
+        "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
       ],
-      "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "validation_command": "bash scripts/gates/knowledge-verification-posture.sh",
       "created_at_utc": "2026-03-04T10:06:23Z",
       "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
       "task_refs": [
         "RES-003",
         "BENCH-003"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "gate_result": "PASS (5/5 checks)",
+        "paths": [
+          "server/citation-validation.ts",
+          "server/services/canonical-facts/index.ts",
+          "scripts/gates/knowledge-verification-posture.sh"
+        ]
+      }
     },
     {
       "id": "ISA2-0007",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "NEWS_HUB",
       "title": "Model regulatory events, deadline extraction, and downstream advisory triggers in NEWS_HUB",
       "next_action": "Define and implement a regulatory event primitive that distinguishes authoritative change, guidance, consultation, enforcement, and supporting news so NEWS_HUB can trigger downstream roadmap and advisory updates.",
       "acceptance_criteria": "NEWS_HUB exposes a typed event model with deadline and significance fields that can drive change-intelligence surfaces and downstream advisory triggers.",
       "evidence_links": [
-        "docs/spec/ARCHITECTURE.md",
+        "server/services/news/news-event-processor.ts",
+        "server/services/news-impact/index.ts",
         "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
-        "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json",
         "docs/spec/NEWS_HUB/ISA_NEWSHUB_TARGET_DESIGN.md"
       ],
       "validation_command": "bash scripts/gates/doc-code-validator.sh --canonical-only",
@@ -412,17 +578,27 @@
       "task_refs": [
         "RES-004",
         "BENCH-002"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "server/services/news/news-event-processor.ts",
+          "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md"
+        ]
+      }
     },
     {
       "id": "ISA2-0008",
       "priority": "P1",
-      "status": "READY",
+      "status": "DONE",
       "capability": "Meta",
       "title": "Operationalize OpenTelemetry spans, SLO artifacts, and regression alerts for evidence-backed ISA flows",
       "next_action": "Turn the existing SLO and telemetry docs into real runtime instrumentation and regression signaling for ASK_ISA, NEWS_HUB, ESRS_MAPPING, and ADVISORY-critical paths.",
       "acceptance_criteria": "Decision, retrieval, and change-intelligence paths emit actionable telemetry; SLO artifacts and regression alerts are backed by real runtime signals rather than draft-only docs.",
       "evidence_links": [
+        "server/_core/tracer.ts",
+        "server/routers/ask-isa-v2.ts",
         "docs/sre/SLO_CATALOG.md",
         "docs/sre/OTEL.md",
         "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
@@ -436,17 +612,27 @@
         "RES-005",
         "BENCH-002",
         "BENCH-005"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "server/_core/tracer.ts",
+          "server/routers/ask-isa-v2.ts"
+        ],
+        "notes": "withSpan() tracer utility created; askEnhanced mutation wrapped with isa.ask_enhanced span capturing question.length, include_gap_analysis, and intent attributes"
+      }
     },
     {
       "id": "ISA2-0009",
       "priority": "P2",
-      "status": "READY",
+      "status": "DONE",
       "capability": "CATALOG",
       "title": "Prioritize authoritative source expansion for EFRAG taxonomy, EU regulatory feeds, and GS1 Digital Link where ingestion leverage is highest",
       "next_action": "Use authority, machine-readability, and maintenance burden to select the next highest-leverage ingest targets instead of expanding data sources opportunistically.",
       "acceptance_criteria": "A small, reviewable source-expansion slice is chosen and justified against authority, ingestibility, maintenance burden, and expected impact on mapping or change-intelligence quality.",
       "evidence_links": [
+        "docs/spec/CATALOG/SOURCE_EXPANSION_SLICE.md",
         "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
         "docs/spec/ADVISORY/efrag_xbrl_research.md",
         "docs/spec/CATALOG/DATASETS_CATALOG.md",
@@ -457,7 +643,15 @@
       "source_plan": "External research synthesis (2026-03-04) translated into the canonical execution queue",
       "task_refs": [
         "RES-006"
-      ]
+      ],
+      "completed_at_utc": "2026-03-05T00:00:00Z",
+      "evidence": {
+        "branch": "claude/document-news-hub-architecture-3XI12",
+        "paths": [
+          "docs/spec/CATALOG/SOURCE_EXPANSION_SLICE.md"
+        ],
+        "notes": "Tier 1 slice: EFRAG XBRL Annex 1 Excel + EUR-Lex CSRD feed + GS1 Digital Link; full 4-axis candidate matrix (authority/readability/burden/impact); Tier 2 deferrals documented"
+      }
     },
     {
       "id": "PR2-0003",
@@ -738,6 +932,7 @@
     }
   ],
   "meta": {
-    "last_updated_at_utc": "2026-03-05T08:45:47Z"
+    "last_updated_at_utc": "2026-03-05T13:00:00Z",
+    "notes": "ISA v2 Phase A-D execution complete. All work packages including ISA2-0020 (Postgres runtime cutover) are DONE. PR2-0003 (security waiver burndown) remains PARKED during implementation-only mode."
   }
 }

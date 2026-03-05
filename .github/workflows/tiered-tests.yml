@@ -268,9 +268,16 @@ jobs:
       - name: Run Postgres parity smoke
         env:
           DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/isa_ci
+          DATABASE_URL_POSTGRES: postgresql://postgres:postgres@127.0.0.1:5432/isa_ci
+          DB_ENGINE: postgres
         run: |
           set -euo pipefail
           bash scripts/dev/postgres-parity-smoke.sh
+
+      - name: Assert parity eval structure (no live DB required)
+        run: |
+          set -euo pipefail
+          bash scripts/gates/parity-eval-structure-gate.sh
 
   tier-2-quarantine:
     name: Tier 2 (Quarantine Diagnostics, Non-Blocking)

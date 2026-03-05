@@ -61,6 +61,29 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 - Current score banding is conservative and evidence-backed in code: `high >= 0.75`, `medium >= 0.50`, else `low`.
 - Active ESRS tool surfaces now consume that same posture contract directly: `client/src/pages/GapAnalyzer.tsx` and `client/src/pages/ToolsComplianceRoadmap.tsx` render explicit downstream review guidance from the stable decision artefact instead of inferring their own review semantics.
 
+## Confidence Decay Contract (E-03)
+<!-- EVIDENCE:implementation:server/db-esrs-gs1-mapping.ts -->
+Mapping confidence degrades automatically when source material becomes stale or when an underlying regulation has been flagged for verification. The decay rules are deterministic and applied at query time:
+
+| Condition | Effect |
+|-----------|--------|
+| Source age ≥ 90 days | `high` → `medium` (one step down) |
+| Source age ≥ 180 days | `high` → `low`, `medium` → `low` (floor to low) |
+| `regulation.needs_verification = true` | `high` → `medium` (one step down, additive with age) |
+
+- `effectiveConfidence` is the output confidence after applying all decay steps.
+- `decayReason` is a comma-separated string of the decay triggers applied (e.g. `"source_age_90d, regulation_needs_verification"`), or `null` if no decay occurred.
+- Implementation: `computeEffectiveConfidence()` / `applyDecayToRows()` in `server/db-esrs-gs1-mapping.ts`.
+- The `regulation.needs_verification` flag is set by `flagRegulationsNeedVerification()` in `server/services/news-impact/index.ts` when NEWS_HUB ingests a news article with `ENFORCEMENT_SIGNAL`, `DELEGATED_ACT_DRAFT`, or `DELEGATED_ACT_ADOPTED` regulatory state.
+
+## Abstention Contract
+When a mapping query returns zero results or all results have `effectiveConfidence = low` with `decayReason` set, the caller is expected to:
+1. Surface `reviewRecommended = true` to the UI layer
+2. Set `escalationAction = "HUMAN_REVIEW"` rather than suppressing the result
+3. Never present a `low`-confidence decayed mapping as authoritative without surfacing the `decayReason`
+
+Abstention (returning no recommendation) is reserved for cases where no mapping exists at all, not for cases where a low-confidence mapping exists. Low-confidence mappings carry signal; they must be surfaced with their decay context rather than omitted.
+
 ## Operational Unknowns
 - External calibration of ESRS mapping confidence against reviewed gold sets remains UNKNOWN from repository-only evidence.
 - Production workload and latency SLOs for mapping-heavy requests are UNKNOWN from repository-only evidence.

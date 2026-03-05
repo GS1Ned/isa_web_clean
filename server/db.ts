@@ -25,9 +25,42 @@ import { serverLogger } from "./_core/logger-wiring";
 
 
 let _db: Awaited<ReturnType<typeof drizzle>> | null = null;
+let _pgSql: { end: () => Promise<void> } | null = null;
+
+/**
+ * Returns the active DB engine identifier.
+ * "mysql"    — default; MySQL2 pool via createMysqlPool()
+ * "postgres" — Postgres path enabled by DB_ENGINE=postgres + DATABASE_URL_POSTGRES
+ */
+export function getDbEngine(): "mysql" | "postgres" {
+  return ENV.dbEngine;
+}
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
+  // Postgres path (ISA2-0020): wire postgres-js adapter when DB_ENGINE=postgres.
+  if (ENV.dbEngine === "postgres") {
+    if (_db) return _db;
+    const pgUrl = ENV.databaseUrlPostgres || process.env.DATABASE_URL_POSTGRES || "";
+    if (!pgUrl) {
+      serverLogger.warn(
+        "[Database] DB_ENGINE=postgres requires DATABASE_URL_POSTGRES; falling back to null."
+      );
+      return null;
+    }
+    try {
+      const { createPostgresDb } = await import("./db-connection-pg.js");
+      const { db, sql } = createPostgresDb(pgUrl);
+      _db = db as any;
+      _pgSql = sql as any;
+      serverLogger.info("[Database] Connected via Postgres (postgres-js)");
+    } catch (error) {
+      serverLogger.warn("[Database] Postgres connection failed:", error);
+      return null;
+    }
+    return _db;
+  }
+
   if (!_db && process.env.DATABASE_URL) {
     try {
       const pool = createMysqlPool(process.env.DATABASE_URL);

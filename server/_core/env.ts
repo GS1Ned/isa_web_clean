@@ -99,6 +99,14 @@ export const ENV = {
   appId: process.env.VITE_APP_ID ?? "",
   cookieSecret: process.env.JWT_SECRET ?? "",
   databaseUrl: process.env.DATABASE_URL ?? "",
+  /**
+   * DB_ENGINE seam — controls which database adapter getDb() uses.
+   * Valid values: "mysql" (default) | "postgres"
+   * Set DATABASE_URL_POSTGRES when switching to postgres to avoid contaminating
+   * the legacy DATABASE_URL validation.
+   */
+  dbEngine: (process.env.DB_ENGINE === "postgres" ? "postgres" : "mysql") as "mysql" | "postgres",
+  databaseUrlPostgres: process.env.DATABASE_URL_POSTGRES ?? "",
   oAuthServerUrl: process.env.OAUTH_SERVER_URL ?? "",
   ownerOpenId: process.env.OWNER_OPEN_ID ?? "",
   isProduction,

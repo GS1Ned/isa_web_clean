@@ -52,6 +52,28 @@ NEWS_HUB manages regulatory/news ingestion flows, enrichment controls, and opera
 - Outputs: typed news and operational telemetry payloads via tRPC surfaces and DB persistence.
 - Exact field-level payloads are code-truth in router/service implementations.
 
+## Regulatory Change-Intelligence Model (B5 — ISA2-0007)
+<!-- EVIDENCE:implementation:server/services/news/news-event-processor.ts -->
+Each ingested `hub_news` article can be processed into a typed `NewsChangeEvent` via `processNewsEvent()` in `server/services/news/news-event-processor.ts`:
+
+| Field | Description |
+|-------|-------------|
+| `eventType` | Typed classification: `ADOPTION`, `AMENDMENT`, `ENFORCEMENT_ACTION`, `DELEGATED_ACT`, `GUIDANCE_PUBLICATION`, `PROPOSAL`, `POSTPONEMENT`, `CONSULTATION`, `UNKNOWN` |
+| `primaryRegulation` | Extracted regulation code: `CSRD`, `ESRS`, `EUDR`, `DPP`, `ESPR`, `PPWR`, `CSDDD`, `EU_TAXONOMY` |
+| `complianceDeadline` | ISO date string of extracted deadline (e.g. `"2026-01-01"`), or `null` |
+| `monthsToDeadline` | Months from now to deadline, or `null` |
+| `urgencyLevel` | `HIGH` / `MEDIUM` / `LOW` based on eventType + credibility + deadline proximity |
+| `urgencyReason` | Human-readable explanation for assigned urgency |
+| `triggersAdvisoryUpdate` | `true` for ADOPTION, AMENDMENT, ENFORCEMENT_ACTION, DELEGATED_ACT events |
+| `triggersRoadmapUpdate` | `true` for ADOPTION, AMENDMENT, PROPOSAL, POSTPONEMENT, DELEGATED_ACT events |
+
+The `hub_news.regulatory_state` enum values map directly to `eventType`:
+- `ADOPTED` → `ADOPTION`, `ENFORCEMENT_SIGNAL` → `ENFORCEMENT_ACTION`, `DELEGATED_ACT_DRAFT` / `DELEGATED_ACT_ADOPTED` → `DELEGATED_ACT`, `GUIDANCE` → `GUIDANCE_PUBLICATION`, `POSTPONED_OR_SOFTENED` → `POSTPONEMENT`
+
+Downstream integration:
+- `server/services/news-impact/index.ts` consumes `regulatory_state` to trigger `flagAdvisoryReportsStaleSince()` and `flagRegulationsNeedVerification()` (E-01/E-02)
+- `NewsChangeEvent.triggersAdvisoryUpdate` indicates advisory re-generation should be considered
+
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/news_hub_health.sh -->
 - Smoke probe: `scripts/probe/news_hub_health.sh`
