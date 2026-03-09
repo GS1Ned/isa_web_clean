@@ -1,9 +1,75 @@
 # Repository Tree
 
-Generated on: 2026-03-02T04:29:50Z
+Generated on: 2026-03-09T04:44:31Z
 
 ```
 .
+├── .agents
+│   └── skills
+│       ├── diagram-generator
+│       │   ├── SKILL.md
+│       │   ├── commands
+│       │   │   └── diagram-generator.md
+│       │   ├── hooks
+│       │   │   ├── post-execute.cjs
+│       │   │   └── pre-execute.cjs
+│       │   ├── references
+│       │   │   └── research-requirements.md
+│       │   ├── rules
+│       │   │   └── diagram-generator.md
+│       │   ├── schemas
+│       │   │   ├── input.schema.json
+│       │   │   └── output.schema.json
+│       │   ├── scripts
+│       │   │   └── main.cjs
+│       │   └── templates
+│       │       └── implementation-template.md
+│       ├── find-skills
+│       │   └── SKILL.md
+│       ├── git-essentials
+│       │   └── SKILL.md
+│       ├── openrouter-typescript-sdk
+│       │   └── SKILL.md
+│       ├── proactive-agent
+│       │   └── SKILL.md
+│       ├── self-improving-agent
+│       │   ├── README.md
+│       │   ├── SKILL.md
+│       │   ├── hooks
+│       │   │   ├── post-bash.sh
+│       │   │   ├── pre-tool.sh
+│       │   │   └── session-end.sh
+│       │   ├── memory
+│       │   │   └── semantic-patterns.json
+│       │   ├── references
+│       │   │   └── appendix.md
+│       │   └── templates
+│       │       ├── correction-template.md
+│       │       ├── pattern-template.md
+│       │       └── validation-template.md
+│       └── skill-creator
+│           ├── LICENSE.txt
+│           ├── SKILL.md
+│           ├── agents
+│           │   ├── analyzer.md
+│           │   ├── comparator.md
+│           │   └── grader.md
+│           ├── assets
+│           │   └── eval_review.html
+│           ├── eval-viewer
+│           │   ├── generate_review.py
+│           │   └── viewer.html
+│           ├── references
+│           │   └── schemas.md
+│           └── scripts
+│               ├── aggregate_benchmark.py
+│               ├── generate_report.py
+│               ├── improve_description.py
+│               ├── package_skill.py
+│               ├── quick_validate.py
+│               ├── run_eval.py
+│               ├── run_loop.py
+│               └── utils.py
 ├── .amazonq
 │   ├── default.json
 │   └── rules
@@ -18,6 +84,7 @@ Generated on: 2026-03-02T04:29:50Z
 ├── .codex
 │   └── config.toml
 ├── .env.example
+├── .env.supabase.example
 ├── .eslintrc.server.json
 ├── .github
 │   ├── PULL_REQUEST_TEMPLATE.md
@@ -50,11 +117,27 @@ Generated on: 2026-03-02T04:29:50Z
 ├── .gitkeep
 ├── .markdownlint.json
 ├── .mcp.json
+├── .openclaw
+│   ├── OPENCLAW_EXTERNAL_ANALYSIS_EXPORT.redacted.json
+│   ├── audit
+│   │   ├── 20260302T081629Z
+│   │   │   ├── OPENCLAW_CONFIGURATION_AUDIT.md
+│   │   │   ├── OPENCLAW_CONFIGURATION_FIELD_INVENTORY.redacted.json
+│   │   │   └── OPENCLAW_CONFIGURATION_SNAPSHOT.redacted.json
+│   │   ├── 20260302T081702Z
+│   │   │   ├── OPENCLAW_UNUSED_CONFLICTING_SHADOWED_REPORT.md
+│   │   │   ├── OPENCLAW_UNUSED_CONFLICTING_SHADOWED_SUMMARY.json
+│   │   │   ├── OPENCLAW_UNUSED_CONFLICTING_SHADOWED_SUPPORT.redacted.json
+│   │   │   └── OPENCLAW_UNUSED_CONFLICTING_SHADOWED_TABLE.json
+│   │   └── 20260302T081732Z
+│   │       └── OPENCLAW_EXTERNAL_ANALYSIS_EXPORT.redacted.json
+│   └── control-plane.json
 ├── .pat_test
 ├── .prettierignore
 ├── .prettierrc
 ├── .vscode
 │   ├── mcp.json
+│   ├── settings.json
 │   └── tasks.json
 ├── 00_AUTONOMY_SETUP_INDEX.md
 ├── AGENTS.md
@@ -92,6 +175,7 @@ Generated on: 2026-03-02T04:29:50Z
 │       ├── completeness_matrix.csv
 │       ├── consistency_report.txt
 │       └── placeholder_scan.txt
+├── GEMINI.md
 ├── ISA_MAP.md
 ├── QUICK_START.md
 ├── README.md
@@ -111,6 +195,7 @@ Generated on: 2026-03-02T04:29:50Z
 │       ├── components
 │       │   ├── AIChatBox.tsx
 │       │   ├── AdvancedSearchFilters.tsx
+│       │   ├── AdvisoryReportPdfExportButton.tsx
 │       │   ├── AskISAFeedbackButtons.tsx
 │       │   ├── AskISAWidget.tsx
 │       │   ├── AuthorityBadge.tsx
@@ -119,6 +204,8 @@ Generated on: 2026-03-02T04:29:50Z
 │       │   ├── ComplianceCoverageChart.tsx
 │       │   ├── DashboardLayout.tsx
 │       │   ├── DashboardLayoutSkeleton.tsx
+│       │   ├── DecisionArtifactCard.test.tsx
+│       │   ├── DecisionArtifactCard.tsx
 │       │   ├── DisclaimerBanner.tsx
 │       │   ├── ESRSDatapointsSection.tsx
 │       │   ├── EnhancedSearchPanel.tsx
@@ -219,12 +306,24 @@ Generated on: 2026-03-02T04:29:50Z
 │       │   └── usePersistFn.ts
 │       ├── index.css
 │       ├── lib
+│       │   ├── advisory-explorer.test.ts
+│       │   ├── advisory-explorer.ts
+│       │   ├── advisory-report-ui.test.ts
+│       │   ├── advisory-report-ui.ts
+│       │   ├── ask-isa-source-posture.test.ts
+│       │   ├── ask-isa-source-posture.ts
+│       │   ├── dataset-registry-verification.test.ts
+│       │   ├── dataset-registry-verification.ts
+│       │   ├── esrs-decision-posture.test.ts
+│       │   ├── esrs-decision-posture.ts
 │       │   ├── export.ts
 │       │   ├── i18n.tsx
 │       │   ├── regulation-milestones.ts
 │       │   ├── regulation-search.ts
 │       │   ├── trpc.ts
-│       │   └── utils.ts
+│       │   ├── utils.ts
+│       │   ├── verification-posture.test.ts
+│       │   └── verification-posture.ts
 │       ├── main.tsx
 │       ├── pages
 │       │   ├── AIGapAnalysisWizard.tsx
@@ -246,6 +345,7 @@ Generated on: 2026-03-02T04:29:50Z
 │       │   ├── AdvisoryDiff.tsx
 │       │   ├── AdvisoryDiffComparison.tsx
 │       │   ├── AdvisoryExplorer.tsx
+│       │   ├── AdvisoryReportDetail.tsx
 │       │   ├── AdvisoryReports.tsx
 │       │   ├── AdvisoryTraceability.tsx
 │       │   ├── AskISA.tsx
@@ -332,16 +432,39 @@ Generated on: 2026-03-02T04:29:50Z
 │       └── select-fix.css
 ├── components.json
 ├── config
+│   ├── agent-platform
+│   │   ├── capability-delivery.workflow.json
+│   │   ├── dependency.inventory.json
+│   │   ├── github-label-map.json
+│   │   ├── handoff.contract.json
+│   │   ├── nonsecret.local.template.env
+│   │   ├── permissions.matrix.json
+│   │   ├── secret-authority.map.json
+│   │   └── task-routing.matrix.json
 │   ├── catalogue_sources.json
 │   ├── governance
 │   │   ├── canonical_docs_allowlist.json
 │   │   ├── golden-gate.policy.json
 │   │   └── openclaw_policy_envelope.json
+│   ├── ide
+│   │   ├── codex
+│   │   │   └── user-config.template.toml
+│   │   └── gemini
+│   │       └── settings.template.json
 │   ├── isa-catalogue
 │   │   └── policy.json
+│   ├── mcp
+│   │   └── servers.catalog.json
 │   ├── openclaw
 │   │   ├── browser.policy.json
+│   │   ├── cli-command-map.json
 │   │   ├── exec-lane.policy.json
+│   │   ├── hooks
+│   │   │   └── README.md
+│   │   ├── model-routing.policy.json
+│   │   ├── openclaw.isa-lab.template.json
+│   │   ├── openclaw.isa-research.template.json
+│   │   ├── skill-routing.policy.json
 │   │   └── skills-allowlist.json
 │   └── testing
 │       └── vitest.quarantine.txt
@@ -395,7 +518,9 @@ Generated on: 2026-03-02T04:29:50Z
 │   │       │   └── records_v2.json
 │   │       ├── esrs_mapping
 │   │       │   ├── mappings_v1.jsonl
-│   │       │   └── mappings_v2.jsonl
+│   │       │   ├── mappings_v2.jsonl
+│   │       │   ├── negative_cases_v1.json
+│   │       │   └── negative_cases_v2.json
 │   │       ├── knowledge_base
 │   │       │   ├── corpus_slice_v1.jsonl
 │   │       │   ├── corpus_slice_v2.jsonl
@@ -543,9 +668,20 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── _AUDIT_FINDINGS.md
 │   ├── agent
 │   │   ├── AGENT_MAP.md
+│   │   ├── GEMINI_CODEX_BOOTSTRAP_PROMPT.md
+│   │   ├── GEMINI_RESEARCH_PROMPT_ISA_EXCELLENCE.md
+│   │   ├── MANUS_OPENCLAW_COLLABORATION.md
 │   │   ├── MCP_POLICY.md
 │   │   ├── MCP_RECIPES.md
-│   │   └── OPENCLAW_UI_DEV_PROMPT_STARTER.md
+│   │   ├── OPENCLAW_ISA_MOBILIZATION_GUIDE.md
+│   │   ├── OPENCLAW_ISA_MOBILIZATION_PROMPT.md
+│   │   ├── OPENCLAW_UI_DEV_PROMPT_STARTER.md
+│   │   ├── OPENCLAW_UI_MODEL_QUICK_REFERENCE.md
+│   │   ├── OPENCLAW_UI_SKILL_QUICK_REFERENCE.md
+│   │   └── _runtime
+│   │       ├── HEARTBEAT.md
+│   │       ├── WAL.md
+│   │       └── WORKING_BUFFER.md
 │   ├── architecture
 │   │   └── panel
 │   │       ├── ATAM_RISKS_SENSITIVITIES_TRADEOFFS.md
@@ -571,6 +707,7 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   └── INDEX.md
 │   ├── datasets-catalog.schema.json
 │   ├── decisions
+│   │   ├── ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md
 │   │   ├── CONFLICTS_PLAN_DECISIONS_2026-02-10.md
 │   │   └── DECISION_LOG.md
 │   ├── eurlex_research.md
@@ -579,6 +716,7 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── governance
 │   │   ├── CREDENTIALS_VERIFICATION.md
 │   │   ├── CRITICAL_FILES_CANDIDATES.md
+│   │   ├── DOCUMENT_STATUS_MODEL.md
 │   │   ├── DOC_AUTHORITY_MAP.md
 │   │   ├── ENTRYPOINTS.md
 │   │   ├── EVIDENCE_INDEX.md
@@ -587,6 +725,9 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── INDEX.md
 │   │   ├── IRON_PROTOCOL.md
 │   │   ├── ISA_ACCEPTANCE_CRITERIA_v1.md
+│   │   ├── ISA_AGENT_HANDOFF_PROTOCOL.md
+│   │   ├── ISA_AGENT_PLATFORM_OPERATING_MODEL.md
+│   │   ├── ISA_CAPABILITY_DELIVERY_WORKFLOW.md
 │   │   ├── ISA_DEVELOPMENT_PLAYBOOK.md
 │   │   ├── ISA_MANUS_PROJECT_GOVERNANCE.md
 │   │   ├── ISA_ULTIMATE_VISION.md
@@ -594,8 +735,10 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── LARGE_ASSETS.md
 │   │   ├── LIVING_DOCUMENTATION_POLICY.md
 │   │   ├── LLM_STRUCTURAL_RISK_ASSESSMENT.md
+│   │   ├── MANUAL_EXTERNAL_REGISTER.md
 │   │   ├── MANUAL_PREFLIGHT.md
 │   │   ├── NO_GATES_WINDOW.md
+│   │   ├── OPENCLAW_MODEL_ROUTING_POLICY.md
 │   │   ├── OPENCLAW_POLICY_ENVELOPE.md
 │   │   ├── OPEN_QUESTIONS.md
 │   │   ├── PLANNING_POLICY.md
@@ -603,6 +746,7 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── PROGRAM_PLAN.md
 │   │   ├── SCOPE_DECISIONS.md
 │   │   ├── SECRET_RISK_FINDINGS.md
+│   │   ├── TECHNICAL_DOCUMENTATION_CANON.md
 │   │   ├── TEMPORAL_GUARDRAILS.md
 │   │   ├── WORK_PRIORITIZATION.md
 │   │   ├── _root
@@ -610,6 +754,10 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── agent-prompt-governance.md
 │   │   ├── credentials_presence.md
 │   │   ├── governance-iron-protocol.md
+│   │   ├── openclaw
+│   │   │   ├── HP_FIX_REPORT_20260301T205814Z.md
+│   │   │   ├── HP_ISSUES_20260301T205814Z.md
+│   │   │   └── OPENCLAW_SKILLS_ENABLEMENT_PLAN.md
 │   │   └── planning_artifacts
 │   │       ├── CAPABILITY_DOCUMENTATION_REFACTOR_PLAN.md
 │   │       ├── CAPABILITY_REFACTOR_SUMMARY.md
@@ -632,6 +780,8 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── BACKLOG.csv
 │   │   ├── INDEX.md
 │   │   ├── NEXT_ACTIONS.json
+│   │   ├── agent-handoffs
+│   │   │   └── README.md
 │   │   └── refactoring
 │   │       ├── CANONICAL_CONTENT_MAP.md
 │   │       ├── CAPABILITY_CONFLICTS.md
@@ -669,8 +819,10 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   │   ├── catalogue.schema.json
 │   │   │   ├── error-budget-status.schema.json
 │   │   │   ├── governance.schema.json
+│   │   │   ├── isa-capability-baseline.schema.json
 │   │   │   ├── isa-capability-eval.schema.json
 │   │   │   ├── isa-drift-report.schema.json
+│   │   │   ├── knowledge-verification-posture.schema.json
 │   │   │   ├── observability.schema.json
 │   │   │   ├── oss-benchmarks-2026-02-15.schema.json
 │   │   │   ├── perf.schema.json
@@ -803,6 +955,7 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   │   ├── ISA_STATUS_SUMMARY_2025-12-19.md
 │   │   │   ├── MULTI_REGULATION_COMPARISON_SUMMARY.md
 │   │   │   ├── RUNTIME_CONTRACT.md
+│   │   │   ├── SOURCE_EXPANSION_SLICE.md
 │   │   │   ├── catalogue-source-registry.md
 │   │   │   └── index.md
 │   │   ├── CATALOG.md
@@ -836,6 +989,7 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── INGESTION_DELIVERABLES_INDEX.md
 │   │   ├── INTEGRATION_CONTRACTS.md
 │   │   ├── ISA_CAPABILITY_MAP.md
+│   │   ├── ISA_DATA_PLANE_ARCHITECTURE.md
 │   │   ├── KNOWLEDGE_BASE
 │   │   │   ├── GS1_Attribute_Mapper_Technical_Specification.md
 │   │   │   ├── IRON_KNOWLEDGE_MAP.md
@@ -877,6 +1031,7 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── NEWS_HUB.md
 │   │   ├── PRODUCTION_READINESS.md
 │   │   ├── QUICK_START_INGESTION.md
+│   │   ├── READINESS_CHECKLIST.md
 │   │   ├── README.md
 │   │   ├── RUN_CONFIG.json
 │   │   ├── TRACEABILITY_MATRIX.csv
@@ -945,6 +1100,10 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── 0019_add_canonical_facts_store 2.sql
 │   │   ├── 0019_add_canonical_facts_store.sql
 │   │   ├── 0020_openclaw_automation_controls.sql
+│   │   ├── 0021_add_advisory_report_decision_artifacts.sql
+│   │   ├── 0022_add_advisory_report_version_decision_artifacts.sql
+│   │   ├── 0023_add_staleness_and_verification.sql
+│   │   ├── 0024_add_advisory_target_join_tables.sql
 │   │   ├── _root
 │   │   │   └── manual_ingest_02_04_05_06.sql
 │   │   ├── _server
@@ -968,7 +1127,13 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── schema_pipeline_observability.ts
 │   ├── schema_regulatory_change_log.ts
 │   └── schema_scraper_health.ts
+├── drizzle.config.pg.ts
 ├── drizzle.config.ts
+├── drizzle_pg
+│   ├── migrations
+│   │   ├── 0000_isa_top3_subset.sql
+│   │   └── 0001_top3_subset_parity.sql
+│   └── schema.ts
 ├── isa-archive
 │   ├── docs
 │   │   ├── _benchmarks
@@ -5534,6 +5699,9 @@ Generated on: 2026-03-02T04:29:50Z
 ├── pnpm-lock.yaml
 ├── scripts
 │   ├── audit
+│   │   ├── generate_openclaw_configuration_audit.py
+│   │   ├── generate_openclaw_effective_report.py
+│   │   ├── generate_openclaw_external_analysis_export.py
 │   │   └── repo_assessment.sh
 │   ├── check-columns.ts
 │   ├── check-db-status.ts
@@ -5551,16 +5719,36 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── ingest_gs1_eu_pcf_attributes.sql
 │   │   └── ingest_gs1_eu_pcf_code_lists.sql
 │   ├── dev
+│   │   ├── _agent_fabric_lib.sh
 │   │   ├── auto-sync-q-branch.sh
+│   │   ├── check-keychain-secrets.sh
+│   │   ├── cleanup-local-forbidden-files.sh
+│   │   ├── create-agent-handoff.sh
+│   │   ├── create-manus-handoff.sh
 │   │   ├── get-scope-stats.mjs
+│   │   ├── launch-isa-vscode.sh
 │   │   ├── local-doctor.sh
 │   │   ├── manus-readiness-precheck.py
+│   │   ├── pg-rehydrate.sh
+│   │   ├── postgres-apply-migrations.sh
+│   │   ├── postgres-parity-smoke.sh
+│   │   ├── provision-agent-fabric-macos.sh
+│   │   ├── reconcile-branch-main-state.sh
+│   │   ├── reconcile-branch-merge-probe.sh
+│   │   ├── render-agent-env.sh
+│   │   ├── render-codex-user-config.sh
+│   │   ├── render-gemini-settings.sh
+│   │   ├── resolve-agent-task-routing.sh
+│   │   ├── resolve-capability-workflow.sh
 │   │   ├── run-pipeline-verbose.mjs
 │   │   ├── setup-q-branch.sh
+│   │   ├── supabase-local-bootstrap.sh
+│   │   ├── sync-keychain-secrets.sh
 │   │   ├── test-db-ssl.mjs
 │   │   ├── test-efrag-detail.mjs
 │   │   ├── test-efrag-pipeline.mjs
-│   │   └── test-xml-parser.mjs
+│   │   ├── test-xml-parser.mjs
+│   │   └── validate-agent-fabric.sh
 │   ├── docker-down.sh
 │   ├── docker-up.sh
 │   ├── docs
@@ -5589,15 +5777,20 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── gates
 │   │   ├── canonical-contract-drift.sh
 │   │   ├── canonical-docs-allowlist.sh
+│   │   ├── db-engine-adr-gate.sh
+│   │   ├── db-only-scope-guard.sh
 │   │   ├── doc-code-validator.sh
 │   │   ├── governance-gate.sh
+│   │   ├── knowledge-verification-posture.sh
 │   │   ├── manifest-ownership-drift.py
 │   │   ├── no-console-gate.sh
 │   │   ├── observability-contract.sh
 │   │   ├── openclaw-browser-policy.sh
 │   │   ├── openclaw-exec-policy.sh
+│   │   ├── openclaw-model-routing-policy.sh
 │   │   ├── openclaw-policy-envelope.sh
 │   │   ├── openclaw-skills-allowlist.sh
+│   │   ├── parity-eval-structure-gate.sh
 │   │   ├── perf-smoke.sh
 │   │   ├── reliability-smoke.sh
 │   │   ├── security-gate.sh
@@ -5628,13 +5821,22 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   └── iron_gate_catalogue.sh
 │   ├── migrate-scraper-health.sql
 │   ├── openclaw-bootstrap.sh
+│   ├── openclaw-config-apply.sh
 │   ├── openclaw-dashboard-url.sh
 │   ├── openclaw-doctor.sh
+│   ├── openclaw-enable-core-skills.sh
+│   ├── openclaw-hp-fix-validate.sh
+│   ├── openclaw-isa-autonomy-setup.sh
+│   ├── openclaw-isa-autonomy.sh
 │   ├── openclaw-isa-dev-start.sh
+│   ├── openclaw-model-route.sh
 │   ├── openclaw-safe-exec.sh
 │   ├── openclaw-skill-admit.sh
 │   ├── openclaw-skill-install.sh
+│   ├── openclaw-skill-route.sh
+│   ├── openclaw-skill-stack-validate.sh
 │   ├── openclaw-status.sh
+│   ├── openclaw-sync-skills-allowlist.sh
 │   ├── openclaw-trusted-proxies.sh
 │   ├── openclaw-tunnel.sh
 │   ├── openclaw-ui.sh
@@ -5676,6 +5878,8 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── seed-golden-qa-pairs.cjs
 │   ├── seed-regulatory-change-log-sql.txt
 │   ├── seed-regulatory-change-log.ts
+│   ├── smoke
+│   │   └── isa_router_smoke.sh
 │   ├── smoke.sh
 │   ├── sre
 │   │   ├── generate-error-budget-status.ts
@@ -5701,8 +5905,13 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   └── test-pipeline-run.ts
 │   ├── verify-data-files.ts
 │   ├── verify_catalogue_entrypoints.py
+│   ├── vm
+│   │   └── isa_vm_ssh.sh
 │   └── vm-run.sh
 ├── server
+│   ├── __fixtures__
+│   │   ├── ask-isa-fixture-replay.test.ts
+│   │   └── ask-isa-replay.json
 │   ├── _core
 │   │   ├── context.ts
 │   │   ├── cookies.ts
@@ -5710,6 +5919,7 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── embedding.ts
 │   │   ├── env.ts
 │   │   ├── error-tracking.ts
+│   │   ├── excel.ts
 │   │   ├── imageGeneration.ts
 │   │   ├── index.ts
 │   │   ├── llm.ts
@@ -5726,6 +5936,7 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── systemRouter.ts
 │   │   ├── trace-id.test.ts
 │   │   ├── trace-id.ts
+│   │   ├── tracer.ts
 │   │   ├── trpc.ts
 │   │   ├── types
 │   │   │   ├── cookie.d.ts
@@ -5733,9 +5944,26 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── vite.ts
 │   │   └── voiceTranscription.ts
 │   ├── admin-analytics.test.ts
+│   ├── advisory-compat.test.ts
+│   ├── advisory-compat.ts
+│   ├── advisory-diff-compat.test.ts
+│   ├── advisory-diff-compat.ts
+│   ├── advisory-diff-runtime.test.ts
+│   ├── advisory-diff-runtime.ts
+│   ├── advisory-diff-snapshot.test.ts
+│   ├── advisory-diff-snapshot.ts
 │   ├── advisory-diff.test.ts
+│   ├── advisory-legacy-compat.test.ts
+│   ├── advisory-legacy-compat.ts
+│   ├── advisory-overview.ts
+│   ├── advisory-read-model.test.ts
+│   ├── advisory-read-model.ts
+│   ├── advisory-report-decision-diff.test.ts
+│   ├── advisory-report-decision-diff.ts
 │   ├── advisory-report-export.test.ts
 │   ├── advisory-report-export.ts
+│   ├── advisory-report-versioning.test.ts
+│   ├── advisory-report-versioning.ts
 │   ├── alert-detection.ts
 │   ├── alert-monitoring-cron.ts
 │   ├── alert-notification-service.ts
@@ -5745,6 +5973,8 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── ask-isa-guardrails.ts
 │   ├── ask-isa-integration.test.ts
 │   ├── ask-isa-query-library.ts
+│   ├── ask-isa-stage-a.test.ts
+│   ├── ask-isa-stage-a.ts
 │   ├── attribute-recommender.test.ts
 │   ├── attribute-recommender.ts
 │   ├── auth.logout.test.ts
@@ -5753,6 +5983,8 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── batch-epcis-processor.ts
 │   ├── batch-generate-esrs-mappings.ts
 │   ├── bm25-search.ts
+│   ├── catalog-authority.test.ts
+│   ├── catalog-authority.ts
 │   ├── cellar-ingestion-scheduler.mjs
 │   ├── check-regulations.ts
 │   ├── citation-validation.ts
@@ -5771,8 +6003,10 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── cron.test.ts
 │   ├── data-quality.test.ts
 │   ├── db-advisory-reports.ts
+│   ├── db-connection-pg.ts
 │   ├── db-connection.ts
 │   ├── db-coverage-analytics.ts
+│   ├── db-coverage-analytics.unit.test.ts
 │   ├── db-data-quality.ts
 │   ├── db-dataset-registry.ts
 │   ├── db-error-tracking.test.ts
@@ -5800,7 +6034,10 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── embedding.test.ts
 │   ├── embedding.ts
 │   ├── epcis-schema.json
+│   ├── esrs-decision-artifacts.test.ts
+│   ├── esrs-decision-artifacts.ts
 │   ├── esrs-gs1-mapping.test.ts
+│   ├── esrs-mapping-capability-eval.test.ts
 │   ├── esrs.test.ts
 │   ├── evaluation
 │   │   ├── evaluation-harness.test.ts
@@ -5845,6 +6082,9 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── ingest-gs1-standards.ts
 │   ├── ingest-validation-rules.ts
 │   ├── inspect-efrag-excel.ts
+│   ├── isa-capability-drift.test.ts
+│   ├── knowledge-provenance.test.ts
+│   ├── knowledge-provenance.ts
 │   ├── knowledge-vector-search.ts
 │   ├── load-gs1-attribute-mappings.ts
 │   ├── load-gs1-esrs-mappings.ts
@@ -5926,17 +6166,21 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── router-performance-tracking.ts
 │   ├── routers
 │   │   ├── __tests__
-│   │   │   └── capability-heartbeat.test.ts
+│   │   │   ├── ask-isa-v2-intent.test.ts
+│   │   │   ├── capability-heartbeat.test.ts
+│   │   │   └── news-impact.test.ts
 │   │   ├── admin-templates.ts
 │   │   ├── advisory-diff.ts
 │   │   ├── advisory-reports.test.ts
 │   │   ├── advisory-reports.ts
+│   │   ├── advisory.test.ts
 │   │   ├── advisory.ts
 │   │   ├── ask-isa-enhanced-routes.ts
 │   │   ├── ask-isa-v2.ts
 │   │   ├── ask-isa.ts
 │   │   ├── attribute-recommender.test.ts
 │   │   ├── attribute-recommender.ts
+│   │   ├── citation-admin.test.ts
 │   │   ├── citation-admin.ts
 │   │   ├── compliance-risks.ts
 │   │   ├── coverage-analytics.ts
@@ -5946,10 +6190,12 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── dutch-initiatives.ts
 │   │   ├── esg-artefacts.ts
 │   │   ├── esrs-gs1-mapping.ts
+│   │   ├── esrs-roadmap.test.ts
 │   │   ├── esrs-roadmap.ts
 │   │   ├── esrs.ts
 │   │   ├── evaluation.ts
 │   │   ├── executive-analytics.ts
+│   │   ├── gap-analyzer.test.ts
 │   │   ├── gap-analyzer.ts
 │   │   ├── governance-documents.test.ts
 │   │   ├── governance-documents.ts
@@ -6000,6 +6246,7 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── seed-production-regulations.mjs
 │   ├── services
 │   │   ├── authority-scoring
+│   │   │   ├── index.test.ts
 │   │   │   └── index.ts
 │   │   ├── canonical-facts
 │   │   │   ├── index 2.ts
@@ -6013,10 +6260,13 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── evidence-analysis
 │   │   │   └── index.ts
 │   │   ├── news
+│   │   │   ├── news-event-processor.ts
 │   │   │   └── scrapers
 │   │   │       ├── efrag-scraper.ts
 │   │   │       ├── eu-commission-scraper.ts
 │   │   │       └── eurlex-scraper.ts
+│   │   ├── news-impact
+│   │   │   └── index.ts
 │   │   ├── rag-metrics
 │   │   │   ├── index.ts
 │   │   │   ├── source-diversity.ts
@@ -6043,6 +6293,8 @@ Generated on: 2026-03-02T04:29:50Z
 │   │   ├── pipeline-logger.ts
 │   │   ├── server-logger.test.ts
 │   │   └── server-logger.ts
+│   ├── verification-posture.test.ts
+│   ├── verification-posture.ts
 │   ├── webhook-notification-service.test.ts
 │   ├── webhook-notification-service.ts
 │   └── weekly-cellar-ingestion.ts
@@ -6056,6 +6308,7 @@ Generated on: 2026-03-02T04:29:50Z
 │   ├── schemas
 │   │   └── advisory-output.schema.json
 │   └── types.ts
+├── skills-lock.json
 ├── test-results
 │   └── ci
 │       ├── governance.json
@@ -6070,5 +6323,5 @@ Generated on: 2026-03-02T04:29:50Z
 ├── vitest.config.ts
 └── vitest.setup.ts
 
-592 directories, 5474 files
+637 directories, 5682 files
 ```
