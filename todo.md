@@ -49,3 +49,7 @@
 - [x] DB Execution: Phase 2D — EUR-Lex enrichment and KVK company seeding
 - [x] DB Execution: Phase 3 — Provenance hardening, validation, KPI computation
 - [x] DB Execution: Phase 4-5 — Coverage verification and execution report
+- [x] User Value Eval: Phase 0 — Inspect actual ISA state (product surfaces, DB, UX)
+- [x] User Value Eval: Phase 1-3 — Evaluation, improvement universe, priority model
+- [x] User Value Eval: Phase 4-5 — Execute highest-value improvements
+- [x] User Value Eval: Phase 6 — Validation, delta report, delivery

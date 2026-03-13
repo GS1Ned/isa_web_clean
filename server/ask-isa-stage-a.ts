@@ -17,6 +17,8 @@ export interface AskISAStageAValidationInput {
   needsVerificationSourceCount: number;
   deprecatedSourceCount: number;
   claimVerification: Pick<VerificationSummary, "totalClaims" | "verificationRate">;
+  /** When true, skip evidence-key checks because sources come from curated knowledge embeddings */
+  knowledgeEmbeddingMode?: boolean;
 }
 
 export interface AskISAStageAValidationResult {
@@ -56,12 +58,16 @@ export function validateAskISAStageAAnswer(
   );
 
   const missingCitations = [...sourceCitationValidation.issues];
-  if (evidenceReadySourceCount < 1) {
-    missingCitations.push("No evidence-backed sources are available for stage-a citation output");
-  } else if (verifiedEvidenceSourceCount < 1) {
-    missingCitations.push(
-      "No recently verified evidence-backed sources are available for stage-a citation output"
-    );
+  // In knowledgeEmbeddingMode, sources come from curated DB records without formal
+  // evidence-key provenance chains. Skip evidence-key checks in this mode.
+  if (!input.knowledgeEmbeddingMode) {
+    if (evidenceReadySourceCount < 1) {
+      missingCitations.push("No evidence-backed sources are available for stage-a citation output");
+    } else if (verifiedEvidenceSourceCount < 1) {
+      missingCitations.push(
+        "No recently verified evidence-backed sources are available for stage-a citation output"
+      );
+    }
   }
 
   if (deprecatedSourceCount > 0) {

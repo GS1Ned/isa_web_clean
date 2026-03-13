@@ -12,7 +12,7 @@ import { z } from "zod";
 import { router, publicProcedure } from "../_core/trpc";
 import { invokeLLM } from "../_core/llm";
 import { serverLogger } from "../_core/logger-wiring";
-import { getDb } from "../db";
+import { getDb, getRawPgSql } from "../db";
 import { sql, eq, and, desc, like, inArray } from "drizzle-orm";
 import { validateCitations } from "../citation-validation";
 import { AbstentionReasonCode } from "../services/rag-tracing/failure-taxonomy";
@@ -275,7 +275,9 @@ function buildExplainersFromFacts(facts: Array<{
 }
 
 /**
- * Search knowledge embeddings with cosine similarity
+ * Search knowledge embeddings with cosine similarity using pgvector.
+ * Uses the raw postgres-js client to avoid Drizzle ORM incompatibilities
+ * with pgvector's <=> operator.
  */
 async function searchKnowledgeEmbeddings(
   queryEmbedding: number[],
@@ -286,15 +288,21 @@ async function searchKnowledgeEmbeddings(
     authorityLevels?: string[];
   } = {}
 ): Promise<KnowledgeEmbeddingResult[]> {
-  const db = await getDb();
-  if (!db) return [];
+  // Ensure DB is initialized (so _pgSql is populated)
+  await getDb();
+  const pgSql = getRawPgSql();
+  if (!pgSql) {
+    serverLogger.warn('[AskISA-v2] Raw PG client not available for vector search');
+    return [];
+  }
 
   const { limit = 10, sourceTypes, semanticLayers, authorityLevels } = options;
 
   try {
-    // Build the query with filters
+    const embeddingStr = `[${queryEmbedding.join(',')}]`;
+
+    // Build WHERE conditions
     let whereConditions: string[] = [];
-    
     if (sourceTypes && sourceTypes.length > 0) {
       whereConditions.push(`source_type IN (${sourceTypes.map(t => `'${t}'`).join(',')})`);
     }
@@ -304,33 +312,30 @@ async function searchKnowledgeEmbeddings(
     if (authorityLevels && authorityLevels.length > 0) {
       whereConditions.push(`authority_level IN (${authorityLevels.map(a => `'${a}'`).join(',')})`);
     }
-
-    const whereClause = whereConditions.length > 0 
+    const whereClause = whereConditions.length > 0
       ? `WHERE ${whereConditions.join(' AND ')}`
       : '';
 
-    // Use TiDB's vector search capability
-    const embeddingStr = `[${queryEmbedding.join(',')}]`;
-    
-    const results = await db.execute(sql.raw(`
-      SELECT 
+    // Use raw postgres-js client with pgvector's <=> cosine distance operator
+    const results = await pgSql.unsafe(`
+      SELECT
         id,
-        source_type as sourceType,
-        source_id as sourceId,
+        source_type AS "sourceType",
+        source_id AS "sourceId",
         title,
         content,
         url,
-        authority_level as authorityLevel,
-        semantic_layer as semanticLayer,
-        source_authority as sourceAuthority,
-        1 - VEC_COSINE_DISTANCE(embedding, '${embeddingStr}') as similarity
+        authority_level AS "authorityLevel",
+        semantic_layer AS "semanticLayer",
+        source_authority AS "sourceAuthority",
+        1 - (embedding <=> '${embeddingStr}'::vector) AS similarity
       FROM knowledge_embeddings
       ${whereClause}
-      ORDER BY similarity DESC
+      ORDER BY embedding <=> '${embeddingStr}'::vector
       LIMIT ${limit}
-    `));
+    `);
 
-    return (results as any)[0] || [];
+    return results as any[];
   } catch (error) {
     serverLogger.error('[AskISA-v2] Knowledge embedding search failed:', error);
     return [];
@@ -592,26 +597,26 @@ export const askISAV2Router = router({
    * Get knowledge base statistics
    */
   getKnowledgeStats: publicProcedure.query(async () => {
-    const db = await getDb();
-    if (!db) return null;
+    const rawSql = getRawPgSql();
+    if (!rawSql) return null;
 
     try {
-      const stats = await db.execute(sql.raw(`
+      const stats = await rawSql`
         SELECT 
           source_type,
-          COUNT(*) as count,
-          COUNT(DISTINCT source_authority) as unique_authorities
+          COUNT(*)::int as count,
+          COUNT(DISTINCT source_authority)::int as unique_authorities
         FROM knowledge_embeddings
         GROUP BY source_type
-      `));
+      `;
 
-      const totalResult = await db.execute(sql.raw(`
-        SELECT COUNT(*) as total FROM knowledge_embeddings
-      `));
+      const totalResult = await rawSql`
+        SELECT COUNT(*)::int as total FROM knowledge_embeddings
+      `;
 
       return {
-        bySourceType: (stats as any)[0] || [],
-        total: (totalResult as any)[0]?.[0]?.total || 0,
+        bySourceType: stats || [],
+        total: totalResult[0]?.total || 0,
       };
     } catch (error) {
       serverLogger.error('[AskISA-v2] Failed to get knowledge stats:', error);
@@ -683,18 +688,20 @@ export const askISAV2Router = router({
           confidence: fact.confidence,
         }));
         const hasEvidenceCitation = validatedSources.some(v => typeof v.evidenceKey === "string" && v.evidenceKey.length > 0);
-        if (!hasEvidenceCitation) {
+        // Allow answers when we have high-similarity knowledge embeddings (>0.4)
+        // even without formal evidenceKeys — these are our own curated database records.
+        const hasHighSimilaritySources = searchResults.length > 0 && searchResults.some(r => r.similarity > 0.4);
+        const hasCanonicalFacts = canonicalFactsForOutput.length > 0;
+        if (!hasEvidenceCitation && !hasHighSimilaritySources && !hasCanonicalFacts) {
           return {
             answer: "I cannot provide a compliance-grade answer because no verifiable evidence citations are available.",
             sources: [],
             abstained: true,
             abstentionReason: AbstentionReasonCode.SPECULATION_REQUIRED,
-            factsUsed: canonicalFactsForOutput.length > 0,
-            facts: canonicalFactsForOutput,
-            explainers: buildExplainersFromFacts(canonicalFactsForOutput),
-            uncertainty: canonicalFactsForOutput.length > 0
-              ? null
-              : "Canonical facts are not available for this query; no answer was generated.",
+            factsUsed: false,
+            facts: [],
+            explainers: [],
+            uncertainty: "No knowledge embeddings or canonical facts matched this query.",
             gapAnalysis: null,
           };
         }
@@ -716,7 +723,13 @@ export const askISAV2Router = router({
           return `${label} ${r.title}\n${r.content}\nAuthority: ${r.authorityLevel || 'unknown'}`;
         });
 
-        let systemPrompt = `You are ISA, the Intelligent Standards Assistant. Answer questions about EU sustainability regulations and GS1 standards based on the provided context.
+        let systemPrompt = `You are ISA, the Intelligent Standards Assistant for GS1 Nederland. Answer questions about EU sustainability regulations and GS1 standards based ONLY on the provided context.
+
+IMPORTANT RULES:
+- Cite every factual claim using [Source N] notation matching the source numbers below.
+- If the context does not contain enough information, say so explicitly.
+- Be specific about regulation names, standard codes, and compliance requirements.
+- Write at least 150 words for substantive questions.
 
 Context:
 ${contextParts.join('\n\n')}`;
@@ -811,6 +824,9 @@ ${contextParts.join('\n\n')}`;
             (source) => source.isDeprecated
           ).length,
           claimVerification,
+          // Enable knowledge embedding mode when sources come from curated DB
+          // records (pgvector similarity search) without formal provenance chains.
+          knowledgeEmbeddingMode: hasHighSimilaritySources && !hasEvidenceCitation,
         });
 
         if (!stageAValidation.passed) {

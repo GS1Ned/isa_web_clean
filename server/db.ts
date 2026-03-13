@@ -10,7 +10,15 @@ import { createMysqlPool } from "./db-connection";
 import { serverLogger } from "./_core/logger-wiring";
 
 let _db: any | null = null;
-let _pgSql: { end: () => Promise<void> } | null = null;
+let _pgSql: any = null;
+
+/**
+ * Returns the raw postgres-js client for direct SQL queries.
+ * Only available when DB_ENGINE=postgres.
+ */
+export function getRawPgSql() {
+  return _pgSql;
+}
 let _schema: any | null = null;
 
 /**

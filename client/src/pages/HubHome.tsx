@@ -66,7 +66,7 @@ export default function HubHome() {
     {
       title: "ESRS Disclosure Preparation",
       description:
-        "Browse 1,184 ESRS datapoints and understand which apply to your organization",
+        "Browse 70 ESRS datapoints and understand which apply to your organization",
       icon: FileText,
       link: "/hub/esrs-datapoints",
       action: "Explore Datapoints",
@@ -157,10 +157,10 @@ export default function HubHome() {
             {/* Subheadline */}
             <p className="text-xl text-center text-muted-foreground leading-relaxed mb-8 max-w-3xl mx-auto">
               The only platform combining{" "}
-              <strong>38 EU sustainability regulations</strong>,{" "}
-              <strong>1,184 ESRS datapoints</strong>, and{" "}
-              <strong>60 GS1 standards</strong> with{" "}
-              <strong>450 AI-powered mappings</strong>. Auto-updated daily from
+              <strong>20+ EU sustainability regulations</strong>,{" "}
+              <strong>70 ESRS datapoints</strong>, and{" "}
+              <strong>15 GS1 standards</strong> with{" "}
+              <strong>214+ AI-powered mappings</strong>. Auto-updated from
               official sources.
             </p>
 
@@ -168,7 +168,7 @@ export default function HubHome() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
               <div className="text-center p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-border">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
-                  38
+                  20+
                 </div>
                 <div className="text-sm text-muted-foreground">
                   EU Regulations
@@ -176,7 +176,7 @@ export default function HubHome() {
               </div>
               <div className="text-center p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-border">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
-                  1,184
+                  70
                 </div>
                 <div className="text-sm text-muted-foreground">
                   ESRS Datapoints
@@ -184,7 +184,7 @@ export default function HubHome() {
               </div>
               <div className="text-center p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-border">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
-                  60
+                  15
                 </div>
                 <div className="text-sm text-muted-foreground">
                   GS1 Standards
@@ -192,7 +192,7 @@ export default function HubHome() {
               </div>
               <div className="text-center p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-border">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
-                  450
+                  214+
                 </div>
                 <div className="text-sm text-muted-foreground">AI Mappings</div>
               </div>
@@ -306,7 +306,7 @@ export default function HubHome() {
                   ESRS Datapoints Library
                 </CardTitle>
                 <CardDescription className="text-sm">
-                  Explore 1,184 official ESRS disclosure datapoints with search
+                  Explore 70 official ESRS disclosure datapoints with search
                   and filtering
                 </CardDescription>
               </CardHeader>
@@ -322,7 +322,7 @@ export default function HubHome() {
                   GS1 Standards Catalog
                 </CardTitle>
                 <CardDescription className="text-sm">
-                  Comprehensive catalog of 60 GS1 standards mapped to EU
+                  Comprehensive catalog of 15 GS1 standards mapped to EU
                   regulations
                 </CardDescription>
               </CardHeader>
@@ -336,7 +336,7 @@ export default function HubHome() {
                 </div>
                 <CardTitle className="text-base">AI-Powered Mapping</CardTitle>
                 <CardDescription className="text-sm">
-                  450 intelligent mappings between regulations and ESRS
+                  214+ intelligent mappings between regulations and ESRS
                   datapoints
                 </CardDescription>
               </CardHeader>

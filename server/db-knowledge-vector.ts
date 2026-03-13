@@ -15,6 +15,7 @@
 import { getDb } from "./db";
 import { sql } from "drizzle-orm";
 import { generateEmbedding, cosineSimilarity } from "./_core/embedding";
+import { parseEmbedding } from "./utils/parse-embedding";
 import { serverLogger } from "./_core/logger-wiring";
 import { getRuntimeSchema } from "./db-runtime-schema";
 
@@ -120,11 +121,12 @@ export async function vectorSearchKnowledge(
 
     // Process regulations
     for (const reg of allRegulations) {
-      if (!reg.embedding || !Array.isArray(reg.embedding)) continue;
+      const regEmb = parseEmbedding(reg.embedding);
+      if (!regEmb) continue;
 
       const similarity = cosineSimilarity(
         queryEmbedding.embedding,
-        reg.embedding
+        regEmb
       );
 
       results.push({
@@ -139,11 +141,12 @@ export async function vectorSearchKnowledge(
 
     // Process standards
     for (const std of allStandards) {
-      if (!std.embedding || !Array.isArray(std.embedding)) continue;
+      const stdEmb = parseEmbedding(std.embedding);
+      if (!stdEmb) continue;
 
       const similarity = cosineSimilarity(
         queryEmbedding.embedding,
-        std.embedding
+        stdEmb
       );
 
       results.push({
@@ -203,11 +206,12 @@ export async function vectorSearchKnowledge(
 
     // Process knowledge embeddings (pre-computed)
     for (const ke of allKnowledgeEmbeddings) {
-      if (!ke.embedding || !Array.isArray(ke.embedding)) continue;
+      const keEmb = parseEmbedding(ke.embedding);
+      if (!keEmb) continue;
 
       const similarity = cosineSimilarity(
         queryEmbedding.embedding,
-        ke.embedding as number[]
+        keEmb
       );
 
       results.push({

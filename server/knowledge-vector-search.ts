@@ -123,7 +123,7 @@ export async function searchKnowledgeEmbeddings(
         embeddingModel: knowledgeEmbeddings.embeddingModel,
       })
       .from(knowledgeEmbeddings)
-      .where(sql`${knowledgeEmbeddings.embedding} IS NOT NULL AND JSON_LENGTH(${knowledgeEmbeddings.embedding}) > 0`);
+      .where(sql`${knowledgeEmbeddings.embedding} IS NOT NULL`);
 
     const allEmbeddings = await dbQuery;
     serverLogger.info(`[KnowledgeSearch] Fetched ${allEmbeddings.length} embeddings`);
@@ -132,10 +132,21 @@ export async function searchKnowledgeEmbeddings(
     const results: KnowledgeSearchResult[] = [];
 
     for (const item of allEmbeddings) {
-      // Skip if no valid embedding
-      if (!item.embedding || !Array.isArray(item.embedding) || item.embedding.length === 0) {
+      // Skip if no valid embedding - pgvector returns string like '[0.1,0.2,...]'
+      if (!item.embedding) continue;
+      let embArr: number[];
+      if (typeof item.embedding === 'string') {
+        try {
+          embArr = JSON.parse(item.embedding);
+        } catch {
+          continue;
+        }
+      } else if (Array.isArray(item.embedding)) {
+        embArr = item.embedding;
+      } else {
         continue;
       }
+      if (!embArr || embArr.length === 0) continue;
 
       // Apply source type filter
       if (cfg.sourceTypes && cfg.sourceTypes.length > 0) {
@@ -155,7 +166,7 @@ export async function searchKnowledgeEmbeddings(
       }
 
       // Calculate cosine similarity
-      let similarity = cosineSimilarity(queryEmbedding.embedding, item.embedding);
+      let similarity = cosineSimilarity(queryEmbedding.embedding, embArr);
 
       // Apply authority boost for authoritative sources
       if (item.authorityLevel === 'authoritative' || item.authorityLevel === 'official') {

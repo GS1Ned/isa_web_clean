@@ -43,7 +43,7 @@ export default function HubAbout() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/hub/regulations">
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                  Explore 38 Regulations <ArrowRight className="w-4 h-4 ml-2" />
+                  Explore 20+ Regulations <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
               <Link href="/getting-started">
@@ -74,7 +74,7 @@ export default function HubAbout() {
                 <Sparkles className="w-12 h-12 text-blue-600 mb-4" />
                 <CardTitle>AI-Powered Mapping</CardTitle>
                 <CardDescription>
-                  450 intelligent regulation-to-standard mappings with
+                  214+ intelligent regulation-to-standard mappings with
                   confidence scores. Our AI analyzes regulatory text to identify
                   applicable GS1 standards automatically.
                 </CardDescription>
@@ -85,8 +85,8 @@ export default function HubAbout() {
                 <Database className="w-12 h-12 text-purple-600 mb-4" />
                 <CardTitle>Official Data Sources</CardTitle>
                 <CardDescription>
-                  Auto-synced with EUR-Lex CELLAR (38 regulations), EFRAG IG 3
-                  (1,184 ESRS datapoints), and GS1 Global Office (60 standards).
+                  Auto-synced with EUR-Lex CELLAR (20+ regulations), EFRAG IG 3
+                  (70 ESRS datapoints), and GS1 Global Office (15 GS1 standards).
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -126,7 +126,7 @@ export default function HubAbout() {
                 Explore Regulations
               </h3>
               <p className="text-muted-foreground">
-                Browse 38 EU sustainability regulations with full-text search,
+                Browse 20+ EU sustainability regulations with full-text search,
                 filtering by topic, and recently updated indicators. Access
                 official EUR-Lex sources with one click.
               </p>
@@ -189,7 +189,7 @@ export default function HubAbout() {
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <CheckCircle2 className="w-4 h-4 text-green-600" />
-                    <span>38 sustainability regulations</span>
+                    <span>20+ sustainability regulations</span>
                   </div>
                 </CardDescription>
               </CardHeader>
@@ -209,7 +209,7 @@ export default function HubAbout() {
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <CheckCircle2 className="w-4 h-4 text-green-600" />
-                    <span>1,184 ESRS datapoints</span>
+                    <span>70 ESRS datapoints</span>
                   </div>
                 </CardDescription>
               </CardHeader>
@@ -229,7 +229,7 @@ export default function HubAbout() {
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <CheckCircle2 className="w-4 h-4 text-green-600" />
-                    <span>60 standards cataloged</span>
+                    <span>15 GS1 standards cataloged</span>
                   </div>
                 </CardDescription>
               </CardHeader>
@@ -467,7 +467,7 @@ export default function HubAbout() {
                     Which regulations are covered?
                   </CardTitle>
                   <CardDescription>
-                    We currently cover 38 EU sustainability regulations
+                    We currently cover 20+ EU sustainability regulations
                     including CSRD (2022/2464), EUDR (2023/1115), ESRS
                     standards, Digital Product Passport (Ecodesign Regulation),
                     PPWR (Packaging Regulation), Battery Regulation, and more.

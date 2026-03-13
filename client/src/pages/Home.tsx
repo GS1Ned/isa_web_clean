@@ -317,11 +317,11 @@ export default function Home() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between py-2 border-b border-border">
                     <span className="text-muted-foreground">EU Regulations</span>
-                    <span className="font-semibold text-foreground">38</span>
+                    <span className="font-semibold text-foreground">20+</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-border">
                     <span className="text-muted-foreground">ESRS Datapoints</span>
-                    <span className="font-semibold text-foreground">1,184</span>
+                    <span className="font-semibold text-foreground">70</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-border">
                     <span className="text-muted-foreground">GS1 Standards</span>
