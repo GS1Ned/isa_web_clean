@@ -2,6 +2,7 @@
 Date: 2026-03-13
 Branch: `codex/ask-isa-user-value-reliability`
 Follow-up branch: `codex/gap-analyzer-relevance-summary`
+Current PR: `#329`
 Target branch: `main`
 
 ## 7. Execution Log
@@ -63,6 +64,18 @@ Target branch: `main`
   - FACT: Added a component test that verifies fallback milestone copy and confirms the dead button is removed.
 - Result: Completed
 
+### Slice 6: Canonical contract metadata refresh for the active PR branch
+- Objective: Clear the canonical drift gate on the active Gap Analyzer PR without mixing in unrelated repo-wide cleanup.
+- Files changed: `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`, `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`, `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`, `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`, `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`, `docs/planning/refactoring/EXECUTION_STATE.json`
+- Rationale:
+  - FACT: PR `#329` failed `canonical-contract-drift` because these files still referenced commit `fc7e38d03956d4a1892c1060984793cbd0456dd9`.
+  - FACT: The active feature branch head was `0d02b0f7566de042f0ca9f9666600277f868088e`.
+  - INTERPRETATION: The branch was functionally ready, but CI would stay red until the machine-readable contract metadata matched the active branch lineage.
+- Validation:
+  - FACT: `bash scripts/gates/canonical-contract-drift.sh` passed after refreshing the `repo_ref.commit` values.
+  - FACT: `python3 scripts/gates/manifest-ownership-drift.py`, `python3 scripts/validate_planning_and_traceability.py`, and `bash scripts/gates/doc-code-validator.sh --canonical-only` all passed after the refresh.
+- Result: Completed
+
 ## 8. Validation Results
 | Check | Result | Notes |
 | --- | --- | --- |
@@ -83,6 +96,8 @@ Target branch: `main`
 - FACT: `scripts/validate_oss_benchmarks_2026_02_15.sh` duplicated repo-wide no-console enforcement inside the schema-validation workflow; the follow-up narrowed that script back to benchmark-package scope so schema checks report schema problems instead of unrelated runtime-script debt.
 - FACT: The Gap Analyzer follow-up surfaced a real sector-scoping denominator bug and a stale UI copy claim about company-size scoping; both were corrected with targeted tests.
 - FACT: The regulation timeline follow-up removed raw placeholder UX from a live hub detail surface without changing data contracts.
+- FACT: PR `#329` initially failed `canonical-contract-drift` because six machine-readable contract files still referenced stale repo metadata from commit `fc7e38d03956d4a1892c1060984793cbd0456dd9`.
+- FACT: Refreshing those `repo_ref.commit` values to the active branch lineage made the local canonical drift gate pass again.
 - INTERPRETATION: The repo is not currently in a globally type-clean state, so branch readiness must rely on scoped regression evidence plus explicit blocker logging.
 - RECOMMENDATION: Treat repo-wide type debt and repo-wide no-console debt as separate cleanup programs, not as blockers for reviewing this targeted Ask ISA hardening change.
 
@@ -90,19 +105,21 @@ Target branch: `main`
 - Branch name: `codex/ask-isa-user-value-reliability` (merged) and `codex/gap-analyzer-relevance-summary` (current)
 - Base branch: `main`
 - Repository: `GS1Ned/isa_web_clean`
+- Active PR: `#329` (`Tighten Gap Analyzer summaries and live timeline fallback UX`)
 - Proposed PR title: `Tighten Gap Analyzer summaries and live timeline fallback UX`
 - Proposed PR summary:
   - Count only the ESRS requirements actually evaluated for non-general Gap Analyzer sector runs.
   - Clarify sector-scoped requirement counts and company-size context in the Gap Analyzer UI.
   - Remove placeholder milestone copy and the unwired timeline CTA from the live regulation timeline card.
+  - Refresh canonical contract metadata so the active feature PR no longer fails the repo-ref freshness gate because of stale generated contract commits.
 - Check status:
   - FACT: Focused tests passed locally.
   - FACT: Functional Ask ISA improvements merged via PR `#326`.
   - FACT: Metadata/governance follow-up is tracked in PR `#328`.
-  - FACT: Gap Analyzer and regulation timeline follow-up changes are validated locally and ready for a new PR.
-  - FACT: `canonical-contract-drift` follow-up required both repo-ref refresh and the missing `error_ledger` ownership entry.
+  - FACT: Gap Analyzer and regulation timeline follow-up changes are validated locally and are already published in PR `#329`.
+  - FACT: `canonical-contract-drift` on PR `#329` failed because of stale repo-ref metadata and now passes locally after the refresh.
   - FACT: `no-console` and global `pnpm check` remain blocked by unrelated pre-existing errors.
-- Merge / automerge status: UNKNOWN until branch is pushed and PR checks are created.
+- Merge / automerge status: UNKNOWN until refreshed commits are pushed and PR checks are rerun.
 
 ## 10. Unknowns And Next Improvements
 ### UNKNOWN-01
