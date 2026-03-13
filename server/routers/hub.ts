@@ -3,7 +3,7 @@ import { and, desc, eq, sql } from "drizzle-orm";
 
 import { router, publicProcedure, protectedProcedure } from "../_core/trpc";
 import { serverLogger } from "../_core/logger-wiring";
-import { getDb } from "../db";
+import { getDb, getRawPgSql } from "../db";
 import {
   hubNews,
   pipelineExecutionLog,
@@ -13,6 +13,47 @@ import {
 } from "../../drizzle_pg/schema";
 
 export const hubRouter = router({
+  // Get platform-wide statistics (dynamic, from database)
+  getPlatformStats: publicProcedure.query(async () => {
+    try {
+      const db = await getDb();
+      if (!db) return null;
+
+      const pgSql = getRawPgSql();
+      if (!pgSql) return null;
+
+      const [regs, standards, esrs, regMappings, esrsMappings, products, companies, embeddings, news, alerts] = await Promise.all([
+        pgSql`SELECT count(*) as cnt FROM regulations`,
+        pgSql`SELECT count(*) as cnt FROM gs1_standards`,
+        pgSql`SELECT count(*) as cnt FROM esrs_datapoints`,
+        pgSql`SELECT count(*) as cnt FROM regulation_standard_mappings`,
+        pgSql`SELECT count(*) as cnt FROM esrs_standard_mappings`,
+        pgSql`SELECT count(*) as cnt FROM products`,
+        pgSql`SELECT count(*) as cnt FROM companies`,
+        pgSql`SELECT count(*) as cnt FROM knowledge_embeddings`,
+        pgSql`SELECT count(*) as cnt FROM hub_news`,
+        pgSql`SELECT count(*) as cnt FROM safety_alerts`,
+      ]);
+
+      return {
+        regulations: parseInt(regs[0].cnt),
+        standards: parseInt(standards[0].cnt),
+        esrsDatapoints: parseInt(esrs[0].cnt),
+        regulationMappings: parseInt(regMappings[0].cnt),
+        esrsMappings: parseInt(esrsMappings[0].cnt),
+        totalMappings: parseInt(regMappings[0].cnt) + parseInt(esrsMappings[0].cnt),
+        products: parseInt(products[0].cnt),
+        companies: parseInt(companies[0].cnt),
+        knowledgeEmbeddings: parseInt(embeddings[0].cnt),
+        newsArticles: parseInt(news[0].cnt),
+        safetyAlerts: parseInt(alerts[0].cnt),
+      };
+    } catch (error) {
+      serverLogger.error("[tRPC] Get platform stats failed:", error);
+      return null;
+    }
+  }),
+
   // Save a regulation for the user
   saveRegulation: protectedProcedure
     .input(z.object({ regulationId: z.number() }))

@@ -58,3 +58,8 @@
 - [x] Expand knowledge embeddings: Generate embeddings for GPC classifications (46 items)
 - [x] Expand knowledge embeddings: Generate embeddings for Safety Gate alerts, companies, NEVO, crosswalks
 - [x] Expand knowledge embeddings: Verify 500+ total (533), rebuild pgvector index, test Ask ISA quality
+- [x] OFF Expansion: Inspect current products table and Open Food Facts API
+- [x] OFF Expansion: Ingest 405 Dutch products from Open Food Facts (17→422 total)
+- [x] OFF Expansion: Generate knowledge embeddings for all new products (533→938 total)
+- [x] OFF Expansion: Make hub statistics dynamic with live database queries
+- [x] OFF Expansion: Verify API endpoint, run tests (923 passed), save checkpoint

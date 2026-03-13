@@ -1,5 +1,6 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useState } from "react";
+import { trpc } from "@/lib/trpc";
 import {
   ArrowRight,
   Search,
@@ -83,6 +84,32 @@ const EXAMPLE_QUESTIONS = [
     description: "Map regulations to implementation standards",
   },
 ];
+
+function PlatformStatsWidget() {
+  const { data: stats, isLoading } = trpc.hub.getPlatformStats.useQuery();
+  
+  const items = [
+    { label: "EU Regulations", value: stats?.regulations, fallback: "20+" },
+    { label: "ESRS Datapoints", value: stats?.esrsDatapoints, fallback: "70" },
+    { label: "GS1 Standards", value: stats?.standards, fallback: "15" },
+    { label: "AI Mappings", value: stats?.totalMappings, fallback: "214" },
+    { label: "Dutch Products", value: stats?.products, fallback: "422" },
+    { label: "Knowledge Embeddings", value: stats?.knowledgeEmbeddings, fallback: "938" },
+  ];
+
+  return (
+    <div className="space-y-3 text-sm">
+      {items.map((item, i) => (
+        <div key={item.label} className={`flex justify-between py-2 ${i < items.length - 1 ? 'border-b border-border' : ''}`}>
+          <span className="text-muted-foreground">{item.label}</span>
+          <span className="font-semibold text-foreground">
+            {isLoading ? "..." : (item.value?.toLocaleString() || item.fallback)}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function Home() {
   useAuth();
@@ -314,24 +341,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold text-foreground">ISA Knowledge Base</h3>
                 </div>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between py-2 border-b border-border">
-                    <span className="text-muted-foreground">EU Regulations</span>
-                    <span className="font-semibold text-foreground">20+</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-border">
-                    <span className="text-muted-foreground">ESRS Datapoints</span>
-                    <span className="font-semibold text-foreground">70</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-border">
-                    <span className="text-muted-foreground">GS1 Standards</span>
-                    <span className="font-semibold text-foreground">60</span>
-                  </div>
-                  <div className="flex justify-between py-2">
-                    <span className="text-muted-foreground">AI Mappings</span>
-                    <span className="font-semibold text-foreground">450</span>
-                  </div>
-                </div>
+                <PlatformStatsWidget />
               </div>
             </div>
           </div>
