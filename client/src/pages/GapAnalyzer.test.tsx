@@ -172,7 +172,10 @@ describe("GapAnalyzer", () => {
       screen.getByText(/confidence badges reflect mapping strength/i)
     ).not.toBeNull();
     expect(
-      screen.getByText(/sector and company size scope which ESRS requirements are evaluated/i)
+      screen.getByText(/sector selection scopes which ESRS requirements are evaluated/i)
+    ).not.toBeNull();
+    expect(
+      screen.getByText(/company size preserves csrd applicability context in the decision output/i)
     ).not.toBeNull();
 
     expect(screen.getByText(/Current GS1 Coverage/i)).not.toBeNull();
@@ -192,7 +195,11 @@ describe("GapAnalyzer", () => {
     render(<GapAnalyzer />);
 
     expect(screen.getByText(/Coverage Summary/i)).not.toBeNull();
+    expect(screen.getByText(/Relevant Requirements/i)).not.toBeNull();
     expect(screen.getByText(/Decision Core Artifact/i)).not.toBeNull();
+    expect(
+      screen.getByText(/Counts are limited to ESRS requirements relevant to the Food Beverage sector/i)
+    ).not.toBeNull();
     expect(screen.getAllByText(/Human review required/i).length).toBeGreaterThan(0);
     expect(
       screen.getByText(

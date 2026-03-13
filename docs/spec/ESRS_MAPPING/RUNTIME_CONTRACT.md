@@ -43,6 +43,7 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 - `attributeRecommender.getAvailableRegulations()` now prefers catalog-backed regulation inventory from `regulations.regulationType` / `regulations.title` and merges compatibility entries only to preserve stable UX coverage for known EU policy surfaces.
 - `attributeRecommender.getSampleAttributes()` now prefers decision-core mapping inventory from `gs1_attribute_esrs_mapping` (`gs1AttributeId`, `gs1AttributeName`, `confidence`) and preserves only core GS1 identifiers as compatibility fallback when mappings are sparse.
 - `gapAnalyzer.getSampleAttributes()` now reuses the same mapping-backed deduplication and confidence ranking as `attributeRecommender.getSampleAttributes()`, while preserving the gap-analyzer route's existing snake_case payload shape.
+- `gapAnalyzer.analyze()` summary totals now scope to the requirements actually evaluated: all mapped ESRS requirements for `general`, or sector-relevant requirements only for non-general sector runs. The active Gap Analyzer UI now labels those counts explicitly and no longer overstates company-size scoping.
 - `attributeRecommender.getAvailableSectors()` remains a curated UI taxonomy for now because current catalog sector coverage is narrower than the user-facing recommender sector surface.
 
 ## Calibrated Vs Heuristic Mapping Surfaces
