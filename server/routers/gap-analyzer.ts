@@ -36,7 +36,10 @@ import { buildGapAnalysisDecisionArtifact } from '../esrs-decision-artifacts.js'
 import { buildGapAnalyzerSampleAttributes } from '../attribute-recommender-inventory.js';
 import { mapESRSToGS1Attributes } from '../mappings/esrs-to-gs1-mapper.js';
 import { ESRS_GS1_CALIBRATION_RULES } from '../mappings/esrs-gs1-calibration-data.js';
-import { ESRS_GS1_MAPPING_RULES } from '../mappings/esrs-gs1-mapping-data.js';
+import {
+  ESRS_GS1_MAPPING_RULES,
+  type GS1AttributeMapping,
+} from '../mappings/esrs-gs1-mapping-data.js';
 import { collectEvidenceRefsForTerms } from '../source-provenance.js';
 
 // =============================================================================
@@ -299,6 +302,19 @@ function getStaticRuleAttributesForRequirement(row: RequirementMappingRow): Stat
   );
 }
 
+function mapperAttributesToStaticRequirementAttributes(
+  attributes: GS1AttributeMapping[],
+): StaticRequirementAttribute[] {
+  return attributes.map((attribute) => ({
+    attributeId: attribute.attributeName,
+    attributeName: humanizeAttributeName(attribute.attributeName),
+    confidence: confidenceLevelFromScore(attribute.mappingConfidence),
+    mappingType: mappingTypeFromStaticRule(attribute.mappingConfidence, attribute.data_type),
+    mappingNotes: `Static fallback from ESRS mapper (${attribute.gs1Standard}): ${attribute.mappingReason}`,
+    mappingSource: 'ESRS_GS1_MAPPING_RULES',
+  }));
+}
+
 async function applyStaticAttributeFallback(rows: RequirementMappingRow[]) {
   const datapointIds = Array.from(
     new Set(
@@ -314,7 +330,10 @@ async function applyStaticAttributeFallback(rows: RequirementMappingRow[]) {
       })
     : [];
   const mappingsByDatapointId = new Map(
-    staticMappings.map((mapping) => [mapping.esrsDatapointId, mapping.gs1Attributes]),
+    staticMappings.map((mapping) => [
+      mapping.esrsDatapointId,
+      mapperAttributesToStaticRequirementAttributes(mapping.gs1Attributes),
+    ]),
   );
 
   return rows.flatMap((row) => {
@@ -524,6 +543,10 @@ async function performGapAnalysis(input: GapAnalysisInput): Promise<GapAnalysisR
   
   // Filter by sector relevance if applicable
   const relevantStandards = SECTOR_ESRS_RELEVANCE[input.sector] || SECTOR_ESRS_RELEVANCE['general'];
+  const relevantRequirementEntries = Array.from(requirementMap.entries()).filter(([_mappingId, data]) => {
+    if (input.sector === 'general') return true;
+    return relevantStandards.some((standard) => data.requirement.esrs_standard.startsWith(standard));
+  });
   
   // Analyze gaps
   const gaps: ComplianceGap[] = [];
@@ -531,13 +554,9 @@ async function performGapAnalysis(input: GapAnalysisInput): Promise<GapAnalysisR
   let coveredCount = 0;
   let partialCount = 0;
   
-  for (const [_mappingId, data] of Array.from(requirementMap.entries())) {
+  for (const [_mappingId, data] of relevantRequirementEntries) {
     const { requirement, attributes } = data;
-    
-    // Check if this standard is relevant for the sector
-    const isRelevant = relevantStandards.some(s => requirement.esrs_standard.startsWith(s));
-    if (!isRelevant && input.sector !== 'general') continue;
-    
+
     // Check coverage
     const coveredAttributes = attributes.filter(a => 
       input.currentGs1Coverage.includes((a as { gs1_attribute_id: string }).gs1_attribute_id)
@@ -597,7 +616,7 @@ async function performGapAnalysis(input: GapAnalysisInput): Promise<GapAnalysisR
   const remediationPaths = generateRemediationPaths([...criticalGaps, ...highGaps]);
   
   // Calculate summary
-  const totalRequirements = requirementMap.size;
+  const totalRequirements = relevantRequirementEntries.length;
   const coveragePercentage = totalRequirements > 0 
     ? Math.round((coveredCount / totalRequirements) * 100) 
     : 0;

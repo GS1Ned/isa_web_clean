@@ -1,5 +1,5 @@
+import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -134,16 +134,11 @@ export function RegulationTimeline({
   return (
     <Card className={className}>
       <CardHeader>
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="space-y-1">
-            <CardTitle className="text-lg">Regulation timeline</CardTitle>
-            <CardDescription>
-              {milestones.length} milestone{milestones.length === 1 ? "" : "s"} for {regulationCode}
-            </CardDescription>
-          </div>
-          <Button size="sm" variant="outline">
-            View full timeline
-          </Button>
+        <div className="space-y-1">
+          <CardTitle className="text-lg">Regulation timeline</CardTitle>
+          <CardDescription>
+            {milestones.length} milestone{milestones.length === 1 ? "" : "s"} for {regulationCode}
+          </CardDescription>
         </div>
       </CardHeader>
       <CardContent>
@@ -167,7 +162,7 @@ export function RegulationTimeline({
                     </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {milestone.description ?? "TODO: add milestone description."}
+                    {milestone.description ?? "Additional milestone detail will appear when ISA adds annotated timeline context."}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {milestone.date}

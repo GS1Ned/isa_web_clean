@@ -179,6 +179,12 @@ export default function GapAnalyzer() {
   const decisionPosture = result
     ? getDecisionPostureSummary(result.decisionArtifact.confidence)
     : null;
+  const activeSector = result?.input.sector ?? sector;
+  const requirementSummaryLabel =
+    activeSector === "general" ? "Total Requirements" : "Relevant Requirements";
+  const formattedSectorName = activeSector
+    ? activeSector.replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())
+    : "selected sector";
 
   // Navigate to Impact Simulator with Core 1 data
   const handleContinueToImpactSimulator = () => {
@@ -318,8 +324,9 @@ export default function GapAnalyzer() {
                   <BookOpen className="h-4 w-4" />
                   <AlertDescription className="text-xs leading-relaxed">
                     Coverage source: current attributes come from ISA&apos;s ESRS-to-GS1 mapping inventory.
-                    Confidence badges reflect mapping strength, while sector and company size scope
-                    which ESRS requirements are evaluated.
+                    Confidence badges reflect mapping strength. Sector selection scopes which ESRS
+                    requirements are evaluated, while company size preserves CSRD applicability
+                    context in the decision output.
                   </AlertDescription>
                 </Alert>
 
@@ -417,7 +424,7 @@ export default function GapAnalyzer() {
                         <div className="text-3xl font-bold text-slate-800">
                           {result.summary.totalRequirements}
                         </div>
-                        <div className="text-sm text-muted-foreground">Total Requirements</div>
+                        <div className="text-sm text-muted-foreground">{requirementSummaryLabel}</div>
                       </div>
                       <div className="text-center p-4 bg-green-50 rounded-lg">
                         <div className="text-3xl font-bold text-green-600">
@@ -445,6 +452,11 @@ export default function GapAnalyzer() {
                         <span className="font-medium">{result.summary.coveragePercentage}%</span>
                       </div>
                       <Progress value={result.summary.coveragePercentage} className="h-3" />
+                      <p className="text-xs text-muted-foreground">
+                        {activeSector === "general"
+                          ? "General analysis reviews every mapped ESRS requirement in the current inventory."
+                          : `Counts are limited to ESRS requirements relevant to the ${formattedSectorName} sector.`}
+                      </p>
                     </div>
 
                     {/* Epistemic Summary */}

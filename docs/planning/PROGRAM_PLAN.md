@@ -13,8 +13,11 @@ Status: EXECUTED_FOR_SELECTED_SLICE
 | 2 | Normalize confidence semantics | `500% confidence` degrades trust and analytics quality | Replace raw source-count score with normalized score plus explicit `sourceCount` | Done |
 | 3 | Repair history loading | Repeated-use UX depends on reliable history retrieval | Move `trpc.useUtils()` to component scope | Done |
 | 4 | Fix similarity display inflation | Overstated match percentages undermine source trust | Stop multiplying already-percent similarity values | Done |
-| 5 | Migrate `/ask` to `askISAV2` | Higher long-term upside but wider compatibility risk | Defer until a dedicated compatibility pass and eval plan exists | Deferred |
-| 6 | Expand legacy retrieval breadth | Could raise recall, but schema and ranking review are needed | Defer until after Ask ISA runtime parity is measured | Deferred |
+| 5 | Correct Gap Analyzer sector-scoped summary math | Non-general sectors could see understated coverage and inflated requirement counts | Count only the requirements actually evaluated and clarify the sector-scoped denominator in the UI | Done |
+| 6 | Remove placeholder/dead-end timeline UX on live regulation detail pages | Visible `TODO` copy and an inert button reduce trust | Replace milestone fallback copy and remove the unwired timeline button | Done |
+| 7 | Refresh canonical contract metadata on the current PR branch | Stale repo-ref metadata blocks the canonical drift gate even when the feature slice is otherwise ready | Update generated contract `repo_ref.commit` values before the final branch commit so local and PR-merge validation stay green | Done |
+| 8 | Migrate `/ask` to `askISAV2` | Higher long-term upside but wider compatibility risk | Defer until a dedicated compatibility pass and eval plan exists | Deferred |
+| 9 | Expand legacy retrieval breadth | Could raise recall, but schema and ranking review are needed | Defer until after Ask ISA runtime parity is measured | Deferred |
 
 ## Execution Slices
 ### Slice A
@@ -29,11 +32,24 @@ Status: EXECUTED_FOR_SELECTED_SLICE
 - FACT: Ask ISA UX trust cleanup
 - Files: `client/src/pages/AskISA.tsx`, `client/src/components/AskISAWidget.tsx`
 
+### Slice D
+- FACT: Gap Analyzer sector-scoped summary correction and UI trust copy
+- Files: `server/routers/gap-analyzer.ts`, `server/routers/gap-analyzer.test.ts`, `client/src/pages/GapAnalyzer.tsx`, `client/src/pages/GapAnalyzer.test.tsx`
+
+### Slice E
+- FACT: Regulation timeline placeholder/dead-end cleanup on live regulation detail pages
+- Files: `client/src/components/RegulationTimeline.tsx`, `client/src/components/RegulationTimeline.test.tsx`
+
+### Slice F
+- FACT: Canonical contract metadata refresh for the current Gap Analyzer PR branch
+- Files: `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`, `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`, `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`, `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`, `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`, `docs/planning/refactoring/EXECUTION_STATE.json`
+
 ## Validation Plan
-1. FACT: Run targeted Ask ISA, hybrid-search, source-posture, and gap-analyzer tests.
+1. FACT: Run targeted Ask ISA, hybrid-search, source-posture, gap-analyzer, and touched live-component tests.
 2. FACT: Run `pnpm check`.
 3. RECOMMENDATION: If `pnpm check` fails, separate pre-existing repo-wide type debt from touched-file regressions.
 
 ## Deferred Next Steps
 - RECOMMENDATION: Add a compatibility plan for moving `/ask` to `askISAV2` without breaking current payload consumers.
 - RECOMMENDATION: Expand retrieval evaluation around entity-type coverage before changing ranking behavior in the legacy path.
+- RECOMMENDATION: Run a separate repo-wide `no-console` remediation program for CLI scripts instead of folding that broad baseline cleanup into feature PRs.

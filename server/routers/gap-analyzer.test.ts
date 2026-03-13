@@ -194,6 +194,65 @@ describe("gapAnalyzerRouter", () => {
     );
   });
 
+  it("limits summary counts to sector-relevant requirements", async () => {
+    const { gapAnalyzerRouter } = await import("./gap-analyzer.js");
+
+    const mockDb = {
+      execute: vi.fn().mockResolvedValueOnce([
+        [
+          {
+            mapping_id: 1,
+            level: "topic",
+            esrs_standard: "ESRS E1",
+            esrs_topic: "Climate Change",
+            data_point_name: "Energy transition plan",
+            short_name: "E1-1",
+            definition: "Disclose energy transition planning.",
+            gs1_relevance: "high",
+            gs1_attribute_id: "productCarbonFootprint",
+            gs1_attribute_name: "Product Carbon Footprint",
+            mapping_type: "direct",
+            mapping_notes: "Use product carbon data",
+            confidence: "high",
+          },
+          {
+            mapping_id: 2,
+            level: "topic",
+            esrs_standard: "ESRS S2",
+            esrs_topic: "Workers in the value chain",
+            data_point_name: "Supplier labor conditions",
+            short_name: "S2-1",
+            definition: "Disclose value-chain labor conditions.",
+            gs1_relevance: "medium",
+            gs1_attribute_id: "supplierInformation",
+            gs1_attribute_name: "Supplier Information",
+            mapping_type: "direct",
+            mapping_notes: "Use supplier master data",
+            confidence: "high",
+          },
+        ],
+      ]),
+    };
+
+    vi.mocked(dbModule.getDb).mockResolvedValue(mockDb as any);
+
+    const caller = gapAnalyzerRouter.createCaller(mockPublicContext);
+    const result = await caller.analyze({
+      sector: "healthcare",
+      companySize: "large",
+      currentGs1Coverage: ["productCarbonFootprint"],
+    });
+
+    expect(result.summary.totalRequirements).toBe(1);
+    expect(result.summary.coveredRequirements).toBe(1);
+    expect(result.summary.coveragePercentage).toBe(100);
+    expect(result.summary.gaps).toBe(0);
+    expect(result.criticalGaps).toHaveLength(0);
+    expect(result.highGaps).toHaveLength(0);
+    expect(result.decisionArtifact.summary.totalRequirements).toBe(1);
+    expect(result.decisionArtifact.summary.coveragePercentage).toBe(100);
+  });
+
   it("falls back to gs1_esrs_mappings-only analysis when attribute mapping table is absent", async () => {
     const { gapAnalyzerRouter } = await import("./gap-analyzer.js");
 
