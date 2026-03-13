@@ -1,0 +1,45 @@
+{
+  "theme": "Default",
+  "selectedAuthType": "google_oauth_standard",
+  "mcpServers": {
+    "catalog_path": "config/mcp/servers.catalog.json",
+    "render_mode": "generate_user_settings",
+    "default_enabled": [
+      "filesystem",
+      "git",
+      "fetch",
+      "playwright",
+      "github",
+      "sequential-thinking"
+    ]
+  },
+  "preferredEditor": "vscode",
+  "telemetry": {
+    "enabled": false,
+    "policy": "defer_to_user_and_official_defaults"
+  },
+  "checkpointing": {
+    "enabled": true,
+    "policy": "git_artifacts_and_repo_docs_first"
+  },
+  "sandbox": {
+    "mode": "trusted_workspace_only",
+    "agentYoloMode": "enabled_only_in_trusted_isa_workspace",
+    "secretLanePolicy": "default_scm_only"
+  },
+  "contextFilePolicy": {
+    "primary": [
+      "AGENTS.md",
+      "docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md",
+      "docs/governance/ISA_AGENT_HANDOFF_PROTOCOL.md",
+      "docs/agent/MCP_POLICY.md"
+    ],
+    "avoidDuplication": true,
+    "notes": "Point Gemini at canonical ISA docs directly; avoid repo-local adapter files that drift from policy."
+  },
+  "comments": [
+    "This file is a repo-side ISA template, not the final raw Gemini settings file.",
+    "Render to the user-level Gemini settings location only after official Gemini settings keys are validated at implementation time.",
+    "Gemini Code Assist target tier is Standard, not Enterprise, in the accepted design."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "created_at_local": "2026-02-07 21:25:57",
+  "inventory_count": 2,
+  "inventory": [
+    {
+      "path": "migrations/manual_ingest_02_04_05_06.sql",
+      "size": 9658,
+      "sha256": "906a6979195f8b7725fcbc603765fd78d8270207a5276ab867fe296a765bd48a",
+      "tracked": true
+    },
+    {
+      "path": "server/db/migrations/0001_add_error_ledger.sql",
+      "size": 839,
+      "sha256": "f0eef950ebd5f5c4ec0b2c58955e29f2190623bba4b076837b2d50fe3d57ee29",
+      "tracked": true
+    }
+  ]
+}

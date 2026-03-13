@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "generated": "2026-02-12",
+  "overall_validity": 92.4,
+  "entrypoints": {
+    "valid": 54,
+    "total": 60,
+    "percent": 90.0
+  },
+  "evidence": {
+    "valid": 125,
+    "total": 134,
+    "percent": 93.3
+  },
+  "schemas": {
+    "valid": 3,
+    "total": 3,
+    "percent": 100.0
+  },
+  "errors": [
+    "[ASK_ISA] Missing: server/routers/ask-isa.test.ts",
+    "[ASK_ISA] Missing: docs/governance/ASK_ISA_SMOKE_RUNBOOK.md",
+    "[NEWS_HUB] Missing: server/routers/news-hub.test.ts",
+    "[CATALOG] Missing: server/routers/catalog.test.ts",
+    "[ADVISORY] Missing: server/routers/advisory.test.ts",
+    "[ADVISORY] Missing: docs/ADVISORY_METHOD.md",
+    "[Evidence] Missing: data/efrag/esrs_datapoints_efrag_ig3.json",
+    "[Evidence] Missing: data/gs1/gs1_standards_catalog.json",
+    "[Evidence] Missing: docs/test-failure-analysis-2025-12-17.md",
+    "[Evidence] Missing: docs/planning/PROGRAM_PLAN.md",
+    "[Evidence] Missing: docs/governance/ASK_ISA_SMOKE_RUNBOOK.md"
+  ]
+}

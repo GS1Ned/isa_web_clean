@@ -251,9 +251,10 @@ export function errorHandlerMiddleware(
   error: Error,
   req: any,
   res: any,
-  next: any
+  _next: any
 ): void {
   const context: ErrorContext = {
+    traceId: req?.traceId,
     requestPath: req.path,
     requestMethod: req.method,
     userAgent: req.get("user-agent"),
@@ -263,7 +264,11 @@ export function errorHandlerMiddleware(
     timestamp: new Date(),
   };
   
-  trackError(error, "error", context).catch(console.error);
+  trackError(error, "error", context).catch((trackErrorFailure) => {
+    serverLogger.error(trackErrorFailure, {
+      context: "[error-tracking] Failed to track error from middleware:",
+    });
+  });
   
   // Send error response
   res.status(500).json({

@@ -216,9 +216,7 @@ export async function scanForRegulationChanges(): Promise<{
       }
     }
 
-    console.log(
-      `Regulation scan complete: ${scanned} scanned, ${changesFound} changes found, ${usersNotified} users notified`
-    );
+    serverLogger.info(`Regulation scan complete: ${scanned} scanned, ${changesFound} changes found, ${usersNotified} users notified`);
     return { scanned, changesFound, usersNotified };
   } catch (error) {
     serverLogger.error("Error scanning for regulation changes:", error);

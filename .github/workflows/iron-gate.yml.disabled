@@ -1,0 +1,76 @@
+name: IRON Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  iron-gate:
+    name: IRON Protocol Compliance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch main and determine hashes
+        id: hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --prune origin main
+
+          MAIN_HASH="$(git rev-parse origin/main)"
+          echo "main_hash=$MAIN_HASH" >> "$GITHUB_OUTPUT"
+          echo "Main branch commit: $MAIN_HASH"
+
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "PR head sha:        $HEAD_SHA"
+
+      # Context-Commit-Hash check disabled for faster development
+      # Re-enable when needed by uncommenting the steps below
+
+      - name: Check Inventory File Not Modified (blocking)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Checking if isa.inventory.json was modified in this PR..."
+
+          git fetch --no-tags --prune origin main
+          MAIN_REF="origin/main"
+          HEAD_SHA="${{ steps.hashes.outputs.head_sha }}"
+
+          CHANGED_FILES="$(git diff --name-only "$MAIN_REF...$HEAD_SHA")"
+
+          if printf '%s\n' "$CHANGED_FILES" | grep -qx "isa.inventory.json"; then
+            echo "::error::isa.inventory.json was modified in this PR."
+            echo "::error::This file is auto-generated and must not be committed or edited in PRs."
+            echo "::error::Please remove isa.inventory.json from your commit."
+            exit 1
+          fi
+
+          echo "✅ Inventory file check passed"
+      - name: Check GS1/EFRAG catalogue freshness
+        env:
+          ISA_EVIDENCE_OUT_DIR: docs/evidence/generated/_generated
+        run: python3 scripts/validate_gs1_efrag_catalogue.py
+      - name: IRON Gate Summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "=============================================="
+          echo "IRON Gate: All checks passed"
+          echo "=============================================="
+          echo ""
+          echo "ℹ️  Context Acknowledgement: Disabled"
+          echo "ℹ️  Context Freshness: Disabled"
+          echo "✅ Inventory File: Not modified"
+          echo ""
+          echo "This PR complies with the IRON Protocol."

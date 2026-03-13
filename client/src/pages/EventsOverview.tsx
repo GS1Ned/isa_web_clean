@@ -22,7 +22,6 @@ import {
 import { 
   ArrowLeft, 
   Calendar, 
-  ChevronRight, 
   FileText, 
   Scale, 
   Shield, 
@@ -36,7 +35,6 @@ import {
   SortAsc,
   SortDesc,
   Layers,
-  TrendingUp,
   BarChart3
 } from "lucide-react";
 import { format } from "date-fns";

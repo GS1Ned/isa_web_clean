@@ -7,8 +7,6 @@ const describeGithub = hasGithubPat ? describe : describe.skip;
 describeGithub('GitHub PAT Validation', () => {
   it('should validate GitHub PAT has correct permissions', async () => {
     const token = ENV.githubPat;
-    console.log('Token length:', token?.length);
-    console.log('Token starts with:', token?.substring(0, 10));
     expect(token).toBeDefined();
     expect(token).not.toBe('');
 
@@ -24,10 +22,9 @@ describeGithub('GitHub PAT Validation', () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('GitHub API Error:', response.status, errorText);
         // Skip assertion if rate limited or network issue
+        void errorText;
         if (response.status === 403 || response.status === 401) {
-          console.warn('GitHub PAT may be expired or rate limited - skipping validation');
           return;
         }
       }
@@ -44,7 +41,7 @@ describeGithub('GitHub PAT Validation', () => {
         }
       }
     } catch (error) {
-      console.warn('GitHub API request failed - network issue:', error);
+      void error;
       // Don't fail test on network issues
     }
   });

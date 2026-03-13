@@ -1,0 +1,94 @@
+/**
+ * Populate database with live GS1.nl articles scraped via Playwright
+ */
+import { scrapeGS1NetherlandsNewsPlaywright } from "./server/news-scraper-playwright.ts";
+import { processNewsItem } from "./server/news-ai-processor.ts";
+import { createHubNews } from "./server/db.ts";
+import { generateRecommendations } from "./server/news-recommendation-engine.ts";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
+
+cliOut("🚀 Fetching live news from GS1.nl...\n");
+
+try {
+  // Scrape articles
+  const articles = await scrapeGS1NetherlandsNewsPlaywright();
+  cliOut(`✅ Scraped ${articles.length} articles\n`);
+
+  if (articles.length === 0) {
+    cliOut("❌ No articles found");
+    process.exit(1);
+  }
+
+  // Process each article
+  let inserted = 0;
+  for (const article of articles.slice(0, 10)) {
+    cliOut(`Processing: ${article.title.substring(0, 60)}...`);
+
+    try {
+      // AI processing
+      const processed = await processNewsItem({
+        title: article.title,
+        link: article.url,
+        pubDate: article.publishedAt.toISOString(),
+        content: "",
+        contentSnippet: "",
+        source: {
+          id: "gs1-nl-news",
+          name: "GS1 Netherlands News",
+          type: "GS1_OFFICIAL",
+          rssUrl: "",
+          keywords: [],
+          enabled: true,
+          credibilityScore: 0.9,
+        },
+      });
+
+      if (!processed) {
+        cliOut("  ⚠️  AI processing failed, skipping");
+        continue;
+      }
+
+      // Insert into database
+      const result = await createHubNews({
+        title: processed.headline,
+        summary: processed.summary,
+        content: processed.whyItMatters,
+        sourceUrl: article.url,
+        publishedAt: article.publishedAt,
+        sourceType: "GS1_OFFICIAL",
+        impactLevel: processed.impactLevel,
+        regulationTags: JSON.stringify(processed.regulationTags),
+        isAutomated: true,
+        retrievedAt: new Date(),
+      });
+
+      const newsId = result.id;
+      cliOut(`  ✅ Inserted with ID ${newsId}`);
+
+      // Generate recommendations
+      try {
+        await generateRecommendations(
+          newsId,
+          processed.headline,
+          processed.summary,
+          processed.whyItMatters
+        );
+      } catch (error) {
+        cliOut(`  ⚠️  Recommendations failed: ${error.message}`);
+      }
+      inserted++;
+    } catch (error) {
+      cliErr(`  ❌ Error:`, error.message);
+    }
+  }
+
+  cliOut(
+    `\n🎉 Successfully inserted ${inserted}/${articles.length} articles`
+  );
+} catch (error) {
+  cliErr("❌ Fatal error:", error);
+  process.exit(1);
+}

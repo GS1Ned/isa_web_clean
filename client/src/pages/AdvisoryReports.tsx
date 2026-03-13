@@ -1,84 +1,22 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, FileText, Eye, Download, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { AlertCircle, AlertTriangle, FileText, Eye } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useLocation } from "wouter";
-
-/**
- * PDF Export Button Component
- * Handles the PDF export flow with loading states
- */
-function PdfExportButton({ reportId, reportTitle }: { reportId: number; reportTitle: string }) {
-  const [isExporting, setIsExporting] = useState(false);
-  const utils = trpc.useUtils();
-
-  const handleExport = async () => {
-    setIsExporting(true);
-    try {
-      const result = await utils.advisoryReports.exportHtml.fetch({
-        id: reportId,
-        includeMetadata: true,
-        includeGovernanceNotice: true,
-      });
-
-      if (result.html) {
-        // Create a new window with the HTML content for printing to PDF
-        const printWindow = window.open('', '_blank');
-        if (printWindow) {
-          printWindow.document.write(result.html);
-          printWindow.document.close();
-          
-          // Add print instructions
-          const printInstructions = printWindow.document.createElement('div');
-          printInstructions.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#3b82f6;color:white;padding:12px;text-align:center;font-family:sans-serif;z-index:9999;';
-          printInstructions.innerHTML = '<strong>To save as PDF:</strong> Press Ctrl+P (or Cmd+P on Mac) and select "Save as PDF" as the destination. <button onclick="this.parentElement.remove()" style="margin-left:16px;padding:4px 12px;background:white;color:#3b82f6;border:none;border-radius:4px;cursor:pointer;">Dismiss</button>';
-          printWindow.document.body.insertBefore(printInstructions, printWindow.document.body.firstChild);
-          
-          toast.success('Report opened in new tab. Use Ctrl+P to save as PDF.');
-        } else {
-          // Fallback: download as HTML
-          const blob = new Blob([result.html], { type: 'text/html' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `${result.filename || reportTitle.replace(/[^a-zA-Z0-9]/g, '_')}.html`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          toast.success('Report downloaded as HTML. Open in browser and print to PDF.');
-        }
-      }
-    } catch (error) {
-      toast.error('Failed to export report');
-      console.error('Export error:', error);
-    } finally {
-      setIsExporting(false);
-    }
-  };
-
-  return (
-    <Button variant="outline" size="sm" onClick={handleExport} disabled={isExporting}>
-      {isExporting ? (
-        <>
-          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-          Exporting...
-        </>
-      ) : (
-        <>
-          <Download className="h-4 w-4 mr-2" />
-          Export PDF
-        </>
-      )}
-    </Button>
-  );
-}
+import { AdvisoryReportPdfExportButton } from "@/components/AdvisoryReportPdfExportButton";
+import {
+  getAdvisoryDecisionPostureSummary,
+  formatAdvisoryEnumLabel,
+  formatDecisionArtifactCount,
+  getAdvisoryPublicationStatusTone,
+  getAdvisoryReviewStatusTone,
+  normalizeDecisionArtifacts,
+} from "@/lib/advisory-report-ui";
 
 /**
  * Advisory Reports Page
@@ -96,40 +34,7 @@ export default function AdvisoryReports() {
     reviewStatus: reviewStatusFilter,
     publicationStatus: undefined, // Show all for now
   });
-
   const { data: stats } = trpc.advisoryReports.stats.useQuery();
-
-  const getReviewStatusColor = (status: string) => {
-    switch (status) {
-      case "PUBLISHED":
-        return "default";
-      case "APPROVED":
-        return "success";
-      case "UNDER_REVIEW":
-        return "warning";
-      case "DRAFT":
-        return "secondary";
-      case "ARCHIVED":
-        return "destructive";
-      default:
-        return "outline";
-    }
-  };
-
-  const getPublicationStatusColor = (status: string) => {
-    switch (status) {
-      case "PUBLISHED":
-        return "default";
-      case "READY_FOR_PUBLICATION":
-        return "success";
-      case "INTERNAL_ONLY":
-        return "secondary";
-      case "WITHDRAWN":
-        return "destructive";
-      default:
-        return "outline";
-    }
-  };
 
   return (
     <div className="container mx-auto py-8 space-y-6">
@@ -153,7 +58,7 @@ export default function AdvisoryReports() {
 
       {/* Statistics */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium">Total Reports</CardTitle>
@@ -190,6 +95,22 @@ export default function AdvisoryReports() {
                   </div>
                 ))}
               </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-amber-600" />
+                Stale Reports
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className={`text-2xl font-bold ${(stats.stale?.count ?? 0) > 0 ? "text-amber-600" : ""}`}>
+                {stats.stale?.count ?? 0}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Marked by NEWS_HUB change signals
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -255,33 +176,66 @@ export default function AdvisoryReports() {
           </Card>
         )}
 
-        {reports?.map((report) => (
-          <Card key={report.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5" />
-                    {report.title}
-                  </CardTitle>
-                  {report.executiveSummary && (
-                    <CardDescription className="mt-2">{report.executiveSummary}</CardDescription>
-                  )}
+        {reports?.map((report) => {
+          const reviewTone = getAdvisoryReviewStatusTone(report.reviewStatus);
+          const publicationTone = getAdvisoryPublicationStatusTone(report.publicationStatus);
+          const reportDecisionArtifacts = normalizeDecisionArtifacts(
+            report.decisionArtifacts,
+          );
+          const postureSummary = getAdvisoryDecisionPostureSummary(
+            report.decisionArtifacts,
+          );
+
+          return (
+            <Card key={report.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5" />
+                      {report.title}
+                    </CardTitle>
+                    {reportDecisionArtifacts.length > 0 && (
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        <Badge variant="secondary">
+                          {formatDecisionArtifactCount(reportDecisionArtifacts.length)}
+                        </Badge>
+                        {postureSummary ? (
+                          <Badge
+                            variant="outline"
+                            className={postureSummary.className}
+                          >
+                            {postureSummary.badgeLabel}
+                          </Badge>
+                        ) : null}
+                      </div>
+                    )}
+                    {report.executiveSummary && (
+                      <CardDescription className="mt-2">{report.executiveSummary}</CardDescription>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2 items-end">
+                    {report.staleSince && (
+                      <Badge variant="destructive">
+                        Stale since {formatDistanceToNow(new Date(report.staleSince))} ago
+                      </Badge>
+                    )}
+                    <Badge variant="outline">
+                      {formatAdvisoryEnumLabel(report.reportType)}
+                    </Badge>
+                    <Badge variant={reviewTone.variant} className={reviewTone.className}>
+                      {formatAdvisoryEnumLabel(report.reviewStatus)}
+                    </Badge>
+                    <Badge
+                      variant={publicationTone.variant}
+                      className={publicationTone.className}
+                    >
+                      {formatAdvisoryEnumLabel(report.publicationStatus)}
+                    </Badge>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2 items-end">
-                  <Badge variant="outline">
-                    {report.reportType.replace(/_/g, " ")}
-                  </Badge>
-                  <Badge variant={getReviewStatusColor(report.reviewStatus) as any}>
-                    {report.reviewStatus}
-                  </Badge>
-                  <Badge variant={getPublicationStatusColor(report.publicationStatus) as any}>
-                    {report.publicationStatus.replace(/_/g, " ")}
-                  </Badge>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
+              </CardHeader>
+              <CardContent className="space-y-4">
               {/* Metadata */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
@@ -317,6 +271,16 @@ export default function AdvisoryReports() {
                 </div>
               )}
 
+              {report.staleSince && (
+                <Alert>
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription className="text-sm">
+                    <strong>Change signal active:</strong> This report is flagged as stale due to recent
+                    regulatory updates and may require regeneration.
+                  </AlertDescription>
+                </Alert>
+              )}
+
               {/* Tags */}
               {((Array.isArray(report.sectorTags) && report.sectorTags.length > 0) || (Array.isArray(report.gs1ImpactTags) && report.gs1ImpactTags.length > 0)) && (
                 <div className="flex flex-wrap gap-2">
@@ -333,32 +297,36 @@ export default function AdvisoryReports() {
                 </div>
               )}
 
-              {/* Actions */}
-              <div className="flex gap-2">
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={() => setLocation(`/advisory-reports/${report.id}`)}
-                >
-                  <Eye className="h-4 w-4 mr-2" />
-                  View Report
-                </Button>
-                <PdfExportButton reportId={report.id} reportTitle={report.title} />
-              </div>
+                {/* Actions */}
+                <div className="flex gap-2">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => setLocation(`/advisory-reports/${report.id}`)}
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    View Report
+                  </Button>
+                  <AdvisoryReportPdfExportButton
+                    reportId={report.id}
+                    reportTitle={report.title}
+                  />
+                </div>
 
-              {/* Governance Notice */}
-              {report.publicationStatus === "INTERNAL_ONLY" && (
-                <Alert>
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription className="text-sm">
-                    <strong>Internal Use Only:</strong> This report has not been approved for external
-                    publication. Decision 4: Publication deferred to Phase 9.
-                  </AlertDescription>
-                </Alert>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+                {/* Governance Notice */}
+                {report.publicationStatus === "INTERNAL_ONLY" && (
+                  <Alert>
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription className="text-sm">
+                      <strong>Internal Use Only:</strong> This report has not been approved for external
+                      publication. Decision 4: Publication deferred to Phase 9.
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );

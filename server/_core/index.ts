@@ -1,13 +1,16 @@
-import "dotenv/config";
+import { config } from "dotenv";
+config({ override: true }); // Override shell environment with .env file
 import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { initOtel } from "./otel";
 import "./logger-wiring"; // Initialize persisted serverLogger
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
-import { performHealthCheck } from "../health";
+import { traceIdMiddleware } from "./trace-id";
+import { performHealthCheck, performReadinessCheck } from "../health";
 import { serveStatic, setupVite } from "./vite";
 import { apiRateLimiter, authRateLimiter } from "./rate-limit";
 import { securityHeaders, devSecurityHeaders } from "./security-headers";
@@ -18,6 +21,7 @@ import {
 } from "../cron-endpoint";
 import { scheduleAlertMonitoring } from "../alert-monitoring-cron";
 import { initializeBM25Index } from "../bm25-search";
+import { serverLogger } from "./logger-wiring";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -39,11 +43,17 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 }
 
 async function startServer() {
+  // Telemetry must initialize before requests are served, but must never block startup.
+  await initOtel();
+
   const app = express();
   const server = createServer(app);
 
   // Trust proxy for proper IP detection behind reverse proxy
   app.set('trust proxy', 1);
+
+  // Request correlation and trace id propagation (applies to all endpoints)
+  app.use(traceIdMiddleware);
 
   // Security headers (production only)
   if (process.env.NODE_ENV === "production") {
@@ -59,7 +69,7 @@ async function startServer() {
   app.use("/api/oauth", authRateLimiter);
   registerOAuthRoutes(app);
   // Health check endpoint (public, no auth required)
-  app.get("/health", async (req, res) => {
+  app.get("/health", async (_req, res) => {
     try {
       const health = await performHealthCheck();
       const statusCode = health.status === 'healthy' ? 200 : health.status === 'degraded' ? 200 : 503;
@@ -69,6 +79,20 @@ async function startServer() {
         status: 'unhealthy',
         timestamp: new Date().toISOString(),
         error: error instanceof Error ? error.message : 'Health check failed',
+      });
+    }
+  });
+
+  // Readiness check endpoint (public, no auth required)
+  app.get("/ready", async (_req, res) => {
+    try {
+      const readiness = await performReadinessCheck();
+      const statusCode = readiness.ready ? 200 : 503;
+      res.status(statusCode).json(readiness);
+    } catch (error) {
+      res.status(503).json({
+        ready: false,
+        error: error instanceof Error ? error.message : 'Readiness check failed',
       });
     }
   });
@@ -98,20 +122,22 @@ async function startServer() {
   const port = await findAvailablePort(preferredPort);
 
   if (port !== preferredPort) {
-    console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
+    serverLogger.info(`Port ${preferredPort} is busy, using port ${port} instead`);
   }
 
   server.listen(port, async () => {
-    console.log(`Server running on http://localhost:${port}/`);
+    serverLogger.info(`Server running on http://localhost:${port}/`);
     
     // Start alert monitoring (runs every 5 minutes)
     scheduleAlertMonitoring();
     
     // Initialize BM25 search index in background (non-blocking)
     initializeBM25Index().catch(err => {
-      console.error('[BM25] Failed to initialize search index:', err);
+      serverLogger.error(err, { context: "[BM25] Failed to initialize search index:" });
     });
   });
 }
 
-startServer().catch(console.error);
+startServer().catch(err => {
+  serverLogger.error(err, { context: "[server] Failed to start:" });
+});

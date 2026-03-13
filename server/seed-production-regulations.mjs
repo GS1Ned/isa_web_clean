@@ -5,11 +5,17 @@
  */
 
 import mysql from "mysql2/promise";
+import { format } from "node:util";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const cliOut = (...args) => process.stdout.write(`${format(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${format(...args)}\n`);
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
-const regulations = [
+export const regulationsSeedData = [
   // CSRD & ESRS - Corporate Sustainability Reporting
   {
     celexId: "32022-02464",
@@ -342,9 +348,9 @@ async function seedRegulations() {
   const connection = await mysql.createConnection(process.env.DATABASE_URL);
 
   try {
-    console.log("🌱 Seeding production regulations...");
+    cliOut("🌱 Seeding production regulations...");
 
-    for (const reg of regulations) {
+    for (const reg of regulationsSeedData) {
       await connection.execute(
         `INSERT INTO regulations (celexId, title, description, regulationType, effectiveDate, sourceUrl)
          VALUES (?, ?, ?, ?, ?, ?)
@@ -363,12 +369,18 @@ async function seedRegulations() {
       );
     }
 
-    console.log(`✅ Successfully seeded ${regulations.length} regulations`);
+    cliOut(`✅ Successfully seeded ${regulationsSeedData.length} regulations`);
   } catch (error) {
-    console.error("❌ Error seeding regulations:", error);
+    cliErr("❌ Error seeding regulations:", error);
   } finally {
     await connection.end();
   }
 }
 
-seedRegulations();
+const isDirectRun =
+  typeof process.argv[1] === "string" &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isDirectRun) {
+  seedRegulations();
+}

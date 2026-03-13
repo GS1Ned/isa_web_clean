@@ -3,6 +3,8 @@
  * Provides timeout handling, retry logic, and error recovery for news fetching
  */
 
+import { serverLogger } from "../_core/logger-wiring";
+
 export interface FetchWithTimeoutOptions {
   timeout?: number;
   retries?: number;
@@ -129,7 +131,7 @@ export function recordSuccess(sourceId: string, responseTimeMs: number): void {
 /**
  * Record a failed fetch
  */
-export function recordFailure(sourceId: string, error: Error): void {
+export function recordFailure(sourceId: string, _error: Error): void {
   const health = getSourceHealth(sourceId);
   health.lastFailure = new Date();
   health.consecutiveFailures++;
@@ -193,7 +195,7 @@ export async function fetchWithErrorHandling<T>(
     const data = await withRetry(fetchFn, {
       ...options,
       onRetry: (attempt, error) => {
-        console.log(`[news-fetch] Retry ${attempt} for ${sourceId}: ${error.message}`);
+        serverLogger.warn(`[news-fetch] Retry ${attempt} for ${sourceId}: ${error.message}`);
       }
     });
     

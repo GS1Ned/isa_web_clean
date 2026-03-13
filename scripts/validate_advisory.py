@@ -7,6 +7,10 @@ Purpose: Validate ISA_ADVISORY_v1.0.json against advisory-output.schema.json
 
 import json
 import sys
+from pathlib import Path
+
+# Detect repo root
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 try:
     from jsonschema import validate, ValidationError
@@ -17,11 +21,11 @@ except ImportError:
     from jsonschema import validate, ValidationError
 
 # Load schema
-with open('/home/ubuntu/isa_web/shared/schemas/advisory-output.schema.json', 'r') as f:
+with open(REPO_ROOT / 'shared/schemas/advisory-output.schema.json', 'r') as f:
     schema = json.load(f)
 
 # Load advisory JSON
-with open('/home/ubuntu/isa_web/data/advisories/ISA_ADVISORY_v1.0.json', 'r') as f:
+with open(REPO_ROOT / 'data/advisories/ISA_ADVISORY_v1.0.json', 'r') as f:
     advisory = json.load(f)
 
 # Validate

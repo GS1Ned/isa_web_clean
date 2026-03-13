@@ -85,7 +85,7 @@ export type AIChatBoxProps = {
  *       }]);
  *     },
  *     onError: (error) => {
- *       console.error("Chat error:", error);
+ *       // Handle error (e.g., show a toast).
  *       // Optionally show error message to user
  *     }
  *   });

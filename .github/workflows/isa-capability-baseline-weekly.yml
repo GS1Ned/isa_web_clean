@@ -1,0 +1,164 @@
+name: ISA Capability Baseline Candidate Weekly
+
+on:
+  schedule:
+    - cron: "30 3 * * 1"
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Evaluation stage"
+        required: false
+        default: "stage_a"
+        type: choice
+        options:
+          - stage_a
+          - stage_b
+          - stage_c
+
+permissions:
+  contents: read
+
+env:
+  ISA_IMPLEMENTATION_ONLY_MODE: "true"
+
+jobs:
+  weekly-baseline-candidate:
+    name: Weekly Baseline Candidate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.0"
+
+      - name: Install proof artifact tooling
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y ripgrep
+          npm install -g ajv-cli
+
+      - name: Resolve stage and drift baseline
+        id: baseline
+        run: |
+          set -euo pipefail
+          STAGE="${{ github.event.inputs.stage || 'stage_a' }}"
+          BASELINE_PATH="$(node scripts/eval/resolve-baseline-path.cjs --stage "$STAGE")"
+          echo "stage=$STAGE" >> "$GITHUB_OUTPUT"
+          echo "baseline_path=$BASELINE_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Implementation-only mode (weekly eval paused)
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE == 'true'
+        run: |
+          set -euo pipefail
+          echo "READY=implementation_only_mode_eval_paused"
+          {
+            echo "## Weekly ISA Baseline Candidate"
+            echo ""
+            echo "- ISA_IMPLEMENTATION_ONLY_MODE=true"
+            echo "- Stage: `${{ steps.baseline.outputs.stage }}`"
+            echo "- Baseline path: `${{ steps.baseline.outputs.baseline_path }}`"
+            echo "- Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo "- Eval/drift/baseline-candidate generation is paused in implementation-only mode."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Restore drift history cache
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: test-results/ci/isa-capability-eval-history.json
+          key: isa-capability-history-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            isa-capability-history-${{ github.ref_name }}-
+
+      - name: Run unified capability evaluation
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        run: |
+          set -euo pipefail
+          node scripts/eval/run-capability-evals.cjs \
+            --registry data/evaluation/golden/registry.json \
+            --thresholds docs/quality/thresholds/isa-capability-thresholds.json \
+            --stage "${{ steps.baseline.outputs.stage }}" \
+            --out-json test-results/ci/isa-capability-eval.json \
+            --run-id weekly-${{ github.run_id }}
+
+      - name: Detect capability drift
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        id: drift
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node scripts/eval/drift-detect.cjs \
+            --eval test-results/ci/isa-capability-eval.json \
+            --baseline "${{ steps.baseline.outputs.baseline_path }}" \
+            --history test-results/ci/isa-capability-eval-history.json \
+            --out test-results/ci/isa-drift-report.json
+
+      - name: Generate baseline candidate artifact
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        run: |
+          set -euo pipefail
+          node scripts/eval/generate-baseline-candidate.cjs \
+            --eval test-results/ci/isa-capability-eval.json \
+            --out test-results/ci/isa-capability-baseline-candidate.json \
+            --id isa-capability-baseline-candidate-weekly-${{ github.run_number }}
+
+      - name: Build knowledge verification posture artifact
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        run: |
+          set -euo pipefail
+          bash scripts/gates/knowledge-verification-posture.sh \
+            test-results/ci/knowledge-verification-posture.json
+
+      - name: Validate proof artifacts
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        run: |
+          set -euo pipefail
+          bash scripts/gates/validate-proof-artifacts.sh
+
+      - name: Upload weekly baseline artifacts
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-capability-baseline-candidate
+          path: |
+            test-results/ci/isa-capability-eval.json
+            test-results/ci/isa-drift-report.json
+            test-results/ci/isa-capability-eval-history.json
+            test-results/ci/isa-capability-baseline-candidate.json
+            test-results/ci/knowledge-verification-posture.json
+
+      - name: Save drift history cache
+        if: always() && env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: test-results/ci/isa-capability-eval-history.json
+          key: isa-capability-history-${{ github.ref_name }}-${{ github.run_id }}
+
+      - name: Publish manual review summary
+        if: env.ISA_IMPLEMENTATION_ONLY_MODE != 'true'
+        run: |
+          FIXTURE_VERSIONS="unknown"
+          BLOCKING_METRICS="unknown"
+          if [[ -f "test-results/ci/isa-capability-eval.json" ]]; then
+            FIXTURE_VERSIONS="$(jq -r '[.capabilities[] | "\(.capability)=\(.fixture_version // "unknown")"] | join(", ")' test-results/ci/isa-capability-eval.json)"
+            BLOCKING_METRICS="$(jq -r '[.capabilities[].metrics[] | select(.status=="fail" and .enforcement=="fail") | "\(.capability):\(.metric_id)=\(.value)"] | if length==0 then "none" else join("; ") end' test-results/ci/isa-capability-eval.json)"
+          fi
+          {
+            echo "## Weekly ISA Baseline Candidate";
+            echo "";
+            echo "A new baseline candidate artifact was generated.";
+            echo "";
+            echo "- Stage: \`${{ steps.baseline.outputs.stage }}\`";
+            echo "- Baseline path: \`${{ steps.baseline.outputs.baseline_path }}\`";
+            echo "- Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}";
+            echo "- Fixture versions: ${FIXTURE_VERSIONS}";
+            echo "- Blocking metrics: ${BLOCKING_METRICS}";
+            echo "Manual review is required before replacing canonical baseline:";
+            echo "1. Inspect isa-capability-eval + isa-drift-report artifacts.";
+            echo "2. Confirm drift status (current outcome: ${{ steps.drift.outcome }}).";
+            echo "3. Update ${{ steps.baseline.outputs.baseline_path }} only via reviewed PR.";
+          } >> "$GITHUB_STEP_SUMMARY"

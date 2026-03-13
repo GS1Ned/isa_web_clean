@@ -7,25 +7,34 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CheckCircle2, AlertCircle, Info, ExternalLink, TrendingUp, Target, Lightbulb } from "lucide-react";
+import { CheckCircle2, AlertCircle, FileText, Info, TrendingUp, Target, Lightbulb } from "lucide-react";
 import { ComplianceCoverageChart } from "@/components/ComplianceCoverageChart";
+import { Link } from "wouter";
 
 export default function HubEsrsGs1Mappings() {
   const [selectedStandard, setSelectedStandard] = useState<string>("all");
   const [activeTab, setActiveTab] = useState("overview");
 
-  // Fetch advisory summary for coverage stats
-  const { data: summary, isLoading: summaryLoading } = trpc.advisory.getSummary.useQuery();
+  // Fetch advisory overview for coverage stats and latest persisted report linkage
+  const { data: overview, isLoading: overviewLoading } = trpc.advisory.getOverview.useQuery();
+  const summary = overview?.summary;
+  const latestReport = overview?.latestReport;
   
   // Fetch full advisory for detailed mappings
   const { data: advisory, isLoading: advisoryLoading } = trpc.advisory.getFull.useQuery();
 
-  const isLoading = summaryLoading || advisoryLoading;
+  type SummaryData = NonNullable<typeof summary>;
+  type TopRecommendation = NonNullable<SummaryData["topRecommendations"]>[number];
+  type AdvisoryData = NonNullable<typeof advisory>;
+  type MappingResult = NonNullable<AdvisoryData["mappingResults"]>[number];
+  type GapAnalysisItem = NonNullable<AdvisoryData["gapAnalysis"]>[number];
+
+  const isLoading = overviewLoading || advisoryLoading;
 
   // Filter mappings by selected ESRS standard
   const filteredMappings = selectedStandard === "all" 
     ? advisory?.mappingResults || []
-    : advisory?.mappingResults?.filter((m: any) => m.regulationStandard === selectedStandard) || [];
+    : advisory?.mappingResults?.filter((m: MappingResult) => m.regulationStandard === selectedStandard) || [];
 
   // Get ESRS standards list
   const esrs_standards = summary?.coverageByESRS 
@@ -56,6 +65,47 @@ export default function HubEsrsGs1Mappings() {
           </div>
         ) : (
           <>
+            {latestReport && (
+              <Card className="mb-6 border-blue-200 bg-blue-50/60">
+                <CardHeader className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-blue-700" />
+                      Latest Advisory Report
+                    </CardTitle>
+                    <CardDescription>
+                      The delivery-layer report for the current advisory version is available for deeper review.
+                    </CardDescription>
+                  </div>
+                  <Button asChild variant="outline">
+                    <Link href={`/advisory-reports/${latestReport.id}`}>Open report</Link>
+                  </Button>
+                </CardHeader>
+                <CardContent className="grid gap-4 md:grid-cols-4">
+                  <div>
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">Report ID</div>
+                    <div className="mt-1 font-mono">{latestReport.id}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">Version</div>
+                    <div className="mt-1 font-mono">{latestReport.version ?? "N/A"}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">Review Status</div>
+                    <div className="mt-1">{latestReport.reviewStatus ?? "N/A"}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">Generated</div>
+                    <div className="mt-1">
+                      {latestReport.generatedDate
+                        ? new Date(latestReport.generatedDate).toLocaleDateString()
+                        : "N/A"}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Coverage Overview Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
               <Card>
@@ -195,7 +245,7 @@ export default function HubEsrsGs1Mappings() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {summary?.topRecommendations?.map((rec: any) => (
+                      {summary?.topRecommendations?.map((rec: TopRecommendation) => (
                         <div key={rec.id} className="border-l-4 border-blue-600 pl-4 py-2">
                           <div className="flex items-start justify-between mb-1">
                             <h4 className="font-semibold">{rec.title}</h4>
@@ -238,7 +288,7 @@ export default function HubEsrsGs1Mappings() {
 
                 {/* Mappings List */}
                 <div className="space-y-4">
-                  {filteredMappings.map((mapping: any) => (
+                  {filteredMappings.map((mapping: MappingResult) => (
                     <Card key={mapping.id}>
                       <CardHeader>
                         <div className="flex items-start justify-between">
@@ -308,7 +358,7 @@ export default function HubEsrsGs1Mappings() {
                 </Alert>
 
                 <div className="space-y-4">
-                  {advisory?.gapAnalysis?.map((gap: any) => (
+                  {advisory?.gapAnalysis?.map((gap: GapAnalysisItem) => (
                     <Card key={gap.id} className="border-l-4 border-orange-500">
                       <CardHeader>
                         <div className="flex items-start justify-between">

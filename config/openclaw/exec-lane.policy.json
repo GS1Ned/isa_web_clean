@@ -1,0 +1,39 @@
+{
+  "version": "1.0.0",
+  "default_decision": "deny",
+  "require_manual_approval_env": "OPENCLAW_SAFE_EXEC_APPROVED",
+  "approval_required_classes": [
+    "filesystem_write",
+    "network_write",
+    "system_mutation"
+  ],
+  "audit_log_path": "logs/policy/exec-lane-audit.jsonl",
+  "deny_patterns": [
+    "(^|[[:space:]])rm[[:space:]]+-rf([[:space:]]|$)",
+    "(^|[[:space:]])git[[:space:]]+reset[[:space:]]+--hard([[:space:]]|$)",
+    "(^|[[:space:]])git[[:space:]]+checkout[[:space:]]+--([[:space:]]|$)",
+    "(^|[[:space:]])mkfs([[:space:]]|$)",
+    "(^|[[:space:]])shutdown([[:space:]]|$)",
+    "(^|[[:space:]])reboot([[:space:]]|$)"
+  ],
+  "allow_rules": [
+    {
+      "name": "allow_git_read_only",
+      "class": "read_only",
+      "pattern": "^git[[:space:]]+(status|log|diff|show|branch|remote|fetch|pull([[:space:]]+--ff-only)?)([[:space:]]|$)",
+      "requires_approval": false
+    },
+    {
+      "name": "allow_repo_checks",
+      "class": "read_only",
+      "pattern": "^(pnpm[[:space:]]+(check|test-unit|test|run[[:space:]]+env:check)|node[[:space:]]+scripts/check-env\\.js|bash[[:space:]]+scripts/gates/[A-Za-z0-9._/-]+)([[:space:]]|$)",
+      "requires_approval": false
+    },
+    {
+      "name": "allow_safe_build_commands",
+      "class": "system_mutation",
+      "pattern": "^(pnpm[[:space:]]+install|pnpm[[:space:]]+build)([[:space:]]|$)",
+      "requires_approval": true
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+name: Schema Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'test-results/ci/**/*.json'
+      - 'docs/evidence/_generated/**/*.json'
+      - 'docs/architecture/panel/_generated/**/*.json'
+      - 'docs/quality/schemas/**/*.schema.json'
+      - 'data/metadata/dataset_registry.json'
+      - 'data/metadata/dataset_registry.schema.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.md'
+      - 'scripts/validate_oss_benchmarks_2026_02_15.sh'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'test-results/ci/**/*.json'
+      - 'docs/evidence/_generated/**/*.json'
+      - 'docs/architecture/panel/_generated/**/*.json'
+      - 'docs/quality/schemas/**/*.schema.json'
+      - 'data/metadata/dataset_registry.json'
+      - 'data/metadata/dataset_registry.schema.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.json'
+      - 'docs/research/oss-benchmarks/2026-02-15/**/*.md'
+      - 'scripts/validate_oss_benchmarks_2026_02_15.sh'
+
+jobs:
+  validate-schemas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install AJV CLI
+        run: npm install -g ajv-cli
+
+      - name: Validate test-results artifacts
+        run: |
+          echo "Validating test-results/ci/*.json against schemas..."
+          for file in test-results/ci/*.json; do
+            if [ -f "$file" ]; then
+              schema_name=$(basename "$file" .json)
+              schema_file="docs/quality/schemas/${schema_name}.schema.json"
+              if [ -f "$schema_file" ]; then
+                echo "Validating $file against $schema_file"
+                ajv validate -s "$schema_file" -d "$file" --strict=false || exit 1
+              else
+                echo "⚠️  No schema found for $file (expected: $schema_file)"
+              fi
+            fi
+          done
+
+      - name: Validate evidence catalogue
+        run: |
+          if [ -f "docs/evidence/_generated/catalogue.json" ]; then
+            echo "Validating evidence catalogue..."
+            # Schema TBD - create docs/quality/schemas/evidence-catalogue.schema.json
+            echo "⚠️  Evidence catalogue schema not yet defined"
+          fi
+
+      - name: Validate architecture scorecard
+        run: |
+          if [ -f "docs/architecture/panel/_generated/ARCHITECTURE_SCORECARD.json" ]; then
+            echo "Validating architecture scorecard..."
+            ajv validate \
+              -s docs/quality/schemas/architecture-scorecard.schema.json \
+              -d docs/architecture/panel/_generated/ARCHITECTURE_SCORECARD.json \
+              --strict=false || exit 1
+          else
+            echo "⚠️  Architecture scorecard not yet generated"
+          fi
+
+      - name: Validate OSS benchmarks package (2026-02-15)
+        run: |
+          set -euo pipefail
+          benchmarks_file="docs/research/oss-benchmarks/2026-02-15/benchmarks.json"
+          if [ ! -f "$benchmarks_file" ]; then
+            echo "STOP=missing_required_file:$benchmarks_file"
+            exit 1
+          fi
+
+          echo "Validating OSS benchmarks JSON against schema..."
+          ajv validate \
+            -s docs/quality/schemas/oss-benchmarks-2026-02-15.schema.json \
+            -d "$benchmarks_file" \
+            --strict=false || exit 1
+
+          echo "Running OSS benchmarks validator script..."
+          bash scripts/validate_oss_benchmarks_2026_02_15.sh
+
+      - name: Validate dataset registry contract
+        run: |
+          set -euo pipefail
+          if [ ! -f "data/metadata/dataset_registry.json" ]; then
+            echo "STOP=missing_dataset_registry_json"
+            exit 1
+          fi
+          if [ ! -f "data/metadata/dataset_registry.schema.json" ]; then
+            echo "STOP=missing_dataset_registry_schema"
+            exit 1
+          fi
+
+          echo "Validating dataset registry JSON against dataset registry schema (draft-2020-12)..."
+          python3 -m pip install --quiet jsonschema==4.21.1
+          python3 - <<'PY'
+          import json
+          import sys
+          from jsonschema import Draft202012Validator
+
+          schema_path = "data/metadata/dataset_registry.schema.json"
+          data_path = "data/metadata/dataset_registry.json"
+
+          with open(schema_path, "r", encoding="utf-8") as f:
+              schema = json.load(f)
+          with open(data_path, "r", encoding="utf-8") as f:
+              data = json.load(f)
+
+          try:
+              Draft202012Validator.check_schema(schema)
+              Draft202012Validator(schema).validate(data)
+          except Exception as exc:
+              print("STOP=dataset_registry_contract_invalid")
+              print(str(exc))
+              sys.exit(1)
+
+          print("DONE=dataset_registry_contract_valid")
+          PY
+
+      - name: Report validation results
+        if: always()
+        run: |
+          echo "✅ Schema validation complete"
+          echo "All JSON artifacts conform to their schemas"

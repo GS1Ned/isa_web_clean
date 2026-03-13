@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/test-summary.schema.json",
+  "title": "ISA Test Summary",
+  "description": "Schema for test execution summary artifacts",
+  "type": "object",
+  "required": ["timestamp", "framework", "total", "passed", "failed", "skipped", "duration_ms", "pass_rate"],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of test execution"
+    },
+    "framework": {
+      "type": "string",
+      "enum": ["vitest", "playwright", "custom"],
+      "description": "Test framework used"
+    },
+    "total": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of tests"
+    },
+    "passed": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of passed tests"
+    },
+    "failed": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of failed tests"
+    },
+    "skipped": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of skipped tests"
+    },
+    "duration_ms": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total execution time in milliseconds"
+    },
+    "pass_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Percentage of tests passed"
+    },
+    "thresholds": {
+      "type": "object",
+      "properties": {
+        "min_pass_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Minimum required pass rate for ≥9/10"
+        },
+        "max_duration_ms": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum allowed duration for ≥9/10"
+        }
+      }
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["test_name", "error"],
+        "properties": {
+          "test_name": {"type": "string"},
+          "file": {"type": "string"},
+          "error": {"type": "string"},
+          "category": {
+            "type": "string",
+            "enum": ["environment", "obsolete", "broken", "flaky"]
+          }
+        }
+      }
+    }
+  }
+}

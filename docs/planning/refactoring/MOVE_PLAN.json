@@ -1,0 +1,1171 @@
+{
+  "version": "1.0",
+  "phase": "2",
+  "total_moves": 164,
+  "by_capability": {
+    "ADVISORY": 44,
+    "ESRS_MAPPING": 16,
+    "ASK_ISA": 19,
+    "NEWS_HUB": 27,
+    "CATALOG": 10,
+    "META": 44,
+    "KNOWLEDGE_BASE": 4
+  },
+  "moves": [
+    {
+      "from": "docs/ADVISORY_DIFF_METRICS.md",
+      "to": "docs/spec/ADVISORY/ADVISORY_DIFF_METRICS.md",
+      "capability": "ADVISORY",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ADVISORY_METHOD.md",
+      "to": "docs/spec/ADVISORY/ADVISORY_METHOD.md",
+      "capability": "ADVISORY",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ADVISORY_OUTPUTS.md",
+      "to": "docs/spec/ADVISORY/ADVISORY_OUTPUTS.md",
+      "capability": "ADVISORY",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ADVISORY_UI_NOTES.md",
+      "to": "docs/spec/ADVISORY/ADVISORY_UI_NOTES.md",
+      "capability": "ADVISORY",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ALIGNMENT_CHECK_2026_01_03.md",
+      "to": "docs/spec/ADVISORY/ALIGNMENT_CHECK_2026_01_03.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ALTERNATIVE_FUTURES_EXPLORATION.md",
+      "to": "docs/spec/ESRS_MAPPING/ALTERNATIVE_FUTURES_EXPLORATION.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/API_REFERENCE.md",
+      "to": "docs/spec/ADVISORY/API_REFERENCE.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ASK_ISA_GUARDRAILS.md",
+      "to": "docs/spec/ASK_ISA/ASK_ISA_GUARDRAILS.md",
+      "capability": "ASK_ISA",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ASK_ISA_QUERY_LIBRARY.md",
+      "to": "docs/spec/ASK_ISA/ASK_ISA_QUERY_LIBRARY.md",
+      "capability": "ASK_ISA",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ASK_ISA_QUERY_LIBRARY_v1.md",
+      "to": "docs/spec/ASK_ISA/ASK_ISA_QUERY_LIBRARY_v1.md",
+      "capability": "ASK_ISA",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ASK_ISA_TEST_RESULTS.md",
+      "to": "docs/spec/ASK_ISA/ASK_ISA_TEST_RESULTS.md",
+      "capability": "ASK_ISA",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/BASELINE_V2_DECISION_GRADE.md",
+      "to": "docs/spec/NEWS_HUB/BASELINE_V2_DECISION_GRADE.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/CGPT-01_INTEGRATION_REPORT.md",
+      "to": "docs/spec/ESRS_MAPPING/CGPT-01_INTEGRATION_REPORT.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/CHANGELOG_SUMMARY.md",
+      "to": "docs/spec/ADVISORY/CHANGELOG_SUMMARY.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/CHATGPT_COLLABORATION_ANALYSIS.md",
+      "to": "docs/spec/ESRS_MAPPING/CHATGPT_COLLABORATION_ANALYSIS.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/CHATGPT_WORK_PARCEL_02_ASK_ISA_EXPANSION.md",
+      "to": "docs/spec/ASK_ISA/CHATGPT_WORK_PARCEL_02_ASK_ISA_EXPANSION.md",
+      "capability": "ASK_ISA",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/CHATGPT_WORK_PARCEL_SUMMARY.md",
+      "to": "docs/spec/ADVISORY/CHATGPT_WORK_PARCEL_SUMMARY.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/CODEX_DELEGATION_SPEC.md",
+      "to": "docs/spec/NEWS_HUB/CODEX_DELEGATION_SPEC.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/COMPLETION_SUMMARY.md",
+      "to": "docs/spec/ADVISORY/COMPLETION_SUMMARY.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/CRITICAL_EVENTS_TAXONOMY.md",
+      "to": "docs/spec/NEWS_HUB/CRITICAL_EVENTS_TAXONOMY.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/CRON_SETUP_GUIDE.md",
+      "to": "docs/spec/NEWS_HUB/CRON_SETUP_GUIDE.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/DATASETS_CATALOG.md",
+      "to": "docs/spec/CATALOG/DATASETS_CATALOG.md",
+      "capability": "CATALOG",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/DAY1_COMPLETION_REPORT.md",
+      "to": "docs/spec/ADVISORY/DAY1_COMPLETION_REPORT.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/DEPLOYMENT.md",
+      "to": "docs/spec/ASK_ISA/DEPLOYMENT.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/DEVELOPMENT_PROGRESS_2026-02-01.md",
+      "to": "docs/spec/ASK_ISA/DEVELOPMENT_PROGRESS_2026-02-01.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/DEVELOPMENT_SESSION_2026-02-01.md",
+      "to": "docs/spec/ASK_ISA/DEVELOPMENT_SESSION_2026-02-01.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/EMBEDDING_QUALITY_IMPROVEMENT_REPORT.md",
+      "to": "docs/spec/ASK_ISA/EMBEDDING_QUALITY_IMPROVEMENT_REPORT.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ENHANCED_EMBEDDING_SCHEMA.md",
+      "to": "docs/spec/ASK_ISA/ENHANCED_EMBEDDING_SCHEMA.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ESG_Hub_MVP_Polish_Plan.md",
+      "to": "docs/spec/ESRS_MAPPING/ESG_Hub_MVP_Polish_Plan.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/FEATURE_DISCOVERY_REPORT.md",
+      "to": "docs/spec/ADVISORY/FEATURE_DISCOVERY_REPORT.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/FILE_SYSTEM_MEMORY_ARCHITECTURE.md",
+      "to": "docs/spec/ADVISORY/FILE_SYSTEM_MEMORY_ARCHITECTURE.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/FINAL_ISA_GRADE_RESCORE.md",
+      "to": "docs/spec/NEWS_HUB/FINAL_ISA_GRADE_RESCORE.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/FINAL_RESCORE_POST_PIPELINE.md",
+      "to": "docs/spec/NEWS_HUB/FINAL_RESCORE_POST_PIPELINE.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GATING_QUESTIONS_EVIDENCE_INVENTORY.md",
+      "to": "docs/governance/GATING_QUESTIONS_EVIDENCE_INVENTORY.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GOVERNANCE_FINAL_SUMMARY.md",
+      "to": "docs/governance/GOVERNANCE_FINAL_SUMMARY.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GOVERNANCE_PHASE_2_3_REPORT.md",
+      "to": "docs/governance/GOVERNANCE_PHASE_2_3_REPORT.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GOVERNANCE_SELF_CHECK_2025-12-17.md",
+      "to": "docs/governance/GOVERNANCE_SELF_CHECK_2025-12-17.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GS1_Attribute_Mapper_Technical_Specification.md",
+      "to": "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md",
+      "capability": "KNOWLEDGE_BASE",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GS1_DATA_MODELS.md",
+      "to": "docs/spec/ESRS_MAPPING/GS1_DATA_MODELS.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GS1_DOCUMENTS_DATASETS_ANALYSIS.md",
+      "to": "docs/spec/CATALOG/GS1_DOCUMENTS_DATASETS_ANALYSIS.md",
+      "capability": "CATALOG",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GS1_EU_PCF_TO_ESRS_E1_MAPPINGS.md",
+      "to": "docs/spec/ESRS_MAPPING/GS1_EU_PCF_TO_ESRS_E1_MAPPINGS.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GS1_STYLE_COMPLIANCE_FINAL_REPORT.md",
+      "to": "docs/spec/ADVISORY/GS1_STYLE_COMPLIANCE_FINAL_REPORT.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GS1_STYLE_GUIDE_INGESTION_SUMMARY.md",
+      "to": "docs/spec/ADVISORY/GS1_STYLE_GUIDE_INGESTION_SUMMARY.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/GS1_STYLE_QUICK_REFERENCE.md",
+      "to": "docs/spec/ADVISORY/GS1_STYLE_QUICK_REFERENCE.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/INSTRUCTION_EVALUATION_ANALYSIS.md",
+      "to": "docs/spec/NEWS_HUB/INSTRUCTION_EVALUATION_ANALYSIS.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_DATA_NEEDS_AND_PRIORITIES.md",
+      "to": "docs/spec/ASK_ISA/ISA_DATA_NEEDS_AND_PRIORITIES.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_DELIVERY_MODEL.md",
+      "to": "docs/spec/ADVISORY/ISA_DELIVERY_MODEL.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_DEVELOPMENT_STATUS.md",
+      "to": "docs/spec/ASK_ISA/ISA_DEVELOPMENT_STATUS.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_DOCUMENTATION_MAP.md",
+      "to": "docs/spec/KNOWLEDGE_BASE/ISA_DOCUMENTATION_MAP.md",
+      "capability": "KNOWLEDGE_BASE",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_FUTURE_DEVELOPMENT_PLAN.md",
+      "to": "docs/spec/ADVISORY/ISA_FUTURE_DEVELOPMENT_PLAN.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_First_Advisory_Report_GS1NL.md",
+      "to": "docs/spec/ADVISORY/ISA_First_Advisory_Report_GS1NL.md",
+      "capability": "ADVISORY",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_First_Advisory_Report_GS1NL_v1.1_UPDATE.md",
+      "to": "docs/spec/ADVISORY/ISA_First_Advisory_Report_GS1NL_v1.1_UPDATE.md",
+      "capability": "ADVISORY",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_INFORMATION_ARCHITECTURE.md",
+      "to": "docs/spec/CATALOG/ISA_INFORMATION_ARCHITECTURE.md",
+      "capability": "CATALOG",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_NEWSHUB_EVOLUTION_SUMMARY.md",
+      "to": "docs/spec/NEWS_HUB/ISA_NEWSHUB_EVOLUTION_SUMMARY.md",
+      "capability": "NEWS_HUB",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md",
+      "to": "docs/spec/NEWS_HUB/ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md",
+      "capability": "NEWS_HUB",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_NEXT_PHASE_DEVELOPMENT_PLAN.md",
+      "to": "docs/spec/ESRS_MAPPING/ISA_NEXT_PHASE_DEVELOPMENT_PLAN.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_PRODUCT_VISION.md",
+      "to": "docs/spec/ADVISORY/ISA_PRODUCT_VISION.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_STATUS_SUMMARY_2025-12-19.md",
+      "to": "docs/spec/CATALOG/ISA_STATUS_SUMMARY_2025-12-19.md",
+      "capability": "CATALOG",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_UX_STRATEGY.md",
+      "to": "docs/spec/ADVISORY/ISA_UX_STRATEGY.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_V1_CONSISTENCY_FIXES.md",
+      "to": "docs/spec/ADVISORY/ISA_V1_CONSISTENCY_FIXES.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_V1_FINAL_DELIVERY.md",
+      "to": "docs/spec/ADVISORY/ISA_V1_FINAL_DELIVERY.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_V1_FORMALIZATION_COMPLETE.md",
+      "to": "docs/spec/ADVISORY/ISA_V1_FORMALIZATION_COMPLETE.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_V1_FORMALIZATION_TARGETS.md",
+      "to": "docs/spec/ADVISORY/ISA_V1_FORMALIZATION_TARGETS.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_V1_HARDENING_COMPLETE.md",
+      "to": "docs/spec/ADVISORY/ISA_V1_HARDENING_COMPLETE.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/ISA_V1_LOCK_RECORD.md",
+      "to": "docs/spec/ADVISORY/ISA_V1_LOCK_RECORD.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/KNOWN_FAILURE_MODES.md",
+      "to": "docs/spec/ESRS_MAPPING/KNOWN_FAILURE_MODES.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/MANUS_DAY1_EXECUTION_CHECKLIST.md",
+      "to": "docs/spec/ADVISORY/MANUS_DAY1_EXECUTION_CHECKLIST.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/MANUS_EXECUTION_BRIEF.md",
+      "to": "docs/spec/ADVISORY/MANUS_EXECUTION_BRIEF.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/META_PHASE_STRATEGIC_EXPLORATION_PLAN.md",
+      "to": "docs/spec/ASK_ISA/META_PHASE_STRATEGIC_EXPLORATION_PLAN.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/NEWS_HEALTH_MONITORING.md",
+      "to": "docs/spec/NEWS_HUB/NEWS_HEALTH_MONITORING.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/NEWS_HUB_MATURITY_ANALYSIS.md",
+      "to": "docs/spec/NEWS_HUB/NEWS_HUB_MATURITY_ANALYSIS.md",
+      "capability": "NEWS_HUB",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/NEWS_PIPELINE.md",
+      "to": "docs/spec/NEWS_HUB/NEWS_PIPELINE.md",
+      "capability": "NEWS_HUB",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/PHASE_1_RESCORE.md",
+      "to": "docs/spec/NEWS_HUB/PHASE_1_RESCORE.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/PHASE_2_RESCORE.md",
+      "to": "docs/spec/NEWS_HUB/PHASE_2_RESCORE.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/PHASE_3_COMPLETION_REPORT.md",
+      "to": "docs/spec/NEWS_HUB/PHASE_3_COMPLETION_REPORT.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/PHASE_3_STARTDOCUMENT.md",
+      "to": "docs/spec/NEWS_HUB/PHASE_3_STARTDOCUMENT.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md",
+      "to": "docs/spec/NEWS_HUB/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/PHASE_8_COMPLETE_SUMMARY.md",
+      "to": "docs/spec/NEWS_HUB/PHASE_8_COMPLETE_SUMMARY.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/PHASE_8_NEWS_HUB_OBSERVABILITY_COMPLETE.md",
+      "to": "docs/spec/NEWS_HUB/PHASE_8_NEWS_HUB_OBSERVABILITY_COMPLETE.md",
+      "capability": "NEWS_HUB",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/PHASE_AB_UX_SUMMARY.md",
+      "to": "docs/spec/ADVISORY/PHASE_AB_UX_SUMMARY.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/PRIORITY_1_COMPLETION_REPORT.md",
+      "to": "docs/spec/ESRS_MAPPING/PRIORITY_1_COMPLETION_REPORT.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/QUALITY_BAR.md",
+      "to": "docs/spec/ADVISORY/QUALITY_BAR.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/REGULATORY_CHANGE_LOG_ENTRY_GUIDE.md",
+      "to": "docs/spec/ADVISORY/REGULATORY_CHANGE_LOG_ENTRY_GUIDE.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/REGULATORY_CHANGE_LOG_TEMPLATES.md",
+      "to": "docs/spec/ADVISORY/REGULATORY_CHANGE_LOG_TEMPLATES.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/REGULATORY_LANDSCAPE_SUMMARIES.md",
+      "to": "docs/spec/ADVISORY/REGULATORY_LANDSCAPE_SUMMARIES.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/SELF_CHECK_EVIDENCE.md",
+      "to": "docs/governance/SELF_CHECK_EVIDENCE.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/STATUS.md",
+      "to": "docs/spec/ESRS_MAPPING/STATUS.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/STRATEGIC_EVALUATION_2026-02-01.md",
+      "to": "docs/spec/ASK_ISA/STRATEGIC_EVALUATION_2026-02-01.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/STRATEGIC_PIVOT_POC.md",
+      "to": "docs/spec/ADVISORY/STRATEGIC_PIVOT_POC.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/STYLE_GUIDE_ADOPTION.md",
+      "to": "docs/spec/ADVISORY/STYLE_GUIDE_ADOPTION.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/TESTING_GUIDE.md",
+      "to": "docs/spec/ASK_ISA/TESTING_GUIDE.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/TRUST_RISK_ANALYSIS.md",
+      "to": "docs/spec/ASK_ISA/TRUST_RISK_ANALYSIS.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/UX_PHASE_A_SUMMARY.md",
+      "to": "docs/spec/ADVISORY/UX_PHASE_A_SUMMARY.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/WIDE_RESEARCH_USAGE.md",
+      "to": "docs/spec/ESRS_MAPPING/WIDE_RESEARCH_USAGE.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/_CONSOLIDATION_VALIDATION.md",
+      "to": "docs/spec/ADVISORY/_CONSOLIDATION_VALIDATION.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/agent/AGENT_MAP.md",
+      "to": "docs/spec/ASK_ISA/AGENT_MAP.md",
+      "capability": "ASK_ISA",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/autonomous-session-2025-12-17.md",
+      "to": "docs/spec/NEWS_HUB/autonomous-session-2025-12-17.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/core/ISA_CORE_CONTRACT.md",
+      "to": "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/efrag_xbrl_research.md",
+      "to": "docs/spec/ADVISORY/efrag_xbrl_research.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/CRITICAL_FILES_CANDIDATES.md",
+      "to": "docs/governance/CRITICAL_FILES_CANDIDATES.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/DOC_AUTHORITY_MAP.md",
+      "to": "docs/governance/DOC_AUTHORITY_MAP.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/ENTRYPOINTS.md",
+      "to": "docs/governance/ENTRYPOINTS.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/EVIDENCE_INDEX.md",
+      "to": "docs/governance/EVIDENCE_INDEX.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/EVIDENCE_LEDGER.md",
+      "to": "docs/governance/EVIDENCE_LEDGER.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/ISA_ACCEPTANCE_CRITERIA_v1.md",
+      "to": "docs/governance/ISA_ACCEPTANCE_CRITERIA_v1.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/ISA_EVIDENCE_PACK_v0.md",
+      "to": "docs/governance/ISA_EVIDENCE_PACK_v0.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/ISA_EXECUTION_MAP.md",
+      "to": "docs/governance/ISA_EXECUTION_MAP.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/ISA_IRON_DOCSET_AND_CRITICAL_PATH_DECISION_DRAFT_v0.md",
+      "to": "docs/governance/ISA_IRON_DOCSET_AND_CRITICAL_PATH_DECISION_DRAFT_v0.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/ISA_JOURNEY_TRACES_v0.md",
+      "to": "docs/governance/ISA_JOURNEY_TRACES_v0.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/ISA_JOURNEY_TRACES_v1.md",
+      "to": "docs/governance/ISA_JOURNEY_TRACES_v1.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/ISA_SOURCES_REGISTRY_v0.md",
+      "to": "docs/governance/ISA_SOURCES_REGISTRY_v0.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/_generated/env/credentials_presence.md",
+      "to": "docs/governance/credentials_presence.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/_generated/env/forge_vars_where_used.md",
+      "to": "docs/governance/forge_vars_where_used.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
+      "to": "docs/spec/CATALOG/CATALOGUE_ENTRYPOINTS_STATUS.md",
+      "capability": "CATALOG",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/CENSUS_DIFF.md",
+      "to": "docs/governance/CENSUS_DIFF.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
+      "to": "docs/spec/CATALOG/GS1_EFRAG_CATALOGUE_INDEX.md",
+      "capability": "CATALOG",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/LARGE_ASSETS.md",
+      "to": "docs/governance/LARGE_ASSETS.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/SUBDIR_SUMMARY.md",
+      "to": "docs/governance/SUBDIR_SUMMARY.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/isa_catalogue_latest/index.md",
+      "to": "docs/spec/CATALOG/index.md",
+      "capability": "CATALOG",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/governance/ASK_ISA_SMOKE_RUNBOOK.md",
+      "to": "docs/spec/ASK_ISA/ASK_ISA_SMOKE_RUNBOOK.md",
+      "capability": "ASK_ISA",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/governance/IRON_KNOWLEDGE_MAP.md",
+      "to": "docs/spec/KNOWLEDGE_BASE/IRON_KNOWLEDGE_MAP.md",
+      "capability": "KNOWLEDGE_BASE",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/ACCELERATED_COMPLETION_PLAN.md",
+      "to": "docs/governance/ACCELERATED_COMPLETION_PLAN.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/COMPLETE_REFACTORING_PLAN.md",
+      "to": "docs/governance/COMPLETE_REFACTORING_PLAN.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/COMPLETION_DELIVERY_PLAN.md",
+      "to": "docs/governance/COMPLETION_DELIVERY_PLAN.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/CREDENTIALS_VERIFICATION.md",
+      "to": "docs/governance/CREDENTIALS_VERIFICATION.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/DAY_0_AUDIT_RESULTS.md",
+      "to": "docs/governance/DAY_0_AUDIT_RESULTS.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/DAY_0_EXECUTION.md",
+      "to": "docs/governance/DAY_0_EXECUTION.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/DAY_1_EXECUTION_SUMMARY.md",
+      "to": "docs/governance/DAY_1_EXECUTION_SUMMARY.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/DAY_1_PLAN.md",
+      "to": "docs/governance/DAY_1_PLAN.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/DAY_1_PROGRESS.md",
+      "to": "docs/governance/DAY_1_PROGRESS.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/GITHUB_WORKFLOW.md",
+      "to": "docs/governance/GITHUB_WORKFLOW.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/INDEX.md",
+      "to": "docs/governance/INDEX.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/ISA_ULTIMATE_VISION.md",
+      "to": "docs/governance/ISA_ULTIMATE_VISION.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/PLANNING_POLICY.md",
+      "to": "docs/governance/PLANNING_POLICY.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/PROGRAM_PLAN.md",
+      "to": "docs/governance/PROGRAM_PLAN.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/REFACTORING_EXECUTION_SUMMARY.md",
+      "to": "docs/governance/REFACTORING_EXECUTION_SUMMARY.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/REFACTORING_PLAN.md",
+      "to": "docs/governance/REFACTORING_PLAN.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/REPOSITORY_INVESTIGATION_STATUS.md",
+      "to": "docs/governance/REPOSITORY_INVESTIGATION_STATUS.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/SCHEMA_MISMATCH_ANALYSIS.md",
+      "to": "docs/governance/SCHEMA_MISMATCH_ANALYSIS.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/planning/SECRET_RISK_FINDINGS.md",
+      "to": "docs/governance/SECRET_RISK_FINDINGS.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/reference/ISA_REFERENCE_DOSSIER.md",
+      "to": "docs/spec/ADVISORY/ISA_REFERENCE_DOSSIER.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/ARCHITECTURE.md",
+      "to": "docs/spec/ADVISORY/ARCHITECTURE.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/DATA_MODEL.md",
+      "to": "docs/spec/ESRS_MAPPING/DATA_MODEL.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/INDEX.md",
+      "to": "docs/spec/ADVISORY/INDEX.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/INGESTION.md",
+      "to": "docs/spec/ESRS_MAPPING/INGESTION.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/INGESTION_SUMMARY_REPORT.md",
+      "to": "docs/spec/ESRS_MAPPING/INGESTION_SUMMARY_REPORT.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/ISA_MASTER_SPEC.md",
+      "to": "docs/spec/CATALOG/ISA_MASTER_SPEC.md",
+      "capability": "CATALOG",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/agent-prompt-governance.md",
+      "to": "docs/governance/agent-prompt-governance.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/catalogue-source-registry.md",
+      "to": "docs/spec/CATALOG/catalogue-source-registry.md",
+      "capability": "CATALOG",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md",
+      "to": "docs/spec/ASK_ISA/ASK_ISA_RUNTIME_CONTRACT.md",
+      "capability": "ASK_ISA",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/data-knowledge-model.md",
+      "to": "docs/spec/KNOWLEDGE_BASE/data-knowledge-model.md",
+      "capability": "KNOWLEDGE_BASE",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/evaluation-governance-reproducibility.md",
+      "to": "docs/governance/evaluation-governance-reproducibility.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/governance-iron-protocol.md",
+      "to": "docs/governance/governance-iron-protocol.md",
+      "capability": "META",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/isa-core-architecture.md",
+      "to": "docs/spec/ESRS_MAPPING/isa-core-architecture.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/newshub/ISA_NEWSHUB_AUDIT_UPDATED.md",
+      "to": "docs/spec/NEWS_HUB/ISA_NEWSHUB_AUDIT_UPDATED.md",
+      "capability": "NEWS_HUB",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/newshub/ISA_NEWSHUB_TARGET_DESIGN.md",
+      "to": "docs/spec/NEWS_HUB/ISA_NEWSHUB_TARGET_DESIGN.md",
+      "capability": "NEWS_HUB",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/newshub/ISA_NEWS_OVERVIEW.md",
+      "to": "docs/spec/NEWS_HUB/ISA_NEWS_OVERVIEW.md",
+      "capability": "NEWS_HUB",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/newshub/RESEARCH_FINDINGS_NEWS_SOURCES.md",
+      "to": "docs/spec/NEWS_HUB/RESEARCH_FINDINGS_NEWS_SOURCES.md",
+      "capability": "NEWS_HUB",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/newshub/research-dutch-sources.md",
+      "to": "docs/spec/NEWS_HUB/research-dutch-sources.md",
+      "capability": "NEWS_HUB",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/ops/CHROMIUM_INSTALLATION_GUIDE.md",
+      "to": "docs/spec/NEWS_HUB/CHROMIUM_INSTALLATION_GUIDE.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/ops/CRON_DEPLOYMENT.md",
+      "to": "docs/spec/NEWS_HUB/CRON_DEPLOYMENT.md",
+      "capability": "NEWS_HUB",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/regulations/MULTI_REGULATION_COMPARISON_SUMMARY.md",
+      "to": "docs/spec/CATALOG/MULTI_REGULATION_COMPARISON_SUMMARY.md",
+      "capability": "CATALOG",
+      "confidence": 1.0,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/spec/repo-change-control-release.md",
+      "to": "docs/spec/ADVISORY/repo-change-control-release.md",
+      "capability": "ADVISORY",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    },
+    {
+      "from": "docs/test-failure-analysis-2025-12-17.md",
+      "to": "docs/spec/ESRS_MAPPING/test-failure-analysis-2025-12-17.md",
+      "capability": "ESRS_MAPPING",
+      "confidence": 0.2,
+      "reason": "capability-centric organization"
+    }
+  ],
+  "dry_run": true,
+  "notes": [
+    "This is a DRY RUN - no files will be moved",
+    "Review plan before executing",
+    "Links will be updated automatically after moves",
+    "Redirects will be generated for all moves"
+  ]
+}

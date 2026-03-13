@@ -1,0 +1,31 @@
+name: Console Usage Check
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  check-console:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check for prohibited console methods in server code
+        run: |
+          VIOLATIONS=$(grep -rn --include="*.ts" --include="*.js" \
+            --exclude="*.test.ts" \
+            --exclude="server-logger.ts" \
+            --exclude="logger-wiring.ts" \
+            --exclude="seed-*.ts" \
+            -E "console\.(error|warn|debug|info|trace)\s*\(" \
+            server/ 2>/dev/null || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "❌ Prohibited console methods found in server code:"
+            echo "$VIOLATIONS"
+            exit 1
+          else
+            echo "✅ No prohibited console methods found in server code."
+          fi

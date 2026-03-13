@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/architecture-scorecard.schema.json",
+  "title": "ISA Architecture Scorecard",
+  "description": "Schema for architecture quality scorecard",
+  "type": "object",
+  "required": ["timestamp", "framework_version", "overall_score", "dimensions"],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "framework_version": {
+      "type": "string",
+      "pattern": "^Repo-Tight v[0-9]+$"
+    },
+    "overall_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "dimensions": {
+      "type": "object",
+      "required": ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12"],
+      "properties": {
+        "D1": {"$ref": "#/definitions/dimension"},
+        "D2": {"$ref": "#/definitions/dimension"},
+        "D3": {"$ref": "#/definitions/dimension"},
+        "D4": {"$ref": "#/definitions/dimension"},
+        "D5": {"$ref": "#/definitions/dimension"},
+        "D6": {"$ref": "#/definitions/dimension"},
+        "D7": {"$ref": "#/definitions/dimension"},
+        "D8": {"$ref": "#/definitions/dimension"},
+        "D9": {"$ref": "#/definitions/dimension"},
+        "D10": {"$ref": "#/definitions/dimension"},
+        "D11": {"$ref": "#/definitions/dimension"},
+        "D12": {"$ref": "#/definitions/dimension"}
+      }
+    }
+  },
+  "definitions": {
+    "dimension": {
+      "type": "object",
+      "required": ["name", "score", "owner_role", "proof_artifacts", "thresholds_met"],
+      "properties": {
+        "name": {"type": "string"},
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "owner_role": {"type": "string"},
+        "proof_artifacts": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "thresholds_met": {"type": "boolean"},
+        "thresholds": {"type": "object"},
+        "risks": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "unknowns": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    }
+  }
+}

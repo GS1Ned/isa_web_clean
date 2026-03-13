@@ -1,0 +1,92 @@
+[
+  {
+    "id": "dpp-001",
+    "title": "Digital Product Passport (DPP) - Definition and Purpose",
+    "sourceType": "regulation",
+    "authorityLevel": 5,
+    "content": "A Digital Product Passport (DPP) is a structured digital record that contains comprehensive information about a product throughout its lifecycle. The DPP is mandated by the EU's Ecodesign for Sustainable Products Regulation (ESPR) to enable transparency, traceability, and sustainability in product value chains.\n\nKey purposes of a DPP:\n1. Consumer transparency: Provides information about product origin, composition, and sustainability\n2. Circular economy support: Enables repair, reuse, and recycling through accessible product data\n3. Regulatory compliance: Demonstrates conformity with EU sustainability requirements\n4. Supply chain traceability: Tracks products from manufacturing to end-of-life\n\nA DPP contains information about: product identification, manufacturer details, materials and substances, carbon footprint, repairability, recyclability, and compliance certifications.",
+    "source": "EU ESPR Regulation 2024/1781",
+    "language": "nl"
+  },
+  {
+    "id": "dpp-002",
+    "title": "ESPR - Ecodesign for Sustainable Products Regulation",
+    "sourceType": "regulation",
+    "authorityLevel": 5,
+    "content": "De Ecodesign for Sustainable Products Regulation (ESPR) is de EU-verordening (2024/1781) die de juridische basis vormt voor Digital Product Passports. ESPR vervangt en breidt de eerdere Ecodesign Directive (2009/125/EC) uit.\n\nKernpunten van ESPR:\n1. Reikwijdte: Geldt voor bijna alle fysieke producten op de EU-markt (met enkele uitzonderingen zoals voedsel en medicijnen)\n2. DPP-verplichting: Maakt Digital Product Passports verplicht voor specifieke productcategorieën\n3. Duurzaamheidseisen: Stelt eisen aan repareerbaarheid, recycleerbaarheid, en milieu-impact\n4. Informatieverplichtingen: Verplicht fabrikanten om productinformatie digitaal beschikbaar te stellen\n\nESPR treedt gefaseerd in werking, met de eerste productspecifieke regels (delegated acts) vanaf 2025-2027.",
+    "source": "EU ESPR Regulation 2024/1781",
+    "language": "nl"
+  },
+  {
+    "id": "dpp-003",
+    "title": "DPP Productcategorieën en Tijdlijn",
+    "sourceType": "regulation",
+    "authorityLevel": 5,
+    "content": "De eerste productcategorieën met DPP-verplichting zijn:\n\n1. Batterijen (EU Battery Regulation 2023/1542):\n   - Industriële batterijen >2kWh: vanaf 18 februari 2027\n   - EV-batterijen: vanaf 18 februari 2027\n   - LMT-batterijen: vanaf 18 augustus 2028\n   - Alle batterijen >2kWh: vanaf 18 augustus 2028\n\n2. Textiel (verwacht 2027-2028):\n   - Kleding en schoeisel\n   - Huishoudtextiel\n   - Technisch textiel\n\n3. Elektronica (verwacht 2028-2029):\n   - Smartphones en tablets\n   - Laptops en computers\n   - Huishoudelijke apparaten\n\n4. Meubels (verwacht 2028-2029)\n\n5. Bouwproducten (verwacht 2029-2030)\n\nDe exacte data worden vastgesteld in productspecifieke delegated acts onder ESPR.",
+    "source": "EU ESPR Regulation 2024/1781, EU Battery Regulation 2023/1542",
+    "language": "nl"
+  },
+  {
+    "id": "dpp-004",
+    "title": "DPP Toegankelijkheid via Data Carriers",
+    "sourceType": "gs1_standard",
+    "authorityLevel": 4,
+    "content": "Een Digital Product Passport wordt toegankelijk gemaakt via een data carrier op het product. GS1 standaarden spelen hierbij een centrale rol:\n\n1. Data Carriers:\n   - QR-code met GS1 Digital Link: Meest gebruikte oplossing, scanbaar met smartphone\n   - NFC-tag: Contactloze chip, geschikt voor premium producten\n   - RFID-tag: Voor industriële toepassingen en supply chain tracking\n   - DataMatrix: Compact formaat voor kleine producten\n\n2. GS1 Digital Link:\n   - Structuur: https://id.gs1.org/01/{GTIN}/21/{serienummer}\n   - Voordelen: Unieke identificatie, web-resolvable, machine-readable\n   - Resolvers: Verwijzen naar productinformatie, DPP-data, en andere bronnen\n\n3. Identificatie:\n   - GTIN (Global Trade Item Number): Identificeert het productmodel\n   - Serienummer: Identificeert het individuele product-exemplaar\n   - Batch/lot nummer: Voor traceability in productie",
+    "source": "GS1 Digital Link Standard, GS1 General Specifications",
+    "language": "nl"
+  },
+  {
+    "id": "dpp-005",
+    "title": "GS1 Standaarden voor DPP",
+    "sourceType": "gs1_standard",
+    "authorityLevel": 4,
+    "content": "GS1 standaarden vormen de basis voor DPP-identificatie en data-uitwisseling:\n\n1. Identificatiestandaarden:\n   - GTIN: Identificeert productmodellen wereldwijd uniek\n   - SGTIN: Serialized GTIN voor individuele producten\n   - GLN: Global Location Number voor locaties en partijen\n   - SSCC: Serial Shipping Container Code voor logistieke eenheden\n\n2. Data-uitwisseling:\n   - GS1 Digital Link: Web-URI structuur voor productidentificatie\n   - EPCIS: Event-based traceability data (wie, wat, waar, wanneer)\n   - GS1 Web Vocabulary: Gestandaardiseerde productattributen\n\n3. Data Carriers:\n   - GS1-128 barcode: Lineaire barcode met Application Identifiers\n   - GS1 DataMatrix: 2D barcode voor compacte codering\n   - GS1 QR Code: 2D barcode met Digital Link ondersteuning\n\n4. DPP-specifieke toepassingen:\n   - Battery Passport: GTIN + serienummer + batch voor batterij-identificatie\n   - Textile Passport: GTIN + kleur/maat varianten\n   - Electronics Passport: GTIN + serienummer voor individuele tracking",
+    "source": "GS1 General Specifications, GS1 Digital Link Standard",
+    "language": "nl"
+  },
+  {
+    "id": "dpp-006",
+    "title": "Batterij-DPP Vereisten (EU Battery Regulation)",
+    "sourceType": "regulation",
+    "authorityLevel": 5,
+    "content": "De EU Battery Regulation (2023/1542) specificeert de verplichte inhoud van een batterij-DPP:\n\n1. Basisinformatie:\n   - Batterijmodel en fabrikant\n   - Productiedatum en -locatie\n   - Gewicht en afmetingen\n   - Chemische samenstelling (cathode, anode, elektrolyt)\n\n2. Prestatie-informatie:\n   - Nominale capaciteit (Ah)\n   - Energiedichtheid (Wh/kg)\n   - Verwachte levensduur (cycli)\n   - State of Health (SoH) parameters\n\n3. Duurzaamheidsinformatie:\n   - Carbon footprint (kg CO2-eq per kWh)\n   - Gerecycled materiaalgehalte\n   - Kritieke grondstoffen (cobalt, lithium, nikkel)\n   - Due diligence informatie\n\n4. Einde-levensduur informatie:\n   - Demontage-instructies\n   - Veiligheidsinformatie voor recyclers\n   - Recyclingefficiëntie targets\n\n5. Compliance:\n   - CE-markering\n   - Conformiteitsverklaring\n   - Notified body informatie",
+    "source": "EU Battery Regulation 2023/1542, Article 77",
+    "language": "nl"
+  },
+  {
+    "id": "dpp-007",
+    "title": "Carbon Footprint in DPP",
+    "sourceType": "regulation",
+    "authorityLevel": 5,
+    "content": "De carbon footprint is een verplicht onderdeel van veel DPP-categorieën:\n\n1. Batterijen (verplicht vanaf 2025):\n   - Totale CO2-uitstoot over levenscyclus (kg CO2-eq per kWh)\n   - Scope: grondstofwinning, productie, transport, gebruik, recycling\n   - Methodologie: Product Environmental Footprint (PEF)\n   - Maximumdrempels worden vastgesteld per batterijtype\n\n2. Berekening volgens PEF:\n   - Life Cycle Assessment (LCA) methodologie\n   - Functionele eenheid: 1 kWh opslagcapaciteit\n   - Systeemgrenzen: cradle-to-grave\n   - Impactcategorieën: climate change (GWP100)\n\n3. Rapportage-eisen:\n   - Carbon footprint klasse (A-E rating)\n   - Absolute waarde in kg CO2-eq\n   - Verificatie door derde partij\n   - Jaarlijkse update bij significante wijzigingen\n\n4. Toekomstige uitbreiding:\n   - Textiel: carbon footprint per kg product\n   - Elektronica: carbon footprint per functionele eenheid\n   - Bouwproducten: Environmental Product Declaration (EPD)",
+    "source": "EU Battery Regulation 2023/1542, EU PEF Methodology",
+    "language": "nl"
+  },
+  {
+    "id": "dpp-008",
+    "title": "DPP Data-integriteit en Beveiliging",
+    "sourceType": "gs1_standard",
+    "authorityLevel": 4,
+    "content": "Data-integriteit in DPP wordt gewaarborgd door meerdere mechanismen:\n\n1. Unieke Identificatie:\n   - GTIN + serienummer: Wereldwijd unieke productidentificatie\n   - UUID/URN: Unieke DPP-document identificatie\n   - Timestamps: Vastleggen van wijzigingshistorie\n\n2. Authenticatie en Autorisatie:\n   - Digitale handtekeningen: Verificatie van data-oorsprong\n   - Access control: Rolgebaseerde toegang tot gevoelige data\n   - API authenticatie: OAuth 2.0 / API keys voor systeem-toegang\n\n3. Onveranderlijkheid:\n   - Blockchain/DLT: Optioneel voor kritieke data-elementen\n   - Audit trails: Logging van alle wijzigingen\n   - Versioning: Behoud van historische data-staten\n\n4. Interoperabiliteit:\n   - Gestandaardiseerde formaten: JSON-LD, XML\n   - Open APIs: RESTful interfaces\n   - GS1 vocabulaire: Consistente semantiek\n\n5. Compliance:\n   - GDPR: Privacy-by-design voor persoonsgegevens\n   - Cybersecurity: NIS2 directive compliance\n   - Data governance: Duidelijke verantwoordelijkheden",
+    "source": "GS1 Digital Link Standard, EU ESPR Implementation Guidelines",
+    "language": "nl"
+  },
+  {
+    "id": "dpp-009",
+    "title": "DPP en Circulaire Economie",
+    "sourceType": "regulation",
+    "authorityLevel": 5,
+    "content": "Digital Product Passports ondersteunen de circulaire economie op meerdere manieren:\n\n1. Verlengen van Levensduur:\n   - Reparatie-informatie: Handleidingen, onderdelen, gereedschap\n   - Onderhoudsinstructies: Preventief onderhoud, updates\n   - Beschikbaarheid reserveonderdelen: Minimaal 7-10 jaar\n\n2. Hergebruik en Refurbishment:\n   - Productgeschiedenis: Gebruik, reparaties, eigenaren\n   - Kwaliteitsbeoordeling: State of Health, restwaarde\n   - Certificering: Refurbished product standaarden\n\n3. Recycling:\n   - Materiaalsamenstelling: Exacte inhoud per component\n   - Demontage-instructies: Veilige en efficiënte verwerking\n   - Gevaarlijke stoffen: Locatie en verwijderingsinstructies\n   - Recyclingdoelen: Materiaalspecifieke targets\n\n4. Design for Circularity:\n   - Modulariteit: Vervangbare componenten\n   - Materiaalefficiëntie: Gerecycled en recyclebaar\n   - Duurzaamheid: Langere levensduur door kwaliteit\n\n5. Economische Waarde:\n   - Secundaire markten: Waardebepaling voor hergebruik\n   - Extended Producer Responsibility: Kostenverdeling\n   - Circulaire businessmodellen: Product-as-a-service",
+    "source": "EU ESPR Regulation 2024/1781, EU Circular Economy Action Plan",
+    "language": "nl"
+  },
+  {
+    "id": "dpp-010",
+    "title": "DPP voor Consumenten",
+    "sourceType": "regulation",
+    "authorityLevel": 4,
+    "content": "Voor consumenten biedt een Digital Product Passport transparantie en empowerment:\n\n1. Toegankelijke Informatie:\n   - Scan QR-code met smartphone\n   - Gebruiksvriendelijke interface\n   - Meertalige ondersteuning\n   - Offline beschikbaarheid (basis-info)\n\n2. Duurzaamheidsinformatie:\n   - Carbon footprint score (A-E rating)\n   - Milieu-impact vergelijking\n   - Certificeringen en labels\n   - Herkomst en productieomstandigheden\n\n3. Praktische Informatie:\n   - Gebruiksaanwijzingen\n   - Onderhoudstips\n   - Reparatiemogelijkheden\n   - Garantie-informatie\n\n4. Aankoopbeslissingen:\n   - Vergelijking tussen producten\n   - Totale eigendomskosten (TCO)\n   - Duurzaamheidsvergelijking\n   - Authenticiteit verificatie\n\n5. Einde-levensduur:\n   - Inzamelpunten\n   - Recyclinginstructies\n   - Inruilmogelijkheden\n   - Restwaardeberekening",
+    "source": "EU ESPR Regulation 2024/1781, Consumer Rights Directive",
+    "language": "nl"
+  }
+]

@@ -9,6 +9,7 @@ import {
   boolean,
   decimal,
   index,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -48,6 +49,25 @@ export const advisoryReports = mysqlTable(
     targetStandardIds: json("targetStandardIds").$type<number[]>(),
     sectorTags: json("sectorTags").$type<string[]>(),
     gs1ImpactTags: json("gs1ImpactTags").$type<string[]>(),
+    decisionArtifacts: json("decisionArtifacts").$type<
+      Array<{
+        artifactVersion: string;
+        artifactType: string;
+        capability: string;
+        generatedAt: string;
+        subject: Record<string, unknown>;
+        confidence: {
+          level: string;
+          score: number;
+          basis: string;
+        };
+        evidence: {
+          codePaths: string[];
+          dataSources: string[];
+        };
+        summary: Record<string, unknown>;
+      }>
+    >(),
     
     // Generation Metadata
     version: varchar("version", { length: 32 }).notNull(), // e.g., "1.0", "1.1"
@@ -110,6 +130,25 @@ export const advisoryReportVersions = mysqlTable(
     reportId: int("reportId").notNull(), // Reference to advisoryReports.id
     version: varchar("version", { length: 32 }).notNull(),
     content: text("content").notNull(),
+    decisionArtifacts: json("decisionArtifacts").$type<
+      Array<{
+        artifactVersion: string;
+        artifactType: string;
+        capability: string;
+        generatedAt: string;
+        subject: Record<string, unknown>;
+        confidence: {
+          level: string;
+          score: number;
+          basis: string;
+        };
+        evidence: {
+          codePaths: string[];
+          dataSources: string[];
+        };
+        summary: Record<string, unknown>;
+      }>
+    >(),
     changeLog: text("changeLog"), // What changed in this version
     createdBy: varchar("createdBy", { length: 255 }),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -121,3 +160,45 @@ export const advisoryReportVersions = mysqlTable(
 
 export type AdvisoryReportVersion = typeof advisoryReportVersions.$inferSelect;
 export type InsertAdvisoryReportVersion = typeof advisoryReportVersions.$inferInsert;
+
+/**
+ * Advisory Report Target Regulations (normalized hot-path filter substrate)
+ *
+ * Mirrors JSON targetRegulationIds for performant joins and PG portability.
+ */
+export const advisoryReportTargetRegulations = mysqlTable(
+  "advisory_report_target_regulations",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    reportId: int("report_id").notNull(),
+    regulationId: int("regulation_id").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  table => ({
+    reportRegulationUniqueIdx: uniqueIndex("advisory_report_target_regulations_report_regulation_uq")
+      .on(table.reportId, table.regulationId),
+    regulationIdx: index("advisory_report_target_regulations_regulation_id_idx").on(table.regulationId),
+    reportIdx: index("advisory_report_target_regulations_report_id_idx").on(table.reportId),
+  })
+);
+
+/**
+ * Advisory Report Target Standards (normalized hot-path filter substrate)
+ *
+ * Mirrors JSON targetStandardIds for performant joins and PG portability.
+ */
+export const advisoryReportTargetStandards = mysqlTable(
+  "advisory_report_target_standards",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    reportId: int("report_id").notNull(),
+    standardId: int("standard_id").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  table => ({
+    reportStandardUniqueIdx: uniqueIndex("advisory_report_target_standards_report_standard_uq")
+      .on(table.reportId, table.standardId),
+    standardIdx: index("advisory_report_target_standards_standard_id_idx").on(table.standardId),
+    reportIdx: index("advisory_report_target_standards_report_id_idx").on(table.reportId),
+  })
+);

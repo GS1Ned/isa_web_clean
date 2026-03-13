@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Canonical document allowlist for ISA repository governance",
+  "last_updated": "2026-03-09",
+  "policy": "No new docs outside this allowlist. Migrate content to canonical docs, then delete when inbound_links==0.",
+  "allowed_docs": [
+    "docs/INDEX.md",
+    "docs/REPO_MAP.md",
+    "docs/README.md",
+    "docs/governance/TECHNICAL_DOCUMENTATION_CANON.md",
+    "docs/spec/ARCHITECTURE.md",
+    "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+    "docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md",
+    "docs/spec/CONFLICT_REGISTER.md",
+    "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
+    "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+    "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+    "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+    "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+    "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+    "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
+    "docs/spec/KNOWLEDGE_BASE/PROVENANCE_PHASE3_HANDOFF.md"
+  ],
+  "allowed_patterns": [
+    "docs/agent/**/*.md",
+    "docs/governance/**/*.md",
+    "docs/architecture/panel/**/*.md",
+    "docs/ops/**/*.md",
+    "docs/sre/**/*.md",
+    "docs/quality/schemas/**/*.json",
+    "docs/planning/**/*.md",
+    "docs/planning/**/*.json",
+    "docs/spec/**/RUNTIME_CONTRACT.md"
+  ],
+  "allowed_generated": [
+    "docs/**/_generated/**",
+    "docs/evidence/_generated/**",
+    "test-results/ci/**",
+    "REPO_TREE.md"
+  ],
+  "canonical_scope_docs": [
+    "docs/governance/_root/ISA_GOVERNANCE.md",
+    "docs/agent/AGENT_MAP.md",
+    "docs/governance/TECHNICAL_DOCUMENTATION_CANON.md",
+    "docs/spec/ARCHITECTURE.md",
+    "docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md",
+    "docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md",
+    "docs/spec/CONFLICT_REGISTER.md",
+    "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
+    "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+    "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+    "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+    "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+    "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+    "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+  ],
+  "forbidden_patterns": [
+    "__MACOSX/**",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/*.swp",
+    "**/*~"
+  ],
+  "exemptions": {
+    "scripts/**": "Scripts are code, not docs",
+    "*.json": "Config/data files allowed",
+    "*.yml": "Config files allowed",
+    "*.yaml": "Config files allowed"
+  }
+}

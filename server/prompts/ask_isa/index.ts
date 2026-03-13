@@ -22,6 +22,15 @@
 import { ASK_ISA_SYSTEM_PROMPT, ASK_ISA_SYSTEM_PROMPT_V1, ASK_ISA_SYSTEM_PROMPT_V2 } from './system';
 import { buildAskISAContext, buildMinimalContext, type AskISAContextParams } from './context';
 import { ASK_ISA_STEP_POLICY, ASK_ISA_STEP_POLICY_COMPACT } from './step_policy';
+import { 
+  CITE_THEN_WRITE_STEP_POLICY, 
+  CITE_THEN_WRITE_COMPACT,
+  CITE_THEN_WRITE_VERIFICATION,
+  parseEvidence,
+  parseAnswer,
+  verifyCitationTraceability,
+  calculateCitationPrecision,
+} from './cite_then_write';
 import { ASK_ISA_VERIFICATION_CHECKLIST, verifyAskISAResponse } from './verification';
 import {
   AskISAResponseSchema,
@@ -65,6 +74,20 @@ export const PROMPT_VARIANTS: Record<string, PromptVariant> = {
     version: '2.0',
     systemPrompt: ASK_ISA_SYSTEM_PROMPT_V2,
     stepPolicy: ASK_ISA_STEP_POLICY_COMPACT,
+    includeVerification: false,
+  },
+  v3_cite_then_write: {
+    name: 'Cite-then-Write (v3.0)',
+    version: '3.0',
+    systemPrompt: ASK_ISA_SYSTEM_PROMPT_V2,
+    stepPolicy: CITE_THEN_WRITE_STEP_POLICY,
+    includeVerification: true,
+  },
+  v3_cite_then_write_compact: {
+    name: 'Cite-then-Write Compact (v3.0)',
+    version: '3.0',
+    systemPrompt: ASK_ISA_SYSTEM_PROMPT_V2,
+    stepPolicy: CITE_THEN_WRITE_COMPACT,
     includeVerification: false,
   },
 };
@@ -132,6 +155,14 @@ export {
   AskISAResponseSchema,
   validateAskISAResponse,
   validateCitations,
+  // Cite-then-Write exports (v3.0)
+  CITE_THEN_WRITE_STEP_POLICY,
+  CITE_THEN_WRITE_COMPACT,
+  CITE_THEN_WRITE_VERIFICATION,
+  parseEvidence,
+  parseAnswer,
+  verifyCitationTraceability,
+  calculateCitationPrecision,
   type AskISAResponse,
   type SourceCitation,
   type AskISAContextParams,

@@ -6,7 +6,10 @@
 import { describe, it, expect } from "vitest";
 import { generateEmbedding, cosineSimilarity } from "./_core/embedding";
 
-describe("OpenAI Embeddings Integration", () => {
+const runLlmTests = process.env.RUN_LLM_TESTS === "true";
+const describeLlm = runLlmTests ? describe : describe.skip;
+
+describeLlm("OpenAI Embeddings Integration", () => {
   it("should generate embedding for simple text", async () => {
     const text = "Corporate Sustainability Reporting Directive (CSRD)";
 

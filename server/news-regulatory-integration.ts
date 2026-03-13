@@ -122,7 +122,7 @@ export async function createChangeLogEntryFromNews(
       isaVersionAffected,
     });
 
-    console.log(
+    serverLogger.info(
       `[news-regulatory-integration] Created change log entry ${entry.id} from news ${newsItem.id}`
     );
 
@@ -158,7 +158,7 @@ export async function bulkCreateChangeLogEntriesFromNews(
   let skipped = 0;
   const errors: string[] = [];
 
-  console.log(
+  serverLogger.info(
     `[news-regulatory-integration] Processing ${newsItems.length} news items for change log entries...`
   );
 
@@ -179,7 +179,7 @@ export async function bulkCreateChangeLogEntriesFromNews(
     }
   }
 
-  console.log(
+  serverLogger.info(
     `[news-regulatory-integration] Bulk creation complete: ${created} created, ${skipped} skipped, ${errors.length} errors`
   );
 

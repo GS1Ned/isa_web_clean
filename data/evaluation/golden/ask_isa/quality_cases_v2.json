@@ -1,0 +1,105 @@
+{
+  "dataset_id": "ask_isa_quality_v2",
+  "notes": "Operational ASK_ISA quality starter set for citation usability, provenance completeness, rationale quality, and abstention detection.",
+  "cases": [
+    {
+      "id": "ASK-QUAL-001",
+      "query": "Explain ESRS E1-6 at a high level.",
+      "expected_behavior": "answer",
+      "expected": {
+        "minimum_citation_count": 2,
+        "rationale_terms": ["ESRS E1", "climate", "applies"],
+        "require_recent_verification": true
+      },
+      "actual": {
+        "response_mode": "answer",
+        "answer": "ESRS E1-6 concerns climate-related emissions disclosure and applies to greenhouse gas reporting in the ESRS E1 standard.",
+        "citations": ["fixture:esrs-e1-6", "fixture:efrag-esrs"],
+        "evidence": [
+          {
+            "citation": "fixture:esrs-e1-6",
+            "evidenceKey": "ke:fixture-esrs-e1-6:hash-e1-6",
+            "lastVerifiedDate": "2026-02-20",
+            "isDeprecated": false
+          },
+          {
+            "citation": "fixture:efrag-esrs",
+            "evidenceKey": "ke:fixture-efrag-esrs:hash-efrag-esrs",
+            "lastVerifiedDate": "2026-02-20",
+            "isDeprecated": false
+          }
+        ],
+        "rationale": "This answer applies because ESRS E1 is the climate standard and the cited ESRS and EFRAG sources directly support the climate disclosure topic."
+      }
+    },
+    {
+      "id": "ASK-QUAL-002",
+      "query": "What is a GS1 Digital Link URI?",
+      "expected_behavior": "answer",
+      "expected": {
+        "minimum_citation_count": 1,
+        "rationale_terms": ["GS1", "Digital Link", "identifier"],
+        "require_recent_verification": true
+      },
+      "actual": {
+        "response_mode": "answer",
+        "answer": "A GS1 Digital Link URI is a web identifier that encodes GS1 identifiers and qualifiers so linked product information can be resolved consistently.",
+        "citations": ["fixture:gs1-digital-link-v2"],
+        "evidence": [
+          {
+            "citation": "fixture:gs1-digital-link-v2",
+            "evidenceKey": "ke:fixture-gs1-digital-link-v2:hash-digital-link-v2",
+            "lastVerifiedDate": "2026-02-20",
+            "isDeprecated": false
+          }
+        ],
+        "rationale": "The answer uses the GS1 Digital Link identifier pattern directly and explains how the web identifier supports linked product information."
+      }
+    },
+    {
+      "id": "ASK-QUAL-003",
+      "query": "Can ISA directly map hazardous material indicator to full ESRS E2 substance disclosure?",
+      "expected_behavior": "answer",
+      "expected": {
+        "minimum_citation_count": 2,
+        "rationale_terms": ["partial", "proxy", "does not fully"],
+        "require_recent_verification": true
+      },
+      "actual": {
+        "response_mode": "answer",
+        "answer": "Only partially. Hazardous material indicator can act as a proxy, but it does not fully satisfy the substance-level ESRS E2 disclosure requirement on its own.",
+        "citations": ["fixture:hazmat-indicator", "fixture:esrs-e2"],
+        "evidence": [
+          {
+            "citation": "fixture:hazmat-indicator",
+            "evidenceKey": "ke:fixture-hazmat-indicator:hash-hazmat-indicator",
+            "lastVerifiedDate": "2026-02-20",
+            "isDeprecated": false
+          },
+          {
+            "citation": "fixture:esrs-e2",
+            "evidenceKey": "ke:fixture-esrs-e2:hash-esrs-e2",
+            "lastVerifiedDate": "2026-02-20",
+            "isDeprecated": false
+          }
+        ],
+        "rationale": "This is a partial proxy answer because the hazardous material indicator helps signal risk, but it does not fully provide the substance-level ESRS E2 evidence required."
+      }
+    },
+    {
+      "id": "ASK-QUAL-004",
+      "query": "What exact GS1 obligation does ESRS S1 impose on living wage disclosure?",
+      "expected_behavior": "abstain",
+      "expected": {
+        "uncertainty_terms": ["verified evidence", "direct GS1 mapping"]
+      },
+      "actual": {
+        "response_mode": "abstain",
+        "answer": "I do not have enough verified evidence in the current ISA corpus to state a direct GS1 mapping for that ESRS S1 living wage question.",
+        "citations": [],
+        "evidence": [],
+        "rationale": "The current ISA corpus does not contain verified evidence for a direct GS1 mapping to ESRS S1 living wage disclosure."
+      }
+    }
+  ]
+}

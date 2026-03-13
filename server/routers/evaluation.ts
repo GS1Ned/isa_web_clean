@@ -18,15 +18,26 @@ import {
   evaluateResponse,
   generateReport,
   type TestCaseResult,
-  type EvaluationReport,
   type AskISAResponse,
 } from "../evaluation/evaluation-harness";
-import { hybridSearch, buildContextFromHybridResults } from "../hybrid-search";
+import { hybridSearch } from "../hybrid-search";
 import { invokeLLM } from "../_core/llm";
 import { assembleAskISAPrompt } from "../prompts/ask_isa";
 import { verifyResponseClaims } from "../claim-citation-verifier";
+import { validateCitations } from "../citation-validation";
+import { validateAskISAStageAAnswer } from "../ask-isa-stage-a";
 import { calculateAuthorityScore } from "../authority-model";
 import { saveEvaluationReport, getAllEvaluationReports, getLatestEvaluationReport, compareReports } from "../evaluation-history";
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
+
+const CAPABILITY_EVAL_ARTIFACT = join(process.cwd(), "test-results", "ci", "isa-capability-eval.json");
+const CAPABILITY_DRIFT_ARTIFACT = join(process.cwd(), "test-results", "ci", "isa-drift-report.json");
+
+function readArtifactIfPresent<T>(artifactPath: string): T | null {
+  if (!existsSync(artifactPath)) return null;
+  return JSON.parse(readFileSync(artifactPath, "utf8")) as T;
+}
 
 /**
  * Run a single test case against Ask ISA
@@ -82,6 +93,37 @@ async function runTestCase(testCase: GoldenSetTestCase): Promise<TestCaseResult>
         content: r.description || "",
       }))
     );
+
+    const validatedSources = await validateCitations(
+      searchResults.map(r => ({
+        id: r.id,
+        title: r.title,
+        url: r.url,
+        similarity: r.hybridScore,
+      }))
+    );
+
+    const stageAValidation = validateAskISAStageAAnswer({
+      answer,
+      sourceCount: relevantChunks.length,
+      evidenceReadySourceCount: validatedSources.filter(
+        source => typeof source.evidenceKey === "string" && source.evidenceKey.length > 0
+      ).length,
+      verifiedEvidenceSourceCount: validatedSources.filter(
+        source =>
+          typeof source.evidenceKey === "string" &&
+          source.evidenceKey.length > 0 &&
+          !source.needsVerification &&
+          !source.isDeprecated
+      ).length,
+      needsVerificationSourceCount: validatedSources.filter(
+        source => source.needsVerification
+      ).length,
+      deprecatedSourceCount: validatedSources.filter(
+        source => source.isDeprecated
+      ).length,
+      claimVerification,
+    });
     
     // 7. Build response object
     const response: AskISAResponse = {
@@ -108,7 +150,18 @@ async function runTestCase(testCase: GoldenSetTestCase): Promise<TestCaseResult>
     const duration = Date.now() - startTime;
     
     // 8. Evaluate response
-    return evaluateResponse(testCase, response, duration);
+    const result = evaluateResponse(testCase, response, duration);
+
+    if (!stageAValidation.passed) {
+      result.passed = false;
+      result.score = Math.min(result.score, 0.59);
+      result.issues = Array.from(new Set([...stageAValidation.issues, ...result.issues]));
+      result.warnings = Array.from(
+        new Set([...stageAValidation.warnings, ...result.warnings])
+      );
+    }
+
+    return result;
     
   } catch (error) {
     const duration = Date.now() - startTime;
@@ -315,6 +368,85 @@ export const evaluationRouter = router({
     
     return getAllEvaluationReports();
   }),
+
+  /**
+   * Get latest unified capability evaluation summary (all ISA capabilities)
+   */
+  getCapabilityEvaluationSummary: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user?.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Only admins can view evaluation history",
+      });
+    }
+
+    const evalArtifact = readArtifactIfPresent<{
+      run_id?: string;
+      generated_at?: string;
+      stage?: string;
+      isa_quality_score?: { value?: number; grade?: string; confidence?: string };
+      capabilities?: Array<{
+        capability: string;
+        stage?: string;
+        fixture_version?: string;
+        status: string;
+        capability_score: { value: number; grade: string };
+      }>;
+      summary?: {
+        total_metrics: number;
+        fail: number;
+        blocking_failures: number;
+        warning_failures: number;
+      };
+      status?: string;
+    }>(CAPABILITY_EVAL_ARTIFACT);
+
+    const driftArtifact = readArtifactIfPresent<{
+      status?: string;
+      stage?: string;
+      summary?: { major?: number; minor?: number; transition?: number; none?: number };
+    }>(CAPABILITY_DRIFT_ARTIFACT);
+
+    if (!evalArtifact) {
+      return {
+        available: false,
+        reason: `Artifact not found: ${CAPABILITY_EVAL_ARTIFACT}`,
+      };
+    }
+
+    return {
+      available: true,
+      runId: evalArtifact.run_id ?? null,
+      generatedAt: evalArtifact.generated_at ?? null,
+      stage: evalArtifact.stage ?? null,
+      isaQualityScore: evalArtifact.isa_quality_score ?? null,
+      status: evalArtifact.status ?? "unknown",
+      summary: evalArtifact.summary ?? null,
+      capabilities: evalArtifact.capabilities ?? [],
+      drift: driftArtifact ?? {
+        status: "unknown",
+        stage: null,
+        summary: { major: 0, minor: 0, transition: 0, none: 0 },
+      },
+    };
+  }),
+
+  /**
+   * Get raw capability evaluation + drift artifacts.
+   */
+  getCapabilityEvaluationArtifacts: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user?.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Only admins can view evaluation history",
+      });
+    }
+
+    return {
+      capabilityEval: readArtifactIfPresent(CAPABILITY_EVAL_ARTIFACT),
+      driftReport: readArtifactIfPresent(CAPABILITY_DRIFT_ARTIFACT),
+    };
+  }),
   
   /**
    * Get latest evaluation report
@@ -327,7 +459,35 @@ export const evaluationRouter = router({
       });
     }
     
-    return getLatestEvaluationReport();
+    const latestAskIsaReport = await getLatestEvaluationReport();
+    const capabilityEval = readArtifactIfPresent<{
+      run_id?: string;
+      generated_at?: string;
+      stage?: string;
+      isa_quality_score?: { value?: number; grade?: string; confidence?: string };
+      summary?: unknown;
+      status?: string;
+    }>(CAPABILITY_EVAL_ARTIFACT);
+    const driftReport = readArtifactIfPresent<{
+      status?: string;
+      summary?: unknown;
+    }>(CAPABILITY_DRIFT_ARTIFACT);
+
+    return {
+      askIsa: latestAskIsaReport,
+      capabilityEvaluation: capabilityEval
+        ? {
+          runId: capabilityEval.run_id ?? null,
+          generatedAt: capabilityEval.generated_at ?? null,
+          stage: capabilityEval.stage ?? null,
+          isaQualityScore: capabilityEval.isa_quality_score ?? null,
+          summary: capabilityEval.summary ?? null,
+            status: capabilityEval.status ?? "unknown",
+          }
+        : null,
+      driftStatus: driftReport?.status ?? "unknown",
+      driftSummary: driftReport?.summary ?? null,
+    };
   }),
   
   /**

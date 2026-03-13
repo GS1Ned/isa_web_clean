@@ -5,7 +5,6 @@
  * against the golden set of test questions.
  */
 
-import { serverLogger } from '../_core/logger-wiring';
 import { type GoldenSetTestCase, GOLDEN_SET, getGoldenSetStats } from './golden-set';
 import { type AuthorityLevel, AUTHORITY_LEVELS } from '../authority-model';
 import { type VerificationSummary } from '../claim-citation-verifier';
@@ -63,6 +62,14 @@ export interface EvaluationReport {
   
   // Recommendations
   recommendations: string[];
+}
+
+export interface CapabilityRollupInputs {
+  correctness: number;
+  coverage: number;
+  explainability: number;
+  authority: number;
+  latencyNorm: number;
 }
 
 /**
@@ -404,6 +411,30 @@ export function detectRegressions(
  */
 export function getEvaluationStats() {
   return getGoldenSetStats();
+}
+
+/**
+ * Compute unified capability score used by cross-capability evaluations.
+ */
+export function calculateCapabilityScore(inputs: CapabilityRollupInputs): number {
+  const rawScore =
+    inputs.correctness * 0.4 +
+    inputs.coverage * 0.2 +
+    inputs.explainability * 0.15 +
+    inputs.authority * 0.15 +
+    inputs.latencyNorm * 0.1;
+
+  return Math.max(0, Math.min(1, Math.round(rawScore * 10000) / 10000));
+}
+
+/**
+ * Translate normalized score into unified ISA quality grade.
+ */
+export function capabilityScoreToGrade(score: number): "A" | "B" | "C" | "D" {
+  if (score >= 0.9) return "A";
+  if (score >= 0.8) return "B";
+  if (score >= 0.7) return "C";
+  return "D";
 }
 
 /**

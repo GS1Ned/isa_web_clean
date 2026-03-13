@@ -4,19 +4,14 @@
  * RSS endpoint is blocked by Cloudflare, so we scrape the HTML page
  */
 
-import { chromium, type Browser, type Page } from "playwright";
+import { chromium, type Browser } from "playwright";
 import type { RawNewsItem } from "../news-fetcher";
 import { NEWS_SOURCES } from "../news-sources";
 import { serverLogger } from "../_core/logger-wiring";
-
-
-interface GS1EUArticle {
-  title: string;
-  url: string;
-  summary: string;
-  publishedAt: Date;
-  imageUrl?: string;
-}
+import {
+  browserLaunchArgs,
+  isBrowserAutomationAllowed,
+} from "../security/browser-automation-policy";
 
 const GS1_EU_NEWS_URL = "https://gs1.eu/news/";
 const GS1_EU_SOURCE = NEWS_SOURCES.find(s => s.id === "gs1-eu-updates")!;
@@ -25,13 +20,17 @@ const GS1_EU_SOURCE = NEWS_SOURCES.find(s => s.id === "gs1-eu-updates")!;
  * Scrape GS1 Europe news listing page
  */
 export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
+  if (!isBrowserAutomationAllowed("gs1-eu-playwright")) {
+    return [];
+  }
+
   let browser: Browser | null = null;
 
   try {
-    console.log("[GS1 EU Scraper] Launching browser...");
+    serverLogger.info("[GS1 EU Scraper] Launching browser...");
     browser = await chromium.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: browserLaunchArgs(),
     });
 
     const context = await browser.newContext({
@@ -41,7 +40,7 @@ export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
 
     const page = await context.newPage();
 
-    console.log("[GS1 EU Scraper] Navigating to GS1 Europe news page...");
+    serverLogger.info("[GS1 EU Scraper] Navigating to GS1 Europe news page...");
     await page.goto(GS1_EU_NEWS_URL, {
       waitUntil: "domcontentloaded",
       timeout: 30000,
@@ -146,7 +145,7 @@ export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
       return items;
     });
 
-    console.log(`[GS1 EU Scraper] Found ${articles.length} articles`);
+    serverLogger.info(`[GS1 EU Scraper] Found ${articles.length} articles`);
 
     // Deduplicate by URL
     const seen = new Set<string>();
@@ -156,9 +155,7 @@ export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
       return true;
     });
 
-    console.log(
-      `[GS1 EU Scraper] Returning ${uniqueArticles.length} unique articles`
-    );
+    serverLogger.info(`[GS1 EU Scraper] Returning ${uniqueArticles.length} unique articles`);
 
     // Convert to RawNewsItem format
     const newsItems: RawNewsItem[] = uniqueArticles
@@ -198,12 +195,16 @@ export async function scrapeGS1EuropeNews(): Promise<RawNewsItem[]> {
 export async function scrapeGS1EUArticleDetail(
   url: string
 ): Promise<string | null> {
+  if (!isBrowserAutomationAllowed("gs1-eu-playwright-detail")) {
+    return null;
+  }
+
   let browser: Browser | null = null;
 
   try {
     browser = await chromium.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: browserLaunchArgs(),
     });
 
     const context = await browser.newContext({

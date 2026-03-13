@@ -1,9 +1,12 @@
 import { getDb } from "./db";
 import { datasetRegistry } from "../drizzle/schema";
-import type { InferInsertModel } from "drizzle-orm";
-
-type InsertDatasetRegistry = InferInsertModel<typeof datasetRegistry>;
-import { eq, and, desc, sql, isNull, isNotNull } from "drizzle-orm";
+import { eq, and, desc, sql, isNotNull } from "drizzle-orm";
+import { deriveCatalogAuthorityTierFromUrl } from "./catalog-authority";
+import { KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS } from "./knowledge-provenance";
+import {
+  summarizeVerificationPosture,
+  withVerificationPosture,
+} from "./verification-posture";
 
 /**
  * Get all datasets with optional filtering
@@ -33,11 +36,12 @@ export async function getDatasets(filters?: {
   }
   
   if (filters?.needsVerification) {
-    // Show datasets with no verification date or verification older than 90 days
-    const ninetyDaysAgo = new Date();
-    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+    const verificationCutoff = new Date();
+    verificationCutoff.setDate(
+      verificationCutoff.getDate() - KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS
+    );
     conditions.push(
-      sql`(${datasetRegistry.lastVerifiedDate} IS NULL OR ${datasetRegistry.lastVerifiedDate} < ${ninetyDaysAgo})`
+      sql`(${datasetRegistry.lastVerifiedDate} IS NULL OR ${datasetRegistry.lastVerifiedDate} < ${verificationCutoff})`
     );
   }
 
@@ -46,7 +50,7 @@ export async function getDatasets(filters?: {
   }
 
   const results = await query.orderBy(desc(datasetRegistry.updatedAt));
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -61,7 +65,7 @@ export async function getDatasetById(id: number) {
     .where(eq(datasetRegistry.id, id))
     .limit(1);
   
-  return results[0] || null;
+  return results[0] ? withVerificationPosture(results[0]) : null;
 }
 
 /**
@@ -70,7 +74,13 @@ export async function getDatasetById(id: number) {
 export async function createDataset(data: typeof datasetRegistry.$inferInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const [result] = await db.insert(datasetRegistry).values(data);
+  const sourceUrl = (data as any).source || (data as any).sourceUrl || (data as any).downloadUrl || (data as any).apiEndpoint;
+  const [result] = await db.insert(datasetRegistry).values({
+    ...data,
+    authorityTier: (data as any).authorityTier || deriveCatalogAuthorityTierFromUrl(sourceUrl),
+    publicationStatus: (data as any).publicationStatus || "UNKNOWN",
+    immutableUri: (data as any).immutableUri ?? null,
+  } as any);
   return result;
 }
 
@@ -106,25 +116,30 @@ export async function updateDataset(
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const sourceUrl = (updates as any).source || (updates as any).sourceUrl || (updates as any).downloadUrl || (updates as any).apiEndpoint;
+  const authorityTier = (updates as any).authorityTier || (sourceUrl ? deriveCatalogAuthorityTierFromUrl(sourceUrl) : undefined);
   const result = await db
     .update(datasetRegistry)
     .set({
       ...updates,
+      ...(authorityTier ? { authorityTier } : {}),
       updatedAt: new Date().toISOString(),
-    })
+    } as any)
     .where(eq(datasetRegistry.id, id));
   
   return result;
 }
 
 /**
- * Get datasets needing verification (older than 90 days or never verified)
+ * Get datasets needing verification (outside the shared verification window or never verified)
  */
 export async function getDatasetsNeedingVerification() {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const ninetyDaysAgo = new Date();
-  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+  const verificationCutoff = new Date();
+  verificationCutoff.setDate(
+    verificationCutoff.getDate() - KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS
+  );
   
   const results = await db
     .select()
@@ -132,12 +147,12 @@ export async function getDatasetsNeedingVerification() {
     .where(
       and(
         eq(datasetRegistry.isActive, 1),
-        sql`(${datasetRegistry.lastVerifiedDate} IS NULL OR ${datasetRegistry.lastVerifiedDate} < ${ninetyDaysAgo})`
+        sql`(${datasetRegistry.lastVerifiedDate} IS NULL OR ${datasetRegistry.lastVerifiedDate} < ${verificationCutoff})`
       )
     )
     .orderBy(datasetRegistry.lastVerifiedDate);
   
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -165,13 +180,25 @@ export async function getDatasetStats() {
     .select({ count: sql<number>`count(*)` })
     .from(datasetRegistry)
     .where(
-      sql`(${datasetRegistry.lastVerifiedDate} IS NULL OR ${datasetRegistry.lastVerifiedDate} < DATE_SUB(NOW(), INTERVAL 90 DAY))`
+      sql`(${datasetRegistry.lastVerifiedDate} IS NULL OR ${datasetRegistry.lastVerifiedDate} < DATE_SUB(NOW(), INTERVAL ${KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS} DAY))`
     );
+
+  const verificationDates = await db
+    .select({
+      lastVerifiedDate: datasetRegistry.lastVerifiedDate,
+    })
+    .from(datasetRegistry);
+
+  const verificationSummary = summarizeVerificationPosture(verificationDates);
   
   return {
     total: totalCount[0]?.count || 0,
     active: activeCount[0]?.count || 0,
     verified: verifiedCount[0]?.count || 0,
     needsVerification: needsVerificationCount[0]?.count || 0,
+    verificationCountsByReason: verificationSummary.countsByReason,
+    verificationFreshnessBuckets: verificationSummary.freshnessBuckets,
+    oldestVerificationAgeDays: verificationSummary.oldestVerificationAgeDays,
+    medianVerificationAgeDays: verificationSummary.medianVerificationAgeDays,
   };
 }

@@ -19,6 +19,7 @@ import {
   ExternalLink,
   Sparkles,
   AlertCircle,
+  Newspaper,
 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useState } from "react";
@@ -28,6 +29,7 @@ import { ESRSDatapointsSection } from "@/components/ESRSDatapointsSection";
 import { GS1AttributesPanelEnhanced } from "@/components/GS1AttributesPanelEnhanced";
 import { AskISAWidget } from "@/components/AskISAWidget";
 import { RegulationTimeline } from "@/components/RegulationTimeline";
+import { NewsCardCompact } from "@/components/NewsCardCompact";
 import { getRegulationMilestones } from "@/lib/regulation-milestones";
 
 export default function HubRegulationDetail() {
@@ -45,6 +47,12 @@ export default function HubRegulationDetail() {
 
   // Fetch ESRS mappings
   const { data: esrsMappings } = trpc.regulations.getEsrsMappings.useQuery(
+    { regulationId },
+    { enabled: regulationId > 0 }
+  );
+
+  // Fetch related news articles
+  const { data: relatedNews } = trpc.hub.getNewsByRegulation.useQuery(
     { regulationId },
     { enabled: regulationId > 0 }
   );
@@ -218,7 +226,7 @@ export default function HubRegulationDetail() {
             {/* Main Content Column */}
             <div className="lg:col-span-2">
             <Tabs defaultValue="overview" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-5">
+              <TabsList className="grid w-full grid-cols-6">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="standards">
                   GS1 Standards ({mappings?.length || 0})
@@ -228,6 +236,10 @@ export default function HubRegulationDetail() {
                   ESRS Datapoints ({esrsMappings?.length || 0})
                 </TabsTrigger>
                 <TabsTrigger value="timeline">Timeline</TabsTrigger>
+                <TabsTrigger value="news" className="flex items-center gap-1">
+                  <Newspaper className="w-3.5 h-3.5" />
+                  News ({relatedNews?.length || 0})
+                </TabsTrigger>
               </TabsList>
 
               {/* Overview Tab */}
@@ -436,6 +448,49 @@ export default function HubRegulationDetail() {
                         regulation.effectiveDate ? new Date(regulation.effectiveDate).toISOString() : undefined
                       )}
                     />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* News Tab */}
+              <TabsContent value="news" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Newspaper className="w-5 h-5" />
+                      Related News
+                    </CardTitle>
+                    <CardDescription>
+                      Latest news articles linked to {regulation.title}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {relatedNews && relatedNews.length > 0 ? (
+                      <div className="space-y-2">
+                        {relatedNews.map(article => (
+                          <NewsCardCompact
+                            key={article.id}
+                            news={{
+                              id: article.id,
+                              title: article.title,
+                              summary: article.summary ?? undefined,
+                              publishedDate: new Date(article.publishedDate!),
+                              regulationTags: (article.regulationTags as string[]) ?? [],
+                              impactLevel: (article.impactLevel ?? "MEDIUM") as "LOW" | "MEDIUM" | "HIGH",
+                              newsType: article.newsType as "NEW_LAW" | "AMENDMENT" | "ENFORCEMENT" | "COURT_DECISION" | "GUIDANCE" | "PROPOSAL",
+                              sources: article.sources as Array<{ name: string; type: string; url: string }> | null,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="py-12 text-center">
+                        <Newspaper className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground">
+                          No news articles linked to this regulation yet.
+                        </p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>

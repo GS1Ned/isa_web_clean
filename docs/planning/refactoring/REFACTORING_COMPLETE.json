@@ -1,0 +1,39 @@
+{
+  "version": "1.0.0",
+  "completed": "2026-02-12T00:53:56.053994",
+  "status": "COMPLETE",
+  "statistics": {
+    "total_files": 828,
+    "files_moved": 0,
+    "unknown_count": 0,
+    "unknown_percent": 0.0,
+    "overall_quality_score": 71.7,
+    "by_capability": {
+      "ASK_ISA": 66,
+      "NEWS_HUB": 95,
+      "KNOWLEDGE_BASE": 35,
+      "CATALOG": 47,
+      "ESRS_MAPPING": 51,
+      "ADVISORY": 82,
+      "CROSS_CUTTING": 326,
+      "META": 126,
+      "UNKNOWN": 0
+    }
+  },
+  "phases": {
+    "phase_0": "COMPLETE",
+    "phase_1": "COMPLETE",
+    "phase_2": "COMPLETE",
+    "phase_3": "COMPLETE",
+    "phase_4": "COMPLETE",
+    "phase_5": "COMPLETE"
+  },
+  "gates": {
+    "inventory_exists": true,
+    "contracts_exist": true,
+    "quality_score_60": true,
+    "unknown_lt_5": true,
+    "links_valid": true
+  },
+  "all_gates_passed": true
+}

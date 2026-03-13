@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/error-budget-status.schema.json",
+  "title": "ISA Error Budget Status",
+  "type": "object",
+  "required": ["meta", "overall_state", "slos"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["generated_at", "measurement_window_days"],
+      "properties": {
+        "generated_at": {"type": "string", "format": "date-time"},
+        "measurement_window_days": {"type": "integer", "minimum": 1}
+      }
+    },
+    "overall_state": {
+      "type": "string",
+      "enum": ["HEALTHY", "CAUTION", "EXHAUSTED", "UNKNOWN"]
+    },
+    "slos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "state", "budget_remaining_pct"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "state": {
+            "type": "string",
+            "enum": ["HEALTHY", "CAUTION", "EXHAUSTED", "UNKNOWN"]
+          },
+          "budget_remaining_pct": {"type": "number", "minimum": 0, "maximum": 100},
+          "measured": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

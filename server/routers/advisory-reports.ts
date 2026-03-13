@@ -14,12 +14,15 @@ import {
   getReportsByStandardIds,
 } from "../db-advisory-reports";
 import { generateReportHtmlForPdf } from "../advisory-report-export";
+import { EsrsDecisionArtifactsSchema } from "../esrs-decision-artifacts.js";
+import { resolveVersionDecisionArtifacts } from "../advisory-report-versioning.js";
+import { buildDecisionArtifactDiffSummary } from "../advisory-report-decision-diff.js";
 
 /**
  * Advisory Reports Router
  * 
  * Implements Decision 4: Advisory report generation with publication deferred to Phase 9.
- * Supports Lane C governance with internal-only status by default.
+ * Supports governance with internal-only status by default.
  */
 export const advisoryReportsRouter = router({
   /**
@@ -81,7 +84,18 @@ export const advisoryReportsRouter = router({
   versions: publicProcedure
     .input(z.object({ reportId: z.number() }))
     .query(async ({ input }) => {
-      return await getReportVersions(input.reportId);
+      const [sourceReport, versions] = await Promise.all([
+        getAdvisoryReportById(input.reportId),
+        getReportVersions(input.reportId),
+      ]);
+
+      return versions.map(version => ({
+        ...version,
+        decisionArtifactDiff: buildDecisionArtifactDiffSummary({
+          currentArtifacts: sourceReport?.decisionArtifacts,
+          snapshotArtifacts: version.decisionArtifacts,
+        }),
+      }));
     }),
 
   /**
@@ -116,6 +130,7 @@ export const advisoryReportsRouter = router({
         targetStandardIds: z.array(z.number()).optional(),
         sectorTags: z.array(z.string()).optional(),
         gs1ImpactTags: z.array(z.string()).optional(),
+        decisionArtifacts: EsrsDecisionArtifactsSchema.optional(),
         version: z.string(),
         generationPrompt: z.string().optional(),
         llmModel: z.string().optional(),
@@ -133,7 +148,6 @@ export const advisoryReportsRouter = router({
         generatedBy: ctx.user.name || ctx.user.email || "Unknown",
         reviewStatus: "DRAFT",
         publicationStatus: "INTERNAL_ONLY", // Decision 4: Defer publication
-        laneStatus: "LANE_C", // Enforce Lane C governance
       } as any);
     }),
 
@@ -156,6 +170,7 @@ export const advisoryReportsRouter = router({
           })
         ).optional(),
         recommendations: z.array(z.string()).optional(),
+        decisionArtifacts: EsrsDecisionArtifactsSchema.optional(),
         qualityScore: z.number().optional(),
         governanceNotes: z.string().optional(),
       })
@@ -202,6 +217,7 @@ export const advisoryReportsRouter = router({
         reportId: z.number(),
         version: z.string(),
         content: z.string(),
+        decisionArtifacts: EsrsDecisionArtifactsSchema.optional(),
         changeLog: z.string().optional(),
       })
     )
@@ -210,8 +226,14 @@ export const advisoryReportsRouter = router({
         throw new Error("Admin access required");
       }
 
+      const sourceReport = await getAdvisoryReportById(input.reportId);
+
       return await createReportVersion({
         ...input,
+        decisionArtifacts: resolveVersionDecisionArtifacts({
+          requestedArtifacts: input.decisionArtifacts,
+          sourceReport,
+        }),
         createdBy: ctx.user.name || ctx.user.email || "Unknown",
       });
     }),

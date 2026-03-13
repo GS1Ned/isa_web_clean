@@ -99,4 +99,7 @@ export const securityHeaders = helmet({
 export const devSecurityHeaders = helmet({
   contentSecurityPolicy: false, // Disable CSP in development
   hsts: false, // Disable HSTS in development (no HTTPS)
+  frameguard: false, // Allow iframe embedding for Manus Preview pane
+  crossOriginOpenerPolicy: false, // Allow iframe embedding
+  crossOriginResourcePolicy: false, // Allow cross-origin resource access
 });

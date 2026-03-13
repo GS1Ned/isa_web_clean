@@ -1,0 +1,271 @@
+{
+  "version": "2026-02-15",
+  "generated_at": "2026-02-15T18:48:41+00:00",
+  "repos": [
+    {
+      "name": "open-metadata/OpenMetadata",
+      "url": "https://github.com/open-metadata/OpenMetadata",
+      "default_branch": "main",
+      "signals": {
+        "stars": 8699,
+        "forks": 1631,
+        "open_issues_count": 679,
+        "pushed_at": "2026-02-15T16:43:05Z",
+        "last_commit_date": "2026-02-15T13:51:33Z",
+        "release_date": "2026-02-04T11:31:09Z"
+      },
+      "release": {
+        "url": "https://github.com/open-metadata/OpenMetadata/releases/tag/1.11.8-release",
+        "tag": "1.11.8-release"
+      },
+      "archived": false,
+      "license": "Apache-2.0",
+      "language": "TypeScript",
+      "description": "OpenMetadata is a unified metadata platform for data discovery, data observability, and data governance powered by a central metadata repository, in-depth column level lineage, and seamless team collaboration.",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "datahub-project/datahub",
+      "url": "https://github.com/datahub-project/datahub",
+      "default_branch": "master",
+      "signals": {
+        "stars": 11579,
+        "forks": 3369,
+        "open_issues_count": 738,
+        "pushed_at": "2026-02-15T11:45:10Z",
+        "last_commit_date": "2026-02-14T19:02:14Z",
+        "release_date": "2026-02-10T19:39:15Z"
+      },
+      "release": {
+        "url": "https://github.com/datahub-project/datahub/releases/tag/v1.4.0.2",
+        "tag": "v1.4.0.2"
+      },
+      "archived": false,
+      "license": "Apache-2.0",
+      "language": "Java",
+      "description": "The Metadata Platform for your Data and AI Stack",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "backstage/backstage",
+      "url": "https://github.com/backstage/backstage",
+      "default_branch": "master",
+      "signals": {
+        "stars": 32606,
+        "forks": 7090,
+        "open_issues_count": 444,
+        "pushed_at": "2026-02-15T15:36:16Z",
+        "last_commit_date": "2026-02-15T14:51:55Z",
+        "release_date": "2026-02-02T16:37:37Z"
+      },
+      "release": {
+        "url": "https://github.com/backstage/backstage/releases/tag/v1.47.3",
+        "tag": "v1.47.3"
+      },
+      "archived": false,
+      "license": "Apache-2.0",
+      "language": "TypeScript",
+      "description": "Backstage is an open framework for building developer portals",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "open-policy-agent/opa",
+      "url": "https://github.com/open-policy-agent/opa",
+      "default_branch": "main",
+      "signals": {
+        "stars": 11228,
+        "forks": 1511,
+        "open_issues_count": 378,
+        "pushed_at": "2026-02-14T15:51:00Z",
+        "last_commit_date": "2026-02-14T12:43:54Z",
+        "release_date": "2026-01-29T21:07:36Z"
+      },
+      "release": {
+        "url": "https://github.com/open-policy-agent/opa/releases/tag/v1.13.1",
+        "tag": "v1.13.1"
+      },
+      "archived": false,
+      "license": "Apache-2.0",
+      "language": "Go",
+      "description": "Open Policy Agent (OPA) is an open source, general-purpose policy engine.",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "kyverno/kyverno",
+      "url": "https://github.com/kyverno/kyverno",
+      "default_branch": "main",
+      "signals": {
+        "stars": 7398,
+        "forks": 1233,
+        "open_issues_count": 303,
+        "pushed_at": "2026-02-15T13:51:15Z",
+        "last_commit_date": "2026-02-15T09:16:47Z",
+        "release_date": "2026-02-02T11:39:39Z"
+      },
+      "release": {
+        "url": "https://github.com/kyverno/kyverno/releases/tag/v1.17.0",
+        "tag": "v1.17.0"
+      },
+      "archived": false,
+      "license": "Apache-2.0",
+      "language": "Go",
+      "description": "Cloud Native Policy Management",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "sigstore/cosign",
+      "url": "https://github.com/sigstore/cosign",
+      "default_branch": "main",
+      "signals": {
+        "stars": 5650,
+        "forks": 690,
+        "open_issues_count": 302,
+        "pushed_at": "2026-02-11T22:44:32Z",
+        "last_commit_date": "2026-02-11T22:44:31Z",
+        "release_date": "2026-01-09T22:13:05Z"
+      },
+      "release": {
+        "url": "https://github.com/sigstore/cosign/releases/tag/v3.0.4",
+        "tag": "v3.0.4"
+      },
+      "archived": false,
+      "license": "Apache-2.0",
+      "language": "Go",
+      "description": "Code signing and transparency for containers and binaries",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "OpenLineage/OpenLineage",
+      "url": "https://github.com/OpenLineage/OpenLineage",
+      "default_branch": "main",
+      "signals": {
+        "stars": 2316,
+        "forks": 425,
+        "open_issues_count": 311,
+        "pushed_at": "2026-02-15T04:28:13Z",
+        "last_commit_date": "2026-02-13T03:30:12Z",
+        "release_date": "2026-01-29T21:17:03Z"
+      },
+      "release": {
+        "url": "https://github.com/OpenLineage/OpenLineage/releases/tag/1.43.0",
+        "tag": "1.43.0"
+      },
+      "archived": false,
+      "license": "Apache-2.0",
+      "language": "Java",
+      "description": "An Open Standard for lineage metadata collection",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "MarquezProject/marquez",
+      "url": "https://github.com/MarquezProject/marquez",
+      "default_branch": "main",
+      "signals": {
+        "stars": 2121,
+        "forks": 380,
+        "open_issues_count": 238,
+        "pushed_at": "2026-02-11T20:50:22Z",
+        "last_commit_date": "2025-03-27T07:32:36Z",
+        "release_date": "2024-10-24T08:23:00Z"
+      },
+      "release": {
+        "url": "https://github.com/MarquezProject/marquez/releases/tag/0.50.0",
+        "tag": "0.50.0"
+      },
+      "archived": false,
+      "license": "Apache-2.0",
+      "language": "Java",
+      "description": "Collect, aggregate, and visualize a data ecosystem's metadata",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "dagster-io/dagster",
+      "url": "https://github.com/dagster-io/dagster",
+      "default_branch": "master",
+      "signals": {
+        "stars": 14951,
+        "forks": 1976,
+        "open_issues_count": 2763,
+        "pushed_at": "2026-02-13T23:20:28Z",
+        "last_commit_date": "2026-02-13T23:17:10Z",
+        "release_date": "2026-02-05T21:39:54Z"
+      },
+      "release": {
+        "url": "https://github.com/dagster-io/dagster/releases/tag/1.12.14",
+        "tag": "1.12.14"
+      },
+      "archived": false,
+      "license": "Apache-2.0",
+      "language": "Python",
+      "description": "An orchestration platform for the development, production, and observation of data assets.",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "dbt-labs/dbt-core",
+      "url": "https://github.com/dbt-labs/dbt-core",
+      "default_branch": "main",
+      "signals": {
+        "stars": 12247,
+        "forks": 2274,
+        "open_issues_count": 814,
+        "pushed_at": "2026-02-15T09:15:02Z",
+        "last_commit_date": "2026-02-12T23:02:08Z",
+        "release_date": "2026-02-13T17:42:26Z"
+      },
+      "release": {
+        "url": "https://github.com/dbt-labs/dbt-core/releases/tag/v1.11.5",
+        "tag": "v1.11.5"
+      },
+      "archived": false,
+      "license": "NOASSERTION",
+      "language": "Python",
+      "description": "dbt enables data analysts and engineers to transform their data using the same practices that software engineers use to build applications.",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "langfuse/langfuse",
+      "url": "https://github.com/langfuse/langfuse",
+      "default_branch": "main",
+      "signals": {
+        "stars": 21945,
+        "forks": 2164,
+        "open_issues_count": 514,
+        "pushed_at": "2026-02-15T16:59:07Z",
+        "last_commit_date": "2026-02-14T17:56:13Z",
+        "release_date": "2026-02-12T18:01:03Z"
+      },
+      "release": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v3.153.0",
+        "tag": "v3.153.0"
+      },
+      "archived": false,
+      "license": "NOASSERTION",
+      "language": "TypeScript",
+      "description": "\ud83e\udea2 Open source LLM engineering platform: LLM Observability, metrics, evals, prompt management, playground, datasets. Integrates with OpenTelemetry, Langchain, OpenAI SDK, LiteLLM, and more. \ud83c\udf4aYC W23 ",
+      "last_verified_date": "2026-02-15"
+    },
+    {
+      "name": "Arize-ai/phoenix",
+      "url": "https://github.com/Arize-ai/phoenix",
+      "default_branch": "main",
+      "signals": {
+        "stars": 8549,
+        "forks": 721,
+        "open_issues_count": 318,
+        "pushed_at": "2026-02-15T11:27:24Z",
+        "last_commit_date": "2026-02-15T10:07:30Z",
+        "release_date": "2026-02-14T00:06:16Z"
+      },
+      "release": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v13.0.3",
+        "tag": "arize-phoenix-v13.0.3"
+      },
+      "archived": false,
+      "license": "NOASSERTION",
+      "language": "Jupyter Notebook",
+      "description": "AI Observability & Evaluation",
+      "last_verified_date": "2026-02-15"
+    }
+  ],
+  "last_verified_date": "2026-02-15"
+}

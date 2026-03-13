@@ -1,11 +1,19 @@
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, CheckCircle2, FileText, Hash, Shield } from "lucide-react";
+import { Link } from "wouter";
+
+function formatMetadataValue(value: unknown) {
+  return value == null ? "N/A" : String(value);
+}
 
 export default function AdvisoryTraceability() {
-  const { data: metadata, isLoading } = trpc.advisory.getMetadata.useQuery();
+  const { data: overview, isLoading } = trpc.advisory.getOverview.useQuery();
+  const metadata = overview?.metadata;
+  const latestReport = overview?.latestReport;
 
   if (isLoading) {
     return (
@@ -54,31 +62,107 @@ export default function AdvisoryTraceability() {
           <div className="grid gap-4 md:grid-cols-2">
             <div>
               <label className="text-sm font-medium text-muted-foreground">Advisory ID</label>
-              <p className="font-mono text-lg">{metadata.advisoryId}</p>
+              <p className="font-mono text-lg">{formatMetadataValue(metadata.advisoryId)}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Version</label>
-              <p className="font-mono text-lg">{metadata.version}</p>
+              <p className="font-mono text-lg">{formatMetadataValue(metadata.version)}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Publication Date</label>
-              <p className="text-lg">{metadata.publicationDate}</p>
+              <p className="text-lg">{formatMetadataValue(metadata.publicationDate)}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Generated At</label>
-              <p className="text-sm">{new Date(metadata.generatedAt).toLocaleString()}</p>
+              <p className="text-sm">
+                {metadata.generatedAt ? new Date(metadata.generatedAt).toLocaleString() : "N/A"}
+              </p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Author</label>
-              <p className="text-lg">{metadata.author}</p>
+              <p className="text-lg">{formatMetadataValue(metadata.author)}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Dataset Registry Version</label>
-              <Badge variant="outline" className="text-base">v{metadata.datasetRegistryVersion}</Badge>
+              <Badge variant="outline" className="text-base">
+                {metadata.datasetRegistryVersion ? `v${metadata.datasetRegistryVersion}` : "Unavailable"}
+              </Badge>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      {metadata.migrationState && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Migration Status</CardTitle>
+            <CardDescription>
+              Traceability is still served from legacy advisory artifacts, with snapshot awareness
+              from persisted advisory reports and versions.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Configured Version</label>
+              <p className="text-lg">{metadata.migrationState.normalizedVersion}</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Snapshot-backed Reports</label>
+              <p className="text-lg">{metadata.migrationState.snapshotBackedReportCount}</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Snapshot-backed Versions</label>
+              <p className="text-lg">{metadata.migrationState.snapshotBackedVersionCount}</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Traceability Status</label>
+              <Badge variant={metadata.traceabilityStatus === "complete" ? "default" : "secondary"}>
+                {metadata.traceabilityStatus}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {latestReport && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Latest Persisted Advisory Report</CardTitle>
+            <CardDescription>
+              Latest delivery-layer report linked to the current advisory read model.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 flex-1">
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Report ID</label>
+                <p className="text-lg font-mono">{latestReport.id}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Version</label>
+                <p className="text-lg font-mono">{formatMetadataValue(latestReport.version)}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Review Status</label>
+                <Badge variant="outline" className="mt-1">
+                  {formatMetadataValue(latestReport.reviewStatus)}
+                </Badge>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Generated</label>
+                <p className="text-sm">
+                  {latestReport.generatedDate
+                    ? new Date(latestReport.generatedDate).toLocaleString()
+                    : "N/A"}
+                </p>
+              </div>
+            </div>
+            <Button asChild variant="outline">
+              <Link href={`/advisory-reports/${latestReport.id}`}>Open report</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Source Artifacts */}
       <div className="space-y-6">
@@ -103,7 +187,7 @@ export default function AdvisoryTraceability() {
             <div>
               <label className="text-sm font-medium text-muted-foreground">File Path</label>
               <code className="block mt-1 bg-muted px-3 py-2 rounded text-sm">
-                {metadata.sourceArtifacts.advisoryMarkdown.path}
+                {metadata.sourceArtifacts?.advisoryMarkdown?.path ?? "Unavailable for current advisory version"}
               </code>
             </div>
             <div>
@@ -112,12 +196,14 @@ export default function AdvisoryTraceability() {
                 SHA256 Hash
               </label>
               <code className="block mt-1 bg-muted px-3 py-2 rounded text-xs font-mono break-all">
-                {metadata.sourceArtifacts.advisoryMarkdown.sha256}
+                {metadata.sourceArtifacts?.advisoryMarkdown?.sha256 ?? "Unavailable"}
               </code>
             </div>
-            <div className="flex items-center gap-2 text-sm text-green-600">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <CheckCircle2 className="h-4 w-4" />
-              <span>Integrity verified</span>
+              <span>
+                {metadata.sourceArtifacts?.advisoryMarkdown ? "Integrity verified" : "Legacy traceability data not available for this advisory version"}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -135,12 +221,16 @@ export default function AdvisoryTraceability() {
             <div>
               <label className="text-sm font-medium text-muted-foreground">File Path</label>
               <code className="block mt-1 bg-muted px-3 py-2 rounded text-sm">
-                {metadata.sourceArtifacts.datasetRegistry.path}
+                {metadata.sourceArtifacts?.datasetRegistry?.path ?? "Unavailable"}
               </code>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Version</label>
-              <Badge variant="outline" className="mt-1">v{metadata.sourceArtifacts.datasetRegistry.version}</Badge>
+              <Badge variant="outline" className="mt-1">
+                {metadata.sourceArtifacts?.datasetRegistry?.version
+                  ? `v${metadata.sourceArtifacts.datasetRegistry.version}`
+                  : "Unavailable"}
+              </Badge>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
@@ -148,12 +238,14 @@ export default function AdvisoryTraceability() {
                 SHA256 Hash
               </label>
               <code className="block mt-1 bg-muted px-3 py-2 rounded text-xs font-mono break-all">
-                {metadata.sourceArtifacts.datasetRegistry.sha256}
+                {metadata.sourceArtifacts?.datasetRegistry?.sha256 ?? "Unavailable"}
               </code>
             </div>
-            <div className="flex items-center gap-2 text-sm text-green-600">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <CheckCircle2 className="h-4 w-4" />
-              <span>Integrity verified</span>
+              <span>
+                {metadata.sourceArtifacts?.datasetRegistry ? "Integrity verified" : "Dataset registry traceability unavailable for this advisory version"}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -171,12 +263,14 @@ export default function AdvisoryTraceability() {
             <div>
               <label className="text-sm font-medium text-muted-foreground">Schema ID</label>
               <code className="block mt-1 bg-muted px-3 py-2 rounded text-sm break-all">
-                {metadata.sourceArtifacts.schema.id}
+                {metadata.sourceArtifacts?.schema?.id ?? "Unavailable"}
               </code>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Version</label>
-              <Badge variant="outline" className="mt-1">{metadata.sourceArtifacts.schema.version}</Badge>
+              <Badge variant="outline" className="mt-1">
+                {metadata.sourceArtifacts?.schema?.version ?? "Unavailable"}
+              </Badge>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
@@ -184,12 +278,14 @@ export default function AdvisoryTraceability() {
                 SHA256 Hash
               </label>
               <code className="block mt-1 bg-muted px-3 py-2 rounded text-xs font-mono break-all">
-                {metadata.sourceArtifacts.schema.sha256}
+                {metadata.sourceArtifacts?.schema?.sha256 ?? "Unavailable"}
               </code>
             </div>
-            <div className="flex items-center gap-2 text-sm text-green-600">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <CheckCircle2 className="h-4 w-4" />
-              <span>Integrity verified</span>
+              <span>
+                {metadata.sourceArtifacts?.schema ? "Integrity verified" : "Schema traceability unavailable for this advisory version"}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -205,27 +301,39 @@ export default function AdvisoryTraceability() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <div>
               <label className="text-sm font-medium text-muted-foreground">Total Datapoints</label>
-              <p className="text-2xl font-bold">{metadata.metadata.totalDatapoints.toLocaleString()}</p>
+              <p className="text-2xl font-bold">
+                {metadata.metadata?.totalDatapoints != null
+                  ? metadata.metadata.totalDatapoints.toLocaleString()
+                  : "N/A"}
+              </p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Total Attributes</label>
-              <p className="text-2xl font-bold">{metadata.metadata.totalAttributes.toLocaleString()}</p>
+              <p className="text-2xl font-bold">
+                {metadata.metadata?.totalAttributes != null
+                  ? metadata.metadata.totalAttributes.toLocaleString()
+                  : "N/A"}
+              </p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Total Records</label>
-              <p className="text-2xl font-bold">{metadata.metadata.totalRecords.toLocaleString()}</p>
+              <p className="text-2xl font-bold">
+                {metadata.metadata?.totalRecords != null
+                  ? metadata.metadata.totalRecords.toLocaleString()
+                  : "N/A"}
+              </p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Regulations Covered</label>
-              <p className="text-2xl font-bold">{metadata.metadata.regulationsCovered}</p>
+              <p className="text-2xl font-bold">{metadata.metadata?.regulationsCovered ?? "N/A"}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Sector Models</label>
-              <p className="text-2xl font-bold">{metadata.metadata.sectorsCovered}</p>
+              <p className="text-2xl font-bold">{metadata.metadata?.sectorsCovered ?? "N/A"}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Total Mappings</label>
-              <p className="text-2xl font-bold">{metadata.metadata.totalMappings}</p>
+              <p className="text-2xl font-bold">{metadata.metadata?.totalMappings ?? "N/A"}</p>
             </div>
           </div>
         </CardContent>

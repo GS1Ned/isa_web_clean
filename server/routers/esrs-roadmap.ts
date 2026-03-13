@@ -3,6 +3,11 @@ import { publicProcedure, router } from "../_core/trpc";
 import { invokeLLM } from "../_core/llm";
 import { getAllEsrsGs1Mappings } from "../db-esrs-gs1-mapping";
 import { serverLogger } from "../_core/logger-wiring";
+import {
+  buildRoadmapDecisionArtifact,
+  EsrsRoadmapDecisionArtifactSchema,
+} from "../esrs-decision-artifacts.js";
+import { collectEvidenceRefsForTerms } from "../source-provenance.js";
 
 
 // ESRS-GS1 Roadmap phase types
@@ -28,7 +33,62 @@ const EsrsRoadmapSchema = z.object({
   summary: z.string(),
   totalDuration: z.string(),
   generatedAt: z.string(),
+  decisionArtifact: EsrsRoadmapDecisionArtifactSchema,
 });
+
+type EsrsRoadmap = z.infer<typeof EsrsRoadmapSchema>;
+
+async function finalizeRoadmapResult(input: {
+  sector: string;
+  esrsRequirements: string[];
+  companySize: "sme" | "large";
+  roadmapData: {
+    summary: string;
+    totalDuration: string;
+    phases: Array<z.infer<typeof EsrsRoadmapPhaseSchema>>;
+  };
+  mappingCount: number;
+  mode: "llm" | "fallback";
+  basis: string;
+}): Promise<EsrsRoadmap> {
+  const generatedAt = new Date().toISOString();
+  const phaseCount = input.roadmapData.phases.length;
+  const criticalPhaseCount = input.roadmapData.phases.filter(
+    (phase) => phase.priority === "critical"
+  ).length;
+  const quickWinCount = input.roadmapData.phases.filter(
+    (phase) => phase.timeframe === "quick_win"
+  ).length;
+
+  const evidenceRefs = await collectEvidenceRefsForTerms({
+    terms: input.esrsRequirements,
+    preferredSourceTypes: ["esrs_datapoint", "regulation", "standard"],
+    limit: 6,
+  });
+
+  const decisionArtifact = buildRoadmapDecisionArtifact({
+    generatedAt,
+    sector: input.sector,
+    companySize: input.companySize,
+    esrsRequirements: input.esrsRequirements,
+    phaseCount,
+    criticalPhaseCount,
+    quickWinCount,
+    mappingCount: input.mappingCount,
+    topPhaseIds: input.roadmapData.phases.map((phase) => phase.id),
+    mode: input.mode,
+    basis: input.basis,
+    evidenceRefs,
+  });
+
+  return EsrsRoadmapSchema.parse({
+    sector: input.sector,
+    esrsRequirements: input.esrsRequirements,
+    ...input.roadmapData,
+    generatedAt,
+    decisionArtifact,
+  });
+}
 
 export const esrsRoadmapRouter = router({
   /**
@@ -181,16 +241,15 @@ Return ONLY a valid JSON object matching this schema:
         }
 
         const roadmapData = JSON.parse(content);
-
-        // Validate and return roadmap
-        const roadmap = {
+        return await finalizeRoadmapResult({
           sector,
           esrsRequirements,
-          ...roadmapData,
-          generatedAt: new Date().toISOString(),
-        };
-
-        return EsrsRoadmapSchema.parse(roadmap);
+          companySize,
+          roadmapData,
+          mappingCount: relevantMappings.length,
+          mode: "llm",
+          basis: `LLM roadmap synthesis grounded in ${relevantMappings.length} relevant GS1-ESRS mappings.`,
+        });
       } catch (error) {
         serverLogger.error("[ESRSRoadmap] Failed to generate roadmap:", error);
 
@@ -234,14 +293,19 @@ Return ONLY a valid JSON object matching this schema:
           },
         ];
 
-        return {
+        return await finalizeRoadmapResult({
           sector,
           esrsRequirements,
-          summary: `Basic roadmap for ${sector} sector covering ${esrsRequirements.join(", ")}`,
-          totalDuration: "6-12 months",
-          phases: fallbackPhases,
-          generatedAt: new Date().toISOString(),
-        };
+          companySize,
+          roadmapData: {
+            summary: `Basic roadmap for ${sector} sector covering ${esrsRequirements.join(", ")}`,
+            totalDuration: "6-12 months",
+            phases: fallbackPhases,
+          },
+          mappingCount: relevantMappings.length,
+          mode: "fallback",
+          basis: `Fallback roadmap generated from ${relevantMappings.length} relevant GS1-ESRS mappings without an LLM response.`,
+        });
       }
     }),
 

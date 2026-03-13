@@ -2,7 +2,49 @@ import { describe, expect, it } from "vitest";
 import { appRouter } from "../routers";
 import type { TrpcContext } from "../_core/context";
 import { getDb } from "../db";
-import { advisoryReports } from "../../drizzle/schema";
+import { advisoryReports, advisoryReportVersions } from "../../drizzle/schema";
+import type { EsrsDecisionArtifact } from "../esrs-decision-artifacts";
+
+const mockDecisionArtifacts: EsrsDecisionArtifact[] = [
+  {
+    artifactVersion: "1.0",
+    artifactType: "gap_analysis",
+    capability: "ESRS_MAPPING",
+    generatedAt: "2026-03-04T12:00:00.000Z",
+    subject: {
+      sector: "Retail",
+      companySize: "large",
+      targetRegulations: ["CSRD"],
+    },
+    confidence: {
+      level: "medium",
+      score: 0.67,
+      basis: "Coverage analysis across mapped requirements.",
+      reviewRecommended: true,
+    },
+    evidence: {
+      codePaths: ["server/routers/gap-analyzer.ts"],
+      dataSources: ["gs1_esrs_mappings"],
+      evidenceRefs: [
+        {
+          sourceChunkId: 1001,
+          evidenceKey: "ke:1001:hash",
+          citationLabel: "CSRD — Article 19a",
+          sourceLocator:
+            "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022L2464",
+        },
+      ],
+    },
+    summary: {
+      totalRequirements: 12,
+      coveragePercentage: 58,
+      criticalGapCount: 2,
+      highGapCount: 3,
+      remediationPathCount: 1,
+      criticalGapIds: ["gap-1"],
+    },
+  },
+];
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
 
@@ -100,9 +142,11 @@ describe("advisoryReports router", () => {
       expect(result).toHaveProperty("total");
       expect(result).toHaveProperty("byReviewStatus");
       expect(result).toHaveProperty("byPublicationStatus");
+      expect(result).toHaveProperty("stale");
       expect(typeof result.total).toBe("number");
       expect(Array.isArray(result.byReviewStatus)).toBe(true);
       expect(Array.isArray(result.byPublicationStatus)).toBe(true);
+      expect(typeof (result as any).stale?.count).toBe("number");
     });
   });
 
@@ -116,6 +160,7 @@ describe("advisoryReports router", () => {
         reportType: "COMPLIANCE_ASSESSMENT" as const,
         content: "# Test Report\n\nThis is a test compliance assessment report.",
         executiveSummary: "Test summary for compliance assessment",
+        decisionArtifacts: mockDecisionArtifacts,
         version: "1.0.0",
       };
 
@@ -206,6 +251,38 @@ describe("advisoryReports router", () => {
         await db.delete(advisoryReports).where({ id: Number(result.insertId) } as any);
       }
     });
+
+    it("persists decision artifacts when provided", async () => {
+      const ctx = createAdminContext();
+      const caller = appRouter.createCaller(ctx);
+
+      const result = await caller.advisoryReports.create({
+        title: "Decision Artifact Persistence Test",
+        reportType: "GAP_ANALYSIS" as const,
+        content: "Testing persisted decision artifacts",
+        version: "1.0.0",
+        decisionArtifacts: mockDecisionArtifacts,
+      });
+
+      const db = await getDb();
+      if (db && result.insertId) {
+        const created = await db
+          .select()
+          .from(advisoryReports)
+          .where({ id: Number(result.insertId) } as any)
+          .limit(1);
+
+        const persistedArtifacts = created[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined;
+
+        expect(Array.isArray(persistedArtifacts)).toBe(true);
+        expect(persistedArtifacts?.[0]?.artifactType).toBe("gap_analysis");
+        expect(persistedArtifacts?.[0]?.evidence?.evidenceRefs?.[0]?.evidenceKey).toBe(
+          "ke:1001:hash"
+        );
+
+        await db.delete(advisoryReports).where({ id: Number(result.insertId) } as any);
+      }
+    });
   });
 
   describe("update (admin only)", () => {
@@ -228,6 +305,7 @@ describe("advisoryReports router", () => {
         id: reportId,
         content: "Updated content",
         title: "Updated Title",
+        decisionArtifacts: mockDecisionArtifacts,
       });
 
       expect(updateResult).toBeDefined();
@@ -243,6 +321,11 @@ describe("advisoryReports router", () => {
 
         expect(updated[0]?.content).toBe("Updated content");
         expect(updated[0]?.title).toBe("Updated Title");
+        expect((updated[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.artifactType).toBe("gap_analysis");
+        expect(
+          (updated[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.evidence
+            ?.evidenceRefs?.[0]?.citationLabel
+        ).toContain("Article 19a");
 
         // Clean up
         await db.delete(advisoryReports).where({ id: reportId } as any);
@@ -327,6 +410,7 @@ describe("advisoryReports router", () => {
         reportType: "REGULATION_IMPACT" as const,
         content: "Version 1.0.0 content",
         version: "1.0.0",
+        decisionArtifacts: mockDecisionArtifacts,
       });
 
       const reportId = Number(createResult.insertId);
@@ -344,8 +428,91 @@ describe("advisoryReports router", () => {
       // Clean up
       const db = await getDb();
       if (db) {
+        const versions = await db
+          .select()
+          .from(advisoryReportVersions)
+          .where({ reportId } as any);
+
+        expect(versions).toHaveLength(1);
+        expect((versions[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.artifactType).toBe("gap_analysis");
+        expect(
+          (versions[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.evidence
+            ?.evidenceRefs?.[0]?.sourceChunkId
+        ).toBe(1001);
+
+        await db.delete(advisoryReportVersions).where({ reportId } as any);
         await db.delete(advisoryReports).where({ id: reportId } as any);
       }
+    });
+
+    it("allows explicit version decision artifacts to override the source report snapshot", async () => {
+      const ctx = createAdminContext();
+      const caller = appRouter.createCaller(ctx);
+
+      const createResult = await caller.advisoryReports.create({
+        title: "Version Override Test Report",
+        reportType: "REGULATION_IMPACT" as const,
+        content: "Version 1.0.0 content",
+        version: "1.0.0",
+        decisionArtifacts: mockDecisionArtifacts,
+      });
+
+      const reportId = Number(createResult.insertId);
+      const overrideArtifacts: EsrsDecisionArtifact[] = [
+        {
+          ...mockDecisionArtifacts[0],
+          artifactType: "roadmap",
+          summary: {
+            phaseCount: 3,
+            criticalPhaseCount: 1,
+            quickWinCount: 1,
+            mappingCount: 8,
+            topPhaseIds: ["phase-1"],
+          },
+          subject: {
+            sector: "Retail",
+            companySize: "large",
+            esrsRequirements: ["ESRS E1"],
+          },
+        } as EsrsDecisionArtifact,
+      ];
+
+      await caller.advisoryReports.createVersion({
+        reportId,
+        version: "1.1.0",
+        content: "Version 1.1.0 content",
+        decisionArtifacts: overrideArtifacts,
+      });
+
+      const db = await getDb();
+      if (db) {
+        const versions = await db
+          .select()
+          .from(advisoryReportVersions)
+          .where({ reportId } as any);
+
+        expect((versions[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.artifactType).toBe("roadmap");
+        expect(
+          (versions[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.evidence
+            ?.evidenceRefs?.[0]?.sourceChunkId
+        ).toBe(1001);
+
+        await db.delete(advisoryReportVersions).where({ reportId } as any);
+        await db.delete(advisoryReports).where({ id: reportId } as any);
+      }
+    });
+
+    it("rejects version creation when the source report does not exist", async () => {
+      const ctx = createAdminContext();
+      const caller = appRouter.createCaller(ctx);
+
+      await expect(
+        caller.advisoryReports.createVersion({
+          reportId: 999999,
+          version: "1.1.0",
+          content: "Missing source report",
+        }),
+      ).rejects.toThrow("Report not found");
     });
 
     it("rejects non-admin from creating version", async () => {

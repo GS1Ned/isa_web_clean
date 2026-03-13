@@ -217,12 +217,21 @@ const normalizeToolChoice = (
 const resolveApiUrl = () =>
   ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0
     ? `${ENV.forgeApiUrl.replace(/\/$/, "")}/v1/chat/completions`
-    : "https://forge.manus.im/v1/chat/completions";
+    : "https://api.openai.com/v1/chat/completions";
 
-const assertApiKey = () => {
-  if (!ENV.forgeApiKey) {
+const getApiKey = () => {
+  // Use forgeApiKey if forgeApiUrl is configured, otherwise use openaiApiKey
+  if (ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0) {
+    if (!ENV.forgeApiKey) {
+      throw new Error("BUILT_IN_FORGE_API_KEY is not configured but FORGE_API_URL is set");
+    }
+    return ENV.forgeApiKey;
+  }
+  // Default to OpenAI API
+  if (!ENV.openaiApiKey) {
     throw new Error("OPENAI_API_KEY is not configured");
   }
+  return ENV.openaiApiKey;
 };
 
 const normalizeResponseFormat = ({
@@ -271,7 +280,7 @@ const normalizeResponseFormat = ({
 };
 
 export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
-  assertApiKey();
+  // API key validation is handled by getApiKey() when making the request
 
   const {
     messages,
@@ -285,7 +294,7 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
   } = params;
 
   const payload: Record<string, unknown> = {
-    model: "gemini-2.5-flash",
+    model: "gpt-4o-mini",
     messages: messages.map(normalizeMessage),
   };
 
@@ -301,10 +310,8 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     payload.tool_choice = normalizedToolChoice;
   }
 
-  payload.max_tokens = 32768;
-  payload.thinking = {
-    budget_tokens: 128,
-  };
+  payload.max_tokens = 4096;
+  // Thinking mode disabled for OpenAI compatibility
 
   const normalizedResponseFormat = normalizeResponseFormat({
     responseFormat,
@@ -321,7 +328,7 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      authorization: `Bearer ${ENV.forgeApiKey}`,
+      authorization: `Bearer ${getApiKey()}`,
     },
     body: JSON.stringify(payload),
   });

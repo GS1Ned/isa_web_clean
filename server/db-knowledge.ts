@@ -5,10 +5,11 @@
  * Uses LLM-based relevance scoring for semantic search.
  */
 
-import { getDb } from "./db";
+import { getDb, getDbEngine } from "./db";
 import { eq, desc, sql } from "drizzle-orm";
 import { generateContentHash, scoreRelevance } from "./embedding";
 import { serverLogger } from "./_core/logger-wiring";
+import { getRuntimeSchema } from "./db-runtime-schema";
 
 
 /**
@@ -17,6 +18,7 @@ import { serverLogger } from "./_core/logger-wiring";
 export async function storeKnowledgeChunk(data: {
   sourceType: "regulation" | "standard" | "esrs_datapoint" | "dutch_initiative" | "esrs_gs1_mapping";
   sourceId: number;
+  sourceChunkId?: number;
   content: string;
   title: string;
   url?: string;
@@ -28,7 +30,7 @@ export async function storeKnowledgeChunk(data: {
   if (!db) return null;
 
   try {
-    const { knowledgeEmbeddings } = await import("../drizzle/schema");
+    const { knowledgeEmbeddings } = (await getRuntimeSchema()) as any;
 
     const contentHash = generateContentHash(data.content);
 
@@ -47,6 +49,7 @@ export async function storeKnowledgeChunk(data: {
     const [result] = await db.insert(knowledgeEmbeddings).values({
       sourceType: data.sourceType,
       sourceId: data.sourceId,
+      sourceChunkId: data.sourceChunkId ?? null,
       content: data.content,
       contentHash,
       embedding: [] as any, // Empty array instead of null for type compatibility
@@ -56,7 +59,7 @@ export async function storeKnowledgeChunk(data: {
       datasetId: data.datasetId,
       datasetVersion: data.datasetVersion,
       lastVerifiedDate: data.lastVerifiedDate ? (typeof data.lastVerifiedDate === 'string' ? data.lastVerifiedDate : data.lastVerifiedDate.toISOString()) : null,
-      isDeprecated: 0,
+      isDeprecated: false as any,
       deprecationReason: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -83,7 +86,7 @@ export async function searchKnowledgeChunks(
   if (!db) return [];
 
   try {
-    const { knowledgeEmbeddings } = await import("../drizzle/schema");
+    const { knowledgeEmbeddings } = (await getRuntimeSchema()) as any;
 
     // Fetch all chunks (or filtered by source type)
     let dbQuery = db.select().from(knowledgeEmbeddings);
@@ -142,7 +145,7 @@ export async function getKnowledgeStats() {
   if (!db) return [];
 
   try {
-    const { knowledgeEmbeddings } = await import("../drizzle/schema");
+    const { knowledgeEmbeddings } = (await getRuntimeSchema()) as any;
 
     const stats = await db
       .select({
@@ -167,15 +170,21 @@ export async function createQAConversation(userId?: number, title?: string) {
   if (!db) return null;
 
   try {
-    const { qaConversations } = await import("../drizzle/schema");
-
-    const [result] = await db.insert(qaConversations).values({
+    const { qaConversations } = (await getRuntimeSchema()) as any;
+    const values = {
       userId,
       title,
       messageCount: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    });
+    };
+
+    if (getDbEngine() === "postgres") {
+      const [result] = await db.insert(qaConversations).values(values).returning();
+      return result ?? null;
+    }
+
+    const [result] = await db.insert(qaConversations).values(values);
 
     return {
       id: result.insertId,
@@ -205,17 +214,26 @@ export async function addQAMessage(data: {
   if (!db) return null;
 
   try {
-    const { qaMessages, qaConversations } = await import("../drizzle/schema");
+    const { qaMessages, qaConversations } = (await getRuntimeSchema()) as any;
 
     // Insert message
-    const [result] = await db.insert(qaMessages).values({
+    const values = {
       conversationId: data.conversationId,
       role: data.role,
       content: data.content,
       sources: data.sources as any,
       retrievedChunks: data.retrievedChunks,
       createdAt: new Date().toISOString(),
-    });
+    };
+
+    let insertedId: number | null = null;
+    if (getDbEngine() === "postgres") {
+      const [result] = await db.insert(qaMessages).values(values).returning();
+      insertedId = result?.id ?? null;
+    } else {
+      const [result] = await db.insert(qaMessages).values(values);
+      insertedId = result.insertId;
+    }
 
     // Update conversation message count
     await db
@@ -227,7 +245,7 @@ export async function addQAMessage(data: {
       .where(eq(qaConversations.id, data.conversationId));
 
     return {
-      id: result.insertId,
+      id: insertedId,
       ...data,
       createdAt: new Date().toISOString(),
     };
@@ -245,7 +263,7 @@ export async function getQAConversation(conversationId: number) {
   if (!db) return null;
 
   try {
-    const { qaConversations, qaMessages } = await import("../drizzle/schema");
+    const { qaConversations, qaMessages } = (await getRuntimeSchema()) as any;
 
     // Get conversation
     const conversation = await db
@@ -286,7 +304,7 @@ export async function getUserQAConversations(
   if (!db) return [];
 
   try {
-    const { qaConversations } = await import("../drizzle/schema");
+    const { qaConversations } = (await getRuntimeSchema()) as any;
 
     return await db
       .select()
@@ -311,7 +329,7 @@ export async function deleteQAConversation(
   if (!db) return false;
 
   try {
-    const { qaConversations, qaMessages } = await import("../drizzle/schema");
+    const { qaConversations, qaMessages } = (await getRuntimeSchema()) as any;
 
     // Verify ownership
     const conversation = await db

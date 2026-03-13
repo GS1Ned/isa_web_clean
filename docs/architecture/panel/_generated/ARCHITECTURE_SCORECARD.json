@@ -1,0 +1,309 @@
+{
+  "$schema": "../../../docs/quality/schemas/architecture-scorecard.schema.json",
+  "timestamp": "2026-02-12T00:00:00Z",
+  "framework_version": "Repo-Tight v5",
+  "overall_score": 6.2,
+  "dimensions": {
+    "D1": {
+      "name": "Domain correctness",
+      "score": 7.0,
+      "owner_role": "Domain Architect",
+      "proof_artifacts": [
+        "data/metadata/dataset_registry.json",
+        "data/efrag/esrs_datapoints_efrag_ig3.json",
+        "docs/planning/refactoring/FILE_INVENTORY.json"
+      ],
+      "thresholds_met": false,
+      "thresholds": {
+        "regulation_count_min": 38,
+        "esrs_datapoint_count_min": 1184,
+        "gs1_standard_count_min": 60,
+        "mapping_citation_rate_min": 1.0
+      },
+      "risks": [
+        "No automated validation of regulation-to-standard mapping correctness",
+        "ESRS datapoint definitions not verified against EFRAG IG3 checksums",
+        "GS1 standards catalog lacks version tracking"
+      ],
+      "unknowns": [
+        "Actual mapping accuracy (no ground truth dataset)",
+        "Coverage completeness vs. real-world compliance needs"
+      ]
+    },
+    "D2": {
+      "name": "Evidence & provenance integrity",
+      "score": 7.5,
+      "owner_role": "Data Architect/Governance",
+      "proof_artifacts": [
+        "docs/planning/refactoring/EVIDENCE_MARKERS.json",
+        "data/metadata/dataset_registry.json",
+        "docs/governance/_root/ISA_GOVERNANCE.md"
+      ],
+      "thresholds_met": true,
+      "thresholds": {
+        "evidence_marker_count_min": 100,
+        "dataset_provenance_completeness": 1.0,
+        "checksum_coverage": 1.0
+      },
+      "risks": [
+        "Evidence markers not validated in CI",
+        "No automated provenance chain verification"
+      ],
+      "unknowns": [
+        "Evidence marker semantic validity (links may be stale)"
+      ]
+    },
+    "D3": {
+      "name": "Security",
+      "score": 5.0,
+      "owner_role": "Security Architect",
+      "proof_artifacts": [],
+      "thresholds_met": false,
+      "thresholds": {
+        "secret_leaks": 0,
+        "authz_bypass_tests_pass": true,
+        "dependency_critical_vulns": 0
+      },
+      "risks": [
+        "No automated secret scanning",
+        "No authorization bypass tests",
+        "No dependency vulnerability scanning",
+        "Manus OAuth integration not independently tested"
+      ],
+      "unknowns": [
+        "Actual secret leak exposure",
+        "Authorization boundary correctness",
+        "Dependency vulnerability count"
+      ]
+    },
+    "D4": {
+      "name": "Reliability",
+      "score": 5.0,
+      "owner_role": "SRE/Platform Architect",
+      "proof_artifacts": [],
+      "thresholds_met": false,
+      "thresholds": {
+        "job_success_rate_min": 0.95,
+        "replay_idempotency_pass": true,
+        "backup_restore_rto_max": 3600,
+        "backup_restore_rpo_max": 86400
+      },
+      "risks": [
+        "No SLO monitoring",
+        "No error budget tracking",
+        "No automated backup/restore testing",
+        "Pipeline failures not tracked systematically"
+      ],
+      "unknowns": [
+        "Actual availability",
+        "Actual MTTR",
+        "Backup/restore capability"
+      ]
+    },
+    "D5": {
+      "name": "Performance & scalability",
+      "score": 5.0,
+      "owner_role": "Performance Engineer",
+      "proof_artifacts": [],
+      "thresholds_met": false,
+      "thresholds": {
+        "p95_latency_ms_max": 3000,
+        "p99_latency_ms_max": 5000,
+        "throughput_min_rps": 10,
+        "db_query_p95_ms_max": 500
+      },
+      "risks": [
+        "No performance testing",
+        "No latency monitoring",
+        "No load testing",
+        "Database query performance not profiled"
+      ],
+      "unknowns": [
+        "Actual p95/p99 latency",
+        "Actual throughput capacity",
+        "Database query performance"
+      ]
+    },
+    "D6": {
+      "name": "Maintainability",
+      "score": 7.0,
+      "owner_role": "Principal Software Architect",
+      "proof_artifacts": [
+        "docs/planning/refactoring/QUALITY_SCORECARDS.json",
+        "docs/spec/*/RUNTIME_CONTRACT.md",
+        "docs/planning/refactoring/FILE_INVENTORY.json"
+      ],
+      "thresholds_met": true,
+      "thresholds": {
+        "contract_completeness_min": 0.6,
+        "quality_score_min": 70,
+        "unknown_file_rate_max": 0.05
+      },
+      "risks": [
+        "TypeScript errors (290) block compilation",
+        "Runtime contracts only 70% complete",
+        "Module boundaries not enforced"
+      ],
+      "unknowns": [
+        "Actual coupling metrics",
+        "Cyclomatic complexity distribution"
+      ]
+    },
+    "D7": {
+      "name": "Testability & determinism",
+      "score": 6.5,
+      "owner_role": "Test Architect/QA",
+      "proof_artifacts": [
+        "docs/TEST_FAILURE_TRIAGE.md",
+        "README.md"
+      ],
+      "thresholds_met": false,
+      "thresholds": {
+        "flake_rate_max": 0.05,
+        "determinism_hash_match": true,
+        "coverage_floor": 0.8
+      },
+      "risks": [
+        "57 test failures (20 flaky)",
+        "No flake rate tracking",
+        "No determinism validation",
+        "No coverage tracking"
+      ],
+      "unknowns": [
+        "Actual flake rate",
+        "Test determinism",
+        "Code coverage"
+      ]
+    },
+    "D8": {
+      "name": "Observability",
+      "score": 5.0,
+      "owner_role": "SRE/Platform Architect",
+      "proof_artifacts": [
+        "server/_core/logger-wiring.ts"
+      ],
+      "thresholds_met": false,
+      "thresholds": {
+        "structured_logging_coverage": 1.0,
+        "trace_id_propagation": true,
+        "error_rate_alerting": true
+      },
+      "risks": [
+        "No distributed tracing",
+        "No metrics collection",
+        "No alerting",
+        "Logs not centralized"
+      ],
+      "unknowns": [
+        "Log coverage",
+        "Trace completeness",
+        "Alert effectiveness"
+      ]
+    },
+    "D9": {
+      "name": "Data model fitness",
+      "score": 7.0,
+      "owner_role": "Data Architect/Governance",
+      "proof_artifacts": [
+        "drizzle/schema.ts",
+        "drizzle/schema_*.ts",
+        "data/metadata/dataset_registry.json"
+      ],
+      "thresholds_met": true,
+      "thresholds": {
+        "schema_normalization_score": 0.8,
+        "migration_reversibility": true,
+        "referential_integrity": true
+      },
+      "risks": [
+        "No schema validation in CI",
+        "No migration testing",
+        "Foreign key constraints not enforced"
+      ],
+      "unknowns": [
+        "Schema normalization quality",
+        "Migration reversibility"
+      ]
+    },
+    "D10": {
+      "name": "LLM/RAG quality",
+      "score": 6.0,
+      "owner_role": "RAG/LLM Architect",
+      "proof_artifacts": [
+        "server/evaluation/rag-eval-harness.ts",
+        "server/services/rag-tracing/"
+      ],
+      "thresholds_met": false,
+      "thresholds": {
+        "groundedness_min": 0.85,
+        "citation_precision_min": 0.90,
+        "citation_recall_min": 0.80,
+        "answer_consistency_min": 0.85,
+        "cost_per_query_max": 0.10,
+        "p95_rag_latency_ms_max": 3000
+      },
+      "risks": [
+        "No automated RAG evaluation",
+        "No citation validation",
+        "No cost tracking",
+        "No latency monitoring"
+      ],
+      "unknowns": [
+        "Actual groundedness",
+        "Actual citation precision/recall",
+        "Actual cost per query",
+        "Actual RAG latency"
+      ]
+    },
+    "D11": {
+      "name": "UX/IA coherence",
+      "score": 6.0,
+      "owner_role": "UX/IA Architect",
+      "proof_artifacts": [
+        "client/src/pages/",
+        "client/src/components/"
+      ],
+      "thresholds_met": false,
+      "thresholds": {
+        "wcag_aa_compliance": true,
+        "page_load_p95_ms_max": 2000,
+        "interaction_latency_p95_ms_max": 100
+      },
+      "risks": [
+        "No accessibility testing",
+        "No UX performance monitoring",
+        "No user testing"
+      ],
+      "unknowns": [
+        "WCAG compliance level",
+        "Actual page load times",
+        "User satisfaction"
+      ]
+    },
+    "D12": {
+      "name": "Operational governance",
+      "score": 7.5,
+      "owner_role": "Principal Software Architect",
+      "proof_artifacts": [
+        "docs/governance/_root/ISA_GOVERNANCE.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md",
+        "scripts/refactor/validate_gates.sh"
+      ],
+      "thresholds_met": true,
+      "thresholds": {
+        "validation_gates_passing": 6,
+        "governance_doc_completeness": 1.0,
+        "ci_gate_coverage": 0.8
+      },
+      "risks": [
+        "Error budget policy not enforced",
+        "SLO monitoring not implemented",
+        "Schema validation not in CI"
+      ],
+      "unknowns": [
+        "Governance adherence rate",
+        "Policy violation frequency"
+      ]
+    }
+  }
+}

@@ -1,0 +1,389 @@
+{
+  "$schema_note": "Machine-readable registry of script clusters for Phase 4 consolidation.",
+  "$version": "1.1.0",
+  "$generated": "2026-02-04",
+  "$source": "Updated after deprecated script cleanup (32 canonical scripts remain)",
+  "clusters": [
+    {
+      "cluster_id": "ingestion",
+      "description": "Content ingestion pipelines for knowledge base population",
+      "label": "PRODUCT_PIPELINE",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [
+        ".github/workflows/generate-embeddings.yml",
+        "scripts/run-all-ingestion.ts"
+      ],
+      "canonical_scripts": [
+        "scripts/ingest_gs1nl_content.py",
+        "scripts/ingest_gs1nl_sector_content.py",
+        "scripts/ingest_sustainability_content.py",
+        "scripts/ingest_fashion_dpp_content.py",
+        "scripts/run-all-ingestion.ts"
+      ],
+      "inputs": [
+        "data/standards/gs1-nl/**/*.xlsx",
+        "data/standards/sustainability/**/*.json"
+      ],
+      "outputs": [
+        "Database: knowledge_items table"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
+      "quality_gates": [
+        "scripts/validate_gs1_efrag_catalogue.py"
+      ],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "embeddings",
+      "description": "Vector embedding generation for semantic search",
+      "label": "PRODUCT_PIPELINE",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [
+        ".github/workflows/generate-embeddings.yml",
+        ".github/workflows/generate-embeddings-optimized.yml",
+        "scripts/cron-generate-embeddings.sh"
+      ],
+      "canonical_scripts": [
+        "scripts/generate_embeddings_standalone.ts",
+        "scripts/cron-generate-embeddings.sh"
+      ],
+      "inputs": [
+        "Database: knowledge_items table"
+      ],
+      "outputs": [
+        "Database: embeddings table"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL",
+        "OPENAI_API_KEY"
+      ],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "catalogue",
+      "description": "GS1/EFRAG catalogue generation and validation",
+      "label": "PRODUCT_PIPELINE",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [
+        ".github/workflows/catalogue-checks.yml",
+        ".github/workflows/update-gs1-efrag-catalogue.yml"
+      ],
+      "canonical_scripts": [
+        "scripts/isa-catalogue/generate_legacy_artefacts.py",
+        "scripts/isa-catalogue/export_run_to_repo.sh",
+        "scripts/isa-catalogue/iron_gate_catalogue.sh",
+        "scripts/validate_gs1_efrag_catalogue.py",
+        "scripts/verify_catalogue_entrypoints.py"
+      ],
+      "deprecated_scripts": [
+        "scripts/proto_crawl_catalogue.py"
+      ],
+      "inputs": [
+        "Database: knowledge_items table",
+        "data/standards/**/*"
+      ],
+      "outputs": [
+        "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.json",
+        "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
+      "quality_gates": [
+        "scripts/validate_gs1_efrag_catalogue.py",
+        "scripts/isa-catalogue/iron_gate_catalogue.sh"
+      ],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "parsing",
+      "description": "GS1 NL datamodel parsing from Excel sources",
+      "label": "DEV_TOOL",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [],
+      "canonical_scripts": [
+        "scripts/parse_gs1nl_datamodel.py"
+      ],
+      "inputs": [
+        "data/standards/gs1-nl/**/*.xlsx"
+      ],
+      "outputs": [
+        "Parsed JSON structures"
+      ],
+      "env_interfaces": [],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "advisory",
+      "description": "ESG advisory report generation",
+      "label": "PRODUCT_PIPELINE",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [],
+      "canonical_scripts": [
+        "scripts/extract_advisory_v1.py",
+        "scripts/validate_advisory.py",
+        "scripts/validate_advisory_schema.cjs"
+      ],
+      "inputs": [
+        "data/standards/**/*",
+        "Database: knowledge_items table"
+      ],
+      "outputs": [
+        "data/advisories/ISA_ADVISORY_v1.0.json"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
+      "quality_gates": [
+        "scripts/validate_advisory.py",
+        "scripts/validate_advisory_schema.cjs"
+      ],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "iron-protocol",
+      "description": "IRON Protocol compliance gates and context management",
+      "label": "PRODUCT_PIPELINE",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [
+        ".github/workflows/iron-gate.yml"
+      ],
+      "canonical_scripts": [
+        "scripts/iron-context.sh",
+        "scripts/iron-inventory.sh"
+      ],
+      "inputs": [
+        "isa.inventory.json",
+        "Repository state"
+      ],
+      "outputs": [
+        "CI gate pass/fail"
+      ],
+      "env_interfaces": [],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "datasets",
+      "description": "Dataset inventory and registry management",
+      "label": "DEV_TOOL",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [],
+      "canonical_scripts": [
+        "scripts/datasets/build_registry.py",
+        "scripts/datasets/generate_inventory.py"
+      ],
+      "inputs": [
+        "data/**/*"
+      ],
+      "outputs": [
+        "data/metadata/dataset_registry.json",
+        "docs/INVENTORY.csv"
+      ],
+      "env_interfaces": [],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "phase3-synthesis",
+      "description": "Canonical specification synthesis from documentation",
+      "label": "PRODUCT_PIPELINE",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [],
+      "canonical_scripts": [
+        "scripts/phase3_synthesis.py",
+        "scripts/validate_specs.py",
+        "scripts/validate_cluster_registry.py"
+      ],
+      "inputs": [
+        "outputs/document_index.json",
+        "outputs/cluster_map.json",
+        "outputs/authority_candidates.json"
+      ],
+      "outputs": [
+        "docs/spec/*.md",
+        "docs/spec/TRACEABILITY_MATRIX.csv"
+      ],
+      "env_interfaces": [
+        "ISA_REPO_ROOT"
+      ],
+      "quality_gates": [
+        "scripts/validate_specs.py",
+        "scripts/validate_cluster_registry.py"
+      ],
+      "run_config_refs": [
+        "docs/spec/RUN_CONFIG.json"
+      ]
+    },
+    {
+      "cluster_id": "esrs",
+      "description": "ESRS (European Sustainability Reporting Standards) data handling",
+      "label": "PRODUCT_PIPELINE",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [],
+      "canonical_scripts": [
+        "scripts/run-esrs-ingest.ts",
+        "scripts/create-esrs-tables.ts"
+      ],
+      "inputs": [
+        "data/standards/esrs/**/*"
+      ],
+      "outputs": [
+        "Database: esrs_* tables"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "ci-testing",
+      "description": "CI and integration testing scripts",
+      "label": "DEV_TOOL",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [],
+      "canonical_scripts": [
+        "scripts/run-ci-tests.sh",
+        "scripts/run-integration-tests.sh",
+        "scripts/run-unit-tests.sh"
+      ],
+      "inputs": [],
+      "outputs": [
+        "Test results"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "rag-evaluation",
+      "description": "RAG (Retrieval-Augmented Generation) evaluation and tracing",
+      "label": "DEV_TOOL",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [],
+      "canonical_scripts": [
+        "scripts/run-rag-evaluation.cjs",
+        "scripts/seed-golden-qa-pairs.cjs"
+      ],
+      "inputs": [
+        "Database: knowledge_items table"
+      ],
+      "outputs": [
+        "Evaluation metrics"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL",
+        "OPENAI_API_KEY"
+      ],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "eudr-mappings",
+      "description": "EUDR (EU Deforestation Regulation) mapping utilities",
+      "label": "ONE_OFF_MIGRATION",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [],
+      "canonical_scripts": [],
+      "inputs": [
+        "Database: mappings"
+      ],
+      "outputs": [
+        "Enhanced mappings"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "seeding",
+      "description": "Database seeding and data population scripts",
+      "label": "ONE_OFF_MIGRATION",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [],
+      "canonical_scripts": [
+        "scripts/seed-regulatory-change-log.ts"
+      ],
+      "inputs": [
+        "Seed data"
+      ],
+      "outputs": [
+        "Database: seeded tables"
+      ],
+      "env_interfaces": [
+        "DATABASE_URL"
+      ],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "legacy",
+      "description": "Legacy scripts pending triage or removal",
+      "label": "LEGACY_REPLACED",
+      "owned_by": "UNKNOWN_OWNER",
+      "entrypoints": [],
+      "canonical_scripts": [],
+      "inputs": [],
+      "outputs": [],
+      "env_interfaces": [],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "inspection",
+      "description": "One-off inspection and debugging scripts",
+      "label": "ONE_OFF_MIGRATION",
+      "owned_by": "UNKNOWN_OWNER",
+      "entrypoints": [],
+      "canonical_scripts": [],
+      "inputs": [
+        "data/standards/gs1-nl/**/*.xlsx"
+      ],
+      "outputs": [
+        "Console output"
+      ],
+      "env_interfaces": [],
+      "quality_gates": [],
+      "run_config_refs": []
+    },
+    {
+      "cluster_id": "utilities",
+      "description": "General utility and helper scripts",
+      "label": "DEV_TOOL",
+      "owned_by": "ISA Core Team",
+      "entrypoints": [],
+      "canonical_scripts": [
+        "scripts/generate-api-docs.ts",
+        "scripts/verify-data-files.ts",
+        "scripts/check-db-status.ts"
+      ],
+      "inputs": [],
+      "outputs": [],
+      "env_interfaces": [],
+      "quality_gates": [],
+      "run_config_refs": []
+    }
+  ],
+  "orphan_scripts": [],
+  "summary": {
+    "total_clusters": 16,
+    "total_scripts": 102,
+    "scripts_in_clusters": 102,
+    "orphan_scripts": 0,
+    "labels": {
+      "PRODUCT_PIPELINE": 8,
+      "DEV_TOOL": 5,
+      "ONE_OFF_MIGRATION": 2,
+      "LEGACY_REPLACED": 1
+    }
+  }
+}

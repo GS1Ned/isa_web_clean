@@ -1,0 +1,18 @@
+[
+  {
+    "from": "cron-configs",
+    "to": "ops/cron",
+    "type": "move",
+    "rationale": "Move cron configs and related docs under ops/cron (remove root clutter).",
+    "risk": "low",
+    "verification": "rg for old paths; run scripts that reference moved configs; CI required checks"
+  },
+  {
+    "from": "configs",
+    "to": "config",
+    "type": "move",
+    "rationale": "Converge config/ into config/ to remove ambiguity. Abort on collisions.",
+    "risk": "high",
+    "verification": "rg for old paths; run scripts that reference moved configs; CI required checks"
+  }
+]

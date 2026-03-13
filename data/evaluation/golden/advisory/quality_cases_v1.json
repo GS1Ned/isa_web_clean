@@ -1,0 +1,35 @@
+{
+  "dataset_id": "advisory_quality_cases_v1",
+  "notes": "Starter advisory quality cases for provenance traceability, rationale completeness, and stakeholder actionability.",
+  "cases": [
+    {
+      "id": "ADV-QUAL-A1",
+      "kind": "mapping_traceability",
+      "mapping_id": "esrs-e1-climate-carbon-footprint",
+      "required_fields": ["sourceAuthority", "rationale", "implementationGuidance", "gs1Attribute"],
+      "rationale_fields": ["rationale", "implementationGuidance"],
+      "actionability_fields": ["gs1Attribute", "implementationGuidance"]
+    },
+    {
+      "id": "ADV-QUAL-A2",
+      "kind": "gap_actionability",
+      "gap_id": "gap-esrs-s1-workforce",
+      "required_fields": ["description", "recommendedAction", "severity", "priority", "estimatedEffort"],
+      "rationale_fields": ["description", "recommendedAction"]
+    },
+    {
+      "id": "ADV-QUAL-A3",
+      "kind": "recommendation_actionability",
+      "recommendation_id": "rec-integrate-epcis-esrs",
+      "required_fields": ["title", "description", "priority", "timeframe", "implementationSteps", "estimatedROI"],
+      "rationale_fields": ["description", "implementationSteps"],
+      "minimum_steps": 4
+    },
+    {
+      "id": "ADV-QUAL-A4",
+      "kind": "diff_traceability",
+      "scenario_id": "advisory-forward-diff",
+      "required_diff_fields": ["metadata", "coverageDeltas", "gapLifecycle", "recommendationLifecycle", "traceabilityDeltas", "compositeMetrics"]
+    }
+  ]
+}

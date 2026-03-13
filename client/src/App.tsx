@@ -6,6 +6,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
+import { I18nProvider } from "./lib/i18n";
 
 // Critical pages - loaded immediately
 import Home from "./pages/Home";
@@ -50,20 +51,38 @@ const NewsAdmin = lazy(() =>
 );
 const HubCompare = lazy(() => import("./pages/HubCompare"));
 const HubCompareEnhanced = lazy(() => import("./pages/HubCompareEnhanced"));
-const AdminCellarIngestion = lazy(() => import("./pages/AdminCellarIngestion"));
 const AdminEUDRSeeder = lazy(() => import("./pages/AdminEUDRSeeder"));
-const AdminCellarSyncMonitor = lazy(
-  () => import("./pages/AdminCellarSyncMonitor")
-);
 const AdvisoryDashboard = lazy(() => import("./pages/AdvisoryDashboard"));
 const AdvisoryExplorer = lazy(() => import("./pages/AdvisoryExplorer"));
 const AdvisoryTraceability = lazy(() => import("./pages/AdvisoryTraceability")
 );
 const DatasetRegistry = lazy(() => import("./pages/DatasetRegistry"));
 const AdvisoryReports = lazy(() => import("./pages/AdvisoryReports"));
+const AdvisoryReportDetail = lazy(() => import("./pages/AdvisoryReportDetail"));
 const GovernanceDocuments = lazy(() => import("./pages/GovernanceDocuments"));
 const AdminAnalyticsDashboard = lazy(
   () => import("./pages/AdminAnalyticsDashboard")
+);
+const AdminFeedbackDashboard = lazy(
+  () => import("./pages/AdminFeedbackDashboard")
+);
+const ComplianceChecklistGenerator = lazy(
+  () => import("./pages/ComplianceChecklistGenerator").then(m => ({ default: m.ComplianceChecklistGenerator }))
+);
+const AIGapAnalysisWizard = lazy(
+  () => import("./pages/AIGapAnalysisWizard")
+);
+const ComplianceMonitoringDashboard = lazy(
+  () => import("./pages/ComplianceMonitoringDashboard")
+);
+const IndustryTemplates = lazy(
+  () => import("./pages/IndustryTemplates")
+);
+const GS1NLAttributeBrowser = lazy(
+  () => import("./pages/GS1NLAttributeBrowser")
+);
+const ExternalAPIIntegration = lazy(
+  () => import("./pages/ExternalAPIIntegration")
 );
 const AdminPromptOptimization = lazy(
   () => import("./pages/AdminPromptOptimization")
@@ -121,6 +140,8 @@ const StandardDetail = lazy(() => import("./pages/StandardDetail").then(m => ({ 
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const AttributeRecommender = lazy(() => import("./pages/AttributeRecommender"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const EsgTraceability = lazy(() => import("./pages/EsgTraceability"));
+const EsgPriorities = lazy(() => import("./pages/EsgPriorities"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -153,19 +174,24 @@ function Router() {
       <Route path="/events" component={EventsOverview} />
       <Route path="/news" component={NewsHub} />
       <Route path="/hub/calendar" component={HubCalendar} />
+      <Route path="/hub/standards" component={StandardsDirectory} />
       <Route path="/hub/standards-mapping" component={HubStandardsMapping} />
       <Route path="/hub/esrs-gs1-mappings" component={HubEsrsGs1Mappings} />
+      <Route path="/hub/esg-traceability" component={EsgTraceability} />
+      <Route path="/hub/esg-priorities" component={EsgPriorities} />
       <Route path="/tools/compliance-roadmap" component={ToolsComplianceRoadmap} />
       <Route path="/tools/gap-analyzer" component={GapAnalyzer} />
       <Route path="/tools/impact-simulator" component={ImpactSimulator} />
       <Route path="/tools/dual-core" component={DualCoreDemo} />
       <Route path="/tools/attribute-recommender" component={AttributeRecommender} />
+      <Route path="/tools/gs1nl-attributes" component={GS1NLAttributeBrowser} />
       <Route path="/hub/resources" component={HubResources} />
       <Route path="/hub/impact-matrix" component={HubImpactMatrix} />
       <Route path="/hub/dashboard" component={HubUserDashboard} />
       <Route path="/hub/regulations/compare" component={CompareRegulations} />
       <Route path="/hub/compare" component={HubCompareEnhanced} />
       <Route path="/hub/compare-legacy" component={HubCompare} />
+      <Route path="/hub/esrs" component={ESRSDatapoints} />
       <Route path="/hub/esrs-datapoints" component={ESRSDatapoints} />
       <Route
         path="/hub/dutch-initiatives/:id"
@@ -187,14 +213,13 @@ function Router() {
       <Route path="/advisory/diff" component={AdvisoryDiff} />
       <Route path="/advisory/compare" component={AdvisoryDiffComparison} />
       <Route path="/dataset-registry" component={DatasetRegistry} />
+      <Route path="/advisory-reports/:id" component={AdvisoryReportDetail} />
       <Route path="/advisory-reports" component={AdvisoryReports} />
       <Route path="/governance-documents" component={GovernanceDocuments} />
       <Route path="/admin/monitoring" component={AdminMonitoring} />
       <Route path="/admin/system-monitoring" component={SystemMonitoring} />
       <Route path="/admin/coverage-analytics" component={AdminCoverageAnalytics} />
       <Route path="/admin/eudr-seeder" component={AdminEUDRSeeder} />
-      <Route path="/admin/cellar" component={AdminCellarIngestion} />
-      <Route path="/admin/cellar-sync" component={AdminCellarSyncMonitor} />
       <Route path="/admin/news-pipeline" component={AdminNewsPipelineManager} />
       <Route path="/admin/news" component={NewsAdmin} />
       <Route path="/admin/scraper-health" component={AdminScraperHealth} />
@@ -211,6 +236,12 @@ function Router() {
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminPanel} />
       <Route path="/admin/analytics" component={AdminAnalyticsDashboard} />
+      <Route path="/admin/feedback" component={AdminFeedbackDashboard} />
+      <Route path="/tools/compliance-checklist" component={ComplianceChecklistGenerator} />
+      <Route path="/tools/ai-gap-analysis" component={AIGapAnalysisWizard} />
+      <Route path="/compliance/monitoring" component={ComplianceMonitoringDashboard} />
+      <Route path="/templates/industry" component={IndustryTemplates} />
+      <Route path="/api-integration" component={ExternalAPIIntegration} />
       <Route
         path="/admin/prompt-optimization"
         component={AdminPromptOptimization}
@@ -249,18 +280,20 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
-        <TooltipProvider>
-          <DisclaimerBanner />
-          <Toaster />
-          <Suspense fallback={<PageLoader />}>
-            <Router />
-          </Suspense>
-        </TooltipProvider>
-      </ThemeProvider>
+      <I18nProvider>
+        <ThemeProvider
+          defaultTheme="light"
+          // switchable
+        >
+          <TooltipProvider>
+            <DisclaimerBanner />
+            <Toaster />
+            <Suspense fallback={<PageLoader />}>
+              <Router />
+            </Suspense>
+          </TooltipProvider>
+        </ThemeProvider>
+      </I18nProvider>
     </ErrorBoundary>
   );
 }

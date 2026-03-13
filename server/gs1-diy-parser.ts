@@ -10,10 +10,10 @@
  * - Validations: Business rules
  */
 
-import XLSX from "xlsx";
 import { getDb } from "./db";
 import { gs1Attributes, gs1AttributeCodeLists } from "../drizzle/schema";
 import { serverLogger } from "./_core/logger-wiring";
+import { getExcelWorksheetRows, readExcelWorkbook } from "./_core/excel";
 
 
 interface ParsedDIYAttribute {
@@ -48,23 +48,14 @@ interface PicklistValue {
 export async function parseFielddefinitionsSheet(
   filePath: string
 ): Promise<ParsedDIYAttribute[]> {
-  const workbook = XLSX.readFile(filePath);
-  const sheet = workbook.Sheets["Fielddefinitions"];
+  const workbook = await readExcelWorkbook(filePath);
+  const data = getExcelWorksheetRows(workbook, "Fielddefinitions", "") as any[][];
 
-  if (!sheet) {
+  if (data.length === 0) {
     throw new Error("Fielddefinitions sheet not found in Excel file");
   }
 
-  // Convert to JSON with header row
-  const data = XLSX.utils.sheet_to_json(sheet, {
-    header: 1,
-    range: 0,
-    defval: "",
-  }) as any[][];
-
-  console.log(
-    `[DIY Parser] Found ${data.length} rows in Fielddefinitions sheet`
-  );
+  serverLogger.info(`[DIY Parser] Found ${data.length} rows in Fielddefinitions sheet`);
 
   // Find header row (row 4, index 3)
   const headerRow = data[3];
@@ -85,7 +76,7 @@ export async function parseFielddefinitionsSheet(
   const xmlPathIdx = headerRow.indexOf("XML Path");
   const attrCategoryIdx = headerRow.indexOf("Attribute Category");
 
-  console.log(
+  serverLogger.info(
     `[DIY Parser] Column mapping: FieldID=${fieldIdIdx}, AttrNameEN=${attrNameEnglishIdx}, Format=${formatIdx}`
   );
 
@@ -167,11 +158,11 @@ export async function parseFielddefinitionsSheet(
     });
   }
 
-  console.log(`[DIY Parser] Parsed ${attributes.length} attributes`);
-  console.log(
+  serverLogger.info(`[DIY Parser] Parsed ${attributes.length} attributes`);
+  serverLogger.info(
     `[DIY Parser] Packaging-related: ${attributes.filter(a => a.packagingRelated).length}`
   );
-  console.log(
+  serverLogger.info(
     `[DIY Parser] Sustainability-related: ${attributes.filter(a => a.sustainabilityRelated).length}`
   );
 
@@ -184,21 +175,15 @@ export async function parseFielddefinitionsSheet(
 export async function parsePicklistsSheet(
   filePath: string
 ): Promise<PicklistValue[]> {
-  const workbook = XLSX.readFile(filePath);
-  const sheet = workbook.Sheets["Picklists"];
+  const workbook = await readExcelWorkbook(filePath);
+  const data = getExcelWorksheetRows(workbook, "Picklists", "") as any[][];
 
-  if (!sheet) {
-    console.log("[DIY Parser] Picklists sheet not found, skipping");
+  if (data.length === 0) {
+    serverLogger.info("[DIY Parser] Picklists sheet not found, skipping");
     return [];
   }
 
-  const data = XLSX.utils.sheet_to_json(sheet, {
-    header: 1,
-    range: 0,
-    defval: "",
-  }) as any[][];
-
-  console.log(`[DIY Parser] Found ${data.length} rows in Picklists sheet`);
+  serverLogger.info(`[DIY Parser] Found ${data.length} rows in Picklists sheet`);
 
   // Find header row (usually row 1)
   let headerRowIdx = 0;
@@ -244,7 +229,7 @@ export async function parsePicklistsSheet(
     });
   }
 
-  console.log(`[DIY Parser] Parsed ${picklistValues.length} picklist values`);
+  serverLogger.info(`[DIY Parser] Parsed ${picklistValues.length} picklist values`);
 
   return picklistValues;
 }
@@ -326,7 +311,7 @@ export async function ingestDIYAttributes(
       success++;
 
       if (success % 100 === 0) {
-        console.log(`[DIY Parser] Ingested ${success} attributes...`);
+        serverLogger.info(`[DIY Parser] Ingested ${success} attributes...`);
       }
     } catch (error) {
       serverLogger.error(
@@ -337,9 +322,7 @@ export async function ingestDIYAttributes(
     }
   }
 
-  console.log(
-    `[DIY Parser] Ingestion complete: ${success} success, ${errors} errors`
-  );
+  serverLogger.info(`[DIY Parser] Ingestion complete: ${success} success, ${errors} errors`);
 
   // Build attribute code to ID map for picklist ingestion
   const attributeMap = new Map<string, number>();
@@ -408,7 +391,7 @@ export async function ingestPicklists(
     }
   }
 
-  console.log(
+  serverLogger.info(
     `[DIY Parser] Picklist ingestion complete: ${success} success, ${errors} errors`
   );
 
@@ -419,8 +402,8 @@ export async function ingestPicklists(
  * Main ingestion workflow for DIY/Garden/Pet sector
  */
 export async function ingestDIYModel(filePath: string): Promise<void> {
-  console.log(`[DIY Parser] Starting DIY/Garden/Pet ingestion`);
-  console.log(`[DIY Parser] File: ${filePath}`);
+  serverLogger.info("[DIY Parser] Starting DIY/Garden/Pet ingestion");
+  serverLogger.info(`[DIY Parser] File: ${filePath}`);
 
   const startTime = Date.now();
 
@@ -443,14 +426,14 @@ export async function ingestDIYModel(filePath: string): Promise<void> {
 
     const duration = Math.round((Date.now() - startTime) / 1000);
 
-    console.log(`[DIY Parser] Completed in ${duration}s`);
-    console.log(`[DIY Parser] Summary:`);
-    console.log(`  - Attributes parsed: ${attributes.length}`);
-    console.log(`  - Attributes ingested: ${attrResult.success}`);
-    console.log(`  - Attribute errors: ${attrResult.errors}`);
-    console.log(`  - Picklists parsed: ${picklists.length}`);
-    console.log(`  - Picklists ingested: ${picklistResult.success}`);
-    console.log(`  - Picklist errors: ${picklistResult.errors}`);
+    serverLogger.info(`[DIY Parser] Completed in ${duration}s`);
+    serverLogger.info("[DIY Parser] Summary:");
+    serverLogger.info(`  - Attributes parsed: ${attributes.length}`);
+    serverLogger.info(`  - Attributes ingested: ${attrResult.success}`);
+    serverLogger.info(`  - Attribute errors: ${attrResult.errors}`);
+    serverLogger.info(`  - Picklists parsed: ${picklists.length}`);
+    serverLogger.info(`  - Picklists ingested: ${picklistResult.success}`);
+    serverLogger.info(`  - Picklist errors: ${picklistResult.errors}`);
   } catch (error) {
     serverLogger.error(`[DIY Parser] Ingestion failed:`, error);
     throw error;
@@ -465,7 +448,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
   ingestDIYModel(filePath)
     .then(() => {
-      console.log("[DIY Parser] Ingestion successful");
+      serverLogger.info("[DIY Parser] Ingestion successful");
       process.exit(0);
     })
     .catch(error => {

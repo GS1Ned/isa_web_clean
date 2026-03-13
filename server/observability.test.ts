@@ -19,13 +19,14 @@ import {
 import { PipelineExecutionContext, calculateQualityScore } from './utils/pipeline-logger';
 
 describe('Observability System', () => {
-  const hasDb = Boolean(process.env.DATABASE_URL);
-  const describeDb = hasDb ? describe : describe.skip;
+  // External DB integration remains opt-in to keep default test runs deterministic.
+  const runDbIntegration = process.env.RUN_OBSERVABILITY_DB_TESTS === "true";
+  const describeDb = runDbIntegration ? describe : describe.skip;
   let testExecutionId: string;
 
   beforeAll(async () => {
     // Clean up any existing test data
-    if (!hasDb) return;
+    if (!runDbIntegration) return;
     const db = await getDb();
     if (db) {
       await db.delete(pipelineExecutionLog).execute();

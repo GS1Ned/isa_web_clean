@@ -11,6 +11,11 @@ import {
   markChunkDeprecated,
   updateVerificationDate,
 } from "../citation-validation";
+import {
+  getKnowledgeVerificationStatus,
+  summarizeKnowledgeVerificationPosture,
+  type KnowledgeVerificationReason,
+} from "../knowledge-provenance";
 import { getDb } from "../db";
 import { eq } from "drizzle-orm";
 import { serverLogger } from "../_core/logger-wiring";
@@ -115,7 +120,7 @@ export const citationAdminRouter = router({
       try {
         const { knowledgeEmbeddings } = await import("../../drizzle/schema");
 
-        const result = await db
+        await db
           .update(knowledgeEmbeddings)
           .set({
             datasetId: input.datasetId,
@@ -162,10 +167,6 @@ export const citationAdminRouter = router({
       try {
         const { knowledgeEmbeddings } = await import("../../drizzle/schema");
 
-        // Get chunks with no verification date or >90 days old
-        const ninetyDaysAgo = new Date();
-        ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
-
         const chunks = await db
           .select({
             id: knowledgeEmbeddings.id,
@@ -180,12 +181,17 @@ export const citationAdminRouter = router({
           .where(eq(knowledgeEmbeddings.isDeprecated, 0))
           .limit(input.limit);
 
-        // Filter in memory for verification date check
-        const needsVerification = chunks.filter(chunk => {
-          if (!chunk.lastVerifiedDate) return true;
-          const verifiedDate = new Date(chunk.lastVerifiedDate);
-          return verifiedDate < ninetyDaysAgo;
-        });
+        const needsVerification = chunks
+          .map((chunk) => {
+            const verification = getKnowledgeVerificationStatus(chunk.lastVerifiedDate);
+            return {
+              ...chunk,
+              needsVerification: verification.needsVerification,
+              verificationReason: verification.reason,
+              verificationAgeDays: verification.verificationAgeDays,
+            };
+          })
+          .filter((chunk) => chunk.needsVerification);
 
         return needsVerification;
       } catch (error) {
@@ -193,4 +199,60 @@ export const citationAdminRouter = router({
         return [];
       }
     }),
+
+  /**
+   * Summarize verification posture for citation-backed knowledge chunks.
+   */
+  getVerificationSummary: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Only admins can view verification status",
+      });
+    }
+
+    const db = await getDb();
+    const emptyCounts: Record<KnowledgeVerificationReason, number> = {
+      ok: 0,
+      missing_last_verified_date: 0,
+      invalid_last_verified_date: 0,
+      stale_last_verified_date: 0,
+    };
+
+    if (!db) {
+      return {
+        ...summarizeKnowledgeVerificationPosture([]),
+        countsByReason: emptyCounts,
+      };
+    }
+
+    try {
+      const { knowledgeEmbeddings } = await import("../../drizzle/schema");
+
+      const chunks = await db
+        .select({
+          lastVerifiedDate: knowledgeEmbeddings.lastVerifiedDate,
+        })
+        .from(knowledgeEmbeddings)
+        .where(eq(knowledgeEmbeddings.isDeprecated, 0));
+
+      const summary = summarizeKnowledgeVerificationPosture(
+        chunks.map((chunk) => chunk.lastVerifiedDate)
+      );
+
+      return {
+        ...summary,
+        countsByReason: {
+          ...emptyCounts,
+          ...summary.countsByReason,
+        },
+      };
+    } catch (error) {
+      serverLogger.error("[CitationAdmin] Failed to summarize verification status:", error);
+      return {
+        ...summarizeKnowledgeVerificationPosture([]),
+        countsByReason: emptyCounts,
+      };
+    }
+  }),
 });

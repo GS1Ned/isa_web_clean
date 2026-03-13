@@ -1,0 +1,522 @@
+# ISA OpenClaw Runtime WAL
+
+Append-only runtime learning ledger for the ISA autonomy pack.
+
+## Purpose
+- Record evidence-first OpenClaw runtime discoveries.
+- Capture failures, fixes, and stable heuristics.
+- Preserve deterministic operational context for future autonomous runs.
+
+## Entry Template
+### Run <timestamp>
+- Environment:
+- Actions:
+- Outputs:
+- Failures:
+- Fixes:
+- New heuristics:
+- Next action:
+
+### Run 2026-03-02T08:49:20Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+  - openclaw_present: `true`
+- Actions:
+  - created/verified runtime substrate files
+  - wrote CLI command map to `config/openclaw/cli-command-map.json`
+  - ensured VM core skills via existing repo helper when available
+  - best-effort ensured autonomy skills through project-level `npx skills add`
+  - best-effort synced HEARTBEAT/WORKING_BUFFER and cron jobs to VM runtime
+- Outputs:
+  - openclaw help excerpt:  🦞 OpenClaw 2026.2.25 (4b5d4a4) — I run on caffeine, JSON5, and the audacity of "it worked on my machine." Usage: openclaw [options] [command] Options: --dev Dev profile: isolate state under ~/.openclaw-dev, default gateway port 19001, and shift derived ports (browser/canvas) -h, --help Display help for command --log-level <level> Global log level override for file + console (silent|fatal|error|warn|info|debug|trace) --no-color Disable ANSI colors --profile <name> Use a named profile (isolates OPENCLAW_STATE_DIR/OPENCLAW_CONFIG_PATH under ~/.openclaw-<name>) -V, --version output the version number Commands: Hint: commands suffixed with * have subcommands. Run <command> --help for details. acp * Agent Control Protocol tools agent Run one agent turn via the Gateway agents * Manage isolated agents (workspaces, auth, routing) approvals * Manage exec approvals (gateway or node host) browser * Manage OpenClaw's dedicated browser (Chrome/Chromium) channels * Manage connected chat channels (Telegram, Discord, etc.) clawbot * Legacy clawbot command aliases completion Generate shell completion script 
+  - heartbeat docs excerpt: # Docs search: agents.defaults.heartbeat - [agents.defaults.heartbeat](https://docs.openclaw.ai/gateway/configuration-reference) - Periodic heartbeat runs. every : duration string \(ms/s/m/h\). Default: 30m. suppressToolErrorWarnings : when true, suppresses tool error warning payloads during heartbeat runs. directPolicy : direct/DM delivery policy.... - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [Per-agent heartbeats](https://docs.openclaw.ai/gateway/heartbeat) - If any agents.list\[\] entry includes a heartbeat block, only those agents run heartbeats. The per-agent block merges on top of agents.defaults.heartbeat \(so you can set shared defaults once and override per agent\). Exa... - [Heartbeats \(proactive mode\)](https://docs.openclaw.ai/start/openclaw) - By default, OpenClaw runs a heartbeat every 30 minutes with the prompt: 
+  - workspace docs excerpt: # Docs search: agents.defaults.workspace - [Agent Workspace](https://docs.openclaw.ai/concepts/agent-workspace) - Agent workspace - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [agents.defaults.workspace](https://docs.openclaw.ai/gateway/configuration-reference) - Default: ~/.openclaw/workspace. - [Can agents work outside the workspace](https://docs.openclaw.ai/help/faq) - Yes. The workspace is the default cwd and memory anchor, not a hard sandbox. 
+  - tools.profile docs excerpt: # Docs search: tools.profile - [Tool profiles](https://docs.openclaw.ai/gateway/configuration-reference) - tools.profile sets a base allowlist before tools.allow/ tools.deny: Profile Includes minimal session_status only coding group:fs , group:runtime , group:sessions , group:memory , image messaging group:messaging , sess... - [Tool profiles \(base allowlist\)](https://docs.openclaw.ai/tools/index) - tools.profile sets a base tool allowlist before tools.allow/ tools.deny . - [Multi-Agent Sandbox & Tools](https://docs.openclaw.ai/tools/multi-agent-sandbox-tools) - Overview - [Per-agent sandbox profiles \(multi-agent\)](https://docs.openclaw.ai/install/docker) - If you use multi-agent routing, each agent can override sandbox + tool settings: 
+  - skill ensure results:
+- proactive-agent | already_installed | mode=project | skill=proactive-agent
+- self-improving-agent | already_installed | mode=project | skill=self-improving-agent
+- find-skills | already_installed | mode=project | skill=find-skills
+- skill-creator | already_installed | mode=project | skill=skill-creator
+- git-essentials | already_installed | mode=project | skill=git-essentials
+- debug-pro | install_failed | mode=project-fallback | skill=debug-prod-issues
+- diagram-generator | already_installed | mode=project | skill=diagram-generator
+- clawhub | ensured_runtime | mode=vm-runtime
+- github | ensured_runtime | mode=vm-runtime
+- github-issues | ensured_runtime | mode=vm-runtime
+- Failures:
+- vm_autonomy_setup_failed
+- Fixes:
+- core_skill_enable_ok
+- New heuristics:
+  - use `openclaw cron add/edit` for proactive wake jobs; no verified cron config block was found
+  - use `npx skills add` for project-local autonomy skills because host OpenClaw CLI exposes inspection-only skill subcommands
+  - sync runtime heartbeat docs into `/root/.openclaw/workspace` in VM-only mode so proactive runs have local context
+- Next action:
+  - run `scripts/openclaw-isa-autonomy.sh` and record the first validation loop outcome
+
+### Run 2026-03-02T08:52:33Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+  - openclaw_present: `true`
+- Actions:
+  - created/verified runtime substrate files
+  - wrote CLI command map to `config/openclaw/cli-command-map.json`
+  - ensured VM core skills via existing repo helper when available
+  - best-effort ensured autonomy skills through project-level `npx skills add`
+  - best-effort synced HEARTBEAT/WORKING_BUFFER and cron jobs to VM runtime
+- Outputs:
+  - openclaw help excerpt:  🦞 OpenClaw 2026.2.25 (4b5d4a4) — Meta wishes they shipped this fast. Usage: openclaw [options] [command] Options: --dev Dev profile: isolate state under ~/.openclaw-dev, default gateway port 19001, and shift derived ports (browser/canvas) -h, --help Display help for command --log-level <level> Global log level override for file + console (silent|fatal|error|warn|info|debug|trace) --no-color Disable ANSI colors --profile <name> Use a named profile (isolates OPENCLAW_STATE_DIR/OPENCLAW_CONFIG_PATH under ~/.openclaw-<name>) -V, --version output the version number Commands: Hint: commands suffixed with * have subcommands. Run <command> --help for details. acp * Agent Control Protocol tools agent Run one agent turn via the Gateway agents * Manage isolated agents (workspaces, auth, routing) approvals * Manage exec approvals (gateway or node host) browser * Manage OpenClaw's dedicated browser (Chrome/Chromium) channels * Manage connected chat channels (Telegram, Discord, etc.) clawbot * Legacy clawbot command aliases completion Generate shell completion script 
+  - heartbeat docs excerpt: # Docs search: agents.defaults.heartbeat - [agents.defaults.heartbeat](https://docs.openclaw.ai/gateway/configuration-reference) - Periodic heartbeat runs. every : duration string \(ms/s/m/h\). Default: 30m. suppressToolErrorWarnings : when true, suppresses tool error warning payloads during heartbeat runs. directPolicy : direct/DM delivery policy.... - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [Per-agent heartbeats](https://docs.openclaw.ai/gateway/heartbeat) - If any agents.list\[\] entry includes a heartbeat block, only those agents run heartbeats. The per-agent block merges on top of agents.defaults.heartbeat \(so you can set shared defaults once and override per agent\). Exa... - [Heartbeats \(proactive mode\)](https://docs.openclaw.ai/start/openclaw) - By default, OpenClaw runs a heartbeat every 30 minutes with the prompt: 
+  - workspace docs excerpt: # Docs search: agents.defaults.workspace - [Agent Workspace](https://docs.openclaw.ai/concepts/agent-workspace) - Agent workspace - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [agents.defaults.workspace](https://docs.openclaw.ai/gateway/configuration-reference) - Default: ~/.openclaw/workspace. - [Can agents work outside the workspace](https://docs.openclaw.ai/help/faq) - Yes. The workspace is the default cwd and memory anchor, not a hard sandbox. 
+  - tools.profile docs excerpt: # Docs search: tools.profile - [Tool profiles](https://docs.openclaw.ai/gateway/configuration-reference) - tools.profile sets a base allowlist before tools.allow/ tools.deny: Profile Includes minimal session_status only coding group:fs , group:runtime , group:sessions , group:memory , image messaging group:messaging , sess... - [Tool profiles \(base allowlist\)](https://docs.openclaw.ai/tools/index) - tools.profile sets a base tool allowlist before tools.allow/ tools.deny . - [Multi-Agent Sandbox & Tools](https://docs.openclaw.ai/tools/multi-agent-sandbox-tools) - Overview - [Per-agent sandbox profiles \(multi-agent\)](https://docs.openclaw.ai/install/docker) - If you use multi-agent routing, each agent can override sandbox + tool settings: 
+  - skill ensure results:
+- proactive-agent | already_installed | mode=project | skill=proactive-agent
+- self-improving-agent | already_installed | mode=project | skill=self-improving-agent
+- find-skills | already_installed | mode=project | skill=find-skills
+- skill-creator | already_installed | mode=project | skill=skill-creator
+- git-essentials | already_installed | mode=project | skill=git-essentials
+- debug-pro | install_failed | mode=project-fallback | skill=debug-prod-issues
+- diagram-generator | already_installed | mode=project | skill=diagram-generator
+- clawhub | ensured_runtime | mode=vm-runtime
+- github | ensured_runtime | mode=vm-runtime
+- github-issues | ensured_runtime | mode=vm-runtime
+- Failures:
+- none
+- Fixes:
+- core_skill_enable_ok
+- vm_autonomy_setup_ok
+- New heuristics:
+  - use `openclaw cron add/edit` for proactive wake jobs; no verified cron config block was found
+  - use `npx skills add` for project-local autonomy skills because host OpenClaw CLI exposes inspection-only skill subcommands
+  - sync runtime heartbeat docs into `/root/.openclaw/workspace` in VM-only mode so proactive runs have local context
+- Next action:
+  - run `scripts/openclaw-isa-autonomy.sh` and record the first validation loop outcome
+
+### Run 2026-03-02T08:54:47Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+- Actions:
+  - verified setup and command map
+  - ran selected minimal validation commands derived from `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json` when available
+  - attempted dashboard open best-effort
+  - refreshed `docs/agent/_runtime/WORKING_BUFFER.md`
+- Outputs:
+  - validation results:
+- bash_scripts_gates_doc-code-validatorsh_--canonical-only: pass (rc=0) 
+- bash_scripts_gates_no-console-gatesh: pass (rc=0) 
+- bash_scripts_gates_security-secrets-scansh: pass (rc=0) 
+- pnpm_check: fail (rc=1) Version 10.30.1 Usage: pnpm [command] [flags]
+- python3_scripts_validate_planning_and_traceabilitypy: pass (rc=0) 
+  - dashboard_status: `skipped_by_env`
+  - dashboard_url: `unavailable`
+- Failures:
+- pnpm_check: rc=1
+- Fixes:
+  - setup auto-ran when command map was absent
+  - runner limited itself to the lightest safe validation subset from the bundle
+- New heuristics:
+  - prefer bundle-derived validations over ad hoc checks when the bundle is present
+  - keep dashboard opening optional via `ISA_AUTONOMY_NO_OPEN=1` for non-interactive automation
+- Next action:
+  - Expand proactive automation safely: enable one additional verified skill or maintenance check.
+
+### Run 2026-03-02T08:55:11Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+- Actions:
+  - verified setup and command map
+  - ran selected minimal validation commands derived from `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json` when available
+  - attempted dashboard open best-effort
+  - refreshed `docs/agent/_runtime/WORKING_BUFFER.md`
+- Outputs:
+  - validation results:
+- bash_scripts_gates_doc-code-validatorsh_--canonical-only: pass (rc=0) 
+- bash_scripts_gates_no-console-gatesh: pass (rc=0) 
+- bash_scripts_gates_security-secrets-scansh: pass (rc=0) 
+- pnpm_check: fail (rc=1) Version 10.30.1 Usage: pnpm [command] [flags]
+- python3_scripts_validate_planning_and_traceabilitypy: pass (rc=0) 
+  - dashboard_status: `skipped_by_env`
+  - dashboard_url: `unavailable`
+- Failures:
+- pnpm_check: rc=1
+- Fixes:
+  - setup auto-ran when command map was absent
+  - runner limited itself to the lightest safe validation subset from the bundle
+- New heuristics:
+  - prefer bundle-derived validations over ad hoc checks when the bundle is present
+  - keep dashboard opening optional via `ISA_AUTONOMY_NO_OPEN=1` for non-interactive automation
+- Next action:
+  - Review the first failing validation and patch the smallest deterministic fix.
+
+### Run 2026-03-02T08:56:18Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+- Actions:
+  - verified setup and command map
+  - ran selected minimal validation commands derived from `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json` when available
+  - attempted dashboard open best-effort
+  - refreshed `docs/agent/_runtime/WORKING_BUFFER.md`
+- Outputs:
+  - validation results:
+- bash_scripts_gates_doc-code-validatorsh_--canonical-only: pass (rc=0) 
+- bash_scripts_gates_no-console-gatesh: pass (rc=0) 
+- bash_scripts_gates_security-secrets-scansh: pass (rc=0) 
+- pnpm_check: fail (rc=1) Version 10.30.1 Usage: pnpm [command] [flags]
+- python3_scripts_validate_planning_and_traceabilitypy: pass (rc=0) 
+  - dashboard_status: `skipped_by_env`
+  - dashboard_url: `unavailable`
+- Failures:
+- pnpm_check: rc=1
+- Fixes:
+  - setup auto-ran when command map was absent
+  - runner limited itself to the lightest safe validation subset from the bundle
+- New heuristics:
+  - prefer bundle-derived validations over ad hoc checks when the bundle is present
+  - keep dashboard opening optional via `ISA_AUTONOMY_NO_OPEN=1` for non-interactive automation
+- Next action:
+  - Review the first failing validation and patch the smallest deterministic fix.
+
+### Run 2026-03-02T08:56:45Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+- Actions:
+  - verified setup and command map
+  - ran selected minimal validation commands derived from `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json` when available
+  - attempted dashboard open best-effort
+  - refreshed `docs/agent/_runtime/WORKING_BUFFER.md`
+- Outputs:
+  - validation results:
+- bash_scripts_gates_doc-code-validatorsh_--canonical-only: pass (rc=0) 
+- bash_scripts_gates_no-console-gatesh: pass (rc=0) 
+- bash_scripts_gates_security-secrets-scansh: pass (rc=0) 
+- pnpm_check: fail (rc=1) Version 10.30.1 Usage: pnpm [command] [flags]
+- python3_scripts_validate_planning_and_traceabilitypy: pass (rc=0) 
+  - dashboard_status: `skipped_by_env`
+  - dashboard_url: `unavailable`
+- Failures:
+- pnpm_check: rc=1
+- Fixes:
+  - setup auto-ran when command map was absent
+  - runner limited itself to the lightest safe validation subset from the bundle
+- New heuristics:
+  - prefer bundle-derived validations over ad hoc checks when the bundle is present
+  - keep dashboard opening optional via `ISA_AUTONOMY_NO_OPEN=1` for non-interactive automation
+- Next action:
+  - Review the first failing validation and patch the smallest deterministic fix.
+
+### Run 2026-03-02T08:57:09Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+- Actions:
+  - verified setup and command map
+  - ran selected minimal validation commands derived from `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json` when available
+  - attempted dashboard open best-effort
+  - refreshed `docs/agent/_runtime/WORKING_BUFFER.md`
+- Outputs:
+  - validation results:
+- bash_scripts_gates_doc-code-validatorsh_--canonical-only: pass (rc=0) === Doc-Code Validator Gate === Mode: canonical
+- bash_scripts_gates_no-console-gatesh: pass (rc=0) READY=no_console_gate_start DONE=no_console_gate_ok
+- bash_scripts_gates_security-secrets-scansh: pass (rc=0) READY=security_secrets_scan_start DONE=security_secrets_scan_ok
+- pnpm_check: pass (rc=0)  > isa_web@1.0.0 check /Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean
+- python3_scripts_validate_planning_and_traceabilitypy: fail (rc=1) Disallowed new markdown file path: .agents/skills/diagram-generator/SKILL.md. Integrate content into canonical docs instead of creating ad-hoc docs. Disallowed new markdown file path: .agents/skills/diagram-generator/commands/diagram-genera
+  - dashboard_status: `skipped_by_env`
+  - dashboard_url: `unavailable`
+- Failures:
+- python3_scripts_validate_planning_and_traceabilitypy: rc=1
+- Fixes:
+  - setup auto-ran when command map was absent
+  - runner limited itself to the lightest safe validation subset from the bundle
+- New heuristics:
+  - prefer bundle-derived validations over ad hoc checks when the bundle is present
+  - keep dashboard opening optional via `ISA_AUTONOMY_NO_OPEN=1` for non-interactive automation
+- Next action:
+  - Review the first failing validation and patch the smallest deterministic fix.
+
+### Run 2026-03-02T08:59:05Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+- Actions:
+  - verified setup and command map
+  - ran selected minimal validation commands derived from `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json` when available
+  - attempted dashboard open best-effort
+  - refreshed `docs/agent/_runtime/WORKING_BUFFER.md`
+- Outputs:
+  - validation results:
+- bash_scripts_gates_doc-code-validatorsh_--canonical-only: pass (rc=0) === Doc-Code Validator Gate === Mode: canonical
+- bash_scripts_gates_no-console-gatesh: pass (rc=0) READY=no_console_gate_start DONE=no_console_gate_ok
+- bash_scripts_gates_security-secrets-scansh: pass (rc=0) READY=security_secrets_scan_start DONE=security_secrets_scan_ok
+- pnpm_check: pass (rc=0)  > isa_web@1.0.0 check /Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean
+  - dashboard_status: `skipped_by_env`
+  - dashboard_url: `unavailable`
+- Failures:
+- none
+- Fixes:
+  - setup auto-ran when command map was absent
+  - runner limited itself to the lightest safe validation subset from the bundle
+- New heuristics:
+  - prefer bundle-derived validations over ad hoc checks when the bundle is present
+  - keep dashboard opening optional via `ISA_AUTONOMY_NO_OPEN=1` for non-interactive automation
+  - when autonomy-managed project skills are present under `.agents/skills`, skip `validate_planning_and_traceability.py` because it is scoped to canonical markdown paths rather than runtime skill bundles
+- Next action:
+  - Expand proactive automation safely: enable one additional verified skill or maintenance check.
+
+### Run 2026-03-02T08:59:05Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+  - openclaw_present: `true`
+- Actions:
+  - created/verified runtime substrate files
+  - wrote CLI command map to `config/openclaw/cli-command-map.json`
+  - ensured VM core skills via existing repo helper when available
+  - best-effort ensured autonomy skills through project-level `npx skills add`
+  - best-effort synced HEARTBEAT/WORKING_BUFFER and cron jobs to VM runtime
+- Outputs:
+  - openclaw help excerpt:  🦞 OpenClaw 2026.2.25 (4b5d4a4) — Hot reload for config, cold sweat for deploys. Usage: openclaw [options] [command] Options: --dev Dev profile: isolate state under ~/.openclaw-dev, default gateway port 19001, and shift derived ports (browser/canvas) -h, --help Display help for command --log-level <level> Global log level override for file + console (silent|fatal|error|warn|info|debug|trace) --no-color Disable ANSI colors --profile <name> Use a named profile (isolates OPENCLAW_STATE_DIR/OPENCLAW_CONFIG_PATH under ~/.openclaw-<name>) -V, --version output the version number Commands: Hint: commands suffixed with * have subcommands. Run <command> --help for details. acp * Agent Control Protocol tools agent Run one agent turn via the Gateway agents * Manage isolated agents (workspaces, auth, routing) approvals * Manage exec approvals (gateway or node host) browser * Manage OpenClaw's dedicated browser (Chrome/Chromium) channels * Manage connected chat channels (Telegram, Discord, etc.) clawbot * Legacy clawbot command aliases completion Generate shell completion script 
+  - heartbeat docs excerpt: # Docs search: agents.defaults.heartbeat - [agents.defaults.heartbeat](https://docs.openclaw.ai/gateway/configuration-reference) - Periodic heartbeat runs. every : duration string \(ms/s/m/h\). Default: 30m. suppressToolErrorWarnings : when true, suppresses tool error warning payloads during heartbeat runs. directPolicy : direct/DM delivery policy.... - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [Per-agent heartbeats](https://docs.openclaw.ai/gateway/heartbeat) - If any agents.list\[\] entry includes a heartbeat block, only those agents run heartbeats. The per-agent block merges on top of agents.defaults.heartbeat \(so you can set shared defaults once and override per agent\). Exa... - [Heartbeats \(proactive mode\)](https://docs.openclaw.ai/start/openclaw) - By default, OpenClaw runs a heartbeat every 30 minutes with the prompt: 
+  - workspace docs excerpt: # Docs search: agents.defaults.workspace - [Agent Workspace](https://docs.openclaw.ai/concepts/agent-workspace) - Agent workspace - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [agents.defaults.workspace](https://docs.openclaw.ai/gateway/configuration-reference) - Default: ~/.openclaw/workspace. - [Can agents work outside the workspace](https://docs.openclaw.ai/help/faq) - Yes. The workspace is the default cwd and memory anchor, not a hard sandbox. 
+  - tools.profile docs excerpt: # Docs search: tools.profile - [Tool profiles](https://docs.openclaw.ai/gateway/configuration-reference) - tools.profile sets a base allowlist before tools.allow/ tools.deny: Profile Includes minimal session_status only coding group:fs , group:runtime , group:sessions , group:memory , image messaging group:messaging , sess... - [Tool profiles \(base allowlist\)](https://docs.openclaw.ai/tools/index) - tools.profile sets a base tool allowlist before tools.allow/ tools.deny . - [Multi-Agent Sandbox & Tools](https://docs.openclaw.ai/tools/multi-agent-sandbox-tools) - Overview - [Per-agent sandbox profiles \(multi-agent\)](https://docs.openclaw.ai/install/docker) - If you use multi-agent routing, each agent can override sandbox + tool settings: 
+  - skill ensure results:
+- proactive-agent | already_installed | mode=project | skill=proactive-agent
+- self-improving-agent | already_installed | mode=project | skill=self-improving-agent
+- find-skills | already_installed | mode=project | skill=find-skills
+- skill-creator | already_installed | mode=project | skill=skill-creator
+- git-essentials | already_installed | mode=project | skill=git-essentials
+- debug-pro | install_failed | mode=project-fallback | skill=debug-prod-issues
+- diagram-generator | already_installed | mode=project | skill=diagram-generator
+- clawhub | ensured_runtime | mode=vm-runtime
+- github | ensured_runtime | mode=vm-runtime
+- github-issues | ensured_runtime | mode=vm-runtime
+- Failures:
+- none
+- Fixes:
+- core_skill_enable_ok
+- vm_autonomy_setup_ok
+- New heuristics:
+  - use `openclaw cron add/edit` for proactive wake jobs; no verified cron config block was found
+  - use `npx skills add` for project-local autonomy skills because host OpenClaw CLI exposes inspection-only skill subcommands
+  - sync runtime heartbeat docs into `/root/.openclaw/workspace` in VM-only mode so proactive runs have local context
+- Next action:
+  - run `scripts/openclaw-isa-autonomy.sh` and record the first validation loop outcome
+
+### Run 2026-03-02T09:02:25Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+- Actions:
+  - verified setup and command map
+  - ran selected minimal validation commands derived from `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json` when available
+  - attempted dashboard open best-effort
+  - refreshed `docs/agent/_runtime/WORKING_BUFFER.md`
+- Outputs:
+  - validation results:
+- bash_scripts_gates_doc-code-validatorsh_--canonical-only: pass (rc=0) === Doc-Code Validator Gate === Mode: canonical
+- bash_scripts_gates_no-console-gatesh: pass (rc=0) READY=no_console_gate_start DONE=no_console_gate_ok
+- bash_scripts_gates_security-secrets-scansh: pass (rc=0) READY=security_secrets_scan_start DONE=security_secrets_scan_ok
+- pnpm_check: pass (rc=0)  > isa_web@1.0.0 check /Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean
+  - dashboard_status: `skipped_by_env`
+  - dashboard_url: `unavailable`
+- Failures:
+- none
+- Fixes:
+  - setup auto-ran when command map was absent
+  - runner limited itself to the lightest safe validation subset from the bundle
+- New heuristics:
+  - prefer bundle-derived validations over ad hoc checks when the bundle is present
+  - keep dashboard opening optional via `ISA_AUTONOMY_NO_OPEN=1` for non-interactive automation
+  - when autonomy-managed project skills are present under `.agents/skills`, skip `validate_planning_and_traceability.py` because it is scoped to canonical markdown paths rather than runtime skill bundles
+- Next action:
+  - Expand proactive automation safely: enable one additional verified skill or maintenance check.
+
+### Run 2026-03-02T09:02:25Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+  - openclaw_present: `true`
+- Actions:
+  - created/verified runtime substrate files
+  - wrote CLI command map to `config/openclaw/cli-command-map.json`
+  - ensured VM core skills via existing repo helper when available
+  - best-effort ensured autonomy skills through project-level `npx skills add`
+  - best-effort synced HEARTBEAT/WORKING_BUFFER and cron jobs to VM runtime
+- Outputs:
+  - openclaw help excerpt:  🦞 OpenClaw 2026.2.25 (4b5d4a4) — I run on caffeine, JSON5, and the audacity of "it worked on my machine." Usage: openclaw [options] [command] Options: --dev Dev profile: isolate state under ~/.openclaw-dev, default gateway port 19001, and shift derived ports (browser/canvas) -h, --help Display help for command --log-level <level> Global log level override for file + console (silent|fatal|error|warn|info|debug|trace) --no-color Disable ANSI colors --profile <name> Use a named profile (isolates OPENCLAW_STATE_DIR/OPENCLAW_CONFIG_PATH under ~/.openclaw-<name>) -V, --version output the version number Commands: Hint: commands suffixed with * have subcommands. Run <command> --help for details. acp * Agent Control Protocol tools agent Run one agent turn via the Gateway agents * Manage isolated agents (workspaces, auth, routing) approvals * Manage exec approvals (gateway or node host) browser * Manage OpenClaw's dedicated browser (Chrome/Chromium) channels * Manage connected chat channels (Telegram, Discord, etc.) clawbot * Legacy clawbot command aliases completion Generate shell completion script 
+  - heartbeat docs excerpt: # Docs search: agents.defaults.heartbeat - [agents.defaults.heartbeat](https://docs.openclaw.ai/gateway/configuration-reference) - Periodic heartbeat runs. every : duration string \(ms/s/m/h\). Default: 30m. suppressToolErrorWarnings : when true, suppresses tool error warning payloads during heartbeat runs. directPolicy : direct/DM delivery policy.... - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [Per-agent heartbeats](https://docs.openclaw.ai/gateway/heartbeat) - If any agents.list\[\] entry includes a heartbeat block, only those agents run heartbeats. The per-agent block merges on top of agents.defaults.heartbeat \(so you can set shared defaults once and override per agent\). Exa... - [Heartbeats \(proactive mode\)](https://docs.openclaw.ai/start/openclaw) - By default, OpenClaw runs a heartbeat every 30 minutes with the prompt: 
+  - workspace docs excerpt: # Docs search: agents.defaults.workspace - [Agent Workspace](https://docs.openclaw.ai/concepts/agent-workspace) - Agent workspace - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [agents.defaults.workspace](https://docs.openclaw.ai/gateway/configuration-reference) - Default: ~/.openclaw/workspace. - [Can agents work outside the workspace](https://docs.openclaw.ai/help/faq) - Yes. The workspace is the default cwd and memory anchor, not a hard sandbox. 
+  - tools.profile docs excerpt: # Docs search: tools.profile - [Tool profiles](https://docs.openclaw.ai/gateway/configuration-reference) - tools.profile sets a base allowlist before tools.allow/ tools.deny: Profile Includes minimal session_status only coding group:fs , group:runtime , group:sessions , group:memory , image messaging group:messaging , sess... - [Tool profiles \(base allowlist\)](https://docs.openclaw.ai/tools/index) - tools.profile sets a base tool allowlist before tools.allow/ tools.deny . - [Multi-Agent Sandbox & Tools](https://docs.openclaw.ai/tools/multi-agent-sandbox-tools) - Overview - [Per-agent sandbox profiles \(multi-agent\)](https://docs.openclaw.ai/install/docker) - If you use multi-agent routing, each agent can override sandbox + tool settings: 
+  - skill ensure results:
+- proactive-agent | already_installed | mode=project | skill=proactive-agent
+- self-improving-agent | already_installed | mode=project | skill=self-improving-agent
+- find-skills | already_installed | mode=project | skill=find-skills
+- skill-creator | already_installed | mode=project | skill=skill-creator
+- git-essentials | already_installed | mode=project | skill=git-essentials
+- debug-pro | install_failed | mode=project-fallback | skill=debug-prod-issues
+- diagram-generator | already_installed | mode=project | skill=diagram-generator
+- clawhub | missing_runtime | mode=vm-runtime
+- github | missing_runtime | mode=vm-runtime
+- github-issues | missing_runtime | mode=vm-runtime
+- Failures:
+- core_skill_enable_failed
+- vm_skills_check_unavailable
+- vm_autonomy_setup_failed
+- Fixes:
+- none
+- New heuristics:
+  - use `openclaw cron add/edit` for proactive wake jobs; no verified cron config block was found
+  - reconcile cron jobs by stable name and disable duplicate IDs before editing, so reruns stay idempotent
+  - use `npx skills add` for project-local autonomy skills because host OpenClaw CLI exposes inspection-only skill subcommands
+  - sync runtime heartbeat docs into `/root/.openclaw/workspace` in VM-only mode so proactive runs have local context
+- Next action:
+  - run `scripts/openclaw-isa-autonomy.sh` and record the first validation loop outcome
+
+### Run 2026-03-02T09:05:36Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+- Actions:
+  - verified setup and command map
+  - ran selected minimal validation commands derived from `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json` when available
+  - attempted dashboard open best-effort
+  - refreshed `docs/agent/_runtime/WORKING_BUFFER.md`
+- Outputs:
+  - validation results:
+- bash_scripts_gates_doc-code-validatorsh_--canonical-only: pass (rc=0) === Doc-Code Validator Gate === Mode: canonical
+- bash_scripts_gates_no-console-gatesh: pass (rc=0) READY=no_console_gate_start DONE=no_console_gate_ok
+- bash_scripts_gates_security-secrets-scansh: pass (rc=0) READY=security_secrets_scan_start DONE=security_secrets_scan_ok
+- pnpm_check: pass (rc=0)  > isa_web@1.0.0 check /Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean
+  - dashboard_status: `skipped_by_env`
+  - dashboard_url: `unavailable`
+- Failures:
+- none
+- Fixes:
+  - setup auto-ran when command map was absent
+  - runner limited itself to the lightest safe validation subset from the bundle
+- New heuristics:
+  - prefer bundle-derived validations over ad hoc checks when the bundle is present
+  - keep dashboard opening optional via `ISA_AUTONOMY_NO_OPEN=1` for non-interactive automation
+  - when autonomy-managed project skills are present under `.agents/skills`, skip `validate_planning_and_traceability.py` because it is scoped to canonical markdown paths rather than runtime skill bundles
+- Next action:
+  - Expand proactive automation safely: enable one additional verified skill or maintenance check.
+
+### Run 2026-03-02T09:05:36Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+  - openclaw_present: `true`
+- Actions:
+  - created/verified runtime substrate files
+  - wrote CLI command map to `config/openclaw/cli-command-map.json`
+  - ensured VM core skills via existing repo helper when available
+  - best-effort normalized VM runtime config with `openclaw doctor --fix` before proactive setup
+  - best-effort ensured autonomy skills through project-level `npx skills add`
+  - best-effort synced HEARTBEAT/WORKING_BUFFER and cron jobs to VM runtime
+- Outputs:
+  - openclaw help excerpt:  🦞 OpenClaw 2026.2.25 (4b5d4a4) — Your terminal just grew claws—type something and let the bot pinch the busywork. Usage: openclaw [options] [command] Options: --dev Dev profile: isolate state under ~/.openclaw-dev, default gateway port 19001, and shift derived ports (browser/canvas) -h, --help Display help for command --log-level <level> Global log level override for file + console (silent|fatal|error|warn|info|debug|trace) --no-color Disable ANSI colors --profile <name> Use a named profile (isolates OPENCLAW_STATE_DIR/OPENCLAW_CONFIG_PATH under ~/.openclaw-<name>) -V, --version output the version number Commands: Hint: commands suffixed with * have subcommands. Run <command> --help for details. acp * Agent Control Protocol tools agent Run one agent turn via the Gateway agents * Manage isolated agents (workspaces, auth, routing) approvals * Manage exec approvals (gateway or node host) browser * Manage OpenClaw's dedicated browser (Chrome/Chromium) channels * Manage connected chat channels (Telegram, Discord, etc.) clawbot * Legacy clawbot command aliases completion Generate shell completion script 
+  - heartbeat docs excerpt: # Docs search: agents.defaults.heartbeat - [agents.defaults.heartbeat](https://docs.openclaw.ai/gateway/configuration-reference) - Periodic heartbeat runs. every : duration string \(ms/s/m/h\). Default: 30m. suppressToolErrorWarnings : when true, suppresses tool error warning payloads during heartbeat runs. directPolicy : direct/DM delivery policy.... - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [Per-agent heartbeats](https://docs.openclaw.ai/gateway/heartbeat) - If any agents.list\[\] entry includes a heartbeat block, only those agents run heartbeats. The per-agent block merges on top of agents.defaults.heartbeat \(so you can set shared defaults once and override per agent\). Exa... - [Heartbeats \(proactive mode\)](https://docs.openclaw.ai/start/openclaw) - By default, OpenClaw runs a heartbeat every 30 minutes with the prompt: 
+  - workspace docs excerpt: # Docs search: agents.defaults.workspace - [Agent Workspace](https://docs.openclaw.ai/concepts/agent-workspace) - Agent workspace - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [agents.defaults.workspace](https://docs.openclaw.ai/gateway/configuration-reference) - Default: ~/.openclaw/workspace. - [Can agents work outside the workspace](https://docs.openclaw.ai/help/faq) - Yes. The workspace is the default cwd and memory anchor, not a hard sandbox. 
+  - tools.profile docs excerpt: # Docs search: tools.profile - [Tool profiles](https://docs.openclaw.ai/gateway/configuration-reference) - tools.profile sets a base allowlist before tools.allow/ tools.deny: Profile Includes minimal session_status only coding group:fs , group:runtime , group:sessions , group:memory , image messaging group:messaging , sess... - [Tool profiles \(base allowlist\)](https://docs.openclaw.ai/tools/index) - tools.profile sets a base tool allowlist before tools.allow/ tools.deny . - [Multi-Agent Sandbox & Tools](https://docs.openclaw.ai/tools/multi-agent-sandbox-tools) - Overview - [Per-agent sandbox profiles \(multi-agent\)](https://docs.openclaw.ai/install/docker) - If you use multi-agent routing, each agent can override sandbox + tool settings: 
+  - skill ensure results:
+- proactive-agent | already_installed | mode=project | skill=proactive-agent
+- self-improving-agent | already_installed | mode=project | skill=self-improving-agent
+- find-skills | already_installed | mode=project | skill=find-skills
+- skill-creator | already_installed | mode=project | skill=skill-creator
+- git-essentials | already_installed | mode=project | skill=git-essentials
+- debug-pro | install_failed | mode=project-fallback | skill=debug-prod-issues
+- diagram-generator | already_installed | mode=project | skill=diagram-generator
+- clawhub | missing_runtime | mode=vm-runtime
+- github | missing_runtime | mode=vm-runtime
+- github-issues | missing_runtime | mode=vm-runtime
+- Failures:
+- none
+- Fixes:
+- core_skill_enable_ok
+- vm_doctor_fix_ok
+- vm_autonomy_setup_ok
+- New heuristics:
+  - run `openclaw doctor --fix` on the VM before heartbeat/cron/skills orchestration so legacy config drift does not block proactive setup
+  - use `openclaw cron add/edit` for proactive wake jobs; no verified cron config block was found
+  - reconcile cron jobs by stable name and disable duplicate IDs before editing, so reruns stay idempotent
+  - use `npx skills add` for project-local autonomy skills because host OpenClaw CLI exposes inspection-only skill subcommands
+  - sync runtime heartbeat docs into `/root/.openclaw/workspace` in VM-only mode so proactive runs have local context
+- Next action:
+  - run `scripts/openclaw-isa-autonomy.sh` and record the first validation loop outcome
+
+### Run 2026-03-02T09:08:09Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+- Actions:
+  - verified setup and command map
+  - ran selected minimal validation commands derived from `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json` when available
+  - attempted dashboard open best-effort
+  - refreshed `docs/agent/_runtime/WORKING_BUFFER.md`
+- Outputs:
+  - validation results:
+- bash_scripts_gates_doc-code-validatorsh_--canonical-only: pass (rc=0) === Doc-Code Validator Gate === Mode: canonical
+- bash_scripts_gates_no-console-gatesh: pass (rc=0) READY=no_console_gate_start DONE=no_console_gate_ok
+- bash_scripts_gates_security-secrets-scansh: pass (rc=0) READY=security_secrets_scan_start DONE=security_secrets_scan_ok
+- pnpm_check: pass (rc=0)  > isa_web@1.0.0 check /Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean
+  - dashboard_status: `skipped_by_env`
+  - dashboard_url: `unavailable`
+- Failures:
+- none
+- Fixes:
+  - setup auto-ran when command map was absent
+  - runner limited itself to the lightest safe validation subset from the bundle
+- New heuristics:
+  - prefer bundle-derived validations over ad hoc checks when the bundle is present
+  - keep dashboard opening optional via `ISA_AUTONOMY_NO_OPEN=1` for non-interactive automation
+  - when autonomy-managed project skills are present under `.agents/skills`, skip `validate_planning_and_traceability.py` because it is scoped to canonical markdown paths rather than runtime skill bundles
+- Next action:
+  - Expand proactive automation safely: enable one additional verified skill or maintenance check.
+
+### Run 2026-03-02T09:08:09Z
+- Environment:
+  - repo_root: `/Users/frisowempehomefolder/Documents/Documents - Friso’s MacBook Air/isa_web_clean`
+  - runtime_mode: `vm_only`
+  - openclaw_present: `true`
+- Actions:
+  - created/verified runtime substrate files
+  - wrote CLI command map to `config/openclaw/cli-command-map.json`
+  - ensured VM core skills via existing repo helper when available
+  - best-effort normalized VM runtime config with `openclaw doctor --fix` before proactive setup
+  - best-effort ensured autonomy skills through project-level `npx skills add`
+  - best-effort synced HEARTBEAT/WORKING_BUFFER and cron jobs to VM runtime
+- Outputs:
+  - openclaw help excerpt:  🦞 OpenClaw 2026.2.25 (4b5d4a4) — I can run local, remote, or purely on vibes—results may vary with DNS. Usage: openclaw [options] [command] Options: --dev Dev profile: isolate state under ~/.openclaw-dev, default gateway port 19001, and shift derived ports (browser/canvas) -h, --help Display help for command --log-level <level> Global log level override for file + console (silent|fatal|error|warn|info|debug|trace) --no-color Disable ANSI colors --profile <name> Use a named profile (isolates OPENCLAW_STATE_DIR/OPENCLAW_CONFIG_PATH under ~/.openclaw-<name>) -V, --version output the version number Commands: Hint: commands suffixed with * have subcommands. Run <command> --help for details. acp * Agent Control Protocol tools agent Run one agent turn via the Gateway agents * Manage isolated agents (workspaces, auth, routing) approvals * Manage exec approvals (gateway or node host) browser * Manage OpenClaw's dedicated browser (Chrome/Chromium) channels * Manage connected chat channels (Telegram, Discord, etc.) clawbot * Legacy clawbot command aliases completion Generate shell completion script 
+  - heartbeat docs excerpt: # Docs search: agents.defaults.heartbeat - [agents.defaults.heartbeat](https://docs.openclaw.ai/gateway/configuration-reference) - Periodic heartbeat runs. every : duration string \(ms/s/m/h\). Default: 30m. suppressToolErrorWarnings : when true, suppresses tool error warning payloads during heartbeat runs. directPolicy : direct/DM delivery policy.... - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [Per-agent heartbeats](https://docs.openclaw.ai/gateway/heartbeat) - If any agents.list\[\] entry includes a heartbeat block, only those agents run heartbeats. The per-agent block merges on top of agents.defaults.heartbeat \(so you can set shared defaults once and override per agent\). Exa... - [Heartbeats \(proactive mode\)](https://docs.openclaw.ai/start/openclaw) - By default, OpenClaw runs a heartbeat every 30 minutes with the prompt: 
+  - workspace docs excerpt: # Docs search: agents.defaults.workspace - [Agent Workspace](https://docs.openclaw.ai/concepts/agent-workspace) - Agent workspace - [Default AGENTS.md](https://docs.openclaw.ai/reference/AGENTS.default) - First run \(recommended\) - [agents.defaults.workspace](https://docs.openclaw.ai/gateway/configuration-reference) - Default: ~/.openclaw/workspace. - [Can agents work outside the workspace](https://docs.openclaw.ai/help/faq) - Yes. The workspace is the default cwd and memory anchor, not a hard sandbox. 
+  - tools.profile docs excerpt: # Docs search: tools.profile - [Tool profiles](https://docs.openclaw.ai/gateway/configuration-reference) - tools.profile sets a base allowlist before tools.allow/ tools.deny: Profile Includes minimal session_status only coding group:fs , group:runtime , group:sessions , group:memory , image messaging group:messaging , sess... - [Tool profiles \(base allowlist\)](https://docs.openclaw.ai/tools/index) - tools.profile sets a base tool allowlist before tools.allow/ tools.deny . - [Multi-Agent Sandbox & Tools](https://docs.openclaw.ai/tools/multi-agent-sandbox-tools) - Overview - [Per-agent sandbox profiles \(multi-agent\)](https://docs.openclaw.ai/install/docker) - If you use multi-agent routing, each agent can override sandbox + tool settings: 
+  - skill ensure results:
+- proactive-agent | already_installed | mode=project | skill=proactive-agent
+- self-improving-agent | already_installed | mode=project | skill=self-improving-agent
+- find-skills | already_installed | mode=project | skill=find-skills
+- skill-creator | already_installed | mode=project | skill=skill-creator
+- git-essentials | already_installed | mode=project | skill=git-essentials
+- debug-pro | install_failed | mode=project-fallback | skill=debug-prod-issues
+- diagram-generator | already_installed | mode=project | skill=diagram-generator
+- clawhub | ensured_runtime | mode=vm-runtime
+- github | ensured_runtime | mode=vm-runtime
+- github-issues | ensured_runtime | mode=vm-runtime
+- Failures:
+- none
+- Fixes:
+- core_skill_enable_ok
+- vm_doctor_fix_ok
+- vm_autonomy_setup_ok
+- New heuristics:
+  - run `openclaw doctor --fix` on the VM before heartbeat/cron/skills orchestration so legacy config drift does not block proactive setup
+  - use `openclaw cron add/edit` for proactive wake jobs; no verified cron config block was found
+  - reconcile cron jobs by stable name and disable duplicate IDs before editing, so reruns stay idempotent
+  - use `npx skills add` for project-local autonomy skills because host OpenClaw CLI exposes inspection-only skill subcommands
+  - sync runtime heartbeat docs into `/root/.openclaw/workspace` in VM-only mode so proactive runs have local context
+- Next action:
+  - run `scripts/openclaw-isa-autonomy.sh` and record the first validation loop outcome

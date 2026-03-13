@@ -1,0 +1,252 @@
+{
+  "registry_id": "isa_golden_registry_v1",
+  "version": "2.0.0",
+  "generated_at": "2026-02-20T00:00:00Z",
+  "mode": "fixture-first-stage-aware",
+  "stages": {
+    "default": "stage_a",
+    "supported": ["stage_a", "stage_b", "stage_c"]
+  },
+  "capabilities": [
+    {
+      "capability": "KNOWLEDGE_BASE",
+      "enforcement": "warn",
+      "contract_path": "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+      "fixture_tiers": {
+        "stage_a": ["kb_corpus_slice_v1", "kb_metadata_gold_v1", "kb_retrieval_quality_v1"],
+        "stage_b": ["kb_corpus_slice_v2", "kb_metadata_gold_v2", "kb_retrieval_quality_v2"],
+        "stage_c": ["kb_corpus_slice_v2", "kb_metadata_gold_v2", "kb_retrieval_quality_v2"]
+      },
+      "datasets": [
+        {
+          "id": "kb_corpus_slice_v1",
+          "path": "data/evaluation/golden/knowledge_base/corpus_slice_v1.jsonl",
+          "format": "jsonl",
+          "minimum_samples": 30,
+          "source": "data/gs1_ref_corpus/metadata/manifest.json"
+        },
+        {
+          "id": "kb_metadata_gold_v1",
+          "path": "data/evaluation/golden/knowledge_base/metadata_gold_v1.json",
+          "format": "json",
+          "minimum_samples": 1,
+          "source": "data/gs1_ref_corpus/metadata/manifest.json"
+        },
+        {
+          "id": "kb_corpus_slice_v2",
+          "path": "data/evaluation/golden/knowledge_base/corpus_slice_v2.jsonl",
+          "format": "jsonl",
+          "minimum_samples": 120,
+          "source": "data/gs1_ref_corpus/metadata/manifest.json"
+        },
+        {
+          "id": "kb_metadata_gold_v2",
+          "path": "data/evaluation/golden/knowledge_base/metadata_gold_v2.json",
+          "format": "json",
+          "minimum_samples": 1,
+          "source": "data/gs1_ref_corpus/metadata/manifest.json"
+        },
+        {
+          "id": "kb_retrieval_quality_v1",
+          "path": "data/evaluation/golden/knowledge_base/retrieval_cases_v1.json",
+          "format": "json",
+          "minimum_samples": 3,
+          "source": "data/gs1_ref_corpus/metadata/manifest.json"
+        },
+        {
+          "id": "kb_retrieval_quality_v2",
+          "path": "data/evaluation/golden/knowledge_base/retrieval_cases_v2.json",
+          "format": "json",
+          "minimum_samples": 5,
+          "source": "data/gs1_ref_corpus/metadata/manifest.json"
+        }
+      ]
+    },
+    {
+      "capability": "CATALOG",
+      "enforcement": "warn",
+      "contract_path": "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+      "fixture_tiers": {
+        "stage_a": ["catalog_records_v1"],
+        "stage_b": ["catalog_records_v2"],
+        "stage_c": ["catalog_records_v2"]
+      },
+      "datasets": [
+        {
+          "id": "catalog_records_v1",
+          "path": "data/evaluation/golden/catalog/records_v1.json",
+          "format": "json",
+          "minimum_samples": 15,
+          "source": "data/metadata/dataset_registry.json"
+        },
+        {
+          "id": "catalog_records_v2",
+          "path": "data/evaluation/golden/catalog/records_v2.json",
+          "format": "json",
+          "minimum_samples": 14,
+          "source": "data/metadata/dataset_registry.json"
+        }
+      ]
+    },
+    {
+      "capability": "ESRS_MAPPING",
+      "enforcement": "warn",
+      "contract_path": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+      "fixture_tiers": {
+        "stage_a": ["esrs_mapping_gold_v1", "esrs_mapping_negative_v1", "esrs_mapping_decision_cases_v1"],
+        "stage_b": ["esrs_mapping_gold_v2", "esrs_mapping_negative_v2", "esrs_mapping_decision_cases_v2"],
+        "stage_c": ["esrs_mapping_gold_v2", "esrs_mapping_negative_v2", "esrs_mapping_decision_cases_v2"]
+      },
+      "datasets": [
+        {
+          "id": "esrs_mapping_gold_v1",
+          "path": "data/evaluation/golden/esrs_mapping/mappings_v1.jsonl",
+          "format": "jsonl",
+          "minimum_samples": 25,
+          "source": "data/advisories/ISA_ADVISORY_v1.1.json"
+        },
+        {
+          "id": "esrs_mapping_gold_v2",
+          "path": "data/evaluation/golden/esrs_mapping/mappings_v2.jsonl",
+          "format": "jsonl",
+          "minimum_samples": 27,
+          "source": "data/advisories/ISA_ADVISORY_v1.1.json"
+        },
+        {
+          "id": "esrs_mapping_negative_v1",
+          "path": "data/evaluation/golden/esrs_mapping/negative_cases_v1.json",
+          "format": "json",
+          "minimum_samples": 4,
+          "source": "data/advisories/ISA_ADVISORY_v1.1.json"
+        },
+        {
+          "id": "esrs_mapping_negative_v2",
+          "path": "data/evaluation/golden/esrs_mapping/negative_cases_v2.json",
+          "format": "json",
+          "minimum_samples": 8,
+          "source": "data/advisories/ISA_ADVISORY_v1.1.json"
+        },
+        {
+          "id": "esrs_mapping_decision_cases_v1",
+          "path": "data/evaluation/golden/esrs_mapping/decision_cases_v1.json",
+          "format": "json",
+          "minimum_samples": 3,
+          "source": "data/advisories/ISA_ADVISORY_v1.1.json"
+        },
+        {
+          "id": "esrs_mapping_decision_cases_v2",
+          "path": "data/evaluation/golden/esrs_mapping/decision_cases_v2.json",
+          "format": "json",
+          "minimum_samples": 5,
+          "source": "data/advisories/ISA_ADVISORY_v1.1.json"
+        }
+      ]
+    },
+    {
+      "capability": "NEWS_HUB",
+      "enforcement": "warn",
+      "contract_path": "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+      "fixture_tiers": {
+        "stage_a": ["news_timeline_v1"],
+        "stage_b": ["news_timeline_v2"],
+        "stage_c": ["news_timeline_v2"]
+      },
+      "datasets": [
+        {
+          "id": "news_timeline_v1",
+          "path": "data/evaluation/golden/news_hub/timeline_v1.json",
+          "format": "json",
+          "minimum_samples": 10,
+          "source": "server/news-event-processor.test.ts"
+        },
+        {
+          "id": "news_timeline_v2",
+          "path": "data/evaluation/golden/news_hub/timeline_v2.json",
+          "format": "json",
+          "minimum_samples": 20,
+          "source": "server/news-event-processor.test.ts"
+        }
+      ]
+    },
+    {
+      "capability": "ADVISORY",
+      "enforcement": "fail",
+      "contract_path": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
+      "fixture_tiers": {
+        "stage_a": ["advisory_scenarios_v1", "advisory_quality_cases_v1"],
+        "stage_b": ["advisory_scenarios_v2", "advisory_quality_cases_v2"],
+        "stage_c": ["advisory_scenarios_v2", "advisory_quality_cases_v2"]
+      },
+      "datasets": [
+        {
+          "id": "advisory_scenarios_v1",
+          "path": "data/evaluation/golden/advisory/scenarios_v1.json",
+          "format": "json",
+          "minimum_samples": 4,
+          "source": "data/advisories/ISA_ADVISORY_DIFF_v1.0_to_v1.0.json"
+        },
+        {
+          "id": "advisory_scenarios_v2",
+          "path": "data/evaluation/golden/advisory/scenarios_v2.json",
+          "format": "json",
+          "minimum_samples": 8,
+          "source": "data/advisories/ISA_ADVISORY_DIFF_v1.0_to_v1.0.json"
+        },
+        {
+          "id": "advisory_quality_cases_v1",
+          "path": "data/evaluation/golden/advisory/quality_cases_v1.json",
+          "format": "json",
+          "minimum_samples": 4,
+          "source": "data/advisories/ISA_ADVISORY_v1.1.json"
+        },
+        {
+          "id": "advisory_quality_cases_v2",
+          "path": "data/evaluation/golden/advisory/quality_cases_v2.json",
+          "format": "json",
+          "minimum_samples": 4,
+          "source": "data/advisories/ISA_ADVISORY_v1.1.json"
+        }
+      ]
+    },
+    {
+      "capability": "ASK_ISA",
+      "enforcement": "warn",
+      "contract_path": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+      "fixture_tiers": {
+        "stage_a": ["ask_isa_golden_v1", "ask_isa_quality_v1"],
+        "stage_b": ["ask_isa_golden_v2", "ask_isa_quality_v2"],
+        "stage_c": ["ask_isa_golden_v2", "ask_isa_quality_v2"]
+      },
+      "datasets": [
+        {
+          "id": "ask_isa_golden_v1",
+          "path": "data/evaluation/golden/ask_isa/questions_v1.json",
+          "format": "json",
+          "minimum_samples": 10,
+          "source": "data/metadata/rag_eval_fixtures_v1.json"
+        },
+        {
+          "id": "ask_isa_golden_v2",
+          "path": "data/evaluation/golden/ask_isa/questions_v2.json",
+          "format": "json",
+          "minimum_samples": 20,
+          "source": "data/metadata/rag_eval_fixtures_v1.json"
+        },
+        {
+          "id": "ask_isa_quality_v1",
+          "path": "data/evaluation/golden/ask_isa/quality_cases_v1.json",
+          "format": "json",
+          "minimum_samples": 3,
+          "source": "data/metadata/rag_eval_fixtures_v1.json"
+        },
+        {
+          "id": "ask_isa_quality_v2",
+          "path": "data/evaluation/golden/ask_isa/quality_cases_v2.json",
+          "format": "json",
+          "minimum_samples": 4,
+          "source": "data/metadata/rag_eval_fixtures_v1.json"
+        }
+      ]
+    }
+  ]
+}

@@ -56,7 +56,7 @@ export async function parseEFRAGTaxonomy(
   };
 
   try {
-    console.log(`[EFRAG Parser] Loading Excel file: ${filePath}`);
+    serverLogger.info(`[EFRAG Parser] Loading Excel file: ${filePath}`);
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.readFile(filePath);
 
@@ -72,8 +72,8 @@ export async function parseEFRAGTaxonomy(
       throw new Error("No worksheet found in Excel file");
     }
 
-    console.log(`[EFRAG Parser] Parsing worksheet: ${sheet.name}`);
-    console.log(`[EFRAG Parser] Total rows: ${sheet.rowCount}`);
+    serverLogger.info(`[EFRAG Parser] Parsing worksheet: ${sheet.name}`);
+    serverLogger.info(`[EFRAG Parser] Total rows: ${sheet.rowCount}`);
 
     // Find header row (usually row 1, but may vary)
     let headerRow: ExcelJS.Row | undefined;
@@ -104,7 +104,7 @@ export async function parseEFRAGTaxonomy(
 
     // Extract column indices from header
     const columnMap = extractColumnMap(headerRow);
-    console.log(`[EFRAG Parser] Column map:`, columnMap);
+    serverLogger.info(`[EFRAG Parser] Column map:`, columnMap);
 
     // Parse data rows
     for (let i = headerRowNumber + 1; i <= sheet.rowCount; i++) {
@@ -134,12 +134,12 @@ export async function parseEFRAGTaxonomy(
       }
     }
 
-    console.log(`[EFRAG Parser] Parsing complete:`);
-    console.log(`  - Total datapoints: ${result.totalCount}`);
-    console.log(`  - Mandatory: ${result.mandatoryCount}`);
-    console.log(`  - Voluntary: ${result.voluntaryCount}`);
-    console.log(`  - By standard:`, result.byStandard);
-    console.log(`  - Errors: ${result.errors.length}`);
+    serverLogger.info(`[EFRAG Parser] Parsing complete:`);
+    serverLogger.info(`  - Total datapoints: ${result.totalCount}`);
+    serverLogger.info(`  - Mandatory: ${result.mandatoryCount}`);
+    serverLogger.info(`  - Voluntary: ${result.voluntaryCount}`);
+    serverLogger.info(`  - By standard:`, result.byStandard);
+    serverLogger.info(`  - Errors: ${result.errors.length}`);
 
     return result;
   } catch (error) {
@@ -183,7 +183,6 @@ function parseDatapointRow(
   columnMap: Record<string, number>
 ): ESRSDatapoint | null {
   // Extract values from mapped columns
-  const _level = getCellValue(row, columnMap.level);
   const role = getCellValue(row, columnMap.role);
   const name = getCellValue(row, columnMap.name);
   const xbrlTag = getCellValue(row, columnMap.xbrlTag);
@@ -281,27 +280,6 @@ function isEmptyRow(row: ExcelJS.Row): boolean {
 }
 
 /**
- * Generate datapoint ID from components
- */
-function generateDatapointId(
-  standard: string,
-  dr: string,
-  name: string
-): string {
-  const standardCode = standard.replace(/\s+/g, "").toUpperCase();
-  const drCode = dr.replace(/\s+/g, "").toUpperCase();
-  const nameSlug = name.substring(0, 20).replace(/[^a-zA-Z0-9]/g, "_");
-  return `${standardCode}_${drCode}_${nameSlug}`;
-}
-
-/**
- * Normalize standard name (e.g., "ESRS E1" → "ESRS E1")
- */
-function normalizeStandard(standard: string): string {
-  return standard.trim().toUpperCase().replace(/\s+/g, " ");
-}
-
-/**
  * Normalize data type
  */
 function normalizeDataType(data_type: string): string {
@@ -323,20 +301,6 @@ function normalizeDataType(data_type: string): string {
   if (normalized.includes("monetary")) return "monetary";
 
   return normalized || "text";
-}
-
-/**
- * Determine if datapoint is mandatory
- */
-function determineMandatory(mandatoryStr: string): boolean {
-  const normalized = mandatoryStr.toLowerCase().trim();
-  return (
-    normalized === "mandatory" ||
-    normalized === "required" ||
-    normalized === "yes" ||
-    normalized === "true" ||
-    normalized === "m"
-  );
 }
 
 /**

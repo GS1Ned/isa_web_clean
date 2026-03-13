@@ -1,0 +1,126 @@
+import { describe, expect, it } from "vitest";
+
+import {
+  getAdvisoryDecisionPostureSummary,
+  formatAdvisoryVersionLabel,
+  formatAdvisoryEnumLabel,
+  formatAdvisoryTimestamp,
+  formatDecisionArtifactConfidenceDelta,
+  formatDecisionArtifactCount,
+  getDecisionArtifactDiffTone,
+  getAdvisoryPublicationStatusTone,
+  getAdvisoryReviewStatusTone,
+  normalizeDecisionArtifacts,
+} from "./advisory-report-ui";
+
+describe("advisory-report-ui", () => {
+  it("formats advisory enum labels for display", () => {
+    expect(formatAdvisoryEnumLabel("READY_FOR_PUBLICATION")).toBe(
+      "READY FOR PUBLICATION",
+    );
+  });
+
+  it("formats decision artifact counts with correct pluralization", () => {
+    expect(formatDecisionArtifactCount(1)).toBe("1 decision artifact");
+    expect(formatDecisionArtifactCount(3)).toBe("3 decision artifacts");
+  });
+
+  it("formats advisory version labels with a v-prefix", () => {
+    expect(formatAdvisoryVersionLabel("1.0")).toBe("v1.0");
+    expect(formatAdvisoryVersionLabel("v1.1")).toBe("v1.1");
+  });
+
+  it("formats decision artifact confidence delta for display", () => {
+    expect(formatDecisionArtifactConfidenceDelta(0.14)).toBe("+14%");
+    expect(formatDecisionArtifactConfidenceDelta(-0.08)).toBe("-8%");
+    expect(formatDecisionArtifactConfidenceDelta(null)).toBe("N/A");
+  });
+
+  it("formats advisory timestamps and handles invalid values", () => {
+    expect(formatAdvisoryTimestamp("not-a-date")).toBe("N/A");
+    expect(formatAdvisoryTimestamp(null)).toBe("N/A");
+  });
+
+  it("normalizes decision artifacts from unknown values", () => {
+    expect(normalizeDecisionArtifacts(null)).toEqual([]);
+    expect(
+      normalizeDecisionArtifacts([
+        {
+          artifactVersion: "1.0.0",
+          artifactType: "gap_analysis",
+          capability: "ESRS_MAPPING",
+          confidence: {
+            level: "high",
+            score: 0.92,
+            basis: "Backed by current mappings",
+            reviewRecommended: false,
+          },
+        },
+        { invalid: true },
+      ]),
+    ).toHaveLength(1);
+  });
+
+  it("derives the most conservative advisory decision posture from mixed artifacts", () => {
+    const summary = getAdvisoryDecisionPostureSummary([
+      {
+        artifactVersion: "1.0.0",
+        artifactType: "gap_analysis",
+        capability: "ESRS_MAPPING",
+        confidence: {
+          level: "high",
+          score: 0.92,
+          basis: "Backed by current mappings",
+          reviewRecommended: false,
+          uncertaintyClass: "decision_grade",
+          escalationAction: "none",
+        },
+      },
+      {
+        artifactVersion: "1.0.0",
+        artifactType: "attribute_recommendation",
+        capability: "ESRS_MAPPING",
+        confidence: {
+          level: "low",
+          score: 0.41,
+          basis: "Insufficient evidence for direct automation",
+          reviewRecommended: true,
+          uncertaintyClass: "insufficient_evidence",
+          escalationAction: "human_review_required",
+        },
+      },
+    ]);
+
+    expect(summary).toEqual({
+      title: "Human review required",
+      description:
+        "This output should not be treated as decision-grade without explicit human validation because the current evidence posture is insufficient.",
+      badgeLabel: "Escalate to human review",
+      className: "border-red-200 bg-red-50 text-red-950",
+    });
+  });
+
+  it("maps advisory statuses to supported badge tones", () => {
+    expect(getAdvisoryReviewStatusTone("APPROVED")).toEqual({
+      variant: "secondary",
+      className: "bg-emerald-100 text-emerald-800 border-transparent",
+    });
+
+    expect(getAdvisoryPublicationStatusTone("READY_FOR_PUBLICATION")).toEqual({
+      variant: "secondary",
+      className: "bg-emerald-100 text-emerald-800 border-transparent",
+    });
+  });
+
+  it("maps decision artifact diff state to supported badge tones", () => {
+    expect(getDecisionArtifactDiffTone(true)).toEqual({
+      variant: "outline",
+      className: "border-amber-300 bg-amber-50 text-amber-900",
+    });
+
+    expect(getDecisionArtifactDiffTone(false)).toEqual({
+      variant: "secondary",
+      className: "bg-emerald-100 text-emerald-800 border-transparent",
+    });
+  });
+});

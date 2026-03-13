@@ -1,0 +1,219 @@
+{
+  "cost_control": {
+    "enforce_budget": true,
+    "max_monthly_usd": 500,
+    "max_request_usd": 5,
+    "soft_alert_threshold_usd": 250,
+    "track_by_model": true
+  },
+  "cost_optimization_stack": {
+    "api": {
+      "entrypoint": "isa_cost_optimizer.middleware_api:app",
+      "framework": "fastapi",
+      "routes": {
+        "health": "/health",
+        "optimize": "/optimize"
+      },
+      "transport": "in_process"
+    },
+    "cache": {
+      "backend": "json_file",
+      "deterministic_ordering": true,
+      "key_algorithm": "sha256",
+      "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime/deterministic_cache.json"
+    },
+    "concurrency_governor": {
+      "enabled": true,
+      "max_in_flight": 4,
+      "overflow_action": "raise_429"
+    },
+    "context_compression": {
+      "algorithm": "cosine_similarity",
+      "deduplicate": true,
+      "enabled": true,
+      "similarity_threshold": 0.92
+    },
+    "embedding_cache": {
+      "enabled": true,
+      "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime/embedding_cache.json",
+      "reuse_threshold": 0.92
+    },
+    "enabled": true,
+    "escalation": {
+      "enabled": true,
+      "quality_floors": {
+        "balanced": 0.9,
+        "economy": 0.85,
+        "premium": 0.95
+      },
+      "tier_order": [
+        "economy",
+        "balanced",
+        "premium"
+      ],
+      "trigger_conditions": [
+        "invalid_json",
+        "quality_below_floor"
+      ]
+    },
+    "json_repair": {
+      "enabled": true,
+      "repair_before_retry": true,
+      "strict_canonical_output": true
+    },
+    "retry_controller": {
+      "enabled": true,
+      "max_attempts": 2
+    },
+    "runtime_dir": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime",
+    "sla_controller": {
+      "breach_action": "promote_tier",
+      "enabled": true,
+      "tier_thresholds": {
+        "balanced": 5000,
+        "economy": 8000,
+        "premium": 3000
+      }
+    },
+    "token_controller": {
+      "default_token_cap": 4096,
+      "enabled": true,
+      "overflow_action": "truncate"
+    },
+    "version": "1.0.0"
+  },
+  "failure_classification": {
+    "categories": [
+      "dependency",
+      "permission",
+      "malformed_json",
+      "missing_runtime",
+      "invalid_scoring",
+      "router_offline"
+    ],
+    "retryable": [
+      "dependency",
+      "router_offline"
+    ],
+    "terminal": [
+      "permission",
+      "malformed_json",
+      "invalid_scoring"
+    ]
+  },
+  "fallback": {
+    "escalation_strategy": [
+      "retry_dynamic_optimizer",
+      "fallback_to_provider_priority",
+      "drop_to_safe_skill_allowlist_only",
+      "require_manual_operator_review"
+    ],
+    "max_retries": 2,
+    "safe_mode": "read_only_governed"
+  },
+  "governance": {
+    "artifact_dir": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/kernel/runs/20260301T175140Z/artifacts",
+    "artifact_hashing": true,
+    "change_control": "policy_review_required",
+    "evidence_enforcement": true,
+    "evidence_required": true,
+    "immutable_artifacts": true,
+    "policy_version": "isa-ucpk-2026-03-01-cost-optimization-stack-v1",
+    "run_id": "20260301T175140Z"
+  },
+  "logging": {
+    "audit_trail": true,
+    "destinations": [
+      "stdout",
+      ".openclaw/logs/control-plane-audit.jsonl"
+    ],
+    "file_path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/kernel/runs/20260301T175140Z/logs/openclaw_control_plane.log",
+    "level": "info",
+    "log_to_file": true,
+    "redact_secrets": true,
+    "structured": true
+  },
+  "metadata": {
+    "compatibility": "isa-unified-control-plane-kernel",
+    "repo_root": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean",
+    "secret_free": true,
+    "today_iso8601": "2026-03-01"
+  },
+  "mode": "deterministic",
+  "model_router": {
+    "cost_optimization_stack": {
+      "enabled": true,
+      "entrypoint": "isa_cost_optimizer.middleware_api:app",
+      "health_path": "/health",
+      "mode": "pre_router_middleware",
+      "optimize_path": "/optimize",
+      "runtime_dir": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime"
+    },
+    "cost_tracking": true,
+    "default_model": "openrouter/moonshotai/kimi-k2.5",
+    "deterministic_selection": true,
+    "dynamic_optimizer_endpoint": "http://localhost:8090/select",
+    "endpoint": "http://127.0.0.1:8090/select",
+    "fallback_models": [],
+    "health": "http://127.0.0.1:8090/health",
+    "max_tokens_per_call": 16000,
+    "provider_priority": [
+      "openrouter",
+      "openai",
+      "anthropic",
+      "gemini"
+    ],
+    "request_timeout_ms": 1500,
+    "strategy": "isa_dynamic_optimizer_http"
+  },
+  "runtime": {
+    "config_integrity_required": true,
+    "integrity_flags": [
+      "secret_free_config",
+      "deterministic_key_ordering",
+      "skill_allowlist_enforced",
+      "router_endpoint_validated"
+    ],
+    "process_restart_policy": "manual_or_supervised_only",
+    "profile_scope": "isa_unified_control_plane_kernel",
+    "sandbox_mode": "off"
+  },
+  "safety": {
+    "allow_destructive_fs": false,
+    "allow_shell": false,
+    "network_install_requires_review": true,
+    "restrict_root_execution": true,
+    "workspace_write_requires_approval": true
+  },
+  "skill_policy": {
+    "allowed_categories": [
+      "orchestration",
+      "execution",
+      "cognition",
+      "integration",
+      "infrastructure",
+      "data",
+      "governance"
+    ],
+    "allowlist_mode": true,
+    "auto_install": false,
+    "dependency_repair_mode": "proposal_only",
+    "untrusted_sources": "deny"
+  },
+  "slas": {
+    "latency_thresholds_ms": {
+      "p50": 3000,
+      "p95": 8000,
+      "p99": 15000
+    },
+    "router_timeout_ms": 1500,
+    "skill_resolution_timeout_ms": 2000
+  },
+  "telemetry": {
+    "collect_metrics": true,
+    "disable_secret_capture": true,
+    "export_json_metrics": true,
+    "router_observability": true
+  },
+  "version": "1.0.0"
+}

@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, FileText, ExternalLink, Download, Search } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 
 /**
  * Governance Documents Page
@@ -46,24 +45,6 @@ export default function GovernanceDocuments() {
     }
   };
 
-  const getVerificationBadge = (lastVerifiedDate: string | null) => {
-    if (!lastVerifiedDate) {
-      return <Badge variant="destructive">Never Verified</Badge>;
-    }
-
-    const daysSinceVerification = Math.floor(
-      (Date.now() - new Date(lastVerifiedDate).getTime()) / (1000 * 60 * 60 * 24)
-    );
-
-    if (daysSinceVerification > 90) {
-      return <Badge variant="destructive">Verification Expired</Badge>;
-    } else if (daysSinceVerification > 60) {
-      return <Badge variant="outline" className="border-yellow-500 text-yellow-700">Verification Expiring Soon</Badge>;
-    } else {
-      return <Badge variant="outline" className="border-green-500 text-green-700">Recently Verified</Badge>;
-    }
-  };
-
   return (
     <div className="container mx-auto py-8 space-y-6">
       {/* Lane C Governance Banner */}
@@ -87,45 +68,70 @@ export default function GovernanceDocuments() {
 
       {/* Statistics */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Documents</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.total}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">By Type</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-1 text-sm">
-                {stats.byDocumentType.slice(0, 3).map((item: any) => (
-                  <div key={item.type} className="flex justify-between">
-                    <span>{item.type?.replace(/_/g, " ")}</span>
-                    <span className="font-medium">{item.count}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">By Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-1 text-sm">
-                {stats.byStatus.map((item: any) => (
-                  <div key={item.status} className="flex justify-between">
-                    <span>{item.status}</span>
-                    <span className="font-medium">{item.count}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">Total Documents</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.total}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">By Type</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-1 text-sm">
+                  {stats.byDocumentType.slice(0, 3).map((item: any) => (
+                    <div key={item.type} className="flex justify-between">
+                      <span>{item.type?.replace(/_/g, " ")}</span>
+                      <span className="font-medium">{item.count}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">By Status</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-1 text-sm">
+                  {stats.byStatus.map((item: any) => (
+                    <div key={item.status} className="flex justify-between">
+                      <span>{item.status}</span>
+                      <span className="font-medium">{item.count}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Alert>
+            <AlertDescription className="flex flex-wrap gap-2 items-center">
+              <strong>Verification posture:</strong>
+              <Badge variant="default">
+                Fresh {stats.verificationFreshnessBuckets?.fresh ?? 0}
+              </Badge>
+              <Badge variant="secondary">
+                Aging {stats.verificationFreshnessBuckets?.aging ?? 0}
+              </Badge>
+              <Badge variant="destructive">
+                Stale {stats.verificationFreshnessBuckets?.stale ?? 0}
+              </Badge>
+              <Badge variant="destructive">
+                Unknown {stats.verificationFreshnessBuckets?.unknown ?? 0}
+              </Badge>
+              {typeof stats.oldestVerificationAgeDays === "number" && (
+                <span className="text-muted-foreground">
+                  Oldest verification: {stats.oldestVerificationAgeDays} days
+                </span>
+              )}
+            </AlertDescription>
+          </Alert>
         </div>
       )}
 

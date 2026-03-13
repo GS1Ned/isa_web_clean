@@ -1,0 +1,99 @@
+{
+  "created_at_local": "2026-02-07 21:20:36",
+  "move_map_file": "docs/archive/root_docs/_move_map_root_scripts_20260207_212036.json",
+  "moved_count": 22,
+  "skipped_count": 0,
+  "errors_count": 0,
+  "moved": [
+    {
+      "from": "check-columns.ts",
+      "to": "scripts/validation/check-columns.ts"
+    },
+    {
+      "from": "check-error-ledger.ts",
+      "to": "scripts/validation/check-error-ledger.ts"
+    },
+    {
+      "from": "check-pipeline-log.ts",
+      "to": "scripts/validation/check-pipeline-log.ts"
+    },
+    {
+      "from": "check-pipeline-table.ts",
+      "to": "scripts/validation/check-pipeline-table.ts"
+    },
+    {
+      "from": "check-table.ts",
+      "to": "scripts/validation/check-table.ts"
+    },
+    {
+      "from": "test-db-connection.ts",
+      "to": "scripts/validation/test-db-connection.ts"
+    },
+    {
+      "from": "test-pipeline-run.ts",
+      "to": "scripts/validation/test-pipeline-run.ts"
+    },
+    {
+      "from": "check-news-dates.mjs",
+      "to": "scripts/ingestion/news/check-news-dates.mjs"
+    },
+    {
+      "from": "debug-scraper.mjs",
+      "to": "scripts/ingestion/news/debug-scraper.mjs"
+    },
+    {
+      "from": "get-scope-stats.mjs",
+      "to": "scripts/dev/get-scope-stats.mjs"
+    },
+    {
+      "from": "populate-live-news.mjs",
+      "to": "scripts/ingestion/news/populate-live-news.mjs"
+    },
+    {
+      "from": "populate-simple.mjs",
+      "to": "scripts/ingestion/news/populate-simple.mjs"
+    },
+    {
+      "from": "run-pipeline-verbose.mjs",
+      "to": "scripts/dev/run-pipeline-verbose.mjs"
+    },
+    {
+      "from": "seed-news.mjs",
+      "to": "scripts/ingestion/news/seed-news.mjs"
+    },
+    {
+      "from": "test-db-ssl.mjs",
+      "to": "scripts/dev/test-db-ssl.mjs"
+    },
+    {
+      "from": "test-efrag-detail.mjs",
+      "to": "scripts/dev/test-efrag-detail.mjs"
+    },
+    {
+      "from": "test-efrag-pipeline.mjs",
+      "to": "scripts/dev/test-efrag-pipeline.mjs"
+    },
+    {
+      "from": "test-news-pipeline.mjs",
+      "to": "scripts/ingestion/news/test-news-pipeline.mjs"
+    },
+    {
+      "from": "test-playwright-scraper.mjs",
+      "to": "scripts/ingestion/news/test-playwright-scraper.mjs"
+    },
+    {
+      "from": "test-scraper.mjs",
+      "to": "scripts/ingestion/news/test-scraper.mjs"
+    },
+    {
+      "from": "test-xml-parser.mjs",
+      "to": "scripts/dev/test-xml-parser.mjs"
+    },
+    {
+      "from": "check_esrs_count.sql",
+      "to": "db/sql/check_esrs_count.sql"
+    }
+  ],
+  "skipped": [],
+  "errors": []
+}

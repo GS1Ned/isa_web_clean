@@ -105,3 +105,52 @@ export async function performHealthCheck(): Promise<HealthCheckResult> {
     },
   };
 }
+
+
+/**
+ * Readiness check - verifies all required env vars are present
+ * Returns names only, never values
+ */
+export function checkEnvReadiness(): { ready: boolean; missing: string[]; present: string[] } {
+  const REQUIRED_VARS = ["VITE_APP_ID", "JWT_SECRET", "DATABASE_URL"];
+  const missing: string[] = [];
+  const present: string[] = [];
+  
+  for (const varName of REQUIRED_VARS) {
+    if (process.env[varName]) {
+      present.push(varName);
+    } else {
+      missing.push(varName);
+    }
+  }
+  
+  return {
+    ready: missing.length === 0,
+    missing,
+    present,
+  };
+}
+
+/**
+ * Perform readiness check (DB + env vars)
+ */
+export async function performReadinessCheck(): Promise<{
+  ready: boolean;
+  checks: {
+    database: { status: 'ok' | 'error'; error?: string };
+    envVars: { ready: boolean; missing: string[]; present: string[] };
+  };
+}> {
+  const [dbCheck, envCheck] = await Promise.all([
+    checkDatabase().catch(e => ({ status: 'error' as const, error: e.message })),
+    Promise.resolve(checkEnvReadiness()),
+  ]);
+  
+  return {
+    ready: dbCheck.status === 'ok' && envCheck.ready,
+    checks: {
+      database: { status: dbCheck.status, error: dbCheck.error },
+      envVars: envCheck,
+    },
+  };
+}

@@ -1,0 +1,805 @@
+{
+  "meta": {
+    "updated_at": "2026-02-20",
+    "updated_by": "codex-5.3",
+    "repo_ref": {
+      "branch": "main",
+      "commit": "70acb22c7975ab851b27cf2912c6dbb2f287167e"
+    }
+  },
+  "registry_version": "1.1.0",
+  "current_phase": "DONE",
+  "phase_order": [
+    "PASS_1_DISCOVERY",
+    "PASS_2_DOC_CODE_RECONCILIATION",
+    "PASS_3_CURRENT_TARGET_DELTA",
+    "PASS_4_CAPABILITY_DERIVATION",
+    "PASS_5_SHARED_PRIMITIVES",
+    "PASS_6_REPO_REFINEMENT_PLAN",
+    "PASS_7_EXECUTE_VALIDATE_LOOP",
+    "DONE"
+  ],
+  "phases": [
+    {
+      "id": "PASS_1_DISCOVERY",
+      "status": "COMPLETE",
+      "depends_on": [],
+      "outputs": [
+        "Canonical anchor discovery",
+        "Validation command inventory",
+        "Router/schema surface inventory"
+      ],
+      "evidence_paths": [
+        "docs/governance/_root/ISA_GOVERNANCE.md",
+        "docs/agent/AGENT_MAP.md",
+        "docs/spec/ARCHITECTURE.md",
+        "server/routers.ts",
+        "drizzle/schema.ts"
+      ],
+      "unresolved_issues": [
+        "Legacy doc drift outside canonical architecture scope"
+      ],
+      "confidence": 0.84
+    },
+    {
+      "id": "PASS_2_DOC_CODE_RECONCILIATION",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_1_DISCOVERY"
+      ],
+      "outputs": [
+        "Canonical architecture source reconciled",
+        "Supplemental architecture source downgraded"
+      ],
+      "evidence_paths": [
+        "docs/spec/ARCHITECTURE.md",
+        "docs/spec/ESRS_MAPPING/isa-core-architecture.md"
+      ],
+      "unresolved_issues": [
+        "Repository-wide non-canonical doc-code backlog remains"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "id": "PASS_3_CURRENT_TARGET_DELTA",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_2_DOC_CODE_RECONCILIATION"
+      ],
+      "outputs": [
+        "Single CURRENT section",
+        "Single TARGET section",
+        "Delta table with terminal row statuses"
+      ],
+      "evidence_paths": [
+        "docs/spec/ARCHITECTURE.md"
+      ],
+      "unresolved_issues": [],
+      "confidence": 0.82
+    },
+    {
+      "id": "PASS_4_CAPABILITY_DERIVATION",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_3_CURRENT_TARGET_DELTA"
+      ],
+      "outputs": [
+        "Six capability boundaries derived",
+        "Per-capability evidence and ownership status mapping"
+      ],
+      "evidence_paths": [
+        "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json",
+        "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
+      ],
+      "unresolved_issues": [],
+      "confidence": 0.86
+    },
+    {
+      "id": "PASS_5_SHARED_PRIMITIVES",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_4_CAPABILITY_DERIVATION"
+      ],
+      "outputs": [
+        "Primitive dictionary with line-ranged evidence refs",
+        "Ownership justification for non-shared owner-layer primitives"
+      ],
+      "evidence_paths": [
+        "docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json",
+        "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
+      ],
+      "unresolved_issues": [],
+      "confidence": 0.84
+    },
+    {
+      "id": "PASS_6_REPO_REFINEMENT_PLAN",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_5_SHARED_PRIMITIVES"
+      ],
+      "outputs": [
+        "No-parallel-artifact reconciliation",
+        "Manifest authority enforcement updates",
+        "Canonical doc validation strategy updates"
+      ],
+      "evidence_paths": [
+        "docs/spec/ARCHITECTURE.md",
+        "docs/agent/AGENT_MAP.md",
+        "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
+        "scripts/gates/doc-code-validator.sh",
+        "scripts/gates/canonical-docs-allowlist.sh"
+      ],
+      "unresolved_issues": [],
+      "confidence": 0.79
+    },
+    {
+      "id": "PASS_7_EXECUTE_VALIDATE_LOOP",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_6_REPO_REFINEMENT_PLAN"
+      ],
+      "outputs": [
+        "Corrective hardening patch set applied",
+        "Validation bundle rerun with canonical-scope doc-code checks",
+        "Confidence recomputed from weighted signals",
+        "Canonical contract drift gate integrated into validation bundle",
+        "Manifest ownership drift gate integrated into validation bundle",
+        "Tiered CI policy integrated (Tier 0/1 blocking, Tier 2 non-blocking)",
+        "Quarantine controls integrated for unit/integration runner scripts",
+        "Capability heartbeat smoke tests integrated across all six capabilities",
+        "Capability benchmark rubric and evidence requirements normalized",
+        "Benchmark findings converted to capability-linked backlog rows (BENCH-001..BENCH-006)",
+        "Canonical repo_ref metadata refreshed to satisfy freshness drift gate",
+        "Planning validator and no-console gate remediated and revalidated",
+        "Security gate deterministic policy hardened and revalidated",
+        "Manifest ownership drift remediated by explicit shared-platform ownership coverage",
+        "Benchmark evidence package normalized to verified-or-unknown date policy",
+        "Security gate policy ratcheted to high+critical blocking with deterministic waiver accounting"
+      ],
+      "evidence_paths": [
+        "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
+        "scripts/gates/doc-code-validator.sh",
+        "scripts/gates/canonical-docs-allowlist.sh"
+      ],
+      "unresolved_issues": [
+        "Temporary high-severity advisory waivers were burned down (SEC-002 completed)."
+      ],
+      "confidence": 0.95
+    },
+    {
+      "id": "DONE",
+      "status": "COMPLETE",
+      "depends_on": [
+        "PASS_7_EXECUTE_VALIDATE_LOOP"
+      ],
+      "outputs": [
+        "Single canonical CURRENT and TARGET state maintained",
+        "Six-capability manifest evidence-backed",
+        "Shared primitive contract evidence-backed",
+        "Threshold-based completion gate enforced"
+      ],
+      "evidence_paths": [
+        "docs/spec/ARCHITECTURE.md",
+        "docs/architecture/panel/_generated/EVIDENCE_INDEX.json",
+        "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json",
+        "docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json",
+        "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json",
+        "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
+      ],
+      "unresolved_issues": [
+        "Security gate now runs with an empty waiver set under SEC-002 completion policy."
+      ],
+      "confidence": 0.91
+    }
+  ],
+  "transition_rules": {
+    "require_checkpoint_write": true,
+    "require_dependency_satisfaction": true,
+    "unresolved_issues_reduce_confidence": true
+  },
+  "completion_gate": {
+    "delta_rows_terminal_required": true,
+    "aggregate_validation_confidence_required": true,
+    "done_confidence_threshold": 0.75,
+    "below_threshold_status": "DONE_WITH_LIMITATIONS"
+  },
+  "done_decision": {
+    "aggregate_validation_confidence": 1,
+    "delta_rows_terminal": true,
+    "threshold_met": true,
+    "result_status": "DONE_WITH_LIMITATIONS",
+    "rationale": "Confidence threshold and terminal delta conditions are met; temporary security waiver IDs were removed under SEC-002."
+  },
+  "continuation_run": {
+    "started_at": "2026-02-20T05:38:25Z",
+    "base_branch": "main",
+    "base_commit": "9cafad14d3b1f86e94438847cefc7382958d527c",
+    "working_branch": "hardening/2026-02-20-prod-readiness-pass2",
+    "checkpoint_commit": "491e3177816818a87d9183d9fc23b4a1d9114c8c",
+    "validation_bundle_version": "V2",
+    "baseline_validation_status": {
+      "planning_validator": "pass",
+      "pnpm_check": "pass",
+      "no_console_gate": "pass",
+      "secrets_scan": "pass",
+      "slo_policy": "pass",
+      "observability_contract": "pass",
+      "security_gate": "pass",
+      "canonical_docs_allowlist": "pass",
+      "doc_code_validator_canonical": "pass",
+      "canonical_contract_drift": "fail:1",
+      "manifest_ownership_drift": "pass"
+    },
+    "canonical_contract_set": [
+      "docs/spec/ARCHITECTURE.md",
+      "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
+      "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json",
+      "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json",
+      "docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json",
+      "docs/architecture/panel/_generated/EVIDENCE_INDEX.json",
+      "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
+      "docs/spec/CONFLICT_REGISTER.md",
+      "docs/planning/refactoring/EXECUTION_STATE.json"
+    ],
+    "current_pipeline_inventory": [
+      {
+        "area": "capabilities_definition",
+        "current_truth": "Canonical six capabilities are explicitly defined and mapped to ownership contracts.",
+        "evidence_paths": [
+          "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
+          "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json",
+          "server/routers.ts"
+        ]
+      },
+      {
+        "area": "router_surface_truth",
+        "current_truth": "Top-level runtime surfaces are defined in appRouter.",
+        "evidence_paths": [
+          "server/routers.ts"
+        ]
+      },
+      {
+        "area": "ingestion_jobs_and_inputs",
+        "current_truth": "INGEST-02..06 scripts consume local datasets and ingest into the database.",
+        "evidence_paths": [
+          "server/ingest/INGEST-02_gdsn_current.ts",
+          "server/ingest/INGEST-03_esrs_datapoints.ts",
+          "server/ingest/INGEST-04_ctes_kdes.ts",
+          "server/ingest/INGEST-05_dpp_rules.ts",
+          "server/ingest/INGEST-06_cbv_digital_link.ts"
+        ]
+      },
+      {
+        "area": "corpus_ingestion_service",
+        "current_truth": "Source-type taxonomy and authority metadata are defined in the corpus ingestion service contract.",
+        "evidence_paths": [
+          "server/services/corpus-ingestion/index.ts"
+        ]
+      },
+      {
+        "area": "news_source_and_scheduling",
+        "current_truth": "Source lists, authority tiers, pipeline modes, and cron schedules exist.",
+        "evidence_paths": [
+          "server/news-sources.ts",
+          "server/news-sources-phase3.ts",
+          "server/news-pipeline-config.ts",
+          "server/cron-scheduler.ts",
+          "server/news-cron-scheduler.ts",
+          "server/routers/cron.ts"
+        ]
+      },
+      {
+        "area": "data_snapshots_and_manifests",
+        "current_truth": "Dataset registry and schema exist but currently drift in structure.",
+        "evidence_paths": [
+          "data/metadata/dataset_registry.json",
+          "data/metadata/dataset_registry.schema.json"
+        ]
+      },
+      {
+        "area": "evaluation_and_testing_harness",
+        "current_truth": "Tiered tests, capability heartbeat, and deterministic gates exist.",
+        "evidence_paths": [
+          "package.json",
+          ".github/workflows/tiered-tests.yml",
+          "server/routers/__tests__/capability-heartbeat.test.ts",
+          "scripts/gates/observability-contract.sh",
+          "scripts/gates/security-gate.sh",
+          "scripts/gates/doc-code-validator.sh",
+          "scripts/gates/canonical-contract-drift.sh",
+          "scripts/gates/manifest-ownership-drift.py"
+        ]
+      }
+    ],
+    "next_deterministic_task": "Maintain zero-waiver security posture and keep high+critical blocking mode green in CI.",
+    "patch_group_checkpoints": [
+      {
+        "patch_group": "PG-00",
+        "validated_at": "2026-02-20T05:38:25Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "planning_validator": "pass",
+          "pnpm_check": "pass",
+          "no_console_gate": "pass",
+          "secrets_scan": "pass",
+          "slo_policy": "pass",
+          "observability_contract": "pass",
+          "security_gate": "pass",
+          "canonical_docs_allowlist": "pass",
+          "doc_code_validator_canonical": "pass",
+          "canonical_contract_drift": "fail:1",
+          "manifest_ownership_drift": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-01",
+        "validated_at": "2026-02-20T05:39:48Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "canonical_contract_drift": "pass",
+          "doc_code_validator_canonical": "pass",
+          "planning_validator": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-02",
+        "validated_at": "2026-02-20T05:42:21Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "doc_code_validator_canonical": "pass",
+          "planning_validator": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-03",
+        "validated_at": "2026-02-20T05:44:28Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "dataset_registry_schema_validation": "pass",
+          "advisory_health_probe": "pass",
+          "planning_validator": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-04",
+        "validated_at": "2026-02-20T05:47:24Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "pnpm_check": "pass",
+          "capability_heartbeat": "pass",
+          "manifest_ownership_drift": "pass",
+          "canonical_contract_drift": "pass",
+          "doc_code_validator_canonical": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-05",
+        "validated_at": "2026-02-20T05:49:20Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "reliability_smoke": "pass",
+          "perf_smoke": "pass",
+          "security_gate": "pass",
+          "canonical_contract_drift": "pass",
+          "doc_code_validator_canonical": "pass",
+          "planning_validator": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-06",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "benchmark_validator": "pass",
+          "benchmark_no_unverified_policy": "pass",
+          "planning_validator": "pass"
+        },
+        "validated_at": "2026-02-20T06:12:29Z"
+      },
+      {
+        "patch_group": "PG-07",
+        "validated_at": "2026-02-20T06:14:40Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "planning_validator": "pass",
+          "pnpm_check": "pass",
+          "no_console_gate": "pass",
+          "secrets_scan": "pass",
+          "slo_policy": "pass",
+          "observability_contract": "pass",
+          "security_gate": "pass",
+          "canonical_docs_allowlist": "pass",
+          "doc_code_validator_canonical": "pass",
+          "canonical_contract_drift": "pass",
+          "manifest_ownership_drift": "pass",
+          "reliability_smoke": "pass",
+          "perf_smoke": "pass",
+          "benchmark_validator": "pass"
+        }
+      },
+      {
+        "patch_group": "PG-08",
+        "validated_at": "2026-02-20T06:34:04Z",
+        "validation_bundle_version": "V2",
+        "statuses": {
+          "planning_validator": "pass",
+          "pnpm_check": "pass",
+          "no_console_gate": "pass",
+          "secrets_scan": "pass",
+          "slo_policy": "pass",
+          "observability_contract": "pass",
+          "security_gate": "pass",
+          "security_gate_no_waiver_canary": "fail_expected",
+          "canonical_docs_allowlist": "pass",
+          "doc_code_validator_canonical": "pass",
+          "canonical_contract_drift": "pass",
+          "manifest_ownership_drift": "pass",
+          "reliability_smoke": "pass",
+          "perf_smoke": "pass"
+        }
+      }
+    ],
+    "reopened_at": "2026-02-20T05:39:12Z",
+    "last_validated_at": "2026-02-20T06:34:04Z",
+    "completion_status": "DONE_WITH_LIMITATIONS"
+  },
+  "continuation_run_history": [
+    {
+      "started_at": "2026-02-20T02:56:32Z",
+      "base_branch": "main",
+      "base_commit": "86a5f9a",
+      "working_branch": "hardening/2026-02-20-cleanup-benchmark-buildout",
+      "validation_bundle_version": "V2",
+      "baseline_validation_status": {
+        "planning_validator": "fail:1",
+        "pnpm_check": "pass",
+        "no_console_gate": "fail:1",
+        "secrets_scan": "pass",
+        "slo_policy": "pass",
+        "observability_contract": "pass",
+        "security_gate": "fail:1",
+        "canonical_docs_allowlist": "pass",
+        "doc_code_validator_canonical": "pass"
+      },
+      "canonical_contract_set": [
+        "docs/spec/ARCHITECTURE.md",
+        "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md",
+        "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json",
+        "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json",
+        "docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json",
+        "docs/architecture/panel/_generated/EVIDENCE_INDEX.json",
+        "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json",
+        "docs/spec/CONFLICT_REGISTER.md",
+        "docs/planning/refactoring/EXECUTION_STATE.json"
+      ],
+      "last_validated_at": "2026-02-20T04:08:00Z",
+      "canonical_contract_set_locked": true,
+      "canonical_contract_set_locked_at": "2026-02-20T02:57:52Z",
+      "canonical_contract_set_lock_commit": "9925f1a",
+      "patch_group_checkpoints": [
+        {
+          "patch_group": "PG-00B",
+          "validated_at": "2026-02-20T02:58:03Z",
+          "validation_bundle_version": "V1",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass"
+          }
+        },
+        {
+          "patch_group": "PG-01A",
+          "validated_at": "2026-02-20T02:58:36Z",
+          "validation_bundle_version": "V1",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass"
+          }
+        },
+        {
+          "patch_group": "PG-01B",
+          "validated_at": "2026-02-20T02:59:20Z",
+          "validation_bundle_version": "V1",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass"
+          }
+        },
+        {
+          "patch_group": "PG-02A.1",
+          "validated_at": "2026-02-20T03:00:04Z",
+          "validation_bundle_version": "V1",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "fail:1",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass"
+          }
+        },
+        {
+          "patch_group": "PG-02A.2",
+          "validated_at": "2026-02-20T03:01:30Z",
+          "validation_bundle_version": "V1",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass"
+          }
+        },
+        {
+          "patch_group": "PG-02B.1",
+          "validated_at": "2026-02-20T03:02:23Z",
+          "validation_bundle_version": "V1",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass"
+          }
+        },
+        {
+          "patch_group": "PG-02B.2",
+          "validated_at": "2026-02-20T03:03:00Z",
+          "validation_bundle_version": "V1",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass"
+          }
+        },
+        {
+          "patch_group": "PG-03A",
+          "validated_at": "2026-02-20T03:04:39Z",
+          "validation_bundle_version": "V1",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass"
+          }
+        },
+        {
+          "patch_group": "PG-03B",
+          "validated_at": "2026-02-20T03:21:08Z",
+          "validation_bundle_version": "V1",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass"
+          }
+        },
+        {
+          "patch_group": "PG-04A",
+          "validated_at": "2026-02-20T03:24:29Z",
+          "validation_bundle_version": "V2",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass",
+            "canonical_contract_drift": "fail:1"
+          }
+        },
+        {
+          "patch_group": "PG-04B",
+          "validated_at": "2026-02-20T03:27:38Z",
+          "validation_bundle_version": "V2",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass",
+            "canonical_contract_drift": "fail:1",
+            "manifest_ownership_drift": "fail:1"
+          }
+        },
+        {
+          "patch_group": "PG-05A",
+          "validated_at": "2026-02-20T03:30:06Z",
+          "validation_bundle_version": "V2",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass",
+            "canonical_contract_drift": "fail:1",
+            "manifest_ownership_drift": "fail:1"
+          }
+        },
+        {
+          "patch_group": "PG-05B",
+          "validated_at": "2026-02-20T03:34:31Z",
+          "validation_bundle_version": "V2",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass",
+            "canonical_contract_drift": "fail:1",
+            "manifest_ownership_drift": "fail:1"
+          }
+        },
+        {
+          "patch_group": "PG-05C",
+          "validated_at": "2026-02-20T03:36:47Z",
+          "validation_bundle_version": "V2",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass",
+            "canonical_contract_drift": "fail:1",
+            "manifest_ownership_drift": "fail:1"
+          }
+        },
+        {
+          "patch_group": "PG-06A",
+          "validated_at": "2026-02-20T03:39:23Z",
+          "validation_bundle_version": "V2",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass",
+            "canonical_contract_drift": "fail:1",
+            "manifest_ownership_drift": "fail:1"
+          }
+        },
+        {
+          "patch_group": "PG-06B",
+          "validated_at": "2026-02-20T03:41:42Z",
+          "validation_bundle_version": "V2",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass",
+            "canonical_contract_drift": "fail:1",
+            "manifest_ownership_drift": "fail:1"
+          }
+        },
+        {
+          "patch_group": "PG-07A",
+          "validated_at": "2026-02-20T03:43:28Z",
+          "validation_bundle_version": "V2",
+          "statuses": {
+            "planning_validator": "fail:1",
+            "pnpm_check": "pass",
+            "no_console_gate": "fail:1",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass",
+            "canonical_contract_drift": "pass",
+            "manifest_ownership_drift": "fail:1"
+          }
+        },
+        {
+          "patch_group": "PG-07A",
+          "validated_at": "2026-02-20T03:48:32Z",
+          "validation_bundle_version": "V2",
+          "statuses": {
+            "planning_validator": "pass",
+            "pnpm_check": "pass",
+            "no_console_gate": "pass",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "fail:1",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass",
+            "canonical_contract_drift": "pass",
+            "manifest_ownership_drift": "fail:1"
+          }
+        },
+        {
+          "patch_group": "PG-07B",
+          "validated_at": "2026-02-20T04:08:00Z",
+          "validation_bundle_version": "V2",
+          "statuses": {
+            "planning_validator": "pass",
+            "pnpm_check": "pass",
+            "no_console_gate": "pass",
+            "secrets_scan": "pass",
+            "slo_policy": "pass",
+            "observability_contract": "pass",
+            "security_gate": "pass",
+            "canonical_docs_allowlist": "pass",
+            "doc_code_validator_canonical": "pass",
+            "canonical_contract_drift": "pass",
+            "manifest_ownership_drift": "pass"
+          }
+        }
+      ]
+    }
+  ]
+}

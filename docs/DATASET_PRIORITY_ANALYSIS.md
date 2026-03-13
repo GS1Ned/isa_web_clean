@@ -284,7 +284,7 @@ Based on the analysis above, I recommend creating the following ingestion tasks:
 **Database Impact:**
 - ~15-20 new tables (raw, staging, canonical)
 - Estimated ~50,000-100,000 total rows across all tables
-- Manageable size, well within MySQL/TiDB limits
+- Manageable size, well within current MySQL-compatible relational DB limits
 
 **Project Bloat Assessment:** **MINIMAL**
 - All datasets are highly structured and directly support core ISA features

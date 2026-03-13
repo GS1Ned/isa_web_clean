@@ -78,7 +78,7 @@ export default function AdminNewsPipelineManager() {
       setPollingEnabled(true);
       refetchStatus();
     } catch (error) {
-      console.error("Failed to start pipeline:", error);
+      alert(`Failed to start pipeline: ${String(error)}`);
     }
   };
 
@@ -87,7 +87,6 @@ export default function AdminNewsPipelineManager() {
       const result = await runArchival.mutateAsync();
       alert(`Archival complete: ${result.archived} items archived`);
     } catch (error) {
-      console.error("Archival failed:", error);
       alert("Archival failed: " + String(error));
     }
   };
@@ -97,7 +96,7 @@ export default function AdminNewsPipelineManager() {
       await resetStatus.mutateAsync();
       refetchStatus();
     } catch (error) {
-      console.error("Failed to reset status:", error);
+      alert(`Failed to reset status: ${String(error)}`);
     }
   };
 

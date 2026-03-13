@@ -1,0 +1,1293 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-02T08:16:29Z",
+    "repo_root": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean",
+    "vm_host": "isa-openclaw-vm"
+  },
+  "cli_status_summary": {
+    "dashboard": "http://127.0.0.1:18789/",
+    "fallback_count": 0,
+    "fallbacks": "-",
+    "gateway_pid": 307971,
+    "hooks_ready": 4,
+    "hooks_total": 4,
+    "listening": "127.0.0.1:18789",
+    "models_status_default": "openrouter/moonshotai/kimi-k2.5",
+    "plugins_loaded": 4,
+    "plugins_total": 37,
+    "runtime_default_model": "moonshotai/kimi-k2.5",
+    "security_audit_summary": "0 critical \u00b7 1 warn \u00b7 1 info",
+    "skills_ready": 10,
+    "skills_total": 51
+  },
+  "sources": {
+    "host:~/.openclaw/env.sh": {
+      "export OPENROUTER_API_KEY": "***REDACTED***"
+    },
+    "repo:.openclaw/control-plane.json": {
+      "cost_control": {
+        "enforce_budget": true,
+        "max_monthly_usd": 500,
+        "max_request_usd": 5,
+        "soft_alert_threshold_usd": 250,
+        "track_by_model": true
+      },
+      "cost_optimization_stack": {
+        "api": {
+          "entrypoint": "isa_cost_optimizer.middleware_api:app",
+          "framework": "fastapi",
+          "routes": {
+            "health": "/health",
+            "optimize": "/optimize"
+          },
+          "transport": "in_process"
+        },
+        "cache": {
+          "backend": "json_file",
+          "deterministic_ordering": true,
+          "key_algorithm": "***REDACTED***",
+          "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime/deterministic_cache.json"
+        },
+        "concurrency_governor": {
+          "enabled": true,
+          "max_in_flight": 4,
+          "overflow_action": "raise_429"
+        },
+        "context_compression": {
+          "algorithm": "cosine_similarity",
+          "deduplicate": true,
+          "enabled": true,
+          "similarity_threshold": 0.92
+        },
+        "embedding_cache": {
+          "enabled": true,
+          "path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime/embedding_cache.json",
+          "reuse_threshold": 0.92
+        },
+        "enabled": true,
+        "escalation": {
+          "enabled": true,
+          "quality_floors": {
+            "balanced": 0.9,
+            "economy": 0.85,
+            "premium": 0.95
+          },
+          "tier_order": [
+            "economy",
+            "balanced",
+            "premium"
+          ],
+          "trigger_conditions": [
+            "invalid_json",
+            "quality_below_floor"
+          ]
+        },
+        "json_repair": {
+          "enabled": true,
+          "repair_before_retry": true,
+          "strict_canonical_output": true
+        },
+        "retry_controller": {
+          "enabled": true,
+          "max_attempts": 2
+        },
+        "runtime_dir": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime",
+        "sla_controller": {
+          "breach_action": "promote_tier",
+          "enabled": true,
+          "tier_thresholds": {
+            "balanced": 5000,
+            "economy": 8000,
+            "premium": 3000
+          }
+        },
+        "token_controller": {
+          "default_token_cap": "***REDACTED***",
+          "enabled": "***REDACTED***",
+          "overflow_action": "***REDACTED***"
+        },
+        "version": "1.0.0"
+      },
+      "failure_classification": {
+        "categories": [
+          "dependency",
+          "permission",
+          "malformed_json",
+          "missing_runtime",
+          "invalid_scoring",
+          "router_offline"
+        ],
+        "retryable": [
+          "dependency",
+          "router_offline"
+        ],
+        "terminal": [
+          "permission",
+          "malformed_json",
+          "invalid_scoring"
+        ]
+      },
+      "fallback": {
+        "escalation_strategy": [
+          "retry_dynamic_optimizer",
+          "fallback_to_provider_priority",
+          "drop_to_safe_skill_allowlist_only",
+          "require_manual_operator_review"
+        ],
+        "max_retries": 2,
+        "safe_mode": "read_only_governed"
+      },
+      "governance": {
+        "artifact_dir": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/kernel/runs/20260301T175140Z/artifacts",
+        "artifact_hashing": true,
+        "change_control": "policy_review_required",
+        "evidence_enforcement": true,
+        "evidence_required": true,
+        "immutable_artifacts": true,
+        "policy_version": "isa-ucpk-2026-03-01-cost-optimization-stack-v1",
+        "run_id": "20260301T175140Z"
+      },
+      "logging": {
+        "audit_trail": true,
+        "destinations": [
+          "stdout",
+          ".openclaw/logs/control-plane-audit.jsonl"
+        ],
+        "file_path": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.openclaw/kernel/runs/20260301T175140Z/logs/openclaw_control_plane.log",
+        "level": "info",
+        "log_to_file": true,
+        "redact_secrets": "***REDACTED***",
+        "structured": true
+      },
+      "metadata": {
+        "compatibility": "isa-unified-control-plane-kernel",
+        "repo_root": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean",
+        "secret_free": "***REDACTED***",
+        "today_iso8601": "2026-03-01"
+      },
+      "mode": "deterministic",
+      "model_router": {
+        "cost_optimization_stack": {
+          "enabled": true,
+          "entrypoint": "isa_cost_optimizer.middleware_api:app",
+          "health_path": "/health",
+          "mode": "pre_router_middleware",
+          "optimize_path": "/optimize",
+          "runtime_dir": "/Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/isa_cost_optimizer/runtime"
+        },
+        "cost_tracking": true,
+        "default_model": "openrouter/moonshotai/kimi-k2.5",
+        "deterministic_selection": true,
+        "dynamic_optimizer_endpoint": "http://localhost:8090/select",
+        "endpoint": "http://127.0.0.1:8090/select",
+        "fallback_models": [],
+        "health": "http://127.0.0.1:8090/health",
+        "max_tokens_per_call": "***REDACTED***",
+        "provider_priority": [
+          "openrouter",
+          "openai",
+          "anthropic",
+          "gemini"
+        ],
+        "request_timeout_ms": 1500,
+        "strategy": "isa_dynamic_optimizer_http"
+      },
+      "runtime": {
+        "config_integrity_required": true,
+        "integrity_flags": [
+          "secret_free_config",
+          "deterministic_key_ordering",
+          "skill_allowlist_enforced",
+          "router_endpoint_validated"
+        ],
+        "process_restart_policy": "manual_or_supervised_only",
+        "profile_scope": "isa_unified_control_plane_kernel",
+        "sandbox_mode": "off"
+      },
+      "safety": {
+        "allow_destructive_fs": false,
+        "allow_shell": false,
+        "network_install_requires_review": true,
+        "restrict_root_execution": true,
+        "workspace_write_requires_approval": true
+      },
+      "skill_policy": {
+        "allowed_categories": [
+          "orchestration",
+          "execution",
+          "cognition",
+          "integration",
+          "infrastructure",
+          "data",
+          "governance"
+        ],
+        "allowlist_mode": true,
+        "auto_install": false,
+        "dependency_repair_mode": "proposal_only",
+        "untrusted_sources": "deny"
+      },
+      "slas": {
+        "latency_thresholds_ms": {
+          "p50": 3000,
+          "p95": 8000,
+          "p99": 15000
+        },
+        "router_timeout_ms": 1500,
+        "skill_resolution_timeout_ms": 2000
+      },
+      "telemetry": {
+        "collect_metrics": true,
+        "disable_secret_capture": "***REDACTED***",
+        "export_json_metrics": true,
+        "router_observability": true
+      },
+      "version": "1.0.0"
+    },
+    "repo:.openclaw/launcher/last_model_route.json": {
+      "alias": "ISA Agentic Coding (Kimi K2.5)",
+      "best_for": [
+        "agentic coding",
+        "visual or multimodal coding",
+        "autonomous tool orchestration",
+        "complex multi-step implementation"
+      ],
+      "better_options_when": [
+        "price-performance matters more than autonomy",
+        "the workload is mostly text plus tools",
+        "the task is long-context research rather than agentic coding"
+      ],
+      "cost_benefit": "Worth the premium when autonomous tool behavior and coding agency matter. Not the best default for routine governed work.",
+      "cost_profile": "premium_agentic",
+      "matched_terms": [],
+      "model": "openrouter/moonshotai/kimi-k2.5",
+      "selected_route_id": "agentic_coding_multimodal",
+      "selection_reason": "default_route_no_keyword_match",
+      "ui_action": "Select 'ISA Agentic Coding (Kimi K2.5)' in the OpenClaw UI model picker."
+    },
+    "repo:config/governance/openclaw_policy_envelope.json": {
+      "artifacts": {
+        "browser_policy": "config/openclaw/browser.policy.json",
+        "exec_lane_policy": "config/openclaw/exec-lane.policy.json",
+        "model_routing_policy": "config/openclaw/model-routing.policy.json",
+        "skills_allowlist": "config/openclaw/skills-allowlist.json"
+      },
+      "automation": {
+        "allow_insecure_dev_bypass_env_var": "OPENCLAW_AUTOMATION_ALLOW_INSECURE_DEV_BYPASS",
+        "kill_switch_env_var": "OPENCLAW_AUTOMATION_KILL_SWITCH",
+        "max_clock_skew_seconds": 300,
+        "require_idempotency_key_in_strict_mode": "***REDACTED***",
+        "require_signature_in_strict_mode": true,
+        "require_timestamp_in_strict_mode": true,
+        "strict_mode_env_var": "OPENCLAW_AUTOMATION_STRICT_MODE",
+        "strict_mode_production": true
+      },
+      "enforcement": {
+        "allow_dev_bypass": true,
+        "mode": "fail_closed"
+      },
+      "network": {
+        "require_trusted_proxies_when_exposed": true,
+        "reverse_proxy_exposure": false,
+        "trusted_proxies_script": "scripts/openclaw-trusted-proxies.sh"
+      },
+      "runtime": {
+        "allow_host_local_gateway": false,
+        "primary_mode": "vm_only",
+        "status_script_default_target": "vm",
+        "ui_launcher_script": "scripts/openclaw-ui.sh"
+      },
+      "version": "1.0.0"
+    },
+    "repo:config/openclaw/browser.policy.json": {
+      "allow_unsafe_launch_flags": false,
+      "mode": "fallback_only",
+      "prohibited_actions": [
+        "autonomous_login_submission",
+        "unchecked_file_downloads",
+        "background_navigation_without_user_intent"
+      ],
+      "require_explicit_opt_in_env": "OPENCLAW_BROWSER_FALLBACK_ALLOWED",
+      "unsafe_launch_flags_env": "OPENCLAW_BROWSER_ALLOW_UNSAFE_FLAGS",
+      "version": "1.0.0"
+    },
+    "repo:config/openclaw/exec-lane.policy.json": {
+      "allow_rules": [
+        {
+          "class": "read_only",
+          "name": "allow_git_read_only",
+          "pattern": "^git[[:space:]]+(status|log|diff|show|branch|remote|fetch|pull([[:space:]]+--ff-only)?)([[:space:]]|$)",
+          "requires_approval": false
+        },
+        {
+          "class": "read_only",
+          "name": "allow_repo_checks",
+          "pattern": "^(pnpm[[:space:]]+(check|test-unit|test|run[[:space:]]+env:check)|node[[:space:]]+scripts/check-env\\.js|bash[[:space:]]+scripts/gates/[A-Za-z0-9._/-]+)([[:space:]]|$)",
+          "requires_approval": false
+        },
+        {
+          "class": "system_mutation",
+          "name": "allow_safe_build_commands",
+          "pattern": "^(pnpm[[:space:]]+install|pnpm[[:space:]]+build)([[:space:]]|$)",
+          "requires_approval": true
+        }
+      ],
+      "approval_required_classes": [
+        "filesystem_write",
+        "network_write",
+        "system_mutation"
+      ],
+      "audit_log_path": "logs/policy/exec-lane-audit.jsonl",
+      "default_decision": "deny",
+      "deny_patterns": [
+        "(^|[[:space:]])rm[[:space:]]+-rf([[:space:]]|$)",
+        "(^|[[:space:]])git[[:space:]]+reset[[:space:]]+--hard([[:space:]]|$)",
+        "(^|[[:space:]])git[[:space:]]+checkout[[:space:]]+--([[:space:]]|$)",
+        "(^|[[:space:]])mkfs([[:space:]]|$)",
+        "(^|[[:space:]])shutdown([[:space:]]|$)",
+        "(^|[[:space:]])reboot([[:space:]]|$)"
+      ],
+      "require_manual_approval_env": "OPENCLAW_SAFE_EXEC_APPROVED",
+      "version": "1.0.0"
+    },
+    "repo:config/openclaw/model-routing.policy.json": {
+      "defaults": {
+        "alias": "ISA Agentic Coding (Kimi K2.5)",
+        "model": "openrouter/moonshotai/kimi-k2.5",
+        "route_id": "agentic_coding_multimodal"
+      },
+      "mode": "operational_assisted_routing",
+      "router": {
+        "default_route_id": "agentic_coding_multimodal",
+        "helper_script": "scripts/openclaw-model-route.sh",
+        "selection_method": "deterministic_profile_keyword_router",
+        "ui_selection_mode": "manual_alias_switch_after_helper_output"
+      },
+      "routes": [
+        {
+          "alias": "ISA Free Sandbox (Trinity Large Preview)",
+          "avoid_for": [
+            "production SLAs",
+            "high-stakes regulated outputs",
+            "quality-sensitive final passes"
+          ],
+          "best_for": [
+            "zero-cost experimentation",
+            "prompt prototyping",
+            "non-critical agent-harness tests",
+            "creative ideation"
+          ],
+          "better_options_when": [
+            "the task is production-critical",
+            "governed automation reliability matters",
+            "you need stronger long-context or multimodal performance"
+          ],
+          "cost_benefit": "Best when cost must be zero. Lowest barrier to experimentation, but lower trust for production use.",
+          "cost_profile": "free",
+          "id": "free_sandbox_exploration",
+          "match_any": [
+            "free",
+            "free tier",
+            "no budget",
+            "zero budget",
+            "sandbox",
+            "prototype",
+            "cheap experiment",
+            "trial run",
+            "draft only"
+          ],
+          "model": "openrouter/arcee-ai/trinity-large-preview:free",
+          "priority": 10,
+          "task_profiles": [
+            "free_sandbox",
+            "prototype",
+            "zero_budget"
+          ]
+        },
+        {
+          "alias": "ISA Controlled Productivity (MiniMax M2.5)",
+          "avoid_for": [
+            "fully autonomous tool-choice flows",
+            "strict schema reliability without caller-side validation",
+            "tasks where DeepSeek already covers the need more cheaply"
+          ],
+          "best_for": [
+            "office and productivity workflows",
+            "controlled tool paths",
+            "parallel-tool business automations",
+            "document and spreadsheet operations"
+          ],
+          "better_options_when": [
+            "you need stronger autonomous agentic behavior",
+            "the task is mostly coding and repository work",
+            "you need much larger context windows"
+          ],
+          "cost_benefit": "Pays off when the workload resembles office productivity automation. Less attractive as a generic coding default.",
+          "cost_profile": "midrange_productivity",
+          "id": "controlled_productivity_automation",
+          "match_any": [
+            "spreadsheet",
+            "excel",
+            "powerpoint",
+            "word document",
+            "office workflow",
+            "business ops",
+            "controlled automation",
+            "parallel tool",
+            "constrained tool path",
+            "productivity suite"
+          ],
+          "model": "openrouter/minimax/minimax-m2.5",
+          "priority": 40,
+          "task_profiles": [
+            "office_productivity",
+            "controlled_automation",
+            "parallel_tool_calls"
+          ]
+        },
+        {
+          "alias": "ISA Agentic Coding (Kimi K2.5)",
+          "avoid_for": [
+            "strict latency ceilings",
+            "strict cost ceilings",
+            "short routine tasks"
+          ],
+          "best_for": [
+            "agentic coding",
+            "visual or multimodal coding",
+            "autonomous tool orchestration",
+            "complex multi-step implementation"
+          ],
+          "better_options_when": [
+            "price-performance matters more than autonomy",
+            "the workload is mostly text plus tools",
+            "the task is long-context research rather than agentic coding"
+          ],
+          "cost_benefit": "Worth the premium when autonomous tool behavior and coding agency matter. Not the best default for routine governed work.",
+          "cost_profile": "premium_agentic",
+          "id": "agentic_coding_multimodal",
+          "match_any": [
+            "agentic coding",
+            "visual coding",
+            "tool autonomy",
+            "multi-step tool workflow",
+            "autonomous tools",
+            "complex orchestration",
+            "planner",
+            "tool calling",
+            "agent swarm",
+            "multimodal coding"
+          ],
+          "model": "openrouter/moonshotai/kimi-k2.5",
+          "priority": 70,
+          "task_profiles": [
+            "agentic_coding",
+            "visual_coding",
+            "tool_autonomy"
+          ]
+        },
+        {
+          "alias": "ISA Long Context Research (Grok 4.1 Fast)",
+          "avoid_for": [
+            "short tasks",
+            "strict cost minimization when DeepSeek already fits",
+            "tasks that do not need long context"
+          ],
+          "best_for": [
+            "very large context tasks",
+            "large repo and multi-document comparisons",
+            "research workflows",
+            "broad workspace analysis"
+          ],
+          "better_options_when": [
+            "163k context is enough and cost-performance matters more",
+            "the task is multimodal document reasoning rather than long-context text reasoning"
+          ],
+          "cost_benefit": "One of the strongest value choices when context size changes the problem. Expensive only if the long window is unnecessary.",
+          "cost_profile": "high_value_long_context",
+          "id": "long_context_research",
+          "match_any": [
+            "long context",
+            "large context",
+            "many files",
+            "many documents",
+            "compare all",
+            "deep research",
+            "keep everything in context",
+            "big repo",
+            "huge prompt",
+            "broad comparison"
+          ],
+          "model": "openrouter/x-ai/grok-4.1-fast",
+          "priority": 90,
+          "task_profiles": [
+            "long_context",
+            "deep_research",
+            "large_workspace"
+          ]
+        },
+        {
+          "alias": "ISA Governed Default (DeepSeek V3.2)",
+          "avoid_for": [
+            "tasks that truly need 1M+ context",
+            "tasks that need premium multimodal reasoning",
+            "tasks where Kimi's agency is the main requirement"
+          ],
+          "best_for": [
+            "default ISA development sessions",
+            "governed tool use",
+            "structured extraction",
+            "general coding and implementation"
+          ],
+          "better_options_when": [
+            "long-context needs dominate",
+            "multimodal document reasoning dominates",
+            "agentic coding autonomy dominates"
+          ],
+          "cost_benefit": "Best overall cost-versus-performance default for ISA text-plus-tool workflows.",
+          "cost_profile": "best_general_value",
+          "id": "general_governed_tooling",
+          "match_any": [
+            "default",
+            "general coding",
+            "implement",
+            "refactor",
+            "structured output",
+            "json schema",
+            "extract",
+            "repo work",
+            "tool use",
+            "governed automation",
+            "balanced",
+            "cost effective"
+          ],
+          "model": "openrouter/deepseek/deepseek-v3.2",
+          "priority": 100,
+          "task_profiles": [
+            "default",
+            "governed_tooling",
+            "coding",
+            "structured_extraction"
+          ]
+        },
+        {
+          "alias": "ISA Premium Multimodal Docs (Gemini 3.1 Pro Preview)",
+          "avoid_for": [
+            "routine coding and extraction",
+            "budget-sensitive repetitive work",
+            "cases where DeepSeek or Grok already fit"
+          ],
+          "best_for": [
+            "complex multimodal tasks",
+            "long document and PDF analysis",
+            "premium reasoning over mixed media",
+            "high-end planning with 1M context"
+          ],
+          "better_options_when": [
+            "the task is ordinary text-plus-tool work",
+            "cost sensitivity is high",
+            "long-context text tasks do not require multimodal richness"
+          ],
+          "cost_benefit": "Highest-cost option here. Use only when multimodal or premium document reasoning benefits justify the spend.",
+          "cost_profile": "premium_multimodal",
+          "id": "premium_multimodal_documents",
+          "match_any": [
+            "pdf",
+            "document reasoning",
+            "multimodal",
+            "audio",
+            "video",
+            "image",
+            "code execution",
+            "function calling",
+            "1m context",
+            "complex planning",
+            "google gemini"
+          ],
+          "model": "openrouter/google/gemini-3.1-pro-preview",
+          "priority": 80,
+          "task_profiles": [
+            "multimodal",
+            "pdf_documents",
+            "premium_reasoning"
+          ]
+        }
+      ],
+      "runtime_note": {
+        "current_runtime_pinned_default": "openrouter/moonshotai/kimi-k2.5",
+        "note": "The helper makes routing operational before the OpenClaw runtime itself supports ISA-semantic auto-switching."
+      },
+      "selection_scope": "isa_openclaw_ui_sessions",
+      "version": "2.0.0"
+    },
+    "repo:config/openclaw/skills-allowlist.json": {
+      "entries": [
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "addf85acd869b4084507241b1ce3f9357ed9e77c4dd4a31a51e4ad15fcd785e0",
+          "name": "1password",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/1password",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "2e094a41827918aeeb212d2b52bfe12c3fcadbe443d6d5dabdb596338c33bcfc",
+          "name": "apple-notes",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/apple-notes",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "55b32e32d4f824b92f1d0c264d315df66e15297ccd07afd3d849f8fbcc92b57b",
+          "name": "apple-reminders",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/apple-reminders",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "b3e822ab09e9283d01e2c021a603a5212187c545fd797e671e617d79dae09330",
+          "name": "bear-notes",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/bear-notes",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "a6cca0c49f67f0aa40cd95b6e44e3210b7857551b30217a022777d94954e228f",
+          "name": "blogwatcher",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/blogwatcher",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "f2d81136171331f1a160e6714c7de07a6ac1c2846de98c77b4a1b7bf9e0de555",
+          "name": "blucli",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/blucli",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "173c8ad20cd0a39d797b0d55b9d9a6a746f562b2949afc812ff4e6488eda7483",
+          "name": "bluebubbles",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/bluebubbles",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "8019c4529f6d4d07c036af003a5e532514c71dac7145b6f7d0e52022ab5eacb8",
+          "name": "camsnap",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/camsnap",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "c73b5d419cc8387255747c55c1abd16de63113772ca0603a2377775bd197ac13",
+          "name": "canvas",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/canvas",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "05d354086733976ab09b79d13f29081e5cefbcb584580fc5144cbea4ca2b9691",
+          "name": "clawhub",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/clawhub",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "a2bd06033a52fd964f321c4be340a3df30ee14da6c5856af4a4f57ea3c809acc",
+          "name": "cleanup-specialist",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.codex/skills/cleanup-specialist",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "f4b377a211818ed2d72c76d179bdee5aae200f2f89a641dcbb0f2170585ec1e5",
+          "name": "coding-agent",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/coding-agent",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "5d7e5afcd678b2fb32473ab581f72bd91e2687a4d12ea6d1273aa7530e087d8a",
+          "name": "discord",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/discord",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "26f0c23cb0bce54341e638342828dd708270ff5547bbb1ebc3d6041b7ee103bb",
+          "name": "eightctl",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/eightctl",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "cfc22551f9e2475b44994456e7100ae87b270f3b5cf0655342149b37b7e0c8a2",
+          "name": "find-skills",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.agents/skills/find-skills",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "1bd0faf51b1b57e8a7529c8568508699d645fbcc18d97b76d797356a6ebeb50a",
+          "name": "gemini",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/gemini",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "a00b56a02e7808ec136fd597acc85fe193d9aac37e5ebe8b6bd9d3f7a01b2cff",
+          "name": "gh-issues",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gh-issues",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "31a0307c8657674d0513423ceaf8c0b13cd231918f8077465ec90f6f0b36876d",
+          "name": "gifgrep",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gifgrep",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "914b327a9a8e61dd4eb209219a17388bc696bd594389d3debbf76a0725aa11d4",
+          "name": "github",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/github",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "373dfdd7442f3e11c05d80ef20a7eef7787c52a2de4f9e04781790cfd99570d6",
+          "name": "gog",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/gog",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "8f9272cc556be4871e1032d9d3af55d9ab1f6c9471f15b92b6a966d60e5729dc",
+          "name": "goplaces",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/goplaces",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "bfdd642b671181d14934b10e69d26eea5921f971f3fad7a3458dae3ee090375b",
+          "name": "healthcheck",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/healthcheck",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "5ae5948db15031eaa2f21da9956006f64a9a1a9102054c097181bf8806746fdc",
+          "name": "himalaya",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/himalaya",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "304a2cb6f94863d6b2c88e68e56fe2c6b5a287aa28c3661b68fe2be2a1aec4f3",
+          "name": "imsg",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/imsg",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "32dd29d67edefe99e77c997928860b3feffee6e7885714b4ef431a0a6e07c13b",
+          "name": "mcporter",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/mcporter",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "4b3a4078cb5b9b945139260d193c129f00f989e52123fc59e5405fe741a5615b",
+          "name": "model-usage",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/model-usage",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "0c3b5b2cd0a73ea5e2066f050985224d227f06982505548b15089aba1fc8ae05",
+          "name": "nano-banana-pro",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/nano-banana-pro",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "c11e683e939ef1a0bf0d898c789654a4cc1f344913e8ed038cd5f03224fd38e2",
+          "name": "nano-pdf",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/nano-pdf",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "d5e9738addd7615fdf1fa10067cc0bf4b59fff7a7f89ffe30000b13d9c6a885c",
+          "name": "notion",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/notion",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "f493dd9d0be43d793a3333c0926bc37efa53e839acdc20d0b1c16706297b2053",
+          "name": "obsidian",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/obsidian",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "95f2de240fde3318fbd39faf80dded09faa8ab2404d9597a7ae09f60a78f8c66",
+          "name": "openai-image-gen",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-image-gen",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "9914e172935221d1ba9829d81c8c9e5cb57c67371884c23c4ee6f7233d973937",
+          "name": "openai-whisper",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-whisper",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "50d3e2d65342bd9525ebd1be2501225d2fbe9ead04c0cbaba0358f67b7fb015f",
+          "name": "openai-whisper-api",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/openai-whisper-api",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "fd64f041940ebb37fa0fbfffc8201b0919df39bb5b7b15e044adb89ccc699d80",
+          "name": "openrouter-typescript-sdk",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/.agents/skills/openrouter-typescript-sdk",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "b21b9adae3d7e44da99a4cfe1f7fced773ed76d125f3270e08b2154d7ce7b3cd",
+          "name": "session-logs",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/session-logs",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "985f4dcf881516613e919ed5fad3a52bc1f78ccd6de8949b43c18a6bb4482e98",
+          "name": "skill-creator",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/skill-creator",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "839267bfedda97434e5fbd1fc8aa1d77f2b0744496c27c74cf7c39ba44c91408",
+          "name": "slack",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/Documents/Documents - Friso\u2019s MacBook Air/isa_web_clean/openclaw_audit/source/openclaw-main/skills/slack",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "8d0079a980fe5f5f59397b93c1935af7aa2f47fc741291a14125bcb0ef8997a6",
+          "name": "tmux",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/tmux",
+          "status": "approved"
+        },
+        {
+          "approval_date": "2026-03-02",
+          "checksum_sha256": "c9e3ae14602bff5991680aa2023275b29f039eb2b5e59d80658f18be38df00a0",
+          "name": "weather",
+          "reviewer": "isa-kernel-sync",
+          "scope": "quarantine-local",
+          "source": "local:///Users/frisowempehomefolder/.local/node-v22.13.0-darwin-arm64/lib/node_modules/openclaw/skills/weather",
+          "status": "approved"
+        }
+      ],
+      "quarantine_install_dir": "~/.openclaw/skills-quarantine",
+      "version": "1.1.0"
+    },
+    "vm:/root/.openclaw/.env": {
+      "GITHUB_TOKEN": "***REDACTED***",
+      "OPENROUTER_API_KEY": "***REDACTED***"
+    },
+    "vm:/root/.openclaw/agents/main/agent/auth-profiles.json": {
+      "lastGood": {},
+      "profiles": {},
+      "usageStats": {},
+      "version": 1
+    },
+    "vm:/root/.openclaw/cron/jobs.json": {
+      "jobs": [],
+      "version": 1
+    },
+    "vm:/root/.openclaw/devices/paired.json": {
+      "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a": {
+        "approvedAtMs": 1772100705901,
+        "approvedScopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "clientId": "openclaw-control-ui",
+        "clientMode": "webchat",
+        "createdAtMs": 1772100705901,
+        "deviceId": "561519f988a01f0aaa7878047690d43bc1b201b8f6a816366a2676cdba859f1a",
+        "platform": "MacIntel",
+        "publicKey": "***REDACTED***",
+        "role": "operator",
+        "roles": [
+          "operator"
+        ],
+        "scopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "tokens": {
+          "operator": {
+            "createdAtMs": "***REDACTED***",
+            "lastUsedAtMs": "***REDACTED***",
+            "role": "***REDACTED***",
+            "scopes": [
+              "***REDACTED***",
+              "***REDACTED***",
+              "***REDACTED***"
+            ],
+            "token": "***REDACTED***"
+          }
+        }
+      },
+      "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3": {
+        "approvedAtMs": 1772101150616,
+        "approvedScopes": [
+          "operator.read",
+          "operator.admin",
+          "operator.write",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "clientId": "cli",
+        "clientMode": "cli",
+        "createdAtMs": 1772101146160,
+        "deviceId": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3",
+        "platform": "linux",
+        "publicKey": "***REDACTED***",
+        "role": "operator",
+        "roles": [
+          "operator"
+        ],
+        "scopes": [
+          "operator.read",
+          "operator.admin",
+          "operator.write",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "tokens": {
+          "operator": {
+            "createdAtMs": "***REDACTED***",
+            "role": "***REDACTED***",
+            "rotatedAtMs": "***REDACTED***",
+            "scopes": [
+              "***REDACTED***",
+              "***REDACTED***",
+              "***REDACTED***",
+              "***REDACTED***",
+              "***REDACTED***"
+            ],
+            "token": "***REDACTED***"
+          }
+        }
+      },
+      "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6": {
+        "approvedAtMs": 1772058911617,
+        "approvedScopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "clientId": "openclaw-control-ui",
+        "clientMode": "webchat",
+        "createdAtMs": 1772058911617,
+        "deviceId": "82b9bed5ed0982636b271ead5163616ea8eb2d76e9f21c4bac38c955b2ed85f6",
+        "platform": "MacIntel",
+        "publicKey": "***REDACTED***",
+        "role": "operator",
+        "roles": [
+          "operator"
+        ],
+        "scopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "tokens": {
+          "operator": {
+            "createdAtMs": "***REDACTED***",
+            "lastUsedAtMs": "***REDACTED***",
+            "role": "***REDACTED***",
+            "scopes": [
+              "***REDACTED***",
+              "***REDACTED***",
+              "***REDACTED***"
+            ],
+            "token": "***REDACTED***"
+          }
+        }
+      },
+      "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157": {
+        "approvedAtMs": 1772021298037,
+        "approvedScopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "clientId": "openclaw-control-ui",
+        "clientMode": "webchat",
+        "createdAtMs": 1772021298037,
+        "deviceId": "8c992a37e2b8f726df32745db5696f97da39df2403966298c9bff0c82f272157",
+        "platform": "MacIntel",
+        "publicKey": "***REDACTED***",
+        "role": "operator",
+        "roles": [
+          "operator"
+        ],
+        "scopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "tokens": {
+          "operator": {
+            "createdAtMs": "***REDACTED***",
+            "lastUsedAtMs": "***REDACTED***",
+            "role": "***REDACTED***",
+            "scopes": [
+              "***REDACTED***",
+              "***REDACTED***",
+              "***REDACTED***"
+            ],
+            "token": "***REDACTED***"
+          }
+        }
+      },
+      "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927": {
+        "approvedAtMs": 1772069632315,
+        "approvedScopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "clientId": "openclaw-control-ui",
+        "clientMode": "webchat",
+        "createdAtMs": 1772069632315,
+        "deviceId": "9445c206c804afb263098de93523a7359ffb830ed82fb68bded4598a0bd29927",
+        "platform": "MacIntel",
+        "publicKey": "***REDACTED***",
+        "role": "operator",
+        "roles": [
+          "operator"
+        ],
+        "scopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "tokens": {
+          "operator": {
+            "createdAtMs": "***REDACTED***",
+            "lastUsedAtMs": "***REDACTED***",
+            "role": "***REDACTED***",
+            "scopes": [
+              "***REDACTED***",
+              "***REDACTED***",
+              "***REDACTED***"
+            ],
+            "token": "***REDACTED***"
+          }
+        }
+      }
+    },
+    "vm:/root/.openclaw/devices/pending.json": {},
+    "vm:/root/.openclaw/exec-approvals.json": {
+      "agents": {},
+      "defaults": {},
+      "socket": {
+        "path": "/root/.openclaw/exec-approvals.sock",
+        "token": "***REDACTED***"
+      },
+      "version": 1
+    },
+    "vm:/root/.openclaw/identity/device.json": {
+      "createdAtMs": 1771965923269,
+      "deviceId": "6e10f0eb17b332c03639bb7a4992379bbfdd0e43b1ef72dedf3cf3574f05a7a3",
+      "privateKeyPem": "***REDACTED***",
+      "publicKeyPem": "***REDACTED***",
+      "version": 1
+    },
+    "vm:/root/.openclaw/openclaw.json": {
+      "agents": {
+        "defaults": {
+          "model": {
+            "fallbacks": [],
+            "primary": "openrouter/moonshotai/kimi-k2.5"
+          },
+          "models": {
+            "openrouter/anthropic/claude-sonnet-4": {
+              "alias": "ISA Premium Coding (Claude Sonnet 4)"
+            },
+            "openrouter/deepseek/deepseek-v3.2": {
+              "alias": "ISA Dev Balanced (DeepSeek V3.2)"
+            },
+            "openrouter/google/gemini-2.5-flash": {
+              "alias": "ISA Long Context Quality (Gemini 2.5 Flash)"
+            },
+            "openrouter/google/gemini-2.5-flash-lite": {
+              "alias": "ISA Fast 1M (Gemini 2.5 Flash Lite)"
+            },
+            "openrouter/minimax/minimax-m2.5": {
+              "alias": "ISA Controlled Tool Budget (MiniMax M2.5)"
+            },
+            "openrouter/moonshotai/kimi-k2.5": {
+              "alias": "ISA Fixed Default (Kimi K2.5)"
+            },
+            "openrouter/x-ai/grok-4.1-fast": {
+              "alias": "ISA Tool Fast 2M (Grok 4.1 Fast)"
+            }
+          },
+          "sandbox": {
+            "mode": "off"
+          },
+          "workspace": "/root/.openclaw/workspace"
+        }
+      },
+      "approvals": {
+        "exec": {
+          "enabled": true
+        }
+      },
+      "auth": {
+        "profiles": {}
+      },
+      "commands": {
+        "native": "auto",
+        "nativeSkills": "auto",
+        "ownerDisplay": "raw",
+        "restart": true
+      },
+      "env": {
+        "shellEnv": {
+          "enabled": true
+        },
+        "vars": {
+          "OPENROUTER_API_KEY": "***REDACTED***"
+        }
+      },
+      "gateway": {
+        "auth": {
+          "mode": "token",
+          "token": "***REDACTED***"
+        },
+        "bind": "loopback",
+        "mode": "local",
+        "port": 18789,
+        "tailscale": {
+          "mode": "off",
+          "resetOnExit": false
+        }
+      },
+      "meta": {
+        "lastTouchedAt": "2026-02-27T21:05:13.968Z",
+        "lastTouchedVersion": "2026.2.26"
+      },
+      "session": {
+        "dmScope": "per-channel-peer"
+      },
+      "tools": {
+        "agentToAgent": {
+          "enabled": true
+        },
+        "deny": [
+          "group:web",
+          "browser"
+        ]
+      },
+      "wizard": {
+        "lastRunAt": "2026-02-26T01:41:02.099Z",
+        "lastRunCommand": "onboard",
+        "lastRunMode": "local",
+        "lastRunVersion": "2026.2.24"
+      }
+    }
+  }
+}

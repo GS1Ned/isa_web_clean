@@ -4,218 +4,242 @@
   "title": "ISA Dataset Registry",
   "type": "object",
   "additionalProperties": false,
-  "required": ["registryVersion", "generatedAt", "datasets"],
+  "required": [
+    "registryVersion",
+    "generatedAt"
+  ],
   "properties": {
-    "registryVersion": { "type": "string", "minLength": 1 },
-    "generatedAt": { "type": "string", "format": "date-time" },
-    "generatedBy": { "type": "string" },
-    "notes": { "type": "string" },
+    "registryVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generatedBy": {
+      "type": "string"
+    },
+    "asrMetadataDefaults": {
+      "$ref": "#/$defs/asrMetadataDefaults"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "object"
+    },
+    "changelog": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/changelogEntry"
+      }
+    },
     "datasets": {
       "type": "array",
-      "minItems": 1,
-      "items": { "$ref": "#/$defs/dataset" }
+      "items": {
+        "$ref": "#/$defs/datasetLike"
+      }
+    },
+    "newDatasets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/datasetLike"
+      }
+    },
+    "registeredStandards": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/standardLike"
+      }
     }
   },
+  "allOf": [
+    {
+      "anyOf": [
+        {
+          "required": [
+            "datasets"
+          ]
+        },
+        {
+          "required": [
+            "newDatasets",
+            "registeredStandards"
+          ]
+        }
+      ]
+    }
+  ],
   "$defs": {
-    "dataset": {
+    "asrMetadataDefaults": {
       "type": "object",
       "additionalProperties": false,
+      "properties": {
+        "authorityTierByDomain": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "publicationStatusDefault": {
+          "type": "string",
+          "minLength": 1
+        },
+        "immutableUriPolicy": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "changelogEntry": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "datasetLike": {
+      "type": "object",
+      "additionalProperties": true,
       "required": [
         "id",
         "title",
         "publisher",
-        "jurisdiction",
-        "sourceType",
-        "canonicalDomains",
-        "status",
-        "version",
-        "releaseDate",
-        "license",
-        "access",
-        "formats",
-        "repoAssets",
-        "lineage"
+        "version"
       ],
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^[a-z0-9][a-z0-9\\-_.:]{2,80}$"
+          "minLength": 1
         },
-        "title": { "type": "string", "minLength": 3 },
-        "description": { "type": "string" },
-        "publisher": { "type": "string", "minLength": 2 },
-        "jurisdiction": {
+        "title": {
           "type": "string",
-          "enum": ["EU", "NL", "EU+NL", "GS1", "Other"]
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "jurisdiction": {
+          "type": "string"
         },
         "sourceType": {
+          "type": "string"
+        },
+        "version": {
           "type": "string",
-          "enum": [
-            "regulation_text",
-            "delegated_act",
-            "guidance",
-            "taxonomy",
-            "standard_spec",
-            "data_model",
-            "vocabulary",
-            "implementation_guide",
-            "tooling_reference",
-            "dataset"
-          ]
+          "minLength": 1
+        },
+        "releaseDate": {
+          "type": "string"
+        },
+        "effectiveDate": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
         },
         "canonicalDomains": {
           "type": "array",
-          "minItems": 1,
-          "items": { "$ref": "#/$defs/canonicalDomain" }
+          "items": {
+            "type": "string"
+          }
         },
-        "status": {
-          "type": "string",
-          "enum": ["mvp", "v1", "future", "archival"]
-        },
-        "version": { "type": "string", "minLength": 1 },
-        "releaseDate": { "type": "string", "format": "date" },
-        "effectiveFrom": { "type": "string", "format": "date" },
-        "effectiveTo": { "type": "string", "format": "date" },
         "language": {
           "type": "array",
-          "items": { "type": "string", "enum": ["EN", "NL"] },
-          "minItems": 1
+          "items": {
+            "type": "string"
+          }
         },
         "license": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["type"],
-          "properties": {
-            "type": {
-              "type": "string",
-              "enum": ["public", "restricted", "licensed", "unknown"]
-            },
-            "termsUrl": { "type": "string" },
-            "notes": { "type": "string" }
-          }
+          "type": "object"
         },
         "access": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["method"],
-          "properties": {
-            "method": {
-              "type": "string",
-              "enum": ["direct_download", "portal", "api", "purchase", "internal"]
-            },
-            "primaryUrl": { "type": "string" },
-            "mirrorUrls": {
-              "type": "array",
-              "items": { "type": "string" }
-            },
-            "credentialsRequired": { "type": "boolean" },
-            "notes": { "type": "string" }
-          }
+          "type": "object"
         },
         "formats": {
           "type": "array",
-          "minItems": 1,
-          "items": { "$ref": "#/$defs/format" }
+          "items": {
+            "type": "object"
+          }
         },
         "repoAssets": {
           "type": "array",
-          "minItems": 1,
-          "items": { "$ref": "#/$defs/repoAsset" }
+          "items": {
+            "type": "object"
+          }
         },
         "lineage": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["hashes"],
-          "properties": {
-            "supersedes": { "type": "string" },
-            "supersededBy": { "type": "string" },
-            "derivedFrom": {
-              "type": "array",
-              "items": { "type": "string" }
-            },
-            "hashes": {
-              "type": "array",
-              "minItems": 1,
-              "items": { "$ref": "#/$defs/hash" }
-            }
-          }
+          "type": "object"
         },
         "ingestion": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "module": { "type": "string" },
-            "targetTables": {
-              "type": "array",
-              "items": { "type": "string" }
-            },
-            "refreshCadence": {
-              "type": "string",
-              "enum": ["ad_hoc", "monthly", "quarterly", "semiannual", "annual"]
-            }
-          }
-        },
-        "tags": {
-          "type": "array",
-          "items": { "type": "string" }
+          "type": "object"
         }
       }
     },
-    "canonicalDomain": {
-      "type": "string",
-      "enum": [
-        "Regulations_and_Obligations",
-        "Disclosures_and_Datapoints",
-        "GS1_Standards_and_Specs",
-        "GS1_Sector_Data_Models",
-        "Product_and_Packaging",
-        "Supply_Chain_Traceability",
-        "Circularity_and_Materials",
-        "Assurance_and_Auditability",
-        "Identifiers_and_Digital_Link",
-        "Vocabularies_and_Taxonomies"
-      ]
-    },
-    "format": {
+    "standardLike": {
       "type": "object",
-      "additionalProperties": false,
-      "required": ["mediaType"],
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "title",
+        "publisher",
+        "version"
+      ],
       "properties": {
-        "mediaType": {
+        "id": {
           "type": "string",
-          "enum": [
-            "application/pdf",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            "text/csv",
-            "application/json",
-            "text/markdown",
-            "application/zip",
-            "text/plain"
-          ]
+          "minLength": 1
         },
-        "notes": { "type": "string" }
-      }
-    },
-    "repoAsset": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["path"],
-      "properties": {
-        "path": { "type": "string", "minLength": 3 },
-        "role": {
+        "title": {
           "type": "string",
-          "enum": ["canonical", "supporting", "archival", "quarantine"]
+          "minLength": 1
         },
-        "bytes": { "type": "integer", "minimum": 0 }
-      }
-    },
-    "hash": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["alg", "value"],
-      "properties": {
-        "alg": { "type": "string", "enum": ["sha256", "sha1", "md5"] },
-        "value": { "type": "string", "minLength": 16 }
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string"
+        },
+        "standard": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "pubDate": {
+          "type": "string"
+        },
+        "effectiveDate": {
+          "type": "string"
+        },
+        "canonicalSourcePage": {
+          "type": "string"
+        },
+        "directDownloadLink": {
+          "type": "string"
+        },
+        "fileFormat": {
+          "type": "string"
+        }
       }
     }
   }

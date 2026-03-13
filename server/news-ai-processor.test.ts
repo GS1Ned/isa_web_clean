@@ -53,13 +53,6 @@ describe("News AI Processor - GS1 Enhancement", () => {
     expect(result.suggestedActions.length).toBeGreaterThanOrEqual(2);
     expect(result.suggestedActions.length).toBeLessThanOrEqual(4);
 
-    console.log("✅ Processed CSRD news:", {
-      headline: result.headline,
-      gs1ImpactTags: result.gs1ImpactTags,
-      sectorTags: result.sectorTags,
-      gs1ImpactAnalysis: result.gs1ImpactAnalysis.slice(0, 100) + "...",
-      suggestedActions: result.suggestedActions,
-    });
   }, 30000); // 30s timeout for LLM call
 
   it("should process DPP news with relevant GS1 tags", async () => {
@@ -87,11 +80,6 @@ describe("News AI Processor - GS1 Enhancement", () => {
     expect(result.gs1ImpactTags).toContain("PACKAGING_ATTRIBUTES");
     expect(result.gs1ImpactAnalysis).toContain("DPP");
     expect(result.suggestedActions.length).toBeGreaterThanOrEqual(3);
-
-    console.log("✅ Processed DPP news:", {
-      gs1ImpactTags: result.gs1ImpactTags,
-      suggestedActions: result.suggestedActions,
-    });
   }, 30000);
 
   it("should use fallback processing when LLM fails", async () => {

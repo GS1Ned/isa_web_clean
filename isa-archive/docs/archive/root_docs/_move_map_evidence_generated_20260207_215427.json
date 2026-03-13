@@ -1,0 +1,169 @@
+{
+  "preflight": {
+    "created_at_local": "2026-02-07 21:54:27",
+    "src_exists": true,
+    "src_file_count": 87,
+    "src_tracked_count": 16,
+    "src_untracked_count": 71,
+    "src_total_bytes": 110337535,
+    "refs_to_src_count": 170,
+    "refs_samples": [
+      "./docs/reference/ISA_REFERENCE_DOSSIER.md:61:| Catalogue Items | `docs/evidence/generated/_generated/isa_catalogue_latest/` |",
+      "./docs/archive/root_docs/_move_manifest_ops_config_cleanup_20260207_213615.json:27:    \"docs/evidence/generated/_generated/LOCAL_REPO_DEEP_SCAN.json\",",
+      "./docs/archive/root_docs/_move_manifest_ops_config_cleanup_20260207_213615.json:28:    \"docs/evidence/generated/_generated/LOCAL_REPO_DEEP_SCAN.md\",",
+      "./docs/evidence/EVIDENCE_INDEX.md:15:- docs/evidence/generated/_generated/ (rebuildable census/summaries)",
+      "./docs/evidence/EVIDENCE_INDEX.md:30:- `docs/evidence/generated/_generated/CENSUS.json` — Machine census of repo snapshot",
+      "./docs/evidence/EVIDENCE_INDEX.md:31:- `docs/evidence/generated/_generated/CENSUS_DIFF.md` — Inventory vs snapshot diffs",
+      "./docs/evidence/EVIDENCE_INDEX.md:32:- `docs/evidence/generated/_generated/SUBDIR_SUMMARY.md` — Directory summary",
+      "./docs/evidence/EVIDENCE_INDEX.md:33:- `docs/evidence/generated/_generated/LARGE_ASSETS.md` — Largest assets + classification",
+      "./scripts/verify_catalogue_entrypoints.py:4:OUT_JSON=Path(\"docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json\")",
+      "./scripts/verify_catalogue_entrypoints.py:5:OUT_MD=Path(\"docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:5:latest_dir = os.path.join(repo_root, \"docs/evidence/generated/_generated/isa_catalogue_latest\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:14:out_csv = os.path.join(repo_root, \"docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:15:out_json = os.path.join(repo_root, \"docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.json\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:16:out_index = os.path.join(repo_root, \"docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE_INDEX.md\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:17:out_status_json = os.path.join(repo_root, \"docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:18:out_status_md = os.path.join(repo_root, \"docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md\")",
+      "./scripts/isa-catalogue/export_run_to_repo.sh:9:OUT_RUNS=\"$REPO_ROOT/docs/evidence/generated/_generated/isa_catalogue_runs\"",
+      "./scripts/isa-catalogue/export_run_to_repo.sh:11:OUT_LATEST=\"$REPO_ROOT/docs/evidence/generated/_generated/isa_catalogue_latest\"",
+      "./scripts/isa-catalogue/iron_gate_catalogue.sh:8:LATEST=\"$REPO_ROOT/docs/evidence/generated/_generated/isa_catalogue_latest\"",
+      "./scripts/isa-catalogue/iron_gate_catalogue.sh:15:latest = os.path.join(repo, \"docs/evidence/generated/_generated/isa_catalogue_latest\")",
+      "./scripts/proto_crawl_catalogue.py:8:OUT_JSON=\"docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.json\"",
+      "./scripts/proto_crawl_catalogue.py:9:OUT_CSV=\"docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv\"",
+      "./scripts/proto_crawl_catalogue.py:10:OUT_MD=\"docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE_INDEX.md\"",
+      "./scripts/validate_gs1_efrag_catalogue.py:4:latest_dir = os.path.join(repo_root, \"docs/evidence/generated/_generated/isa_catalogue_latest\")",
+      "./scripts/validate_gs1_efrag_catalogue.py:10:  \"docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv\","
+    ]
+  },
+  "moves": [
+    {
+      "from": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.json",
+      "to": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.json",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/CENSUS_DIFF.md",
+      "to": "docs/evidence/generated/_generated/CENSUS_DIFF.md",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
+      "to": "docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/SUBDIR_SUMMARY.md",
+      "to": "docs/evidence/generated/_generated/SUBDIR_SUMMARY.md",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv",
+      "to": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/CENSUS.json",
+      "to": "docs/evidence/generated/_generated/CENSUS.json",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/LARGE_ASSETS.md",
+      "to": "docs/evidence/generated/_generated/LARGE_ASSETS.md",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/DOCSET_MAP.csv",
+      "to": "docs/evidence/generated/_generated/DOCSET_MAP.csv",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json",
+      "to": "docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
+      "to": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/isa_catalogue_latest/summary.json",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/summary.json",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/isa_catalogue_latest/index.md",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/index.md",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/isa_catalogue_latest/files/summary.json",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/files/summary.json",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.jsonl",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.jsonl",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/isa_catalogue_latest/files/state.json",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/files/state.json",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    },
+    {
+      "from": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.csv",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.csv",
+      "type": "move",
+      "rationale": "Normalize evidence output: keep current tracked snapshot under docs/evidence/generated/_generated, stop using docs/evidence/_generated for versioned files.",
+      "risk": "med",
+      "verification": "rg docs/evidence/generated/_generated/ should be empty; CI checks; ensure evidence links resolve"
+    }
+  ],
+  "errors": []
+}

@@ -201,26 +201,26 @@ const BACKGROUNDS = {
   'GS1 Dark Gray': '#4C4C4C',
 };
 
-console.log('=== WCAG 2.1 AA Color Contrast Test ===\n');
-console.log('Testing GS1 colors against common backgrounds\n');
+print('=== WCAG 2.1 AA Color Contrast Test ===\n');
+print('Testing GS1 colors against common backgrounds\n');
 
 for (const [bgName, bgColor] of Object.entries(BACKGROUNDS)) {
-  console.log(`\n--- Background: ${bgName} (${bgColor}) ---`);
+  print(`\n--- Background: ${bgName} (${bgColor}) ---`);
   
   for (const [colorName, colorHex] of Object.entries(GS1_COLORS)) {
     const ratio = getContrastRatio(colorHex, bgColor);
     const passNormal = ratio >= WCAG_AA_NORMAL_TEXT ? '✅' : '❌';
     const passLarge = ratio >= WCAG_AA_LARGE_TEXT ? '✅' : '❌';
     
-    console.log(`${colorName} (${colorHex}): ${ratio.toFixed(2)}:1 | Normal: ${passNormal} | Large: ${passLarge}`);
+    print(`${colorName} (${colorHex}): ${ratio.toFixed(2)}:1 | Normal: ${passNormal} | Large: ${passLarge}`);
   }
 }
 
-console.log('\n=== Summary ===');
-console.log('✅ = Passes WCAG 2.1 AA');
-console.log('❌ = Fails WCAG 2.1 AA');
-console.log('\nNormal text: >= 4.5:1 contrast ratio');
-console.log('Large text (18pt+ or 14pt+ bold): >= 3.0:1 contrast ratio\n');
+print('\n=== Summary ===');
+print('✅ = Passes WCAG 2.1 AA');
+print('❌ = Fails WCAG 2.1 AA');
+print('\nNormal text: >= 4.5:1 contrast ratio');
+print('Large text (18pt+ or 14pt+ bold): >= 3.0:1 contrast ratio\n');
 ```
 
 **Action Items:**

@@ -7,6 +7,8 @@
  * wire a persist function at server startup that does an insert into your DB.
  */
 import crypto from "crypto";
+import util from "util";
+import { getRequestTraceId } from "../_core/request-context";
 
 type PersistFn = (row: {
   trace_id: string;
@@ -42,10 +44,25 @@ function safeStringify(v: unknown) {
 export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: string }) => {
   const persist = opts?.persist ?? DEFAULT_PERSIST_FN;
   const environment = opts?.environment ?? process.env.NODE_ENV ?? "unknown";
+  const silent =
+    process.env.ISA_TEST_SILENT === "true" ||
+    process.env.NODE_ENV === "test" ||
+    process.env.VITEST === "true";
+
+  function writeStdout(line: string) {
+    if (silent) return;
+    process.stdout.write(line.endsWith("\n") ? line : `${line}\n`);
+  }
+
+  function writeStderr(line: string) {
+    if (silent) return;
+    process.stderr.write(line.endsWith("\n") ? line : `${line}\n`);
+  }
 
   async function error(err: unknown, meta?: unknown) {
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
-    const traceId = (metaObj as any).traceId ?? crypto.randomUUID();
+    const traceId = (metaObj as any).traceId ?? getRequestTraceId() ?? crypto.randomUUID();
+    const metaOut = { ...metaObj, traceId };
     const payload =
       err && typeof err === "object" && "message" in (err as any)
         ? {
@@ -58,29 +75,31 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
     const row = {
       trace_id: traceId,
       created_at: nowIso(),
-      error_code: (metaObj as any).code ?? payload.name ?? "ERROR",
-      classification: (metaObj as any).classification ?? "deterministic",
-      commit_sha: (metaObj as any).commitSha ?? null,
-      branch: (metaObj as any).branch ?? null,
+      error_code: (metaOut as any).code ?? payload.name ?? "ERROR",
+      classification: (metaOut as any).classification ?? "deterministic",
+      commit_sha: (metaOut as any).commitSha ?? null,
+      branch: (metaOut as any).branch ?? null,
       environment,
-      affected_files: safeStringify((metaObj as any).affectedFiles ?? null),
-      error_payload: safeStringify({ payload, meta: metaObj }),
-      failing_inputs: safeStringify((metaObj as any).failingInputs ?? null),
+      affected_files: safeStringify((metaOut as any).affectedFiles ?? null),
+      error_payload: safeStringify({ payload, meta: metaOut }),
+      failing_inputs: safeStringify((metaOut as any).failingInputs ?? null),
     };
 
-    try {
-      console.error(JSON.stringify({ level: "error", traceId, payload, meta: metaObj, ts: row.created_at }));
-    } catch {
-      console.error("[error]", payload.message ?? JSON.stringify(payload));
-    }
-
-    try {
-      await persist(row);
-    } catch (e) {
+    if (!silent) {
       try {
-        console.error(JSON.stringify({ level: "error", msg: "persist failed", err: String(e), traceId }));
+        writeStderr(JSON.stringify({ level: "error", traceId, payload, meta: metaOut, ts: row.created_at }));
       } catch {
-        console.error("[error] persist failed", e);
+        writeStderr(util.format("[error] %s", payload.message ?? JSON.stringify(payload)));
+      }
+
+      try {
+        await persist(row);
+      } catch (e) {
+        try {
+          writeStderr(JSON.stringify({ level: "error", msg: "persist failed", err: String(e), traceId }));
+        } catch {
+          writeStderr(util.format("[error] persist failed %s", String(e)));
+        }
       }
     }
 
@@ -89,21 +108,34 @@ export const serverLoggerFactory = (opts?: { persist?: PersistFn; environment?: 
 
   async function warn(warnMsg: unknown, meta?: unknown) {
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
-    const traceId = (metaObj as any).traceId ?? crypto.randomUUID();
+    const traceId = (metaObj as any).traceId ?? getRequestTraceId() ?? crypto.randomUUID();
+    const metaOut = { ...metaObj, traceId };
+    if (silent) return traceId;
     try {
-      console.warn(JSON.stringify({ level: "warn", traceId, message: String(warnMsg), meta: metaObj, ts: nowIso() }));
+      writeStderr(JSON.stringify({ level: "warn", traceId, message: String(warnMsg), meta: metaOut, ts: nowIso() }));
     } catch {
-      console.warn("[warn]", warnMsg);
+      writeStderr(util.format("[warn] %s", String(warnMsg)));
     }
     return traceId;
   }
 
   function info(msg: unknown, meta?: unknown) {
+    if (silent) return;
     const metaObj = (typeof meta === 'object' && meta !== null ? meta : {}) as Record<string, unknown>;
+    const traceId = (metaObj as any).traceId ?? getRequestTraceId() ?? crypto.randomUUID();
+    const metaOut = { ...metaObj, traceId };
     if (process.env.NODE_ENV !== "production") {
-      console.log("[info]", msg, metaObj);
+      writeStdout(
+        util.format(
+          "[info] %s %s",
+          String(msg),
+          Object.keys(metaOut).length ? JSON.stringify(metaOut) : "{}"
+        )
+      );
     } else {
-      console.log(JSON.stringify({ level: "info", message: String(msg), meta: metaObj, ts: nowIso() }));
+      writeStdout(
+        JSON.stringify({ level: "info", traceId, message: String(msg), meta: metaOut, ts: nowIso() })
+      );
     }
   }
 

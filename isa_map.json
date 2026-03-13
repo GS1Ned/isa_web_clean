@@ -1,0 +1,135 @@
+{
+  "generated": "2026-02-13",
+  "generator": "Claude Code (Opus 4.6)",
+  "A_architecture": {
+    "frontend": {
+      "framework": "React 19.1.1",
+      "bundler": "Vite 7.1.7",
+      "routing": "Wouter 3.3.5",
+      "styling": "Tailwind CSS 4.1.14 + shadcn/ui (Radix)",
+      "entry": "client/src/main.tsx",
+      "pages_count": 102
+    },
+    "backend": {
+      "framework": "Express 4.21.2",
+      "rpc": "tRPC 11.6.0",
+      "runtime": "Node.js (ESM)",
+      "dev_runner": "tsx 4.19.1",
+      "entry": "server/_core/index.ts",
+      "master_router": "server/routers.ts",
+      "router_count": 45
+    },
+    "database": {
+      "provider": "TiDB Cloud (MySQL-compatible)",
+      "orm": "Drizzle ORM 0.44.5",
+      "schema": "drizzle/schema.ts",
+      "config": "drizzle.config.ts",
+      "vector_search": "TiDB native VEC_COSINE_DISTANCE"
+    },
+    "ai": {
+      "llm": "OpenAI GPT-4o-mini",
+      "embeddings": "OpenAI text-embedding-3-small",
+      "llm_config": "server/_core/llm.ts",
+      "embedding_config": "server/_core/embedding.ts"
+    },
+    "build": {
+      "package_manager": "pnpm 10.4.1",
+      "typescript": "5.9.3 (strict)",
+      "client_build": "Vite → dist/public/",
+      "server_build": "esbuild → dist/index.js",
+      "testing": "Vitest 2.1.4"
+    },
+    "deploy": {
+      "method": "manual",
+      "environments": 1,
+      "urls": ["gs1isa.com", "isa-standards-cozu6eot.manus.space"],
+      "note": "Both URLs serve the same build"
+    }
+  },
+  "B_features": [
+    { "name": "Ask ISA (RAG Q&A)", "status": "implemented", "key_files": ["server/routers/ask-isa.ts", "server/routers/ask-isa-v2.ts", "server/knowledge-vector-search.ts", "server/ask-isa-cache.ts", "server/ask-isa-guardrails.ts"] },
+    { "name": "News Hub", "status": "implemented", "key_files": ["server/news-pipeline.ts", "server/news-cron-scheduler.ts", "server/news/news-scraper-eurlex.ts", "server/news/news-scraper-gs1eu.ts", "server/news/news-scraper-greendeal.ts", "server/news/news-scraper-zes.ts"] },
+    { "name": "Hybrid Search", "status": "implemented", "key_files": ["server/hybrid-search.ts", "server/bm25-search.ts"] },
+    { "name": "Ingestion Pipelines", "status": "implemented", "key_files": ["server/ingest/INGEST-03_esrs_datapoints.ts", "server/ingest/INGEST-04_ctes_kdes.ts", "server/ingest/INGEST-05_dpp_rules.ts", "server/ingest/INGEST-06_cbv_digital_link.ts", "server/ingest-gs1-standards.ts", "scripts/run-all-ingestion.ts"] },
+    { "name": "Admin/Monitoring", "status": "implemented", "key_files": ["server/routers/monitoring.ts", "server/routers/production-monitoring.ts", "server/routers/executive-analytics.ts"] },
+    { "name": "User Management", "status": "implemented", "key_files": ["server/_core/oauth.ts", "server/db.ts"] },
+    { "name": "Email/Notifications", "status": "implemented", "key_files": ["server/email-service.ts", "server/email-notifications.ts", "server/alert-notification-service.ts"] },
+    { "name": "ESRS Mapping", "status": "implemented", "key_files": ["server/routers/esrs-gs1-mapping.ts"] },
+    { "name": "Advisory Reports", "status": "implemented", "key_files": ["server/routers/advisory-reports.ts"] },
+    { "name": "Standards Directory", "status": "implemented", "key_files": ["server/routers/standards-directory.ts"] },
+    { "name": "Pipeline Observability", "status": "implemented", "key_files": ["server/routers/pipeline-observability.ts", "server/db-pipeline-observability.ts"] }
+  ],
+  "C_governance": {
+    "active_docs_count": 30,
+    "archived_docs_count": 37,
+    "architecture_ssot": "docs/spec/ARCHITECTURE.md",
+    "governance_root": "docs/governance/_root/ISA_GOVERNANCE.md",
+    "docs_index": "docs/INDEX.md",
+    "planning": {
+      "next_actions": "docs/planning/NEXT_ACTIONS.json",
+      "backlog": "docs/planning/BACKLOG.csv"
+    },
+    "capability_specs": [
+      "docs/spec/ASK_ISA/",
+      "docs/spec/NEWS_HUB/",
+      "docs/spec/KNOWLEDGE_BASE/",
+      "docs/spec/CATALOG/",
+      "docs/spec/ESRS_MAPPING/",
+      "docs/spec/ADVISORY/"
+    ],
+    "archive_location": "isa-archive/governance/"
+  },
+  "D_env_vars": {
+    "required": ["VITE_APP_ID", "JWT_SECRET", "DATABASE_URL"],
+    "auth": ["OAUTH_SERVER_URL", "OWNER_OPEN_ID"],
+    "llm": ["OPENAI_API_KEY", "BUILT_IN_FORGE_API_URL", "BUILT_IN_FORGE_API_KEY"],
+    "cron": ["CRON_SECRET"],
+    "email": ["SENDGRID_API_KEY", "SENDER_EMAIL", "SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASSWORD", "SMTP_SECURE"],
+    "github": ["GITHUB_PAT", "GH_TOKEN", "GITHUB_APP_PRIVATE_KEY", "GITHUB_APP_ID", "INSTALLATION_ID"],
+    "tidb": ["TIDB_PRIVATE_KEY", "TIDB_PUBLIC_KEY"],
+    "manus": ["MANUS_API_KEY", "VITE_FRONTEND_FORGE_API_URL"],
+    "test": ["RUN_DB_TESTS", "RUN_CELLAR_TESTS", "BATCH_SIZE", "CONCURRENCY", "DRY_RUN", "FORCE_REGENERATE"],
+    "secret_safety": {
+      "env_gitignored": true,
+      "mcp_gitignored": true,
+      "env_example_exists": true,
+      "no_committed_secrets": true,
+      "secrets_manager": "none (env-var based)"
+    }
+  },
+  "E_integrations": [
+    { "service": "Database", "provider": "TiDB Cloud (MySQL)", "config": "DATABASE_URL env, drizzle.config.ts" },
+    { "service": "Vector search", "provider": "TiDB native", "config": "server/knowledge-vector-search.ts" },
+    { "service": "LLM", "provider": "OpenAI GPT-4o-mini", "config": "server/_core/llm.ts" },
+    { "service": "Embeddings", "provider": "OpenAI text-embedding-3-small", "config": "server/_core/embedding.ts" },
+    { "service": "Auth", "provider": "Manus OAuth", "config": "server/_core/oauth.ts" },
+    { "service": "Email", "provider": "SendGrid / SMTP", "config": "server/email-service.ts" },
+    { "service": "Object storage", "provider": "AWS S3 (optional)", "config": "@aws-sdk/client-s3 in package.json" },
+    { "service": "GitHub", "provider": "REST API via PAT", "config": "server/_core/env.ts" }
+  ],
+  "F_quality": {
+    "tests": { "passing": 517, "total": 574, "rate": "90.1%", "framework": "Vitest 2.1.4" },
+    "ci_workflows": 7,
+    "typescript": { "version": "5.9.3", "strict": true },
+    "lint": { "eslint": "minimal (server only)", "prettier": true, "markdownlint": true },
+    "risks": [
+      "57 failing tests mask regressions",
+      "ESLint minimal — no React hooks rules",
+      "noUnusedLocals/noUnusedParameters disabled",
+      "No staging environment",
+      "Manual deployment"
+    ]
+  },
+  "bottlenecks": [
+    { "id": 1, "description": "Doc sprawl (68→30 after archive)", "type": "governance", "impact": "HIGH", "status": "resolved" },
+    { "id": 2, "description": "No single SSOT index", "type": "governance", "impact": "HIGH", "status": "resolved" },
+    { "id": 3, "description": "57 failing tests", "type": "quality", "impact": "HIGH", "size": "M", "status": "open" },
+    { "id": 4, "description": "Duplicate tool configs (AmazonQ + Claude Code)", "type": "process", "impact": "MEDIUM", "size": "S", "status": "open" },
+    { "id": 5, "description": "No staging environment", "type": "process", "impact": "MEDIUM", "size": "L", "status": "open" },
+    { "id": 6, "description": "Master router 1310 lines", "type": "technical", "impact": "MEDIUM", "size": "M", "status": "open" },
+    { "id": 7, "description": "ESLint gaps", "type": "quality", "impact": "LOW-MEDIUM", "size": "S", "status": "open" },
+    { "id": 8, "description": "Manual deployment", "type": "process", "impact": "MEDIUM", "size": "M", "status": "open" },
+    { "id": 9, "description": "No durable agent memory", "type": "process", "impact": "MEDIUM", "status": "resolved" },
+    { "id": 10, "description": "Missing automation scripts", "type": "process", "impact": "MEDIUM", "size": "S", "status": "in_progress" }
+  ]
+}

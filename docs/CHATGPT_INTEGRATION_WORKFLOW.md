@@ -1,5 +1,12 @@
 # ChatGPT Integration Workflow
 
+Status: HISTORICAL REFERENCE ONLY
+
+Current canonical operating documents:
+- `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
+- `docs/governance/ISA_AGENT_HANDOFF_PROTOCOL.md`
+- `docs/governance/ISA_CAPABILITY_DELIVERY_WORKFLOW.md`
+
 **Version:** 1.0  
 **Last Updated:** December 11, 2025  
 **Purpose:** Step-by-step procedures for integrating ChatGPT's contributions into ISA
@@ -281,7 +288,7 @@ pnpm test
 import { mapESRSToGS1Attributes } from "./server/mappings/esrs-to-gs1-mapper";
 
 const result = await mapESRSToGS1Attributes(["E1-1_01"]);
-console.log(result);
+print(result);
 // Verify output matches expected format
 ```
 

@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/security-gate.schema.json",
+  "title": "ISA Security Gate",
+  "type": "object",
+  "required": ["meta", "status", "checks", "thresholds"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["generated_at"],
+      "properties": {
+        "generated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "fail", "unknown"]
+    },
+    "checks": {
+      "type": "object",
+      "required": ["secret_scan", "authz_tests", "dependency_scan"],
+      "properties": {
+        "secret_scan": {
+          "type": "object",
+          "required": ["executed", "secrets_found"],
+          "properties": {
+            "executed": {"type": "boolean"},
+            "secrets_found": {"type": "integer", "minimum": 0}
+          }
+        },
+        "authz_tests": {
+          "type": "object",
+          "required": ["executed", "tests_passed"],
+          "properties": {
+            "executed": {"type": "boolean"},
+            "tests_passed": {"type": "boolean"}
+          }
+        },
+        "dependency_scan": {
+          "type": "object",
+          "required": ["executed", "critical_vulns"],
+          "properties": {
+            "executed": {"type": "boolean"},
+            "critical_vulns": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "required": ["secret_leaks_max", "critical_vulns_max"],
+      "properties": {
+        "secret_leaks_max": {"type": "integer", "minimum": 0},
+        "critical_vulns_max": {"type": "integer", "minimum": 0}
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

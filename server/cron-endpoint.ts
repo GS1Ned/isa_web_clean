@@ -7,38 +7,82 @@ import type { Request, Response } from "express";
 import { dailyNewsIngestion, weeklyNewsArchival } from "./news-cron-scheduler";
 import { monitoredCronJob } from "./cron-monitoring-simple";
 import { serverLogger } from "./_core/logger-wiring";
+import {
+  authorizeAutomationRequest,
+  isAutomationAuthError,
+} from "./security/automation-auth";
 
+function firstHeaderValue(value: string | string[] | undefined): string | undefined {
+  if (Array.isArray(value)) return value[0];
+  return value;
+}
 
-const CRON_SECRET = process.env.CRON_SECRET || "change-me-in-production";
+function requestActor(req: Request): string {
+  return req.ip || req.socket.remoteAddress || "unknown";
+}
 
-function validateCronSecret(req: Request): boolean {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return false;
+async function authorizeCronRequest(
+  req: Request,
+  source: string
+): Promise<void> {
+  await authorizeAutomationRequest({
+    source,
+    actor: requestActor(req),
+    traceId: firstHeaderValue(req.headers["x-trace-id"]),
+    authorizationHeader: firstHeaderValue(req.headers.authorization),
+    secret: typeof req.query.secret === "string" ? req.query.secret : undefined,
+    idempotencyKey:
+      firstHeaderValue(req.headers["x-idempotency-key"]) ||
+      (typeof req.query.idempotencyKey === "string" ? req.query.idempotencyKey : undefined),
+    requestTimestamp:
+      firstHeaderValue(req.headers["x-request-timestamp"]) ||
+      (typeof req.query.requestTimestamp === "string" ? req.query.requestTimestamp : undefined),
+    signature:
+      firstHeaderValue(req.headers["x-signature"]) ||
+      (typeof req.query.signature === "string" ? req.query.signature : undefined),
+  });
+}
 
-  // Support both "Bearer <token>" and direct token
-  const token = authHeader.startsWith("Bearer ")
-    ? authHeader.substring(7)
-    : authHeader;
+function handleAuthorizationError(res: Response, source: string, error: unknown): boolean {
+  if (!isAutomationAuthError(error)) return false;
 
-  return token === CRON_SECRET;
+  serverLogger.warn(`[cron-endpoint] ${source} denied`, {
+    code: error.code,
+    category: error.category,
+    status: error.status,
+    message: error.message,
+  });
+  res.status(error.status).json({
+    success: false,
+    error: error.message,
+    code: error.code,
+    category: error.category,
+  });
+  return true;
 }
 
 /**
  * Daily news ingestion endpoint
  * GET /cron/daily-news-ingestion
  * Header: Authorization: Bearer <CRON_SECRET>
+ * Strict mode headers: x-idempotency-key, x-request-timestamp, x-signature
  */
 export async function handleDailyNewsIngestion(req: Request, res: Response) {
-  // Validate secret
-  if (!validateCronSecret(req)) {
-    res.status(401).json({
+  try {
+    await authorizeCronRequest(req, "rest.cron.daily-news-ingestion");
+  } catch (error) {
+    if (handleAuthorizationError(res, "daily-news-ingestion", error)) {
+      return;
+    }
+    serverLogger.error("[cron-endpoint] Daily auth check failed unexpectedly:", error);
+    res.status(500).json({
       success: false,
-      error: "Unauthorized: Invalid or missing authorization token",
+      error: "Authorization check failed",
     });
     return;
   }
 
-  console.log("[cron-endpoint] Daily news ingestion triggered");
+  serverLogger.info("[cron-endpoint] Daily news ingestion triggered");
 
   try {
     const result = await monitoredCronJob(
@@ -73,18 +117,24 @@ export async function handleDailyNewsIngestion(req: Request, res: Response) {
  * Weekly news archival endpoint
  * GET /cron/weekly-news-archival
  * Header: Authorization: Bearer <CRON_SECRET>
+ * Strict mode headers: x-idempotency-key, x-request-timestamp, x-signature
  */
 export async function handleWeeklyNewsArchival(req: Request, res: Response) {
-  // Validate secret
-  if (!validateCronSecret(req)) {
-    res.status(401).json({
+  try {
+    await authorizeCronRequest(req, "rest.cron.weekly-news-archival");
+  } catch (error) {
+    if (handleAuthorizationError(res, "weekly-news-archival", error)) {
+      return;
+    }
+    serverLogger.error("[cron-endpoint] Weekly auth check failed unexpectedly:", error);
+    res.status(500).json({
       success: false,
-      error: "Unauthorized: Invalid or missing authorization token",
+      error: "Authorization check failed",
     });
     return;
   }
 
-  console.log("[cron-endpoint] Weekly news archival triggered");
+  serverLogger.info("[cron-endpoint] Weekly news archival triggered");
 
   try {
     const result = await monitoredCronJob(
@@ -117,7 +167,7 @@ export async function handleWeeklyNewsArchival(req: Request, res: Response) {
  * Health check endpoint
  * GET /cron/health
  */
-export function handleCronHealth(req: Request, res: Response) {
+export function handleCronHealth(_req: Request, res: Response) {
   res.status(200).json({
     status: "ok",
     timestamp: new Date().toISOString(),

@@ -1,0 +1,29 @@
+name: ask-isa-runtime-smoke
+
+on:
+  pull_request:
+    paths:
+      - "server/prompts/ask_isa/**"
+      - "docs/spec/ASK_ISA.md"
+      - "docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md"
+      - "docs/planning/**"
+      - "scripts/validate_planning_and_traceability.py"
+      - "scripts/probe/ask_isa_smoke.py"
+      - ".github/workflows/ask-isa-runtime-smoke.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: validate planning and traceability
+        run: python3 scripts/validate_planning_and_traceability.py
+      - name: ask isa smoke
+        run: python3 scripts/probe/ask_isa_smoke.py

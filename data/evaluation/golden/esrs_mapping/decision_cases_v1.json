@@ -1,0 +1,39 @@
+{
+  "dataset_id": "esrs_mapping_decision_cases_v1",
+  "notes": "Stage-a ESRS decision-quality starter set covering direct, partial, and no-mapping posture.",
+  "cases": [
+    {
+      "id": "ESRS-DEC-A1",
+      "mapping_id": "MAP-DPP-001",
+      "expected_posture": "decision_grade",
+      "expected_review_signal": "none",
+      "expected_confidence": "direct",
+      "expected_regulation_standard": "DPP",
+      "min_rationale_length": 20,
+      "rationale_terms": ["standard", "product", "identifier", "DPP"],
+      "required_fields": ["sourceAuthority", "source_file", "sectors"]
+    },
+    {
+      "id": "ESRS-DEC-A2",
+      "mapping_id": "MAP-E1-003",
+      "expected_posture": "review_required",
+      "expected_review_signal": "review_recommended",
+      "expected_confidence": "partial",
+      "expected_regulation_standard": "ESRS E1",
+      "min_rationale_length": 40,
+      "rationale_terms": ["energy", "carbon", "footprint"],
+      "required_fields": ["sourceAuthority", "source_file", "sectors"]
+    },
+    {
+      "id": "ESRS-DEC-A3",
+      "negative_case_id": "NEG-S1-LIVING-WAGE",
+      "expected_posture": "insufficient_evidence",
+      "expected_review_signal": "human_review_required",
+      "expected_confidence": "no_mapping",
+      "expected_regulation_standard": "ESRS S1",
+      "min_rationale_length": 40,
+      "rationale_terms": ["living", "wage", "attributes"],
+      "required_fields": ["sourceAuthority", "source_file", "sectors"]
+    }
+  ]
+}

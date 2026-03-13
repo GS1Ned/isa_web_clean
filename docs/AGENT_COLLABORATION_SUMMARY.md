@@ -1,5 +1,12 @@
 # Agent Collaboration Framework - Summary
 
+Status: HISTORICAL REFERENCE ONLY
+
+Current canonical operating documents:
+- `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
+- `docs/governance/ISA_AGENT_HANDOFF_PROTOCOL.md`
+- `docs/governance/ISA_CAPABILITY_DELIVERY_WORKFLOW.md`
+
 **Version:** 1.0  
 **Created:** December 11, 2025  
 **Purpose:** Executive summary of Manus ↔ ChatGPT collaboration architecture for ISA development

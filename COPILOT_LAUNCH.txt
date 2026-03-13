@@ -1,0 +1,73 @@
+# COPILOT AGENT AUTO-MERGE: QUICK LAUNCH CARD
+
+⚡ **Copy the entire block below into Copilot Chat (Agent mode) and press Enter.**
+
+---
+
+```
+COPILOT AGENT MISSION
+
+ROLE
+You are operating in VS Code Chat Agent mode with autonomy enabled (chat.tools.autoApprove: true).
+
+OBJECTIVE
+Rebase and auto-merge all open PRs in repository GS1Ned/isa_web_clean onto the default branch (strict-no-console). Execute end-to-end without asking for confirmations.
+
+NON-NEGOTIABLES
+- Never request secrets/credentials. Use authenticated gh/git environment.
+- If auth fails, stop with: "STOP: [reason]. Remediation: [single action]"
+- All actions logged to ./docs/planning/merge/PR_MERGE_AUTOPILOT_LOG.md
+- Minimal changes: rebase only, no feature additions.
+
+SUCCESS CRITERIA
+1. All open PR branches rebased onto strict-no-console
+2. All branches pushed (--force-with-lease)
+3. All CI checks green
+4. Auto-merge enabled on all PRs
+5. Audit log complete with per-PR status
+
+EXECUTION
+1. EXECUTE: chmod +x ./scripts/copilot/automerge_prs.sh && ./scripts/copilot/automerge_prs.sh
+2. IF CONFLICT/FAILURE (exit code 1):
+   → Diagnose (git status, check error message)
+   → Fix (edit files, run lint/tests, commit)
+   → RE-EXECUTE: ./scripts/copilot/automerge_prs.sh
+3. REPEAT until all PRs merged or blocker documented
+
+RECOVERY LOOP
+- Rebase conflict? → Resolve in editor, git add . && git commit, rerun
+- Failing lint? → pnpm lint --fix && git add . && git commit, rerun
+- Failing tests? → Fix code, pnpm test, git commit, rerun
+- Auto-merge blocked? → Check PR UI for status/reviews, fix blockers, rerun
+```
+
+---
+
+## Expected Output
+
+Terminal should show:
+```
+Using default branch: strict-no-console
+----
+Processing PR #123: feature-branch
+- status: AUTO_MERGE_ENABLED
+...
+DONE: processed all open PRs (auto-merge enabled).
+```
+
+Log file created at: `./docs/planning/merge/PR_MERGE_AUTOPILOT_LOG.md`
+
+---
+
+## Manual Launch (Terminal Only)
+
+If not using Copilot Agent mode:
+
+```bash
+cd /Users/frisowempehomefolder/Documents/isa_web_clean
+./scripts/copilot/automerge_prs.sh
+```
+
+---
+
+**Setup Complete:** 2026-02-16

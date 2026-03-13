@@ -1,0 +1,178 @@
+[
+  {
+    "from": "check-columns.ts",
+    "to": "scripts/validation/check-columns.ts",
+    "type": "move",
+    "rationale": "Move root validation/test helpers under scripts/validation.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "check-error-ledger.ts",
+    "to": "scripts/validation/check-error-ledger.ts",
+    "type": "move",
+    "rationale": "Move root validation/test helpers under scripts/validation.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "check-pipeline-log.ts",
+    "to": "scripts/validation/check-pipeline-log.ts",
+    "type": "move",
+    "rationale": "Move root validation/test helpers under scripts/validation.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "check-pipeline-table.ts",
+    "to": "scripts/validation/check-pipeline-table.ts",
+    "type": "move",
+    "rationale": "Move root validation/test helpers under scripts/validation.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "check-table.ts",
+    "to": "scripts/validation/check-table.ts",
+    "type": "move",
+    "rationale": "Move root validation/test helpers under scripts/validation.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "test-db-connection.ts",
+    "to": "scripts/validation/test-db-connection.ts",
+    "type": "move",
+    "rationale": "Move root validation/test helpers under scripts/validation.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "test-pipeline-run.ts",
+    "to": "scripts/validation/test-pipeline-run.ts",
+    "type": "move",
+    "rationale": "Move root validation/test helpers under scripts/validation.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "check-news-dates.mjs",
+    "to": "scripts/ingestion/news/check-news-dates.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "debug-scraper.mjs",
+    "to": "scripts/ingestion/news/debug-scraper.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "get-scope-stats.mjs",
+    "to": "scripts/dev/get-scope-stats.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "populate-live-news.mjs",
+    "to": "scripts/ingestion/news/populate-live-news.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "populate-simple.mjs",
+    "to": "scripts/ingestion/news/populate-simple.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "run-pipeline-verbose.mjs",
+    "to": "scripts/dev/run-pipeline-verbose.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "seed-news.mjs",
+    "to": "scripts/ingestion/news/seed-news.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "test-db-ssl.mjs",
+    "to": "scripts/dev/test-db-ssl.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "test-efrag-detail.mjs",
+    "to": "scripts/dev/test-efrag-detail.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "test-efrag-pipeline.mjs",
+    "to": "scripts/dev/test-efrag-pipeline.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "test-news-pipeline.mjs",
+    "to": "scripts/ingestion/news/test-news-pipeline.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "test-playwright-scraper.mjs",
+    "to": "scripts/ingestion/news/test-playwright-scraper.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "test-scraper.mjs",
+    "to": "scripts/ingestion/news/test-scraper.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "test-xml-parser.mjs",
+    "to": "scripts/dev/test-xml-parser.mjs",
+    "type": "move",
+    "rationale": "Move root ad-hoc node scripts under scripts/ for discoverability.",
+    "risk": "med",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  },
+  {
+    "from": "check_esrs_count.sql",
+    "to": "db/sql/check_esrs_count.sql",
+    "type": "move",
+    "rationale": "Move root SQL helpers under db/sql.",
+    "risk": "low",
+    "verification": "rg for old path refs; pnpm test-ci (if configured); smoke run moved scripts if used"
+  }
+]

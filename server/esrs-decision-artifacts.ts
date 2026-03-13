@@ -1,0 +1,427 @@
+import { z } from "zod";
+import type { SourceEvidenceRef } from "./source-provenance";
+
+export type DecisionArtifactConfidenceLevel = 'high' | 'medium' | 'low';
+
+export interface DecisionArtifactConfidence {
+  level: DecisionArtifactConfidenceLevel;
+  score: number;
+  basis: string;
+  reviewRecommended: boolean;
+  uncertaintyClass?: 'decision_grade' | 'review_required' | 'insufficient_evidence';
+  escalationAction?: 'none' | 'analyst_review' | 'human_review_required';
+}
+
+export interface DecisionArtifactEvidence {
+  codePaths: string[];
+  dataSources: string[];
+  evidenceRefs?: SourceEvidenceRef[];
+}
+
+export interface EsrsGapAnalysisDecisionArtifact {
+  artifactVersion: '1.0';
+  artifactType: 'gap_analysis';
+  capability: 'ESRS_MAPPING';
+  generatedAt: string;
+  subject: {
+    sector: string;
+    companySize: string;
+    targetRegulations: string[];
+  };
+  confidence: DecisionArtifactConfidence;
+  evidence: DecisionArtifactEvidence;
+  summary: {
+    totalRequirements: number;
+    coveragePercentage: number;
+    criticalGapCount: number;
+    highGapCount: number;
+    remediationPathCount: number;
+    criticalGapIds: string[];
+  };
+}
+
+export interface EsrsAttributeRecommendationDecisionArtifact {
+  artifactVersion: '1.0';
+  artifactType: 'attribute_recommendation';
+  capability: 'ESRS_MAPPING';
+  generatedAt: string;
+  subject: {
+    sector: string;
+    companySize?: string;
+    targetRegulations: string[];
+  };
+  confidence: DecisionArtifactConfidence;
+  evidence: DecisionArtifactEvidence;
+  summary: {
+    totalRecommendations: number;
+    highConfidenceCount: number;
+    regulationsCovered: string[];
+    topRecommendationIds: string[];
+  };
+}
+
+export interface EsrsRoadmapDecisionArtifact {
+  artifactVersion: '1.0';
+  artifactType: 'roadmap';
+  capability: 'ESRS_MAPPING';
+  generatedAt: string;
+  subject: {
+    sector: string;
+    companySize: string;
+    esrsRequirements: string[];
+  };
+  confidence: DecisionArtifactConfidence;
+  evidence: DecisionArtifactEvidence;
+  summary: {
+    phaseCount: number;
+    criticalPhaseCount: number;
+    quickWinCount: number;
+    mappingCount: number;
+    topPhaseIds: string[];
+  };
+}
+
+export const DecisionArtifactConfidenceSchema = z.object({
+  level: z.enum(["high", "medium", "low"]),
+  score: z.number().min(0).max(1),
+  basis: z.string(),
+  reviewRecommended: z.boolean(),
+  uncertaintyClass: z
+    .enum(["decision_grade", "review_required", "insufficient_evidence"])
+    .optional(),
+  escalationAction: z
+    .enum(["none", "analyst_review", "human_review_required"])
+    .optional(),
+});
+
+export const DecisionArtifactEvidenceSchema = z.object({
+  codePaths: z.array(z.string()),
+  dataSources: z.array(z.string()),
+  evidenceRefs: z
+    .array(
+      z.object({
+        sourceId: z.number().optional(),
+        sourceChunkId: z.number().optional(),
+        evidenceKey: z.string().nullable().optional(),
+        citationLabel: z.string().nullable().optional(),
+        sourceChunkLocator: z.string().nullable().optional(),
+        sourceLocator: z.string().nullable().optional(),
+        immutableUri: z.string().nullable().optional(),
+        authorityTier: z.string().nullable().optional(),
+        sourceRole: z.string().nullable().optional(),
+        publicationStatus: z.string().nullable().optional(),
+        lastVerifiedDate: z.string().nullable().optional(),
+        needsVerification: z.boolean().optional(),
+        verificationReason: z.string().optional(),
+      }),
+    )
+    .optional(),
+});
+
+export const EsrsGapAnalysisDecisionArtifactSchema = z.object({
+  artifactVersion: z.literal("1.0"),
+  artifactType: z.literal("gap_analysis"),
+  capability: z.literal("ESRS_MAPPING"),
+  generatedAt: z.string(),
+  subject: z.object({
+    sector: z.string(),
+    companySize: z.string(),
+    targetRegulations: z.array(z.string()),
+  }),
+  confidence: DecisionArtifactConfidenceSchema,
+  evidence: DecisionArtifactEvidenceSchema,
+  summary: z.object({
+    totalRequirements: z.number(),
+    coveragePercentage: z.number(),
+    criticalGapCount: z.number(),
+    highGapCount: z.number(),
+    remediationPathCount: z.number(),
+    criticalGapIds: z.array(z.string()),
+  }),
+});
+
+export const EsrsAttributeRecommendationDecisionArtifactSchema = z.object({
+  artifactVersion: z.literal("1.0"),
+  artifactType: z.literal("attribute_recommendation"),
+  capability: z.literal("ESRS_MAPPING"),
+  generatedAt: z.string(),
+  subject: z.object({
+    sector: z.string(),
+    companySize: z.string().optional(),
+    targetRegulations: z.array(z.string()),
+  }),
+  confidence: DecisionArtifactConfidenceSchema,
+  evidence: DecisionArtifactEvidenceSchema,
+  summary: z.object({
+    totalRecommendations: z.number(),
+    highConfidenceCount: z.number(),
+    regulationsCovered: z.array(z.string()),
+    topRecommendationIds: z.array(z.string()),
+  }),
+});
+
+export const EsrsRoadmapDecisionArtifactSchema = z.object({
+  artifactVersion: z.literal("1.0"),
+  artifactType: z.literal("roadmap"),
+  capability: z.literal("ESRS_MAPPING"),
+  generatedAt: z.string(),
+  subject: z.object({
+    sector: z.string(),
+    companySize: z.string(),
+    esrsRequirements: z.array(z.string()),
+  }),
+  confidence: DecisionArtifactConfidenceSchema,
+  evidence: DecisionArtifactEvidenceSchema,
+  summary: z.object({
+    phaseCount: z.number(),
+    criticalPhaseCount: z.number(),
+    quickWinCount: z.number(),
+    mappingCount: z.number(),
+    topPhaseIds: z.array(z.string()),
+  }),
+});
+
+export const EsrsDecisionArtifactSchema = z.union([
+  EsrsGapAnalysisDecisionArtifactSchema,
+  EsrsAttributeRecommendationDecisionArtifactSchema,
+  EsrsRoadmapDecisionArtifactSchema,
+]);
+
+export const EsrsDecisionArtifactsSchema = z.array(EsrsDecisionArtifactSchema);
+
+export type EsrsDecisionArtifact = z.infer<typeof EsrsDecisionArtifactSchema>;
+
+const BASE_CONFIDENCE_SCORE: Record<DecisionArtifactConfidenceLevel, number> = {
+  high: 0.85,
+  medium: 0.65,
+  low: 0.35,
+};
+
+const DECISION_ARTIFACT_CONFIDENCE_BANDS = {
+  high: 0.75,
+  medium: 0.5,
+} as const;
+
+function clampScore(score: number): number {
+  return Math.max(0, Math.min(1, Number(score.toFixed(2))));
+}
+
+export function scoreToDecisionArtifactConfidenceLevel(
+  score: number
+): DecisionArtifactConfidenceLevel {
+  const normalized = clampScore(score);
+  if (normalized >= DECISION_ARTIFACT_CONFIDENCE_BANDS.high) return "high";
+  if (normalized >= DECISION_ARTIFACT_CONFIDENCE_BANDS.medium) return "medium";
+  return "low";
+}
+
+function minConfidenceLevel(
+  left: DecisionArtifactConfidenceLevel,
+  right: DecisionArtifactConfidenceLevel
+): DecisionArtifactConfidenceLevel {
+  const order = ["low", "medium", "high"];
+  return order.indexOf(left) <= order.indexOf(right) ? left : right;
+}
+
+export function buildDecisionArtifactConfidence(input: {
+  preferredLevel?: DecisionArtifactConfidenceLevel;
+  rawScore: number;
+  basis: string;
+}): DecisionArtifactConfidence {
+  const score = clampScore(input.rawScore);
+  const derivedLevel = scoreToDecisionArtifactConfidenceLevel(score);
+  const level = input.preferredLevel
+    ? minConfidenceLevel(input.preferredLevel, derivedLevel)
+    : derivedLevel;
+
+  return {
+    level,
+    score,
+    basis: input.basis,
+    reviewRecommended: level !== "high",
+    uncertaintyClass:
+      level === "high"
+        ? "decision_grade"
+        : level === "medium"
+          ? "review_required"
+          : "insufficient_evidence",
+    escalationAction:
+      level === "high"
+        ? "none"
+        : level === "medium"
+          ? "analyst_review"
+          : "human_review_required",
+  };
+}
+
+export function buildGapAnalysisDecisionArtifact(input: {
+  generatedAt: string;
+  sector: string;
+  companySize: string;
+  targetRegulations?: string[];
+  totalRequirements: number;
+  coveragePercentage: number;
+  criticalGapCount: number;
+  highGapCount: number;
+  remediationPathCount: number;
+  criticalGapIds: string[];
+  factCount: number;
+  inferenceCount: number;
+  uncertainCount: number;
+  overallConfidence: DecisionArtifactConfidenceLevel;
+  dataSources?: string[];
+  evidenceRefs?: SourceEvidenceRef[];
+}): EsrsGapAnalysisDecisionArtifact {
+  const markerCount = input.factCount + input.inferenceCount + input.uncertainCount;
+  const baseScore = BASE_CONFIDENCE_SCORE[input.overallConfidence];
+  const factRatio = markerCount === 0 ? 0 : input.factCount / markerCount;
+  const uncertaintyPenalty = markerCount === 0 ? 0 : (input.uncertainCount / markerCount) * 0.15;
+  const score = clampScore(baseScore + factRatio * 0.15 - uncertaintyPenalty);
+
+  return {
+    artifactVersion: '1.0',
+    artifactType: 'gap_analysis',
+    capability: 'ESRS_MAPPING',
+    generatedAt: input.generatedAt,
+    subject: {
+      sector: input.sector,
+      companySize: input.companySize,
+      targetRegulations: input.targetRegulations ?? [],
+    },
+    confidence: buildDecisionArtifactConfidence({
+      preferredLevel: input.overallConfidence,
+      rawScore: score,
+      basis: `Coverage analysis across ${input.totalRequirements} mapped requirements with ${input.factCount} fact markers and ${input.inferenceCount} inferred markers.`,
+    }),
+    evidence: {
+      codePaths: [
+        'server/routers/gap-analyzer.ts',
+        'server/gap-reasoning.ts',
+      ],
+      dataSources: input.dataSources ?? [
+        'gs1_esrs_mappings',
+        'gs1_attribute_esrs_mapping',
+      ],
+      evidenceRefs: input.evidenceRefs?.length ? input.evidenceRefs : undefined,
+    },
+    summary: {
+      totalRequirements: input.totalRequirements,
+      coveragePercentage: input.coveragePercentage,
+      criticalGapCount: input.criticalGapCount,
+      highGapCount: input.highGapCount,
+      remediationPathCount: input.remediationPathCount,
+      criticalGapIds: input.criticalGapIds.slice(0, 5),
+    },
+  };
+}
+
+export function buildAttributeRecommendationDecisionArtifact(input: {
+  generatedAt: string;
+  sector: string;
+  companySize?: string;
+  targetRegulations?: string[];
+  totalRecommendations: number;
+  highConfidenceCount: number;
+  regulationsCovered: string[];
+  topRecommendationIds: string[];
+  recommendationScores: number[];
+  overallConfidence: DecisionArtifactConfidenceLevel;
+  overallBasis: string;
+  evidenceRefs?: SourceEvidenceRef[];
+}): EsrsAttributeRecommendationDecisionArtifact {
+  const averageScore =
+    input.recommendationScores.length === 0
+      ? 0
+      : input.recommendationScores.reduce((sum, score) => sum + score, 0) /
+        input.recommendationScores.length;
+
+  return {
+    artifactVersion: '1.0',
+    artifactType: 'attribute_recommendation',
+    capability: 'ESRS_MAPPING',
+    generatedAt: input.generatedAt,
+    subject: {
+      sector: input.sector,
+      companySize: input.companySize,
+      targetRegulations: input.targetRegulations ?? [],
+    },
+    confidence: buildDecisionArtifactConfidence({
+      preferredLevel: input.overallConfidence,
+      rawScore: averageScore,
+      basis: input.overallBasis,
+    }),
+    evidence: {
+      codePaths: [
+        'server/attribute-recommender.ts',
+        'server/routers/attribute-recommender.ts',
+      ],
+      dataSources: [
+        'ATTRIBUTE_METADATA',
+        'SECTOR_ATTRIBUTES',
+      ],
+      evidenceRefs: input.evidenceRefs?.length ? input.evidenceRefs : undefined,
+    },
+    summary: {
+      totalRecommendations: input.totalRecommendations,
+      highConfidenceCount: input.highConfidenceCount,
+      regulationsCovered: input.regulationsCovered,
+      topRecommendationIds: input.topRecommendationIds.slice(0, 5),
+    },
+  };
+}
+
+export function buildRoadmapDecisionArtifact(input: {
+  generatedAt: string;
+  sector: string;
+  companySize: string;
+  esrsRequirements: string[];
+  phaseCount: number;
+  criticalPhaseCount: number;
+  quickWinCount: number;
+  mappingCount: number;
+  topPhaseIds: string[];
+  mode: 'llm' | 'fallback';
+  basis: string;
+  evidenceRefs?: SourceEvidenceRef[];
+}): EsrsRoadmapDecisionArtifact {
+  const baseScore = input.mode === 'llm' ? 0.62 : 0.48;
+  const mappingBoost = Math.min(input.mappingCount / 25, 0.18);
+  const phaseShapeBoost = input.phaseCount >= 3 ? 0.08 : 0.03;
+  const score = clampScore(baseScore + mappingBoost + phaseShapeBoost);
+  const level = scoreToDecisionArtifactConfidenceLevel(score);
+
+  return {
+    artifactVersion: '1.0',
+    artifactType: 'roadmap',
+    capability: 'ESRS_MAPPING',
+    generatedAt: input.generatedAt,
+    subject: {
+      sector: input.sector,
+      companySize: input.companySize,
+      esrsRequirements: input.esrsRequirements,
+    },
+    confidence: buildDecisionArtifactConfidence({
+      preferredLevel: level,
+      rawScore: score,
+      basis: input.basis,
+    }),
+    evidence: {
+      codePaths: [
+        'server/routers/esrs-roadmap.ts',
+        'server/db-esrs-gs1-mapping.ts',
+      ],
+      dataSources: [
+        'getAllEsrsGs1Mappings',
+        'gs1_esrs_mappings',
+      ],
+      evidenceRefs: input.evidenceRefs?.length ? input.evidenceRefs : undefined,
+    },
+    summary: {
+      phaseCount: input.phaseCount,
+      criticalPhaseCount: input.criticalPhaseCount,
+      quickWinCount: input.quickWinCount,
+      mappingCount: input.mappingCount,
+      topPhaseIds: input.topPhaseIds.slice(0, 5),
+    },
+  };
+}

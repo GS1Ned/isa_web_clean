@@ -4,6 +4,12 @@
  */
 
 import { createFactMarker, createInferenceMarker, createUncertainMarker, type EpistemicMarker } from './gap-reasoning.js';
+import {
+  buildAttributeRecommendationDecisionArtifact,
+  scoreToDecisionArtifactConfidenceLevel,
+  type EsrsAttributeRecommendationDecisionArtifact,
+} from './esrs-decision-artifacts.js';
+import { collectEvidenceRefsForTerms } from './source-provenance.js';
 
 // =============================================================================
 // TYPES
@@ -53,6 +59,7 @@ export interface AttributeRecommendationResult {
   };
   epistemic: EpistemicMarker;
   generatedAt: string;
+  decisionArtifact: EsrsAttributeRecommendationDecisionArtifact;
 }
 
 // =============================================================================
@@ -433,12 +440,6 @@ function calculateConfidenceScore(
   return Math.min(score, 1.0);
 }
 
-function getConfidenceLevel(score: number): 'high' | 'medium' | 'low' {
-  if (score >= 0.7) return 'high';
-  if (score >= 0.4) return 'medium';
-  return 'low';
-}
-
 function generateRationale(
   attributeId: string,
   sector: string,
@@ -485,7 +486,7 @@ export async function generateAttributeRecommendations(
   const scoredAttrs = candidateAttrs.map(attrId => {
     const metadata = ATTRIBUTE_METADATA[attrId];
     const confidenceScore = calculateConfidenceScore(attrId, sector, targetRegulations);
-    const confidenceLevel = getConfidenceLevel(confidenceScore);
+    const confidenceLevel = scoreToDecisionArtifactConfidenceLevel(confidenceScore);
 
     const regulatoryRelevance: RegulatoryRelevance[] = [];
     if (metadata && targetRegulations.length > 0) {
@@ -552,6 +553,36 @@ export async function generateAttributeRecommendations(
       ? createInferenceMarker('Recommendations based on sector analysis', 'medium')
       : createUncertainMarker('Recommendations based on general best practices', 'low');
 
+  const generatedAt = new Date().toISOString();
+  const evidenceTerms = Array.from(
+    new Set(
+      [
+        ...targetRegulations,
+        ...recommendations.slice(0, 5).flatMap((recommendation) => recommendation.esrsDatapoints),
+        ...regulationsCovered,
+      ].filter((value): value is string => typeof value === 'string' && value.trim().length > 0),
+    ),
+  );
+  const evidenceRefs = await collectEvidenceRefsForTerms({
+    terms: evidenceTerms,
+    preferredSourceTypes: ['regulation', 'esrs_datapoint', 'standard'],
+    limit: 6,
+  });
+  const decisionArtifact = buildAttributeRecommendationDecisionArtifact({
+    generatedAt,
+    sector: input.sector,
+    companySize: input.companySize,
+    targetRegulations,
+    totalRecommendations: recommendations.length,
+    highConfidenceCount: highCount,
+    regulationsCovered,
+    topRecommendationIds: recommendations.map((recommendation) => recommendation.attributeId),
+    recommendationScores: recommendations.map((recommendation) => recommendation.confidenceScore),
+    overallConfidence: overallEpistemic.confidence,
+    overallBasis: overallEpistemic.basis,
+    evidenceRefs,
+  });
+
   return {
     input,
     recommendations,
@@ -564,6 +595,7 @@ export async function generateAttributeRecommendations(
       estimatedImplementationEffort: avgEffort >= 2.5 ? 'High' : avgEffort >= 1.5 ? 'Medium' : 'Low',
     },
     epistemic: overallEpistemic,
-    generatedAt: new Date().toISOString(),
+    generatedAt,
+    decisionArtifact,
   };
 }

@@ -1,0 +1,19 @@
+{
+  "by_capability": {
+    "ASK_ISA": 51,
+    "ADVISORY": 64,
+    "UNKNOWN": 505,
+    "NEWS_HUB": 41,
+    "CATALOG": 34,
+    "ESRS_MAPPING": 41,
+    "META": 80,
+    "KNOWLEDGE_BASE": 12
+  },
+  "by_confidence": {
+    "high": 189,
+    "medium": 0,
+    "low": 639
+  },
+  "unknown_count": 505,
+  "unknown_percent": 61.0
+}

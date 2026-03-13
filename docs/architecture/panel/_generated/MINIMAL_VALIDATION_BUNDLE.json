@@ -1,0 +1,195 @@
+{
+  "meta": {
+    "generated_at": "2026-02-20",
+    "generated_by": "codex-5.3",
+    "repo_ref": {
+      "branch": "main",
+      "commit": "70acb22c7975ab851b27cf2912c6dbb2f287167e"
+    },
+    "baseline_run": {
+      "captured_at": "2026-02-20T02:56:32Z",
+      "base_branch": "main",
+      "base_commit": "86a5f9a",
+      "working_branch": "hardening/2026-02-20-cleanup-benchmark-buildout",
+      "validation_bundle_version": "V1",
+      "status_summary": {
+        "planning_validator": "fail:1",
+        "pnpm_check": "pass",
+        "no_console_gate": "fail:1",
+        "secrets_scan": "pass",
+        "slo_policy": "pass",
+        "observability_contract": "pass",
+        "security_gate": "fail:1",
+        "canonical_docs_allowlist": "pass",
+        "doc_code_validator_canonical": "pass"
+      },
+      "validated_at": "2026-02-20T02:57:29Z"
+    },
+    "latest_run": {
+      "validated_at": "2026-02-20T06:34:04Z",
+      "run_type": "PG-08_SECURITY_RATCHET",
+      "commit": "d13882278aeecb015e7ec93ada424e7ae6b7067a",
+      "statuses": {
+        "planning_validator": "pass",
+        "ts_check": "pass",
+        "no_console_gate": "pass",
+        "secrets_scan": "pass",
+        "slo_policy": "pass",
+        "observability_contract": "pass",
+        "security_gate": "pass",
+        "security_gate_no_waiver_canary": "fail_expected",
+        "canonical_docs_allowlist": "pass",
+        "doc_code_validator": "pass",
+        "canonical_contract_drift": "pass",
+        "manifest_ownership_drift": "pass",
+        "reliability_smoke": "pass",
+        "perf_smoke": "pass"
+      }
+    }
+  },
+  "bundle": {
+    "preflight_and_action_commands": [
+      "python3 scripts/validate_planning_and_traceability.py",
+      "pnpm check",
+      "bash scripts/gates/no-console-gate.sh",
+      "bash scripts/gates/security-secrets-scan.sh",
+      "bash scripts/gates/slo-policy-check.sh /tmp/slo-policy-check.current.json",
+      "bash scripts/gates/observability-contract.sh /tmp/observability.current.json",
+      "bash scripts/gates/security-gate.sh /tmp/security.current.json",
+      "bash scripts/gates/canonical-docs-allowlist.sh",
+      "bash scripts/gates/doc-code-validator.sh --canonical-only",
+      "bash scripts/gates/canonical-contract-drift.sh",
+      "python3 scripts/gates/manifest-ownership-drift.py",
+      "bash scripts/gates/reliability-smoke.sh /tmp/reliability.current.json",
+      "bash scripts/gates/perf-smoke.sh /tmp/perf.current.json",
+      "bash scripts/validate_oss_benchmarks_2026_02_15.sh"
+    ]
+  },
+  "weights": {
+    "planning_validator": 0.1,
+    "ts_check": 0.15,
+    "no_console_gate": 0.1,
+    "secrets_scan": 0.1,
+    "slo_policy": 0.08,
+    "observability_contract": 0.12,
+    "security_gate": 0.12,
+    "canonical_docs_allowlist": 0.1,
+    "doc_code_validator": 0.13,
+    "canonical_contract_drift": 0,
+    "manifest_ownership_drift": 0,
+    "reliability_smoke": 0,
+    "perf_smoke": 0,
+    "benchmark_validator": 0
+  },
+  "results": [
+    {
+      "id": "planning_validator",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0.1,
+      "limitation": "Canonical planning validator now passes; non-canonical planning docs were removed from tracked canonical scope."
+    },
+    {
+      "id": "ts_check",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0.15,
+      "limitation": "Type safety only; no runtime behavior guarantee."
+    },
+    {
+      "id": "no_console_gate",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0.1,
+      "limitation": "No forbidden console usage remains in tracked scripts under gate scope."
+    },
+    {
+      "id": "secrets_scan",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0.1,
+      "limitation": "Heuristic scan only; cannot prove absence of all secret forms."
+    },
+    {
+      "id": "slo_policy",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0.08,
+      "limitation": "Validates policy presence, not runtime SLO enforcement."
+    },
+    {
+      "id": "observability_contract",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0.12,
+      "limitation": "Runtime-scoped coverage passes threshold; gate does not prove end-to-end trace completeness."
+    },
+    {
+      "id": "security_gate",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0.12,
+      "limitation": "Deterministic security gate now blocks high+critical severities; temporary waiver IDs are explicitly tracked and must be burned down under SEC-002."
+    },
+    {
+      "id": "canonical_docs_allowlist",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0.1,
+      "limitation": "Deterministic tracked-file checks pass; untracked local noise is warning-only by policy."
+    },
+    {
+      "id": "doc_code_validator",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0.13,
+      "limitation": "Canonical-scope mode passes; global legacy backlog remains outside canonical gate."
+    },
+    {
+      "id": "canonical_contract_drift",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0,
+      "limitation": "Passes with HEAD/HEAD^ freshness rule; requires refresh commit after each canonical contract update."
+    },
+    {
+      "id": "manifest_ownership_drift",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0,
+      "limitation": "Manifest now covers all runtime router surfaces and mysqlTable names with explicit owner/shared assignment."
+    },
+    {
+      "id": "reliability_smoke",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0,
+      "limitation": "Deterministic pass/fail contract now enforced; represents smoke-level reliability checks only."
+    },
+    {
+      "id": "perf_smoke",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0,
+      "limitation": "Deterministic pass/fail contract now enforced; represents smoke-level performance checks only."
+    },
+    {
+      "id": "benchmark_validator",
+      "status": "pass",
+      "signal": 1,
+      "contribution": 0,
+      "limitation": "Benchmark package validator enforces verified-or-unknown evidence date policy for 2026-02-15 benchmark set."
+    }
+  ],
+  "aggregate": {
+    "confidence_score": 1,
+    "rounded_confidence_score": 1,
+    "formula": "sum(weight_i * signal_i)",
+    "status_interpretation": "all weighted validation checks pass under deterministic thresholds, including high+critical security blocking with explicit temporary waivers"
+  },
+  "completion_gate": {
+    "done_confidence_threshold": 0.75,
+    "delta_rows_terminal_required": true,
+    "below_threshold_status": "DONE_WITH_LIMITATIONS"
+  }
+}

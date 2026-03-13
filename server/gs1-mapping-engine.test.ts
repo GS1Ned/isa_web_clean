@@ -26,7 +26,6 @@ describe("GS1 Mapping Engine", () => {
         .limit(1);
 
       if (csrdRegulations.length === 0) {
-        console.log("No CSRD regulations found, skipping test");
         return;
       }
 
@@ -52,7 +51,6 @@ describe("GS1 Mapping Engine", () => {
         .limit(1);
 
       if (dppRegulations.length === 0) {
-        console.log("No DPP regulations found, skipping test");
         return;
       }
 
@@ -81,7 +79,6 @@ describe("GS1 Mapping Engine", () => {
         .limit(1);
 
       if (eudrRegulations.length === 0) {
-        console.log("No EUDR regulations found, skipping test");
         return;
       }
 
@@ -110,7 +107,6 @@ describe("GS1 Mapping Engine", () => {
         .limit(1);
 
       if (ppwrRegulations.length === 0) {
-        console.log("No PPWR regulations found, skipping test");
         return;
       }
 
@@ -246,7 +242,6 @@ describe("GS1 Mapping Engine", () => {
       );
 
       if (traceabilityRegulations.length === 0) {
-        console.log("No traceability regulations found, skipping test");
         return;
       }
 
@@ -276,7 +271,6 @@ describe("GS1 Mapping Engine", () => {
       );
 
       if (packagingRegulations.length === 0) {
-        console.log("No packaging regulations found, skipping test");
         return;
       }
 

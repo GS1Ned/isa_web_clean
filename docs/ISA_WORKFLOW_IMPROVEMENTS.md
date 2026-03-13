@@ -192,7 +192,7 @@ try {
   const record = await extractRecord(row);
   records.push(record);
 } catch (error) {
-  console.error(`Failed to extract row ${rowNum}:`, error);
+  printError(`Failed to extract row ${rowNum}:`, error);
   // Error is lost, model can't learn from it
 }
 
@@ -755,7 +755,7 @@ await db.insert(advisoryEvaluations).values({
   timestamp: new Date()
 });
 
-console.log('Baseline established:', results);
+print('Baseline established:', results);
 ```
 
 **Validation:**

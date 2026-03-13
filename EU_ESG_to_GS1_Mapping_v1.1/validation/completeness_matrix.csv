@@ -1,0 +1,12 @@
+instrument_id,corpus_status,obligations_count,atomic_count,data_count,has_mapping_for_all_data,has_scoring_for_all_data
+CSRD,confirmed,4,4,4,yes,yes
+ESRS,confirmed,1,1,1,yes,yes
+TAX,confirmed,2,2,2,yes,yes
+CSDDD,confirmed,3,3,3,yes,yes
+BATT,confirmed,2,2,2,yes,yes
+PPWR,confirmed,2,2,2,yes,yes
+SFDR,provisional,2,2,2,yes,yes
+EUDR,provisional,2,2,2,yes,yes
+CBAM,provisional,2,2,2,yes,yes
+PAY,provisional,2,2,2,yes,yes
+FL,provisional,2,2,2,yes,yes

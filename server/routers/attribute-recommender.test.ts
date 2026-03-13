@@ -176,5 +176,21 @@ describe("Attribute Recommender Router", () => {
       expect(result.epistemic).toHaveProperty("status");
       expect(result.epistemic).toHaveProperty("confidence");
     }, 30000);
+
+    it("should expose a decision artifact envelope", async () => {
+      const caller = appRouter.createCaller(mockPublicContext);
+
+      const result = await caller.attributeRecommender.recommend({
+        sector: "electronics",
+        targetRegulations: ["DPP"],
+      });
+
+      expect(result.decisionArtifact).toBeDefined();
+      expect(result.decisionArtifact).toHaveProperty("artifactType", "attribute_recommendation");
+      expect(result.decisionArtifact).toHaveProperty("capability", "ESRS_MAPPING");
+      expect(result.decisionArtifact.summary.topRecommendationIds[0]).toBe(
+        result.recommendations[0]?.attributeId
+      );
+    }, 30000);
   });
 });

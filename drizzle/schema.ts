@@ -1,4 +1,4 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, index, int, varchar, text, timestamp, mysqlEnum, json, decimal, foreignKey, float, tinyint } from "drizzle-orm/mysql-core"
+import { mysqlTable, index, uniqueIndex, int, varchar, text, timestamp, mysqlEnum, json, decimal, float, tinyint } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 export const advisoryReportVersions = mysqlTable("advisory_report_versions", {
@@ -6,6 +6,23 @@ export const advisoryReportVersions = mysqlTable("advisory_report_versions", {
 	reportId: int().notNull(),
 	version: varchar({ length: 32 }).notNull(),
 	content: text().notNull(),
+	decisionArtifacts: json("decisionArtifacts").$type<Array<{
+		artifactVersion: string,
+		artifactType: string,
+		capability: string,
+		generatedAt: string,
+		subject: Record<string, unknown>,
+		confidence: {
+			level: string,
+			score: number,
+			basis: string,
+		},
+		evidence: {
+			codePaths: string[],
+			dataSources: string[],
+		},
+		summary: Record<string, unknown>,
+	}>>(),
 	changeLog: text(),
 	createdBy: varchar({ length: 255 }),
 	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
@@ -26,6 +43,23 @@ export const advisoryReports = mysqlTable("advisory_reports", {
 	targetStandardIds: json(),
 	sectorTags: json(),
 	gs1ImpactTags: json(),
+	decisionArtifacts: json("decisionArtifacts").$type<Array<{
+		artifactVersion: string,
+		artifactType: string,
+		capability: string,
+		generatedAt: string,
+		subject: Record<string, unknown>,
+		confidence: {
+			level: string,
+			score: number,
+			basis: string,
+		},
+		evidence: {
+			codePaths: string[],
+			dataSources: string[],
+		},
+		summary: Record<string, unknown>,
+	}>>(),
 	version: varchar({ length: 32 }).notNull(),
 	generatedDate: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
 	generatedBy: varchar({ length: 255 }),
@@ -42,6 +76,7 @@ export const advisoryReports = mysqlTable("advisory_reports", {
 	viewCount: int().default(0),
 	downloadCount: int().default(0),
 	lastAccessedAt: timestamp({ mode: 'string' }),
+	staleSince: timestamp("stale_since", { mode: 'string' }),
 	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
 	updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
 },
@@ -50,6 +85,36 @@ export const advisoryReports = mysqlTable("advisory_reports", {
 	index("reviewStatus_idx").on(table.reviewStatus),
 	index("publicationStatus_idx").on(table.publicationStatus),
 	index("generatedDate_idx").on(table.generatedDate),
+]);
+
+export const advisoryReportTargetRegulations = mysqlTable("advisory_report_target_regulations", {
+	id: int().autoincrement().notNull(),
+	reportId: int("report_id").notNull(),
+	regulationId: int("regulation_id").notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	uniqueIndex("advisory_report_target_regulations_report_regulation_uq").on(
+		table.reportId,
+		table.regulationId,
+	),
+	index("advisory_report_target_regulations_regulation_id_idx").on(table.regulationId),
+	index("advisory_report_target_regulations_report_id_idx").on(table.reportId),
+]);
+
+export const advisoryReportTargetStandards = mysqlTable("advisory_report_target_standards", {
+	id: int().autoincrement().notNull(),
+	reportId: int("report_id").notNull(),
+	standardId: int("standard_id").notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	uniqueIndex("advisory_report_target_standards_report_standard_uq").on(
+		table.reportId,
+		table.standardId,
+	),
+	index("advisory_report_target_standards_standard_id_idx").on(table.standardId),
+	index("advisory_report_target_standards_report_id_idx").on(table.reportId),
 ]);
 
 export const askIsaFeedback = mysqlTable("ask_isa_feedback", {
@@ -288,6 +353,10 @@ export const datasetRegistry = mysqlTable("dataset_registry", {
 	description: text(),
 	category: mysqlEnum(['GS1_STANDARDS','GDSN_DATA','ESRS_DATAPOINTS','CBV_VOCABULARIES','DPP_RULES','EU_REGULATIONS','INDUSTRY_DATASETS','OTHER']).notNull(),
 	source: varchar({ length: 512 }).notNull(),
+	authorityTier: varchar("authority_tier", { length: 64 }),
+	licenseType: varchar("license_type", { length: 64 }),
+	publicationStatus: varchar("publication_status", { length: 64 }),
+	immutableUri: varchar("immutable_uri", { length: 1024 }),
 	format: mysqlEnum(['JSON','CSV','XML','XLSX','PDF','API','OTHER']).notNull(),
 	version: varchar({ length: 64 }),
 	recordCount: int(),
@@ -1020,6 +1089,7 @@ export const knowledgeEmbeddings = mysqlTable("knowledge_embeddings", {
 	url: varchar({ length: 512 }),
 	datasetId: varchar({ length: 255 }),
 	datasetVersion: varchar({ length: 64 }),
+	sourceChunkId: int("source_chunk_id"),
 	lastVerifiedDate: timestamp({ mode: 'string' }),
 	isDeprecated: tinyint().default(0).notNull(),
 	deprecationReason: text(),
@@ -1029,6 +1099,7 @@ export const knowledgeEmbeddings = mysqlTable("knowledge_embeddings", {
 (table) => [
 	index("source_type_idx").on(table.sourceType),
 	index("source_id_idx").on(table.sourceId),
+	index("source_chunk_id_idx").on(table.sourceChunkId),
 	index("content_hash_idx").on(table.contentHash),
 	index("source_composite_idx").on(table.sourceType, table.sourceId),
 ]);
@@ -1127,6 +1198,25 @@ export const pipelineExecutionLog = mysqlTable("pipeline_execution_log", {
 	index("idx_pipeline_type").on(table.pipelineType),
 	index("idx_execution_id").on(table.executionId),
 	index("execution_id").on(table.executionId),
+]);
+
+export const ingestItemProvenance = mysqlTable("ingest_item_provenance", {
+	id: int().autoincrement().notNull(),
+	pipelineType: varchar("pipeline_type", { length: 64 }).notNull(),
+	itemKey: varchar("item_key", { length: 255 }).notNull(),
+	sourceLocator: varchar("source_locator", { length: 512 }),
+	retrievedAt: timestamp("retrieved_at", { mode: 'string' }),
+	contentHash: varchar("content_hash", { length: 64 }),
+	parserVersion: varchar("parser_version", { length: 64 }),
+	lastIngestedAt: timestamp("last_ingested_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+	traceId: varchar("trace_id", { length: 64 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+},
+(table) => [
+	index("ingest_item_provenance_unique").on(table.pipelineType, table.itemKey),
+	index("idx_ingest_item_provenance_pipeline_type").on(table.pipelineType),
+	index("idx_ingest_item_provenance_last_ingested_at").on(table.lastIngestedAt),
+	index("idx_ingest_item_provenance_trace_id").on(table.traceId),
 ]);
 
 export const qaConversations = mysqlTable("qa_conversations", {
@@ -1298,6 +1388,7 @@ export const regulations = mysqlTable("regulations", {
 	lastUpdated: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
 	createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
 	embedding: json(),
+	needsVerification: tinyint("needs_verification").default(0),
 },
 (table) => [
 	index("regulations_celexId_unique").on(table.celexId),
@@ -2066,3 +2157,184 @@ export const regulatoryEvents = mysqlTable("regulatory_events", {
 
 export type RegulatoryEvent = typeof regulatoryEvents.$inferSelect;
 export type InsertRegulatoryEvent = typeof regulatoryEvents.$inferInsert;
+
+
+// ============================================================================
+// EU ESG to GS1 Mapping Artefact Tables (v1.1)
+// Source: EU_ESG_to_GS1_Mapping_v1.1 (frozen, audit-defensible baseline)
+// Integration Date: 2026-01-25
+// IMMUTABILITY: Content is semantically frozen. Do not alter.
+// ============================================================================
+
+/**
+ * Regulatory corpus - authoritative EU instruments
+ * Source: EU_ESG_to_GS1_Mapping_v1.1/data/corpus.json
+ */
+export const esgCorpus = mysqlTable("esg_corpus", {
+	id: int().autoincrement().notNull(),
+	instrumentId: varchar("instrument_id", { length: 32 }).notNull(),
+	name: varchar({ length: 512 }).notNull(),
+	status: varchar({ length: 32 }).notNull(), // confirmed, draft, etc.
+	scope: text().notNull(),
+	authoritySource: varchar("authority_source", { length: 128 }),
+	authorityReference: varchar("authority_reference", { length: 128 }),
+	eliUrl: varchar("eli_url", { length: 512 }),
+	celex: varchar({ length: 32 }),
+	lastVerified: varchar("last_verified", { length: 16 }),
+	formats: json(), // Array of format strings
+	effectStatus: varchar("effect_status", { length: 64 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("esg_corpus_instrument_id_unique").on(table.instrumentId),
+]);
+
+/**
+ * Legal obligations - article-level obligations from EU instruments
+ * Source: EU_ESG_to_GS1_Mapping_v1.1/data/obligations.json
+ */
+export const esgObligations = mysqlTable("esg_obligations", {
+	id: int().autoincrement().notNull(),
+	obligationId: varchar("obligation_id", { length: 32 }).notNull(),
+	instrumentId: varchar("instrument_id", { length: 32 }).notNull(),
+	article: varchar({ length: 128 }).notNull(),
+	obligationText: text("obligation_text").notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("esg_obligations_obligation_id_unique").on(table.obligationId),
+	index("esg_obligations_instrument_id_idx").on(table.instrumentId),
+]);
+
+/**
+ * Atomic requirements - decomposed obligations into computable requirements
+ * Source: EU_ESG_to_GS1_Mapping_v1.1/data/atomic_requirements.json
+ */
+export const esgAtomicRequirements = mysqlTable("esg_atomic_requirements", {
+	id: int().autoincrement().notNull(),
+	atomicId: varchar("atomic_id", { length: 32 }).notNull(),
+	obligationId: varchar("obligation_id", { length: 32 }).notNull(),
+	obligationRefInstrumentId: varchar("obligation_ref_instrument_id", { length: 32 }),
+	obligationRefArticle: varchar("obligation_ref_article", { length: 128 }),
+	subject: varchar({ length: 255 }).notNull(),
+	action: text().notNull(),
+	object: varchar({ length: 255 }),
+	scope: varchar({ length: 128 }),
+	timing: varchar({ length: 128 }),
+	enforcement: text(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("esg_atomic_requirements_atomic_id_unique").on(table.atomicId),
+	index("esg_atomic_requirements_obligation_id_idx").on(table.obligationId),
+]);
+
+/**
+ * Data requirements - data objects derived from atomic requirements
+ * Source: EU_ESG_to_GS1_Mapping_v1.1/data/data_requirements.json
+ */
+export const esgDataRequirements = mysqlTable("esg_data_requirements", {
+	id: int().autoincrement().notNull(),
+	dataId: varchar("data_id", { length: 32 }).notNull(),
+	atomicId: varchar("atomic_id", { length: 32 }).notNull(),
+	obligationId: varchar("obligation_id", { length: 32 }).notNull(),
+	dataClass: varchar("data_class", { length: 128 }).notNull(),
+	dataElements: json("data_elements").notNull(), // Array of data element strings
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("esg_data_requirements_data_id_unique").on(table.dataId),
+	index("esg_data_requirements_atomic_id_idx").on(table.atomicId),
+	index("esg_data_requirements_obligation_id_idx").on(table.obligationId),
+]);
+
+/**
+ * GS1 mappings with scoring - GS1 capability assessment per data requirement
+ * Source: EU_ESG_to_GS1_Mapping_v1.1/data/gs1_mapping.json + scoring.json
+ */
+export const esgGs1Mappings = mysqlTable("esg_gs1_mappings", {
+	id: int().autoincrement().notNull(),
+	dataId: varchar("data_id", { length: 32 }).notNull(),
+	// From gs1_mapping.json
+	gs1Capability: varchar("gs1_capability", { length: 64 }).notNull(), // none, partial, master data, traceability
+	gs1Standards: json("gs1_standards").notNull(), // Array of standard names
+	mappingStrength: varchar("mapping_strength", { length: 32 }).notNull(), // none, partial, strong
+	justification: text().notNull(),
+	sectorRelevance: varchar("sector_relevance", { length: 255 }),
+	// From scoring.json
+	regulatoryForce: int("regulatory_force"), // 1-5
+	informationInevitability: int("information_inevitability"), // 1-5
+	interoperabilityDependency: int("interoperability_dependency"), // 1-5
+	gs1SolutionFitness: int("gs1_solution_fitness"), // 1-5
+	sectorExposure: int("sector_exposure"), // 1-5
+	timeCriticality: int("time_criticality"), // 1-5
+	totalScore: int("total_score"),
+	scoreRationale: text("score_rationale"),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("esg_gs1_mappings_data_id_unique").on(table.dataId),
+	index("esg_gs1_mappings_mapping_strength_idx").on(table.mappingStrength),
+	index("esg_gs1_mappings_total_score_idx").on(table.totalScore),
+]);
+
+// Type exports for EU ESG to GS1 Mapping tables
+export type EsgCorpus = typeof esgCorpus.$inferSelect;
+export type InsertEsgCorpus = typeof esgCorpus.$inferInsert;
+
+export type EsgObligation = typeof esgObligations.$inferSelect;
+export type InsertEsgObligation = typeof esgObligations.$inferInsert;
+
+export type EsgAtomicRequirement = typeof esgAtomicRequirements.$inferSelect;
+export type InsertEsgAtomicRequirement = typeof esgAtomicRequirements.$inferInsert;
+
+export type EsgDataRequirement = typeof esgDataRequirements.$inferSelect;
+export type InsertEsgDataRequirement = typeof esgDataRequirements.$inferInsert;
+
+export type EsgGs1Mapping = typeof esgGs1Mappings.$inferSelect;
+export type InsertEsgGs1Mapping = typeof esgGs1Mappings.$inferInsert;
+
+// ============================================================================
+// OpenClaw automation governance controls
+// ============================================================================
+
+export const automationRequestLedger = mysqlTable("automation_request_ledger", {
+	id: int().autoincrement().notNull(),
+	source: varchar({ length: 128 }).notNull(),
+	idempotencyKey: varchar("idempotency_key", { length: 191 }).notNull(),
+	requestTimestamp: timestamp("request_timestamp", { mode: 'string' }),
+	signature: varchar({ length: 255 }),
+	actor: varchar({ length: 255 }),
+	traceId: varchar("trace_id", { length: 128 }),
+	decision: mysqlEnum(['allow','deny']).default('allow').notNull(),
+	reasonCode: varchar("reason_code", { length: 128 }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	uniqueIndex("automation_request_ledger_source_key_uq").on(table.source, table.idempotencyKey),
+	index("automation_request_ledger_created_at_idx").on(table.createdAt),
+	index("automation_request_ledger_trace_id_idx").on(table.traceId),
+]);
+
+export const policyActionAudit = mysqlTable("policy_action_audit", {
+	id: int().autoincrement().notNull(),
+	source: varchar({ length: 128 }).notNull(),
+	actor: varchar({ length: 255 }),
+	traceId: varchar("trace_id", { length: 128 }),
+	decision: mysqlEnum(['allow','deny']).notNull(),
+	reasonCode: varchar("reason_code", { length: 128 }).notNull(),
+	category: mysqlEnum(['transient','config','permission','logic']).notNull(),
+	strictMode: tinyint("strict_mode").default(0).notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+},
+(table) => [
+	index("policy_action_audit_source_idx").on(table.source),
+	index("policy_action_audit_decision_idx").on(table.decision),
+	index("policy_action_audit_trace_id_idx").on(table.traceId),
+	index("policy_action_audit_created_at_idx").on(table.createdAt),
+]);
+
+export type AutomationRequestLedger = typeof automationRequestLedger.$inferSelect;
+export type InsertAutomationRequestLedger = typeof automationRequestLedger.$inferInsert;
+export type PolicyActionAudit = typeof policyActionAudit.$inferSelect;
+export type InsertPolicyActionAudit = typeof policyActionAudit.$inferInsert;

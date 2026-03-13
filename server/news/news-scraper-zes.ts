@@ -12,6 +12,10 @@
 import type { RawNewsItem } from "../news-fetcher";
 import { NEWS_SOURCES } from "../news-sources";
 import { serverLogger } from "../_core/logger-wiring";
+import {
+  browserLaunchArgs,
+  isBrowserAutomationAllowed,
+} from "../security/browser-automation-policy";
 
 
 /**
@@ -19,16 +23,21 @@ import { serverLogger } from "../_core/logger-wiring";
  * Returns empty array if Playwright is unavailable (deployment environment)
  */
 export async function scrapeZESNews(): Promise<RawNewsItem[]> {
+  if (!isBrowserAutomationAllowed("zes-playwright")) {
+    return [];
+  }
+
   try {
     // Dynamic import to handle optional Playwright dependency
     const playwright = await import("playwright");
-    const browser = await playwright.chromium.launch({ headless: true });
+    const browser = await playwright.chromium.launch({
+      headless: true,
+      args: browserLaunchArgs(),
+    });
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    console.log(
-      "[ZES] Fetching news from https://opwegnaarzes.nl/actueel/nieuws"
-    );
+    serverLogger.info("[ZES] Fetching news from https://opwegnaarzes.nl/actueel/nieuws");
     await page.goto("https://opwegnaarzes.nl/actueel/nieuws", {
       waitUntil: "networkidle",
       timeout: 30000,
@@ -38,9 +47,7 @@ export async function scrapeZESNews(): Promise<RawNewsItem[]> {
     await page
       .waitForSelector("article, .news-item, .post", { timeout: 10000 })
       .catch(() => {
-        console.log(
-          "[ZES] No article selector found, trying alternative approach"
-        );
+        serverLogger.warn("[ZES] No article selector found, trying alternative approach");
       });
 
     // Extract article data from the page
@@ -118,7 +125,7 @@ export async function scrapeZESNews(): Promise<RawNewsItem[]> {
       return items;
     });
 
-    console.log(`[ZES] Found ${articles.length} articles on listing page`);
+    serverLogger.info(`[ZES] Found ${articles.length} articles on listing page`);
 
     // Fetch full content for each article
     const fullArticles: RawNewsItem[] = [];
@@ -165,23 +172,21 @@ export async function scrapeZESNews(): Promise<RawNewsItem[]> {
           source: sourceObj,
         });
 
-        console.log(`[ZES] Scraped: ${article.title}`);
+        serverLogger.info(`[ZES] Scraped: ${article.title}`);
       } catch (error) {
         serverLogger.error(`[ZES] Error scraping detail page ${article.url}:`, error);
       }
     }
 
     await browser.close();
-    console.log(`[ZES] Successfully scraped ${fullArticles.length} articles`);
+    serverLogger.info(`[ZES] Successfully scraped ${fullArticles.length} articles`);
     return fullArticles;
   } catch (error: any) {
     if (
       error.code === "MODULE_NOT_FOUND" ||
       error.message?.includes("playwright")
     ) {
-      console.log(
-        "[ZES] Playwright not available (deployment mode), returning empty array"
-      );
+      serverLogger.info("[ZES] Playwright not available (deployment mode), returning empty array");
       return [];
     }
     serverLogger.error("[ZES] Scraping error:", error);

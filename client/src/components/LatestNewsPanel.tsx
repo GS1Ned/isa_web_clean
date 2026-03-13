@@ -3,6 +3,7 @@
  * Shows top 5-8 news items on homepage
  */
 
+import React from "react";
 import { NewsCardCompact } from "./NewsCardCompact";
 import { NewsCardCompactSkeleton } from "./NewsCardSkeleton";
 import { Button } from "./ui/button";
@@ -10,10 +11,50 @@ import { Newspaper, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 
+type CompactNewsItem = Parameters<typeof NewsCardCompact>[0]["news"];
+
+type RawLatestNewsItem = {
+  id?: unknown;
+  title?: unknown;
+  summary?: unknown;
+  publishedDate?: unknown;
+  createdAt?: unknown;
+  regulationTags?: unknown;
+  impactLevel?: unknown;
+  newsType?: unknown;
+};
+
+function isRawLatestNewsItem(value: unknown): value is RawLatestNewsItem {
+  return typeof value === "object" && value !== null;
+}
+
+function mapToCompactNewsItem(value: unknown): CompactNewsItem | null {
+  if (!isRawLatestNewsItem(value)) {
+    return null;
+  }
+
+  return {
+    id: value.id as CompactNewsItem["id"],
+    title: value.title as CompactNewsItem["title"],
+    summary: (value.summary || "") as CompactNewsItem["summary"],
+    publishedDate: new Date(
+      (value.publishedDate || value.createdAt || "") as string | number | Date,
+    ),
+    regulationTags: Array.isArray(value.regulationTags)
+      ? (value.regulationTags as CompactNewsItem["regulationTags"])
+      : [],
+    impactLevel: (value.impactLevel || "MEDIUM") as CompactNewsItem["impactLevel"],
+    newsType: value.newsType as CompactNewsItem["newsType"],
+  };
+}
+
 export function LatestNewsPanel() {
   const { data: newsItems, isLoading } = trpc.hub.getRecentNews.useQuery({
     limit: 6,
   });
+  const recentItems: unknown[] = Array.isArray(newsItems)
+    ? newsItems.slice(0, 5)
+    : [];
 
   if (isLoading) {
     return (
@@ -35,7 +76,7 @@ export function LatestNewsPanel() {
     );
   }
 
-  if (!newsItems || newsItems.length === 0) {
+  if (recentItems.length === 0) {
     return (
       <div className="lg:sticky lg:top-24">
         <div className="bg-card border border-border rounded-lg p-6">
@@ -81,22 +122,12 @@ export function LatestNewsPanel() {
 
         {/* News List */}
         <div className="space-y-3">
-          {newsItems.slice(0, 5).map((item: any) => (
-            <NewsCardCompact
-              key={item.id}
-              news={{
-                id: item.id,
-                title: item.title,
-                summary: item.summary || "",
-                publishedDate: new Date(item.publishedDate || item.createdAt),
-                regulationTags: Array.isArray(item.regulationTags)
-                  ? item.regulationTags
-                  : [],
-                impactLevel: item.impactLevel || "MEDIUM",
-                newsType: item.newsType,
-              }}
-            />
-          ))}
+          {recentItems
+            .map(mapToCompactNewsItem)
+            .filter((item): item is CompactNewsItem => item !== null)
+            .map(item => (
+              <NewsCardCompact key={item.id} news={item} />
+            ))}
         </div>
       </div>
     </div>

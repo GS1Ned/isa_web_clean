@@ -1,0 +1,150 @@
+{
+  "created_at_local": "2026-02-07 21:54:29",
+  "repo_root": "/Users/frisowempe/Documents/GitHub/isa_web_clean",
+  "move_map_file": "docs/archive/root_docs/_move_map_evidence_generated_20260207_215427.json",
+  "preflight": {
+    "created_at_local": "2026-02-07 21:54:27",
+    "src_exists": true,
+    "src_file_count": 87,
+    "src_tracked_count": 16,
+    "src_untracked_count": 71,
+    "src_total_bytes": 110337535,
+    "refs_to_src_count": 170,
+    "refs_samples": [
+      "./docs/reference/ISA_REFERENCE_DOSSIER.md:61:| Catalogue Items | `docs/evidence/_generated/isa_catalogue_latest/` |",
+      "./docs/archive/root_docs/_move_manifest_ops_config_cleanup_20260207_213615.json:27:    \"docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.json\",",
+      "./docs/archive/root_docs/_move_manifest_ops_config_cleanup_20260207_213615.json:28:    \"docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.md\",",
+      "./docs/evidence/EVIDENCE_INDEX.md:15:- docs/evidence/_generated/ (rebuildable census/summaries)",
+      "./docs/evidence/EVIDENCE_INDEX.md:30:- `docs/evidence/_generated/CENSUS.json` — Machine census of repo snapshot",
+      "./docs/evidence/EVIDENCE_INDEX.md:31:- `docs/evidence/_generated/CENSUS_DIFF.md` — Inventory vs snapshot diffs",
+      "./docs/evidence/EVIDENCE_INDEX.md:32:- `docs/evidence/_generated/SUBDIR_SUMMARY.md` — Directory summary",
+      "./docs/evidence/EVIDENCE_INDEX.md:33:- `docs/evidence/_generated/LARGE_ASSETS.md` — Largest assets + classification",
+      "./scripts/verify_catalogue_entrypoints.py:4:OUT_JSON=Path(\"docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json\")",
+      "./scripts/verify_catalogue_entrypoints.py:5:OUT_MD=Path(\"docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:5:latest_dir = os.path.join(repo_root, \"docs/evidence/_generated/isa_catalogue_latest\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:14:out_csv = os.path.join(repo_root, \"docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:15:out_json = os.path.join(repo_root, \"docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:16:out_index = os.path.join(repo_root, \"docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:17:out_status_json = os.path.join(repo_root, \"docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json\")",
+      "./scripts/isa-catalogue/generate_legacy_artefacts.py:18:out_status_md = os.path.join(repo_root, \"docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md\")",
+      "./scripts/isa-catalogue/export_run_to_repo.sh:9:OUT_RUNS=\"$REPO_ROOT/docs/evidence/_generated/isa_catalogue_runs\"",
+      "./scripts/isa-catalogue/export_run_to_repo.sh:11:OUT_LATEST=\"$REPO_ROOT/docs/evidence/_generated/isa_catalogue_latest\"",
+      "./scripts/isa-catalogue/iron_gate_catalogue.sh:8:LATEST=\"$REPO_ROOT/docs/evidence/_generated/isa_catalogue_latest\"",
+      "./scripts/isa-catalogue/iron_gate_catalogue.sh:15:latest = os.path.join(repo, \"docs/evidence/_generated/isa_catalogue_latest\")",
+      "./scripts/proto_crawl_catalogue.py:8:OUT_JSON=\"docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json\"",
+      "./scripts/proto_crawl_catalogue.py:9:OUT_CSV=\"docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv\"",
+      "./scripts/proto_crawl_catalogue.py:10:OUT_MD=\"docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md\"",
+      "./scripts/validate_gs1_efrag_catalogue.py:4:latest_dir = os.path.join(repo_root, \"docs/evidence/_generated/isa_catalogue_latest\")",
+      "./scripts/validate_gs1_efrag_catalogue.py:10:  \"docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv\","
+    ]
+  },
+  "moved_count": 16,
+  "skipped_count": 0,
+  "errors_count": 0,
+  "moved": [
+    {
+      "from": "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.json",
+      "to": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.json"
+    },
+    {
+      "from": "docs/evidence/_generated/CENSUS_DIFF.md",
+      "to": "docs/evidence/generated/_generated/CENSUS_DIFF.md"
+    },
+    {
+      "from": "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md",
+      "to": "docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.md"
+    },
+    {
+      "from": "docs/evidence/_generated/SUBDIR_SUMMARY.md",
+      "to": "docs/evidence/generated/_generated/SUBDIR_SUMMARY.md"
+    },
+    {
+      "from": "docs/evidence/_generated/GS1_EFRAG_CATALOGUE.csv",
+      "to": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE.csv"
+    },
+    {
+      "from": "docs/evidence/_generated/CENSUS.json",
+      "to": "docs/evidence/generated/_generated/CENSUS.json"
+    },
+    {
+      "from": "docs/evidence/_generated/LARGE_ASSETS.md",
+      "to": "docs/evidence/generated/_generated/LARGE_ASSETS.md"
+    },
+    {
+      "from": "docs/evidence/_generated/DOCSET_MAP.csv",
+      "to": "docs/evidence/generated/_generated/DOCSET_MAP.csv"
+    },
+    {
+      "from": "docs/evidence/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json",
+      "to": "docs/evidence/generated/_generated/CATALOGUE_ENTRYPOINTS_STATUS.json"
+    },
+    {
+      "from": "docs/evidence/_generated/GS1_EFRAG_CATALOGUE_INDEX.md",
+      "to": "docs/evidence/generated/_generated/GS1_EFRAG_CATALOGUE_INDEX.md"
+    },
+    {
+      "from": "docs/evidence/_generated/isa_catalogue_latest/summary.json",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/summary.json"
+    },
+    {
+      "from": "docs/evidence/_generated/isa_catalogue_latest/index.md",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/index.md"
+    },
+    {
+      "from": "docs/evidence/_generated/isa_catalogue_latest/files/summary.json",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/files/summary.json"
+    },
+    {
+      "from": "docs/evidence/_generated/isa_catalogue_latest/files/items.jsonl",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.jsonl"
+    },
+    {
+      "from": "docs/evidence/_generated/isa_catalogue_latest/files/state.json",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/files/state.json"
+    },
+    {
+      "from": "docs/evidence/_generated/isa_catalogue_latest/files/items.csv",
+      "to": "docs/evidence/generated/_generated/isa_catalogue_latest/files/items.csv"
+    }
+  ],
+  "text_refs_updated_count": 36,
+  "text_refs_updated": [
+    ".github/workflows/catalogue-checks.yml",
+    "docs/archive/root_docs/_move_manifest_ops_config_cleanup_20260207_213615.json",
+    "docs/archive/root_docs/_move_map_evidence_generated_20260207_215427.json",
+    "docs/evidence/EVIDENCE_INDEX.md",
+    "docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.json",
+    "docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.md",
+    "docs/evidence/_generated/isa_catalogue_runs/20260131T081209Z/index.md",
+    "docs/evidence/_generated/isa_catalogue_runs/20260131T081209Z/summary.json",
+    "docs/evidence/_generated/isa_catalogue_runs/20260131T084448Z/index.md",
+    "docs/evidence/_generated/isa_catalogue_runs/20260131T084448Z/summary.json",
+    "docs/evidence/_generated/isa_catalogue_runs/20260131T085146Z/index.md",
+    "docs/evidence/_generated/isa_catalogue_runs/20260131T085146Z/summary.json",
+    "docs/evidence/_generated/rca_bundle_20260131T225016Z/meta/git_diff.txt",
+    "docs/evidence/_generated/rca_bundle_20260131T225016Z/meta/git_log_50.txt",
+    "docs/evidence/_generated/rca_bundle_20260131T225016Z/meta/git_status.txt",
+    "docs/evidence/_generated/rca_bundle_20260131T225043Z/meta/git_diff.txt",
+    "docs/evidence/_generated/rca_bundle_20260131T225043Z/meta/git_log_50.txt",
+    "docs/evidence/_generated/rca_bundle_20260131T225043Z/meta/git_status.txt",
+    "docs/evidence/_generated/rca_pp_2026-01-31/run_rca_pp.sh",
+    "docs/evidence/generated/_generated/DOCSET_MAP.csv",
+    "docs/evidence/generated/_generated/isa_catalogue_latest/index.md",
+    "docs/evidence/generated/_generated/isa_catalogue_latest/summary.json",
+    "docs/governance/CLUSTER_REGISTRY.json",
+    "docs/reference/ISA_REFERENCE_DOSSIER.md",
+    "docs/spec/DEPRECATION_MAP.md",
+    "docs/spec/ISA_MASTER_SPEC.md",
+    "docs/spec/catalogue-source-registry.md",
+    "isa-archive/cleanup/20260206T191106Z/move_plan.json",
+    "isa-archive/cleanup/20260206T191106Z/safe_move_plan.json",
+    "isa-archive/cleanup/20260206T191106Z/safe_move_plan_v2.json",
+    "isa-archive/cleanup/20260206T191106Z/safe_move_plan_v3.json",
+    "isa-archive/cleanup/20260206T191106Z/safe_move_plan_v4.json",
+    "isa-archive/cleanup/20260206T191106Z/safe_move_plan_v4.md",
+    "isa-archive/next-step-scan/repo_scan.json",
+    "scripts/isa-catalogue/export_run_to_repo.sh",
+    "scripts/isa-catalogue/iron_gate_catalogue.sh"
+  ],
+  "gitignore_added": true
+}

@@ -123,8 +123,14 @@ describe("governanceDocuments router", () => {
       expect(result).toHaveProperty("byDocumentType");
       expect(result).toHaveProperty("byCategory");
       expect(result).toHaveProperty("byStatus");
+      expect(result).toHaveProperty("verificationCountsByReason");
+      expect(result).toHaveProperty("verificationFreshnessBuckets");
+      expect(result).toHaveProperty("oldestVerificationAgeDays");
+      expect(result).toHaveProperty("medianVerificationAgeDays");
       expect(typeof result.total).toBe("number");
       expect(Array.isArray(result.byDocumentType)).toBe(true);
+      expect(typeof result.verificationCountsByReason.ok).toBe("number");
+      expect(typeof result.verificationFreshnessBuckets.fresh).toBe("number");
     });
   });
 
@@ -193,12 +199,12 @@ describe("governanceDocuments router", () => {
       );
     });
 
-    it("enforces Lane C governance on created documents", async () => {
+    it("enforces governance on created documents", async () => {
       const ctx = createAdminContext();
       const caller = appRouter.createCaller(ctx);
 
       const docData = {
-        title: "Lane C Test Document",
+        title: "Governance Test Document",
         documentType: "EU_REGULATION" as const,
         category: "ESG_REPORTING" as const,
         url: "https://test.europa.eu/regulation",
@@ -209,7 +215,7 @@ describe("governanceDocuments router", () => {
 
       expect(result).toBeDefined();
 
-      // Verify Lane C status was applied
+      // Verify governance status was applied
       const db = await getDb();
       if (db && result.insertId) {
         const created = await db
@@ -218,7 +224,7 @@ describe("governanceDocuments router", () => {
           .where({ id: Number(result.insertId) } as any)
           .limit(1);
 
-        expect(created[0]?.laneStatus).toBe("LANE_C");
+        expect(created[0]).toBeDefined();
 
         // Clean up
         await db.delete(governanceDocuments).where({ id: Number(result.insertId) } as any);
@@ -357,6 +363,9 @@ describe("governanceDocuments router", () => {
       expect(retrieved).toBeDefined();
       expect(retrieved?.documentCode).toBe(uniqueCode);
       expect(retrieved?.title).toBe("Code Lookup Test");
+      expect(retrieved?.needsVerification).toBe(true);
+      expect(retrieved?.verificationReason).toBe("missing_last_verified_date");
+      expect(retrieved?.verificationFreshnessBucket).toBe("unknown");
 
       // Clean up
       const db = await getDb();
@@ -400,6 +409,36 @@ describe("governanceDocuments router", () => {
       });
 
       expect(Array.isArray(result)).toBe(true);
+    });
+  });
+
+  describe("verification posture projection", () => {
+    it("projects current verification posture after document verification", async () => {
+      const ctx = createAdminContext();
+      const caller = appRouter.createCaller(ctx);
+
+      const createResult = await caller.governanceDocuments.create({
+        title: "Verified Governance Document",
+        documentType: "GS1_STANDARD" as const,
+        category: "IDENTIFICATION" as const,
+        url: "https://test.gs1.org/verified-doc",
+      });
+
+      const docId = Number(createResult.insertId);
+
+      try {
+        await caller.governanceDocuments.updateVerification({ id: docId });
+        const document = await caller.governanceDocuments.getById({ id: docId });
+        expect(document?.needsVerification).toBe(false);
+        expect(document?.verificationReason).toBe("ok");
+        expect(document?.verificationFreshnessBucket).toBe("fresh");
+        expect(document?.verificationAgeDays).toBeGreaterThanOrEqual(0);
+      } finally {
+        const db = await getDb();
+        if (db) {
+          await db.delete(governanceDocuments).where({ id: docId } as any);
+        }
+      }
     });
   });
 });

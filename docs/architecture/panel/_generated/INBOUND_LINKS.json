@@ -1,0 +1,6347 @@
+{
+  "meta": {
+    "generated_at": "2026-02-12T17:33:45.034Z",
+    "total_paths": 629
+  },
+  "inbound_links": [
+    {
+      "referenced_path": ".amazonq/rules/memory-bank/path",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        ".amazonq/rules/memory-bank/guidelines.md"
+      ]
+    },
+    {
+      "referenced_path": ".amazonq/rules/memory-bank/vitest",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        ".amazonq/rules/memory-bank/guidelines.md"
+      ]
+    },
+    {
+      "referenced_path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "exists": true,
+      "inbound_count": 2,
+      "inbound_files": [
+        "AGENTS.md",
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "AGENT_START_HERE.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENT_START_HERE.md"
+      ]
+    },
+    {
+      "referenced_path": "AGENTS.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "referenced_path": "client/src/_core/hooks/react",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/_core/hooks/useAuth.ts"
+      ]
+    },
+    {
+      "referenced_path": "client/src/App",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/main.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/charts/recharts",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "client/src/components/charts/DurationTrendChart.tsx",
+        "client/src/components/charts/ItemsFetchedTrendChart.tsx",
+        "client/src/components/charts/SuccessRateTrendChart.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/DashboardLayoutSkeleton",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/DashboardLayout.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/date-fns",
+      "exists": false,
+      "inbound_count": 7,
+      "inbound_files": [
+        "client/src/components/CompareTimelines.tsx",
+        "client/src/components/EventContext.tsx",
+        "client/src/components/NewsCard.tsx",
+        "client/src/components/NewsCardCompact.tsx",
+        "client/src/components/NewsTimeline.tsx",
+        "client/src/components/NewsTimelineItem.tsx",
+        "client/src/components/PipelineStatusBanner.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/DisclaimerBanner",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ErrorBoundary",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/lucide-react",
+      "exists": false,
+      "inbound_count": 30,
+      "inbound_files": [
+        "client/src/components/AIChatBox.tsx",
+        "client/src/components/AdvancedSearchFilters.tsx",
+        "client/src/components/AskISAFeedbackButtons.tsx",
+        "client/src/components/AskISAWidget.tsx",
+        "client/src/components/AuthorityBadge.tsx",
+        "client/src/components/Breadcrumbs.tsx",
+        "client/src/components/CompareTimelines.tsx",
+        "client/src/components/DashboardLayout.tsx",
+        "client/src/components/DisclaimerBanner.tsx",
+        "client/src/components/ESRSDatapointsSection.tsx",
+        "client/src/components/EnhancedSearchPanel.tsx",
+        "client/src/components/ErrorBoundary.tsx",
+        "client/src/components/EventContext.tsx",
+        "client/src/components/ExportButtons.tsx",
+        "client/src/components/FeedbackButtons.tsx",
+        "client/src/components/GS1AttributesPanel.tsx",
+        "client/src/components/GS1AttributesPanelEnhanced.tsx",
+        "client/src/components/GapAnalysisPanel.tsx",
+        "client/src/components/LatestNewsPanel.tsx",
+        "client/src/components/NavigationMenu.tsx",
+        "client/src/components/NewsCard.tsx",
+        "client/src/components/NewsCardCompact.tsx",
+        "client/src/components/NewsRecommendationCard.tsx",
+        "client/src/components/NewsTimeline.tsx",
+        "client/src/components/NewsTimelineItem.tsx",
+        "client/src/components/PipelineStatusBanner.tsx",
+        "client/src/components/RecommendedResources.tsx",
+        "client/src/components/RegulationTimeline.tsx",
+        "client/src/components/SectorFilter.tsx",
+        "client/src/components/WebhookConfiguration.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/NavigationMenu",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/PageLayout.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/NewsCardCompact",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/LatestNewsPanel.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/NewsCardSkeleton",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/LatestNewsPanel.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/NewsTimelineItem",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/NewsTimeline.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/react",
+      "exists": false,
+      "inbound_count": 22,
+      "inbound_files": [
+        "client/src/components/AIChatBox.tsx",
+        "client/src/components/AdvancedSearchFilters.tsx",
+        "client/src/components/AskISAFeedbackButtons.tsx",
+        "client/src/components/AskISAWidget.tsx",
+        "client/src/components/CompareTimelines.tsx",
+        "client/src/components/DashboardLayout.tsx",
+        "client/src/components/DisclaimerBanner.tsx",
+        "client/src/components/EnhancedSearchPanel.tsx",
+        "client/src/components/ErrorBoundary.tsx",
+        "client/src/components/EventContext.tsx",
+        "client/src/components/ExportButtons.tsx",
+        "client/src/components/FeedbackButtons.tsx",
+        "client/src/components/GS1AttributesPanelEnhanced.tsx",
+        "client/src/components/GapAnalysisPanel.tsx",
+        "client/src/components/ManusDialog.tsx",
+        "client/src/components/Map.tsx",
+        "client/src/components/NavigationMenu.tsx",
+        "client/src/components/NewsTimeline.tsx",
+        "client/src/components/NewsTimelineItem.tsx",
+        "client/src/components/PageLayout.tsx",
+        "client/src/components/WebhookConfiguration.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/sonner",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "client/src/components/AskISAFeedbackButtons.tsx",
+        "client/src/components/ESRSDatapointsSection.tsx",
+        "client/src/components/FeedbackButtons.tsx",
+        "client/src/components/WebhookConfiguration.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/streamdown",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "client/src/components/AIChatBox.tsx",
+        "client/src/components/AskISAWidget.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/badge",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/AdminMonitoring.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/button",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "client/src/components/DashboardLayout.tsx",
+        "client/src/components/LatestNewsPanel.tsx",
+        "client/src/pages/AdminMonitoring.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/card",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/AdminMonitoring.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/class-variance-authority",
+      "exists": false,
+      "inbound_count": 12,
+      "inbound_files": [
+        "client/src/components/ui/alert.tsx",
+        "client/src/components/ui/badge.tsx",
+        "client/src/components/ui/button-group.tsx",
+        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/empty.tsx",
+        "client/src/components/ui/field.tsx",
+        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/item.tsx",
+        "client/src/components/ui/navigation-menu.tsx",
+        "client/src/components/ui/sidebar.tsx",
+        "client/src/components/ui/toggle-group.tsx",
+        "client/src/components/ui/toggle.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/cmdk",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/ui/command.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/embla-carousel-react",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/ui/carousel.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/input-otp",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/ui/input-otp.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/lucide-react",
+      "exists": false,
+      "inbound_count": 20,
+      "inbound_files": [
+        "client/src/components/ui/accordion.tsx",
+        "client/src/components/ui/breadcrumb.tsx",
+        "client/src/components/ui/calendar.tsx",
+        "client/src/components/ui/carousel.tsx",
+        "client/src/components/ui/checkbox.tsx",
+        "client/src/components/ui/command.tsx",
+        "client/src/components/ui/context-menu.tsx",
+        "client/src/components/ui/dialog.tsx",
+        "client/src/components/ui/dropdown-menu.tsx",
+        "client/src/components/ui/input-otp.tsx",
+        "client/src/components/ui/menubar.tsx",
+        "client/src/components/ui/navigation-menu.tsx",
+        "client/src/components/ui/pagination.tsx",
+        "client/src/components/ui/radio-group.tsx",
+        "client/src/components/ui/resizable.tsx",
+        "client/src/components/ui/select-custom.tsx",
+        "client/src/components/ui/select.tsx",
+        "client/src/components/ui/sheet.tsx",
+        "client/src/components/ui/sidebar.tsx",
+        "client/src/components/ui/spinner.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/next-themes",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/ui/sonner.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/react",
+      "exists": false,
+      "inbound_count": 46,
+      "inbound_files": [
+        "client/src/components/ui/accordion.tsx",
+        "client/src/components/ui/alert-dialog.tsx",
+        "client/src/components/ui/alert.tsx",
+        "client/src/components/ui/avatar.tsx",
+        "client/src/components/ui/badge.tsx",
+        "client/src/components/ui/breadcrumb.tsx",
+        "client/src/components/ui/button.tsx",
+        "client/src/components/ui/calendar.tsx",
+        "client/src/components/ui/card.tsx",
+        "client/src/components/ui/carousel.tsx",
+        "client/src/components/ui/chart.tsx",
+        "client/src/components/ui/checkbox.tsx",
+        "client/src/components/ui/command.tsx",
+        "client/src/components/ui/context-menu.tsx",
+        "client/src/components/ui/dialog.tsx",
+        "client/src/components/ui/drawer.tsx",
+        "client/src/components/ui/dropdown-menu.tsx",
+        "client/src/components/ui/field.tsx",
+        "client/src/components/ui/form.tsx",
+        "client/src/components/ui/hover-card.tsx",
+        "client/src/components/ui/input-group.tsx",
+        "client/src/components/ui/input-otp.tsx",
+        "client/src/components/ui/input.tsx",
+        "client/src/components/ui/item.tsx",
+        "client/src/components/ui/label.tsx",
+        "client/src/components/ui/menubar.tsx",
+        "client/src/components/ui/navigation-menu.tsx",
+        "client/src/components/ui/pagination.tsx",
+        "client/src/components/ui/popover.tsx",
+        "client/src/components/ui/progress.tsx",
+        "client/src/components/ui/radio-group.tsx",
+        "client/src/components/ui/resizable.tsx",
+        "client/src/components/ui/scroll-area.tsx",
+        "client/src/components/ui/select-custom.tsx",
+        "client/src/components/ui/select.tsx",
+        "client/src/components/ui/separator.tsx",
+        "client/src/components/ui/sheet.tsx",
+        "client/src/components/ui/sidebar.tsx",
+        "client/src/components/ui/slider.tsx",
+        "client/src/components/ui/switch.tsx",
+        "client/src/components/ui/table.tsx",
+        "client/src/components/ui/tabs.tsx",
+        "client/src/components/ui/textarea.tsx",
+        "client/src/components/ui/toggle-group.tsx",
+        "client/src/components/ui/toggle.tsx",
+        "client/src/components/ui/tooltip.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/react-day-picker",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/ui/calendar.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/react-hook-form",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/ui/form.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/react-resizable-panels",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/ui/resizable.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/recharts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/ui/chart.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/skeleton",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/DashboardLayoutSkeleton.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/sonner",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/ui/sonner.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/ui/vaul",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/ui/drawer.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/wouter",
+      "exists": false,
+      "inbound_count": 12,
+      "inbound_files": [
+        "client/src/components/Breadcrumbs.tsx",
+        "client/src/components/CompareTimelines.tsx",
+        "client/src/components/DashboardLayout.tsx",
+        "client/src/components/ESRSDatapointsSection.tsx",
+        "client/src/components/EventContext.tsx",
+        "client/src/components/Footer.tsx",
+        "client/src/components/LatestNewsPanel.tsx",
+        "client/src/components/NavigationMenu.tsx",
+        "client/src/components/NewsCard.tsx",
+        "client/src/components/NewsCardCompact.tsx",
+        "client/src/components/NewsTimelineItem.tsx",
+        "client/src/components/RecommendedResources.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/components/xlsx",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/components/GS1AttributesPanelEnhanced.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/const",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/main.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/contexts/react",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/contexts/ThemeContext.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/contexts/ThemeContext",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/hooks/react",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "client/src/hooks/useComposition.ts",
+        "client/src/hooks/useMobile.tsx",
+        "client/src/hooks/usePersistFn.ts"
+      ]
+    },
+    {
+      "referenced_path": "client/src/hooks/usePersistFn",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/hooks/useComposition.ts"
+      ]
+    },
+    {
+      "referenced_path": "client/src/index.css",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/main.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/lib/clsx",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/lib/utils.ts"
+      ]
+    },
+    {
+      "referenced_path": "client/src/lib/i18n",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/lib/jspdf",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/lib/export.ts"
+      ]
+    },
+    {
+      "referenced_path": "client/src/lib/jspdf-autotable",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/lib/export.ts"
+      ]
+    },
+    {
+      "referenced_path": "client/src/lib/react",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/lib/i18n.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/lib/tailwind-merge",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/lib/utils.ts"
+      ]
+    },
+    {
+      "referenced_path": "client/src/lib/trpc",
+      "exists": false,
+      "inbound_count": 7,
+      "inbound_files": [
+        "client/src/pages/AIGapAnalysisWizard.tsx",
+        "client/src/pages/AdminMonitoring.tsx",
+        "client/src/pages/AdminScraperHealth.tsx",
+        "client/src/pages/AttributeRecommender.tsx",
+        "client/src/pages/GapAnalyzer.tsx",
+        "client/src/pages/ImpactSimulator.tsx",
+        "client/src/pages/ToolsComplianceRoadmap.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/admin/lucide-react",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "client/src/pages/admin/CoverageAnalytics.tsx",
+        "client/src/pages/admin/ObservabilityDashboard.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/admin/react",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/admin/ObservabilityDashboard.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/admin/recharts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/admin/CoverageAnalytics.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/AskISA",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/AskISAEnhanced.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/date-fns",
+      "exists": false,
+      "inbound_count": 9,
+      "inbound_files": [
+        "client/src/pages/AdvisoryReports.tsx",
+        "client/src/pages/ComponentShowcase.tsx",
+        "client/src/pages/DatasetRegistry.tsx",
+        "client/src/pages/EventDetail.tsx",
+        "client/src/pages/EventsOverview.tsx",
+        "client/src/pages/GovernanceDocuments.tsx",
+        "client/src/pages/HubRegulationDetailEnhanced.tsx",
+        "client/src/pages/NewsDetail.tsx",
+        "client/src/pages/SystemMonitoring.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/date-fns/locale",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/ComponentShowcase.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/Features",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/GettingStarted",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/Home",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/HubHome",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/HubRegulationDetail",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/HubRegulations",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/jspdf",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "client/src/pages/AskISA.tsx",
+        "client/src/pages/ComplianceChecklistGenerator.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/leaflet",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/EPCISEUDRMap.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/leaflet/dist/leaflet.css",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/EPCISEUDRMap.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/lucide-react",
+      "exists": false,
+      "inbound_count": 99,
+      "inbound_files": [
+        "client/src/pages/AIGapAnalysisWizard.tsx",
+        "client/src/pages/About.tsx",
+        "client/src/pages/AdminAnalyticsDashboard.tsx",
+        "client/src/pages/AdminEUDRSeeder.tsx",
+        "client/src/pages/AdminEvidenceVerification.tsx",
+        "client/src/pages/AdminFeedbackDashboard.tsx",
+        "client/src/pages/AdminKnowledgeBase.tsx",
+        "client/src/pages/AdminMonitoring.tsx",
+        "client/src/pages/AdminNewsPanel.tsx",
+        "client/src/pages/AdminNewsPipelineManager.tsx",
+        "client/src/pages/AdminPanel.tsx",
+        "client/src/pages/AdminPipelineObservability.tsx",
+        "client/src/pages/AdminPromptOptimization.tsx",
+        "client/src/pages/AdminScraperHealth.tsx",
+        "client/src/pages/AdminTemplateManager.tsx",
+        "client/src/pages/AdvisoryDashboard.tsx",
+        "client/src/pages/AdvisoryDiff.tsx",
+        "client/src/pages/AdvisoryDiffComparison.tsx",
+        "client/src/pages/AdvisoryExplorer.tsx",
+        "client/src/pages/AdvisoryReports.tsx",
+        "client/src/pages/AdvisoryTraceability.tsx",
+        "client/src/pages/AskISA.tsx",
+        "client/src/pages/AskISAEnhanced.tsx",
+        "client/src/pages/AttributeRecommender.tsx",
+        "client/src/pages/BarcodeScanner.tsx",
+        "client/src/pages/Blog.tsx",
+        "client/src/pages/CompareRegulations.tsx",
+        "client/src/pages/ComparisonTool.tsx",
+        "client/src/pages/ComplianceChecklistGenerator.tsx",
+        "client/src/pages/ComplianceMonitoringDashboard.tsx",
+        "client/src/pages/ComplianceReport.tsx",
+        "client/src/pages/ComplianceRoadmap.tsx",
+        "client/src/pages/ComplianceScoreboard.tsx",
+        "client/src/pages/ComponentShowcase.tsx",
+        "client/src/pages/Contact.tsx",
+        "client/src/pages/Dashboard.tsx",
+        "client/src/pages/DataQuality.tsx",
+        "client/src/pages/DatasetRegistry.tsx",
+        "client/src/pages/DualCoreDemo.tsx",
+        "client/src/pages/EPCISEUDRMap.tsx",
+        "client/src/pages/EPCISSupplyChain.tsx",
+        "client/src/pages/EPCISUpload.tsx",
+        "client/src/pages/EPCISUploadEnhanced.tsx",
+        "client/src/pages/ESRSDatapoints.tsx",
+        "client/src/pages/EsgPriorities.tsx",
+        "client/src/pages/EsgTraceability.tsx",
+        "client/src/pages/EvaluationDashboard.tsx",
+        "client/src/pages/EventDetail.tsx",
+        "client/src/pages/EventsOverview.tsx",
+        "client/src/pages/ExecutiveScorecard.tsx",
+        "client/src/pages/ExternalAPIIntegration.tsx",
+        "client/src/pages/FAQ.tsx",
+        "client/src/pages/Features.tsx",
+        "client/src/pages/FeaturesComparison.tsx",
+        "client/src/pages/GS1NLAttributeBrowser.tsx",
+        "client/src/pages/GapAnalysis.tsx",
+        "client/src/pages/GapAnalyzer.tsx",
+        "client/src/pages/GettingStarted.tsx",
+        "client/src/pages/GovernanceDocuments.tsx",
+        "client/src/pages/Home.tsx",
+        "client/src/pages/HowItWorks.tsx",
+        "client/src/pages/HubAbout.tsx",
+        "client/src/pages/HubCalendar.tsx",
+        "client/src/pages/HubCompare.tsx",
+        "client/src/pages/HubCompareEnhanced.tsx",
+        "client/src/pages/HubDutchInitiativeDetail.tsx",
+        "client/src/pages/HubDutchInitiatives.tsx",
+        "client/src/pages/HubEsrsGs1Mappings.tsx",
+        "client/src/pages/HubHome.tsx",
+        "client/src/pages/HubImpactMatrix.tsx",
+        "client/src/pages/HubNews.tsx",
+        "client/src/pages/HubRegulationDetail.tsx",
+        "client/src/pages/HubRegulationDetailEnhanced.tsx",
+        "client/src/pages/HubRegulations.tsx",
+        "client/src/pages/HubResources.tsx",
+        "client/src/pages/HubStandardsMapping.tsx",
+        "client/src/pages/HubUserDashboard.tsx",
+        "client/src/pages/ImpactSimulator.tsx",
+        "client/src/pages/IndustryTemplates.tsx",
+        "client/src/pages/IndustryTemplatesGS1NL.tsx",
+        "client/src/pages/NewsAdmin.tsx",
+        "client/src/pages/NewsDetail.tsx",
+        "client/src/pages/NewsHub.tsx",
+        "client/src/pages/NotFound.tsx",
+        "client/src/pages/NotificationPreferences.tsx",
+        "client/src/pages/RegulatoryChangeLog.tsx",
+        "client/src/pages/RiskRemediation.tsx",
+        "client/src/pages/RoadmapCollaboration.tsx",
+        "client/src/pages/StakeholderDashboard.tsx",
+        "client/src/pages/StandardDetail.tsx",
+        "client/src/pages/StandardsDirectory.tsx",
+        "client/src/pages/SupplyChainDashboard.tsx",
+        "client/src/pages/SystemMonitoring.tsx",
+        "client/src/pages/TemplateAnalyticsDashboard.tsx",
+        "client/src/pages/TemplateLibrary.tsx",
+        "client/src/pages/ToolsComplianceRoadmap.tsx",
+        "client/src/pages/UseCases.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/react",
+      "exists": false,
+      "inbound_count": 79,
+      "inbound_files": [
+        "client/src/pages/AIGapAnalysisWizard.tsx",
+        "client/src/pages/AdminEUDRSeeder.tsx",
+        "client/src/pages/AdminEvidenceVerification.tsx",
+        "client/src/pages/AdminFeedbackDashboard.tsx",
+        "client/src/pages/AdminKnowledgeBase.tsx",
+        "client/src/pages/AdminMonitoring.tsx",
+        "client/src/pages/AdminNewsPanel.tsx",
+        "client/src/pages/AdminNewsPipelineManager.tsx",
+        "client/src/pages/AdminPanel.tsx",
+        "client/src/pages/AdminPipelineObservability.tsx",
+        "client/src/pages/AdminPromptOptimization.tsx",
+        "client/src/pages/AdminScraperHealth.tsx",
+        "client/src/pages/AdminTemplateManager.tsx",
+        "client/src/pages/AdvisoryDiff.tsx",
+        "client/src/pages/AdvisoryDiffComparison.tsx",
+        "client/src/pages/AdvisoryExplorer.tsx",
+        "client/src/pages/AdvisoryReports.tsx",
+        "client/src/pages/AskISA.tsx",
+        "client/src/pages/AskISAEnhanced.tsx",
+        "client/src/pages/AttributeRecommender.tsx",
+        "client/src/pages/BarcodeScanner.tsx",
+        "client/src/pages/CompareRegulations.tsx",
+        "client/src/pages/ComparisonTool.tsx",
+        "client/src/pages/ComplianceChecklistGenerator.tsx",
+        "client/src/pages/ComplianceMonitoringDashboard.tsx",
+        "client/src/pages/ComplianceReport.tsx",
+        "client/src/pages/ComplianceRoadmap.tsx",
+        "client/src/pages/ComplianceScoreboard.tsx",
+        "client/src/pages/ComponentShowcase.tsx",
+        "client/src/pages/Contact.tsx",
+        "client/src/pages/Dashboard.tsx",
+        "client/src/pages/DatasetRegistry.tsx",
+        "client/src/pages/EPCISEUDRMap.tsx",
+        "client/src/pages/EPCISSupplyChain.tsx",
+        "client/src/pages/EPCISUpload.tsx",
+        "client/src/pages/EPCISUploadEnhanced.tsx",
+        "client/src/pages/ESRSDatapoints.tsx",
+        "client/src/pages/EsgTraceability.tsx",
+        "client/src/pages/EvaluationDashboard.tsx",
+        "client/src/pages/EventDetail.tsx",
+        "client/src/pages/EventsOverview.tsx",
+        "client/src/pages/ExecutiveScorecard.tsx",
+        "client/src/pages/ExternalAPIIntegration.tsx",
+        "client/src/pages/FAQ.tsx",
+        "client/src/pages/Features.tsx",
+        "client/src/pages/GS1NLAttributeBrowser.tsx",
+        "client/src/pages/GapAnalysis.tsx",
+        "client/src/pages/GapAnalyzer.tsx",
+        "client/src/pages/GettingStarted.tsx",
+        "client/src/pages/GovernanceDocuments.tsx",
+        "client/src/pages/Home.tsx",
+        "client/src/pages/HubCalendar.tsx",
+        "client/src/pages/HubCompare.tsx",
+        "client/src/pages/HubCompareEnhanced.tsx",
+        "client/src/pages/HubDutchInitiatives.tsx",
+        "client/src/pages/HubEsrsGs1Mappings.tsx",
+        "client/src/pages/HubImpactMatrix.tsx",
+        "client/src/pages/HubNews.tsx",
+        "client/src/pages/HubRegulationDetail.tsx",
+        "client/src/pages/HubRegulationDetailEnhanced.tsx",
+        "client/src/pages/HubRegulations.tsx",
+        "client/src/pages/HubResources.tsx",
+        "client/src/pages/HubStandardsMapping.tsx",
+        "client/src/pages/HubUserDashboard.tsx",
+        "client/src/pages/ImpactSimulator.tsx",
+        "client/src/pages/IndustryTemplates.tsx",
+        "client/src/pages/NewsAdmin.tsx",
+        "client/src/pages/NewsDetail.tsx",
+        "client/src/pages/NewsHub.tsx",
+        "client/src/pages/NotificationPreferences.tsx",
+        "client/src/pages/RegulatoryChangeLog.tsx",
+        "client/src/pages/RiskRemediation.tsx",
+        "client/src/pages/RoadmapCollaboration.tsx",
+        "client/src/pages/StandardsDirectory.tsx",
+        "client/src/pages/SupplyChainDashboard.tsx",
+        "client/src/pages/SystemMonitoring.tsx",
+        "client/src/pages/TemplateAnalyticsDashboard.tsx",
+        "client/src/pages/TemplateLibrary.tsx",
+        "client/src/pages/ToolsComplianceRoadmap.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/react-leaflet",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/EPCISEUDRMap.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/reactflow",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/EPCISSupplyChain.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/reactflow/dist/style.css",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/EPCISSupplyChain.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/recharts",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "client/src/pages/AdminAnalyticsDashboard.tsx",
+        "client/src/pages/AdminFeedbackDashboard.tsx",
+        "client/src/pages/AdminPipelineObservability.tsx",
+        "client/src/pages/SystemMonitoring.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/sonner",
+      "exists": false,
+      "inbound_count": 9,
+      "inbound_files": [
+        "client/src/pages/AdminMonitoring.tsx",
+        "client/src/pages/AdminPanel.tsx",
+        "client/src/pages/AdvisoryReports.tsx",
+        "client/src/pages/AttributeRecommender.tsx",
+        "client/src/pages/ComponentShowcase.tsx",
+        "client/src/pages/Contact.tsx",
+        "client/src/pages/HubRegulationDetail.tsx",
+        "client/src/pages/NewsAdmin.tsx",
+        "client/src/pages/RegulatoryChangeLog.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/streamdown",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/pages/AskISA.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/pages/wouter",
+      "exists": false,
+      "inbound_count": 51,
+      "inbound_files": [
+        "client/src/pages/AIGapAnalysisWizard.tsx",
+        "client/src/pages/About.tsx",
+        "client/src/pages/AdminAnalyticsDashboard.tsx",
+        "client/src/pages/AdminEUDRSeeder.tsx",
+        "client/src/pages/AdminFeedbackDashboard.tsx",
+        "client/src/pages/AdminNewsPanel.tsx",
+        "client/src/pages/AdminNewsPipelineManager.tsx",
+        "client/src/pages/AdminPanel.tsx",
+        "client/src/pages/AdminPromptOptimization.tsx",
+        "client/src/pages/AdvisoryDashboard.tsx",
+        "client/src/pages/AdvisoryReports.tsx",
+        "client/src/pages/AttributeRecommender.tsx",
+        "client/src/pages/BarcodeScanner.tsx",
+        "client/src/pages/Blog.tsx",
+        "client/src/pages/CompareRegulations.tsx",
+        "client/src/pages/ComparisonTool.tsx",
+        "client/src/pages/ComplianceMonitoringDashboard.tsx",
+        "client/src/pages/Contact.tsx",
+        "client/src/pages/Dashboard.tsx",
+        "client/src/pages/DualCoreDemo.tsx",
+        "client/src/pages/EventDetail.tsx",
+        "client/src/pages/EventsOverview.tsx",
+        "client/src/pages/FAQ.tsx",
+        "client/src/pages/Features.tsx",
+        "client/src/pages/FeaturesComparison.tsx",
+        "client/src/pages/GapAnalyzer.tsx",
+        "client/src/pages/GettingStarted.tsx",
+        "client/src/pages/Home.tsx",
+        "client/src/pages/HowItWorks.tsx",
+        "client/src/pages/HubAbout.tsx",
+        "client/src/pages/HubCalendar.tsx",
+        "client/src/pages/HubCompare.tsx",
+        "client/src/pages/HubCompareEnhanced.tsx",
+        "client/src/pages/HubDutchInitiativeDetail.tsx",
+        "client/src/pages/HubDutchInitiatives.tsx",
+        "client/src/pages/HubHome.tsx",
+        "client/src/pages/HubImpactMatrix.tsx",
+        "client/src/pages/HubNews.tsx",
+        "client/src/pages/HubRegulationDetail.tsx",
+        "client/src/pages/HubRegulationDetailEnhanced.tsx",
+        "client/src/pages/HubRegulations.tsx",
+        "client/src/pages/HubResources.tsx",
+        "client/src/pages/HubStandardsMapping.tsx",
+        "client/src/pages/HubUserDashboard.tsx",
+        "client/src/pages/ImpactSimulator.tsx",
+        "client/src/pages/NewsDetail.tsx",
+        "client/src/pages/NewsHub.tsx",
+        "client/src/pages/NotFound.tsx",
+        "client/src/pages/StandardDetail.tsx",
+        "client/src/pages/StandardsDirectory.tsx",
+        "client/src/pages/UseCases.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/react",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/react-dom/client",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/main.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/select-fix.css",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/main.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/superjson",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/main.tsx"
+      ]
+    },
+    {
+      "referenced_path": "client/src/wouter",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "client/src/App.tsx"
+      ]
+    },
+    {
+      "referenced_path": "crypto",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "vitest.setup.ts"
+      ]
+    },
+    {
+      "referenced_path": "data/advisories/",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "data/efrag/esrs_datapoints_efrag_ig3.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "data/esg/GTIN Version Number",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "data/esg/dpp_identifier_components.json"
+      ]
+    },
+    {
+      "referenced_path": "data/gs1/gs1_standards_catalog.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "data/metadata/dataset_registry.json",
+      "exists": true,
+      "inbound_count": 2,
+      "inbound_files": [
+        "AGENTS.md",
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/_core/logger-wiring",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/SERVERLOGGER_INTEGRATION.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/ADVISORY_METHOD.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/ARCHITECTURE.md",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md",
+        "docs/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/architecture/panel/_generated/ARCHITECTURE_SCORECARD.json",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/architecture/panel/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/architecture/panel/ATAM_RISKS_SENSITIVITIES_TRADEOFFS.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/architecture/panel/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/architecture/panel/ATAM_SCENARIOS.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/architecture/panel/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/architecture/panel/ATAM_UTILITY_TREE.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/architecture/panel/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/architecture/panel/ISO25010_MAPPING.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/architecture/panel/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/architecture/panel/KICKOFF_PACKAGE.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/architecture/panel/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/Built on GS1 Standards",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/ISA_GS1_PRE_EXECUTION_PREPARATION.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/CHANGELOG.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/checks/schema-naming",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/ISA_NEVER_AGAIN_ARCHITECTURAL_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/checks/sql-defaults",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/ISA_NEVER_AGAIN_ARCHITECTURAL_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/checks/test-isolation",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/ISA_NEVER_AGAIN_ARCHITECTURAL_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/checks/trpc-procedures",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/ISA_NEVER_AGAIN_ARCHITECTURAL_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/DATASETS_CATALOG.md",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "AGENTS.md",
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/db",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/DEPLOYMENT_GUIDE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/December 13, 2025",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/STYLE_ALIGNMENT_RECOMMENDATIONS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/DEPLOYMENT_GUIDE.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/efrag_xbrl_research.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/eurlex_research.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/Explainability",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/ISA_PRODUCT_DIMENSIONS_ANALYSIS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/express-rate-limit",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/DEPLOYMENT_GUIDE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/fs",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/ISA_GS1_PRE_EXECUTION_PREPARATION.md",
+        "docs/ISA_WORKFLOW_IMPROVEMENTS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/_root/.git/config",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/_root/ISA_GOVERNANCE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/_root/.github/PULL_REQUEST_TEMPLATE.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/_root/ISA_GOVERNANCE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/_root/data/metadata/dataset_registry.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/_root/ISA_GOVERNANCE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/_root/ISA_GOVERNANCE.md",
+      "exists": true,
+      "inbound_count": 11,
+      "inbound_files": [
+        "AGENTS.md",
+        "README.md",
+        "docs/governance/_root/GOVERNANCE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/_root/server/routers/ask-isa.ts",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "docs/governance/_root/ISA_GOVERNANCE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/.github/workflows/",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/PLANNING_POLICY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/ASK_ISA_SMOKE_RUNBOOK.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENT_START_HERE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/docs/governance/MANUAL_PREFLIGHT.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/PLANNING_POLICY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/docs/governance/NO_GATES_WINDOW.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/PLANNING_POLICY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/docs/planning/BACKLOG.csv",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/PLANNING_POLICY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/docs/planning/NEXT_ACTIONS.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/PLANNING_POLICY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/docs/planning/PROGRAM_PLAN.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/PLANNING_POLICY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/docs/spec/TRACEABILITY_MATRIX.csv",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/PLANNING_POLICY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/MANUAL_PREFLIGHT.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/PLANNING_POLICY.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/todo.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/PLANNING_POLICY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/governance/vitest",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/governance/DAY_1_PLAN.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/GS1_DATA_MODELS.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/helmet",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/DEPLOYMENT_GUIDE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/how many regulations does ISA monitor?",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/ISA_STRATEGIC_PIVOT_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/ISA_First_Advisory_Report_GS1NL.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/logger-wiring",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/SERVERLOGGER_INTEGRATION.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/MISSING",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/GS1_EU_PCF_INTEGRATION_SUMMARY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/NEWS_PIPELINE.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/BACKLOG.csv",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENT_START_HERE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/INDEX.md",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/NEXT_ACTIONS.json",
+      "exists": true,
+      "inbound_count": 2,
+      "inbound_files": [
+        "AGENT_START_HERE.md",
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/PROGRAM_PLAN.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENT_START_HERE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/.github/workflows/refactoring-validation.yml",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md",
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/AGENT_START_HERE.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/client/src/main.tsx",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/planning/refactoring/CLASSIFICATION_RULES.json",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/planning/refactoring/EVIDENCE_MARKERS.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/planning/refactoring/FILE_INVENTORY.json",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md",
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/planning/refactoring/FINAL_STATUS_REPORT.md",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/planning/refactoring/MASTER_REFACTORING_PLAN.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/planning/refactoring/MOVE_EXECUTION_LOG.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/planning/refactoring/MOVE_PLAN.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/planning/refactoring/REFACTORING_COMPLETE.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md",
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/reference",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/V3_COMPLETION_SUMMARY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/scripts/refactor/phase_0_inventory.py",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/scripts/refactor/phase_1_contracts.py",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/scripts/refactor/phase_2_execute.py",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/scripts/refactor/phase_2_plan.py",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/scripts/refactor/phase_3_quality.py",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/scripts/refactor/phase_4_automation.py",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/scripts/refactor/phase_5_final_lock.py",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/planning/refactoring/EXECUTION_SUMMARY.md",
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/scripts/refactor/validate_gates.sh",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "docs/planning/refactoring/FINAL_STATUS_REPORT.md",
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/planning/refactoring/server/_core/index.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/planning/refactoring/MASTER_REFACTORING_PLAN_V3_ENHANCED.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/potential gaps",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/ISA_IMPLEMENTATION_EXECUTION_PLAN.md",
+        "docs/ISA_STRATEGIC_EVALUATION_QUALITY_MAPPING.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/PRODUCTION_READINESS.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/QUALITY_BAR.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/README.md",
+      "exists": true,
+      "inbound_count": 3,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/recommended",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/ISA_STRATEGIC_EVALUATION_QUALITY_MAPPING.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/regulation knowledge base",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/ISA_Strategic_Insights_from_Reports.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/REPO_MAP.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENT_START_HERE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/schema_esg_extensions",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/ESG_INTEGRATION_FINAL_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/server/_core/error-tracking",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/server/_core/performance-monitoring",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/PRODUCTION_IMPROVEMENTS_JAN_2026.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/server/mappings/esrs-to-gs1-mapper",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/CHATGPT_INTEGRATION_WORKFLOW.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/sort-keys",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/ISA_WORKFLOW_IMPROVEMENTS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/advisory-diff",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/ADVISORY_DIFF_METRICS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/client/src/pages/AdvisoryDashboard.tsx",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/data/advisories/",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/December 13, 2025",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/GS1_STYLE_GUIDE_INGESTION_SUMMARY.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/design PCF attributes",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/ISA_First_Advisory_Report_GS1NL_v1.1_UPDATE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/docs/planning/refactoring/FILE_INVENTORY.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/missing",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/ADVISORY_OUTPUTS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/server/advisory-report-export.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/server/routers/advisory-diff.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/server/routers/advisory-reports.ts",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "docs/spec/ADVISORY/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/server/utils/deterministic-json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/FILE_SYSTEM_MEMORY_ARCHITECTURE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ADVISORY/vitest",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ADVISORY/ADVISORY_DIFF_METRICS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ALERTING_SYSTEM.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/WEBHOOK_INTEGRATION.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ARCHITECTURE.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ASK_ISA.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENT_START_HERE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ASK_ISA/db",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ASK_ISA/TESTING_GUIDE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ASK_ISA/docs/planning/refactoring/FILE_INVENTORY.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ASK_ISA/docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ASK_ISA/server/routers/ask-isa-enhanced-routes.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ASK_ISA/server/routers/ask-isa-v2.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ASK_ISA/server/routers/ask-isa.ts",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ASK_ISA/vitest",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "docs/spec/ASK_ISA/TESTING_GUIDE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/blocking issues",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/DECISION_LOG_PHASE3.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/agent-prompt-governance.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/catalogue-source-registry.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/data-knowledge-model.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/docs/planning/refactoring/FILE_INVENTORY.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/evaluation-governance-reproducibility.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/governance-iron-protocol.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/ingestion-update-lifecycle.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/isa-core-architecture.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/MISSING",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "docs/spec/CATALOG/GS1_DOCUMENTS_DATASETS_ANALYSIS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/observability-tracing-feedback.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/repo-change-control-release.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/retrieval-embeddings-grounding.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/roadmap-evolution.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/server/gs1-standards-router.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/server/routers/standards-directory.ts",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "docs/spec/CATALOG/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/CATALOG/ux-user-journey.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/CATALOG/ISA_MASTER_SPEC.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/client/src/lib/trpc",
+      "exists": false,
+      "inbound_count": 353,
+      "inbound_files": [
+        "docs/spec/ADVISORY/API_REFERENCE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/contracts/ASK_ISA_RUNTIME_CONTRACT.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENT_START_HERE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/drizzle/schema",
+      "exists": false,
+      "inbound_count": 5,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/ARCHITECTURE.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/STATUS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/CHANGELOG.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/STATUS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/docs/planning/refactoring/FILE_INVENTORY.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/efrag_xbrl_research.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/STATUS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/eurlex_research.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/STATUS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/GS1_DATA_MODELS.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/STATUS.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/server/batch-generate-esrs-mappings.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/server/compliance-scoring.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/server/create-attribute-mappings.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/server/mappings/esrs-to-gs1-mapper",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/CGPT-01_INTEGRATION_REPORT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/server/routers/esrs-gs1-mapping.ts",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/server/routers/esrs-roadmap.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/ESRS_MAPPING/server/routers/gap-analyzer.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/HEALTH_MONITORING_ENHANCEMENTS.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/EURLEX_SCRAPER_FIX.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/axios",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/csv-parse/sync",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/db",
+      "exists": false,
+      "inbound_count": 7,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/docs/planning/refactoring/FILE_INVENTORY.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/drizzle-orm",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/drizzle-orm/mysql-core",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/drizzle-orm/mysql2",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/fs",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/lucide-react",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/react",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/routers",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/server/_core/llm",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/server/claim-citation-verifier.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/server/db-knowledge-vector.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/server/db-knowledge.ts",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/trpc",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/vitest",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/KNOWLEDGE_BASE/zod",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/KNOWLEDGE_BASE/GS1_Attribute_Mapper_Technical_Specification.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/MONITORING_TESTS.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/WEBHOOK_INTEGRATION.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/NEWS_HUB/DATA_MODEL.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/NEWS_HUB/NEWS_HEALTH_MONITORING.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/NEWS_HUB/docs/planning/refactoring/FILE_INVENTORY.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/NEWS_HUB/docs/planning/refactoring/QUALITY_SCORECARDS.json",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/NEWS_HUB/NEWS_PIPELINE.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/NEWS_HUB/NEWS_HEALTH_MONITORING.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/NEWS_HUB/NEWS_SOURCES.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/NEWS_HUB/NEWS_HEALTH_MONITORING.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/NEWS_HUB/news-health-monitor",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "docs/spec/NEWS_HUB/NEWS_HEALTH_MONITORING.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/NEWS_HUB/server/news-admin-router.ts",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/NEWS_HUB/server/news-pipeline",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/spec/NEWS_HUB/ISA_NEWS_OVERVIEW.md",
+        "docs/spec/NEWS_HUB/PHASE_8.3_INGESTION_WINDOW_COMPLETE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/NEWS_HUB/TESTING.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/NEWS_HUB/NEWS_HEALTH_MONITORING.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/NEWS_PIPELINE.md",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "docs/spec/EURLEX_SCRAPER_FIX.md",
+        "docs/spec/WEBHOOK_INTEGRATION.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/server/news-sources.ts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/spec/EURLEX_SCRAPER_FIX.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/spec/server/routers",
+      "exists": false,
+      "inbound_count": 353,
+      "inbound_files": [
+        "docs/spec/ADVISORY/API_REFERENCE.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/sre/ERROR_BUDGET_POLICY.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/sre/SLO_CATALOG.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/STATUS.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "docs/README.md"
+      ]
+    },
+    {
+      "referenced_path": "docs/test-failure-analysis-2025-12-17.md",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "dotenv",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "vitest.setup.ts"
+      ]
+    },
+    {
+      "referenced_path": "drizzle-kit",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "drizzle.config.ts"
+      ]
+    },
+    {
+      "referenced_path": "drizzle/drizzle-orm",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "drizzle/schema.ts"
+      ]
+    },
+    {
+      "referenced_path": "drizzle/drizzle-orm/mysql-core",
+      "exists": false,
+      "inbound_count": 17,
+      "inbound_files": [
+        "drizzle/schema.ts",
+        "drizzle/schema_advisory_reports.ts",
+        "drizzle/schema_ask_isa_feedback.ts",
+        "drizzle/schema_corpus_governance.ts",
+        "drizzle/schema_cron_monitoring.ts",
+        "drizzle/schema_dataset_registry.ts",
+        "drizzle/schema_esg_extensions.ts",
+        "drizzle/schema_governance_documents.ts",
+        "drizzle/schema_gs1_esrs_mappings.ts",
+        "drizzle/schema_gs1_eu_pcf.ts",
+        "drizzle/schema_news_history.ts",
+        "drizzle/schema_news_hub.ts",
+        "drizzle/schema_news_recommendations.ts",
+        "drizzle/schema_pipeline_observability.ts",
+        "drizzle/schema_regulatory_change_log.ts",
+        "drizzle/schema_scraper_health.ts"
+      ]
+    },
+    {
+      "referenced_path": "drizzle/drizzle-orm/relations",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "drizzle/relations.ts"
+      ]
+    },
+    {
+      "referenced_path": "drizzle/schema",
+      "exists": false,
+      "inbound_count": 91,
+      "inbound_files": [
+        "docs/DEPLOYMENT_GUIDE.md",
+        "drizzle/relations.ts",
+        "drizzle/schema_ask_isa_feedback.ts",
+        "server/_core/context.ts",
+        "server/_core/sdk.ts",
+        "server/admin-analytics.test.ts",
+        "server/alert-detection.ts",
+        "server/alert-notification-service.ts",
+        "server/alert-system.test.ts",
+        "server/batch-epcis-processor.ts",
+        "server/bm25-search.ts",
+        "server/check-regulations.ts",
+        "server/collaboration-notifications.ts",
+        "server/compliance-scoring.ts",
+        "server/create-attribute-mappings.ts",
+        "server/create-multi-sector-mappings.ts",
+        "server/db-advisory-reports.ts",
+        "server/db-coverage-analytics.ts",
+        "server/db-data-quality.ts",
+        "server/db-dataset-registry.ts",
+        "server/db-error-tracking.test.ts",
+        "server/db-error-tracking.ts",
+        "server/db-governance-documents.ts",
+        "server/db-knowledge-vector.ts",
+        "server/db-news-helpers-additions.ts",
+        "server/db-news-helpers.ts",
+        "server/db-performance-tracking.test.ts",
+        "server/db-performance-tracking.ts",
+        "server/db-pipeline-observability.ts",
+        "server/db-recommendations.ts",
+        "server/db-regulatory-change-log.ts",
+        "server/db.ts",
+        "server/efrag-ig3-parser.ts",
+        "server/email-notification-triggers.ts",
+        "server/email-notifications.ts",
+        "server/generate-embeddings-enhanced.ts",
+        "server/generate-embeddings-optimized.ts",
+        "server/gs1-benelux-parser.ts",
+        "server/gs1-diy-parser.ts",
+        "server/gs1-mapping-engine.test.ts",
+        "server/gs1-mapping-engine.ts",
+        "server/gs1-standards-router.ts",
+        "server/gs1-web-vocab-parser.ts",
+        "server/ingest-gs1-nl-complete.ts",
+        "server/ingest-validation-rules.ts",
+        "server/ingest/INGEST-02_gdsn_current.ts",
+        "server/ingest/INGEST-03_esrs_datapoints.test.ts",
+        "server/ingest/INGEST-03_esrs_datapoints.ts",
+        "server/ingest/INGEST-04_ctes_kdes.ts",
+        "server/ingest/INGEST-05_dpp_rules.ts",
+        "server/ingest/INGEST-06_cbv_digital_link.ts",
+        "server/news-admin-router.ts",
+        "server/news-archival.ts",
+        "server/news-event-processor.ts",
+        "server/news-health-monitor.test.ts",
+        "server/news-health-monitor.ts",
+        "server/news-pipeline-db-integration.test.ts",
+        "server/news-pipeline.test.ts",
+        "server/news-pipeline.ts",
+        "server/news-recommendation-engine.ts",
+        "server/news-regulatory-integration.ts",
+        "server/observability.test.ts",
+        "server/regulation-change-tracker.ts",
+        "server/roadmap-generator.ts",
+        "server/routers-webhook-config.ts",
+        "server/routers.ts",
+        "server/routers/admin-templates.ts",
+        "server/routers/advisory-reports.test.ts",
+        "server/routers/compliance-risks.ts",
+        "server/routers/dataset-registry.test.ts",
+        "server/routers/executive-analytics.ts",
+        "server/routers/governance-documents.test.ts",
+        "server/routers/gs1-attributes-multi-sector.test.ts",
+        "server/routers/gs1-attributes.ts",
+        "server/routers/gs1nl-attributes.ts",
+        "server/routers/notification-preferences.ts",
+        "server/routers/roadmap.ts",
+        "server/routers/scraper-health.test.ts",
+        "server/routers/scraper-health.ts",
+        "server/routers/standards-directory.ts",
+        "server/routers/templates.ts",
+        "server/run-first-ingestion.test.ts",
+        "server/seed-gs1-standards.ts",
+        "server/test-helpers/db-test-utils.test.ts",
+        "server/test-helpers/db-test-utils.ts",
+        "server/webhook-notification-service.ts",
+        "server/weekly-cellar-ingestion.ts",
+        "shared/types.ts"
+      ]
+    },
+    {
+      "referenced_path": "drizzle/schema.js",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/seed-epcis-events.ts",
+        "server/seed-eudr-data.ts"
+      ]
+    },
+    {
+      "referenced_path": "drizzle/schema.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/ingest-gs1-standards.ts"
+      ]
+    },
+    {
+      "referenced_path": "home/ubuntu/screenshots/3000-iy7vr2kxbut6oiy_2025-12-17_05-59-22_3666.webp",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/docs/screenshots/news-hub-enhanced-filters.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/db",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "isa-archive/reports/tasks__INGESTION_MASTER_PROMPT_FOR_CHATGPT.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/docs/agent-prompts/drizzle-orm",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_INGEST-03.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/docs/agent-prompts/fs",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_INGEST-03.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/docs/agent-prompts/INGEST-XX_name",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/docs/agent-prompts/INGEST-XX_something",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_INGEST-03.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/docs/agent-prompts/path",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_INGEST-03.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/docs/agent-prompts/vitest",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md",
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_INGEST-03.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/docs/agent-prompts/xlsx",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md",
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_INGEST-03.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/docs/db",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md",
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_INGEST-03.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/drizzle/schema",
+      "exists": false,
+      "inbound_count": 18,
+      "inbound_files": [
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_BATCH_INGEST_02_04_05_06.md",
+        "isa-archive/docs/agent-prompts/CHATGPT_PROMPT_INGEST-03.md",
+        "isa-archive/server/cellar-ingestion-integration.test.ts",
+        "isa-archive/server/cellar-ingestion-router.ts",
+        "isa-archive/server/cellar-normalizer.test.ts",
+        "isa-archive/server/cellar-normalizer.ts",
+        "isa-archive/server/epcis-integration.test.ts",
+        "isa-archive/server/epcis-ui.test.ts",
+        "isa-archive/server/generate-all-embeddings-optimized.ts",
+        "isa-archive/server/generate-all-embeddings-v2.ts",
+        "isa-archive/server/generate-all-embeddings.ts",
+        "isa-archive/server/routers/batch-epcis.ts",
+        "isa-archive/server/routers/benchmarking.ts",
+        "isa-archive/server/routers/collaboration.ts",
+        "isa-archive/server/routers/remediation.ts",
+        "isa-archive/server/routers/stakeholder-dashboard.ts",
+        "isa-archive/server/routers/template-analytics.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/drizzle/schema.js",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "isa-archive/server/epcis-router.ts",
+        "isa-archive/server/eudr-analyzer.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/mappings/esrs-to-gs1-mapper",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/tasks__for_chatgpt__CGPT-01_esrs_to_gs1_mapping.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/next-step-scan/roadmap-evolution.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/next-step-scan/repo_scan.json"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/next-step-scan/ROADMAP.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/next-step-scan/repo_scan.json"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/next-step-scan/STATUS.md",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/next-step-scan/repo_scan.json"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/bm25-search",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/research__ASK_ISA_IMPLEMENTATION_PLAN.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/db-knowledge-vector",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/research__ASK_ISA_IMPLEMENTATION_PLAN.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/drizzle-orm",
+      "exists": false,
+      "inbound_count": 5,
+      "inbound_files": [
+        "isa-archive/reports/tasks__INGESTION_MASTER_PROMPT_FOR_CHATGPT.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/drizzle-orm/mysql-core",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/tasks__INGESTION_MASTER_PROMPT_FOR_CHATGPT.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/fs",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "isa-archive/reports/tasks__INGESTION_MASTER_PROMPT_FOR_CHATGPT.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/gpc-to-gs1-mapper",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/tasks__for_chatgpt__CGPT-02_gpc_to_gs1_mapping.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/INGEST-XX_<name>",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/tasks__INGESTION_MASTER_PROMPT_FOR_CHATGPT.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/lucide-react",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/tasks__for_chatgpt__CGPT-03_news_timeline_component.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/path",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "isa-archive/reports/tasks__INGESTION_MASTER_PROMPT_FOR_CHATGPT.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/react",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "isa-archive/reports/tasks__TASK_SPEC_TEMPLATE.md",
+        "isa-archive/reports/tasks__for_chatgpt__CGPT-02_gpc_to_gs1_mapping.md",
+        "isa-archive/reports/tasks__for_chatgpt__CGPT-17_data_quality_validation.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/type",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/tasks__for_chatgpt__INGEST-02_gdsn_current.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/vitest",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/tasks__INGESTION_MASTER_PROMPT_FOR_CHATGPT.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/wink-bm25-text-search",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/research__ASK_ISA_IMPLEMENTATION_PLAN.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/wink-nlp-utils",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/research__ASK_ISA_IMPLEMENTATION_PLAN.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/reports/xlsx",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "isa-archive/reports/tasks__INGESTION_MASTER_PROMPT_FOR_CHATGPT.md",
+        "isa-archive/reports/tasks__for_chatgpt__INGEST-03_esrs_datapoints.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/roadmaps/isa_architecture.png",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/roadmaps/ISA_Strategic_Roadmap.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/roadmaps/isa_cicd_pipeline.png",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/roadmaps/ISA_Strategic_Roadmap.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/roadmaps/isa_data_flow.png",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/roadmaps/ISA_Strategic_Roadmap.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/roadmaps/isa_implementation_timeline.png",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/roadmaps/ISA_Strategic_Roadmap.md"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/_core/embedding",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "isa-archive/server/generate-all-embeddings-optimized.ts",
+        "isa-archive/server/generate-all-embeddings-v2.ts",
+        "isa-archive/server/generate-all-embeddings.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/_core/env",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/generate-all-embeddings-optimized.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/_core/logger-wiring",
+      "exists": false,
+      "inbound_count": 8,
+      "inbound_files": [
+        "isa-archive/server/ask-isa-enhanced.ts",
+        "isa-archive/server/automated-cellar-sync.ts",
+        "isa-archive/server/cellar-connector.ts",
+        "isa-archive/server/cellar-ingestion-router.ts",
+        "isa-archive/server/generate-all-embeddings-optimized.ts",
+        "isa-archive/server/generate-all-embeddings-v2.ts",
+        "isa-archive/server/generate-all-embeddings.ts",
+        "isa-archive/server/routers/batch-epcis.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/_core/notification",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/cellar-ingestion-router.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/_core/notification.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/automated-cellar-sync.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/_core/trpc",
+      "exists": false,
+      "inbound_count": 8,
+      "inbound_files": [
+        "isa-archive/server/cellar-ingestion-router.ts",
+        "isa-archive/server/routers/batch-epcis.ts",
+        "isa-archive/server/routers/benchmarking.ts",
+        "isa-archive/server/routers/collaboration.ts",
+        "isa-archive/server/routers/impact-simulator.ts",
+        "isa-archive/server/routers/remediation.ts",
+        "isa-archive/server/routers/stakeholder-dashboard.ts",
+        "isa-archive/server/routers/template-analytics.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/_core/trpc.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/epcis-router.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/axios",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "isa-archive/server/cellar-connector.ts",
+        "isa-archive/server/cellar-diagnostic.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/batch-epcis-processor",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/routers/batch-epcis.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/cellar-connector",
+      "exists": false,
+      "inbound_count": 5,
+      "inbound_files": [
+        "isa-archive/server/cellar-connector.test.ts",
+        "isa-archive/server/cellar-ingestion-integration.test.ts",
+        "isa-archive/server/cellar-ingestion-router.ts",
+        "isa-archive/server/cellar-normalizer.test.ts",
+        "isa-archive/server/cellar-normalizer.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/cellar-connector.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/automated-cellar-sync.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/cellar-normalizer",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "isa-archive/server/cellar-ingestion-integration.test.ts",
+        "isa-archive/server/cellar-ingestion-router.ts",
+        "isa-archive/server/cellar-normalizer.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/cellar-normalizer.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/automated-cellar-sync.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/crypto",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "isa-archive/server/generate-all-embeddings-optimized.ts",
+        "isa-archive/server/generate-all-embeddings-v2.ts",
+        "isa-archive/server/generate-all-embeddings.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/db",
+      "exists": false,
+      "inbound_count": 13,
+      "inbound_files": [
+        "isa-archive/server/cellar-ingestion-integration.test.ts",
+        "isa-archive/server/cellar-ingestion-router.ts",
+        "isa-archive/server/epcis-integration.test.ts",
+        "isa-archive/server/epcis-ui.test.ts",
+        "isa-archive/server/generate-all-embeddings-optimized.ts",
+        "isa-archive/server/generate-all-embeddings-v2.ts",
+        "isa-archive/server/generate-all-embeddings.ts",
+        "isa-archive/server/routers/batch-epcis.ts",
+        "isa-archive/server/routers/benchmarking.ts",
+        "isa-archive/server/routers/collaboration.ts",
+        "isa-archive/server/routers/remediation.ts",
+        "isa-archive/server/routers/stakeholder-dashboard.ts",
+        "isa-archive/server/routers/template-analytics.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/db.js",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "isa-archive/server/automated-cellar-sync.ts",
+        "isa-archive/server/epcis-router.ts",
+        "isa-archive/server/eudr-analyzer.ts",
+        "isa-archive/server/routers/impact-simulator.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/drizzle-orm",
+      "exists": false,
+      "inbound_count": 8,
+      "inbound_files": [
+        "isa-archive/server/cellar-ingestion-integration.test.ts",
+        "isa-archive/server/cellar-ingestion-router.ts",
+        "isa-archive/server/epcis-integration.test.ts",
+        "isa-archive/server/epcis-router.ts",
+        "isa-archive/server/eudr-analyzer.ts",
+        "isa-archive/server/generate-all-embeddings-optimized.ts",
+        "isa-archive/server/generate-all-embeddings-v2.ts",
+        "isa-archive/server/generate-all-embeddings.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/epcis-xml-parser.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/epcis-router.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/eudr-analyzer.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/epcis-router.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/fast-xml-parser",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/epcis-xml-parser.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/fs",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/generate-all-embeddings-optimized.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/gap-reasoning.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/routers/impact-simulator.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/knowledge-vector-search",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/ask-isa-enhanced.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/path",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/generate-all-embeddings-optimized.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/regulation-esrs-mapper.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/automated-cellar-sync.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/routers/drizzle-orm",
+      "exists": false,
+      "inbound_count": 7,
+      "inbound_files": [
+        "isa-archive/server/routers/batch-epcis.ts",
+        "isa-archive/server/routers/benchmarking.ts",
+        "isa-archive/server/routers/collaboration.ts",
+        "isa-archive/server/routers/impact-simulator.ts",
+        "isa-archive/server/routers/remediation.ts",
+        "isa-archive/server/routers/stakeholder-dashboard.ts",
+        "isa-archive/server/routers/template-analytics.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/routers/zod",
+      "exists": false,
+      "inbound_count": 6,
+      "inbound_files": [
+        "isa-archive/server/routers/batch-epcis.ts",
+        "isa-archive/server/routers/benchmarking.ts",
+        "isa-archive/server/routers/collaboration.ts",
+        "isa-archive/server/routers/impact-simulator.ts",
+        "isa-archive/server/routers/remediation.ts",
+        "isa-archive/server/routers/template-analytics.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/seed-epcis-events.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/epcis-router.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/seed-eudr-data.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/epcis-router.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/services/ab-testing/crypto",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/server/services/ab-testing/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/vitest",
+      "exists": false,
+      "inbound_count": 6,
+      "inbound_files": [
+        "isa-archive/server/cellar-connector.test.ts",
+        "isa-archive/server/cellar-diagnostic.test.ts",
+        "isa-archive/server/cellar-ingestion-integration.test.ts",
+        "isa-archive/server/cellar-normalizer.test.ts",
+        "isa-archive/server/epcis-integration.test.ts",
+        "isa-archive/server/epcis-ui.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/server/zod",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "isa-archive/server/cellar-ingestion-router.ts",
+        "isa-archive/server/epcis-router.ts"
+      ]
+    },
+    {
+      "referenced_path": "isa-archive/utils/digital-link",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "isa-archive/reports/tasks__for_chatgpt__CGPT-05_digital_link_utils.md"
+      ]
+    },
+    {
+      "referenced_path": "package.json",
+      "exists": true,
+      "inbound_count": 2,
+      "inbound_files": [
+        "README.md",
+        "vitest.config.ts"
+      ]
+    },
+    {
+      "referenced_path": "path",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "vite.config.ts",
+        "vitest.config.ts"
+      ]
+    },
+    {
+      "referenced_path": "README.md",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENT_START_HERE.md"
+      ]
+    },
+    {
+      "referenced_path": "REPO_TREE.md",
+      "exists": true,
+      "inbound_count": 2,
+      "inbound_files": [
+        "AGENT_START_HERE.md",
+        "docs/README.md"
+      ]
+    },
+    {
+      "referenced_path": "scripts/docs/[^'\"]+",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/docs/ref_index.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/docs/child_process",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/docs/ref_index.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/docs/fs",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/docs/ref_index.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/docs/path",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "scripts/docs/ref_index.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/dotenv",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "scripts/check-columns.ts",
+        "scripts/check-env.js",
+        "scripts/run-migration-simple.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/drizzle-orm",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/create-esrs-tables.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/fs",
+      "exists": false,
+      "inbound_count": 5,
+      "inbound_files": [
+        "scripts/check-env.js",
+        "scripts/run-migration-simple.ts",
+        "scripts/run-migration.ts",
+        "scripts/test-report.ts",
+        "scripts/verify-data-files.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/mysql2/promise",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "scripts/check-columns.ts",
+        "scripts/check-db-status.ts",
+        "scripts/generate_embeddings_standalone.ts",
+        "scripts/run-migration-simple.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/openai",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/generate_embeddings_standalone.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/path",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "scripts/check-env.js",
+        "scripts/test-report.ts",
+        "scripts/verify-data-files.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/probe/ask_isa_smoke.py",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENT_START_HERE.md"
+      ]
+    },
+    {
+      "referenced_path": "scripts/refactor/validate_gates.sh",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "referenced_path": "scripts/sre/child_process",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/sre/generate-evidence-catalogue.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/sre/fs",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "scripts/sre/generate-error-budget-status.ts",
+        "scripts/sre/generate-evidence-catalogue.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/sre/path",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "scripts/sre/generate-error-budget-status.ts",
+        "scripts/sre/generate-evidence-catalogue.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/url",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/check-env.js"
+      ]
+    },
+    {
+      "referenced_path": "scripts/validation/drizzle-orm",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "scripts/validation/check-pipeline-log.ts",
+        "scripts/validation/test-db-connection.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/validation/drizzle/schema",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/validation/check-pipeline-log.ts"
+      ]
+    },
+    {
+      "referenced_path": "scripts/validation/server/news-pipeline",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/validation/test-pipeline-run.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/_core/voiceTranscription",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/voiceTranscription.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/axios",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/sdk.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/context",
+      "exists": false,
+      "inbound_count": 20,
+      "inbound_files": [
+        "server/_core/index.ts",
+        "server/_core/trpc.ts",
+        "server/ask-isa-integration.test.ts",
+        "server/auth.logout.test.ts",
+        "server/cron-secret-validation.test.ts",
+        "server/cron.test.ts",
+        "server/esrs.test.ts",
+        "server/mapping-feedback.test.ts",
+        "server/news-admin-router.test.ts",
+        "server/onboarding.test.ts",
+        "server/regulation-esrs-mapper.test.ts",
+        "server/regulatory-change-log.test.ts",
+        "server/routers.test.ts",
+        "server/routers/advisory-reports.test.ts",
+        "server/routers/attribute-recommender.test.ts",
+        "server/routers/dataset-registry.test.ts",
+        "server/routers/governance-documents.test.ts",
+        "server/routers/gs1-attributes.test.ts",
+        "server/routers/standards-directory.test.ts",
+        "server/standards-directory.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/cookie",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/sdk.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/cookies",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/oauth.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/dotenv",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/embedding",
+      "exists": false,
+      "inbound_count": 6,
+      "inbound_files": [
+        "server/db-knowledge-vector.ts",
+        "server/embedding.test.ts",
+        "server/generate-embeddings-enhanced.ts",
+        "server/generate-embeddings-optimized.ts",
+        "server/knowledge-vector-search.ts",
+        "server/weekly-cellar-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/env",
+      "exists": false,
+      "inbound_count": 11,
+      "inbound_files": [
+        "server/_core/dataApi.ts",
+        "server/_core/embedding.ts",
+        "server/_core/imageGeneration.ts",
+        "server/_core/llm.ts",
+        "server/_core/map.ts",
+        "server/_core/notification.ts",
+        "server/_core/sdk.ts",
+        "server/_core/voiceTranscription.ts",
+        "server/db.ts",
+        "server/github-pat-validation.test.ts",
+        "server/storage.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/error-tracking",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/_core/performance-monitoring.ts",
+        "server/production-monitoring.test.ts",
+        "server/routers/production-monitoring.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/express",
+      "exists": false,
+      "inbound_count": 6,
+      "inbound_files": [
+        "server/_core/cookies.ts",
+        "server/_core/index.ts",
+        "server/_core/oauth.ts",
+        "server/_core/rate-limit.ts",
+        "server/_core/sdk.ts",
+        "server/_core/vite.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/express-rate-limit",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/rate-limit.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/fs",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/vite.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/helmet",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/security-headers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/http",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/_core/index.ts",
+        "server/_core/vite.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/index.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/jose",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/sdk.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/llm",
+      "exists": false,
+      "inbound_count": 11,
+      "inbound_files": [
+        "server/embedding.ts",
+        "server/news-ai-processor.ts",
+        "server/news-content-analyzer.ts",
+        "server/news-event-processor.ts",
+        "server/regulation-esrs-mapper.ts",
+        "server/routers/ask-isa-v2.ts",
+        "server/routers/ask-isa.ts",
+        "server/routers/esrs-roadmap.ts",
+        "server/routers/evaluation.ts",
+        "server/test-helpers/api-mocks.test.ts",
+        "server/test-helpers/api-mocks.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/logger-wiring",
+      "exists": false,
+      "inbound_count": 99,
+      "inbound_files": [
+        "server/_core/error-tracking.ts",
+        "server/_core/index.ts",
+        "server/_core/notification.ts",
+        "server/_core/oauth.ts",
+        "server/_core/sdk.ts",
+        "server/_core/vite.ts",
+        "server/alert-monitoring-cron.ts",
+        "server/alert-notification-service.ts",
+        "server/ask-isa-cache.ts",
+        "server/authority-model.ts",
+        "server/batch-epcis-processor.ts",
+        "server/batch-generate-esrs-mappings.ts",
+        "server/bm25-search.ts",
+        "server/citation-validation.ts",
+        "server/claim-citation-verifier.ts",
+        "server/collaboration-notifications.ts",
+        "server/create-attribute-mappings.ts",
+        "server/create-multi-sector-mappings.ts",
+        "server/cron-endpoint.ts",
+        "server/cron-monitoring-simple.ts",
+        "server/cron-scheduler.ts",
+        "server/db-esg-artefacts.ts",
+        "server/db-knowledge-vector.ts",
+        "server/db-knowledge.ts",
+        "server/db-news-helpers.ts",
+        "server/db-pipeline-observability.ts",
+        "server/db-recommendations.ts",
+        "server/db.ts",
+        "server/efrag-ig3-parser.ts",
+        "server/efrag-xbrl-parser.ts",
+        "server/email-notification-triggers.ts",
+        "server/email-notifications.ts",
+        "server/email-service.ts",
+        "server/embedding.ts",
+        "server/evaluation/evaluation-harness.ts",
+        "server/export-router.ts",
+        "server/export-scheduler.ts",
+        "server/export-utils-branded.ts",
+        "server/generate-embeddings-enhanced.ts",
+        "server/generate-embeddings-optimized.ts",
+        "server/gs1-benelux-parser.ts",
+        "server/gs1-diy-parser.ts",
+        "server/gs1-web-vocab-parser.ts",
+        "server/hybrid-search.ts",
+        "server/ingest-gs1-nl-complete.ts",
+        "server/ingest-gs1-standards.ts",
+        "server/ingest-validation-rules.ts",
+        "server/ingest/INGEST-02_gdsn_current.ts",
+        "server/ingest/INGEST-03_esrs_datapoints.ts",
+        "server/ingest/INGEST-04_ctes_kdes.ts",
+        "server/ingest/INGEST-05_dpp_rules.ts",
+        "server/ingest/INGEST-06_cbv_digital_link.ts",
+        "server/knowledge-vector-search.ts",
+        "server/load-gs1-attribute-mappings.ts",
+        "server/load-gs1-esrs-mappings.ts",
+        "server/news-admin-router.ts",
+        "server/news-ai-processor.ts",
+        "server/news-archival.ts",
+        "server/news-content-analyzer.ts",
+        "server/news-cron-scheduler.ts",
+        "server/news-fetcher.ts",
+        "server/news-health-monitor.ts",
+        "server/news-pipeline.ts",
+        "server/news-recommendation-engine.ts",
+        "server/news-regulatory-integration.ts",
+        "server/news-retry-util.ts",
+        "server/news-scraper-efrag.ts",
+        "server/news-scraper-gs1nl.ts",
+        "server/news-scraper-playwright.ts",
+        "server/news/news-scraper-eurlex.ts",
+        "server/news/news-scraper-greendeal.ts",
+        "server/news/news-scraper-gs1eu.ts",
+        "server/news/news-scraper-zes.ts",
+        "server/query-clarification.ts",
+        "server/reasoning-engine.ts",
+        "server/regulation-change-tracker.ts",
+        "server/regulation-esrs-mapper.ts",
+        "server/routers.ts",
+        "server/routers/ask-isa-enhanced-routes.ts",
+        "server/routers/ask-isa-v2.ts",
+        "server/routers/ask-isa.ts",
+        "server/routers/citation-admin.ts",
+        "server/routers/cron.ts",
+        "server/routers/esrs-roadmap.ts",
+        "server/routers/evaluation.ts",
+        "server/routers/gs1nl-attributes.ts",
+        "server/run-gs1-mapping.ts",
+        "server/seed-epcis-events.ts",
+        "server/seed-eudr-data.ts",
+        "server/seed-gs1-standards.ts",
+        "server/services/authority-scoring/index.ts",
+        "server/services/corpus-ingestion/index.ts",
+        "server/services/news/scrapers/efrag-scraper.ts",
+        "server/services/news/scrapers/eu-commission-scraper.ts",
+        "server/services/news/scrapers/eurlex-scraper.ts",
+        "server/services/rag-metrics/source-diversity.ts",
+        "server/services/rag-metrics/traceability-score.ts",
+        "server/services/rag-tracing/index.ts",
+        "server/weekly-cellar-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/nanoid",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/vite.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/net",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/notification",
+      "exists": false,
+      "inbound_count": 12,
+      "inbound_files": [
+        "server/_core/error-tracking.ts",
+        "server/_core/systemRouter.ts",
+        "server/alert-notification-service.ts",
+        "server/collaboration-notifications.ts",
+        "server/cron-monitoring-simple.ts",
+        "server/email-notification-triggers.ts",
+        "server/email-notifications.ts",
+        "server/news-health-monitor.ts",
+        "server/regulation-change-tracker.ts",
+        "server/routers.ts",
+        "server/routers/monitoring.ts",
+        "server/weekly-cellar-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/oauth",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/path",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/vite.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/performance-monitoring",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/production-monitoring.test.ts",
+        "server/routers/production-monitoring.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/rate-limit",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/_core/index.ts",
+        "server/rate-limit.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/sdk",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/_core/context.ts",
+        "server/_core/oauth.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/security-headers",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/server/storage",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/imageGeneration.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/superjson",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/trpc.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/systemRouter",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/trpc",
+      "exists": false,
+      "inbound_count": 43,
+      "inbound_files": [
+        "server/_core/systemRouter.ts",
+        "server/export-router.ts",
+        "server/gs1-standards-router.ts",
+        "server/news-admin-router.ts",
+        "server/router-error-tracking.ts",
+        "server/router-performance-tracking.ts",
+        "server/routers-data-quality.ts",
+        "server/routers.ts",
+        "server/routers/admin-templates.ts",
+        "server/routers/advisory-diff.ts",
+        "server/routers/advisory-reports.ts",
+        "server/routers/advisory.ts",
+        "server/routers/ask-isa-enhanced-routes.ts",
+        "server/routers/ask-isa-v2.ts",
+        "server/routers/ask-isa.ts",
+        "server/routers/attribute-recommender.ts",
+        "server/routers/citation-admin.ts",
+        "server/routers/compliance-risks.ts",
+        "server/routers/coverage-analytics.ts",
+        "server/routers/cron.ts",
+        "server/routers/dataset-registry.ts",
+        "server/routers/esg-artefacts.ts",
+        "server/routers/esrs-gs1-mapping.ts",
+        "server/routers/esrs-roadmap.ts",
+        "server/routers/evaluation.ts",
+        "server/routers/executive-analytics.ts",
+        "server/routers/gap-analyzer.ts",
+        "server/routers/governance-documents.ts",
+        "server/routers/gs1-attributes.ts",
+        "server/routers/gs1nl-attributes.ts",
+        "server/routers/monitoring.ts",
+        "server/routers/notification-preferences.ts",
+        "server/routers/observability.ts",
+        "server/routers/pipeline-observability.ts",
+        "server/routers/production-monitoring.ts",
+        "server/routers/realtime.ts",
+        "server/routers/regulatory-change-log.ts",
+        "server/routers/roadmap-export.ts",
+        "server/routers/roadmap.ts",
+        "server/routers/scoring.ts",
+        "server/routers/scraper-health.ts",
+        "server/routers/standards-directory.ts",
+        "server/routers/templates.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/types/manusTypes",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/sdk.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/vite",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/_core/index.ts",
+        "server/_core/vite.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/_core/zod",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/systemRouter.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/${current.title}",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/regulation-change-tracker.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/advisory-report-export",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/advisory-report-export.test.ts",
+        "server/routers/advisory-reports.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/alert-detection",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/alert-monitoring-cron.ts",
+        "server/alert-notification-service.ts",
+        "server/alert-system.test.ts",
+        "server/routers/production-monitoring.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/alert-monitoring-cron",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/alert-notification-service",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/alert-monitoring-cron.ts",
+        "server/alert-system.test.ts",
+        "server/routers/production-monitoring.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ask-isa-cache",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/ask-isa.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ask-isa-enhanced",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/ask-isa-enhanced-routes.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ask-isa-guardrails",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/ask-isa-guardrails.test.ts",
+        "server/ask-isa-integration.test.ts",
+        "server/routers/ask-isa.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ask-isa-query-library",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/ask-isa.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/attribute-recommender",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/attribute-recommender.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/attribute-recommender.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/attribute-recommender.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/authority-model",
+      "exists": false,
+      "inbound_count": 7,
+      "inbound_files": [
+        "server/authority-model.test.ts",
+        "server/claim-citation-verifier.ts",
+        "server/evaluation/evaluation-harness.ts",
+        "server/evaluation/golden-set.ts",
+        "server/hybrid-search.ts",
+        "server/routers/ask-isa.ts",
+        "server/routers/evaluation.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/axios",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-scraper-gs1nl.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/bm25-search",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/_core/index.ts",
+        "server/hybrid-search.test.ts",
+        "server/hybrid-search.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/cellar-connector",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/run-first-ingestion.test.ts",
+        "server/test-helpers/api-mocks.test.ts",
+        "server/test-helpers/api-mocks.ts",
+        "server/weekly-cellar-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/cellar-normalizer",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/run-first-ingestion.test.ts",
+        "server/weekly-cellar-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/cheerio",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-scraper-gs1nl.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/child_process",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/advisory-diff.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/citation-validation",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/routers/ask-isa.ts",
+        "server/routers/citation-admin.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/claim-citation-verifier",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/claim-citation-verifier.test.ts",
+        "server/evaluation/evaluation-harness.ts",
+        "server/routers/ask-isa.ts",
+        "server/routers/evaluation.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/compliance-scoring",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/scoring.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/cron-endpoint",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/cron-monitoring-simple",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/cron-endpoint.ts",
+        "server/news-admin-router.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/crypto",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/embedding.ts",
+        "server/generate-embeddings-enhanced.ts",
+        "server/generate-embeddings-optimized.ts",
+        "server/news-regulatory-integration.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db",
+      "exists": false,
+      "inbound_count": 110,
+      "inbound_files": [
+        "scripts/create-esrs-tables.ts",
+        "scripts/validation/check-columns.ts",
+        "scripts/validation/check-error-ledger.ts",
+        "scripts/validation/check-pipeline-log.ts",
+        "scripts/validation/check-pipeline-table.ts",
+        "scripts/validation/check-table.ts",
+        "scripts/validation/test-db-connection.ts",
+        "server/_core/logger-wiring.ts",
+        "server/_core/oauth.ts",
+        "server/_core/sdk.ts",
+        "server/admin-analytics.test.ts",
+        "server/alert-detection.ts",
+        "server/alert-notification-service.ts",
+        "server/alert-system.test.ts",
+        "server/batch-epcis-processor.ts",
+        "server/batch-generate-esrs-mappings.ts",
+        "server/bm25-search.ts",
+        "server/check-regulations.ts",
+        "server/citation-validation.ts",
+        "server/collaboration-notifications.ts",
+        "server/compliance-scoring.ts",
+        "server/coverage-analytics.test.ts",
+        "server/create-attribute-mappings.ts",
+        "server/create-multi-sector-mappings.ts",
+        "server/db-advisory-reports.ts",
+        "server/db-coverage-analytics.ts",
+        "server/db-data-quality.ts",
+        "server/db-dataset-registry.ts",
+        "server/db-error-tracking.test.ts",
+        "server/db-error-tracking.ts",
+        "server/db-esg-artefacts.ts",
+        "server/db-governance-documents.ts",
+        "server/db-knowledge-vector.ts",
+        "server/db-knowledge.ts",
+        "server/db-news-helpers-additions.ts",
+        "server/db-news-helpers.ts",
+        "server/db-performance-tracking.test.ts",
+        "server/db-performance-tracking.ts",
+        "server/db-pipeline-observability.ts",
+        "server/db-recommendations.ts",
+        "server/db-regulatory-change-log.ts",
+        "server/dutch-initiatives.test.ts",
+        "server/efrag-ig3-parser.ts",
+        "server/email-notification-triggers.ts",
+        "server/email-notifications.ts",
+        "server/export-router.ts",
+        "server/export-scheduler.ts",
+        "server/generate-embeddings-enhanced.ts",
+        "server/generate-embeddings-optimized.ts",
+        "server/gs1-benelux-parser.ts",
+        "server/gs1-diy-parser.ts",
+        "server/gs1-mapping-engine.test.ts",
+        "server/gs1-mapping-engine.ts",
+        "server/gs1-standards-router.ts",
+        "server/gs1-web-vocab-parser.ts",
+        "server/health.test.ts",
+        "server/health.ts",
+        "server/ingest/INGEST-02_gdsn_current.ts",
+        "server/ingest/INGEST-03_esrs_datapoints.test.ts",
+        "server/ingest/INGEST-03_esrs_datapoints.ts",
+        "server/ingest/INGEST-04_ctes_kdes.ts",
+        "server/ingest/INGEST-05_dpp_rules.ts",
+        "server/ingest/INGEST-06_cbv_digital_link.ts",
+        "server/knowledge-vector-search.ts",
+        "server/news-admin-router.ts",
+        "server/news-archival.ts",
+        "server/news-event-processor.ts",
+        "server/news-health-monitor.test.ts",
+        "server/news-health-monitor.ts",
+        "server/news-pipeline-db-integration.test.ts",
+        "server/news-pipeline.test.ts",
+        "server/news-pipeline.ts",
+        "server/news-recommendation-engine.ts",
+        "server/observability.test.ts",
+        "server/reasoning-engine.ts",
+        "server/regulation-change-tracker.ts",
+        "server/regulation-esrs-mapper.ts",
+        "server/roadmap-generator.ts",
+        "server/routers-webhook-config.ts",
+        "server/routers.ts",
+        "server/routers/admin-templates.ts",
+        "server/routers/advisory-reports.test.ts",
+        "server/routers/ask-isa-v2.ts",
+        "server/routers/citation-admin.ts",
+        "server/routers/compliance-risks.ts",
+        "server/routers/dataset-registry.test.ts",
+        "server/routers/executive-analytics.ts",
+        "server/routers/governance-documents.test.ts",
+        "server/routers/gs1-attributes-multi-sector.test.ts",
+        "server/routers/gs1-attributes.test.ts",
+        "server/routers/gs1-attributes.ts",
+        "server/routers/gs1nl-attributes.ts",
+        "server/routers/notification-preferences.ts",
+        "server/routers/roadmap.ts",
+        "server/routers/scraper-health.test.ts",
+        "server/routers/scraper-health.ts",
+        "server/routers/standards-directory.ts",
+        "server/routers/templates.ts",
+        "server/run-first-ingestion.test.ts",
+        "server/seed-gs1-standards.ts",
+        "server/services/corpus-governance/index.ts",
+        "server/services/corpus-governance/test-ingestion.ts",
+        "server/services/corpus-ingestion/index.ts",
+        "server/services/rag-tracing/index.ts",
+        "server/webhook-notification-service.test.ts",
+        "server/webhook-notification-service.ts",
+        "server/weekly-cellar-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-advisory-reports",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/advisory-report-export.ts",
+        "server/routers/advisory-reports.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-connection",
+      "exists": false,
+      "inbound_count": 6,
+      "inbound_files": [
+        "server/admin-analytics.test.ts",
+        "server/db-health-guard.test.ts",
+        "server/db.ts",
+        "server/ingest-gs1-nl-complete.ts",
+        "server/ingest-gs1-standards.ts",
+        "server/ingest-validation-rules.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-coverage-analytics",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/coverage-analytics.test.ts",
+        "server/routers/coverage-analytics.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-data-quality",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/data-quality.test.ts",
+        "server/routers-data-quality.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-dataset-registry",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/dataset-registry.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-error-tracking",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/db-error-tracking.test.ts",
+        "server/router-error-tracking.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-esg-artefacts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/esg-artefacts.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-esrs-gs1-mapping",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/esrs-gs1-mapping.test.ts",
+        "server/routers/esrs-roadmap.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-esrs-gs1-mapping.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/esrs-gs1-mapping.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-governance-documents",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/governance-documents.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-health-guard.test.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "vitest.config.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-knowledge",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/routers/ask-isa.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-knowledge-vector",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/gs1-nl-content.test.ts",
+        "server/hybrid-search.test.ts",
+        "server/hybrid-search.ts",
+        "server/routers/ask-isa.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-news-helpers",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-pipeline.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-performance-tracking",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/db-performance-tracking.test.ts",
+        "server/router-performance-tracking.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-pipeline-observability",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/news-pipeline.ts",
+        "server/observability.test.ts",
+        "server/routers/observability.ts",
+        "server/routers/pipeline-observability.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db-regulatory-change-log",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "scripts/seed-regulatory-change-log.ts",
+        "server/news-regulatory-integration.ts",
+        "server/routers/regulatory-change-log.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/db.js",
+      "exists": false,
+      "inbound_count": 7,
+      "inbound_files": [
+        "scripts/run-migration.ts",
+        "server/db-esrs-gs1-mapping.ts",
+        "server/load-gs1-attribute-mappings.ts",
+        "server/load-gs1-esrs-mappings.ts",
+        "server/routers/gap-analyzer.ts",
+        "server/seed-epcis-events.ts",
+        "server/seed-eudr-data.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/drizzle-orm",
+      "exists": false,
+      "inbound_count": 58,
+      "inbound_files": [
+        "server/alert-detection.ts",
+        "server/alert-notification-service.ts",
+        "server/alert-system.test.ts",
+        "server/batch-epcis-processor.ts",
+        "server/bm25-search.ts",
+        "server/check-regulations.ts",
+        "server/citation-validation.ts",
+        "server/collaboration-notifications.ts",
+        "server/compliance-scoring.ts",
+        "server/create-attribute-mappings.ts",
+        "server/create-multi-sector-mappings.ts",
+        "server/db-advisory-reports.ts",
+        "server/db-coverage-analytics.ts",
+        "server/db-data-quality.ts",
+        "server/db-dataset-registry.ts",
+        "server/db-error-tracking.test.ts",
+        "server/db-error-tracking.ts",
+        "server/db-esg-artefacts.ts",
+        "server/db-esrs-gs1-mapping.ts",
+        "server/db-governance-documents.ts",
+        "server/db-knowledge-vector.ts",
+        "server/db-knowledge.ts",
+        "server/db-news-helpers-additions.ts",
+        "server/db-news-helpers.ts",
+        "server/db-performance-tracking.test.ts",
+        "server/db-performance-tracking.ts",
+        "server/db-pipeline-observability.ts",
+        "server/db-recommendations.ts",
+        "server/db-regulatory-change-log.ts",
+        "server/db.ts",
+        "server/efrag-ig3-parser.ts",
+        "server/email-notification-triggers.ts",
+        "server/email-notifications.ts",
+        "server/generate-embeddings-enhanced.ts",
+        "server/generate-embeddings-optimized.ts",
+        "server/gs1-mapping-engine.test.ts",
+        "server/gs1-mapping-engine.ts",
+        "server/gs1-standards-router.ts",
+        "server/knowledge-vector-search.ts",
+        "server/load-gs1-attribute-mappings.ts",
+        "server/load-gs1-esrs-mappings.ts",
+        "server/news-admin-router.ts",
+        "server/news-archival.ts",
+        "server/news-event-processor.ts",
+        "server/news-health-monitor.test.ts",
+        "server/news-health-monitor.ts",
+        "server/news-pipeline-db-integration.test.ts",
+        "server/news-pipeline.test.ts",
+        "server/news-recommendation-engine.ts",
+        "server/reasoning-engine.ts",
+        "server/regulation-change-tracker.ts",
+        "server/roadmap-generator.ts",
+        "server/routers-webhook-config.ts",
+        "server/routers.ts",
+        "server/run-first-ingestion.test.ts",
+        "server/webhook-notification-service.ts",
+        "server/weekly-cellar-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/drizzle-orm/mysql2",
+      "exists": false,
+      "inbound_count": 5,
+      "inbound_files": [
+        "server/admin-analytics.test.ts",
+        "server/db.ts",
+        "server/ingest-gs1-nl-complete.ts",
+        "server/ingest-gs1-standards.ts",
+        "server/ingest-validation-rules.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/email-notifications",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/cron-scheduler.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/embedding",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/db-knowledge.ts",
+        "server/routers/ask-isa.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/embedding.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "server/evaluation-history",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/evaluation.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/evaluation/evaluation-harness",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/evaluation/evaluation-harness.test.ts",
+        "server/routers/evaluation.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/evaluation/golden-set",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/evaluation/evaluation-harness.ts",
+        "server/routers/evaluation.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/evaluation/vitest",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/evaluation/evaluation-harness.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/events",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/realtime-notifications.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/exceljs",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/efrag-xbrl-parser.ts",
+        "server/ingest-gs1-nl-complete.ts",
+        "server/ingest-validation-rules.ts",
+        "server/inspect-efrag-excel.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/export-scheduler",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/export-enhancements.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/export-utils",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/export-router.ts",
+        "server/export-scheduler.ts",
+        "server/export.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/export-utils-branded",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/export-enhancements.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/express",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/cron-endpoint.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/fs",
+      "exists": false,
+      "inbound_count": 5,
+      "inbound_files": [
+        "server/advisory-diff.test.ts",
+        "server/cron-monitoring-simple.ts",
+        "server/gs1-web-vocab-parser.ts",
+        "server/load-gs1-attribute-mappings.ts",
+        "server/load-gs1-esrs-mappings.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/fs/promises",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/evaluation-history.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/gap-reasoning",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/gap-reasoning.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/gap-reasoning.js",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/attribute-recommender.ts",
+        "server/routers/gap-analyzer.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/gs1-mapping-engine",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/gs1-mapping-engine.test.ts",
+        "server/gs1-standards-router.ts",
+        "server/run-gs1-mapping.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/gs1-mapping-engine.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "server/gs1-standards-router.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/health",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/_core/index.ts",
+        "server/health.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/http",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/onboarding.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/hybrid-search",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/gs1-nl-content.test.ts",
+        "server/hybrid-search.test.ts",
+        "server/routers/ask-isa.ts",
+        "server/routers/evaluation.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ingest/drizzle-orm",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/ingest/INGEST-03_esrs_datapoints.ts",
+        "server/ingest/INGEST-04_ctes_kdes.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ingest/fs",
+      "exists": false,
+      "inbound_count": 5,
+      "inbound_files": [
+        "server/ingest/INGEST-02_gdsn_current.ts",
+        "server/ingest/INGEST-03_esrs_datapoints.ts",
+        "server/ingest/INGEST-04_ctes_kdes.ts",
+        "server/ingest/INGEST-05_dpp_rules.ts",
+        "server/ingest/INGEST-06_cbv_digital_link.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ingest/INGEST-02_gdsn_current",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/run-all-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ingest/INGEST-03_esrs_datapoints",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "scripts/run-esrs-ingest.ts",
+        "server/ingest/INGEST-03_esrs_datapoints.test.ts",
+        "server/ingest/INGEST-03_esrs_datapoints_README.md"
+      ]
+    },
+    {
+      "referenced_path": "server/ingest/INGEST-04_ctes_kdes",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/run-all-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ingest/INGEST-05_dpp_rules",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/run-all-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ingest/INGEST-06_cbv_digital_link",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/run-all-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ingest/path",
+      "exists": false,
+      "inbound_count": 5,
+      "inbound_files": [
+        "server/ingest/INGEST-02_gdsn_current.ts",
+        "server/ingest/INGEST-03_esrs_datapoints.ts",
+        "server/ingest/INGEST-04_ctes_kdes.ts",
+        "server/ingest/INGEST-05_dpp_rules.ts",
+        "server/ingest/INGEST-06_cbv_digital_link.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ingest/vitest",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/ingest/INGEST-03_esrs_datapoints.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/ingest/xlsx",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/ingest/INGEST-03_esrs_datapoints.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/jspdf",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/export-utils-branded.ts",
+        "server/export-utils.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/jspdf-autotable",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/export-utils-branded.ts",
+        "server/export-utils.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/knowledge-vector-search",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/ask-isa-enhanced-routes.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/mappings/esrs-gs1-mapping-data",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/mappings/esrs-to-gs1-mapper.test.ts",
+        "server/mappings/esrs-to-gs1-mapper.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/mappings/esrs-to-gs1-mapper",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/mappings/esrs-to-gs1-mapper.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/mappings/mappings/esrs-to-gs1-mapper",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/mappings/README.md"
+      ]
+    },
+    {
+      "referenced_path": "server/mappings/vitest",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/mappings/esrs-to-gs1-mapper.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/mysql2/promise",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/admin-analytics.test.ts",
+        "server/db-connection.ts",
+        "server/ingest-gs1-nl-complete.ts",
+        "server/ingest-validation-rules.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-admin-router",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-admin-router.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-admin-router.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-ai-processor",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/news-ai-processor.test.ts",
+        "server/news-pipeline.test.ts",
+        "server/news-pipeline.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-archival",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/news-admin-router.ts",
+        "server/news-cron-scheduler.ts",
+        "server/news-pipeline.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-content-analyzer",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/news-recommendation-engine.ts",
+        "server/news-recommendations.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-cron-scheduler",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/cron-endpoint.ts",
+        "server/cron-scheduler.ts",
+        "server/news-admin-router.ts",
+        "server/routers/cron.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-deduplicator",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-pipeline.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-event-processor",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/news-event-processor.test.ts",
+        "server/news-pipeline.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-fetcher",
+      "exists": false,
+      "inbound_count": 10,
+      "inbound_files": [
+        "server/news-ai-processor.test.ts",
+        "server/news-ai-processor.ts",
+        "server/news-pipeline.test.ts",
+        "server/news-pipeline.ts",
+        "server/news/news-scraper-eurlex.ts",
+        "server/news/news-scraper-greendeal.ts",
+        "server/news/news-scraper-gs1eu.ts",
+        "server/news/news-scraper-zes.ts",
+        "server/test-helpers/api-mocks.test.ts",
+        "server/test-helpers/api-mocks.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-health-monitor",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/news-fetcher.ts",
+        "server/news-health-monitor.test.ts",
+        "server/news-pipeline-db-integration.test.ts",
+        "server/news-retry-health.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-pipeline",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/news-cron-scheduler.ts",
+        "server/news-pipeline-modes.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-pipeline-config",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/news-admin-router.ts",
+        "server/news-pipeline.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-recommendation-engine",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/news-pipeline.ts",
+        "server/news-recommendations.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-retry-util",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/news-fetcher.ts",
+        "server/news-pipeline-db-integration.test.ts",
+        "server/news-retry-health.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-scraper-efrag",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-fetcher.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-scraper-playwright",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-fetcher.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-sources",
+      "exists": false,
+      "inbound_count": 10,
+      "inbound_files": [
+        "server/news-admin-router.ts",
+        "server/news-ai-processor.ts",
+        "server/news-fetcher.ts",
+        "server/news-regulatory-intelligence.test.ts",
+        "server/news-sources.test.ts",
+        "server/news/news-scraper-eurlex.ts",
+        "server/news/news-scraper-greendeal.ts",
+        "server/news/news-scraper-gs1eu.ts",
+        "server/news/news-scraper-zes.ts",
+        "server/test-helpers/api-mocks.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-sources-phase3",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/news-sources-phase3.test.ts",
+        "server/news-sources.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news-sources.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "server/news/\\d{1,2}",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news/news-scraper-gs1eu.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news/\\d{4}",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news/news-scraper-gs1eu.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news/news-fetch-utils",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/news-admin-router.ts",
+        "server/news/news-fetch-utils.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news/news-scraper-eurlex",
+      "exists": false,
+      "inbound_count": 4,
+      "inbound_files": [
+        "server/news-fetcher.ts",
+        "server/news/news-scraper-eurlex.test.ts",
+        "server/test-helpers/api-mocks.test.ts",
+        "server/test-helpers/api-mocks.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news/news-scraper-greendeal",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-fetcher.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news/news-scraper-gs1eu",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-fetcher.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news/news-scraper-zes",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-fetcher.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news/playwright",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news/news-scraper-gs1eu.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/news/vitest",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/news/news-fetch-utils.test.ts",
+        "server/news/news-scraper-eurlex.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/node-cron",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/cron-scheduler.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/onboarding-progress",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/path",
+      "exists": false,
+      "inbound_count": 7,
+      "inbound_files": [
+        "server/advisory-diff.test.ts",
+        "server/cron-monitoring-simple.ts",
+        "server/efrag-xbrl-parser.ts",
+        "server/evaluation-history.ts",
+        "server/inspect-efrag-excel.ts",
+        "server/load-gs1-attribute-mappings.ts",
+        "server/load-gs1-esrs-mappings.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa",
+      "exists": true,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/routers/ask-isa.ts",
+        "server/routers/evaluation.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/[^\"']+",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ask_isa/cite_then_write.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/cite_then_write",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ask_isa/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/context",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ask_isa/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/index",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ask_isa/ask_isa.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/index.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "AGENT_START_HERE.md"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/output_contracts",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ask_isa/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/step_policy",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ask_isa/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/system",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ask_isa/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/verification",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ask_isa/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/vitest",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ask_isa/ask_isa.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ask_isa/zod",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ask_isa/output_contracts.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/prompts/ingestion/system",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/prompts/ingestion/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/query-clarification",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/query-clarification.test.ts",
+        "server/routers/ask-isa.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/realtime-notifications",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/realtime.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/reasoning-engine",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/ask-isa-enhanced-routes.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/regulation-change-tracker",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/cron-scheduler.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/regulation-esrs-mapper",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/batch-generate-esrs-mappings.ts",
+        "server/regulation-esrs-mapper.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/roadmap-generator",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/routers/roadmap-export.ts",
+        "server/routers/roadmap.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/router-error-tracking.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/router-performance-tracking.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers",
+      "exists": true,
+      "inbound_count": 20,
+      "inbound_files": [
+        "client/src/lib/trpc.ts",
+        "server/_core/index.ts",
+        "server/ask-isa-integration.test.ts",
+        "server/auth.logout.test.ts",
+        "server/cron-secret-validation.test.ts",
+        "server/cron.test.ts",
+        "server/esrs.test.ts",
+        "server/mapping-feedback.test.ts",
+        "server/onboarding.test.ts",
+        "server/regulation-esrs-mapper.test.ts",
+        "server/regulatory-change-log.test.ts",
+        "server/routers.test.ts",
+        "server/routers/advisory-reports.test.ts",
+        "server/routers/attribute-recommender.test.ts",
+        "server/routers/dataset-registry.test.ts",
+        "server/routers/governance-documents.test.ts",
+        "server/routers/gs1-attributes.test.ts",
+        "server/routers/scraper-health.test.ts",
+        "server/routers/standards-directory.test.ts",
+        "server/standards-directory.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers-data-quality.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers-webhook-config.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "scripts/generate-api-docs.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/advisory-diff.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/advisory-reports.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/advisory.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/ask-isa-v2.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/ask-isa.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/attribute-recommender.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/child_process",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/advisory-diff.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/citation-admin.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/coverage-analytics.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/cron.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/dataset-registry.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/drizzle-orm",
+      "exists": false,
+      "inbound_count": 15,
+      "inbound_files": [
+        "server/routers/admin-templates.ts",
+        "server/routers/ask-isa-v2.ts",
+        "server/routers/citation-admin.ts",
+        "server/routers/compliance-risks.ts",
+        "server/routers/executive-analytics.ts",
+        "server/routers/gap-analyzer.ts",
+        "server/routers/gs1-attributes-multi-sector.test.ts",
+        "server/routers/gs1-attributes.ts",
+        "server/routers/gs1nl-attributes.ts",
+        "server/routers/notification-preferences.ts",
+        "server/routers/roadmap.ts",
+        "server/routers/scraper-health.test.ts",
+        "server/routers/scraper-health.ts",
+        "server/routers/standards-directory.ts",
+        "server/routers/templates.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/esg-artefacts.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/esrs-gs1-mapping.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/esrs-roadmap.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/evaluation.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/fs",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/routers/advisory-diff.ts",
+        "server/routers/advisory.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/gap-analyzer.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/governance-documents.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/gs1-attributes.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/gs1nl-attributes.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/monitoring.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/observability.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/path",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/routers/advisory-diff.ts",
+        "server/routers/advisory.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/pipeline-observability.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/production-monitoring.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/regulatory-change-log.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/scraper-health.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/standards-directory.js",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/vitest",
+      "exists": false,
+      "inbound_count": 8,
+      "inbound_files": [
+        "server/routers/advisory-reports.test.ts",
+        "server/routers/attribute-recommender.test.ts",
+        "server/routers/dataset-registry.test.ts",
+        "server/routers/governance-documents.test.ts",
+        "server/routers/gs1-attributes-multi-sector.test.ts",
+        "server/routers/gs1-attributes.test.ts",
+        "server/routers/scraper-health.test.ts",
+        "server/routers/standards-directory.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/routers/zod",
+      "exists": false,
+      "inbound_count": 33,
+      "inbound_files": [
+        "server/routers/admin-templates.ts",
+        "server/routers/advisory-diff.ts",
+        "server/routers/advisory-reports.ts",
+        "server/routers/advisory.ts",
+        "server/routers/ask-isa-enhanced-routes.ts",
+        "server/routers/ask-isa-v2.ts",
+        "server/routers/ask-isa.ts",
+        "server/routers/attribute-recommender.ts",
+        "server/routers/citation-admin.ts",
+        "server/routers/compliance-risks.ts",
+        "server/routers/coverage-analytics.ts",
+        "server/routers/cron.ts",
+        "server/routers/dataset-registry.ts",
+        "server/routers/esg-artefacts.ts",
+        "server/routers/esrs-gs1-mapping.ts",
+        "server/routers/esrs-roadmap.ts",
+        "server/routers/evaluation.ts",
+        "server/routers/gap-analyzer.ts",
+        "server/routers/governance-documents.ts",
+        "server/routers/gs1-attributes.ts",
+        "server/routers/gs1nl-attributes.ts",
+        "server/routers/notification-preferences.ts",
+        "server/routers/observability.ts",
+        "server/routers/pipeline-observability.ts",
+        "server/routers/production-monitoring.ts",
+        "server/routers/realtime.ts",
+        "server/routers/regulatory-change-log.ts",
+        "server/routers/roadmap-export.ts",
+        "server/routers/roadmap.ts",
+        "server/routers/scoring.ts",
+        "server/routers/scraper-health.ts",
+        "server/routers/standards-directory.ts",
+        "server/routers/templates.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/rss-parser",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/news-fetcher.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/authority-scoring",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/services/rag-metrics/source-diversity.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/corpus-governance/crypto",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/services/corpus-governance/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/corpus-governance/drizzle-orm",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/services/corpus-governance/index.ts",
+        "server/services/corpus-governance/schema.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/corpus-governance/drizzle-orm/mysql-core",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/services/corpus-governance/schema.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/corpus-governance/index",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/services/corpus-governance/test-ingestion.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/corpus-governance/schema",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/services/corpus-governance/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/corpus-governance/uuid",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/services/corpus-governance/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/corpus-ingestion/crypto",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/services/corpus-ingestion/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/corpus-ingestion/drizzle-orm",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/services/corpus-ingestion/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/evidence-analysis",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/ask-isa.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/news/scrapers/rss-parser",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/services/news/scrapers/efrag-scraper.ts",
+        "server/services/news/scrapers/eu-commission-scraper.ts",
+        "server/services/news/scrapers/eurlex-scraper.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/rag-metrics",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/ask-isa.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/rag-metrics/services/rag-metrics",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/services/rag-metrics/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/rag-metrics/source-diversity",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/services/rag-metrics/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/rag-metrics/traceability-score",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/services/rag-metrics/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/rag-tracing",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/routers/ask-isa.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/rag-tracing/crypto",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/services/rag-tracing/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/rag-tracing/drizzle-orm",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/services/rag-tracing/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/services/rag-tracing/failure-taxonomy",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/routers/ask-isa.ts",
+        "server/services/evidence-analysis/index.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/storage",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/export-scheduler.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/test-helpers/api-mocks",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/test-helpers/api-mocks-dryrun.test.ts",
+        "server/test-helpers/api-mocks.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/test-helpers/db-test-utils",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/test-helpers/db-test-utils.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/test-helpers/drizzle-orm",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/test-helpers/db-test-utils.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/test-helpers/drizzle-orm/mysql2",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/test-helpers/db-test-utils.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/test-helpers/mysql2/promise",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/test-helpers/db-test-utils.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/test-helpers/test-helpers/db-test-utils",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/test-helpers/db-test-utils.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/test-helpers/vitest",
+      "exists": false,
+      "inbound_count": 5,
+      "inbound_files": [
+        "server/test-helpers/api-mocks-dryrun.test.ts",
+        "server/test-helpers/api-mocks.test.ts",
+        "server/test-helpers/db-test-utils.test.ts",
+        "server/test-helpers/db-test-utils.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/url",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/load-gs1-attribute-mappings.ts",
+        "server/load-gs1-esrs-mappings.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/utils/crypto",
+      "exists": false,
+      "inbound_count": 2,
+      "inbound_files": [
+        "server/utils/pipeline-logger.ts",
+        "server/utils/server-logger.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/utils/pipeline-logger",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/news-pipeline.ts",
+        "server/observability.test.ts",
+        "server/pipeline-observability.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/utils/server-logger",
+      "exists": false,
+      "inbound_count": 7,
+      "inbound_files": [
+        "server/_core/index.ts",
+        "server/_core/logger-wiring.ts",
+        "server/db-connection.ts",
+        "server/evaluation-history.ts",
+        "server/news-event-processor.ts",
+        "server/test-helpers/db-test-utils.ts",
+        "server/utils/server-logger.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/utils/sort-keys",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/utils/deterministic-json.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/utils/vitest",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/utils/server-logger.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/vitest",
+      "exists": false,
+      "inbound_count": 57,
+      "inbound_files": [
+        "server/admin-analytics.test.ts",
+        "server/advisory-diff.test.ts",
+        "server/advisory-report-export.test.ts",
+        "server/alert-system.test.ts",
+        "server/ask-isa-guardrails.test.ts",
+        "server/ask-isa-integration.test.ts",
+        "server/attribute-recommender.test.ts",
+        "server/auth.logout.test.ts",
+        "server/authority-model.test.ts",
+        "server/claim-citation-verifier.test.ts",
+        "server/coverage-analytics.test.ts",
+        "server/cron-secret-validation.test.ts",
+        "server/cron.test.ts",
+        "server/data-quality.test.ts",
+        "server/db-error-tracking.test.ts",
+        "server/db-health-guard.test.ts",
+        "server/db-performance-tracking.test.ts",
+        "server/dutch-initiatives.test.ts",
+        "server/embedding.test.ts",
+        "server/esrs-gs1-mapping.test.ts",
+        "server/esrs.test.ts",
+        "server/event-procedures.test.ts",
+        "server/export-enhancements.test.ts",
+        "server/export.test.ts",
+        "server/gap-reasoning.test.ts",
+        "server/github-pat-validation.test.ts",
+        "server/gs1-mapping-engine.test.ts",
+        "server/gs1-nl-content.test.ts",
+        "server/health.test.ts",
+        "server/hybrid-search.test.ts",
+        "server/mapping-feedback.test.ts",
+        "server/news-admin-router.test.ts",
+        "server/news-ai-processor.test.ts",
+        "server/news-event-processor.test.ts",
+        "server/news-filters.test.ts",
+        "server/news-health-monitor.test.ts",
+        "server/news-pipeline-db-integration.test.ts",
+        "server/news-pipeline-modes.test.ts",
+        "server/news-pipeline.test.ts",
+        "server/news-recommendations.test.ts",
+        "server/news-regulatory-intelligence.test.ts",
+        "server/news-retry-health.test.ts",
+        "server/news-sources-phase3.test.ts",
+        "server/news-sources.test.ts",
+        "server/observability.test.ts",
+        "server/onboarding.test.ts",
+        "server/pipeline-observability.test.ts",
+        "server/production-monitoring.test.ts",
+        "server/query-clarification.test.ts",
+        "server/rate-limit.test.ts",
+        "server/regulation-esrs-mapper.test.ts",
+        "server/regulatory-change-log.test.ts",
+        "server/routers.test.ts",
+        "server/run-first-ingestion.test.ts",
+        "server/standards-directory.test.ts",
+        "server/webhook-notification-service.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/webhook-notification-service",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/alert-notification-service.ts",
+        "server/routers-webhook-config.ts",
+        "server/webhook-notification-service.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/wink-bm25-text-search",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/bm25-search.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/wink-nlp-utils",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/bm25-search.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/xlsx",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/efrag-ig3-parser.ts",
+        "server/gs1-benelux-parser.ts",
+        "server/gs1-diy-parser.ts"
+      ]
+    },
+    {
+      "referenced_path": "server/zod",
+      "exists": false,
+      "inbound_count": 8,
+      "inbound_files": [
+        "server/export-router.ts",
+        "server/gs1-standards-router.ts",
+        "server/news-admin-router.ts",
+        "server/router-error-tracking.ts",
+        "server/router-performance-tracking.ts",
+        "server/routers-data-quality.ts",
+        "server/routers-webhook-config.ts",
+        "server/routers.ts"
+      ]
+    },
+    {
+      "referenced_path": "shared/_core/errors",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "shared/types.ts"
+      ]
+    },
+    {
+      "referenced_path": "shared/const",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/auth.logout.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "shared/news-tags",
+      "exists": false,
+      "inbound_count": 3,
+      "inbound_files": [
+        "server/news-ai-processor.test.ts",
+        "server/news-ai-processor.ts",
+        "server/news-filters.test.ts"
+      ]
+    },
+    {
+      "referenced_path": "vite",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "vite.config.ts"
+      ]
+    },
+    {
+      "referenced_path": "vite-plugin-manus-runtime",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "vite.config.ts"
+      ]
+    },
+    {
+      "referenced_path": "vite.config",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "server/_core/vite.ts"
+      ]
+    },
+    {
+      "referenced_path": "vite.config.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "README.md"
+      ]
+    },
+    {
+      "referenced_path": "vitest.config.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "vitest.config.ts"
+      ]
+    },
+    {
+      "referenced_path": "vitest.setup.ts",
+      "exists": true,
+      "inbound_count": 1,
+      "inbound_files": [
+        "vitest.config.ts"
+      ]
+    },
+    {
+      "referenced_path": "vitest/config",
+      "exists": false,
+      "inbound_count": 1,
+      "inbound_files": [
+        "vitest.config.ts"
+      ]
+    }
+  ]
+}

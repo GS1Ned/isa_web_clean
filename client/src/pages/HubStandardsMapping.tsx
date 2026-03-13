@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
-import { Search, Grid3x3, List, CheckCircle, AlertCircle } from "lucide-react";
+import { Search, Grid3x3, List } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const STANDARDS_MAPPING = [
@@ -82,12 +82,6 @@ const LEVEL_COLORS = {
   REQUIRED: "bg-red-100 text-red-800",
   RECOMMENDED: "bg-yellow-100 text-yellow-800",
   OPTIONAL: "bg-green-100 text-green-800",
-};
-
-const _LEVEL_ICONS = {
-  REQUIRED: <AlertCircle className="w-4 h-4" />,
-  RECOMMENDED: <AlertCircle className="w-4 h-4" />,
-  OPTIONAL: <CheckCircle className="w-4 h-4" />,
 };
 
 export default function HubStandardsMapping() {

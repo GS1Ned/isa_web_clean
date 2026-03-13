@@ -1,68 +1,110 @@
 #!/usr/bin/env node
 
-/**
- * ISA Advisory Diff Computation Script
- * 
- * Computes canonical diff metrics between two advisory versions per docs/ADVISORY_DIFF_METRICS.md
- * 
- * Usage:
- *   node scripts/compute_advisory_diff.cjs v1.0 v1.1
- *   pnpm diff:advisory v1.0 v1.1
- */
+const fs = require("node:fs");
+const path = require("node:path");
 
-const fs = require('fs');
-const path = require('path');
-
-// Parse command line arguments
-const args = process.argv.slice(2);
-if (args.length !== 2) {
-  console.error('Usage: node compute_advisory_diff.cjs <version1> <version2>');
-  console.error('Example: node compute_advisory_diff.cjs v1.0 v1.1');
-  process.exit(1);
+function normalizeVersion(input) {
+  const value = String(input || "").trim();
+  if (!/^v\d+\.\d+$/.test(value)) {
+    throw new Error(`Invalid advisory version: ${value}. Expected format v<major>.<minor>`);
+  }
+  return value;
 }
 
-const [version1, version2] = args;
-
-// Construct file paths
-const advisoriesDir = path.join(__dirname, '..', 'data', 'advisories');
-const file1 = path.join(advisoriesDir, `ISA_ADVISORY_${version1}.json`);
-const file2 = path.join(advisoriesDir, `ISA_ADVISORY_${version2}.json`);
-
-// Check if files exist
-if (!fs.existsSync(file1)) {
-  console.error(`❌ Advisory file not found: ${file1}`);
-  console.error(`   Hint: Advisory ${version1} does not exist yet.`);
-  process.exit(1);
+function readJson(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, "utf8"));
 }
 
-if (!fs.existsSync(file2)) {
-  console.error(`❌ Advisory file not found: ${file2}`);
-  console.error(`   Hint: Advisory ${version2} does not exist yet.`);
-  console.error(`   To create v1.1, run a new advisory analysis and save as ISA_ADVISORY_v1.1.json`);
-  process.exit(1);
+function writeJson(filePath, payload) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
 }
 
-// Load advisory JSON files
-let advisory1, advisory2;
-try {
-  advisory1 = JSON.parse(fs.readFileSync(file1, 'utf8'));
-  advisory2 = JSON.parse(fs.readFileSync(file2, 'utf8'));
-} catch (error) {
-  console.error(`❌ Failed to parse advisory JSON: ${error.message}`);
-  process.exit(1);
+function toVersionedObject(version1Label, value1, version2Label, value2) {
+  const obj = { [version1Label]: value1 };
+  if (version2Label !== version1Label) {
+    obj[version2Label] = value2;
+  }
+  return obj;
 }
 
-console.log(`\n📊 Computing diff: ${version1} → ${version2}\n`);
+function mappingId(mapping, idx) {
+  return String(mapping.mappingId || mapping.id || `MAPPING-${idx}`);
+}
 
-// ============================================================================
-// 1. Coverage Deltas
-// ============================================================================
+function gapId(gap, idx) {
+  return String(gap.gapId || gap.id || `GAP-${idx}`);
+}
 
-function computeCoverageDeltas(adv1, adv2) {
-  const mappings1 = new Map(adv1.mappingResults.map(m => [m.mappingId, m]));
-  const mappings2 = new Map(adv2.mappingResults.map(m => [m.mappingId, m]));
+function recommendationId(recommendation, idx) {
+  return String(recommendation.recommendationId || recommendation.id || `REC-${idx}`);
+}
 
-  // Confidence transitions
+function confidenceValue(value) {
+  const normalized = String(value || "missing").toLowerCase();
+  if (["direct", "partial", "missing"].includes(normalized)) return normalized;
+  return "missing";
+}
+
+function confidenceDistribution(mappings) {
+  const out = { direct: 0, partial: 0, missing: 0 };
+  for (const mapping of mappings) {
+    out[confidenceValue(mapping.confidence)] += 1;
+  }
+  return out;
+}
+
+function coverageRate(dist) {
+  const total = dist.direct + dist.partial + dist.missing;
+  if (!total) return 0;
+  return (dist.direct + dist.partial) / total;
+}
+
+function toMap(items, keyFn) {
+  const map = new Map();
+  items.forEach((item, idx) => {
+    map.set(keyFn(item, idx), item);
+  });
+  return map;
+}
+
+function severityValue(gap) {
+  return String(gap.category || gap.severity || "low-priority").toLowerCase();
+}
+
+function timeframeDistribution(recommendations) {
+  const counts = {};
+  for (const recommendation of recommendations) {
+    const timeframe = String(recommendation.timeframe || "unknown");
+    counts[timeframe] = (counts[timeframe] || 0) + 1;
+  }
+  return counts;
+}
+
+function compareSourceArtifact(source1, source2, key) {
+  const a = source1?.[key];
+  const b = source2?.[key];
+  if (!a || !b) return false;
+
+  const hashA = typeof a.sha256 === "string" ? a.sha256 : "";
+  const hashB = typeof b.sha256 === "string" ? b.sha256 : "";
+  const pathA = typeof a.path === "string" ? a.path : "";
+  const pathB = typeof b.path === "string" ? b.path : "";
+
+  return hashA !== hashB || pathA !== pathB;
+}
+
+function round(value, decimals = 4) {
+  const power = 10 ** decimals;
+  return Math.round(value * power) / power;
+}
+
+function buildDiff(advisory1, advisory2, version1Label, version2Label) {
+  const mappings1 = Array.isArray(advisory1.mappingResults) ? advisory1.mappingResults : [];
+  const mappings2 = Array.isArray(advisory2.mappingResults) ? advisory2.mappingResults : [];
+  const map1 = toMap(mappings1, mappingId);
+  const map2 = toMap(mappings2, mappingId);
+
   const transitions = {
     missing_to_partial: 0,
     missing_to_direct: 0,
@@ -72,401 +114,301 @@ function computeCoverageDeltas(adv1, adv2) {
     direct_to_missing: 0,
   };
 
-  // Track new and removed mappings
+  for (const [id, mappingV1] of map1.entries()) {
+    if (!map2.has(id)) continue;
+    const from = confidenceValue(mappingV1.confidence);
+    const to = confidenceValue(map2.get(id).confidence);
+    const transitionKey = `${from}_to_${to}`;
+    if (Object.prototype.hasOwnProperty.call(transitions, transitionKey)) {
+      transitions[transitionKey] += 1;
+    }
+  }
+
+  const dist1 = confidenceDistribution(mappings1);
+  const dist2 = confidenceDistribution(mappings2);
+  const coverageRate1 = coverageRate(dist1);
+  const coverageRate2 = coverageRate(dist2);
+
   const newMappings = [];
   const removedMappings = [];
 
-  // Compare mappings present in both versions
-  for (const [id, m1] of mappings1) {
-    if (mappings2.has(id)) {
-      const m2 = mappings2.get(id);
-      const conf1 = m1.confidence;
-      const conf2 = m2.confidence;
-      
-      if (conf1 !== conf2) {
-        const transitionKey = `${conf1}_to_${conf2}`;
-        if (transitions.hasOwnProperty(transitionKey)) {
-          transitions[transitionKey]++;
-        }
-      }
-    } else {
-      removedMappings.push(id);
+  for (const [id, mapping] of map2.entries()) {
+    if (!map1.has(id)) {
+      newMappings.push({ id, regulationStandard: mapping.regulationStandard || null });
     }
   }
 
-  // Find new mappings in v2
-  for (const [id, m2] of mappings2) {
-    if (!mappings1.has(id)) {
-      newMappings.push(id);
+  for (const [id, mapping] of map1.entries()) {
+    if (!map2.has(id)) {
+      removedMappings.push({ id, regulationStandard: mapping.regulationStandard || null });
     }
   }
 
-  // Confidence distribution
-  const countConfidence = (mappings) => {
-    const counts = { direct: 0, partial: 0, missing: 0 };
-    for (const m of mappings) {
-      counts[m.confidence]++;
+  const gaps1 = Array.isArray(advisory1.gaps) ? advisory1.gaps : [];
+  const gaps2 = Array.isArray(advisory2.gaps) ? advisory2.gaps : [];
+  const gapsMap1 = toMap(gaps1, gapId);
+  const gapsMap2 = toMap(gaps2, gapId);
+
+  const closedGaps = [];
+  const newGapsDetails = [];
+  const severityChangeDetails = [];
+
+  for (const [id, gap] of gapsMap1.entries()) {
+    if (!gapsMap2.has(id)) {
+      closedGaps.push({
+        gapId: id,
+        title: gap.title || null,
+        category: severityValue(gap),
+      });
+      continue;
     }
-    return counts;
+
+    const before = severityValue(gap);
+    const after = severityValue(gapsMap2.get(id));
+    if (before !== after) {
+      severityChangeDetails.push({ gapId: id, [version1Label]: before, [version2Label]: after });
+    }
+  }
+
+  for (const [id, gap] of gapsMap2.entries()) {
+    if (!gapsMap1.has(id)) {
+      newGapsDetails.push({
+        gapId: id,
+        title: gap.title || null,
+        category: severityValue(gap),
+      });
+    }
+  }
+
+  const severityDistribution1 = { critical: 0, moderate: 0, "low-priority": 0 };
+  const severityDistribution2 = { critical: 0, moderate: 0, "low-priority": 0 };
+
+  for (const gap of gaps1) {
+    const severity = severityValue(gap);
+    if (severityDistribution1[severity] !== undefined) severityDistribution1[severity] += 1;
+  }
+
+  for (const gap of gaps2) {
+    const severity = severityValue(gap);
+    if (severityDistribution2[severity] !== undefined) severityDistribution2[severity] += 1;
+  }
+
+  const recommendations1 = Array.isArray(advisory1.recommendations) ? advisory1.recommendations : [];
+  const recommendations2 = Array.isArray(advisory2.recommendations) ? advisory2.recommendations : [];
+  const recMap1 = toMap(recommendations1, recommendationId);
+  const recMap2 = toMap(recommendations2, recommendationId);
+
+  const implementedDetails = [];
+  const newRecommendationsDetails = [];
+  const timeframeChangeDetails = [];
+
+  for (const [id, recommendation] of recMap1.entries()) {
+    if (!recMap2.has(id)) {
+      implementedDetails.push({
+        recommendationId: id,
+        title: recommendation.title || null,
+        timeframe: recommendation.timeframe || null,
+      });
+      continue;
+    }
+
+    const before = String(recommendation.timeframe || "");
+    const after = String(recMap2.get(id).timeframe || "");
+    if (before !== after) {
+      timeframeChangeDetails.push({ recommendationId: id, [version1Label]: before, [version2Label]: after });
+    }
+  }
+
+  for (const [id, recommendation] of recMap2.entries()) {
+    if (!recMap1.has(id)) {
+      newRecommendationsDetails.push({
+        recommendationId: id,
+        title: recommendation.title || null,
+        timeframe: recommendation.timeframe || null,
+      });
+    }
+  }
+
+  const sourceArtifacts1 = advisory1.sourceArtifacts || {};
+  const sourceArtifacts2 = advisory2.sourceArtifacts || {};
+
+  const sourceArtifactChanges = {
+    advisoryMarkdown: compareSourceArtifact(sourceArtifacts1, sourceArtifacts2, "advisoryMarkdown"),
+    datasetRegistry: compareSourceArtifact(sourceArtifacts1, sourceArtifacts2, "datasetRegistry"),
+    schema: compareSourceArtifact(sourceArtifacts1, sourceArtifacts2, "schema"),
   };
 
-  const dist1 = countConfidence(adv1.mappingResults);
-  const dist2 = countConfidence(adv2.mappingResults);
+  const anySourceArtifactChanged =
+    sourceArtifactChanges.advisoryMarkdown ||
+    sourceArtifactChanges.datasetRegistry ||
+    sourceArtifactChanges.schema;
 
-  // Coverage rates
-  const coverageRate1 = (dist1.direct + dist1.partial) / adv1.mappingResults.length;
-  const coverageRate2 = (dist2.direct + dist2.partial) / adv2.mappingResults.length;
   const coverageImprovement = coverageRate2 - coverageRate1;
 
-  return {
-    totalMappings: {
-      [version1]: adv1.mappingResults.length,
-      [version2]: adv2.mappingResults.length,
-      delta: adv2.mappingResults.length - adv1.mappingResults.length,
-    },
-    confidenceTransitions: transitions,
-    confidenceDistribution: {
-      [version1]: dist1,
-      [version2]: dist2,
-    },
-    coverageRate: {
-      [version1]: parseFloat(coverageRate1.toFixed(4)),
-      [version2]: parseFloat(coverageRate2.toFixed(4)),
-    },
-    coverageImprovement: parseFloat(coverageImprovement.toFixed(4)),
-    newMappings: newMappings.length,
-    removedMappings: removedMappings.length,
-  };
-}
-
-// ============================================================================
-// 2. Gap Lifecycle
-// ============================================================================
-
-function computeGapLifecycle(adv1, adv2) {
-  // Handle missing gaps field gracefully
-  const gaps1 = new Map((adv1.gaps || []).map(g => [g.gapId, g]));
-  const gaps2 = new Map((adv2.gaps || []).map(g => [g.gapId, g]));
-
-  const closed = [];
-  const newGaps = [];
-  const severityChanges = [];
-
-  // Find closed gaps (in v1 but not v2)
-  for (const [id, g1] of gaps1) {
-    if (!gaps2.has(id)) {
-      closed.push({ gapId: id, title: g1.title, category: g1.category });
-    } else {
-      const g2 = gaps2.get(id);
-      if (g1.category !== g2.category) {
-        severityChanges.push({
-          gapId: id,
-          title: g1.title,
-          from: g1.category,
-          to: g2.category,
-        });
-      }
-    }
-  }
-
-  // Find new gaps (in v2 but not v1)
-  for (const [id, g2] of gaps2) {
-    if (!gaps1.has(id)) {
-      newGaps.push({ gapId: id, title: g2.title, category: g2.category });
-    }
-  }
-
-  // Count by severity
-  const countBySeverity = (gaps) => {
-    const counts = { critical: 0, moderate: 0, 'low-priority': 0 };
-    for (const g of (gaps || [])) {
-      counts[g.category]++;
-    }
-    return counts;
-  };
-
-  const severity1 = countBySeverity(adv1.gaps);
-  const severity2 = countBySeverity(adv2.gaps);
-
-  return {
-    totalGaps: {
-      [version1]: (adv1.gaps || []).length,
-      [version2]: (adv2.gaps || []).length,
-      delta: (adv2.gaps || []).length - (adv1.gaps || []).length,
-    },
-    gapsClosed: closed.length,
-    newGaps: newGaps.length,
-    severityChanges: severityChanges.length,
-    severityDistribution: {
-      [version1]: severity1,
-      [version2]: severity2,
-    },
-    closedGaps: closed,
-    newGapsDetails: newGaps,
-    severityChangeDetails: severityChanges,
-  };
-}
-
-// ============================================================================
-// 3. Recommendation Lifecycle
-// ============================================================================
-
-function computeRecommendationLifecycle(adv1, adv2) {
-  const recs1 = new Map(adv1.recommendations.map(r => [r.recommendationId, r]));
-  const recs2 = new Map(adv2.recommendations.map(r => [r.recommendationId, r]));
-
-  const implemented = [];
-  const newRecs = [];
-  const timeframeChanges = [];
-
-  // Find implemented recommendations (in v1 but not v2)
-  for (const [id, r1] of recs1) {
-    if (!recs2.has(id)) {
-      implemented.push({ recommendationId: id, title: r1.title, timeframe: r1.timeframe });
-    } else {
-      const r2 = recs2.get(id);
-      if (r1.timeframe !== r2.timeframe) {
-        timeframeChanges.push({
-          recommendationId: id,
-          title: r1.title,
-          from: r1.timeframe,
-          to: r2.timeframe,
-        });
-      }
-    }
-  }
-
-  // Find new recommendations (in v2 but not v1)
-  for (const [id, r2] of recs2) {
-    if (!recs1.has(id)) {
-      newRecs.push({ recommendationId: id, title: r2.title, timeframe: r2.timeframe });
-    }
-  }
-
-  // Count by timeframe
-  const countByTimeframe = (recs) => {
-    const counts = { 'short-term': 0, 'medium-term': 0, 'long-term': 0 };
-    for (const r of recs) {
-      counts[r.timeframe]++;
-    }
-    return counts;
-  };
-
-  const timeframe1 = countByTimeframe(adv1.recommendations);
-  const timeframe2 = countByTimeframe(adv2.recommendations);
-
-  return {
-    totalRecommendations: {
-      [version1]: adv1.recommendations.length,
-      [version2]: adv2.recommendations.length,
-      delta: adv2.recommendations.length - adv1.recommendations.length,
-    },
-    implemented: implemented.length,
-    newRecommendations: newRecs.length,
-    timeframeChanges: timeframeChanges.length,
-    timeframeDistribution: {
-      [version1]: timeframe1,
-      [version2]: timeframe2,
-    },
-    implementedDetails: implemented,
-    newRecommendationsDetails: newRecs,
-    timeframeChangeDetails: timeframeChanges,
-  };
-}
-
-// ============================================================================
-// 4. Traceability Deltas
-// ============================================================================
-
-function computeTraceabilityDeltas(adv1, adv2) {
-  const hashChanged = (artifact1, artifact2) => {
-    if (!artifact1 || !artifact2) return false;
-    return artifact1.sha256 !== artifact2.sha256;
-  };
-
-  const changes = {
-    advisoryMarkdown: hashChanged(
-      adv1.sourceArtifacts?.advisoryMarkdown,
-      adv2.sourceArtifacts?.advisoryMarkdown
-    ),
-    datasetRegistry: hashChanged(
-      adv1.sourceArtifacts?.datasetRegistry,
-      adv2.sourceArtifacts?.datasetRegistry
-    ),
-    schema: hashChanged(
-      adv1.sourceArtifacts?.schema,
-      adv2.sourceArtifacts?.schema
-    ),
-  };
-
-  const datasetRegistryVersionChanged = 
-    adv1.datasetRegistryVersion !== adv2.datasetRegistryVersion;
-
-  return {
-    datasetRegistryVersion: {
-      [version1]: adv1.datasetRegistryVersion,
-      [version2]: adv2.datasetRegistryVersion,
-      changed: datasetRegistryVersionChanged,
-    },
-    sourceArtifactChanges: changes,
-    anySourceArtifactChanged: Object.values(changes).some(c => c),
-  };
-}
-
-// ============================================================================
-// 5. Composite Metrics
-// ============================================================================
-
-function computeCompositeMetrics(coverageDeltas, gapLifecycle, recLifecycle) {
-  // Overall progress score (0-100)
-  // Formula: weighted average of coverage improvement, gap closure, and recommendation implementation
-  const coverageWeight = 0.5;
-  const gapWeight = 0.3;
-  const recWeight = 0.2;
-
-  const coverageScore = coverageDeltas.coverageImprovement * 100; // Convert to percentage
-  const gapScore = gapLifecycle.totalGaps[version1] > 0
-    ? (gapLifecycle.gapsClosed / gapLifecycle.totalGaps[version1]) * 100
-    : 0;
-  const recScore = recLifecycle.totalRecommendations[version1] > 0
-    ? (recLifecycle.implemented / recLifecycle.totalRecommendations[version1]) * 100
+  const coverageScore = Math.max(0, coverageImprovement * 100);
+  const gapClosureScore = gaps1.length ? Math.max(0, (closedGaps.length / gaps1.length) * 100) : 0;
+  const recommendationImplementationScore = recommendations1.length
+    ? Math.max(0, (implementedDetails.length / recommendations1.length) * 100)
     : 0;
 
-  const overallProgressScore = 
-    coverageWeight * coverageScore +
-    gapWeight * gapScore +
-    recWeight * recScore;
-
-  // Regression detection
   const regressions = [];
-  
-  if (coverageDeltas.coverageImprovement < 0) {
+
+  if (coverageImprovement < 0) {
+    regressions.push({ type: "coverage_regression", severity: "critical", detail: "coverage rate decreased" });
+  }
+
+  const downgradeCount =
+    transitions.direct_to_partial + transitions.partial_to_missing + transitions.direct_to_missing;
+  if (downgradeCount > 0) {
+    const critical = transitions.partial_to_missing + transitions.direct_to_missing > 0;
     regressions.push({
-      type: 'coverage_regression',
-      severity: 'critical',
-      message: `Coverage rate decreased by ${Math.abs(coverageDeltas.coverageImprovement * 100).toFixed(2)}%`,
+      type: "confidence_downgrade",
+      severity: critical ? "critical" : "moderate",
+      detail: `${downgradeCount} mapping confidence downgrades detected`,
     });
   }
 
-  if (coverageDeltas.confidenceTransitions.direct_to_partial > 0) {
+  if (gaps2.length > gaps1.length) {
     regressions.push({
-      type: 'confidence_downgrade',
-      severity: 'moderate',
-      message: `${coverageDeltas.confidenceTransitions.direct_to_partial} mappings downgraded from direct to partial`,
+      type: "gap_increase",
+      severity: "moderate",
+      detail: `gaps increased from ${gaps1.length} to ${gaps2.length}`,
     });
   }
 
-  if (coverageDeltas.confidenceTransitions.partial_to_missing > 0 || 
-      coverageDeltas.confidenceTransitions.direct_to_missing > 0) {
-    regressions.push({
-      type: 'confidence_downgrade',
-      severity: 'critical',
-      message: `Mappings downgraded to missing`,
-    });
-  }
+  const regressionDetected = regressions.length > 0;
+  const overallProgressScore = round(
+    coverageScore * 0.5 + gapClosureScore * 0.25 + recommendationImplementationScore * 0.25,
+    2
+  );
 
-  if (gapLifecycle.newGaps > gapLifecycle.gapsClosed) {
-    regressions.push({
-      type: 'gap_increase',
-      severity: 'moderate',
-      message: `More gaps opened (${gapLifecycle.newGaps}) than closed (${gapLifecycle.gapsClosed})`,
-    });
-  }
+  const datasetRegistryVersionObj = toVersionedObject(
+    version1Label,
+    advisory1.datasetRegistryVersion || null,
+    version2Label,
+    advisory2.datasetRegistryVersion || null
+  );
+  datasetRegistryVersionObj.changed =
+    (advisory1.datasetRegistryVersion || null) !== (advisory2.datasetRegistryVersion || null);
 
   return {
-    overallProgressScore: parseFloat(overallProgressScore.toFixed(2)),
-    componentScores: {
-      coverage: parseFloat(coverageScore.toFixed(2)),
-      gapClosure: parseFloat(gapScore.toFixed(2)),
-      recommendationImplementation: parseFloat(recScore.toFixed(2)),
+    metadata: {
+      comparisonDate: new Date().toISOString(),
+      version1: {
+        advisoryId: advisory1.advisoryId || `ISA_ADVISORY_${version1Label}`,
+        version: advisory1.version || version1Label.replace("v", ""),
+        publicationDate: advisory1.publicationDate || null,
+      },
+      version2: {
+        advisoryId: advisory2.advisoryId || `ISA_ADVISORY_${version2Label}`,
+        version: advisory2.version || version2Label.replace("v", ""),
+        publicationDate: advisory2.publicationDate || null,
+      },
     },
-    regressionDetected: regressions.length > 0,
-    regressions,
+    coverageDeltas: {
+      totalMappings: {
+        ...toVersionedObject(version1Label, mappings1.length, version2Label, mappings2.length),
+        delta: mappings2.length - mappings1.length,
+      },
+      confidenceTransitions: transitions,
+      confidenceDistribution: toVersionedObject(version1Label, dist1, version2Label, dist2),
+      coverageRate: toVersionedObject(version1Label, round(coverageRate1), version2Label, round(coverageRate2)),
+      coverageImprovement: round(coverageImprovement),
+      newMappings: newMappings.length,
+      removedMappings: removedMappings.length,
+    },
+    gapLifecycle: {
+      totalGaps: {
+        ...toVersionedObject(version1Label, gaps1.length, version2Label, gaps2.length),
+        delta: gaps2.length - gaps1.length,
+      },
+      gapsClosed: closedGaps.length,
+      newGaps: newGapsDetails.length,
+      severityChanges: severityChangeDetails.length,
+      severityDistribution: toVersionedObject(version1Label, severityDistribution1, version2Label, severityDistribution2),
+      closedGaps,
+      newGapsDetails,
+      severityChangeDetails,
+    },
+    recommendationLifecycle: {
+      totalRecommendations: {
+        ...toVersionedObject(version1Label, recommendations1.length, version2Label, recommendations2.length),
+        delta: recommendations2.length - recommendations1.length,
+      },
+      implemented: implementedDetails.length,
+      newRecommendations: newRecommendationsDetails.length,
+      timeframeChanges: timeframeChangeDetails.length,
+      timeframeDistribution: toVersionedObject(
+        version1Label,
+        timeframeDistribution(recommendations1),
+        version2Label,
+        timeframeDistribution(recommendations2)
+      ),
+      implementedDetails,
+      newRecommendationsDetails,
+      timeframeChangeDetails,
+    },
+    traceabilityDeltas: {
+      datasetRegistryVersion: datasetRegistryVersionObj,
+      sourceArtifactChanges,
+      anySourceArtifactChanged,
+    },
+    compositeMetrics: {
+      overallProgressScore,
+      componentScores: {
+        coverage: round(coverageScore, 2),
+        gapClosure: round(gapClosureScore, 2),
+        recommendationImplementation: round(recommendationImplementationScore, 2),
+      },
+      regressionDetected,
+      regressions,
+    },
   };
 }
 
-// ============================================================================
-// Main Computation
-// ============================================================================
+function main() {
+  const version1 = normalizeVersion(process.argv[2]);
+  const version2 = normalizeVersion(process.argv[3]);
+  const version1Label = version1;
+  const version2Label = version2;
 
-const coverageDeltas = computeCoverageDeltas(advisory1, advisory2);
-const gapLifecycle = computeGapLifecycle(advisory1, advisory2);
-const recLifecycle = computeRecommendationLifecycle(advisory1, advisory2);
-const traceabilityDeltas = computeTraceabilityDeltas(advisory1, advisory2);
-const compositeMetrics = computeCompositeMetrics(coverageDeltas, gapLifecycle, recLifecycle);
+  const advisoryPath1 = path.join(process.cwd(), "data", "advisories", `ISA_ADVISORY_${version1}.json`);
+  const advisoryPath2 = path.join(process.cwd(), "data", "advisories", `ISA_ADVISORY_${version2}.json`);
 
-// ============================================================================
-// Output
-// ============================================================================
+  if (!fs.existsSync(advisoryPath1)) {
+    throw new Error(`Missing advisory file: ${advisoryPath1}`);
+  }
+  if (!fs.existsSync(advisoryPath2)) {
+    throw new Error(`Missing advisory file: ${advisoryPath2}`);
+  }
 
-const diffOutput = {
-  metadata: {
-    comparisonDate: new Date().toISOString(),
-    version1: {
-      advisoryId: advisory1.advisoryId,
-      version: advisory1.version,
-      publicationDate: advisory1.publicationDate,
-    },
-    version2: {
-      advisoryId: advisory2.advisoryId,
-      version: advisory2.version,
-      publicationDate: advisory2.publicationDate,
-    },
-  },
-  coverageDeltas,
-  gapLifecycle,
-  recommendationLifecycle: recLifecycle,
-  traceabilityDeltas,
-  compositeMetrics,
-};
+  const advisory1 = readJson(advisoryPath1);
+  const advisory2 = readJson(advisoryPath2);
 
-// Write diff output to file
-const outputFile = path.join(advisoriesDir, `ISA_ADVISORY_DIFF_${version1}_to_${version2}.json`);
-fs.writeFileSync(outputFile, JSON.stringify(diffOutput, null, 2) + '\n');
+  const diff = buildDiff(advisory1, advisory2, version1Label, version2Label);
 
-// Print summary
-console.log('✅ Diff computation complete\n');
-console.log('📈 Coverage Deltas:');
-console.log(`   Total mappings: ${coverageDeltas.totalMappings[version1]} → ${coverageDeltas.totalMappings[version2]} (${coverageDeltas.totalMappings.delta >= 0 ? '+' : ''}${coverageDeltas.totalMappings.delta})`);
-console.log(`   Coverage rate: ${(coverageDeltas.coverageRate[version1] * 100).toFixed(1)}% → ${(coverageDeltas.coverageRate[version2] * 100).toFixed(1)}% (${coverageDeltas.coverageImprovement >= 0 ? '+' : ''}${(coverageDeltas.coverageImprovement * 100).toFixed(1)}%)`);
-console.log(`   Confidence transitions:`);
-console.log(`     missing → partial: ${coverageDeltas.confidenceTransitions.missing_to_partial}`);
-console.log(`     missing → direct: ${coverageDeltas.confidenceTransitions.missing_to_direct}`);
-console.log(`     partial → direct: ${coverageDeltas.confidenceTransitions.partial_to_direct}`);
+  const outPath = path.join(
+    process.cwd(),
+    "data",
+    "advisories",
+    `ISA_ADVISORY_DIFF_${version1}_to_${version2}.json`
+  );
 
-console.log('\n🔍 Gap Lifecycle:');
-console.log(`   Total gaps: ${gapLifecycle.totalGaps[version1]} → ${gapLifecycle.totalGaps[version2]} (${gapLifecycle.totalGaps.delta >= 0 ? '+' : ''}${gapLifecycle.totalGaps.delta})`);
-console.log(`   Gaps closed: ${gapLifecycle.gapsClosed}`);
-console.log(`   New gaps: ${gapLifecycle.newGaps}`);
+  writeJson(outPath, diff);
+  process.stdout.write(`DONE=advisory_diff_written:${outPath}\n`);
 
-console.log('\n✅ Recommendation Lifecycle:');
-console.log(`   Total recommendations: ${recLifecycle.totalRecommendations[version1]} → ${recLifecycle.totalRecommendations[version2]} (${recLifecycle.totalRecommendations.delta >= 0 ? '+' : ''}${recLifecycle.totalRecommendations.delta})`);
-console.log(`   Implemented: ${recLifecycle.implemented}`);
-console.log(`   New recommendations: ${recLifecycle.newRecommendations}`);
+  const hasCriticalRegression = (diff.compositeMetrics.regressions || []).some(
+    (regression) => regression.severity === "critical"
+  );
 
-console.log('\n🔒 Traceability Deltas:');
-console.log(`   Dataset registry version: ${traceabilityDeltas.datasetRegistryVersion[version1]} → ${traceabilityDeltas.datasetRegistryVersion[version2]} ${traceabilityDeltas.datasetRegistryVersion.changed ? '(CHANGED)' : '(unchanged)'}`);
-console.log(`   Source artifact changes: ${traceabilityDeltas.anySourceArtifactChanged ? 'YES' : 'NO'}`);
-
-console.log('\n📊 Composite Metrics:');
-console.log(`   Overall progress score: ${compositeMetrics.overallProgressScore}/100`);
-console.log(`   Regression detected: ${compositeMetrics.regressionDetected ? 'YES ⚠️' : 'NO ✅'}`);
-if (compositeMetrics.regressions.length > 0) {
-  console.log('   Regressions:');
-  compositeMetrics.regressions.forEach(r => {
-    console.log(`     - [${r.severity.toUpperCase()}] ${r.message}`);
-  });
-}
-
-console.log(`\n📄 Diff output saved to: ${outputFile}\n`);
-
-// Exit with error code if regressions detected
-if (compositeMetrics.regressionDetected) {
-  const criticalRegressions = compositeMetrics.regressions.filter(r => r.severity === 'critical');
-  if (criticalRegressions.length > 0) {
-    console.error('❌ CRITICAL REGRESSIONS DETECTED - diff computation failed');
+  if (hasCriticalRegression) {
     process.exit(1);
   }
 }
 
-console.log('✅ Diff computation passed (no critical regressions)\n');
+try {
+  main();
+} catch (error) {
+  process.stderr.write(`STOP=advisory_diff_error:${String(error?.message || error)}\n`);
+  process.exit(1);
+}

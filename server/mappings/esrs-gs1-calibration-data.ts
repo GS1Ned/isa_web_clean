@@ -1,0 +1,679 @@
+export type CalibratedConfidenceLevel = "high" | "medium" | "low";
+export type CalibratedMappingType = "direct" | "calculated" | "aggregated";
+
+export interface ESRSGS1CalibratedAttribute {
+  attributeId: string;
+  attributeName: string;
+  mappingConfidence: CalibratedConfidenceLevel;
+  mappingType: CalibratedMappingType;
+  implementationNotes: string;
+}
+
+export interface ESRSGS1CalibrationRule {
+  id: string;
+  esrsStandard: string;
+  shortNamePhrases?: string[];
+  requirementPhrases?: string[];
+  definitionPhrases?: string[];
+  rationale: string;
+  attributes: ESRSGS1CalibratedAttribute[];
+}
+
+export const ESRS_GS1_CALIBRATION_RULES: ESRSGS1CalibrationRule[] = [
+  {
+    id: "E1_PRODUCT_CARBON_FOOTPRINT_IDENTIFICATION",
+    esrsStandard: "E1",
+    shortNamePhrases: [
+      "Digital Link provides carbon footprint access",
+      "Product Carbon Footprint",
+      "Battery CFP",
+    ],
+    requirementPhrases: [
+      "Product carbon footprint disclosure",
+      "GHG Emissions Scope 3 - Product Carbon Footprint",
+      "Battery Carbon Footprint",
+    ],
+    rationale:
+      "Calibrated from repo-native DPP identification rules and carbon-footprint guidance: product-level carbon footprint disclosures need the footprint value plus stable GS1 identifiers for product and, where applicable, item-level traceability.",
+    attributes: [
+      {
+        attributeId: "productCarbonFootprint",
+        attributeName: "Product Carbon Footprint",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: product carbon footprint is the primary disclosure field for these ESRS product-level carbon use cases.",
+      },
+      {
+        attributeId: "gtin",
+        attributeName: "GTIN",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: GTIN is the stable product identifier that anchors product carbon footprint disclosures to a concrete GS1 identity.",
+      },
+      {
+        attributeId: "serialNumber",
+        attributeName: "Serial Number",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: serial number is useful when product carbon footprint disclosure needs instance-level or battery-passport traceability.",
+      },
+    ],
+  },
+  {
+    id: "E2_PRODUCT_COMPLIANCE_TRACKING",
+    esrsStandard: "E2",
+    shortNamePhrases: [
+      "GDSN captures hazardous substance data",
+      "GTIN links to compliance data",
+    ],
+    requirementPhrases: [
+      "Substances of concern in products",
+      "Product regulatory compliance tracking",
+    ],
+    rationale:
+      "Calibrated from repo-native hazardous-substances and traceability attributes: compliance tracking requires a regulated-product identity, the compliance substance payload, and supplier context for escalation.",
+    attributes: [
+      {
+        attributeId: "hazardousSubstances",
+        attributeName: "Hazardous Substances",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: hazardous-substances data is the primary GS1-aligned payload for these ESRS pollution and compliance cases.",
+      },
+      {
+        attributeId: "gtin",
+        attributeName: "GTIN",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: GTIN provides the stable product identity required to attach compliance and substances-of-concern data to a specific item.",
+      },
+      {
+        attributeId: "supplierInformation",
+        attributeName: "Supplier Information",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: supplier information is needed to trace upstream compliance responsibility and escalation paths.",
+      },
+    ],
+  },
+  {
+    id: "E5_LIFECYCLE_IDENTIFICATION",
+    esrsStandard: "E5",
+    shortNamePhrases: ["GTIN enables product lifecycle tracking"],
+    requirementPhrases: ["Unique product identification for lifecycle tracking"],
+    rationale:
+      "Calibrated from repo-native DPP identification rules and GS1 identification standards: lifecycle tracking requires stable product and instance identifiers rather than packaging recyclability fields.",
+    attributes: [
+      {
+        attributeId: "gtin",
+        attributeName: "GTIN",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: GTIN is the primary GS1 product identifier for lifecycle and passport lookup flows.",
+      },
+      {
+        attributeId: "serialNumber",
+        attributeName: "Serial Number",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: serial number strengthens item-level lifecycle tracking where product-instance traceability is in scope.",
+      },
+    ],
+  },
+  {
+    id: "ESRS2_VALUE_CHAIN_CONTEXT",
+    esrsStandard: "ESRS 2",
+    shortNamePhrases: [
+      "GLN supports value chain documentation",
+      "CBV ensures data consistency",
+    ],
+    requirementPhrases: [
+      "Description of value chain",
+      "Standardized business vocabulary",
+    ],
+    rationale:
+      "Calibrated from repo-native GS1 identification and business-vocabulary assets: these ESRS 2 cases are best anchored in party/location identity plus supplier context, not product-specific GTIN expansion.",
+    attributes: [
+      {
+        attributeId: "gln",
+        attributeName: "GLN",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: GLN is the primary GS1 identifier for locations, legal entities, and value-chain actors.",
+      },
+      {
+        attributeId: "supplierInformation",
+        attributeName: "Supplier Information",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: supplier information provides the narrative business context needed to describe value-chain structure and relationships.",
+      },
+    ],
+  },
+  {
+    id: "S1_DUE_DILIGENCE_GEOGRAPHY",
+    esrsStandard: "S1",
+    shortNamePhrases: [
+      "EPCIS supports supply chain transparency",
+      "GS1 Traceability supports CSDDD",
+    ],
+    requirementPhrases: [
+      "Supply chain due diligence",
+      "Human rights due diligence traceability",
+    ],
+    rationale:
+      "Calibrated from repo-native due-diligence and origin-category assets: these recurring S1 traceability cases consistently require supplier identity and location context, with country-of-origin data acting as a stable supporting field when risk review is geography-sensitive.",
+    attributes: [
+      {
+        attributeId: "supplierInformation",
+        attributeName: "Supplier Information",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: supplier information is the primary reviewer-facing field for tracing due-diligence responsibility across upstream actors.",
+      },
+      {
+        attributeId: "gln",
+        attributeName: "GLN",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: GLN anchors legal-entity and location identity for due-diligence and chain-of-custody review.",
+      },
+      {
+        attributeId: "countryOfOrigin",
+        attributeName: "Country Of Origin",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: country-of-origin data is a stable supporting field when due-diligence assessment depends on geography-sensitive sourcing risk.",
+      },
+    ],
+  },
+  {
+    id: "S2_VALUE_CHAIN_GEOGRAPHY",
+    esrsStandard: "S2",
+    shortNamePhrases: ["GLN enables supplier identification"],
+    requirementPhrases: ["Value chain mapping"],
+    rationale:
+      "Calibrated from repo-native supplier-identification and origin-sourcing assets: these recurring S2 value-chain cases are best anchored in party identity plus supplier context, with origin retained only as a governed support field for geography-sensitive mapping.",
+    attributes: [
+      {
+        attributeId: "gln",
+        attributeName: "GLN",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: GLN is the core GS1 identifier for supplier and location mapping in value-chain structure review.",
+      },
+      {
+        attributeId: "supplierInformation",
+        attributeName: "Supplier Information",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: supplier information provides the named party context needed to interpret value-chain relationships.",
+      },
+      {
+        attributeId: "countryOfOrigin",
+        attributeName: "Country Of Origin",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: country-of-origin remains a governed support field when value-chain mapping needs geography-sensitive sourcing context.",
+      },
+    ],
+  },
+  {
+    id: "E1_VALUE_CHAIN_EMISSIONS_SEGMENTATION",
+    esrsStandard: "E1",
+    shortNamePhrases: [
+      "EPCIS enables Scope 3 tracking",
+      "Supply Chain Emissions",
+    ],
+    requirementPhrases: [
+      "Scope 3 GHG emissions from value chain",
+      "Supply Chain Traceability - Emissions",
+    ],
+    rationale:
+      "Calibrated from repo-native Scope 3 and GDM segmentation assets: these recurring E1 value-chain emissions cases consistently need the overall Scope 3 value plus category segmentation, while the category field remains an aggregated reviewer-facing grouping rather than a raw event datum.",
+    attributes: [
+      {
+        attributeId: "greenhouseGasEmissionsScope3",
+        attributeName: "Greenhouse Gas Emissions Scope 3",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: Scope 3 emissions remain the primary direct disclosure field for these value-chain emissions cases.",
+      },
+      {
+        attributeId: "supplyChainEmissionsCategory",
+        attributeName: "Supply Chain Emissions Category",
+        mappingConfidence: "medium",
+        mappingType: "aggregated",
+        implementationNotes:
+          "Calibrated exact-match fallback: supply-chain emissions category is a governed segmentation field that groups underlying value-chain emissions evidence by activity type.",
+      },
+    ],
+  },
+  {
+    id: "E1_ENERGY_MIX_DISCLOSURE",
+    esrsStandard: "E1",
+    shortNamePhrases: ["EPCIS tracks energy-intensive processes"],
+    requirementPhrases: ["Energy consumption from non-renewable sources"],
+    rationale:
+      "Calibrated from repo-native ESRS E1 advisory mappings and GS1 Web Vocabulary energy attributes: this exact energy-mix case consistently requires the overall energy figure plus the renewable-energy percentage, while no additional weak support field is needed for reviewer-facing disclosure.",
+    attributes: [
+      {
+        attributeId: "totalEnergyConsumption",
+        attributeName: "Total Energy Consumption",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: total energy consumption is the primary direct GS1-aligned field for this ESRS energy-use disclosure case.",
+      },
+      {
+        attributeId: "renewableEnergyShare",
+        attributeName: "Renewable Energy Share",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: renewable energy share is a governed percentage field for energy-mix disclosure, backed by repo-native GS1 Web Vocabulary mappings for renewable-energy reporting.",
+      },
+    ],
+  },
+  {
+    id: "E3_SEAFOOD_TRACEABILITY",
+    esrsStandard: "E3",
+    shortNamePhrases: ["GS1 Fresh Foods enables seafood traceability"],
+    requirementPhrases: ["Seafood traceability"],
+    rationale:
+      "Calibrated from repo-native fresh-foods traceability and origin-sourcing assets: these recurring seafood cases consistently require provenance origin plus a timing field and lot identity to support reviewer-facing chain-of-custody checks.",
+    attributes: [
+      {
+        attributeId: "countryOfOrigin",
+        attributeName: "Country Of Origin",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: country-of-origin is the strongest direct provenance field for seafood sourcing and marine-resource traceability review.",
+      },
+      {
+        attributeId: "harvestDate",
+        attributeName: "Harvest Date",
+        mappingConfidence: "medium",
+        mappingType: "calculated",
+        implementationNotes:
+          "Calibrated exact-match fallback: harvest date strengthens seafood provenance timing but still summarizes underlying operational events and sourcing windows.",
+      },
+      {
+        attributeId: "batchNumber",
+        attributeName: "Batch Number",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: batch number is the stable lot-level identifier for seafood chain-of-custody and handling traceability in this exact case.",
+      },
+    ],
+  },
+  {
+    id: "S4_HEALTHCARE_TRACEABILITY",
+    esrsStandard: "S4",
+    shortNamePhrases: ["GS1 Healthcare enables patient safety"],
+    requirementPhrases: ["Healthcare product traceability"],
+    rationale:
+      "Calibrated from repo-native healthcare traceability mappings, GS1 healthcare standards references, and the GS1 Web Vocabulary expiration-date definition: this exact patient-safety case consistently requires product identity, serialisation, and expiry control, while sterilization metadata remains too context-specific to promote into the governed exact bundle.",
+    attributes: [
+      {
+        attributeId: "gtin",
+        attributeName: "GTIN",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: GTIN is the baseline healthcare product identifier for patient-safety and regulated traceability workflows.",
+      },
+      {
+        attributeId: "serialNumber",
+        attributeName: "Serial Number",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: serial number supports item-level healthcare traceability and adverse-event investigation.",
+      },
+      {
+        attributeId: "expirationDate",
+        attributeName: "Expiration Date",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: expiration date is a governed reviewer-facing patient-safety field with explicit GS1 vocabulary support for healthcare product lifecycle control.",
+      },
+    ],
+  },
+  {
+    id: "E1_LOGISTICS_EMISSIONS",
+    esrsStandard: "E1",
+    shortNamePhrases: ["SSCC enables logistics emissions tracking"],
+    requirementPhrases: ["Transport and logistics emissions"],
+    rationale:
+      "Calibrated from repo-native advisory and GS1 logistics references: transport and logistics emissions are better represented through value-chain emissions constructs than facility Scope 1 defaults.",
+    attributes: [
+      {
+        attributeId: "greenhouseGasEmissionsScope3",
+        attributeName: "Greenhouse Gas Emissions Scope 3",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: logistics and transport emissions align more closely with value-chain emissions disclosure than direct facility emissions totals.",
+      },
+      {
+        attributeId: "supplyChainEmissionsCategory",
+        attributeName: "Supply Chain Emissions Category",
+        mappingConfidence: "medium",
+        mappingType: "aggregated",
+        implementationNotes:
+          "Calibrated exact-match fallback: category segmentation is useful for reviewer-facing logistics-emissions analysis but still aggregates underlying event-level evidence.",
+      },
+    ],
+  },
+  {
+    id: "E4_DEFORESTATION_TRACEABILITY",
+    esrsStandard: "E4",
+    shortNamePhrases: [
+      "GDSN supports origin and certification data",
+      "GS1 Traceability supports EUDR",
+      "GS1 Fresh Foods enables farm-to-fork",
+      "Deforestation Tracking",
+      "Deforestation-free Supply Chain",
+    ],
+    requirementPhrases: [
+      "Deforestation-free sourcing",
+      "Traceability for biodiversity impact",
+      "Agricultural product traceability",
+      "Deforestation-free Supply Chain",
+      "Deforestation Tracking",
+    ],
+    rationale:
+      "Calibrated from repo-native EUDR-oriented attribute inventory, GS1 CBV certification references, and agricultural traceability seed data: these E4 sourcing cases consistently require origin and supplier context plus certification evidence and harvest timing for agricultural provenance review.",
+    attributes: [
+      {
+        attributeId: "countryOfOrigin",
+        attributeName: "Country Of Origin",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: country of origin is the primary GS1-aligned sourcing field for deforestation-sensitive and biodiversity-sensitive product disclosure.",
+      },
+      {
+        attributeId: "supplierInformation",
+        attributeName: "Supplier Information",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: supplier information is needed to anchor upstream accountability and chain-of-custody review for deforestation-sensitive sourcing.",
+      },
+      {
+        attributeId: "organicCertification",
+        attributeName: "Organic Certification",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: certification evidence is a stable reviewer-facing proxy for agricultural sustainability and deforestation-related sourcing claims in these recurring E4 cases.",
+      },
+      {
+        attributeId: "harvestDate",
+        attributeName: "Harvest Date",
+        mappingConfidence: "medium",
+        mappingType: "calculated",
+        implementationNotes:
+          "Calibrated exact-match fallback: harvest timing strengthens agricultural provenance review and seasonal traceability evidence, but it still summarizes underlying operational events.",
+      },
+    ],
+  },
+  {
+    id: "E5_DPP_GENERIC_MATERIALS",
+    esrsStandard: "E5",
+    shortNamePhrases: ["Digital Link enables DPP access"],
+    requirementPhrases: ["Digital Product Passport data carrier"],
+    rationale:
+      "Calibrated from repo-native DPP fundamentals and identification rules: generic passport access needs stable GS1 identifiers, and material composition is a consistently disclosed core passport payload, while battery details are not universally required.",
+    attributes: [
+      {
+        attributeId: "gtin",
+        attributeName: "GTIN",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: GTIN remains the baseline model-level identifier for Digital Product Passport access and resolution.",
+      },
+      {
+        attributeId: "serialNumber",
+        attributeName: "Serial Number",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: serial number supports item-level Digital Link resolution where passport access is tied to a specific product instance.",
+      },
+      {
+        attributeId: "materialComposition",
+        attributeName: "Material Composition",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: material composition is a common passport payload across product categories and is the strongest stable product-content field for generic DPP access.",
+      },
+    ],
+  },
+  {
+    id: "E5_DPP_TEXTILE_PAYLOAD",
+    esrsStandard: "E5",
+    shortNamePhrases: ["Textile DPP"],
+    requirementPhrases: ["Digital Product Passport - Textile"],
+    rationale:
+      "Calibrated from repo-native DPP fundamentals and textile-oriented material-composition assets: textile passports reliably require product identity and material composition, while battery-specific payloads are not the stable default.",
+    attributes: [
+      {
+        attributeId: "gtin",
+        attributeName: "GTIN",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: GTIN remains the baseline product identifier for textile DPP lookup and model-level resolution.",
+      },
+      {
+        attributeId: "serialNumber",
+        attributeName: "Serial Number",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: serial number supports item-level textile passport access when product-instance traceability is required.",
+      },
+      {
+        attributeId: "materialComposition",
+        attributeName: "Material Composition",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: material composition is a core textile passport payload for fiber disclosure, circularity review, and downstream recyclability analysis.",
+      },
+    ],
+  },
+  {
+    id: "E5_DPP_ELECTRONICS_PAYLOAD",
+    esrsStandard: "E5",
+    shortNamePhrases: ["Electronics DPP"],
+    requirementPhrases: ["Digital Product Passport - Electronics"],
+    rationale:
+      "Calibrated from repo-native DPP fundamentals, identification rules, and battery-information attribute inventory: electronics passports reliably require identity plus materials, and battery detail is a stable supporting payload for battery-adjacent products.",
+    attributes: [
+      {
+        attributeId: "gtin",
+        attributeName: "GTIN",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: GTIN remains the baseline product identifier for electronics passport resolution.",
+      },
+      {
+        attributeId: "serialNumber",
+        attributeName: "Serial Number",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: serial number supports instance-level electronics passport resolution, warranty workflows, and regulated product traceability.",
+      },
+      {
+        attributeId: "materialComposition",
+        attributeName: "Material Composition",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: material composition is a stable electronics passport payload for circularity, recyclability, and substances review.",
+      },
+      {
+        attributeId: "batteryInformation",
+        attributeName: "Battery Information",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: battery information is justified for electronics passport cases because the product cohort is battery-adjacent and the repo-native DPP assets explicitly model battery payloads.",
+      },
+    ],
+  },
+  {
+    id: "E5_REPAIR_ACCESS_DURABILITY",
+    esrsStandard: "E5",
+    shortNamePhrases: ["Digital Link enables repair/recycle info"],
+    requirementPhrases: ["Repair and recycling information access"],
+    rationale:
+      "Calibrated from repo-native DPP circularity guidance and the GS1 warranty-information module: repair and recycling access cases consistently need repairability and end-of-life guidance, and warranty metadata is a stable supporting durability field for reviewer-facing repair access.",
+    attributes: [
+      {
+        attributeId: "repairabilityScore",
+        attributeName: "Repairability Score",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: repairability score is the primary product-level signal for repair access and circularity review.",
+      },
+      {
+        attributeId: "endOfLifeInstructions",
+        attributeName: "End Of Life Instructions",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: end-of-life instructions are a direct reviewer-usable route for recycling and disposal guidance.",
+      },
+      {
+        attributeId: "warrantyInformation",
+        attributeName: "Warranty Information",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: warranty metadata is a stable durability and repair-support field for products exposing repair and recycling access.",
+      },
+    ],
+  },
+  {
+    id: "E5_RECYCLABILITY_DISCLOSURE",
+    esrsStandard: "E5",
+    shortNamePhrases: ["Product Recyclability"],
+    requirementPhrases: ["Resource Outflows - Recyclability"],
+    rationale:
+      "Calibrated from repo-native circularity and advisory assets: recyclability disclosures are best anchored in direct repairability and end-of-life guidance, while warranty metadata is not stable enough to be treated as core recyclability evidence for this exact case.",
+    attributes: [
+      {
+        attributeId: "repairabilityScore",
+        attributeName: "Repairability Score",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: repairability score remains the strongest direct circularity signal for this recyclability disclosure case.",
+      },
+      {
+        attributeId: "endOfLifeInstructions",
+        attributeName: "End Of Life Instructions",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: end-of-life instructions remain the clearest direct route for downstream recyclability handling guidance.",
+      },
+    ],
+  },
+  {
+    id: "E5_CIRCULAR_ASSET_TRACKING",
+    esrsStandard: "E5",
+    shortNamePhrases: [
+      "EPCIS enables material flow tracking",
+      "GRAI enables circular asset management",
+    ],
+    requirementPhrases: [
+      "Resource inflows and outflows",
+      "Returnable asset tracking",
+    ],
+    rationale:
+      "Calibrated from repo-native EPCIS, GRAI, and circular-economy assets: these recurring circular-flow cases consistently need material composition and recycled-content context, and serialized identity is a stable supporting field for item or asset-level lifecycle tracking.",
+    attributes: [
+      {
+        attributeId: "materialComposition",
+        attributeName: "Material Composition",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: material composition is the primary GS1-aligned payload for circular material-flow review.",
+      },
+      {
+        attributeId: "recycledContentPercentage",
+        attributeName: "Recycled Content Percentage",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: recycled content remains a direct circular-economy metric for resource-flow disclosure.",
+      },
+      {
+        attributeId: "serialNumber",
+        attributeName: "Serial Number",
+        mappingConfidence: "medium",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: serialized identity is a stable reviewer-facing support field for item-level material-flow and returnable-asset tracking in these exact circular-flow cases.",
+      },
+    ],
+  },
+  {
+    id: "E5_RECYCLED_CONTENT_DISCLOSURE",
+    esrsStandard: "E5",
+    shortNamePhrases: ["Recycled Content"],
+    requirementPhrases: ["Resource Inflows - Recycled Content"],
+    rationale:
+      "Calibrated from repo-native circular-economy and recycled-content assets: recycled-content disclosure is best expressed through material composition and recycled-content percentage, without promoting serialized identity as core evidence for this exact case.",
+    attributes: [
+      {
+        attributeId: "materialComposition",
+        attributeName: "Material Composition",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: material composition is the clearest supporting context for recycled-content disclosure.",
+      },
+      {
+        attributeId: "recycledContentPercentage",
+        attributeName: "Recycled Content Percentage",
+        mappingConfidence: "high",
+        mappingType: "direct",
+        implementationNotes:
+          "Calibrated exact-match fallback: recycled content percentage is the primary disclosure field for this recycled-content case.",
+      },
+    ],
+  },
+];

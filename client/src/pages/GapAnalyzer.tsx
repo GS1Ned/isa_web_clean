@@ -1,9 +1,10 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { trpc } from "../lib/trpc";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import {
   Select,
@@ -32,9 +33,7 @@ import {
   Search,
   Target,
   TrendingUp,
-  XCircle,
   Building2,
-  Factory,
   Leaf,
   ShieldCheck,
   ArrowRight,
@@ -42,6 +41,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
+import { DecisionArtifactCard } from "@/components/DecisionArtifactCard";
+import { getDecisionPostureSummary } from "@/lib/esrs-decision-posture";
 
 // Epistemic status badge component
 function EpistemicBadge({ status, confidence }: { status: string; confidence: string }) {
@@ -83,7 +84,7 @@ function EpistemicBadge({ status, confidence }: { status: string; confidence: st
 
   return (
     <Tooltip>
-      <TooltipTrigger>
+      <TooltipTrigger asChild>
         <Badge variant="outline" className={`${config.color} text-xs gap-1`}>
           <Icon className="h-3 w-3" />
           {config.label}
@@ -175,6 +176,9 @@ export default function GapAnalyzer() {
   };
 
   const result = analyzeMutation.data;
+  const decisionPosture = result
+    ? getDecisionPostureSummary(result.decisionArtifact.confidence)
+    : null;
 
   // Navigate to Impact Simulator with Core 1 data
   const handleContinueToImpactSimulator = () => {
@@ -309,6 +313,15 @@ export default function GapAnalyzer() {
                 <div className="text-xs text-muted-foreground">
                   {selectedAttributes.length} attributes selected
                 </div>
+
+                <Alert>
+                  <BookOpen className="h-4 w-4" />
+                  <AlertDescription className="text-xs leading-relaxed">
+                    Coverage source: current attributes come from ISA&apos;s ESRS-to-GS1 mapping inventory.
+                    Confidence badges reflect mapping strength, while sector and company size scope
+                    which ESRS requirements are evaluated.
+                  </AlertDescription>
+                </Alert>
 
                 <div className="max-h-64 overflow-y-auto space-y-2 border rounded-md p-2">
                   {filteredAttributes?.map((attr) => (
@@ -457,6 +470,25 @@ export default function GapAnalyzer() {
                     </div>
                   </CardContent>
                 </Card>
+
+                <DecisionArtifactCard
+                  artifact={result.decisionArtifact}
+                  title="Decision Core Artifact"
+                  description="Stable ESRS_MAPPING gap-analysis artifact used for downstream explainability and delivery."
+                />
+
+                {decisionPosture ? (
+                  <Alert className={decisionPosture.className}>
+                    <ShieldCheck className="h-4 w-4" />
+                    <AlertTitle>{decisionPosture.title}</AlertTitle>
+                    <AlertDescription>
+                      <p>{decisionPosture.description}</p>
+                      <p className="mt-1 font-medium">
+                        Recommended next action: {decisionPosture.badgeLabel}.
+                      </p>
+                    </AlertDescription>
+                  </Alert>
+                ) : null}
 
                 {/* Gaps by Priority */}
                 {result.criticalGaps.length > 0 && (

@@ -1,0 +1,113 @@
+%% ISA As-Built Dependency Graph (2026-02-19)
+%% Source anchors:
+%% - server/routers.ts
+%% - server/routers/ask-isa.ts
+%% - server/routers/ask-isa-v2.ts
+%% - server/news-admin-router.ts
+%% - server/routers/hub.ts
+%% - server/routers/regulations.ts
+%% - server/gs1-standards-router.ts
+%% - server/routers/standards-directory.ts
+%% - server/routers/esrs-gs1-mapping.ts
+%% - server/db-knowledge.ts
+%% - server/db-knowledge-vector.ts
+%% - server/routers/advisory.ts
+%% - server/routers/advisory-reports.ts
+%% - drizzle/schema.ts
+
+flowchart LR
+  subgraph Client["Client Layer (React pages)"]
+    C_ASK[ASK_ISA UI\nclient/src/pages/AskISA.tsx]
+    C_NEWS[NEWS_HUB UI\nclient/src/pages/NewsHub.tsx]
+    C_CAT[CATALOG UI\nclient/src/pages/HubRegulations.tsx\nclient/src/pages/StandardsDirectory.tsx]
+    C_MAP[ESRS_MAPPING UI\nclient/src/pages/HubEsrsGs1Mappings.tsx]
+    C_KB[KNOWLEDGE_BASE UI\nclient/src/pages/AdminKnowledgeBase.tsx]
+    C_ADV[ADVISORY UI\nclient/src/pages/AdvisoryReports.tsx]
+  end
+
+  C_ASK --> TRPC[/api/trpc/]
+  C_NEWS --> TRPC
+  C_CAT --> TRPC
+  C_MAP --> TRPC
+  C_KB --> TRPC
+  C_ADV --> TRPC
+
+  subgraph API["API Layer (Express + tRPC)"]
+    APP[appRouter\nserver/routers.ts]
+    ASK[ASK_ISA\naskISA + askISAV2 routers]
+    NEWS[NEWS_HUB\nnewsAdmin + hub routers]
+    CAT[CATALOG\nregulations + gs1Standards + standardsDirectory routers]
+    MAP[ESRS_MAPPING\nesrsGs1Mapping + regulation ESRS endpoints]
+    KB[KNOWLEDGE_BASE\nknowledge services]
+    ADV[ADVISORY\nadvisory + advisoryReports routers]
+  end
+
+  TRPC --> APP
+  APP --> ASK
+  APP --> NEWS
+  APP --> CAT
+  APP --> MAP
+  APP --> ADV
+
+  ASK --> KB
+  ASK --> CAT
+  NEWS --> CAT
+  NEWS --> MAP
+  KB --> CAT
+  ADV --> ASK
+  ADV --> NEWS
+  ADV --> KB
+  ADV --> CAT
+  ADV --> MAP
+
+  subgraph Data["Data Layer (Drizzle/MySQL-compatible DB)"]
+    T_REG[(regulations)]
+    T_STD[(gs1_standards)]
+    T_ESRS[(esrs_datapoints)]
+    T_MAP[(regulation_esrs_mappings)]
+    T_KE[(knowledge_embeddings)]
+    T_NEWS[(hub_news)]
+    T_ADV[(advisory_reports)]
+    T_ADVV[(advisory_report_versions)]
+    T_DS[(dataset_registry)]
+  end
+
+  CAT --> T_REG
+  CAT --> T_STD
+  CAT --> T_ESRS
+
+  MAP --> T_ESRS
+  MAP --> T_STD
+  MAP --> T_MAP
+
+  KB --> T_KE
+  KB --> T_REG
+  KB --> T_STD
+  KB --> T_ESRS
+
+  ASK --> T_KE
+  ASK --> T_REG
+  ASK --> T_STD
+  ASK --> T_ESRS
+
+  NEWS --> T_NEWS
+  NEWS --> T_REG
+  NEWS --> T_STD
+  NEWS --> T_ESRS
+
+  ADV --> T_ADV
+  ADV --> T_ADVV
+  ADV --> T_DS
+
+  subgraph External["External Dependencies"]
+    X_LLM[OpenAI / Manus Forge]
+    X_PW[Playwright]
+    X_SRC[EUR-Lex / EFRAG / GS1 web sources]
+  end
+
+  ASK --> X_LLM
+  KB --> X_LLM
+  MAP --> X_LLM
+  NEWS --> X_LLM
+  NEWS --> X_PW
+  X_PW --> X_SRC

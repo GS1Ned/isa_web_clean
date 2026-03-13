@@ -1,0 +1,21 @@
+{
+  "staleness_days_max": 14,
+  "required_latest_files": ["items.csv"],
+  "required_items_csv_columns": [
+    "source",
+    "source_url",
+    "resource_url",
+    "format",
+    "title",
+    "date_published",
+    "version",
+    "status",
+    "discovered_via",
+    "http_status",
+    "content_type",
+    "content_length",
+    "etag",
+    "last_modified",
+    "last_verified_date"
+  ]
+}

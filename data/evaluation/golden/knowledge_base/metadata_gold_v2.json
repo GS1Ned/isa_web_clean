@@ -1,0 +1,27 @@
+{
+  "dataset_id": "kb_metadata_gold_v2",
+  "source_file": "data/gs1_ref_corpus/metadata/manifest.json",
+  "required_fields": [
+    "url",
+    "file_path",
+    "kind",
+    "content_type",
+    "checksum_sha256",
+    "intended_use",
+    "source_manifest"
+  ],
+  "linking_target_min": 2,
+  "expected_manifest_counts": {
+    "sitemap_urls": 234,
+    "pages_downloaded": 228,
+    "documents_discovered": 127,
+    "documents_downloaded": 124,
+    "manifest_items": 352
+  },
+  "lifecycle": {
+    "status": "complete",
+    "cadence": "quarterly",
+    "evidence": "data/metadata/dataset_registry.json"
+  },
+  "notes": "Operational baseline fixture slice derived from GS1 reference corpus manifest."
+}

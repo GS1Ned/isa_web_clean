@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "scoring"
+  ],
+  "properties": {
+    "scoring": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "data_id",
+          "regulatory_force",
+          "information_inevitability",
+          "interoperability_dependency",
+          "gs1_solution_fitness",
+          "sector_exposure",
+          "time_criticality",
+          "total"
+        ],
+        "properties": {
+          "data_id": {
+            "type": "string"
+          },
+          "regulatory_force": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "information_inevitability": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "interoperability_dependency": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "gs1_solution_fitness": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "sector_exposure": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "time_criticality": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 6,
+            "maximum": 30
+          },
+          "audit_classification": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -10,6 +10,10 @@
 
 import { existsSync, statSync } from 'fs';
 import { join } from 'path';
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 interface DataFile {
   id: string;
@@ -146,7 +150,7 @@ function formatSize(bytes: number): string {
 }
 
 function main() {
-  console.log('🔍 Verifying ISA data files...\n');
+  cliOut('🔍 Verifying ISA data files...\n');
   
   const results = DATA_FILES.map(verifyFile);
   
@@ -154,45 +158,45 @@ function main() {
   const failed = results.filter(r => !r.exists || r.error);
   
   // Print results
-  console.log('✅ PASSED:');
+  cliOut('✅ PASSED:');
   passed.forEach(r => {
-    console.log(`  ✓ ${r.file.id}`);
-    console.log(`    Path: ${r.file.path}`);
-    console.log(`    Size: ${r.size ? formatSize(r.size) : 'Unknown'}`);
-    console.log(`    Description: ${r.file.description}`);
-    console.log();
+    cliOut(`  ✓ ${r.file.id}`);
+    cliOut(`    Path: ${r.file.path}`);
+    cliOut(`    Size: ${r.size ? formatSize(r.size) : 'Unknown'}`);
+    cliOut(`    Description: ${r.file.description}`);
+    cliOut();
   });
   
   if (failed.length > 0) {
-    console.log('❌ FAILED:');
+    cliOut('❌ FAILED:');
     failed.forEach(r => {
-      console.log(`  ✗ ${r.file.id}`);
-      console.log(`    Path: ${r.file.path}`);
-      console.log(`    Error: ${r.error}`);
-      console.log(`    Description: ${r.file.description}`);
-      console.log();
+      cliOut(`  ✗ ${r.file.id}`);
+      cliOut(`    Path: ${r.file.path}`);
+      cliOut(`    Error: ${r.error}`);
+      cliOut(`    Description: ${r.file.description}`);
+      cliOut();
     });
   }
   
   // Summary
-  console.log('─'.repeat(60));
-  console.log(`Total files: ${DATA_FILES.length}`);
-  console.log(`Passed: ${passed.length}`);
-  console.log(`Failed: ${failed.length}`);
+  cliOut('─'.repeat(60));
+  cliOut(`Total files: ${DATA_FILES.length}`);
+  cliOut(`Passed: ${passed.length}`);
+  cliOut(`Failed: ${failed.length}`);
   
   if (failed.length === 0) {
-    console.log('\n✅ All data files verified successfully!');
-    console.log('Ready to start ingestion pipeline.\n');
+    cliOut('\n✅ All data files verified successfully!');
+    cliOut('Ready to start ingestion pipeline.\n');
     process.exit(0);
   } else {
-    console.log('\n❌ Some data files are missing or invalid.');
-    console.log('Please fix the issues above before starting ingestion.\n');
+    cliOut('\n❌ Some data files are missing or invalid.');
+    cliOut('Please fix the issues above before starting ingestion.\n');
     
     // Print helpful instructions
-    console.log('💡 To fix:');
-    console.log('1. Extract isa_data_sources_full_ingest.zip');
-    console.log('2. Move files to correct paths under /data/');
-    console.log('3. Run this script again: pnpm verify:data\n');
+    cliOut('💡 To fix:');
+    cliOut('1. Extract isa_data_sources_full_ingest.zip');
+    cliOut('2. Move files to correct paths under /data/');
+    cliOut('3. Run this script again: pnpm verify:data\n');
     
     process.exit(1);
   }

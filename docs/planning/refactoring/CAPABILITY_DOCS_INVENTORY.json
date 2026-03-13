@@ -1,0 +1,465 @@
+{
+  "metadata": {
+    "created": "2026-02-12",
+    "version": "1.0.0",
+    "purpose": "Complete inventory of capability documentation for refactoring",
+    "total_capabilities": 6,
+    "total_files": 167,
+    "target_files": 39
+  },
+  "ASK_ISA": {
+    "total_files": 19,
+    "runtime_contract": "docs/spec/ASK_ISA/RUNTIME_CONTRACT.md",
+    "quality_grade": "A",
+    "quality_score": 100,
+    "by_type": {
+      "spec": [
+        "RUNTIME_CONTRACT.md",
+        "ASK_ISA_RUNTIME_CONTRACT.md",
+        "ASK_ISA_GUARDRAILS.md",
+        "AGENT_MAP.md"
+      ],
+      "guide": [
+        "TESTING_GUIDE.md",
+        "DEPLOYMENT.md",
+        "ASK_ISA_SMOKE_RUNBOOK.md"
+      ],
+      "reference": [
+        "ASK_ISA_QUERY_LIBRARY.md",
+        "ASK_ISA_QUERY_LIBRARY_v1.md",
+        "ASK_ISA_TEST_RESULTS.md"
+      ],
+      "historical": [
+        "DEVELOPMENT_PROGRESS_2026-02-01.md",
+        "DEVELOPMENT_SESSION_2026-02-01.md",
+        "STRATEGIC_EVALUATION_2026-02-01.md",
+        "META_PHASE_STRATEGIC_EXPLORATION_PLAN.md",
+        "CHATGPT_WORK_PARCEL_02_ASK_ISA_EXPANSION.md"
+      ],
+      "analysis": [
+        "TRUST_RISK_ANALYSIS.md",
+        "EMBEDDING_QUALITY_IMPROVEMENT_REPORT.md",
+        "ENHANCED_EMBEDDING_SCHEMA.md",
+        "ISA_DATA_NEEDS_AND_PRIORITIES.md",
+        "ISA_DEVELOPMENT_STATUS.md"
+      ]
+    },
+    "conflicts": [
+      {
+        "files": ["RUNTIME_CONTRACT.md", "ASK_ISA_RUNTIME_CONTRACT.md"],
+        "issue": "Duplicate runtime contracts",
+        "resolution": "Keep RUNTIME_CONTRACT.md (newer, more complete)"
+      }
+    ],
+    "target_mapping": {
+      "CAPABILITY_SPEC.md": {
+        "sources": ["RUNTIME_CONTRACT.md", "ASK_ISA_GUARDRAILS.md", "TRUST_RISK_ANALYSIS.md"],
+        "sections": ["Purpose", "Architecture", "Guardrails", "Security"]
+      },
+      "API_REFERENCE.md": {
+        "sources": ["server/routers/ask-isa.ts", "ASK_ISA_QUERY_LIBRARY.md"],
+        "sections": ["tRPC Procedures", "Schemas", "Examples"]
+      },
+      "IMPLEMENTATION_GUIDE.md": {
+        "sources": ["AGENT_MAP.md", "code analysis"],
+        "sections": ["Setup", "Workflow", "Patterns"]
+      },
+      "TESTING_GUIDE.md": {
+        "sources": ["TESTING_GUIDE.md", "ASK_ISA_TEST_RESULTS.md"],
+        "sections": ["Strategy", "Fixtures", "Scenarios"]
+      },
+      "DEPLOYMENT.md": {
+        "sources": ["DEPLOYMENT.md", "ASK_ISA_SMOKE_RUNBOOK.md"],
+        "sections": ["Steps", "Verification", "Rollback"]
+      },
+      "TROUBLESHOOTING.md": {
+        "sources": ["ASK_ISA_SMOKE_RUNBOOK.md", "code analysis"],
+        "sections": ["Common Issues", "Error Codes", "Debug"]
+      }
+    }
+  },
+  "NEWS_HUB": {
+    "total_files": 28,
+    "runtime_contract": "docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md",
+    "quality_grade": "C",
+    "quality_score": 70,
+    "by_type": {
+      "spec": [
+        "RUNTIME_CONTRACT.md",
+        "NEWS_PIPELINE.md",
+        "ISA_NEWSHUB_TARGET_DESIGN.md",
+        "CODEX_DELEGATION_SPEC.md"
+      ],
+      "guide": [
+        "CRON_SETUP_GUIDE.md",
+        "CRON_DEPLOYMENT.md",
+        "CHROMIUM_INSTALLATION_GUIDE.md",
+        "NEWS_HEALTH_MONITORING.md"
+      ],
+      "reference": [
+        "ISA_NEWS_OVERVIEW.md",
+        "CRITICAL_EVENTS_TAXONOMY.md",
+        "RESEARCH_FINDINGS_NEWS_SOURCES.md",
+        "research-dutch-sources.md"
+      ],
+      "historical": [
+        "PHASE_3_COMPLETION_REPORT.md",
+        "PHASE_3_STARTDOCUMENT.md",
+        "PHASE_8_COMPLETE_SUMMARY.md",
+        "PHASE_8_NEWS_HUB_OBSERVABILITY_COMPLETE.md",
+        "PHASE_8.3_INGESTION_WINDOW_COMPLETE.md",
+        "autonomous-session-2025-12-17.md"
+      ],
+      "analysis": [
+        "NEWS_HUB_MATURITY_ANALYSIS.md",
+        "ISA_NEWSHUB_AUDIT_UPDATED.md",
+        "ISA_NEWSHUB_EVOLUTION_SUMMARY.md",
+        "ISA_NEWS_HUB_SELF_CHECK_ASSESSMENT.md",
+        "BASELINE_V2_DECISION_GRADE.md",
+        "FINAL_ISA_GRADE_RESCORE.md",
+        "FINAL_RESCORE_POST_PIPELINE.md",
+        "PHASE_1_RESCORE.md",
+        "PHASE_2_RESCORE.md",
+        "INSTRUCTION_EVALUATION_ANALYSIS.md"
+      ]
+    },
+    "conflicts": [],
+    "target_mapping": {
+      "CAPABILITY_SPEC.md": {
+        "sources": ["RUNTIME_CONTRACT.md", "NEWS_PIPELINE.md", "ISA_NEWSHUB_TARGET_DESIGN.md"],
+        "sections": ["Purpose", "Architecture", "Data Flow", "Sources"]
+      },
+      "API_REFERENCE.md": {
+        "sources": ["server/news-admin-router.ts", "CODEX_DELEGATION_SPEC.md"],
+        "sections": ["tRPC Procedures", "Schemas", "Events"]
+      },
+      "IMPLEMENTATION_GUIDE.md": {
+        "sources": ["NEWS_PIPELINE.md", "code analysis"],
+        "sections": ["Setup", "Scraping", "Enrichment", "Patterns"]
+      },
+      "TESTING_GUIDE.md": {
+        "sources": ["code analysis"],
+        "sections": ["Strategy", "Fixtures", "Scenarios"]
+      },
+      "DEPLOYMENT.md": {
+        "sources": ["CRON_SETUP_GUIDE.md", "CRON_DEPLOYMENT.md", "CHROMIUM_INSTALLATION_GUIDE.md"],
+        "sections": ["Prerequisites", "Cron Setup", "Verification"]
+      },
+      "TROUBLESHOOTING.md": {
+        "sources": ["NEWS_HEALTH_MONITORING.md", "code analysis"],
+        "sections": ["Common Issues", "Health Monitoring", "Debug"]
+      }
+    }
+  },
+  "KNOWLEDGE_BASE": {
+    "total_files": 5,
+    "runtime_contract": "docs/spec/KNOWLEDGE_BASE/RUNTIME_CONTRACT.md",
+    "quality_grade": "F",
+    "quality_score": 50,
+    "by_type": {
+      "spec": [
+        "RUNTIME_CONTRACT.md",
+        "data-knowledge-model.md"
+      ],
+      "reference": [
+        "GS1_Attribute_Mapper_Technical_Specification.md",
+        "IRON_KNOWLEDGE_MAP.md",
+        "ISA_DOCUMENTATION_MAP.md"
+      ],
+      "guide": [],
+      "historical": [],
+      "analysis": []
+    },
+    "conflicts": [],
+    "target_mapping": {
+      "CAPABILITY_SPEC.md": {
+        "sources": ["RUNTIME_CONTRACT.md", "data-knowledge-model.md"],
+        "sections": ["Purpose", "Architecture", "Data Model", "Embeddings"]
+      },
+      "API_REFERENCE.md": {
+        "sources": ["server/db-knowledge.ts", "GS1_Attribute_Mapper_Technical_Specification.md"],
+        "sections": ["Database Schema", "Embedding API", "Search API"]
+      },
+      "IMPLEMENTATION_GUIDE.md": {
+        "sources": ["code analysis"],
+        "sections": ["Corpus Ingestion", "Embedding Generation", "Search"]
+      },
+      "TESTING_GUIDE.md": {
+        "sources": ["code analysis"],
+        "sections": ["Strategy", "Fixtures", "Scenarios"]
+      },
+      "DEPLOYMENT.md": {
+        "sources": ["code analysis"],
+        "sections": ["Prerequisites", "KB Generation", "Verification"]
+      },
+      "TROUBLESHOOTING.md": {
+        "sources": ["code analysis"],
+        "sections": ["Common Issues", "Empty KB", "Search Quality"]
+      }
+    }
+  },
+  "CATALOG": {
+    "total_files": 11,
+    "runtime_contract": "docs/spec/CATALOG/RUNTIME_CONTRACT.md",
+    "quality_grade": "C",
+    "quality_score": 70,
+    "by_type": {
+      "spec": [
+        "RUNTIME_CONTRACT.md",
+        "ISA_MASTER_SPEC.md",
+        "ISA_INFORMATION_ARCHITECTURE.md"
+      ],
+      "reference": [
+        "DATASETS_CATALOG.md",
+        "GS1_EFRAG_CATALOGUE_INDEX.md",
+        "catalogue-source-registry.md",
+        "GS1_DOCUMENTS_DATASETS_ANALYSIS.md"
+      ],
+      "guide": [
+        "index.md"
+      ],
+      "historical": [
+        "ISA_STATUS_SUMMARY_2025-12-19.md"
+      ],
+      "analysis": [
+        "CATALOGUE_ENTRYPOINTS_STATUS.md",
+        "MULTI_REGULATION_COMPARISON_SUMMARY.md"
+      ]
+    },
+    "conflicts": [],
+    "target_mapping": {
+      "CAPABILITY_SPEC.md": {
+        "sources": ["RUNTIME_CONTRACT.md", "ISA_INFORMATION_ARCHITECTURE.md"],
+        "sections": ["Purpose", "Architecture", "Data Sources", "Coverage"]
+      },
+      "API_REFERENCE.md": {
+        "sources": ["server/routers/catalog.ts", "GS1_EFRAG_CATALOGUE_INDEX.md"],
+        "sections": ["tRPC Procedures", "Schemas", "Filters"]
+      },
+      "IMPLEMENTATION_GUIDE.md": {
+        "sources": ["DATASETS_CATALOG.md", "code analysis"],
+        "sections": ["Data Ingestion", "Catalog Updates", "Patterns"]
+      },
+      "TESTING_GUIDE.md": {
+        "sources": ["code analysis"],
+        "sections": ["Strategy", "Fixtures", "Scenarios"]
+      },
+      "DEPLOYMENT.md": {
+        "sources": ["code analysis"],
+        "sections": ["Prerequisites", "Data Loading", "Verification"]
+      },
+      "TROUBLESHOOTING.md": {
+        "sources": ["code analysis"],
+        "sections": ["Common Issues", "Data Quality", "Debug"]
+      }
+    }
+  },
+  "ESRS_MAPPING": {
+    "total_files": 16,
+    "runtime_contract": "docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md",
+    "quality_grade": "C",
+    "quality_score": 70,
+    "by_type": {
+      "spec": [
+        "RUNTIME_CONTRACT.md",
+        "DATA_MODEL.md",
+        "isa-core-architecture.md"
+      ],
+      "reference": [
+        "GS1_DATA_MODELS.md",
+        "GS1_EU_PCF_TO_ESRS_E1_MAPPINGS.md"
+      ],
+      "guide": [
+        "INGESTION.md",
+        "INGESTION_SUMMARY_REPORT.md"
+      ],
+      "historical": [
+        "PRIORITY_1_COMPLETION_REPORT.md",
+        "STATUS.md",
+        "ESG_Hub_MVP_Polish_Plan.md"
+      ],
+      "analysis": [
+        "ALTERNATIVE_FUTURES_EXPLORATION.md",
+        "CGPT-01_INTEGRATION_REPORT.md",
+        "CHATGPT_COLLABORATION_ANALYSIS.md",
+        "ISA_NEXT_PHASE_DEVELOPMENT_PLAN.md",
+        "KNOWN_FAILURE_MODES.md",
+        "test-failure-analysis-2025-12-17.md",
+        "WIDE_RESEARCH_USAGE.md"
+      ]
+    },
+    "conflicts": [],
+    "target_mapping": {
+      "CAPABILITY_SPEC.md": {
+        "sources": ["RUNTIME_CONTRACT.md", "DATA_MODEL.md", "isa-core-architecture.md"],
+        "sections": ["Purpose", "Architecture", "Mapping Engine", "Data Model"]
+      },
+      "API_REFERENCE.md": {
+        "sources": ["server/gs1-mapping-engine.ts", "GS1_DATA_MODELS.md"],
+        "sections": ["Mapping API", "Schemas", "Examples"]
+      },
+      "IMPLEMENTATION_GUIDE.md": {
+        "sources": ["INGESTION.md", "GS1_EU_PCF_TO_ESRS_E1_MAPPINGS.md"],
+        "sections": ["Data Ingestion", "Mapping Generation", "Patterns"]
+      },
+      "TESTING_GUIDE.md": {
+        "sources": ["test-failure-analysis-2025-12-17.md", "code analysis"],
+        "sections": ["Strategy", "Fixtures", "Scenarios"]
+      },
+      "DEPLOYMENT.md": {
+        "sources": ["INGESTION_SUMMARY_REPORT.md", "code analysis"],
+        "sections": ["Prerequisites", "Data Loading", "Verification"]
+      },
+      "TROUBLESHOOTING.md": {
+        "sources": ["KNOWN_FAILURE_MODES.md", "code analysis"],
+        "sections": ["Common Issues", "Mapping Quality", "Debug"]
+      }
+    }
+  },
+  "ADVISORY": {
+    "total_files": 44,
+    "runtime_contract": "docs/spec/ADVISORY/RUNTIME_CONTRACT.md",
+    "quality_grade": "C",
+    "quality_score": 70,
+    "by_type": {
+      "spec": [
+        "RUNTIME_CONTRACT.md",
+        "ARCHITECTURE.md",
+        "ADVISORY_METHOD.md",
+        "ISA_CORE_CONTRACT.md",
+        "ISA_DELIVERY_MODEL.md"
+      ],
+      "reference": [
+        "API_REFERENCE.md",
+        "ADVISORY_OUTPUTS.md",
+        "ISA_First_Advisory_Report_GS1NL.md",
+        "ISA_First_Advisory_Report_GS1NL_v1.1_UPDATE.md",
+        "ADVISORY_DIFF_METRICS.md",
+        "GS1_STYLE_QUICK_REFERENCE.md"
+      ],
+      "guide": [
+        "QUALITY_BAR.md",
+        "REGULATORY_CHANGE_LOG_ENTRY_GUIDE.md",
+        "REGULATORY_CHANGE_LOG_TEMPLATES.md",
+        "STYLE_GUIDE_ADOPTION.md"
+      ],
+      "historical": [
+        "DAY1_COMPLETION_REPORT.md",
+        "COMPLETION_SUMMARY.md",
+        "PHASE_AB_UX_SUMMARY.md",
+        "UX_PHASE_A_SUMMARY.md",
+        "ISA_V1_CONSISTENCY_FIXES.md",
+        "ISA_V1_FINAL_DELIVERY.md",
+        "ISA_V1_FORMALIZATION_COMPLETE.md",
+        "ISA_V1_FORMALIZATION_TARGETS.md",
+        "ISA_V1_HARDENING_COMPLETE.md",
+        "ISA_V1_LOCK_RECORD.md",
+        "MANUS_DAY1_EXECUTION_CHECKLIST.md",
+        "MANUS_EXECUTION_BRIEF.md",
+        "CHATGPT_WORK_PARCEL_SUMMARY.md",
+        "CHANGELOG_SUMMARY.md",
+        "ALIGNMENT_CHECK_2026_01_03.md",
+        "_CONSOLIDATION_VALIDATION.md"
+      ],
+      "analysis": [
+        "FEATURE_DISCOVERY_REPORT.md",
+        "GS1_STYLE_COMPLIANCE_FINAL_REPORT.md",
+        "GS1_STYLE_GUIDE_INGESTION_SUMMARY.md",
+        "ISA_PRODUCT_VISION.md",
+        "ISA_FUTURE_DEVELOPMENT_PLAN.md",
+        "ISA_REFERENCE_DOSSIER.md",
+        "ISA_UX_STRATEGY.md",
+        "STRATEGIC_PIVOT_POC.md",
+        "ADVISORY_UI_NOTES.md",
+        "FILE_SYSTEM_MEMORY_ARCHITECTURE.md",
+        "efrag_xbrl_research.md",
+        "REGULATORY_LANDSCAPE_SUMMARIES.md",
+        "repo-change-control-release.md",
+        "INDEX.md"
+      ]
+    },
+    "conflicts": [
+      {
+        "files": ["ISA_First_Advisory_Report_GS1NL.md", "ISA_First_Advisory_Report_GS1NL_v1.1_UPDATE.md"],
+        "issue": "Multiple advisory versions",
+        "resolution": "Keep both as versioned outputs, reference in ADVISORY_OUTPUTS.md"
+      }
+    ],
+    "target_mapping": {
+      "CAPABILITY_SPEC.md": {
+        "sources": ["RUNTIME_CONTRACT.md", "ARCHITECTURE.md", "ADVISORY_METHOD.md"],
+        "sections": ["Purpose", "Architecture", "Methodology", "Versioning"]
+      },
+      "API_REFERENCE.md": {
+        "sources": ["API_REFERENCE.md", "server/routers/advisory.ts"],
+        "sections": ["tRPC Procedures", "Schemas", "Diff API"]
+      },
+      "IMPLEMENTATION_GUIDE.md": {
+        "sources": ["ADVISORY_METHOD.md", "STYLE_GUIDE_ADOPTION.md"],
+        "sections": ["Advisory Generation", "Diff Computation", "Patterns"]
+      },
+      "TESTING_GUIDE.md": {
+        "sources": ["QUALITY_BAR.md", "code analysis"],
+        "sections": ["Strategy", "Fixtures", "Validation"]
+      },
+      "DEPLOYMENT.md": {
+        "sources": ["code analysis"],
+        "sections": ["Prerequisites", "Generation", "Publication"]
+      },
+      "TROUBLESHOOTING.md": {
+        "sources": ["code analysis"],
+        "sections": ["Common Issues", "Quality Issues", "Debug"]
+      }
+    }
+  },
+  "system_wide": {
+    "total_files": 44,
+    "files": [
+      "ARCHITECTURE.md",
+      "ISA_CAPABILITY_MAP.md",
+      "README.md",
+      "PRODUCTION_READINESS.md",
+      "CONFLICT_REGISTER.md",
+      "DEPRECATION_MAP.md",
+      "TRACEABILITY_MATRIX.csv",
+      "RUN_CONFIG.json",
+      "EXTERNAL_REFERENCES.md",
+      "DECISION_LOG_PHASE3.md",
+      "EPCIS_CBV_INTEGRATION_SUMMARY.md",
+      "EURLEX_SCRAPER_FIX.md",
+      "GS1_ARTEFACT_PROCESSING.md",
+      "INGESTION_DELIVERABLES_INDEX.md",
+      "ingestion-update-lifecycle.md",
+      "QUICK_START_INGESTION.md",
+      "observability-tracing-feedback.md",
+      "retrieval-embeddings-grounding.md",
+      "TYPESCRIPT_FIX_SUMMARY.md",
+      "TYPESCRIPT_NOTES.md",
+      "ux-user-journey.md",
+      "WEBHOOK_INTEGRATION.md"
+    ],
+    "target_mapping": {
+      "ARCHITECTURE.md": {
+        "sources": ["ISA_CAPABILITY_MAP.md", "various capability architectures"],
+        "sections": ["System Overview", "Capabilities", "Infrastructure", "Data Flow"]
+      },
+      "INTEGRATION_CONTRACTS.md": {
+        "sources": ["code analysis", "TRACEABILITY_MATRIX.csv"],
+        "sections": ["Dependencies", "Shared Models", "Events", "APIs"]
+      },
+      "DEPLOYMENT_GUIDE.md": {
+        "sources": ["PRODUCTION_READINESS.md", "capability deployment docs"],
+        "sections": ["Prerequisites", "Order", "Verification", "Rollback"]
+      }
+    }
+  },
+  "summary": {
+    "total_current_files": 167,
+    "total_target_files": 39,
+    "reduction_percentage": 76.6,
+    "capabilities_with_conflicts": 2,
+    "capabilities_needing_major_work": ["KNOWLEDGE_BASE", "CATALOG", "ESRS_MAPPING"],
+    "capabilities_in_good_shape": ["ASK_ISA"],
+    "estimated_effort_weeks": 6
+  }
+}

@@ -7,7 +7,7 @@
 
 import { getDb } from "./db";
 import { regulations, gs1Standards, regulationStandardMappings, esrsDatapoints } from "../drizzle/schema";
-import { sql, count, isNull, and, or, eq } from "drizzle-orm";
+import { sql, count, isNull, or, eq } from "drizzle-orm";
 
 /**
  * Get orphaned regulations (regulations with no standard mappings)

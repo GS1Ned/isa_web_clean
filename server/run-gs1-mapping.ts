@@ -11,24 +11,24 @@ import { serverLogger } from "./_core/logger-wiring";
 
 
 async function runMapping() {
-  console.log("🔗 Starting GS1 mapping algorithm...\n");
+  serverLogger.info("🔗 Starting GS1 mapping algorithm...\n");
 
   try {
     const results = await mapAllRegulations();
 
-    console.log("\n✅ Mapping completed successfully!\n");
-    console.log(`📊 Statistics:`);
-    console.log(`   - Regulations processed: ${results.length}`);
-    console.log(
+    serverLogger.info("\n✅ Mapping completed successfully!\n");
+    serverLogger.info(`📊 Statistics:`);
+    serverLogger.info(`   - Regulations processed: ${results.length}`);
+    serverLogger.info(
       `   - Total mappings generated: ${results.reduce((sum, r) => sum + r.mappingsCount, 0)}`
     );
-    console.log(
+    serverLogger.info(
       `   - Average mappings per regulation: ${(results.reduce((sum, r) => sum + r.mappingsCount, 0) / results.length).toFixed(1)}`
     );
 
-    console.log("\n📋 Mappings by regulation:");
+    serverLogger.info("\n📋 Mappings by regulation:");
     for (const result of results) {
-      console.log(
+      serverLogger.info(
         `   - Regulation ${result.regulationId}: ${result.mappingsCount} standards mapped`
       );
     }
@@ -40,7 +40,7 @@ async function runMapping() {
 
 runMapping()
   .then(() => {
-    console.log("\n🎉 Done!");
+    serverLogger.info("\n🎉 Done!");
     process.exit(0);
   })
   .catch(error => {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useRef, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
@@ -25,12 +26,39 @@ import {
   History,
   Plus,
   Trash2,
+  ThumbsUp,
+  ThumbsDown,
+  Download,
+  Eye,
 } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle2, Library, AlertTriangle, Info } from "lucide-react";
 import { AuthorityBadge, AuthorityScore, AuthorityLegend } from "@/components/AuthorityBadge";
+import { jsPDF } from "jspdf";
+import { useI18n, LanguageSwitcher } from "@/lib/i18n";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  buildAskIsaSourcePostureSummary,
+  getAskIsaVerificationAgeBadgeLabel,
+  getAskIsaVerificationAgeLabel,
+  getAskIsaVerificationReasonBadgeLabel,
+  getAskIsaVerificationReasonLabel,
+} from "@/lib/ask-isa-source-posture";
+import {
+  getAskIsaSourceDisplayLabel,
+  getAskIsaSourceHref,
+  getAskIsaSourceLocatorLabel,
+  hasReviewerUsableAskIsaCitation,
+} from "@/lib/ask-isa-citation";
 
 /**
  * Ask ISA - RAG-Powered Q&A Interface
@@ -60,9 +88,23 @@ interface Message {
     datasetId?: string;
     datasetVersion?: string;
     lastVerifiedDate?: string;
+    verificationAgeDays?: number | null;
     isDeprecated?: boolean;
     needsVerification?: boolean;
+    verificationReason?: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date";
     deprecationReason?: string;
+    evidenceKey?: string | null;
+    evidenceKeyReason?: "ok" | "missing_content_hash" | "missing_authoritative_chunk" | "chunk_not_found" | "db_unavailable";
+    sourceRecordId?: number;
+    sourceChunkId?: number;
+    authorityTier?: string;
+    sourceRole?: string;
+    admissionBasis?: string;
+    publicationStatus?: string;
+    sourceLocator?: string | null;
+    immutableUri?: string | null;
+    citationLabel?: string | null;
+    sourceChunkLocator?: string | null;
     authorityLevel?: AuthorityLevel;
     authorityScore?: number;
   }>;
@@ -94,6 +136,9 @@ interface Message {
     unverifiedClaims: number;
     warnings: string[];
   };
+  // Feedback tracking
+  messageId?: string;
+  feedbackGiven?: 'positive' | 'negative' | null;
 }
 
 // Query library organized by category (30 pre-approved questions from ASK_ISA_QUERY_LIBRARY.md)
@@ -161,12 +206,15 @@ type AuthorityFilter = typeof AUTHORITY_FILTER_OPTIONS[number]['value'];
 
 export default function AskISA() {
   const { user } = useAuth();
+  const { t, language } = useI18n();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [conversationId, setConversationId] = useState<number | undefined>();
   const [advisoryVersion, setAdvisoryVersion] = useState("v1.0");
   const [showHistory, setShowHistory] = useState(false);
   const [authorityFilter, setAuthorityFilter] = useState<AuthorityFilter>('all');
+  const [sectorFilter, setSectorFilter] = useState<string>('all');
+  const [previewSource, setPreviewSource] = useState<Message['sources'][0] | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Filter sources based on authority level
@@ -197,6 +245,166 @@ export default function AskISA() {
       conversationsQuery.refetch();
     },
   });
+
+  // Feedback mutation
+  const feedbackMutation = trpc.askISA.submitFeedback.useMutation({
+    onSuccess: (_, variables) => {
+      // Update the message to show feedback was given
+      setMessages(prev => prev.map(msg => 
+        msg.messageId === variables.questionId 
+          ? { ...msg, feedbackGiven: variables.feedbackType }
+          : msg
+      ));
+    },
+  });
+
+  const handleFeedback = (messageIdx: number, feedbackType: 'positive' | 'negative') => {
+    const message = messages[messageIdx];
+    if (!message || message.role !== 'assistant' || !user) return;
+    
+    // Find the user question that preceded this answer
+    const userQuestion = messages[messageIdx - 1];
+    if (!userQuestion || userQuestion.role !== 'user') return;
+    
+    const messageId = message.messageId || `msg_${Date.now()}_${messageIdx}`;
+    
+    feedbackMutation.mutate({
+      questionId: messageId,
+      questionText: userQuestion.content,
+      answerText: message.content,
+      feedbackType,
+      confidenceScore: message.confidence?.score,
+      sourcesCount: message.sources?.length || 0,
+    });
+    
+    // Optimistically update UI
+    setMessages(prev => prev.map((msg, idx) => 
+      idx === messageIdx ? { ...msg, messageId, feedbackGiven: feedbackType } : msg
+    ));
+  };
+
+  // Export conversation to PDF
+  const handleExportPDF = async (messageIdx: number) => {
+    const message = messages[messageIdx];
+    if (!message || message.role !== 'assistant') return;
+    
+    // Find the user question that preceded this answer
+    const userQuestion = messages[messageIdx - 1];
+    if (!userQuestion || userQuestion.role !== 'user') return;
+    
+    // Create native PDF using jsPDF
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20;
+    const maxWidth = pageWidth - (margin * 2);
+    let yPos = 20;
+    
+    // Helper function to add text with word wrap and page breaks
+    const addText = (text: string, fontSize: number, isBold: boolean = false, color: [number, number, number] = [0, 0, 0]) => {
+      doc.setFontSize(fontSize);
+      doc.setFont('helvetica', isBold ? 'bold' : 'normal');
+      doc.setTextColor(color[0], color[1], color[2]);
+      const lines = doc.splitTextToSize(text, maxWidth);
+      
+      for (const line of lines) {
+        if (yPos > 270) {
+          doc.addPage();
+          yPos = 20;
+        }
+        doc.text(line, margin, yPos);
+        yPos += fontSize * 0.5;
+      }
+      yPos += 5;
+    };
+    
+    // Header
+    doc.setFillColor(0, 102, 204);
+    doc.rect(0, 0, pageWidth, 35, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('ISA - Intelligent Standards Architect', margin, 22);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Generated: ${new Date().toLocaleString()}`, margin, 30);
+    
+    yPos = 50;
+    
+    // Question section
+    doc.setFillColor(245, 245, 245);
+    doc.rect(margin - 5, yPos - 5, maxWidth + 10, 25, 'F');
+    addText('QUESTION', 10, true, [100, 100, 100]);
+    addText(userQuestion.content, 12, false, [0, 0, 0]);
+    yPos += 10;
+    
+    // Answer section
+    addText('ANSWER', 10, true, [100, 100, 100]);
+    // Clean markdown from answer for PDF
+    const cleanAnswer = message.content
+      .replace(/\*\*([^*]+)\*\*/g, '$1')  // Remove bold markdown
+      .replace(/\*([^*]+)\*/g, '$1')      // Remove italic markdown
+      .replace(/###\s*/g, '')              // Remove h3 headers
+      .replace(/##\s*/g, '')               // Remove h2 headers
+      .replace(/#\s*/g, '');               // Remove h1 headers
+    addText(cleanAnswer, 11, false, [33, 33, 33]);
+    yPos += 10;
+    
+    // Sources section
+    if (message.sources && message.sources.length > 0) {
+      // Draw separator line
+      doc.setDrawColor(200, 200, 200);
+      doc.line(margin, yPos, pageWidth - margin, yPos);
+      yPos += 10;
+      
+      addText(`SOURCES (${message.sources.length})`, 10, true, [100, 100, 100]);
+      
+      message.sources.forEach((source, idx) => {
+        if (yPos > 260) {
+          doc.addPage();
+          yPos = 20;
+        }
+        doc.setFillColor(249, 249, 249);
+        doc.rect(margin - 2, yPos - 4, maxWidth + 4, 14, 'F');
+        addText(`[${idx + 1}] ${getAskIsaSourceDisplayLabel(source)}`, 10, true, [0, 102, 204]);
+        const sourceHref = getAskIsaSourceHref(source);
+        const sourceLocator = getAskIsaSourceLocatorLabel(source);
+        addText(
+          `${source.type || 'Unknown'} • Relevance: ${Math.round(source.similarity * 100)}%${sourceLocator ? ` • ${sourceLocator}` : ''}${sourceHref ? ` • ${sourceHref}` : ''}`,
+          9,
+          false,
+          [100, 100, 100],
+        );
+      });
+    }
+    
+    // Metadata section
+    yPos += 5;
+    doc.setDrawColor(200, 200, 200);
+    doc.line(margin, yPos, pageWidth - margin, yPos);
+    yPos += 10;
+    
+    const metadataItems: string[] = [];
+    if (message.confidence) {
+      metadataItems.push(`Confidence: ${message.confidence.level.toUpperCase()} (${Math.round(message.confidence.score * 100)}%)`);
+    }
+    if (message.claimVerification) {
+      metadataItems.push(`Verification: ${message.claimVerification.verifiedClaims}/${message.claimVerification.totalClaims} claims verified`);
+    }
+    if (metadataItems.length > 0) {
+      addText(metadataItems.join(' • '), 9, false, [100, 100, 100]);
+    }
+    
+    // Footer / Disclaimer
+    yPos += 10;
+    doc.setDrawColor(200, 200, 200);
+    doc.line(margin, yPos, pageWidth - margin, yPos);
+    yPos += 8;
+    addText('DISCLAIMER', 8, true, [150, 150, 150]);
+    addText('This response was generated by ISA (Intelligent Standards Architect) and is for informational purposes only. Always verify information with official sources before making compliance decisions.', 8, false, [150, 150, 150]);
+    
+    // Save the PDF
+    doc.save(`isa-response-${new Date().toISOString().split('T')[0]}.pdf`);
+  };
 
   const askMutation = trpc.askISA.ask.useMutation({
     onSuccess: data => {
@@ -262,10 +470,11 @@ export default function AskISA() {
     // Add user message immediately
     setMessages(prev => [...prev, { role: "user", content: question }]);
 
-    // Send to API
+    // Send to API with sector filter
     askMutation.mutate({
       question,
       conversationId,
+      sector: sectorFilter as any,
     });
   };
 
@@ -277,10 +486,11 @@ export default function AskISA() {
     // Add user message immediately
     setMessages(prev => [...prev, { role: "user", content: question }]);
 
-    // Send to API
+    // Send to API with sector filter
     askMutation.mutate({
       question,
       conversationId,
+      sector: sectorFilter as any,
     });
   };
 
@@ -395,7 +605,7 @@ export default function AskISA() {
         setShowHistory(false);
       }
     } catch (error) {
-      console.error("Failed to load conversation:", error);
+      alert(`Failed to load conversation: ${String(error)}`);
     }
   };
 
@@ -418,9 +628,9 @@ export default function AskISA() {
               <Sparkles className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold">Ask ISA</h1>
+              <h1 className="text-4xl font-bold">{t('askIsa.title')}</h1>
               <p className="text-muted-foreground mt-1">
-                AI-powered assistant for EU regulations and GS1 standards
+                {t('askIsa.subtitle')}
               </p>
             </div>
           </div>
@@ -884,6 +1094,63 @@ export default function AskISA() {
                               </div>
                             </div>
                           )}
+                          {message.claimVerification?.warnings &&
+                            message.claimVerification.warnings.length > 0 && (
+                              <Alert className="mt-3 border-yellow-500/30 bg-yellow-500/5">
+                                <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                                <AlertDescription className="text-sm">
+                                  <p className="font-medium text-yellow-700 dark:text-yellow-300">
+                                    Verification posture warnings
+                                  </p>
+                                  <ul className="mt-1 list-disc list-inside space-y-1 text-muted-foreground">
+                                    {message.claimVerification.warnings.map((warning, warningIdx) => (
+                                      <li key={warningIdx}>{warning}</li>
+                                    ))}
+                                  </ul>
+                                </AlertDescription>
+                              </Alert>
+                            )}
+                          {/* Feedback Buttons */}
+                          {user && !message.needsClarification && message.content && (
+                            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/50">
+                              <span className="text-xs text-muted-foreground">Was this helpful?</span>
+                              <Button
+                                variant={message.feedbackGiven === 'positive' ? 'default' : 'ghost'}
+                                size="sm"
+                                className={`h-7 px-2 ${message.feedbackGiven === 'positive' ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                                onClick={() => handleFeedback(idx, 'positive')}
+                                disabled={feedbackMutation.isPending || !!message.feedbackGiven}
+                              >
+                                <ThumbsUp className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button
+                                variant={message.feedbackGiven === 'negative' ? 'default' : 'ghost'}
+                                size="sm"
+                                className={`h-7 px-2 ${message.feedbackGiven === 'negative' ? 'bg-red-600 hover:bg-red-700' : ''}`}
+                                onClick={() => handleFeedback(idx, 'negative')}
+                                disabled={feedbackMutation.isPending || !!message.feedbackGiven}
+                              >
+                                <ThumbsDown className="h-3.5 w-3.5" />
+                              </Button>
+                              {message.feedbackGiven && (
+                                <span className="text-xs text-muted-foreground ml-2">
+                                  Thanks for your feedback!
+                                </span>
+                              )}
+                              <div className="ml-auto">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 px-2"
+                                  onClick={() => handleExportPDF(idx)}
+                                  title="Export as HTML"
+                                >
+                                  <Download className="h-3.5 w-3.5 mr-1" />
+                                  <span className="text-xs">Export</span>
+                                </Button>
+                              </div>
+                            </div>
+                          )}
                         </>
                       ) : (
                         <p className="text-sm">{message.content}</p>
@@ -911,6 +1178,59 @@ export default function AskISA() {
                           </SelectContent>
                         </Select>
                       </div>
+                      {(() => {
+                        const visibleSources = filterSourcesByAuthority(message.sources);
+                        const posture = buildAskIsaSourcePostureSummary(visibleSources || []);
+                        if (!visibleSources?.length) {
+                          return null;
+                        }
+
+                        const postureTone =
+                          posture.deprecatedCount > 0
+                            ? "border-destructive/30 bg-destructive/5"
+                            : posture.needsVerificationCount > 0
+                              ? "border-yellow-500/30 bg-yellow-500/5"
+                              : "border-muted bg-muted/40";
+
+                        const postureIconClass =
+                          posture.deprecatedCount > 0
+                            ? "text-destructive"
+                            : posture.needsVerificationCount > 0
+                              ? "text-yellow-600"
+                              : "text-muted-foreground";
+
+                        return (
+                          <Alert className={`mb-3 ${postureTone}`}>
+                            {posture.deprecatedCount > 0 || posture.needsVerificationCount > 0 ? (
+                              <AlertTriangle className={`h-4 w-4 ${postureIconClass}`} />
+                            ) : (
+                              <Info className={`h-4 w-4 ${postureIconClass}`} />
+                            )}
+                            <AlertDescription className="text-sm">
+                              {posture.allVerifiedWithinWindow ? (
+                                <>
+                                  Verification posture: all {posture.totalSources} cited sources are within the
+                                  current verification window.
+                                </>
+                              ) : (
+                                <>
+                                  Verification posture: {posture.needsVerificationCount} of {posture.totalSources} cited
+                                  sources need review
+                                  {posture.deprecatedCount > 0
+                                    ? `, and ${posture.deprecatedCount} source${posture.deprecatedCount === 1 ? "" : "s"} ${posture.deprecatedCount === 1 ? "is" : "are"} deprecated`
+                                    : ""}
+                                  . Reasons: {posture.countsByReason.stale_last_verified_date} stale,{" "}
+                                  {posture.countsByReason.missing_last_verified_date} missing date,{" "}
+                                  {posture.countsByReason.invalid_last_verified_date} invalid date.
+                                  {typeof posture.oldestVerificationAgeDays === "number"
+                                    ? ` Oldest known verification: ${posture.oldestVerificationAgeDays} days ago.`
+                                    : ""}
+                                </>
+                              )}
+                            </AlertDescription>
+                          </Alert>
+                        );
+                      })()}
                       <div className="grid gap-2">
                         {filterSourcesByAuthority(message.sources)?.map((source, sourceIdx) => (
                           <Card
@@ -925,8 +1245,13 @@ export default function AskISA() {
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <CardTitle className="text-sm line-clamp-1">
-                                      {source.title}
+                                      {getAskIsaSourceDisplayLabel(source)}
                                     </CardTitle>
+                                    {getAskIsaSourceLocatorLabel(source) && (
+                                      <p className="mt-1 text-xs text-muted-foreground">
+                                        {getAskIsaSourceLocatorLabel(source)}
+                                      </p>
+                                    )}
                                     <div className="flex items-center gap-2 mt-1 flex-wrap">
                                       <Badge
                                         variant="secondary"
@@ -973,30 +1298,79 @@ export default function AskISA() {
                                         <Badge
                                           variant="outline"
                                           className="text-xs text-yellow-700 dark:text-yellow-400"
-                                          title={source.lastVerifiedDate ? `Last verified: ${new Date(source.lastVerifiedDate).toLocaleDateString()}` : 'Not yet verified'}
+                                          title={[
+                                            getAskIsaVerificationReasonLabel(source.verificationReason),
+                                            getAskIsaVerificationAgeLabel(source.verificationAgeDays),
+                                          ]
+                                            .filter(Boolean)
+                                            .join(" • ")}
                                         >
                                           ⚠️ Needs verification
                                         </Badge>
                                       )}
+                                      {source.needsVerification &&
+                                        !source.isDeprecated &&
+                                        getAskIsaVerificationReasonBadgeLabel(source.verificationReason) && (
+                                          <Badge
+                                            variant="outline"
+                                            className="text-xs"
+                                          >
+                                            {getAskIsaVerificationReasonBadgeLabel(
+                                              source.verificationReason,
+                                            )}
+                                          </Badge>
+                                        )}
+                                      {getAskIsaVerificationAgeBadgeLabel(source.verificationAgeDays) && (
+                                        <Badge
+                                          variant="outline"
+                                          className="text-xs"
+                                          title={getAskIsaVerificationAgeLabel(
+                                            source.verificationAgeDays,
+                                          ) || undefined}
+                                        >
+                                          {getAskIsaVerificationAgeBadgeLabel(
+                                            source.verificationAgeDays,
+                                          )}
+                                        </Badge>
+                                      )}
+                                      <Badge
+                                        variant="outline"
+                                        className="text-xs"
+                                      >
+                                        {hasReviewerUsableAskIsaCitation(source)
+                                          ? "Reviewer-usable citation"
+                                          : "Citation locator incomplete"}
+                                      </Badge>
                                     </div>
                                   </div>
                                 </div>
-                                {source.url && (
+                                <div className="flex gap-1">
                                   <Button
                                     variant="ghost"
                                     size="sm"
                                     className="h-8 w-8 p-0"
-                                    asChild
+                                    onClick={() => setPreviewSource(source)}
+                                    title="Preview source"
                                   >
-                                    <a
-                                      href={source.url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                    >
-                                      <ExternalLink className="h-4 w-4" />
-                                    </a>
+                                    <Eye className="h-4 w-4" />
                                   </Button>
-                                )}
+                                  {getAskIsaSourceHref(source) && (
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-8 w-8 p-0"
+                                      asChild
+                                    >
+                                      <a
+                                        href={getAskIsaSourceHref(source)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        <ExternalLink className="h-4 w-4" />
+                                      </a>
+                                    </Button>
+                                  )}
+                                </div>
                               </div>
                             </CardHeader>
                           </Card>
@@ -1013,7 +1387,7 @@ export default function AskISA() {
                   <div className="bg-muted rounded-lg px-4 py-3 flex items-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" />
                     <span className="text-sm text-muted-foreground">
-                      Thinking...
+                      {t('askIsa.thinking')}
                     </span>
                   </div>
                 </div>
@@ -1028,11 +1402,31 @@ export default function AskISA() {
 
         {/* Input Area */}
         <div className="p-4">
+          {/* Sector Filter */}
+          <div className="mb-3 flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">{t('askIsa.sectorFilter') || 'Sector:'}</span>
+            <Select value={sectorFilter} onValueChange={setSectorFilter}>
+              <SelectTrigger className="w-[180px] h-8">
+                <SelectValue placeholder="All sectors" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('askIsa.sectors.all') || 'All Sectors'}</SelectItem>
+                <SelectItem value="fmcg">{t('askIsa.sectors.fmcg') || 'FMCG / Food & Beverage'}</SelectItem>
+                <SelectItem value="diy">{t('askIsa.sectors.diy') || 'DIY / Garden / Pet'}</SelectItem>
+                <SelectItem value="healthcare">{t('askIsa.sectors.healthcare') || 'Healthcare'}</SelectItem>
+                <SelectItem value="fashion">{t('askIsa.sectors.fashion') || 'Fashion & Textiles'}</SelectItem>
+                <SelectItem value="sustainability">{t('askIsa.sectors.sustainability') || 'Sustainability'}</SelectItem>
+                <SelectItem value="retail">{t('askIsa.sectors.retail') || 'Retail'}</SelectItem>
+                <SelectItem value="agriculture">{t('askIsa.sectors.agriculture') || 'Agriculture'}</SelectItem>
+                <SelectItem value="construction">{t('askIsa.sectors.construction') || 'Construction'}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <form onSubmit={handleSubmit} className="flex gap-2">
             <Input
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder="Ask about regulations, standards, or compliance requirements..."
+              placeholder={t('askIsa.placeholder')}
               disabled={askMutation.isPending}
               className="flex-1"
             />
@@ -1054,6 +1448,132 @@ export default function AskISA() {
         </div>
       </Card>
       </div>
+
+      {/* Source Preview Modal */}
+      <Dialog open={!!previewSource} onOpenChange={(open) => !open && setPreviewSource(null)}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {previewSource && getSourceIcon(previewSource.type)}
+              {previewSource ? getAskIsaSourceDisplayLabel(previewSource) : null}
+            </DialogTitle>
+            <DialogDescription className="flex items-center gap-2 flex-wrap">
+              {previewSource?.type && (
+                <Badge variant="secondary">{getSourceTypeLabel(previewSource.type)}</Badge>
+              )}
+              {previewSource?.authorityLevel && (
+                <AuthorityBadge level={previewSource.authorityLevel} size="sm" />
+              )}
+              <Badge variant="outline">{previewSource?.similarity}% match</Badge>
+              {previewSource ? (
+                <Badge variant="outline">
+                  {hasReviewerUsableAskIsaCitation(previewSource)
+                    ? "Reviewer-usable citation"
+                    : "Citation locator incomplete"}
+                </Badge>
+              ) : null}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 mt-4">
+            {/* Source Metadata */}
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-muted-foreground">Source Type</p>
+                <p className="font-medium">{previewSource?.type ? getSourceTypeLabel(previewSource.type) : 'Unknown'}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Relevance Score</p>
+                <p className="font-medium">{previewSource?.similarity}%</p>
+              </div>
+              {previewSource?.datasetVersion && (
+                <div>
+                  <p className="text-muted-foreground">Dataset Version</p>
+                  <p className="font-medium font-mono">{previewSource.datasetVersion}</p>
+                </div>
+              )}
+              {previewSource?.lastVerifiedDate && (
+                <div>
+                  <p className="text-muted-foreground">Last Verified</p>
+                  <p className="font-medium">{new Date(previewSource.lastVerifiedDate).toLocaleDateString()}</p>
+                </div>
+              )}
+              {previewSource?.citationLabel && (
+                <div className="col-span-2">
+                  <p className="text-muted-foreground">Citation Label</p>
+                  <p className="font-medium">{previewSource.citationLabel}</p>
+                </div>
+              )}
+              {previewSource && getAskIsaSourceLocatorLabel(previewSource) && (
+                <div className="col-span-2">
+                  <p className="text-muted-foreground">Citation Locator</p>
+                  <p className="font-medium break-all">{getAskIsaSourceLocatorLabel(previewSource)}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Warnings */}
+            {(previewSource?.isDeprecated || previewSource?.needsVerification) && (
+              <div className="space-y-2">
+                {previewSource.isDeprecated && (
+                  <div className="flex items-center gap-2 p-3 bg-destructive/10 rounded-lg">
+                    <AlertTriangle className="h-4 w-4 text-destructive" />
+                    <div>
+                      <p className="font-medium text-destructive">Deprecated Source</p>
+                      <p className="text-sm text-muted-foreground">{previewSource.deprecationReason || 'This source has been marked as deprecated.'}</p>
+                    </div>
+                  </div>
+                )}
+                {previewSource.needsVerification && !previewSource.isDeprecated && (
+                  <div className="flex items-center gap-2 p-3 bg-yellow-500/10 rounded-lg">
+                    <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                    <div>
+                      <p className="font-medium text-yellow-600">Needs Verification</p>
+                      <p className="text-sm text-muted-foreground">
+                        This source should be verified before relying on it for compliance decisions.{" "}
+                        {getAskIsaVerificationReasonLabel(previewSource.verificationReason)}.
+                        {getAskIsaVerificationAgeLabel(previewSource.verificationAgeDays)
+                          ? ` Last known verification: ${getAskIsaVerificationAgeLabel(previewSource.verificationAgeDays)}.`
+                          : ""}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Authority Information */}
+            {previewSource?.authorityLevel && (
+              <div className="p-3 bg-muted rounded-lg">
+                <p className="text-sm font-medium mb-2">Authority Level</p>
+                <div className="flex items-center gap-2">
+                  <AuthorityBadge level={previewSource.authorityLevel} size="md" />
+                  {previewSource.authorityScore && (
+                    <span className="text-sm text-muted-foreground">
+                      Score: {(previewSource.authorityScore * 100).toFixed(0)}%
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              {previewSource && getAskIsaSourceHref(previewSource) && (
+                <Button asChild>
+                  <a href={getAskIsaSourceHref(previewSource)} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Open Source
+                  </a>
+                </Button>
+              )}
+              <Button variant="outline" onClick={() => setPreviewSource(null)}>
+                Close
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

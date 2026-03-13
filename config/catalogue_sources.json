@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "last_verified": "2026-01-29",
+  "required_bodies": [
+    "GS1_GLOBAL",
+    "GS1_NL",
+    "GS1_EUROPE",
+    "EFRAG"
+  ],
+  "bodies": {
+    "GS1_GLOBAL": {
+      "seeds": [
+        "https://www.gs1.org/standards/log",
+        "https://www.gs1.org/standards",
+        "https://ref.gs1.org/standards/",
+        "https://www.gs1.org/standards/barcodes-epcrfid-id-keys/gs1-general-specifications"
+      ],
+      "allow_patterns": [
+        "gs1\\.org"
+      ],
+      "deny_patterns": []
+    },
+    "GS1_NL": {
+      "seeds": [
+        "https://www.gs1.nl/kennisbank/",
+        "https://www.gs1.nl/media/",
+        "https://www.gs1.nl/kennisbank/gs1-edi/",
+        "https://www.gs1.nl/kennisbank/gs1-data-source/"
+      ],
+      "allow_patterns": [
+        "gs1\\.nl"
+      ],
+      "deny_patterns": []
+    },
+    "GS1_EUROPE": {
+      "seeds": [
+        "https://gs1.eu/publications/"
+      ],
+      "allow_patterns": [
+        "gs1\\.eu",
+        "gs1europe"
+      ],
+      "deny_patterns": []
+    },
+    "EFRAG": {
+      "seeds": [
+        "https://www.efrag.org/en/sustainability-reporting-publications",
+        "https://www.efrag.org/en/news-and-calendar/news",
+        "https://www.efrag.org/en/projects/esrs-xbrl-taxonomy/concluded",
+        "https://efrag-website.azurewebsites.net/Activities/2304270816111835/Article-8-XBRL-Taxonomy",
+        "https://knowledgehub.efrag.org/eng"
+      ],
+      "allow_patterns": [
+        "efrag\\.org",
+        "xbrl\\.efrag\\.org"
+      ],
+      "deny_patterns": []
+    }
+  },
+  "entrypoints_last_verified_at": "2026-01-30"
+}

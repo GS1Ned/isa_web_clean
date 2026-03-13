@@ -1,0 +1,1661 @@
+{
+  "capability_derivation": {
+    "groups": {
+      "ADVISORY": {
+        "module_evidence_ids": [
+          "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ADVISORY_TS",
+          "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ADVISORY_REPORTS_TS",
+          "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ADVISORY_DIFF_TS",
+          "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ESG_ARTEFACTS_TS"
+        ],
+        "router_surface_evidence_ids": [
+          "EV-CAP-ADV-ROUTER-ADVISORY",
+          "EV-CAP-ADV-ROUTER-ADVISORYREPORTS",
+          "EV-CAP-ADV-ROUTER-ADVISORYDIFF",
+          "EV-CAP-ADV-ROUTER-ESGARTEFACTS"
+        ],
+        "table_evidence_ids": [
+          "EV-CAP-ADV-TABLE-ADVISORY_REPORTS",
+          "EV-CAP-ADV-TABLE-ADVISORY_REPORT_VERSIONS"
+        ]
+      },
+      "ASK_ISA": {
+        "module_evidence_ids": [
+          "EV-CAP-ASK-MODULE-SERVER_ROUTERS_ASK_ISA_TS",
+          "EV-CAP-ASK-MODULE-SERVER_ROUTERS_ASK_ISA_V2_TS",
+          "EV-CAP-ASK-MODULE-SERVER_ROUTERS_EVALUATION_TS"
+        ],
+        "router_surface_evidence_ids": [
+          "EV-CAP-ASK-ROUTER-ASKISA",
+          "EV-CAP-ASK-ROUTER-ASKISAV2",
+          "EV-CAP-ASK-ROUTER-EVALUATION"
+        ],
+        "table_evidence_ids": [
+          "EV-CAP-ASK-TABLE-QA_CONVERSATIONS",
+          "EV-CAP-ASK-TABLE-QA_MESSAGES",
+          "EV-CAP-ASK-TABLE-ASK_ISA_FEEDBACK",
+          "EV-CAP-ASK-TABLE-RAG_TRACES",
+          "EV-CAP-ASK-TABLE-EVALUATION_RESULTS"
+        ]
+      },
+      "CATALOG": {
+        "module_evidence_ids": [
+          "EV-CAP-CAT-MODULE-SERVER_ROUTERS_REGULATIONS_TS",
+          "EV-CAP-CAT-MODULE-SERVER_ROUTERS_STANDARDS_TS",
+          "EV-CAP-CAT-MODULE-SERVER_GS1_STANDARDS_ROUTER_TS",
+          "EV-CAP-CAT-MODULE-SERVER_ROUTERS_STANDARDS_DIRECTORY_TS",
+          "EV-CAP-CAT-MODULE-SERVER_ROUTERS_DATASET_REGISTRY_TS",
+          "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GOVERNANCE_DOCUMENTS_TS",
+          "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GS1_ATTRIBUTES_TS",
+          "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GS1NL_ATTRIBUTES_TS",
+          "EV-CAP-CAT-MODULE-SERVER_ROUTERS_ESRS_TS",
+          "EV-CAP-CAT-MODULE-SERVER_ROUTERS_DUTCH_INITIATIVES_TS"
+        ],
+        "router_surface_evidence_ids": [
+          "EV-CAP-CAT-ROUTER-REGULATIONS",
+          "EV-CAP-CAT-ROUTER-STANDARDS",
+          "EV-CAP-CAT-ROUTER-GS1STANDARDS",
+          "EV-CAP-CAT-ROUTER-STANDARDSDIRECTORY",
+          "EV-CAP-CAT-ROUTER-ESRS",
+          "EV-CAP-CAT-ROUTER-DUTCHINITIATIVES",
+          "EV-CAP-CAT-ROUTER-DATASETREGISTRY",
+          "EV-CAP-CAT-ROUTER-GOVERNANCEDOCUMENTS",
+          "EV-CAP-CAT-ROUTER-GS1ATTRIBUTES",
+          "EV-CAP-CAT-ROUTER-GS1NLATTRIBUTES"
+        ],
+        "table_evidence_ids": [
+          "EV-CAP-CAT-TABLE-REGULATIONS",
+          "EV-CAP-CAT-TABLE-GS1_STANDARDS",
+          "EV-CAP-CAT-TABLE-ESRS_DATAPOINTS",
+          "EV-CAP-CAT-TABLE-DUTCH_INITIATIVES",
+          "EV-CAP-CAT-TABLE-REGULATION_STANDARD_MAPPINGS",
+          "EV-CAP-CAT-TABLE-DATASET_REGISTRY",
+          "EV-CAP-CAT-TABLE-GOVERNANCE_DOCUMENTS",
+          "EV-CAP-CAT-TABLE-GS1_ATTRIBUTES",
+          "EV-CAP-CAT-TABLE-GS1_WEB_VOCABULARY"
+        ]
+      },
+      "ESRS_MAPPING": {
+        "module_evidence_ids": [
+          "EV-CAP-MAP-MODULE-SERVER_ROUTERS_ESRS_GS1_MAPPING_TS",
+          "EV-CAP-MAP-MODULE-SERVER_ROUTERS_ESRS_ROADMAP_TS",
+          "EV-CAP-MAP-MODULE-SERVER_ROUTERS_GAP_ANALYZER_TS",
+          "EV-CAP-MAP-MODULE-SERVER_ROUTERS_ATTRIBUTE_RECOMMENDER_TS"
+        ],
+        "router_surface_evidence_ids": [
+          "EV-CAP-MAP-ROUTER-ESRSGS1MAPPING",
+          "EV-CAP-MAP-ROUTER-ESRSROADMAP",
+          "EV-CAP-MAP-ROUTER-GAPANALYZER",
+          "EV-CAP-MAP-ROUTER-ATTRIBUTERECOMMENDER"
+        ],
+        "table_evidence_ids": [
+          "EV-CAP-MAP-TABLE-GS1_ESRS_MAPPINGS",
+          "EV-CAP-MAP-TABLE-GS1_ATTRIBUTE_ESRS_MAPPING",
+          "EV-CAP-MAP-TABLE-REGULATION_ESRS_MAPPINGS",
+          "EV-CAP-MAP-TABLE-MAPPING_FEEDBACK",
+          "EV-CAP-MAP-TABLE-ESG_GS1_MAPPINGS"
+        ]
+      },
+      "KNOWLEDGE_BASE": {
+        "module_evidence_ids": [
+          "EV-CAP-KB-MODULE-SERVER_ROUTERS_CITATION_ADMIN_TS",
+          "EV-CAP-KB-MODULE-SERVER_DB_KNOWLEDGE_TS",
+          "EV-CAP-KB-MODULE-SERVER_DB_KNOWLEDGE_VECTOR_TS",
+          "EV-CAP-KB-MODULE-SERVER_HYBRID_SEARCH_TS",
+          "EV-CAP-KB-MODULE-SERVER_EMBEDDING_TS"
+        ],
+        "router_surface_evidence_ids": [
+          "EV-CAP-KB-ROUTER-CITATIONADMIN"
+        ],
+        "table_evidence_ids": [
+          "EV-CAP-KB-TABLE-KNOWLEDGE_EMBEDDINGS",
+          "EV-CAP-KB-TABLE-SOURCES",
+          "EV-CAP-KB-TABLE-SOURCE_CHUNKS",
+          "EV-CAP-KB-TABLE-INGEST_ITEM_PROVENANCE"
+        ]
+      },
+      "NEWS_HUB": {
+        "module_evidence_ids": [
+          "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_HUB_TS",
+          "EV-CAP-NEWS-MODULE-SERVER_NEWS_ADMIN_ROUTER_TS",
+          "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_CRON_TS",
+          "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_SCRAPER_HEALTH_TS",
+          "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_PIPELINE_OBSERVABILITY_TS",
+          "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_REGULATORY_CHANGE_LOG_TS"
+        ],
+        "router_surface_evidence_ids": [
+          "EV-CAP-NEWS-ROUTER-HUB",
+          "EV-CAP-NEWS-ROUTER-NEWSADMIN",
+          "EV-CAP-NEWS-ROUTER-CRON",
+          "EV-CAP-NEWS-ROUTER-SCRAPERHEALTH",
+          "EV-CAP-NEWS-ROUTER-PIPELINEOBSERVABILITY",
+          "EV-CAP-NEWS-ROUTER-REGULATORYCHANGELOG"
+        ],
+        "table_evidence_ids": [
+          "EV-CAP-NEWS-TABLE-HUB_NEWS",
+          "EV-CAP-NEWS-TABLE-HUB_NEWS_HISTORY",
+          "EV-CAP-NEWS-TABLE-NEWS_RECOMMENDATIONS",
+          "EV-CAP-NEWS-TABLE-SCRAPER_EXECUTIONS",
+          "EV-CAP-NEWS-TABLE-SCRAPER_HEALTH_SUMMARY",
+          "EV-CAP-NEWS-TABLE-PIPELINE_EXECUTION_LOG",
+          "EV-CAP-NEWS-TABLE-REGULATORY_CHANGE_LOG",
+          "EV-CAP-NEWS-TABLE-REGULATORY_EVENTS"
+        ]
+      }
+    },
+    "shared_platform_router_evidence_ids": [
+      "EV-SHARED-ROUTER-SYSTEM",
+      "EV-SHARED-ROUTER-AUTH",
+      "EV-SHARED-ROUTER-USER",
+      "EV-SHARED-ROUTER-ANALYTICS",
+      "EV-SHARED-ROUTER-CONTACT",
+      "EV-SHARED-ROUTER-EXPORT",
+      "EV-SHARED-ROUTER-ONBOARDING",
+      "EV-SHARED-ROUTER-INSIGHTS",
+      "EV-SHARED-ROUTER-MONITORING",
+      "EV-SHARED-ROUTER-COVERAGEANALYTICS",
+      "EV-SHARED-ROUTER-OBSERVABILITY",
+      "EV-SHARED-ROUTER-DATAQUALITY",
+      "EV-SHARED-ROUTER-PRODUCTIONMONITORING",
+      "EV-SHARED-ROUTER-ERRORTRACKING",
+      "EV-SHARED-ROUTER-PERFORMANCETRACKING",
+      "EV-SHARED-ROUTER-WEBHOOKCONFIG"
+    ]
+  },
+  "contract_purpose": "Line-ranged evidence pointers for canonical architecture FACT claims and capability ownership derivation.",
+  "entries": [
+    {
+      "claim": "Governance root defines non-negotiable ISA governance principles used as highest precedence.",
+      "confidence": 1,
+      "evidence_type": "governance_anchor",
+      "id": "EV-ARCH-001",
+      "line_end": 40,
+      "line_start": 1,
+      "path": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "claim": "AGENT_MAP marks canonical chain and execution registry location.",
+      "confidence": 1,
+      "evidence_type": "navigation_authority",
+      "id": "EV-ARCH-002",
+      "line_end": 25,
+      "line_start": 1,
+      "path": "docs/agent/AGENT_MAP.md"
+    },
+    {
+      "claim": "ISA core contract defines exactly six canonical capabilities and ownership rule.",
+      "confidence": 1,
+      "evidence_type": "capability_contract",
+      "id": "EV-ARCH-003",
+      "line_end": 23,
+      "line_start": 5,
+      "path": "docs/spec/ADVISORY/ISA_CORE_CONTRACT.md"
+    },
+    {
+      "claim": "Top-level appRouter surfaces are declared in server/routers.ts.",
+      "confidence": 1,
+      "evidence_type": "runtime_router_truth",
+      "id": "EV-ARCH-004",
+      "line_end": 613,
+      "line_start": 55,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform surfaces are declared in appRouter and assigned in capability manifest.",
+      "confidence": 0.98,
+      "evidence_type": "shared_platform_router_truth",
+      "id": "EV-ARCH-005",
+      "line_end": 613,
+      "line_start": 55,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Supplemental ESRS architecture file is explicitly non-canonical for system CURRENT/TARGET.",
+      "confidence": 1,
+      "evidence_type": "supplemental_status",
+      "id": "EV-ARCH-006",
+      "line_end": 30,
+      "line_start": 1,
+      "path": "docs/spec/ESRS_MAPPING/isa-core-architecture.md"
+    },
+    {
+      "claim": "As-built dependency graph source exists at docs/evidence/EXEC_GRAPH.mmd.",
+      "confidence": 0.9,
+      "evidence_type": "dependency_graph_source",
+      "id": "EV-ARCH-007",
+      "line_end": 40,
+      "line_start": 1,
+      "path": "docs/evidence/EXEC_GRAPH.mmd"
+    },
+    {
+      "claim": "Conflict register declares itself as single canonical conflict location.",
+      "confidence": 1,
+      "evidence_type": "conflict_authority",
+      "id": "EV-ARCH-008",
+      "line_end": 24,
+      "line_start": 1,
+      "path": "docs/spec/CONFLICT_REGISTER.md"
+    },
+    {
+      "claim": "Client route entrypoint file exists at client/src/App.tsx.",
+      "confidence": 1,
+      "evidence_type": "client_entrypoint",
+      "id": "EV-ARCH-009",
+      "line_end": 20,
+      "line_start": 1,
+      "path": "client/src/App.tsx"
+    },
+    {
+      "claim": "ASK_ISA owns router surface askISA in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-ASK-ROUTER-ASKISA",
+      "line_end": 552,
+      "line_start": 552,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ASK_ISA owns router surface askISAV2 in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-ASK-ROUTER-ASKISAV2",
+      "line_end": 557,
+      "line_start": 557,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ASK_ISA owns router surface evaluation in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-ASK-ROUTER-EVALUATION",
+      "line_end": 562,
+      "line_start": 562,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ASK_ISA owns table qa_conversations.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-ASK-TABLE-QA_CONVERSATIONS",
+      "line_end": 1151,
+      "line_start": 1151,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "ASK_ISA owns table qa_messages.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-ASK-TABLE-QA_MESSAGES",
+      "line_end": 1164,
+      "line_start": 1164,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "ASK_ISA owns table ask_isa_feedback.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-ASK-TABLE-ASK_ISA_FEEDBACK",
+      "line_end": 55,
+      "line_start": 55,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "ASK_ISA owns table rag_traces.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-ASK-TABLE-RAG_TRACES",
+      "line_end": 182,
+      "line_start": 182,
+      "path": "drizzle/schema_corpus_governance.ts"
+    },
+    {
+      "claim": "ASK_ISA owns table evaluation_results.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-ASK-TABLE-EVALUATION_RESULTS",
+      "line_end": 315,
+      "line_start": 315,
+      "path": "drizzle/schema_corpus_governance.ts"
+    },
+    {
+      "claim": "ASK_ISA runtime module path exists for ownership mapping: server/routers/ask-isa.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-ASK-MODULE-SERVER_ROUTERS_ASK_ISA_TS",
+      "line_end": 91,
+      "line_start": 91,
+      "path": "server/routers/ask-isa.ts"
+    },
+    {
+      "claim": "ASK_ISA runtime module path exists for ownership mapping: server/routers/ask-isa-v2.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-ASK-MODULE-SERVER_ROUTERS_ASK_ISA_V2_TS",
+      "line_end": 280,
+      "line_start": 280,
+      "path": "server/routers/ask-isa-v2.ts"
+    },
+    {
+      "claim": "ASK_ISA runtime module path exists for ownership mapping: server/routers/evaluation.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-ASK-MODULE-SERVER_ROUTERS_EVALUATION_TS",
+      "line_end": 138,
+      "line_start": 138,
+      "path": "server/routers/evaluation.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns router surface hub in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-NEWS-ROUTER-HUB",
+      "line_end": 75,
+      "line_start": 75,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns router surface newsAdmin in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-NEWS-ROUTER-NEWSADMIN",
+      "line_end": 582,
+      "line_start": 582,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns router surface cron in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-NEWS-ROUTER-CRON",
+      "line_end": 587,
+      "line_start": 587,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns router surface scraperHealth in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-NEWS-ROUTER-SCRAPERHEALTH",
+      "line_end": 604,
+      "line_start": 604,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns router surface pipelineObservability in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-NEWS-ROUTER-PIPELINEOBSERVABILITY",
+      "line_end": 609,
+      "line_start": 609,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns router surface regulatoryChangeLog in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-NEWS-ROUTER-REGULATORYCHANGELOG",
+      "line_end": 597,
+      "line_start": 597,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns table hub_news.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-NEWS-TABLE-HUB_NEWS",
+      "line_end": 873,
+      "line_start": 873,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns table hub_news_history.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-NEWS-TABLE-HUB_NEWS_HISTORY",
+      "line_end": 906,
+      "line_start": 906,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns table news_recommendations.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-NEWS-TABLE-NEWS_RECOMMENDATIONS",
+      "line_end": 1049,
+      "line_start": 1049,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns table scraper_executions.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-NEWS-TABLE-SCRAPER_EXECUTIONS",
+      "line_end": 1598,
+      "line_start": 1598,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns table scraper_health_summary.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-NEWS-TABLE-SCRAPER_HEALTH_SUMMARY",
+      "line_end": 1619,
+      "line_start": 1619,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns table pipeline_execution_log.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-NEWS-TABLE-PIPELINE_EXECUTION_LOG",
+      "line_end": 1092,
+      "line_start": 1092,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns table regulatory_change_log.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-NEWS-TABLE-REGULATORY_CHANGE_LOG",
+      "line_end": 1336,
+      "line_start": 1336,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "NEWS_HUB owns table regulatory_events.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-NEWS-TABLE-REGULATORY_EVENTS",
+      "line_end": 1984,
+      "line_start": 1984,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "NEWS_HUB runtime module path exists for ownership mapping: server/routers/hub.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_HUB_TS",
+      "line_end": 15,
+      "line_start": 15,
+      "path": "server/routers/hub.ts"
+    },
+    {
+      "claim": "NEWS_HUB runtime module path exists for ownership mapping: server/news-admin-router.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-NEWS-MODULE-SERVER_NEWS_ADMIN_ROUTER_TS",
+      "line_end": 48,
+      "line_start": 48,
+      "path": "server/news-admin-router.ts"
+    },
+    {
+      "claim": "NEWS_HUB runtime module path exists for ownership mapping: server/routers/cron.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_CRON_TS",
+      "line_end": 24,
+      "line_start": 24,
+      "path": "server/routers/cron.ts"
+    },
+    {
+      "claim": "NEWS_HUB runtime module path exists for ownership mapping: server/routers/scraper-health.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_SCRAPER_HEALTH_TS",
+      "line_end": 12,
+      "line_start": 12,
+      "path": "server/routers/scraper-health.ts"
+    },
+    {
+      "claim": "NEWS_HUB runtime module path exists for ownership mapping: server/routers/pipeline-observability.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_PIPELINE_OBSERVABILITY_TS",
+      "line_end": 22,
+      "line_start": 22,
+      "path": "server/routers/pipeline-observability.ts"
+    },
+    {
+      "claim": "NEWS_HUB runtime module path exists for ownership mapping: server/routers/regulatory-change-log.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-NEWS-MODULE-SERVER_ROUTERS_REGULATORY_CHANGE_LOG_TS",
+      "line_end": 37,
+      "line_start": 37,
+      "path": "server/routers/regulatory-change-log.ts"
+    },
+    {
+      "claim": "KNOWLEDGE_BASE owns router surface citationAdmin in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-KB-ROUTER-CITATIONADMIN",
+      "line_end": 567,
+      "line_start": 567,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "KNOWLEDGE_BASE owns table knowledge_embeddings.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-KB-TABLE-KNOWLEDGE_EMBEDDINGS",
+      "line_end": 1011,
+      "line_start": 1011,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "KNOWLEDGE_BASE owns table sources.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-KB-TABLE-SOURCES",
+      "line_end": 40,
+      "line_start": 40,
+      "path": "drizzle/schema_corpus_governance.ts"
+    },
+    {
+      "claim": "KNOWLEDGE_BASE owns table source_chunks.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-KB-TABLE-SOURCE_CHUNKS",
+      "line_end": 120,
+      "line_start": 120,
+      "path": "drizzle/schema_corpus_governance.ts"
+    },
+    {
+      "claim": "KNOWLEDGE_BASE owns table ingest_item_provenance.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-KB-TABLE-INGEST_ITEM_PROVENANCE",
+      "line_end": 1132,
+      "line_start": 1132,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "KNOWLEDGE_BASE runtime module path exists for ownership mapping: server/routers/citation-admin.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-KB-MODULE-SERVER_ROUTERS_CITATION_ADMIN_TS",
+      "line_end": 19,
+      "line_start": 19,
+      "path": "server/routers/citation-admin.ts"
+    },
+    {
+      "claim": "KNOWLEDGE_BASE runtime module path exists for ownership mapping: server/db-knowledge.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-KB-MODULE-SERVER_DB_KNOWLEDGE_TS",
+      "line_end": 17,
+      "line_start": 17,
+      "path": "server/db-knowledge.ts"
+    },
+    {
+      "claim": "KNOWLEDGE_BASE runtime module path exists for ownership mapping: server/db-knowledge-vector.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-KB-MODULE-SERVER_DB_KNOWLEDGE_VECTOR_TS",
+      "line_end": 45,
+      "line_start": 45,
+      "path": "server/db-knowledge-vector.ts"
+    },
+    {
+      "claim": "KNOWLEDGE_BASE runtime module path exists for ownership mapping: server/hybrid-search.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-KB-MODULE-SERVER_HYBRID_SEARCH_TS",
+      "line_end": 104,
+      "line_start": 104,
+      "path": "server/hybrid-search.ts"
+    },
+    {
+      "claim": "KNOWLEDGE_BASE runtime module path exists for ownership mapping: server/embedding.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-KB-MODULE-SERVER_EMBEDDING_TS",
+      "line_end": 16,
+      "line_start": 16,
+      "path": "server/embedding.ts"
+    },
+    {
+      "claim": "CATALOG owns router surface regulations in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-CAT-ROUTER-REGULATIONS",
+      "line_end": 72,
+      "line_start": 72,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "CATALOG owns router surface standards in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-CAT-ROUTER-STANDARDS",
+      "line_end": 73,
+      "line_start": 73,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "CATALOG owns router surface gs1Standards in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-CAT-ROUTER-GS1STANDARDS",
+      "line_end": 327,
+      "line_start": 327,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "CATALOG owns router surface standardsDirectory in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-CAT-ROUTER-STANDARDSDIRECTORY",
+      "line_end": 563,
+      "line_start": 563,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "CATALOG owns router surface esrs in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-CAT-ROUTER-ESRS",
+      "line_end": 412,
+      "line_start": 412,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "CATALOG owns router surface dutchInitiatives in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-CAT-ROUTER-DUTCHINITIATIVES",
+      "line_end": 515,
+      "line_start": 515,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "CATALOG owns router surface datasetRegistry in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-CAT-ROUTER-DATASETREGISTRY",
+      "line_end": 484,
+      "line_start": 484,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "CATALOG owns router surface governanceDocuments in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-CAT-ROUTER-GOVERNANCEDOCUMENTS",
+      "line_end": 494,
+      "line_start": 494,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "CATALOG owns router surface gs1Attributes in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-CAT-ROUTER-GS1ATTRIBUTES",
+      "line_end": 437,
+      "line_start": 437,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "CATALOG owns router surface gs1nlAttributes in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-CAT-ROUTER-GS1NLATTRIBUTES",
+      "line_end": 442,
+      "line_start": 442,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "CATALOG owns table regulations.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-CAT-TABLE-REGULATIONS",
+      "line_end": 1309,
+      "line_start": 1309,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "CATALOG owns table gs1_standards.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-CAT-TABLE-GS1_STANDARDS",
+      "line_end": 761,
+      "line_start": 761,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "CATALOG owns table esrs_datapoints.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-CAT-TABLE-ESRS_DATAPOINTS",
+      "line_end": 457,
+      "line_start": 457,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "CATALOG owns table dutch_initiatives.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-CAT-TABLE-DUTCH_INITIATIVES",
+      "line_end": 364,
+      "line_start": 364,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "CATALOG owns table regulation_standard_mappings.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-CAT-TABLE-REGULATION_STANDARD_MAPPINGS",
+      "line_end": 1298,
+      "line_start": 1298,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "CATALOG owns table dataset_registry.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-CAT-TABLE-DATASET_REGISTRY",
+      "line_end": 285,
+      "line_start": 285,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "CATALOG owns table governance_documents.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-CAT-TABLE-GOVERNANCE_DOCUMENTS",
+      "line_end": 572,
+      "line_start": 572,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "CATALOG owns table gs1_attributes.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-CAT-TABLE-GS1_ATTRIBUTES",
+      "line_end": 641,
+      "line_start": 641,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "CATALOG owns table gs1_web_vocabulary.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-CAT-TABLE-GS1_WEB_VOCABULARY",
+      "line_end": 801,
+      "line_start": 801,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "CATALOG runtime module path exists for ownership mapping: server/routers/regulations.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_REGULATIONS_TS",
+      "line_end": 7,
+      "line_start": 7,
+      "path": "server/routers/regulations.ts"
+    },
+    {
+      "claim": "CATALOG runtime module path exists for ownership mapping: server/routers/standards.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_STANDARDS_TS",
+      "line_end": 4,
+      "line_start": 4,
+      "path": "server/routers/standards.ts"
+    },
+    {
+      "claim": "CATALOG runtime module path exists for ownership mapping: server/gs1-standards-router.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-CAT-MODULE-SERVER_GS1_STANDARDS_ROUTER_TS",
+      "line_end": 23,
+      "line_start": 23,
+      "path": "server/gs1-standards-router.ts"
+    },
+    {
+      "claim": "CATALOG runtime module path exists for ownership mapping: server/routers/standards-directory.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_STANDARDS_DIRECTORY_TS",
+      "line_end": 23,
+      "line_start": 23,
+      "path": "server/routers/standards-directory.ts"
+    },
+    {
+      "claim": "CATALOG runtime module path exists for ownership mapping: server/routers/dataset-registry.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_DATASET_REGISTRY_TS",
+      "line_end": 20,
+      "line_start": 20,
+      "path": "server/routers/dataset-registry.ts"
+    },
+    {
+      "claim": "CATALOG runtime module path exists for ownership mapping: server/routers/governance-documents.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GOVERNANCE_DOCUMENTS_TS",
+      "line_end": 23,
+      "line_start": 23,
+      "path": "server/routers/governance-documents.ts"
+    },
+    {
+      "claim": "CATALOG runtime module path exists for ownership mapping: server/routers/gs1-attributes.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GS1_ATTRIBUTES_TS",
+      "line_end": 20,
+      "line_start": 20,
+      "path": "server/routers/gs1-attributes.ts"
+    },
+    {
+      "claim": "CATALOG runtime module path exists for ownership mapping: server/routers/gs1nl-attributes.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_GS1NL_ATTRIBUTES_TS",
+      "line_end": 45,
+      "line_start": 45,
+      "path": "server/routers/gs1nl-attributes.ts"
+    },
+    {
+      "claim": "CATALOG runtime module path exists for ownership mapping: server/routers/esrs.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_ESRS_TS",
+      "line_end": 140,
+      "line_start": 1,
+      "path": "server/routers/esrs.ts"
+    },
+    {
+      "claim": "CATALOG runtime module path exists for ownership mapping: server/routers/dutch-initiatives.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-CAT-MODULE-SERVER_ROUTERS_DUTCH_INITIATIVES_TS",
+      "line_end": 37,
+      "line_start": 4,
+      "path": "server/routers/dutch-initiatives.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING owns router surface esrsGs1Mapping in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-MAP-ROUTER-ESRSGS1MAPPING",
+      "line_end": 499,
+      "line_start": 499,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING owns router surface esrsRoadmap in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-MAP-ROUTER-ESRSROADMAP",
+      "line_end": 504,
+      "line_start": 504,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING owns router surface gapAnalyzer in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-MAP-ROUTER-GAPANALYZER",
+      "line_end": 577,
+      "line_start": 577,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING owns router surface attributeRecommender in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-MAP-ROUTER-ATTRIBUTERECOMMENDER",
+      "line_end": 587,
+      "line_start": 587,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING owns table gs1_esrs_mappings.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-MAP-TABLE-GS1_ESRS_MAPPINGS",
+      "line_end": 682,
+      "line_start": 682,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING owns table gs1_attribute_esrs_mapping.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-MAP-TABLE-GS1_ATTRIBUTE_ESRS_MAPPING",
+      "line_end": 622,
+      "line_start": 622,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING owns table regulation_esrs_mappings.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-MAP-TABLE-REGULATION_ESRS_MAPPINGS",
+      "line_end": 1283,
+      "line_start": 1283,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING owns table mapping_feedback.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-MAP-TABLE-MAPPING_FEEDBACK",
+      "line_end": 1036,
+      "line_start": 1036,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING owns table esg_gs1_mappings.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-MAP-TABLE-ESG_GS1_MAPPINGS",
+      "line_end": 2183,
+      "line_start": 2183,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING runtime module path exists for ownership mapping: server/routers/esrs-gs1-mapping.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-MAP-MODULE-SERVER_ROUTERS_ESRS_GS1_MAPPING_TS",
+      "line_end": 24,
+      "line_start": 24,
+      "path": "server/routers/esrs-gs1-mapping.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING runtime module path exists for ownership mapping: server/routers/esrs-roadmap.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-MAP-MODULE-SERVER_ROUTERS_ESRS_ROADMAP_TS",
+      "line_end": 33,
+      "line_start": 33,
+      "path": "server/routers/esrs-roadmap.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING runtime module path exists for ownership mapping: server/routers/gap-analyzer.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-MAP-MODULE-SERVER_ROUTERS_GAP_ANALYZER_TS",
+      "line_end": 423,
+      "line_start": 423,
+      "path": "server/routers/gap-analyzer.ts"
+    },
+    {
+      "claim": "ESRS_MAPPING runtime module path exists for ownership mapping: server/routers/attribute-recommender.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-MAP-MODULE-SERVER_ROUTERS_ATTRIBUTE_RECOMMENDER_TS",
+      "line_end": 37,
+      "line_start": 37,
+      "path": "server/routers/attribute-recommender.ts"
+    },
+    {
+      "claim": "ADVISORY owns router surface advisory in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-ADV-ROUTER-ADVISORY",
+      "line_end": 457,
+      "line_start": 457,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ADVISORY owns router surface advisoryReports in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-ADV-ROUTER-ADVISORYREPORTS",
+      "line_end": 489,
+      "line_start": 489,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ADVISORY owns router surface advisoryDiff in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-ADV-ROUTER-ADVISORYDIFF",
+      "line_end": 509,
+      "line_start": 509,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ADVISORY owns router surface esgArtefacts in appRouter.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-CAP-ADV-ROUTER-ESGARTEFACTS",
+      "line_end": 593,
+      "line_start": 593,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "ADVISORY owns table advisory_reports.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-ADV-TABLE-ADVISORY_REPORTS",
+      "line_end": 17,
+      "line_start": 17,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "ADVISORY owns table advisory_report_versions.",
+      "confidence": 1,
+      "evidence_type": "schema_table",
+      "id": "EV-CAP-ADV-TABLE-ADVISORY_REPORT_VERSIONS",
+      "line_end": 4,
+      "line_start": 4,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "ADVISORY runtime module path exists for ownership mapping: server/routers/advisory.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ADVISORY_TS",
+      "line_end": 35,
+      "line_start": 35,
+      "path": "server/routers/advisory.ts"
+    },
+    {
+      "claim": "ADVISORY runtime module path exists for ownership mapping: server/routers/advisory-reports.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ADVISORY_REPORTS_TS",
+      "line_end": 24,
+      "line_start": 24,
+      "path": "server/routers/advisory-reports.ts"
+    },
+    {
+      "claim": "ADVISORY runtime module path exists for ownership mapping: server/routers/advisory-diff.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ADVISORY_DIFF_TS",
+      "line_end": 14,
+      "line_start": 14,
+      "path": "server/routers/advisory-diff.ts"
+    },
+    {
+      "claim": "ADVISORY runtime module path exists for ownership mapping: server/routers/esg-artefacts.ts.",
+      "confidence": 1,
+      "evidence_type": "module_path",
+      "id": "EV-CAP-ADV-MODULE-SERVER_ROUTERS_ESG_ARTEFACTS_TS",
+      "line_end": 35,
+      "line_start": 35,
+      "path": "server/routers/esg-artefacts.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface system.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-SYSTEM",
+      "line_end": 55,
+      "line_start": 55,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface auth.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-AUTH",
+      "line_end": 65,
+      "line_start": 56,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface user.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-USER",
+      "line_end": 74,
+      "line_start": 74,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface analytics.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-ANALYTICS",
+      "line_end": 128,
+      "line_start": 80,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface contact.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-CONTACT",
+      "line_end": 177,
+      "line_start": 133,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface export.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-EXPORT",
+      "line_end": 320,
+      "line_start": 182,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface onboarding.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-ONBOARDING",
+      "line_end": 406,
+      "line_start": 382,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface insights.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-INSIGHTS",
+      "line_end": 73,
+      "line_start": 73,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface monitoring.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-MONITORING",
+      "line_end": 598,
+      "line_start": 598,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface coverageAnalytics.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-COVERAGEANALYTICS",
+      "line_end": 599,
+      "line_start": 599,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface observability.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-OBSERVABILITY",
+      "line_end": 614,
+      "line_start": 614,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface dataQuality.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-DATAQUALITY",
+      "line_end": 557,
+      "line_start": 557,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface productionMonitoring.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-PRODUCTIONMONITORING",
+      "line_end": 567,
+      "line_start": 567,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface errorTracking.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-ERRORTRACKING",
+      "line_end": 568,
+      "line_start": 568,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface performanceTracking.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-PERFORMANCETRACKING",
+      "line_end": 569,
+      "line_start": 569,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "Shared platform owns router surface webhookConfig.",
+      "confidence": 1,
+      "evidence_type": "router_surface",
+      "id": "EV-SHARED-ROUTER-WEBHOOKCONFIG",
+      "line_end": 612,
+      "line_start": 595,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "P-001 authoritative reference 1.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-001-REF-01",
+      "line_end": 14,
+      "line_start": 14,
+      "path": "server/_core/oauth.ts"
+    },
+    {
+      "claim": "P-001 authoritative reference 2.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-001-REF-02",
+      "line_end": 28,
+      "line_start": 10,
+      "path": "server/_core/trpc.ts"
+    },
+    {
+      "claim": "P-001 authoritative reference 3.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-001-REF-03",
+      "line_end": 65,
+      "line_start": 55,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "P-002 authoritative reference 1.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-002-REF-01",
+      "line_end": 80,
+      "line_start": 1,
+      "path": "data/metadata/dataset_registry.json"
+    },
+    {
+      "claim": "P-002 authoritative reference 2.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-002-REF-02",
+      "line_end": 315,
+      "line_start": 285,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "P-002 authoritative reference 3.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-002-REF-03",
+      "line_end": 20,
+      "line_start": 20,
+      "path": "server/routers/dataset-registry.ts"
+    },
+    {
+      "claim": "P-003 authoritative reference 1.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-003-REF-01",
+      "line_end": 184,
+      "line_start": 15,
+      "path": "server/citation-validation.ts"
+    },
+    {
+      "claim": "P-003 authoritative reference 2.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-003-REF-02",
+      "line_end": 397,
+      "line_start": 112,
+      "path": "server/claim-citation-verifier.ts"
+    },
+    {
+      "claim": "P-003 authoritative reference 3.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-003-REF-03",
+      "line_end": 40,
+      "line_start": 17,
+      "path": "docs/governance/_root/ISA_GOVERNANCE.md"
+    },
+    {
+      "claim": "P-004 authoritative reference 1.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-004-REF-01",
+      "line_end": 1324,
+      "line_start": 1309,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "P-004 authoritative reference 2.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-004-REF-02",
+      "line_end": 7,
+      "line_start": 7,
+      "path": "server/routers/regulations.ts"
+    },
+    {
+      "claim": "P-005 authoritative reference 1.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-005-REF-01",
+      "line_end": 810,
+      "line_start": 761,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "P-005 authoritative reference 2.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-005-REF-02",
+      "line_end": 23,
+      "line_start": 23,
+      "path": "server/gs1-standards-router.ts"
+    },
+    {
+      "claim": "P-005 authoritative reference 3.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-005-REF-03",
+      "line_end": 4,
+      "line_start": 4,
+      "path": "server/routers/standards.ts"
+    },
+    {
+      "claim": "P-006 authoritative reference 1.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-006-REF-01",
+      "line_end": 477,
+      "line_start": 457,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "P-006 authoritative reference 2.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-006-REF-02",
+      "line_end": 547,
+      "line_start": 411,
+      "path": "server/routers.ts"
+    },
+    {
+      "claim": "P-007 authoritative reference 1.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-007-REF-01",
+      "line_end": 282,
+      "line_start": 282,
+      "path": "server/_core/llm.ts"
+    },
+    {
+      "claim": "P-007 authoritative reference 2.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-007-REF-02",
+      "line_end": 91,
+      "line_start": 91,
+      "path": "server/routers/ask-isa.ts"
+    },
+    {
+      "claim": "P-007 authoritative reference 3.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-007-REF-03",
+      "line_end": 33,
+      "line_start": 33,
+      "path": "server/routers/esrs-roadmap.ts"
+    },
+    {
+      "claim": "P-007 authoritative reference 4.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-007-REF-04",
+      "line_end": 417,
+      "line_start": 131,
+      "path": "server/news-ai-processor.ts"
+    },
+    {
+      "claim": "P-008 authoritative reference 1.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-008-REF-01",
+      "line_end": 172,
+      "line_start": 16,
+      "path": "server/embedding.ts"
+    },
+    {
+      "claim": "P-008 authoritative reference 2.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-008-REF-02",
+      "line_end": 295,
+      "line_start": 45,
+      "path": "server/db-knowledge-vector.ts"
+    },
+    {
+      "claim": "P-008 authoritative reference 3.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-008-REF-03",
+      "line_end": 271,
+      "line_start": 104,
+      "path": "server/hybrid-search.ts"
+    },
+    {
+      "claim": "P-009 authoritative reference 1.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-009-REF-01",
+      "line_end": 105,
+      "line_start": 15,
+      "path": "server/news-cron-scheduler.ts"
+    },
+    {
+      "claim": "P-009 authoritative reference 2.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-009-REF-02",
+      "line_end": 24,
+      "line_start": 24,
+      "path": "server/routers/cron.ts"
+    },
+    {
+      "claim": "P-009 authoritative reference 3.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-009-REF-03",
+      "line_end": 48,
+      "line_start": 48,
+      "path": "server/news-admin-router.ts"
+    },
+    {
+      "claim": "P-010 authoritative reference 1.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-010-REF-01",
+      "line_end": 95,
+      "line_start": 81,
+      "path": "server/_core/logger-wiring.ts"
+    },
+    {
+      "claim": "P-010 authoritative reference 2.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-010-REF-02",
+      "line_end": 55,
+      "line_start": 6,
+      "path": "server/_core/trace-id.ts"
+    },
+    {
+      "claim": "P-010 authoritative reference 3.",
+      "confidence": 0.95,
+      "evidence_type": "shared_primitive",
+      "id": "EV-P-010-REF-03",
+      "line_end": 80,
+      "line_start": 1,
+      "path": "scripts/gates/observability-contract.sh"
+    },
+    {
+      "claim": "Observability contract check reports pass with runtime-scoped coverage meeting threshold.",
+      "confidence": 1,
+      "evidence_type": "validation_result",
+      "id": "EV-VAL-001",
+      "line_end": 99,
+      "line_start": 94,
+      "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
+    },
+    {
+      "claim": "Security gate reports pass under deterministic timeout-fail semantics with critical-severity blocking policy.",
+      "confidence": 1,
+      "evidence_type": "validation_result",
+      "id": "EV-VAL-002",
+      "line_end": 106,
+      "line_start": 101,
+      "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
+    },
+    {
+      "claim": "Aggregate weighted confidence is 1.00 with DONE threshold set to 0.75.",
+      "confidence": 1,
+      "evidence_type": "validation_result",
+      "id": "EV-VAL-003",
+      "line_end": 146,
+      "line_start": 136,
+      "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
+    },
+    {
+      "claim": "Canonical doc-code validator passes in canonical-only mode.",
+      "confidence": 1,
+      "evidence_type": "validation_result",
+      "id": "EV-VAL-004",
+      "line_end": 119,
+      "line_start": 115,
+      "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
+    },
+    {
+      "claim": "Canonical docs allowlist pass is based on forbidden tracked file checks; untracked local noise is warning-only.",
+      "confidence": 1,
+      "evidence_type": "validation_policy",
+      "id": "EV-VAL-005",
+      "line_end": 47,
+      "line_start": 4,
+      "path": "scripts/gates/canonical-docs-allowlist.sh"
+    },
+    {
+      "claim": "Capability manifest is authoritative ownership contract with capability sections.",
+      "confidence": 1,
+      "evidence_type": "generated_contract",
+      "id": "EV-ARCH-010",
+      "line_end": 120,
+      "line_start": 1,
+      "path": "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json"
+    },
+    {
+      "claim": "Capability graph contains machine-readable overlap/gap coverage validation.",
+      "confidence": 1,
+      "evidence_type": "generated_contract",
+      "id": "EV-ARCH-011",
+      "line_end": 540,
+      "line_start": 1,
+      "path": "docs/architecture/panel/_generated/CAPABILITY_GRAPH.json"
+    },
+    {
+      "claim": "Shared platform router ownership is explicitly represented in capability manifest.",
+      "confidence": 1,
+      "evidence_type": "generated_contract",
+      "id": "EV-ARCH-012",
+      "line_end": 2014,
+      "line_start": 1574,
+      "path": "docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json"
+    },
+    {
+      "claim": "Primary table definitions are declared in drizzle/schema.ts via mysqlTable exports.",
+      "confidence": 1,
+      "evidence_type": "schema_truth",
+      "id": "EV-ARCH-013",
+      "line_end": 2183,
+      "line_start": 1,
+      "path": "drizzle/schema.ts"
+    },
+    {
+      "claim": "Supplemental table definitions are declared in drizzle/schema_corpus_governance.ts via mysqlTable exports.",
+      "confidence": 1,
+      "evidence_type": "schema_truth",
+      "id": "EV-ARCH-014",
+      "line_end": 354,
+      "line_start": 1,
+      "path": "drizzle/schema_corpus_governance.ts"
+    },
+    {
+      "claim": "Tiered CI policy is defined in .github/workflows/tiered-tests.yml.",
+      "confidence": 1,
+      "evidence_type": "ci_policy_contract",
+      "id": "EV-ARCH-015",
+      "line_end": 140,
+      "line_start": 1,
+      "path": ".github/workflows/tiered-tests.yml"
+    },
+    {
+      "claim": "Manifest ownership drift check reports pass with full router/table ownership coverage and no duplicates.",
+      "confidence": 1,
+      "evidence_type": "validation_result",
+      "id": "EV-VAL-006",
+      "line_end": 134,
+      "line_start": 129,
+      "path": "docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json"
+    }
+  ],
+  "meta": {
+    "contract_version": "2.0.0",
+    "generated_at": "2026-02-20",
+    "generated_by": "codex-5.3",
+    "repo_ref": {
+      "branch": "main",
+      "commit": "70acb22c7975ab851b27cf2912c6dbb2f287167e"
+    }
+  },
+  "primitive_derivation": {
+    "groups": {
+      "P-001": [
+        "EV-P-001-REF-01",
+        "EV-P-001-REF-02",
+        "EV-P-001-REF-03"
+      ],
+      "P-002": [
+        "EV-P-002-REF-01",
+        "EV-P-002-REF-02",
+        "EV-P-002-REF-03"
+      ],
+      "P-003": [
+        "EV-P-003-REF-01",
+        "EV-P-003-REF-02",
+        "EV-P-003-REF-03"
+      ],
+      "P-004": [
+        "EV-P-004-REF-01",
+        "EV-P-004-REF-02"
+      ],
+      "P-005": [
+        "EV-P-005-REF-01",
+        "EV-P-005-REF-02",
+        "EV-P-005-REF-03"
+      ],
+      "P-006": [
+        "EV-P-006-REF-01",
+        "EV-P-006-REF-02"
+      ],
+      "P-007": [
+        "EV-P-007-REF-01",
+        "EV-P-007-REF-02",
+        "EV-P-007-REF-03",
+        "EV-P-007-REF-04"
+      ],
+      "P-008": [
+        "EV-P-008-REF-01",
+        "EV-P-008-REF-02",
+        "EV-P-008-REF-03"
+      ],
+      "P-009": [
+        "EV-P-009-REF-01",
+        "EV-P-009-REF-02",
+        "EV-P-009-REF-03"
+      ],
+      "P-010": [
+        "EV-P-010-REF-01",
+        "EV-P-010-REF-02",
+        "EV-P-010-REF-03"
+      ]
+    }
+  }
+}

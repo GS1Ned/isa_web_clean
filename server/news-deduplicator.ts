@@ -4,6 +4,8 @@
  * Uses title similarity and content overlap to identify duplicates
  */
 
+import { serverLogger } from "./_core/logger-wiring";
+
 export interface NewsItem {
   title: string;
   url: string;
@@ -183,16 +185,17 @@ export function logDeduplicationStats(
   const duplicatesFound = originalCount - deduplicatedCount;
   const multiSourceItems = mergedItems.filter(item => item.sources.length > 1);
 
-  console.log(`[Deduplication] Original items: ${originalCount}`);
-  console.log(`[Deduplication] After deduplication: ${deduplicatedCount}`);
-  console.log(`[Deduplication] Duplicates merged: ${duplicatesFound}`);
-  console.log(`[Deduplication] Multi-source items: ${multiSourceItems.length}`);
+  // Intentionally info-level: these are operational metrics for the ingestion pipeline.
+  serverLogger.info(`[Deduplication] Original items: ${originalCount}`);
+  serverLogger.info(`[Deduplication] After deduplication: ${deduplicatedCount}`);
+  serverLogger.info(`[Deduplication] Duplicates merged: ${duplicatesFound}`);
+  serverLogger.info(`[Deduplication] Multi-source items: ${multiSourceItems.length}`);
 
   if (multiSourceItems.length > 0) {
-    console.log("\n[Deduplication] Multi-source articles:");
+    serverLogger.info("\n[Deduplication] Multi-source articles:");
     multiSourceItems.forEach(item => {
       const sourceNames = item.sources.map(s => s.name).join(", ");
-      console.log(`  - "${item.title}" (${sourceNames})`);
+      serverLogger.info(`  - "${item.title}" (${sourceNames})`);
     });
   }
 }

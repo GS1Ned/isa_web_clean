@@ -1,0 +1,38 @@
+{
+  "servers": {
+    "filesystem": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["-s", "dlx", "@modelcontextprotocol/server-filesystem@2026.1.14", "."]
+    },
+    "git": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["-s", "dlx", "@cyanheads/git-mcp-server@2.8.4"]
+    },
+    "fetch": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["-s", "dlx", "@lmcc-dev/mult-fetch-mcp-server@1.3.2"]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["-s", "dlx", "@playwright/mcp@0.0.68"]
+    },
+    "openai_docs": {
+      "type": "http",
+      "url": "https://developers.openai.com/mcp"
+    },
+    "sequential-thinking": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["-s", "dlx", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    }
+  }
+}

@@ -130,7 +130,7 @@ row.esrs_standard  // match the actual interface definition
 
 ## Technical Notes
 
-### MySQL/TiDB Type Mappings
+### MySQL-Compatible Type Mappings
 - **tinyint**: Maps to `number` in TypeScript, use 0/1 for boolean values
 - **timestamp with mode: 'string'**: Maps to `string` in TypeScript, use `.toISOString()` for Date objects
 - **Drizzle schema field names**: Use exact casing from schema definition (usually camelCase)

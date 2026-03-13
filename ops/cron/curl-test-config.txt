@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -z "${BASE_URL:-}" || -z "${CRON_SECRET:-}" ]]; then
+  echo "STOP=Set BASE_URL and CRON_SECRET before running this script."
+  echo "Example: BASE_URL=https://example.com CRON_SECRET=... bash ops/cron/curl-test-config.txt"
+  exit 1
+fi
+
+echo "READY=testing_cron_endpoints"
+echo ""
+echo "1. Health endpoint"
+curl -sS "$BASE_URL/cron/health"
+echo ""
+echo ""
+echo "2. Daily news ingestion"
+curl -sS -X GET \
+  -H "Authorization: Bearer $CRON_SECRET" \
+  "$BASE_URL/cron/daily-news-ingestion"
+echo ""
+echo ""
+echo "3. Weekly news archival"
+curl -sS -X GET \
+  -H "Authorization: Bearer $CRON_SECRET" \
+  "$BASE_URL/cron/weekly-news-archival"
+echo ""
+echo ""
+echo "DONE=cron_endpoint_tests_complete"

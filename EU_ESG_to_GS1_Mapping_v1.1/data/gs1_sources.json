@@ -1,0 +1,89 @@
+{
+  "gs1_sources": [
+    {
+      "standard_id": "GTIN",
+      "full_name": "Global Trade Item Number",
+      "description": "A globally unique identifier for trade items (products or services) that may be priced, ordered, or invoiced at any point in the supply chain.",
+      "canonical_url": "https://www.gs1.org/standards/id-keys/gtin",
+      "specification_url": "https://ref.gs1.org/standards/gtin-management/",
+      "general_specs_section": "GS1 General Specifications Section 2",
+      "current_version": "GS1 General Specifications v25 (January 2025)",
+      "iso_standard": null,
+      "scope": "Product identification for trade items at any packaging level (consumer unit, case, pallet)",
+      "key_attributes": ["8/12/13/14-digit identifier", "Check digit validation", "Company prefix allocation"],
+      "usage_in_mapping": 5
+    },
+    {
+      "standard_id": "GLN",
+      "full_name": "Global Location Number",
+      "description": "A globally unique identifier for parties (legal entities, functions) and locations (physical, operational) in the supply chain.",
+      "canonical_url": "https://www.gs1.org/standards/id-keys/gln",
+      "specification_url": "https://www.gs1.org/standards/gs1-gln-allocation-rules-standard/current-standard",
+      "general_specs_section": "GS1 General Specifications Section 2",
+      "current_version": "GLN Allocation Rules Standard v2.0",
+      "iso_standard": null,
+      "scope": "Identification of legal entities, trading parties, physical locations, and operational locations",
+      "key_attributes": ["13-digit identifier", "Party identification", "Location identification", "Hierarchy support"],
+      "usage_in_mapping": 9
+    },
+    {
+      "standard_id": "GDSN",
+      "full_name": "Global Data Synchronisation Network",
+      "description": "A network of interoperable data pools enabling trading partners to share trusted product master data in real-time.",
+      "canonical_url": "https://www.gs1.org/services/gdsn",
+      "specification_url": "https://www.gs1.org/standards/gdsn",
+      "general_specs_section": "GS1 GDSN Standards",
+      "current_version": "GDSN 3.1",
+      "iso_standard": null,
+      "scope": "Product master data synchronisation between trading partners via certified data pools",
+      "key_attributes": ["Data pool network", "Product attributes", "Real-time synchronisation", "Global registry"],
+      "usage_in_mapping": 2
+    },
+    {
+      "standard_id": "EPCIS/CBV",
+      "full_name": "Electronic Product Code Information Services / Core Business Vocabulary",
+      "description": "A traceability event messaging standard enabling supply chain visibility through sharing event data (what, where, when, why) using a common vocabulary.",
+      "canonical_url": "https://www.gs1.org/standards/epcis",
+      "specification_url": "https://ref.gs1.org/standards/epcis/",
+      "cbv_url": "https://ref.gs1.org/standards/cbv/",
+      "general_specs_section": "EPCIS and CBV Standards",
+      "current_version": "EPCIS 2.0 / CBV 2.0",
+      "iso_standard": "ISO/IEC 19987 (EPCIS), ISO/IEC 19988 (CBV)",
+      "scope": "Capture and share visibility events across supply chain (ObjectEvent, AggregationEvent, TransactionEvent, TransformationEvent)",
+      "key_attributes": ["Event-based traceability", "What/Where/When/Why", "Business step vocabulary", "Disposition vocabulary"],
+      "usage_in_mapping": 4
+    },
+    {
+      "standard_id": "Digital Link",
+      "full_name": "GS1 Digital Link",
+      "description": "A standardised method for encoding GS1 identifiers (GTINs, GLNs, SSCCs) in web URIs, enabling QR codes and barcodes to link to web resources.",
+      "canonical_url": "https://www.gs1.org/standards/gs1-digital-link",
+      "specification_url": "https://ref.gs1.org/standards/digital-link/uri-syntax/",
+      "general_specs_section": "GS1 Digital Link Standard",
+      "current_version": "GS1 Digital Link Standard 1.1.3",
+      "iso_standard": null,
+      "scope": "Web-enabling GS1 identifiers through standardised URI syntax for linking physical products to digital information",
+      "key_attributes": ["URI syntax", "Resolver functionality", "QR code encoding", "Multiple identifier support"],
+      "usage_in_mapping": 5
+    },
+    {
+      "standard_id": "SSCC",
+      "full_name": "Serial Shipping Container Code",
+      "description": "A globally unique identifier for logistic units (pallets, cases, containers) enabling tracking of shipments through the supply chain.",
+      "canonical_url": "https://www.gs1.org/standards/id-keys/sscc",
+      "specification_url": "https://www.gs1.org/standards/id-keys/sscc",
+      "general_specs_section": "GS1 General Specifications Section 2",
+      "current_version": "GS1 General Specifications v25 (January 2025)",
+      "iso_standard": null,
+      "scope": "Identification of logistic units for tracking shipments and enabling supply chain visibility",
+      "key_attributes": ["18-digit identifier", "Extension digit", "Serial reference", "Logistic unit tracking"],
+      "usage_in_mapping": 3
+    }
+  ],
+  "metadata": {
+    "created": "2026-01-27",
+    "version": "1.0",
+    "source": "GS1.org official documentation",
+    "purpose": "Authoritative GS1 source metadata for EU_ESG_to_GS1_Mapping v1.1 artefact set"
+  }
+}

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Menu, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { LanguageSwitcher } from "@/lib/i18n";
 
 interface NavItem {
   label: string;
@@ -109,8 +110,7 @@ export function NavigationMenu() {
         { label: "News Pipeline", href: "/admin/news-pipeline", description: "Trigger news ingestion" },
         { label: "News Management", href: "/admin/news", description: "Manage articles" },
         { label: "Analytics", href: "/admin/analytics", description: "Hub metrics" },
-        { label: "CELLAR Ingestion", href: "/admin/cellar", description: "EU regulation sync" },
-        { label: "Sync Monitor", href: "/admin/cellar-sync", description: "Monitor sync history" },
+        { label: "Ingestion Monitoring", href: "/admin/monitoring", description: "Cron jobs and source health" },
         { label: "EUDR Data Seeder", href: "/admin/eudr-seeder", description: "Populate sample data" },
         { label: "Scraper Health", href: "/admin/scraper-health", description: "Monitor scrapers" },
         { label: "Coverage Analytics", href: "/admin/coverage-analytics", description: "News coverage" },
@@ -218,6 +218,7 @@ export function NavigationMenu() {
                 <Button size="sm">Dashboard</Button>
               </Link>
             )}
+            <LanguageSwitcher />
           </div>
 
           {/* Mobile Menu Button */}

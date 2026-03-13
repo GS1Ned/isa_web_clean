@@ -1,0 +1,137 @@
+name: Generate Embeddings (Optimized)
+
+# Optimized workflow for generating vector embeddings
+# 
+# Improvements over original:
+#   - Batch API calls (100 items per request)
+#   - Parallel processing (5 concurrent batches)
+#   - Exponential backoff with retry logic
+#   - Progress persistence for resume capability
+#   - Dependency caching for faster startup
+#   - Configurable batch size and concurrency
+#
+# Required Secrets:
+#   - DATABASE_URL: MySQL connection string for TiDB Cloud
+#   - OPENAI_API_KEY: OpenAI API key for embedding generation
+#   - JWT_SECRET: Secret for JWT token generation
+#
+# Required Variables:
+#   - VITE_APP_ID: Application ID for Vite
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (skip database writes)'
+        required: false
+        default: 'false'
+        type: boolean
+      force_regenerate:
+        description: 'Force regenerate all embeddings (ignore existing)'
+        required: false
+        default: 'false'
+        type: boolean
+      batch_size:
+        description: 'Items per API call (default: 100, max: 2048)'
+        required: false
+        default: '100'
+        type: string
+      concurrency:
+        description: 'Parallel batches (default: 5)'
+        required: false
+        default: '5'
+        type: string
+
+  # Scheduled run: Every Sunday at 2:00 AM UTC
+  schedule:
+    - cron: '0 2 * * 0'
+
+jobs:
+  generate-embeddings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120  # Extended timeout for large datasets
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate environment
+        run: |
+          if [ -z "${{ secrets.DATABASE_URL }}" ]; then
+            echo "❌ DATABASE_URL secret is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.OPENAI_API_KEY }}" ]; then
+            echo "❌ OPENAI_API_KEY secret is not set"
+            exit 1
+          fi
+          echo "✅ All required secrets are configured"
+
+      - name: Generate embeddings (optimized)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          VITE_APP_ID: ${{ vars.VITE_APP_ID }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          NODE_ENV: production
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          FORCE_REGENERATE: ${{ github.event.inputs.force_regenerate || 'false' }}
+          BATCH_SIZE: ${{ github.event.inputs.batch_size || '100' }}
+          CONCURRENCY: ${{ github.event.inputs.concurrency || '5' }}
+        run: |
+          echo "🚀 Starting optimized embedding generation..."
+          echo ""
+          echo "Configuration:"
+          echo "  - Dry Run: $DRY_RUN"
+          echo "  - Force Regenerate: $FORCE_REGENERATE"
+          echo "  - Batch Size: $BATCH_SIZE"
+          echo "  - Concurrency: $CONCURRENCY"
+          echo ""
+          pnpm exec tsx server/generate-all-embeddings-optimized.ts
+
+      - name: Report results
+        if: always()
+        run: |
+          echo ""
+          echo "📊 Embedding generation workflow completed"
+          echo "   Status: ${{ job.status }}"
+          echo "   Triggered by: ${{ github.event_name }}"
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "   Triggered by user: ${{ github.actor }}"
+          fi
+
+      - name: Upload progress file (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: embedding-progress
+          path: /tmp/embedding-progress.json
+          if-no-files-found: ignore
+          retention-days: 7

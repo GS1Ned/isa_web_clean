@@ -7,6 +7,21 @@
 import { serverLoggerFactory } from "../utils/server-logger";
 import { getDb } from "../db";
 
+const silent =
+  process.env.ISA_TEST_SILENT === "true" ||
+  process.env.NODE_ENV === "test" ||
+  process.env.VITEST === "true";
+
+function writeStdout(line: string) {
+  if (silent) return;
+  process.stdout.write(line.endsWith("\n") ? line : `${line}\n`);
+}
+
+function writeStderr(line: string) {
+  if (silent) return;
+  process.stderr.write(line.endsWith("\n") ? line : `${line}\n`);
+}
+
 type PersistRow = {
   trace_id: string;
   created_at: string;
@@ -24,9 +39,9 @@ type PersistRow = {
 async function createPersistFn() {
   const db = await getDb();
   if (!db) {
-    return async (_row: PersistRow) => {
-      serverLogger.error("[serverLogger.persist] DB not available; skipping persist");
-    };
+    // Return a silent no-op when DB is unavailable
+    // CRITICAL: Do NOT log here - it creates infinite recursion
+    return async (_row: PersistRow) => {};
   }
 
   return async (row: PersistRow) => {
@@ -52,7 +67,7 @@ async function createPersistFn() {
     } catch (err) {
       // CRITICAL: Do NOT use serverLogger.error here - it creates infinite recursion
       // when persist fails, as serverLogger.error tries to persist again
-      console.error(JSON.stringify({
+      writeStderr(JSON.stringify({
         level: "error",
         message: "[serverLogger.persist] failed to insert row",
         error: String(err),
@@ -65,14 +80,16 @@ async function createPersistFn() {
 
 let serverLogger = serverLoggerFactory(); // fallback
 
-(async () => {
-  try {
-    const persist = await createPersistFn();
-    serverLogger = serverLoggerFactory({ persist, environment: process.env.NODE_ENV });
-    console.log("[logger-wiring] persisted serverLogger wired");
-  } catch (e) {
-    serverLogger.error("[logger-wiring] failed to wire persisted serverLogger", String(e));
-  }
-})();
+if (!silent) {
+  (async () => {
+    try {
+      const persist = await createPersistFn();
+      serverLogger = serverLoggerFactory({ persist, environment: process.env.NODE_ENV });
+      writeStdout("[logger-wiring] persisted serverLogger wired");
+    } catch (e) {
+      serverLogger.error("[logger-wiring] failed to wire persisted serverLogger", String(e));
+    }
+  })();
+}
 
 export { serverLogger };

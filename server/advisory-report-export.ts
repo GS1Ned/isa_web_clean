@@ -3,6 +3,12 @@
  * Phase 1 Enhancement: Generate professional Markdown reports from analysis results
  */
 
+import type {
+  EsrsDecisionArtifact,
+  EsrsAttributeRecommendationDecisionArtifact,
+  EsrsGapAnalysisDecisionArtifact,
+} from "./esrs-decision-artifacts";
+
 // Database operations use in-memory storage for demo
 
 // =============================================================================
@@ -18,7 +24,9 @@ export interface GapAnalysisReportInput {
   companyName?: string;
   preparedFor?: string;
   preparedBy?: string;
-  gapAnalysisResult: any;
+  gapAnalysisResult: any & {
+    decisionArtifact?: EsrsGapAnalysisDecisionArtifact;
+  };
 }
 
 export interface AttributeRecommendationReportInput {
@@ -30,7 +38,186 @@ export interface AttributeRecommendationReportInput {
   companyName?: string;
   preparedFor?: string;
   preparedBy?: string;
-  recommendationResult: any;
+  recommendationResult: any & {
+    decisionArtifact?: EsrsAttributeRecommendationDecisionArtifact;
+  };
+}
+
+type DecisionArtifactEvidenceRef = NonNullable<
+  NonNullable<EsrsDecisionArtifact["evidence"]>["evidenceRefs"]
+>[number];
+
+function formatDecisionSummaryLabel(key: string) {
+  return key
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (match) => match.toUpperCase());
+}
+
+function formatDecisionSummaryValue(value: unknown) {
+  if (Array.isArray(value)) {
+    return value.length === 0 ? "None" : value.join(", ");
+  }
+
+  if (typeof value === "boolean") {
+    return value ? "Yes" : "No";
+  }
+
+  if (value == null || value === "") {
+    return "N/A";
+  }
+
+  return String(value);
+}
+
+function formatEvidenceRefLabel(ref: DecisionArtifactEvidenceRef) {
+  return ref.citationLabel || ref.evidenceKey || "unresolved";
+}
+
+function formatEvidenceRefLocator(ref: DecisionArtifactEvidenceRef) {
+  return ref.sourceChunkLocator || ref.sourceLocator || ref.immutableUri || "Locator unavailable";
+}
+
+function hasReviewerUsableEvidenceRef(ref: DecisionArtifactEvidenceRef) {
+  return Boolean(
+    (ref.evidenceKey || ref.citationLabel) &&
+      (ref.sourceChunkLocator || ref.sourceLocator || ref.immutableUri),
+  );
+}
+
+function appendDecisionArtifactSection(
+  lines: string[],
+  artifact?: EsrsGapAnalysisDecisionArtifact | EsrsAttributeRecommendationDecisionArtifact,
+) {
+  if (!artifact) {
+    return;
+  }
+
+  lines.push("## Decision artifact");
+  lines.push("");
+  lines.push("This section captures the stable ESRS_MAPPING decision-core envelope used by downstream UI and delivery consumers.");
+  lines.push("");
+  lines.push(`- **Capability:** ${artifact.capability}`);
+  lines.push(`- **Artifact Type:** ${artifact.artifactType}`);
+  lines.push(`- **Artifact Version:** ${artifact.artifactVersion}`);
+  lines.push(`- **Confidence Level:** ${artifact.confidence.level}`);
+  lines.push(`- **Confidence Score:** ${Math.round(artifact.confidence.score * 100)}%`);
+  lines.push(`- **Confidence Basis:** ${artifact.confidence.basis}`);
+  lines.push(`- **Review Recommended:** ${artifact.confidence.reviewRecommended ? "Yes" : "No"}`);
+  if (artifact.confidence.uncertaintyClass) {
+    lines.push(`- **Uncertainty Class:** ${artifact.confidence.uncertaintyClass}`);
+  }
+  if (artifact.confidence.escalationAction) {
+    lines.push(`- **Escalation Action:** ${artifact.confidence.escalationAction}`);
+  }
+  lines.push("");
+
+  const summaryEntries = Object.entries(artifact.summary ?? {});
+  if (summaryEntries.length > 0) {
+    lines.push("### Decision summary");
+    lines.push("");
+    lines.push("| Field | Value |");
+    lines.push("|-------|-------|");
+    for (const [key, value] of summaryEntries) {
+      lines.push(`| ${formatDecisionSummaryLabel(key)} | ${formatDecisionSummaryValue(value)} |`);
+    }
+    lines.push("");
+  }
+
+  lines.push("### Evidence sources");
+  lines.push("");
+  lines.push(`- **Code Paths:** ${(artifact.evidence.codePaths || []).join(", ") || "N/A"}`);
+  lines.push(`- **Data Sources:** ${(artifact.evidence.dataSources || []).join(", ") || "N/A"}`);
+  if (Array.isArray(artifact.evidence.evidenceRefs) && artifact.evidence.evidenceRefs.length > 0) {
+    const usableRefCount = artifact.evidence.evidenceRefs.filter(hasReviewerUsableEvidenceRef).length;
+    lines.push(
+      `- **Evidence Ref Posture:** ${usableRefCount}/${artifact.evidence.evidenceRefs.length} reviewer-usable reference${artifact.evidence.evidenceRefs.length === 1 ? "" : "s"}`,
+    );
+    for (const ref of artifact.evidence.evidenceRefs) {
+      lines.push(
+        `  - ${formatEvidenceRefLabel(ref)} — ${formatEvidenceRefLocator(ref)}${ref.needsVerification ? ` [needs verification: ${ref.verificationReason || "review required"}]` : ""}`,
+      );
+    }
+  } else {
+    lines.push(`- **Evidence Ref Posture:** No authoritative evidence refs recorded`);
+  }
+  lines.push("");
+}
+
+function formatDecisionArtifactHtmlSummaryValue(value: unknown) {
+  if (Array.isArray(value)) {
+    return value.length === 0 ? "None" : value.join(", ");
+  }
+
+  if (typeof value === "boolean") {
+    return value ? "Yes" : "No";
+  }
+
+  if (value == null || value === "") {
+    return "N/A";
+  }
+
+  return String(value);
+}
+
+export function renderDecisionArtifactsHtml(artifacts?: EsrsDecisionArtifact[]): string {
+  if (!Array.isArray(artifacts) || artifacts.length === 0) {
+    return "";
+  }
+
+  const cards = artifacts
+    .map((artifact) => {
+      const summaryRows = Object.entries(artifact.summary ?? {})
+        .map(
+          ([key, value]) => `
+            <tr>
+              <td style="padding: 4px 8px; border-top: 1px solid #e5e7eb;"><strong>${formatDecisionSummaryLabel(key)}</strong></td>
+              <td style="padding: 4px 8px; border-top: 1px solid #e5e7eb;">${formatDecisionArtifactHtmlSummaryValue(value)}</td>
+            </tr>
+          `,
+        )
+        .join("");
+
+      return `
+        <div style="margin-bottom: 16px; padding: 16px; border: 1px solid #dbeafe; border-radius: 8px; background-color: #eff6ff;">
+          <p style="margin: 0 0 8px 0;"><strong>Artifact:</strong> ${artifact.artifactType}</p>
+          <p style="margin: 0 0 8px 0;"><strong>Capability:</strong> ${artifact.capability}</p>
+          <p style="margin: 0 0 8px 0;"><strong>Version:</strong> ${artifact.artifactVersion}</p>
+          <p style="margin: 0 0 8px 0;"><strong>Confidence:</strong> ${artifact.confidence.level} (${Math.round(artifact.confidence.score * 100)}%)</p>
+          <p style="margin: 0 0 8px 0;"><strong>Basis:</strong> ${artifact.confidence.basis}</p>
+          <p style="margin: 0 0 8px 0;"><strong>Review Recommended:</strong> ${artifact.confidence.reviewRecommended ? "Yes" : "No"}</p>
+          ${artifact.confidence.uncertaintyClass ? `<p style="margin: 0 0 8px 0;"><strong>Uncertainty Class:</strong> ${artifact.confidence.uncertaintyClass}</p>` : ""}
+          ${artifact.confidence.escalationAction ? `<p style="margin: 0 0 8px 0;"><strong>Escalation Action:</strong> ${artifact.confidence.escalationAction}</p>` : ""}
+          <p style="margin: 0 0 8px 0;"><strong>Evidence:</strong> ${(artifact.evidence.dataSources || []).join(", ") || "N/A"}</p>
+          ${Array.isArray(artifact.evidence.evidenceRefs) && artifact.evidence.evidenceRefs.length > 0
+            ? `<div style="margin: 0 0 8px 0;"><strong>Evidence Ref Posture:</strong> ${artifact.evidence.evidenceRefs.filter(hasReviewerUsableEvidenceRef).length}/${artifact.evidence.evidenceRefs.length} reviewer-usable references<ul style="margin: 8px 0 0 18px; padding: 0;">${artifact.evidence.evidenceRefs
+                .map(
+                  (ref) =>
+                    `<li><strong>${formatEvidenceRefLabel(ref)}</strong> — ${formatEvidenceRefLocator(ref)}${ref.needsVerification ? ` <em>(needs verification: ${ref.verificationReason || "review required"})</em>` : ""}</li>`,
+                )
+                .join("")}</ul></div>`
+            : `<p style="margin: 0 0 8px 0;"><strong>Evidence Ref Posture:</strong> No authoritative evidence refs recorded</p>`}
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 12px;">
+            <thead>
+              <tr>
+                <th style="text-align: left; padding: 4px 8px; background-color: #dbeafe;">Summary field</th>
+                <th style="text-align: left; padding: 4px 8px; background-color: #dbeafe;">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${summaryRows}
+            </tbody>
+          </table>
+        </div>
+      `;
+    })
+    .join("");
+
+  return `
+    <h2 style="color: #1e40af; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; margin-top: 32px;">Decision Artifacts</h2>
+    <p style="margin-bottom: 16px;">This export includes persisted ESRS_MAPPING decision-core envelopes for downstream review and traceability.</p>
+    ${cards}
+  `;
 }
 
 // =============================================================================
@@ -97,6 +284,8 @@ export function generateGapAnalysisMarkdown(input: GapAnalysisReportInput): stri
     }
     lines.push('');
   }
+
+  appendDecisionArtifactSection(lines, gapAnalysisResult?.decisionArtifact);
 
   // Detailed Findings
   if (includeDetailedFindings) {
@@ -264,6 +453,8 @@ export function generateAttributeRecommendationMarkdown(input: AttributeRecommen
     lines.push(`| Estimated Implementation Effort | ${recommendationResult?.summary?.estimatedImplementationEffort || 'Medium'} |`);
     lines.push('');
   }
+
+  appendDecisionArtifactSection(lines, recommendationResult?.decisionArtifact);
 
   // Detailed Recommendations
   if (includeDetailedFindings) {
@@ -467,8 +658,8 @@ export async function generateReportHtmlForPdf(reportId: number, options: PdfExp
     const governanceNotice = options.includeGovernanceNotice !== false ? `
       <div style="background-color: #fef3c7; border: 1px solid #f59e0b; padding: 16px; margin-bottom: 24px; border-radius: 8px;">
         <p style="margin: 0; font-size: 14px; color: #92400e;">
-          <strong>⚠️ Lane C Governance Notice:</strong> This advisory report is AI-generated and for internal use only. 
-          Publication is deferred pending Phase 9 governance review. Always consult official GS1 and regulatory 
+          <strong>⚠️ Governance Notice:</strong> This advisory report is AI-generated and for internal use only. 
+          Publication is deferred pending governance review. Always consult official GS1 and regulatory 
           documentation for authoritative guidance.
         </p>
       </div>
@@ -571,6 +762,14 @@ export async function generateReportHtmlForPdf(reportId: number, options: PdfExp
       }
     }
 
+    const decisionArtifacts = Array.isArray(report.decisionArtifacts)
+      ? report.decisionArtifacts
+      : typeof report.decisionArtifacts === "string"
+        ? JSON.parse(report.decisionArtifacts)
+        : [];
+
+    const decisionArtifactsHtml = renderDecisionArtifactsHtml(decisionArtifacts);
+
     const html = `
 <!DOCTYPE html>
 <html>
@@ -630,6 +829,8 @@ export async function generateReportHtmlForPdf(reportId: number, options: PdfExp
   
   <h2 style="color: #1e40af; border-bottom: 2px solid #3b82f6; padding-bottom: 8px;">Report Content</h2>
   <div>${report.content}</div>
+  
+  ${decisionArtifactsHtml}
   
   ${findingsHtml}
   ${recommendationsHtml}

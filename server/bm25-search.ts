@@ -10,9 +10,8 @@
 import bm25 from 'wink-bm25-text-search';
 import nlp from 'wink-nlp-utils';
 import { getDb } from './db';
-import { regulations, gs1Standards } from '../drizzle/schema';
-import { sql } from 'drizzle-orm';
 import { serverLogger } from './_core/logger-wiring';
+import { getRuntimeSchema } from './db-runtime-schema';
 
 /**
  * Document structure for BM25 indexing
@@ -93,6 +92,7 @@ export async function initializeBM25Index(): Promise<void> {
         serverLogger.error('[BM25] Database not available');
         return;
       }
+      const { regulations, gs1Standards } = (await getRuntimeSchema()) as any;
 
       // Create fresh search engine
       searchEngine = createSearchEngine();

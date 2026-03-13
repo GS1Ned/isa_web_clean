@@ -1,0 +1,95 @@
+/**
+ * News Hub Database Schema
+ * 
+ * Tables for news aggregation, enrichment, and history tracking
+ */
+
+import {
+  mysqlTable,
+  int,
+  varchar,
+  text,
+  timestamp,
+  json,
+  decimal,
+  tinyint,
+  mysqlEnum,
+  index,
+} from "drizzle-orm/mysql-core";
+
+export const hubNews = mysqlTable("hub_news", {
+  id: int().autoincrement().notNull(),
+  title: varchar({ length: 512 }).notNull(),
+  summary: text(),
+  content: text(),
+  newsType: mysqlEnum(['NEW_LAW','AMENDMENT','ENFORCEMENT','COURT_DECISION','GUIDANCE','PROPOSAL']).notNull(),
+  relatedRegulationIds: json(),
+  sourceUrl: varchar({ length: 512 }),
+  sourceTitle: varchar({ length: 255 }),
+  credibilityScore: decimal({ precision: 3, scale: 2 }).default('0.00'),
+  gs1ImpactTags: json(),
+  sectorTags: json(),
+  relatedStandardIds: json(),
+  gs1ImpactAnalysis: text(),
+  suggestedActions: json(),
+  publishedDate: timestamp({ mode: 'string' }),
+  createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+  updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+  regulationTags: json(),
+  impactLevel: mysqlEnum(['LOW','MEDIUM','HIGH']).default('MEDIUM'),
+  sourceType: mysqlEnum(['EU_OFFICIAL','GS1_OFFICIAL','DUTCH_NATIONAL','INDUSTRY','MEDIA']).default('EU_OFFICIAL'),
+  retrievedAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP'),
+  isAutomated: tinyint().default(0),
+  sources: json(),
+  regulatoryState: mysqlEnum("regulatory_state", ['PROPOSAL','POLITICAL_AGREEMENT','ADOPTED','DELEGATED_ACT_DRAFT','DELEGATED_ACT_ADOPTED','GUIDANCE','ENFORCEMENT_SIGNAL','POSTPONED_OR_SOFTENED']).default('ADOPTED'),
+  isNegativeSignal: tinyint("is_negative_signal").default(0),
+  confidenceLevel: mysqlEnum("confidence_level", ['CONFIRMED_LAW','DRAFT_PROPOSAL','GUIDANCE_INTERPRETATION','MARKET_PRACTICE']).default('GUIDANCE_INTERPRETATION'),
+  negativeSignalKeywords: json("negative_signal_keywords"),
+  regulatoryEventId: int("regulatory_event_id"),
+});
+
+export const hubNewsHistory = mysqlTable("hub_news_history", {
+  id: int().autoincrement().notNull(),
+  originalId: int().notNull(),
+  title: varchar({ length: 512 }).notNull(),
+  summary: text(),
+  content: text(),
+  newsType: mysqlEnum(['NEW_LAW','AMENDMENT','ENFORCEMENT','COURT_DECISION','GUIDANCE','PROPOSAL']).notNull(),
+  relatedRegulationIds: json(),
+  regulationTags: json(),
+  impactLevel: mysqlEnum(['LOW','MEDIUM','HIGH']).default('MEDIUM'),
+  sourceUrl: varchar({ length: 512 }),
+  sourceTitle: varchar({ length: 255 }),
+  sourceType: mysqlEnum(['EU_OFFICIAL','GS1_OFFICIAL','DUTCH_NATIONAL','INDUSTRY','MEDIA']).default('EU_OFFICIAL'),
+  credibilityScore: decimal({ precision: 3, scale: 2 }).default('0.00'),
+  gs1ImpactTags: json(),
+  publishedDate: timestamp({ mode: 'string' }),
+  retrievedAt: timestamp({ mode: 'string' }).notNull(),
+  isAutomated: tinyint().default(0),
+  archivedAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP'),
+  originalCreatedAt: timestamp({ mode: 'string' }).notNull(),
+  originalUpdatedAt: timestamp({ mode: 'string' }).notNull(),
+  sources: json(),
+  sectorTags: json(),
+  relatedStandardIds: json(),
+  gs1ImpactAnalysis: text(),
+  suggestedActions: json(),
+},
+(table) => [
+  index("idx_originalId").on(table.originalId),
+  index("idx_publishedDate").on(table.publishedDate),
+  index("idx_archivedAt").on(table.archivedAt),
+]);
+
+export const hubResources = mysqlTable("hub_resources", {
+  id: int().autoincrement().notNull(),
+  title: varchar({ length: 512 }).notNull(),
+  description: text(),
+  resourceType: mysqlEnum(['GUIDE','CHECKLIST','TEMPLATE','CASE_STUDY','WHITEPAPER','TOOL']).notNull(),
+  relatedRegulationIds: json(),
+  relatedStandardIds: json(),
+  fileUrl: varchar({ length: 512 }),
+  downloadCount: int().default(0),
+  createdAt: timestamp({ mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+  updatedAt: timestamp({ mode: 'string' }).defaultNow().onUpdateNow().notNull(),
+});

@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/slo-policy-check.schema.json",
+  "title": "ISA SLO Policy Check",
+  "type": "object",
+  "required": ["meta", "status", "policy_state", "slo_coverage"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["generated_at"],
+      "properties": {
+        "generated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "fail"]
+    },
+    "policy_state": {
+      "type": "string",
+      "enum": ["HEALTHY", "CAUTION", "EXHAUSTED", "UNKNOWN"]
+    },
+    "slo_coverage": {
+      "type": "object",
+      "required": ["defined", "required"],
+      "properties": {
+        "defined": {"type": "integer", "minimum": 0},
+        "required": {"type": "integer", "minimum": 0}
+      }
+    },
+    "error_budget_file_exists": {
+      "type": "boolean"
+    }
+  }
+}

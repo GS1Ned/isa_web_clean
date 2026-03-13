@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/isa-drift-report.schema.json",
+  "title": "ISA Capability Drift Report",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "run_id",
+    "baseline_path",
+    "history_path",
+    "stage",
+    "summary",
+    "status",
+    "metrics"
+  ],
+  "properties": {
+    "generated_at": { "type": "string", "format": "date-time" },
+    "run_id": { "type": "string" },
+    "baseline_path": { "type": "string" },
+    "history_path": { "type": "string" },
+    "stage": { "type": "string", "enum": ["stage_a", "stage_b", "stage_c"] },
+    "rules": {
+      "type": "object",
+      "properties": {
+        "major_score_degrade_pct": { "type": "number" },
+        "major_latency_increase_pct": { "type": "number" },
+        "minor_score_degrade_pct": { "type": "number" },
+        "minor_latency_increase_pct": { "type": "number" },
+        "runtime_latency_baseline_floor_ms": { "type": "number" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["major", "minor", "transition", "none"],
+      "properties": {
+        "major": { "type": "integer", "minimum": 0 },
+        "minor": { "type": "integer", "minimum": 0 },
+        "transition": { "type": "integer", "minimum": 0 },
+        "none": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "status": { "type": "string", "enum": ["pass", "warn", "fail"] },
+    "alerts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "capability_transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["capability", "reason"],
+        "properties": {
+          "capability": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "metric_id",
+          "capability",
+          "current",
+          "baseline",
+          "delta_pct",
+          "drift",
+          "stage",
+          "fixture_version",
+          "comparison_mode",
+          "transition"
+        ],
+        "properties": {
+          "metric_id": { "type": "string" },
+          "capability": { "type": "string" },
+          "current": { "type": "number" },
+          "baseline": { "type": "number" },
+          "delta_pct": { "type": "number" },
+          "drift": { "type": "string", "enum": ["none", "minor", "major", "transition"] },
+          "stage": { "type": "string", "enum": ["stage_a", "stage_b", "stage_c"] },
+          "fixture_version": { "type": "string" },
+          "measurement_mode": { "type": "string", "enum": ["runtime", "fixture", "synthetic"] },
+          "comparison_mode": { "type": "string", "enum": ["stage+fixture_version", "transition"] },
+          "transition": { "type": "boolean" },
+          "transition_reason": { "type": ["string", "null"] },
+          "kind": { "type": "string" },
+          "direction": { "type": "string", "enum": ["score", "latency"] }
+        }
+      }
+    }
+  }
+}

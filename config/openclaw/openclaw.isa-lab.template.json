@@ -1,0 +1,42 @@
+{
+  "_meta": {
+    "evidence": {
+      "documented_keys": [
+        "agents.defaults.model",
+        "agents.defaults.heartbeat",
+        "agents.defaults.workspace",
+        "tools.profile"
+      ],
+      "note": "This template mirrors the VM dev profile that was applied on 2026-03-03. Keep runtime-only secrets out of repo templates."
+    },
+    "intent": "ISA OpenClaw dev profile template",
+    "profile": "default",
+    "runtime_mode_hint": "vm_execution_host_editing"
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "openrouter/deepseek/deepseek-v3.2",
+        "fallbacks": [
+          "openrouter/minimax/minimax-m2.5"
+        ]
+      },
+      "heartbeat": {
+        "every": "30m",
+        "suppressToolErrorWarnings": true
+      },
+      "workspace": "/root/isa_web_clean"
+    }
+  },
+  "gateway": {
+    "controlUi": {
+      "allowedOrigins": [
+        "http://127.0.0.1:18789",
+        "http://localhost:18789"
+      ]
+    }
+  },
+  "tools": {
+    "profile": "coding"
+  }
+}

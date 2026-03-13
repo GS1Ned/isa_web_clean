@@ -1,26 +1,34 @@
 ## Summary
 
-<!-- Short description of what this PR does -->
+<!-- Short description of what this PR changes and why -->
 
-## Trace ID(s)
-- trace_id: <!-- e.g. 123e4567-e89b-12d3-a456-426614174000 -->
+## Scope
 
-## Repro test(s)
-- tests/repro/<traceId>.test.ts (failing before the fix; passing after)
+- Task / issue / backlog reference:
+- Canonical docs or contracts touched:
+- Out of scope:
 
-## Changes
-- What changed (files, high-level explanation)
+## Validation
 
-## Remediation plan
-- Short plan and rollback instructions
+- Commands run:
+- Evidence or artifacts updated:
+- Manual preflight deviations, if any:
 
-## Checklist (Manus / CI must validate)
-- [ ] Repro test exists and demonstrates the failure
-- [ ] CI runs repro-harness and repro test passes
-- [ ] serverLogger persisted (migration applied in dev)
-- [ ] No server-side console.error or console.warn remain
-- [ ] Trace id(s) referenced in PR body and in error_ledger remediation_attempts
+## Risks And Rollback
 
-## Notes for reviewers
-- Pay attention to any `serverLogger` import paths
-- Check multi-argument console replacements: ensure `serverLogger.error(error, { meta })` used where appropriate
+- Risks:
+- Rollback plan:
+
+## Traceability
+
+- Related issue / PR / trace IDs:
+- Context-Commit-Hash (optional while IRON gate remains disabled):
+
+## Checklist
+
+- [ ] Scope is minimal and reviewable
+- [ ] Relevant tests/checks were run, or the omission is explained above
+- [ ] Canonical docs/config were updated if repo truth changed
+- [ ] Planning or traceability artifacts were updated when required
+- [ ] No secrets or credentials were added to tracked files
+- [ ] Manual preflight was reviewed: `docs/governance/MANUAL_PREFLIGHT.md`

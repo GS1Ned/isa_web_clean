@@ -1,0 +1,162 @@
+{
+  "$schema": "ask-isa-replay-fixture-v1",
+  "description": "Deterministic evaluation fixtures for Ask ISA guardrails and query classification (BENCH-001)",
+  "created_at_utc": "2026-02-26T17:59:00Z",
+  "source_ref": "BENCH-001",
+  "fixtures": [
+    {
+      "id": "F-GAP-001",
+      "input": "Which gaps exist for CSRD in DIY?",
+      "expected": {
+        "type": "gap",
+        "allowed": true
+      }
+    },
+    {
+      "id": "F-GAP-002",
+      "input": "What is the status of Gap #1?",
+      "expected": {
+        "type": "gap",
+        "allowed": true
+      }
+    },
+    {
+      "id": "F-MAP-001",
+      "input": "Which GS1 attributes cover ESRS E1 datapoints?",
+      "expected": {
+        "type": "mapping",
+        "allowed": true
+      }
+    },
+    {
+      "id": "F-MAP-002",
+      "input": "Which mappings exist for supplier due diligence?",
+      "expected": {
+        "type": "mapping",
+        "allowed": true
+      }
+    },
+    {
+      "id": "F-VER-001",
+      "input": "What changed between v1.0 and v1.1?",
+      "expected": {
+        "type": "version_comparison",
+        "allowed": true
+      }
+    },
+    {
+      "id": "F-PROV-001",
+      "input": "Which datasets underpin the Product Carbon Footprint recommendations?",
+      "expected": {
+        "type": "dataset_provenance",
+        "allowed": true
+      }
+    },
+    {
+      "id": "F-REC-001",
+      "input": "What are the short-term recommendations for DIY?",
+      "expected": {
+        "type": "recommendation",
+        "allowed": true
+      }
+    },
+    {
+      "id": "F-COV-001",
+      "input": "What is the coverage percentage for ESRS E1 in DIY?",
+      "expected": {
+        "type": "coverage",
+        "allowed": true
+      }
+    },
+    {
+      "id": "F-ESG-001",
+      "input": "Which obligations for CSRD mapping to GS1?",
+      "expected": {
+        "type": "esg_traceability",
+        "allowed": true
+      }
+    },
+    {
+      "id": "F-FORBID-ESG-001",
+      "input": "What is CSRD?",
+      "expected": {
+        "type": "forbidden",
+        "allowed": false,
+        "reason_contains": "General ESG explanations"
+      }
+    },
+    {
+      "id": "F-FORBID-HYPO-001",
+      "input": "What should GS1 do about DPP?",
+      "expected": {
+        "type": "forbidden",
+        "allowed": false,
+        "reason_contains": "Hypothetical"
+      }
+    },
+    {
+      "id": "F-FORBID-SPEC-001",
+      "input": "Will GS1 NL adopt this in 2026?",
+      "expected": {
+        "type": "forbidden",
+        "allowed": false,
+        "reason_contains": "Speculative"
+      }
+    },
+    {
+      "id": "F-FORBID-CALC-001",
+      "input": "How do I calculate Scope 3 emissions?",
+      "expected": {
+        "type": "forbidden",
+        "allowed": false,
+        "reason_contains": "Calculation"
+      }
+    },
+    {
+      "id": "F-FORBID-CONV-001",
+      "input": "Hi, can you help me?",
+      "expected": {
+        "type": "forbidden",
+        "allowed": false,
+        "reason_contains": "conversational"
+      }
+    },
+    {
+      "id": "F-CITE-VALID-001",
+      "input_answer": "Based on ISA_ADVISORY_v1.1, there are 3 critical gaps. Dataset references: esrs.datapoints.ig3",
+      "expected_citation": {
+        "valid": true,
+        "missing_count": 0
+      }
+    },
+    {
+      "id": "F-CITE-MISSING-001",
+      "input_answer": "There are 3 critical gaps for CSRD in DIY.",
+      "expected_citation": {
+        "valid": false,
+        "missing_min": 1
+      }
+    },
+    {
+      "id": "F-CONF-HIGH",
+      "input_source_count": 5,
+      "expected_confidence": {
+        "level": "high"
+      }
+    },
+    {
+      "id": "F-CONF-MED",
+      "input_source_count": 2,
+      "expected_confidence": {
+        "level": "medium"
+      }
+    },
+    {
+      "id": "F-CONF-LOW",
+      "input_source_count": 0,
+      "expected_confidence": {
+        "level": "low"
+      }
+    }
+  ]
+}

@@ -1,5 +1,20 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "wouter";
+import {
+  ArrowRight,
+  Calendar,
+  Eye,
+  FileText,
+  GitCompare,
+  Layers3,
+  Loader2,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+
+import { DecisionArtifactCard } from "@/components/DecisionArtifactCard";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,474 +30,451 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import {
-  GitCompare,
-  TrendingUp,
-  TrendingDown,
-  Minus,
-  CheckCircle2,
-  XCircle,
-  AlertCircle,
-  Loader2,
-  ArrowRight,
-} from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+  formatAdvisoryTimestamp,
+  formatAdvisoryVersionLabel,
+  formatDecisionArtifactConfidenceDelta,
+  formatDecisionArtifactCount,
+  getDecisionArtifactDiffTone,
+  normalizeDecisionArtifacts,
+} from "@/lib/advisory-report-ui";
+import { trpc } from "@/lib/trpc";
 
 /**
  * Advisory Diff Comparison Page
  *
- * Visualizes differences between ISA advisory versions using canonical diff metrics.
- * Implements metrics from docs/ADVISORY_DIFF_METRICS.md
+ * Compares persisted advisory report snapshots against the current report state.
+ * Uses advisory_reports + advisory_report_versions instead of legacy file-based JSON diffs.
  */
 
+function renderArtifactTypeBadges(
+  values: string[],
+  variant: "outline" | "secondary" | "destructive",
+) {
+  if (values.length === 0) {
+    return <span className="text-muted-foreground">None</span>;
+  }
+
+  return values.map(value => (
+    <Badge key={value} variant={variant}>
+      {value}
+    </Badge>
+  ));
+}
+
 export default function AdvisoryDiffComparison() {
-  const [version1, setVersion1] = useState("v1.0");
-  const [version2, setVersion2] = useState("v1.1");
+  const [selectedReportId, setSelectedReportId] = useState("");
+  const [selectedSnapshotId, setSelectedSnapshotId] = useState("");
 
-  // Fetch available versions
-  const versionsQuery = trpc.advisoryDiff.listVersions.useQuery();
+  const reportsQuery = trpc.advisoryReports.list.useQuery();
+  const reports = reportsQuery.data ?? [];
 
-  // Fetch diff data
-  const diffQuery = trpc.advisoryDiff.computeDiff.useQuery(
-    { version1, version2 },
-    { enabled: !!version1 && !!version2 && version1 !== version2 }
+  const versionsQuery = trpc.advisoryReports.versions.useQuery(
+    { reportId: Number(selectedReportId) },
+    { enabled: Number(selectedReportId) > 0 },
+  );
+  const versions = versionsQuery.data ?? [];
+
+  useEffect(() => {
+    if (!selectedReportId && reports.length > 0) {
+      setSelectedReportId(String(reports[0].id));
+    }
+  }, [reports, selectedReportId]);
+
+  useEffect(() => {
+    if (versions.length === 0) {
+      if (selectedSnapshotId) {
+        setSelectedSnapshotId("");
+      }
+      return;
+    }
+
+    if (!versions.some(version => String(version.id) === selectedSnapshotId)) {
+      setSelectedSnapshotId(String(versions[0].id));
+    }
+  }, [selectedSnapshotId, versions]);
+
+  const selectedReport = useMemo(
+    () => reports.find(report => String(report.id) === selectedReportId) ?? null,
+    [reports, selectedReportId],
   );
 
-  const handleCompare = () => {
-    diffQuery.refetch();
-  };
+  const selectedSnapshot = useMemo(
+    () => versions.find(version => String(version.id) === selectedSnapshotId) ?? null,
+    [selectedSnapshotId, versions],
+  );
 
-  const renderConfidenceTransitions = () => {
-    if (!diffQuery.data?.coverageDeltas?.confidenceTransitions) return null;
-
-    const transitions = diffQuery.data.coverageDeltas.confidenceTransitions;
-    const improvements = [
-      { key: "missing_to_partial", label: "Missing → Partial", color: "text-blue-600" },
-      { key: "missing_to_direct", label: "Missing → Direct", color: "text-green-600" },
-      { key: "partial_to_direct", label: "Partial → Direct", color: "text-green-600" },
-    ];
-
-    const regressions = [
-      { key: "direct_to_partial", label: "Direct → Partial", color: "text-orange-600" },
-      { key: "partial_to_missing", label: "Partial → Missing", color: "text-red-600" },
-      { key: "direct_to_missing", label: "Direct → Missing", color: "text-red-600" },
-    ];
-
-    return (
-      <div className="grid md:grid-cols-2 gap-4">
-        {/* Improvements */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-green-600" />
-              Improvements
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {improvements.map(({ key, label, color }) => (
-              <div key={key} className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">{label}</span>
-                <Badge className={color}>{transitions[key as keyof typeof transitions]}</Badge>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        {/* Regressions */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <TrendingDown className="h-4 w-4 text-red-600" />
-              Regressions
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {regressions.map(({ key, label, color }) => (
-              <div key={key} className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">{label}</span>
-                <Badge className={color}>{transitions[key as keyof typeof transitions]}</Badge>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-    );
-  };
-
-  const renderCoverageMetrics = () => {
-    if (!diffQuery.data?.coverageDeltas) return null;
-
-    const { totalMappings, coverageRate, coverageImprovement } = diffQuery.data.coverageDeltas;
-
-    return (
-      <div className="grid md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-muted-foreground">Total Mappings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold">{totalMappings?.[version1]}</span>
-              <ArrowRight className="h-4 w-4 text-muted-foreground" />
-              <span className="text-2xl font-bold">{totalMappings?.[version2]}</span>
-              {totalMappings?.delta !== 0 && (
-                <Badge variant={totalMappings?.delta > 0 ? "default" : "destructive"}>
-                  {totalMappings?.delta > 0 ? "+" : ""}{totalMappings?.delta}
-                </Badge>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-muted-foreground">Coverage Rate</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold">
-                {((coverageRate?.[version1] || 0) * 100).toFixed(1)}%
-              </span>
-              <ArrowRight className="h-4 w-4 text-muted-foreground" />
-              <span className="text-2xl font-bold">
-                {((coverageRate?.[version2] || 0) * 100).toFixed(1)}%
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-muted-foreground">Improvement</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              {coverageImprovement > 0 ? (
-                <TrendingUp className="h-5 w-5 text-green-600" />
-              ) : coverageImprovement < 0 ? (
-                <TrendingDown className="h-5 w-5 text-red-600" />
-              ) : (
-                <Minus className="h-5 w-5 text-muted-foreground" />
-              )}
-              <span className="text-2xl font-bold">
-                {((coverageImprovement || 0) * 100).toFixed(1)}%
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  };
-
-  const renderGapLifecycle = () => {
-    if (!diffQuery.data?.gapLifecycle) return null;
-
-    const { newGaps, closedGaps, severityChanges, gapClosureRate, criticalGapReduction } =
-      diffQuery.data.gapLifecycle;
-
-    return (
-      <div className="space-y-4">
-        {/* Gap Closure Metrics */}
-        <div className="grid md:grid-cols-2 gap-4">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm text-muted-foreground">Gap Closure Rate</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                <span className="text-2xl font-bold">
-                  {((gapClosureRate || 0) * 100).toFixed(1)}%
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {closedGaps?.length || 0} gaps closed
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm text-muted-foreground">
-                Critical Gap Reduction
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2">
-                <AlertCircle className="h-5 w-5 text-orange-600" />
-                <span className="text-2xl font-bold">
-                  {((criticalGapReduction || 0) * 100).toFixed(1)}%
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                Reduction in critical gaps
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Closed Gaps */}
-        {closedGaps && closedGaps.length > 0 && (
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
-                Closed Gaps ({closedGaps.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {closedGaps.map((gap: any) => (
-                  <div
-                    key={gap.gapId}
-                    className="flex items-start justify-between gap-2 p-2 rounded-md bg-green-50 dark:bg-green-950"
-                  >
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">{gap.title}</p>
-                      <p className="text-xs text-muted-foreground">{gap.gapId}</p>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      {gap.category}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* New Gaps */}
-        {newGaps && newGaps.length > 0 && (
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <XCircle className="h-4 w-4 text-orange-600" />
-                New Gaps ({newGaps.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {newGaps.map((gap: any) => (
-                  <div
-                    key={gap.gapId}
-                    className="flex items-start justify-between gap-2 p-2 rounded-md bg-orange-50 dark:bg-orange-950"
-                  >
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">{gap.title}</p>
-                      <p className="text-xs text-muted-foreground">{gap.gapId}</p>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      {gap.category}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Severity Changes */}
-        {severityChanges && severityChanges.length > 0 && (
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <AlertCircle className="h-4 w-4 text-blue-600" />
-                Severity Changes ({severityChanges.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {severityChanges.map((change: any) => (
-                  <div
-                    key={change.gapId}
-                    className="flex items-start justify-between gap-2 p-2 rounded-md bg-blue-50 dark:bg-blue-950"
-                  >
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">{change.gapId}</p>
-                      <p className="text-xs text-muted-foreground">{change.reason}</p>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Badge variant="outline" className="text-xs">
-                        {change[version1]}
-                      </Badge>
-                      <ArrowRight className="h-3 w-3" />
-                      <Badge variant="outline" className="text-xs">
-                        {change[version2]}
-                      </Badge>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-    );
-  };
+  const currentArtifacts = normalizeDecisionArtifacts(selectedReport?.decisionArtifacts);
+  const snapshotArtifacts = normalizeDecisionArtifacts(selectedSnapshot?.decisionArtifacts);
+  const diffSummary = selectedSnapshot?.decisionArtifactDiff ?? null;
+  const diffTone = getDecisionArtifactDiffTone(Boolean(diffSummary?.hasChanges));
 
   return (
-    <div className="container mx-auto py-8 max-w-7xl">
-      {/* Header */}
-      <div className="mb-8">
+    <div className="container mx-auto py-8 max-w-7xl space-y-6">
+      <div>
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg">
+          <div className="p-3 bg-gradient-to-br from-slate-800 to-slate-600 rounded-lg">
             <GitCompare className="h-8 w-8 text-white" />
           </div>
           <div>
-            <h1 className="text-4xl font-bold">Advisory Version Comparison</h1>
+            <h1 className="text-4xl font-bold">Advisory Snapshot Comparison</h1>
             <p className="text-muted-foreground mt-1">
-              Compare ISA advisory versions to track coverage improvements and gap closure
+              Compare current advisory reports against persisted version snapshots backed by
+              `advisory_reports` and `advisory_report_versions`.
             </p>
           </div>
         </div>
-
-        {/* Version Selectors */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Select Versions to Compare</CardTitle>
-            <CardDescription>
-              Choose two advisory versions to compute diff metrics
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <div className="flex-1">
-                <label className="text-sm font-medium mb-2 block">Base Version</label>
-                <Select value={version1} onValueChange={setVersion1}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {versionsQuery.data?.map((v: any) => (
-                      <SelectItem key={v.version} value={v.version}>
-                        {v.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <ArrowRight className="h-6 w-6 text-muted-foreground mt-6" />
-
-              <div className="flex-1">
-                <label className="text-sm font-medium mb-2 block">Compare Version</label>
-                <Select value={version2} onValueChange={setVersion2}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {versionsQuery.data?.map((v: any) => (
-                      <SelectItem key={v.version} value={v.version}>
-                        {v.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <Button
-                onClick={handleCompare}
-                disabled={!version1 || !version2 || version1 === version2 || diffQuery.isFetching}
-                className="mt-6"
-              >
-                {diffQuery.isFetching ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Computing...
-                  </>
-                ) : (
-                  <>
-                    <GitCompare className="h-4 w-4 mr-2" />
-                    Compare
-                  </>
-                )}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
-      {/* Diff Results */}
-      {diffQuery.data && (
-        <Tabs defaultValue="coverage" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="coverage">Coverage Deltas</TabsTrigger>
-            <TabsTrigger value="gaps">Gap Lifecycle</TabsTrigger>
-            <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
-          </TabsList>
+      <Card>
+        <CardHeader>
+          <CardTitle>Select a report and snapshot</CardTitle>
+          <CardDescription>
+            This compare surface now prefers persisted advisory snapshots over legacy static diff
+            JSON files.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-[1.4fr_1.4fr_auto]">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Report</label>
+            <Select value={selectedReportId} onValueChange={setSelectedReportId}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select report" />
+              </SelectTrigger>
+              <SelectContent>
+                {reports.map(report => (
+                  <SelectItem key={report.id} value={String(report.id)}>
+                    {report.title} ({formatAdvisoryVersionLabel(report.version)})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-          <TabsContent value="coverage" className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Coverage Deltas</h2>
-              <p className="text-muted-foreground mb-6">
-                Track mapping confidence transitions and coverage rate improvements
-              </p>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Snapshot version</label>
+            <Select
+              value={selectedSnapshotId}
+              onValueChange={setSelectedSnapshotId}
+              disabled={!selectedReportId || versionsQuery.isLoading || versions.length === 0}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder={versionsQuery.isLoading ? "Loading snapshots..." : "Select snapshot"}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {versions.map(version => (
+                  <SelectItem key={version.id} value={String(version.id)}>
+                    {formatAdvisoryVersionLabel(version.version)} snapshot
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-              {renderCoverageMetrics()}
-              <Separator className="my-6" />
-              {renderConfidenceTransitions()}
+          <div className="flex items-end">
+            <Button asChild variant="outline" disabled={!selectedReport}>
+              <Link href={selectedReport ? `/advisory-reports/${selectedReport.id}` : "/advisory-reports"}>
+                <Eye className="h-4 w-4 mr-2" />
+                View report
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {reportsQuery.isLoading && (
+        <Card>
+          <CardContent className="py-8">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              Loading advisory reports...
             </div>
-          </TabsContent>
+          </CardContent>
+        </Card>
+      )}
 
-          <TabsContent value="gaps" className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Gap Lifecycle</h2>
-              <p className="text-muted-foreground mb-6">
-                Track gap creation, closure, and severity changes
-              </p>
+      {!reportsQuery.isLoading && reports.length === 0 && (
+        <Alert>
+          <AlertDescription>
+            No advisory reports are available yet. Create or persist advisory reports before using
+            the snapshot compare surface.
+          </AlertDescription>
+        </Alert>
+      )}
 
-              {renderGapLifecycle()}
-            </div>
-          </TabsContent>
+      {selectedReport && (
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-slate-700" />
+                    {selectedReport.title}
+                  </CardTitle>
+                  <CardDescription className="mt-1">
+                    Compare the current advisory report against one persisted snapshot.
+                  </CardDescription>
+                </div>
+                {Array.isArray(selectedReport.decisionArtifacts) &&
+                  selectedReport.decisionArtifacts.length > 0 && (
+                    <Badge variant="secondary">
+                      {formatDecisionArtifactCount(selectedReport.decisionArtifacts.length)}
+                    </Badge>
+                  )}
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <div className="rounded-lg border bg-muted/20 p-4">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Current Report
+                </div>
+                <div className="mt-2 font-medium">
+                  {formatAdvisoryVersionLabel(selectedReport.version)}
+                </div>
+              </div>
+              <div className="rounded-lg border bg-muted/20 p-4">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Generated
+                </div>
+                <div className="mt-2 font-medium flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  {formatAdvisoryTimestamp(selectedReport.generatedDate)}
+                </div>
+              </div>
+              <div className="rounded-lg border bg-muted/20 p-4">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Review Status
+                </div>
+                <div className="mt-2 font-medium">{selectedReport.reviewStatus}</div>
+              </div>
+              <div className="rounded-lg border bg-muted/20 p-4">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Views
+                </div>
+                <div className="mt-2 font-medium flex items-center gap-2">
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                  {selectedReport.viewCount ?? 0}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-          <TabsContent value="recommendations" className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Recommendation Lifecycle</h2>
-              <p className="text-muted-foreground mb-6">
-                Track recommendation implementation progress
-              </p>
+          {versionsQuery.isLoading && (
+            <Card>
+              <CardContent className="py-8">
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Loading report snapshots...
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
+          {!versionsQuery.isLoading && versions.length === 0 && (
+            <Alert>
+              <AlertDescription>
+                This report has no persisted version snapshots yet. Create a version snapshot to
+                compare against the current report state.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {selectedSnapshot && (
+            <>
               <Card>
-                <CardContent className="pt-6">
-                  <p className="text-sm text-muted-foreground text-center">
-                    Recommendation lifecycle metrics coming soon...
-                  </p>
+                <CardHeader>
+                  <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <GitCompare className="h-5 w-5 text-slate-700" />
+                        Snapshot Comparison Summary
+                      </CardTitle>
+                      <CardDescription>
+                        Current report vs {formatAdvisoryVersionLabel(selectedSnapshot.version)} snapshot
+                      </CardDescription>
+                    </div>
+                    {diffSummary && (
+                      <Badge variant={diffTone.variant} className={diffTone.className}>
+                        {diffSummary.hasChanges ? "Artifact drift detected" : "No artifact drift"}
+                      </Badge>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="rounded-lg border p-4">
+                      <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Snapshot Version
+                      </div>
+                      <div className="mt-2 font-medium">
+                        {formatAdvisoryVersionLabel(selectedSnapshot.version)}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border p-4">
+                      <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Snapshot Created
+                      </div>
+                      <div className="mt-2 font-medium">
+                        {formatAdvisoryTimestamp(selectedSnapshot.createdAt)}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border p-4">
+                      <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Snapshot Artifacts
+                      </div>
+                      <div className="mt-2 font-medium">
+                        {formatDecisionArtifactCount(snapshotArtifacts.length)}
+                      </div>
+                    </div>
+                    <div className="rounded-lg border p-4">
+                      <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Confidence Delta
+                      </div>
+                      <div className="mt-2 font-medium">
+                        {formatDecisionArtifactConfidenceDelta(
+                          diffSummary?.averageConfidenceDelta ?? null,
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {selectedSnapshot.changeLog && (
+                    <div className="rounded-lg border bg-muted/20 p-4 text-sm">
+                      <div className="font-medium mb-2 flex items-center gap-2">
+                        <ShieldCheck className="h-4 w-4 text-slate-600" />
+                        Snapshot Change Log
+                      </div>
+                      <div className="text-muted-foreground whitespace-pre-wrap">
+                        {selectedSnapshot.changeLog}
+                      </div>
+                    </div>
+                  )}
+
+                  {diffSummary && (
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+                      <div className="rounded-lg border bg-muted/10 p-4">
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Added In Current
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {renderArtifactTypeBadges(diffSummary.addedArtifactTypes, "secondary")}
+                        </div>
+                      </div>
+                      <div className="rounded-lg border bg-muted/10 p-4">
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Removed From Current
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {renderArtifactTypeBadges(diffSummary.removedArtifactTypes, "destructive")}
+                        </div>
+                      </div>
+                      <div className="rounded-lg border bg-muted/10 p-4">
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Changed
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {renderArtifactTypeBadges(diffSummary.changedArtifactTypes, "outline")}
+                        </div>
+                      </div>
+                      <div className="rounded-lg border bg-muted/10 p-4">
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Confidence Drift
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {renderArtifactTypeBadges(
+                            diffSummary.confidenceChangedArtifactTypes,
+                            "outline",
+                          )}
+                        </div>
+                      </div>
+                      <div className="rounded-lg border bg-muted/10 p-4">
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Uncertainty Drift
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {renderArtifactTypeBadges(
+                            diffSummary.uncertaintyChangedArtifactTypes,
+                            "outline",
+                          )}
+                        </div>
+                      </div>
+                      <div className="rounded-lg border bg-muted/10 p-4">
+                        <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Escalation Drift
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {renderArtifactTypeBadges(
+                            diffSummary.escalationChangedArtifactTypes,
+                            "outline",
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
-      )}
 
-      {/* Empty State */}
-      {!diffQuery.data && !diffQuery.isFetching && (
-        <Card>
-          <CardContent className="py-12">
-            <div className="flex flex-col items-center justify-center text-center">
-              <GitCompare className="h-16 w-16 text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No Comparison Yet</h3>
-              <p className="text-muted-foreground max-w-md">
-                Select two different advisory versions and click "Compare" to view diff metrics
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+              <div className="grid gap-6 xl:grid-cols-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Sparkles className="h-5 w-5 text-slate-700" />
+                      Current Report Artifacts
+                    </CardTitle>
+                    <CardDescription>
+                      Decision artifacts attached to the current advisory report.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {currentArtifacts.length === 0 && (
+                      <div className="text-sm text-muted-foreground">
+                        No decision artifacts are attached to the current report.
+                      </div>
+                    )}
+                    {currentArtifacts.map((artifact, index) => (
+                      <DecisionArtifactCard
+                        key={`current-${artifact.artifactType}-${index}`}
+                        artifact={artifact}
+                        title={`Current Artifact ${index + 1}`}
+                        description="Persisted current-state decision artifact."
+                      />
+                    ))}
+                  </CardContent>
+                </Card>
 
-      {/* Error State */}
-      {diffQuery.isError && (
-        <Card className="border-red-200 dark:border-red-800">
-          <CardContent className="py-6">
-            <div className="flex items-center gap-2 text-red-600">
-              <XCircle className="h-5 w-5" />
-              <p className="text-sm font-medium">
-                Failed to compute diff: {diffQuery.error?.message}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Layers3 className="h-5 w-5 text-slate-700" />
+                      Snapshot Artifacts
+                    </CardTitle>
+                    <CardDescription>
+                      Persisted advisory version snapshot used for governed comparison.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {snapshotArtifacts.length === 0 && (
+                      <div className="text-sm text-muted-foreground">
+                        No decision artifacts were captured on this snapshot.
+                      </div>
+                    )}
+                    {snapshotArtifacts.map((artifact, index) => (
+                      <DecisionArtifactCard
+                        key={`snapshot-${artifact.artifactType}-${index}`}
+                        artifact={artifact}
+                        title={`Snapshot Artifact ${index + 1}`}
+                        description="Persisted advisory version snapshot artifact."
+                      />
+                    ))}
+                  </CardContent>
+                </Card>
+              </div>
+            </>
+          )}
+        </div>
       )}
     </div>
   );

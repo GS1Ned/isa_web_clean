@@ -18,7 +18,42 @@ import {
   gs1WebVocabulary,
   esrsDatapoints,
 } from "../../drizzle/schema";
-import { eq, like, or, and, inArray } from "drizzle-orm";
+import { eq } from "drizzle-orm";
+import { withVerificationPosture } from "../verification-posture";
+
+const STANDARDS_DIRECTORY_DATASET_VERIFIED_AT = "2025-12-13";
+
+interface StandardsDirectoryListItem {
+  id: string;
+  name: string;
+  owningOrganization: string;
+  jurisdiction: string;
+  sector: string | null;
+  lifecycleStatus: string | null;
+  sourceType: "gs1_standard" | "gs1_attributes" | "gs1_web_vocabulary" | "esrs_datapoint";
+  recordCount?: number;
+  lastVerifiedDate: string | null;
+  needsVerification: boolean;
+  verificationReason: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date";
+  verificationAgeDays: number | null;
+  verificationFreshnessBucket: "fresh" | "aging" | "stale" | "unknown";
+}
+
+function withStandardsDirectoryListVerificationPosture<
+  T extends {
+    id: string;
+    name: string;
+    owningOrganization: string;
+    jurisdiction: string;
+    sector: string | null;
+    lifecycleStatus: string | null;
+    sourceType: "gs1_standard" | "gs1_attributes" | "gs1_web_vocabulary" | "esrs_datapoint";
+    recordCount?: number;
+    lastVerifiedDate: string | null;
+  },
+>(record: T): StandardsDirectoryListItem {
+  return withVerificationPosture(record);
+}
 
 export const standardsDirectoryRouter = router({
   /**
@@ -85,16 +120,7 @@ export const standardsDirectoryRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database connection failed");
 
-      const results: Array<{
-        id: string;
-        name: string;
-        owningOrganization: string;
-        jurisdiction: string;
-        sector: string | null;
-        lifecycleStatus: string | null;
-        sourceType: "gs1_standard" | "gs1_attributes" | "gs1_web_vocabulary" | "esrs_datapoint";
-        recordCount?: number;
-      }> = [];
+      const results: StandardsDirectoryListItem[] = [];
 
       // Query GS1 Standards
       const gs1StandardsQuery = db.select().from(gs1Standards);
@@ -139,7 +165,7 @@ export const standardsDirectoryRouter = router({
           continue;
         }
 
-        results.push({
+        results.push(withStandardsDirectoryListVerificationPosture({
           id: `gs1_standard_${standard.id}`,
           name: standard.standardName,
           owningOrganization: org,
@@ -147,7 +173,8 @@ export const standardsDirectoryRouter = router({
           sector: null, // GS1 standards are cross-sector
           lifecycleStatus: "ratified", // Assume ratified if in database
           sourceType: "gs1_standard",
-        });
+          lastVerifiedDate: null, // Not tracked in current schema
+        }));
       }
 
       // Query GS1 Attributes (grouped by sector)
@@ -183,7 +210,7 @@ export const standardsDirectoryRouter = router({
               continue;
             }
 
-            results.push({
+            results.push(withStandardsDirectoryListVerificationPosture({
               id: `gs1_attributes_${sector}`,
               name: `GS1 Data Source ${sector} Attributes`,
               owningOrganization: "GS1_NL",
@@ -192,7 +219,8 @@ export const standardsDirectoryRouter = router({
               lifecycleStatus: "current",
               sourceType: "gs1_attributes",
               recordCount: count,
-            });
+              lastVerifiedDate: STANDARDS_DIRECTORY_DATASET_VERIFIED_AT,
+            }));
           }
         }
       }
@@ -210,16 +238,17 @@ export const standardsDirectoryRouter = router({
               if (input?.lifecycleStatus && lifecycleStatus !== input.lifecycleStatus) {
                 // Skip this entry
               } else {
-                results.push({
-                id: "gs1_web_vocabulary",
-                name: "GS1 Web Vocabulary",
-                owningOrganization: "GS1_Global",
-                jurisdiction: "Global",
-                sector: null,
-                lifecycleStatus: "current",
-                sourceType: "gs1_web_vocabulary",
-                recordCount: vocabData.length,
-                });
+                results.push(withStandardsDirectoryListVerificationPosture({
+                  id: "gs1_web_vocabulary",
+                  name: "GS1 Web Vocabulary",
+                  owningOrganization: "GS1_Global",
+                  jurisdiction: "Global",
+                  sector: null,
+                  lifecycleStatus: "current",
+                  sourceType: "gs1_web_vocabulary",
+                  recordCount: vocabData.length,
+                  lastVerifiedDate: STANDARDS_DIRECTORY_DATASET_VERIFIED_AT,
+                }));
               }
             }
           }
@@ -256,7 +285,7 @@ export const standardsDirectoryRouter = router({
               continue;
             }
 
-            results.push({
+            results.push(withStandardsDirectoryListVerificationPosture({
               id: `esrs_datapoints_${standard}`,
               name: `${standard} Datapoints`,
               owningOrganization: "EFRAG",
@@ -265,7 +294,8 @@ export const standardsDirectoryRouter = router({
               lifecycleStatus: "ratified",
               sourceType: "esrs_datapoint",
               recordCount: count,
-            });
+              lastVerifiedDate: STANDARDS_DIRECTORY_DATASET_VERIFIED_AT,
+            }));
           }
         }
       }
@@ -309,18 +339,21 @@ export const standardsDirectoryRouter = router({
         }
 
         return {
-          id: input.id,
-          name: standard.standardName,
-          description: standard.description,
-          owningOrganization: standard.standardCode.includes("NL") ? "GS1_NL" : standard.standardCode.includes("EU") ? "GS1_EU" : "GS1_Global",
-          jurisdiction: standard.standardCode.includes("NL") ? "Benelux" : standard.standardCode.includes("EU") ? "EU" : "Global",
-          sector: null,
-          lifecycleStatus: "ratified",
-          authoritativeSourceUrl: standard.referenceUrl,
-          datasetIdentifier: standard.standardCode,
-          lastVerifiedDate: null, // Not tracked in current schema
-          category: standard.category,
-          scope: standard.scope,
+          ...withVerificationPosture({
+            id: input.id,
+            name: standard.standardName,
+            description: standard.description,
+            owningOrganization: standard.standardCode.includes("NL") ? "GS1_NL" : standard.standardCode.includes("EU") ? "GS1_EU" : "GS1_Global",
+            jurisdiction: standard.standardCode.includes("NL") ? "Benelux" : standard.standardCode.includes("EU") ? "EU" : "Global",
+            sector: null,
+            lifecycleStatus: "ratified",
+            authoritativeSourceUrl: standard.referenceUrl,
+            datasetIdentifier: standard.standardCode,
+            lastVerifiedDate: null, // Not tracked in current schema
+            recordCount: null,
+            category: standard.category,
+            scope: standard.scope,
+          }),
         };
       }
 
@@ -332,17 +365,21 @@ export const standardsDirectoryRouter = router({
           .where(eq(gs1Attributes.sector, sector as any));
 
         return {
-          id: input.id,
-          name: `GS1 Data Source ${sector} Attributes`,
-          description: `GS1 NL/Benelux data model attributes for ${sector} sector`,
-          owningOrganization: "GS1_NL",
-          jurisdiction: "Benelux",
-          sector,
-          lifecycleStatus: "current",
-          authoritativeSourceUrl: `https://www.gs1.nl/en/knowledge-base/gs1-data-source/`,
-          datasetIdentifier: `gs1nl.benelux.${sector.toLowerCase()}.v3.1.33`,
-          lastVerifiedDate: "2025-12-13", // From dataset registry
-          recordCount: attributes.length,
+          ...withVerificationPosture({
+            id: input.id,
+            name: `GS1 Data Source ${sector} Attributes`,
+            description: `GS1 NL/Benelux data model attributes for ${sector} sector`,
+            owningOrganization: "GS1_NL",
+            jurisdiction: "Benelux",
+            sector,
+            lifecycleStatus: "current",
+            authoritativeSourceUrl: `https://www.gs1.nl/en/knowledge-base/gs1-data-source/`,
+            datasetIdentifier: `gs1nl.benelux.${sector.toLowerCase()}.v3.1.33`,
+            lastVerifiedDate: STANDARDS_DIRECTORY_DATASET_VERIFIED_AT,
+            recordCount: attributes.length,
+            category: null,
+            scope: null,
+          }),
         };
       }
 
@@ -350,17 +387,21 @@ export const standardsDirectoryRouter = router({
         const vocabData = await db.select().from(gs1WebVocabulary);
 
         return {
-          id: input.id,
-          name: "GS1 Web Vocabulary",
-          description: "GS1 Web Vocabulary (voc.gs1.org) - semantic vocabulary for GS1 standards",
-          owningOrganization: "GS1_Global",
-          jurisdiction: "Global",
-          sector: null,
-          lifecycleStatus: "current",
-          authoritativeSourceUrl: "https://www.gs1.org/voc/",
-          datasetIdentifier: "gs1.webvoc.v1.17.0",
-          lastVerifiedDate: "2025-12-13", // From dataset registry
-          recordCount: vocabData.length,
+          ...withVerificationPosture({
+            id: input.id,
+            name: "GS1 Web Vocabulary",
+            description: "GS1 Web Vocabulary (voc.gs1.org) - semantic vocabulary for GS1 standards",
+            owningOrganization: "GS1_Global",
+            jurisdiction: "Global",
+            sector: null,
+            lifecycleStatus: "current",
+            authoritativeSourceUrl: "https://www.gs1.org/voc/",
+            datasetIdentifier: "gs1.webvoc.v1.17.0",
+            lastVerifiedDate: STANDARDS_DIRECTORY_DATASET_VERIFIED_AT,
+            recordCount: vocabData.length,
+            category: null,
+            scope: null,
+          }),
         };
       }
 
@@ -372,17 +413,21 @@ export const standardsDirectoryRouter = router({
           .where(eq(esrsDatapoints.esrsStandard, standard as any));
 
         return {
-          id: input.id,
-          name: `${standard} Datapoints`,
-          description: `ESRS ${standard} disclosure datapoints from EFRAG Implementation Guidance 3`,
-          owningOrganization: "EFRAG",
-          jurisdiction: "EU",
-          sector: null,
-          lifecycleStatus: "ratified",
-          authoritativeSourceUrl: "https://www.efrag.org/lab6",
-          datasetIdentifier: `esrs.datapoints.ig3`,
-          lastVerifiedDate: "2025-12-13", // From dataset registry
-          recordCount: datapoints.length,
+          ...withVerificationPosture({
+            id: input.id,
+            name: `${standard} Datapoints`,
+            description: `ESRS ${standard} disclosure datapoints from EFRAG Implementation Guidance 3`,
+            owningOrganization: "EFRAG",
+            jurisdiction: "EU",
+            sector: null,
+            lifecycleStatus: "ratified",
+            authoritativeSourceUrl: "https://www.efrag.org/lab6",
+            datasetIdentifier: `esrs.datapoints.ig3`,
+            lastVerifiedDate: STANDARDS_DIRECTORY_DATASET_VERIFIED_AT,
+            recordCount: datapoints.length,
+            category: null,
+            scope: null,
+          }),
         };
       }
 

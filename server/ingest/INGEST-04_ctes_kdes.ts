@@ -1,8 +1,14 @@
 import * as fs from "fs";
 import * as path from "path";
+import crypto from "node:crypto";
 import { eq } from "drizzle-orm";
 import { getDb } from "../db";
 import { serverLogger } from "../_core/logger-wiring";
+import {
+  getIngestProvenanceContentHash,
+  recordIngestProvenance,
+  sha256Hex,
+} from "./_core/provenance";
 
 import {
   ctes,
@@ -15,6 +21,7 @@ export interface IngestOptions {
   dryRun?: boolean;
   limit?: number;
   verbose?: boolean;
+  traceId?: string;
 }
 
 export interface IngestResult {
@@ -50,11 +57,53 @@ function loadJsonFile<T>(filePath: string): T {
   return JSON.parse(content) as T;
 }
 
+const PIPELINE_TYPE = "INGEST-04_ctes_kdes";
+const PARSER_VERSION = "INGEST-04_ctes_kdes@v1";
+
+function getRetrievedAtIso(filePath: string): string | null {
+  try {
+    const st = fs.statSync(filePath);
+    return new Date(st.mtimeMs).toISOString();
+  } catch {
+    return null;
+  }
+}
+
+async function upsertProvenanceOrWarn(
+  db: any,
+  input: {
+    itemKey: string;
+    sourceLocator: string;
+    retrievedAt: string | null;
+    contentHash: string;
+    traceId: string;
+  },
+  verbose: boolean
+): Promise<void> {
+  const prov = await recordIngestProvenance(db, {
+    pipelineType: PIPELINE_TYPE,
+    itemKey: input.itemKey,
+    sourceLocator: input.sourceLocator,
+    retrievedAt: input.retrievedAt,
+    contentHash: input.contentHash,
+    parserVersion: PARSER_VERSION,
+    traceId: input.traceId,
+  });
+
+  if (!prov.ok && verbose) {
+    serverLogger.warn("[INGEST-04] provenance upsert failed", {
+      traceId: input.traceId,
+      error: prov.error,
+    });
+  }
+}
+
 export async function ingestCtesKdes(
   options: IngestOptions = {}
 ): Promise<IngestResult> {
   const startTime = Date.now();
   const { dryRun = false, limit, verbose = false } = options;
+  const traceId = options.traceId ?? crypto.randomUUID();
   const result: IngestResult = {
     success: true,
     recordsProcessed: 0,
@@ -71,19 +120,16 @@ export async function ingestCtesKdes(
     }
 
     if (verbose) {
-      console.log("Starting CTEs and KDEs ingestion");
+      serverLogger.info("Starting CTEs and KDEs ingestion", { traceId });
     }
 
-    const filePath = path.join(
-      process.cwd(),
-      "data",
-      "esg",
-      "ctes_and_kdes.json"
-    );
+    const sourceLocator = path.join("data", "esg", "ctes_and_kdes.json");
+    const filePath = path.join(process.cwd(), sourceLocator);
+    const retrievedAt = getRetrievedAtIso(filePath);
     const ctesList = loadJsonFile<CteRaw[]>(filePath);
 
     if (verbose) {
-      console.log(`Loaded ${ctesList.length} CTEs`);
+      serverLogger.info(`Loaded ${ctesList.length} CTEs`, { traceId });
     }
 
     // Track unique KDEs
@@ -103,7 +149,7 @@ export async function ingestCtesKdes(
     }
 
     if (verbose) {
-      console.log(`Found ${kdeMap.size} unique KDEs`);
+      serverLogger.info(`Found ${kdeMap.size} unique KDEs`, { traceId });
     }
 
     // Insert KDEs first
@@ -116,23 +162,37 @@ export async function ingestCtesKdes(
       }
 
       if (!dryRun) {
-        try {
-          await db.insert(kdes).values({
+        await db
+          .insert(kdes)
+          .values({
             code: kdeCode,
             name: kdeData.name,
             description: kdeData.description,
             dataType: kdeData.gs1Standard,
             mandatory: 0,
+          })
+          .onDuplicateKeyUpdate({
+            set: {
+              name: kdeData.name,
+              description: kdeData.description,
+              dataType: kdeData.gs1Standard,
+              mandatory: 0,
+            },
           });
-        } catch (error) {
-          // Ignore duplicate key errors
-        }
 
         // Get the ID (whether just inserted or already exists)
         const [kdeRecord] = await db.select().from(kdes).where(eq(kdes.code, kdeCode)).limit(1);
         if (kdeRecord) {
           kdeIdMap.set(kdeCode, kdeRecord.id);
         }
+
+        const itemKey = `kde:${kdeCode}`;
+        const contentHash = sha256Hex(JSON.stringify({ code: kdeCode, ...kdeData }));
+        await upsertProvenanceOrWarn(
+          db as any,
+          { itemKey, sourceLocator, retrievedAt, contentHash, traceId },
+          verbose
+        );
       }
 
       kdeCount += 1;
@@ -144,7 +204,7 @@ export async function ingestCtesKdes(
     for (const cte of ctesList) {
       if (limit !== undefined && cteCount >= limit) {
         if (verbose) {
-          console.log(`Limit reached (${limit}), stopping`);
+          serverLogger.info(`Limit reached (${limit}), stopping`, { traceId });
         }
         break;
       }
@@ -152,23 +212,42 @@ export async function ingestCtesKdes(
       result.recordsProcessed += 1;
 
       if (!dryRun) {
-        // Insert into raw table
-        await db.insert(rawCtesKdes).values({
-          rawJson: cte,
-        });
+        const itemKey = `cte:${cte.cteId}`;
+        const contentHash = sha256Hex(JSON.stringify(cte));
+        const existingHash = await getIngestProvenanceContentHash(
+          db as any,
+          PIPELINE_TYPE,
+          itemKey
+        );
+        const skipRaw = existingHash !== null && existingHash === contentHash;
+
+        // Insert into raw table (dedupe via provenance to avoid append-only duplication)
+        if (!skipRaw) {
+          await db.insert(rawCtesKdes).values({
+            rawJson: cte,
+          });
+        } else {
+          result.recordsSkipped += 1;
+        }
 
         // Insert CTE
-        try {
-          await db.insert(ctes).values({
+        await db
+          .insert(ctes)
+          .values({
             code: cte.cteId,
             name: cte.cteName,
             description: cte.description,
             category: cte.exampleStandards?.join(", ") || null,
             regulationContext: cte.exampleRegulations?.join(", ") || null,
+          })
+          .onDuplicateKeyUpdate({
+            set: {
+              name: cte.cteName,
+              description: cte.description,
+              category: cte.exampleStandards?.join(", ") || null,
+              regulationContext: cte.exampleRegulations?.join(", ") || null,
+            },
           });
-        } catch (error) {
-          // Ignore duplicate key errors
-        }
 
         // Get CTE ID
         const [cteRecord] = await db.select().from(ctes).where(eq(ctes.code, cte.cteId)).limit(1);
@@ -189,29 +268,40 @@ export async function ingestCtesKdes(
           }
         }
 
+        await upsertProvenanceOrWarn(
+          db as any,
+          { itemKey, sourceLocator, retrievedAt, contentHash, traceId },
+          verbose
+        );
+
         result.recordsInserted += 1;
       }
 
       cteCount += 1;
 
       if (verbose && cteCount % 2 === 0) {
-        console.log(`Processed ${cteCount} CTEs`);
+        serverLogger.info(`Processed ${cteCount} CTEs`, { traceId });
       }
     }
 
     result.duration = Date.now() - startTime;
     if (verbose) {
-      console.log(
-        `CTEs/KDEs ingestion complete: ${kdeCount} KDEs + ${cteCount} CTEs in ${result.duration}ms`
+      serverLogger.info(
+        `CTEs/KDEs ingestion complete: ${kdeCount} KDEs + ${cteCount} CTEs in ${result.duration}ms`,
+        { traceId }
       );
     }
   } catch (error) {
     result.success = false;
     const errorMessage = error instanceof Error ? error.message : String(error);
     result.errors?.push(errorMessage);
-    if (verbose) {
-      serverLogger.error("CTEs/KDEs ingestion failed:", errorMessage);
-    }
+    await serverLogger.error(error, {
+      traceId,
+      code: "INGEST-04_CTES_KDES",
+      classification: "ingest",
+      affectedFiles: ["server/ingest/INGEST-04_ctes_kdes.ts"],
+      failingInputs: { pipelineType: PIPELINE_TYPE },
+    });
   }
 
   return result;

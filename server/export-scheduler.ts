@@ -114,9 +114,7 @@ export async function cacheExport(
     };
 
     exportCache.set(cacheKey, entry);
-    console.log(
-      `[Export Cache] Cached ${format.toUpperCase()} for regulation ${regulationId}`
-    );
+    serverLogger.info(`[Export Cache] Cached ${format.toUpperCase()} for regulation ${regulationId}`);
 
     return entry;
   } catch (error) {
@@ -135,9 +133,7 @@ export function invalidateCache(regulationId: string): void {
   exportCache.delete(pdfKey);
   exportCache.delete(csvKey);
 
-  console.log(
-    `[Export Cache] Invalidated cache for regulation ${regulationId}`
-  );
+  serverLogger.info(`[Export Cache] Invalidated cache for regulation ${regulationId}`);
 }
 
 /**
@@ -145,7 +141,7 @@ export function invalidateCache(regulationId: string): void {
  */
 export function invalidateAllCaches(): void {
   exportCache.clear();
-  console.log("[Export Cache] Invalidated all caches");
+  serverLogger.info("[Export Cache] Invalidated all caches");
 }
 
 /**
@@ -163,7 +159,7 @@ export async function generatePopularExports(): Promise<{
     errors: [] as Array<{ regulationId: string; error: string }>,
   };
 
-  console.log("[Export Scheduler] Starting popular exports generation...");
+  serverLogger.info("[Export Scheduler] Starting popular exports generation...");
 
   const regulations = await getRegulations();
 
@@ -184,9 +180,7 @@ export async function generatePopularExports(): Promise<{
       // Check if cache is still valid
       const cached = exportCache.get(getCacheKey(regulationId, "pdf"));
       if (cached && isCacheValid(cached)) {
-        console.log(
-          `[Export Scheduler] PDF for regulation ${regulationId} already cached`
-        );
+        serverLogger.info(`[Export Scheduler] PDF for regulation ${regulationId} already cached`);
         results.successful++;
         continue;
       }
@@ -224,9 +218,7 @@ export async function generatePopularExports(): Promise<{
       }
 
       results.successful++;
-      console.log(
-        `[Export Scheduler] Successfully generated PDF for regulation ${regulationId}`
-      );
+      serverLogger.info(`[Export Scheduler] Successfully generated PDF for regulation ${regulationId}`);
     } catch (error) {
       results.failed++;
       results.errors.push({
@@ -239,9 +231,7 @@ export async function generatePopularExports(): Promise<{
     }
   }
 
-  console.log(
-    `[Export Scheduler] Completed: ${results.successful} successful, ${results.failed} failed`
-  );
+  serverLogger.info(`[Export Scheduler] Completed: ${results.successful} successful, ${results.failed} failed`);
 
   return results;
 }
@@ -307,7 +297,7 @@ export function cleanupExpiredCache(): number {
   });
 
   if (cleaned > 0) {
-    console.log(`[Export Cache] Cleaned up ${cleaned} expired entries`);
+    serverLogger.info(`[Export Cache] Cleaned up ${cleaned} expired entries`);
   }
 
   return cleaned;
@@ -326,5 +316,5 @@ export function initializeScheduler(): void {
     60 * 60 * 1000
   );
 
-  console.log("[Export Scheduler] Initialized with hourly cleanup");
+  serverLogger.info("[Export Scheduler] Initialized with hourly cleanup");
 }

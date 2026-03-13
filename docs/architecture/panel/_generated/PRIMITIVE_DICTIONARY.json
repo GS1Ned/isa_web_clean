@@ -1,0 +1,398 @@
+{
+  "meta": {
+    "generated_at": "2026-02-20",
+    "generated_by": "codex-5.3",
+    "repo_ref": {
+      "branch": "main",
+      "commit": "70acb22c7975ab851b27cf2912c6dbb2f287167e"
+    }
+  },
+  "status": "AUTHORITATIVE_SHARED_PRIMITIVES",
+  "promotion_rule": "Any concept referenced by multiple capabilities without clear single-owner justification is promoted to shared primitive.",
+  "primitives": [
+    {
+      "id": "P-001",
+      "name": "IdentityAccessControl",
+      "description": "Authentication, session handling, and role authorization primitives.",
+      "owner_layer": "SHARED_PLATFORM",
+      "authoritative_paths": [
+        "server/_core/oauth.ts",
+        "server/_core/trpc.ts",
+        "server/routers.ts"
+      ],
+      "used_by_capabilities": [
+        "ASK_ISA",
+        "NEWS_HUB",
+        "KNOWLEDGE_BASE",
+        "CATALOG",
+        "ESRS_MAPPING",
+        "ADVISORY"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-P-001-REF-01",
+          "path": "server/_core/oauth.ts",
+          "line_start": 14,
+          "line_end": 14
+        },
+        {
+          "evidence_id": "EV-P-001-REF-02",
+          "path": "server/_core/trpc.ts",
+          "line_start": 10,
+          "line_end": 28
+        },
+        {
+          "evidence_id": "EV-P-001-REF-03",
+          "path": "server/routers.ts",
+          "line_start": 55,
+          "line_end": 65
+        }
+      ]
+    },
+    {
+      "id": "P-002",
+      "name": "DatasetProvenance",
+      "description": "Dataset metadata, verification recency, and source lineage contract.",
+      "owner_layer": "SHARED_PLATFORM",
+      "authoritative_paths": [
+        "data/metadata/dataset_registry.json",
+        "drizzle/schema.ts",
+        "server/routers/dataset-registry.ts"
+      ],
+      "used_by_capabilities": [
+        "CATALOG",
+        "KNOWLEDGE_BASE",
+        "ADVISORY",
+        "NEWS_HUB"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-P-002-REF-01",
+          "path": "data/metadata/dataset_registry.json",
+          "line_start": 1,
+          "line_end": 80
+        },
+        {
+          "evidence_id": "EV-P-002-REF-02",
+          "path": "drizzle/schema.ts",
+          "line_start": 285,
+          "line_end": 315
+        },
+        {
+          "evidence_id": "EV-P-002-REF-03",
+          "path": "server/routers/dataset-registry.ts",
+          "line_start": 20,
+          "line_end": 20
+        }
+      ]
+    },
+    {
+      "id": "P-003",
+      "name": "CitationEvidenceChain",
+      "description": "Mandatory citation structure, claim verification, and provenance checks for generated outputs.",
+      "owner_layer": "SHARED_PLATFORM",
+      "authoritative_paths": [
+        "server/citation-validation.ts",
+        "server/claim-citation-verifier.ts",
+        "server/routers/citation-admin.ts",
+        "docs/governance/_root/ISA_GOVERNANCE.md"
+      ],
+      "used_by_capabilities": [
+        "ASK_ISA",
+        "KNOWLEDGE_BASE",
+        "ADVISORY",
+        "ESRS_MAPPING"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-P-003-REF-01",
+          "path": "server/citation-validation.ts",
+          "line_start": 15,
+          "line_end": 184
+        },
+        {
+          "evidence_id": "EV-P-003-REF-02",
+          "path": "server/claim-citation-verifier.ts",
+          "line_start": 112,
+          "line_end": 397
+        },
+        {
+          "evidence_id": "EV-P-003-REF-03",
+          "path": "docs/governance/_root/ISA_GOVERNANCE.md",
+          "line_start": 17,
+          "line_end": 40
+        }
+      ]
+    },
+    {
+      "id": "P-004",
+      "name": "RegulationEntityModel",
+      "description": "Canonical regulation records used by cataloging, mapping, and intelligence flows.",
+      "owner_layer": "CATALOG",
+      "authoritative_paths": [
+        "drizzle/schema.ts",
+        "server/routers/regulations.ts"
+      ],
+      "used_by_capabilities": [
+        "CATALOG",
+        "ASK_ISA",
+        "NEWS_HUB",
+        "KNOWLEDGE_BASE",
+        "ESRS_MAPPING",
+        "ADVISORY"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-P-004-REF-01",
+          "path": "drizzle/schema.ts",
+          "line_start": 1309,
+          "line_end": 1324
+        },
+        {
+          "evidence_id": "EV-P-004-REF-02",
+          "path": "server/routers/regulations.ts",
+          "line_start": 7,
+          "line_end": 7
+        }
+      ],
+      "ownership_justification": "Owned by CATALOG because canonical regulation entities are source-of-record registry data."
+    },
+    {
+      "id": "P-005",
+      "name": "StandardsEntityModel",
+      "description": "Canonical GS1 standards and related attribute models.",
+      "owner_layer": "CATALOG",
+      "authoritative_paths": [
+        "drizzle/schema.ts",
+        "server/gs1-standards-router.ts",
+        "server/routers/standards.ts"
+      ],
+      "used_by_capabilities": [
+        "CATALOG",
+        "ASK_ISA",
+        "NEWS_HUB",
+        "KNOWLEDGE_BASE",
+        "ESRS_MAPPING",
+        "ADVISORY"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-P-005-REF-01",
+          "path": "drizzle/schema.ts",
+          "line_start": 761,
+          "line_end": 810
+        },
+        {
+          "evidence_id": "EV-P-005-REF-02",
+          "path": "server/gs1-standards-router.ts",
+          "line_start": 23,
+          "line_end": 23
+        },
+        {
+          "evidence_id": "EV-P-005-REF-03",
+          "path": "server/routers/standards.ts",
+          "line_start": 4,
+          "line_end": 4
+        }
+      ],
+      "ownership_justification": "Owned by CATALOG because standards entities are core catalog registries consumed cross-capability."
+    },
+    {
+      "id": "P-006",
+      "name": "EsrsDatapointModel",
+      "description": "Canonical ESRS datapoints for mapping and compliance reasoning.",
+      "owner_layer": "CATALOG",
+      "authoritative_paths": [
+        "drizzle/schema.ts",
+        "server/routers.ts"
+      ],
+      "used_by_capabilities": [
+        "CATALOG",
+        "ASK_ISA",
+        "NEWS_HUB",
+        "KNOWLEDGE_BASE",
+        "ESRS_MAPPING",
+        "ADVISORY"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-P-006-REF-01",
+          "path": "drizzle/schema.ts",
+          "line_start": 457,
+          "line_end": 477
+        },
+        {
+          "evidence_id": "EV-P-006-REF-02",
+          "path": "server/routers.ts",
+          "line_start": 411,
+          "line_end": 547
+        }
+      ],
+      "ownership_justification": "Owned by CATALOG because ESRS datapoints are catalog canonical entities."
+    },
+    {
+      "id": "P-007",
+      "name": "LlmInferenceContract",
+      "description": "Model invocation and response validation primitives for AI-assisted behavior.",
+      "owner_layer": "SHARED_PLATFORM",
+      "authoritative_paths": [
+        "server/_core/llm.ts",
+        "server/routers/ask-isa.ts",
+        "server/routers/esrs-roadmap.ts",
+        "server/news-ai-processor.ts"
+      ],
+      "used_by_capabilities": [
+        "ASK_ISA",
+        "NEWS_HUB",
+        "KNOWLEDGE_BASE",
+        "ESRS_MAPPING",
+        "ADVISORY"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-P-007-REF-01",
+          "path": "server/_core/llm.ts",
+          "line_start": 282,
+          "line_end": 282
+        },
+        {
+          "evidence_id": "EV-P-007-REF-02",
+          "path": "server/routers/ask-isa.ts",
+          "line_start": 91,
+          "line_end": 91
+        },
+        {
+          "evidence_id": "EV-P-007-REF-03",
+          "path": "server/routers/esrs-roadmap.ts",
+          "line_start": 33,
+          "line_end": 33
+        },
+        {
+          "evidence_id": "EV-P-007-REF-04",
+          "path": "server/news-ai-processor.ts",
+          "line_start": 131,
+          "line_end": 417
+        }
+      ]
+    },
+    {
+      "id": "P-008",
+      "name": "RetrievalEmbeddings",
+      "description": "Embedding generation, vector retrieval, and hybrid ranking primitives.",
+      "owner_layer": "KNOWLEDGE_BASE",
+      "authoritative_paths": [
+        "server/embedding.ts",
+        "server/db-knowledge-vector.ts",
+        "server/hybrid-search.ts",
+        "drizzle/schema.ts"
+      ],
+      "used_by_capabilities": [
+        "KNOWLEDGE_BASE",
+        "ASK_ISA",
+        "ESRS_MAPPING",
+        "ADVISORY"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-P-008-REF-01",
+          "path": "server/embedding.ts",
+          "line_start": 16,
+          "line_end": 172
+        },
+        {
+          "evidence_id": "EV-P-008-REF-02",
+          "path": "server/db-knowledge-vector.ts",
+          "line_start": 45,
+          "line_end": 295
+        },
+        {
+          "evidence_id": "EV-P-008-REF-03",
+          "path": "server/hybrid-search.ts",
+          "line_start": 104,
+          "line_end": 271
+        }
+      ],
+      "ownership_justification": "Owned by KNOWLEDGE_BASE because retrieval/embedding pipeline is implemented and governed in knowledge layer modules."
+    },
+    {
+      "id": "P-009",
+      "name": "SchedulingOrchestration",
+      "description": "Cron execution and pipeline orchestration primitives.",
+      "owner_layer": "SHARED_PLATFORM",
+      "authoritative_paths": [
+        "server/news-cron-scheduler.ts",
+        "server/routers/cron.ts",
+        "server/news-admin-router.ts"
+      ],
+      "used_by_capabilities": [
+        "NEWS_HUB",
+        "ADVISORY"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-P-009-REF-01",
+          "path": "server/news-cron-scheduler.ts",
+          "line_start": 15,
+          "line_end": 105
+        },
+        {
+          "evidence_id": "EV-P-009-REF-02",
+          "path": "server/routers/cron.ts",
+          "line_start": 24,
+          "line_end": 24
+        },
+        {
+          "evidence_id": "EV-P-009-REF-03",
+          "path": "server/news-admin-router.ts",
+          "line_start": 48,
+          "line_end": 48
+        }
+      ]
+    },
+    {
+      "id": "P-010",
+      "name": "ObservabilityTelemetry",
+      "description": "Logging, traces, and operational checks used by all runtime surfaces.",
+      "owner_layer": "SHARED_PLATFORM",
+      "authoritative_paths": [
+        "server/_core/logger-wiring.ts",
+        "server/_core/trace-id.ts",
+        "scripts/gates/observability-contract.sh"
+      ],
+      "used_by_capabilities": [
+        "ASK_ISA",
+        "NEWS_HUB",
+        "KNOWLEDGE_BASE",
+        "CATALOG",
+        "ESRS_MAPPING",
+        "ADVISORY"
+      ],
+      "evidence_refs": [
+        {
+          "evidence_id": "EV-P-010-REF-01",
+          "path": "server/_core/logger-wiring.ts",
+          "line_start": 81,
+          "line_end": 95
+        },
+        {
+          "evidence_id": "EV-P-010-REF-02",
+          "path": "server/_core/trace-id.ts",
+          "line_start": 6,
+          "line_end": 55
+        },
+        {
+          "evidence_id": "EV-P-010-REF-03",
+          "path": "scripts/gates/observability-contract.sh",
+          "line_start": 1,
+          "line_end": 80
+        }
+      ]
+    }
+  ],
+  "coverage_validation": {
+    "promoted_cross_capability_concepts": true,
+    "unowned_concepts_remaining": [],
+    "notes": "Primitive promotion applied per architecture convergence policy."
+  },
+  "evidence_source_contract": "docs/architecture/panel/_generated/EVIDENCE_INDEX.json"
+}

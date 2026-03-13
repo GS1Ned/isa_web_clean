@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 import { classifyQuery, validateCitations, calculateConfidence } from "./ask-isa-guardrails";
+import { buildAdvisoryReadModel } from "./advisory-read-model";
 
 /**
  * Ask ISA Integration Tests
@@ -218,5 +219,19 @@ describe("Advisory Diff API", () => {
     expect(summary).toBeDefined();
     expect(summary.version).toBeDefined();
     expect(summary.statistics?.totalMappings || summary.mappingResults?.total || 0).toBeGreaterThan(0);
+  });
+
+  it("loads the current advisory summary through the normalized read model when available", async () => {
+    const ctx = createPublicContext();
+    const caller = appRouter.createCaller(ctx);
+    const readModel = await buildAdvisoryReadModel();
+    const activeVersion = `v${String(readModel.summary.version).replace(/^v/i, "")}`;
+
+    const summary = await caller.advisoryDiff.getAdvisorySummary({ version: activeVersion });
+
+    expect(summary).toBeDefined();
+    expect(summary.version).toBeDefined();
+    expect(summary.mappingResults?.total || summary.stats?.totalMappings || 0).toBeGreaterThan(0);
+    expect(summary.migrationState).toBeDefined();
   });
 });

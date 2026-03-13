@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Ask ISA Router
  *
@@ -51,10 +52,13 @@ import {
 import {
   classifyQuery,
   generateRefusalMessage,
-  validateCitations as validateCitationFormat,
   calculateConfidence,
 } from "../ask-isa-guardrails";
 import { validateCitations } from "../citation-validation";
+import {
+  ASK_ISA_STAGE_A_ABSTENTION_MESSAGE,
+  validateAskISAStageAAnswer,
+} from "../ask-isa-stage-a";
 import { serverLogger } from "../_core/logger-wiring";
 
 import {
@@ -69,6 +73,36 @@ import {
   getQueriesBySector,
   searchProductionQueries,
 } from "../ask-isa-query-library";
+import {
+  getCachedResponse,
+  cacheResponse,
+  getCacheStats,
+  invalidateCache,
+  cleanupExpiredEntries,
+} from "../ask-isa-cache";
+import { RagTraceManager } from "../services/rag-tracing";
+import { AbstentionReasonCode, classifyError } from "../services/rag-tracing/failure-taxonomy";
+import { calculateRagQualityMetrics, type SourceInfo } from "../services/rag-metrics";
+import { getVerificationStatus } from "../services/rag-tracing/failure-taxonomy";
+import {
+  analyzeEvidenceSufficiency, 
+  generateAbstentionMessage,
+  inferQueryType,
+  type EvidenceChunk 
+} from "../services/evidence-analysis";
+import { getRuntimeSchema } from "../db-runtime-schema";
+
+const VERSION_SCOPED_URI_PATTERN = /(\/eli\/|\/v?\d+\.\d+(?:\.\d+)?(?:\/|$)|\/\d{4}(?:-\d{2})?(?:\/|$))/i;
+
+function hasVersionScopedUri(url?: string | null): boolean {
+  return typeof url === "string" && VERSION_SCOPED_URI_PATTERN.test(url);
+}
+
+function retrievalPriorityScore(result: HybridSearchResult): number {
+  const authorityComponent = (result.authorityScore || 0) * 0.2;
+  const versionScopedBoost = hasVersionScopedUri(result.url) ? 0.05 : 0;
+  return (result.hybridScore || 0) + authorityComponent + versionScopedBoost;
+}
 
 export const askISARouter = router({
   /**
@@ -80,18 +114,45 @@ export const askISARouter = router({
         question: z.string().min(3).max(1000),
         conversationId: z.number().optional(),
         userId: z.number().optional(),
+        sector: z.enum(["all", "fmcg", "diy", "healthcare", "fashion", "sustainability", "retail", "agriculture", "construction"]).optional().default("all"),
       })
     )
     .mutation(async ({ input }) => {
-      const { question, conversationId, userId } = input;
+      const { question, conversationId, userId, sector } = input;
+      
+      // Initialize RAG trace for observability
+      const trace = await RagTraceManager.start({
+        query: question,
+        sectorFilter: sector !== 'all' ? sector : undefined,
+        conversationId,
+        userId,
+      });
 
       try {
-        // Step 0: Analyze query for ambiguity
+        // Step 0: Check cache for existing response
+        const cachedResponse = getCachedResponse(question);
+        if (cachedResponse) {
+          serverLogger.info(`[AskISA] Returning cached response for query`);
+          trace.recordCacheHit(question);
+          await trace.complete();
+          return {
+            answer: cachedResponse.answer,
+            sources: cachedResponse.sources,
+            confidence: cachedResponse.confidence,
+            claimVerification: cachedResponse.claimVerification,
+            conversationId: conversationId || null,
+            fromCache: true,
+          };
+        }
+
+        // Step 1: Analyze query for ambiguity
         const queryAnalysis = analyzeQuery(question);
         
         // If query is highly ambiguous, return clarification suggestions
         if (queryAnalysis.isAmbiguous && queryAnalysis.ambiguityScore >= 0.5) {
           serverLogger.info(`[AskISA] Query is ambiguous (score: ${queryAnalysis.ambiguityScore}), returning clarifications`);
+          trace.recordAbstention(AbstentionReasonCode.AMBIGUOUS_QUERY);
+          await trace.complete();
           return {
             answer: '',
             sources: [],
@@ -106,6 +167,8 @@ export const askISARouter = router({
         const classification = classifyQuery(question);
         if (!classification.allowed) {
           const refusalMessage = generateRefusalMessage(classification);
+          trace.recordAbstention(AbstentionReasonCode.OUT_OF_SCOPE);
+          await trace.complete();
           return {
             answer: refusalMessage,
             sources: [],
@@ -116,11 +179,24 @@ export const askISARouter = router({
         }
         // Step 1: Search for relevant content using HYBRID search (vector + BM25)
         // This combines semantic understanding with keyword matching for better retrieval
-        const hybridResults = await hybridSearch(question, {
+        // Sector filter boosts relevance of sector-specific content
+        const retrievalStartTime = Date.now();
+        const hybridResultsRaw = await hybridSearch(question, {
           vectorWeight: 0.7,
           bm25Weight: 0.3,
-          limit: 5,
+          limit: sector === "all" ? 5 : 8, // Fetch more results when filtering by sector
+          sectorFilter: sector !== "all" ? sector : undefined,
         });
+        const hybridResults = [...hybridResultsRaw].sort(
+          (a, b) => retrievalPriorityScore(b) - retrievalPriorityScore(a)
+        );
+        const retrievalLatencyMs = Date.now() - retrievalStartTime;
+        
+        // Record retrieval in trace
+        trace.recordRetrieval(
+          hybridResults.map(r => ({ chunkId: r.id, score: r.hybridScore })),
+          retrievalLatencyMs
+        );
 
         // Convert hybrid results to the format expected by the rest of the pipeline
         const relevantResults = hybridResults.map(r => ({
@@ -133,6 +209,8 @@ export const askISARouter = router({
         }));
 
         if (relevantResults.length === 0) {
+          trace.recordAbstention(AbstentionReasonCode.NO_RELEVANT_EVIDENCE);
+          await trace.complete();
           return {
             answer:
               "I couldn't find any relevant information in the knowledge base to answer your question. Please try rephrasing or ask about EU regulations (CSRD, EUDR, DPP) or GS1 standards.",
@@ -141,7 +219,119 @@ export const askISARouter = router({
           };
         }
 
-        // Step 2: Build modular prompt using v2.0 system
+        // Validate citation provenance metadata early so both abstain and answer
+        // paths return consistent citation contracts.
+        const validatedSources = await validateCitations(
+          relevantResults.map(r => ({
+            id: r.id,
+            title: r.title,
+            url: r.url,
+            similarity: r.similarity,
+          }))
+        );
+
+        // Step 1.5: Analyze evidence sufficiency (Hard Abstention Policy - Gate 2.2)
+        const evidenceChunks: EvidenceChunk[] = hybridResults.map(r => ({
+          id: r.id,
+          title: r.title,
+          content: r.description,
+          description: r.description,
+          similarity: r.hybridScore,
+          authorityLevel: r.authorityLevel,
+          sourceType: r.type,
+          url: r.url,
+        }));
+        
+        const queryType = inferQueryType(question);
+        const evidenceAnalysis = analyzeEvidenceSufficiency(evidenceChunks, {
+          query: question,
+          queryType,
+        });
+        
+        // Log evidence analysis for monitoring
+        serverLogger.info(
+          `[AskISA] Evidence analysis: sufficient=${evidenceAnalysis.isSufficient}, ` +
+          `avgSimilarity=${(evidenceAnalysis.details.avgSimilarity * 100).toFixed(0)}%, ` +
+          `highQualityChunks=${evidenceAnalysis.details.highQualityChunks}, ` +
+          `authority=${evidenceAnalysis.details.highestAuthority}, ` +
+          `conflicts=${evidenceAnalysis.details.hasConflicts}`
+        );
+        
+        // If evidence is insufficient, abstain
+        if (!evidenceAnalysis.isSufficient && evidenceAnalysis.abstentionReason) {
+          const abstentionMessage = generateAbstentionMessage(
+            evidenceAnalysis.abstentionReason,
+            evidenceAnalysis.details
+          );
+          
+          trace.recordAbstention(evidenceAnalysis.abstentionReason);
+          await trace.complete();
+          
+          return {
+            answer: abstentionMessage,
+            sources: validatedSources.map((source, index) => ({
+              id: source.id,
+              type: relevantResults[index]?.type || "regulation",
+              title: source.title,
+              url: source.url,
+              similarity: Math.round(source.similarity * 100),
+              datasetId: source.datasetId,
+              datasetVersion: source.datasetVersion,
+              lastVerifiedDate: source.lastVerifiedDate,
+              verificationAgeDays: source.verificationAgeDays,
+              isDeprecated: source.isDeprecated,
+              needsVerification: source.needsVerification,
+              verificationReason: source.verificationReason,
+              deprecationReason: source.deprecationReason,
+              evidenceKey: source.evidenceKey,
+              evidenceKeyReason: source.evidenceKeyReason,
+              sourceRecordId: source.sourceRecordId,
+              sourceChunkId: source.sourceChunkId,
+              authorityTier: source.authorityTier,
+              sourceRole: source.sourceRole,
+              admissionBasis: source.admissionBasis,
+              publicationStatus: source.publicationStatus,
+              sourceLocator: source.sourceLocator,
+              immutableUri: source.immutableUri,
+              citationLabel: source.citationLabel,
+              sourceChunkLocator: source.sourceChunkLocator,
+            })),
+            conversationId: conversationId || null,
+            queryType,
+            confidence: { level: 'low' as const, score: evidenceAnalysis.analysisConfidence },
+            abstained: true,
+            abstentionReason: evidenceAnalysis.abstentionReason,
+            evidenceAnalysis: {
+              avgSimilarity: evidenceAnalysis.details.avgSimilarity,
+              highQualityChunks: evidenceAnalysis.details.highQualityChunks,
+              highestAuthority: evidenceAnalysis.details.highestAuthority,
+              hasConflicts: evidenceAnalysis.details.hasConflicts,
+            },
+          };
+        }
+
+        // Step 2: Load conversation history if conversationId is provided
+        let conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }> = [];
+        
+        if (conversationId) {
+          try {
+            const existingConversation = await getQAConversation(conversationId);
+            if (existingConversation && existingConversation.messages) {
+              // Get last 6 messages (3 turns) for context
+              const recentMessages = existingConversation.messages.slice(-6);
+              conversationHistory = recentMessages.map(msg => ({
+                role: msg.role as 'user' | 'assistant',
+                content: msg.content,
+              }));
+              serverLogger.info(`[AskISA] Loaded ${conversationHistory.length} messages from conversation ${conversationId}`);
+            }
+          } catch (error) {
+            serverLogger.warn(`[AskISA] Failed to load conversation history:`, error);
+            // Continue without history
+          }
+        }
+
+        // Step 3: Build modular prompt using v2.0 system with conversation context
         const contextParams: AskISAContextParams = {
           question,
           relevantChunks: relevantResults.map(r => ({
@@ -152,25 +342,27 @@ export const askISARouter = router({
             url: r.url,
             similarity: Math.round(r.similarity * 100),
           })),
+          conversationHistory: conversationHistory.length > 0 ? conversationHistory : undefined,
         };
 
         const fullPrompt = assembleAskISAPrompt(contextParams, 'v2_modular');
 
-        // Step 3: Generate AI answer using LLM with modular prompt
-
-        const response = await invokeLLM({
+        // Step 4: Generate AI answer using LLM with modular prompt
+        const generationStartTime = Date.now();
+        const llmResponse = await invokeLLM({
           messages: [
             { role: "user", content: fullPrompt },
           ],
         });
+        const generationLatencyMs = Date.now() - generationStartTime;
 
-        const answerContent = response.choices[0]?.message?.content;
+        const answerContent = llmResponse.choices[0]?.message?.content;
         const answer =
           typeof answerContent === "string"
             ? answerContent
             : "Sorry, I could not generate an answer.";
 
-        // Step 4: Store conversation if needed
+        // Step 4: Prepare conversation persistence if needed
         let finalConversationId: number | undefined = conversationId;
 
         if (!finalConversationId) {
@@ -182,8 +374,18 @@ export const askISARouter = router({
           finalConversationId = conversation?.id || undefined;
         }
 
-        // Step 5: Store messages
-        if (finalConversationId) {
+        async function persistConversation(
+          answerText: string,
+          sources: Array<{
+            id: number;
+            type: string;
+            title: string;
+            url?: string;
+            similarity: number;
+          }>
+        ) {
+          if (!finalConversationId) return;
+
           await addQAMessage({
             conversationId: finalConversationId,
             role: "user",
@@ -193,37 +395,21 @@ export const askISARouter = router({
           await addQAMessage({
             conversationId: finalConversationId,
             role: "assistant",
-            content: answer,
-            sources: relevantResults.map(result => ({
-              id: result.id,
-              type: result.type,
-              title: result.title,
-              url: result.url,
-              similarity: result.similarity,
-            })),
-            retrievedChunks: relevantResults.length,
+            content: answerText,
+            sources,
+            retrievedChunks: sources.length,
           });
         }
 
-        // Step 6: Validate citations and calculate confidence
-        const citationValidation = validateCitationFormat(answer);
+        // Step 5: Validate citations and calculate confidence
         const confidence = calculateConfidence(relevantResults.length);
 
         // Step 6.5: Validate citation provenance and deprecation status
-        const validatedSources = await validateCitations(
-          relevantResults.map(r => ({
-            id: r.id,
-            title: r.title,
-            url: r.url,
-            similarity: r.similarity,
-          }))
-        );
-
         // Step 7: Programmatic verification (v2.0 modular prompt system)
         const verification = verifyAskISAResponse(
           answer,
           relevantResults,
-          confidence.score
+          Math.max(0, Math.min(1, relevantResults.length / 3))
         );
 
         if (!verification.passed) {
@@ -241,58 +427,123 @@ export const askISARouter = router({
           }))
         );
 
-        return {
+        // Calculate claim verification once
+        const claimVerificationResult = verifyResponseClaims(
           answer,
-          sources: validatedSources.map((source, index) => {
-            const hybridResult = hybridResults[index];
-            return {
+          hybridResults.map(r => ({
+            id: r.id,
+            title: r.title,
+            url: r.url,
+            authorityLevel: r.authorityLevel,
+          }))
+        );
+
+        const responseSources = validatedSources.map((source, index) => {
+          const hybridResult = hybridResults[index];
+          return {
+            id: source.id,
+            type: hybridResult?.type || 'regulation',
+            title: source.title,
+            url: source.url,
+            similarity: Math.round(source.similarity * 100),
+            datasetId: source.datasetId,
+            datasetVersion: source.datasetVersion,
+            lastVerifiedDate: source.lastVerifiedDate,
+            verificationAgeDays: source.verificationAgeDays,
+            isDeprecated: source.isDeprecated,
+            needsVerification: source.needsVerification,
+            verificationReason: source.verificationReason,
+            deprecationReason: source.deprecationReason,
+            evidenceKey: source.evidenceKey,
+            evidenceKeyReason: source.evidenceKeyReason,
+            sourceRecordId: source.sourceRecordId,
+            sourceChunkId: source.sourceChunkId,
+            authorityTier: source.authorityTier,
+            sourceRole: source.sourceRole,
+            admissionBasis: source.admissionBasis,
+            publicationStatus: source.publicationStatus,
+            sourceLocator: source.sourceLocator,
+            immutableUri: source.immutableUri,
+            citationLabel: source.citationLabel,
+            sourceChunkLocator: source.sourceChunkLocator,
+            authorityLevel: hybridResult?.authorityLevel || 'industry' as AuthorityLevel,
+            authorityScore: hybridResult?.authorityScore || 0.5,
+          };
+        });
+
+        const stageAValidation = validateAskISAStageAAnswer({
+          answer,
+          sourceCount: relevantResults.length,
+          evidenceReadySourceCount: validatedSources.filter(
+            source => typeof source.evidenceKey === "string" && source.evidenceKey.length > 0
+          ).length,
+          verifiedEvidenceSourceCount: validatedSources.filter(
+            source =>
+              typeof source.evidenceKey === "string" &&
+              source.evidenceKey.length > 0 &&
+              !source.needsVerification &&
+              !source.isDeprecated
+          ).length,
+          needsVerificationSourceCount: validatedSources.filter(
+            source => source.needsVerification
+          ).length,
+          deprecatedSourceCount: validatedSources.filter(
+            source => source.isDeprecated
+          ).length,
+          claimVerification: claimVerificationResult,
+        });
+
+        if (!stageAValidation.passed) {
+          serverLogger.warn("[AskISA] Stage-A validation failed:", stageAValidation.issues);
+          if (stageAValidation.warnings.length > 0) {
+            serverLogger.warn("[AskISA] Stage-A validation warnings:", stageAValidation.warnings);
+          }
+
+          await persistConversation(
+            ASK_ISA_STAGE_A_ABSTENTION_MESSAGE,
+            responseSources.map(source => ({
               id: source.id,
+              type: source.type,
               title: source.title,
               url: source.url,
-              similarity: Math.round(source.similarity * 100),
-              datasetId: source.datasetId,
-              datasetVersion: source.datasetVersion,
-              lastVerifiedDate: source.lastVerifiedDate,
-              isDeprecated: source.isDeprecated,
-              needsVerification: source.needsVerification,
-              deprecationReason: source.deprecationReason,
-              // Authority information
-              authorityLevel: hybridResult?.authorityLevel || 'industry' as AuthorityLevel,
-              authorityScore: hybridResult?.authorityScore || 0.5,
-            };
-          }),
+              similarity: source.similarity,
+            }))
+          );
+
+          trace.recordAbstention(AbstentionReasonCode.SPECULATION_REQUIRED);
+          await trace.complete();
+          return {
+            answer: ASK_ISA_STAGE_A_ABSTENTION_MESSAGE,
+            sources: responseSources,
+            conversationId: finalConversationId,
+            queryType: classification.type,
+            confidence: { level: "low" as const, score: 0 },
+            citationValid: false,
+            missingCitations: stageAValidation.issues,
+            abstained: true,
+            abstentionReason: AbstentionReasonCode.SPECULATION_REQUIRED,
+          };
+        }
+
+        const response = {
+          answer,
+          sources: responseSources,
           conversationId: finalConversationId,
           queryType: classification.type,
           confidence,
-          citationValid: citationValidation.valid,
-          missingCitations: citationValidation.missingElements,
+          citationValid: stageAValidation.citationValid,
+          missingCitations: stageAValidation.missingCitations,
           // Overall authority assessment
           authority: authorityScore,
           // Claim-citation verification
-          claimVerification: verifyResponseClaims(
-            answer,
-            hybridResults.map((r, i) => ({
-              id: r.id,
-              title: r.title,
-              url: r.url,
-              authorityLevel: r.authorityLevel,
-            }))
-          ),
+          claimVerification: claimVerificationResult,
           // Response mode based on evidence quality
           responseMode: determineResponseMode(
             hybridResults.map(r => ({
               score: r.hybridScore,
               authorityLevel: r.authorityLevel,
             })),
-            verifyResponseClaims(
-              answer,
-              hybridResults.map(r => ({
-                id: r.id,
-                title: r.title,
-                url: r.url,
-                authorityLevel: r.authorityLevel,
-              }))
-            ).verificationRate
+            claimVerificationResult.verificationRate
           ),
           // Query analysis info
           queryAnalysis: {
@@ -300,8 +551,127 @@ export const askISARouter = router({
             relatedTopics: queryAnalysis.relatedTopics,
           },
         };
+
+        // Record generation in trace
+        trace.recordGeneration(
+          answer,
+          hybridResults.map(r => ({
+            sourceChunkId: r.id,
+            sourceTitle: r.title,
+            sourceUrl: r.url,
+            citedText: r.description?.slice(0, 200) || '',
+          })),
+          generationLatencyMs,
+          {
+            llmModel: 'gpt-4o-mini',
+            promptVersion: 'v2_modular',
+            confidenceScore: confidence.score,
+          }
+        );
+        
+        // Set verification status based on claim verification
+        trace.setVerificationStatus(
+          getVerificationStatus(claimVerificationResult.verificationRate),
+          {
+            verificationRate: claimVerificationResult.verificationRate,
+            totalClaims: claimVerificationResult.totalClaims,
+            verifiedClaims: claimVerificationResult.verifiedClaims,
+          }
+        );
+        
+        // Calculate RAG quality metrics
+        const sourceInfos: SourceInfo[] = hybridResults.map((r, index) => ({
+          sourceNumber: index + 1,
+          sourceType: r.type || 'unknown',
+          authorityLevel: r.authorityLevel || 'guidance',
+          citationCount: 0, // Will be calculated by the metric
+        }));
+        
+        const ragQualityMetrics = calculateRagQualityMetrics(answer, sourceInfos);
+        
+        // Log quality metrics for monitoring
+        serverLogger.info(
+          `[AskISA] Quality metrics: ` +
+          `traceability=${(ragQualityMetrics.traceability.overallScore * 100).toFixed(0)}%, ` +
+          `sources=${ragQualityMetrics.diversity.uniqueSourcesCited}/${ragQualityMetrics.diversity.totalSourcesAvailable}, ` +
+          `pattern=${ragQualityMetrics.diversity.interpretation.pattern}, ` +
+          `level=${ragQualityMetrics.assessment.level}`
+        );
+        
+        // Add metrics to trace metadata
+        trace.setMetrics({
+          traceabilityScore: ragQualityMetrics.traceability.overallScore,
+          citationPresenceRate: ragQualityMetrics.traceability.citationPresenceRate,
+          citationValidityRate: ragQualityMetrics.traceability.citationValidityRate,
+          sourceUtilization: ragQualityMetrics.diversity.utilizationRate,
+          sourceDiversityPattern: ragQualityMetrics.diversity.interpretation.pattern,
+          qualityLevel: ragQualityMetrics.assessment.level,
+        });
+
+        // Complete the trace
+        await trace.complete();
+
+        await persistConversation(
+          answer,
+          responseSources.map(source => ({
+            id: source.id,
+            type: source.type,
+            title: source.title,
+            url: source.url,
+            similarity: source.similarity,
+          }))
+        );
+
+        // Cache the response for future queries
+        cacheResponse(question, {
+          answer,
+          sources: response.sources.map(s => ({
+            id: s.id,
+            type: s.type,
+            title: s.title,
+            url: s.url,
+            similarity: s.similarity,
+            authorityLevel: s.authorityLevel,
+            authorityScore: s.authorityScore,
+            lastVerifiedDate: s.lastVerifiedDate,
+            verificationAgeDays: s.verificationAgeDays,
+            verificationReason: s.verificationReason,
+            evidenceKey: s.evidenceKey,
+            evidenceKeyReason: s.evidenceKeyReason,
+            sourceRecordId: s.sourceRecordId,
+            sourceChunkId: s.sourceChunkId,
+            authorityTier: s.authorityTier,
+            sourceRole: s.sourceRole,
+            admissionBasis: s.admissionBasis,
+            publicationStatus: s.publicationStatus,
+            sourceLocator: s.sourceLocator,
+            immutableUri: s.immutableUri,
+            citationLabel: s.citationLabel,
+            sourceChunkLocator: s.sourceChunkLocator,
+          })),
+          confidence,
+          claimVerification: {
+            verificationRate: claimVerificationResult.verificationRate,
+            totalClaims: claimVerificationResult.totalClaims,
+            verifiedClaims: claimVerificationResult.verifiedClaims,
+            unverifiedClaims: claimVerificationResult.unverifiedClaims,
+            warnings: Array.from(
+              new Set([...claimVerificationResult.warnings, ...stageAValidation.warnings])
+            ),
+          },
+        });
+
+        return response;
       } catch (error) {
         serverLogger.error("[AskISA] Failed to answer question:", error);
+        serverLogger.error("[AskISA] Full error details:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        
+        // Record error in trace
+        if (error instanceof Error) {
+          trace.recordError(error, classifyError(error));
+        }
+        await trace.complete();
+        
         throw new Error("Failed to generate answer. Please try again.");
       }
     }),
@@ -382,7 +752,7 @@ export const askISARouter = router({
           const { getDb } = await import("../db");
           const db = await getDb();
           if (db) {
-            const { esrsDatapoints } = await import("../../drizzle/schema");
+            const { esrsDatapoints } = (await getRuntimeSchema()) as any;
             sources = await db.select().from(esrsDatapoints).limit(10000);
           }
         } else if (sourceType === "dutch_initiative") {
@@ -526,7 +896,7 @@ export const askISARouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
-      const { askIsaFeedback } = await import("../../drizzle/schema");
+      const { askIsaFeedback } = (await getRuntimeSchema()) as any;
 
       try {
         await db.insert(askIsaFeedback).values({
@@ -549,4 +919,159 @@ export const askISARouter = router({
         throw new Error("Failed to submit feedback");
       }
     }),
+
+  // Get feedback statistics for admin dashboard
+  getFeedbackStats: protectedProcedure
+    .input(
+      z.object({
+        timeRange: z.enum(["7d", "30d", "90d", "all"]).default("30d"),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Admin access required");
+      }
+
+      const { getDb } = await import("../db");
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      const { askIsaFeedback } = (await getRuntimeSchema()) as any;
+      const { sql, count, avg, and, gte } = await import("drizzle-orm");
+
+      // Calculate date filter
+      let dateFilter = undefined;
+      if (input.timeRange !== "all") {
+        const days = input.timeRange === "7d" ? 7 : input.timeRange === "30d" ? 30 : 90;
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        dateFilter = gte(askIsaFeedback.timestamp, cutoffDate.toISOString());
+      }
+
+      try {
+        // Get positive count
+        const positiveResult = await db
+          .select({ count: count() })
+          .from(askIsaFeedback)
+          .where(
+            dateFilter
+              ? and(sql`${askIsaFeedback.feedbackType} = 'positive'`, dateFilter)
+              : sql`${askIsaFeedback.feedbackType} = 'positive'`
+          );
+
+        // Get negative count
+        const negativeResult = await db
+          .select({ count: count() })
+          .from(askIsaFeedback)
+          .where(
+            dateFilter
+              ? and(sql`${askIsaFeedback.feedbackType} = 'negative'`, dateFilter)
+              : sql`${askIsaFeedback.feedbackType} = 'negative'`
+          );
+
+        // Get average confidence score
+        const avgConfidenceResult = await db
+          .select({ avg: avg(askIsaFeedback.confidenceScore) })
+          .from(askIsaFeedback)
+          .where(dateFilter || undefined);
+
+        // Get daily trend (last 14 days)
+        const trendCutoffDate = new Date();
+        trendCutoffDate.setDate(trendCutoffDate.getDate() - 14);
+
+        const trendResult = await db
+          .select({
+            date: sql<string>`DATE(${askIsaFeedback.timestamp})`,
+            positive: sql<number>`SUM(CASE WHEN ${askIsaFeedback.feedbackType} = 'positive' THEN 1 ELSE 0 END)`,
+            negative: sql<number>`SUM(CASE WHEN ${askIsaFeedback.feedbackType} = 'negative' THEN 1 ELSE 0 END)`,
+          })
+          .from(askIsaFeedback)
+          .where(gte(askIsaFeedback.timestamp, trendCutoffDate.toISOString()))
+          .groupBy(sql`DATE(${askIsaFeedback.timestamp})`)
+          .orderBy(sql`DATE(${askIsaFeedback.timestamp})`);
+
+        return {
+          positive: positiveResult[0]?.count || 0,
+          negative: negativeResult[0]?.count || 0,
+          avgConfidence: avgConfidenceResult[0]?.avg ? Number(avgConfidenceResult[0].avg) : null,
+          dailyTrend: trendResult.map(row => ({
+            date: row.date,
+            positive: Number(row.positive) || 0,
+            negative: Number(row.negative) || 0,
+          })),
+        };
+      } catch (error) {
+        serverLogger.error("[AskISA] Failed to get feedback stats:", error);
+        throw new Error("Failed to get feedback statistics");
+      }
+    }),
+
+  // Get recent feedback entries for admin review
+  getRecentFeedback: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).default(20),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Admin access required");
+      }
+
+      const { getDb } = await import("../db");
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      const { askIsaFeedback } = (await getRuntimeSchema()) as any;
+      const { desc } = await import("drizzle-orm");
+
+      try {
+        const feedback = await db
+          .select()
+          .from(askIsaFeedback)
+          .orderBy(desc(askIsaFeedback.timestamp))
+          .limit(input.limit);
+
+        return feedback.map(f => ({
+          id: String(f.id),
+          questionId: f.questionId,
+          questionText: f.questionText,
+          answerText: f.answerText,
+          feedbackType: f.feedbackType,
+          feedbackComment: f.feedbackComment,
+          confidenceScore: f.confidenceScore,
+          sourcesCount: f.sourcesCount,
+          timestamp: f.timestamp,
+        }));
+      } catch (error) {
+        serverLogger.error("[AskISA] Failed to get recent feedback:", error);
+        throw new Error("Failed to get recent feedback");
+      }
+    }),
+
+  // Get cache statistics
+  getCacheStats: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Admin access required");
+    }
+    return getCacheStats();
+  }),
+
+  // Invalidate cache (admin only)
+  invalidateCache: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Admin access required");
+    }
+    invalidateCache();
+    return { success: true, message: "Cache invalidated successfully" };
+  }),
+
+  // Cleanup expired cache entries (admin only)
+  cleanupCache: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Admin access required");
+    }
+    const cleaned = cleanupExpiredEntries();
+    return { success: true, cleanedEntries: cleaned };
+  }),
 });

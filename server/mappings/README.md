@@ -33,9 +33,11 @@ import { mapESRSToGS1Attributes } from "./mappings/esrs-to-gs1-mapper";
 const mappings = await mapESRSToGS1Attributes(["E1-1_01", "E5-2_01"]);
 
 for (const mapping of mappings) {
-  console.log(mapping.esrsDatapointId, mapping.esrsStandard);
+  process.stdout.write(`${mapping.esrsDatapointId} ${mapping.esrsStandard}\n`);
   for (const attribute of mapping.gs1Attributes) {
-    console.log(`  - ${attribute.attributeName} (${attribute.gs1Standard})`);
+    process.stdout.write(
+      `  - ${attribute.attributeName} (${attribute.gs1Standard})\n`
+    );
   }
 }
 ```

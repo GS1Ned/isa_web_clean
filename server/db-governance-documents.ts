@@ -3,6 +3,11 @@ import {
   governanceDocuments,
 } from "../drizzle/schema";
 import { eq, and, desc, sql, like, or, InferSelectModel } from "drizzle-orm";
+import { KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS } from "./knowledge-provenance";
+import {
+  summarizeVerificationPosture,
+  withVerificationPosture,
+} from "./verification-posture";
 
 type GovernanceDocument = InferSelectModel<typeof governanceDocuments>;
 
@@ -54,7 +59,7 @@ export async function getGovernanceDocuments(filters?: {
   }
 
   const results = await query.orderBy(desc(governanceDocuments.publishedDate));
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -70,7 +75,7 @@ export async function getGovernanceDocumentById(id: number) {
     .where(eq(governanceDocuments.id, id))
     .limit(1);
   
-  return results[0] || null;
+  return results[0] ? withVerificationPosture(results[0]) : null;
 }
 
 /**
@@ -86,7 +91,7 @@ export async function getGovernanceDocumentByCode(documentCode: string) {
     .where(eq(governanceDocuments.documentCode, documentCode))
     .limit(1);
   
-  return results[0] || null;
+  return results[0] ? withVerificationPosture(results[0]) : null;
 }
 
 /**
@@ -144,14 +149,16 @@ export async function updateDocumentVerification(
 }
 
 /**
- * Get documents needing verification (older than 90 days or never verified)
+ * Get documents needing verification (outside the shared verification window or never verified)
  */
 export async function getDocumentsNeedingVerification() {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
-  const ninetyDaysAgo = new Date();
-  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+  const verificationCutoff = new Date();
+  verificationCutoff.setDate(
+    verificationCutoff.getDate() - KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS
+  );
   
   const results = await db
     .select()
@@ -159,12 +166,12 @@ export async function getDocumentsNeedingVerification() {
     .where(
       and(
         eq(governanceDocuments.status, "PUBLISHED"),
-        sql`(${governanceDocuments.lastVerifiedDate} IS NULL OR ${governanceDocuments.lastVerifiedDate} < ${ninetyDaysAgo})`
+        sql`(${governanceDocuments.lastVerifiedDate} IS NULL OR ${governanceDocuments.lastVerifiedDate} < ${verificationCutoff})`
       )
     )
     .orderBy(governanceDocuments.lastVerifiedDate);
   
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -201,12 +208,24 @@ export async function getGovernanceDocumentStats() {
     })
     .from(governanceDocuments)
     .groupBy(governanceDocuments.status);
+
+  const verificationDates = await db
+    .select({
+      lastVerifiedDate: governanceDocuments.lastVerifiedDate,
+    })
+    .from(governanceDocuments);
+
+  const verificationSummary = summarizeVerificationPosture(verificationDates);
   
   return {
     total: totalCount[0]?.count || 0,
     byDocumentType,
     byCategory,
     byStatus,
+    verificationCountsByReason: verificationSummary.countsByReason,
+    verificationFreshnessBuckets: verificationSummary.freshnessBuckets,
+    oldestVerificationAgeDays: verificationSummary.oldestVerificationAgeDays,
+    medianVerificationAgeDays: verificationSummary.medianVerificationAgeDays,
   };
 }
 
@@ -230,7 +249,7 @@ export async function searchGovernanceDocuments(searchTerm: string) {
     )
     .orderBy(desc(governanceDocuments.publishedDate));
   
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -250,7 +269,7 @@ export async function getDocumentsByRegulationIds(regulationIds: number[]) {
     )
     .orderBy(desc(governanceDocuments.publishedDate));
   
-  return results;
+  return results.map(withVerificationPosture);
 }
 
 /**
@@ -270,5 +289,5 @@ export async function getDocumentsByStandardIds(standardIds: number[]) {
     )
     .orderBy(desc(governanceDocuments.publishedDate));
   
-  return results;
+  return results.map(withVerificationPosture);
 }

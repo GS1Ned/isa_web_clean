@@ -1,9 +1,121 @@
-import { getDb } from "./db";
+import { getDb, getDbEngine } from "./db";
 import {
-  advisoryReports,
-  advisoryReportVersions,
+  advisoryReports as mysqlAdvisoryReports,
+  advisoryReportVersions as mysqlAdvisoryReportVersions,
+  advisoryReportTargetRegulations as mysqlAdvisoryReportTargetRegulations,
+  advisoryReportTargetStandards as mysqlAdvisoryReportTargetStandards,
 } from "../drizzle/schema";
-import { eq, and, desc, sql, inArray } from "drizzle-orm";
+import {
+  advisoryReports as pgAdvisoryReports,
+  advisoryReportVersions as pgAdvisoryReportVersions,
+  advisoryReportTargetRegulations as pgAdvisoryReportTargetRegulations,
+  advisoryReportTargetStandards as pgAdvisoryReportTargetStandards,
+} from "../drizzle_pg/schema";
+import { eq, and, desc, sql, inArray, isNotNull } from "drizzle-orm";
+
+type AdvisoryReportInsert = typeof mysqlAdvisoryReports.$inferInsert;
+type AdvisoryReportVersionInsert = typeof mysqlAdvisoryReportVersions.$inferInsert;
+
+type AdvisoryTables = {
+  advisoryReports: any;
+  advisoryReportVersions: any;
+  advisoryReportTargetRegulations: any;
+  advisoryReportTargetStandards: any;
+};
+
+type AdvisoryTargetTables = Pick<
+  AdvisoryTables,
+  "advisoryReportTargetRegulations" | "advisoryReportTargetStandards"
+>;
+
+function getAdvisoryTables(): AdvisoryTables {
+  if (getDbEngine() === "postgres") {
+    return {
+      advisoryReports: pgAdvisoryReports,
+      advisoryReportVersions: pgAdvisoryReportVersions,
+      advisoryReportTargetRegulations: pgAdvisoryReportTargetRegulations,
+      advisoryReportTargetStandards: pgAdvisoryReportTargetStandards,
+    };
+  }
+
+  return {
+    advisoryReports: mysqlAdvisoryReports,
+    advisoryReportVersions: mysqlAdvisoryReportVersions,
+    advisoryReportTargetRegulations: mysqlAdvisoryReportTargetRegulations,
+    advisoryReportTargetStandards: mysqlAdvisoryReportTargetStandards,
+  };
+}
+
+function buildJsonArrayContainsCondition(column: any, values: number[]) {
+  if (getDbEngine() === "postgres") {
+    return sql`${column} @> ${JSON.stringify(values)}::jsonb`;
+  }
+  return sql`JSON_CONTAINS(${column}, ${JSON.stringify(values)})`;
+}
+
+async function insertAndExtractId(db: any, table: any, values: unknown) {
+  if (getDbEngine() === "postgres") {
+    const inserted = await db.insert(table).values(values).returning({ id: table.id });
+    return Number(inserted[0]?.id || 0);
+  }
+
+  const insertResult = await db.insert(table).values(values);
+  const normalizedResult = Array.isArray(insertResult)
+    ? insertResult[0]
+    : insertResult;
+  return Number((normalizedResult as any)?.insertId || 0);
+}
+
+function normalizeIdArray(input: unknown): number[] | undefined {
+  if (!Array.isArray(input)) return undefined;
+  const values = input
+    .map((value) => (typeof value === "number" ? value : Number(value)))
+    .filter((value) => Number.isInteger(value) && value > 0);
+  return Array.from(new Set(values));
+}
+
+async function syncAdvisoryReportTargets(
+  db: any,
+  tables: AdvisoryTargetTables,
+  reportId: number,
+  targetRegulationIds: unknown,
+  targetStandardIds: unknown
+) {
+  const advisoryReportTargetRegulations = tables.advisoryReportTargetRegulations;
+  const advisoryReportTargetStandards = tables.advisoryReportTargetStandards;
+  const regulationIds = normalizeIdArray(targetRegulationIds);
+  const standardIds = normalizeIdArray(targetStandardIds);
+
+  if (regulationIds !== undefined) {
+    await db
+      .delete(advisoryReportTargetRegulations)
+      .where(eq(advisoryReportTargetRegulations.reportId, reportId));
+
+    if (regulationIds.length > 0) {
+      await db.insert(advisoryReportTargetRegulations).values(
+        regulationIds.map((regulationId) => ({
+          reportId,
+          regulationId,
+        }))
+      );
+    }
+  }
+
+  if (standardIds !== undefined) {
+    await db
+      .delete(advisoryReportTargetStandards)
+      .where(eq(advisoryReportTargetStandards.reportId, reportId));
+
+    if (standardIds.length > 0) {
+      await db.insert(advisoryReportTargetStandards).values(
+        standardIds.map((standardId) => ({
+          reportId,
+          standardId,
+        }))
+      );
+    }
+  }
+}
 
 /**
  * Get all advisory reports with optional filtering
@@ -16,6 +128,7 @@ export async function getAdvisoryReports(filters?: {
 }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
   
   let query = db.select().from(advisoryReports);
 
@@ -51,6 +164,7 @@ export async function getAdvisoryReports(filters?: {
 export async function getAdvisoryReportById(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
   
   const results = await db
     .select()
@@ -62,13 +176,44 @@ export async function getAdvisoryReportById(id: number) {
 }
 
 /**
- * Create a new advisory report
+ * Get the latest advisory report by generated date.
  */
-export async function createAdvisoryReport(data: typeof advisoryReports.$inferInsert) {
+export async function getLatestAdvisoryReport() {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const [result] = await db.insert(advisoryReports).values(data);
-  return result;
+  const { advisoryReports } = getAdvisoryTables();
+
+  const results = await db
+    .select()
+    .from(advisoryReports)
+    .orderBy(desc(advisoryReports.generatedDate))
+    .limit(1);
+
+  return results[0] || null;
+}
+
+/**
+ * Create a new advisory report
+ */
+export async function createAdvisoryReport(data: AdvisoryReportInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const tables = getAdvisoryTables();
+  const advisoryReports = tables.advisoryReports;
+
+  const insertId = await insertAndExtractId(db, advisoryReports, data);
+
+  if (Number.isInteger(insertId) && insertId > 0) {
+    await syncAdvisoryReportTargets(
+      db,
+      tables,
+      insertId,
+      data.targetRegulationIds,
+      data.targetStandardIds
+    );
+  }
+
+  return { insertId };
 }
 
 /**
@@ -76,10 +221,12 @@ export async function createAdvisoryReport(data: typeof advisoryReports.$inferIn
  */
 export async function updateAdvisoryReport(
   id: number,
-  updates: Partial<typeof advisoryReports.$inferInsert>
+  updates: Partial<AdvisoryReportInsert>
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const tables = getAdvisoryTables();
+  const advisoryReports = tables.advisoryReports;
   
   const result = await db
     .update(advisoryReports)
@@ -88,6 +235,19 @@ export async function updateAdvisoryReport(
       updatedAt: new Date().toISOString(),
     })
     .where(eq(advisoryReports.id, id));
+
+  if (
+    updates.targetRegulationIds !== undefined ||
+    updates.targetStandardIds !== undefined
+  ) {
+    await syncAdvisoryReportTargets(
+      db,
+      tables,
+      id,
+      updates.targetRegulationIds,
+      updates.targetStandardIds
+    );
+  }
   
   return result;
 }
@@ -103,6 +263,7 @@ export async function updateReportReviewStatus(
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
   
   const result = await db
     .update(advisoryReports)
@@ -124,6 +285,7 @@ export async function updateReportReviewStatus(
 export async function incrementReportViewCount(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
   
   const result = await db
     .update(advisoryReports)
@@ -142,6 +304,7 @@ export async function incrementReportViewCount(id: number) {
 export async function getReportVersions(reportId: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReportVersions } = getAdvisoryTables();
   
   const results = await db
     .select()
@@ -155,12 +318,13 @@ export async function getReportVersions(reportId: number) {
 /**
  * Create report version
  */
-export async function createReportVersion(data: typeof advisoryReportVersions.$inferInsert) {
+export async function createReportVersion(data: AdvisoryReportVersionInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReportVersions } = getAdvisoryTables();
   
-  const result = await db.insert(advisoryReportVersions).values(data);
-  return result;
+  const insertId = await insertAndExtractId(db, advisoryReportVersions, data);
+  return { insertId };
 }
 
 /**
@@ -169,6 +333,7 @@ export async function createReportVersion(data: typeof advisoryReportVersions.$i
 export async function getAdvisoryReportStats() {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
   
   const totalCount = await db
     .select({ count: sql<number>`count(*)` })
@@ -189,11 +354,19 @@ export async function getAdvisoryReportStats() {
     })
     .from(advisoryReports)
     .groupBy(advisoryReports.publicationStatus);
+
+  const staleCount = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(advisoryReports)
+    .where(isNotNull(advisoryReports.staleSince));
   
   return {
     total: totalCount[0]?.count || 0,
     byReviewStatus,
     byPublicationStatus,
+    stale: {
+      count: staleCount[0]?.count || 0,
+    },
   };
 }
 
@@ -203,18 +376,36 @@ export async function getAdvisoryReportStats() {
 export async function getReportsByRegulationIds(regulationIds: number[]) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports, advisoryReportTargetRegulations } = getAdvisoryTables();
   
   if (regulationIds.length === 0) return [];
-  
-  const results = await db
+
+  const normalizedIds = normalizeIdArray(regulationIds) ?? [];
+  if (normalizedIds.length === 0) return [];
+
+  const joined = await db
+    .select({ report: advisoryReports })
+    .from(advisoryReportTargetRegulations)
+    .innerJoin(
+      advisoryReports,
+      eq(advisoryReportTargetRegulations.reportId, advisoryReports.id)
+    )
+    .where(inArray(advisoryReportTargetRegulations.regulationId, normalizedIds))
+    .orderBy(desc(advisoryReports.generatedDate));
+
+  const deduped = Array.from(
+    new Map(joined.map((row: any) => [row.report.id, row.report])).values()
+  );
+  if (deduped.length > 0) return deduped;
+
+  // Legacy fallback while historical rows are being rehydrated into join tables.
+  return await db
     .select()
     .from(advisoryReports)
     .where(
-      sql`JSON_CONTAINS(${advisoryReports.targetRegulationIds}, ${JSON.stringify(regulationIds)})`
+      buildJsonArrayContainsCondition(advisoryReports.targetRegulationIds, normalizedIds)
     )
     .orderBy(desc(advisoryReports.generatedDate));
-  
-  return results;
 }
 
 /**
@@ -223,16 +414,34 @@ export async function getReportsByRegulationIds(regulationIds: number[]) {
 export async function getReportsByStandardIds(standardIds: number[]) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports, advisoryReportTargetStandards } = getAdvisoryTables();
   
   if (standardIds.length === 0) return [];
-  
-  const results = await db
+
+  const normalizedIds = normalizeIdArray(standardIds) ?? [];
+  if (normalizedIds.length === 0) return [];
+
+  const joined = await db
+    .select({ report: advisoryReports })
+    .from(advisoryReportTargetStandards)
+    .innerJoin(
+      advisoryReports,
+      eq(advisoryReportTargetStandards.reportId, advisoryReports.id)
+    )
+    .where(inArray(advisoryReportTargetStandards.standardId, normalizedIds))
+    .orderBy(desc(advisoryReports.generatedDate));
+
+  const deduped = Array.from(
+    new Map(joined.map((row: any) => [row.report.id, row.report])).values()
+  );
+  if (deduped.length > 0) return deduped;
+
+  // Legacy fallback while historical rows are being rehydrated into join tables.
+  return await db
     .select()
     .from(advisoryReports)
     .where(
-      sql`JSON_CONTAINS(${advisoryReports.targetStandardIds}, ${JSON.stringify(standardIds)})`
+      buildJsonArrayContainsCondition(advisoryReports.targetStandardIds, normalizedIds)
     )
     .orderBy(desc(advisoryReports.generatedDate));
-  
-  return results;
 }

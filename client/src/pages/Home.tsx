@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Search,
   MessageSquare,
-  BarChart3,
   FileText,
   Building2,
   Truck,

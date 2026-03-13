@@ -1,4 +1,8 @@
 import { serverLogger } from "./_core/logger-wiring";
+import {
+  browserLaunchArgs,
+  isBrowserAutomationAllowed,
+} from "./security/browser-automation-policy";
 
 /**
  * EFRAG News Playwright Scraper
@@ -20,9 +24,7 @@ async function getPlaywright() {
   try {
     return await import("playwright");
   } catch (error) {
-    console.log(
-      "[EFRAG Scraper] Playwright not available - install with: pnpm add -D playwright && npx playwright install chromium"
-    );
+    serverLogger.info("[EFRAG Scraper] Playwright not available - scraping disabled");
     return null;
   }
 }
@@ -31,27 +33,31 @@ async function getPlaywright() {
  * Scrape EFRAG sustainability reporting news
  */
 export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
+  if (!isBrowserAutomationAllowed("efrag-playwright")) {
+    return [];
+  }
+
   // Check if Playwright is available
   const playwright = await getPlaywright();
   if (!playwright) {
-    console.log("[EFRAG Scraper] Skipping - Playwright not installed");
+    serverLogger.info("[EFRAG Scraper] Skipping - Playwright not installed");
     return [];
   }
 
   let browser: any = null;
 
   try {
-    console.log("[EFRAG Scraper] Launching browser...");
+    serverLogger.info("[EFRAG Scraper] Launching browser...");
     browser = await playwright.chromium.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: browserLaunchArgs(),
     });
 
     const context = await browser.newContext();
     const page = await context.newPage();
 
     // Navigate to EFRAG sustainability reporting news
-    console.log("[EFRAG Scraper] Navigating to EFRAG news page...");
+    serverLogger.info("[EFRAG Scraper] Navigating to EFRAG news page...");
     await page.goto("https://www.efrag.org/en/sustainability-reporting/news", {
       waitUntil: "networkidle",
       timeout: 30000,
@@ -98,7 +104,7 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
       return results;
     });
 
-    console.log(`[EFRAG Scraper] Found ${articles.length} raw articles`);
+    serverLogger.info(`[EFRAG Scraper] Found ${articles.length} raw articles`);
 
     // Process and deduplicate
     const seen = new Set<string>();
@@ -140,9 +146,7 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
 
     await browser.close();
 
-    console.log(
-      `[EFRAG Scraper] Returning ${processed.length} unique articles`
-    );
+    serverLogger.info(`[EFRAG Scraper] Returning ${processed.length} unique articles`);
     return processed.slice(0, 20); // Return top 20 most recent
   } catch (error) {
     serverLogger.error("[EFRAG Scraper] Error:", error);
@@ -159,12 +163,14 @@ export async function scrapeEFRAGNewsPlaywright(): Promise<ScrapedArticle[]> {
 export async function scrapeEFRAGArticleDetail(
   url: string
 ): Promise<string | null> {
+  if (!isBrowserAutomationAllowed("efrag-playwright-detail")) {
+    return null;
+  }
+
   // Check if Playwright is available
   const playwright = await getPlaywright();
   if (!playwright) {
-    console.log(
-      "[EFRAG Scraper] Skipping detail scrape - Playwright not installed"
-    );
+    serverLogger.info("[EFRAG Scraper] Skipping detail scrape - Playwright not installed");
     return null;
   }
 
@@ -173,7 +179,7 @@ export async function scrapeEFRAGArticleDetail(
   try {
     browser = await playwright.chromium.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: browserLaunchArgs(),
     });
 
     const context = await browser.newContext();
@@ -208,16 +214,14 @@ export async function scrapeEFRAGArticleDetail(
 
 // CLI test execution
 if (import.meta.url === `file://${process.argv[1]}`) {
-  console.log("Testing EFRAG scraper...");
+  process.stdout.write("Testing EFRAG scraper...\n");
   scrapeEFRAGNewsPlaywright()
     .then(articles => {
-      console.log(`\n✅ Scraped ${articles.length} articles:`);
+      process.stdout.write(`\n✅ Scraped ${articles.length} articles:\n`);
       articles.forEach((article, i) => {
-        console.log(`\n${i + 1}. ${article.title}`);
-        console.log(`   URL: ${article.url}`);
-        console.log(
-          `   Date: ${article.publishedAt.toISOString().split("T")[0]}`
-        );
+        process.stdout.write(`\n${i + 1}. ${article.title}\n`);
+        process.stdout.write(`   URL: ${article.url}\n`);
+        process.stdout.write(`   Date: ${article.publishedAt.toISOString().split("T")[0]}\n`);
       });
     })
     .catch(error => {

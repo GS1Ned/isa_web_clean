@@ -1,11 +1,15 @@
 import { getDb } from "../server/db";
 import { sql } from "drizzle-orm";
+import { format as utilFormat } from "node:util";
+const cliOut = (...args) => process.stdout.write(`${utilFormat(...args)}\n`);
+const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
+
 
 async function createTables() {
   try {
     const db = await getDb();
     if (!db) {
-      console.error("❌ Database not available");
+      cliErr("❌ Database not available");
       process.exit(1);
     }
     
@@ -32,7 +36,7 @@ async function createTables() {
         INDEX idx_raw_esrs_sheet (sheet_name)
       )
     `);
-    console.log("✅ Created raw_esrs_datapoints table");
+    cliOut("✅ Created raw_esrs_datapoints table");
     
     // Create esrs_datapoints table
     await db.execute(sql`
@@ -54,12 +58,12 @@ async function createTables() {
         INDEX idx_esrs_standard (esrs_standard)
       )
     `);
-    console.log("✅ Created esrs_datapoints table");
+    cliOut("✅ Created esrs_datapoints table");
     
-    console.log("✅ All ESRS tables created successfully");
+    cliOut("✅ All ESRS tables created successfully");
     process.exit(0);
   } catch (error) {
-    console.error("❌ Error creating tables:", error);
+    cliErr("❌ Error creating tables:", error);
     process.exit(1);
   }
 }

@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://isa.gs1nl.org/schemas/rag-eval.schema.json",
+  "title": "ISA RAG Evaluation",
+  "description": "Schema for RAG quality evaluation artifacts",
+  "type": "object",
+  "required": ["timestamp", "query_count", "metrics", "thresholds", "pass"],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "query_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["groundedness", "citation_precision", "citation_recall", "answer_consistency", "avg_cost_per_query", "p95_latency_ms"],
+      "properties": {
+        "groundedness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Fraction of answers grounded in source documents"
+        },
+        "citation_precision": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Precision of citation references"
+        },
+        "citation_recall": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Recall of citation references"
+        },
+        "answer_consistency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Consistency across repeated queries"
+        },
+        "avg_cost_per_query": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Average cost in USD per query"
+        },
+        "p95_latency_ms": {
+          "type": "number",
+          "minimum": 0,
+          "description": "95th percentile latency in milliseconds"
+        }
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "required": ["groundedness_min", "citation_precision_min", "citation_recall_min", "answer_consistency_min", "cost_per_query_max", "p95_latency_ms_max"],
+      "properties": {
+        "groundedness_min": {"type": "number", "minimum": 0, "maximum": 1},
+        "citation_precision_min": {"type": "number", "minimum": 0, "maximum": 1},
+        "citation_recall_min": {"type": "number", "minimum": 0, "maximum": 1},
+        "answer_consistency_min": {"type": "number", "minimum": 0, "maximum": 1},
+        "cost_per_query_max": {"type": "number", "minimum": 0},
+        "p95_latency_ms_max": {"type": "number", "minimum": 0}
+      }
+    },
+    "pass": {
+      "type": "boolean",
+      "description": "Whether all thresholds are met"
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["metric", "actual", "threshold"],
+        "properties": {
+          "metric": {"type": "string"},
+          "actual": {"type": "number"},
+          "threshold": {"type": "number"}
+        }
+      }
+    }
+  }
+}

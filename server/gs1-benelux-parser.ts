@@ -12,10 +12,10 @@
  * - Sheet 5: Change Log
  */
 
-import XLSX from "xlsx";
 import { getDb } from "./db";
 import { gs1Attributes, gs1AttributeCodeLists } from "../drizzle/schema";
 import { serverLogger } from "./_core/logger-wiring";
+import { getExcelWorksheetRows, readExcelWorkbook } from "./_core/excel";
 
 
 interface ParsedAttribute {
@@ -45,26 +45,18 @@ export async function parseAttributesSheet(
   filePath: string,
   sector: "food_hb" | "diy_garden_pet" | "healthcare" | "agriculture"
 ): Promise<ParsedAttribute[]> {
-  const workbook = XLSX.readFile(filePath);
-  const attributesSheet = workbook.Sheets["Attributes"];
+  const workbook = await readExcelWorkbook(filePath);
+  const data = getExcelWorksheetRows(workbook, "Attributes", "") as any[][];
 
-  if (!attributesSheet) {
+  if (data.length === 0) {
     throw new Error("Attributes sheet not found in Excel file");
   }
 
-  // Convert to JSON with header row
-  const data = XLSX.utils.sheet_to_json(attributesSheet, {
-    header: 1,
-    range: 0,
-    defval: "",
-  }) as any[][];
-
-  console.log(
+  serverLogger.info(
     `[GS1 Benelux Parser] Found ${data.length} rows in Attributes sheet`
   );
 
   // Find header row (row 1, index 1)
-  const _headerRow = data[1];
   const localNameIdx = 0;
   const gdsnNameIdx = 1;
   const bmsIdIdx = 2;
@@ -150,11 +142,11 @@ export async function parseAttributesSheet(
     });
   }
 
-  console.log(`[GS1 Benelux Parser] Parsed ${attributes.length} attributes`);
-  console.log(
+  serverLogger.info(`[GS1 Benelux Parser] Parsed ${attributes.length} attributes`);
+  serverLogger.info(
     `[GS1 Benelux Parser] Packaging-related: ${attributes.filter(a => a.packagingRelated).length}`
   );
-  console.log(
+  serverLogger.info(
     `[GS1 Benelux Parser] Sustainability-related: ${attributes.filter(a => a.sustainabilityRelated).length}`
   );
 
@@ -167,21 +159,15 @@ export async function parseAttributesSheet(
 export async function parseCodeListsSheet(
   filePath: string
 ): Promise<CodeListValue[]> {
-  const workbook = XLSX.readFile(filePath);
-  const codeListsSheet = workbook.Sheets["Code Lists"];
+  const workbook = await readExcelWorkbook(filePath);
+  const data = getExcelWorksheetRows(workbook, "Code Lists", "") as any[][];
 
-  if (!codeListsSheet) {
-    console.log("[GS1 Benelux Parser] Code Lists sheet not found, skipping");
+  if (data.length === 0) {
+    serverLogger.info("[GS1 Benelux Parser] Code Lists sheet not found, skipping");
     return [];
   }
 
-  const data = XLSX.utils.sheet_to_json(codeListsSheet, {
-    header: 1,
-    range: 0,
-    defval: "",
-  }) as any[][];
-
-  console.log(
+  serverLogger.info(
     `[GS1 Benelux Parser] Found ${data.length} rows in Code Lists sheet`
   );
 
@@ -202,7 +188,7 @@ export async function parseCodeListsSheet(
     });
   }
 
-  console.log(
+  serverLogger.info(
     `[GS1 Benelux Parser] Parsed ${codeListValues.length} code list values`
   );
 
@@ -244,7 +230,7 @@ export async function ingestCodeLists(
       success++;
 
       if (success % 500 === 0) {
-        console.log(
+        serverLogger.info(
           `[GS1 Benelux Parser] Ingested ${success} code list values...`
         );
       }
@@ -253,7 +239,7 @@ export async function ingestCodeLists(
     }
   }
 
-  console.log(
+  serverLogger.info(
     `[GS1 Benelux Parser] Code list ingestion complete: ${success} success, ${errors} errors`
   );
 
@@ -322,7 +308,7 @@ export async function ingestAttributes(
       success++;
 
       if (success % 50 === 0) {
-        console.log(`[GS1 Benelux Parser] Ingested ${success} attributes...`);
+        serverLogger.info(`[GS1 Benelux Parser] Ingested ${success} attributes...`);
       }
     } catch (error) {
       serverLogger.error(
@@ -333,7 +319,7 @@ export async function ingestAttributes(
     }
   }
 
-  console.log(
+  serverLogger.info(
     `[GS1 Benelux Parser] Ingestion complete: ${success} success, ${errors} errors`
   );
 
@@ -354,8 +340,8 @@ export async function ingestGS1BeneluxModel(
   filePath: string,
   sector: "food_hb" | "diy_garden_pet" | "healthcare" | "agriculture"
 ): Promise<void> {
-  console.log(`[GS1 Benelux Parser] Starting ingestion for sector: ${sector}`);
-  console.log(`[GS1 Benelux Parser] File: ${filePath}`);
+  serverLogger.info(`[GS1 Benelux Parser] Starting ingestion for sector: ${sector}`);
+  serverLogger.info(`[GS1 Benelux Parser] File: ${filePath}`);
 
   const startTime = Date.now();
 
@@ -377,14 +363,14 @@ export async function ingestGS1BeneluxModel(
 
     const duration = Math.round((Date.now() - startTime) / 1000);
 
-    console.log(`[GS1 Benelux Parser] Completed in ${duration}s`);
-    console.log(`[GS1 Benelux Parser] Summary:`);
-    console.log(`  - Attributes parsed: ${attributes.length}`);
-    console.log(`  - Attributes ingested: ${attrResult.success}`);
-    console.log(`  - Attribute errors: ${attrResult.errors}`);
-    console.log(`  - Code lists parsed: ${codeLists.length}`);
-    console.log(`  - Code lists ingested: ${codeListResult.success}`);
-    console.log(`  - Code list errors: ${codeListResult.errors}`);
+    serverLogger.info(`[GS1 Benelux Parser] Completed in ${duration}s`);
+    serverLogger.info(`[GS1 Benelux Parser] Summary:`);
+    serverLogger.info(`  - Attributes parsed: ${attributes.length}`);
+    serverLogger.info(`  - Attributes ingested: ${attrResult.success}`);
+    serverLogger.info(`  - Attribute errors: ${attrResult.errors}`);
+    serverLogger.info(`  - Code lists parsed: ${codeLists.length}`);
+    serverLogger.info(`  - Code lists ingested: ${codeListResult.success}`);
+    serverLogger.info(`  - Code list errors: ${codeListResult.errors}`);
   } catch (error) {
     serverLogger.error(`[GS1 Benelux Parser] Ingestion failed:`, error);
     throw error;
@@ -400,7 +386,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
   ingestGS1BeneluxModel(filePath, sector)
     .then(() => {
-      console.log("[GS1 Benelux Parser] Ingestion successful");
+      serverLogger.info("[GS1 Benelux Parser] Ingestion successful");
       process.exit(0);
     })
     .catch(error => {

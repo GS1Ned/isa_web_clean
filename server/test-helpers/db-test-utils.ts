@@ -21,6 +21,7 @@ import {
   type InsertUser,
 } from "../../drizzle/schema";
 import { beforeEach, afterEach } from "vitest";
+import { serverLogger } from '../utils/server-logger';
 
 // Type for database instance with transaction support
 export type TestDb = MySql2Database<Record<string, never>>;
@@ -28,6 +29,37 @@ export type TestDb = MySql2Database<Record<string, never>>;
 // Transaction context for test isolation
 let testConnection: mysql.Connection | null = null;
 let testDb: TestDb | null = null;
+
+type TestContextWithDb = {
+  db?: TestDb;
+};
+
+type InsertIdCarrier = {
+  insertId?: unknown;
+};
+
+function readInsertId(value: unknown): unknown {
+  if (typeof value !== "object" || value === null) {
+    return undefined;
+  }
+
+  if (!("insertId" in value)) {
+    return undefined;
+  }
+
+  return (value as InsertIdCarrier).insertId;
+}
+
+function extractInsertId(result: unknown, entityName: string): number {
+  const fromFirstItem = Array.isArray(result) ? readInsertId(result[0]) : undefined;
+  const insertId = fromFirstItem ?? readInsertId(result);
+
+  if (!insertId) {
+    throw new Error(`Failed to get insertId from ${entityName} insert`);
+  }
+
+  return Number(insertId);
+}
 
 /**
  * Setup database test isolation using transactions.
@@ -74,7 +106,8 @@ export function setupDbTestIsolation() {
     testDb = drizzle(testConnection);
 
     // Inject db into test context
-    (context as any).db = testDb;
+    const contextWithDb = context as unknown as TestContextWithDb;
+    contextWithDb.db = testDb;
   });
 
   afterEach(async () => {
@@ -84,7 +117,7 @@ export function setupDbTestIsolation() {
         await testConnection.rollback();
         await testConnection.end();
       } catch (error) {
-        console.error("[db-test-utils] Failed to rollback transaction:", error);
+        serverLogger.error("[db-test-utils] Failed to rollback transaction:", error);
       } finally {
         testConnection = null;
         testDb = null;
@@ -128,7 +161,7 @@ export async function createTestDb(): Promise<TestDb> {
  * 
  * @param db - The database instance to cleanup
  */
-export async function cleanupTestDb(db: TestDb): Promise<void> {
+export async function cleanupTestDb(_db: TestDb): Promise<void> {
   // When using transaction-based isolation, cleanup is handled by afterEach
   // This function is a no-op but kept for API compatibility
   return Promise.resolve();
@@ -170,17 +203,11 @@ export async function seedTestUser(
   };
 
   const result = await db.insert(users).values(userData);
-  
-  // Handle Drizzle mysql2 insertId correctly
-  const insertId = (result as any)[0]?.insertId ?? (result as any).insertId;
-  
-  if (!insertId) {
-    throw new Error("Failed to get insertId from user insert");
-  }
+  const insertId = extractInsertId(result, "user");
 
   return {
     ...userData,
-    id: Number(insertId),
+    id: insertId,
   };
 }
 
@@ -237,17 +264,11 @@ export async function seedTestNewsItem(
   };
 
   const result = await db.insert(hubNews).values(newsData);
-  
-  // Handle Drizzle mysql2 insertId correctly
-  const insertId = (result as any)[0]?.insertId ?? (result as any).insertId;
-  
-  if (!insertId) {
-    throw new Error("Failed to get insertId from hubNews insert");
-  }
+  const insertId = extractInsertId(result, "hubNews");
 
   return {
     ...newsData,
-    id: Number(insertId),
+    id: insertId,
   };
 }
 
@@ -291,17 +312,11 @@ export async function seedTestEsrsDatapoint(
   };
 
   const result = await db.insert(esrsDatapoints).values(datapointData);
-  
-  // Handle Drizzle mysql2 insertId correctly
-  const insertId = (result as any)[0]?.insertId ?? (result as any).insertId;
-  
-  if (!insertId) {
-    throw new Error("Failed to get insertId from esrsDatapoints insert");
-  }
+  const insertId = extractInsertId(result, "esrsDatapoints");
 
   return {
     ...datapointData,
-    id: Number(insertId),
+    id: insertId,
   };
 }
 
@@ -347,16 +362,10 @@ export async function seedTestGs1Attribute(
   };
 
   const result = await db.insert(gs1Attributes).values(attributeData);
-  
-  // Handle Drizzle mysql2 insertId correctly
-  const insertId = (result as any)[0]?.insertId ?? (result as any).insertId;
-  
-  if (!insertId) {
-    throw new Error("Failed to get insertId from gs1Attributes insert");
-  }
+  const insertId = extractInsertId(result, "gs1Attributes");
 
   return {
     ...attributeData,
-    id: Number(insertId),
+    id: insertId,
   };
 }

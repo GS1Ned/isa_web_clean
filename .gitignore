@@ -5,17 +5,29 @@
 # Build outputs
 dist/
 build/
+.next/
+out/
+coverage/
+.cache/
+logs/
+node_modules/
 *.dist
 
 # Environment variables
 .env
+.env.bak.*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+# MCP configuration (contains database credentials)
+.mcp/
+
 # IDE and editor files
-.vscode/
+.vscode/*
+!.vscode/mcp.json
+!.vscode/tasks.json
 .idea/
 *.swp
 *.swo
@@ -116,9 +128,67 @@ data/gs1_ref_corpus/xlsx
 !data/gs1_ref_corpus/**/.gitkeep
 
 # External archives
+__MACOSX/
 __MACOSX
 data/external/
 data/external/Archive_2.zip
 
 # Manus cache files
 .manus/db/*.json
+isa.inventory.json
+docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.md
+docs/evidence/_generated/LOCAL_REPO_DEEP_SCAN.json
+data.zip
+EU_ESG_to_GS1_Mapping_v1.1.zip
+
+__pycache__/
+*.pyc
+
+# ISA catalogue snapshots (auto-generated)
+docs/evidence/_generated/isa_catalogue_runs/
+
+# Local analysis bundles / trees
+repo_tree_*.txt
+isa_context_bundle_*/
+.isa_rca_bundle/
+patterns.txt
+
+# Generated evidence bundles
+docs/evidence/_generated/
+
+# Generated reports
+reports/
+test-results/unit.json
+.coverage
+
+# Local OpenClaw runtime artifacts (host-only; not canonical repo truth)
+.openclaw/backups/
+.openclaw/kernel/
+.openclaw/launcher/
+.openclaw/environment_snapshot.json
+.openclaw/integrity_manifest.json
+.openclaw/metadata.json
+.openclaw/cost_optimization_verification.json
+.openclaw/isa_cost_optimizer_coverage.json
+
+# Local helper script copies
+isa_rca_bundle.sh
+
+_context_bundles/
+
+# Generated outputs (local/CI)
+docs/reports/
+docs/evidence/generated/_generated/
+context_bundles/
+*.tar.gz
+*.tar
+*.zip
+*.dmp
+*.dump
+docs/evidence/generated/_generated/isa_catalogue_runs/
+docs/evidence/generated/_generated/isa_catalogue_latest/
+docs/evidence/_generated/isa_catalogue_latest/
+docs/gs1_research_package.zip
+artifacts/archives/Archive.zip
+test-results/
+test-results/ci/

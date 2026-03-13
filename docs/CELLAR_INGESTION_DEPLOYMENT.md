@@ -33,7 +33,7 @@ The CELLAR Ingestion Scheduler is an automated system that synchronizes the ISA 
          ▼
 ┌─────────────────┐
 │  ISA Database   │
-│   (MySQL/TiDB)  │
+│ (MySQL-compatible) │
 └─────────────────┘
 ```
 
@@ -74,7 +74,7 @@ The CELLAR Ingestion Scheduler is an automated system that synchronizes the ISA 
 node --version  # Should be v22.13.0 or higher
 
 # Ensure database connection is configured
-echo $DATABASE_URL  # Should output your MySQL/TiDB connection string
+echo $DATABASE_URL  # Should output your MySQL-compatible database connection string
 ```
 
 ### Build TypeScript Files
