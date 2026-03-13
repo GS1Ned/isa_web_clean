@@ -4,7 +4,7 @@
     "generated_by": "codex-5.3",
     "repo_ref": {
       "branch": "main",
-      "commit": "70acb22c7975ab851b27cf2912c6dbb2f287167e"
+      "commit": "fc7e38d03956d4a1892c1060984793cbd0456dd9"
     }
   },
   "status": "AUTHORITATIVE_CONTRACT",
@@ -1831,6 +1831,7 @@
       "epcis_event_templates",
       "epcis_events",
       "error_log",
+      "error_ledger",
       "esg_atomic_requirements",
       "esg_corpus",
       "esg_data_categories",
