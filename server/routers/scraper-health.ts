@@ -6,7 +6,7 @@
 import { z } from "zod";
 import { publicProcedure, adminProcedure, router } from "../_core/trpc";
 import { getDb } from "../db";
-import { scraperExecutions, scraperHealthSummary } from "../../drizzle/schema";
+import { scraperExecutions, scraperHealthSummary } from "../../drizzle_pg/schema";
 import { eq, desc, gte } from "drizzle-orm";
 
 export const scraperHealthRouter = router({

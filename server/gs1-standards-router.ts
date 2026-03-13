@@ -11,7 +11,7 @@ import {
   gs1Standards,
   regulationStandardMappings,
   regulations,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import { eq, like, or } from "drizzle-orm";
 import {
   mapRegulationToStandards,

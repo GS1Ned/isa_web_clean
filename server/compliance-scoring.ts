@@ -8,7 +8,7 @@ import {
   complianceEvidence,
   regulations,
   regulationEsrsMappings,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 
 /**

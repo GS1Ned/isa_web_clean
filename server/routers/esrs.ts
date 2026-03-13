@@ -23,7 +23,7 @@ export const esrsRouter = router({
       const db = await getDb();
       if (!db) return { datapoints: [], total: 0, page: 1, pageSize: 50 };
 
-      const { esrsDatapoints } = await import("../../drizzle/schema");
+      const { esrsDatapoints } = await import("../../drizzle_pg/schema");
       const { like, and, eq, sql } = await import("drizzle-orm");
 
       const page = input?.page || 1;
@@ -82,7 +82,7 @@ export const esrsRouter = router({
     const db = await getDb();
     if (!db) return [];
 
-    const { esrsDatapoints } = await import("../../drizzle/schema");
+    const { esrsDatapoints } = await import("../../drizzle_pg/schema");
 
     const standards = await db
       .select({ standard: esrsDatapoints.esrsStandard })
@@ -100,7 +100,7 @@ export const esrsRouter = router({
     const db = await getDb();
     if (!db) return { total: 0, byStandard: {}, byDataType: {} };
 
-    const { esrsDatapoints } = await import("../../drizzle/schema");
+    const { esrsDatapoints } = await import("../../drizzle_pg/schema");
     const { sql } = await import("drizzle-orm");
 
     // Total count

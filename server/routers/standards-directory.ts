@@ -17,7 +17,7 @@ import {
   gs1Attributes,
   gs1WebVocabulary,
   esrsDatapoints,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 import { withVerificationPosture } from "../verification-posture";
 

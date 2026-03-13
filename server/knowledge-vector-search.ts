@@ -105,7 +105,7 @@ export async function searchKnowledgeEmbeddings(
     serverLogger.info(`[KnowledgeSearch] Query embedding generated in ${Date.now() - startTime}ms`);
 
     // Step 2: Fetch embeddings from knowledge_embeddings table
-    const { knowledgeEmbeddings } = await import("../drizzle/schema");
+    const { knowledgeEmbeddings } = await import("../drizzle_pg/schema");
     
     // Build query with optional filters
     let dbQuery = db
@@ -215,7 +215,7 @@ export async function getRelatedContent(
 
   try {
     const { knowledgeEmbeddings, regulationEsrsMappings, gs1EsrsMappings } = 
-      await import("../drizzle/schema");
+      await import("../drizzle_pg/schema");
 
     let relatedIds: number[] = [];
 
@@ -342,7 +342,7 @@ export async function getKnowledgeStats(): Promise<Record<string, number>> {
   if (!db) return {};
 
   try {
-    const { knowledgeEmbeddings } = await import("../drizzle/schema");
+    const { knowledgeEmbeddings } = await import("../drizzle_pg/schema");
 
     const stats = await db
       .select({

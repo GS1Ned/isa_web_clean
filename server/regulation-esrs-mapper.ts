@@ -40,7 +40,7 @@ export async function generateRegulationEsrsMappings(
     }
 
     // 1. Fetch regulation details
-    const { regulations } = await import("../drizzle/schema");
+    const { regulations } = await import("../drizzle_pg/schema");
     const { eq } = await import("drizzle-orm");
 
     const regulationResults = await db
@@ -60,7 +60,7 @@ export async function generateRegulationEsrsMappings(
     const regulation = regulationResults[0];
 
     // 2. Fetch all ESRS datapoints for context
-    const { esrsDatapoints } = await import("../drizzle/schema");
+    const { esrsDatapoints } = await import("../drizzle_pg/schema");
     const allDatapoints = await db.select().from(esrsDatapoints);
 
     if (allDatapoints.length === 0) {

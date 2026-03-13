@@ -1,7 +1,7 @@
 import { router, protectedProcedure } from "../_core/trpc";
 import { z } from "zod";
 import { getDb } from "../db";
-import { notificationPreferences } from "../../drizzle/schema";
+import { notificationPreferences } from "../../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 
 export const notificationPreferencesRouter = router({

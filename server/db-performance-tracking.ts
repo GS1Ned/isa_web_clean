@@ -1,5 +1,5 @@
 import { getDb } from "./db";
-import { performanceLog } from "../drizzle/schema";
+import { performanceLog } from "../drizzle_pg/schema";
 import { and, gte, eq, sql } from "drizzle-orm";
 
 type PerformanceLog = typeof performanceLog.$inferSelect;

@@ -13,7 +13,7 @@ import {
   gs1Standards,
   esrsDatapoints,
   newsRecommendations,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import { sql, or, like } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 

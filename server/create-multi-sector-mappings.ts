@@ -10,7 +10,7 @@ import {
   gs1Attributes,
   regulations,
   attributeRegulationMappings,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 

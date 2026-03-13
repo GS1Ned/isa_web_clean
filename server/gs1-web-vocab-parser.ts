@@ -13,7 +13,7 @@
 
 import * as fs from "fs";
 import { getDb } from "./db";
-import { gs1WebVocabulary } from "../drizzle/schema";
+import { gs1WebVocabulary } from "../drizzle_pg/schema";
 import { serverLogger } from "./_core/logger-wiring";
 
 

@@ -6,7 +6,7 @@
  */
 
 import { getDb } from "./db";
-import { esrsDatapoints } from "../drizzle/schema";
+import { esrsDatapoints } from "../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 import { getExcelSheetNames, getExcelWorksheetRows, readExcelWorkbook } from "./_core/excel";

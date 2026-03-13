@@ -1,5 +1,5 @@
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
-import type { User } from "../../drizzle/schema";
+import type { User } from "../../drizzle_pg/schema";
 import { sdk } from "./sdk";
 import crypto from "node:crypto";
 import { getRequestTraceId } from "./request-context";

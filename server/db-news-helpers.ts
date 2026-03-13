@@ -3,7 +3,7 @@
  */
 
 import { eq } from "drizzle-orm";
-import { hubNews } from "../drizzle/schema";
+import { hubNews } from "../drizzle_pg/schema";
 import { getDb } from "./db";
 import { serverLogger } from "./_core/logger-wiring";
 

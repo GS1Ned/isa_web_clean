@@ -118,7 +118,7 @@ export const citationAdminRouter = router({
       }
 
       try {
-        const { knowledgeEmbeddings } = await import("../../drizzle/schema");
+        const { knowledgeEmbeddings } = await import("../../drizzle_pg/schema");
 
         await db
           .update(knowledgeEmbeddings)
@@ -165,7 +165,7 @@ export const citationAdminRouter = router({
       if (!db) return [];
 
       try {
-        const { knowledgeEmbeddings } = await import("../../drizzle/schema");
+        const { knowledgeEmbeddings } = await import("../../drizzle_pg/schema");
 
         const chunks = await db
           .select({
@@ -227,7 +227,7 @@ export const citationAdminRouter = router({
     }
 
     try {
-      const { knowledgeEmbeddings } = await import("../../drizzle/schema");
+      const { knowledgeEmbeddings } = await import("../../drizzle_pg/schema");
 
       const chunks = await db
         .select({

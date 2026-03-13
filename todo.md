@@ -10,3 +10,25 @@
 - [x] Approve and merge PR #325 to main
 - [ ] Verify production deployment succeeds after merge
 - [ ] Clean up expired/invalid GitHub tokens
+- [x] Audit .codex/ directory configuration for isa_web_clean setup
+- [x] Audit database configuration, Supabase status, and rehydration requirements
+- [x] Create concrete cutover action plan for MySQL → Supabase Postgres migration
+- [x] Improve cutover plan v2 based on Codex rehydration brief analysis
+- [x] Set DATABASE_URL_POSTGRES secret for new ISA_MAART_2026 Supabase project
+- [x] Verify Supabase Postgres connectivity
+- [x] Apply prepare: false fix to db-connection-pg.ts for transaction-mode pooler compatibility
+- [x] Phase 1: Assess current state - scripts, data assets, runnable pipelines
+- [x] Phase 2: Create Postgres schema via drizzle-kit push (structural rehydration)
+- [x] Phase 3: Seed foundation data (regulations, GS1 standards, ESRS datapoints)
+- [x] Phase 4: Port critical MySQL-dialect code for Postgres compatibility
+- [x] Phase 5: Run ingestion pipelines (news hub seeded with 10 EU ESG articles)
+- [x] Phase 6: Set DB_ENGINE=postgres, all 10 vitest tests pass, health endpoint OK
+- [x] Phase 6b: Fix alert-detection.ts and alert-notification-service.ts for engine-aware schema loading
+- [x] Phase 6c: Create all 121 Postgres tables (monitoring, extended, raw, ESG, roadmap, etc.)
+- [x] Phase 6d: Generate and append 76 Postgres schema stubs to drizzle_pg/schema.ts
+- [x] Phase 6e: Fix all 57 server files to import from drizzle_pg/schema instead of drizzle/schema
+- [x] Phase 6f: Add missing type exports to drizzle_pg/schema.ts
+- [x] Phase 6g: Fix hubNews PG schema to include all MySQL-compatible camelCase columns
+- [x] Phase 6h: Verify all critical API endpoints (regulations, standards, ESRS, hub news, standards directory, ask ISA v2)
+- [x] Phase 6i: Run full vitest suite (921 passed, 2 failed pre-existing, 11 skipped)
+- [x] Phase 7: Save checkpoint and deliver publishable ISA

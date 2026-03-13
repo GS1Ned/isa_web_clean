@@ -6,7 +6,7 @@
 
 import { z } from "zod";
 import { getDb } from "./db";
-import { webhookConfiguration } from "../drizzle/schema";
+import { webhookConfiguration } from "../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 import { sendSlackAlert, sendTeamsAlert, getDeliveryHistory, getDeliveryStats, AlertPayload } from "./webhook-notification-service";
 

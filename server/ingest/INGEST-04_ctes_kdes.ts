@@ -15,7 +15,7 @@ import {
   kdes,
   cteKdeMappings,
   rawCtesKdes,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 
 export interface IngestOptions {
   dryRun?: boolean;

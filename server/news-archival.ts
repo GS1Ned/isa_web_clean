@@ -4,7 +4,7 @@
  */
 
 import { getDb } from "./db";
-import { hubNews, hubNewsHistory } from "../drizzle/schema";
+import { hubNews, hubNewsHistory } from "../drizzle_pg/schema";
 import { lt, sql } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 

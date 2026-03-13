@@ -14,7 +14,7 @@ import {
   gs1WebVocabulary,
   attributeRegulationMappings,
   regulations,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 import { eq, and, desc } from "drizzle-orm";
 
 export const gs1AttributesRouter = router({

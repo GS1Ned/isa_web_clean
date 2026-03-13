@@ -6,7 +6,7 @@
  */
 
 import { getDb } from "./db";
-import { regulations, gs1Standards, regulationStandardMappings, esrsDatapoints } from "../drizzle/schema";
+import { regulations, gs1Standards, regulationStandardMappings, esrsDatapoints } from "../drizzle_pg/schema";
 import { sql, count, isNull, or, eq } from "drizzle-orm";
 
 /**

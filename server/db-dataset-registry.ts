@@ -1,5 +1,5 @@
 import { getDb } from "./db";
-import { datasetRegistry } from "../drizzle/schema";
+import { datasetRegistry } from "../drizzle_pg/schema";
 import { eq, and, desc, sql, isNotNull } from "drizzle-orm";
 import { deriveCatalogAuthorityTierFromUrl } from "./catalog-authority";
 import { KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS } from "./knowledge-provenance";

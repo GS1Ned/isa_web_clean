@@ -3,9 +3,9 @@
  */
 
 import { getDb } from "./db";
-import { hubNews } from "../drizzle/schema";
+import { hubNews } from "../drizzle_pg/schema";
 import { inArray } from "drizzle-orm";
-import type { HubNews } from "../drizzle/schema";
+import type { HubNews } from "../drizzle_pg/schema";
 
 /**
  * Get high-impact news items (HIGH or CRITICAL impact level)

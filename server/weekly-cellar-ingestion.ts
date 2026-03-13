@@ -17,7 +17,7 @@
 import { CellarConnector } from "./cellar-connector";
 import { normalizeEULegalAct } from "./cellar-normalizer";
 import { getDb } from "./db";
-import { regulations } from "../drizzle/schema";
+import { regulations } from "../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 import { generateEmbedding } from "./_core/embedding";

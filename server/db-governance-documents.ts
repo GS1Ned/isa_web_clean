@@ -1,7 +1,7 @@
 import { getDb } from "./db";
 import {
   governanceDocuments,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import { eq, and, desc, sql, like, or, InferSelectModel } from "drizzle-orm";
 import { KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS } from "./knowledge-provenance";
 import {

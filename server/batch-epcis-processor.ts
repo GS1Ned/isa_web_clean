@@ -6,7 +6,7 @@ import {
   supplyChainEdges,
   supplyChainRisks,
   supplyChainAnalytics,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import { eq, and } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 

@@ -28,7 +28,7 @@ import {
   dppIdentifierComponents,
   ctes,
   kdes,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import { generateEmbedding, prepareTextForEmbedding } from "./_core/embedding";
 import { eq, and, sql, isNull, or } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";

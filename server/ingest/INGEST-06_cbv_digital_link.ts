@@ -14,7 +14,7 @@ import {
   rawCbvVocabularies,
   digitalLinkTypes,
   rawDigitalLinkTypes,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 
 export interface IngestOptions {
   dryRun?: boolean;

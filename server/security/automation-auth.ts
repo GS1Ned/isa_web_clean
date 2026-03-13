@@ -5,7 +5,7 @@ import { getDb } from "../db";
 import {
   automationRequestLedger,
   policyActionAudit,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 import { serverLogger } from "../_core/logger-wiring";
 
 const INSECURE_SECRET_DEFAULTS = new Set([

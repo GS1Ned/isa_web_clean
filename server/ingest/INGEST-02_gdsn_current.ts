@@ -16,7 +16,7 @@ import {
   rawGdsnClassAttributes,
   gdsnValidationRules,
   rawGdsnValidationRules,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 
 export interface IngestOptions {
   dryRun?: boolean;

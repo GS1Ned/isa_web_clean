@@ -1,5 +1,5 @@
 import { getDb } from "./db";
-import { regulations } from "../drizzle/schema";
+import { regulations } from "../drizzle_pg/schema";
 import { sql } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 

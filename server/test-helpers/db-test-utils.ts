@@ -19,7 +19,7 @@ import {
   esrsDatapoints,
   gs1Attributes,
   type InsertUser,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 import { beforeEach, afterEach } from "vitest";
 import { serverLogger } from '../utils/server-logger';
 

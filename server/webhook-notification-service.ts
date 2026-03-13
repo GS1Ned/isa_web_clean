@@ -7,7 +7,7 @@
 
 import { eq, desc } from "drizzle-orm";
 import { getDb } from "./db";
-import { webhookDeliveryHistory, webhookConfiguration } from "../drizzle/schema";
+import { webhookDeliveryHistory, webhookConfiguration } from "../drizzle_pg/schema";
 
 // Webhook delivery result
 export interface WebhookDeliveryResult {

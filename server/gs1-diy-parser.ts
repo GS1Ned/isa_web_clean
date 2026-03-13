@@ -11,7 +11,7 @@
  */
 
 import { getDb } from "./db";
-import { gs1Attributes, gs1AttributeCodeLists } from "../drizzle/schema";
+import { gs1Attributes, gs1AttributeCodeLists } from "../drizzle_pg/schema";
 import { serverLogger } from "./_core/logger-wiring";
 import { getExcelWorksheetRows, readExcelWorkbook } from "./_core/excel";
 

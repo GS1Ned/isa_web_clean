@@ -1,7 +1,7 @@
 import { notifyOwner } from "./_core/notification";
 import { getDb } from "./db";
 import { eq, and, lt } from "drizzle-orm";
-import { userAlerts, regulations, hubNews } from "../drizzle/schema";
+import { userAlerts, regulations, hubNews } from "../drizzle_pg/schema";
 import { serverLogger } from "./_core/logger-wiring";
 
 

@@ -5,7 +5,7 @@ import {
   supplyChainRisks,
   epcisEvents,
   supplyChainNodes,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 import { eq, and, desc, SQL } from "drizzle-orm";
 
 /**

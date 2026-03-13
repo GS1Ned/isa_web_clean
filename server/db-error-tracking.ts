@@ -1,5 +1,5 @@
 import { getDb } from "./db";
-import { errorLog } from "../drizzle/schema";
+import { errorLog } from "../drizzle_pg/schema";
 import { desc, and, gte, eq, sql } from "drizzle-orm";
 
 type ErrorLog = typeof errorLog.$inferSelect;

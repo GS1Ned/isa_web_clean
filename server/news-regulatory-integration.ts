@@ -10,7 +10,7 @@
  */
 
 import { createRegulatoryChangeLogEntry } from "./db-regulatory-change-log";
-import type { HubNews } from "../drizzle/schema";
+import type { HubNews } from "../drizzle_pg/schema";
 import { createHash } from "crypto";
 import { serverLogger } from "./_core/logger-wiring";
 

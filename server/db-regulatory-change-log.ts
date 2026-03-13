@@ -1,5 +1,5 @@
 import { getDb } from "./db";
-import { regulatoryChangeLog } from "../drizzle/schema";
+import { regulatoryChangeLog } from "../drizzle_pg/schema";
 
 type RegulatoryChangeLogEntry = typeof regulatoryChangeLog.$inferSelect;
 type InsertRegulatoryChangeLogEntry = typeof regulatoryChangeLog.$inferInsert;

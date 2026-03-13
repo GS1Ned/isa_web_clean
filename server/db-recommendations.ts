@@ -3,7 +3,7 @@
  */
 
 import { getDb } from "./db";
-import { newsRecommendations } from "../drizzle/schema";
+import { newsRecommendations } from "../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 

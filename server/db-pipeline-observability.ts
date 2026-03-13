@@ -5,7 +5,7 @@
  */
 
 import { getDb } from "./db";
-import { pipelineExecutionLog } from "../drizzle/schema";
+import { pipelineExecutionLog } from "../drizzle_pg/schema";
 import { desc, eq, and, gte, lte, sql } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 

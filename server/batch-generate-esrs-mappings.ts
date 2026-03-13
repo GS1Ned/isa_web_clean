@@ -18,7 +18,7 @@ async function batchGenerateEsrsMappings() {
   }
 
   // Fetch all regulations
-  const { regulations } = await import("../drizzle/schema");
+  const { regulations } = await import("../drizzle_pg/schema");
   const allRegulations = await db.select().from(regulations);
 
   serverLogger.info(`Found ${allRegulations.length} regulations\n`);

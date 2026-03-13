@@ -10,7 +10,7 @@ import {
   regulatoryEvents,
   userAlerts,
   userSavedItems,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 
 export const hubRouter = router({
   // Save a regulation for the user

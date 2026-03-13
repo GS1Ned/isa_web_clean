@@ -5,7 +5,7 @@
  */
 
 import { serverLoggerFactory } from "../utils/server-logger";
-import { getDb } from "../db";
+import { getDb, getDbEngine } from "../db";
 
 const silent =
   process.env.ISA_TEST_SILENT === "true" ||
@@ -46,11 +46,6 @@ async function createPersistFn() {
 
   return async (row: PersistRow) => {
     try {
-      const insertSql = `
-        INSERT INTO error_ledger
-          (trace_id, error_code, classification, commit_sha, branch, environment, affected_files, error_payload, failing_inputs, remediation_attempts, resolved)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
-      `;
       const params = [
         row.trace_id,
         row.error_code ?? null,
@@ -63,7 +58,23 @@ async function createPersistFn() {
         JSON.stringify(row.failing_inputs ?? null),
         JSON.stringify(row.remediation_attempts ?? []),
       ];
-      await (db as any).execute(insertSql, params);
+
+      if (getDbEngine() === "postgres") {
+        // Use drizzle's sql tagged template for Postgres parameterized inserts
+        const { sql } = await import("drizzle-orm");
+        await (db as any).execute(
+          sql`INSERT INTO error_ledger
+            (trace_id, error_code, classification, commit_sha, branch, environment, affected_files, error_payload, failing_inputs, remediation_attempts, resolved)
+          VALUES (${params[0]}, ${params[1]}, ${params[2]}, ${params[3]}, ${params[4]}, ${params[5]}, ${params[6]}, ${params[7]}, ${params[8]}, ${params[9]}, 0)`
+        );
+      } else {
+        const insertSql = `
+          INSERT INTO error_ledger
+            (trace_id, error_code, classification, commit_sha, branch, environment, affected_files, error_payload, failing_inputs, remediation_attempts, resolved)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+        `;
+        await (db as any).execute(insertSql, params);
+      }
     } catch (err) {
       // CRITICAL: Do NOT use serverLogger.error here - it creates infinite recursion
       // when persist fails, as serverLogger.error tries to persist again

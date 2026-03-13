@@ -4,7 +4,7 @@ import {
   advisoryReportVersions as mysqlAdvisoryReportVersions,
   advisoryReportTargetRegulations as mysqlAdvisoryReportTargetRegulations,
   advisoryReportTargetStandards as mysqlAdvisoryReportTargetStandards,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import {
   advisoryReports as pgAdvisoryReports,
   advisoryReportVersions as pgAdvisoryReportVersions,

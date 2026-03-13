@@ -10,7 +10,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getDb } from "./db";
-import { gs1Standards, type InsertGS1Standard } from "../drizzle/schema";
+import { gs1Standards, type InsertGS1Standard } from "../drizzle_pg/schema";
 import { serverLogger } from "./_core/logger-wiring";
 
 

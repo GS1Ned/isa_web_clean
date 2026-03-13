@@ -7,7 +7,7 @@ import {
   updateRoadmapStatus,
 } from "../roadmap-generator";
 import { getDb } from "../db";
-import { roadmapActions } from "../../drizzle/schema";
+import { roadmapActions } from "../../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 
 /**

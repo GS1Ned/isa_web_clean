@@ -21,7 +21,7 @@
  */
 
 import { getDb } from "./db";
-import { regulations, gs1Standards, knowledgeEmbeddings } from "../drizzle/schema";
+import { regulations, gs1Standards, knowledgeEmbeddings } from "../drizzle_pg/schema";
 import { generateEmbedding, prepareTextForEmbedding } from "./_core/embedding";
 import { eq, and } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";

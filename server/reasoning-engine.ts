@@ -80,7 +80,7 @@ export async function analyzeComplianceGaps(
 
   try {
     const { regulations, regulationEsrsMappings, esrsDatapoints, gs1EsrsMappings, gs1Standards } = 
-      await import("../drizzle/schema");
+      await import("../drizzle_pg/schema");
 
     // Get regulation details
     const [regulation] = await db
@@ -226,7 +226,7 @@ export async function analyzeStandardCoverage(
 
   try {
     const { gs1Standards, gs1EsrsMappings, esrsDatapoints, regulationEsrsMappings, regulations } = 
-      await import("../drizzle/schema");
+      await import("../drizzle_pg/schema");
 
     // Get standard details
     const [standard] = await db
@@ -325,7 +325,7 @@ export async function buildEvidenceChain(
   if (db) {
     try {
       const { regulations, gs1Standards, esrsDatapoints, knowledgeEmbeddings } = 
-        await import("../drizzle/schema");
+        await import("../drizzle_pg/schema");
 
       for (const source of relatedSourceIds) {
         let title = '';
@@ -483,7 +483,7 @@ export async function getReasoningStats(): Promise<{
   }
 
   try {
-    const { regulationEsrsMappings, gs1EsrsMappings } = await import("../drizzle/schema");
+    const { regulationEsrsMappings, gs1EsrsMappings } = await import("../drizzle_pg/schema");
 
     const [regMappingCount] = await db
       .select({ count: sql<number>`COUNT(*)` })

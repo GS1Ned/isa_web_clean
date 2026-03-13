@@ -7,7 +7,7 @@ import {
   riskRemediationPlans,
   complianceEvidence,
   regulations,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 
 /**

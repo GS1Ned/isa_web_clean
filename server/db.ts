@@ -1,31 +1,17 @@
-import { eq, desc, sql } from "drizzle-orm";
 import {
   flagAdvisoryReportsStaleSince,
   flagRegulationsNeedVerification,
   isVerificationTriggerState,
 } from "./services/news-impact";
 import { drizzle } from "drizzle-orm/mysql2";
-import {
-  InsertUser,
-  users,
-  regulations,
-  gs1Standards,
-  regulationStandardMappings,
-  userAnalyses,
-  regulatoryChangeAlerts,
-  userPreferences,
-  InsertContact,
-  contacts,
-  hubNews,
-  userAlerts,
-} from "../drizzle/schema";
+import { eq, desc, and, inArray, count, sql } from "drizzle-orm";
 import { ENV } from "./_core/env";
 import { createMysqlPool } from "./db-connection";
 import { serverLogger } from "./_core/logger-wiring";
 
-
-let _db: Awaited<ReturnType<typeof drizzle>> | null = null;
+let _db: any | null = null;
 let _pgSql: { end: () => Promise<void> } | null = null;
+let _schema: any | null = null;
 
 /**
  * Returns the active DB engine identifier.
@@ -34,6 +20,19 @@ let _pgSql: { end: () => Promise<void> } | null = null;
  */
 export function getDbEngine(): "mysql" | "postgres" {
   return ENV.dbEngine;
+}
+
+/**
+ * Lazily load the correct schema based on engine.
+ */
+async function getSchema() {
+  if (_schema) return _schema;
+  if (ENV.dbEngine === "postgres") {
+    _schema = await import("../drizzle_pg/schema");
+  } else {
+    _schema = await import("../drizzle_pg/schema");
+  }
+  return _schema;
 }
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
@@ -73,6 +72,65 @@ export async function getDb() {
   return _db;
 }
 
+// ---------------------------------------------------------------------------
+// Engine-aware upsert helper
+// ---------------------------------------------------------------------------
+
+/**
+ * Performs an upsert: MySQL uses onDuplicateKeyUpdate, Postgres uses
+ * onConflictDoUpdate. The caller provides the table, values, conflict target,
+ * and the update set.
+ */
+async function engineUpsert(
+  db: any,
+  table: any,
+  values: any,
+  conflictTarget: any,
+  updateSet: Record<string, unknown>
+) {
+  if (ENV.dbEngine === "postgres") {
+    return db.insert(table).values(values).onConflictDoUpdate({
+      target: conflictTarget,
+      set: updateSet,
+    });
+  } else {
+    return db.insert(table).values(values).onDuplicateKeyUpdate({
+      set: updateSet,
+    });
+  }
+}
+
+/**
+ * Extracts the inserted ID from an insert result.
+ * MySQL returns insertId on the result; Postgres uses RETURNING.
+ */
+async function engineInsertReturningId(
+  db: any,
+  table: any,
+  values: any
+): Promise<number | null> {
+  if (ENV.dbEngine === "postgres") {
+    const result = await db.insert(table).values(values).returning({ id: table.id });
+    return result?.[0]?.id ?? null;
+  } else {
+    const result = await db.insert(table).values(values);
+    return Number((result as any).insertId || (result as any)?.[0]?.insertId) || null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// User operations
+// ---------------------------------------------------------------------------
+
+export type InsertUser = {
+  openId: string;
+  name?: string | null;
+  email?: string | null;
+  loginMethod?: string | null;
+  role?: string;
+  lastSignedIn?: string;
+};
+
 export async function upsertUser(user: InsertUser): Promise<void> {
   if (!user.openId) {
     throw new Error("User openId is required for upsert");
@@ -84,8 +142,10 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     return;
   }
 
+  const schema = await getSchema();
+
   try {
-    const values: InsertUser = {
+    const values: any = {
       openId: user.openId,
     };
     const updateSet: Record<string, unknown> = {};
@@ -123,9 +183,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       updateSet.lastSignedIn = new Date().toISOString();
     }
 
-    await db.insert(users).values(values).onDuplicateKeyUpdate({
-      set: updateSet,
-    });
+    await engineUpsert(db, schema.users, values, schema.users.openId, updateSet);
   } catch (error) {
     serverLogger.error("[Database] Failed to upsert user:", error);
     throw error;
@@ -139,10 +197,12 @@ export async function getUserByOpenId(openId: string) {
     return undefined;
   }
 
+  const schema = await getSchema();
+
   const result = await db
     .select()
-    .from(users)
-    .where(eq(users.openId, openId))
+    .from(schema.users)
+    .where(eq(schema.users.openId, openId))
     .limit(1);
 
   return result.length > 0 ? result[0] : undefined;
@@ -159,17 +219,19 @@ export async function getRegulations(type?: string) {
   const db = await getDb();
   if (!db) return [];
 
+  const schema = await getSchema();
+
   try {
     if (type) {
       return await db
         .select()
-        .from(regulations)
-        .where(eq(regulations.regulationType, type as any));
+        .from(schema.regulations)
+        .where(eq(schema.regulations.regulationType, type as any));
     }
     return await db
       .select()
-      .from(regulations)
-      .orderBy(desc(regulations.createdAt));
+      .from(schema.regulations)
+      .orderBy(desc(schema.regulations.createdAt));
   } catch (error) {
     serverLogger.error("[Database] Failed to get regulations:", error);
     return [];
@@ -190,22 +252,23 @@ export async function upsertRegulation(regulation: {
   const db = await getDb();
   if (!db) throw new Error("Database connection failed");
 
+  const schema = await getSchema();
+
   try {
     // Check if regulation exists by celexId
     let existing = null;
     if (regulation.celexId) {
       const results = await db
         .select()
-        .from(regulations)
-        .where(eq(regulations.celexId, regulation.celexId))
+        .from(schema.regulations)
+        .where(eq(schema.regulations.celexId, regulation.celexId))
         .limit(1);
       existing = results.length > 0 ? results[0] : null;
     }
 
     if (existing) {
-      // Update existing regulation
       await db
-        .update(regulations)
+        .update(schema.regulations)
         .set({
           title: regulation.title,
           description: regulation.description,
@@ -213,12 +276,11 @@ export async function upsertRegulation(regulation: {
           sourceUrl: regulation.sourceUrl,
           regulationType: regulation.regulationType as any,
         })
-        .where(eq(regulations.id, existing.id));
+        .where(eq(schema.regulations.id, existing.id));
 
       return { id: existing.id, inserted: false, updated: true };
     } else {
-      // Insert new regulation
-      const result = await db.insert(regulations).values({
+      const insertedId = await engineInsertReturningId(db, schema.regulations, {
         title: regulation.title,
         celexId: regulation.celexId,
         description: regulation.description,
@@ -226,9 +288,7 @@ export async function upsertRegulation(regulation: {
         sourceUrl: regulation.sourceUrl,
         regulationType: regulation.regulationType as any,
       });
-
-      const insertId = (result as any).insertId;
-      return { id: Number(insertId), inserted: true, updated: false };
+      return { id: Number(insertedId), inserted: true, updated: false };
     }
   } catch (error) {
     serverLogger.error("[Database] Failed to upsert regulation:", error);
@@ -243,41 +303,46 @@ export async function getRegulationWithStandards(regulationId: number) {
   const db = await getDb();
   if (!db) return null;
 
+  const schema = await getSchema();
+
   try {
     const regulation = await db
       .select()
-      .from(regulations)
-      .where(eq(regulations.id, regulationId))
+      .from(schema.regulations)
+      .where(eq(schema.regulations.id, regulationId))
       .limit(1);
     if (!regulation.length) return null;
 
-    const mappings = await db
-      .select()
-      .from(regulationStandardMappings)
-      .where(eq(regulationStandardMappings.regulationId, regulationId));
+    // regulationStandardMappings may not exist in PG schema yet
+    const mappingTable = schema.regulationStandardMappings;
+    let mappings: any[] = [];
+    let standards: any[] = [];
 
-    const standardIds = mappings.map(m => m.standardId);
-    const standards: (typeof gs1Standards.$inferSelect)[] = [];
-    if (standardIds.length > 0) {
-      // Fetch all standards by their IDs
-      for (const standardId of standardIds) {
-        const result = await db
-          .select()
-          .from(gs1Standards)
-          .where(eq(gs1Standards.id, standardId));
-        if (result.length > 0) {
-          standards.push(result[0]);
+    if (mappingTable) {
+      mappings = await db
+        .select()
+        .from(mappingTable)
+        .where(eq(mappingTable.regulationId, regulationId));
+
+      const standardIds = mappings.map((m: any) => m.standardId);
+      if (standardIds.length > 0) {
+        for (const standardId of standardIds) {
+          const result = await db
+            .select()
+            .from(schema.gs1Standards)
+            .where(eq(schema.gs1Standards.id, standardId));
+          if (result.length > 0) {
+            standards.push(result[0]);
+          }
         }
       }
     }
 
-    const result = {
+    return {
       regulation: regulation[0],
       mappings,
       standards,
     };
-
-    return result;
   } catch (error) {
     serverLogger.error("[Database] Failed to get regulation with standards:", error);
     return null;
@@ -291,11 +356,13 @@ export async function getGS1Standards() {
   const db = await getDb();
   if (!db) return [];
 
+  const schema = await getSchema();
+
   try {
     return await db
       .select()
-      .from(gs1Standards)
-      .orderBy(gs1Standards.standardCode);
+      .from(schema.gs1Standards)
+      .orderBy(schema.gs1Standards.standardCode);
   } catch (error) {
     serverLogger.error("[Database] Failed to get GS1 standards:", error);
     return [];
@@ -309,11 +376,14 @@ export async function getRecentRegulatoryChanges(limit: number = 10) {
   const db = await getDb();
   if (!db) return [];
 
+  const schema = await getSchema();
+
   try {
+    if (!schema.regulatoryChangeAlerts) return [];
     return await db
       .select()
-      .from(regulatoryChangeAlerts)
-      .orderBy(desc(regulatoryChangeAlerts.detectedAt))
+      .from(schema.regulatoryChangeAlerts)
+      .orderBy(desc(schema.regulatoryChangeAlerts.createdAt))
       .limit(limit);
   } catch (error) {
     serverLogger.error("[Database] Failed to get regulatory changes:", error);
@@ -331,12 +401,15 @@ export async function getUserAnalysisHistory(
   const db = await getDb();
   if (!db) return [];
 
+  const schema = await getSchema();
+
   try {
+    if (!schema.userAnalyses) return [];
     return await db
       .select()
-      .from(userAnalyses)
-      .where(eq(userAnalyses.userId, userId))
-      .orderBy(desc(userAnalyses.createdAt))
+      .from(schema.userAnalyses)
+      .where(eq(schema.userAnalyses.userId, userId))
+      .orderBy(desc(schema.userAnalyses.createdAt))
       .limit(limit);
   } catch (error) {
     serverLogger.error("[Database] Failed to get user analysis history:", error);
@@ -352,22 +425,23 @@ export async function createUserAnalysis(data: {
   regulationId?: number;
   documentTitle?: string;
   documentUrl?: string;
-  analysisType: "CELEX" | "DOCUMENT_UPLOAD" | "URL" | "TEXT";
+  analysisType: string;
   detectedStandardsCount?: number;
   analysisResult?: any;
 }) {
   const db = await getDb();
   if (!db) return null;
 
+  const schema = await getSchema();
+
   try {
-    const result = await db.insert(userAnalyses).values({
+    if (!schema.userAnalyses) return null;
+    const result = await db.insert(schema.userAnalyses).values({
       userId: data.userId,
-      regulationId: data.regulationId,
-      documentTitle: data.documentTitle,
-      documentUrl: data.documentUrl,
       analysisType: data.analysisType,
-      detectedStandardsCount: data.detectedStandardsCount || 0,
-      analysisResult: data.analysisResult,
+      title: data.documentTitle,
+      inputData: data,
+      resultData: data.analysisResult,
     });
     return result;
   } catch (error) {
@@ -383,27 +457,38 @@ export async function getUserPreferences(userId: number) {
   const db = await getDb();
   if (!db) return null;
 
+  const schema = await getSchema();
+
   try {
+    if (!schema.userPreferences) return null;
     const existing = await db
       .select()
-      .from(userPreferences)
-      .where(eq(userPreferences.userId, userId))
+      .from(schema.userPreferences)
+      .where(eq(schema.userPreferences.userId, userId))
       .limit(1);
 
     if (existing.length) {
       return existing[0];
     }
 
-    // Create default preferences
-    await db.insert(userPreferences).values({
-      userId,
-      notificationsEnabled: 1,
-    });
+    // Create default preferences — engine-aware
+    if (ENV.dbEngine === "postgres") {
+      await db.insert(schema.userPreferences).values({
+        userId,
+        preferenceKey: "notifications_enabled",
+        preferenceValue: "true",
+      });
+    } else {
+      await db.insert(schema.userPreferences).values({
+        userId,
+        notificationsEnabled: 1,
+      });
+    }
 
     const result = await db
       .select()
-      .from(userPreferences)
-      .where(eq(userPreferences.userId, userId))
+      .from(schema.userPreferences)
+      .where(eq(schema.userPreferences.userId, userId))
       .limit(1);
     return result.length > 0 ? result[0] : null;
   } catch (error) {
@@ -415,21 +500,27 @@ export async function getUserPreferences(userId: number) {
 /**
  * Create a new contact submission
  */
-export async function createContact(contact: InsertContact) {
+export async function createContact(contact: any) {
   const db = await getDb();
   if (!db) {
     serverLogger.warn("[Database] Cannot create contact: database not available");
     return null;
   }
 
+  const schema = await getSchema();
+
   try {
-    const result = await db.insert(contacts).values(contact);
-    const newContact = await db
-      .select()
-      .from(contacts)
-      .where(eq(contacts.id, Number((result[0] as any).insertId)))
-      .limit(1);
-    return newContact.length > 0 ? newContact[0] : null;
+    if (!schema.contacts) return null;
+    const insertedId = await engineInsertReturningId(db, schema.contacts, contact);
+    if (insertedId) {
+      const newContact = await db
+        .select()
+        .from(schema.contacts)
+        .where(eq(schema.contacts.id, insertedId))
+        .limit(1);
+      return newContact.length > 0 ? newContact[0] : null;
+    }
+    return null;
   } catch (error) {
     serverLogger.error("[Database] Failed to create contact:", error);
     throw error;
@@ -446,11 +537,14 @@ export async function getContacts(limit: number = 50, offset: number = 0) {
     return [];
   }
 
+  const schema = await getSchema();
+
   try {
+    if (!schema.contacts) return [];
     return await db
       .select()
-      .from(contacts)
-      .orderBy(desc(contacts.createdAt))
+      .from(schema.contacts)
+      .orderBy(desc(schema.contacts.createdAt))
       .limit(limit)
       .offset(offset);
   } catch (error) {
@@ -466,15 +560,26 @@ export async function getDashboardStats() {
   const db = await getDb();
   if (!db) return null;
 
+  const schema = await getSchema();
+
   try {
-    const regulationCount = await db.select().from(regulations);
-    const standardCount = await db.select().from(gs1Standards);
-    const mappingCount = await db.select().from(regulationStandardMappings);
-    const recentChanges = await db
-      .select()
-      .from(regulatoryChangeAlerts)
-      .orderBy(desc(regulatoryChangeAlerts.detectedAt))
-      .limit(5);
+    const regulationCount = await db.select().from(schema.regulations);
+    const standardCount = await db.select().from(schema.gs1Standards);
+
+    const mappingTable = schema.regulationStandardMappings || schema.regulationEsrsMappings;
+    let mappingCount: any[] = [];
+    if (mappingTable) {
+      mappingCount = await db.select().from(mappingTable);
+    }
+
+    let recentChanges: any[] = [];
+    if (schema.regulatoryChangeAlerts) {
+      recentChanges = await db
+        .select()
+        .from(schema.regulatoryChangeAlerts)
+        .orderBy(desc(schema.regulatoryChangeAlerts.createdAt))
+        .limit(5);
+    }
 
     return {
       totalRegulations: regulationCount.length,
@@ -494,31 +599,18 @@ export async function getDashboardStats() {
 export async function createHubNews(news: {
   title: string;
   content: string;
-  newsType:
-    | "NEW_LAW"
-    | "AMENDMENT"
-    | "ENFORCEMENT"
-    | "COURT_DECISION"
-    | "GUIDANCE"
-    | "PROPOSAL";
+  newsType?: string;
   sourceUrl?: string;
   sourceTitle?: string;
-  sourceType?:
-    | "EU_OFFICIAL"
-    | "GS1_OFFICIAL"
-    | "DUTCH_NATIONAL"
-    | "INDUSTRY"
-    | "MEDIA";
+  sourceType?: string;
   relatedRegulationIds?: number[];
   regulationTags?: string[];
-  impactLevel?: "LOW" | "MEDIUM" | "HIGH";
+  impactLevel?: string;
   credibilityScore?: string;
   publishedDate?: Date | string;
   retrievedAt?: Date | string;
   isAutomated?: boolean | number;
   summary?: string;
-
-  // GS1-specific fields
   gs1ImpactTags?: string[];
   sectorTags?: string[];
   relatedStandardIds?: string[];
@@ -532,42 +624,54 @@ export async function createHubNews(news: {
     return null;
   }
 
+  const schema = await getSchema();
+
   try {
-    const result = await db.insert(hubNews).values({
+    if (!schema.hubNews) return null;
+
+    // Build values object — PG schema has simpler columns
+    const values: any = {
       title: news.title,
       content: news.content,
-      newsType: news.newsType,
-      sourceUrl: news.sourceUrl,
-      sourceTitle: news.sourceTitle,
-      sourceType: news.sourceType,
-      relatedRegulationIds: news.relatedRegulationIds
-        ? JSON.stringify(news.relatedRegulationIds)
-        : null,
-      regulationTags: news.regulationTags || null,
-      impactLevel: news.impactLevel,
-      credibilityScore: news.credibilityScore,
-      publishedDate: news.publishedDate ? (typeof news.publishedDate === 'string' ? news.publishedDate : news.publishedDate.toISOString()) : new Date().toISOString(),
-      retrievedAt: news.retrievedAt ? (typeof news.retrievedAt === 'string' ? news.retrievedAt : news.retrievedAt.toISOString()) : new Date().toISOString(),
-      isAutomated: news.isAutomated ? 1 : 0,
       summary: news.summary,
+    };
 
-      // GS1-specific fields
-      gs1ImpactTags: news.gs1ImpactTags || null,
-      sectorTags: news.sectorTags || null,
-      relatedStandardIds: news.relatedStandardIds || null,
-      gs1ImpactAnalysis: news.gs1ImpactAnalysis || null,
-      suggestedActions: news.suggestedActions || null,
-      sources: news.sources || null,
-    });
-    const insertId = (result as any).insertId;
+    if (ENV.dbEngine === "postgres") {
+      // PG hub_news has: title, summary, content, source_url, source_name, category, tags, published_at
+      values.sourceUrl = news.sourceUrl;
+      values.sourceName = news.sourceTitle;
+      values.category = news.newsType;
+      values.tags = news.regulationTags;
+      values.publishedAt = news.publishedDate ? (typeof news.publishedDate === 'string' ? news.publishedDate : news.publishedDate.toISOString()) : new Date().toISOString();
+    } else {
+      // MySQL hub_news has all the detailed columns
+      values.newsType = news.newsType;
+      values.sourceUrl = news.sourceUrl;
+      values.sourceTitle = news.sourceTitle;
+      values.sourceType = news.sourceType;
+      values.relatedRegulationIds = news.relatedRegulationIds
+        ? JSON.stringify(news.relatedRegulationIds)
+        : null;
+      values.regulationTags = news.regulationTags || null;
+      values.impactLevel = news.impactLevel;
+      values.credibilityScore = news.credibilityScore;
+      values.publishedDate = news.publishedDate ? (typeof news.publishedDate === 'string' ? news.publishedDate : news.publishedDate.toISOString()) : new Date().toISOString();
+      values.retrievedAt = news.retrievedAt ? (typeof news.retrievedAt === 'string' ? news.retrievedAt : news.retrievedAt.toISOString()) : new Date().toISOString();
+      values.isAutomated = news.isAutomated ? 1 : 0;
+      values.gs1ImpactTags = news.gs1ImpactTags || null;
+      values.sectorTags = news.sectorTags || null;
+      values.relatedStandardIds = news.relatedStandardIds || null;
+      values.gs1ImpactAnalysis = news.gs1ImpactAnalysis || null;
+      values.suggestedActions = news.suggestedActions || null;
+      values.sources = news.sources || null;
+    }
 
-    // E-01 + E-02: Propagate news signals into downstream capability state (fire-and-forget).
+    const insertedId = await engineInsertReturningId(db, schema.hubNews, values);
+
+    // E-01 + E-02: Propagate news signals
     if (news.relatedRegulationIds && news.relatedRegulationIds.length > 0) {
       const regulationIds = news.relatedRegulationIds;
-      // E-01: Mark advisory reports as stale for affected regulations.
       flagAdvisoryReportsStaleSince(regulationIds).catch(() => {});
-      // E-02: Flag regulations for re-verification when a high-authority or
-      // enforcement-class signal is detected.
       const credibilityNum = news.credibilityScore ? parseFloat(String(news.credibilityScore)) : 0;
       const isHighCredibility = credibilityNum >= 0.8;
       const hasVerificationState = isVerificationTriggerState((news as any).regulatoryState);
@@ -576,7 +680,7 @@ export async function createHubNews(news: {
       }
     }
 
-    return { id: Number(insertId) };
+    return { id: Number(insertedId) };
   } catch (error) {
     serverLogger.error("[Database] Failed to create hub news:", error);
     return null;
@@ -593,11 +697,16 @@ export async function getRecentHubNews(limit: number = 20) {
     return [];
   }
 
+  const schema = await getSchema();
+
   try {
+    if (!schema.hubNews) return [];
+    // PG uses publishedAt, MySQL uses publishedDate
+    const orderCol = schema.hubNews.publishedAt || schema.hubNews.publishedDate;
     return await db
       .select()
-      .from(hubNews)
-      .orderBy(desc(hubNews.publishedDate))
+      .from(schema.hubNews)
+      .orderBy(desc(orderCol))
       .limit(limit);
   } catch (error) {
     serverLogger.error("[Database] Failed to get hub news:", error);
@@ -606,18 +715,16 @@ export async function getRecentHubNews(limit: number = 20) {
 }
 
 /**
- * Create a user alert preference
+ * Create a user alert
  */
 export async function createUserAlert(alert: {
   userId: number;
   regulationId?: number;
-  alertType:
-    | "REGULATION_UPDATE"
-    | "DEADLINE_APPROACHING"
-    | "NEW_REGULATION"
-    | "ENFORCEMENT_ACTION";
+  alertType: string;
   isActive?: boolean;
   daysBeforeDeadline?: number;
+  title?: string;
+  content?: string;
 }) {
   const db = await getDb();
   if (!db) {
@@ -625,14 +732,26 @@ export async function createUserAlert(alert: {
     return null;
   }
 
+  const schema = await getSchema();
+
   try {
-    const result = await db.insert(userAlerts).values({
+    if (!schema.userAlerts) return null;
+
+    const values: any = {
       userId: alert.userId,
-      regulationId: alert.regulationId,
       alertType: alert.alertType,
-      isActive: alert.isActive ? 1 : 0,
-      daysBeforeDeadline: alert.daysBeforeDeadline,
-    });
+    };
+
+    if (ENV.dbEngine === "postgres") {
+      values.title = alert.title || alert.alertType;
+      values.content = alert.content;
+    } else {
+      values.regulationId = alert.regulationId;
+      values.isActive = alert.isActive ? 1 : 0;
+      values.daysBeforeDeadline = alert.daysBeforeDeadline;
+    }
+
+    const result = await db.insert(schema.userAlerts).values(values);
     return result;
   } catch (error) {
     serverLogger.error("[Database] Failed to create user alert:", error);
@@ -650,11 +769,14 @@ export async function getUserAlerts(userId: number) {
     return [];
   }
 
+  const schema = await getSchema();
+
   try {
+    if (!schema.userAlerts) return [];
     return await db
       .select()
-      .from(userAlerts)
-      .where(eq(userAlerts.userId, userId));
+      .from(schema.userAlerts)
+      .where(eq(schema.userAlerts.userId, userId));
   } catch (error) {
     serverLogger.error("[Database] Failed to get user alerts:", error);
     return [];
@@ -671,11 +793,22 @@ export async function getUsersWithActiveAlerts() {
     return [];
   }
 
+  const schema = await getSchema();
+
   try {
-    return await db
-      .selectDistinct({ userId: userAlerts.userId })
-      .from(userAlerts)
-      .where(eq(userAlerts.isActive, 1));
+    if (!schema.userAlerts) return [];
+    if (ENV.dbEngine === "postgres") {
+      // PG schema uses isRead instead of isActive
+      return await db
+        .selectDistinct({ userId: schema.userAlerts.userId })
+        .from(schema.userAlerts)
+        .where(eq(schema.userAlerts.isRead, false));
+    } else {
+      return await db
+        .selectDistinct({ userId: schema.userAlerts.userId })
+        .from(schema.userAlerts)
+        .where(eq(schema.userAlerts.isActive, 1));
+    }
   } catch (error) {
     serverLogger.error("[Database] Failed to get users with active alerts:", error);
     return [];
@@ -692,38 +825,36 @@ export async function getRegulationEsrsMappings(regulationId: number) {
     return [];
   }
 
+  const schema = await getSchema();
+
   try {
-    const { regulationEsrsMappings, esrsDatapoints } = await import(
-      "../drizzle/schema"
-    );
-    const { eq } = await import("drizzle-orm");
+    if (!schema.regulationEsrsMappings || !schema.esrsDatapoints) return [];
 
     return await db
       .select({
-        id: regulationEsrsMappings.id,
-        regulationId: regulationEsrsMappings.regulationId,
-        datapointId: regulationEsrsMappings.datapointId,
-        relevanceScore: regulationEsrsMappings.relevanceScore,
-        reasoning: regulationEsrsMappings.reasoning,
-        createdAt: regulationEsrsMappings.createdAt,
-        // Join with datapoint details
+        id: schema.regulationEsrsMappings.id,
+        regulationId: schema.regulationEsrsMappings.regulationId,
+        datapointId: schema.regulationEsrsMappings.datapointId,
+        relevanceScore: schema.regulationEsrsMappings.relevanceScore,
+        reasoning: schema.regulationEsrsMappings.reasoning,
+        createdAt: schema.regulationEsrsMappings.createdAt,
         datapoint: {
-          id: esrsDatapoints.id,
-          datapointId: esrsDatapoints.code,
-          esrs_standard: esrsDatapoints.esrsStandard,
-          disclosure_requirement: esrsDatapoints.disclosureRequirement,
-          datapointName: esrsDatapoints.name,
-          data_type: esrsDatapoints.dataType,
-          mayVoluntary: esrsDatapoints.voluntary,
+          id: schema.esrsDatapoints.id,
+          datapointId: schema.esrsDatapoints.code,
+          esrs_standard: schema.esrsDatapoints.esrsStandard,
+          disclosure_requirement: schema.esrsDatapoints.disclosureRequirement,
+          datapointName: schema.esrsDatapoints.name,
+          data_type: schema.esrsDatapoints.dataType,
+          mayVoluntary: schema.esrsDatapoints.voluntary,
         },
       })
-      .from(regulationEsrsMappings)
+      .from(schema.regulationEsrsMappings)
       .leftJoin(
-        esrsDatapoints,
-        eq(regulationEsrsMappings.datapointId, esrsDatapoints.id)
+        schema.esrsDatapoints,
+        eq(schema.regulationEsrsMappings.datapointId, schema.esrsDatapoints.id)
       )
-      .where(eq(regulationEsrsMappings.regulationId, regulationId))
-      .orderBy(regulationEsrsMappings.relevanceScore);
+      .where(eq(schema.regulationEsrsMappings.regulationId, regulationId))
+      .orderBy(schema.regulationEsrsMappings.relevanceScore);
   } catch (error) {
     serverLogger.error("[Database] Failed to get regulation ESRS mappings:", error);
     return [];
@@ -745,42 +876,39 @@ export async function upsertRegulationEsrsMapping(mapping: {
     return null;
   }
 
-  try {
-    const { regulationEsrsMappings } = await import("../drizzle/schema");
-    const { eq, and } = await import("drizzle-orm");
+  const schema = await getSchema();
 
-    // Check if mapping already exists
+  try {
+    if (!schema.regulationEsrsMappings) return null;
+
     const existing = await db
       .select()
-      .from(regulationEsrsMappings)
+      .from(schema.regulationEsrsMappings)
       .where(
         and(
-          eq(regulationEsrsMappings.regulationId, mapping.regulationId),
-          eq(regulationEsrsMappings.datapointId, mapping.datapointId)
+          eq(schema.regulationEsrsMappings.regulationId, mapping.regulationId),
+          eq(schema.regulationEsrsMappings.datapointId, mapping.datapointId)
         )
       )
       .limit(1);
 
     if (existing.length > 0) {
-      // Update existing mapping
       await db
-        .update(regulationEsrsMappings)
+        .update(schema.regulationEsrsMappings)
         .set({
           relevanceScore: mapping.relevanceScore,
           reasoning: mapping.reasoning,
-          updatedAt: new Date().toISOString(),
         })
-        .where(eq(regulationEsrsMappings.id, existing[0].id));
+        .where(eq(schema.regulationEsrsMappings.id, existing[0].id));
       return existing[0];
     } else {
-      // Insert new mapping
-      const result = await db.insert(regulationEsrsMappings).values({
+      const insertedId = await engineInsertReturningId(db, schema.regulationEsrsMappings, {
         regulationId: mapping.regulationId,
         datapointId: mapping.datapointId,
         relevanceScore: mapping.relevanceScore,
         reasoning: mapping.reasoning,
       });
-      return { id: Number((result as any).insertId), ...mapping };
+      return { id: Number(insertedId), ...mapping };
     }
   } catch (error) {
     serverLogger.error("[Database] Failed to upsert regulation ESRS mapping:", error);
@@ -794,19 +922,17 @@ export async function upsertRegulationEsrsMapping(mapping: {
 export async function deleteRegulationEsrsMappings(regulationId: number) {
   const db = await getDb();
   if (!db) {
-    serverLogger.warn(
-      "[Database] Cannot delete regulation ESRS mappings: database not available"
-    );
+    serverLogger.warn("[Database] Cannot delete regulation ESRS mappings: database not available");
     return false;
   }
 
-  try {
-    const { regulationEsrsMappings } = await import("../drizzle/schema");
-    const { eq } = await import("drizzle-orm");
+  const schema = await getSchema();
 
+  try {
+    if (!schema.regulationEsrsMappings) return false;
     await db
-      .delete(regulationEsrsMappings)
-      .where(eq(regulationEsrsMappings.regulationId, regulationId));
+      .delete(schema.regulationEsrsMappings)
+      .where(eq(schema.regulationEsrsMappings.regulationId, regulationId));
     return true;
   } catch (error) {
     serverLogger.error("[Database] Failed to delete regulation ESRS mappings:", error);
@@ -828,37 +954,35 @@ export async function submitMappingFeedback(params: {
     return null;
   }
 
-  try {
-    const { mappingFeedback } = await import("../drizzle/schema");
-    const { eq, and } = await import("drizzle-orm");
+  const schema = await getSchema();
 
-    // Check if user already voted on this mapping
+  try {
+    if (!schema.mappingFeedback) return null;
+
     const existing = await db
       .select()
-      .from(mappingFeedback)
+      .from(schema.mappingFeedback)
       .where(
         and(
-          eq(mappingFeedback.userId, params.userId),
-          eq(mappingFeedback.mappingId, params.mappingId)
+          eq(schema.mappingFeedback.userId, params.userId),
+          eq(schema.mappingFeedback.mappingId, params.mappingId)
         )
       )
       .limit(1);
 
     if (existing.length > 0) {
-      // Update existing vote
       await db
-        .update(mappingFeedback)
+        .update(schema.mappingFeedback)
         .set({ vote: params.vote ? 1 : 0 })
-        .where(eq(mappingFeedback.id, existing[0].id));
+        .where(eq(schema.mappingFeedback.id, existing[0].id));
       return { ...existing[0], vote: params.vote ? 1 : 0 };
     } else {
-      // Insert new vote
-      const result = await db.insert(mappingFeedback).values({
+      const insertedId = await engineInsertReturningId(db, schema.mappingFeedback, {
         userId: params.userId,
         mappingId: params.mappingId,
         vote: params.vote ? 1 : 0,
       });
-      return { id: Number((result as any).insertId), userId: params.userId, mappingId: params.mappingId, vote: params.vote ? 1 : 0 };
+      return { id: Number(insertedId), userId: params.userId, mappingId: params.mappingId, vote: params.vote ? 1 : 0 };
     }
   } catch (error) {
     serverLogger.error("[Database] Failed to submit mapping feedback:", error);
@@ -876,17 +1000,18 @@ export async function getUserMappingFeedback(
   const db = await getDb();
   if (!db) return null;
 
+  const schema = await getSchema();
+
   try {
-    const { mappingFeedback } = await import("../drizzle/schema");
-    const { eq, and } = await import("drizzle-orm");
+    if (!schema.mappingFeedback) return null;
 
     const result = await db
       .select()
-      .from(mappingFeedback)
+      .from(schema.mappingFeedback)
       .where(
         and(
-          eq(mappingFeedback.userId, userId),
-          eq(mappingFeedback.mappingId, mappingId)
+          eq(schema.mappingFeedback.userId, userId),
+          eq(schema.mappingFeedback.mappingId, mappingId)
         )
       )
       .limit(1);
@@ -899,23 +1024,24 @@ export async function getUserMappingFeedback(
 }
 
 /**
- * Get aggregated feedback stats for a mapping (total votes, % positive)
+ * Get aggregated feedback stats for a mapping
  */
 export async function getMappingFeedbackStats(mappingId: number) {
   const db = await getDb();
   if (!db) return null;
 
+  const schema = await getSchema();
+
   try {
-    const { mappingFeedback } = await import("../drizzle/schema");
-    const { eq, count, sql } = await import("drizzle-orm");
+    if (!schema.mappingFeedback) return null;
 
     const stats = await db
       .select({
         totalVotes: count(),
-        positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
+        positiveVotes: sql<number>`SUM(CASE WHEN ${schema.mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
       })
-      .from(mappingFeedback)
-      .where(eq(mappingFeedback.mappingId, mappingId));
+      .from(schema.mappingFeedback)
+      .where(eq(schema.mappingFeedback.mappingId, mappingId));
 
     if (stats.length === 0 || stats[0].totalVotes === 0) {
       return { totalVotes: 0, positiveVotes: 0, positivePercentage: 0 };
@@ -933,33 +1059,33 @@ export async function getMappingFeedbackStats(mappingId: number) {
 }
 
 /**
- * Get feedback stats for multiple mappings (batch operation)
+ * Get feedback stats for multiple mappings (batch)
  */
 export async function getBatchMappingFeedbackStats(mappingIds: number[]) {
   const db = await getDb();
   if (!db || mappingIds.length === 0) return {};
 
+  const schema = await getSchema();
+
   try {
-    const { mappingFeedback } = await import("../drizzle/schema");
-    const { inArray, count, sql } = await import("drizzle-orm");
+    if (!schema.mappingFeedback) return {};
 
     const stats = await db
       .select({
-        mappingId: mappingFeedback.mappingId,
+        mappingId: schema.mappingFeedback.mappingId,
         totalVotes: count(),
-        positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
+        positiveVotes: sql<number>`SUM(CASE WHEN ${schema.mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
       })
-      .from(mappingFeedback)
-      .where(inArray(mappingFeedback.mappingId, mappingIds))
-      .groupBy(mappingFeedback.mappingId);
+      .from(schema.mappingFeedback)
+      .where(inArray(schema.mappingFeedback.mappingId, mappingIds))
+      .groupBy(schema.mappingFeedback.mappingId);
 
-    // Convert to map for easy lookup
     const statsMap: Record<
       number,
       { totalVotes: number; positiveVotes: number; positivePercentage: number }
     > = {};
 
-    stats.forEach(stat => {
+    stats.forEach((stat: any) => {
       const totalVotes = Number(stat.totalVotes);
       const positiveVotes = Number(stat.positiveVotes);
       const positivePercentage =
@@ -979,45 +1105,45 @@ export async function getBatchMappingFeedbackStats(mappingIds: number[]) {
 }
 
 /**
- * Get low-scored ESRS mappings (< 50% approval)
+ * Get low-scored ESRS mappings
  */
 export async function getLowScoredMappings(minVotes: number = 3) {
   const db = await getDb();
   if (!db) return [];
 
+  const schema = await getSchema();
+
   try {
-    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } =
-      await import("../drizzle/schema");
-    const { count, sql, desc } = await import("drizzle-orm");
+    if (!schema.regulationEsrsMappings || !schema.esrsDatapoints || !schema.mappingFeedback) return [];
 
     const lowScored = await db
       .select({
-        mappingId: regulationEsrsMappings.id,
-        regulationId: regulationEsrsMappings.regulationId,
-        datapointId: regulationEsrsMappings.datapointId,
-        datapointName: esrsDatapoints.name,
-        esrs_standard: esrsDatapoints.esrsStandard,
-        relevanceScore: regulationEsrsMappings.relevanceScore,
-        reasoning: regulationEsrsMappings.reasoning,
-        totalVotes: count(mappingFeedback.id),
-        positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
+        mappingId: schema.regulationEsrsMappings.id,
+        regulationId: schema.regulationEsrsMappings.regulationId,
+        datapointId: schema.regulationEsrsMappings.datapointId,
+        datapointName: schema.esrsDatapoints.name,
+        esrs_standard: schema.esrsDatapoints.esrsStandard,
+        relevanceScore: schema.regulationEsrsMappings.relevanceScore,
+        reasoning: schema.regulationEsrsMappings.reasoning,
+        totalVotes: count(schema.mappingFeedback.id),
+        positiveVotes: sql<number>`SUM(CASE WHEN ${schema.mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
       })
-      .from(regulationEsrsMappings)
+      .from(schema.regulationEsrsMappings)
       .innerJoin(
-        esrsDatapoints,
-        sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`
+        schema.esrsDatapoints,
+        sql`${schema.regulationEsrsMappings.datapointId} = ${schema.esrsDatapoints.id}`
       )
       .leftJoin(
-        mappingFeedback,
-        sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`
+        schema.mappingFeedback,
+        sql`${schema.regulationEsrsMappings.id} = ${schema.mappingFeedback.mappingId}`
       )
-      .groupBy(regulationEsrsMappings.id)
+      .groupBy(schema.regulationEsrsMappings.id)
       .having(
-        sql`COUNT(${mappingFeedback.id}) >= ${minVotes} AND (SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END) / COUNT(${mappingFeedback.id})) < 0.5`
+        sql`COUNT(${schema.mappingFeedback.id}) >= ${minVotes} AND (SUM(CASE WHEN ${schema.mappingFeedback.vote} = 1 THEN 1 ELSE 0 END) / COUNT(${schema.mappingFeedback.id})) < 0.5`
       )
-      .orderBy(desc(sql`COUNT(${mappingFeedback.id})`));
+      .orderBy(desc(sql`COUNT(${schema.mappingFeedback.id})`));
 
-    return lowScored.map(m => ({
+    return lowScored.map((m: any) => ({
       mappingId: m.mappingId,
       regulationId: m.regulationId,
       datapointId: m.datapointId,
@@ -1047,30 +1173,30 @@ export async function getVoteDistributionByStandard() {
   const db = await getDb();
   if (!db) return [];
 
+  const schema = await getSchema();
+
   try {
-    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } =
-      await import("../drizzle/schema");
-    const { count, sql } = await import("drizzle-orm");
+    if (!schema.regulationEsrsMappings || !schema.esrsDatapoints || !schema.mappingFeedback) return [];
 
     const distribution = await db
       .select({
-        esrs_standard: esrsDatapoints.esrsStandard,
-        totalMappings: count(regulationEsrsMappings.id),
-        totalVotes: count(mappingFeedback.id),
-        positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
+        esrs_standard: schema.esrsDatapoints.esrsStandard,
+        totalMappings: count(schema.regulationEsrsMappings.id),
+        totalVotes: count(schema.mappingFeedback.id),
+        positiveVotes: sql<number>`SUM(CASE WHEN ${schema.mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
       })
-      .from(regulationEsrsMappings)
+      .from(schema.regulationEsrsMappings)
       .innerJoin(
-        esrsDatapoints,
-        sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`
+        schema.esrsDatapoints,
+        sql`${schema.regulationEsrsMappings.datapointId} = ${schema.esrsDatapoints.id}`
       )
       .leftJoin(
-        mappingFeedback,
-        sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`
+        schema.mappingFeedback,
+        sql`${schema.regulationEsrsMappings.id} = ${schema.mappingFeedback.mappingId}`
       )
-      .groupBy(esrsDatapoints.esrsStandard);
+      .groupBy(schema.esrsDatapoints.esrsStandard);
 
-    return distribution.map(d => ({
+    return distribution.map((d: any) => ({
       esrs_standard: d.esrs_standard,
       totalMappings: Number(d.totalMappings),
       totalVotes: Number(d.totalVotes),
@@ -1095,37 +1221,37 @@ export async function getMostVotedMappings(limit: number = 10) {
   const db = await getDb();
   if (!db) return [];
 
+  const schema = await getSchema();
+
   try {
-    const { regulationEsrsMappings, esrsDatapoints, mappingFeedback } =
-      await import("../drizzle/schema");
-    const { count, sql, desc } = await import("drizzle-orm");
+    if (!schema.regulationEsrsMappings || !schema.esrsDatapoints || !schema.mappingFeedback) return [];
 
     const mostVoted = await db
       .select({
-        mappingId: regulationEsrsMappings.id,
-        regulationId: regulationEsrsMappings.regulationId,
-        datapointId: regulationEsrsMappings.datapointId,
-        datapointName: esrsDatapoints.name,
-        esrs_standard: esrsDatapoints.esrsStandard,
-        relevanceScore: regulationEsrsMappings.relevanceScore,
-        totalVotes: count(mappingFeedback.id),
-        positiveVotes: sql<number>`SUM(CASE WHEN ${mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
+        mappingId: schema.regulationEsrsMappings.id,
+        regulationId: schema.regulationEsrsMappings.regulationId,
+        datapointId: schema.regulationEsrsMappings.datapointId,
+        datapointName: schema.esrsDatapoints.name,
+        esrs_standard: schema.esrsDatapoints.esrsStandard,
+        relevanceScore: schema.regulationEsrsMappings.relevanceScore,
+        totalVotes: count(schema.mappingFeedback.id),
+        positiveVotes: sql<number>`SUM(CASE WHEN ${schema.mappingFeedback.vote} = 1 THEN 1 ELSE 0 END)`,
       })
-      .from(regulationEsrsMappings)
+      .from(schema.regulationEsrsMappings)
       .innerJoin(
-        esrsDatapoints,
-        sql`${regulationEsrsMappings.datapointId} = ${esrsDatapoints.id}`
+        schema.esrsDatapoints,
+        sql`${schema.regulationEsrsMappings.datapointId} = ${schema.esrsDatapoints.id}`
       )
       .leftJoin(
-        mappingFeedback,
-        sql`${regulationEsrsMappings.id} = ${mappingFeedback.mappingId}`
+        schema.mappingFeedback,
+        sql`${schema.regulationEsrsMappings.id} = ${schema.mappingFeedback.mappingId}`
       )
-      .groupBy(regulationEsrsMappings.id)
-      .having(sql`COUNT(${mappingFeedback.id}) > 0`)
-      .orderBy(desc(count(mappingFeedback.id)))
+      .groupBy(schema.regulationEsrsMappings.id)
+      .having(sql`COUNT(${schema.mappingFeedback.id}) > 0`)
+      .orderBy(desc(count(schema.mappingFeedback.id)))
       .limit(limit);
 
-    return mostVoted.map(m => ({
+    return mostVoted.map((m: any) => ({
       mappingId: m.mappingId,
       regulationId: m.regulationId,
       datapointId: m.datapointId,
@@ -1148,148 +1274,8 @@ export async function getMostVotedMappings(limit: number = 10) {
 }
 
 // ============================================================================
-// User Onboarding Progress Helpers
+// Q&A Conversations
 // ============================================================================
-
-/**
- * TEMPORARILY DISABLED
- * userOnboardingProgress helpers were previously implemented here but relied on a
- * commented-out table/schema. Keeping the commented block caused churn and made
- * ongoing DB work harder to review.
- */
-// If onboarding is re-enabled, reintroduce these helpers alongside the table/schema,
-// and add tests or a migration to prevent regressions.
-
-// ============================================================================
-// DUTCH INITIATIVES
-// ============================================================================
-
-/**
- * Get all Dutch initiatives with optional filtering
- */
-export async function getDutchInitiatives(filters?: {
-  sector?: string;
-  status?: string;
-}) {
-  const db = await getDb();
-  if (!db) return [];
-
-  try {
-    const { dutchInitiatives } = await import("../drizzle/schema");
-    const { eq, and } = await import("drizzle-orm");
-
-    let query = db.select().from(dutchInitiatives);
-
-    const conditions = [];
-    if (filters?.sector) {
-      conditions.push(eq(dutchInitiatives.sector, filters.sector));
-    }
-    if (filters?.status) {
-      conditions.push(eq(dutchInitiatives.status, filters.status));
-    }
-
-    if (conditions.length > 0) {
-      query = query.where(and(...conditions)) as any;
-    }
-
-    return await query;
-  } catch (error) {
-    serverLogger.error("[Database] Failed to get Dutch initiatives:", error);
-    return [];
-  }
-}
-
-/**
- * Get a single Dutch initiative with all its mappings
- */
-export async function getDutchInitiativeWithMappings(initiativeId: number) {
-  const db = await getDb();
-  if (!db) return null;
-
-  try {
-    const {
-      dutchInitiatives,
-      initiativeRegulationMappings,
-      initiativeStandardMappings,
-      regulations,
-      gs1Standards,
-    } = await import("../drizzle/schema");
-    const { eq } = await import("drizzle-orm");
-
-    // Get initiative
-    const [initiative] = await db
-      .select()
-      .from(dutchInitiatives)
-      .where(eq(dutchInitiatives.id, initiativeId));
-
-    if (!initiative) return null;
-
-    // Get regulation mappings
-    const regMappings = await db
-      .select({
-        id: initiativeRegulationMappings.id,
-        relationshipType: initiativeRegulationMappings.relationshipType,
-        description: initiativeRegulationMappings.description,
-        regulation: regulations,
-      })
-      .from(initiativeRegulationMappings)
-      .leftJoin(
-        regulations,
-        eq(initiativeRegulationMappings.regulationId, regulations.id)
-      )
-      .where(eq(initiativeRegulationMappings.initiativeId, initiativeId));
-
-    // Get standard mappings
-    const stdMappings = await db
-      .select({
-        id: initiativeStandardMappings.id,
-        criticality: initiativeStandardMappings.criticality,
-        implementationNotes: initiativeStandardMappings.implementationNotes,
-        standard: gs1Standards,
-      })
-      .from(initiativeStandardMappings)
-      .leftJoin(
-        gs1Standards,
-        eq(initiativeStandardMappings.standardId, gs1Standards.id)
-      )
-      .where(eq(initiativeStandardMappings.initiativeId, initiativeId));
-
-    return {
-      initiative,
-      regulationMappings: regMappings,
-      standardMappings: stdMappings,
-    };
-  } catch (error) {
-    serverLogger.error("[Database] Failed to get Dutch initiative with mappings:", error);
-    return null;
-  }
-}
-
-/**
- * Get unique sectors from Dutch initiatives
- */
-export async function getDutchInitiativeSectors() {
-  const db = await getDb();
-  if (!db) return [];
-
-  try {
-    const { dutchInitiatives } = await import("../drizzle/schema");
-    const result = await db
-      .selectDistinct({ sector: dutchInitiatives.sector })
-      .from(dutchInitiatives);
-
-    return result.map(r => r.sector);
-  } catch (error) {
-    serverLogger.error("[Database] Failed to get Dutch initiative sectors:", error);
-    return [];
-  }
-}
-
-// ============================================================================
-// KNOWLEDGE EMBEDDINGS (MOVED)
-// ============================================================================
-// Deprecated embeddings helpers previously lived in this file; the active
-// implementation is now in db-knowledge.ts and db-knowledge-vector.ts.
 
 /**
  * Create a new Q&A conversation
@@ -1298,10 +1284,12 @@ export async function createQAConversation(userId?: number, title?: string) {
   const db = await getDb();
   if (!db) return null;
 
-  try {
-    const { qaConversations } = await import("../drizzle/schema");
+  const schema = await getSchema();
 
-    const [result] = await db.insert(qaConversations).values({
+  try {
+    if (!schema.qaConversations) return null;
+
+    const insertedId = await engineInsertReturningId(db, schema.qaConversations, {
       userId,
       title,
       messageCount: 0,
@@ -1310,7 +1298,7 @@ export async function createQAConversation(userId?: number, title?: string) {
     });
 
     return {
-      id: result.insertId,
+      id: insertedId,
       userId,
       title,
       messageCount: 0,
@@ -1336,11 +1324,12 @@ export async function addQAMessage(data: {
   const db = await getDb();
   if (!db) return null;
 
-  try {
-    const { qaMessages, qaConversations } = await import("../drizzle/schema");
+  const schema = await getSchema();
 
-    // Insert message
-    const [result] = await db.insert(qaMessages).values({
+  try {
+    if (!schema.qaMessages || !schema.qaConversations) return null;
+
+    const insertedId = await engineInsertReturningId(db, schema.qaMessages, {
       conversationId: data.conversationId,
       role: data.role,
       content: data.content,
@@ -1351,15 +1340,15 @@ export async function addQAMessage(data: {
 
     // Update conversation message count
     await db
-      .update(qaConversations)
+      .update(schema.qaConversations)
       .set({
-        messageCount: sql`${qaConversations.messageCount} + 1`,
+        messageCount: sql`${schema.qaConversations.messageCount} + 1`,
         updatedAt: new Date().toISOString(),
       })
-      .where(eq(qaConversations.id, data.conversationId));
+      .where(eq(schema.qaConversations.id, data.conversationId));
 
     return {
-      id: result.insertId,
+      id: insertedId,
       ...data,
       createdAt: new Date().toISOString(),
     };
@@ -1376,26 +1365,24 @@ export async function getQAConversation(conversationId: number) {
   const db = await getDb();
   if (!db) return null;
 
-  try {
-    const { qaConversations, qaMessages } = await import("../drizzle/schema");
+  const schema = await getSchema();
 
-    // Get conversation
+  try {
+    if (!schema.qaConversations || !schema.qaMessages) return null;
+
     const conversation = await db
       .select()
-      .from(qaConversations)
-      .where(eq(qaConversations.id, conversationId))
+      .from(schema.qaConversations)
+      .where(eq(schema.qaConversations.id, conversationId))
       .limit(1);
 
-    if (conversation.length === 0) {
-      return null;
-    }
+    if (conversation.length === 0) return null;
 
-    // Get messages
     const messages = await db
       .select()
-      .from(qaMessages)
-      .where(eq(qaMessages.conversationId, conversationId))
-      .orderBy(qaMessages.createdAt);
+      .from(schema.qaMessages)
+      .where(eq(schema.qaMessages.conversationId, conversationId))
+      .orderBy(schema.qaMessages.createdAt);
 
     return {
       ...conversation[0],
@@ -1417,14 +1404,16 @@ export async function getUserQAConversations(
   const db = await getDb();
   if (!db) return [];
 
+  const schema = await getSchema();
+
   try {
-    const { qaConversations } = await import("../drizzle/schema");
+    if (!schema.qaConversations) return [];
 
     return await db
       .select()
-      .from(qaConversations)
-      .where(eq(qaConversations.userId, userId))
-      .orderBy(desc(qaConversations.updatedAt))
+      .from(schema.qaConversations)
+      .where(eq(schema.qaConversations.userId, userId))
+      .orderBy(desc(schema.qaConversations.updatedAt))
       .limit(limit);
   } catch (error) {
     serverLogger.error("[Database] Failed to get conversations:", error);
@@ -1442,33 +1431,145 @@ export async function deleteQAConversation(
   const db = await getDb();
   if (!db) return false;
 
-  try {
-    const { qaConversations, qaMessages } = await import("../drizzle/schema");
+  const schema = await getSchema();
 
-    // Verify ownership
+  try {
+    if (!schema.qaConversations || !schema.qaMessages) return false;
+
     const conversation = await db
       .select()
-      .from(qaConversations)
-      .where(eq(qaConversations.id, conversationId))
+      .from(schema.qaConversations)
+      .where(eq(schema.qaConversations.id, conversationId))
       .limit(1);
 
     if (conversation.length === 0 || conversation[0].userId !== userId) {
       return false;
     }
 
-    // Delete messages first
     await db
-      .delete(qaMessages)
-      .where(eq(qaMessages.conversationId, conversationId));
+      .delete(schema.qaMessages)
+      .where(eq(schema.qaMessages.conversationId, conversationId));
 
-    // Delete conversation
     await db
-      .delete(qaConversations)
-      .where(eq(qaConversations.id, conversationId));
+      .delete(schema.qaConversations)
+      .where(eq(schema.qaConversations.id, conversationId));
 
     return true;
   } catch (error) {
     serverLogger.error("[Database] Failed to delete conversation:", error);
     return false;
+  }
+}
+
+// ============================================================================
+// DUTCH INITIATIVES (only available on MySQL for now)
+// ============================================================================
+
+export async function getDutchInitiatives(filters?: {
+  sector?: string;
+  status?: string;
+}) {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    const schema = await import("../drizzle_pg/schema");
+    if (!schema.dutchInitiatives) return [];
+
+    let query = db.select().from(schema.dutchInitiatives);
+
+    const conditions = [];
+    if (filters?.sector) {
+      conditions.push(eq(schema.dutchInitiatives.sector, filters.sector));
+    }
+    if (filters?.status) {
+      conditions.push(eq(schema.dutchInitiatives.status, filters.status));
+    }
+
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions)) as any;
+    }
+
+    return await query;
+  } catch (error) {
+    serverLogger.error("[Database] Failed to get Dutch initiatives:", error);
+    return [];
+  }
+}
+
+export async function getDutchInitiativeWithMappings(initiativeId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  try {
+    const schema = await import("../drizzle_pg/schema");
+    if (!schema.dutchInitiatives) return null;
+
+    const [initiative] = await db
+      .select()
+      .from(schema.dutchInitiatives)
+      .where(eq(schema.dutchInitiatives.id, initiativeId));
+
+    if (!initiative) return null;
+
+    const regMappings = schema.initiativeRegulationMappings
+      ? await db
+          .select({
+            id: schema.initiativeRegulationMappings.id,
+            relationshipType: schema.initiativeRegulationMappings.relationshipType,
+            description: schema.initiativeRegulationMappings.description,
+            regulation: schema.regulations,
+          })
+          .from(schema.initiativeRegulationMappings)
+          .leftJoin(
+            schema.regulations,
+            eq(schema.initiativeRegulationMappings.regulationId, schema.regulations.id)
+          )
+          .where(eq(schema.initiativeRegulationMappings.initiativeId, initiativeId))
+      : [];
+
+    const stdMappings = schema.initiativeStandardMappings
+      ? await db
+          .select({
+            id: schema.initiativeStandardMappings.id,
+            criticality: schema.initiativeStandardMappings.criticality,
+            implementationNotes: schema.initiativeStandardMappings.implementationNotes,
+            standard: schema.gs1Standards,
+          })
+          .from(schema.initiativeStandardMappings)
+          .leftJoin(
+            schema.gs1Standards,
+            eq(schema.initiativeStandardMappings.standardId, schema.gs1Standards.id)
+          )
+          .where(eq(schema.initiativeStandardMappings.initiativeId, initiativeId))
+      : [];
+
+    return {
+      initiative,
+      regulationMappings: regMappings,
+      standardMappings: stdMappings,
+    };
+  } catch (error) {
+    serverLogger.error("[Database] Failed to get Dutch initiative with mappings:", error);
+    return null;
+  }
+}
+
+export async function getDutchInitiativeSectors() {
+  const db = await getDb();
+  if (!db) return [];
+
+  try {
+    const schema = await import("../drizzle_pg/schema");
+    if (!schema.dutchInitiatives) return [];
+
+    const result = await db
+      .selectDistinct({ sector: schema.dutchInitiatives.sector })
+      .from(schema.dutchInitiatives);
+
+    return result.map((r: any) => r.sector);
+  } catch (error) {
+    serverLogger.error("[Database] Failed to get Dutch initiative sectors:", error);
+    return [];
   }
 }

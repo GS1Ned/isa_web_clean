@@ -1,11 +1,11 @@
 /**
  * Alert Notification Service
  * 
- * Sends alert notifications via email and tracks alert history
+ * Sends alert notifications via email and tracks alert history.
+ * Engine-aware: loads schema from drizzle_pg or drizzle based on DB_ENGINE.
  */
 
-import { getDb } from "./db";
-import { alertHistory } from "../drizzle/schema";
+import { getDb, getDbEngine } from "./db";
 import { notifyOwner } from "./_core/notification";
 import { broadcastAlert, AlertPayload } from "./webhook-notification-service";
 import {
@@ -18,6 +18,15 @@ import {
 import { desc, eq, and, isNull } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 
+// Lazy schema reference - resolved at runtime based on engine
+async function getAlertHistorySchema() {
+  if (getDbEngine() === "postgres") {
+    const pgSchema = await import("../drizzle_pg/schema");
+    return pgSchema.alertHistory;
+  }
+  const mysqlSchema = await import("../drizzle_pg/schema");
+  return mysqlSchema.alertHistory;
+}
 
 /**
  * Alert notification result
@@ -106,6 +115,8 @@ async function saveAlertHistory(
   if (!db) {
     throw new Error("Database not available");
   }
+
+  const alertHistory = await getAlertHistorySchema();
 
   const result = await db.insert(alertHistory).values({
     alertType: alert.alertType,
@@ -228,6 +239,8 @@ export async function getAlertHistory(
     throw new Error("Database not available");
   }
 
+  const alertHistory = await getAlertHistorySchema();
+
   let query = db.select().from(alertHistory);
 
   const conditions = [];
@@ -247,7 +260,7 @@ export async function getAlertHistory(
 
   const results = await query.orderBy(desc(alertHistory.createdAt)).limit(limit);
 
-  return results.map((row) => ({
+  return results.map((row: any) => ({
     ...row,
     metadata: typeof row.metadata === "string" ? JSON.parse(row.metadata) : row.metadata,
   }));
@@ -261,6 +274,8 @@ export async function acknowledgeAlert(alertId: number, userId: number): Promise
   if (!db) {
     throw new Error("Database not available");
   }
+
+  const alertHistory = await getAlertHistorySchema();
 
   try {
     await db
@@ -286,6 +301,8 @@ export async function getUnacknowledgedCount(): Promise<number> {
   if (!db) {
     throw new Error("Database not available");
   }
+
+  const alertHistory = await getAlertHistorySchema();
 
   const results = await db
     .select()

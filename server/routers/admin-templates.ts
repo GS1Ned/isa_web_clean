@@ -5,7 +5,7 @@ import {
   roadmapTemplates,
   templateActions,
   templateMilestones,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 import { desc, sql, eq, and } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 

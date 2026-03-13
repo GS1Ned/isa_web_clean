@@ -9,7 +9,7 @@ import {
   complianceRoadmaps,
   roadmapActions,
   roadmapMilestones,
-} from "../../drizzle/schema";
+} from "../../drizzle_pg/schema";
 import { eq, and, like, desc } from "drizzle-orm";
 
 /**

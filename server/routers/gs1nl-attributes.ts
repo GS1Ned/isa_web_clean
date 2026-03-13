@@ -14,7 +14,7 @@
 import { router, publicProcedure } from "../_core/trpc";
 import { z } from "zod";
 import { getDb } from "../db";
-import { knowledgeEmbeddings } from "../../drizzle/schema";
+import { knowledgeEmbeddings } from "../../drizzle_pg/schema";
 import { sql, like, or, and, asc } from "drizzle-orm";
 import { serverLogger } from "../_core/logger-wiring";
 

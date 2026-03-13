@@ -12,7 +12,7 @@ import {
   regulationStandardMappings,
   type Regulation,
   type GS1Standard,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 
 /**

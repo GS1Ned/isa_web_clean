@@ -23,7 +23,7 @@ export async function getEsgCorpus() {
   if (!db) return [];
 
   try {
-    const { esgCorpus } = await import("../drizzle/schema");
+    const { esgCorpus } = await import("../drizzle_pg/schema");
     return await db.select().from(esgCorpus);
   } catch (error) {
     serverLogger.error("[Database] Failed to get ESG corpus:", error);
@@ -39,7 +39,7 @@ export async function getEsgInstrument(instrumentId: string) {
   if (!db) return null;
 
   try {
-    const { esgCorpus } = await import("../drizzle/schema");
+    const { esgCorpus } = await import("../drizzle_pg/schema");
     const results = await db
       .select()
       .from(esgCorpus)
@@ -64,7 +64,7 @@ export async function getEsgObligations(instrumentId?: string) {
   if (!db) return [];
 
   try {
-    const { esgObligations } = await import("../drizzle/schema");
+    const { esgObligations } = await import("../drizzle_pg/schema");
     let query = db.select().from(esgObligations);
     
     if (instrumentId) {
@@ -86,7 +86,7 @@ export async function getEsgObligation(obligationId: string) {
   if (!db) return null;
 
   try {
-    const { esgObligations } = await import("../drizzle/schema");
+    const { esgObligations } = await import("../drizzle_pg/schema");
     const results = await db
       .select()
       .from(esgObligations)
@@ -111,7 +111,7 @@ export async function getEsgAtomicRequirements(obligationId?: string) {
   if (!db) return [];
 
   try {
-    const { esgAtomicRequirements } = await import("../drizzle/schema");
+    const { esgAtomicRequirements } = await import("../drizzle_pg/schema");
     let query = db.select().from(esgAtomicRequirements);
     
     if (obligationId) {
@@ -133,7 +133,7 @@ export async function getEsgAtomicRequirement(atomicId: string) {
   if (!db) return null;
 
   try {
-    const { esgAtomicRequirements } = await import("../drizzle/schema");
+    const { esgAtomicRequirements } = await import("../drizzle_pg/schema");
     const results = await db
       .select()
       .from(esgAtomicRequirements)
@@ -161,7 +161,7 @@ export async function getEsgDataRequirements(filters?: {
   if (!db) return [];
 
   try {
-    const { esgDataRequirements } = await import("../drizzle/schema");
+    const { esgDataRequirements } = await import("../drizzle_pg/schema");
     let query = db.select().from(esgDataRequirements);
     
     if (filters?.atomicId) {
@@ -186,7 +186,7 @@ export async function getEsgDataRequirement(dataId: string) {
   if (!db) return null;
 
   try {
-    const { esgDataRequirements } = await import("../drizzle/schema");
+    const { esgDataRequirements } = await import("../drizzle_pg/schema");
     const results = await db
       .select()
       .from(esgDataRequirements)
@@ -214,7 +214,7 @@ export async function getEsgGs1Mappings(filters?: {
   if (!db) return [];
 
   try {
-    const { esgGs1Mappings } = await import("../drizzle/schema");
+    const { esgGs1Mappings } = await import("../drizzle_pg/schema");
     let query = db.select().from(esgGs1Mappings);
     
     if (filters?.mappingStrength) {
@@ -246,7 +246,7 @@ export async function getEsgGs1Mapping(dataId: string) {
   if (!db) return null;
 
   try {
-    const { esgGs1Mappings } = await import("../drizzle/schema");
+    const { esgGs1Mappings } = await import("../drizzle_pg/schema");
     const results = await db
       .select()
       .from(esgGs1Mappings)
@@ -278,7 +278,7 @@ export async function getEsgTraceabilityChain(instrumentId: string) {
       esgAtomicRequirements, 
       esgDataRequirements, 
       esgGs1Mappings 
-    } = await import("../drizzle/schema");
+    } = await import("../drizzle_pg/schema");
 
     // Get instrument
     const instrument = await db
@@ -404,7 +404,7 @@ export async function getEsgArtefactStats() {
       esgAtomicRequirements, 
       esgDataRequirements, 
       esgGs1Mappings 
-    } = await import("../drizzle/schema");
+    } = await import("../drizzle_pg/schema");
 
     const [
       corpusCount,

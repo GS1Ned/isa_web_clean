@@ -171,7 +171,7 @@ export async function markChunkDeprecated(
   if (!db) return false;
 
   try {
-    const { knowledgeEmbeddings } = await import("../drizzle/schema");
+    const { knowledgeEmbeddings } = await import("../drizzle_pg/schema");
 
     await db
       .update(knowledgeEmbeddings)
@@ -197,7 +197,7 @@ export async function updateVerificationDate(chunkId: number): Promise<boolean> 
   if (!db) return false;
 
   try {
-    const { knowledgeEmbeddings } = await import("../drizzle/schema");
+    const { knowledgeEmbeddings } = await import("../drizzle_pg/schema");
 
     await db
       .update(knowledgeEmbeddings)

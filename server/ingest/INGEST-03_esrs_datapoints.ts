@@ -3,7 +3,7 @@ import * as path from "path";
 import crypto from "node:crypto";
 import { eq } from "drizzle-orm";
 import { getDb } from "../db";
-import { esrsDatapoints, rawEsrsDatapoints } from "../../drizzle/schema";
+import { esrsDatapoints, rawEsrsDatapoints } from "../../drizzle_pg/schema";
 import { serverLogger } from "../_core/logger-wiring";
 import { getExcelSheetNames, getExcelWorksheetRows, readExcelWorkbook } from "../_core/excel";
 import { recordIngestProvenance, sha256Hex } from "./_core/provenance";

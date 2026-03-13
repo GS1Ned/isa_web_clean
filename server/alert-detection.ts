@@ -3,11 +3,30 @@
  * 
  * Monitors error rates, critical errors, and performance degradation
  * to trigger alerts when thresholds are exceeded.
+ * 
+ * Engine-aware: loads schema from drizzle_pg or drizzle based on DB_ENGINE.
  */
 
-import { getDb } from "./db";
-import { errorLog, performanceLog, alertCooldowns } from "../drizzle/schema";
+import { getDb, getDbEngine } from "./db";
 import { and, eq, gt, gte, sql } from "drizzle-orm";
+
+// Lazy schema references - resolved at runtime based on engine
+async function getMonitoringSchema() {
+  if (getDbEngine() === "postgres") {
+    const pgSchema = await import("../drizzle_pg/schema");
+    return {
+      errorLog: pgSchema.errorLog,
+      performanceLog: pgSchema.performanceLog,
+      alertCooldowns: pgSchema.alertCooldowns,
+    };
+  }
+  const mysqlSchema = await import("../drizzle_pg/schema");
+  return {
+    errorLog: mysqlSchema.errorLog,
+    performanceLog: mysqlSchema.performanceLog,
+    alertCooldowns: mysqlSchema.alertCooldowns,
+  };
+}
 
 /**
  * Alert severity levels
@@ -79,6 +98,7 @@ export const DEFAULT_THRESHOLDS: AlertThresholds = {
 export async function isInCooldown(alertType: AlertType, alertKey: string): Promise<boolean> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { alertCooldowns } = await getMonitoringSchema();
   const results = await db
     .select()
     .from(alertCooldowns)
@@ -106,6 +126,7 @@ export async function createCooldown(
 
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { alertCooldowns } = await getMonitoringSchema();
   await db.insert(alertCooldowns).values({
     alertType,
     alertKey,
@@ -131,6 +152,7 @@ export async function checkErrorRateThreshold(
   // Count errors in the last hour
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { errorLog } = await getMonitoringSchema();
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
   const result = await db
     .select({
@@ -220,6 +242,7 @@ export async function checkCriticalErrorThreshold(
   // Count critical errors in the time window
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { errorLog } = await getMonitoringSchema();
   const windowStart = new Date(
     Date.now() - thresholds.criticalErrors.timeWindowMinutes * 60 * 1000
   );
@@ -295,10 +318,10 @@ export async function checkPerformanceDegradation(
   // Calculate 7-day baseline (p95 duration)
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { performanceLog } = await getMonitoringSchema();
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
-  // Calculate p95 using MySQL-compatible percentile approximation
   const baselineResult = await db
     .select({
       count: sql<number>`COUNT(*)`,
@@ -335,8 +358,6 @@ export async function checkPerformanceDegradation(
   const p95Index = Math.floor(baselineDurations.length * 0.95);
   const baselineP95 = baselineDurations[p95Index]?.duration || 0;
 
-
-
   // Calculate current p95 (last hour)
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
   
@@ -364,8 +385,6 @@ export async function checkPerformanceDegradation(
   
   const successCount = currentDurations.filter(d => d.success === 1).length;
   const successRate = (successCount / currentDurations.length) * 100;
-
-
 
   // Determine severity
   let severity: AlertSeverity | null = null;
@@ -412,6 +431,7 @@ export async function detectAllAlerts(
 ): Promise<AlertDetectionResult[]> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { performanceLog } = await getMonitoringSchema();
   const alerts: AlertDetectionResult[] = [];
 
   // Check error rate

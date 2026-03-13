@@ -9,7 +9,7 @@ import { TRPCError } from "@trpc/server";
 import { manualNewsIngestion, manualNewsArchival } from "./news-cron-scheduler";
 import { getArchivalStats } from "./news-archival";
 import { getDb } from "./db";
-import { hubNews } from "../drizzle/schema";
+import { hubNews } from "../drizzle_pg/schema";
 import { desc } from "drizzle-orm";
 import {
   monitoredCronJob,

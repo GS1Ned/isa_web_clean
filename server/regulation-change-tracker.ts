@@ -8,7 +8,7 @@ import {
   regulations,
   regulatoryChangeAlerts,
   userAlerts,
-} from "../drizzle/schema";
+} from "../drizzle_pg/schema";
 import { eq, and } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
 import { serverLogger } from "./_core/logger-wiring";

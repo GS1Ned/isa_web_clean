@@ -5,7 +5,7 @@
 
 import { notifyOwner } from "./_core/notification";
 import { getDb } from "./db";
-import { users, userAlerts, regulations, hubNews } from "../drizzle/schema";
+import { users, userAlerts, regulations, hubNews } from "../drizzle_pg/schema";
 import { eq } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 
