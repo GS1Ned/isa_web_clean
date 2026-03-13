@@ -184,13 +184,11 @@ fi
 
 echo "READY=docs_dates_ok"
 
-# No-console gate (scoped). Regex uses an escaped dot to match the literal '.' character.
+# No-console gate (scoped to the benchmark package). Regex uses an escaped dot to
+# match the literal '.' character. Repo-wide runtime/script enforcement belongs to
+# the dedicated no-console workflow, not the schema-validation path for this package.
 pat='console\.'
 scopes=(
-  server
-  client
-  shared
-  scripts
   "${BASE}"
 )
 

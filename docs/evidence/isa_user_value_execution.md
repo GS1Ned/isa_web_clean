@@ -45,6 +45,7 @@ Target branch: `main`
 | `python3 scripts/validate_planning_and_traceability.py` | Pass | Canonical planning/doc-sprawl validator passed after moving artifacts into allowed locations |
 | `bash scripts/gates/doc-code-validator.sh --canonical-only` | Pass | Canonical doc-code validator passed |
 | `bash scripts/gates/canonical-contract-drift.sh` | Pass | Generated contract metadata updated to the current commit |
+| `python3 scripts/gates/manifest-ownership-drift.py` | Pass after follow-up | Follow-up governance patch added missing shared-platform ownership for `error_ledger` |
 | `bash scripts/gates/no-console-gate.sh` | Fail | Fails on long-standing `scripts/*.mjs` console usage outside this change set |
 | `pnpm check` | Fail | Repo-wide pre-existing TypeScript debt unrelated to this slice |
 | Touched-file compiler isolation | Pass | No `tsc` matches for edited Ask ISA files |
@@ -52,8 +53,10 @@ Target branch: `main`
 ### Issues Encountered And Resolved
 - FACT: `pnpm check` failed on many unrelated client, server, and schema files outside the Ask ISA slice.
 - FACT: `bash scripts/gates/no-console-gate.sh` failed on pre-existing `scripts/*.mjs` console usage outside this branch.
+- FACT: PR follow-up CI exposed a separate ownership-contract gap: `error_ledger` existed in runtime schema declarations but not in `CAPABILITY_MANIFEST.json`.
+- FACT: `scripts/validate_oss_benchmarks_2026_02_15.sh` duplicated repo-wide no-console enforcement inside the schema-validation workflow; the follow-up narrowed that script back to benchmark-package scope so schema checks report schema problems instead of unrelated runtime-script debt.
 - INTERPRETATION: The repo is not currently in a globally type-clean state, so branch readiness must rely on scoped regression evidence plus explicit blocker logging.
-- RECOMMENDATION: Treat repo-wide type debt as a separate cleanup program, not as a blocker for reviewing this targeted Ask ISA hardening change.
+- RECOMMENDATION: Treat repo-wide type debt and repo-wide no-console debt as separate cleanup programs, not as blockers for reviewing this targeted Ask ISA hardening change.
 
 ## 9. Pull Request Readiness
 - Branch name: `codex/ask-isa-user-value-reliability`
@@ -67,7 +70,9 @@ Target branch: `main`
   - Remove double-scaled similarity percentages from Ask ISA export/widget surfaces.
 - Check status:
   - FACT: Focused tests passed locally.
-  - FACT: `canonical-contract-drift` was remediated locally by refreshing generated contract commit stamps.
+  - FACT: Functional Ask ISA improvements merged via PR `#326`.
+  - FACT: Metadata/governance follow-up is tracked in PR `#328`.
+  - FACT: `canonical-contract-drift` follow-up required both repo-ref refresh and the missing `error_ledger` ownership entry.
   - FACT: `no-console` and global `pnpm check` remain blocked by unrelated pre-existing errors.
 - Merge / automerge status: UNKNOWN until branch is pushed and PR checks are created.
 
