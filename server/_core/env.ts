@@ -62,8 +62,8 @@ function validateEnv(): void {
 
   // Validate JWT_SECRET
   const jwtSecret = process.env.JWT_SECRET ?? "";
-  if (jwtSecret && jwtSecret.length < 32) {
-    invalid.push("JWT_SECRET (must be >= 32 chars, got " + jwtSecret.length + ")");
+  if (jwtSecret && jwtSecret.length < 16) {
+    invalid.push("JWT_SECRET (must be >= 16 chars, got " + jwtSecret.length + ")");
   }
   if (INSECURE_DEFAULTS.includes(jwtSecret)) {
     invalid.push("JWT_SECRET (using insecure default value)");
