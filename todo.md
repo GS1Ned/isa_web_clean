@@ -53,3 +53,8 @@
 - [x] User Value Eval: Phase 1-3 — Evaluation, improvement universe, priority model
 - [x] User Value Eval: Phase 4-5 — Execute highest-value improvements
 - [x] User Value Eval: Phase 6 — Validation, delta report, delivery
+- [x] Expand knowledge embeddings: Inspect current state and available data sources
+- [x] Expand knowledge embeddings: Generate embeddings for GS1 Web Vocabulary (52 terms)
+- [x] Expand knowledge embeddings: Generate embeddings for GPC classifications (46 items)
+- [x] Expand knowledge embeddings: Generate embeddings for Safety Gate alerts, companies, NEVO, crosswalks
+- [x] Expand knowledge embeddings: Verify 500+ total (533), rebuild pgvector index, test Ask ISA quality
