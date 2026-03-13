@@ -42,11 +42,16 @@ Target branch: `main`
 | Check | Result | Notes |
 | --- | --- | --- |
 | Focused Vitest suite | Pass | `7` files, `91` tests passed |
+| `python3 scripts/validate_planning_and_traceability.py` | Pass | Canonical planning/doc-sprawl validator passed after moving artifacts into allowed locations |
+| `bash scripts/gates/doc-code-validator.sh --canonical-only` | Pass | Canonical doc-code validator passed |
+| `bash scripts/gates/canonical-contract-drift.sh` | Pass | Generated contract metadata updated to the current commit |
+| `bash scripts/gates/no-console-gate.sh` | Fail | Fails on long-standing `scripts/*.mjs` console usage outside this change set |
 | `pnpm check` | Fail | Repo-wide pre-existing TypeScript debt unrelated to this slice |
 | Touched-file compiler isolation | Pass | No `tsc` matches for edited Ask ISA files |
 
 ### Issues Encountered And Resolved
 - FACT: `pnpm check` failed on many unrelated client, server, and schema files outside the Ask ISA slice.
+- FACT: `bash scripts/gates/no-console-gate.sh` failed on pre-existing `scripts/*.mjs` console usage outside this branch.
 - INTERPRETATION: The repo is not currently in a globally type-clean state, so branch readiness must rely on scoped regression evidence plus explicit blocker logging.
 - RECOMMENDATION: Treat repo-wide type debt as a separate cleanup program, not as a blocker for reviewing this targeted Ask ISA hardening change.
 
@@ -62,7 +67,8 @@ Target branch: `main`
   - Remove double-scaled similarity percentages from Ask ISA export/widget surfaces.
 - Check status:
   - FACT: Focused tests passed locally.
-  - FACT: Global `pnpm check` remains blocked by unrelated pre-existing errors.
+  - FACT: `canonical-contract-drift` was remediated locally by refreshing generated contract commit stamps.
+  - FACT: `no-console` and global `pnpm check` remain blocked by unrelated pre-existing errors.
 - Merge / automerge status: UNKNOWN until branch is pushed and PR checks are created.
 
 ## 10. Unknowns And Next Improvements
