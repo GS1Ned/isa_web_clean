@@ -32,3 +32,20 @@
 - [x] Phase 6h: Verify all critical API endpoints (regulations, standards, ESRS, hub news, standards directory, ask ISA v2)
 - [x] Phase 6i: Run full vitest suite (921 passed, 2 failed pre-existing, 11 skipped)
 - [x] Phase 7: Save checkpoint and deliver publishable ISA
+- [x] Netherlands-first GS1 Data Coverage Research: Phase 1-2 Discovery & Screening
+- [x] Netherlands-first GS1 Data Coverage Research: Phase 3 Deep Evaluation
+- [x] Netherlands-first GS1 Data Coverage Research: Phase 4-5 Architecture & Roadmap
+- [x] Netherlands-first GS1 Data Coverage Research: Phase 6 Critical Review & Gap Analysis
+- [x] Netherlands-first GS1 Data Coverage Research: Deliver complete research package
+- [x] ISA DB Strengthening Plan: Section A-D (Executive, Coverage Strategy, Priority Actions, Entity Matrix)
+- [x] ISA DB Strengthening Plan: Section E-G (Source-to-Content, Identifier Graph, Quality/Trust)
+- [x] ISA DB Strengthening Plan: Section H-K (Sector Rollout, KPIs, Phased Roadmap, Blockers)
+- [x] ISA DB Strengthening Plan: Self-check and deliver complete package
+- [x] DB Execution: Phase 0 — Inspect repo/DB, produce execution inventory
+- [x] DB Execution: Phase 1 — Schema changes for new entity types, provenance, crosswalks
+- [x] DB Execution: Phase 2A — Populate regulation-standard and ESRS mappings
+- [x] DB Execution: Phase 2B — Ingest GS1 Web Vocabulary and GPC classification
+- [x] DB Execution: Phase 2C — Ingest Safety Gate alerts and Open Food Facts products
+- [x] DB Execution: Phase 2D — EUR-Lex enrichment and KVK company seeding
+- [x] DB Execution: Phase 3 — Provenance hardening, validation, KPI computation
+- [x] DB Execution: Phase 4-5 — Coverage verification and execution report
