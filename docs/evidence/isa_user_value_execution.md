@@ -4,7 +4,7 @@ Date: 2026-03-13
 Current branch: `codex/ask-isa-v2-intelligence`
 Base branch: `main`
 Merged groundwork: `#326`, `#328`, `#329`
-Current PR: pending branch push
+Current PR: `#330`
 Target branch: `main`
 
 ## 7. Execution Log
@@ -65,8 +65,9 @@ Target branch: `main`
 | Focused Ask ISA v2 Vitest suite                             | Pass                | `4` files, `29` tests passed                                                            |
 | `server/hybrid-search.test.ts`                              | Pass                | Included in the focused suite to catch retrieval regressions                            |
 | Touched-file compiler isolation                             | Pass                | `pnpm exec tsc --noEmit --pretty false` produced no matches for edited Ask ISA v2 files |
-| `bash scripts/gates/doc-code-validator.sh --canonical-only` | Pending rerun       | To be rerun after final doc updates                                                     |
-| `python3 scripts/validate_planning_and_traceability.py`     | Pending rerun       | To be rerun after final doc updates                                                     |
+| `bash scripts/gates/doc-code-validator.sh --canonical-only` | Pass                | Canonical doc-code validator passed after runtime-contract and evidence updates          |
+| `python3 scripts/validate_planning_and_traceability.py`     | Pass                | Canonical planning/traceability validator passed after evidence updates                  |
+| `bash scripts/gates/canonical-contract-drift.sh`            | Pass after follow-up | Generated `repo_ref.commit` values refreshed to the current `main` base SHA for PR `#330` |
 | Repo-wide `pnpm check`                                      | Known baseline fail | Existing repo-wide TypeScript debt outside this slice                                   |
 | Repo-wide `no-console` gate                                 | Known baseline fail | Existing `scripts/*.mjs` console usage outside this slice                               |
 
@@ -92,8 +93,11 @@ Target branch: `main`
 - Check status:
   - FACT: Focused tests passed locally.
   - FACT: Touched-file compiler isolation passed.
-  - FACT: Canonical doc/planning validators still need a final rerun after the documentation updates in this branch.
-- Merge / automerge status: Not applicable yet; branch not pushed and PR not opened at the time of this log entry.
+  - FACT: PR `#330` is open against `main`.
+  - FACT: `secrets-scan`, both `smoke` checks, and both `validate` checks passed on the initial PR run.
+  - FACT: `canonical-contract-drift` failed on the initial PR run because six generated `repo_ref.commit` values still referenced `b63e3a98ca526e3f62d1462b1921d520d1168948`; this follow-up refresh fixes that branch-local drift.
+  - FACT: `no-console` remains a repo-wide baseline failure outside this slice.
+- Merge / automerge status: Not enabled; PR `#330` remains subject to branch checks.
 
 ## 10. Unknowns And Next Improvements
 
