@@ -59,6 +59,10 @@ import {
   getAskIsaSourceLocatorLabel,
   hasReviewerUsableAskIsaCitation,
 } from "@/lib/ask-isa-citation";
+import {
+  formatAskIsaConfidencePercent,
+  formatAskIsaSourceCount,
+} from "@shared/ask-isa-confidence";
 
 /**
  * Ask ISA - RAG-Powered Q&A Interface
@@ -112,6 +116,7 @@ interface Message {
   confidence?: {
     level: "high" | "medium" | "low";
     score: number;
+    sourceCount?: number;
   };
   citationValid?: boolean;
   missingCitations?: string[];
@@ -207,6 +212,7 @@ type AuthorityFilter = typeof AUTHORITY_FILTER_OPTIONS[number]['value'];
 export default function AskISA() {
   const { user } = useAuth();
   const { t, language } = useI18n();
+  const utils = trpc.useUtils();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [conversationId, setConversationId] = useState<number | undefined>();
@@ -369,7 +375,7 @@ export default function AskISA() {
         const sourceHref = getAskIsaSourceHref(source);
         const sourceLocator = getAskIsaSourceLocatorLabel(source);
         addText(
-          `${source.type || 'Unknown'} • Relevance: ${Math.round(source.similarity * 100)}%${sourceLocator ? ` • ${sourceLocator}` : ''}${sourceHref ? ` • ${sourceHref}` : ''}`,
+          `${source.type || 'Unknown'} • Relevance: ${source.similarity}%${sourceLocator ? ` • ${sourceLocator}` : ''}${sourceHref ? ` • ${sourceHref}` : ''}`,
           9,
           false,
           [100, 100, 100],
@@ -385,7 +391,16 @@ export default function AskISA() {
     
     const metadataItems: string[] = [];
     if (message.confidence) {
-      metadataItems.push(`Confidence: ${message.confidence.level.toUpperCase()} (${Math.round(message.confidence.score * 100)}%)`);
+      const confidencePercent = formatAskIsaConfidencePercent(
+        message.confidence.score,
+        message.confidence.sourceCount,
+      );
+      const sourceCountLabel = formatAskIsaSourceCount(
+        message.confidence.sourceCount,
+      );
+      metadataItems.push(
+        `Confidence: ${message.confidence.level.toUpperCase()} (${confidencePercent}${sourceCountLabel ? `, ${sourceCountLabel}` : ""})`,
+      );
     }
     if (message.claimVerification) {
       metadataItems.push(`Verification: ${message.claimVerification.verifiedClaims}/${message.claimVerification.totalClaims} claims verified`);
@@ -529,7 +544,11 @@ export default function AskISA() {
     }
   };
 
-  const getConfidenceBadge = (confidence?: { level: "high" | "medium" | "low"; score: number }) => {
+  const getConfidenceBadge = (confidence?: {
+    level: "high" | "medium" | "low";
+    score: number;
+    sourceCount?: number;
+  }) => {
     if (!confidence) return null;
 
     const colors = {
@@ -540,7 +559,11 @@ export default function AskISA() {
 
     return (
       <Badge className={colors[confidence.level]}>
-        {confidence.level.toUpperCase()} Confidence ({confidence.score} sources)
+        {confidence.level.toUpperCase()} Confidence{" "}
+        {formatAskIsaConfidencePercent(confidence.score, confidence.sourceCount)}
+        {confidence.sourceCount !== undefined
+          ? ` (${formatAskIsaSourceCount(confidence.sourceCount)})`
+          : ""}
       </Badge>
     );
   };
@@ -591,7 +614,6 @@ export default function AskISA() {
 
   const handleLoadConversation = async (convId: number) => {
     try {
-      const utils = trpc.useUtils();
       const conversation = await utils.askISA.getConversation.fetch({ conversationId: convId });
       if (conversation) {
         setConversationId(convId);

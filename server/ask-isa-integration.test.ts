@@ -117,21 +117,24 @@ describe("Ask ISA Guardrails", () => {
       const confidence = calculateConfidence(5);
 
       expect(confidence.level).toBe("high");
-      expect(confidence.score).toBe(5);
+      expect(confidence.score).toBe(0.85);
+      expect(confidence.sourceCount).toBe(5);
     });
 
     it("assigns medium confidence for 2 sources", () => {
       const confidence = calculateConfidence(2);
 
       expect(confidence.level).toBe("medium");
-      expect(confidence.score).toBe(2);
+      expect(confidence.score).toBe(0.65);
+      expect(confidence.sourceCount).toBe(2);
     });
 
     it("assigns low confidence for 1 source", () => {
       const confidence = calculateConfidence(1);
 
       expect(confidence.level).toBe("low");
-      expect(confidence.score).toBe(1);
+      expect(confidence.score).toBe(0.4);
+      expect(confidence.sourceCount).toBe(1);
     });
 
     it("assigns low confidence for 0 sources", () => {
@@ -139,6 +142,7 @@ describe("Ask ISA Guardrails", () => {
 
       expect(confidence.level).toBe("low");
       expect(confidence.score).toBe(0);
+      expect(confidence.sourceCount).toBe(0);
     });
   });
 

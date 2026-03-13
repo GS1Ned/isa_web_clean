@@ -1,12 +1,18 @@
 // @ts-nocheck
 /**
  * Ask ISA Query Cache
- * 
+ *
  * Simple in-memory cache for Ask ISA queries to improve response times
  * for frequently asked questions.
  */
 
 import { serverLogger } from "./_core/logger-wiring";
+
+export interface AskISACacheContext {
+  sector?: string | null;
+  conversationId?: number | null;
+  hasConversationHistory?: boolean;
+}
 
 interface CachedResponse {
   answer: string;
@@ -22,6 +28,7 @@ interface CachedResponse {
   confidence: {
     level: "high" | "medium" | "low";
     score: number;
+    sourceCount?: number;
   };
   claimVerification?: {
     verificationRate: number;
@@ -30,8 +37,27 @@ interface CachedResponse {
     unverifiedClaims: number;
     warnings: string[];
   };
+  queryType?: string;
+  citationValid?: boolean;
+  missingCitations?: string[];
+  authority?: {
+    score: number;
+    level: string;
+    breakdown?: Record<string, number>;
+  };
+  responseMode?: {
+    mode: "full" | "partial" | "insufficient";
+    reason: string;
+    recommendations: string[];
+  };
+  queryAnalysis?: {
+    isAmbiguous?: boolean;
+    relatedTopics?: string[];
+  };
   cachedAt: number;
   hitCount: number;
+  cacheQuery: string;
+  cacheSector: string;
 }
 
 interface CacheStats {
@@ -46,7 +72,6 @@ interface CacheStats {
 // Cache configuration
 const CACHE_TTL_MS = 1000 * 60 * 60; // 1 hour
 const MAX_CACHE_SIZE = 100; // Maximum number of cached queries
-const SIMILARITY_THRESHOLD = 0.95; // Minimum similarity for cache hit
 
 // In-memory cache store
 const queryCache = new Map<string, CachedResponse>();
@@ -60,15 +85,31 @@ function normalizeQuery(query: string): string {
   return query
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s]/g, "") // Remove punctuation
-    .replace(/\s+/g, " "); // Normalize whitespace
+    .replace(/[^\w\s]/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function normalizeSector(sector?: string | null): string {
+  return String(sector || "all")
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-");
+}
+
+function isConversationScoped(context?: AskISACacheContext) {
+  return Boolean(context?.conversationId || context?.hasConversationHistory);
+}
+
+function isCacheEligible(context?: AskISACacheContext) {
+  return !isConversationScoped(context);
 }
 
 /**
  * Generate a cache key from a query
  */
-function generateCacheKey(query: string): string {
-  return normalizeQuery(query);
+function generateCacheKey(query: string, context?: AskISACacheContext): string {
+  return `q:${normalizeQuery(query)}|sector:${normalizeSector(context?.sector)}`;
 }
 
 /**
@@ -82,23 +123,34 @@ function isValidCacheEntry(entry: CachedResponse): boolean {
 /**
  * Get a cached response for a query
  */
-export function getCachedResponse(query: string): CachedResponse | null {
-  const key = generateCacheKey(query);
+export function getCachedResponse(
+  query: string,
+  context?: AskISACacheContext,
+): CachedResponse | null {
+  if (!isCacheEligible(context)) {
+    serverLogger.info(
+      `[Ask ISA Cache] Bypassed cache for conversation-scoped query: "${query.substring(0, 50)}..."`,
+    );
+    return null;
+  }
+
+  const key = generateCacheKey(query, context);
   const cached = queryCache.get(key);
-  
+
   if (cached && isValidCacheEntry(cached)) {
     cached.hitCount++;
     totalHits++;
     serverLogger.info(`[Ask ISA Cache] Cache HIT for query: "${query.substring(0, 50)}..."`);
     return cached;
   }
-  
-  // Remove expired entry if exists
+
   if (cached) {
     queryCache.delete(key);
-    serverLogger.info(`[Ask ISA Cache] Expired entry removed for query: "${query.substring(0, 50)}..."`);
+    serverLogger.info(
+      `[Ask ISA Cache] Expired entry removed for query: "${query.substring(0, 50)}..."`,
+    );
   }
-  
+
   totalMisses++;
   return null;
 }
@@ -108,34 +160,42 @@ export function getCachedResponse(query: string): CachedResponse | null {
  */
 export function cacheResponse(
   query: string,
-  response: Omit<CachedResponse, "cachedAt" | "hitCount">
+  response: Omit<CachedResponse, "cachedAt" | "hitCount" | "cacheQuery" | "cacheSector">,
+  context?: AskISACacheContext,
 ): void {
-  // Enforce cache size limit
+  if (!isCacheEligible(context)) {
+    serverLogger.info(
+      `[Ask ISA Cache] Skipped caching for conversation-scoped query: "${query.substring(0, 50)}..."`,
+    );
+    return;
+  }
+
   if (queryCache.size >= MAX_CACHE_SIZE) {
-    // Remove oldest entry
     let oldestKey: string | null = null;
     let oldestTime = Infinity;
-    
+
     for (const [key, entry] of queryCache.entries()) {
       if (entry.cachedAt < oldestTime) {
         oldestTime = entry.cachedAt;
         oldestKey = key;
       }
     }
-    
+
     if (oldestKey) {
       queryCache.delete(oldestKey);
       serverLogger.info(`[Ask ISA Cache] Evicted oldest entry to make room`);
     }
   }
-  
-  const key = generateCacheKey(query);
+
+  const key = generateCacheKey(query, context);
   queryCache.set(key, {
     ...response,
     cachedAt: Date.now(),
     hitCount: 0,
+    cacheQuery: normalizeQuery(query),
+    cacheSector: normalizeSector(context?.sector),
   });
-  
+
   serverLogger.info(`[Ask ISA Cache] Cached response for query: "${query.substring(0, 50)}..."`);
 }
 
@@ -154,15 +214,17 @@ export function invalidateCache(): void {
 export function invalidateCacheByPattern(pattern: string): number {
   const normalizedPattern = normalizeQuery(pattern);
   let invalidated = 0;
-  
-  for (const [key] of queryCache.entries()) {
-    if (key.includes(normalizedPattern)) {
+
+  for (const [key, entry] of queryCache.entries()) {
+    if (key.includes(normalizedPattern) || entry.cacheQuery.includes(normalizedPattern)) {
       queryCache.delete(key);
       invalidated++;
     }
   }
-  
-  serverLogger.info(`[Ask ISA Cache] Invalidated ${invalidated} entries matching pattern: "${pattern}"`);
+
+  serverLogger.info(
+    `[Ask ISA Cache] Invalidated ${invalidated} entries matching pattern: "${pattern}"`,
+  );
   return invalidated;
 }
 
@@ -172,7 +234,7 @@ export function invalidateCacheByPattern(pattern: string): number {
 export function getCacheStats(): CacheStats {
   let oldestEntry: number | null = null;
   let newestEntry: number | null = null;
-  
+
   for (const entry of queryCache.values()) {
     if (oldestEntry === null || entry.cachedAt < oldestEntry) {
       oldestEntry = entry.cachedAt;
@@ -181,9 +243,9 @@ export function getCacheStats(): CacheStats {
       newestEntry = entry.cachedAt;
     }
   }
-  
+
   const totalRequests = totalHits + totalMisses;
-  
+
   return {
     totalEntries: queryCache.size,
     totalHits,
@@ -199,33 +261,39 @@ export function getCacheStats(): CacheStats {
  */
 export function cleanupExpiredEntries(): number {
   let cleaned = 0;
-  
+
   for (const [key, entry] of queryCache.entries()) {
     if (!isValidCacheEntry(entry)) {
       queryCache.delete(key);
       cleaned++;
     }
   }
-  
+
   if (cleaned > 0) {
     serverLogger.info(`[Ask ISA Cache] Cleaned up ${cleaned} expired entries`);
   }
-  
+
   return cleaned;
 }
 
 /**
  * Get the most frequently asked questions from cache
  */
-export function getTopQueries(limit: number = 10): Array<{ query: string; hitCount: number }> {
-  const entries: Array<{ query: string; hitCount: number }> = [];
-  
-  for (const [key, entry] of queryCache.entries()) {
+export function getTopQueries(
+  limit: number = 10,
+): Array<{ query: string; sector: string; hitCount: number }> {
+  const entries: Array<{ query: string; sector: string; hitCount: number }> = [];
+
+  for (const entry of queryCache.values()) {
     if (isValidCacheEntry(entry)) {
-      entries.push({ query: key, hitCount: entry.hitCount });
+      entries.push({
+        query: entry.cacheQuery,
+        sector: entry.cacheSector,
+        hitCount: entry.hitCount,
+      });
     }
   }
-  
+
   return entries
     .sort((a, b) => b.hitCount - a.hitCount)
     .slice(0, limit);

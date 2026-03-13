@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Badge } from "@/components/ui/badge";
+import { formatAskIsaConfidencePercent } from "@shared/ask-isa-confidence";
 import {
   Card,
   CardContent,
@@ -225,7 +226,9 @@ export default function AdminFeedbackDashboard() {
             <CardHeader className="pb-2">
               <CardDescription>Avg. Confidence</CardDescription>
               <CardTitle className="text-3xl">
-                {stats?.avgConfidence ? `${Math.round(stats.avgConfidence * 100)}%` : "N/A"}
+                {stats?.avgConfidence !== null && stats?.avgConfidence !== undefined
+                  ? `${Math.round(stats.avgConfidence * 100)}%`
+                  : "N/A"}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -335,9 +338,15 @@ export default function AdminFeedbackDashboard() {
                               Negative
                             </Badge>
                           )}
-                          {feedback.confidenceScore && (
+                          {feedback.confidenceScore !== null &&
+                            feedback.confidenceScore !== undefined && (
                             <Badge variant="outline">
-                              {Math.round(Number(feedback.confidenceScore) * 100)}% confidence
+                              {formatAskIsaConfidencePercent(
+                                Number(feedback.confidenceScore),
+                                typeof feedback.sourcesCount === "number"
+                                  ? feedback.sourcesCount
+                                  : null,
+                              )} confidence
                             </Badge>
                           )}
                           {feedback.sourcesCount && (
