@@ -132,6 +132,13 @@ const advisoryLaneStatusEnum = pgEnum("advisory_lane_status", [
   "LANE_C",
 ]);
 
+const qaMessageRoleEnum = pgEnum("qa_message_role", ["user", "assistant"]);
+
+const askIsaFeedbackTypeEnum = pgEnum("ask_isa_feedback_type", [
+  "positive",
+  "negative",
+]);
+
 // ---------------------------------------------------------------------------
 // Ask ISA / Knowledge Base subset
 // ---------------------------------------------------------------------------
@@ -143,12 +150,15 @@ export const sources = pgTable(
     name: varchar("name", { length: 512 }).notNull(),
     acronym: varchar("acronym", { length: 64 }),
     externalId: varchar("external_id", { length: 255 }),
+    datasetId: varchar("dataset_id", { length: 255 }),
     sourceType: sourceTypeEnum("source_type").notNull(),
     authorityLevel: integer("authority_level").notNull(),
     authorityTier: varchar("authority_tier", { length: 64 }),
+    sourceRole: varchar("source_role", { length: 64 }),
     licenseType: varchar("license_type", { length: 64 }),
     publicationStatus: varchar("publication_status", { length: 64 }),
     immutableUri: varchar("immutable_uri", { length: 1024 }),
+    sourceLocator: varchar("source_locator", { length: 1024 }),
     publisher: varchar("publisher", { length: 255 }),
     publisherUrl: varchar("publisher_url", { length: 512 }),
     version: varchar("version", { length: 64 }),
@@ -174,6 +184,10 @@ export const sources = pgTable(
     })
       .defaultNow()
       .notNull(),
+    retrievedAt: timestamp("retrieved_at", {
+      withTimezone: true,
+      mode: "string",
+    }),
     lastVerifiedDate: timestamp("last_verified_date", {
       withTimezone: true,
       mode: "string",
@@ -181,7 +195,9 @@ export const sources = pgTable(
     verificationStatus: sourceVerificationStatusEnum("verification_status")
       .default("pending")
       .notNull(),
+    contentHash: varchar("content_hash", { length: 64 }),
     description: text("description"),
+    admissionBasis: varchar("admission_basis", { length: 64 }),
     sector: varchar("sector", { length: 128 }),
     language: varchar("language", { length: 8 }).default("en"),
     createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
@@ -195,6 +211,8 @@ export const sources = pgTable(
   (table) => [
     index("sources_source_type_idx").on(table.sourceType),
     index("sources_authority_level_idx").on(table.authorityLevel),
+    index("sources_dataset_id_idx").on(table.datasetId),
+    index("sources_source_role_idx").on(table.sourceRole),
     index("sources_status_idx").on(table.status),
     index("sources_sector_idx").on(table.sector),
     index("sources_publication_date_idx").on(table.publicationDate),
@@ -300,6 +318,47 @@ export const ragTraces = pgTable(
   ]
 );
 
+export const qaConversations = pgTable(
+  "qa_conversations",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id"),
+    title: varchar("title", { length: 255 }),
+    messageCount: integer("message_count").default(0).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("qa_conversations_user_id_idx").on(table.userId),
+    index("qa_conversations_created_at_idx").on(table.createdAt),
+  ]
+);
+
+export const qaMessages = pgTable(
+  "qa_messages",
+  {
+    id: serial("id").primaryKey(),
+    conversationId: integer("conversation_id")
+      .references(() => qaConversations.id, { onDelete: "cascade" })
+      .notNull(),
+    role: qaMessageRoleEnum("role").notNull(),
+    content: text("content").notNull(),
+    sources: jsonb("sources"),
+    retrievedChunks: integer("retrieved_chunks"),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("qa_messages_conversation_id_idx").on(table.conversationId),
+    index("qa_messages_created_at_idx").on(table.createdAt),
+  ]
+);
+
 export const knowledgeEmbeddings = pgTable(
   "knowledge_embeddings",
   {
@@ -316,7 +375,31 @@ export const knowledgeEmbeddings = pgTable(
     url: varchar("url", { length: 512 }),
     datasetId: varchar("dataset_id", { length: 255 }),
     datasetVersion: varchar("dataset_version", { length: 64 }),
+    sourceChunkId: integer("source_chunk_id"),
+    authorityLevel: varchar("authority_level", { length: 64 }),
+    legalStatus: varchar("legal_status", { length: 64 }),
+    effectiveDate: timestamp("effective_date", {
+      withTimezone: true,
+      mode: "string",
+    }),
+    expiryDate: timestamp("expiry_date", {
+      withTimezone: true,
+      mode: "string",
+    }),
+    version: varchar("version", { length: 64 }),
+    sourceAuthority: varchar("source_authority", { length: 255 }),
+    celexId: varchar("celex_id", { length: 64 }),
+    canonicalUrl: varchar("canonical_url", { length: 512 }),
+    semanticLayer: varchar("semantic_layer", { length: 64 }),
+    documentType: varchar("document_type", { length: 128 }),
+    parentEmbeddingId: integer("parent_embedding_id"),
+    regulationId: integer("regulation_id"),
+    confidenceScore: numeric("confidence_score", { precision: 5, scale: 2 }),
     lastVerifiedDate: timestamp("last_verified_date", {
+      withTimezone: true,
+      mode: "string",
+    }),
+    lastVerifiedAt: timestamp("last_verified_at", {
       withTimezone: true,
       mode: "string",
     }),
@@ -332,8 +415,36 @@ export const knowledgeEmbeddings = pgTable(
   (table) => [
     index("knowledge_embeddings_source_type_idx").on(table.sourceType),
     index("knowledge_embeddings_source_id_idx").on(table.sourceId),
+    index("knowledge_embeddings_source_chunk_id_idx").on(table.sourceChunkId),
     index("knowledge_embeddings_content_hash_idx").on(table.contentHash),
     index("knowledge_embeddings_source_composite_idx").on(table.sourceType, table.sourceId),
+    index("knowledge_embeddings_authority_level_idx").on(table.authorityLevel),
+    index("knowledge_embeddings_semantic_layer_idx").on(table.semanticLayer),
+    index("knowledge_embeddings_source_authority_idx").on(table.sourceAuthority),
+  ]
+);
+
+export const askIsaFeedback = pgTable(
+  "ask_isa_feedback",
+  {
+    id: serial("id").primaryKey(),
+    questionId: varchar("question_id", { length: 255 }).notNull(),
+    userId: integer("user_id"),
+    questionText: text("question_text").notNull(),
+    answerText: text("answer_text").notNull(),
+    feedbackType: askIsaFeedbackTypeEnum("feedback_type").notNull(),
+    feedbackComment: text("feedback_comment"),
+    promptVariant: varchar("prompt_variant", { length: 50 }),
+    confidenceScore: numeric("confidence_score", { precision: 3, scale: 2 }),
+    sourcesCount: integer("sources_count"),
+    timestamp: timestamp("timestamp", { withTimezone: true, mode: "string" }).defaultNow(),
+  },
+  (table) => [
+    index("ask_isa_feedback_question_id_idx").on(table.questionId),
+    index("ask_isa_feedback_user_id_idx").on(table.userId),
+    index("ask_isa_feedback_feedback_type_idx").on(table.feedbackType),
+    index("ask_isa_feedback_prompt_variant_idx").on(table.promptVariant),
+    index("ask_isa_feedback_timestamp_idx").on(table.timestamp),
   ]
 );
 
@@ -361,6 +472,13 @@ export const regulations = pgTable(
       .defaultNow()
       .notNull(),
     embedding: jsonb("embedding"),
+    version: varchar("version", { length: 64 }),
+    status: varchar("status", { length: 64 }),
+    lastVerifiedAt: timestamp("last_verified_at", {
+      withTimezone: true,
+      mode: "string",
+    }),
+    parentCelexId: varchar("parent_celex_id", { length: 64 }),
     needsVerification: boolean("needs_verification").default(false),
   },
   (table) => [uniqueIndex("regulations_celex_id_uq").on(table.celexId)]
@@ -439,6 +557,17 @@ export const gs1Standards = pgTable(
       .defaultNow()
       .notNull(),
     embedding: jsonb("embedding"),
+    version: varchar("version", { length: 64 }),
+    publicationDate: timestamp("publication_date", {
+      withTimezone: true,
+      mode: "string",
+    }),
+    sourceUrl: varchar("source_url", { length: 512 }),
+    publisher: varchar("publisher", { length: 128 }),
+    lastVerifiedAt: timestamp("last_verified_at", {
+      withTimezone: true,
+      mode: "string",
+    }),
   },
   (table) => [uniqueIndex("gs1_standards_standard_code_uq").on(table.standardCode)]
 );

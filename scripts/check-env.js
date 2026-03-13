@@ -28,6 +28,11 @@ config({ path: join(rootDir, '.env') });
 const envExamplePath = join(rootDir, '.env.example');
 const envExampleContent = readFileSync(envExamplePath, 'utf-8');
 
+const rawEngine = process.env.DB_ENGINE || process.env.ISA_DB_ENGINE || "mysql";
+const resolvedEngine = rawEngine === "postgres" ? "postgres" : "mysql";
+const requiredDatabaseKey =
+  resolvedEngine === "postgres" ? "DATABASE_URL_POSTGRES" : "DATABASE_URL";
+
 // Extract all keys from .env.example (lines with KEY=)
 const allKeys = envExampleContent
   .split('\n')
@@ -40,7 +45,7 @@ const allKeys = envExampleContent
 const REQUIRED_KEYS = [
   'VITE_APP_ID',
   'JWT_SECRET',
-  'DATABASE_URL',
+  requiredDatabaseKey,
 ];
 
 // Check for missing required keys
@@ -53,6 +58,8 @@ const missingOptional = allKeys
 
 // Report results
 cliOut('=== Environment Variable Presence Check ===\n');
+cliOut(`INFO=db_engine=${resolvedEngine}`);
+cliOut(`INFO=required_db_var=${requiredDatabaseKey}\n`);
 
 if (missingRequired.length === 0) {
   cliOut('✓ All required environment variables are present\n');

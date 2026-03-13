@@ -1,5 +1,6 @@
 # AGENT_MAP (Canonical)
 Status: CANONICAL
+Last Updated: 2026-03-13
 
 ## Canonical Chain
 - Entrypoint (top-level only): `AGENT_START_HERE.md`
@@ -12,6 +13,8 @@ Status: CANONICAL
 ## Tooling: MCP
 - Canonical policy: `docs/agent/MCP_POLICY.md`
 - Canonical recipes: `docs/agent/MCP_RECIPES.md`
+- Codex repo defaults: `.codex/config.toml`
+- Codex user merge template: `config/ide/codex/user-config.template.toml`
 - Gemini/Codex bootstrap prompt: `docs/agent/GEMINI_CODEX_BOOTSTRAP_PROMPT.md`
 
 ## Tooling: OpenClaw
@@ -23,8 +26,9 @@ Status: CANONICAL
 
 ## Planning
 - Planning index: `docs/planning/INDEX.md`
+- Execution queue (single source of next work when no narrower task scope exists): `docs/planning/NEXT_ACTIONS.json`
 - Structured backlog (canonical): `docs/planning/BACKLOG.csv`
-- Execution state registry (phase checkpoints): `docs/planning/refactoring/EXECUTION_STATE.json`
+- Agent handoffs (cross-session/tool coordination): `docs/planning/agent-handoffs/README.md`
 
 ## Specs And Core Contract
 - Specs index: `docs/spec/README.md`
@@ -46,8 +50,8 @@ Status: CANONICAL
 - Document status model: `docs/governance/DOCUMENT_STATUS_MODEL.md`
 - Technical documentation canon: `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
 - Manual preflight checklist: `docs/governance/MANUAL_PREFLIGHT.md`
+- CI index: `docs/ci/INDEX.md`
 - Planning policy: `docs/governance/PLANNING_POLICY.md`
-- IRON protocol: `docs/governance/IRON_PROTOCOL.md`
 - Agent platform operating model: `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
 - Agent handoff protocol: `docs/governance/ISA_AGENT_HANDOFF_PROTOCOL.md`
 - Capability delivery workflow: `docs/governance/ISA_CAPABILITY_DELIVERY_WORKFLOW.md`
@@ -61,10 +65,15 @@ Status: CANONICAL
 - Avoid standalone report artifacts unless explicitly requested.
 - Resolve uncertainty now; do not commit unresolved claims.
 
+## Task Resolution
+- Explicit user request, active issue/PR, or current branch scope wins over queue order.
+- When no narrower task scope exists, use the first `READY` item in `docs/planning/NEXT_ACTIONS.json`.
+- Keep standing rules in canonical docs/config; keep task-local plans in planning, issue/PR text, or governed handoff artifacts.
+
 ## Execution Procedure (Agent)
 1) Read `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
-2) Read `docs/planning/NEXT_ACTIONS.json`
-3) Pick the first item with `status=READY`
-4) Implement exactly one scoped change
-5) Run local preflight from `docs/governance/MANUAL_PREFLIGHT.md`
-6) Update item evidence/status and stop
+2) Resolve task scope from the explicit request/issue/PR/branch, otherwise from `docs/planning/NEXT_ACTIONS.json`
+3) Read the affected canonical contracts and code truth for that scope
+4) Implement the complete in-scope change with a minimal, reviewable diff
+5) Run proportional validation from `docs/governance/MANUAL_PREFLIGHT.md`, `docs/ci/INDEX.md`, and relevant gates
+6) Update the owning planning/evidence artifacts only when truth changed

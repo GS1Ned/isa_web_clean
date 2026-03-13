@@ -10,7 +10,7 @@ import {
   getDatasetsNeedingVerification,
   getDatasetStats,
 } from "../db-dataset-registry";
-import { deriveCatalogAuthorityTierFromUrl } from "../catalog-authority";
+import { deriveCatalogAuthorityTierFromUrl, resolveDatasetAdmission } from "../catalog-authority";
 
 /**
  * Dataset Registry Router
@@ -80,6 +80,21 @@ export const datasetRegistryRouter = router({
         ]),
         source: z.string(),
         authorityTier: z.string().optional(),
+        sourceRole: z
+          .enum([
+            "normative_authority",
+            "canonical_technical_artifact",
+            "supplemental_source",
+          ])
+          .optional(),
+        admissionBasis: z
+          .enum([
+            "official_publication",
+            "registry_registered_artifact",
+            "canonical_publication_evidence",
+            "supplemental_only",
+          ])
+          .optional(),
         licenseType: z.string().optional(),
         publicationStatus: z.string().optional(),
         immutableUri: z.string().optional(),
@@ -90,6 +105,8 @@ export const datasetRegistryRouter = router({
         downloadUrl: z.string().optional(),
         apiEndpoint: z.string().optional(),
         metadata: z.record(z.string(), z.unknown()).optional(),
+        canonicalPublicationUrl: z.string().optional(),
+        normativeAuthorityUrl: z.string().optional(),
         tags: z.array(z.string()).optional(),
         relatedRegulationIds: z.array(z.number()).optional(),
         relatedStandardIds: z.array(z.number()).optional(),
@@ -102,12 +119,29 @@ export const datasetRegistryRouter = router({
         throw new Error("Admin access required");
       }
 
-      const authorityTier = input.authorityTier || deriveCatalogAuthorityTierFromUrl(input.source);
+      const admission = resolveDatasetAdmission({
+        source: input.source,
+        downloadUrl: input.downloadUrl,
+        apiEndpoint: input.apiEndpoint,
+        authorityTier: input.authorityTier,
+        metadata: {
+          ...(input.metadata || {}),
+          ...(input.sourceRole ? { sourceRole: input.sourceRole } : {}),
+          ...(input.admissionBasis ? { admissionBasis: input.admissionBasis } : {}),
+          ...(input.canonicalPublicationUrl
+            ? { canonicalPublicationUrl: input.canonicalPublicationUrl }
+            : {}),
+          ...(input.normativeAuthorityUrl
+            ? { normativeAuthorityUrl: input.normativeAuthorityUrl }
+            : {}),
+        },
+      });
       return await createDataset({
         ...input,
-        authorityTier,
+        authorityTier: admission.authorityTier,
         publicationStatus: input.publicationStatus || "UNKNOWN",
         immutableUri: input.immutableUri || null,
+        metadata: admission.metadata,
       });
     }),
 
@@ -145,6 +179,21 @@ export const datasetRegistryRouter = router({
         version: z.string().optional(),
         source: z.string().optional(),
         authorityTier: z.string().optional(),
+        sourceRole: z
+          .enum([
+            "normative_authority",
+            "canonical_technical_artifact",
+            "supplemental_source",
+          ])
+          .optional(),
+        admissionBasis: z
+          .enum([
+            "official_publication",
+            "registry_registered_artifact",
+            "canonical_publication_evidence",
+            "supplemental_only",
+          ])
+          .optional(),
         licenseType: z.string().optional(),
         publicationStatus: z.string().optional(),
         immutableUri: z.string().optional(),
@@ -153,6 +202,8 @@ export const datasetRegistryRouter = router({
         apiEndpoint: z.string().optional(),
         isActive: z.boolean().optional(),
         metadata: z.record(z.string(), z.unknown()).optional(),
+        canonicalPublicationUrl: z.string().optional(),
+        normativeAuthorityUrl: z.string().optional(),
         tags: z.array(z.string()).optional(),
         governanceNotes: z.string().optional(),
       })
@@ -163,10 +214,31 @@ export const datasetRegistryRouter = router({
       }
 
       const { id, ...updates } = input;
-      const authorityTier = updates.authorityTier || deriveCatalogAuthorityTierFromUrl(updates.source || updates.downloadUrl || updates.apiEndpoint);
+      const admission = resolveDatasetAdmission({
+        source: updates.source,
+        downloadUrl: updates.downloadUrl,
+        apiEndpoint: updates.apiEndpoint,
+        authorityTier:
+          updates.authorityTier ||
+          deriveCatalogAuthorityTierFromUrl(
+            updates.source || updates.downloadUrl || updates.apiEndpoint,
+          ),
+        metadata: {
+          ...(updates.metadata || {}),
+          ...(updates.sourceRole ? { sourceRole: updates.sourceRole } : {}),
+          ...(updates.admissionBasis ? { admissionBasis: updates.admissionBasis } : {}),
+          ...(updates.canonicalPublicationUrl
+            ? { canonicalPublicationUrl: updates.canonicalPublicationUrl }
+            : {}),
+          ...(updates.normativeAuthorityUrl
+            ? { normativeAuthorityUrl: updates.normativeAuthorityUrl }
+            : {}),
+        },
+      });
       return await updateDataset(id, {
         ...updates,
-        authorityTier,
+        authorityTier: admission.authorityTier,
+        metadata: admission.metadata,
         ...(updates.publicationStatus ? { publicationStatus: updates.publicationStatus } : {}),
       } as any);
     }),

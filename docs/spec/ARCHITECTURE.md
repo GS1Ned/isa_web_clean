@@ -40,6 +40,10 @@
 
 **FACT [EV-ARCH-007]:** As-built dependency graph source is `docs/evidence/EXEC_GRAPH.mmd`.
 
+**FACT (maintainer-confirmed production authority, 2026-03-06):** Manus is the production host, publish/deploy authority, and central production operations hub for ISA. The canonical public production domain is `https://www.gs1isa.com`, and the live Manus production endpoint is `https://isa-standards-cozu6eot.manus.space`.
+
+**FACT (repo-proven limitation):** The repository still does not codify the exact Manus publish trigger or rollback mechanism; those gaps are tracked in `docs/governance/PRODUCTION_DEPLOY_RUNBOOK.md`.
+
 ### 2.2 Six Capability Surfaces (Current Ownership)
 
 | Capability | Owned Top-Level Router Surfaces | Primary Runtime Modules | Owned Core Tables |

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,10 +10,12 @@ import { formatDistanceToNow } from "date-fns";
 import { useLocation } from "wouter";
 import { AdvisoryReportPdfExportButton } from "@/components/AdvisoryReportPdfExportButton";
 import {
+  getAdvisoryDecisionPostureSummary,
   formatAdvisoryEnumLabel,
   formatDecisionArtifactCount,
   getAdvisoryPublicationStatusTone,
   getAdvisoryReviewStatusTone,
+  normalizeDecisionArtifacts,
 } from "@/lib/advisory-report-ui";
 
 /**
@@ -177,6 +179,12 @@ export default function AdvisoryReports() {
         {reports?.map((report) => {
           const reviewTone = getAdvisoryReviewStatusTone(report.reviewStatus);
           const publicationTone = getAdvisoryPublicationStatusTone(report.publicationStatus);
+          const reportDecisionArtifacts = normalizeDecisionArtifacts(
+            report.decisionArtifacts,
+          );
+          const postureSummary = getAdvisoryDecisionPostureSummary(
+            report.decisionArtifacts,
+          );
 
           return (
             <Card key={report.id} className="hover:shadow-lg transition-shadow">
@@ -187,11 +195,19 @@ export default function AdvisoryReports() {
                       <FileText className="h-5 w-5" />
                       {report.title}
                     </CardTitle>
-                    {Array.isArray(report.decisionArtifacts) && report.decisionArtifacts.length > 0 && (
-                      <div className="mt-2">
+                    {reportDecisionArtifacts.length > 0 && (
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
                         <Badge variant="secondary">
-                          {formatDecisionArtifactCount(report.decisionArtifacts.length)}
+                          {formatDecisionArtifactCount(reportDecisionArtifacts.length)}
                         </Badge>
+                        {postureSummary ? (
+                          <Badge
+                            variant="outline"
+                            className={postureSummary.className}
+                          >
+                            {postureSummary.badgeLabel}
+                          </Badge>
+                        ) : null}
                       </div>
                     )}
                     {report.executiveSummary && (

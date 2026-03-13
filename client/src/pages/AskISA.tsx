@@ -53,6 +53,12 @@ import {
   getAskIsaVerificationReasonBadgeLabel,
   getAskIsaVerificationReasonLabel,
 } from "@/lib/ask-isa-source-posture";
+import {
+  getAskIsaSourceDisplayLabel,
+  getAskIsaSourceHref,
+  getAskIsaSourceLocatorLabel,
+  hasReviewerUsableAskIsaCitation,
+} from "@/lib/ask-isa-citation";
 
 /**
  * Ask ISA - RAG-Powered Q&A Interface
@@ -88,7 +94,17 @@ interface Message {
     verificationReason?: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date";
     deprecationReason?: string;
     evidenceKey?: string | null;
-    evidenceKeyReason?: "ok" | "missing_content_hash" | "chunk_not_found" | "db_unavailable";
+    evidenceKeyReason?: "ok" | "missing_content_hash" | "missing_authoritative_chunk" | "chunk_not_found" | "db_unavailable";
+    sourceRecordId?: number;
+    sourceChunkId?: number;
+    authorityTier?: string;
+    sourceRole?: string;
+    admissionBasis?: string;
+    publicationStatus?: string;
+    sourceLocator?: string | null;
+    immutableUri?: string | null;
+    citationLabel?: string | null;
+    sourceChunkLocator?: string | null;
     authorityLevel?: AuthorityLevel;
     authorityScore?: number;
   }>;
@@ -349,8 +365,15 @@ export default function AskISA() {
         }
         doc.setFillColor(249, 249, 249);
         doc.rect(margin - 2, yPos - 4, maxWidth + 4, 14, 'F');
-        addText(`[${idx + 1}] ${source.title}`, 10, true, [0, 102, 204]);
-        addText(`${source.type || 'Unknown'} • Relevance: ${Math.round(source.similarity * 100)}%`, 9, false, [100, 100, 100]);
+        addText(`[${idx + 1}] ${getAskIsaSourceDisplayLabel(source)}`, 10, true, [0, 102, 204]);
+        const sourceHref = getAskIsaSourceHref(source);
+        const sourceLocator = getAskIsaSourceLocatorLabel(source);
+        addText(
+          `${source.type || 'Unknown'} • Relevance: ${Math.round(source.similarity * 100)}%${sourceLocator ? ` • ${sourceLocator}` : ''}${sourceHref ? ` • ${sourceHref}` : ''}`,
+          9,
+          false,
+          [100, 100, 100],
+        );
       });
     }
     
@@ -1222,8 +1245,13 @@ export default function AskISA() {
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <CardTitle className="text-sm line-clamp-1">
-                                      {source.title}
+                                      {getAskIsaSourceDisplayLabel(source)}
                                     </CardTitle>
+                                    {getAskIsaSourceLocatorLabel(source) && (
+                                      <p className="mt-1 text-xs text-muted-foreground">
+                                        {getAskIsaSourceLocatorLabel(source)}
+                                      </p>
+                                    )}
                                     <div className="flex items-center gap-2 mt-1 flex-wrap">
                                       <Badge
                                         variant="secondary"
@@ -1305,6 +1333,14 @@ export default function AskISA() {
                                           )}
                                         </Badge>
                                       )}
+                                      <Badge
+                                        variant="outline"
+                                        className="text-xs"
+                                      >
+                                        {hasReviewerUsableAskIsaCitation(source)
+                                          ? "Reviewer-usable citation"
+                                          : "Citation locator incomplete"}
+                                      </Badge>
                                     </div>
                                   </div>
                                 </div>
@@ -1318,7 +1354,7 @@ export default function AskISA() {
                                   >
                                     <Eye className="h-4 w-4" />
                                   </Button>
-                                  {source.url && (
+                                  {getAskIsaSourceHref(source) && (
                                     <Button
                                       variant="ghost"
                                       size="sm"
@@ -1326,7 +1362,7 @@ export default function AskISA() {
                                       asChild
                                     >
                                       <a
-                                        href={source.url}
+                                        href={getAskIsaSourceHref(source)}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                       >
@@ -1419,7 +1455,7 @@ export default function AskISA() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               {previewSource && getSourceIcon(previewSource.type)}
-              {previewSource?.title}
+              {previewSource ? getAskIsaSourceDisplayLabel(previewSource) : null}
             </DialogTitle>
             <DialogDescription className="flex items-center gap-2 flex-wrap">
               {previewSource?.type && (
@@ -1429,6 +1465,13 @@ export default function AskISA() {
                 <AuthorityBadge level={previewSource.authorityLevel} size="sm" />
               )}
               <Badge variant="outline">{previewSource?.similarity}% match</Badge>
+              {previewSource ? (
+                <Badge variant="outline">
+                  {hasReviewerUsableAskIsaCitation(previewSource)
+                    ? "Reviewer-usable citation"
+                    : "Citation locator incomplete"}
+                </Badge>
+              ) : null}
             </DialogDescription>
           </DialogHeader>
           
@@ -1453,6 +1496,18 @@ export default function AskISA() {
                 <div>
                   <p className="text-muted-foreground">Last Verified</p>
                   <p className="font-medium">{new Date(previewSource.lastVerifiedDate).toLocaleDateString()}</p>
+                </div>
+              )}
+              {previewSource?.citationLabel && (
+                <div className="col-span-2">
+                  <p className="text-muted-foreground">Citation Label</p>
+                  <p className="font-medium">{previewSource.citationLabel}</p>
+                </div>
+              )}
+              {previewSource && getAskIsaSourceLocatorLabel(previewSource) && (
+                <div className="col-span-2">
+                  <p className="text-muted-foreground">Citation Locator</p>
+                  <p className="font-medium break-all">{getAskIsaSourceLocatorLabel(previewSource)}</p>
                 </div>
               )}
             </div>
@@ -1504,9 +1559,9 @@ export default function AskISA() {
 
             {/* Actions */}
             <div className="flex justify-end gap-2 pt-4 border-t">
-              {previewSource?.url && (
+              {previewSource && getAskIsaSourceHref(previewSource) && (
                 <Button asChild>
-                  <a href={previewSource.url} target="_blank" rel="noopener noreferrer">
+                  <a href={getAskIsaSourceHref(previewSource)} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="h-4 w-4 mr-2" />
                     Open Source
                   </a>

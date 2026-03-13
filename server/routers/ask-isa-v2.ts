@@ -778,6 +778,16 @@ ${contextParts.join('\n\n')}`;
             deprecationReason: validated?.deprecationReason,
             evidenceKey: validated?.evidenceKey ?? null,
             evidenceKeyReason: validated?.evidenceKeyReason ?? "chunk_not_found",
+            sourceRecordId: validated?.sourceRecordId,
+            sourceChunkId: validated?.sourceChunkId,
+            authorityTier: validated?.authorityTier,
+            sourceRole: validated?.sourceRole,
+            admissionBasis: validated?.admissionBasis,
+            publicationStatus: validated?.publicationStatus,
+            sourceLocator: validated?.sourceLocator,
+            immutableUri: validated?.immutableUri,
+            citationLabel: validated?.citationLabel,
+            sourceChunkLocator: validated?.sourceChunkLocator,
           };
         });
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  getAdvisoryDecisionPostureSummary,
   formatAdvisoryVersionLabel,
   formatAdvisoryEnumLabel,
   formatAdvisoryTimestamp,
@@ -58,6 +59,45 @@ describe("advisory-report-ui", () => {
         { invalid: true },
       ]),
     ).toHaveLength(1);
+  });
+
+  it("derives the most conservative advisory decision posture from mixed artifacts", () => {
+    const summary = getAdvisoryDecisionPostureSummary([
+      {
+        artifactVersion: "1.0.0",
+        artifactType: "gap_analysis",
+        capability: "ESRS_MAPPING",
+        confidence: {
+          level: "high",
+          score: 0.92,
+          basis: "Backed by current mappings",
+          reviewRecommended: false,
+          uncertaintyClass: "decision_grade",
+          escalationAction: "none",
+        },
+      },
+      {
+        artifactVersion: "1.0.0",
+        artifactType: "attribute_recommendation",
+        capability: "ESRS_MAPPING",
+        confidence: {
+          level: "low",
+          score: 0.41,
+          basis: "Insufficient evidence for direct automation",
+          reviewRecommended: true,
+          uncertaintyClass: "insufficient_evidence",
+          escalationAction: "human_review_required",
+        },
+      },
+    ]);
+
+    expect(summary).toEqual({
+      title: "Human review required",
+      description:
+        "This output should not be treated as decision-grade without explicit human validation because the current evidence posture is insufficient.",
+      badgeLabel: "Escalate to human review",
+      className: "border-red-200 bg-red-50 text-red-950",
+    });
   });
 
   it("maps advisory statuses to supported badge tones", () => {

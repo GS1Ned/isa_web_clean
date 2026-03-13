@@ -17,6 +17,11 @@ const cliErr = (...args) => process.stderr.write(`${utilFormat(...args)}\n`);
 // Load .env from repo root
 config({ path: resolve(import.meta.dirname, "..", ".env") });
 
+const rawEngine = process.env.DB_ENGINE || process.env.ISA_DB_ENGINE || "mysql";
+const resolvedEngine = rawEngine === "postgres" ? "postgres" : "mysql";
+const requiredDatabaseVar =
+  resolvedEngine === "postgres" ? "DATABASE_URL_POSTGRES" : "DATABASE_URL";
+
 interface VarGroup {
   name: string;
   vars: { name: string; required: boolean }[];
@@ -28,7 +33,18 @@ const groups: VarGroup[] = [
     vars: [
       { name: "VITE_APP_ID", required: true },
       { name: "JWT_SECRET", required: true },
-      { name: "DATABASE_URL", required: true },
+    ],
+  },
+  {
+    name: "Database routing",
+    vars: [
+      { name: "DB_ENGINE", required: false },
+      { name: "ISA_DB_ENGINE", required: false },
+      { name: "DATABASE_URL", required: requiredDatabaseVar === "DATABASE_URL" },
+      {
+        name: "DATABASE_URL_POSTGRES",
+        required: requiredDatabaseVar === "DATABASE_URL_POSTGRES",
+      },
     ],
   },
   {
@@ -96,6 +112,7 @@ let totalChecked = 0;
 
 cliOut("ISA Environment Check");
 cliOut("=====================\n");
+cliOut("INFO=db_engine=%s required_db_var=%s\n", resolvedEngine, requiredDatabaseVar);
 
 for (const group of groups) {
   cliOut(`[${group.name}]`);

@@ -64,6 +64,11 @@ ADVISORY produces, versions and compares advisory outputs and related ESG artefa
 - Field-level payload shape remains code-truth in ADVISORY router procedures.
 - `advisory_reports.stale_since` (set by `server/services/news-impact/index.ts` when linked regulations receive enforcement/amendment signals) is surfaced through `advisoryReports.stats`, report-list metadata, and dashboard badges so consumers can identify reports that require re-generation against updated regulatory context.
 
+## Phase-3 Provenance Target (Artifact Traceability Contract)
+- Canonical target contract: `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md`
+- `decisionArtifacts`, advisory report snapshots, exports, and diff payloads must preserve authoritative `sourceId`, `sourceChunkId`, `evidenceKey`, authority posture, and insufficiency markers once the provenance rebuild lands.
+- Advisory traceability must tighten by enriching persisted evidence references, not by inventing a separate citation model.
+
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/advisory_health.sh -->
 - Smoke probe: `scripts/probe/advisory_health.sh`

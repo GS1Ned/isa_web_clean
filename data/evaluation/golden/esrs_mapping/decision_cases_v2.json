@@ -1,0 +1,61 @@
+{
+  "dataset_id": "esrs_mapping_decision_cases_v2",
+  "notes": "Operational ESRS decision-quality starter set for applicability posture, rationale completeness, evidence traceability, and uncertainty handling.",
+  "cases": [
+    {
+      "id": "ESRS-DEC-B1",
+      "mapping_id": "esrs-e1-climate-carbon-footprint",
+      "expected_posture": "decision_grade",
+      "expected_review_signal": "none",
+      "expected_confidence": "direct",
+      "expected_regulation_standard": "ESRS E1",
+      "min_rationale_length": 40,
+      "rationale_terms": ["carbon", "footprint", "aligned"],
+      "required_fields": ["sourceAuthority", "source_file", "sectors"]
+    },
+    {
+      "id": "ESRS-DEC-B2",
+      "mapping_id": "MAP-E1-003",
+      "expected_posture": "review_required",
+      "expected_review_signal": "review_recommended",
+      "expected_confidence": "partial",
+      "expected_regulation_standard": "ESRS E1",
+      "min_rationale_length": 40,
+      "rationale_terms": ["energy", "carbon", "footprint"],
+      "required_fields": ["sourceAuthority", "source_file", "sectors"]
+    },
+    {
+      "id": "ESRS-DEC-B3",
+      "mapping_id": "MAP-E2-001",
+      "expected_posture": "review_required",
+      "expected_review_signal": "review_recommended",
+      "expected_confidence": "partial",
+      "expected_regulation_standard": "ESRS E2",
+      "min_rationale_length": 40,
+      "rationale_terms": ["substance", "detail", "risk"],
+      "required_fields": ["sourceAuthority", "source_file", "sectors"]
+    },
+    {
+      "id": "ESRS-DEC-B4",
+      "negative_case_id": "NEG-S1-LIVING-WAGE",
+      "expected_posture": "insufficient_evidence",
+      "expected_review_signal": "human_review_required",
+      "expected_confidence": "no_mapping",
+      "expected_regulation_standard": "ESRS S1",
+      "min_rationale_length": 40,
+      "rationale_terms": ["living", "wage", "attributes"],
+      "required_fields": ["sourceAuthority", "source_file", "sectors"]
+    },
+    {
+      "id": "ESRS-DEC-B5",
+      "negative_case_id": "NEG-E4-SPECIES_RECOVERY_PLAN",
+      "expected_posture": "insufficient_evidence",
+      "expected_review_signal": "human_review_required",
+      "expected_confidence": "no_mapping",
+      "expected_regulation_standard": "ESRS E4",
+      "min_rationale_length": 40,
+      "rationale_terms": ["species", "recovery", "attributes"],
+      "required_fields": ["sourceAuthority", "source_file", "sectors"]
+    }
+  ]
+}

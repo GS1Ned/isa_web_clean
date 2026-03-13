@@ -1,7 +1,12 @@
+Status: SUPPLEMENTAL
+Canonical status model: `docs/governance/DOCUMENT_STATUS_MODEL.md`
+Canonical precedence source: `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
+Warning: This map is a transitional support artifact. Its local taxonomy (`authority_spine`, `active`, `archived`, etc.) is not the canonical ISA document-status model and must not be used as current architecture or planning authority.
+
 # Deprecation Map
 
-**Status:** Phase 3 Synthesis
-**Last Updated:** 2026-03-05
+**Status:** Phase 3 Synthesis (historical generation state)
+**Last Updated:** 2026-03-09
 
 ## Status Legend
 

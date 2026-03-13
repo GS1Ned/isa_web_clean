@@ -6,14 +6,16 @@
 
 import mysql from "mysql2/promise";
 import { format } from "node:util";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const cliOut = (...args) => process.stdout.write(`${format(...args)}\n`);
 const cliErr = (...args) => process.stderr.write(`${format(...args)}\n`);
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
-const regulations = [
+export const regulationsSeedData = [
   // CSRD & ESRS - Corporate Sustainability Reporting
   {
     celexId: "32022-02464",
@@ -348,7 +350,7 @@ async function seedRegulations() {
   try {
     cliOut("🌱 Seeding production regulations...");
 
-    for (const reg of regulations) {
+    for (const reg of regulationsSeedData) {
       await connection.execute(
         `INSERT INTO regulations (celexId, title, description, regulationType, effectiveDate, sourceUrl)
          VALUES (?, ?, ?, ?, ?, ?)
@@ -367,7 +369,7 @@ async function seedRegulations() {
       );
     }
 
-    cliOut(`✅ Successfully seeded ${regulations.length} regulations`);
+    cliOut(`✅ Successfully seeded ${regulationsSeedData.length} regulations`);
   } catch (error) {
     cliErr("❌ Error seeding regulations:", error);
   } finally {
@@ -375,4 +377,10 @@ async function seedRegulations() {
   }
 }
 
-seedRegulations();
+const isDirectRun =
+  typeof process.argv[1] === "string" &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isDirectRun) {
+  seedRegulations();
+}

@@ -70,6 +70,12 @@ CATALOG is the source-of-record capability for regulation, standards, ESRS datap
 - Canonical derivation helper for verification posture:
   - `server/verification-posture.ts`
 
+## Phase-3 Provenance Target (Registry Admission Coupling)
+- Canonical target contract: `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md`
+- Dataset registry admission must distinguish `normative_authority`, `canonical_technical_artifact`, and `supplemental_source`.
+- `github.com/gs1/*` must not be admitted as normative authority by domain alone; it requires explicit technical-artifact registration or documented canonical-publication evidence.
+- Catalog-facing transparency fields must remain queryable after the provenance rebuild and continue to surface authority, publication status, source locator, and verification posture.
+
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/catalog_health.sh -->
 - Smoke probe: `scripts/probe/catalog_health.sh`

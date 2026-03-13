@@ -2,6 +2,8 @@
 
 ISA is a sustainability compliance intelligence web app that helps map EU sustainability/ESG regulations to GS1 standards. It combines governed datasets, a relational knowledge model, and AI-assisted search/Q&A.
 
+Production authority is Manus-centered: Manus hosts and operates ISA in production, and the canonical public production domain is `https://www.gs1isa.com`.
+
 This project is not legal advice. Outputs are informational and should be validated against authoritative sources.
 
 ## Problem Statement
@@ -28,11 +30,11 @@ The following are evidenced by concrete routers, tables, and entry points in thi
 High-level request flow:
 - React SPA calls tRPC over HTTP at `/api/trpc` (cookies included). (`client/src/main.tsx`)
 - Express server mounts OAuth callback, health/readiness endpoints, cron endpoints, then the tRPC router. (`server/_core/index.ts`, `server/_core/oauth.ts`, `server/cron-endpoint.ts`, `server/routers.ts`)
-- Drizzle ORM reads/writes to a MySQL-compatible database (TiDB is supported by URL+SSL conventions). (`server/db.ts`, `server/db-connection.ts`, `drizzle.config.ts`)
+- Drizzle ORM uses an engine-aware relational DB path: current runtime defaults to the MySQL-compatible path, Postgres parity exists behind `DB_ENGINE=postgres`. (`server/db.ts`, `server/db-connection.ts`, `server/_core/env.ts`)
 - LLM and embeddings calls go to OpenAI directly or via a Forge proxy, depending on env. (`server/_core/llm.ts`, `server/_core/embedding.ts`, `.env.example`)
 
 ```text
-Browser (React) --> /api/trpc (tRPC) --> Express --> Drizzle --> MySQL/TiDB
+Browser (React) --> /api/trpc (tRPC) --> Express --> Drizzle --> mysql/postgres runtime path
                      |                  |
                      |                  +--> OAuth callback (/api/oauth/callback)
                      |
@@ -60,7 +62,10 @@ Core entry points:
 Prerequisites (pinned in repo configuration):
 - Node.js 22.x (CI uses 22.13.0). (`.github/workflows/q-branch-ci.yml`)
 - pnpm (repo pins a version in `package.json`). (`package.json`)
-- A MySQL-compatible database (required for most server features). (`server/_core/env.ts`, `server/db.ts`)
+- A relational database compatible with the selected engine path:
+  - current default: MySQL-compatible via `DATABASE_URL`
+  - Postgres parity path: `DB_ENGINE=postgres` + `DATABASE_URL_POSTGRES`
+  (`server/_core/env.ts`, `server/db.ts`)
 
 Install dependencies:
 ```bash
@@ -84,7 +89,9 @@ cp .env.example .env
 Minimum required for server start:
 - `VITE_APP_ID`
 - `JWT_SECRET` (>= 32 chars)
-- `DATABASE_URL` (must start with `mysql://` and include a database name)
+- database DSN for the selected engine:
+  - `DATABASE_URL` for default mysql-compatible runtime
+  - `DATABASE_URL_POSTGRES` when `DB_ENGINE=postgres`
 (`server/_core/env.ts`, `.env.example`)
 
 Example (do not paste real secrets):
@@ -171,6 +178,8 @@ NODE_ENV=production pnpm start
 Operational notes:
 - Production enables Helmet-based security headers. (`server/_core/security-headers.ts`)
 - `app.set("trust proxy", 1)` is enabled; set `x-forwarded-proto` correctly so secure cookies are used behind TLS-terminating proxies. (`server/_core/index.ts`, `server/_core/cookies.ts`)
+- Manus is the production host and deploy/publish authority; repo-side production gaps are tracked in `docs/governance/PRODUCTION_DEPLOY_RUNBOOK.md`.
+- Consolidated operations docs live under `docs/ops/`. Use `docs/ops/DEPLOYMENT.md` and `docs/ops/RUNBOOK.md` for current operational guidance.
 
 ## Cron / Background Jobs
 
@@ -182,8 +191,8 @@ HTTP cron endpoints (bearer-token protected):
 
 Requests to `/cron/daily-news-ingestion` and `/cron/weekly-news-archival` must include `Authorization: Bearer <CRON_SECRET>`. (`server/cron-endpoint.ts`)
 
-Configure an external cron service to call these endpoints and set `CRON_SECRET` to a high-entropy value in production (do not reuse example tokens). Setup docs live under:
-- `ops/cron/00-START-HERE.md`
+Use Manus Scheduled Tasks as the intended production scheduler for these endpoints and set `CRON_SECRET` to a high-entropy value in production (do not reuse example tokens). Setup and schedule policy live under:
+- `docs/ops/CRON.md`
 (`ops/cron/00-START-HERE.md`, `.env.example`)
 
 The server also starts an in-process alert monitoring interval (every 5 minutes) on startup:

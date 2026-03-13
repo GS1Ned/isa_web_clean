@@ -1,4 +1,8 @@
 import type { DecisionArtifactCardData } from "@/components/DecisionArtifactCard";
+import {
+  getDecisionPostureSummary,
+  type DecisionPostureSummary,
+} from "@/lib/esrs-decision-posture";
 
 export type AdvisoryBadgeVariant = "default" | "secondary" | "destructive" | "outline";
 
@@ -70,6 +74,53 @@ export function normalizeDecisionArtifacts(value: unknown): DecisionArtifactCard
   }
 
   return value.filter(isDecisionArtifactCardData);
+}
+
+function getDecisionArtifactSeverity(artifact: DecisionArtifactCardData) {
+  if (artifact.confidence.escalationAction === "human_review_required") {
+    return 3;
+  }
+
+  if (
+    artifact.confidence.escalationAction === "analyst_review" ||
+    artifact.confidence.reviewRecommended
+  ) {
+    return 2;
+  }
+
+  return 1;
+}
+
+export function getMostSevereDecisionArtifact(
+  artifacts: DecisionArtifactCardData[]
+) {
+  if (artifacts.length === 0) {
+    return null;
+  }
+
+  return artifacts.reduce((current, candidate) => {
+    if (!current) {
+      return candidate;
+    }
+
+    return getDecisionArtifactSeverity(candidate) >
+      getDecisionArtifactSeverity(current)
+      ? candidate
+      : current;
+  }, null as DecisionArtifactCardData | null);
+}
+
+export function getAdvisoryDecisionPostureSummary(
+  value: unknown
+): DecisionPostureSummary | null {
+  const artifacts = normalizeDecisionArtifacts(value);
+  const mostSevereArtifact = getMostSevereDecisionArtifact(artifacts);
+
+  if (!mostSevereArtifact) {
+    return null;
+  }
+
+  return getDecisionPostureSummary(mostSevereArtifact.confidence);
 }
 
 export function getAdvisoryReviewStatusTone(status: string): AdvisoryBadgeTone {

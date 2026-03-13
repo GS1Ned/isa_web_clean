@@ -20,15 +20,20 @@ For more details, please see the [Host ↔ VM OpenClaw Workflow](#host--vm-openc
 ---
 
 **Purpose:** Single canonical orientation for any AI agent or developer working on ISA.
-**Last Updated:** 2026-02-25
+**Last Updated:** 2026-03-06
 
 ---
 
 ## What is ISA
 
-ISA (Intelligent Standards Architect) is a sustainability compliance intelligence platform connecting EU ESG regulations to GS1 standards. It is deployed at `gs1isa.com`.
+ISA (Intelligent Standards Architect) is a sustainability compliance intelligence platform connecting EU ESG regulations to GS1 standards.
 
-**Stack:** React 19 + Express 4 + tRPC 11 + Drizzle ORM + MySQL-compatible relational DB + OpenAI
+Production authority is Manus-centered:
+- canonical public production domain: `https://www.gs1isa.com`
+- live Manus production endpoint: `https://isa-standards-cozu6eot.manus.space`
+- production hosting, publish/deploy authority, OAuth, and platform-side secrets are Manus-owned
+
+**Stack:** React 19 + Express 4 + tRPC 11 + Drizzle ORM + engine-aware relational DB path (`mysql` default, `postgres` path available) + OpenAI
 
 ---
 
@@ -40,6 +45,7 @@ This file is the only top-level entrypoint for agent onboarding.
 | --- | --- | --- |
 | Agent Map (Canonical) | `docs/agent/AGENT_MAP.md` | Canonical navigation map for humans and agents |
 | Technical Documentation Canon (Canonical) | `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md` | Canonical technical document chain and agentic loop |
+| Production Deploy Runbook (Canonical) | `docs/governance/PRODUCTION_DEPLOY_RUNBOOK.md` | Manus-centered production authority and unresolved deploy-gap register |
 | Data Plane Contract (Canonical) | `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` | Shared storage, provenance, retrieval, and engine policy |
 | Data Plane ADR (Canonical) | `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md` | Confirmed Postgres/Supabase target and migration invariants |
 | MCP Policy (Canonical) | `docs/agent/MCP_POLICY.md` | MCP server usage + evidence logging policy |
@@ -59,6 +65,7 @@ This file is the only top-level entrypoint for agent onboarding.
 - It does not automatically mean "target state".
 - System-level current and target truth live explicitly in `docs/spec/ARCHITECTURE.md`.
 - Shared storage, provenance, retrieval, and engine policy truth live in `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`.
+- Manus-centered production authority and unresolved deploy mechanics live in `docs/governance/PRODUCTION_DEPLOY_RUNBOOK.md`.
 - See `docs/governance/DOCUMENT_STATUS_MODEL.md`.
 
 ---
@@ -92,7 +99,7 @@ This file is the only top-level entrypoint for agent onboarding.
 
 - **Next actions:** `docs/planning/NEXT_ACTIONS.json`
 - **Backlog:** `docs/planning/BACKLOG.csv`
-- **Current READY item:** `ISA2-0001` — promote `ESRS_MAPPING` to the canonical decision core with confidence-calibrated gap analysis and attribute recommendation outputs
+- **Status rule:** Do not rely on point-in-time work items embedded in this file. Read `docs/planning/NEXT_ACTIONS.json` for the current execution state.
 
 ---
 

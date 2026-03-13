@@ -7,12 +7,14 @@
  * Run with: npx tsx server/seed-gs1-standards.ts
  */
 
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { getDb } from "./db";
 import { gs1Standards, type InsertGS1Standard } from "../drizzle/schema";
 import { serverLogger } from "./_core/logger-wiring";
 
 
-const gs1StandardsData: Omit<
+export const gs1StandardsData: Omit<
   InsertGS1Standard,
   "id" | "createdAt" | "updatedAt"
 >[] = [
@@ -379,13 +381,18 @@ async function seedGS1Standards() {
   }
 }
 
-// Run the seed
-seedGS1Standards()
-  .then(() => {
-    serverLogger.info("\n🎉 Seed completed successfully!");
-    process.exit(0);
-  })
-  .catch(error => {
-    serverLogger.error(error, { context: "\n💥 Seed failed:" });
-    process.exit(1);
-  });
+const isDirectRun =
+  typeof process.argv[1] === "string" &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isDirectRun) {
+  seedGS1Standards()
+    .then(() => {
+      serverLogger.info("\n🎉 Seed completed successfully!");
+      process.exit(0);
+    })
+    .catch(error => {
+      serverLogger.error(error, { context: "\n💥 Seed failed:" });
+      process.exit(1);
+    });
+}

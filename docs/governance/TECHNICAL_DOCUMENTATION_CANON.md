@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Updated: 2026-03-05
+Last Updated: 2026-03-13
 
 # ISA Technical Documentation Canon
 
@@ -15,6 +15,7 @@ This document defines the minimum canonical technical documentation set for ISA,
 | Technical canon | `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md` | Canonical technical document chain and update rules |
 | System contract | `docs/spec/ARCHITECTURE.md` | Single `CURRENT` / `TARGET` architecture contract |
 | Data plane contract | `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` | Shared storage, provenance, retrieval, and engine policy contract |
+| Provenance rebuild contract | `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md` | Implementation-ready contract for authoritative `sources` / `source_chunks`, authority admission, and Phase 3 cutover |
 | Data-plane decision record | `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md` | Confirmed migration decision and invariants for Postgres/Supabase target |
 | Core capability contract | `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md` | Six-capability model, mission, ownership rule, anti-goals |
 | Ownership contract | `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json` | Capability ownership of routers, tables, modules |
@@ -32,19 +33,26 @@ This document defines the minimum canonical technical documentation set for ISA,
 4. `docs/spec/ARCHITECTURE.md`
 5. `docs/spec/ADVISORY/ISA_CORE_CONTRACT.md`
 6. `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
-7. `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`
-8. `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
-9. `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
-10. `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
-11. Relevant `docs/spec/*/RUNTIME_CONTRACT.md`
-12. `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`
-13. `docs/planning/NEXT_ACTIONS.json`
-14. `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
+7. `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md` when working on authoritative evidence, source admission, or chunk-level citation semantics
+8. `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`
+9. `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`
+10. `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`
+11. `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`
+12. Relevant `docs/spec/*/RUNTIME_CONTRACT.md`
+13. `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`
+14. `docs/planning/NEXT_ACTIONS.json`
+15. `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
+
+## Task Resolution Rule
+- Explicit user request, active issue/PR, or in-flight branch scope wins over queue order.
+- Use `docs/planning/NEXT_ACTIONS.json` as the fallback queue only when no narrower task scope already exists.
+- Keep standing rules in `AGENTS.md`, repo config, and canonical workflow docs. Keep task-local execution plans in planning, issue/PR text, or governed handoff artifacts.
 
 ## Relationship Rules
 - `ARCHITECTURE.md` is the only canonical system-level `CURRENT` / `TARGET` contract.
 - `ISA_CORE_CONTRACT.md` defines what ISA is for, what the six capabilities are, and what ISA is not.
 - `ISA_DATA_PLANE_ARCHITECTURE.md` defines the shared storage, provenance, retrieval, and engine-policy substrate. It does not reassign capability ownership or redefine product architecture.
+- `PROVENANCE_REBUILD_SPEC.md` refines the shared provenance implementation contract for `sources`, `source_chunks`, dataset admission, evidence keys, and Phase 3 coexistence with `knowledge_embeddings`. It does not redefine broader system architecture or capability ownership.
 - `CAPABILITY_MANIFEST.json` wins for ownership disputes.
 - `PRIMITIVE_DICTIONARY.json` wins when a concept is genuinely cross-capability.
 - `CAPABILITY_GRAPH.json` wins for dependency and flow questions.
@@ -70,6 +78,7 @@ flowchart TD
         ARCH["ARCHITECTURE.md\nSystem CURRENT/TARGET"]
         CORE["ISA_CORE_CONTRACT.md\nMission, six capabilities, anti-goals"]
         DATA["ISA_DATA_PLANE_ARCHITECTURE.md\nShared data-plane contract"]
+        PROV["PROVENANCE_REBUILD_SPEC.md\nAuthoritative source/chunk rebuild contract"]
         MANIFEST["CAPABILITY_MANIFEST.json\nOwnership contract"]
         PRIMS["PRIMITIVE_DICTIONARY.json\nShared primitives"]
         GRAPH["CAPABILITY_GRAPH.json\nDependencies and flows"]
@@ -84,6 +93,7 @@ flowchart TD
     CANON --> ARCH
     ARCH --> CORE
     CORE --> DATA
+    DATA --> PROV
     DATA --> ADR["ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md\nData-plane migration decision/invariants"]
     CORE --> MANIFEST
     CORE --> PRIMS
@@ -97,12 +107,12 @@ flowchart TD
     POLICY --> NEXT
 
     subgraph AgenticLoop["Agentic Development Loop"]
-        A["Agent selects first READY item"]
+        A["Agent resolves scope from user/issue/PR or first READY item"]
         B["Read canonical chain for affected capability"]
-        C["Implement one reviewable change"]
+        C["Implement complete in-scope change with reviewable diff"]
         D["Run relevant validations from validation bundle"]
         E["Update canonical docs only when evidence or contract changed"]
-        F["Update NEXT_ACTIONS status/evidence and stop"]
+        F["Update owning plan/evidence artifacts and stop when scope is complete"]
     end
 
     NEXT --> A
@@ -136,6 +146,7 @@ flowchart TD
 - Update `ARCHITECTURE.md` when system `CURRENT`, `TARGET`, or deltas change.
 - Update `ISA_CORE_CONTRACT.md` when capability mission, anti-goals, or ownership semantics change.
 - Update `ISA_DATA_PLANE_ARCHITECTURE.md` when shared storage, provenance, retrieval, or engine policy materially changes.
+- Update `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md` when authoritative source admission, `sources` / `source_chunks` contracts, evidence-key semantics, or Phase 1 evaluation-to-provenance mapping materially changes.
 - Update machine contracts when repo reality changes.
 - Update runtime contracts when a capability surface or owned data shape materially changes.
 - Update `NEXT_ACTIONS.json` whenever the next canonical work item changes.

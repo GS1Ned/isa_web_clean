@@ -4,6 +4,7 @@ import type { TrpcContext } from "../_core/context";
 
 const invokeLLMMock = vi.fn();
 const getAllEsrsGs1MappingsMock = vi.fn();
+const collectEvidenceRefsForTermsMock = vi.fn();
 
 vi.mock("../_core/llm", () => ({
   invokeLLM: invokeLLMMock,
@@ -11,6 +12,10 @@ vi.mock("../_core/llm", () => ({
 
 vi.mock("../db-esrs-gs1-mapping", () => ({
   getAllEsrsGs1Mappings: getAllEsrsGs1MappingsMock,
+}));
+
+vi.mock("../source-provenance.js", () => ({
+  collectEvidenceRefsForTerms: collectEvidenceRefsForTermsMock,
 }));
 
 vi.mock("../_core/logger-wiring", () => ({
@@ -32,6 +37,15 @@ const mockPublicContext: TrpcContext = {
 describe("esrsRoadmapRouter", () => {
   it("returns a roadmap with a stable decision artifact envelope", async () => {
     const { esrsRoadmapRouter } = await import("./esrs-roadmap.js");
+
+    collectEvidenceRefsForTermsMock.mockResolvedValue([
+      {
+        sourceChunkId: 3001,
+        evidenceKey: "ke:3001:hash",
+        citationLabel: "ESRS E1 — Climate Change",
+        sourceLocator: "https://example.com/esrs-e1",
+      },
+    ]);
 
     getAllEsrsGs1MappingsMock.mockResolvedValue([
       {
@@ -89,6 +103,9 @@ describe("esrsRoadmapRouter", () => {
     expect(result.decisionArtifact.confidence.reviewRecommended).toBe(true);
     expect(result.decisionArtifact.confidence.uncertaintyClass).toBe("review_required");
     expect(result.decisionArtifact.confidence.escalationAction).toBe("analyst_review");
+    expect(result.decisionArtifact.evidence.evidenceRefs?.[0]?.evidenceKey).toBe(
+      "ke:3001:hash"
+    );
   });
 
   it("falls back to a deterministic roadmap and still emits a decision artifact", async () => {

@@ -51,6 +51,10 @@ Active:
   - Trigger: pushes to `main` and `isa_web_clean_Q_branch` for `docs/**` and `scripts/refactor/**`; PRs targeting `main`.
   - Purpose: run refactoring validation gates and enforce a quality score threshold.
   - Local: `bash scripts/refactor/validate_gates.sh`
+- `tiered-tests.yml`
+  - Trigger: core CI for build/test/eval enforcement.
+  - Purpose: includes the stage-a calibration manifest sync gate before unified capability evals.
+  - Local: `bash scripts/gates/calibration-manifest-sync.sh`
 - `repo-tree.yml`
   - Trigger: scheduled + manual; creates a PR when `REPO_TREE.md` changes.
   - Purpose: keep `REPO_TREE.md` current for navigation and auditing.
@@ -98,6 +102,7 @@ Disabled (`*.yml.disabled`):
 ## Gate Scripts (Quick Links)
 
 - Governance: `bash scripts/gates/governance-gate.sh`
+- Calibration manifest sync: `bash scripts/gates/calibration-manifest-sync.sh`
 - Security: `bash scripts/gates/security-gate.sh`
 - Observability contract: `bash scripts/gates/observability-contract.sh`
 - Proof/artifact validation: `bash scripts/gates/validate-proof-artifacts.sh`

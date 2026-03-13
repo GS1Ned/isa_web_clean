@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { trpc } from "../lib/trpc";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -84,7 +84,7 @@ function EpistemicBadge({ status, confidence }: { status: string; confidence: st
 
   return (
     <Tooltip>
-      <TooltipTrigger>
+      <TooltipTrigger asChild>
         <Badge variant="outline" className={`${config.color} text-xs gap-1`}>
           <Icon className="h-3 w-3" />
           {config.label}
@@ -313,6 +313,15 @@ export default function GapAnalyzer() {
                 <div className="text-xs text-muted-foreground">
                   {selectedAttributes.length} attributes selected
                 </div>
+
+                <Alert>
+                  <BookOpen className="h-4 w-4" />
+                  <AlertDescription className="text-xs leading-relaxed">
+                    Coverage source: current attributes come from ISA&apos;s ESRS-to-GS1 mapping inventory.
+                    Confidence badges reflect mapping strength, while sector and company size scope
+                    which ESRS requirements are evaluated.
+                  </AlertDescription>
+                </Alert>
 
                 <div className="max-h-64 overflow-y-auto space-y-2 border rounded-md p-2">
                   {filteredAttributes?.map((attr) => (

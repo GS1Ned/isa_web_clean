@@ -1,10 +1,11 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { trpc } from "../lib/trpc";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Select,
   SelectContent,
@@ -86,7 +87,7 @@ function EpistemicBadge({ status, confidence }: { status: string; confidence: st
 
   return (
     <Tooltip>
-      <TooltipTrigger>
+      <TooltipTrigger asChild>
         <Badge variant="outline" className={`${config.color} text-xs gap-1`}>
           <Icon className="h-3 w-3" />
           {config.label}
@@ -122,7 +123,7 @@ function ConfidenceBadge({ level, score }: { level: string; score: number }) {
 
   return (
     <Tooltip>
-      <TooltipTrigger>
+      <TooltipTrigger asChild>
         <Badge variant="outline" className={`${config.color} gap-1`}>
           <Icon className="h-3 w-3" />
           {Math.round(score * 100)}%
@@ -292,6 +293,16 @@ export default function AttributeRecommender() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Input Form */}
         <div className="lg:col-span-1 space-y-6">
+          <Alert className="bg-muted/40">
+            <Info className="h-4 w-4" />
+            <AlertDescription className="text-sm leading-6">
+              <span className="font-medium">Inventory sources:</span>{" "}
+              sectors use ISA&apos;s curated taxonomy for readable labels,
+              regulation choices come from the current ISA regulation catalog when available,
+              and current attributes come from ESRS-to-GS1 mapping coverage with a small core-identifier fallback.
+            </AlertDescription>
+          </Alert>
+
           {/* Sector Selection */}
           <Card>
             <CardHeader>
@@ -299,7 +310,9 @@ export default function AttributeRecommender() {
                 <Building2 className="h-5 w-5" />
                 Sector
               </CardTitle>
-              <CardDescription>Select your industry sector</CardDescription>
+              <CardDescription>
+                Select your industry sector from ISA&apos;s curated decision-core taxonomy
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Select value={sector} onValueChange={setSector}>
@@ -349,7 +362,9 @@ export default function AttributeRecommender() {
                 <ShieldCheck className="h-5 w-5" />
                 Target Regulations
               </CardTitle>
-              <CardDescription>Select regulations to focus on</CardDescription>
+              <CardDescription>
+                Select regulations from the current ISA regulation inventory
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
               {regulations?.map((reg) => (
@@ -377,7 +392,9 @@ export default function AttributeRecommender() {
                 <Leaf className="h-5 w-5" />
                 Current Attributes
               </CardTitle>
-              <CardDescription>Select attributes you already have</CardDescription>
+              <CardDescription>
+                Select attributes from the current ESRS-to-GS1 mapping inventory
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="relative">

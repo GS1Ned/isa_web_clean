@@ -64,6 +64,7 @@ export const sources = mysqlTable('sources', {
   name: varchar('name', { length: 512 }).notNull(),
   acronym: varchar('acronym', { length: 64 }),
   externalId: varchar('external_id', { length: 255 }),
+  datasetId: varchar('dataset_id', { length: 255 }),
   
   // Source metadata
   sourceType: sourceTypeEnum.notNull(),
@@ -71,9 +72,11 @@ export const sources = mysqlTable('sources', {
   // Authority & Trust (1=highest, 5=lowest)
   authorityLevel: int('authority_level').notNull(),
   authorityTier: varchar('authority_tier', { length: 64 }),
+  sourceRole: varchar('source_role', { length: 64 }),
   licenseType: varchar('license_type', { length: 64 }),
   publicationStatus: varchar('publication_status', { length: 64 }),
   immutableUri: varchar('immutable_uri', { length: 1024 }),
+  sourceLocator: varchar('source_locator', { length: 1024 }),
   publisher: varchar('publisher', { length: 255 }),
   publisherUrl: varchar('publisher_url', { length: 512 }),
   
@@ -93,11 +96,14 @@ export const sources = mysqlTable('sources', {
   
   // Ingestion metadata
   ingestionDate: timestamp('ingestion_date').notNull().defaultNow(),
+  retrievedAt: timestamp('retrieved_at'),
   lastVerifiedDate: timestamp('last_verified_date'),
   verificationStatus: verificationStatusEnum.notNull().default('pending'),
+  contentHash: varchar('content_hash', { length: 64 }),
   
   // Content summary
   description: text('description'),
+  admissionBasis: varchar('admission_basis', { length: 64 }),
   sector: varchar('sector', { length: 128 }),
   language: varchar('language', { length: 8 }).default('en'),
   
@@ -108,6 +114,8 @@ export const sources = mysqlTable('sources', {
 }, (table) => ({
   sourceTypeIdx: index('source_type_idx').on(table.sourceType),
   authorityLevelIdx: index('authority_level_idx').on(table.authorityLevel),
+  datasetIdIdx: index('dataset_id_idx').on(table.datasetId),
+  sourceRoleIdx: index('source_role_idx').on(table.sourceRole),
   statusIdx: index('status_idx').on(table.status),
   sectorIdx: index('sector_idx').on(table.sector),
   publicationDateIdx: index('publication_date_idx').on(table.publicationDate),

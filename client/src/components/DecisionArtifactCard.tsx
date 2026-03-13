@@ -32,9 +32,24 @@ export interface DecisionArtifactCardData {
   evidence?: {
     codePaths?: string[];
     dataSources?: string[];
+    evidenceRefs?: Array<{
+      evidenceKey?: string | null;
+      citationLabel?: string | null;
+      sourceChunkLocator?: string | null;
+      sourceLocator?: string | null;
+      immutableUri?: string | null;
+      sourceRole?: string | null;
+      publicationStatus?: string | null;
+      needsVerification?: boolean;
+      verificationReason?: string;
+    }>;
   };
   summary?: Record<string, DecisionArtifactSummaryValue>;
 }
+
+type DecisionArtifactEvidenceRef = NonNullable<
+  NonNullable<DecisionArtifactCardData["evidence"]>["evidenceRefs"]
+>[number];
 
 interface DecisionArtifactCardProps {
   artifact?: DecisionArtifactCardData | null;
@@ -78,6 +93,15 @@ function getConfidenceTone(level: string) {
   }
 }
 
+function hasReviewerUsableEvidenceRef(
+  evidenceRef: DecisionArtifactEvidenceRef,
+) {
+  return Boolean(
+    (evidenceRef.evidenceKey || evidenceRef.citationLabel) &&
+      (evidenceRef.sourceChunkLocator || evidenceRef.sourceLocator || evidenceRef.immutableUri),
+  );
+}
+
 export function DecisionArtifactCard({
   artifact,
   title = "Decision Artifact",
@@ -91,7 +115,22 @@ export function DecisionArtifactCard({
   const evidence = artifact.evidence ?? {};
   const codePaths = evidence.codePaths ?? [];
   const dataSources = evidence.dataSources ?? [];
+  const evidenceRefs = evidence.evidenceRefs ?? [];
+  const reviewerUsableEvidenceRefs = evidenceRefs.filter(hasReviewerUsableEvidenceRef);
+  const evidenceRefsNeedReview = evidenceRefs.filter((ref) => ref.needsVerification);
   const postureSummary = getDecisionPostureSummary(artifact.confidence);
+  const evidenceGateLabel =
+    evidenceRefs.length === 0
+      ? "No evidence refs"
+      : reviewerUsableEvidenceRefs.length === evidenceRefs.length &&
+          evidenceRefsNeedReview.length === 0
+        ? "Evidence refs ready"
+        : "Evidence refs need review";
+  const workflowReady =
+    !artifact.confidence.reviewRecommended &&
+    evidenceRefs.length > 0 &&
+    reviewerUsableEvidenceRefs.length === evidenceRefs.length &&
+    evidenceRefsNeedReview.length === 0;
 
   return (
     <Card>
@@ -114,8 +153,15 @@ export function DecisionArtifactCard({
                 {formatDecisionPostureLabel(artifact.confidence.uncertaintyClass)}
               </Badge>
             ) : null}
-            <Badge variant={artifact.confidence.reviewRecommended ? "secondary" : "outline"}>
-              {artifact.confidence.reviewRecommended ? "Review recommended" : "Ready for routine use"}
+            <Badge variant={artifact.confidence.reviewRecommended || !workflowReady ? "secondary" : "outline"}>
+              {artifact.confidence.reviewRecommended
+                ? "Review recommended"
+                : workflowReady
+                  ? "Ready for routine use"
+                  : "Routine use gated by provenance"}
+            </Badge>
+            <Badge variant={workflowReady ? "outline" : "secondary"}>
+              {evidenceGateLabel}
             </Badge>
             <Badge variant="secondary">{artifact.artifactType}</Badge>
           </div>
@@ -187,6 +233,43 @@ export function DecisionArtifactCard({
               {dataSources.length > 0 ? dataSources.join(", ") : "No data sources recorded."}
             </div>
           </div>
+        </div>
+
+        <div className="rounded-lg border bg-white p-3">
+          <div className="mb-2 flex items-center gap-2 text-sm font-medium">
+            <FileSearch className="h-4 w-4 text-slate-600" />
+            Evidence Ref Traceability
+          </div>
+          {evidenceRefs.length > 0 ? (
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <p>
+                Reviewer-usable refs: {reviewerUsableEvidenceRefs.length}/{evidenceRefs.length}
+                {evidenceRefsNeedReview.length > 0
+                  ? ` • ${evidenceRefsNeedReview.length} need verification`
+                  : ""}
+              </p>
+              <ul className="space-y-1">
+                {evidenceRefs.slice(0, 3).map((ref, index) => (
+                  <li key={`${ref.evidenceKey || ref.citationLabel || "ref"}-${index}`}>
+                    <span className="font-medium text-foreground">
+                      {ref.citationLabel || ref.evidenceKey || "Unresolved reference"}
+                    </span>
+                    <span>
+                      {" "}
+                      — {ref.sourceChunkLocator || ref.sourceLocator || ref.immutableUri || "Locator unavailable"}
+                    </span>
+                    {ref.needsVerification ? (
+                      <span> • needs verification</span>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="text-sm text-muted-foreground">
+              No authoritative evidence refs recorded for this artifact yet.
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -46,6 +46,15 @@ describe('ESRS decision artifacts', () => {
       inferenceCount: 5,
       uncertainCount: 1,
       overallConfidence: 'medium',
+      evidenceRefs: [
+        {
+          sourceId: 1,
+          sourceChunkId: 10,
+          evidenceKey: 'ke:10:hash',
+          citationLabel: 'CSRD — Article 19a',
+          sourceLocator: 'https://eur-lex.example/article-19a',
+        },
+      ],
     });
 
     expect(artifact.artifactType).toBe('gap_analysis');
@@ -56,6 +65,7 @@ describe('ESRS decision artifacts', () => {
     expect(artifact.confidence.score).toBeGreaterThan(0);
     expect(artifact.summary.criticalGapIds).toEqual(['gap-1', 'gap-2', 'gap-3']);
     expect(artifact.evidence.dataSources).toContain('gs1_esrs_mappings');
+    expect(artifact.evidence.evidenceRefs?.[0]?.evidenceKey).toBe('ke:10:hash');
   });
 
   it('builds a stable attribute-recommendation decision artifact', () => {
@@ -71,6 +81,13 @@ describe('ESRS decision artifacts', () => {
       recommendationScores: [0.9, 0.8, 0.6],
       overallConfidence: 'high',
       overallBasis: 'Majority of recommendations based on database mappings',
+      evidenceRefs: [
+        {
+          sourceChunkId: 22,
+          citationLabel: 'ESRS E1-3 — GHG emissions',
+          sourceLocator: 'https://efrag.example/e1-3',
+        },
+      ],
     });
 
     expect(artifact.artifactType).toBe('attribute_recommendation');
@@ -85,6 +102,7 @@ describe('ESRS decision artifacts', () => {
       'recycledContentPercentage',
     ]);
     expect(artifact.evidence.dataSources).toContain('ATTRIBUTE_METADATA');
+    expect(artifact.evidence.evidenceRefs?.[0]?.citationLabel).toContain('ESRS E1-3');
   });
 
   it('builds a stable roadmap decision artifact', () => {
@@ -100,6 +118,14 @@ describe('ESRS decision artifacts', () => {
       topPhaseIds: ['phase-1', 'phase-2', 'phase-3'],
       mode: 'llm',
       basis: 'LLM roadmap synthesis grounded in 12 relevant mappings.',
+      evidenceRefs: [
+        {
+          sourceChunkId: 33,
+          evidenceKey: 'ke:33:hash',
+          citationLabel: 'ESRS E5 — Circular Economy',
+          sourceLocator: 'https://efrag.example/e5',
+        },
+      ],
     });
 
     expect(artifact.artifactType).toBe('roadmap');
@@ -109,6 +135,7 @@ describe('ESRS decision artifacts', () => {
     expect(artifact.confidence.uncertaintyClass).toBe('decision_grade');
     expect(artifact.summary.mappingCount).toBe(12);
     expect(artifact.summary.topPhaseIds).toEqual(['phase-1', 'phase-2', 'phase-3']);
+    expect(artifact.evidence.evidenceRefs?.[0]?.sourceChunkId).toBe(33);
   });
 
   it('marks low-confidence artifacts as insufficient evidence with human review required', () => {

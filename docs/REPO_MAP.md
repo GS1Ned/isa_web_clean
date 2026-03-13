@@ -1,95 +1,70 @@
 # ISA Repository Map
 
-**Version:** 1.0.0  
-**Commit:** `bd6e18cabed87201790ede614576e14cb8548de1`  
-**Last Updated:** 2026-01-27
+Status: SUPPORTING
+Canonical replacement: `docs/INDEX.md`
+Last reviewed: 2026-03-06
+Scope: Navigation/support only; not source-of-truth for architecture, planning, or operations.
 
----
+## Purpose
 
-## 1. Purpose
+Use this file for a quick structural orientation to the repository.
+For authority questions, follow the canonical chain instead of this support map.
 
-This document provides a high-level, evidence-bound map of the ISA repository. It is designed to be a **stable, low-maintenance entrypoint** for developers to quickly understand the project structure. Every statement is backed by a concrete file path.
+## Canonical First-Read Chain
 
----
+1. `README.md`
+2. `AGENT_START_HERE.md`
+3. `docs/INDEX.md`
+4. `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
+5. `docs/spec/ARCHITECTURE.md`
+6. `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
+7. `docs/planning/NEXT_ACTIONS.json`
 
-## 2. Entrypoints
+## Repository Zones
 
-| Type | Command | Entrypoint File |
-|---|---|---|
-| **Development** | `pnpm dev` | `server/_core/index.ts` |
-| **Production** | `pnpm start` | `dist/index.js` |
-| **Frontend** | (Vite) | `client/index.html` → `client/src/main.tsx` |
+| Area | Path | Primary purpose |
+| --- | --- | --- |
+| Frontend | `client/` | React app and UI surfaces |
+| Backend | `server/` | Express, tRPC, services, runtime logic |
+| Database schema | `drizzle/` | Drizzle schema and MySQL migration history |
+| Postgres migration line | `drizzle_pg/` | Postgres schema and isolated PG migration history |
+| Scripts | `scripts/` | Dev, validation, ingest, and governance automation |
+| Data | `data/` | Dataset metadata and source material |
+| Canonical docs | `docs/governance/`, `docs/spec/`, `docs/planning/`, `docs/decisions/` | Authority, contracts, planning, decisions |
+| Generated architecture contracts | `docs/architecture/panel/_generated/` | Machine-readable manifests and validation bundle |
+| Historical archive | `isa-archive/` | Historical reference only |
+| External/reference corpus | `openclaw_audit/` | Non-canonical audit/source material used by some local config |
 
----
+## Code Entrypoints
 
-## 3. Critical Files & Directories
+| Topic | Path |
+| --- | --- |
+| Server entry | `server/_core/index.ts` |
+| Client entry | `client/src/main.tsx` |
+| Root API router | `server/routers.ts` |
+| Default DB/runtime helpers | `server/db.ts` |
+| Environment validation | `server/_core/env.ts` |
+| Main schema | `drizzle/schema.ts` |
+| Postgres connection path | `server/db-connection-pg.ts` |
 
-### Top-20 Critical Files
+## Where To Look First
 
-| File | Responsibility | Why It Matters |
-|---|---|---|
-| `package.json` | Defines all dependencies and scripts | The single source of truth for the project's build and runtime environment. |
-| `server/_core/index.ts` | Main backend server entrypoint | Initializes Express, tRPC, Vite, and all core middleware. |
-| `server/routers.ts` | Root tRPC router | Aggregates all API endpoints into a single, type-safe router. |
-| `server/db.ts` | Database connection and schema | Defines the Drizzle ORM instance and the database connection logic. |
-| `drizzle/schema.ts` | Canonical database schema | The single source of truth for all database tables, columns, and relations. |
-| `client/src/main.tsx` | Main frontend entrypoint | Renders the root React component and sets up the client-side environment. |
-| `client/src/App.tsx` | Root React component | Defines the main application layout, routing, and core UI components. |
-| `vite.config.ts` | Frontend build configuration | Controls how the React frontend is built, bundled, and served. |
-| `server/_core/oauth.ts` | Authentication and authorization | Handles user login, session management, and role-based access control. |
-| `server/ask-isa-guardrails.ts` | Ask ISA safety and validation | Implements guardrails to prevent harmful or off-topic queries. |
-| `server/hybrid-search.ts` | Core Ask ISA search logic | Combines BM25 and vector search to retrieve relevant documents. |
-| `server/ingest/` (directory) | Data ingestion pipelines | Contains all scripts for ingesting regulations, standards, and other data. |
-| `server/_core/logger-wiring.ts` | Centralized logging | Configures the `pino` logger for structured, production-grade logging. |
-| `server/_core/security-headers.ts` | HTTP security configuration | Defines CSP, CORS, and other security headers to protect against attacks. |
-| `.github/workflows/iron-gate.yml.disabled` | IRON Protocol enforcement (disabled) | Legacy CI workflow currently disabled. |
-| `docs/planning/NEXT_ACTIONS.json` | Execution queue (canonical) | The single source of what to work on next. |
-| `docs/governance/IRON_PROTOCOL.md` | Core governance rules | Defines the rules of engagement for development. |
-| `docs/governance/SCOPE_DECISIONS.md` | Persistent scope registry | Prevents scope creep and ensures a clean repository. |
-| `README.md` | Project overview and setup | The first document a new developer should read. |
-| `docs/spec/ESRS_MAPPING/isa-core-architecture.md` | **Architecture SSOT** - System architecture and components |
+| Question | Best starting point |
+| --- | --- |
+| What is ISA? | `README.md` |
+| How should an agent work here? | `AGENT_START_HERE.md` and `docs/agent/AGENT_MAP.md` |
+| What is canonical technical truth? | `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md` |
+| What is the system architecture? | `docs/spec/ARCHITECTURE.md` |
+| What is the data-plane contract? | `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md` |
+| What is the current work queue? | `docs/planning/NEXT_ACTIONS.json` |
+| Which capability owns what? | `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json` |
 
-### Top-10 Critical Directories
+## Scope Rule
 
-| Directory | Responsibility |
-|---|---|
-| `server/` | All backend logic, including tRPC, database, and core services. |
-| `client/` | All frontend logic, including React components, styles, and assets. |
-| `drizzle/` | Database schema and migration files. |
-| `scripts/` | Standalone scripts for automation, maintenance, and governance (like IRON). |
-| `data/` | Raw and processed data files used for ingestion. |
-| `.github/` | CI/CD workflows, PR templates, and other GitHub-specific configuration. |
-| `docs/` | All project documentation (deprecated in favor of IRON Knowledge Map). |
-| `server/_core/` | The heart of the backend: server setup, auth, security, logging. |
-| `server/ingest/` | All data ingestion pipelines and related logic. |
-| `server/prompts/` | All LLM prompt templates for Ask ISA and other features. |
+Do not use this file to determine:
+- current work status
+- canonical architecture authority
+- deployment truth
+- policy precedence
 
----
-
-## 4. Where to Look First
-
-| Topic | Primary Location | Secondary Location |
-|---|---|---|
-| **Authentication** | `server/_core/oauth.ts` | `server/authority-model.ts` |
-| **Database** | `drizzle/schema.ts` | `server/db.ts` |
-| **API (tRPC)** | `server/routers.ts` | `server/` (individual router files) |
-| **Data Ingestion** | `server/ingest/` | `scripts/` (utility scripts) |
-| **Ask ISA** | `server/hybrid-search.ts` | `server/prompts/ask_isa/` |
-| **Planning** | `docs/planning/NEXT_ACTIONS.json` | `docs/planning/BACKLOG.csv` |
-| **Monitoring** | `server/_core/performance-monitoring.ts` | `server/db-health-guard.test.ts` |
-
----
-
-## 5. Canonical Documentation
-
-| Document | Purpose |
-|---|---|
-| `README.md` | Project overview and setup instructions |
-| `docs/INDEX.md` | Documentation index and navigation |
-| `docs/REPO_MAP.md` | This file - repository structure map |
-| `docs/spec/ESRS_MAPPING/isa-core-architecture.md` | **Architecture SSOT** - Single source of truth for system architecture |
-| `docs/governance/_root/ISA_GOVERNANCE.md` | Governance framework for all development |
-| `docs/architecture/panel/KICKOFF_PACKAGE.md` | Architecture review framework (Repo-Tight v5) |
-| `docs/planning/INDEX.md` | Planning documentation index |
-| `docs/planning/NEXT_ACTIONS.json` | Execution queue (canonical) |
-| `config/governance/canonical_docs_allowlist.json` | Canonical docs policy |
+Those scopes belong to the canonical replacements listed above.

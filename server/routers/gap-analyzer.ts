@@ -33,6 +33,11 @@ import {
   COMPANY_SIZE_THRESHOLDS,
 } from '../gap-reasoning.js';
 import { buildGapAnalysisDecisionArtifact } from '../esrs-decision-artifacts.js';
+import { buildGapAnalyzerSampleAttributes } from '../attribute-recommender-inventory.js';
+import { mapESRSToGS1Attributes } from '../mappings/esrs-to-gs1-mapper.js';
+import { ESRS_GS1_CALIBRATION_RULES } from '../mappings/esrs-gs1-calibration-data.js';
+import { ESRS_GS1_MAPPING_RULES } from '../mappings/esrs-gs1-mapping-data.js';
+import { collectEvidenceRefsForTerms } from '../source-provenance.js';
 
 // =============================================================================
 // INPUT SCHEMAS
@@ -49,14 +54,350 @@ const gapAnalysisInputSchema = z.object({
 // DATABASE QUERIES
 // =============================================================================
 
+function isMissingRelationError(error: unknown, relationName: string) {
+  const queue = [error];
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (!current || typeof current !== 'object') continue;
+
+    const code = 'code' in current ? String((current as { code?: unknown }).code ?? '') : '';
+    const message =
+      'message' in current ? String((current as { message?: unknown }).message ?? '') : '';
+
+    if (code === '42P01' || message.includes(`relation "${relationName}" does not exist`)) {
+      return true;
+    }
+
+    if ('cause' in current) {
+      queue.push((current as { cause?: unknown }).cause);
+    }
+  }
+
+  return false;
+}
+
+function extractRows<T extends Record<string, unknown>>(result: unknown): T[] {
+  if (Array.isArray(result)) {
+    const maybeRows = result[0];
+    return Array.isArray(maybeRows) ? (maybeRows as T[]) : (result as T[]);
+  }
+
+  if (
+    result &&
+    typeof result === 'object' &&
+    'rows' in result &&
+    Array.isArray((result as { rows?: unknown }).rows)
+  ) {
+    return ((result as { rows: unknown[] }).rows ?? []) as T[];
+  }
+
+  return [];
+}
+
+type RequirementMappingRow = {
+  mapping_id: number;
+  level: string;
+  esrs_standard: string;
+  esrs_topic: string;
+  data_point_name: string;
+  short_name: string;
+  definition: string;
+  gs1_relevance: string;
+  gs1_attribute_id: string | null;
+  gs1_attribute_name: string | null;
+  mapping_type: string | null;
+  mapping_notes: string | null;
+  confidence: string | null;
+  mapping_source?: string | null;
+};
+
+type SampleAttributeRow = {
+  gs1AttributeId: string | null;
+  gs1AttributeName: string | null;
+  confidence: string | null;
+};
+
+type StaticRequirementAttribute = {
+  attributeId: string;
+  attributeName: string;
+  confidence: 'high' | 'medium' | 'low';
+  mappingType: 'direct' | 'calculated' | 'aggregated';
+  mappingNotes: string;
+  mappingSource: 'ESRS_GS1_MAPPING_RULES' | 'ESRS_GS1_CALIBRATIONS';
+};
+
+function normalizeStaticDatapointId(shortName: string | null | undefined) {
+  const normalized = String(shortName || '').trim().toUpperCase();
+  if (!normalized) return null;
+  if (/^[A-Z]\d-\d+_\d+$/.test(normalized)) return normalized;
+  if (/^[A-Z]\d-\d+$/.test(normalized)) return `${normalized}_01`;
+  return null;
+}
+
+function normalizeEsrsStandard(esrsStandard: string | null | undefined) {
+  const normalized = String(esrsStandard || '').trim().toUpperCase();
+  if (!normalized) return '';
+  return normalized.replace(/^ESRS\s+/, '');
+}
+
+function normalizeMatchText(value: string | null | undefined) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const STATIC_RULE_STOPWORDS = new Set([
+  'and',
+  'for',
+  'the',
+  'with',
+  'from',
+  'into',
+  'data',
+  'supports',
+  'support',
+  'enables',
+  'enable',
+  'captures',
+  'capture',
+  'provides',
+  'provide',
+  'disclosure',
+  'disclosures',
+]);
+
+function requirementTextTokens(value: string | null | undefined) {
+  return String(value || '')
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .map((part) => part.trim())
+    .filter((part) => part.length > 2 && !STATIC_RULE_STOPWORDS.has(part));
+}
+
+function humanizeAttributeName(attributeId: string) {
+  return attributeId
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/([A-Za-z])(\d+)/g, '$1 $2')
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (match) => match.toUpperCase())
+    .replace(/\bGtin\b/g, 'GTIN')
+    .replace(/\bGln\b/g, 'GLN')
+    .replace(/\bGdsn\b/g, 'GDSN')
+    .replace(/\bGhg\b/g, 'GHG')
+    .replace(/\bSscc\b/g, 'SSCC')
+    .replace(/\bDpp\b/g, 'DPP')
+    .trim();
+}
+
+function confidenceLevelFromScore(score: number): 'high' | 'medium' | 'low' {
+  if (score >= 0.85) return 'high';
+  if (score >= 0.7) return 'medium';
+  return 'low';
+}
+
+function mappingTypeFromStaticRule(
+  score: number,
+  dataType: 'narrative' | 'monetary' | 'percentage' | 'date' | 'boolean' | 'quantitative',
+): 'direct' | 'calculated' | 'aggregated' {
+  if (score >= 0.85) return 'direct';
+  if (dataType === 'narrative') return 'aggregated';
+  return 'calculated';
+}
+
+function getCalibratedAttributesForRequirement(row: RequirementMappingRow): StaticRequirementAttribute[] {
+  const rowStandard = normalizeEsrsStandard(row.esrs_standard);
+  if (!rowStandard) return [];
+
+  const shortName = normalizeMatchText(row.short_name);
+  const requirement = normalizeMatchText(row.data_point_name);
+  const definition = normalizeMatchText(row.definition);
+
+  for (const rule of ESRS_GS1_CALIBRATION_RULES) {
+    if (normalizeEsrsStandard(rule.esrsStandard) !== rowStandard) continue;
+
+    const shortNameMatch = !rule.shortNamePhrases?.length || rule.shortNamePhrases.some((phrase) => shortName.includes(normalizeMatchText(phrase)));
+    const requirementMatch = !rule.requirementPhrases?.length || rule.requirementPhrases.some((phrase) => requirement.includes(normalizeMatchText(phrase)));
+    const definitionMatch = !rule.definitionPhrases?.length || rule.definitionPhrases.some((phrase) => definition.includes(normalizeMatchText(phrase)));
+
+    if (!shortNameMatch || !requirementMatch || !definitionMatch) continue;
+
+    return rule.attributes.map((attribute) => ({
+      attributeId: attribute.attributeId,
+      attributeName: attribute.attributeName,
+      confidence: attribute.mappingConfidence,
+      mappingType: attribute.mappingType,
+      mappingNotes: `${attribute.implementationNotes} ${rule.rationale}`,
+      mappingSource: 'ESRS_GS1_CALIBRATIONS',
+    }));
+  }
+
+  return [];
+}
+
+function getStaticRuleAttributesForRequirement(row: RequirementMappingRow): StaticRequirementAttribute[] {
+  const rowStandard = normalizeEsrsStandard(row.esrs_standard);
+  if (!rowStandard) return [];
+
+  const rowText = [row.short_name, row.data_point_name, row.definition]
+    .map((value) => String(value || '').toLowerCase())
+    .join(' ');
+  const rowTokens = new Set([
+    ...requirementTextTokens(row.short_name),
+    ...requirementTextTokens(row.data_point_name),
+    ...requirementTextTokens(row.definition),
+  ]);
+
+  let bestRule:
+    | (typeof ESRS_GS1_MAPPING_RULES)[number]
+    | null = null;
+  let bestScore = 0;
+
+  for (const rule of ESRS_GS1_MAPPING_RULES) {
+    if (normalizeEsrsStandard(rule.esrs_standard) !== rowStandard) continue;
+
+    const candidatePhrases = [rule.topic, ...(rule.matchTerms ?? [])]
+      .map((value) => String(value || '').trim())
+      .filter((value) => value.length > 0);
+
+    let ruleBestScore = 0;
+
+    for (const candidatePhrase of candidatePhrases) {
+      const candidateLower = candidatePhrase.toLowerCase();
+      const candidateTokens = requirementTextTokens(candidatePhrase);
+      if (candidateTokens.length === 0) continue;
+
+      const overlapCount = candidateTokens.filter((token) => rowTokens.has(token)).length;
+      const overlapRatio = overlapCount / candidateTokens.length;
+      const exactPhraseMatch = rowText.includes(candidateLower);
+      const score =
+        overlapRatio +
+        (exactPhraseMatch ? 0.5 : 0) +
+        (overlapCount >= 3 ? 0.15 : 0);
+
+      if (exactPhraseMatch || overlapCount >= 2 || overlapRatio >= 0.5) {
+        ruleBestScore = Math.max(ruleBestScore, score);
+      }
+    }
+
+    if (ruleBestScore > bestScore) {
+      bestRule = rule;
+      bestScore = ruleBestScore;
+    }
+  }
+
+  return (
+    bestRule?.gs1Attributes.map((attribute) => ({
+      attributeId: attribute.attributeName,
+      attributeName: humanizeAttributeName(attribute.attributeName),
+      confidence: confidenceLevelFromScore(attribute.mappingConfidence),
+      mappingType: mappingTypeFromStaticRule(attribute.mappingConfidence, attribute.data_type),
+      mappingNotes: `Heuristic static fallback from ESRS_GS1_MAPPING_RULES (${attribute.gs1Standard}): ${attribute.mappingReason}`,
+      mappingSource: 'ESRS_GS1_MAPPING_RULES',
+    })) ?? []
+  );
+}
+
+async function applyStaticAttributeFallback(rows: RequirementMappingRow[]) {
+  const datapointIds = Array.from(
+    new Set(
+      rows
+        .map((row) => normalizeStaticDatapointId(row.short_name))
+        .filter((value): value is string => typeof value === 'string' && value.length > 0),
+    ),
+  );
+  const staticMappings = datapointIds.length
+    ? await mapESRSToGS1Attributes(datapointIds, {
+        includeLowConfidence: true,
+        maxAttributesPerDatapoint: 3,
+      })
+    : [];
+  const mappingsByDatapointId = new Map(
+    staticMappings.map((mapping) => [mapping.esrsDatapointId, mapping.gs1Attributes]),
+  );
+
+  return rows.flatMap((row) => {
+    const calibratedAttributes = getCalibratedAttributesForRequirement(row);
+    if (calibratedAttributes.length > 0) {
+      return calibratedAttributes.map((attribute) => ({
+        ...row,
+        gs1_attribute_id: attribute.attributeId,
+        gs1_attribute_name: attribute.attributeName,
+        mapping_type: attribute.mappingType,
+        mapping_notes: attribute.mappingNotes,
+        confidence: attribute.confidence,
+        mapping_source: attribute.mappingSource,
+      }));
+    }
+
+    const datapointId = normalizeStaticDatapointId(row.short_name);
+    const attributes = datapointId
+      ? mappingsByDatapointId.get(datapointId) ?? getStaticRuleAttributesForRequirement(row)
+      : getStaticRuleAttributesForRequirement(row);
+    if (attributes.length === 0) {
+      return [row];
+    }
+
+    return attributes.map((attribute) => ({
+      ...row,
+      gs1_attribute_id: attribute.attributeId,
+      gs1_attribute_name: attribute.attributeName,
+      mapping_type: attribute.mappingType,
+      mapping_notes: attribute.mappingNotes,
+      confidence: attribute.confidence,
+      mapping_source: attribute.mappingSource,
+    }));
+  });
+}
+
+function buildStaticSampleAttributeRows(): SampleAttributeRow[] {
+  const byAttributeId = new Map<string, SampleAttributeRow & { confidenceRank: number }>();
+
+  for (const rule of ESRS_GS1_CALIBRATION_RULES) {
+    for (const attribute of rule.attributes) {
+      const confidenceRank = attribute.mappingConfidence === 'high' ? 3 : attribute.mappingConfidence === 'medium' ? 2 : 1;
+      const existing = byAttributeId.get(attribute.attributeId);
+      if (!existing || confidenceRank > existing.confidenceRank) {
+        byAttributeId.set(attribute.attributeId, {
+          gs1AttributeId: attribute.attributeId,
+          gs1AttributeName: attribute.attributeName,
+          confidence: attribute.mappingConfidence,
+          confidenceRank,
+        });
+      }
+    }
+  }
+
+  for (const rule of ESRS_GS1_MAPPING_RULES) {
+    for (const attribute of rule.gs1Attributes) {
+      const confidence = confidenceLevelFromScore(attribute.mappingConfidence);
+      const confidenceRank = confidence === 'high' ? 3 : confidence === 'medium' ? 2 : 1;
+      const existing = byAttributeId.get(attribute.attributeName);
+      if (!existing || confidenceRank > existing.confidenceRank) {
+        byAttributeId.set(attribute.attributeName, {
+          gs1AttributeId: attribute.attributeName,
+          gs1AttributeName: humanizeAttributeName(attribute.attributeName),
+          confidence,
+          confidenceRank,
+        });
+      }
+    }
+  }
+
+  return Array.from(byAttributeId.values())
+    .sort((left, right) => right.confidenceRank - left.confidenceRank || String(left.gs1AttributeName).localeCompare(String(right.gs1AttributeName)))
+    .map(({ confidenceRank: _confidenceRank, ...row }) => row);
+}
+
 /**
  * Get all ESRS requirements with their GS1 attribute mappings.
  */
 async function getEsrsRequirementsWithMappings() {
   const db = await getDb();
   if (!db) throw new Error('Database not available');
-  
-  const result = await db.execute(sql`
+
+  const selectWithJoin = sql`
     SELECT 
       m.mapping_id,
       m.level,
@@ -74,23 +415,38 @@ async function getEsrsRequirementsWithMappings() {
     FROM gs1_esrs_mappings m
     LEFT JOIN gs1_attribute_esrs_mapping a ON m.mapping_id = a.esrs_mapping_id
     ORDER BY m.esrs_standard, m.mapping_id
-  `);
-  
-  return (result[0] as unknown) as Array<{
-    mapping_id: number;
-    level: string;
-    esrs_standard: string;
-    esrs_topic: string;
-    data_point_name: string;
-    short_name: string;
-    definition: string;
-    gs1_relevance: string;
-    gs1_attribute_id: string | null;
-    gs1_attribute_name: string | null;
-    mapping_type: string | null;
-    mapping_notes: string | null;
-    confidence: string | null;
-  }>;
+  `;
+
+  const selectWithoutJoin = sql`
+    SELECT
+      m.mapping_id,
+      m.level,
+      m.esrs_standard,
+      m.esrs_topic,
+      m.data_point_name,
+      m.short_name,
+      m.definition,
+      m.gs1_relevance,
+      null as gs1_attribute_id,
+      null as gs1_attribute_name,
+      null as mapping_type,
+      null as mapping_notes,
+      null as confidence
+    FROM gs1_esrs_mappings m
+    ORDER BY m.esrs_standard, m.mapping_id
+  `;
+
+  try {
+    const result = await db.execute(selectWithJoin);
+    return extractRows<RequirementMappingRow>(result);
+  } catch (error) {
+    if (!isMissingRelationError(error, 'gs1_attribute_esrs_mapping')) {
+      throw error;
+    }
+
+    const fallback = await db.execute(selectWithoutJoin);
+    return applyStaticAttributeFallback(extractRows<RequirementMappingRow>(fallback));
+  }
 }
 
 /**
@@ -106,7 +462,7 @@ async function getAvailableEsrsStandards() {
     ORDER BY esrs_standard
   `);
   
-  return ((result[0] as unknown) as Array<{ esrs_standard: string }>).map(r => r.esrs_standard);
+  return extractRows<{ esrs_standard: string }>(result).map(r => r.esrs_standard);
 }
 
 /**
@@ -120,7 +476,7 @@ async function getAvailableSectors() {
     SELECT DISTINCT sector FROM gs1_attributes ORDER BY sector
   `);
   
-  return ((result[0] as unknown) as Array<{ sector: string }>).map(r => r.sector);
+  return extractRows<{ sector: string }>(result).map(r => r.sector);
 }
 
 // =============================================================================
@@ -253,6 +609,20 @@ async function performGapAnalysis(input: GapAnalysisInput): Promise<GapAnalysisR
     overallConfidence: calculateOverallConfidence(epistemicMarkers),
   };
 
+  const evidenceTerms = Array.from(
+    new Set([
+      ...(input.targetRegulations ?? []),
+      ...criticalGaps.flatMap((gap) => [gap.esrsStandard, gap.shortName, gap.requirement]),
+      ...highGaps.flatMap((gap) => [gap.esrsStandard, gap.shortName, gap.requirement]),
+    ].filter((value): value is string => typeof value === 'string' && value.trim().length > 0)),
+  );
+
+  const evidenceRefs = await collectEvidenceRefsForTerms({
+    terms: evidenceTerms,
+    preferredSourceTypes: ['regulation', 'esrs_datapoint', 'standard'],
+    limit: 6,
+  });
+
   const decisionArtifact = buildGapAnalysisDecisionArtifact({
     generatedAt: timestamp,
     sector: input.sector,
@@ -268,6 +638,25 @@ async function performGapAnalysis(input: GapAnalysisInput): Promise<GapAnalysisR
     inferenceCount: overallEpistemic.inferenceCount,
     uncertainCount: overallEpistemic.uncertainCount,
     overallConfidence: overallEpistemic.overallConfidence,
+    dataSources: Array.from(
+      new Set([
+        'gs1_esrs_mappings',
+        ...(requirementsWithMappings.some((row) => row.mapping_source === 'ESRS_GS1_MAPPING_RULES')
+          ? ['ESRS_GS1_MAPPING_RULES']
+          : []),
+        ...(requirementsWithMappings.some((row) => row.mapping_source === 'ESRS_GS1_CALIBRATIONS')
+          ? ['ESRS_GS1_CALIBRATIONS']
+          : []),
+        ...(!requirementsWithMappings.some(
+          (row) =>
+            row.mapping_source === 'ESRS_GS1_MAPPING_RULES' ||
+            row.mapping_source === 'ESRS_GS1_CALIBRATIONS',
+        )
+          ? ['gs1_attribute_esrs_mapping']
+          : []),
+      ]),
+    ),
+    evidenceRefs,
   });
   
   return {
@@ -522,18 +911,51 @@ export const gapAnalyzerRouter = router({
   getSampleAttributes: publicProcedure.query(async () => {
     const db = await getDb();
     if (!db) throw new Error('Database not available');
-    
-    const result = await db.execute(sql`
-      SELECT DISTINCT gs1_attribute_id, gs1_attribute_name, confidence
-      FROM gs1_attribute_esrs_mapping
-      ORDER BY confidence DESC, gs1_attribute_name
-      LIMIT 50
-    `);
-    
-    return (result[0] as unknown) as Array<{
-      gs1_attribute_id: string;
-      gs1_attribute_name: string;
-      confidence: string;
-    }>;
+
+    try {
+      const result = await db.execute(sql`
+        SELECT DISTINCT
+          gs1_attribute_id as gs1AttributeId,
+          gs1_attribute_name as gs1AttributeName,
+          confidence
+        FROM gs1_attribute_esrs_mapping
+        ORDER BY confidence DESC, gs1_attribute_name
+        LIMIT 50
+      `);
+
+      return buildGapAnalyzerSampleAttributes(
+        extractRows<{
+          gs1AttributeId: string | null;
+          gs1AttributeName: string | null;
+          confidence: string | null;
+        }>(result)
+      );
+    } catch (error) {
+      if (!isMissingRelationError(error, 'gs1_attribute_esrs_mapping')) {
+        throw error;
+      }
+
+      try {
+        const fallback = await db.execute(sql`
+          SELECT DISTINCT
+            attribute_code as gs1AttributeId,
+            attribute_name as gs1AttributeName,
+            'low' as confidence
+          FROM gs1_attributes
+          ORDER BY attribute_name
+          LIMIT 50
+        `);
+        const fallbackRows = extractRows<SampleAttributeRow>(fallback);
+        if (fallbackRows.length > 0) {
+          return buildGapAnalyzerSampleAttributes(fallbackRows);
+        }
+        return buildGapAnalyzerSampleAttributes(buildStaticSampleAttributeRows());
+      } catch (fallbackError) {
+        if (!isMissingRelationError(fallbackError, 'gs1_attributes')) {
+          throw fallbackError;
+        }
+        return buildGapAnalyzerSampleAttributes(buildStaticSampleAttributeRows());
+      }
+    }
   }),
 });

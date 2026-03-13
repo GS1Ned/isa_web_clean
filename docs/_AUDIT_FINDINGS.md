@@ -1,3 +1,8 @@
+Status: HISTORICAL REFERENCE ONLY
+Current planning authority: `docs/planning/NEXT_ACTIONS.json`
+Current documentation authority: `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`
+Warning: This 2025 audit is retained for historical context only. It contains stale consolidation recommendations and must not drive current architecture, planning, or implementation work.
+
 # ISA Documentation Audit Findings
 
 **Date:** 17 December 2025  
