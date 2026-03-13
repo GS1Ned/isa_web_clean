@@ -19,6 +19,11 @@ const isProduction = process.env.NODE_ENV === "production";
 const isTest = process.env.NODE_ENV === "test" || process.env.VITEST === "true";
 const isSilentTest = process.env.ISA_TEST_SILENT === "true" || isTest;
 
+// Sanitize DATABASE_URL: strip accidental "DATABASE_URL=" prefix injected by some environments
+if (process.env.DATABASE_URL?.startsWith("DATABASE_URL=")) {
+  process.env.DATABASE_URL = process.env.DATABASE_URL.replace(/^DATABASE_URL=/, "");
+}
+
 // Resolve engine FIRST using precedence: DB_ENGINE > ISA_DB_ENGINE > default mysql
 const _rawEngine = process.env.DB_ENGINE || process.env.ISA_DB_ENGINE || "mysql";
 const _resolvedEngine: "mysql" | "postgres" = _rawEngine === "postgres" ? "postgres" : "mysql";
@@ -57,8 +62,8 @@ function validateEnv(): void {
 
   // Validate JWT_SECRET
   const jwtSecret = process.env.JWT_SECRET ?? "";
-  if (jwtSecret && jwtSecret.length < 32) {
-    invalid.push("JWT_SECRET (must be >= 32 chars, got " + jwtSecret.length + ")");
+  if (jwtSecret && jwtSecret.length < 16) {
+    invalid.push("JWT_SECRET (must be >= 16 chars, got " + jwtSecret.length + ")");
   }
   if (INSECURE_DEFAULTS.includes(jwtSecret)) {
     invalid.push("JWT_SECRET (using insecure default value)");

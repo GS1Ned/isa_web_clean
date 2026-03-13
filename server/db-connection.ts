@@ -75,6 +75,9 @@ export function buildMysqlConfig(databaseUrl: string): MysqlOptions {
 
   if (ssl) {
     config.ssl = ssl;
+  } else if (url.hostname.includes("tidbcloud.com")) {
+    // TiDB Serverless requires SSL; auto-enable when no explicit SSL param is set
+    config.ssl = { rejectUnauthorized: false };
   }
 
   return config;
