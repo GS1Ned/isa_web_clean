@@ -5,6 +5,7 @@
  * Helps users understand the reliability of cited information.
  */
 
+import React from "react";
 import { cn } from '@/lib/utils';
 import {
   Tooltip,

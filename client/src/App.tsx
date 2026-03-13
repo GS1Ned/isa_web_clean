@@ -121,6 +121,7 @@ const HubDutchInitiativeDetail = lazy(
   () => import("./pages/HubDutchInitiativeDetail")
 );
 const AskISA = lazy(() => import("./pages/AskISA"));
+const AskISAEnhanced = lazy(() => import("./pages/AskISAEnhanced"));
 const EvaluationDashboard = lazy(() => import("./pages/EvaluationDashboard"));
 const AdminKnowledgeBase = lazy(() => import("./pages/AdminKnowledgeBase"));
 const DataQuality = lazy(() => import("./pages/DataQuality"));
@@ -198,7 +199,8 @@ function Router() {
         component={HubDutchInitiativeDetail}
       />
       <Route path="/hub/dutch-initiatives" component={HubDutchInitiatives} />
-      <Route path="/ask" component={AskISA} />
+      <Route path="/ask/classic" component={AskISA} />
+      <Route path="/ask" component={AskISAEnhanced} />
       <Route path="/stakeholder-dashboard" component={StakeholderDashboard} />
       <Route path="/advisory/dashboard" component={AdvisoryDashboard} />
       <Route path="/advisory/explorer" component={AdvisoryExplorer} />
