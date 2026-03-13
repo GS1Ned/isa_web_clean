@@ -88,6 +88,7 @@ Target branch: `main`
 | `bash scripts/gates/no-console-gate.sh` | Fail | Fails on long-standing `scripts/*.mjs` console usage outside this change set |
 | `pnpm check` | Fail | Repo-wide pre-existing TypeScript debt unrelated to this slice |
 | Touched-file compiler isolation | Pass | No `tsc` matches for edited Ask ISA files |
+| PR `#329` CI rollup | Partial pass | `canonical-contract-drift`, `validate`, `validate-schemas`, `validate-docs`, both `smoke` checks, and `secrets-scan` passed; only repo-wide `no-console` failed |
 
 ### Issues Encountered And Resolved
 - FACT: `pnpm check` failed on many unrelated client, server, and schema files outside the Ask ISA slice.
@@ -115,11 +116,11 @@ Target branch: `main`
 - Check status:
   - FACT: Focused tests passed locally.
   - FACT: Functional Ask ISA improvements merged via PR `#326`.
-  - FACT: Metadata/governance follow-up is tracked in PR `#328`.
+  - FACT: Metadata/governance follow-up merged via PR `#328`.
   - FACT: Gap Analyzer and regulation timeline follow-up changes are validated locally and are already published in PR `#329`.
-  - FACT: `canonical-contract-drift` on PR `#329` failed because of stale repo-ref metadata and now passes locally after the refresh.
+  - FACT: PR `#329` now passes `canonical-contract-drift`, `validate`, `validate-schemas`, `validate-docs`, both `smoke` checks, and `secrets-scan`.
   - FACT: `no-console` and global `pnpm check` remain blocked by unrelated pre-existing errors.
-- Merge / automerge status: UNKNOWN until refreshed commits are pushed and PR checks are rerun.
+- Merge / automerge status: Not enabled; PR `#329` remains blocked by the repo-wide `no-console` baseline.
 
 ## 10. Unknowns And Next Improvements
 ### UNKNOWN-01
