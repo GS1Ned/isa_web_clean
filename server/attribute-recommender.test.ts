@@ -3,11 +3,39 @@
  * Phase 1: Test suite for GS1 Attribute Recommender
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { generateAttributeRecommendations } from './attribute-recommender';
+
+const { collectEvidenceRefsForTermsMock } = vi.hoisted(() => ({
+  collectEvidenceRefsForTermsMock: vi.fn(),
+}));
+
+vi.mock('./source-provenance.js', () => ({
+  collectEvidenceRefsForTerms: collectEvidenceRefsForTermsMock,
+}));
 
 describe('Attribute Recommender Engine', () => {
   describe('generateAttributeRecommendations', () => {
+    it('attaches reviewer-usable evidence refs to the decision artifact envelope', async () => {
+      collectEvidenceRefsForTermsMock.mockResolvedValue([
+        {
+          sourceId: 201,
+          sourceChunkId: 2001,
+          evidenceKey: 'ke:2001:hash',
+          citationLabel: 'ESRS E1-3 — GHG emissions',
+          sourceLocator: 'https://example.com/esrs-e1-3',
+        },
+      ]);
+
+      const result = await generateAttributeRecommendations({
+        sector: 'Retail',
+        targetRegulations: ['CSRD', 'DPP'],
+      });
+
+      expect(result.decisionArtifact.evidence.evidenceRefs?.[0]?.sourceChunkId).toBe(2001);
+      expect(result.decisionArtifact.evidence.evidenceRefs?.[0]?.citationLabel).toContain('ESRS E1-3');
+    });
+
     it('should generate recommendations for Food & Beverage sector', async () => {
       const result = await generateAttributeRecommendations({
         sector: 'Food & Beverage',

@@ -1,15 +1,28 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
 # ISA managed Codex user configuration template.
-# Render or merge this into ~/.codex/config.toml without overwriting unrelated user settings.
+# Merge this into ~/.codex/config.toml without overwriting unrelated user settings.
+# Repo-scoped defaults live in .codex/config.toml; this file is for user-level MCP and auth.
 # Secret-bearing values must be injected outside the repo.
+# This template renders only the repo-validated shared MCP set.
+# Optional Codex-only servers such as context7, memory, postgres, and neo4j remain
+# session/user-managed until they are added to the repo catalog and readiness checks.
 
 profile = "fast-iterate"
+personality = "pragmatic"
+model_reasoning_summary = "concise"
 web_search = "disabled"
 
 [profiles.fast-iterate]
+personality = "pragmatic"
 web_search = "disabled"
 
 [profiles.deep-review]
+personality = "pragmatic"
 web_search = "live"
+model_reasoning_effort = "high"
+plan_mode_reasoning_effort = "xhigh"
+model_reasoning_summary = "concise"
 
 # BEGIN ISA MANAGED MCP SECTION
 [mcp_servers.filesystem]

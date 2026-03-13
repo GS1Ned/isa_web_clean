@@ -7,6 +7,7 @@ import {
   buildRoadmapDecisionArtifact,
   EsrsRoadmapDecisionArtifactSchema,
 } from "../esrs-decision-artifacts.js";
+import { collectEvidenceRefsForTerms } from "../source-provenance.js";
 
 
 // ESRS-GS1 Roadmap phase types
@@ -37,7 +38,7 @@ const EsrsRoadmapSchema = z.object({
 
 type EsrsRoadmap = z.infer<typeof EsrsRoadmapSchema>;
 
-function finalizeRoadmapResult(input: {
+async function finalizeRoadmapResult(input: {
   sector: string;
   esrsRequirements: string[];
   companySize: "sme" | "large";
@@ -49,7 +50,7 @@ function finalizeRoadmapResult(input: {
   mappingCount: number;
   mode: "llm" | "fallback";
   basis: string;
-}): EsrsRoadmap {
+}): Promise<EsrsRoadmap> {
   const generatedAt = new Date().toISOString();
   const phaseCount = input.roadmapData.phases.length;
   const criticalPhaseCount = input.roadmapData.phases.filter(
@@ -58,6 +59,12 @@ function finalizeRoadmapResult(input: {
   const quickWinCount = input.roadmapData.phases.filter(
     (phase) => phase.timeframe === "quick_win"
   ).length;
+
+  const evidenceRefs = await collectEvidenceRefsForTerms({
+    terms: input.esrsRequirements,
+    preferredSourceTypes: ["esrs_datapoint", "regulation", "standard"],
+    limit: 6,
+  });
 
   const decisionArtifact = buildRoadmapDecisionArtifact({
     generatedAt,
@@ -71,6 +78,7 @@ function finalizeRoadmapResult(input: {
     topPhaseIds: input.roadmapData.phases.map((phase) => phase.id),
     mode: input.mode,
     basis: input.basis,
+    evidenceRefs,
   });
 
   return EsrsRoadmapSchema.parse({
@@ -233,7 +241,7 @@ Return ONLY a valid JSON object matching this schema:
         }
 
         const roadmapData = JSON.parse(content);
-        return finalizeRoadmapResult({
+        return await finalizeRoadmapResult({
           sector,
           esrsRequirements,
           companySize,
@@ -285,7 +293,7 @@ Return ONLY a valid JSON object matching this schema:
           },
         ];
 
-        return finalizeRoadmapResult({
+        return await finalizeRoadmapResult({
           sector,
           esrsRequirements,
           companySize,

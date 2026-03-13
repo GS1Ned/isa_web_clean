@@ -87,6 +87,15 @@ const mockGapAnalysisResult = {
     evidence: {
       codePaths: ['server/routers/gap-analyzer.ts'],
       dataSources: ['gs1_esrs_mappings'],
+      evidenceRefs: [
+        {
+          sourceChunkId: 1001,
+          evidenceKey: 'ke:1001:hash',
+          citationLabel: 'CSRD — Article 19a',
+          sourceLocator: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022L2464',
+          needsVerification: false,
+        },
+      ],
     },
     summary: {
       totalRequirements: 50,
@@ -173,6 +182,16 @@ const mockRecommendationResult = {
     evidence: {
       codePaths: ['server/attribute-recommender.ts'],
       dataSources: ['ATTRIBUTE_METADATA', 'SECTOR_ATTRIBUTES'],
+      evidenceRefs: [
+        {
+          sourceChunkId: 2001,
+          evidenceKey: 'ke:2001:hash',
+          citationLabel: 'ESRS E1-3 — GHG emissions',
+          sourceLocator: 'https://www.efrag.org/lab6',
+          needsVerification: true,
+          verificationReason: 'stale_last_verified_date',
+        },
+      ],
     },
     summary: {
       totalRecommendations: 2,
@@ -280,6 +299,9 @@ describe('Gap Analysis Markdown Generation', () => {
     expect(markdown).toContain('**Escalation Action:** analyst_review');
     expect(markdown).toContain('| Critical Gap Count | 1 |');
     expect(markdown).toContain('server/routers/gap-analyzer.ts');
+    expect(markdown).toContain('**Evidence Ref Posture:** 1/1 reviewer-usable reference');
+    expect(markdown).toContain('CSRD — Article 19a');
+    expect(markdown).toContain('https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022L2464');
   });
 
   it('should include disclaimer section', () => {
@@ -396,6 +418,9 @@ describe('Attribute Recommendation Markdown Generation', () => {
     expect(markdown).toContain('**Uncertainty Class:** decision_grade');
     expect(markdown).toContain('| Top Recommendation Ids | productCarbonFootprint |');
     expect(markdown).toContain('ATTRIBUTE_METADATA, SECTOR_ATTRIBUTES');
+    expect(markdown).toContain('**Evidence Ref Posture:** 1/1 reviewer-usable reference');
+    expect(markdown).toContain('ESRS E1-3 — GHG emissions');
+    expect(markdown).toContain('[needs verification: stale_last_verified_date]');
   });
 });
 
@@ -444,6 +469,10 @@ describe('Decision Artifact HTML Rendering', () => {
     expect(html).toContain('analyst_review');
     expect(html).toContain('Coverage Percentage');
     expect(html).toContain('ATTRIBUTE_METADATA, SECTOR_ATTRIBUTES');
+    expect(html).toContain('Evidence Ref Posture');
+    expect(html).toContain('CSRD — Article 19a');
+    expect(html).toContain('ESRS E1-3 — GHG emissions');
+    expect(html).toContain('needs verification: stale_last_verified_date');
   });
 
   it('returns empty markup when no persisted decision artifacts exist', () => {

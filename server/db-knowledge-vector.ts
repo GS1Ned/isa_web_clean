@@ -15,8 +15,8 @@
 import { getDb } from "./db";
 import { sql } from "drizzle-orm";
 import { generateEmbedding, cosineSimilarity } from "./_core/embedding";
-import { regulations, gs1Standards, esrsDatapoints, knowledgeEmbeddings } from "../drizzle/schema";
 import { serverLogger } from "./_core/logger-wiring";
+import { getRuntimeSchema } from "./db-runtime-schema";
 
 
 /**
@@ -48,6 +48,12 @@ export async function vectorSearchKnowledge(
 ): Promise<VectorSearchResult[]> {
   const db = await getDb();
   if (!db) return [];
+  const {
+    regulations,
+    gs1Standards,
+    esrsDatapoints,
+    knowledgeEmbeddings,
+  } = (await getRuntimeSchema()) as any;
 
   try {
     // Step 1: Generate embedding for query (~500ms)
@@ -105,7 +111,7 @@ export async function vectorSearchKnowledge(
         url: knowledgeEmbeddings.url,
       })
       .from(knowledgeEmbeddings)
-      .where(sql`${knowledgeEmbeddings.isDeprecated} = 0`);
+      .where(sql`${knowledgeEmbeddings.isDeprecated} = ${false}`);
 
     serverLogger.info(`[VectorSearch] Fetched ${allRegulations.length} regulations, ${allStandards.length} standards, ${allEsrsDatapoints.length} ESRS datapoints, ${allKnowledgeEmbeddings.length} knowledge chunks`);
 
@@ -238,6 +244,12 @@ export async function getSearchResultContent(
 ): Promise<string | null> {
   const db = await getDb();
   if (!db) return null;
+  const {
+    regulations,
+    gs1Standards,
+    esrsDatapoints,
+    knowledgeEmbeddings,
+  } = (await getRuntimeSchema()) as any;
 
   try {
     if (type === "regulation") {

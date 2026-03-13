@@ -47,12 +47,15 @@ export interface IngestionSourceInput {
   name: string;
   acronym?: string;
   externalId: string;
+  datasetId?: string;
   sourceType: SourceType;
   authorityLevel: number;
   authorityTier?: string;
+  sourceRole?: 'normative_authority' | 'canonical_technical_artifact' | 'supplemental_source';
   licenseType?: string;
   publicationStatus?: string;
   immutableUri?: string;
+  sourceLocator?: string;
   publisher?: string;
   publisherUrl?: string;
   version?: string;
@@ -61,6 +64,13 @@ export interface IngestionSourceInput {
   expirationDate?: Date;
   officialUrl?: string;
   archiveUrl?: string;
+  retrievedAt?: Date;
+  contentHash?: string;
+  admissionBasis?:
+    | 'official_publication'
+    | 'registry_registered_artifact'
+    | 'canonical_publication_evidence'
+    | 'supplemental_only';
   description?: string;
   sector?: string;
   language?: string;
@@ -326,23 +336,31 @@ export async function ingestDocument(
   // Create new source
   const authorityTier = source.authorityTier || deriveAuthorityTierFromUrl(source.officialUrl || source.publisherUrl);
   const publicationStatus = source.publicationStatus || 'UNKNOWN';
+  const sourceLocator = source.sourceLocator || source.officialUrl || source.immutableUri || null;
+  const sourceContentHash =
+    source.contentHash ||
+    createHash('sha256').update(
+      Array.isArray(content)
+        ? content.map((chunk) => chunk.content).join('\n')
+        : content
+    ).digest('hex');
   const [insertResult] = await db.execute(sql`
     INSERT INTO sources (
-      name, acronym, external_id, source_type, authority_level,
-      authority_tier, license_type, publication_status, immutable_uri,
+      name, acronym, external_id, dataset_id, source_type, authority_level,
+      authority_tier, source_role, license_type, publication_status, immutable_uri, source_locator,
       publisher, publisher_url, version, publication_date, effective_date,
-      expiration_date, official_url, archive_url, status, description,
-      sector, language, created_by
+      expiration_date, official_url, archive_url, status, retrieved_at, content_hash, description,
+      admission_basis, sector, language, created_by
     ) VALUES (
-      ${source.name}, ${source.acronym || null}, ${source.externalId},
+      ${source.name}, ${source.acronym || null}, ${source.externalId}, ${source.datasetId || null},
       ${source.sourceType}, ${source.authorityLevel},
-      ${authorityTier}, ${source.licenseType || null}, ${publicationStatus}, ${source.immutableUri || null},
+      ${authorityTier}, ${source.sourceRole || null}, ${source.licenseType || null}, ${publicationStatus}, ${source.immutableUri || null}, ${sourceLocator},
       ${source.publisher || null}, ${source.publisherUrl || null},
       ${source.version || null}, ${source.publicationDate?.toISOString() || null},
       ${source.effectiveDate?.toISOString() || null}, ${source.expirationDate?.toISOString() || null},
       ${source.officialUrl || null}, ${source.archiveUrl || null},
-      'active', ${source.description || null},
-      ${source.sector || null}, ${source.language || 'en'},
+      'active', ${source.retrievedAt?.toISOString() || null}, ${sourceContentHash}, ${source.description || null},
+      ${source.admissionBasis || null}, ${source.sector || null}, ${source.language || 'en'},
       'corpus-ingestion-service'
     )
   `);

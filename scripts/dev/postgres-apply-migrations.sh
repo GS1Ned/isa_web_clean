@@ -3,6 +3,14 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 MIGRATIONS_DIR="$REPO_ROOT/drizzle_pg/migrations"
+
+if [[ -f "$REPO_ROOT/.env" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "$REPO_ROOT/.env"
+  set +a
+fi
+
 DATABASE_URL="${DATABASE_URL_POSTGRES:-${DATABASE_URL:-}}"
 
 echo "READY=postgres_apply_migrations_start"
@@ -10,11 +18,6 @@ echo "READY=postgres_apply_migrations_start"
 if [[ -z "$DATABASE_URL" ]]; then
   echo "STOP=postgres_apply_migrations_database_url_missing"
   echo "Set DATABASE_URL_POSTGRES (preferred) or DATABASE_URL"
-  exit 1
-fi
-
-if ! command -v psql >/dev/null 2>&1; then
-  echo "STOP=postgres_apply_migrations_psql_missing"
   exit 1
 fi
 
@@ -32,8 +35,19 @@ if [[ ${#MIGRATION_FILES[@]} -eq 0 ]]; then
   exit 1
 fi
 
-for migration_file in "${MIGRATION_FILES[@]}"; do
-  psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$migration_file" >/dev/null
-done
+if command -v psql >/dev/null 2>&1; then
+  for migration_file in "${MIGRATION_FILES[@]}"; do
+    psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$migration_file" >/dev/null
+  done
 
-echo "DONE=postgres_apply_migrations_ok count=${#MIGRATION_FILES[@]}"
+  echo "DONE=postgres_apply_migrations_ok count=${#MIGRATION_FILES[@]}"
+  exit 0
+fi
+
+if command -v pnpm >/dev/null 2>&1; then
+  pnpm exec tsx scripts/dev/postgres-apply-migrations.ts
+  exit 0
+fi
+
+echo "STOP=postgres_apply_migrations_runtime_missing"
+exit 1

@@ -44,6 +44,7 @@ export const sources = mysqlTable("sources", {
   name: varchar({ length: 512 }).notNull(),
   acronym: varchar({ length: 64 }),
   externalId: varchar("external_id", { length: 255 }), // e.g., CELEX number for EU law
+  datasetId: varchar("dataset_id", { length: 255 }),
   
   // Source metadata
   sourceType: mysqlEnum("source_type", [
@@ -61,9 +62,11 @@ export const sources = mysqlTable("sources", {
   // Authority & Trust
   authorityLevel: int("authority_level").notNull().$type<AuthorityLevel>(),
   authorityTier: varchar("authority_tier", { length: 64 }),
+  sourceRole: varchar("source_role", { length: 64 }),
   licenseType: varchar("license_type", { length: 64 }),
   publicationStatus: varchar("publication_status", { length: 64 }),
   immutableUri: varchar("immutable_uri", { length: 1024 }),
+  sourceLocator: varchar("source_locator", { length: 1024 }),
   publisher: varchar({ length: 255 }),
   publisherUrl: varchar("publisher_url", { length: 512 }),
   
@@ -89,6 +92,7 @@ export const sources = mysqlTable("sources", {
   
   // Ingestion metadata
   ingestionDate: timestamp("ingestion_date", { mode: 'string' }).default('CURRENT_TIMESTAMP').notNull(),
+  retrievedAt: timestamp("retrieved_at", { mode: 'string' }),
   lastVerifiedDate: timestamp("last_verified_date", { mode: 'string' }),
   verificationStatus: mysqlEnum("verification_status", [
     'pending',
@@ -96,9 +100,11 @@ export const sources = mysqlTable("sources", {
     'stale',
     'failed'
   ]).default('pending').notNull(),
+  contentHash: varchar("content_hash", { length: 64 }),
   
   // Content summary
   description: text(),
+  admissionBasis: varchar("admission_basis", { length: 64 }),
   sector: varchar({ length: 128 }), // e.g., 'fmcg', 'healthcare', 'all'
   language: varchar({ length: 8 }).default('en'),
   
@@ -109,6 +115,8 @@ export const sources = mysqlTable("sources", {
 }, (table) => [
   index("source_type_idx").on(table.sourceType),
   index("authority_level_idx").on(table.authorityLevel),
+  index("dataset_id_idx").on(table.datasetId),
+  index("source_role_idx").on(table.sourceRole),
   index("status_idx").on(table.status),
   index("sector_idx").on(table.sector),
   index("publication_date_idx").on(table.publicationDate),

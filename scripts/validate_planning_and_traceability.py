@@ -148,6 +148,7 @@ allowed_new_markdown_prefixes = (
     "docs/agent/",
     "docs/planning/",
     "docs/governance/",
+    "docs/ops/",
     "docs/spec/",
     "docs/core/",
     "docs/decisions/",

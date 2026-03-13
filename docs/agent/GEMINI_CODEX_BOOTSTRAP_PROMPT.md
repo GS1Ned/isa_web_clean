@@ -1,7 +1,7 @@
 # Gemini / Codex Bootstrap Prompt (ISA)
 
 Status: ACTIVE  
-Last Updated: 2026-03-04
+Last Updated: 2026-03-09
 
 Use this as a compact bootstrap prompt for Gemini Code Assist or Codex when starting a new ISA task.
 
@@ -35,30 +35,22 @@ Read in this order:
 11. Relevant runtime contracts:
    - `docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md`
    - `docs/spec/ADVISORY/RUNTIME_CONTRACT.md`
-12. Current code truth for the active stream:
-   - `server/esrs-decision-artifacts.ts`
-   - `server/advisory-report-versioning.ts`
-   - `server/advisory-report-decision-diff.ts`
-   - `server/routers/advisory-reports.ts`
-   - `client/src/pages/AdvisoryReports.tsx`
-   - `client/src/pages/AdvisoryReportDetail.tsx`
+12. Current code truth for the slice you were asked to execute:
+   - inspect the router, module, schema, and UI files named by the relevant runtime contract
+   - for `ADVISORY`-specific work, start with:
+     - `server/esrs-decision-artifacts.ts`
+     - `server/advisory-report-versioning.ts`
+     - `server/advisory-report-decision-diff.ts`
+     - `server/routers/advisory-reports.ts`
+     - `client/src/pages/AdvisoryReports.tsx`
+     - `client/src/pages/AdvisoryReportDetail.tsx`
 
 Current macro status:
 - Canonical next-work queue is `docs/planning/NEXT_ACTIONS.json`
-- Current first READY item is `ISA2-0001`
+- Determine the current READY item from `docs/planning/NEXT_ACTIONS.json` at run time; do not hardcode it in this prompt
 - `ESRS_MAPPING` is the decision core
 - `ADVISORY` is the durable stakeholder-deliverable layer
-- Recent work already added:
-  - stable ESRS decision artifacts
-  - advisory report persistence for decision artifacts
-  - advisory version snapshots carrying decision artifacts
-  - advisory detail UI consuming persisted artifacts
-  - advisory version diff summary for decision artifacts
-
-What is probably still open:
-- remaining migration away from file-based advisory diff/version flows
-- compare surfaces still tied to old static advisory files
-- any downstream consumers not yet using persisted report/version artifacts
+- Verify current implementation status from code, runtime contracts, and the active branch diff before assuming any migration or cleanup slice is still open
 
 Do not use as current architecture/status authority:
 - `docs/governance/DOC_AUTHORITY_MAP.md`

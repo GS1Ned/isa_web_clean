@@ -1,5 +1,8 @@
 # ISA Docs — Index
 
+Status: CANONICAL
+Last reviewed: 2026-03-06
+
 ## Start Here
 
 **Top-level Agent Entrypoint:** `AGENT_START_HERE.md`
@@ -12,10 +15,11 @@
 **Data Plane Contract:** `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
 **Data Plane ADR:** `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`
 **Governance Framework:** `docs/governance/_root/ISA_GOVERNANCE.md`
+**Production Deploy Runbook (Canonical):** `docs/governance/PRODUCTION_DEPLOY_RUNBOOK.md`
 **Document Status Model:** `docs/governance/DOCUMENT_STATUS_MODEL.md`
 **Agent Platform Operating Model:** `docs/governance/ISA_AGENT_PLATFORM_OPERATING_MODEL.md`
 **Capability Delivery Workflow:** `docs/governance/ISA_CAPABILITY_DELIVERY_WORKFLOW.md`
-**Repository Map:** `docs/REPO_MAP.md`
+**Repository Map (Support Only):** `docs/REPO_MAP.md`
 
 ## Core Documentation
 
@@ -39,6 +43,7 @@
 - **Agent Handoff Protocol:** `docs/governance/ISA_AGENT_HANDOFF_PROTOCOL.md`
 - **Capability Delivery Workflow:** `docs/governance/ISA_CAPABILITY_DELIVERY_WORKFLOW.md`
 - **OpenClaw Policy Envelope Runbook:** `docs/governance/OPENCLAW_POLICY_ENVELOPE.md`
+- **Production Deploy Runbook (Canonical):** `docs/governance/PRODUCTION_DEPLOY_RUNBOOK.md`
 - **Canonical Docs Allowlist:** `config/governance/canonical_docs_allowlist.json`
 - **Planning Index:** `docs/planning/INDEX.md`
 - **Next Actions:** `docs/planning/NEXT_ACTIONS.json`
@@ -56,29 +61,33 @@
 - **Error Budget Policy:** `docs/sre/ERROR_BUDGET_POLICY.md`
 - **Error Budget Status:** `docs/sre/_generated/error_budget_status.json`
 
+### Operations
+- **Deployment (Current Ops):** `docs/ops/DEPLOYMENT.md`
+- **Runbook (Current Ops):** `docs/ops/RUNBOOK.md`
+- **Cron Operations (Current Ops):** `docs/ops/CRON.md`
+
 ### Supplemental Evidence
 - **Architecture Review:** `docs/architecture/panel/KICKOFF_PACKAGE.md`
 - **ATAM Scenarios:** `docs/architecture/panel/ATAM_SCENARIOS.md`
 - **ATAM Risks:** `docs/architecture/panel/ATAM_RISKS_SENSITIVITIES_TRADEOFFS.md`
 - **ISO/IEC 25010 Mapping:** `docs/architecture/panel/ISO25010_MAPPING.md`
-- **Evidence Catalogue:** `docs/evidence/_generated/catalogue.json`
-- **Proof Schemas:** `docs/quality/schemas/*.schema.json`
+- **Generated Evidence Index:** `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`
+- **Reference Index:** `docs/architecture/panel/_generated/REF_INDEX.json`
+- **Proof Schemas Directory:** `docs/quality/schemas/`
 - **Research:** `docs/research/`
 
 ## Planning
 - **Planning Index:** `docs/planning/INDEX.md`
 - **Next Actions:** `docs/planning/NEXT_ACTIONS.json`
-- **Refactoring Status:** `docs/planning/refactoring/`
+- **Historical Refactoring Artefacts (Support Only):** `docs/planning/refactoring/`
 
 ## Archives
 
+- **Archive root:** `isa-archive/`
 - **Governance (historical):** `isa-archive/governance/`
-- **Phase Reports:** `isa-archive/phase-reports/`
-- **Roadmaps:** `isa-archive/planning/roadmaps/`
-- **Backlog Snapshots:** `isa-archive/backlog/`
 
 ---
 
 **Document Status:** Canonical Index  
-**Last Updated:** 2026-03-05  
+**Last Updated:** 2026-03-06  
 **Maintainer:** ISA Repository Steward

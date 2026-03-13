@@ -84,12 +84,13 @@ import { RagTraceManager } from "../services/rag-tracing";
 import { AbstentionReasonCode, classifyError } from "../services/rag-tracing/failure-taxonomy";
 import { calculateRagQualityMetrics, type SourceInfo } from "../services/rag-metrics";
 import { getVerificationStatus } from "../services/rag-tracing/failure-taxonomy";
-import { 
+import {
   analyzeEvidenceSufficiency, 
   generateAbstentionMessage,
   inferQueryType,
   type EvidenceChunk 
 } from "../services/evidence-analysis";
+import { getRuntimeSchema } from "../db-runtime-schema";
 
 const VERSION_SCOPED_URI_PATTERN = /(\/eli\/|\/v?\d+\.\d+(?:\.\d+)?(?:\/|$)|\/\d{4}(?:-\d{2})?(?:\/|$))/i;
 
@@ -284,6 +285,16 @@ export const askISARouter = router({
               deprecationReason: source.deprecationReason,
               evidenceKey: source.evidenceKey,
               evidenceKeyReason: source.evidenceKeyReason,
+              sourceRecordId: source.sourceRecordId,
+              sourceChunkId: source.sourceChunkId,
+              authorityTier: source.authorityTier,
+              sourceRole: source.sourceRole,
+              admissionBasis: source.admissionBasis,
+              publicationStatus: source.publicationStatus,
+              sourceLocator: source.sourceLocator,
+              immutableUri: source.immutableUri,
+              citationLabel: source.citationLabel,
+              sourceChunkLocator: source.sourceChunkLocator,
             })),
             conversationId: conversationId || null,
             queryType,
@@ -445,6 +456,16 @@ export const askISARouter = router({
             deprecationReason: source.deprecationReason,
             evidenceKey: source.evidenceKey,
             evidenceKeyReason: source.evidenceKeyReason,
+            sourceRecordId: source.sourceRecordId,
+            sourceChunkId: source.sourceChunkId,
+            authorityTier: source.authorityTier,
+            sourceRole: source.sourceRole,
+            admissionBasis: source.admissionBasis,
+            publicationStatus: source.publicationStatus,
+            sourceLocator: source.sourceLocator,
+            immutableUri: source.immutableUri,
+            citationLabel: source.citationLabel,
+            sourceChunkLocator: source.sourceChunkLocator,
             authorityLevel: hybridResult?.authorityLevel || 'industry' as AuthorityLevel,
             authorityScore: hybridResult?.authorityScore || 0.5,
           };
@@ -617,6 +638,16 @@ export const askISARouter = router({
             verificationReason: s.verificationReason,
             evidenceKey: s.evidenceKey,
             evidenceKeyReason: s.evidenceKeyReason,
+            sourceRecordId: s.sourceRecordId,
+            sourceChunkId: s.sourceChunkId,
+            authorityTier: s.authorityTier,
+            sourceRole: s.sourceRole,
+            admissionBasis: s.admissionBasis,
+            publicationStatus: s.publicationStatus,
+            sourceLocator: s.sourceLocator,
+            immutableUri: s.immutableUri,
+            citationLabel: s.citationLabel,
+            sourceChunkLocator: s.sourceChunkLocator,
           })),
           confidence,
           claimVerification: {
@@ -721,7 +752,7 @@ export const askISARouter = router({
           const { getDb } = await import("../db");
           const db = await getDb();
           if (db) {
-            const { esrsDatapoints } = await import("../../drizzle/schema");
+            const { esrsDatapoints } = (await getRuntimeSchema()) as any;
             sources = await db.select().from(esrsDatapoints).limit(10000);
           }
         } else if (sourceType === "dutch_initiative") {
@@ -865,7 +896,7 @@ export const askISARouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
-      const { askIsaFeedback } = await import("../../drizzle/schema");
+      const { askIsaFeedback } = (await getRuntimeSchema()) as any;
 
       try {
         await db.insert(askIsaFeedback).values({
@@ -905,7 +936,7 @@ export const askISARouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
-      const { askIsaFeedback } = await import("../../drizzle/schema");
+      const { askIsaFeedback } = (await getRuntimeSchema()) as any;
       const { sql, count, avg, and, gte } = await import("drizzle-orm");
 
       // Calculate date filter
@@ -945,6 +976,9 @@ export const askISARouter = router({
           .where(dateFilter || undefined);
 
         // Get daily trend (last 14 days)
+        const trendCutoffDate = new Date();
+        trendCutoffDate.setDate(trendCutoffDate.getDate() - 14);
+
         const trendResult = await db
           .select({
             date: sql<string>`DATE(${askIsaFeedback.timestamp})`,
@@ -952,7 +986,7 @@ export const askISARouter = router({
             negative: sql<number>`SUM(CASE WHEN ${askIsaFeedback.feedbackType} = 'negative' THEN 1 ELSE 0 END)`,
           })
           .from(askIsaFeedback)
-          .where(gte(askIsaFeedback.timestamp, sql`DATE_SUB(NOW(), INTERVAL 14 DAY)`))
+          .where(gte(askIsaFeedback.timestamp, trendCutoffDate.toISOString()))
           .groupBy(sql`DATE(${askIsaFeedback.timestamp})`)
           .orderBy(sql`DATE(${askIsaFeedback.timestamp})`);
 
@@ -988,7 +1022,7 @@ export const askISARouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
-      const { askIsaFeedback } = await import("../../drizzle/schema");
+      const { askIsaFeedback } = (await getRuntimeSchema()) as any;
       const { desc } = await import("drizzle-orm");
 
       try {

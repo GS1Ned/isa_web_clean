@@ -2,11 +2,14 @@
 
 <!-- EVIDENCE:requirement:docs/planning/NEXT_ACTIONS.json -->
 <!-- EVIDENCE:requirement:docs/planning/BACKLOG.csv -->
-<!-- EVIDENCE:requirement:docs/planning/PROGRAM_PLAN.md -->
 ## Canonical planning sources (SSoT)
 - `docs/planning/NEXT_ACTIONS.json` — next execution queue
 - `docs/planning/BACKLOG.csv` — structured backlog
-- `docs/planning/PROGRAM_PLAN.md` — support narrative (optional, non-canonical)
+
+## Optional planning narrative
+- A support narrative may exist under `docs/planning/` when useful.
+- It is never canonical unless explicitly promoted by governance.
+- No specific narrative file is required.
 
 ## Deprecated planning files
 <!-- EVIDENCE:decision:todo.md -->
@@ -41,5 +44,5 @@
 
 ## Documentation sprawl guardrail (repo-wide linkage)
 - Integration-first mode is mandatory across all work, not only planning/MCP (`docs/agent/MCP_POLICY.md`).
-- New markdown artifacts must stay in canonical locations and avoid ad-hoc report-style files.
+- New markdown artifacts must stay in canonical locations such as `docs/planning/`, `docs/governance/`, `docs/spec/`, `docs/ops/`, or governed archive/support locations, and must avoid ad-hoc report-style files.
 - Enforced by `python scripts/validate_planning_and_traceability.py`.

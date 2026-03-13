@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { SourceEvidenceRef } from "./source-provenance";
 
 export type DecisionArtifactConfidenceLevel = 'high' | 'medium' | 'low';
 
@@ -14,6 +15,7 @@ export interface DecisionArtifactConfidence {
 export interface DecisionArtifactEvidence {
   codePaths: string[];
   dataSources: string[];
+  evidenceRefs?: SourceEvidenceRef[];
 }
 
 export interface EsrsGapAnalysisDecisionArtifact {
@@ -95,6 +97,25 @@ export const DecisionArtifactConfidenceSchema = z.object({
 export const DecisionArtifactEvidenceSchema = z.object({
   codePaths: z.array(z.string()),
   dataSources: z.array(z.string()),
+  evidenceRefs: z
+    .array(
+      z.object({
+        sourceId: z.number().optional(),
+        sourceChunkId: z.number().optional(),
+        evidenceKey: z.string().nullable().optional(),
+        citationLabel: z.string().nullable().optional(),
+        sourceChunkLocator: z.string().nullable().optional(),
+        sourceLocator: z.string().nullable().optional(),
+        immutableUri: z.string().nullable().optional(),
+        authorityTier: z.string().nullable().optional(),
+        sourceRole: z.string().nullable().optional(),
+        publicationStatus: z.string().nullable().optional(),
+        lastVerifiedDate: z.string().nullable().optional(),
+        needsVerification: z.boolean().optional(),
+        verificationReason: z.string().optional(),
+      }),
+    )
+    .optional(),
 });
 
 export const EsrsGapAnalysisDecisionArtifactSchema = z.object({
@@ -248,6 +269,8 @@ export function buildGapAnalysisDecisionArtifact(input: {
   inferenceCount: number;
   uncertainCount: number;
   overallConfidence: DecisionArtifactConfidenceLevel;
+  dataSources?: string[];
+  evidenceRefs?: SourceEvidenceRef[];
 }): EsrsGapAnalysisDecisionArtifact {
   const markerCount = input.factCount + input.inferenceCount + input.uncertainCount;
   const baseScore = BASE_CONFIDENCE_SCORE[input.overallConfidence];
@@ -275,10 +298,11 @@ export function buildGapAnalysisDecisionArtifact(input: {
         'server/routers/gap-analyzer.ts',
         'server/gap-reasoning.ts',
       ],
-      dataSources: [
+      dataSources: input.dataSources ?? [
         'gs1_esrs_mappings',
         'gs1_attribute_esrs_mapping',
       ],
+      evidenceRefs: input.evidenceRefs?.length ? input.evidenceRefs : undefined,
     },
     summary: {
       totalRequirements: input.totalRequirements,
@@ -303,6 +327,7 @@ export function buildAttributeRecommendationDecisionArtifact(input: {
   recommendationScores: number[];
   overallConfidence: DecisionArtifactConfidenceLevel;
   overallBasis: string;
+  evidenceRefs?: SourceEvidenceRef[];
 }): EsrsAttributeRecommendationDecisionArtifact {
   const averageScore =
     input.recommendationScores.length === 0
@@ -334,6 +359,7 @@ export function buildAttributeRecommendationDecisionArtifact(input: {
         'ATTRIBUTE_METADATA',
         'SECTOR_ATTRIBUTES',
       ],
+      evidenceRefs: input.evidenceRefs?.length ? input.evidenceRefs : undefined,
     },
     summary: {
       totalRecommendations: input.totalRecommendations,
@@ -356,6 +382,7 @@ export function buildRoadmapDecisionArtifact(input: {
   topPhaseIds: string[];
   mode: 'llm' | 'fallback';
   basis: string;
+  evidenceRefs?: SourceEvidenceRef[];
 }): EsrsRoadmapDecisionArtifact {
   const baseScore = input.mode === 'llm' ? 0.62 : 0.48;
   const mappingBoost = Math.min(input.mappingCount / 25, 0.18);
@@ -387,6 +414,7 @@ export function buildRoadmapDecisionArtifact(input: {
         'getAllEsrsGs1Mappings',
         'gs1_esrs_mappings',
       ],
+      evidenceRefs: input.evidenceRefs?.length ? input.evidenceRefs : undefined,
     },
     summary: {
       phaseCount: input.phaseCount,

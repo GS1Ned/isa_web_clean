@@ -20,6 +20,8 @@ This is the canonical data-plane contract for ISA: persistence substrate, proven
 ### 1.1 Relational Core
 **FACT:** Current runtime uses a MySQL-compatible relational core through `drizzle-orm/mysql2` + `mysql2`.
 
+**FACT (maintainer-confirmed production authority, 2026-03-06):** The current production relational database is Manus-managed and MySQL-compatible.
+
 **FACT:** Runtime entrypoints are:
 - `server/db.ts`
 - `server/db-connection.ts`
@@ -45,6 +47,23 @@ This is the canonical data-plane contract for ISA: persistence substrate, proven
 
 **TARGET:** Migration is rebuild + rehydration from authoritative sources plus deterministic regeneration of derived artifacts.
 
+### 2.1.1 12-Month Target Lock-In
+**FACT:** The canonical 12-month data-plane target is `OPTION 1`: Supabase Postgres as the managed target and local Postgres parity via Supabase Local or equivalent Docker-backed local Postgres.
+
+**FACT:** This lock-in is evidenced by:
+- `docs/decisions/ADR-0001_SUPABASE_POSTGRES_DATA_PLANE.md`
+- `drizzle_pg/schema.ts`
+- `drizzle_pg/migrations/*.sql`
+- `server/db-connection-pg.ts`
+- `scripts/dev/supabase-local-bootstrap.sh`
+- `scripts/dev/postgres-apply-migrations.sh`
+- `scripts/dev/postgres-parity-smoke.sh`
+- `.github/workflows/tiered-tests.yml` (`postgres-parity-foundation`)
+
+**TARGET:** `pgvector` is OFF by default for this migration line. It remains an optional additive Postgres extension only after stable parity, deterministic rebuild, and current retrieval/provenance contracts stay non-regressive.
+
+**TARGET:** Graph remains optional for the 12-month DB target. Existing graph/projection work may remain additive, but no graph introduction or graph dependency is required for Postgres bootstrap, rehydration, parity, or cutover acceptance.
+
 ### 2.2 Scope Boundaries (This Migration Line)
 **TARGET (IN):**
 - Postgres engine migration path
@@ -61,6 +80,15 @@ This is the canonical data-plane contract for ISA: persistence substrate, proven
 2. Evidence/provenance layer
 3. Retrieval substrate (contract-preserving)
 4. Optional semantic projection (additive, not required for cutover)
+
+### 2.4 Provenance Rebuild Contract (Phase 2 Confirmed)
+**FACT:** Current runtime citations and retrieval still bind to `knowledge_embeddings`.
+
+**TARGET:** The authoritative provenance rebuild contract is defined in `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md`.
+
+**TARGET:** `sources` and `source_chunks` become the authoritative document and chunk substrate, while `knowledge_embeddings` remains a compatibility mirror until Phase 3 cutover validations pass.
+
+**TARGET:** Dataset admission, authority-role classification, evidence-key generation, verification posture, and Phase 1 metric tightening must follow that provenance rebuild contract.
 
 ## 3) Migration Invariants (Merge-Blocking)
 

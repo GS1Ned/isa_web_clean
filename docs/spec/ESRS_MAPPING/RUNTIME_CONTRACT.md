@@ -5,7 +5,7 @@ COMPONENT: runtime
 FUNCTION_LABEL: "Mapping between ESRS requirements and GS1 attributes"
 OWNER: gs1ned-isa
 STATUS: active
-LAST_VERIFIED: 2026-02-20
+LAST_VERIFIED: 2026-03-11
 VERIFICATION_METHOD: repo-evidence
 ---
 
@@ -40,6 +40,25 @@ ESRS_MAPPING maintains procedure surfaces for ESRS-to-GS1 mapping, roadmap gener
 - Outputs: mapping records, gap-analysis outputs and recommendation payloads.
 - Field-level payloads remain code-truth in router implementations.
 - Runtime confidence semantics are currently aligned across attribute recommendations and ESRS decision artefacts: `high >= 0.75`, `medium >= 0.50`, else `low`.
+- `attributeRecommender.getAvailableRegulations()` now prefers catalog-backed regulation inventory from `regulations.regulationType` / `regulations.title` and merges compatibility entries only to preserve stable UX coverage for known EU policy surfaces.
+- `attributeRecommender.getSampleAttributes()` now prefers decision-core mapping inventory from `gs1_attribute_esrs_mapping` (`gs1AttributeId`, `gs1AttributeName`, `confidence`) and preserves only core GS1 identifiers as compatibility fallback when mappings are sparse.
+- `gapAnalyzer.getSampleAttributes()` now reuses the same mapping-backed deduplication and confidence ranking as `attributeRecommender.getSampleAttributes()`, while preserving the gap-analyzer route's existing snake_case payload shape.
+- `attributeRecommender.getAvailableSectors()` remains a curated UI taxonomy for now because current catalog sector coverage is narrower than the user-facing recommender sector surface.
+
+## Calibrated Vs Heuristic Mapping Surfaces
+- Governed exact-match calibration surface:
+  - Source of truth: `server/mappings/esrs-gs1-calibration-data.ts`
+  - Generated review manifest: `data/governance/calibrations.manifest.json`
+  - Purpose: reviewer-approved exact-match overrides for recurring high-value cases
+- Heuristic static fallback surface:
+  - Source of truth: `server/mappings/esrs-gs1-mapping-data.ts`
+  - Purpose: breadth-preserving compatibility fallback when no governed exact-match calibration applies
+- Review contract:
+  1. Edit `server/mappings/esrs-gs1-calibration-data.ts`
+  2. Regenerate `data/governance/calibrations.manifest.json` with `pnpm exec tsx scripts/governance/build_calibration_manifest.ts`
+  3. Run `bash scripts/gates/calibration-manifest-sync.sh`
+  4. Re-run the targeted ESRS mapping tests and capability eval bundle used for mapping-governance slices
+- The manifest is governance-only and must not change runtime behavior. Runtime code continues to consume `server/mappings/esrs-gs1-calibration-data.ts` directly.
 
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/esrs_mapping_health.sh -->
@@ -83,6 +102,12 @@ When a mapping query returns zero results or all results have `effectiveConfiden
 3. Never present a `low`-confidence decayed mapping as authoritative without surfacing the `decayReason`
 
 Abstention (returning no recommendation) is reserved for cases where no mapping exists at all, not for cases where a low-confidence mapping exists. Low-confidence mappings carry signal; they must be surfaced with their decay context rather than omitted.
+
+## Phase-3 Provenance Target (Decision-Evidence Contract)
+- Canonical target contract: `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md`
+- Mapping, roadmap, gap, and recommendation outputs should carry chunk-level `evidenceRefs` once Phase 3 lands.
+- No-mapping and insufficient-evidence cases must preserve explicit insufficiency markers instead of fabricating authority.
+- Phase 1 decision-quality metrics stay stable but tighten from fixture-only trace proxies to authoritative source-chunk evidence.
 
 ## Operational Unknowns
 - External calibration of ESRS mapping confidence against reviewed gold sets remains UNKNOWN from repository-only evidence.

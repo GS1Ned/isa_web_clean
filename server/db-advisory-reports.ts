@@ -1,11 +1,70 @@
-import { getDb } from "./db";
+import { getDb, getDbEngine } from "./db";
 import {
-  advisoryReports,
-  advisoryReportVersions,
-  advisoryReportTargetRegulations,
-  advisoryReportTargetStandards,
+  advisoryReports as mysqlAdvisoryReports,
+  advisoryReportVersions as mysqlAdvisoryReportVersions,
+  advisoryReportTargetRegulations as mysqlAdvisoryReportTargetRegulations,
+  advisoryReportTargetStandards as mysqlAdvisoryReportTargetStandards,
 } from "../drizzle/schema";
+import {
+  advisoryReports as pgAdvisoryReports,
+  advisoryReportVersions as pgAdvisoryReportVersions,
+  advisoryReportTargetRegulations as pgAdvisoryReportTargetRegulations,
+  advisoryReportTargetStandards as pgAdvisoryReportTargetStandards,
+} from "../drizzle_pg/schema";
 import { eq, and, desc, sql, inArray, isNotNull } from "drizzle-orm";
+
+type AdvisoryReportInsert = typeof mysqlAdvisoryReports.$inferInsert;
+type AdvisoryReportVersionInsert = typeof mysqlAdvisoryReportVersions.$inferInsert;
+
+type AdvisoryTables = {
+  advisoryReports: any;
+  advisoryReportVersions: any;
+  advisoryReportTargetRegulations: any;
+  advisoryReportTargetStandards: any;
+};
+
+type AdvisoryTargetTables = Pick<
+  AdvisoryTables,
+  "advisoryReportTargetRegulations" | "advisoryReportTargetStandards"
+>;
+
+function getAdvisoryTables(): AdvisoryTables {
+  if (getDbEngine() === "postgres") {
+    return {
+      advisoryReports: pgAdvisoryReports,
+      advisoryReportVersions: pgAdvisoryReportVersions,
+      advisoryReportTargetRegulations: pgAdvisoryReportTargetRegulations,
+      advisoryReportTargetStandards: pgAdvisoryReportTargetStandards,
+    };
+  }
+
+  return {
+    advisoryReports: mysqlAdvisoryReports,
+    advisoryReportVersions: mysqlAdvisoryReportVersions,
+    advisoryReportTargetRegulations: mysqlAdvisoryReportTargetRegulations,
+    advisoryReportTargetStandards: mysqlAdvisoryReportTargetStandards,
+  };
+}
+
+function buildJsonArrayContainsCondition(column: any, values: number[]) {
+  if (getDbEngine() === "postgres") {
+    return sql`${column} @> ${JSON.stringify(values)}::jsonb`;
+  }
+  return sql`JSON_CONTAINS(${column}, ${JSON.stringify(values)})`;
+}
+
+async function insertAndExtractId(db: any, table: any, values: unknown) {
+  if (getDbEngine() === "postgres") {
+    const inserted = await db.insert(table).values(values).returning({ id: table.id });
+    return Number(inserted[0]?.id || 0);
+  }
+
+  const insertResult = await db.insert(table).values(values);
+  const normalizedResult = Array.isArray(insertResult)
+    ? insertResult[0]
+    : insertResult;
+  return Number((normalizedResult as any)?.insertId || 0);
+}
 
 function normalizeIdArray(input: unknown): number[] | undefined {
   if (!Array.isArray(input)) return undefined;
@@ -17,10 +76,13 @@ function normalizeIdArray(input: unknown): number[] | undefined {
 
 async function syncAdvisoryReportTargets(
   db: any,
+  tables: AdvisoryTargetTables,
   reportId: number,
   targetRegulationIds: unknown,
   targetStandardIds: unknown
 ) {
+  const advisoryReportTargetRegulations = tables.advisoryReportTargetRegulations;
+  const advisoryReportTargetStandards = tables.advisoryReportTargetStandards;
   const regulationIds = normalizeIdArray(targetRegulationIds);
   const standardIds = normalizeIdArray(targetStandardIds);
 
@@ -66,6 +128,7 @@ export async function getAdvisoryReports(filters?: {
 }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
   
   let query = db.select().from(advisoryReports);
 
@@ -101,6 +164,7 @@ export async function getAdvisoryReports(filters?: {
 export async function getAdvisoryReportById(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
   
   const results = await db
     .select()
@@ -117,6 +181,7 @@ export async function getAdvisoryReportById(id: number) {
 export async function getLatestAdvisoryReport() {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
 
   const results = await db
     .select()
@@ -130,28 +195,25 @@ export async function getLatestAdvisoryReport() {
 /**
  * Create a new advisory report
  */
-export async function createAdvisoryReport(data: typeof advisoryReports.$inferInsert) {
+export async function createAdvisoryReport(data: AdvisoryReportInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const tables = getAdvisoryTables();
+  const advisoryReports = tables.advisoryReports;
 
-  const insertResult = await db.insert(advisoryReports).values(data);
-  const normalizedResult = Array.isArray(insertResult)
-    ? insertResult[0]
-    : insertResult;
-  const insertId = Number(
-    (normalizedResult as any)?.insertId
-  );
+  const insertId = await insertAndExtractId(db, advisoryReports, data);
 
   if (Number.isInteger(insertId) && insertId > 0) {
     await syncAdvisoryReportTargets(
       db,
+      tables,
       insertId,
       data.targetRegulationIds,
       data.targetStandardIds
     );
   }
 
-  return normalizedResult;
+  return { insertId };
 }
 
 /**
@@ -159,10 +221,12 @@ export async function createAdvisoryReport(data: typeof advisoryReports.$inferIn
  */
 export async function updateAdvisoryReport(
   id: number,
-  updates: Partial<typeof advisoryReports.$inferInsert>
+  updates: Partial<AdvisoryReportInsert>
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const tables = getAdvisoryTables();
+  const advisoryReports = tables.advisoryReports;
   
   const result = await db
     .update(advisoryReports)
@@ -178,6 +242,7 @@ export async function updateAdvisoryReport(
   ) {
     await syncAdvisoryReportTargets(
       db,
+      tables,
       id,
       updates.targetRegulationIds,
       updates.targetStandardIds
@@ -198,6 +263,7 @@ export async function updateReportReviewStatus(
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
   
   const result = await db
     .update(advisoryReports)
@@ -219,6 +285,7 @@ export async function updateReportReviewStatus(
 export async function incrementReportViewCount(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
   
   const result = await db
     .update(advisoryReports)
@@ -237,6 +304,7 @@ export async function incrementReportViewCount(id: number) {
 export async function getReportVersions(reportId: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReportVersions } = getAdvisoryTables();
   
   const results = await db
     .select()
@@ -250,12 +318,13 @@ export async function getReportVersions(reportId: number) {
 /**
  * Create report version
  */
-export async function createReportVersion(data: typeof advisoryReportVersions.$inferInsert) {
+export async function createReportVersion(data: AdvisoryReportVersionInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReportVersions } = getAdvisoryTables();
   
-  const result = await db.insert(advisoryReportVersions).values(data);
-  return result;
+  const insertId = await insertAndExtractId(db, advisoryReportVersions, data);
+  return { insertId };
 }
 
 /**
@@ -264,6 +333,7 @@ export async function createReportVersion(data: typeof advisoryReportVersions.$i
 export async function getAdvisoryReportStats() {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports } = getAdvisoryTables();
   
   const totalCount = await db
     .select({ count: sql<number>`count(*)` })
@@ -306,6 +376,7 @@ export async function getAdvisoryReportStats() {
 export async function getReportsByRegulationIds(regulationIds: number[]) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports, advisoryReportTargetRegulations } = getAdvisoryTables();
   
   if (regulationIds.length === 0) return [];
 
@@ -332,7 +403,7 @@ export async function getReportsByRegulationIds(regulationIds: number[]) {
     .select()
     .from(advisoryReports)
     .where(
-      sql`JSON_CONTAINS(${advisoryReports.targetRegulationIds}, ${JSON.stringify(normalizedIds)})`
+      buildJsonArrayContainsCondition(advisoryReports.targetRegulationIds, normalizedIds)
     )
     .orderBy(desc(advisoryReports.generatedDate));
 }
@@ -343,6 +414,7 @@ export async function getReportsByRegulationIds(regulationIds: number[]) {
 export async function getReportsByStandardIds(standardIds: number[]) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
+  const { advisoryReports, advisoryReportTargetStandards } = getAdvisoryTables();
   
   if (standardIds.length === 0) return [];
 
@@ -369,7 +441,7 @@ export async function getReportsByStandardIds(standardIds: number[]) {
     .select()
     .from(advisoryReports)
     .where(
-      sql`JSON_CONTAINS(${advisoryReports.targetStandardIds}, ${JSON.stringify(normalizedIds)})`
+      buildJsonArrayContainsCondition(advisoryReports.targetStandardIds, normalizedIds)
     )
     .orderBy(desc(advisoryReports.generatedDate));
 }

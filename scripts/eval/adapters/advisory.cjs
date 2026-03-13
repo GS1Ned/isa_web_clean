@@ -7,6 +7,7 @@ const {
   safeDiv,
   latencyNorm,
   selectDatasetByPrefix,
+  fieldPresenceRatio,
 } = require("../lib/common.cjs");
 
 function loadScenarioDiff(scenario) {
@@ -27,11 +28,19 @@ function hasKeys(obj, keys) {
 async function evaluate(context) {
   const { registryEntry, datasets, thresholdsByMetric, fixtureVersion } = context;
   const dataset = selectDatasetByPrefix(datasets, "advisory_scenarios_");
+  const qualityDataset = datasets.find((item) =>
+    String(item.id || "").startsWith("advisory_quality_cases_")
+  );
   const payload = readJson(dataset.path);
   const scenarios = Array.isArray(payload.scenarios) ? payload.scenarios : [];
+  const qualityPayload = qualityDataset ? readJson(qualityDataset.path) : null;
+  const qualityCases = Array.isArray(qualityPayload?.cases) ? qualityPayload.cases : [];
 
   const advisoryV10 = readJson("data/advisories/ISA_ADVISORY_v1.0.json");
   const advisoryV11 = readJson("data/advisories/ISA_ADVISORY_v1.1.json");
+  const mappingById = new Map((advisoryV11.mappingResults || []).map((item) => [item.id, item]));
+  const gapById = new Map((advisoryV11.gapAnalysis || []).map((item) => [item.id, item]));
+  const recommendationById = new Map((advisoryV11.recommendations || []).map((item) => [item.id, item]));
 
   const evidenceChecks = [];
   const latencies = [];
@@ -102,6 +111,87 @@ async function evaluate(context) {
     mappings.length,
     0
   );
+  const qualityResults = qualityCases.map((item) => {
+    if (item.kind === "mapping_traceability") {
+      const target = mappingById.get(item.mapping_id);
+      return {
+        provenance: fieldPresenceRatio(target || {}, item.required_fields || []),
+        rationale: Number(
+          fieldPresenceRatio(target || {}, item.rationale_fields || ["rationale", "implementationGuidance"]) === 1
+        ),
+        actionability: Number(
+          fieldPresenceRatio(target || {}, item.actionability_fields || ["gs1Attribute", "implementationGuidance"]) === 1
+        ),
+      };
+    }
+
+    if (item.kind === "gap_actionability") {
+      const target = gapById.get(item.gap_id);
+      return {
+        provenance: 0,
+        rationale: Number(
+          fieldPresenceRatio(target || {}, item.rationale_fields || ["description", "recommendedAction"]) === 1
+        ),
+        actionability: Number(
+          fieldPresenceRatio(target || {}, item.required_fields || []) === 1
+        ),
+      };
+    }
+
+    if (item.kind === "recommendation_actionability") {
+      const target = recommendationById.get(item.recommendation_id);
+      const meetsStepCount =
+        Array.isArray(target?.implementationSteps) &&
+        target.implementationSteps.length >= Number(item.minimum_steps || 1);
+      return {
+        provenance: 0,
+        rationale: Number(
+          fieldPresenceRatio(target || {}, item.rationale_fields || ["description", "implementationSteps"]) === 1
+        ),
+        actionability: Number(
+          fieldPresenceRatio(target || {}, item.required_fields || []) === 1 && meetsStepCount
+        ),
+      };
+    }
+
+    if (item.kind === "diff_traceability") {
+      const target = scenarioDiffs.get(item.scenario_id);
+      const requiredDiffFields = Array.isArray(item.required_diff_fields) ? item.required_diff_fields : [];
+      return {
+        provenance: fieldPresenceRatio(target || {}, requiredDiffFields),
+        rationale: 0,
+        actionability: 0,
+      };
+    }
+
+    return { provenance: 0, rationale: 0, actionability: 0 };
+  });
+  const provenanceTraceability = Number(
+    avg(
+      qualityResults
+        .map((item, index) => ({ item, source: qualityCases[index] }))
+        .filter((entry) => ["mapping_traceability", "diff_traceability"].includes(entry.source.kind))
+        .map((entry) => entry.item.provenance)
+    ).toFixed(4)
+  );
+  const rationaleCompleteness = Number(
+    avg(
+      qualityResults
+        .map((item, index) => ({ item, source: qualityCases[index] }))
+        .filter((entry) =>
+          ["mapping_traceability", "gap_actionability", "recommendation_actionability"].includes(entry.source.kind)
+        )
+        .map((entry) => entry.item.rationale)
+    ).toFixed(4)
+  );
+  const actionabilityCoverage = Number(
+    avg(
+      qualityResults
+        .map((item, index) => ({ item, source: qualityCases[index] }))
+        .filter((entry) => ["gap_actionability", "recommendation_actionability"].includes(entry.source.kind))
+        .map((entry) => entry.item.actionability)
+    ).toFixed(4)
+  );
 
   const contractAdherence = Number(
     safeDiv(
@@ -168,6 +258,36 @@ async function evaluate(context) {
       fixture_version: fixtureVersion,
     },
     {
+      dataset_id: qualityDataset?.id || dataset.id,
+      metric_id: "advisory.provenance.traceability",
+      dimension: "provenance traceability",
+      kind: "authority",
+      value: provenanceTraceability,
+      fixture_path: qualityDataset?.path || dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
+    },
+    {
+      dataset_id: qualityDataset?.id || dataset.id,
+      metric_id: "advisory.rationale.completeness",
+      dimension: "rationale completeness",
+      kind: "explainability",
+      value: rationaleCompleteness,
+      fixture_path: qualityDataset?.path || dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
+    },
+    {
+      dataset_id: qualityDataset?.id || dataset.id,
+      metric_id: "advisory.actionability.coverage",
+      dimension: "actionability coverage",
+      kind: "correctness",
+      value: actionabilityCoverage,
+      fixture_path: qualityDataset?.path || dataset.path,
+      measurement_mode: "fixture",
+      fixture_version: fixtureVersion,
+    },
+    {
       dataset_id: dataset.id,
       metric_id: "advisory.contract.adherence",
       dimension: "contract adherence",
@@ -211,10 +331,10 @@ async function evaluate(context) {
 
   const latencyThreshold = thresholdsByMetric["advisory.latency.p95_ms"].value;
   const rollups = {
-    correctness: Number(avg([gapDetection, recommendationStructure]).toFixed(4)),
-    coverage: Number(evidenceCoverage.toFixed(4)),
-    explainability: Number(recommendationStructure.toFixed(4)),
-    authority: Number(authorityPropagation.toFixed(4)),
+    correctness: Number(avg([gapDetection, actionabilityCoverage]).toFixed(4)),
+    coverage: Number(avg([evidenceCoverage, provenanceTraceability]).toFixed(4)),
+    explainability: Number(avg([recommendationStructure, rationaleCompleteness]).toFixed(4)),
+    authority: Number(avg([authorityPropagation, provenanceTraceability]).toFixed(4)),
     contract_adherence: contractAdherence,
     integration_completeness: integrationCompleteness,
     latency_norm: Number(latencyNorm(latencyP95Ms, latencyThreshold).toFixed(4)),
@@ -226,14 +346,24 @@ async function evaluate(context) {
 
   return {
     capability: "ADVISORY",
-    datasetIds: [dataset.id],
+    datasetIds: datasets.map((item) => item.id),
     fixtureVersion,
-    sampleCount: scenarios.length,
+    sampleCount: scenarios.length + qualityCases.length,
     minimumSamples: datasets.reduce((sum, d) => sum + Number(d.minimum_samples || 0), 0),
     contractPath: registryEntry.contract_path,
     metrics,
     rollups,
     syntheticLatencyCount,
+    diagnostics: qualityCases.length
+      ? {
+          advisory_quality: {
+            case_count: qualityCases.length,
+            provenance_traceability: provenanceTraceability,
+            rationale_completeness: rationaleCompleteness,
+            actionability_coverage: actionabilityCoverage,
+          },
+        }
+      : null,
   };
 }
 

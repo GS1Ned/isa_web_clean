@@ -24,6 +24,14 @@ describe("DecisionArtifactCard", () => {
           evidence: {
             codePaths: ["server/routers/esrs-roadmap.ts"],
             dataSources: ["gs1_esrs_mappings"],
+            evidenceRefs: [
+              {
+                sourceChunkId: 3001,
+                evidenceKey: "ke:3001:hash",
+                citationLabel: "ESRS E1 — Climate Change",
+                sourceLocator: "https://www.efrag.org/esrs/e1",
+              },
+            ],
           },
           summary: {
             phaseCount: 4,
@@ -39,6 +47,7 @@ describe("DecisionArtifactCard", () => {
     expect(screen.queryByText(/high 82%/i)).not.toBeNull();
     expect(screen.queryByText(/Decision Grade/i)).not.toBeNull();
     expect(screen.queryByText(/Ready for routine use/i)).not.toBeNull();
+    expect(screen.queryByText(/Evidence refs ready/i)).not.toBeNull();
     expect(screen.queryByText("Roadmap grounded in mapped ESRS requirements.")).not.toBeNull();
     expect(screen.queryByText(/routine downstream use acceptable/i)).not.toBeNull();
     expect(screen.queryByText(/Escalation: None/i)).not.toBeNull();
@@ -46,5 +55,8 @@ describe("DecisionArtifactCard", () => {
     expect(screen.queryByText("phase-1, phase-2")).not.toBeNull();
     expect(screen.queryByText("server/routers/esrs-roadmap.ts")).not.toBeNull();
     expect(screen.queryByText("gs1_esrs_mappings")).not.toBeNull();
+    expect(screen.queryByText(/Reviewer-usable refs: 1\/1/i)).not.toBeNull();
+    expect(screen.queryByText(/ESRS E1 — Climate Change/i)).not.toBeNull();
+    expect(screen.queryByText(/https:\/\/www\.efrag\.org\/esrs\/e1/i)).not.toBeNull();
   });
 });

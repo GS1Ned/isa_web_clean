@@ -21,6 +21,7 @@ export type KnowledgeVerificationFreshnessBucket =
 
 export type KnowledgeEvidenceKeyReason =
   | "ok"
+  | "missing_authoritative_chunk"
   | "missing_content_hash";
 
 export interface KnowledgeVerificationStatus {
@@ -159,12 +160,19 @@ export function doesKnowledgeChunkNeedVerification(
 }
 
 export function buildKnowledgeEvidenceKey(
-  chunkId: number,
+  chunkId?: number | null,
   contentHash?: string | null
 ): {
   evidenceKey: string | null;
   evidenceKeyReason: KnowledgeEvidenceKeyReason;
 } {
+  if (!chunkId) {
+    return {
+      evidenceKey: null,
+      evidenceKeyReason: "missing_authoritative_chunk",
+    };
+  }
+
   if (!contentHash) {
     return {
       evidenceKey: null,
@@ -176,4 +184,44 @@ export function buildKnowledgeEvidenceKey(
     evidenceKey: `ke:${chunkId}:${contentHash}`,
     evidenceKeyReason: "ok",
   };
+}
+
+export function buildSourceChunkLocator(input: {
+  sectionPath?: string | null;
+  heading?: string | null;
+  charStart?: number | null;
+  charEnd?: number | null;
+}): string | null {
+  const sectionPath = input.sectionPath?.trim();
+  if (sectionPath) return sectionPath;
+
+  const heading = input.heading?.trim();
+  if (heading) return heading;
+
+  if (
+    Number.isFinite(input.charStart) &&
+    Number.isFinite(input.charEnd) &&
+    typeof input.charStart === "number" &&
+    typeof input.charEnd === "number"
+  ) {
+    return `chars ${input.charStart}-${input.charEnd}`;
+  }
+
+  return null;
+}
+
+export function buildKnowledgeCitationLabel(input: {
+  title?: string | null;
+  locator?: string | null;
+  version?: string | null;
+}): string | null {
+  const title = input.title?.trim();
+  if (!title) return null;
+
+  const parts = [title];
+  const locator = input.locator?.trim();
+  if (locator) parts.push(locator);
+  const version = input.version?.trim();
+  if (version) parts.push(`v${version}`);
+  return parts.join(" — ");
 }

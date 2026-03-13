@@ -1,118 +1,134 @@
 # MCP Policy (Canonical)
 Status: CANONICAL
-Last Updated: 2026-02-19
+Last Updated: 2026-03-13
 
 ## Purpose And Scope
-This policy defines when ISA agents should use MCP servers, and how to log evidence while preserving no-console policy compliance and avoiding secret leakage.
+This policy defines how ISA agents choose MCP servers, what the repository actually configures, and how MCP-derived evidence is recorded without leaking secrets.
 
-Scope: ISA repository development (code, docs, governance, refactors, research used for ISA decisions).
+Scope: ISA repository development across code, docs, governance, data-plane work, evaluation, CI, and research that changes repo truth.
 
-## Server Catalog (SSOT)
-Notes:
-- `where_configured` refers to the shared configuration surface for each tool. For Codex, repo-checked `.codex/config.toml` only carries workspace defaults; managed MCP/auth entries are rendered to `~/.codex/config.toml`.
-- `billing` is best-effort and must be treated as `unknown` unless confirmed.
-- Evidence logging is required when MCP output is used to justify a claim, or when MCP actions modify repo state.
-- Optional servers are intentionally not configured by default: `context7`, `firecrawl`, `db`.
+## Source Of Truth For MCP Configuration
+- Shared server inventory: `config/mcp/servers.catalog.json`
+- Claude-compatible repo config: `.mcp.json`
+- Codex user merge template: `config/ide/codex/user-config.template.toml`
+- Repo-scoped Codex defaults only: `.codex/config.toml`
+- Validation scripts: `scripts/validate_mcp_agent_readiness.sh`, `scripts/validate_mcp_connectivity.sh`
 
-| name | purpose | transport | where_configured | billing | trigger_conditions | anti_triggers | evidence_logging_required | data_risk |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `filesystem` | Read/write repo files deterministically (source-of-truth for all repo claims) | stdio | codex, q, claude, vscode | local | Any claim about repo content; any doc/code update; verify file existence/paths | User provided full file content inline and no repo read is needed | YES | med |
-| `git` | Diffs/history/branch state for evidence-first changes | stdio | codex, q, claude, vscode | local | Any claim about diffs/history; base branch verification; release hygiene | If repo is not a git repo; if answer does not depend on git state | YES | med |
-| `fetch` | Retrieve static web content for evidence (HTML/text/markdown) | stdio | codex, q, claude, vscode | local | Validate URLs; capture source snapshots; retrieve non-JS pages for citations | JS-rendered/cookie-gated flows (use `playwright`); paywalled/auth-only content unless explicitly required | YES | med |
-| `playwright` | Deterministic browser automation for repro/scrape/DOM issues | stdio | codex, q, claude, vscode | local | UI repro; screenshots/DOM snapshots; JS-rendered pages; cookie/banner flows | If `fetch` suffices; if automation is blocked; if task is not evidence-sensitive | YES | med |
-| `openai_docs` | Authoritative OpenAI docs lookup via MCP | http | codex, q, claude, vscode | unknown | Any claim about Codex/MCP/OpenAI product behavior that could change; need exact config syntax | If repo already contains the required truth; if offline work only | YES | low |
-| `github` | External OSS patterns, cross-repo search, upstream issue/PR evidence | http | codex, q, claude, vscode | account | Need external implementation patterns; confirm upstream behavior; link evidence to issues/PRs | If solution can be derived from ISA repo alone; if token/auth is unavailable | YES | high |
+## Availability Classes
 
-## Default Behavior (When To Use What)
-- Repo truth: use `filesystem` and `git` before making repo claims or edits.
-- External evidence: use `fetch` first for static sources, then `playwright` for JS-rendered pages.
-- Product facts (OpenAI/Codex/MCP): prefer `openai_docs` to avoid stale assumptions.
-- OSS patterns: use `github` for discovery, then capture a stable source snapshot with `fetch` and record retrieval date.
+### Repo-Managed Shared Servers
+These servers are confirmed by repo-managed config and are the only set validated by the shared readiness scripts today.
 
-Common ISA task mappings:
-- Repo refactor and evidence artifacts: `filesystem` + `git`.
-- Benchmark research and external comparison: `github` + `fetch` + `openai_docs`.
-- Scraping/DOM/repro work: `playwright` (use `fetch` when JS automation is not required).
+| name | purpose | where_configured | trigger_conditions | anti_triggers | evidence_logging_required | data_risk |
+| --- | --- | --- | --- | --- | --- | --- |
+| `filesystem` | Read/write repo files deterministically | `config/mcp/servers.catalog.json`, `.mcp.json`, `config/ide/codex/user-config.template.toml` | Any claim about repo content; any doc/code edit; file/path discovery | User provided the full required content inline and no repo read is needed | YES | med |
+| `git` | Diffs, history, branch state, and change scope | `config/mcp/servers.catalog.json`, `.mcp.json`, `config/ide/codex/user-config.template.toml` | Any claim about branch state, diffs, blame, or release hygiene | The task does not depend on git state | YES | med |
+| `fetch` | Static public web retrieval for exact evidence | `config/mcp/servers.catalog.json`, `.mcp.json`, `config/ide/codex/user-config.template.toml` | Official docs, standards, or source snapshots where static retrieval is enough | JS-rendered/cookie-gated flows that need browser automation | YES | med |
+| `playwright` | Deterministic browser/runtime evidence | `config/mcp/servers.catalog.json`, `.mcp.json`, `config/ide/codex/user-config.template.toml` | UI repro, screenshots, JS-rendered pages, DOM verification | `fetch` is sufficient; browser automation is irrelevant or blocked | YES | med |
+| `openai_docs` | Authoritative OpenAI/Codex docs via MCP | `config/mcp/servers.catalog.json`, `.mcp.json`, `config/ide/codex/user-config.template.toml` | Any claim about Codex, OpenAI APIs, MCP behavior, or config syntax that could drift | Repo truth already answers the question; offline-only work | YES | low |
+| `github` | GitHub issues, PRs, review context, and upstream repo metadata | `config/mcp/servers.catalog.json`, `.mcp.json`, `config/ide/codex/user-config.template.toml` | PR/issue/review context; upstream implementation evidence; remote repo metadata | Repo truth alone is sufficient; auth is unavailable | YES | high |
+| `sequential-thinking` | Explicit decomposition for ambiguous or multi-phase work | `config/mcp/servers.catalog.json`, `.mcp.json`, `config/ide/codex/user-config.template.toml` | Architecture planning, migration sequencing, complex debugging | Straightforward inspect/edit/validate loops | NO | low |
 
-### Search-Capable MCP + Fallback
-- Primary search path in-repo: use `filesystem.search_files` first for file/path discovery.
-- Content search fallback: if `filesystem` is unavailable or incomplete for text matching, use `rg` (`rg -n "pattern" <path>`).
-- Always reflect the same evidence standards regardless of path: record searched paths, matched files, and UTC timestamp in evidence artifacts when the result is used for a claim.
+### Optional Session-Only Codex Servers
+Some Codex sessions expose additional servers such as `context7`, `memory`, `postgres`, and `neo4j`. The repo does not currently manage or validate these as shared defaults, so do not assume they exist from repo config alone.
 
-## Lean Documentation Integration Mode (Repository-Wide)
-These rules apply to all work, not only MCP:
+| name | use_when | do_not_assume | fallback_if_unavailable |
+| --- | --- | --- | --- |
+| `context7` | Version-sensitive framework/library setup or API usage needs current docs | Repo-managed availability, auth, or parity with other tools | Use repo truth first, then official vendor docs via `fetch`; use `openai_docs` for OpenAI-specific behavior |
+| `memory` | Durable project conventions or recurring blockers need cross-session persistence | That memory contents are fresher than repo truth | Re-read repo docs/config/code and record the missing durable fact locally in the owning canonical doc if needed |
+| `postgres` | Live relational schema/data state matters for migration, rehydration, parity, or runtime debugging | That Postgres credentials or server wiring are present in every session | Use repo schema, migration files, runtime docs, and scripts; note the live-data blocker explicitly |
+| `neo4j` | Live graph traversals or graph-backed validation materially affect the answer | That graph credentials or server wiring are present in every session | Use repo graph/bootstrap scripts and architecture docs; note the live-data blocker explicitly |
+
+## Routing Order
+1. Repo truth first: use `filesystem`, then `git`.
+2. Official docs second: use `openai_docs` for OpenAI/Codex, and `fetch` for other official public docs or standards.
+3. Browser/runtime evidence only when needed: use `playwright`.
+4. External repository/review context when needed: use `github`.
+5. Optional Codex-only servers only when the current runtime proves availability and the task actually requires them.
+6. Wider external retrieval only when repo truth and official docs are insufficient.
+
+Do not use web retrieval by default. Use it only when freshness, external validation, or exact source capture is required.
+
+## Common ISA Task Routing
+- Repo refactor, docs cleanup, contract edits, or code inspection: `filesystem` + `git`
+- Codex/OpenAI config or product behavior: `openai_docs` + `filesystem`
+- Framework/library implementation details: `filesystem` first, then `context7` if available, otherwise official vendor docs via `fetch`
+- UI repro or browser-state evidence: `playwright` + `filesystem` + `git`
+- PR, issue, review, or CI metadata: `github` + `git`
+- DB, ingestion, provenance rebuild, rehydration, or parity work: `filesystem` + `git`; add `postgres` only when live relational truth matters
+- Graph-backed ESRS/GS1/advisory validation: `filesystem` + repo scripts/docs; add `neo4j` only when live graph truth matters
+- Durable cross-session workflow preferences: `memory` only for stable conventions, never as a substitute for fresh repo inspection
+
+For DB, ingestion, provenance, or eval work, route through the owning canonical docs before live tools:
+- `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`
+- `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md`
+- `docs/ops/RUNBOOK.md`
+- `data/evaluation/golden/registry.json`
+- `docs/ci/INDEX.md`
+
+## Search Fallback
+- Primary in-repo discovery path: `filesystem.search_files`
+- Content-search fallback: `rg -n "pattern" <path>`
+- Apply the same evidence standard regardless of tool path. Record searched paths, matched files, URLs, and UTC retrieval dates when they materially support a claim.
+
+## Lean Documentation Integration Mode
 - Integrate useful outcomes directly into existing canonical docs/config before creating new artifacts.
-- Do not commit ad-hoc report files by default.
-- Triage every finding as `INTEGRATE_NOW`, `RESOLVE_NOW`, or `DROP_NOW`.
+- Do not commit ad hoc report files by default.
+- Triage findings as `INTEGRATE_NOW`, `RESOLVE_NOW`, or `DROP_NOW`.
 - Resolve uncertainty in the same run or drop it; do not commit unresolved claims.
-- Keep scratch analysis outside the repo (`/tmp`) unless explicitly promoted to a canonical doc update.
+- Keep scratch analysis outside the repo (`/tmp`) unless explicitly promoted into canonical docs or governed evidence artifacts.
 
 ## Evidence Logging (No-Console Compatible)
 Do not add console logging in code or examples.
 
-When `evidence_logging_required=YES`, append a short evidence note to:
+When MCP output materially supports a claim or an MCP action modifies repo state, append a short evidence note to:
 - `docs/evidence/generated/_generated/mcp_log.md`
 
-Minimum fields (single entry):
+Minimum fields:
 - `timestamp_utc=...`
 - `task=...`
 - `server=...`
-- `trigger=...` (short id like `T_REPO_READ`, `T_REPO_WRITE`, `T_WEB_FETCH`, `T_WEB_JS`, `T_OSS_PATTERN`)
+- `trigger=...`
 - `inputs=...` (paths/urls only; redact tokens)
-- `outputs=...` (paths/urls/hashes/screenshot names)
+- `outputs=...` (paths/urls/hashes/artifact names)
 - `errors=...` (if any)
 - `fallback=...` (if any)
 
 Redaction rules:
 - Never include secrets, tokens, cookies, Authorization headers, or private repo content.
-- For any web source used as evidence, record URL plus retrieval date (UTC).
+- For any web source used as evidence, record the URL and retrieval date (UTC).
 
-## Rollout (Repo-Level vs User-Level)
-Repo-checked (shared defaults):
-- `.codex/config.toml` (Codex workspace defaults only; not the secret-bearing MCP authority)
-- `.amazonq/default.json` and `.amazonq/rules/*.md` (Amazon Q in IDE)
-- `.mcp.json` (Claude Code)
-- `.vscode/mcp.json` (optional workspace discovery)
-- `docs/agent/MCP_POLICY.md`, `docs/agent/MCP_RECIPES.md` (canonical agent guidance)
+## Repo-Level Vs User-Level Responsibility
+Repo-managed:
+- `.codex/config.toml`
+- `config/ide/codex/user-config.template.toml`
+- `config/mcp/servers.catalog.json`
+- `.mcp.json`
+- `docs/agent/MCP_POLICY.md`
+- `docs/agent/MCP_RECIPES.md`
 
-User-level (never commit):
-- GitHub auth token for `github` MCP where required (recommended env var: `GH_TOKEN`).
-- Any per-user overrides:
-  - Codex: `~/.codex/config.toml`
-  - Amazon Q: global config under `~/.aws/amazonq/...`
-  - Claude Code: user settings / `claude mcp` commands
+User-level or runtime-only:
+- `~/.codex/config.toml`
+- GitHub auth material such as `GH_TOKEN`
+- Any runtime credentials for optional servers such as `postgres` or `neo4j`
 
 Token handling requirements:
 - Never commit or paste literal token values into repo files, prompts, or logs.
-- A token string cannot be trusted by format alone; validate by running an authenticated GitHub API request locally and only report pass/fail.
+- Validate auth through a smallest-safe runtime check and report pass/fail only.
 
-## Verification Checklist (Per Tool)
-Codex (CLI + VS Code):
-1. Confirm repo `.codex/config.toml` still only defines shared workspace defaults.
-2. Confirm managed user config `~/.codex/config.toml` includes: `filesystem`, `git`, `fetch`, `playwright`, `openai_docs`, `github`.
-3. Run `bash scripts/validate_mcp_connectivity.sh` for runtime connectivity checks.
-
-Amazon Q (VS Code):
-1. Confirm `.amazonq/default.json` exists.
-2. In the MCP servers panel, confirm the same server set is visible/enabled.
-
-Claude Code:
-1. Confirm `.mcp.json` exists at repo root.
-2. Confirm `claude mcp list` shows the server set (auth-dependent for `github`).
+## Verification Checklist
+Codex:
+1. Confirm repo `.codex/config.toml` contains only workspace defaults, not secret-bearing MCP/auth material.
+2. Confirm `config/ide/codex/user-config.template.toml` and `config/mcp/servers.catalog.json` agree on the repo-managed shared set.
+3. Run `bash scripts/validate_mcp_agent_readiness.sh`.
+4. Use `MCP_VALIDATE_CONNECTIVITY=1 bash scripts/validate_mcp_agent_readiness.sh` when connectivity verification is needed. This validates the repo-managed shared set only.
+5. If using `context7`, `memory`, `postgres`, or `neo4j`, verify availability in the current runtime before relying on them, and record the blocker/fallback when absent.
 
 Repo validation commands:
 - Baseline: `bash scripts/validate_mcp_agent_readiness.sh`
-- With runtime checks: `MCP_VALIDATE_CONNECTIVITY=1 bash scripts/validate_mcp_agent_readiness.sh`
-- GitHub auth in connectivity checks: uses `GH_TOKEN` first, then falls back to `gh auth token` when available.
-- Documentation hygiene gate: `python scripts/validate_planning_and_traceability.py`
-- Connectivity mode options:
-  - `MCP_CONNECTIVITY_MODE=strict` (default): validates `filesystem`, `git`, `fetch`, `playwright`, plus HTTP endpoints.
-  - `MCP_CONNECTIVITY_MODE=fast`: validates `filesystem`, `git`, `fetch`, plus HTTP endpoints (skips `playwright` to reduce runtime).
-- Machine-readable summary options:
-  - `MCP_SUMMARY_JSON_PATH=/path/to/summary.json`: writes JSON summary for CI/artifacts.
-  - `MCP_SUMMARY_STDOUT=1`: prints compact summary JSON to stdout.
+- Connectivity: `MCP_VALIDATE_CONNECTIVITY=1 bash scripts/validate_mcp_agent_readiness.sh`
+- Documentation hygiene: `python scripts/validate_planning_and_traceability.py`
 
-CI profile defaults:
-- Pull Request profile: `fast` (quick feedback)
-- Nightly/scheduled profile: `strict` (full connectivity coverage)
-- Workflow file: `.github/workflows/mcp-validation-profiles.yml`
+Connectivity modes:
+- `MCP_CONNECTIVITY_MODE=strict` validates `filesystem`, `git`, `fetch`, `playwright`, and the shared HTTP endpoints.
+- `MCP_CONNECTIVITY_MODE=fast` skips `playwright` to reduce runtime.

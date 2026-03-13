@@ -1,0 +1,34 @@
+{
+  "dataset_id": "kb_retrieval_quality_v1",
+  "evaluation_mode": "lexical-metadata-proxy",
+  "notes": "Stage-a starter retrieval cases over corpus metadata. These cases measure deterministic evidence hit-rate and provenance detectability while source_chunks remain absent.",
+  "cases": [
+    {
+      "id": "KB-RET-A1",
+      "query": "GS1 architecture principles",
+      "expected_row_id": "html/ref.gs1.org/architecture/principles/index.html",
+      "top_k": 3,
+      "required_intended_use": ["RAG"],
+      "required_present_fields": ["url", "file_path", "checksum_sha256", "source_manifest"],
+      "expected_missing_fields": ["contentHash", "datasetId", "datasetVersion", "lastVerifiedDate"]
+    },
+    {
+      "id": "KB-RET-A2",
+      "query": "GS1 system architecture",
+      "expected_row_id": "html/ref.gs1.org/architecture/system-architecture/index.html",
+      "top_k": 3,
+      "required_intended_use": ["RAG"],
+      "required_present_fields": ["url", "file_path", "checksum_sha256", "source_manifest"],
+      "expected_missing_fields": ["contentHash", "datasetId", "datasetVersion", "lastVerifiedDate"]
+    },
+    {
+      "id": "KB-RET-A3",
+      "query": "unique GS1 identification",
+      "expected_row_id": "html/ref.gs1.org/architecture/findings/unique-gs1-identification/index.html",
+      "top_k": 3,
+      "required_intended_use": ["RAG"],
+      "required_present_fields": ["url", "file_path", "checksum_sha256", "source_manifest"],
+      "expected_missing_fields": ["contentHash", "datasetId", "datasetVersion", "lastVerifiedDate"]
+    }
+  ]
+}

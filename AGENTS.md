@@ -2,60 +2,49 @@
 
 <!-- EVIDENCE:requirement:docs/governance/_root/ISA_GOVERNANCE.md -->
 <!-- EVIDENCE:constraint:AGENTS.md -->
-## Non-negotiables (evidence-first)
-- Repo contents are the only source of truth. Documentation is a claim unless backed by code/config/tests.
+## Operating Principles
+- Repo files, config, tests, and generated artifacts are the only source of truth. Documentation is a claim until it matches code/config/tests.
 - Label outputs explicitly as: FACT / INTERPRETATION / RECOMMENDATION.
-- No secrets in code, logs, prompts, or commits.
+- No secrets in code, logs, prompts, commits, screenshots, or evidence artifacts.
+- Prefer deterministic, CI-compatible steps and minimal, reviewable diffs.
 
-## Autonomy & safety
-<!-- EVIDENCE:constraint:scripts/refactor/validate_gates.sh -->
-<!-- EVIDENCE:decision:docs/governance/MANUAL_PREFLIGHT.md -->
-- Prefer deterministic, reproducible steps.
-- Never run destructive commands unless explicitly required; if required, print a safe alternative first.
-- Prefer CI-compatible solutions; avoid local-only assumptions.
+## Canonical Start Here
+- Read `AGENT_START_HERE.md`, then `docs/agent/AGENT_MAP.md`, then `docs/governance/TECHNICAL_DOCUMENTATION_CANON.md`.
+- Use `docs/planning/NEXT_ACTIONS.json` as the canonical next-work queue only when the user, active issue/PR, or current branch does not already define the task scope.
+- Use `docs/spec/ARCHITECTURE.md` for CURRENT/TARGET system truth.
+- For DB, ingestion, provenance, or rehydration work, also read `docs/spec/ISA_DATA_PLANE_ARCHITECTURE.md`, `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md`, and `docs/ops/RUNBOOK.md`.
+- For evaluation, CI, or gates, also read `data/evaluation/golden/registry.json`, `docs/ci/INDEX.md`, and `docs/governance/MANUAL_PREFLIGHT.md`.
 
-## Terminal execution (blind-paste safe)
-- When providing terminal actions: deliver exactly one pasteable block that writes a script to /tmp/*.sh and executes `bash /tmp/*.sh`.
-- Script must:
-  - `set -euo pipefail`
-  - include PREFLIGHT + ACTION in the same run
-  - emit one of: STOP=... / READY=... / DONE=...
+## Standing Vs Task-Local Guidance
+- Keep `AGENTS.md` limited to repo-wide rules that should apply on every task.
+- Put task-local execution plans in `docs/planning/NEXT_ACTIONS.json`, the active issue/PR, or a governed handoff artifact. Do not turn `AGENTS.md` into a task tracker.
+- If the same correction is needed repeatedly, either update `AGENTS.md` for repo-wide always-on behavior or update the deeper canonical doc/script that owns the workflow.
 
-## Repo workflow
-<!-- EVIDENCE:requirement:.github/PULL_REQUEST_TEMPLATE.md -->
-<!-- EVIDENCE:constraint:docs/governance/PLANNING_POLICY.md -->
-- Do not commit to the default branch.
-- Make minimal, reviewable commits with governance-grade messages.
-- Prefer small diffs; avoid refactors unless necessary for the task.
+## Documentation And Planning Discipline
+- Do not create parallel architecture, roadmap, status, or operating docs when an existing canonical file can absorb the truth.
+- Update the owning canonical doc when code, contracts, workflow truth, or operating assumptions materially change.
+- Follow `docs/governance/PLANNING_POLICY.md`; new planning truth belongs in `docs/planning/NEXT_ACTIONS.json` or `docs/planning/BACKLOG.csv`.
 - MCP usage must follow `docs/agent/MCP_POLICY.md` and `docs/agent/MCP_RECIPES.md`.
 
-## Workspace authority and synchronization (Host ↔ VM ↔ GitHub)
-- Canonical SSOT for repository history is the Git remote `origin` (GitHub).
-- Current workspace authority (effective 2026-02-25): host repo is the primary editing workspace. VM is the runtime/execution target for OpenClaw operations.
-- Default working mode:
-  - Edit on host.
-  - Run OpenClaw and VM-specific checks through repo scripts over SSH.
-  - Sync host ↔ VM via Git only. Do not rsync/zip-copy working trees between environments.
-- Host guardrails:
-  - Host push remains disabled by default (mirror mode). Any exception must be explicit and temporary.
-  - Host pulls must be fast-forward only.
-- VM guardrails:
-  - VM is execution-first for OpenClaw and infrastructure checks.
-  - If editing on VM is explicitly required: run `git status` then `git pull --ff-only` before edits; keep commits small; push to `origin`; mirror on host via `git pull --ff-only`.
-- SSH access contract (for scripts and agents):
-  - SSH alias: `ISA_VM_HOST` (recommended `isa-openclaw-vm`)
-  - VM repo path: `VM_REPO_PATH`
-  - VM env path: `VM_ENV_PATH`
-  - Key path: `ISA_VM_SSH_KEY`
-  - Automation should use non-interactive host key behavior (`StrictHostKeyChecking=accept-new`).
-- Agent forwarding is preferred for VM Git operations to avoid copying private keys to the VM.
-- OpenClaw runtime contract:
-  - UI tunnel: `127.0.0.1:18789` (host) -> `127.0.0.1:18789` (VM).
-  - VM state/config location: `/root/.openclaw/*`.
-  - `OPENCLAW_GATEWAY_TOKEN` remains VM-only secret, authoritative in `/root/.openclaw/openclaw.json` (or VM env). Never store token values in repo docs.
-- Future VM-primary cutover prerequisites (not active yet):
-  - Branch protection and merge controls for `main` verified and documented.
-  - Host mirror guardrails automated (prevent local host commit/push except explicit temporary override).
-  - VM bootstrap + doctor path fully green via repo scripts.
-  - SSH known-host and agent-forwarding checks pass non-interactively in automation.
-  - Canonical docs/tasks/scripts updated with cutover date and rollback path.
+## Workflow And Workspace Authority
+- Do not commit to the default branch.
+- Host repo is the primary editing workspace. VM is the execution-first target for OpenClaw and infrastructure checks. Sync host and VM through Git only.
+- Host push stays disabled by default; host and VM pulls must be fast-forward only.
+- If VM edits are explicitly required, run `git status` and `git pull --ff-only` before changes.
+- Canonical host↔VM runtime, SSH, and OpenClaw details live in `AGENT_START_HERE.md#host--vm-openclaw-workflow-canonical`.
+
+## Tool Routing And Escalation
+- Repo truth first: `filesystem`, then `git`.
+- Official product docs second: `openai_docs` for OpenAI/Codex behavior; `fetch` for other official public docs; `playwright` only when browser/runtime evidence is required.
+- Wider external retrieval only when repo truth and official docs are insufficient, and record the reason.
+- `github` is for PR/issue/review context, remote repository metadata, and upstream evidence.
+- `context7`, `memory`, `postgres`, and `neo4j` are optional Codex-only servers. Use them only when runtime confirms availability and the task actually requires them; otherwise fall back to repo truth and note the blocker.
+- `sequential-thinking` is for complex, ambiguous, or multi-phase planning/debugging.
+
+## Terminal Execution (Blind-Paste Safe)
+- When providing terminal actions, deliver exactly one pasteable block that writes a script to `/tmp/*.sh` and executes `bash /tmp/*.sh`.
+- The script must use `set -euo pipefail`, include PREFLIGHT + ACTION in the same run, and emit one of `STOP=...`, `READY=...`, or `DONE=...`.
+
+## Safety
+- Never run destructive commands unless explicitly required; print a safe alternative first when possible.
+- Prefer local commands and repo scripts that can run in CI or over SSH without manual intervention.

@@ -1,15 +1,10 @@
 # GitHub Actions Setup Instructions
 
-1. Add CRON_SECRET to your GitHub repository secrets:
-   - Go to your repository → Settings → Secrets and variables → Actions
-   - Click "New repository secret"
-   - Name: CRON_SECRET
-   - Value: c11f32585dcc3641dd108e4b6d9c3d4c9a718a41eeab7869775bb8ee97ca3f9b
-   - Click "Add secret"
+Status: DEPRECATED REDIRECT
+Canonical replacement: `docs/ops/CRON.md`
+Last reviewed: 2026-03-06
+Scope: Historical provider-specific path preserved for continuity. Use the canonical replacement for current setup guidance.
 
-2. Create the workflow file:
-   - Copy the generated workflow file to: .github/workflows/isa-news-cron.yml
-   - Commit and push to your repository
+The repository does not currently contain a live `.github/workflows/isa-news-cron.yml` workflow.
 
-3. GitHub will automatically run the workflow on schedule
-4. You can also trigger manually from Actions tab → "ISA News Collection" → "Run workflow"
+Use `docs/ops/CRON.md` for the current scheduler contract instead of this file.

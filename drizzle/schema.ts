@@ -1089,6 +1089,7 @@ export const knowledgeEmbeddings = mysqlTable("knowledge_embeddings", {
 	url: varchar({ length: 512 }),
 	datasetId: varchar({ length: 255 }),
 	datasetVersion: varchar({ length: 64 }),
+	sourceChunkId: int("source_chunk_id"),
 	lastVerifiedDate: timestamp({ mode: 'string' }),
 	isDeprecated: tinyint().default(0).notNull(),
 	deprecationReason: text(),
@@ -1098,6 +1099,7 @@ export const knowledgeEmbeddings = mysqlTable("knowledge_embeddings", {
 (table) => [
 	index("source_type_idx").on(table.sourceType),
 	index("source_id_idx").on(table.sourceId),
+	index("source_chunk_id_idx").on(table.sourceChunkId),
 	index("content_hash_idx").on(table.contentHash),
 	index("source_composite_idx").on(table.sourceType, table.sourceId),
 ]);

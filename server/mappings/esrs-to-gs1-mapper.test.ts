@@ -85,6 +85,21 @@ describe("mapESRSToGS1Attributes", () => {
     expect(mapping.gs1Attributes).toEqual([]);
   });
 
+  it("combines expanded E1-3 rule coverage for product-level carbon footprint use cases", async () => {
+    const [mapping] = await mapESRSToGS1Attributes(["E1-3_01"], {
+      includeLowConfidence: true,
+    });
+
+    expect(mapping.esrsStandard).toBe("E1");
+    expect(mapping.gs1Attributes).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ attributeName: "greenhouseGasEmissionsScope3" }),
+        expect.objectContaining({ attributeName: "productCarbonFootprint" }),
+        expect.objectContaining({ attributeName: "gtin" }),
+      ]),
+    );
+  });
+
   it("returns an empty array when called with an empty input array", async () => {
     const result = await mapESRSToGS1Attributes([]);
 

@@ -1,8 +1,13 @@
+Status: HISTORICAL REFERENCE ONLY
+Current-state authority: `docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md`
+Canonical planning authority: `docs/planning/NEXT_ACTIONS.json`
+Warning: This 2026-02-01 proposed plan predates the current Postgres mapping state and contains stale current-state assertions, including empty mapping-table claims.
+
 # ISA Next-Generation Development Plan
 
 **Date:** February 1, 2026  
 **Author:** Manus AI  
-**Status:** Proposed Plan
+**Status at Publication:** Proposed Plan
 
 ## 1. Executive Summary
 

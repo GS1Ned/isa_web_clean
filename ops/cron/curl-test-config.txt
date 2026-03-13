@@ -1,25 +1,28 @@
-#!/bin/bash
-# Test commands for ISA News Cron Endpoints
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "Testing ISA News Cron Endpoints..."
-echo "=================================="
+if [[ -z "${BASE_URL:-}" || -z "${CRON_SECRET:-}" ]]; then
+  echo "STOP=Set BASE_URL and CRON_SECRET before running this script."
+  echo "Example: BASE_URL=https://example.com CRON_SECRET=... bash ops/cron/curl-test-config.txt"
+  exit 1
+fi
+
+echo "READY=testing_cron_endpoints"
 echo ""
-
-# Test health endpoint
-echo "1. Testing health endpoint (no auth required)..."
-curl -s https://your-domain.manus.space/cron/health | jq
+echo "1. Health endpoint"
+curl -sS "$BASE_URL/cron/health"
 echo ""
-
-# Test with invalid auth
-echo "2. Testing with invalid authorization (should fail)..."
-curl -s -X GET https://your-domain.manus.space/cron/daily-news-ingestion \
-  -H "Authorization: Bearer wrong-secret" | jq
 echo ""
-
-# Test daily news ingestion
-echo "3. Testing daily news ingestion (with valid auth)..."
-curl -s -X GET https://your-domain.manus.space/cron/daily-news-ingestion \
-  -H "Authorization: Bearer c11f32585dcc3641dd108e4b6d9c3d4c9a718a41eeab7869775bb8ee97ca3f9b" | jq
+echo "2. Daily news ingestion"
+curl -sS -X GET \
+  -H "Authorization: Bearer $CRON_SECRET" \
+  "$BASE_URL/cron/daily-news-ingestion"
 echo ""
-
-echo "✅ All tests completed!"
+echo ""
+echo "3. Weekly news archival"
+curl -sS -X GET \
+  -H "Authorization: Bearer $CRON_SECRET" \
+  "$BASE_URL/cron/weekly-news-archival"
+echo ""
+echo ""
+echo "DONE=cron_endpoint_tests_complete"

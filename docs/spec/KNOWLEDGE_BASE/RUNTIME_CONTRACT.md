@@ -57,6 +57,12 @@ KNOWLEDGE_BASE provides ingestion-governed corpus storage, embeddings, and retri
 - Citation-admin surfaces may expose additive verification posture summaries, `verificationAgeDays`, `freshnessBuckets`, and aggregate age stats derived from the same canonical verification helper, so admin review flows stay aligned with retrieval-time provenance semantics.
 - Admin verification workflows and retrieval validation must use the same verification-window rule so downstream ASK_ISA citation behavior stays aligned.
 
+## Phase-3 Provenance Target (Implementation Contract)
+- Canonical target contract: `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md`
+- Phase 3 must make `sources` and `source_chunks` the authoritative document and chunk substrate.
+- `knowledge_embeddings` may remain as a compatibility mirror during cutover, but every active retrieval row must resolve to one authoritative `source_chunks.id`.
+- Citation validation and ASK_ISA stage-a enforcement must keep the canonical evidence-key form `ke:<chunkId>:<contentHash>`, with `chunkId` resolving to authoritative chunk identity once the rebuild lands.
+
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/knowledge_base_health.sh -->
 - Smoke probe: `scripts/probe/knowledge_base_health.sh`

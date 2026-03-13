@@ -8,30 +8,19 @@ import { getDb } from "./db";
 import { eq } from "drizzle-orm";
 import { serverLogger } from "./_core/logger-wiring";
 import {
-  buildKnowledgeEvidenceKey,
   getKnowledgeVerificationStatus,
 } from "./knowledge-provenance";
+import { resolveKnowledgeCitationProvenance } from "./source-provenance";
+import { getRuntimeSchema } from "./db-runtime-schema";
 
 
 /**
  * Check if a knowledge chunk is deprecated
  */
 export async function isChunkDeprecated(chunkId: number): Promise<boolean> {
-  const db = await getDb();
-  if (!db) return false;
-
   try {
-    const { knowledgeEmbeddings } = await import("../drizzle/schema");
-
-    const chunks = await db
-      .select()
-      .from(knowledgeEmbeddings)
-      .where(eq(knowledgeEmbeddings.id, chunkId))
-      .limit(1);
-
-    if (chunks.length === 0) return false;
-
-    return chunks[0].isDeprecated === 1;
+    const resolved = await resolveKnowledgeCitationProvenance(chunkId);
+    return resolved?.isDeprecated ?? false;
   } catch (error) {
     serverLogger.error("[Citation] Failed to check deprecation status:", error);
     return false;
@@ -42,23 +31,9 @@ export async function isChunkDeprecated(chunkId: number): Promise<boolean> {
  * Check if a knowledge chunk needs verification (>90 days old)
  */
 export async function needsVerification(chunkId: number): Promise<boolean> {
-  const db = await getDb();
-  if (!db) return false;
-
   try {
-    const { knowledgeEmbeddings } = await import("../drizzle/schema");
-
-    const chunks = await db
-      .select()
-      .from(knowledgeEmbeddings)
-      .where(eq(knowledgeEmbeddings.id, chunkId))
-      .limit(1);
-
-    if (chunks.length === 0) return false;
-
-    const chunk = chunks[0];
-
-    return getKnowledgeVerificationStatus(chunk.lastVerifiedDate).needsVerification;
+    const resolved = await resolveKnowledgeCitationProvenance(chunkId);
+    return resolved?.needsVerification ?? false;
   } catch (error) {
     serverLogger.error("[Citation] Failed to check verification status:", error);
     return false;
@@ -90,7 +65,22 @@ export async function validateCitations(
     verificationReason?: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date";
     deprecationReason?: string;
     evidenceKey: string | null;
-    evidenceKeyReason?: "ok" | "missing_content_hash" | "chunk_not_found" | "db_unavailable";
+    evidenceKeyReason?:
+      | "ok"
+      | "missing_content_hash"
+      | "missing_authoritative_chunk"
+      | "chunk_not_found"
+      | "db_unavailable";
+    sourceRecordId?: number;
+    sourceChunkId?: number;
+    authorityTier?: string;
+    sourceRole?: string;
+    admissionBasis?: string;
+    publicationStatus?: string;
+    sourceLocator?: string;
+    immutableUri?: string;
+    citationLabel?: string;
+    sourceChunkLocator?: string;
   }>
 > {
   const db = await getDb();
@@ -105,7 +95,7 @@ export async function validateCitations(
   }
 
   try {
-    const { knowledgeEmbeddings } = await import("../drizzle/schema");
+    const { knowledgeEmbeddings } = (await getRuntimeSchema()) as any;
 
     const validatedSources = await Promise.all(
       sources.map(async source => {
@@ -126,24 +116,33 @@ export async function validateCitations(
         }
 
         const chunk = chunks[0];
-        const { evidenceKey, evidenceKeyReason } = buildKnowledgeEvidenceKey(
-          source.id,
-          chunk.contentHash || null
+        const resolved = await resolveKnowledgeCitationProvenance(source.id);
+        const verificationStatus = getKnowledgeVerificationStatus(
+          resolved?.lastVerifiedDate || chunk.lastVerifiedDate,
         );
-        const verificationStatus = getKnowledgeVerificationStatus(chunk.lastVerifiedDate);
 
         return {
           ...source,
-          datasetId: chunk.datasetId || undefined,
-          datasetVersion: chunk.datasetVersion || undefined,
-          lastVerifiedDate: chunk.lastVerifiedDate || undefined,
+          datasetId: resolved?.datasetId || chunk.datasetId || undefined,
+          datasetVersion: resolved?.datasetVersion || chunk.datasetVersion || undefined,
+          lastVerifiedDate: resolved?.lastVerifiedDate || chunk.lastVerifiedDate || undefined,
           verificationAgeDays: verificationStatus.verificationAgeDays,
-          isDeprecated: chunk.isDeprecated === 1,
-          needsVerification: verificationStatus.needsVerification,
-          verificationReason: verificationStatus.reason,
-          deprecationReason: chunk.deprecationReason || undefined,
-          evidenceKey,
-          evidenceKeyReason,
+          isDeprecated: resolved?.isDeprecated ?? (chunk.isDeprecated === 1 || chunk.isDeprecated === true),
+          needsVerification: resolved?.needsVerification ?? verificationStatus.needsVerification,
+          verificationReason: resolved?.verificationReason ?? verificationStatus.reason,
+          deprecationReason: resolved?.deprecationReason || chunk.deprecationReason || undefined,
+          evidenceKey: resolved?.evidenceKey ?? null,
+          evidenceKeyReason: resolved?.evidenceKeyReason ?? "missing_authoritative_chunk",
+          sourceRecordId: resolved?.sourceRecordId,
+          sourceChunkId: resolved?.sourceChunkId,
+          authorityTier: resolved?.authorityTier,
+          sourceRole: resolved?.sourceRole,
+          admissionBasis: resolved?.admissionBasis,
+          publicationStatus: resolved?.publicationStatus,
+          sourceLocator: resolved?.sourceLocator,
+          immutableUri: resolved?.immutableUri,
+          citationLabel: resolved?.citationLabel,
+          sourceChunkLocator: resolved?.sourceChunkLocator,
         };
       })
     );

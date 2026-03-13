@@ -1,9 +1,13 @@
+Status: SUPPLEMENTAL
+Current-state authority: `docs/spec/NEWS_HUB/RUNTIME_CONTRACT.md`
+Warning: This broader capability spec contains design and historical implementation detail. When it conflicts with the runtime contract or code, the runtime contract and code win.
+
 # NEWS_HUB Capability Specification
 
 **Capability:** NEWS_HUB  
 **Version:** 1.0  
 **Last Updated:** 2026-02-12  
-**Status:** Production
+**Status:** Supplemental design reference
 
 ---
 

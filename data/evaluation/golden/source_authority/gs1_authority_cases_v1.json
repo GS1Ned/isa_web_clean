@@ -1,0 +1,34 @@
+{
+  "dataset_id": "gs1_source_authority_cases_v1",
+  "notes": "Starter source-authority classification cases for Phase 1. GitHub-hosted GS1 repositories are not treated as automatically authoritative without explicit registration or artifact-role justification.",
+  "cases": [
+    {
+      "id": "AUTH-GS1-001",
+      "url": "https://www.gs1.org/standards",
+      "expectedAuthorityTier": "GS1_Global",
+      "expectedRole": "normative_authority",
+      "registrationRequired": false
+    },
+    {
+      "id": "AUTH-GS1-002",
+      "url": "https://ref.gs1.org/epcis/",
+      "expectedAuthorityTier": "GS1_Global",
+      "expectedRole": "normative_authority",
+      "registrationRequired": false
+    },
+    {
+      "id": "AUTH-GS1-003",
+      "url": "https://github.com/gs1/interpretGS1scan",
+      "expectedAuthorityTier": "UNKNOWN",
+      "expectedRole": "canonical_technical_artifact",
+      "registrationRequired": true
+    },
+    {
+      "id": "AUTH-GS1-004",
+      "url": "https://github.com/gs1/oliot-epcis",
+      "expectedAuthorityTier": "UNKNOWN",
+      "expectedRole": "canonical_technical_artifact",
+      "registrationRequired": true
+    }
+  ]
+}

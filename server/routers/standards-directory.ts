@@ -23,6 +23,38 @@ import { withVerificationPosture } from "../verification-posture";
 
 const STANDARDS_DIRECTORY_DATASET_VERIFIED_AT = "2025-12-13";
 
+interface StandardsDirectoryListItem {
+  id: string;
+  name: string;
+  owningOrganization: string;
+  jurisdiction: string;
+  sector: string | null;
+  lifecycleStatus: string | null;
+  sourceType: "gs1_standard" | "gs1_attributes" | "gs1_web_vocabulary" | "esrs_datapoint";
+  recordCount?: number;
+  lastVerifiedDate: string | null;
+  needsVerification: boolean;
+  verificationReason: "ok" | "missing_last_verified_date" | "invalid_last_verified_date" | "stale_last_verified_date";
+  verificationAgeDays: number | null;
+  verificationFreshnessBucket: "fresh" | "aging" | "stale" | "unknown";
+}
+
+function withStandardsDirectoryListVerificationPosture<
+  T extends {
+    id: string;
+    name: string;
+    owningOrganization: string;
+    jurisdiction: string;
+    sector: string | null;
+    lifecycleStatus: string | null;
+    sourceType: "gs1_standard" | "gs1_attributes" | "gs1_web_vocabulary" | "esrs_datapoint";
+    recordCount?: number;
+    lastVerifiedDate: string | null;
+  },
+>(record: T): StandardsDirectoryListItem {
+  return withVerificationPosture(record);
+}
+
 export const standardsDirectoryRouter = router({
   /**
    * List all standards with deterministic filtering
@@ -88,16 +120,7 @@ export const standardsDirectoryRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database connection failed");
 
-      const results: Array<{
-        id: string;
-        name: string;
-        owningOrganization: string;
-        jurisdiction: string;
-        sector: string | null;
-        lifecycleStatus: string | null;
-        sourceType: "gs1_standard" | "gs1_attributes" | "gs1_web_vocabulary" | "esrs_datapoint";
-        recordCount?: number;
-      }> = [];
+      const results: StandardsDirectoryListItem[] = [];
 
       // Query GS1 Standards
       const gs1StandardsQuery = db.select().from(gs1Standards);
@@ -142,7 +165,7 @@ export const standardsDirectoryRouter = router({
           continue;
         }
 
-        results.push({
+        results.push(withStandardsDirectoryListVerificationPosture({
           id: `gs1_standard_${standard.id}`,
           name: standard.standardName,
           owningOrganization: org,
@@ -150,7 +173,8 @@ export const standardsDirectoryRouter = router({
           sector: null, // GS1 standards are cross-sector
           lifecycleStatus: "ratified", // Assume ratified if in database
           sourceType: "gs1_standard",
-        });
+          lastVerifiedDate: null, // Not tracked in current schema
+        }));
       }
 
       // Query GS1 Attributes (grouped by sector)
@@ -186,7 +210,7 @@ export const standardsDirectoryRouter = router({
               continue;
             }
 
-            results.push({
+            results.push(withStandardsDirectoryListVerificationPosture({
               id: `gs1_attributes_${sector}`,
               name: `GS1 Data Source ${sector} Attributes`,
               owningOrganization: "GS1_NL",
@@ -195,7 +219,8 @@ export const standardsDirectoryRouter = router({
               lifecycleStatus: "current",
               sourceType: "gs1_attributes",
               recordCount: count,
-            });
+              lastVerifiedDate: STANDARDS_DIRECTORY_DATASET_VERIFIED_AT,
+            }));
           }
         }
       }
@@ -213,16 +238,17 @@ export const standardsDirectoryRouter = router({
               if (input?.lifecycleStatus && lifecycleStatus !== input.lifecycleStatus) {
                 // Skip this entry
               } else {
-                results.push({
-                id: "gs1_web_vocabulary",
-                name: "GS1 Web Vocabulary",
-                owningOrganization: "GS1_Global",
-                jurisdiction: "Global",
-                sector: null,
-                lifecycleStatus: "current",
-                sourceType: "gs1_web_vocabulary",
-                recordCount: vocabData.length,
-                });
+                results.push(withStandardsDirectoryListVerificationPosture({
+                  id: "gs1_web_vocabulary",
+                  name: "GS1 Web Vocabulary",
+                  owningOrganization: "GS1_Global",
+                  jurisdiction: "Global",
+                  sector: null,
+                  lifecycleStatus: "current",
+                  sourceType: "gs1_web_vocabulary",
+                  recordCount: vocabData.length,
+                  lastVerifiedDate: STANDARDS_DIRECTORY_DATASET_VERIFIED_AT,
+                }));
               }
             }
           }
@@ -259,7 +285,7 @@ export const standardsDirectoryRouter = router({
               continue;
             }
 
-            results.push({
+            results.push(withStandardsDirectoryListVerificationPosture({
               id: `esrs_datapoints_${standard}`,
               name: `${standard} Datapoints`,
               owningOrganization: "EFRAG",
@@ -268,7 +294,8 @@ export const standardsDirectoryRouter = router({
               lifecycleStatus: "ratified",
               sourceType: "esrs_datapoint",
               recordCount: count,
-            });
+              lastVerifiedDate: STANDARDS_DIRECTORY_DATASET_VERIFIED_AT,
+            }));
           }
         }
       }

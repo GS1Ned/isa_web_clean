@@ -12,7 +12,7 @@
  * - Read-only display, no interpretation
  */
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,6 +29,12 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Search, ExternalLink, Building2, MapPin, Tag, CheckCircle2 } from "lucide-react";
 import { useLocation } from "wouter";
+import {
+  getVerificationAgeLabel,
+  getVerificationBadgeLabel,
+  getVerificationBadgeVariant,
+  getVerificationTitle,
+} from "@/lib/verification-posture";
 
 export function StandardsDirectory() {
   const [, navigate] = useLocation();
@@ -273,6 +279,20 @@ export function StandardsDirectory() {
                     {standard.recordCount.toLocaleString()} records
                   </CardDescription>
                 )}
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+                  <Badge
+                    variant={getVerificationBadgeVariant(
+                      standard.verificationFreshnessBucket,
+                    )}
+                  >
+                    {getVerificationBadgeLabel(standard.verificationFreshnessBucket)}
+                  </Badge>
+                  <span className="text-muted-foreground">
+                    {standard.needsVerification
+                      ? getVerificationTitle(standard.verificationReason)
+                      : getVerificationAgeLabel(standard.verificationAgeDays) ?? "Verification current"}
+                  </span>
+                </div>
               </CardHeader>
             </Card>
           ))

@@ -57,6 +57,12 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
 - When some cited sources still require refreshed verification but the answer remains stage-a passable, ASK_ISA now emits additive warnings rather than inventing silent confidence.
 - Evaluation runs must apply the same stage-a gate so offline quality reporting does not overstate runtime readiness.
 
+## Phase-3 Provenance Target (Chunk-Level Consumption)
+- Canonical target contract: `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md`
+- Phase 3 passing answers must cite authoritative `source_chunks`, not metadata-only proxies.
+- Stage-a abstention remains mandatory when verified authoritative chunk evidence is unavailable.
+- ASK_ISA citation payloads must preserve `sourceId`, `sourceChunkId`, `evidenceKey`, `authorityTier`, `sourceRole`, `publicationStatus`, and verification posture from the rebuilt provenance substrate.
+
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/ask_isa_smoke.py -->
 - Smoke probe: `scripts/probe/ask_isa_smoke.py`

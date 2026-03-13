@@ -1,0 +1,52 @@
+{
+  "dataset_id": "kb_retrieval_quality_v2",
+  "evaluation_mode": "lexical-metadata-proxy",
+  "notes": "Stage-b/stage-c retrieval starter set. This is a real but intentionally conservative proxy over corpus metadata until authoritative source_chunks and chunk-level provenance are rebuilt.",
+  "cases": [
+    {
+      "id": "KB-RET-B1",
+      "query": "GS1 architecture principles",
+      "expected_row_id": "html/ref.gs1.org/architecture/principles/index.html",
+      "top_k": 3,
+      "required_intended_use": ["RAG"],
+      "required_present_fields": ["url", "file_path", "checksum_sha256", "source_manifest"],
+      "expected_missing_fields": ["contentHash", "datasetId", "datasetVersion", "lastVerifiedDate"]
+    },
+    {
+      "id": "KB-RET-B2",
+      "query": "GS1 system architecture",
+      "expected_row_id": "html/ref.gs1.org/architecture/system-architecture/index.html",
+      "top_k": 3,
+      "required_intended_use": ["RAG"],
+      "required_present_fields": ["url", "file_path", "checksum_sha256", "source_manifest"],
+      "expected_missing_fields": ["contentHash", "datasetId", "datasetVersion", "lastVerifiedDate"]
+    },
+    {
+      "id": "KB-RET-B3",
+      "query": "digital link quick start guide",
+      "expected_row_id": "html/ref.gs1.org/docs/2024/digital-link-quick-start-guide.html",
+      "top_k": 3,
+      "required_intended_use": ["RAG"],
+      "required_present_fields": ["url", "file_path", "checksum_sha256", "source_manifest"],
+      "expected_missing_fields": ["contentHash", "datasetId", "datasetVersion", "lastVerifiedDate"]
+    },
+    {
+      "id": "KB-RET-B4",
+      "query": "EPCIS CBV guideline",
+      "expected_row_id": "html/ref.gs1.org/guidelines/epcis-cbv/index.html",
+      "top_k": 3,
+      "required_intended_use": ["RAG"],
+      "required_present_fields": ["url", "file_path", "checksum_sha256", "source_manifest"],
+      "expected_missing_fields": ["contentHash", "datasetId", "datasetVersion", "lastVerifiedDate"]
+    },
+    {
+      "id": "KB-RET-B5",
+      "query": "unique GS1 identification",
+      "expected_row_id": "html/ref.gs1.org/architecture/findings/unique-gs1-identification/index.html",
+      "top_k": 3,
+      "required_intended_use": ["RAG"],
+      "required_present_fields": ["url", "file_path", "checksum_sha256", "source_manifest"],
+      "expected_missing_fields": ["contentHash", "datasetId", "datasetVersion", "lastVerifiedDate"]
+    }
+  ]
+}

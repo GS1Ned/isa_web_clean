@@ -25,6 +25,15 @@ const mockDecisionArtifacts: EsrsDecisionArtifact[] = [
     evidence: {
       codePaths: ["server/routers/gap-analyzer.ts"],
       dataSources: ["gs1_esrs_mappings"],
+      evidenceRefs: [
+        {
+          sourceChunkId: 1001,
+          evidenceKey: "ke:1001:hash",
+          citationLabel: "CSRD — Article 19a",
+          sourceLocator:
+            "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022L2464",
+        },
+      ],
     },
     summary: {
       totalRequirements: 12,
@@ -267,6 +276,9 @@ describe("advisoryReports router", () => {
 
         expect(Array.isArray(persistedArtifacts)).toBe(true);
         expect(persistedArtifacts?.[0]?.artifactType).toBe("gap_analysis");
+        expect(persistedArtifacts?.[0]?.evidence?.evidenceRefs?.[0]?.evidenceKey).toBe(
+          "ke:1001:hash"
+        );
 
         await db.delete(advisoryReports).where({ id: Number(result.insertId) } as any);
       }
@@ -310,6 +322,10 @@ describe("advisoryReports router", () => {
         expect(updated[0]?.content).toBe("Updated content");
         expect(updated[0]?.title).toBe("Updated Title");
         expect((updated[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.artifactType).toBe("gap_analysis");
+        expect(
+          (updated[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.evidence
+            ?.evidenceRefs?.[0]?.citationLabel
+        ).toContain("Article 19a");
 
         // Clean up
         await db.delete(advisoryReports).where({ id: reportId } as any);
@@ -419,6 +435,10 @@ describe("advisoryReports router", () => {
 
         expect(versions).toHaveLength(1);
         expect((versions[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.artifactType).toBe("gap_analysis");
+        expect(
+          (versions[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.evidence
+            ?.evidenceRefs?.[0]?.sourceChunkId
+        ).toBe(1001);
 
         await db.delete(advisoryReportVersions).where({ reportId } as any);
         await db.delete(advisoryReports).where({ id: reportId } as any);
@@ -472,6 +492,10 @@ describe("advisoryReports router", () => {
           .where({ reportId } as any);
 
         expect((versions[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.artifactType).toBe("roadmap");
+        expect(
+          (versions[0]?.decisionArtifacts as EsrsDecisionArtifact[] | undefined)?.[0]?.evidence
+            ?.evidenceRefs?.[0]?.sourceChunkId
+        ).toBe(1001);
 
         await db.delete(advisoryReportVersions).where({ reportId } as any);
         await db.delete(advisoryReports).where({ id: reportId } as any);

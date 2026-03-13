@@ -9,6 +9,7 @@ import {
   scoreToDecisionArtifactConfidenceLevel,
   type EsrsAttributeRecommendationDecisionArtifact,
 } from './esrs-decision-artifacts.js';
+import { collectEvidenceRefsForTerms } from './source-provenance.js';
 
 // =============================================================================
 // TYPES
@@ -553,6 +554,20 @@ export async function generateAttributeRecommendations(
       : createUncertainMarker('Recommendations based on general best practices', 'low');
 
   const generatedAt = new Date().toISOString();
+  const evidenceTerms = Array.from(
+    new Set(
+      [
+        ...targetRegulations,
+        ...recommendations.slice(0, 5).flatMap((recommendation) => recommendation.esrsDatapoints),
+        ...regulationsCovered,
+      ].filter((value): value is string => typeof value === 'string' && value.trim().length > 0),
+    ),
+  );
+  const evidenceRefs = await collectEvidenceRefsForTerms({
+    terms: evidenceTerms,
+    preferredSourceTypes: ['regulation', 'esrs_datapoint', 'standard'],
+    limit: 6,
+  });
   const decisionArtifact = buildAttributeRecommendationDecisionArtifact({
     generatedAt,
     sector: input.sector,
@@ -565,6 +580,7 @@ export async function generateAttributeRecommendations(
     recommendationScores: recommendations.map((recommendation) => recommendation.confidenceScore),
     overallConfidence: overallEpistemic.confidence,
     overallBasis: overallEpistemic.basis,
+    evidenceRefs,
   });
 
   return {

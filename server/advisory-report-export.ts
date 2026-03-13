@@ -43,6 +43,10 @@ export interface AttributeRecommendationReportInput {
   };
 }
 
+type DecisionArtifactEvidenceRef = NonNullable<
+  NonNullable<EsrsDecisionArtifact["evidence"]>["evidenceRefs"]
+>[number];
+
 function formatDecisionSummaryLabel(key: string) {
   return key
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -64,6 +68,21 @@ function formatDecisionSummaryValue(value: unknown) {
   }
 
   return String(value);
+}
+
+function formatEvidenceRefLabel(ref: DecisionArtifactEvidenceRef) {
+  return ref.citationLabel || ref.evidenceKey || "unresolved";
+}
+
+function formatEvidenceRefLocator(ref: DecisionArtifactEvidenceRef) {
+  return ref.sourceChunkLocator || ref.sourceLocator || ref.immutableUri || "Locator unavailable";
+}
+
+function hasReviewerUsableEvidenceRef(ref: DecisionArtifactEvidenceRef) {
+  return Boolean(
+    (ref.evidenceKey || ref.citationLabel) &&
+      (ref.sourceChunkLocator || ref.sourceLocator || ref.immutableUri),
+  );
 }
 
 function appendDecisionArtifactSection(
@@ -109,6 +128,19 @@ function appendDecisionArtifactSection(
   lines.push("");
   lines.push(`- **Code Paths:** ${(artifact.evidence.codePaths || []).join(", ") || "N/A"}`);
   lines.push(`- **Data Sources:** ${(artifact.evidence.dataSources || []).join(", ") || "N/A"}`);
+  if (Array.isArray(artifact.evidence.evidenceRefs) && artifact.evidence.evidenceRefs.length > 0) {
+    const usableRefCount = artifact.evidence.evidenceRefs.filter(hasReviewerUsableEvidenceRef).length;
+    lines.push(
+      `- **Evidence Ref Posture:** ${usableRefCount}/${artifact.evidence.evidenceRefs.length} reviewer-usable reference${artifact.evidence.evidenceRefs.length === 1 ? "" : "s"}`,
+    );
+    for (const ref of artifact.evidence.evidenceRefs) {
+      lines.push(
+        `  - ${formatEvidenceRefLabel(ref)} — ${formatEvidenceRefLocator(ref)}${ref.needsVerification ? ` [needs verification: ${ref.verificationReason || "review required"}]` : ""}`,
+      );
+    }
+  } else {
+    lines.push(`- **Evidence Ref Posture:** No authoritative evidence refs recorded`);
+  }
   lines.push("");
 }
 
@@ -157,6 +189,14 @@ export function renderDecisionArtifactsHtml(artifacts?: EsrsDecisionArtifact[]):
           ${artifact.confidence.uncertaintyClass ? `<p style="margin: 0 0 8px 0;"><strong>Uncertainty Class:</strong> ${artifact.confidence.uncertaintyClass}</p>` : ""}
           ${artifact.confidence.escalationAction ? `<p style="margin: 0 0 8px 0;"><strong>Escalation Action:</strong> ${artifact.confidence.escalationAction}</p>` : ""}
           <p style="margin: 0 0 8px 0;"><strong>Evidence:</strong> ${(artifact.evidence.dataSources || []).join(", ") || "N/A"}</p>
+          ${Array.isArray(artifact.evidence.evidenceRefs) && artifact.evidence.evidenceRefs.length > 0
+            ? `<div style="margin: 0 0 8px 0;"><strong>Evidence Ref Posture:</strong> ${artifact.evidence.evidenceRefs.filter(hasReviewerUsableEvidenceRef).length}/${artifact.evidence.evidenceRefs.length} reviewer-usable references<ul style="margin: 8px 0 0 18px; padding: 0;">${artifact.evidence.evidenceRefs
+                .map(
+                  (ref) =>
+                    `<li><strong>${formatEvidenceRefLabel(ref)}</strong> — ${formatEvidenceRefLocator(ref)}${ref.needsVerification ? ` <em>(needs verification: ${ref.verificationReason || "review required"})</em>` : ""}</li>`,
+                )
+                .join("")}</ul></div>`
+            : `<p style="margin: 0 0 8px 0;"><strong>Evidence Ref Posture:</strong> No authoritative evidence refs recorded</p>`}
           <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 12px;">
             <thead>
               <tr>

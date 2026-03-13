@@ -74,6 +74,11 @@ Downstream integration:
 - `server/services/news-impact/index.ts` consumes `regulatory_state` to trigger `flagAdvisoryReportsStaleSince()` and `flagRegulationsNeedVerification()` (E-01/E-02)
 - `NewsChangeEvent.triggersAdvisoryUpdate` indicates advisory re-generation should be considered
 
+## Phase-3 Provenance Target (Verification Coupling)
+- Canonical target contract: `docs/spec/KNOWLEDGE_BASE/PROVENANCE_REBUILD_SPEC.md`
+- When NEWS_HUB flags regulations or reports as needing verification, downstream repair flows should be able to resolve the affected dataset or source identity in the authoritative provenance substrate.
+- NEWS_HUB remains an update signal, not a substitute authority source for normative compliance evidence.
+
 ## Verification
 <!-- EVIDENCE:implementation:scripts/probe/news_hub_health.sh -->
 - Smoke probe: `scripts/probe/news_hub_health.sh`

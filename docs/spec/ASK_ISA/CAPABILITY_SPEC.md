@@ -1,8 +1,12 @@
+Status: SUPPLEMENTAL
+Current-state authority: `docs/spec/ASK_ISA/RUNTIME_CONTRACT.md`
+Warning: This broader capability spec contains design and historical implementation detail. When it conflicts with the runtime contract or code, the runtime contract and code win.
+
 # ASK_ISA Capability Specification
 
 **Capability ID:** ASK_ISA  
 **Version:** 2.0.0  
-**Status:** Active  
+**Status:** Supplemental design reference  
 **Owner:** ISA Development Team  
 **Last Updated:** 2026-02-12
 
@@ -477,6 +481,6 @@ See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) for common issues and solutions.
 
 ---
 
-**Document Status:** AUTHORITATIVE  
-**Quality Grade:** A (100/100)  
-**Last Verified:** 2026-02-12
+**Document Status:** SUPPLEMENTAL  
+**Current-State Authority:** `docs/spec/ASK_ISA/RUNTIME_CONTRACT.md`  
+**Status Review:** 2026-03-09

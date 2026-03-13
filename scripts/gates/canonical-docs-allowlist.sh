@@ -62,6 +62,19 @@ fi
 echo ""
 echo "Checking for docs outside canonical allowlist..."
 
+ALLOWLIST_DOCS=$(python3 - "$ALLOWLIST" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], "r", encoding="utf-8") as handle:
+    payload = json.load(handle)
+
+docs = set(payload.get("allowed_docs", [])) | set(payload.get("canonical_scope_docs", []))
+for item in sorted(docs):
+    print(item)
+PY
+)
+
 # Candidate docs are newly added docs only:
 # - Added in latest commit (if available)
 # - Untracked in current worktree
@@ -74,13 +87,19 @@ ADDED_DOCS_WORKTREE=$(git ls-files --others --exclude-standard | grep -E '^docs/
 NEW_DOCS=$(printf '%s\n%s\n' "$ADDED_DOCS_HEAD" "$ADDED_DOCS_WORKTREE" \
     | sed '/^$/d' \
     | sort -u \
-    | grep -vE '(^docs/.*/_generated/|^docs/planning/|^docs/governance/|^docs/decisions/|^docs/architecture/panel/|^docs/sre/|^docs/quality/|/RUNTIME_CONTRACT\.md$|/INDEX\.md$|/README\.md$|/REPO_MAP\.md$|isa-core-architecture\.md$|ISA_CORE_CONTRACT\.md$)' \
+    | grep -vE '(^docs/.*/_generated/|^docs/planning/|^docs/governance/|^docs/decisions/|^docs/architecture/panel/|^docs/ops/|^docs/sre/|^docs/quality/|/RUNTIME_CONTRACT\.md$|/INDEX\.md$|/README\.md$|/REPO_MAP\.md$|isa-core-architecture\.md$|ISA_CORE_CONTRACT\.md$)' \
     || true)
 
 if [[ -n "$NEW_DOCS" ]]; then
-    NEW_DOCS_COUNT=$(printf '%s\n' "$NEW_DOCS" | wc -l | tr -d ' ')
+    FILTERED_NEW_DOCS=$(printf '%s\n' "$NEW_DOCS" | grep -vxFf <(printf '%s\n' "$ALLOWLIST_DOCS") || true)
+else
+    FILTERED_NEW_DOCS=""
+fi
+
+if [[ -n "$FILTERED_NEW_DOCS" ]]; then
+    NEW_DOCS_COUNT=$(printf '%s\n' "$FILTERED_NEW_DOCS" | wc -l | tr -d ' ')
     echo "⚠️  WARNING: Potential non-canonical docs found (manual review required):"
-    printf '%s\n' "$NEW_DOCS" | head -n 60
+    printf '%s\n' "$FILTERED_NEW_DOCS" | head -n 60
     if [[ "$NEW_DOCS_COUNT" -gt 60 ]]; then
         echo "... and $((NEW_DOCS_COUNT - 60)) more"
     fi

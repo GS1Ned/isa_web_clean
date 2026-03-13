@@ -1,0 +1,75 @@
+{
+  "dataset_id": "ask_isa_quality_v1",
+  "notes": "Structured ASK_ISA quality cases for abstention, rationale, and provenance. Chunk-level strictness will increase after the authoritative provenance substrate is rebuilt.",
+  "cases": [
+    {
+      "id": "ASK-QUAL-001",
+      "query": "Explain ESRS E1-6 at a high level.",
+      "expected_behavior": "answer",
+      "expected": {
+        "minimum_citation_count": 2,
+        "rationale_terms": ["ESRS E1", "climate", "applies"],
+        "require_recent_verification": true
+      },
+      "actual": {
+        "response_mode": "answer",
+        "answer": "ESRS E1-6 concerns climate-related emissions disclosure and applies to greenhouse gas reporting in the ESRS E1 standard.",
+        "citations": ["fixture:esrs-e1-6", "fixture:efrag-esrs"],
+        "evidence": [
+          {
+            "citation": "fixture:esrs-e1-6",
+            "evidenceKey": "ke:fixture-esrs-e1-6:hash-e1-6",
+            "lastVerifiedDate": "2026-02-20",
+            "isDeprecated": false
+          },
+          {
+            "citation": "fixture:efrag-esrs",
+            "evidenceKey": "ke:fixture-efrag-esrs:hash-efrag-esrs",
+            "lastVerifiedDate": "2026-02-20",
+            "isDeprecated": false
+          }
+        ],
+        "rationale": "This answer applies because ESRS E1 is the climate standard and the cited ESRS and EFRAG sources directly support the climate disclosure topic."
+      }
+    },
+    {
+      "id": "ASK-QUAL-002",
+      "query": "What is a GS1 Digital Link URI?",
+      "expected_behavior": "answer",
+      "expected": {
+        "minimum_citation_count": 1,
+        "rationale_terms": ["GS1", "Digital Link", "identifier"],
+        "require_recent_verification": true
+      },
+      "actual": {
+        "response_mode": "answer",
+        "answer": "A GS1 Digital Link URI is a web identifier that encodes GS1 identifiers and qualifiers so linked product information can be resolved consistently.",
+        "citations": ["fixture:gs1-digital-link"],
+        "evidence": [
+          {
+            "citation": "fixture:gs1-digital-link",
+            "evidenceKey": "ke:fixture-gs1-digital-link:hash-digital-link",
+            "lastVerifiedDate": "2026-02-20",
+            "isDeprecated": false
+          }
+        ],
+        "rationale": "The answer uses the GS1 Digital Link concept directly and explains why the identifier structure matters for product-linked information."
+      }
+    },
+    {
+      "id": "ASK-QUAL-003",
+      "query": "What exact GS1 obligation does ESRS S1 impose on living wage disclosure?",
+      "expected_behavior": "abstain",
+      "expected": {
+        "uncertainty_terms": ["verified evidence", "direct GS1 mapping"]
+      },
+      "actual": {
+        "response_mode": "abstain",
+        "answer": "I do not have enough verified evidence in the current ISA corpus to state a direct GS1 mapping for that ESRS S1 living wage question.",
+        "citations": [],
+        "evidence": [],
+        "rationale": "The current ISA corpus does not contain verified evidence for a direct GS1 mapping to ESRS S1 living wage disclosure."
+      }
+    }
+  ]
+}

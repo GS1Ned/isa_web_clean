@@ -45,6 +45,40 @@ function clamp01(value) {
   return Math.max(0, Math.min(1, value));
 }
 
+function hasMeaningfulValue(value) {
+  if (Array.isArray(value)) return value.length > 0;
+  if (value === null || value === undefined) return false;
+  if (typeof value === "boolean") return true;
+  if (typeof value === "number") return Number.isFinite(value);
+  return String(value).trim().length > 0;
+}
+
+function tokenizeText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
+function textIncludesAllTerms(value, terms) {
+  const haystack = new Set(tokenizeText(value));
+  return (terms || []).every((term) => tokenizeText(term).every((token) => haystack.has(token)));
+}
+
+function fieldPresenceRatio(record, fields) {
+  if (!Array.isArray(fields) || !fields.length) return 1;
+  return safeDiv(
+    fields.filter((field) => hasMeaningfulValue(record?.[field])).length,
+    fields.length,
+    1
+  );
+}
+
+function collectMissingFields(record, fields) {
+  return (fields || []).filter((field) => !hasMeaningfulValue(record?.[field]));
+}
+
 function compareThreshold(value, op, threshold) {
   if (op === ">=") return value >= threshold;
   if (op === "<=") return value <= threshold;
@@ -123,6 +157,11 @@ module.exports = {
   percentile,
   safeDiv,
   clamp01,
+  hasMeaningfulValue,
+  tokenizeText,
+  textIncludesAllTerms,
+  fieldPresenceRatio,
+  collectMissingFields,
   compareThreshold,
   latencyNorm,
   computeCapabilityScore,

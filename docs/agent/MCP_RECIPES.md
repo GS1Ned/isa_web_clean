@@ -82,3 +82,27 @@ Acceptance checks:
 - Required gates pass for the refactor scope.
 - No behavioral regressions introduced (tests or equivalent evidence).
 - Evidence log entry references which checks were run and their results.
+
+## Recipe: Data Plane Or Graph Bootstrap (Filesystem + Git + Postgres + Neo4j)
+1. Establish repo truth first.
+  - Use `filesystem.search_files` and `git` to find the canonical schema, migration, seed, and architecture files before touching live data.
+2. Pick the live source of truth deliberately.
+  - Use `postgres` for relational schema/data state and migration/seed verification.
+  - Use `neo4j` for relationship traversal, graph projection checks, and graph-backed validation.
+3. Bootstrap in the smallest valuable slice.
+  - Prefer canonical repo datasets and migration files over ad hoc inserts.
+  - Seed only the tables/nodes/edges needed to unlock the current ISA capability slice.
+4. Validate with live reads.
+  - For `postgres`, run row-count/schema checks and one smallest-safe query tied to the new slice.
+  - For `neo4j`, run one smallest-safe traversal that proves the projection is useful, not merely present.
+5. Record blockers precisely.
+  - If a loader path, dataset path, or schema assumption is stale, update the canonical script or doc rather than leaving a silent manual workaround.
+
+Expected artifacts:
+- A working migration/bootstrap path that does not depend on missing local infrastructure.
+- Live relational counts and one graph traversal proving the seeded slice is queryable.
+
+Acceptance checks:
+- Remote relational bootstrap works against the actual target DB.
+- Graph bootstrap yields a non-empty, traversable slice with clear provenance.
+- Repo instructions clearly steer future agents to `postgres` and `neo4j` when live data truth is required.

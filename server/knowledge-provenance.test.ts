@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import {
   KNOWLEDGE_VERIFICATION_MAX_AGE_DAYS,
+  buildKnowledgeCitationLabel,
   buildKnowledgeEvidenceKey,
+  buildSourceChunkLocator,
   getKnowledgeVerificationAgeDays,
   doesKnowledgeChunkNeedVerification,
   getKnowledgeVerificationReason,
@@ -172,11 +174,65 @@ describe("knowledge provenance", () => {
       });
     });
 
+    it("requires an authoritative chunk identifier", () => {
+      expect(buildKnowledgeEvidenceKey(null, "abc123")).toEqual({
+        evidenceKey: null,
+        evidenceKeyReason: "missing_authoritative_chunk",
+      });
+    });
+
     it("returns a null key when the content hash is absent", () => {
       expect(buildKnowledgeEvidenceKey(42, null)).toEqual({
         evidenceKey: null,
         evidenceKeyReason: "missing_content_hash",
       });
+    });
+  });
+
+  describe("buildSourceChunkLocator", () => {
+    it("prefers structural section paths when available", () => {
+      expect(
+        buildSourceChunkLocator({
+          sectionPath: "Article 3 > Paragraph 2",
+          heading: "Article 3",
+          charStart: 12,
+          charEnd: 42,
+        }),
+      ).toBe("Article 3 > Paragraph 2");
+    });
+
+    it("falls back to heading and character spans", () => {
+      expect(
+        buildSourceChunkLocator({
+          heading: "Scope",
+        }),
+      ).toBe("Scope");
+      expect(
+        buildSourceChunkLocator({
+          charStart: 10,
+          charEnd: 42,
+        }),
+      ).toBe("chars 10-42");
+    });
+  });
+
+  describe("buildKnowledgeCitationLabel", () => {
+    it("builds human-usable citation labels from title, locator, and version", () => {
+      expect(
+        buildKnowledgeCitationLabel({
+          title: "Corporate Sustainability Reporting Directive",
+          locator: "Article 3",
+          version: "2023-07-31",
+        }),
+      ).toBe("Corporate Sustainability Reporting Directive — Article 3 — v2023-07-31");
+    });
+
+    it("returns null when no title is available", () => {
+      expect(
+        buildKnowledgeCitationLabel({
+          locator: "Article 3",
+        }),
+      ).toBeNull();
     });
   });
 });
