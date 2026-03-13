@@ -153,7 +153,7 @@ export function AskISAWidget({
                         <div className="font-medium truncate">{source.title || source.content?.substring(0, 50)}</div>
                         {source.similarity && (
                           <div className="text-muted-foreground">
-                            {Math.round(source.similarity * 100)}% match
+                            {source.similarity}% match
                           </div>
                         )}
                       </div>

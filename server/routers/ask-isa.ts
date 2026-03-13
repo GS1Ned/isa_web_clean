@@ -91,6 +91,7 @@ import {
   type EvidenceChunk 
 } from "../services/evidence-analysis";
 import { getRuntimeSchema } from "../db-runtime-schema";
+import { normalizeAskIsaConfidenceScore } from "@shared/ask-isa-confidence";
 
 const VERSION_SCOPED_URI_PATTERN = /(\/eli\/|\/v?\d+\.\d+(?:\.\d+)?(?:\/|$)|\/\d{4}(?:-\d{2})?(?:\/|$))/i;
 
@@ -130,7 +131,10 @@ export const askISARouter = router({
 
       try {
         // Step 0: Check cache for existing response
-        const cachedResponse = getCachedResponse(question);
+        const cachedResponse = getCachedResponse(question, {
+          sector,
+          conversationId,
+        });
         if (cachedResponse) {
           serverLogger.info(`[AskISA] Returning cached response for query`);
           trace.recordCacheHit(question);
@@ -140,6 +144,12 @@ export const askISARouter = router({
             sources: cachedResponse.sources,
             confidence: cachedResponse.confidence,
             claimVerification: cachedResponse.claimVerification,
+            queryType: cachedResponse.queryType,
+            citationValid: cachedResponse.citationValid,
+            missingCitations: cachedResponse.missingCitations,
+            authority: cachedResponse.authority,
+            responseMode: cachedResponse.responseMode,
+            queryAnalysis: cachedResponse.queryAnalysis,
             conversationId: conversationId || null,
             fromCache: true,
           };
@@ -156,7 +166,7 @@ export const askISARouter = router({
           return {
             answer: '',
             sources: [],
-            confidence: { score: 0, level: 'low' as const },
+            confidence: { score: 0, level: 'low' as const, sourceCount: 0 },
             needsClarification: true,
             clarifications: queryAnalysis.clarifications,
             relatedTopics: queryAnalysis.relatedTopics,
@@ -174,7 +184,7 @@ export const askISARouter = router({
             sources: [],
             conversationId: conversationId || null,
             queryType: classification.type,
-            confidence: { level: "low" as const, score: 0 },
+            confidence: { level: "low" as const, score: 0, sourceCount: 0 },
           };
         }
         // Step 1: Search for relevant content using HYBRID search (vector + BM25)
@@ -216,6 +226,7 @@ export const askISARouter = router({
               "I couldn't find any relevant information in the knowledge base to answer your question. Please try rephrasing or ask about EU regulations (CSRD, EUDR, DPP) or GS1 standards.",
             sources: [],
             conversationId: conversationId || null,
+            confidence: { level: "low" as const, score: 0, sourceCount: 0 },
           };
         }
 
@@ -298,7 +309,11 @@ export const askISARouter = router({
             })),
             conversationId: conversationId || null,
             queryType,
-            confidence: { level: 'low' as const, score: evidenceAnalysis.analysisConfidence },
+            confidence: {
+              level: 'low' as const,
+              score: evidenceAnalysis.analysisConfidence,
+              sourceCount: relevantResults.length,
+            },
             abstained: true,
             abstentionReason: evidenceAnalysis.abstentionReason,
             evidenceAnalysis: {
@@ -517,7 +532,11 @@ export const askISARouter = router({
             sources: responseSources,
             conversationId: finalConversationId,
             queryType: classification.type,
-            confidence: { level: "low" as const, score: 0 },
+            confidence: {
+              level: "low" as const,
+              score: 0,
+              sourceCount: relevantResults.length,
+            },
             citationValid: false,
             missingCitations: stageAValidation.issues,
             abstained: true,
@@ -650,6 +669,10 @@ export const askISARouter = router({
             sourceChunkLocator: s.sourceChunkLocator,
           })),
           confidence,
+          queryType: response.queryType,
+          citationValid: response.citationValid,
+          missingCitations: response.missingCitations,
+          authority: response.authority,
           claimVerification: {
             verificationRate: claimVerificationResult.verificationRate,
             totalClaims: claimVerificationResult.totalClaims,
@@ -659,6 +682,10 @@ export const askISARouter = router({
               new Set([...claimVerificationResult.warnings, ...stageAValidation.warnings])
             ),
           },
+          responseMode: response.responseMode,
+          queryAnalysis: response.queryAnalysis,
+        }, {
+          sector,
         });
 
         return response;
@@ -907,10 +934,15 @@ export const askISARouter = router({
           feedbackType: input.feedbackType,
           feedbackComment: input.feedbackComment,
           promptVariant: input.promptVariant || "v2_modular",
-          confidenceScore: input.confidenceScore
-            ? input.confidenceScore.toString()
-            : null,
-          sourcesCount: input.sourcesCount || null,
+          confidenceScore:
+            typeof input.confidenceScore === "number"
+              ? normalizeAskIsaConfidenceScore(
+                  input.confidenceScore,
+                  input.sourcesCount,
+                ).toString()
+              : null,
+          sourcesCount:
+            typeof input.sourcesCount === "number" ? input.sourcesCount : null,
         });
 
         return { success: true };
@@ -937,7 +969,7 @@ export const askISARouter = router({
       if (!db) throw new Error("Database not available");
 
       const { askIsaFeedback } = (await getRuntimeSchema()) as any;
-      const { sql, count, avg, and, gte } = await import("drizzle-orm");
+      const { sql, count, and, gte } = await import("drizzle-orm");
 
       // Calculate date filter
       let dateFilter = undefined;
@@ -969,9 +1001,13 @@ export const askISARouter = router({
               : sql`${askIsaFeedback.feedbackType} = 'negative'`
           );
 
-        // Get average confidence score
-        const avgConfidenceResult = await db
-          .select({ avg: avg(askIsaFeedback.confidenceScore) })
+        // Normalize confidence history so legacy source-count values do not
+        // inflate admin analytics above 100%.
+        const confidenceRows = await db
+          .select({
+            confidenceScore: askIsaFeedback.confidenceScore,
+            sourcesCount: askIsaFeedback.sourcesCount,
+          })
           .from(askIsaFeedback)
           .where(dateFilter || undefined);
 
@@ -990,10 +1026,23 @@ export const askISARouter = router({
           .groupBy(sql`DATE(${askIsaFeedback.timestamp})`)
           .orderBy(sql`DATE(${askIsaFeedback.timestamp})`);
 
+        const normalizedConfidenceScores = confidenceRows
+          .map(row =>
+            normalizeAskIsaConfidenceScore(
+              row.confidenceScore ? Number(row.confidenceScore) : null,
+              typeof row.sourcesCount === "number" ? row.sourcesCount : null,
+            )
+          )
+          .filter(score => Number.isFinite(score));
+
         return {
           positive: positiveResult[0]?.count || 0,
           negative: negativeResult[0]?.count || 0,
-          avgConfidence: avgConfidenceResult[0]?.avg ? Number(avgConfidenceResult[0].avg) : null,
+          avgConfidence:
+            normalizedConfidenceScores.length > 0
+              ? normalizedConfidenceScores.reduce((sum, score) => sum + score, 0) /
+                normalizedConfidenceScores.length
+              : null,
           dailyTrend: trendResult.map(row => ({
             date: row.date,
             positive: Number(row.positive) || 0,

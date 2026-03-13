@@ -5,6 +5,8 @@
  * Based on ASK_ISA_GUARDRAILS.md and ASK_ISA_QUERY_LIBRARY.md
  */
 
+import { calculateAskIsaConfidenceFromSourceCount } from "@shared/ask-isa-confidence";
+
 export type QueryType =
   | "gap"
   | "mapping"
@@ -308,14 +310,9 @@ export function validateCitations(answer: string): {
 export function calculateConfidence(sourceCount: number): {
   level: "high" | "medium" | "low";
   score: number;
+  sourceCount: number;
 } {
-  if (sourceCount >= 3) {
-    return { level: "high", score: sourceCount };
-  } else if (sourceCount === 2) {
-    return { level: "medium", score: sourceCount };
-  } else {
-    return { level: "low", score: sourceCount };
-  }
+  return calculateAskIsaConfidenceFromSourceCount(sourceCount);
 }
 
 /**
