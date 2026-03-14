@@ -85,6 +85,14 @@ function applyDecayToRows<T extends Record<string, unknown>>(
 
 function extractRows(result: unknown): Record<string, unknown>[] {
   if (Array.isArray(result)) {
+    if (result.length === 0) return [];
+    if (
+      result[0] &&
+      typeof result[0] === "object" &&
+      !Array.isArray(result[0])
+    ) {
+      return result as Record<string, unknown>[];
+    }
     const maybeRows = result[0];
     return Array.isArray(maybeRows) ? (maybeRows as Record<string, unknown>[]) : [];
   }
@@ -99,6 +107,20 @@ function extractRows(result: unknown): Record<string, unknown>[] {
   }
 
   return [];
+}
+
+function normalizeEsrsStandardInput(esrsStandard: string): string {
+  const normalized = String(esrsStandard || "")
+    .trim()
+    .toUpperCase()
+    .replace(/^ESRS\s+/, "");
+
+  if (normalized === "2" || normalized === "ESRS 2") {
+    return "ESRS 2";
+  }
+
+  const match = normalized.match(/^([ESAG]\d+)(?:-\d+)?$/);
+  return match ? match[1] : normalized;
 }
 
 /**
@@ -135,6 +157,7 @@ export async function getAllEsrsGs1Mappings() {
 export async function getEsrsGs1MappingsByStandard(esrs_standard: string) {
   const db = await getDb();
   if (!db) throw new Error('Database not available');
+  const normalizedStandard = normalizeEsrsStandardInput(esrs_standard);
 
   const result = await db.execute(sql`
     SELECT
@@ -148,11 +171,12 @@ export async function getEsrsGs1MappingsByStandard(esrs_standard: string) {
       m.definition,
       m.gs1_relevance,
       m.source_date,
-      COALESCE(MAX(r.needs_verification), 0) as regulation_needs_verification
+      COALESCE(BOOL_OR(r.needs_verification), FALSE) as regulation_needs_verification
     FROM gs1_esrs_mappings m
-    LEFT JOIN regulation_esrs_mappings rem ON rem.esrs_datapoint_id LIKE CONCAT(m.esrs_standard, '%')
+    LEFT JOIN esrs_datapoints ed ON ed.esrs_standard = m.esrs_standard
+    LEFT JOIN regulation_esrs_mappings rem ON rem.datapoint_id = ed.id
     LEFT JOIN regulations r ON r.id = rem.regulation_id
-    WHERE m.esrs_standard = ${esrs_standard}
+    WHERE m.esrs_standard = ${normalizedStandard}
     GROUP BY m.mapping_id, m.level, m.esrs_standard, m.esrs_topic, m.data_point_name,
              m.short_name, m.definition, m.gs1_relevance, m.source_date
     ORDER BY m.mapping_id
@@ -190,10 +214,11 @@ export async function getGs1AttributesForEsrsMapping(esrsMappingId: number) {
       m.esrs_standard as esrsStandard,
       m.esrs_topic,
       m.source_date,
-      COALESCE(MAX(r.needs_verification), 0) as regulation_needs_verification
+      COALESCE(BOOL_OR(r.needs_verification), FALSE) as regulation_needs_verification
     FROM gs1_attribute_esrs_mapping a
     JOIN gs1_esrs_mappings m ON a.esrs_mapping_id = m.mapping_id
-    LEFT JOIN regulation_esrs_mappings rem ON rem.esrs_datapoint_id LIKE CONCAT(m.esrs_standard, '%')
+    LEFT JOIN esrs_datapoints ed ON ed.esrs_standard = m.esrs_standard
+    LEFT JOIN regulation_esrs_mappings rem ON rem.datapoint_id = ed.id
     LEFT JOIN regulations r ON r.id = rem.regulation_id
     WHERE a.esrs_mapping_id = ${esrsMappingId}
     GROUP BY a.id, a.gs1_attribute_id, a.gs1_attribute_name, a.mapping_type,

@@ -1,7 +1,7 @@
 # ISA User Value Audit
 
-Date: 2026-03-13
-Branch: `codex/ask-isa-v2-intelligence`
+Date: 2026-03-14
+Branch: `codex/ask-isa-v2-eval-reranking`
 Status: VALIDATED_LOCAL_CHANGES
 
 ## 1. Executive Summary
@@ -42,7 +42,7 @@ Status: VALIDATED_LOCAL_CHANGES
 
 ### Key bottlenecks
 
-- FACT: Route-level scenario eval coverage for the new expert-first `/ask` surface is still limited.
+- FACT: Route-level scenario eval coverage now exists, but it is still compact at six live cases.
 - FACT: Repo-wide `pnpm check` and repo-wide `no-console` debt remain outside this slice.
 - INTERPRETATION: The product intelligence layer improved materially, but branch confidence still depends on focused test evidence rather than a fully clean global baseline.
 
@@ -54,7 +54,7 @@ Status: VALIDATED_LOCAL_CHANGES
 | CAP-02      | `askISAV2.askEnhanced` now returns intent, retrieval profile, mapping context, confidence, authority, facts, and gap-summary enrichment | `server/routers/ask-isa-v2.ts`                                                                                                                      | High           | High       | Users get deeper structured output instead of a thin answer-only payload |
 | CAP-03      | `askISAV2.enhancedSearch` applies smart retrieval defaults and exposes retrieval strategy                                               | `server/routers/ask-isa-v2.ts`; `client/src/components/EnhancedSearchPanel.tsx`                                                                     | High           | High       | Makes the retrieval layer inspectable                                    |
 | CAP-04      | Expert UI now exposes trust signals and evidence panels directly on the main route                                                      | `client/src/components/AskISAExpertMode.tsx`; `client/src/components/AuthorityBadge.tsx`                                                            | High           | High       | Improves perceived intelligence and trust                                |
-| CAP-05      | Focused server/client coverage exists for new v2 intent logic and expert route rendering                                                | `server/routers/__tests__/ask-isa-v2-intent.test.ts`; `client/src/components/AskISAExpertMode.test.tsx`; `client/src/pages/AskISAEnhanced.test.tsx` | Medium         | High       | Good targeted protection, but not full route eval coverage               |
+| CAP-05      | Focused server/client coverage plus a six-scenario live Ask ISA v2 eval suite now exist                                                 | `server/routers/__tests__/ask-isa-v2-intent.test.ts`; `server/routers/__tests__/ask-isa-v2-retrieval.test.ts`; `scripts/eval/run-ask-isa-v2-scenario-eval.ts` | High           | High       | Good targeted protection, but wider scenario breadth is still possible   |
 
 ## 4. User Value Framework
 
@@ -64,7 +64,7 @@ Status: VALIDATED_LOCAL_CHANGES
 | Retrieval relevance | Ability to pull the right evidence set for the question type           | Improved                | Intent-aware retrieval defaults reduce generic one-size-fits-all retrieval                      | `server/routers/ask-isa-v2-intelligence.ts`; `server/routers/ask-isa-v2.ts`                      |
 | Trustworthiness     | Visibility into why the answer should be believed                      | Improved                | Confidence, authority, evidence cards, and canonical facts are surfaced directly                | `client/src/components/AskISAExpertMode.tsx`; `client/src/components/AuthorityBadge.tsx`         |
 | Discovery           | Ease of reaching the smarter path                                      | Improved                | `/ask` now lands on the expert-first shell instead of only the legacy chat                      | `client/src/App.tsx`; `client/src/pages/AskISAEnhanced.tsx`                                      |
-| Regression safety   | Ability to prove the intelligence change still works                   | Improved but incomplete | Focused tests are in place; scenario eval coverage still needs expansion                        | `server/routers/__tests__/ask-isa-v2-intent.test.ts`; `client/src/pages/AskISAEnhanced.test.tsx` |
+| Regression safety   | Ability to prove the intelligence change still works                   | Improved                | Focused tests and a live six-scenario eval suite now exist, though broader scenario expansion is still valuable | `server/routers/__tests__/ask-isa-v2-intent.test.ts`; `server/routers/__tests__/ask-isa-v2-retrieval.test.ts`; `scripts/eval/run-ask-isa-v2-scenario-eval.ts` |
 
 ## 5. Opportunity Inventory
 
@@ -74,8 +74,8 @@ Status: VALIDATED_LOCAL_CHANGES
 | OPP-02         | Make v2 retrieval intent-aware                        | Retrieval quality                 | Better candidate selection for change, mapping, gap, and news questions        | 3      | 2    | 5      | 4             | Existing embeddings/search path   | 32    | `server/routers/ask-isa-v2-intelligence.ts`; `server/routers/ask-isa-v2.ts` |
 | OPP-03         | Activate mapping-context enrichment in expert answers | Answer depth                      | Stronger cross-linking between regulations, ESRS datapoints, and GS1 standards | 3      | 2    | 5      | 4             | Existing `getMappingContext()`    | 31    | `server/routers/ask-isa-v2.ts`                                              |
 | OPP-04         | Expose expert trust and evidence panels               | UX / trust                        | Makes the intelligence gain legible to users                                   | 2      | 1    | 4      | 5             | Existing source/confidence models | 31    | `client/src/components/AskISAExpertMode.tsx`                                |
-| OPP-05         | Add route-level v2 scenario evals                     | Evaluation                        | Raises confidence in the new default route                                     | 3      | 2    | 4      | 3             | Eval fixture design               | 27    | `data/evaluation/golden/registry.json`; `server/routers/evaluation.ts`      |
-| OPP-06         | Expand broader reranking and conflict handling        | Retrieval / synthesis             | Could improve precision further                                                | 4      | 3    | 4      | 2             | More diagnostics and evals        | 23    | `server/routers/ask-isa-v2.ts`; `server/hybrid-search.ts`                   |
+| OPP-05         | Add route-level v2 scenario evals                     | Evaluation                        | Raises confidence in the new default route                                     | 3      | 2    | 4      | 3             | Eval fixture design               | 27    | `data/evaluation/golden/ask_isa/scenario_cases_v2_live.json`; `scripts/eval/run-ask-isa-v2-scenario-eval.ts` |
+| OPP-06         | Expand targeted reranking for exact ESRS and GS1 mapping scenarios | Retrieval / synthesis             | Improves correctness and applicability on the highest-value weak cases          | 3      | 2    | 5      | 4             | Scenario diagnostics              | 30    | `server/routers/ask-isa-v2-retrieval.ts`; `server/routers/ask-isa-v2.ts`    |
 
 ## 6. Chosen Implementation Portfolio
 
@@ -86,9 +86,63 @@ Status: VALIDATED_LOCAL_CHANGES
 
 ### Deferred
 
-- FACT: Route-level v2 scenario evals were deferred.
-- FACT: Deeper reranking/conflict-resolution work was deferred.
-- INTERPRETATION: Both remain valuable, but they require more measurement scaffolding than this route-promotion slice justified.
+- FACT: Route-level v2 scenario evals and targeted reranking improvements are now implemented in the current branch.
+- FACT: Broader freshness/conflict-resolution reranking is still deferred.
+- INTERPRETATION: The next frontier now moves beyond measurement scaffolding into broader policy work on conflict handling and freshness.
+
+## 6A. 2026-03-14 Ask ISA v2 Follow-Up
+
+- FACT: The live Ask ISA v2 retrieval path was still assuming pgvector semantics even though the current corpus stores `knowledge_embeddings.embedding` as `jsonb` and the `vector` type is unavailable.
+- FACT: The live corpus taxonomy also drifted from v2 assumptions, with `standard`/`regulation`/`normative`/`juridical` values needing normalization before ranking and filtering behaved as intended.
+- FACT: A six-scenario live eval suite now exists and improved from a `0.9167` legacy average to a `1.0000` reranked average.
+- INTERPRETATION: The biggest remaining user-value limiter after the route promotion slice was real retrieval fidelity, not UI structure.
+
+### 6A.1 Current Ask ISA v2 Intelligence Model
+
+- FACT: `askISAV2.askEnhanced` classifies intent, retrieves evidence, optionally enriches with mapping context and canonical facts, applies Stage-A validation, and returns a structured payload to the expert route.
+- FACT: `server/routers/ask-isa-v2-retrieval.ts` is now the shared retrieval seam for both `askISAV2.enhancedSearch` and `askISAV2.askEnhanced`.
+- FACT: The retrieval layer now generates a query embedding, loads the live `knowledge_embeddings` pool, scores cosine similarity in application code, normalizes metadata, and reranks results by intent.
+- INTERPRETATION: Ask ISA v2 is no longer dependent on one storage-specific vector operator to produce grounded answers.
+
+### 6A.2 Scenario Suite
+
+| Scenario ID | User question | Expected intent | What success looks like | Main failure modes |
+| ----------- | ------------- | --------------- | ----------------------- | ------------------ |
+| `ASK-V2-SCEN-001` | What changed in ESPR for Digital Product Passports? | `REGULATORY_CHANGE` | ESPR regulation in top results with regulation-first ordering | `zero_results`, `missing_espr_regulation`, `no_regulation_in_top_results` |
+| `ASK-V2-SCEN-002` | Which GS1 identifiers are relevant for a Digital Product Passport? | `ESRS_MAPPING` | GS1-first ordering and GS1 support coverage | `no_gs1_standard_in_top_results`, `regulation_only_answer_context` |
+| `ASK-V2-SCEN-003` | What regulation applies to deforestation due diligence? | `GENERAL_QA` | `EUDR` preferred as top regulation | `wrong_regulation_top1`, `weak_due_diligence_grounding` |
+| `ASK-V2-SCEN-004` | Explain ESRS E1-6 at a high level. | `GENERAL_QA` | Exact `E1-6_*` datapoints in the top set and non-abstaining answer | `generic_esrs_neighbors_dominate`, `exact_clause_not_in_top_results` |
+| `ASK-V2-SCEN-005` | Map GS1 attributes to ESRS E1-6 emissions disclosures. | `ESRS_MAPPING` | Mixed ESRS + GS1 top results and non-abstaining answer | `esrs_only_context`, `mapping_answer_abstains`, `no_gs1_support_signal` |
+| `ASK-V2-SCEN-006` | Which traceability standards support the EU Battery Regulation? | `GENERAL_QA` | Regulation + GS1 support sources both present | `no_battery_standard_support`, `missing_traceability_context` |
+
+### 6A.3 Baseline Findings
+
+- FACT: The legacy ranking baseline missed exact ESRS clause rescue on `ASK-V2-SCEN-004`, scoring `0.75` and surfacing `SBM-1_24 - ESRS 2` above `E1-6_*` datapoints.
+- FACT: The legacy ranking baseline missed GS1 support coverage on `ASK-V2-SCEN-005`, scoring `0.75` because the top-5 contained only `esrs_datapoint` rows.
+- FACT: `hub_news` is absent in the current environment and needed a safe no-table path.
+- FACT: `canonical_facts` can be absent in some environments and needed the same reliability treatment.
+- INTERPRETATION: The highest-value fixes were retrieval compatibility, metadata normalization, exact ESRS rescue, and GS1 support promotion.
+
+### 6A.4 Before / After Scenario Results
+
+| Scenario ID | Legacy score | Current score | Key gain |
+| ----------- | ------------ | ------------- | -------- |
+| `ASK-V2-SCEN-001` | `1.0000` | `1.0000` | Preserved correct regulation-first ordering |
+| `ASK-V2-SCEN-002` | `1.0000` | `1.0000` | Preserved GS1-first ordering while reducing regulation bleed |
+| `ASK-V2-SCEN-003` | `1.0000` | `1.0000` | Preserved `EUDR` as top regulation |
+| `ASK-V2-SCEN-004` | `0.7500` | `1.0000` | Exact `E1-6_*` datapoints rescued into the top results |
+| `ASK-V2-SCEN-005` | `0.7500` | `1.0000` | GS1 support signal surfaced in the top-5 for mapping |
+| `ASK-V2-SCEN-006` | `1.0000` | `1.0000` | Preserved regulation + standards support mix |
+
+### 6A.5 Selected Reranking Opportunities
+
+| Opportunity ID | Title | User-value upside | Intelligence upside | Feasibility | Risk | Decision |
+| -------------- | ----- | ----------------- | ------------------- | ----------- | ---- | -------- |
+| `OPP-RERANK-01` | Replace pgvector-only retrieval assumption | High | High | High | Low | Selected |
+| `OPP-RERANK-02` | Normalize live taxonomy before ranking/filtering | High | High | High | Low | Selected |
+| `OPP-RERANK-03` | Rescue exact ESRS clause matches | High | High | High | Low | Selected |
+| `OPP-RERANK-04` | Promote GS1 support for mapping prompts | High | High | High | Low | Selected |
+| `OPP-RERANK-05` | Add freshness/conflict-aware reranking | Medium | Medium | Medium | Medium | Deferred |
 
 ## Evidence Register
 
@@ -147,3 +201,31 @@ Status: VALIDATED_LOCAL_CHANGES
 - Path or command: `pnpm exec tsc --noEmit --pretty false` filtered for touched files
 - Short excerpt: no touched-file matches for edited Ask ISA v2 files
 - Claim supported: This slice did not introduce touched-file TypeScript regressions under the repo compiler
+
+### EVD-20260314-109
+
+- Type: command
+- Path or command: `pnpm exec tsx scripts/eval/probe-ask-isa-v2-runtime.ts`
+- Short excerpt: `"data_type": "jsonb"` and `"table_name": null`
+- Claim supported: Ask ISA v2 had live retrieval/schema drift against the current Postgres environment
+
+### EVD-20260314-110
+
+- Type: command
+- Path or command: `pnpm exec tsx scripts/eval/run-ask-isa-v2-scenario-eval.ts`
+- Short excerpt: `"legacy": 0.9167`, `"current": 1`
+- Claim supported: Scenario-driven reranking work improved measured Ask ISA v2 quality
+
+### EVD-20260314-111
+
+- Type: file
+- Path or command: `scripts/eval/probe-ask-isa-v2-runtime.ts`
+- Short excerpt: runtime probe checks `embeddingType`, `vectorTypeAvailable`, corpus taxonomy values, and optional-table presence
+- Claim supported: Ask ISA v2 now has a durable inspection script for the live runtime assumptions behind retrieval
+
+### EVD-20260314-112
+
+- Type: file
+- Path or command: `data/evaluation/golden/ask_isa/scenario_cases_v2_live.json`
+- Short excerpt: six scenario cases covering regulation change, GS1 identifiers, exact ESRS clauses, mapping, and traceability
+- Claim supported: Route-level Ask ISA v2 scenario coverage now exists

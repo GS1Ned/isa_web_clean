@@ -5,7 +5,7 @@ COMPONENT: runtime
 FUNCTION_LABEL: "Grounded Q&A via expert, search, and classic Ask ISA surfaces"
 OWNER: gs1ned-isa
 STATUS: active
-LAST_VERIFIED: 2026-03-13
+LAST_VERIFIED: 2026-03-14
 VERIFICATION_METHOD: repo-evidence
 ---
 
@@ -36,6 +36,7 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
   - `server/hybrid-search.ts`
   - `server/db-knowledge-vector.ts`
   - `server/routers/ask-isa-v2-intelligence.ts`
+  - `server/routers/ask-isa-v2-retrieval.ts`
 
 ## Data Surfaces (Ownership Contract)
 
@@ -95,9 +96,13 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
 
 - `askISAV2.askEnhanced` must classify query intent before retrieval.
 - Retrieval plans may vary by intent across source type, semantic layer, and authority posture.
+- `askISAV2` retrieval must work against the live `knowledge_embeddings` substrate even when pgvector is unavailable, and the current implementation does so by generating a query embedding and scoring the JSONB embedding pool with cosine similarity in application code.
+- `askISAV2` retrieval must normalize live corpus taxonomy values into the shared Ask ISA v2 source-type, authority, and semantic-layer vocabulary before reranking or UI return payload assembly.
 - Mapping-sensitive questions may inject structured mapping context into prompt assembly when regulation or ESRS signals are present.
+- ESRS mapping questions may augment retrieval with GS1 mapping candidates when exact ESRS standards are detected.
 - Gap-analysis enrichment may auto-activate for gap-oriented questions when a regulation can be inferred from retrieved evidence.
 - UI-facing source authority levels must be mapped into the shared Ask ISA authority taxonomy before returning to the client.
+- When Stage-A fails for an `ESRS_MAPPING` answer but the evidence set contains exact ESRS and GS1 support signals, the router may return a deterministic structured partial-mapping fallback instead of an unhelpful blind abstention.
 
 ## Phase-3 Provenance Target (Chunk-Level Consumption)
 
@@ -115,9 +120,13 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
   - `server/ask-isa-stage-a.test.ts`
   - `server/ask-isa-guardrails.test.ts`
   - `server/routers/__tests__/ask-isa-v2-intent.test.ts`
+  - `server/routers/__tests__/ask-isa-v2-retrieval.test.ts`
   - `client/src/components/AskISAExpertMode.test.tsx`
   - `client/src/pages/AskISAEnhanced.test.tsx`
   - `server/routers/__tests__/capability-heartbeat.test.ts`
+- Scenario eval:
+  - `data/evaluation/golden/ask_isa/scenario_cases_v2_live.json`
+  - `scripts/eval/run-ask-isa-v2-scenario-eval.ts`
 - Canonical gate alignment:
   - `bash scripts/gates/doc-code-validator.sh --canonical-only`
   - `python3 scripts/validate_planning_and_traceability.py`
@@ -137,6 +146,7 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
 <!-- EVIDENCE:implementation:server/routers/ask-isa.ts -->
 <!-- EVIDENCE:implementation:server/routers/ask-isa-v2.ts -->
 <!-- EVIDENCE:implementation:server/routers/ask-isa-v2-intelligence.ts -->
+<!-- EVIDENCE:implementation:server/routers/ask-isa-v2-retrieval.ts -->
 <!-- EVIDENCE:implementation:server/routers/evaluation.ts -->
 <!-- EVIDENCE:implementation:server/embedding.ts -->
 
