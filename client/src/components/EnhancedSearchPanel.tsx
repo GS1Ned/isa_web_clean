@@ -185,6 +185,24 @@ export function EnhancedSearchPanel({ onResultSelect }: EnhancedSearchPanelProps
           </Button>
         </div>
 
+        {query.length >= 3 && searchMutation.data?.queryIntent ? (
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="secondary">
+              Intent: {searchMutation.data.queryIntent.toLowerCase().replace(/_/g, " ")}
+            </Badge>
+            {searchMutation.data.retrievalStrategy ? (
+              <Badge variant="outline">
+                Strategy: {searchMutation.data.retrievalStrategy}
+              </Badge>
+            ) : null}
+            {activeFilterCount > 0 ? (
+              <Badge variant="outline">Explicit filters override smart defaults</Badge>
+            ) : (
+              <Badge variant="outline">Using intent-aware retrieval defaults</Badge>
+            )}
+          </div>
+        ) : null}
+
         {/* Filters */}
         <Collapsible open={showFilters} onOpenChange={setShowFilters}>
           <CollapsibleContent className="space-y-4 pt-4">

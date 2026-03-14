@@ -1,148 +1,149 @@
 # ISA User Value Audit
+
 Date: 2026-03-13
-Branch: `codex/ask-isa-user-value-reliability`
-Status: REVIEW_READY
+Branch: `codex/ask-isa-v2-intelligence`
+Status: VALIDATED_LOCAL_CHANGES
 
 ## 1. Executive Summary
-- FACT: ISA is a broad six-capability product, but the primary user-facing Q&A surface is still `askISA.ask` on the `/ask` route, not `askISAV2`. Evidence: `docs/spec/ARCHITECTURE.md`, `server/routers.ts`, `client/src/pages/AskISA.tsx`.
-- FACT: The highest-confidence user-value defects were concentrated in Ask ISA reliability and trust presentation, not in missing top-level product surface area.
-- INTERPRETATION: The largest immediate value gain was to harden the existing Ask ISA path rather than attempt a speculative migration to `askISAV2`.
-- RECOMMENDATION: Prioritize correctness-preserving fixes that stop context bleed, remove misleading trust signals, and keep cached responses behaviorally identical to fresh responses.
+
+- FACT: `/ask` now routes to `client/src/pages/AskISAEnhanced.tsx`, while the legacy chat path remains available at `/ask/classic`. Evidence: `client/src/App.tsx`.
+- FACT: `askISAV2` already existed in-repo, but the primary user route was not exposing it and key intelligence helpers such as mapping-context enrichment were not active on the main answer path. Evidence: `server/routers/ask-isa-v2.ts`, `client/src/pages/AskISAEnhanced.tsx`, `server/routers/ask-isa-v2-intelligence.ts`.
+- INTERPRETATION: The highest-upside improvement was to promote the richer v2 runtime and deepen its retrieval/grounding behavior, rather than keep adding narrow fixes to the legacy `/ask` route.
+- RECOMMENDATION: Keep the classic fallback route until v2 scenario eval coverage is broader, then decide whether the legacy route can be fully retired.
 
 ## 2. Repository-Derived Product Model
+
 ### Main subsystems
-- FACT: Canonical architecture defines ISA as six capabilities with ASK_ISA and NEWS_HUB as the user operating surface, ESRS_MAPPING as the decision core, and KNOWLEDGE_BASE as the evidence backbone.
-- FACT: The active Ask ISA request path is `client/src/pages/AskISA.tsx` -> `trpc.askISA.ask` -> `server/routers/ask-isa.ts`.
-- FACT: Gap analysis is served separately through `server/routers/gap-analyzer.ts` and already has strong deterministic test coverage.
 
-### Answer flow
-1. FACT: `/ask` uses `trpc.askISA.ask` from the legacy router.
-2. FACT: `askISA.ask` performs hybrid retrieval, citation validation, evidence sufficiency checks, LLM generation, stage-A validation, persistence, and caching.
-3. FACT: The main Ask ISA UI exposes answers, sources, source-posture cues, history, export, and feedback capture.
+- FACT: ASK_ISA spans `askISA`, `askISAV2`, and `evaluation` routers with the knowledge base and ESRS mapping capabilities as its evidence/decision backplane.
+- FACT: The primary Ask ISA user surfaces are now:
+  - `/ask` -> `client/src/pages/AskISAEnhanced.tsx`
+  - `/ask/classic` -> `client/src/pages/AskISA.tsx`
+  - `client/src/components/AskISAExpertMode.tsx`
+  - `client/src/components/EnhancedSearchPanel.tsx`
 
-### Retrieval and data flow
-1. FACT: Hybrid retrieval combines vector and BM25 search through `server/hybrid-search.ts`.
-2. FACT: The router applies citation validation and stage-A abstention before returning compliance-grade answers.
-3. FACT: Query caching sits in `server/ask-isa-cache.ts` and is user-visible because `/ask` reuses cached answers.
+### Current answer flow
+
+1. FACT: The expert surface calls `trpc.askISAV2.askEnhanced.useMutation()`.
+2. FACT: `askISAV2.askEnhanced` now performs query-intent classification, intent-aware retrieval planning, optional recent-news augmentation, structured mapping-context lookup, canonical-facts lookup, Stage-A validation, and structured answer packaging.
+3. FACT: The legacy chat surface remains reachable at `/ask/classic` and still uses `trpc.askISA.ask`.
+
+### Retrieval and grounding flow
+
+1. FACT: `askISAV2` uses embedding-driven retrieval from `knowledge_embeddings`.
+2. FACT: Retrieval defaults are now intent-specific for source type, semantic layer, and authority posture.
+3. FACT: Mapping-sensitive flows can now add structured regulation/ESRS/GS1 context to the prompt before generation.
 
 ### UI and navigation flow
-1. FACT: `client/src/App.tsx` routes `/ask` to `client/src/pages/AskISA.tsx`.
-2. FACT: Conversation history is loaded from the same page through `askISA.getConversation`.
-3. FACT: Ask ISA answer export and the compact Ask ISA widget both display source similarity cues.
+
+1. FACT: The Ask ISA landing page now exposes expert reasoning, advanced search, and classic chat as explicit tabs.
+2. FACT: Advanced search now shows detected intent and retrieval-strategy labels.
+3. FACT: The expert answer surface now shows structured context, authority/confidence, inline GS1 recommendations, canonical facts, gap summary, and evidence sources.
 
 ### Key bottlenecks
-- FACT: Pre-change caching keyed only on normalized question text, while the router behavior also depended on `sector` and conversation history.
-- FACT: Pre-change confidence scores were raw source counts, which made some UI and analytics surfaces display values like `500%`.
-- FACT: Pre-change conversation loading called `trpc.useUtils()` inside an event handler instead of at component top level.
-- INTERPRETATION: These issues reduce trust faster than they reduce feature breadth, because they can make correct answers look unreliable or inconsistent.
+
+- FACT: Route-level scenario eval coverage for the new expert-first `/ask` surface is still limited.
+- FACT: Repo-wide `pnpm check` and repo-wide `no-console` debt remain outside this slice.
+- INTERPRETATION: The product intelligence layer improved materially, but branch confidence still depends on focused test evidence rather than a fully clean global baseline.
 
 ## 3. Current Capacity Analysis
-| Capacity ID | Current capacity | Evidence | User relevance | Confidence | Notes |
-| --- | --- | --- | --- | --- | --- |
-| CAP-01 | Ask ISA can retrieve, ground, abstain, persist conversations, and collect feedback | `server/routers/ask-isa.ts`; `docs/spec/ASK_ISA/RUNTIME_CONTRACT.md` | High | High | Main `/ask` path is production-relevant |
-| CAP-02 | Ask ISA UI exposes sources, verification posture, export, and history | `client/src/pages/AskISA.tsx` | High | High | Trust signals matter as much as raw answer text |
-| CAP-03 | Gap Analyzer provides deterministic ESRS-to-GS1 decision artifacts | `server/routers/gap-analyzer.ts`; `server/routers/gap-analyzer.test.ts` | Medium | High | Strong current behavior; not the top blocker |
-| CAP-04 | Hybrid retrieval and citation validation are covered by focused tests | `server/hybrid-search.test.ts`; `server/ask-isa-guardrails.test.ts` | High | High | Good leverage for a small Ask ISA fix set |
-| CAP-05 | Governance, architecture, and validation policy are unusually strong | `AGENT_START_HERE.md`; `docs/governance/MANUAL_PREFLIGHT.md` | Medium | High | Lowers change risk for targeted improvements |
+
+| Capacity ID | Current capacity                                                                                                                        | Evidence                                                                                                                                            | User relevance | Confidence | Notes                                                                    |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ---------- | ------------------------------------------------------------------------ |
+| CAP-01      | `/ask` now exposes expert reasoning, advanced evidence search, and classic fallback                                                     | `client/src/App.tsx`; `client/src/pages/AskISAEnhanced.tsx`                                                                                         | High           | High       | Primary Ask ISA route changed materially                                 |
+| CAP-02      | `askISAV2.askEnhanced` now returns intent, retrieval profile, mapping context, confidence, authority, facts, and gap-summary enrichment | `server/routers/ask-isa-v2.ts`                                                                                                                      | High           | High       | Users get deeper structured output instead of a thin answer-only payload |
+| CAP-03      | `askISAV2.enhancedSearch` applies smart retrieval defaults and exposes retrieval strategy                                               | `server/routers/ask-isa-v2.ts`; `client/src/components/EnhancedSearchPanel.tsx`                                                                     | High           | High       | Makes the retrieval layer inspectable                                    |
+| CAP-04      | Expert UI now exposes trust signals and evidence panels directly on the main route                                                      | `client/src/components/AskISAExpertMode.tsx`; `client/src/components/AuthorityBadge.tsx`                                                            | High           | High       | Improves perceived intelligence and trust                                |
+| CAP-05      | Focused server/client coverage exists for new v2 intent logic and expert route rendering                                                | `server/routers/__tests__/ask-isa-v2-intent.test.ts`; `client/src/components/AskISAExpertMode.test.tsx`; `client/src/pages/AskISAEnhanced.test.tsx` | Medium         | High       | Good targeted protection, but not full route eval coverage               |
 
 ## 4. User Value Framework
-| Dimension | Definition | Current state | Why it matters | Evidence |
-| --- | --- | --- | --- | --- |
-| Answer quality | Correct answers for the current request context | Constrained by cache context bleed risk | Wrong-context reuse is worse than a slower answer | `HEAD:server/routers/ask-isa.ts`; `server/ask-isa-cache.ts` |
-| Trustworthiness | Signals match actual evidence quality | Constrained by source-count-as-confidence semantics and double-scaled similarity display | Trust cues shape whether users believe the answer | `HEAD:server/ask-isa-guardrails.ts`; `HEAD:client/src/pages/AskISA.tsx`; `HEAD:client/src/components/AskISAWidget.tsx` |
-| Reliability | Core interactions work repeatedly | Constrained by invalid hook placement in history loader | Broken history retrieval harms repeated use | `HEAD:client/src/pages/AskISA.tsx` |
-| Speed | Fast repeated queries | Good candidate for caching, but only if scope-safe | Unsafe cache hits trade latency for incorrectness | `server/ask-isa-cache.ts`; `server/routers/ask-isa.ts` |
-| Evolution quality | Metrics and feedback loops reflect reality | Constrained by malformed confidence analytics | Bad telemetry slows future product improvement | `server/routers/ask-isa.ts`; `client/src/pages/AdminFeedbackDashboard.tsx` |
+
+| Dimension           | Definition                                                             | Current state           | Why it matters                                                                                  | Evidence                                                                                         |
+| ------------------- | ---------------------------------------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Answer depth        | Ability to explain applicability, mappings, and next-step implications | Improved                | Expert outputs now include mapping context, explainers, gap summary, and inline recommendations | `server/routers/ask-isa-v2.ts`; `client/src/components/AskISAExpertMode.tsx`                     |
+| Retrieval relevance | Ability to pull the right evidence set for the question type           | Improved                | Intent-aware retrieval defaults reduce generic one-size-fits-all retrieval                      | `server/routers/ask-isa-v2-intelligence.ts`; `server/routers/ask-isa-v2.ts`                      |
+| Trustworthiness     | Visibility into why the answer should be believed                      | Improved                | Confidence, authority, evidence cards, and canonical facts are surfaced directly                | `client/src/components/AskISAExpertMode.tsx`; `client/src/components/AuthorityBadge.tsx`         |
+| Discovery           | Ease of reaching the smarter path                                      | Improved                | `/ask` now lands on the expert-first shell instead of only the legacy chat                      | `client/src/App.tsx`; `client/src/pages/AskISAEnhanced.tsx`                                      |
+| Regression safety   | Ability to prove the intelligence change still works                   | Improved but incomplete | Focused tests are in place; scenario eval coverage still needs expansion                        | `server/routers/__tests__/ask-isa-v2-intent.test.ts`; `client/src/pages/AskISAEnhanced.test.tsx` |
 
 ## 5. Opportunity Inventory
-| Opportunity ID | Title | Category | User benefit | Effort | Risk | Impact | Time-to-value | Dependencies | Score | Evidence |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| OPP-01 | Scope Ask ISA cache by sector and bypass it for conversation-scoped prompts | Reliability | Prevents wrong-context answers | 2 | 1 | 5 | 5 | None | 31 | `HEAD:server/routers/ask-isa.ts`; `HEAD:server/ask-isa-cache.ts` |
-| OPP-02 | Normalize confidence semantics and feedback analytics | Trust / observability | Removes misleading `>100%` confidence and repairs analytics | 2 | 1 | 4 | 5 | None | 30 | `HEAD:server/ask-isa-guardrails.ts`; `client/src/pages/AdminFeedbackDashboard.tsx` |
-| OPP-03 | Fix Ask ISA history loader invalid hook + similarity inflation | Reliability / UX | Restores conversation revisit flow and removes exaggerated trust cues | 1 | 1 | 4 | 5 | None | 29 | `HEAD:client/src/pages/AskISA.tsx`; `HEAD:client/src/components/AskISAWidget.tsx` |
-| OPP-04 | Migrate `/ask` from `askISA.ask` to `askISAV2` | Product architecture | Could unlock richer structured output | 4 | 4 | 5 | 2 | Wider compatibility review | 22 | `client/src/pages/AskISA.tsx`; `server/routers/ask-isa-v2.ts` |
-| OPP-05 | Expand legacy hybrid retrieval coverage across more content types | Retrieval depth | Could improve recall | 4 | 3 | 4 | 2 | Schema/runtime review | 21 | `server/hybrid-search.ts`; `server/db-knowledge-vector.ts` |
+
+| Opportunity ID | Title                                                 | Category                          | User benefit                                                                   | Effort | Risk | Impact | Time-to-value | Dependencies                      | Score | Evidence                                                                    |
+| -------------- | ----------------------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------ | ------ | ---- | ------ | ------------- | --------------------------------- | ----- | --------------------------------------------------------------------------- |
+| OPP-01         | Promote `askISAV2` to the primary `/ask` route        | Discovery / intelligence exposure | Users reach the stronger Ask ISA flow by default                               | 3      | 2    | 5      | 5             | Existing v2 UI/runtime            | 33    | `client/src/App.tsx`; `client/src/pages/AskISAEnhanced.tsx`                 |
+| OPP-02         | Make v2 retrieval intent-aware                        | Retrieval quality                 | Better candidate selection for change, mapping, gap, and news questions        | 3      | 2    | 5      | 4             | Existing embeddings/search path   | 32    | `server/routers/ask-isa-v2-intelligence.ts`; `server/routers/ask-isa-v2.ts` |
+| OPP-03         | Activate mapping-context enrichment in expert answers | Answer depth                      | Stronger cross-linking between regulations, ESRS datapoints, and GS1 standards | 3      | 2    | 5      | 4             | Existing `getMappingContext()`    | 31    | `server/routers/ask-isa-v2.ts`                                              |
+| OPP-04         | Expose expert trust and evidence panels               | UX / trust                        | Makes the intelligence gain legible to users                                   | 2      | 1    | 4      | 5             | Existing source/confidence models | 31    | `client/src/components/AskISAExpertMode.tsx`                                |
+| OPP-05         | Add route-level v2 scenario evals                     | Evaluation                        | Raises confidence in the new default route                                     | 3      | 2    | 4      | 3             | Eval fixture design               | 27    | `data/evaluation/golden/registry.json`; `server/routers/evaluation.ts`      |
+| OPP-06         | Expand broader reranking and conflict handling        | Retrieval / synthesis             | Could improve precision further                                                | 4      | 3    | 4      | 2             | More diagnostics and evals        | 23    | `server/routers/ask-isa-v2.ts`; `server/hybrid-search.ts`                   |
 
 ## 6. Chosen Implementation Portfolio
+
 ### Selected
-- FACT: Selected OPP-01, OPP-02, and OPP-03.
-- INTERPRETATION: These items shared one theme: Ask ISA was already feature-rich, but some reliability and trust cues were internally inconsistent.
-- RECOMMENDATION: Treat this as a reviewable quality hardening slice rather than a new feature branch.
+
+- FACT: Selected OPP-01 through OPP-04.
+- INTERPRETATION: These four items compound: they improve what `askISAV2` does, make the product route users into that stronger path, and expose why the new behavior is smarter.
 
 ### Deferred
-- FACT: `askISAV2` migration was deferred.
-- FACT: Retrieval-surface expansion in the legacy path was deferred.
-- INTERPRETATION: Both deferred items are strategically interesting but require broader compatibility and evaluation work than this safe slice justified.
+
+- FACT: Route-level v2 scenario evals were deferred.
+- FACT: Deeper reranking/conflict-resolution work was deferred.
+- INTERPRETATION: Both remain valuable, but they require more measurement scaffolding than this route-promotion slice justified.
 
 ## Evidence Register
-### EVD-20260313-001
-- Type: file
-- Path or command: `AGENT_START_HERE.md:73-94`
-- Short excerpt: code entrypoints plus six-capability table
-- Claim supported: ISA architecture is broad; Ask ISA is only one but highly user-visible capability
 
-### EVD-20260313-002
-- Type: file
-- Path or command: `docs/spec/ARCHITECTURE.md:37-56`
-- Short excerpt: ASK_ISA, KNOWLEDGE_BASE, and ESRS_MAPPING ownership rows
-- Claim supported: Ask ISA sits directly on the evidence and decision backbone
+### EVD-20260313-101
 
-### EVD-20260313-003
 - Type: file
-- Path or command: `git show HEAD:server/routers/ask-isa.ts | nl -ba | sed -n '115,155p'`
-- Short excerpt: `getCachedResponse(question)` with no sector or conversation scope
-- Claim supported: Pre-change cache behavior could not distinguish request context
+- Path or command: `client/src/App.tsx`
+- Short excerpt: `/ask` -> `AskISAEnhanced`; `/ask/classic` -> `AskISA`
+- Claim supported: Primary Ask ISA route now exposes the enhanced shell
 
-### EVD-20260313-004
+### EVD-20260313-102
+
 - Type: file
-- Path or command: `git show HEAD:server/ask-isa-guardrails.ts | nl -ba | sed -n '304,320p'`
-- Short excerpt: confidence `score` returned as raw `sourceCount`
-- Claim supported: Pre-change confidence contract could overstate percentages and analytics
+- Path or command: `server/routers/ask-isa-v2-intelligence.ts`
+- Short excerpt: `classifyQueryIntent`, `buildIntentRetrievalPlan`, `deriveMappingSignals`, `mergeKnowledgeResults`
+- Claim supported: V2 retrieval and mapping decisions are now intent-aware and reusable
 
-### EVD-20260313-005
+### EVD-20260313-103
+
 - Type: file
-- Path or command: `git show HEAD:client/src/pages/AskISA.tsx | nl -ba | sed -n '588,602p'`
-- Short excerpt: `const utils = trpc.useUtils();` inside `handleLoadConversation`
-- Claim supported: Pre-change history loader violated React hook placement rules
+- Path or command: `server/routers/ask-isa-v2.ts`
+- Short excerpt: `askEnhanced` now assembles primary/fallback/news retrieval, mapping context, confidence, authority, and structured payload fields
+- Claim supported: V2 answer generation is materially richer and more grounded
 
-### EVD-20260313-006
+### EVD-20260313-104
+
 - Type: file
-- Path or command: `git show HEAD:client/src/pages/AskISA.tsx | nl -ba | sed -n '372,382p'`
-- Short excerpt: PDF export multiplies `source.similarity * 100`
-- Claim supported: Pre-change Ask ISA export could display exaggerated similarity percentages
+- Path or command: `client/src/components/AskISAExpertMode.tsx`
+- Short excerpt: expert answer surface renders confidence, authority, mapping context, facts, gap summary, and evidence sources
+- Claim supported: The user-facing surface now makes the intelligence upgrade visible
 
-### EVD-20260313-007
+### EVD-20260313-105
+
 - Type: file
-- Path or command: `git show HEAD:client/src/components/AskISAWidget.tsx | nl -ba | sed -n '150,160p'`
-- Short excerpt: widget multiplies `source.similarity * 100`
-- Claim supported: Pre-change compact Ask ISA surface also overstated similarity
+- Path or command: `client/src/components/EnhancedSearchPanel.tsx`
+- Short excerpt: intent and retrieval-strategy badges plus smart-default indicator
+- Claim supported: Retrieval transparency is now exposed to users
 
-### EVD-20260313-008
+### EVD-20260313-106
+
 - Type: file
-- Path or command: `server/ask-isa-cache.ts:11-199`
-- Short excerpt: cache context now includes sector, conversation bypass, and response metadata parity
-- Claim supported: Cache now avoids cross-context reuse and preserves richer cached payloads
+- Path or command: `client/src/components/AuthorityBadge.tsx`
+- Short excerpt: React import restored for authority score rendering
+- Claim supported: The new trust surface no longer crashes under the current runtime/test setup
 
-### EVD-20260313-009
-- Type: file
-- Path or command: `shared/ask-isa-confidence.ts:1-86`
-- Short excerpt: normalized confidence model plus legacy-score normalization helpers
-- Claim supported: Confidence semantics are now explicit and backwards-compatible for stored feedback
+### EVD-20260313-107
 
-### EVD-20260313-010
-- Type: file
-- Path or command: `server/routers/ask-isa.ts:930-1045`
-- Short excerpt: feedback persistence and stats now normalize confidence values before storage and aggregation
-- Claim supported: Admin analytics now reflect normalized confidence rather than raw source counts
-
-### EVD-20260313-011
-- Type: file
-- Path or command: `client/src/pages/AskISA.tsx:212-215`, `client/src/pages/AskISA.tsx:392-403`, `client/src/pages/AskISA.tsx:615-618`
-- Short excerpt: `useUtils()` moved to component scope; confidence and similarity formatting corrected
-- Claim supported: Main Ask ISA UI now avoids hook misuse and presents trust signals coherently
-
-### EVD-20260313-012
 - Type: test
-- Path or command: `pnpm vitest run shared/ask-isa-confidence.test.ts server/ask-isa-cache.test.ts server/ask-isa-guardrails.test.ts server/ask-isa-integration.test.ts server/hybrid-search.test.ts server/routers/gap-analyzer.test.ts client/src/lib/ask-isa-citation.test.ts client/src/lib/ask-isa-source-posture.test.ts --reporter=verbose --no-coverage`
-- Short excerpt: `7 passed`, `91 passed`
-- Claim supported: The implemented Ask ISA slice and adjacent critical coverage pass locally
+- Path or command: `pnpm vitest run server/routers/__tests__/ask-isa-v2-intent.test.ts client/src/components/AskISAExpertMode.test.tsx client/src/pages/AskISAEnhanced.test.tsx server/hybrid-search.test.ts --reporter=verbose --no-coverage`
+- Short excerpt: `4 passed`, `29 passed`
+- Claim supported: Focused v2 backend/UI behavior passes locally
+
+### EVD-20260313-108
+
+- Type: command
+- Path or command: `pnpm exec tsc --noEmit --pretty false` filtered for touched files
+- Short excerpt: no touched-file matches for edited Ask ISA v2 files
+- Claim supported: This slice did not introduce touched-file TypeScript regressions under the repo compiler

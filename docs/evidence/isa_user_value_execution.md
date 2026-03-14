@@ -1,137 +1,120 @@
 # ISA User Value Execution
+
 Date: 2026-03-13
-Branch: `codex/ask-isa-user-value-reliability`
-Follow-up branch: `codex/gap-analyzer-relevance-summary`
-Current PR: `#329`
+Current branch: `codex/ask-isa-v2-intelligence`
+Base branch: `main`
+Merged groundwork: `#326`, `#328`, `#329`
+Current PR: `#330`
 Target branch: `main`
 
 ## 7. Execution Log
-### Slice 1: Ask ISA cache safety
-- Objective: Prevent wrong-context cache hits and keep cache-hit responses feature-complete.
-- Files changed: `server/ask-isa-cache.ts`, `server/routers/ask-isa.ts`, `server/ask-isa-cache.test.ts`
-- Rationale:
-  - FACT: Pre-change cache lookup used only question text.
-  - FACT: Ask ISA behavior also depends on `sector` and conversation context.
-  - INTERPRETATION: Cache reuse across those scopes could return a materially wrong answer.
+
+### Slice 1: Promote the richer Ask ISA route
+
+- Objective: Make the smarter Ask ISA experience the default route while preserving a low-risk fallback path.
+- Files changed: `client/src/App.tsx`, `client/src/pages/AskISAEnhanced.tsx`
+- Implementation summary:
+  - FACT: `/ask` now routes to `AskISAEnhanced`.
+  - FACT: `/ask/classic` preserves the previous `AskISA` chat flow.
+  - FACT: The new shell defaults to an expert reasoning tab and keeps advanced search and classic chat as explicit alternatives.
+- Expected user-value gain:
+  - INTERPRETATION: Users reach the stronger route without needing to discover an internal alternate surface.
+- Expected intelligence gain:
+  - INTERPRETATION: The product now exposes deeper structured reasoning by default instead of burying it behind the older flow.
 - Validation:
-  - FACT: `server/ask-isa-cache.test.ts` verifies sector scoping, conversation bypass, and cached metadata parity.
+  - FACT: `client/src/pages/AskISAEnhanced.test.tsx` verifies the new default route shell and the advanced-search knowledge-stats panel.
 - Result: Completed
 
-### Slice 2: Confidence normalization and analytics repair
-- Objective: Replace raw source-count confidence scores with normalized scores plus explicit `sourceCount`.
-- Files changed: `shared/ask-isa-confidence.ts`, `server/ask-isa-guardrails.ts`, `server/routers/ask-isa.ts`, `server/ask-isa-guardrails.test.ts`, `server/ask-isa-integration.test.ts`, `client/src/pages/AdminFeedbackDashboard.tsx`
-- Rationale:
-  - FACT: Pre-change `calculateConfidence()` returned `score=sourceCount`.
-  - FACT: UI and analytics rendered that field as a percentage.
-  - INTERPRETATION: The product could tell users `500% confidence`, which is a trust failure.
+### Slice 2: Make `askISAV2` retrieval intent-aware and mapping-context aware
+
+- Objective: Improve v2 answer quality by matching retrieval and prompt context to the question type.
+- Files changed: `server/routers/ask-isa-v2.ts`, `server/routers/ask-isa-v2-intelligence.ts`, `server/routers/__tests__/ask-isa-v2-intent.test.ts`
+- Implementation summary:
+  - FACT: Added reusable intent helpers for query classification, retrieval planning, mapping-signal extraction, result merging, and authority-level mapping.
+  - FACT: `askISAV2.enhancedSearch` now returns `queryIntent` and `retrievalStrategy`, and uses intent-aware defaults when explicit filters are absent.
+  - FACT: `askISAV2.askEnhanced` now combines primary/fallback retrieval, recent-news augmentation, mapping-context lookup, canonical facts, authority/confidence summaries, and gap-analysis inference for gap-oriented questions.
+- Expected user-value gain:
+  - INTERPRETATION: Change, mapping, gap, and news questions should pull more relevant evidence with less user steering.
+- Expected intelligence gain:
+  - INTERPRETATION: Answers can now synthesize retrieved text with structured mapping signals and canonical facts instead of relying on generic retrieval alone.
 - Validation:
-  - FACT: `shared/ask-isa-confidence.test.ts` verifies normalized scoring and legacy-score normalization.
-  - FACT: Ask ISA guardrail and integration tests were updated and pass.
+  - FACT: `server/routers/__tests__/ask-isa-v2-intent.test.ts` verifies intent classification, ESRS extraction, retrieval plans, mapping signals, result dedupe, and authority mapping.
+  - FACT: `server/hybrid-search.test.ts` remained green after the v2 changes.
 - Result: Completed
 
-### Slice 3: Ask ISA UI reliability and trust cleanup
-- Objective: Fix history loading and remove double-scaled similarity percentages.
-- Files changed: `client/src/pages/AskISA.tsx`, `client/src/components/AskISAWidget.tsx`
-- Rationale:
-  - FACT: Pre-change history loading called `trpc.useUtils()` inside an event handler.
-  - FACT: Pre-change export and widget views multiplied already-percent similarity values by 100 again.
-- Validation:
-  - FACT: Focused Ask ISA tests remain green.
-  - FACT: No touched-file matches were found when filtering `pnpm exec tsc --noEmit --pretty false` output for the edited files.
-- Result: Completed
+### Slice 3: Expose trust and structured evidence on the main expert surface
 
-### Slice 4: Gap Analyzer sector-scoped summary correction
-- Objective: Stop understating coverage for non-general sectors and clarify what the coverage denominator means.
-- Files changed: `server/routers/gap-analyzer.ts`, `server/routers/gap-analyzer.test.ts`, `client/src/pages/GapAnalyzer.tsx`, `client/src/pages/GapAnalyzer.test.tsx`, `docs/spec/ESRS_MAPPING/RUNTIME_CONTRACT.md`
-- Rationale:
-  - FACT: Pre-change `gapAnalyzer.analyze()` counted `requirementMap.size` even when the loop skipped non-relevant sector rows.
-  - FACT: The Gap Analyzer summary card displayed that count directly to users as the headline denominator.
-  - INTERPRETATION: Non-general sector runs could look less complete than they actually were, which weakens trust in the tool.
+- Objective: Make the smarter answer path legible and trustworthy to users.
+- Files changed: `client/src/components/AskISAExpertMode.tsx`, `client/src/components/EnhancedSearchPanel.tsx`, `client/src/components/AuthorityBadge.tsx`, `client/src/components/AskISAExpertMode.test.tsx`
+- Implementation summary:
+  - FACT: Added an expert answer surface showing intent, retrieval strategy, confidence, authority, explainers, inline GS1 recommendations, gap snapshot, mapping context, canonical facts, and evidence sources.
+  - FACT: Enhanced Search now surfaces intent and retrieval-strategy badges plus whether smart defaults or explicit filters are in effect.
+  - FACT: Restored the missing React import in `AuthorityBadge.tsx` so the authority score panel renders safely under the current runtime/test setup.
+- Expected user-value gain:
+  - INTERPRETATION: Users can understand why the system answered the way it did and inspect the evidence shape without leaving `/ask`.
+- Expected intelligence gain:
+  - INTERPRETATION: The product feels more expert because evidence, structure, and applicability cues are visible instead of implicit.
 - Validation:
-  - FACT: Added router coverage test for sector-relevant summary totals.
-  - FACT: Added page test asserting the revised sector-scoped trust copy and summary label.
-  - FACT: No touched-file `tsc` matches were found for the edited Gap Analyzer files.
-- Result: Completed
-
-### Slice 5: Regulation timeline placeholder and dead-end cleanup
-- Objective: Remove raw placeholder UX from the live regulation timeline surface.
-- Files changed: `client/src/components/RegulationTimeline.tsx`, `client/src/components/RegulationTimeline.test.tsx`
-- Rationale:
-  - FACT: The live timeline card rendered `TODO: add milestone description.` when timeline annotations were missing.
-  - FACT: The same card exposed a `View full timeline` button without any wired action.
-  - INTERPRETATION: Placeholder text and dead controls create avoidable product friction on hub regulation detail pages.
-- Validation:
-  - FACT: Added a component test that verifies fallback milestone copy and confirms the dead button is removed.
-- Result: Completed
-
-### Slice 6: Canonical contract metadata refresh for the active PR branch
-- Objective: Clear the canonical drift gate on the active Gap Analyzer PR without mixing in unrelated repo-wide cleanup.
-- Files changed: `docs/architecture/panel/_generated/CAPABILITY_MANIFEST.json`, `docs/architecture/panel/_generated/CAPABILITY_GRAPH.json`, `docs/architecture/panel/_generated/PRIMITIVE_DICTIONARY.json`, `docs/architecture/panel/_generated/EVIDENCE_INDEX.json`, `docs/architecture/panel/_generated/MINIMAL_VALIDATION_BUNDLE.json`, `docs/planning/refactoring/EXECUTION_STATE.json`
-- Rationale:
-  - FACT: PR `#329` failed `canonical-contract-drift` because these files still referenced commit `fc7e38d03956d4a1892c1060984793cbd0456dd9`.
-  - FACT: The active feature branch head was `0d02b0f7566de042f0ca9f9666600277f868088e`.
-  - INTERPRETATION: The branch was functionally ready, but CI would stay red until the machine-readable contract metadata matched the active branch lineage.
-- Validation:
-  - FACT: `bash scripts/gates/canonical-contract-drift.sh` passed after refreshing the `repo_ref.commit` values.
-  - FACT: `python3 scripts/gates/manifest-ownership-drift.py`, `python3 scripts/validate_planning_and_traceability.py`, and `bash scripts/gates/doc-code-validator.sh --canonical-only` all passed after the refresh.
+  - FACT: `client/src/components/AskISAExpertMode.test.tsx` verifies the structured result surface and evidence cards.
 - Result: Completed
 
 ## 8. Validation Results
-| Check | Result | Notes |
-| --- | --- | --- |
-| Focused Vitest suite | Pass | `7` files, `91` tests passed |
-| Gap / timeline follow-up Vitest suite | Pass | `3` files, `28` tests passed |
-| `python3 scripts/validate_planning_and_traceability.py` | Pass | Canonical planning/doc-sprawl validator passed after moving artifacts into allowed locations |
-| `bash scripts/gates/doc-code-validator.sh --canonical-only` | Pass | Canonical doc-code validator passed |
-| `bash scripts/gates/canonical-contract-drift.sh` | Pass | Generated contract metadata updated to the current commit |
-| `python3 scripts/gates/manifest-ownership-drift.py` | Pass after follow-up | Follow-up governance patch added missing shared-platform ownership for `error_ledger` |
-| `bash scripts/gates/no-console-gate.sh` | Fail | Fails on long-standing `scripts/*.mjs` console usage outside this change set |
-| `pnpm check` | Fail | Repo-wide pre-existing TypeScript debt unrelated to this slice |
-| Touched-file compiler isolation | Pass | No `tsc` matches for edited Ask ISA files |
-| PR `#329` CI rollup | Partial pass | `canonical-contract-drift`, `validate`, `validate-schemas`, `validate-docs`, both `smoke` checks, and `secrets-scan` passed; only repo-wide `no-console` failed |
+
+| Check                                                       | Result              | Notes                                                                                   |
+| ----------------------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------- |
+| Focused Ask ISA v2 Vitest suite                             | Pass                | `4` files, `29` tests passed                                                            |
+| `server/hybrid-search.test.ts`                              | Pass                | Included in the focused suite to catch retrieval regressions                            |
+| Touched-file compiler isolation                             | Pass                | `pnpm exec tsc --noEmit --pretty false` produced no matches for edited Ask ISA v2 files |
+| `bash scripts/gates/doc-code-validator.sh --canonical-only` | Pass                | Canonical doc-code validator passed after runtime-contract and evidence updates          |
+| `python3 scripts/validate_planning_and_traceability.py`     | Pass                | Canonical planning/traceability validator passed after evidence updates                  |
+| `bash scripts/gates/canonical-contract-drift.sh`            | Pass after follow-up | Generated `repo_ref.commit` values refreshed to the current `main` base SHA for PR `#330` |
+| Repo-wide `pnpm check`                                      | Known baseline fail | Existing repo-wide TypeScript debt outside this slice                                   |
+| Repo-wide `no-console` gate                                 | Known baseline fail | Existing `scripts/*.mjs` console usage outside this slice                               |
 
 ### Issues Encountered And Resolved
-- FACT: `pnpm check` failed on many unrelated client, server, and schema files outside the Ask ISA slice.
-- FACT: `bash scripts/gates/no-console-gate.sh` failed on pre-existing `scripts/*.mjs` console usage outside this branch.
-- FACT: PR follow-up CI exposed a separate ownership-contract gap: `error_ledger` existed in runtime schema declarations but not in `CAPABILITY_MANIFEST.json`.
-- FACT: `scripts/validate_oss_benchmarks_2026_02_15.sh` duplicated repo-wide no-console enforcement inside the schema-validation workflow; the follow-up narrowed that script back to benchmark-package scope so schema checks report schema problems instead of unrelated runtime-script debt.
-- FACT: The Gap Analyzer follow-up surfaced a real sector-scoping denominator bug and a stale UI copy claim about company-size scoping; both were corrected with targeted tests.
-- FACT: The regulation timeline follow-up removed raw placeholder UX from a live hub detail surface without changing data contracts.
-- FACT: PR `#329` initially failed `canonical-contract-drift` because six machine-readable contract files still referenced stale repo metadata from commit `fc7e38d03956d4a1892c1060984793cbd0456dd9`.
-- FACT: Refreshing those `repo_ref.commit` values to the active branch lineage made the local canonical drift gate pass again.
-- INTERPRETATION: The repo is not currently in a globally type-clean state, so branch readiness must rely on scoped regression evidence plus explicit blocker logging.
-- RECOMMENDATION: Treat repo-wide type debt and repo-wide no-console debt as separate cleanup programs, not as blockers for reviewing this targeted Ask ISA hardening change.
+
+- FACT: The new expert-mode test initially failed on `streamdown` CSS loading under Vitest.
+- FACT: The test harness was updated to mock `streamdown` rather than weakening component behavior.
+- FACT: `AuthorityBadge.tsx` surfaced a real runtime/test issue because `AuthorityScore` rendered without a React import in the current environment.
+- FACT: `AskISAEnhanced` and expert-mode tests required React 19-safe assertions because hooks/components can be invoked more than once during render.
+- FACT: Touched-file type checking surfaced implicit `any` usage in the new page and iterator patterns that were not safe under the repo compiler target; both were corrected.
 
 ## 9. Pull Request Readiness
-- Branch name: `codex/ask-isa-user-value-reliability` (merged) and `codex/gap-analyzer-relevance-summary` (current)
+
+- Branch name: `codex/ask-isa-v2-intelligence`
 - Base branch: `main`
 - Repository: `GS1Ned/isa_web_clean`
-- Active PR: `#329` (`Tighten Gap Analyzer summaries and live timeline fallback UX`)
-- Proposed PR title: `Tighten Gap Analyzer summaries and live timeline fallback UX`
+- Proposed PR title: `Promote Ask ISA v2 to the primary expert route`
 - Proposed PR summary:
-  - Count only the ESRS requirements actually evaluated for non-general Gap Analyzer sector runs.
-  - Clarify sector-scoped requirement counts and company-size context in the Gap Analyzer UI.
-  - Remove placeholder milestone copy and the unwired timeline CTA from the live regulation timeline card.
-  - Refresh canonical contract metadata so the active feature PR no longer fails the repo-ref freshness gate because of stale generated contract commits.
+  - Route `/ask` to the expert-first Ask ISA shell and preserve the legacy chat at `/ask/classic`.
+  - Make `askISAV2` retrieval intent-aware, mapping-context aware, and more explicit about authority/confidence.
+  - Expose structured expert answers, retrieval strategy, evidence cards, and knowledge stats on the primary Ask ISA surface.
+  - Add focused server/client regression coverage for the new v2 path and repair the authority-score runtime issue.
 - Check status:
   - FACT: Focused tests passed locally.
-  - FACT: Functional Ask ISA improvements merged via PR `#326`.
-  - FACT: Metadata/governance follow-up merged via PR `#328`.
-  - FACT: Gap Analyzer and regulation timeline follow-up changes are validated locally and are already published in PR `#329`.
-  - FACT: PR `#329` now passes `canonical-contract-drift`, `validate`, `validate-schemas`, `validate-docs`, both `smoke` checks, and `secrets-scan`.
-  - FACT: `no-console` and global `pnpm check` remain blocked by unrelated pre-existing errors.
-- Merge / automerge status: Not enabled; PR `#329` remains blocked by the repo-wide `no-console` baseline.
+  - FACT: Touched-file compiler isolation passed.
+  - FACT: PR `#330` is open against `main`.
+  - FACT: `secrets-scan`, both `smoke` checks, and both `validate` checks passed on the initial PR run.
+  - FACT: `canonical-contract-drift` failed on the initial PR run because six generated `repo_ref.commit` values still referenced `b63e3a98ca526e3f62d1462b1921d520d1168948`; this follow-up refresh fixes that branch-local drift.
+  - FACT: `no-console` remains a repo-wide baseline failure outside this slice.
+- Merge / automerge status: Not enabled; PR `#330` remains subject to branch checks.
 
 ## 10. Unknowns And Next Improvements
+
 ### UNKNOWN-01
-- UNKNOWN: Whether repository CI policy will accept this branch without also addressing the unrelated repo-wide TypeScript failures.
-- How to verify: Push the branch and inspect PR-required checks.
+
+- UNKNOWN: Whether current v2 route behavior is already sufficient to retire the classic Ask ISA route after a short soak period.
+- Why it matters: Keeping both routes indefinitely increases maintenance surface area.
+- How to verify: Add route-level scenario evals and inspect runtime usage/feedback after the expert-first route ships.
 
 ### NEXT-01
-- RECOMMENDATION: Design a compatibility plan to move `/ask` from `askISA.ask` to `askISAV2`.
+
+- RECOMMENDATION: Add scenario evals for `askISAV2.askEnhanced` covering change, mapping, gap, and news prompts.
 
 ### NEXT-02
-- RECOMMENDATION: Add retrieval evaluation cases for sector-specific Ask ISA prompts so cache and retrieval changes can be measured against golden sets.
+
+- RECOMMENDATION: Inspect whether additional freshness/conflict-aware reranking is warranted once v2 route evals exist.
 
 ### NEXT-03
-- RECOMMENDATION: Run a dedicated repo-wide TypeScript debt reduction pass so `pnpm check` becomes a meaningful merge gate again.
+
+- RECOMMENDATION: Run a separate repo-wide TypeScript and `no-console` cleanup program so branch readiness does not depend on touched-file filtering.
