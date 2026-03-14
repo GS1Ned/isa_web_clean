@@ -30,93 +30,16 @@ import {
   buildIntentRetrievalPlan,
   buildMappingContextPrompt,
   classifyQueryIntent,
-  deriveMappingSignals,
   mapAskISAV2AuthorityLevel,
-  mergeKnowledgeResults,
   summarizeMappingContext,
 } from "./ask-isa-v2-intelligence";
-
-// ---------------------------------------------------------------------------
-// E-06: Recent news article retrieval
-// ---------------------------------------------------------------------------
-
-/**
- * Queries hub_news for high-credibility articles published in the last 30 days
- * that keyword-match the query. Results are shaped to match KnowledgeEmbeddingResult
- * so they can be merged seamlessly into the main retrieval set.
- */
-async function searchRecentNewsArticles(
-  query: string,
-  limit = 4
-): Promise<KnowledgeEmbeddingResult[]> {
-  const db = await getDb();
-  if (!db) return [];
-
-  // Extract up to 3 significant keywords (≥4 chars) from the query.
-  const keywords = query
-    .split(/\s+/)
-    .map(w => w.replace(/[^a-zA-Z0-9]/g, ""))
-    .filter(w => w.length >= 4)
-    .slice(0, 3);
-
-  if (keywords.length === 0) return [];
-
-  try {
-    const likeConditions = keywords
-      .map(
-        kw =>
-          `(title LIKE '%${kw}%' OR content LIKE '%${kw}%' OR summary LIKE '%${kw}%')`
-      )
-      .join(" OR ");
-
-    const rows = await db.execute(
-      sql.raw(`
-      SELECT
-        id,
-        title,
-        COALESCE(summary, LEFT(content, 500)) as content,
-        source_url as url,
-        credibility_score,
-        published_date,
-        regulation_tags
-      FROM hub_news
-      WHERE published_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-        AND credibility_score >= 0.7
-        AND (${likeConditions})
-      ORDER BY published_date DESC
-      LIMIT ${limit}
-    `)
-    );
-
-    const articles = ((rows as any)[0] || []) as Record<string, unknown>[];
-
-    return articles.map((a, idx) => {
-      const credibility = parseFloat(String(a.credibility_score || 0));
-      const authorityLevel =
-        credibility >= 0.9
-          ? "binding"
-          : credibility >= 0.7
-            ? "authoritative"
-            : "guidance";
-      return {
-        id: -(idx + 1), // Negative IDs to distinguish from knowledge_embeddings
-        sourceType: "news",
-        sourceId: Number(a.id),
-        title: String(a.title || ""),
-        content: String(a.content || ""),
-        url: a.url ? String(a.url) : null,
-        authorityLevel,
-        semanticLayer: null,
-        sourceAuthority: null,
-        similarity: credibility * 0.75, // Normalize into [0,1] range
-        publishedDate: a.published_date ? String(a.published_date) : undefined,
-      } as KnowledgeEmbeddingResult & { publishedDate?: string };
-    });
-  } catch (error) {
-    serverLogger.error("[AskISA-v2] Recent news retrieval failed:", error);
-    return [];
-  }
-}
+import {
+  buildAskISAV2QueryEmbedding,
+  expandEsrsStandardsForMappings,
+  rerankAskISAV2Results,
+  retrieveAskISAV2Candidates,
+  searchKnowledgeEmbeddings,
+} from "./ask-isa-v2-retrieval";
 
 // ---------------------------------------------------------------------------
 // E-05: Inline ESRS-GS1 recommendation extraction
@@ -214,37 +137,34 @@ interface GapAnalysisResult {
   recommendations: string[];
 }
 
-const VERSION_SCOPED_URI_PATTERN =
-  /(\/eli\/|\/v?\d+\.\d+(?:\.\d+)?(?:\/|$)|\/\d{4}(?:-\d{2})?(?:\/|$))/i;
-
-function hasVersionScopedUri(url?: string | null): boolean {
-  return typeof url === "string" && VERSION_SCOPED_URI_PATTERN.test(url);
-}
-
-function authorityWeight(authorityLevel?: string | null): number {
-  switch ((authorityLevel || "unknown").toLowerCase()) {
-    case "binding":
-    case "official":
-      return 0.2;
-    case "authoritative":
-    case "regulatory":
-      return 0.15;
-    case "industry":
-      return 0.1;
-    case "guidance":
-      return 0.05;
-    default:
-      return 0;
+function extractDbRows(result: unknown): Record<string, unknown>[] {
+  if (Array.isArray(result)) {
+    if (result.length === 0) return [];
+    if (
+      result[0] &&
+      typeof result[0] === "object" &&
+      !Array.isArray(result[0])
+    ) {
+      return result as Record<string, unknown>[];
+    }
+    if (Array.isArray(result[0])) {
+      return result[0] as Record<string, unknown>[];
+    }
   }
-}
 
-function retrievalPriorityScore(result: KnowledgeEmbeddingResult): number {
-  const versionBoost = hasVersionScopedUri(result.url) ? 0.05 : 0;
-  return (
-    (result.similarity || 0) +
-    authorityWeight(result.authorityLevel) +
-    versionBoost
-  );
+  if (
+    result &&
+    typeof result === "object" &&
+    "rows" in result &&
+    Array.isArray((result as { rows?: unknown[] }).rows)
+  ) {
+    return ((result as { rows: unknown[] }).rows ?? []) as Record<
+      string,
+      unknown
+    >[];
+  }
+
+  return [];
 }
 
 function buildExplainersFromFacts(
@@ -290,82 +210,50 @@ function buildExplainersFromFacts(
   };
 }
 
-/**
- * Search knowledge embeddings with cosine similarity using pgvector.
- * Uses the raw postgres-js client to avoid Drizzle ORM incompatibilities
- * with pgvector's <=> operator.
- */
-async function searchKnowledgeEmbeddings(
-  queryEmbedding: number[],
-  options: {
-    limit?: number;
-    sourceTypes?: string[];
-    semanticLayers?: string[];
-    authorityLevels?: string[];
-  } = {}
-): Promise<KnowledgeEmbeddingResult[]> {
-  // Ensure DB is initialized (so _pgSql is populated)
-  await getDb();
-  const pgSql = getRawPgSql();
-  if (!pgSql) {
-    serverLogger.warn(
-      "[AskISA-v2] Raw PG client not available for vector search"
-    );
-    return [];
-  }
+function buildStructuredMappingFallbackAnswer(
+  sources: KnowledgeEmbeddingResult[],
+  mappingContextSummary: ReturnType<typeof summarizeMappingContext>
+): string | null {
+  const exactEsrsSource = sources.find(source => source.sourceType === "esrs_datapoint");
+  const gs1Sources = sources
+    .filter(source => source.sourceType === "gs1_standard")
+    .slice(0, 3);
 
-  const { limit = 10, sourceTypes, semanticLayers, authorityLevels } = options;
+  if (!exactEsrsSource || gs1Sources.length === 0) return null;
 
-  try {
-    const embeddingStr = `[${queryEmbedding.join(",")}]`;
+  const citationFor = (source: KnowledgeEmbeddingResult) => {
+    const index = sources.findIndex(item => item.id === source.id);
+    return index >= 0 ? `[Source ${index + 1}]` : "[Source 1]";
+  };
 
-    // Build WHERE conditions
-    let whereConditions: string[] = [];
-    if (sourceTypes && sourceTypes.length > 0) {
-      whereConditions.push(
-        `source_type IN (${sourceTypes.map(t => `'${t}'`).join(",")})`
-      );
-    }
-    if (semanticLayers && semanticLayers.length > 0) {
-      whereConditions.push(
-        `semantic_layer IN (${semanticLayers.map(l => `'${l}'`).join(",")})`
-      );
-    }
-    if (authorityLevels && authorityLevels.length > 0) {
-      whereConditions.push(
-        `authority_level IN (${authorityLevels.map(a => `'${a}'`).join(",")})`
-      );
-    }
-    const whereClause =
-      whereConditions.length > 0
-        ? `WHERE ${whereConditions.join(" AND ")}`
-        : "";
+  const topGs1Statements = gs1Sources
+    .map(
+      source =>
+        `${source.title} ${citationFor(source)}`
+    )
+    .join(", ");
 
-    // Use raw postgres-js client with pgvector's <=> cosine distance operator
-    const results = await pgSql.unsafe(`
-      SELECT
-        id,
-        source_type AS "sourceType",
-        source_id AS "sourceId",
-        title,
-        content,
-        url,
-        authority_level AS "authorityLevel",
-        semantic_layer AS "semanticLayer",
-        source_authority AS "sourceAuthority",
-        1 - (embedding <=> '${embeddingStr}'::vector) AS similarity
-      FROM knowledge_embeddings
-      ${whereClause}
-      ORDER BY embedding <=> '${embeddingStr}'::vector
-      LIMIT ${limit}
-    `);
+  const mappedSignals = mappingContextSummary.gs1Mappings
+    .slice(0, 3)
+    .map(
+      mapping =>
+        `${mapping.standardName} (${mapping.esrsStandard})`
+    )
+    .join(", ");
 
-    return results as any[];
-  } catch (error) {
-    serverLogger.error("[AskISA-v2] Knowledge embedding search failed:", error);
-    return [];
-  }
+  return [
+    `ISA can support a partial GS1 mapping answer for this request, but not a fully verified one-to-one attribute claim.`,
+    `The exact ESRS disclosure context comes from ${exactEsrsSource.title} ${citationFor(exactEsrsSource)}.`,
+    `The strongest GS1 implementation signals in the current corpus are ${topGs1Statements}.`,
+    mappedSignals
+      ? `Structured mapping context also points to ${mappedSignals} as relevant support signals.`
+      : null,
+    `Use those GS1 signals as supporting or proxy evidence, then validate the final disclosure design against the cited ESRS datapoints rather than assuming a single GS1 field fully satisfies the disclosure requirement ${citationFor(exactEsrsSource)}.`,
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
+
 
 /**
  * Get mapping context for a question
@@ -378,46 +266,48 @@ async function getMappingContext(
   if (!db) return { regulationMappings: [], gs1Mappings: [] };
 
   try {
+    const mappingStandards = expandEsrsStandardsForMappings(esrsStandards);
+
     // Get regulation-ESRS mappings
     const regMappings =
       regulationIds.length > 0
         ? await db.execute(
             sql.raw(`
           SELECT 
-            rem.regulation_id as regulationId,
-            r.name as regulationName,
-            rem.esrs_datapoint_id as esrsDatapointId,
-            rem.relevance_score as relevanceScore
+            rem.regulation_id as "regulationId",
+            r.title as "regulationName",
+            ed.code as "esrsDatapointId",
+            rem.relevance_score as "relevanceScore"
           FROM regulation_esrs_mappings rem
           JOIN regulations r ON rem.regulation_id = r.id
+          JOIN esrs_datapoints ed ON rem.datapoint_id = ed.id
           WHERE rem.regulation_id IN (${regulationIds.join(",")})
           ORDER BY rem.relevance_score DESC
           LIMIT 20
         `)
           )
-        : { 0: [] };
+        : [];
 
     // Get GS1-ESRS mappings
     const gs1Mappings =
-      esrsStandards.length > 0
+      mappingStandards.length > 0
         ? await db.execute(
             sql.raw(`
           SELECT 
-            gem.gs1_standard_id as standardId,
-            gs.name as standardName,
-            gem.esrs_standard as esrsStandard,
-            gem.coverage_type as coverageType
+            gem.mapping_id as "standardId",
+            COALESCE(gem.short_name, gem.data_point_name) as "standardName",
+            gem.esrs_standard as "esrsStandard",
+            gem.gs1_relevance as "coverageType"
           FROM gs1_esrs_mappings gem
-          JOIN gs1_standards gs ON gem.gs1_standard_id = gs.id
-          WHERE gem.esrs_standard IN (${esrsStandards.map(s => `'${s}'`).join(",")})
+          WHERE gem.esrs_standard IN (${mappingStandards.map(s => `'${s}'`).join(",")})
           LIMIT 20
         `)
           )
-        : { 0: [] };
+        : [];
 
     return {
-      regulationMappings: (regMappings as any)[0] || [],
-      gs1Mappings: (gs1Mappings as any)[0] || [],
+      regulationMappings: extractDbRows(regMappings) as any[],
+      gs1Mappings: extractDbRows(gs1Mappings) as any[],
     };
   } catch (error) {
     serverLogger.error("[AskISA-v2] Mapping context retrieval failed:", error);
@@ -438,64 +328,69 @@ async function performGapAnalysis(
     // Get regulation info
     const regResult = await db.execute(
       sql.raw(`
-      SELECT id, name, description FROM regulations WHERE id = ${regulationId}
+      SELECT id, title, description FROM regulations WHERE id = ${regulationId}
     `)
     );
-    const regulation = (regResult as any)[0]?.[0];
+    const regulation = extractDbRows(regResult)[0] as
+      | Record<string, unknown>
+      | undefined;
     if (!regulation) return null;
 
     // Get all ESRS datapoints mapped to this regulation
     const mappingsResult = await db.execute(
       sql.raw(`
       SELECT 
-        rem.esrs_datapoint_id,
-        ed.name as datapoint_name,
-        ed.esrs_standard,
-        rem.relevance_score
+        rem.datapoint_id as "esrsDatapointId",
+        ed.name as "datapointName",
+        ed.esrs_standard as "esrsStandard",
+        rem.relevance_score as "relevanceScore"
       FROM regulation_esrs_mappings rem
-      JOIN esrs_datapoints ed ON rem.esrs_datapoint_id = ed.datapoint_id
+      JOIN esrs_datapoints ed ON rem.datapoint_id = ed.id
       WHERE rem.regulation_id = ${regulationId}
       ORDER BY rem.relevance_score DESC
     `)
     );
-    const mappings = (mappingsResult as any)[0] || [];
+    const mappings = extractDbRows(mappingsResult);
 
     // Get GS1 coverage for these ESRS standards
     const esrsStandards = [
-      ...new Set(mappings.map((m: any) => m.esrs_standard)),
+      ...new Set(mappings.map((m: any) => m.esrsStandard)),
     ];
     const coverageResult =
       esrsStandards.length > 0
         ? await db.execute(
             sql.raw(`
-          SELECT esrs_standard, coverage_type, gs1_standard_id
+          SELECT
+            esrs_standard as "esrsStandard",
+            gs1_relevance as "coverageType",
+            mapping_id as "gs1StandardId"
           FROM gs1_esrs_mappings
           WHERE esrs_standard IN (${esrsStandards.map((s: string) => `'${s}'`).join(",")})
         `)
           )
-        : { 0: [] };
-    const coverage = (coverageResult as any)[0] || [];
+        : [];
+    const coverage = extractDbRows(coverageResult);
 
     // Calculate coverage
-    const coveredStandards = new Set(coverage.map((c: any) => c.esrs_standard));
+    const coveredStandards = new Set(coverage.map((c: any) => c.esrsStandard));
     const coveredDatapoints = mappings.filter((m: any) =>
-      coveredStandards.has(m.esrs_standard)
+      coveredStandards.has(m.esrsStandard)
     );
 
     // Identify gaps
     const gaps = mappings
-      .filter((m: any) => !coveredStandards.has(m.esrs_standard))
+      .filter((m: any) => !coveredStandards.has(m.esrsStandard))
       .slice(0, 10)
       .map((m: any) => ({
-        datapointId: m.esrs_datapoint_id,
-        datapointName: m.datapoint_name,
+        datapointId: m.esrsDatapointId,
+        datapointName: m.datapointName,
         priority:
-          m.relevance_score > 0.8
+          m.relevanceScore > 0.8
             ? "high"
-            : m.relevance_score > 0.5
+            : m.relevanceScore > 0.5
               ? "medium"
               : "low",
-        recommendation: `Consider implementing GS1 standards to cover ${m.esrs_standard} requirements`,
+        recommendation: `Consider implementing GS1 standards to cover ${m.esrsStandard} requirements`,
       }));
 
     // Generate recommendations
@@ -504,11 +399,11 @@ async function performGapAnalysis(
         .filter((s: string) => !coveredStandards.has(s))
         .slice(0, 3)
         .join(", ")} to improve coverage`,
-      `Current GS1 coverage addresses ${Math.round((coveredDatapoints.length / mappings.length) * 100)}% of ${regulation.name} requirements`,
+      `Current GS1 coverage addresses ${Math.round((coveredDatapoints.length / mappings.length) * 100)}% of ${regulation.title} requirements`,
     ];
 
     return {
-      regulation: regulation.name,
+      regulation: regulation.title,
       totalDatapoints: mappings.length,
       coveredDatapoints: coveredDatapoints.length,
       coveragePercentage:
@@ -521,31 +416,6 @@ async function performGapAnalysis(
   } catch (error) {
     serverLogger.error("[AskISA-v2] Gap analysis failed:", error);
     return null;
-  }
-}
-
-/**
- * Generate query embedding using OpenAI
- */
-async function generateQueryEmbedding(query: string): Promise<number[]> {
-  try {
-    const response = await fetch("https://api.openai.com/v1/embeddings", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "text-embedding-3-small",
-        input: query,
-      }),
-    });
-
-    const data = await response.json();
-    return data.data?.[0]?.embedding || [];
-  } catch (error) {
-    serverLogger.error("[AskISA-v2] Embedding generation failed:", error);
-    return [];
   }
 }
 
@@ -584,23 +454,40 @@ export const askISAV2Router = router({
       try {
         const intent = classifyQueryIntent(query);
         const retrievalPlan = buildIntentRetrievalPlan(intent);
+        const hasExplicitFilters = Boolean(
+          filters?.sourceTypes?.length ||
+            filters?.semanticLayers?.length ||
+            filters?.authorityLevels?.length
+        );
 
-        // Generate embedding for query
-        const queryEmbedding = await generateQueryEmbedding(query);
-        if (queryEmbedding.length === 0) {
-          return { results: [], error: "Failed to generate query embedding" };
+        let results: KnowledgeEmbeddingResult[] = [];
+
+        if (hasExplicitFilters) {
+          const queryEmbedding = await buildAskISAV2QueryEmbedding(query);
+          if (queryEmbedding.length === 0) {
+            return { results: [], error: "Failed to generate query embedding" };
+          }
+
+          const filteredResults = await searchKnowledgeEmbeddings(
+            queryEmbedding,
+            {
+              limit: Math.max(limit * 4, 24),
+              sourceTypes: filters?.sourceTypes,
+              semanticLayers: filters?.semanticLayers,
+              authorityLevels: filters?.authorityLevels,
+            }
+          );
+          results = rerankAskISAV2Results(query, intent, filteredResults).slice(
+            0,
+            limit
+          ) as KnowledgeEmbeddingResult[];
+        } else {
+          const candidateBundle = await retrieveAskISAV2Candidates(query, intent);
+          results = candidateBundle.rerankedResults.slice(
+            0,
+            limit
+          ) as KnowledgeEmbeddingResult[];
         }
-
-        // Search knowledge embeddings with intent-aware defaults when explicit filters are absent.
-        const results = await searchKnowledgeEmbeddings(queryEmbedding, {
-          limit,
-          sourceTypes:
-            filters?.sourceTypes ?? retrievalPlan.primary.sourceTypes,
-          semanticLayers:
-            filters?.semanticLayers ?? retrievalPlan.primary.semanticLayers,
-          authorityLevels:
-            filters?.authorityLevels ?? retrievalPlan.primary.authorityLevels,
-        });
 
         return {
           results: results.map(r => ({
@@ -653,16 +540,20 @@ export const askISAV2Router = router({
     try {
       const result = await db.execute(
         sql.raw(`
-        SELECT DISTINCT r.id, r.name, r.short_name, COUNT(rem.id) as datapoint_count
+        SELECT DISTINCT
+          r.id,
+          r.title as name,
+          r.celex_id as short_name,
+          COUNT(rem.id) as datapoint_count
         FROM regulations r
         LEFT JOIN regulation_esrs_mappings rem ON r.id = rem.regulation_id
-        GROUP BY r.id, r.name, r.short_name
+        GROUP BY r.id, r.title, r.celex_id
         HAVING datapoint_count > 0
         ORDER BY datapoint_count DESC
       `)
       );
 
-      return (result as any)[0] || [];
+      return extractDbRows(result);
     } catch (error) {
       serverLogger.error("[AskISA-v2] Failed to get regulations:", error);
       return [];
@@ -732,40 +623,19 @@ export const askISAV2Router = router({
             span.setAttribute("intent", intent);
             span.setAttribute("retrieval.strategy", retrievalPlan.label);
 
-            // Step 1: Generate query embedding
-            const queryEmbedding = await generateQueryEmbedding(question);
-            if (queryEmbedding.length === 0) {
+            const candidateBundle = await retrieveAskISAV2Candidates(
+              question,
+              intent
+            );
+            if (candidateBundle.queryEmbedding.length === 0) {
               return { error: "Failed to process question" };
             }
 
-            // Step 2: Assemble intent-aware retrieval candidates + E-06 news augmentation.
-            const [primaryResults, fallbackResults, newsResults] =
-              await Promise.all([
-                searchKnowledgeEmbeddings(
-                  queryEmbedding,
-                  retrievalPlan.primary
-                ),
-                searchKnowledgeEmbeddings(
-                  queryEmbedding,
-                  retrievalPlan.fallback
-                ),
-                intent === "REGULATORY_CHANGE" || intent === "NEWS_QUERY"
-                  ? searchRecentNewsArticles(question, 4)
-                  : Promise.resolve([] as KnowledgeEmbeddingResult[]),
-              ]);
-
-            const searchResults = mergeKnowledgeResults([
-              newsResults,
-              primaryResults,
-              fallbackResults,
-            ]).sort(
-              (a, b) => retrievalPriorityScore(b) - retrievalPriorityScore(a)
-            );
-
-            const mappingSignals = deriveMappingSignals(
-              question,
-              searchResults
-            );
+            const searchResults = candidateBundle.rerankedResults.slice(
+              0,
+              12
+            ) as KnowledgeEmbeddingResult[];
+            const mappingSignals = candidateBundle.mappingSignals;
             const shouldFetchMappingContext =
               mappingSignals.regulationIds.length > 0 ||
               mappingSignals.esrsStandards.length > 0;
@@ -1055,6 +925,62 @@ ${contextParts.join("\n\n")}`;
             };
 
             if (!stageAValidation.passed) {
+              if (intent === "ESRS_MAPPING") {
+                const fallbackAnswer = buildStructuredMappingFallbackAnswer(
+                  searchResults,
+                  mappingContextSummary
+                );
+
+                if (fallbackAnswer) {
+                  const fallbackClaimVerification = verifyResponseClaims(
+                    fallbackAnswer,
+                    searchResults.map(r => ({
+                      id: r.id,
+                      title: r.title,
+                      url: r.url,
+                      authorityLevel: r.authorityLevel,
+                    }))
+                  );
+
+                  const fallbackStageAValidation = validateAskISAStageAAnswer({
+                    answer: fallbackAnswer,
+                    sourceCount: searchResults.length,
+                    evidenceReadySourceCount,
+                    verifiedEvidenceSourceCount,
+                    needsVerificationSourceCount,
+                    deprecatedSourceCount,
+                    claimVerification: fallbackClaimVerification,
+                    knowledgeEmbeddingMode:
+                      hasHighSimilaritySources && !hasEvidenceCitation,
+                  });
+
+                  if (fallbackAnswer) {
+                    return {
+                      answer: fallbackAnswer,
+                      sources: responseSources,
+                      citationValid: fallbackStageAValidation.citationValid,
+                      missingCitations:
+                        fallbackStageAValidation.missingCitations,
+                      claimVerification: {
+                        verificationRate:
+                          fallbackClaimVerification.verificationRate,
+                        totalClaims: fallbackClaimVerification.totalClaims,
+                        verifiedClaims: fallbackClaimVerification.verifiedClaims,
+                        unverifiedClaims:
+                          fallbackClaimVerification.unverifiedClaims,
+                        warnings: Array.from(
+                          new Set([
+                            ...fallbackClaimVerification.warnings,
+                            ...fallbackStageAValidation.warnings,
+                          ])
+                        ),
+                      },
+                      ...sharedPayload,
+                    };
+                  }
+                }
+              }
+
               return {
                 answer: ASK_ISA_STAGE_A_ABSTENTION_MESSAGE,
                 sources: responseSources,

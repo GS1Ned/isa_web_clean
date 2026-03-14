@@ -1,6 +1,6 @@
 # Program Plan
 
-Date: 2026-03-13
+Date: 2026-03-14
 Status: EXECUTED_FOR_ACTIVE_SLICE
 
 ## Prioritization Method
@@ -23,8 +23,9 @@ Status: EXECUTED_FOR_ACTIVE_SLICE
 | 8    | Promote `askISAV2` to the primary `/ask` route with a classic fallback  | The richer Ask ISA runtime already existed but users were still defaulting into the legacy path        | Route `/ask` to `AskISAEnhanced`, preserve `/ask/classic`, and keep expert, search, and classic workflows reviewable               | Done     |
 | 9    | Make `askISAV2` retrieval intent-aware and mapping-context aware        | V2 had deeper assets, but retrieval defaults and prompt assembly were still generic                    | Add intent-specific retrieval plans, mapping-context enrichment, authority/confidence summaries, and smarter gap-analysis triggers | Done     |
 | 10   | Expose the intelligence gain directly in the UI                         | Intelligence only matters if users can see and steer it                                                | Add expert answer surface, retrieval-strategy badges, knowledge stats, and evidence/trust panels                                   | Done     |
-| 11   | Add `/ask` parity eval coverage for the v2 route                        | Route promotion increases the need for measurable scenario coverage                                    | Add scenario evals and before/after comparisons for v2 expert flows                                                                | Deferred |
-| 12   | Expand broader retrieval/reranking depth beyond current v2 plans        | More upside remains, but it requires broader schema/runtime review than this slice                     | Defer until v2 route adoption is measured and eval scaffolding is expanded                                                         | Deferred |
+| 11   | Add `/ask` parity eval coverage for the v2 route                        | Route promotion increases the need for measurable scenario coverage                                    | Add scenario evals and before/after comparisons for v2 expert flows                                                                | Done     |
+| 12   | Repair live v2 retrieval drift and expand targeted reranking depth      | Material answer-quality gains remained blocked by runtime/schema drift and weak exact-match rescue     | Replace pgvector-only assumptions, normalize live metadata, and rerank exact ESRS / GS1 mapping scenarios                         | Done     |
+| 13   | Expand broader conflict/freshness-aware reranking beyond current v2 plans | More upside remains, but it requires wider policy/runtime review than this slice                       | Defer until the new scenario suite is extended and conflict/freshness tradeoffs are measured                                       | Deferred |
 
 ## Execution Slices
 
@@ -68,15 +69,21 @@ Status: EXECUTED_FOR_ACTIVE_SLICE
 - FACT: Expert-first `/ask` route exposure with classic fallback and retrieval transparency
 - Files: `client/src/App.tsx`, `client/src/pages/AskISAEnhanced.tsx`, `client/src/components/AskISAExpertMode.tsx`, `client/src/components/EnhancedSearchPanel.tsx`, `client/src/components/AuthorityBadge.tsx`, `client/src/components/AskISAExpertMode.test.tsx`, `client/src/pages/AskISAEnhanced.test.tsx`
 
+### Slice I
+
+- FACT: Scenario-eval-driven retrieval repair and reranking for Ask ISA v2
+- Files: `server/routers/ask-isa-v2.ts`, `server/routers/ask-isa-v2-retrieval.ts`, `server/db-esrs-gs1-mapping.ts`, `server/services/canonical-facts/index.ts`, `server/routers/__tests__/ask-isa-v2-retrieval.test.ts`, `scripts/eval/run-ask-isa-v2-scenario-eval.ts`, `data/evaluation/golden/ask_isa/scenario_cases_v2_live.json`
+
 ## Validation Plan
 
 1. FACT: Run focused Ask ISA v2 server/client tests plus `server/hybrid-search.test.ts`.
 2. FACT: Run touched-file compiler isolation via `pnpm exec tsc --noEmit --pretty false` and filter for edited files.
 3. FACT: Keep canonical doc/planning validation in scope after updating repo artifacts.
-4. RECOMMENDATION: Treat repo-wide `pnpm check` and repo-wide `no-console` debt as baseline cleanup programs unless the edited files contribute new failures.
+4. FACT: Run the live scenario-eval harness at `scripts/eval/run-ask-isa-v2-scenario-eval.ts` after reranking changes.
+5. RECOMMENDATION: Treat repo-wide `pnpm check` and repo-wide `no-console` debt as baseline cleanup programs unless the edited files contribute new failures.
 
 ## Deferred Next Steps
 
-- RECOMMENDATION: Add scenario eval coverage for `askISAV2.askEnhanced` and `/ask` route adoption before deeper reranking changes.
-- RECOMMENDATION: Inspect whether `askEnhanced` should incorporate additional conflict-resolution or source-freshness scoring once v2 route usage is measured.
+- FACT: Scenario eval coverage for `askISAV2.askEnhanced` now exists at `data/evaluation/golden/ask_isa/scenario_cases_v2_live.json`.
+- RECOMMENDATION: Inspect whether `askEnhanced` should incorporate additional conflict-resolution or source-freshness scoring now that v2 route evals exist.
 - RECOMMENDATION: Run a separate repo-wide TypeScript and `no-console` cleanup program instead of folding that broad baseline work into the Ask ISA intelligence PR.

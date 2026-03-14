@@ -56,6 +56,8 @@ const RELATION_PATTERNS: Array<{ predicate: string; pattern: RegExp }> = [
   { predicate: "aligns_with", pattern: /\baligns?\s+with\b/i },
 ];
 
+let canonicalFactsAvailable: boolean | null = null;
+
 function buildEvidenceKey(sourceChunkId: number, contentHash: string): string {
   return `ke:${sourceChunkId}:${contentHash}`;
 }
@@ -226,6 +228,22 @@ export async function findCanonicalFactsForQuery(query: string, limit: number = 
   const db = await getDb();
   if (!db) return [];
 
+  if (canonicalFactsAvailable === null) {
+    try {
+      const result = await db.execute(sql`
+        SELECT to_regclass('public.canonical_facts') as table_name
+      `);
+      const rows = Array.isArray(result)
+        ? (result as Record<string, unknown>[])
+        : (((result as { rows?: Record<string, unknown>[] })?.rows || []) as Record<string, unknown>[]);
+      canonicalFactsAvailable = Boolean(rows[0]?.table_name);
+    } catch {
+      canonicalFactsAvailable = false;
+    }
+  }
+
+  if (!canonicalFactsAvailable) return [];
+
   const terms = Array.from(
     new Set(
       query
@@ -237,7 +255,7 @@ export async function findCanonicalFactsForQuery(query: string, limit: number = 
   );
 
   try {
-    const [rows] = await db.execute(sql`
+    const result = await db.execute(sql`
       SELECT
         id,
         source_id as sourceId,
@@ -254,7 +272,9 @@ export async function findCanonicalFactsForQuery(query: string, limit: number = 
       LIMIT 500
     `);
 
-    const list = (rows as any[]) || [];
+    const list = Array.isArray(result)
+      ? (result as any[])
+      : (((result as { rows?: any[] })?.rows || []) as any[]);
     const scored = list
       .map((row) => {
         const haystack = `${row.subject || ""} ${row.predicate || ""} ${row.objectValue || ""}`.toLowerCase();

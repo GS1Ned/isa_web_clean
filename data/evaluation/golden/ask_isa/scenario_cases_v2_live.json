@@ -1,0 +1,108 @@
+{
+  "dataset_id": "ask_isa_v2_scenarios_live",
+  "notes": "Live Ask ISA v2 retrieval and answer-quality scenarios focused on regulation identification, exact ESRS clause rescue, GS1 mapping support, and standards-context usefulness.",
+  "cases": [
+    {
+      "id": "ASK-V2-SCEN-001",
+      "query": "What changed in ESPR for Digital Product Passports?",
+      "expectedIntent": "REGULATORY_CHANGE",
+      "topK": 5,
+      "expectedAnyTitlePatterns": [
+        "ESPR - Digital Product Passport Delegated Act",
+        "Ecodesign for Sustainable Products Regulation (ESPR)"
+      ],
+      "requiredTopKSourceTypes": ["regulation"],
+      "preferredTop1SourceType": "regulation",
+      "failureModes": [
+        "zero_results",
+        "missing_espr_regulation",
+        "no_regulation_in_top_results"
+      ]
+    },
+    {
+      "id": "ASK-V2-SCEN-002",
+      "query": "Which GS1 identifiers are relevant for a Digital Product Passport?",
+      "expectedIntent": "ESRS_MAPPING",
+      "topK": 5,
+      "expectedAnyTitlePatterns": [
+        "Digital Product Passport Framework",
+        "GS1 Electronics Passport Implementation"
+      ],
+      "requiredTopKSourceTypes": ["gs1_standard"],
+      "preferredTop1SourceType": "gs1_standard",
+      "failureModes": [
+        "no_gs1_standard_in_top_results",
+        "regulation_only_answer_context"
+      ]
+    },
+    {
+      "id": "ASK-V2-SCEN-003",
+      "query": "What regulation applies to deforestation due diligence?",
+      "expectedIntent": "GENERAL_QA",
+      "topK": 5,
+      "expectedAnyTitlePatterns": ["EUDR - EU Deforestation Regulation"],
+      "requiredTopKSourceTypes": ["regulation"],
+      "preferredTop1TitlePattern": "EUDR - EU Deforestation Regulation",
+      "failureModes": [
+        "wrong_regulation_top1",
+        "weak_due_diligence_grounding"
+      ]
+    },
+    {
+      "id": "ASK-V2-SCEN-004",
+      "query": "Explain ESRS E1-6 at a high level.",
+      "expectedIntent": "GENERAL_QA",
+      "topK": 5,
+      "expectedAnyTitlePatterns": [
+        "E1-6_02 - E1",
+        "E1-6_05 - E1",
+        "E1-6_08 - E1"
+      ],
+      "requiredTopKSourceTypes": ["esrs_datapoint"],
+      "answerExpectation": {
+        "expectNonAbstain": true,
+        "minimumSourceCount": 5
+      },
+      "failureModes": [
+        "generic_esrs_neighbors_dominate",
+        "exact_clause_not_in_top_results"
+      ]
+    },
+    {
+      "id": "ASK-V2-SCEN-005",
+      "query": "Map GS1 attributes to ESRS E1-6 emissions disclosures.",
+      "expectedIntent": "ESRS_MAPPING",
+      "topK": 5,
+      "expectedAnyTitlePatterns": [
+        "E1-6_07 - E1",
+        "SSCC enables logistics emissions tracking for E1",
+        "Digital Link provides carbon footprint access for E1"
+      ],
+      "requiredTopKSourceTypes": ["esrs_datapoint", "gs1_standard"],
+      "answerExpectation": {
+        "expectNonAbstain": true,
+        "requireMappingSignals": true
+      },
+      "failureModes": [
+        "esrs_only_context",
+        "mapping_answer_abstains",
+        "no_gs1_support_signal"
+      ]
+    },
+    {
+      "id": "ASK-V2-SCEN-006",
+      "query": "Which traceability standards support the EU Battery Regulation?",
+      "expectedIntent": "GENERAL_QA",
+      "topK": 5,
+      "expectedAnyTitlePatterns": [
+        "EU Battery Regulation",
+        "GS1 Battery Passport Implementation"
+      ],
+      "requiredTopKSourceTypes": ["regulation", "gs1_standard"],
+      "failureModes": [
+        "no_battery_standard_support",
+        "missing_traceability_context"
+      ]
+    }
+  ]
+}
