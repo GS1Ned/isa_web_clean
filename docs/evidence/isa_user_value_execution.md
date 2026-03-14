@@ -4,7 +4,7 @@ Date: 2026-03-14
 Current branch: `codex/ask-isa-v2-decision-grade`
 Base branch: `main`
 Merged groundwork: `#326`, `#328`, `#329`, `#330`
-Current PR: Pending creation for the decision-grade slice
+Current PR: `#332`
 Target branch: `main`
 
 ## 7. Execution Log
@@ -165,6 +165,7 @@ Target branch: `main`
 - Base branch: `main`
 - Repository: `GS1Ned/isa_web_clean`
 - Proposed PR title: `Make Ask ISA v2 more decision-grade with eval-driven evidence ranking`
+- Current PR: `#332`
 - Proposed PR summary:
   - Expand the live Ask ISA v2 scenario-eval suite to ten decision-grade prompts covering trust, cautious confidence, gap triggers, and useful gap snapshots.
   - Add provenance-aware reranking so binding regulations lead trust and gap-analysis prompts while GS1 guidance remains supporting context.
