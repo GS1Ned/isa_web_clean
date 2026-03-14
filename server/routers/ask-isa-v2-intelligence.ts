@@ -73,7 +73,7 @@ export function classifyQueryIntent(question: string): QueryIntent {
     return "REGULATORY_CHANGE";
   }
   if (
-    /\bgap\b|coverage|missing|uncovered|not covered|lack(ing)?/i.test(question)
+    /\bgaps?\b|coverage|missing|uncovered|not covered|lack(ing)?/i.test(question)
   ) {
     return "GAP_ANALYSIS";
   }

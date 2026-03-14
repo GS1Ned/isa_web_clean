@@ -56,6 +56,36 @@ type ExpertResult = {
     level: "official" | "verified" | "guidance" | "industry" | "community";
     breakdown?: Record<string, number>;
   };
+  decisionSummary?: {
+    summary: string;
+    primaryEvidence: Array<{
+      title: string;
+      sourceType: string;
+      sourceRole?: string | null;
+      authorityTier?: string | null;
+      evidenceReady: boolean;
+      needsVerification: boolean;
+      reasons: string[];
+    }>;
+    supportingEvidence: Array<{
+      title: string;
+      sourceType: string;
+      sourceRole?: string | null;
+      authorityTier?: string | null;
+      evidenceReady: boolean;
+      needsVerification: boolean;
+      reasons: string[];
+    }>;
+    cautionFlags: string[];
+  } | null;
+  gapTrigger?: {
+    requested: boolean;
+    activated: boolean;
+    mode: "explicit" | "auto" | "suppressed" | "none";
+    reason: string;
+    regulationId?: number | null;
+    regulationTitle?: string | null;
+  } | null;
   explainers?: {
     whatIsIt?: string | null;
     whenToUse?: string | null;
@@ -116,6 +146,11 @@ type ExpertResult = {
     evidenceKey?: string | null;
     citationLabel?: string | null;
     needsVerification?: boolean;
+    sourceRole?: string | null;
+    authorityTier?: string | null;
+    publicationStatus?: string | null;
+    evidenceRole?: "primary" | "supporting" | "context";
+    selectionReasons?: string[];
   }>;
 };
 
@@ -424,6 +459,140 @@ export function AskISAExpertMode() {
               />
             ) : null}
 
+            {result.decisionSummary ? (
+              <Card className="border-slate-200 bg-white/95 shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-base">Decision Basis</CardTitle>
+                  <CardDescription>
+                    Why ISA chose the leading evidence and what should still be
+                    treated cautiously.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 text-sm">
+                  <div className="text-slate-700">
+                    {result.decisionSummary.summary}
+                  </div>
+
+                  {result.decisionSummary.primaryEvidence.length ? (
+                    <div className="space-y-2">
+                      <div className="font-medium text-slate-900">
+                        Primary evidence
+                      </div>
+                      {result.decisionSummary.primaryEvidence.map(item => (
+                        <div
+                          key={`${item.title}-${item.sourceType}`}
+                          className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+                        >
+                          <div className="font-medium text-slate-900">
+                            {item.title}
+                          </div>
+                          <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                            <Badge variant="secondary">{item.sourceType}</Badge>
+                            {item.sourceRole ? (
+                              <Badge variant="outline">{item.sourceRole}</Badge>
+                            ) : null}
+                            {item.authorityTier ? (
+                              <Badge variant="outline">{item.authorityTier}</Badge>
+                            ) : null}
+                            {item.evidenceReady ? (
+                              <Badge variant="secondary">Evidence ready</Badge>
+                            ) : null}
+                            {item.needsVerification ? (
+                              <Badge variant="destructive">
+                                Needs verification
+                              </Badge>
+                            ) : null}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  {result.decisionSummary.supportingEvidence.length ? (
+                    <div className="space-y-2">
+                      <div className="font-medium text-slate-900">
+                        Supporting evidence
+                      </div>
+                      {result.decisionSummary.supportingEvidence.map(item => (
+                        <div
+                          key={`${item.title}-${item.sourceType}`}
+                          className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+                        >
+                          <div className="font-medium text-slate-900">
+                            {item.title}
+                          </div>
+                          <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                            <Badge variant="secondary">{item.sourceType}</Badge>
+                            {item.sourceRole ? (
+                              <Badge variant="outline">{item.sourceRole}</Badge>
+                            ) : null}
+                            {item.authorityTier ? (
+                              <Badge variant="outline">{item.authorityTier}</Badge>
+                            ) : null}
+                            {item.evidenceReady ? (
+                              <Badge variant="secondary">Evidence ready</Badge>
+                            ) : null}
+                            {item.needsVerification ? (
+                              <Badge variant="destructive">
+                                Needs verification
+                              </Badge>
+                            ) : null}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  {result.decisionSummary.cautionFlags.length ? (
+                    <div className="space-y-2">
+                      <div className="font-medium text-slate-900">
+                        Caution flags
+                      </div>
+                      {result.decisionSummary.cautionFlags.map(flag => (
+                        <div
+                          key={flag}
+                          className="flex items-start gap-2 text-slate-600"
+                        >
+                          <AlertTriangle className="mt-0.5 h-3.5 w-3.5 text-amber-600" />
+                          <span>{flag}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                </CardContent>
+              </Card>
+            ) : null}
+
+            {result.gapTrigger ? (
+              <Card className="border-slate-200 bg-white/95 shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-base">Gap Trigger</CardTitle>
+                  <CardDescription>
+                    How ISA decided whether to auto-run a coverage gap
+                    assessment.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="secondary">{result.gapTrigger.mode}</Badge>
+                    {result.gapTrigger.activated ? (
+                      <Badge className="bg-emerald-600 text-white">
+                        Activated
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline">Not activated</Badge>
+                    )}
+                  </div>
+                  <div className="text-slate-700">{result.gapTrigger.reason}</div>
+                  {result.gapTrigger.regulationTitle ? (
+                    <div className="text-slate-600">
+                      Regulation basis: {result.gapTrigger.regulationTitle}
+                    </div>
+                  ) : null}
+                </CardContent>
+              </Card>
+            ) : null}
+
             {result.mappingContext?.hasSignals ? (
               <Card className="border-slate-200 bg-white/95 shadow-sm">
                 <CardHeader>
@@ -549,6 +718,9 @@ export function AskISAExpertMode() {
                         <Badge variant="outline">
                           {source.similarity}% similarity
                         </Badge>
+                        {source.evidenceRole ? (
+                          <Badge variant="outline">{source.evidenceRole}</Badge>
+                        ) : null}
                         {source.evidenceKey ? (
                           <Badge variant="secondary">Evidence ready</Badge>
                         ) : null}
@@ -557,7 +729,20 @@ export function AskISAExpertMode() {
                             Needs verification
                           </Badge>
                         ) : null}
+                        {source.sourceRole ? (
+                          <Badge variant="outline">{source.sourceRole}</Badge>
+                        ) : null}
                       </div>
+
+                      {source.selectionReasons?.length ? (
+                        <div className="flex flex-wrap gap-2 text-xs">
+                          {source.selectionReasons.map(reason => (
+                            <Badge key={reason} variant="secondary">
+                              {reason}
+                            </Badge>
+                          ))}
+                        </div>
+                      ) : null}
 
                       {source.url ? (
                         <a

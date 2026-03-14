@@ -34,9 +34,11 @@ import {
   summarizeMappingContext,
 } from "./ask-isa-v2-intelligence";
 import {
+  type AskISAV2DecisionSummary,
   buildAskISAV2QueryEmbedding,
+  applyAskISAV2DecisionRerank,
+  buildAskISAV2DecisionSummary,
   expandEsrsStandardsForMappings,
-  rerankAskISAV2Results,
   retrieveAskISAV2Candidates,
   searchKnowledgeEmbeddings,
 } from "./ask-isa-v2-retrieval";
@@ -135,6 +137,15 @@ interface GapAnalysisResult {
     recommendation: string;
   }>;
   recommendations: string[];
+}
+
+interface AskISAV2GapTrigger {
+  requested: boolean;
+  activated: boolean;
+  mode: "explicit" | "auto" | "suppressed" | "none";
+  reason: string;
+  regulationId: number | null;
+  regulationTitle: string | null;
 }
 
 function extractDbRows(result: unknown): Record<string, unknown>[] {
@@ -252,6 +263,128 @@ function buildStructuredMappingFallbackAnswer(
   ]
     .filter(Boolean)
     .join(" ");
+}
+
+function buildGapAnalysisTrigger(input: {
+  includeGapAnalysis: boolean;
+  regulationId?: number;
+  intent: string;
+  searchResults: KnowledgeEmbeddingResult[];
+}): AskISAV2GapTrigger {
+  if (typeof input.regulationId === "number") {
+    const explicitRegulation = input.searchResults.find(
+      result => result.sourceType === "regulation" && result.sourceId === input.regulationId
+    );
+    return {
+      requested: true,
+      activated: true,
+      mode: "explicit",
+      reason: "Gap analysis activated from the explicit regulation selection.",
+      regulationId: input.regulationId,
+      regulationTitle: explicitRegulation?.title ?? null,
+    };
+  }
+
+  if (input.intent !== "GAP_ANALYSIS") {
+    return {
+      requested: input.includeGapAnalysis,
+      activated: false,
+      mode: input.includeGapAnalysis ? "suppressed" : "none",
+      reason: input.includeGapAnalysis
+        ? "Gap analysis auto-activation is reserved for gap-oriented questions unless a regulation is explicitly supplied."
+        : "Gap analysis was not requested for this question.",
+      regulationId: null,
+      regulationTitle: null,
+    };
+  }
+
+  const inferredRegulation = input.searchResults.find(
+    result =>
+      result.sourceType === "regulation" &&
+      !result.isDeprecated &&
+      (result.sourceRole === "normative_authority" ||
+        result.authorityTier === "EU" ||
+        result.authorityLevel === "binding" ||
+        result.authorityLevel === "authoritative") &&
+      result.similarity >= 0.4
+  );
+
+  if (!inferredRegulation) {
+    return {
+      requested: true,
+      activated: false,
+      mode: "suppressed",
+      reason:
+        "Gap analysis was suppressed because no authoritative regulation match was strong enough to justify an inferred coverage assessment.",
+      regulationId: null,
+      regulationTitle: null,
+    };
+  }
+
+  return {
+    requested: true,
+    activated: true,
+    mode: "auto",
+    reason: `Gap analysis auto-activated from the strongest regulation match: ${inferredRegulation.title}.`,
+    regulationId: inferredRegulation.sourceId,
+    regulationTitle: inferredRegulation.title,
+  };
+}
+
+function buildDecisionUncertainty(input: {
+  decisionSummary: AskISAV2DecisionSummary | null;
+  canonicalFactsCount: number;
+}): string | null {
+  const cautionFlags = input.decisionSummary?.cautionFlags ?? [];
+  if (cautionFlags.length > 0) {
+    return cautionFlags.join(" ");
+  }
+
+  if (input.canonicalFactsCount === 0) {
+    return "No canonical facts were found for this query; the answer relies on retrieved documents and structured mapping context only.";
+  }
+
+  return null;
+}
+
+function calculateAskISAV2DecisionConfidence(input: {
+  decisionSummary: AskISAV2DecisionSummary | null;
+  sources: Array<{
+    evidenceKey?: string | null;
+    needsVerification?: boolean;
+    isDeprecated?: boolean;
+    sourceRole?: string | null;
+  }>;
+}) {
+  const reliableSourceCount = input.sources.filter(
+    source =>
+      Boolean(source.evidenceKey) &&
+      !source.needsVerification &&
+      !source.isDeprecated
+  ).length;
+
+  const baseConfidence = calculateAskIsaConfidenceFromSourceCount(
+    reliableSourceCount
+  );
+  let score = baseConfidence.score;
+  const primarySource = input.sources[0];
+  const cautionFlags = input.decisionSummary?.cautionFlags ?? [];
+
+  if (primarySource?.needsVerification) score -= 0.18;
+  if (!primarySource?.evidenceKey) score -= 0.16;
+  if (primarySource?.sourceRole === "normative_authority" && primarySource.evidenceKey && !primarySource.needsVerification) {
+    score += 0.05;
+  }
+  if (cautionFlags.some(flag => /verification/i.test(flag))) score -= 0.08;
+  if (cautionFlags.some(flag => /proxy/i.test(flag))) score -= 0.1;
+
+  score = Math.max(0, Math.min(0.95, Number(score.toFixed(4))));
+
+  return {
+    level: score >= 0.75 ? "high" : score >= 0.5 ? "medium" : "low",
+    score,
+    sourceCount: reliableSourceCount,
+  } as const;
 }
 
 
@@ -376,6 +509,9 @@ async function performGapAnalysis(
     const coveredDatapoints = mappings.filter((m: any) =>
       coveredStandards.has(m.esrsStandard)
     );
+    const uncoveredStandards = esrsStandards.filter(
+      (standard: string) => !coveredStandards.has(standard)
+    );
 
     // Identify gaps
     const gaps = mappings
@@ -394,13 +530,22 @@ async function performGapAnalysis(
       }));
 
     // Generate recommendations
-    const recommendations = [
-      `Focus on implementing GS1 standards for ${esrsStandards
-        .filter((s: string) => !coveredStandards.has(s))
-        .slice(0, 3)
-        .join(", ")} to improve coverage`,
-      `Current GS1 coverage addresses ${Math.round((coveredDatapoints.length / mappings.length) * 100)}% of ${regulation.title} requirements`,
-    ];
+    const recommendations =
+      mappings.length === 0
+        ? [
+            `No ESRS datapoint mappings were found for ${regulation.title}, so ISA cannot infer a reliable GS1 coverage assessment yet.`,
+          ]
+        : uncoveredStandards.length > 0
+          ? [
+              `Focus on implementing GS1 standards for ${uncoveredStandards
+                .slice(0, 3)
+                .join(", ")} to improve coverage.`,
+              `Current GS1 coverage addresses ${Math.round((coveredDatapoints.length / mappings.length) * 100)}% of ${regulation.title} requirements.`,
+            ]
+          : [
+              `Current GS1 coverage maps to all tracked ESRS standards for ${regulation.title}.`,
+              `Validate operational completeness at datapoint level before treating this as full compliance coverage.`,
+            ];
 
     return {
       regulation: regulation.title,
@@ -477,10 +622,12 @@ export const askISAV2Router = router({
               authorityLevels: filters?.authorityLevels,
             }
           );
-          results = rerankAskISAV2Results(query, intent, filteredResults).slice(
-            0,
-            limit
-          ) as KnowledgeEmbeddingResult[];
+          const decisionRerank = await applyAskISAV2DecisionRerank(
+            query,
+            intent,
+            filteredResults
+          );
+          results = decisionRerank.rerankedResults.slice(0, limit) as KnowledgeEmbeddingResult[];
         } else {
           const candidateBundle = await retrieveAskISAV2Candidates(query, intent);
           results = candidateBundle.rerankedResults.slice(
@@ -647,6 +794,9 @@ export const askISAV2Router = router({
               : { regulationMappings: [], gs1Mappings: [] };
             const mappingContextSummary =
               summarizeMappingContext(mappingContext);
+            const decisionSummary =
+              candidateBundle.decisionSummary ??
+              buildAskISAV2DecisionSummary(question, searchResults);
 
             const validatedSources = await validateCitations(
               searchResults.map(r => ({
@@ -683,18 +833,16 @@ export const askISAV2Router = router({
               searchResults.some(r => r.similarity > 0.4);
             const hasCanonicalFacts = canonicalFactsForOutput.length > 0;
 
+            const gapTrigger = buildGapAnalysisTrigger({
+              includeGapAnalysis,
+              regulationId,
+              intent,
+              searchResults,
+            });
+
             let gapAnalysis: GapAnalysisResult | null = null;
-            const effectiveGapRegulationId =
-              regulationId ??
-              (intent === "GAP_ANALYSIS" &&
-              mappingSignals.regulationIds.length > 0
-                ? mappingSignals.regulationIds[0]
-                : undefined);
-            if (
-              (includeGapAnalysis || intent === "GAP_ANALYSIS") &&
-              effectiveGapRegulationId
-            ) {
-              gapAnalysis = await performGapAnalysis(effectiveGapRegulationId);
+            if (gapTrigger.activated && gapTrigger.regulationId) {
+              gapAnalysis = await performGapAnalysis(gapTrigger.regulationId);
             }
             const gapAnalysisSummary = gapAnalysis
               ? {
@@ -731,6 +879,8 @@ export const askISAV2Router = router({
                 uncertainty:
                   "No knowledge embeddings or canonical facts matched this query.",
                 gapAnalysis: gapAnalysisSummary,
+                gapTrigger,
+                decisionSummary: candidateBundle.decisionSummary,
                 mappingContext: mappingContextSummary,
                 retrievalProfile,
                 queryIntent: intent,
@@ -792,6 +942,32 @@ ${contextParts.join("\n\n")}`;
                 .join(", ")}`;
             }
 
+            if (decisionSummary) {
+              const primaryLines = decisionSummary.primaryEvidence
+                .map(
+                  item =>
+                    `- ${item.title} (${item.sourceType}${item.sourceRole ? `, ${item.sourceRole}` : ""})`
+                )
+                .join("\n");
+              const supportingLines = decisionSummary.supportingEvidence
+                .map(
+                  item =>
+                    `- ${item.title} (${item.sourceType}${item.sourceRole ? `, ${item.sourceRole}` : ""})`
+                )
+                .join("\n");
+              systemPrompt += `\n\nDecision basis:\n${primaryLines || "- No primary evidence identified."}`;
+              if (supportingLines) {
+                systemPrompt += `\nSupporting evidence:\n${supportingLines}`;
+              }
+              if (decisionSummary.cautionFlags.length) {
+                systemPrompt += `\nCaution flags:\n${decisionSummary.cautionFlags
+                  .map(flag => `- ${flag}`)
+                  .join("\n")}`;
+              }
+            }
+
+            systemPrompt += `\n\nGap trigger posture: ${gapTrigger.reason}`;
+
             // Step 4: Generate answer
             const response = await invokeLLM({
               messages: [
@@ -845,6 +1021,12 @@ ${contextParts.join("\n\n")}`;
                 immutableUri: validated?.immutableUri,
                 citationLabel: validated?.citationLabel,
                 sourceChunkLocator: validated?.sourceChunkLocator,
+                sourceRole: validated?.sourceRole ?? r.sourceRole ?? null,
+                authorityTier: validated?.authorityTier ?? r.authorityTier ?? null,
+                publicationStatus:
+                  validated?.publicationStatus ?? r.publicationStatus ?? null,
+                evidenceRole: r.evidenceRole ?? (index === 0 ? "primary" : index < 4 ? "supporting" : "context"),
+                selectionReasons: r.selectionReasons ?? [],
               };
             });
 
@@ -867,11 +1049,10 @@ ${contextParts.join("\n\n")}`;
               source => source.isDeprecated
             ).length;
 
-            const expertConfidence = calculateAskIsaConfidenceFromSourceCount(
-              verifiedEvidenceSourceCount > 0
-                ? verifiedEvidenceSourceCount
-                : Math.min(searchResults.length, 3)
-            );
+            const expertConfidence = calculateAskISAV2DecisionConfidence({
+              decisionSummary,
+              sources: responseSources,
+            });
             const authoritySummary = calculateAuthorityScore(
               searchResults.map(result => ({
                 authorityLevel: mapAskISAV2AuthorityLevel(
@@ -909,14 +1090,16 @@ ${contextParts.join("\n\n")}`;
             const sharedPayload = {
               confidence: expertConfidence,
               authority: authoritySummary,
+              decisionSummary,
               factsUsed: canonicalFactsForOutput.length > 0,
               facts: canonicalFactsForOutput,
               explainers,
-              uncertainty:
-                canonicalFactsForOutput.length > 0
-                  ? null
-                  : "No canonical facts were found for this query; response is based on document retrieval and structured mapping context only.",
+              uncertainty: buildDecisionUncertainty({
+                decisionSummary,
+                canonicalFactsCount: canonicalFactsForOutput.length,
+              }),
               gapAnalysis: gapAnalysisSummary,
+              gapTrigger,
               mappingContext: mappingContextSummary,
               retrievalProfile,
               queryIntent: intent,
