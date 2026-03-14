@@ -58,6 +58,10 @@ type ExpertResult = {
   };
   decisionSummary?: {
     summary: string;
+    evidenceChoice?: string | null;
+    freshnessSummary?: string | null;
+    conflictSummary?: string | null;
+    nextStep?: string | null;
     primaryEvidence: Array<{
       title: string;
       sourceType: string;
@@ -472,6 +476,50 @@ export function AskISAExpertMode() {
                   <div className="text-slate-700">
                     {result.decisionSummary.summary}
                   </div>
+
+                  {result.decisionSummary.evidenceChoice ? (
+                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                      <div className="font-medium text-slate-900">
+                        Why this source won
+                      </div>
+                      <div className="mt-1 text-slate-700">
+                        {result.decisionSummary.evidenceChoice}
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {result.decisionSummary.freshnessSummary ? (
+                    <div className="rounded-lg border border-sky-100 bg-sky-50/70 p-3">
+                      <div className="font-medium text-slate-900">
+                        Freshness posture
+                      </div>
+                      <div className="mt-1 text-slate-700">
+                        {result.decisionSummary.freshnessSummary}
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {result.decisionSummary.conflictSummary ? (
+                    <div className="rounded-lg border border-amber-100 bg-amber-50/70 p-3">
+                      <div className="font-medium text-slate-900">
+                        Conflict posture
+                      </div>
+                      <div className="mt-1 text-slate-700">
+                        {result.decisionSummary.conflictSummary}
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {result.decisionSummary.nextStep ? (
+                    <div className="rounded-lg border border-emerald-100 bg-emerald-50/70 p-3">
+                      <div className="font-medium text-slate-900">
+                        Recommended next step
+                      </div>
+                      <div className="mt-1 text-slate-700">
+                        {result.decisionSummary.nextStep}
+                      </div>
+                    </div>
+                  ) : null}
 
                   {result.decisionSummary.primaryEvidence.length ? (
                     <div className="space-y-2">

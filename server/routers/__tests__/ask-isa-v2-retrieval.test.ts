@@ -146,6 +146,167 @@ describe("rerankAskISAV2Results", () => {
     expect(ranked[0].title).toContain("Delegated Act");
   });
 
+  it("rescues the newest authoritative DPP source ahead of stale ESRS datapoints", () => {
+    const ranked = rerankAskISAV2Results(
+      "What is the newest authoritative source for DPP identifiers?",
+      "GENERAL_QA",
+      [
+        buildResult({
+          id: 1,
+          sourceType: "esrs_datapoint",
+          title: "BP-2_20 - ESRS 2",
+          content: "Generic governance datapoint.",
+          similarity: 0.77,
+          authorityTier: "EFRAG",
+          sourceRole: "canonical_technical_artifact",
+          evidenceKey: "ke:1:hash",
+          needsVerification: true,
+          verificationAgeDays: 120,
+        }),
+        buildResult({
+          id: 2,
+          sourceType: "regulation",
+          title: "ESPR - Digital Product Passport Delegated Act",
+          content: "Binding Digital Product Passport identifier requirements.",
+          similarity: 0.58,
+          sourceRole: "normative_authority",
+          authorityTier: "EU",
+          publicationStatus: "in_force",
+          evidenceKey: "ke:2:hash",
+          needsVerification: false,
+          verificationAgeDays: 20,
+        }),
+        buildResult({
+          id: 3,
+          sourceType: "gs1_standard",
+          title: "Digital Product Passport Framework",
+          content: "GS1 identifier guidance for DPP implementation.",
+          similarity: 0.56,
+          sourceRole: "normative_authority",
+          authorityTier: "GS1_Global",
+          evidenceKey: "ke:3:hash",
+          needsVerification: false,
+          verificationAgeDays: 18,
+        }),
+      ]
+    );
+
+    expect(ranked[0].title).toBe("ESPR - Digital Product Passport Delegated Act");
+    expect(ranked[1].title).toBe("Digital Product Passport Framework");
+  });
+
+  it("pins the binding regulation ahead of GS1 guidance on explicit conflict questions", () => {
+    const ranked = rerankAskISAV2Results(
+      "Should I follow ESPR delegated act requirements or GS1 guidance when they differ on DPP identifiers?",
+      "GENERAL_QA",
+      [
+        buildResult({
+          id: 1,
+          sourceType: "gs1_standard",
+          title: "GS1 Electronics Passport Implementation",
+          content: "Implementation guidance for DPP identifiers.",
+          similarity: 0.67,
+          sourceRole: "normative_authority",
+          authorityTier: "GS1_Global",
+          evidenceKey: "ke:1:hash",
+          needsVerification: false,
+        }),
+        buildResult({
+          id: 2,
+          sourceType: "regulation",
+          title: "ESPR - Digital Product Passport Delegated Act",
+          content: "Binding delegated act requirements for DPP identifiers.",
+          similarity: 0.61,
+          sourceRole: "normative_authority",
+          authorityTier: "EU",
+          publicationStatus: "in_force",
+          evidenceKey: "ke:2:hash",
+          needsVerification: false,
+        }),
+      ]
+    );
+
+    expect(ranked[0].sourceType).toBe("regulation");
+    expect(ranked[0].title).toContain("Delegated Act");
+    expect(ranked[1].sourceType).toBe("gs1_standard");
+  });
+
+  it("keeps the delegated act ahead of the broader regulation on freshness-sensitive change questions", () => {
+    const ranked = rerankAskISAV2Results(
+      "What changed most recently for battery passport carbon footprint requirements?",
+      "REGULATORY_CHANGE",
+      [
+        buildResult({
+          id: 1,
+          sourceType: "regulation",
+          title: "EU Battery Regulation",
+          content: "Battery passport framework requirements.",
+          similarity: 0.66,
+          sourceRole: "normative_authority",
+          authorityTier: "EU",
+          publicationStatus: "in_force",
+          evidenceKey: "ke:1:hash",
+          needsVerification: false,
+          verificationAgeDays: 25,
+        }),
+        buildResult({
+          id: 2,
+          sourceType: "regulation",
+          title: "Battery Regulation - Carbon Footprint Delegated Act",
+          content: "Most recent carbon footprint delegated act for battery passports.",
+          similarity: 0.61,
+          sourceRole: "normative_authority",
+          authorityTier: "EU",
+          publicationStatus: "in_force",
+          evidenceKey: "ke:2:hash",
+          needsVerification: false,
+          verificationAgeDays: 20,
+        }),
+      ]
+    );
+
+    expect(ranked[0].title).toBe(
+      "Battery Regulation - Carbon Footprint Delegated Act"
+    );
+  });
+
+  it("prefers the DPP delegated act over the broader ESPR regulation on newest-source questions", () => {
+    const ranked = rerankAskISAV2Results(
+      "What is the newest authoritative source for DPP identifiers?",
+      "GENERAL_QA",
+      [
+        buildResult({
+          id: 1,
+          sourceType: "regulation",
+          title: "Ecodesign for Sustainable Products Regulation (ESPR)",
+          content: "Broader ecodesign regulation with DPP context.",
+          similarity: 0.68,
+          sourceRole: "normative_authority",
+          authorityTier: "EU",
+          publicationStatus: "in_force",
+          evidenceKey: "ke:1:hash",
+          needsVerification: false,
+          verificationAgeDays: 25,
+        }),
+        buildResult({
+          id: 2,
+          sourceType: "regulation",
+          title: "ESPR - Digital Product Passport Delegated Act",
+          content: "Specific delegated act for Digital Product Passport identifiers.",
+          similarity: 0.62,
+          sourceRole: "normative_authority",
+          authorityTier: "EU",
+          publicationStatus: "in_force",
+          evidenceKey: "ke:2:hash",
+          needsVerification: false,
+          verificationAgeDays: 20,
+        }),
+      ]
+    );
+
+    expect(ranked[0].title).toBe("ESPR - Digital Product Passport Delegated Act");
+  });
+
   it("keeps exact ESRS evidence first while injecting GS1 support into mapping top-3", () => {
     const ranked = rerankAskISAV2Results(
       "Map GS1 attributes to ESRS E1-6 emissions disclosures.",
@@ -286,5 +447,41 @@ describe("decision summary helpers", () => {
     expect(summary?.supportingEvidence[0]?.title).toContain("Framework");
     expect(summary?.cautionFlags.join(" ")).toMatch(/verification/i);
     expect(summary?.cautionFlags.join(" ")).toMatch(/proxy/i);
+  });
+
+  it("builds explicit evidence choice, freshness, conflict, and next-step summaries for source-selection questions", () => {
+    const annotated = annotateAskISAV2DecisionRoles(
+      "What is the newest authoritative source for DPP identifiers?",
+      [
+        buildResult({
+          id: 1,
+          sourceType: "regulation",
+          title: "ESPR - Digital Product Passport Delegated Act",
+          sourceRole: "normative_authority",
+          authorityTier: "EU",
+          evidenceKey: "ke:1:hash",
+          needsVerification: false,
+        }),
+        buildResult({
+          id: 2,
+          sourceType: "gs1_standard",
+          title: "Digital Product Passport Framework",
+          sourceRole: "normative_authority",
+          authorityTier: "GS1_Global",
+          evidenceKey: "ke:2:hash",
+          needsVerification: false,
+        }),
+      ]
+    );
+
+    const summary = buildAskISAV2DecisionSummary(
+      "What is the newest authoritative source for DPP identifiers?",
+      annotated
+    );
+
+    expect(summary?.evidenceChoice).toMatch(/binding regulation basis/i);
+    expect(summary?.freshnessSummary).toMatch(/current evidence-ready/i);
+    expect(summary?.conflictSummary).toMatch(/regulation as binding/i);
+    expect(summary?.nextStep).toMatch(/GS1 implementation details/i);
   });
 });

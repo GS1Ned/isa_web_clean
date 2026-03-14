@@ -62,6 +62,14 @@ describe("AskISAExpertMode", () => {
         decisionSummary: {
           summary:
             "Primary basis: CSRD. Supporting context: GS1 Digital Link.",
+          evidenceChoice:
+            "CSRD leads because it is the binding regulation basis, while GS1 Digital Link remains supporting implementation guidance.",
+          freshnessSummary:
+            "CSRD is the current evidence-ready basis in the live corpus, with GS1 Digital Link kept as fresh supporting implementation guidance.",
+          conflictSummary:
+            "If GS1 guidance and regulation wording diverge, treat the regulation as binding and use the GS1 material as supporting implementation guidance only.",
+          nextStep:
+            "Use CSRD to set the binding requirement baseline, then apply GS1 Digital Link for GS1 implementation details.",
           primaryEvidence: [
             {
               title: "CSRD",
@@ -192,6 +200,10 @@ describe("AskISAExpertMode", () => {
     expect(screen.getByText(/^Canonical Facts$/i)).not.toBeNull();
     expect(screen.getByText(/ke:fixture-esrs-e1-6:hash/i)).not.toBeNull();
     expect(screen.getByText(/^Decision Basis$/i)).not.toBeNull();
+    expect(screen.getByText(/Why this source won/i)).not.toBeNull();
+    expect(screen.getByText(/Freshness posture/i)).not.toBeNull();
+    expect(screen.getByText(/Conflict posture/i)).not.toBeNull();
+    expect(screen.getByText(/Recommended next step/i)).not.toBeNull();
     expect(screen.getByText(/^Gap Trigger$/i)).not.toBeNull();
     expect(screen.getAllByText(/normative_authority/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Evidence Sources/i)).not.toBeNull();

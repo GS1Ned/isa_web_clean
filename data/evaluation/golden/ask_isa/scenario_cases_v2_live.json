@@ -1,6 +1,6 @@
 {
   "dataset_id": "ask_isa_v2_scenarios_live",
-  "notes": "Live Ask ISA v2 retrieval and answer-quality scenarios focused on regulation identification, exact ESRS clause rescue, GS1 mapping support, and standards-context usefulness.",
+  "notes": "Live Ask ISA v2 retrieval and answer-quality scenarios focused on regulation identification, exact ESRS clause rescue, GS1 mapping support, and decision-grade freshness/conflict handling.",
   "cases": [
     {
       "id": "ASK-V2-SCEN-001",
@@ -225,6 +225,135 @@
       "failureModes": [
         "gap_snapshot_contains_blank_recommendation",
         "full_coverage_case_not_explained_responsibly"
+      ]
+    },
+    {
+      "id": "ASK-V2-SCEN-011",
+      "focusArea": "newest authoritative source selection",
+      "query": "What is the newest authoritative source for DPP identifiers?",
+      "expectedIntent": "GENERAL_QA",
+      "topK": 5,
+      "expectedAnyTitlePatterns": [
+        "ESPR - Digital Product Passport Delegated Act",
+        "Digital Product Passport Framework"
+      ],
+      "requiredTopKSourceTypes": ["regulation", "gs1_standard"],
+      "requiredFreshTopKSourceTypes": ["regulation", "gs1_standard"],
+      "requiredTopKAuthorityTiers": ["EU", "GS1_Global"],
+      "preferredTop1TitlePattern": "ESPR - Digital Product Passport Delegated Act",
+      "answerExpectation": {
+        "expectNonAbstain": true,
+        "minimumSourceCount": 4,
+        "forbidGapAnalysis": true,
+        "expectedPrimarySourceType": "regulation",
+        "expectedPrimarySourceRole": "normative_authority",
+        "expectedPrimaryAuthorityTier": "EU",
+        "requireEvidenceReadyPrimary": true,
+        "requireSupportingSourceTypes": ["gs1_standard"],
+        "requireDecisionSummary": true,
+        "requireEvidenceChoicePatterns": ["binding", "guidance"],
+        "requireFreshnessSummaryPatterns": ["newest", "current"],
+        "requireNextStepPatterns": ["GS1", "implementation"]
+      },
+      "failureModes": [
+        "stale_esrs_datapoints_dominate_source_selection",
+        "authoritative_source_query_abstains",
+        "no_freshness_explanation"
+      ]
+    },
+    {
+      "id": "ASK-V2-SCEN-012",
+      "focusArea": "freshness comparison between binding and guidance",
+      "query": "Which source is more current for Digital Product Passport requirements, ESPR or GS1 guidance?",
+      "expectedIntent": "GENERAL_QA",
+      "topK": 5,
+      "expectedAnyTitlePatterns": [
+        "ESPR - Digital Product Passport Delegated Act",
+        "Digital Product Passport Framework"
+      ],
+      "requiredTopKSourceTypes": ["regulation", "gs1_standard"],
+      "requiredFreshTopKSourceTypes": ["regulation", "gs1_standard"],
+      "requiredTopKAuthorityTiers": ["EU", "GS1_Global"],
+      "preferredTop1TitlePattern": "ESPR - Digital Product Passport Delegated Act",
+      "answerExpectation": {
+        "expectNonAbstain": true,
+        "forbidGapAnalysis": true,
+        "expectedPrimarySourceType": "regulation",
+        "expectedPrimarySourceRole": "normative_authority",
+        "requireEvidenceReadyPrimary": true,
+        "requireSupportingSourceTypes": ["gs1_standard"],
+        "requireDecisionSummary": true,
+        "requireEvidenceChoicePatterns": ["binding", "guidance"],
+        "requireFreshnessSummaryPatterns": ["current", "delegated act"],
+        "requireConflictSummaryPatterns": ["binding", "supporting"]
+      },
+      "failureModes": [
+        "freshness_comparison_lacks_source_role_distinction",
+        "guidance_ranked_above_binding_regulation"
+      ]
+    },
+    {
+      "id": "ASK-V2-SCEN-013",
+      "focusArea": "binding versus guidance conflict handling",
+      "query": "Should I follow ESPR delegated act requirements or GS1 guidance when they differ on DPP identifiers?",
+      "expectedIntent": "GENERAL_QA",
+      "topK": 5,
+      "expectedAnyTitlePatterns": [
+        "ESPR - Digital Product Passport Delegated Act",
+        "Digital Product Passport Framework",
+        "GS1 Electronics Passport Implementation"
+      ],
+      "requiredTopKSourceTypes": ["regulation", "gs1_standard"],
+      "requiredFreshTopKSourceTypes": ["regulation", "gs1_standard"],
+      "requiredTopKAuthorityTiers": ["EU", "GS1_Global"],
+      "preferredTop1TitlePattern": "ESPR - Digital Product Passport Delegated Act",
+      "answerExpectation": {
+        "expectNonAbstain": true,
+        "minimumSourceCount": 4,
+        "forbidGapAnalysis": true,
+        "expectedPrimarySourceType": "regulation",
+        "expectedPrimarySourceRole": "normative_authority",
+        "expectedPrimaryAuthorityTier": "EU",
+        "requireEvidenceReadyPrimary": true,
+        "requireSupportingSourceTypes": ["gs1_standard"],
+        "requireDecisionSummary": true,
+        "requireEvidenceChoicePatterns": ["binding", "regulation"],
+        "requireConflictSummaryPatterns": ["guidance", "override"],
+        "requireNextStepPatterns": ["implement", "GS1"]
+      },
+      "failureModes": [
+        "gs1_guidance_ranked_as_primary_for_conflict_question",
+        "answer_abstains_despite_clear_binding_basis",
+        "no_conflict_resolution_summary"
+      ]
+    },
+    {
+      "id": "ASK-V2-SCEN-014",
+      "focusArea": "delegated act beats broader regulation on freshness-sensitive change question",
+      "query": "What changed most recently for battery passport carbon footprint requirements?",
+      "expectedIntent": "REGULATORY_CHANGE",
+      "topK": 5,
+      "expectedAnyTitlePatterns": [
+        "Battery Regulation - Carbon Footprint Delegated Act",
+        "EU Battery Regulation"
+      ],
+      "requiredTopKSourceTypes": ["regulation", "gs1_standard"],
+      "requiredFreshTopKSourceTypes": ["regulation"],
+      "requiredTopKAuthorityTiers": ["EU"],
+      "preferredTop1TitlePattern": "Battery Regulation - Carbon Footprint Delegated Act",
+      "answerExpectation": {
+        "expectNonAbstain": true,
+        "forbidGapAnalysis": true,
+        "expectedPrimarySourceType": "regulation",
+        "expectedPrimarySourceRole": "normative_authority",
+        "expectedPrimaryAuthorityTier": "EU",
+        "requireEvidenceReadyPrimary": true,
+        "requireDecisionSummary": true,
+        "requireFreshnessSummaryPatterns": ["recent", "delegated act"]
+      },
+      "failureModes": [
+        "broader_base_regulation_ranked_ahead_of_specific_recent_measure",
+        "freshness_sensitive_change_answer_lacks_temporal_explanation"
       ]
     }
   ]

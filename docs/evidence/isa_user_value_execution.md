@@ -130,18 +130,61 @@ Target branch: `main`
 | `ASK-V2-SCEN-008` | GS1 DPP guidance outranked the binding delegated act and no decision summary explained the choice | Binding delegated act is primary, GS1 is supporting, and the expert UI shows the decision basis | Trust-sensitive prompts now explain which source is binding and why |
 | `ASK-V2-SCEN-009` | Current-evidence mapping prompts could overstate certainty around stale/proxy support | Confidence is capped to low and caution flags are surfaced in the answer payload | Users get a more honest answer when evidence is only partially current or proxy-backed |
 
+### Slice 6: Expand Ask ISA v2 into the freshness/conflict frontier
+
+- Objective: Improve freshness-aware source selection, conflict posture, and source-selection answer reliability on realistic DPP and delegated-act prompts.
+- Files changed:
+  - `server/routers/ask-isa-v2.ts`
+  - `server/routers/ask-isa-v2-intelligence.ts`
+  - `server/routers/ask-isa-v2-retrieval.ts`
+  - `server/routers/__tests__/ask-isa-v2-intent.test.ts`
+  - `server/routers/__tests__/ask-isa-v2-retrieval.test.ts`
+  - `client/src/components/AskISAExpertMode.tsx`
+  - `client/src/components/AskISAExpertMode.test.tsx`
+  - `scripts/eval/run-ask-isa-v2-scenario-eval.ts`
+  - `data/evaluation/golden/ask_isa/scenario_cases_v2_live.json`
+  - `docs/spec/ASK_ISA/RUNTIME_CONTRACT.md`
+  - `docs/evidence/isa_user_value_audit.md`
+  - `docs/planning/PROGRAM_PLAN.md`
+- Implementation summary:
+  - FACT: Expanded the live Ask ISA v2 eval suite from 10 to 14 scenarios, adding freshness-sensitive source-selection, binding-vs-guidance conflict, and delegated-act tie-break cases.
+  - FACT: Reclassified source-selection/freshness prompts so `GS1` mentions no longer force those questions into `ESRS_MAPPING`.
+  - FACT: Added bounded lexical rescue on top of the live embedding pool to recover relevant DPP and delegated-act evidence when semantic recall underperformed.
+  - FACT: Added delegated-act specificity boosts for freshness-sensitive prompts so broader base regulations do not outrank more current/specific measures.
+  - FACT: Extended `decisionSummary` with `evidenceChoice`, `freshnessSummary`, `conflictSummary`, and `nextStep`, and surfaced those fields in the expert UI.
+  - FACT: Added a deterministic decision-basis fallback path so Stage-A can still return a cited bounded answer instead of blind abstention when the decision basis is already strong.
+- Expected user-value gain:
+  - INTERPRETATION: Users now get better answers to “which source should I use?”, “which source is more current?”, and “what changed most recently?” without having to infer the policy from scattered citations.
+- Expected intelligence gain:
+  - INTERPRETATION: Ask ISA v2 now behaves more like an expert reviewer on evidence choice and freshness, not just a retriever with add-on cautions.
+- Validation:
+  - FACT: The final live eval run measured `legacy: 0.9405`, `current: 1.0000`, `answer: 0.7143`, and `answerEligible: 1.0000`.
+  - FACT: `ASK-V2-SCEN-011` improved from `0.8333` legacy / `0.1667` pre-fix current to `1.0000` current once lexical rescue and DPP-specific tie-breaks landed.
+  - FACT: `ASK-V2-SCEN-012` stopped abstaining once the deterministic decision-basis fallback was added.
+  - FACT: `ASK-V2-SCEN-014` preserved delegated-act-first ordering after the freshness tie-break patch.
+- Result: Completed
+
+#### Slice 6 Before / After Highlights
+
+| Scenario ID | Before | After | User-visible effect |
+| ----------- | ------ | ----- | ------------------- |
+| `ASK-V2-SCEN-011` | DPP “newest source” prompts surfaced stale ESRS datapoints or the broader ESPR regulation | The DPP delegated act now leads, GS1 identifier evidence stays adjacent, and the answer no longer abstains | Users get the right current source instead of a generic or stale answer |
+| `ASK-V2-SCEN-012` | Freshness-comparison prompts could still abstain even with a correct decision basis in the payload | The route now returns a cited deterministic fallback answer when the model draft fails Stage-A | Users keep a useful, grounded answer instead of a dead-end abstention |
+| `ASK-V2-SCEN-013` | Conflict prompts could let GS1 guidance outrank binding regulation or under-explain the conflict posture | Binding DPP regulation now leads and the answer explicitly states that GS1 guidance does not override regulation | Users can act on the answer with clearer legal/implementation separation |
+| `ASK-V2-SCEN-014` | Broader base regulations could outrank more specific delegated acts on “what changed most recently?” prompts | Delegated acts now win the tie-break when they are the fresher, more specific source | Change questions are more timeline-accurate and decision-useful |
+
 ## 8. Validation Results
 
 | Check                                                       | Result              | Notes                                                                                   |
 | ----------------------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------- |
-| Focused Ask ISA v2 Vitest suite                             | Pass                | `4` files, `29` tests passed                                                            |
+| Focused Ask ISA v2 Vitest suite                             | Pass                | `3` files, `29` tests passed                                                            |
 | `server/hybrid-search.test.ts`                              | Pass                | Included in the focused suite to catch retrieval regressions                            |
 | Decision-grade Ask ISA v2 Vitest suite                      | Pass                | `3` files, `25` tests passed                                                            |
 | Touched-file compiler isolation                             | Pass                | `pnpm exec tsc --noEmit --pretty false` produced no matches for edited Ask ISA v2 files |
 | `bash scripts/gates/doc-code-validator.sh --canonical-only` | Pass                | Canonical doc-code validator passed after runtime-contract and evidence updates          |
 | `python3 scripts/validate_planning_and_traceability.py`     | Pass                | Canonical planning/traceability validator passed after evidence updates                  |
-| `pnpm vitest run server/routers/__tests__/ask-isa-v2-intent.test.ts server/routers/__tests__/ask-isa-v2-retrieval.test.ts --reporter=verbose --no-coverage` | Pass | `20` tests passed for intent and reranking coverage |
-| `pnpm exec tsx scripts/eval/run-ask-isa-v2-scenario-eval.ts` | Pass | Expanded scenario suite measured `legacy: 0.9167`, `current: 1.0000`, `answer: 0.6000` |
+| `pnpm vitest run server/routers/__tests__/ask-isa-v2-intent.test.ts server/routers/__tests__/ask-isa-v2-retrieval.test.ts client/src/components/AskISAExpertMode.test.tsx --reporter=verbose --no-coverage` | Pass | `29` tests passed for intent, reranking, and expert UI coverage |
+| `pnpm exec tsx scripts/eval/run-ask-isa-v2-scenario-eval.ts` | Pass | Expanded 14-scenario suite measured `legacy: 0.9405`, `current: 1.0000`, `answer: 0.7143`, `answerEligible: 1.0000` |
 | `pnpm exec tsx scripts/eval/probe-ask-isa-v2-runtime.ts` | Pass | Confirmed `jsonb` embeddings, no `vector` type, live taxonomy drift, and optional-table absence |
 | `bash scripts/gates/canonical-contract-drift.sh`            | Pass after follow-up | Generated `repo_ref.commit` values refreshed to the active branch head so canonical drift stays clean |
 | Repo-wide `pnpm check`                                      | Known baseline fail | Existing repo-wide TypeScript debt outside this slice                                   |
@@ -158,6 +201,7 @@ Target branch: `main`
 - FACT: Current corpus metadata values did not match the v2 ranking/filter taxonomy, so `standard`, `regulation`, `normative`, and `juridical` rows needed normalization before intent-aware ranking would behave correctly.
 - FACT: `hub_news` and `canonical_facts` are optional in the current environment and needed existence guards to avoid repeated query failures on the expert route.
 - FACT: One expanded-scenario eval run transiently abstained on `ASK-V2-SCEN-004`, but a direct route call and a confirming second full eval both returned the expected grounded, non-abstaining answer; this is recorded as live-model variance rather than a routing regression.
+- FACT: One intermediate freshness-comparison probe still abstained even though the decision basis was correct; a deterministic cited fallback was then added and the final 14-scenario eval completed with `answerEligible: 1.0000`.
 
 ## 9. Pull Request Readiness
 

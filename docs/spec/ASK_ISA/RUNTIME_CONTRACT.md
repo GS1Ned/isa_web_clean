@@ -65,6 +65,10 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
     - `confidence`
     - `authority`
     - `decisionSummary`
+      - `evidenceChoice`
+      - `freshnessSummary`
+      - `conflictSummary`
+      - `nextStep`
     - `gapTrigger`
     - `inlineRecommendations`
     - `facts`
@@ -107,8 +111,11 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
 - Gap-analysis enrichment may auto-activate for gap-oriented questions only when a strong authoritative regulation can be inferred from retrieved evidence; otherwise the trigger is surfaced as `suppressed` or `none`.
 - Trust-sensitive and gap-analysis prompts may pin binding regulations ahead of GS1 implementation guidance in the final evidence ordering while still retaining GS1 support evidence in the top result set.
 - Expert-route payloads must preserve decision-basis semantics through `decisionSummary`, `gapTrigger`, source-level `evidenceRole`, and additive `selectionReasons` so the UI can explain why a source was chosen.
+- `decisionSummary` may carry explicit evidence-choice, freshness, conflict, and next-step posture fields when the query is source-selection-, freshness-, or conflict-sensitive.
 - UI-facing source authority levels must be mapped into the shared Ask ISA authority taxonomy before returning to the client.
 - When Stage-A fails for an `ESRS_MAPPING` answer but the evidence set contains exact ESRS and GS1 support signals, the router may return a deterministic structured partial-mapping fallback instead of an unhelpful blind abstention.
+- When source-selection or freshness prompts have strong decision metadata but the freeform model answer fails Stage-A, the router may return a deterministic decision-basis fallback answer with citations instead of a blind abstention.
+- Freshness-sensitive and source-selection prompts may augment embedding retrieval with bounded lexical rescue from the live `knowledge_embeddings` pool so newer or more specific regulations are not dropped when semantic similarity under-recalls them.
 
 ## Phase-3 Provenance Target (Chunk-Level Consumption)
 
