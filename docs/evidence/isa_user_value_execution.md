@@ -4,7 +4,7 @@ Date: 2026-03-14
 Current branch: `codex/ask-isa-v2-eval-reranking`
 Base branch: `main`
 Merged groundwork: `#326`, `#328`, `#329`, `#330`
-Current PR: `#331`
+Current PR: pending publication for the reranking/eval follow-up slice
 Target branch: `main`
 
 ## 7. Execution Log
@@ -135,10 +135,9 @@ Target branch: `main`
   - FACT: The live scenario-eval suite passed locally with a measured improvement from `0.9167` to `1.0000`.
   - FACT: Touched-file compiler isolation passed.
   - FACT: Canonical doc, planning, and contract drift gates passed locally after follow-up refresh.
-  - FACT: PR `#330` for the route-promotion slice is already merged into `main`.
-  - FACT: PR `#331` is open against `main` for the reranking/eval follow-up slice.
+  - FACT: PR `#330` for the route-promotion slice is already merged into `main`; this branch is the next follow-up PR candidate.
   - FACT: `no-console` remains a repo-wide baseline failure outside this slice.
-- Merge / automerge status: Not enabled; GitHub had not yet reported check runs at PR creation time.
+- Merge / automerge status: Not applicable until the follow-up PR is published.
 
 ## 10. Unknowns And Next Improvements
 
