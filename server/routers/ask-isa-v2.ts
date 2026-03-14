@@ -265,6 +265,50 @@ function buildStructuredMappingFallbackAnswer(
     .join(" ");
 }
 
+function buildDecisionBasisFallbackAnswer(input: {
+  decisionSummary: AskISAV2DecisionSummary | null;
+  sources: Array<{
+    title: string;
+    sourceType: string;
+  }>;
+}): string | null {
+  const decisionSummary = input.decisionSummary;
+  if (!decisionSummary?.primaryEvidence.length) return null;
+
+  const sourceLabelFor = (title?: string | null) => {
+    if (!title) return "";
+    const index = input.sources.findIndex(source => source.title === title);
+    return index >= 0 ? `[Source ${index + 1}]` : "";
+  };
+
+  const primary = decisionSummary.primaryEvidence[0];
+  const supporting = decisionSummary.supportingEvidence[0];
+  const primaryLabel = sourceLabelFor(primary?.title);
+  const supportingLabel = sourceLabelFor(supporting?.title);
+  const sharedLabels = [primaryLabel, supportingLabel].filter(Boolean).join(" ");
+
+  const lines = [
+    `The strongest current basis for this question is ${primary.title} ${primaryLabel}.`,
+    decisionSummary.evidenceChoice
+      ? `${decisionSummary.evidenceChoice} ${sharedLabels}`
+      : null,
+    decisionSummary.freshnessSummary
+      ? `${decisionSummary.freshnessSummary} ${sharedLabels}`
+      : null,
+    decisionSummary.conflictSummary
+      ? `${decisionSummary.conflictSummary} ${sharedLabels}`
+      : null,
+    decisionSummary.nextStep
+      ? `Recommended next step: ${decisionSummary.nextStep} ${sharedLabels}`
+      : null,
+  ]
+    .filter(Boolean)
+    .map(line => String(line).replace(/\s+/g, " ").trim());
+
+  const fallback = lines.join(" ");
+  return fallback.length >= 100 ? fallback : null;
+}
+
 function buildGapAnalysisTrigger(input: {
   includeGapAnalysis: boolean;
   regulationId?: number;
@@ -350,6 +394,7 @@ function buildDecisionUncertainty(input: {
 function calculateAskISAV2DecisionConfidence(input: {
   decisionSummary: AskISAV2DecisionSummary | null;
   sources: Array<{
+    sourceType?: string | null;
     evidenceKey?: string | null;
     needsVerification?: boolean;
     isDeprecated?: boolean;
@@ -369,6 +414,12 @@ function calculateAskISAV2DecisionConfidence(input: {
   let score = baseConfidence.score;
   const primarySource = input.sources[0];
   const cautionFlags = input.decisionSummary?.cautionFlags ?? [];
+  const supportingHasBindingRegulation =
+    input.decisionSummary?.supportingEvidence?.some(
+      item =>
+        item.sourceType === "regulation" &&
+        item.sourceRole === "normative_authority"
+    ) ?? false;
 
   if (primarySource?.needsVerification) score -= 0.18;
   if (!primarySource?.evidenceKey) score -= 0.16;
@@ -377,6 +428,16 @@ function calculateAskISAV2DecisionConfidence(input: {
   }
   if (cautionFlags.some(flag => /verification/i.test(flag))) score -= 0.08;
   if (cautionFlags.some(flag => /proxy/i.test(flag))) score -= 0.1;
+  if (
+    primarySource?.sourceType === "gs1_standard" &&
+    supportingHasBindingRegulation &&
+    input.decisionSummary?.conflictSummary
+  ) {
+    score -= 0.18;
+  }
+  if (/(provisional|refresh)/i.test(input.decisionSummary?.freshnessSummary || "")) {
+    score -= 0.08;
+  }
 
   score = Math.max(0, Math.min(0.95, Number(score.toFixed(4))));
 
@@ -964,9 +1025,22 @@ ${contextParts.join("\n\n")}`;
                   .map(flag => `- ${flag}`)
                   .join("\n")}`;
               }
+              if (decisionSummary.evidenceChoice) {
+                systemPrompt += `\nEvidence choice:\n- ${decisionSummary.evidenceChoice}`;
+              }
+              if (decisionSummary.freshnessSummary) {
+                systemPrompt += `\nFreshness posture:\n- ${decisionSummary.freshnessSummary}`;
+              }
+              if (decisionSummary.conflictSummary) {
+                systemPrompt += `\nConflict posture:\n- ${decisionSummary.conflictSummary}`;
+              }
+              if (decisionSummary.nextStep) {
+                systemPrompt += `\nNext-step posture:\n- ${decisionSummary.nextStep}`;
+              }
             }
 
             systemPrompt += `\n\nGap trigger posture: ${gapTrigger.reason}`;
+            systemPrompt += `\nWhen multiple source types appear, explain which source is binding, which is supporting, and why ISA preferred the primary source.`;
 
             // Step 4: Generate answer
             const response = await invokeLLM({
@@ -1161,6 +1235,62 @@ ${contextParts.join("\n\n")}`;
                       ...sharedPayload,
                     };
                   }
+                }
+              }
+
+              const decisionFallbackAnswer = buildDecisionBasisFallbackAnswer({
+                decisionSummary,
+                sources: responseSources,
+              });
+
+              if (decisionFallbackAnswer) {
+                const decisionFallbackClaimVerification = verifyResponseClaims(
+                  decisionFallbackAnswer,
+                  searchResults.map(r => ({
+                    id: r.id,
+                    title: r.title,
+                    url: r.url,
+                    authorityLevel: r.authorityLevel,
+                  }))
+                );
+
+                const decisionFallbackStageAValidation =
+                  validateAskISAStageAAnswer({
+                    answer: decisionFallbackAnswer,
+                    sourceCount: searchResults.length,
+                    evidenceReadySourceCount,
+                    verifiedEvidenceSourceCount,
+                    needsVerificationSourceCount,
+                    deprecatedSourceCount,
+                    claimVerification: decisionFallbackClaimVerification,
+                    knowledgeEmbeddingMode:
+                      hasHighSimilaritySources && !hasEvidenceCitation,
+                  });
+
+                if (decisionFallbackStageAValidation.passed) {
+                  return {
+                    answer: decisionFallbackAnswer,
+                    sources: responseSources,
+                    citationValid: decisionFallbackStageAValidation.citationValid,
+                    missingCitations:
+                      decisionFallbackStageAValidation.missingCitations,
+                    claimVerification: {
+                      verificationRate:
+                        decisionFallbackClaimVerification.verificationRate,
+                      totalClaims: decisionFallbackClaimVerification.totalClaims,
+                      verifiedClaims:
+                        decisionFallbackClaimVerification.verifiedClaims,
+                      unverifiedClaims:
+                        decisionFallbackClaimVerification.unverifiedClaims,
+                      warnings: Array.from(
+                        new Set([
+                          ...decisionFallbackClaimVerification.warnings,
+                          ...decisionFallbackStageAValidation.warnings,
+                        ])
+                      ),
+                    },
+                    ...sharedPayload,
+                  };
                 }
               }
 

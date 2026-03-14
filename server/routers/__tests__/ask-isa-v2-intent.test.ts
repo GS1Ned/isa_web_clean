@@ -71,6 +71,16 @@ describe("classifyQueryIntent (E-04)", () => {
     expect(classifyQueryIntent("How does CSRD relate to ESRS?")).toBe(
       "GENERAL_QA"
     );
+    expect(
+      classifyQueryIntent(
+        "Should I follow ESPR delegated act requirements or GS1 guidance when they differ on DPP identifiers?"
+      )
+    ).toBe("GENERAL_QA");
+    expect(
+      classifyQueryIntent(
+        "What is the newest authoritative source for DPP identifiers?"
+      )
+    ).toBe("GENERAL_QA");
   });
 });
 

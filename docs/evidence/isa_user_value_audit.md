@@ -161,6 +161,37 @@ Status: VALIDATED_LOCAL_CHANGES
 | `OPP-RERANK-07` | Add decision-summary, caution-flag, and gap-trigger payloads to the expert route | High | High | High | Low | Selected |
 | `OPP-RERANK-08` | Add freshness/conflict-aware reranking beyond bounded authority rules | Medium | Medium | Medium | Medium | Deferred |
 
+## 6B. 2026-03-14 Ask ISA v2 Freshness / Conflict Frontier
+
+- FACT: The next live frontier after PR `#332` was not generic retrieval quality; it was freshness-sensitive source selection, conflict posture between binding regulation and GS1 guidance, and the tendency to abstain even when the decision basis was already clear in the payload.
+- FACT: The live scenario suite now covers 14 cases, adding explicit freshness/source-selection, conflict, and delegated-act tie-break prompts.
+- FACT: The current live eval now measures `legacy: 0.9405`, `current: 1.0000`, `answer: 0.7143`, and `answerEligible: 1.0000`.
+- INTERPRETATION: Ask ISA v2 is now materially better at choosing current binding evidence and explaining why it won, not just surfacing the right documents.
+
+### 6B.1 Key Improvements
+
+- FACT: Source-selection/freshness prompts now classify as `GENERAL_QA` instead of falling into `ESRS_MAPPING` purely because `GS1` was mentioned.
+- FACT: `server/routers/ask-isa-v2-retrieval.ts` now adds bounded lexical rescue across the live `knowledge_embeddings` pool so specific DPP and delegated-act evidence can be recovered even when semantic recall underperforms.
+- FACT: Freshness-sensitive ranking now adds specificity tie-breaks for delegated acts and other recent change artifacts instead of over-favoring broader base regulations.
+- FACT: `decisionSummary` now carries `evidenceChoice`, `freshnessSummary`, `conflictSummary`, and `nextStep`.
+- FACT: When the freeform model answer fails Stage-A but the decision basis is already strong and evidence-ready, `askISAV2.askEnhanced` can now return a deterministic cited fallback answer instead of a blind abstention.
+
+### 6B.2 Expanded Scenario Frontier
+
+| Scenario ID | User question | What it probes | Current result |
+| ----------- | ------------- | -------------- | -------------- |
+| `ASK-V2-SCEN-011` | What is the newest authoritative source for DPP identifiers? | Freshness-sensitive source selection with DPP acronym expansion | `0.8333 -> 1.0000` |
+| `ASK-V2-SCEN-012` | Which source is more current for Digital Product Passport requirements, ESPR or GS1 guidance? | Binding-vs-guidance freshness comparison with explicit explanation posture | `1.0000 -> 1.0000` retrieval preserved, answer behavior now fully passes |
+| `ASK-V2-SCEN-013` | Should I follow ESPR delegated act requirements or GS1 guidance when they differ on DPP identifiers? | Conflict handling and binding-vs-supporting policy | `1.0000 -> 1.0000` retrieval preserved, answer posture now fully passes |
+| `ASK-V2-SCEN-014` | What changed most recently for battery passport carbon footprint requirements? | Delegated-act tie-break over broader base regulation | `1.0000 -> 1.0000` retrieval preserved with explicit freshness summary |
+
+### 6B.3 Highest-Value Failure Modes Resolved
+
+- FACT: Freshness/source-selection prompts could previously return only stale ESRS datapoints or broader regulations instead of the DPP delegated act and GS1 support evidence.
+- FACT: Conflict prompts could still rank GS1 implementation guidance above binding regulation evidence if the query mentioned GS1 strongly enough to trip mapping heuristics.
+- FACT: Even when retrieval and decision metadata were correct, some source-selection answers still dropped to abstention because the freeform model output failed Stage-A despite a valid cited fallback being possible.
+- RESULT: Those failures are now covered by the live eval frontier and addressed with classification fixes, lexical rescue, delegated-act tie-breaks, explicit decision posture fields, and deterministic cited fallback behavior.
+
 ## Evidence Register
 
 ### EVD-20260313-101

@@ -39,6 +39,10 @@ export interface AskISAV2KnowledgeResult
 
 export interface AskISAV2DecisionSummary {
   summary: string;
+  evidenceChoice?: string | null;
+  freshnessSummary?: string | null;
+  conflictSummary?: string | null;
+  nextStep?: string | null;
   primaryEvidence: Array<{
     title: string;
     sourceType: string;
@@ -96,11 +100,15 @@ type RetrievalSignals = {
   esrsStandards: string[];
   keywords: string[];
   mentionsGs1: boolean;
+  mentionsIdentifiers: boolean;
   mentionsTimeline: boolean;
   mentionsMapping: boolean;
   mentionsTraceability: boolean;
   mentionsTrust: boolean;
   mentionsCurrentEvidence: boolean;
+  mentionsSourceSelection: boolean;
+  mentionsFreshnessComparison: boolean;
+  mentionsBindingChoice: boolean;
   mentionsGap: boolean;
 };
 
@@ -139,6 +147,9 @@ const STOPWORDS = new Set([
 let hubNewsAvailability: boolean | null = null;
 const ESRS_SIGNAL_PATTERN =
   /(?:^|[^A-Z0-9])(?:ESRS\s+)?([ESAG]\d+(?:-\d+)?)(?=[^A-Z0-9]|$)/gi;
+const ACRONYM_KEYWORD_HINTS: Record<string, string[]> = {
+  DPP: ["product", "passport"],
+};
 
 function normalizeSourceType(value?: string | null): string {
   switch ((value || "").toLowerCase()) {
@@ -231,6 +242,18 @@ function unique<T>(values: T[]): T[] {
   return Array.from(new Set(values));
 }
 
+function expandAcronymKeywordHints(text: string): string[] {
+  const acronyms = unique(
+    (String(text || "").match(/\b[A-Z]{2,6}\b/g) || []).map(token =>
+      token.trim().toUpperCase()
+    )
+  );
+
+  return unique(
+    acronyms.flatMap(acronym => ACRONYM_KEYWORD_HINTS[acronym] || [])
+  );
+}
+
 function extractEsrsSignalCodes(text: string): string[] {
   const matches = Array.from(String(text || "").matchAll(ESRS_SIGNAL_PATTERN));
   return unique(matches.map(match => String(match[1] || "").toUpperCase()));
@@ -268,12 +291,19 @@ function buildRetrievalSignals(question: string): RetrievalSignals {
       (original.match(/\b[A-Z]{3,6}\b/g) || []).map(token => token.trim())
     ),
     esrsStandards: extractEsrsStandards(original),
-    keywords: unique(tokenize(original)).slice(0, 16),
+    keywords: unique([
+      ...tokenize(original),
+      ...expandAcronymKeywordHints(original),
+    ]).slice(0, 20),
     mentionsGs1: /\bgs1\b|\bgtin\b|\bgln\b|digital link|epcis|identifier/i.test(
       original
     ),
+    mentionsIdentifiers:
+      /\bidentifiers?\b|\bgtin\b|\bgln\b|\bsscc\b|digital link|epcis/i.test(
+        original
+      ),
     mentionsTimeline:
-      /what changed|recent|latest|updated?|amended|timeline|effective|when/i.test(
+      /what changed|changed most recently|recent|latest|updated?|amended|timeline|effective|when/i.test(
         lower
       ),
     mentionsMapping: /\bmap\b|mapping|attributes?|coverage|proxy/i.test(lower),
@@ -289,6 +319,18 @@ function buildRetrievalSignals(question: string): RetrievalSignals {
       /current verified evidence|verified evidence|current evidence|most current|up to date|up-to-date|current/i.test(
         lower
       ),
+    mentionsSourceSelection:
+      /which source|authoritative source|should i follow|should i rely|should i trust|what source/i.test(
+        lower
+      ),
+    mentionsFreshnessComparison:
+      /newest|freshest|more current|most current|changed most recently|most recent source|current source/i.test(
+        lower
+      ),
+    mentionsBindingChoice:
+      /should i follow|should i rely|when they differ|binding basis|override|versus|\bvs\.?\b/i.test(
+        lower
+      ),
     mentionsGap:
       /\bgaps?\b|coverage|missing|uncovered|lack(ing)?/i.test(lower),
   };
@@ -300,6 +342,62 @@ function countMatches(tokens: string[], haystack: string): number {
     (count, token) => count + (haystack.includes(token) ? 1 : 0),
     0
   );
+}
+
+function scoreLexicalRescueCandidate(
+  question: string,
+  result: AskISAV2KnowledgeResult
+): number {
+  const signals = buildRetrievalSignals(question);
+  const title = result.title.toLowerCase();
+  const content = result.content.toLowerCase();
+  const combined = `${title}\n${content}`;
+  const acronymTokens = signals.acronyms.map(token => token.toLowerCase());
+  const titleMatches = countMatches(signals.keywords, title);
+  const contentMatches = countMatches(signals.keywords, combined);
+  const acronymMatches = countMatches(acronymTokens, combined);
+
+  let score = titleMatches * 3 + contentMatches + acronymMatches * 2;
+
+  if (
+    signals.mentionsTraceability &&
+    /traceability|passport|digital product passport|battery passport/i.test(
+      combined
+    )
+  ) {
+    score += 3;
+  }
+
+  if (
+    signals.mentionsIdentifiers &&
+    /identifier|gtin|gln|sscc|digital link|epcis/i.test(combined)
+  ) {
+    score += 3;
+  }
+
+  if (
+    signals.mentionsTimeline &&
+    /delegated act|delegated regulation|implementing act|amend/i.test(title)
+  ) {
+    score += 3;
+  }
+
+  if (
+    (signals.mentionsSourceSelection ||
+      signals.mentionsBindingChoice ||
+      signals.mentionsFreshnessComparison) &&
+    signals.esrsStandards.length === 0
+  ) {
+    if (result.sourceType === "regulation") score += 4;
+    if (result.sourceType === "gs1_standard") score += 3;
+    if (result.sourceType === "esrs_datapoint") score -= 4;
+  }
+
+  if (result.sourceType === "regulation" && /delegated act/i.test(title)) {
+    score += 1;
+  }
+
+  return score;
 }
 
 function sourceTypeBoost(
@@ -333,6 +431,16 @@ function sourceTypeBoost(
       if (sourceType === "gs1_standard") return 0.05;
       return 0;
   }
+}
+
+function isBindingLike(result: AskISAV2KnowledgeResult): boolean {
+  return (
+    result.sourceType === "regulation" &&
+    (result.sourceRole === "normative_authority" ||
+      result.authorityTier === "EU" ||
+      result.authorityLevel === "binding" ||
+      result.authorityLevel === "authoritative")
+  );
 }
 
 function hasMatchingEsrsCode(
@@ -442,6 +550,10 @@ function scoreAskISAV2Result(
     score += 0.11;
   }
 
+  if (signals.mentionsIdentifiers && result.sourceType === "gs1_standard") {
+    score += 0.08;
+  }
+
   if (signals.mentionsMapping && result.sourceType === "gs1_standard") {
     score += 0.06;
   }
@@ -456,6 +568,27 @@ function scoreAskISAV2Result(
     result.sourceRole === "normative_authority"
   ) {
     score += 0.16;
+  }
+
+  if (
+    (signals.mentionsSourceSelection ||
+      signals.mentionsBindingChoice ||
+      signals.mentionsFreshnessComparison) &&
+    signals.esrsStandards.length === 0
+  ) {
+    if (isBindingLike(result)) {
+      score += 0.18;
+    } else if (result.sourceType === "regulation") {
+      score += 0.1;
+    }
+
+    if (result.sourceType === "gs1_standard") {
+      score += signals.mentionsIdentifiers || signals.mentionsGs1 ? 0.1 : 0.04;
+    }
+
+    if (result.sourceType === "esrs_datapoint") {
+      score -= 0.24;
+    }
   }
 
   if (
@@ -482,6 +615,48 @@ function scoreAskISAV2Result(
     )
   ) {
     score += 0.05;
+  }
+
+  if (
+    (signals.mentionsTraceability || signals.mentionsIdentifiers) &&
+    /traceability|passport|identifier|digital link|epcis/i.test(
+      `${result.title}\n${result.content}`
+    )
+  ) {
+    score += 0.05;
+  }
+
+  if (
+    (signals.mentionsFreshnessComparison ||
+      signals.mentionsSourceSelection ||
+      signals.mentionsTimeline) &&
+    /delegated act|delegated regulation|implementing act/i.test(result.title)
+  ) {
+    score += signals.mentionsTraceability || signals.mentionsIdentifiers ? 0.12 : 0.07;
+  }
+
+  if (
+    signals.mentionsFreshnessComparison ||
+    signals.mentionsCurrentEvidence ||
+    signals.mentionsTimeline
+  ) {
+    if (!result.needsVerification && result.evidenceKey) {
+      score += 0.06;
+    }
+
+    if (typeof result.verificationAgeDays === "number") {
+      if (result.verificationAgeDays <= 45) {
+        score += 0.05;
+      } else if (result.verificationAgeDays <= 90) {
+        score += 0.02;
+      } else {
+        score -= 0.08;
+      }
+    }
+
+    if (result.needsVerification) {
+      score -= signals.mentionsFreshnessComparison ? 0.12 : 0.06;
+    }
   }
 
   if (mappingSignals?.regulationIds?.length && result.sourceType === "regulation") {
@@ -622,6 +797,29 @@ function applyIntentCoveragePromotion(
   }
 
   if (
+    (signals.mentionsSourceSelection ||
+      signals.mentionsBindingChoice ||
+      signals.mentionsFreshnessComparison) &&
+    signals.esrsStandards.length === 0
+  ) {
+    next = pinFirstMatchingResult(
+      next,
+      result => isBindingLike(result),
+      0,
+      4
+    );
+
+    if (signals.mentionsGs1 || signals.mentionsIdentifiers || signals.mentionsTraceability) {
+      next = pinFirstMatchingResult(
+        next,
+        result => result.sourceType === "gs1_standard",
+        1,
+        5
+      );
+    }
+  }
+
+  if (
     intent !== "ESRS_MAPPING" &&
     mappingSignals?.regulationIds?.length &&
     signals.esrsStandards.length === 0
@@ -683,8 +881,171 @@ function buildSelectionReasons(
   if (signals.mentionsTrust && result.sourceType === "regulation") {
     reasons.push("preferred for trust question");
   }
+  if (
+    (signals.mentionsSourceSelection || signals.mentionsBindingChoice) &&
+    result.sourceType === "regulation"
+  ) {
+    reasons.push("preferred binding source");
+  }
+  if (
+    (signals.mentionsSourceSelection ||
+      signals.mentionsBindingChoice ||
+      signals.mentionsFreshnessComparison) &&
+    result.sourceType === "gs1_standard"
+  ) {
+    reasons.push("supporting implementation guidance");
+  }
+  if (
+    (signals.mentionsFreshnessComparison || signals.mentionsCurrentEvidence) &&
+    !result.needsVerification &&
+    result.evidenceKey
+  ) {
+    reasons.push("fresh verified evidence");
+  }
 
   return Array.from(new Set(reasons));
+}
+
+function buildDecisionEvidenceChoice(
+  question: string,
+  primary: AskISAV2KnowledgeResult | undefined,
+  supporting: AskISAV2KnowledgeResult[]
+): string | null {
+  if (!primary) return null;
+  const signals = buildRetrievalSignals(question);
+  const gs1Support = supporting.find(result => result.sourceType === "gs1_standard");
+
+  if (
+    (signals.mentionsSourceSelection ||
+      signals.mentionsBindingChoice ||
+      signals.mentionsTrust) &&
+    primary.sourceType === "regulation"
+  ) {
+    return gs1Support
+      ? `${primary.title} leads because it is the binding regulation basis for this question, while ${gs1Support.title} remains supporting GS1 implementation guidance.`
+      : `${primary.title} leads because it is the binding regulation basis supported by evidence-ready provenance.`;
+  }
+
+  if (
+    (signals.mentionsSourceSelection || signals.mentionsFreshnessComparison) &&
+    primary.sourceType === "gs1_standard"
+  ) {
+    return `${primary.title} leads because ISA did not find a stronger binding source ahead of it in the current evidence set.`;
+  }
+
+  return null;
+}
+
+function buildDecisionFreshnessSummary(
+  question: string,
+  primary: AskISAV2KnowledgeResult | undefined,
+  supporting: AskISAV2KnowledgeResult[]
+): string | null {
+  if (!primary) return null;
+  const signals = buildRetrievalSignals(question);
+  if (
+    !signals.mentionsFreshnessComparison &&
+    !signals.mentionsCurrentEvidence &&
+    !signals.mentionsTimeline
+  ) {
+    return null;
+  }
+
+  const freshSupport = supporting.find(
+    result =>
+      result.sourceType === "gs1_standard" &&
+      Boolean(result.evidenceKey) &&
+      !result.needsVerification &&
+      !result.isDeprecated
+  );
+
+  if (primary.evidenceKey && !primary.needsVerification && !primary.isDeprecated) {
+    if (signals.mentionsTimeline) {
+      return freshSupport && primary.sourceType === "regulation"
+        ? `The most recent evidence-ready change signal in the live corpus is ${primary.title}, with ${freshSupport.title} kept as current supporting implementation guidance.`
+        : `The most recent evidence-ready change signal in the live corpus is ${primary.title}.`;
+    }
+
+    if (signals.mentionsFreshnessComparison) {
+      return freshSupport && primary.sourceType === "regulation"
+        ? `The newest current evidence-ready basis in the live corpus is ${primary.title}, with ${freshSupport.title} kept as current supporting implementation guidance.`
+        : `The newest current evidence-ready source ISA prioritized for this question is ${primary.title}.`;
+    }
+
+    return freshSupport && primary.sourceType === "regulation"
+      ? `${primary.title} is the current evidence-ready basis in the live corpus, with ${freshSupport.title} kept as fresh supporting implementation guidance.`
+      : `${primary.title} is the current evidence-ready source ISA prioritized for this question.`;
+  }
+
+  return "ISA could not confirm a fully current evidence-ready primary source, so treat the answer as provisional until the cited material is refreshed.";
+}
+
+function buildDecisionConflictSummary(
+  question: string,
+  primary: AskISAV2KnowledgeResult | undefined,
+  supporting: AskISAV2KnowledgeResult[]
+): string | null {
+  if (!primary) return null;
+  const signals = buildRetrievalSignals(question);
+  const gs1Support = supporting.find(result => result.sourceType === "gs1_standard");
+  const regulationSupport = supporting.find(result => result.sourceType === "regulation");
+  const hasRegulation =
+    primary.sourceType === "regulation" || Boolean(regulationSupport);
+  const hasGs1 =
+    primary.sourceType === "gs1_standard" || Boolean(gs1Support);
+
+  if (
+    hasRegulation &&
+    hasGs1 &&
+    (signals.mentionsBindingChoice ||
+      signals.mentionsSourceSelection ||
+      signals.mentionsTrust)
+  ) {
+    return "If GS1 guidance and regulation wording diverge, treat the regulation as binding and use the GS1 material as supporting implementation guidance only; it does not override the regulation.";
+  }
+
+  if (
+    signals.mentionsMapping &&
+    supporting.some(
+      result =>
+        result.sourceAuthority === "internal_mapping" || !result.evidenceKey
+    )
+  ) {
+    return "Proxy GS1 mapping signals can support interpretation, but they do not override the cited ESRS datapoints or regulations.";
+  }
+
+  return null;
+}
+
+function buildDecisionNextStep(
+  question: string,
+  primary: AskISAV2KnowledgeResult | undefined,
+  supporting: AskISAV2KnowledgeResult[],
+  cautionFlags: string[]
+): string | null {
+  if (!primary) return null;
+  const signals = buildRetrievalSignals(question);
+  const gs1Support = supporting.find(result => result.sourceType === "gs1_standard");
+
+  if (
+    primary.sourceType === "regulation" &&
+    gs1Support &&
+    (signals.mentionsSourceSelection ||
+      signals.mentionsBindingChoice ||
+      signals.mentionsIdentifiers)
+  ) {
+    return `Use ${primary.title} to set the binding requirement baseline, then apply ${gs1Support.title} for GS1 implementation details.`;
+  }
+
+  if (cautionFlags.some(flag => /verification/i.test(flag))) {
+    return "Refresh the cited stale sources before treating the answer as final.";
+  }
+
+  if (cautionFlags.some(flag => /proxy/i.test(flag))) {
+    return "Validate any proxy mapping against the cited exact datapoints before adopting it as a one-to-one compliance mapping.";
+  }
+
+  return null;
 }
 
 export function annotateAskISAV2DecisionRoles(
@@ -732,6 +1093,10 @@ export function buildAskISAV2DecisionSummary(
     }));
 
   const cautionFlags: string[] = [];
+  const primaryResult = results.find(result => result.evidenceRole === "primary");
+  const supportingResults = results.filter(
+    result => result.evidenceRole === "supporting"
+  );
   const needsVerificationCount = results.filter(result => result.needsVerification).length;
   const proxyCount = results.filter(
     result =>
@@ -767,6 +1132,27 @@ export function buildAskISAV2DecisionSummary(
 
   return {
     summary,
+    evidenceChoice: buildDecisionEvidenceChoice(
+      question,
+      primaryResult,
+      supportingResults
+    ),
+    freshnessSummary: buildDecisionFreshnessSummary(
+      question,
+      primaryResult,
+      supportingResults
+    ),
+    conflictSummary: buildDecisionConflictSummary(
+      question,
+      primaryResult,
+      supportingResults
+    ),
+    nextStep: buildDecisionNextStep(
+      question,
+      primaryResult,
+      supportingResults,
+      cautionFlags
+    ),
     primaryEvidence,
     supportingEvidence,
     cautionFlags: Array.from(new Set(cautionFlags)),
@@ -977,6 +1363,38 @@ export function filterKnowledgeSimilarityPool(
     })
     .sort((left, right) => right.similarity - left.similarity)
     .slice(0, limit);
+}
+
+function selectLexicalRescueCandidates(
+  question: string,
+  pool: AskISAV2KnowledgeResult[],
+  limit = 8
+): AskISAV2KnowledgeResult[] {
+  const signals = buildRetrievalSignals(question);
+  const shouldRescue =
+    signals.mentionsTimeline ||
+    signals.mentionsFreshnessComparison ||
+    signals.mentionsSourceSelection ||
+    signals.mentionsBindingChoice;
+
+  if (!shouldRescue) return [];
+
+  return pool
+    .map(result => ({
+      result,
+      lexicalScore: scoreLexicalRescueCandidate(question, result),
+    }))
+    .filter(({ lexicalScore }) => lexicalScore >= 6)
+    .sort(
+      (left, right) =>
+        right.lexicalScore - left.lexicalScore ||
+        right.result.similarity - left.result.similarity
+    )
+    .slice(0, limit)
+    .map(({ result, lexicalScore }) => ({
+      ...result,
+      similarity: Math.max(result.similarity, Number((lexicalScore / 20).toFixed(4))),
+    }));
 }
 
 async function ensureHubNewsAvailable(): Promise<boolean> {
@@ -1190,6 +1608,7 @@ export async function retrieveAskISAV2Candidates(
     ...retrievalPlan.fallback,
     limit: Math.max((retrievalPlan.fallback.limit || 6) * 4, 18),
   });
+  const lexicalRescueResults = selectLexicalRescueCandidates(question, pool, 8);
   const mappingCandidates =
     resolvedIntent === "ESRS_MAPPING" && questionSignals.mentionsGs1
       ? await fetchGs1MappingCandidates(questionSignals.esrsStandards)
@@ -1202,6 +1621,7 @@ export async function retrieveAskISAV2Candidates(
   const mergedResults = mergeKnowledgeResults([
     mappingCandidates,
     newsResults,
+    lexicalRescueResults,
     primaryResults,
     fallbackResults,
   ]) as AskISAV2KnowledgeResult[];

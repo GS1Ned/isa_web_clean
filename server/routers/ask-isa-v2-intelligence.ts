@@ -66,6 +66,13 @@ export function classifyQueryIntent(question: string): QueryIntent {
     return "NEWS_QUERY";
   }
   if (
+    /\bwhich source\b|authoritative source|should i follow|should i rely|should i trust|more current|newest authoritative|binding basis|when they differ/i.test(
+      question
+    )
+  ) {
+    return "GENERAL_QA";
+  }
+  if (
     /what changed|recent(ly)?|latest|updated?|amended|new rule|new regulation/i.test(
       question
     )

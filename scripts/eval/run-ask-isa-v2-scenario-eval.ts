@@ -37,7 +37,12 @@ type ScenarioCase = {
     requireEvidenceReadyPrimary?: boolean;
     requireSupportingSourceTypes?: string[];
     requireDecisionSummary?: boolean;
+    requireDecisionSummaryPatterns?: string[];
     requireCautionFlagPatterns?: string[];
+    requireEvidenceChoicePatterns?: string[];
+    requireFreshnessSummaryPatterns?: string[];
+    requireConflictSummaryPatterns?: string[];
+    requireNextStepPatterns?: string[];
     expectGapTriggerMode?: "auto" | "explicit" | "suppressed" | "none";
   };
   failureModes?: string[];
@@ -75,7 +80,12 @@ type AnswerEval = {
   evidenceReadyPrimaryHit: boolean | null;
   supportingSourceCoverageHit: boolean | null;
   decisionSummaryHit: boolean | null;
+  decisionSummaryPatternsHit: boolean | null;
   cautionFlagsHit: boolean | null;
+  evidenceChoiceHit: boolean | null;
+  freshnessSummaryHit: boolean | null;
+  conflictSummaryHit: boolean | null;
+  nextStepHit: boolean | null;
   gapTriggerModeHit: boolean | null;
   score: number;
   abstained: boolean;
@@ -86,7 +96,12 @@ type AnswerEval = {
   primarySourceType: string | null;
   primarySourceRole: string | null;
   primaryAuthorityTier: string | null;
+  decisionSummarySummary: string | null;
   cautionFlags: string[];
+  evidenceChoice: string | null;
+  freshnessSummary: string | null;
+  conflictSummary: string | null;
+  nextStep: string | null;
   gapTriggerMode: string | null;
 };
 
@@ -265,9 +280,27 @@ function evaluateAnswer(
     ? answerResult.gapAnalysis.recommendations.join("\n")
     : "";
   const decisionSummary = answerResult.decisionSummary;
+  const decisionSummarySummary =
+    typeof decisionSummary?.summary === "string" ? decisionSummary.summary : null;
   const cautionFlags = Array.isArray(decisionSummary?.cautionFlags)
     ? decisionSummary.cautionFlags.map((flag: unknown) => String(flag))
     : [];
+  const evidenceChoice =
+    typeof decisionSummary?.evidenceChoice === "string"
+      ? decisionSummary.evidenceChoice
+      : null;
+  const freshnessSummary =
+    typeof decisionSummary?.freshnessSummary === "string"
+      ? decisionSummary.freshnessSummary
+      : null;
+  const conflictSummary =
+    typeof decisionSummary?.conflictSummary === "string"
+      ? decisionSummary.conflictSummary
+      : null;
+  const nextStep =
+    typeof decisionSummary?.nextStep === "string"
+      ? decisionSummary.nextStep
+      : null;
 
   const scoreParts: boolean[] = [];
 
@@ -386,6 +419,15 @@ function evaluateAnswer(
       : null;
   if (decisionSummaryHit !== null) scoreParts.push(decisionSummaryHit);
 
+  const decisionSummaryPatternsHit =
+    answerExpectation.requireDecisionSummaryPatterns?.length
+      ? stringContainsAny(
+          decisionSummarySummary,
+          answerExpectation.requireDecisionSummaryPatterns
+        )
+      : null;
+  if (decisionSummaryPatternsHit !== null) scoreParts.push(decisionSummaryPatternsHit);
+
   const cautionFlagsHit = answerExpectation.requireCautionFlagPatterns?.length
     ? stringContainsAny(
         cautionFlags.join("\n"),
@@ -393,6 +435,36 @@ function evaluateAnswer(
       )
     : null;
   if (cautionFlagsHit !== null) scoreParts.push(cautionFlagsHit);
+
+  const evidenceChoiceHit = answerExpectation.requireEvidenceChoicePatterns?.length
+    ? stringContainsAny(
+        evidenceChoice,
+        answerExpectation.requireEvidenceChoicePatterns
+      )
+    : null;
+  if (evidenceChoiceHit !== null) scoreParts.push(evidenceChoiceHit);
+
+  const freshnessSummaryHit =
+    answerExpectation.requireFreshnessSummaryPatterns?.length
+      ? stringContainsAny(
+          freshnessSummary,
+          answerExpectation.requireFreshnessSummaryPatterns
+        )
+      : null;
+  if (freshnessSummaryHit !== null) scoreParts.push(freshnessSummaryHit);
+
+  const conflictSummaryHit = answerExpectation.requireConflictSummaryPatterns?.length
+    ? stringContainsAny(
+        conflictSummary,
+        answerExpectation.requireConflictSummaryPatterns
+      )
+    : null;
+  if (conflictSummaryHit !== null) scoreParts.push(conflictSummaryHit);
+
+  const nextStepHit = answerExpectation.requireNextStepPatterns?.length
+    ? stringContainsAny(nextStep, answerExpectation.requireNextStepPatterns)
+    : null;
+  if (nextStepHit !== null) scoreParts.push(nextStepHit);
 
   const gapTriggerModeHit = answerExpectation.expectGapTriggerMode
     ? answerResult.gapTrigger?.mode === answerExpectation.expectGapTriggerMode
@@ -413,7 +485,12 @@ function evaluateAnswer(
     evidenceReadyPrimaryHit,
     supportingSourceCoverageHit: supportingCoverageHit,
     decisionSummaryHit,
+    decisionSummaryPatternsHit,
     cautionFlagsHit,
+    evidenceChoiceHit,
+    freshnessSummaryHit,
+    conflictSummaryHit,
+    nextStepHit,
     gapTriggerModeHit,
     score: Number(
       (
@@ -429,7 +506,12 @@ function evaluateAnswer(
     primarySourceType: primarySource?.sourceType ?? null,
     primarySourceRole: primarySource?.sourceRole ?? null,
     primaryAuthorityTier: primarySource?.authorityTier ?? null,
+    decisionSummarySummary,
     cautionFlags,
+    evidenceChoice,
+    freshnessSummary,
+    conflictSummary,
+    nextStep,
     gapTriggerMode: answerResult.gapTrigger?.mode ?? null,
   };
 }
@@ -513,6 +595,18 @@ async function main() {
           (sum, row) => sum + Number((row as any).answerCheck?.score || 0),
           0
         ) / rows.length
+      ).toFixed(4)
+    ),
+    answerEligible: Number(
+      (
+        rows.reduce(
+          (sum, row) => sum + Number((row as any).answerCheck?.score || 0),
+          0
+        ) /
+        Math.max(
+          rows.filter(row => Boolean((row as any).answerCheck)).length,
+          1
+        )
       ).toFixed(4)
     ),
   };
