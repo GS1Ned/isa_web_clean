@@ -33,6 +33,11 @@ describe("classifyQueryIntent (E-04)", () => {
       "GAP_ANALYSIS"
     );
     expect(
+      classifyQueryIntent(
+        "What gaps remain between GS1 standards and the EU Battery Regulation?"
+      )
+    ).toBe("GAP_ANALYSIS");
+    expect(
       classifyQueryIntent("Which requirements are missing from our mapping?")
     ).toBe("GAP_ANALYSIS");
     expect(

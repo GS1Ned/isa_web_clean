@@ -59,6 +59,43 @@ describe("AskISAExpertMode", () => {
             community: 0,
           },
         },
+        decisionSummary: {
+          summary:
+            "Primary basis: CSRD. Supporting context: GS1 Digital Link.",
+          primaryEvidence: [
+            {
+              title: "CSRD",
+              sourceType: "regulation",
+              sourceRole: "normative_authority",
+              authorityTier: "EU",
+              evidenceReady: true,
+              needsVerification: false,
+              reasons: ["top-ranked decision basis", "normative authority"],
+            },
+          ],
+          supportingEvidence: [
+            {
+              title: "GS1 Digital Link",
+              sourceType: "gs1_standard",
+              sourceRole: "normative_authority",
+              authorityTier: "GS1_Global",
+              evidenceReady: true,
+              needsVerification: false,
+              reasons: ["supporting implementation guidance"],
+            },
+          ],
+          cautionFlags: [
+            "Use normative regulations as the binding basis and GS1 standards as implementation guidance unless the regulation explicitly adopts the GS1 construct.",
+          ],
+        },
+        gapTrigger: {
+          requested: true,
+          activated: true,
+          mode: "auto",
+          reason: "Gap analysis auto-activated from the strongest regulation match: CSRD.",
+          regulationId: 1,
+          regulationTitle: "CSRD",
+        },
         explainers: {
           whatIsIt: "ESRS E1-6 covers greenhouse gas emissions disclosures.",
           whenToUse:
@@ -128,6 +165,13 @@ describe("AskISAExpertMode", () => {
             url: "https://example.com/esrs-e1-6",
             evidenceKey: "ke:fixture-esrs-e1-6:hash",
             needsVerification: false,
+            sourceRole: "canonical_technical_artifact",
+            authorityTier: "EFRAG",
+            evidenceRole: "primary",
+            selectionReasons: [
+              "top-ranked decision basis",
+              "canonical technical source",
+            ],
           },
         ],
       },
@@ -144,9 +188,12 @@ describe("AskISAExpertMode", () => {
     expect(screen.getByText(/Product Carbon Footprint/i)).not.toBeNull();
     expect(screen.getByText(/Structured Context/i)).not.toBeNull();
     expect(screen.getAllByText(/^CSRD$/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/GS1 Digital Link/i)).not.toBeNull();
+    expect(screen.getAllByText(/GS1 Digital Link/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/^Canonical Facts$/i)).not.toBeNull();
     expect(screen.getByText(/ke:fixture-esrs-e1-6:hash/i)).not.toBeNull();
+    expect(screen.getByText(/^Decision Basis$/i)).not.toBeNull();
+    expect(screen.getByText(/^Gap Trigger$/i)).not.toBeNull();
+    expect(screen.getAllByText(/normative_authority/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Evidence Sources/i)).not.toBeNull();
     expect(
       screen.getByText(/ESRS E1-6 Gross Scope 1, 2, and 3 emissions/i)

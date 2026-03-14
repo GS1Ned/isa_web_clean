@@ -1,5 +1,6 @@
 import { generateEmbedding, cosineSimilarity } from "../_core/embedding";
 import { serverLogger } from "../_core/logger-wiring";
+import { validateCitations } from "../citation-validation";
 import { getDb, getRawPgSql } from "../db";
 import { getEsrsGs1MappingsByStandard } from "../db-esrs-gs1-mapping.js";
 import {
@@ -21,9 +22,42 @@ export interface AskISAV2KnowledgeResult
   semanticLayer: string | null;
   sourceAuthority: string | null;
   publishedDate?: string;
+  lastVerifiedDate?: string | null;
+  verificationAgeDays?: number | null;
+  needsVerification?: boolean;
+  isDeprecated?: boolean;
+  evidenceKey?: string | null;
+  authorityTier?: string | null;
+  sourceRole?: string | null;
+  publicationStatus?: string | null;
+  evidenceRole?: "primary" | "supporting" | "context";
+  selectionReasons?: string[];
   rawSourceType?: string | null;
   rawAuthorityLevel?: string | null;
   rawSemanticLayer?: string | null;
+}
+
+export interface AskISAV2DecisionSummary {
+  summary: string;
+  primaryEvidence: Array<{
+    title: string;
+    sourceType: string;
+    sourceRole?: string | null;
+    authorityTier?: string | null;
+    evidenceReady: boolean;
+    needsVerification: boolean;
+    reasons: string[];
+  }>;
+  supportingEvidence: Array<{
+    title: string;
+    sourceType: string;
+    sourceRole?: string | null;
+    authorityTier?: string | null;
+    evidenceReady: boolean;
+    needsVerification: boolean;
+    reasons: string[];
+  }>;
+  cautionFlags: string[];
 }
 
 export interface AskISAV2CandidateBundle {
@@ -38,6 +72,7 @@ export interface AskISAV2CandidateBundle {
   legacyRankedResults: AskISAV2KnowledgeResult[];
   rerankedResults: AskISAV2KnowledgeResult[];
   mappingSignals: MappingSignals;
+  decisionSummary: AskISAV2DecisionSummary | null;
 }
 
 type MappingRow = {
@@ -64,9 +99,13 @@ type RetrievalSignals = {
   mentionsTimeline: boolean;
   mentionsMapping: boolean;
   mentionsTraceability: boolean;
+  mentionsTrust: boolean;
+  mentionsCurrentEvidence: boolean;
+  mentionsGap: boolean;
 };
 
 const DEFAULT_SIMILARITY_THRESHOLD = 0.2;
+const DECISION_RERANK_WINDOW = 18;
 const VERSION_SCOPED_URI_PATTERN =
   /(\/eli\/|\/v?\d+\.\d+(?:\.\d+)?(?:\/|$)|\/\d{4}(?:-\d{2})?(?:\/|$))/i;
 
@@ -242,6 +281,16 @@ function buildRetrievalSignals(question: string): RetrievalSignals {
       /traceability|passport|digital product passport|battery passport/i.test(
         lower
       ),
+    mentionsTrust:
+      /trust|rely|reliable|authoritative|binding|official source|which source/i.test(
+        lower
+      ),
+    mentionsCurrentEvidence:
+      /current verified evidence|verified evidence|current evidence|most current|up to date|up-to-date|current/i.test(
+        lower
+      ),
+    mentionsGap:
+      /\bgaps?\b|coverage|missing|uncovered|lack(ing)?/i.test(lower),
   };
 }
 
@@ -327,6 +376,58 @@ function scoreAskISAV2Result(
   score += Math.min(acronymTitleMatches * 0.08, 0.16);
   score += Math.min(acronymContentMatches * 0.03, 0.06);
 
+  if (result.sourceRole === "normative_authority") {
+    score += 0.08;
+  } else if (result.sourceRole === "canonical_technical_artifact") {
+    score += 0.04;
+  }
+
+  if (result.authorityTier === "EU") {
+    score += 0.05;
+  } else if (
+    result.authorityTier === "GS1_Global" ||
+    result.authorityTier === "GS1_MO"
+  ) {
+    score += 0.04;
+  } else if (result.authorityTier === "EFRAG") {
+    score += 0.03;
+  }
+
+  if (result.publicationStatus) {
+    const normalizedStatus = result.publicationStatus.toLowerCase();
+    if (normalizedStatus === "in_force" || normalizedStatus === "active") {
+      score += 0.03;
+    }
+    if (
+      ["superseded", "deprecated", "archived", "repealed", "withdrawn"].includes(
+        normalizedStatus
+      )
+    ) {
+      score -= 0.18;
+    }
+  }
+
+  if (result.evidenceKey) {
+    score += 0.04;
+  } else if (result.sourceAuthority === "internal_mapping") {
+    score -= signals.mentionsCurrentEvidence ? 0.16 : 0.05;
+  } else if (signals.mentionsCurrentEvidence || signals.mentionsTrust) {
+    score -= 0.08;
+  }
+
+  if (result.isDeprecated) {
+    score -= 0.24;
+  }
+
+  if (result.needsVerification) {
+    score -= signals.mentionsCurrentEvidence ? 0.14 : 0.07;
+  } else if (
+    typeof result.verificationAgeDays === "number" &&
+    result.verificationAgeDays <= 30
+  ) {
+    score += 0.03;
+  }
+
   if (signals.esrsStandards.length > 0) {
     if (hasMatchingEsrsCode(result, signals.esrsStandards)) {
       score += result.title.toUpperCase().includes(signals.esrsStandards[0])
@@ -350,6 +451,31 @@ function scoreAskISAV2Result(
   }
 
   if (
+    signals.mentionsTrust &&
+    result.sourceType === "regulation" &&
+    result.sourceRole === "normative_authority"
+  ) {
+    score += 0.16;
+  }
+
+  if (
+    signals.mentionsTrust &&
+    result.sourceType === "gs1_standard" &&
+    result.sourceRole === "normative_authority"
+  ) {
+    score += 0.05;
+  }
+
+  if (
+    signals.mentionsCurrentEvidence &&
+    result.sourceType === "regulation" &&
+    !result.needsVerification &&
+    Boolean(result.evidenceKey)
+  ) {
+    score += 0.08;
+  }
+
+  if (
     signals.mentionsTraceability &&
     /traceability|passport|digital link|epcis/i.test(
       `${result.title}\n${result.content}`
@@ -367,6 +493,23 @@ function scoreAskISAV2Result(
   }
 
   return score;
+}
+
+function mergeCitationMetadata(
+  results: AskISAV2KnowledgeResult[],
+  citations: Array<Record<string, any>>
+): AskISAV2KnowledgeResult[] {
+  return results.map((result, index) => ({
+    ...result,
+    lastVerifiedDate: citations[index]?.lastVerifiedDate ?? null,
+    verificationAgeDays: citations[index]?.verificationAgeDays ?? null,
+    needsVerification: citations[index]?.needsVerification ?? false,
+    isDeprecated: citations[index]?.isDeprecated ?? false,
+    evidenceKey: citations[index]?.evidenceKey ?? null,
+    authorityTier: citations[index]?.authorityTier ?? null,
+    sourceRole: citations[index]?.sourceRole ?? null,
+    publicationStatus: citations[index]?.publicationStatus ?? null,
+  }));
 }
 
 function promoteFirstMatchingResult(
@@ -388,6 +531,30 @@ function promoteFirstMatchingResult(
   return clone;
 }
 
+function pinFirstMatchingResult(
+  ranked: AskISAV2KnowledgeResult[],
+  predicate: (result: AskISAV2KnowledgeResult) => boolean,
+  targetIndex: number,
+  windowSize: number
+): AskISAV2KnowledgeResult[] {
+  if (ranked.slice(0, targetIndex + 1).some(predicate)) {
+    return ranked;
+  }
+
+  const promotedIndex = ranked.findIndex(
+    (result, index) => index < windowSize && predicate(result)
+  );
+
+  if (promotedIndex === -1) {
+    return promoteFirstMatchingResult(ranked, predicate, targetIndex, windowSize);
+  }
+
+  const clone = ranked.slice();
+  const [promoted] = clone.splice(promotedIndex, 1);
+  clone.splice(Math.min(targetIndex, clone.length), 0, promoted);
+  return clone;
+}
+
 function applyIntentCoveragePromotion(
   question: string,
   intent: QueryIntent,
@@ -399,6 +566,27 @@ function applyIntentCoveragePromotion(
 
   if (intent === "REGULATORY_CHANGE" || intent === "NEWS_QUERY") {
     next = promoteFirstMatchingResult(next, result => result.sourceType === "regulation", 0, 2);
+  }
+
+  if (intent === "GAP_ANALYSIS") {
+    next = pinFirstMatchingResult(
+      next,
+      result =>
+        result.sourceType === "regulation" &&
+        (result.sourceRole === "normative_authority" ||
+          result.authorityTier === "EU"),
+      0,
+      3
+    );
+
+    if (signals.mentionsGs1) {
+      next = pinFirstMatchingResult(
+        next,
+        result => result.sourceType === "gs1_standard",
+        1,
+        4
+      );
+    }
   }
 
   if (intent === "ESRS_MAPPING" && signals.mentionsGs1) {
@@ -441,7 +629,148 @@ function applyIntentCoveragePromotion(
     next = promoteFirstMatchingResult(next, result => result.sourceType === "regulation", 0, 3);
   }
 
+  if (signals.mentionsTrust || signals.mentionsCurrentEvidence) {
+    next = pinFirstMatchingResult(
+      next,
+      result =>
+        result.sourceType === "regulation" &&
+        (result.sourceRole === "normative_authority" ||
+          result.authorityTier === "EU"),
+      0,
+      3
+    );
+
+    if (signals.mentionsGs1) {
+      next = pinFirstMatchingResult(
+        next,
+        result => result.sourceType === "gs1_standard",
+        1,
+        4
+      );
+    }
+  }
+
   return next;
+}
+
+function buildSelectionReasons(
+  question: string,
+  result: AskISAV2KnowledgeResult,
+  index: number
+): string[] {
+  const signals = buildRetrievalSignals(question);
+  const reasons: string[] = [];
+
+  if (index === 0) reasons.push("top-ranked decision basis");
+  if (result.sourceRole === "normative_authority") {
+    reasons.push("normative authority");
+  } else if (result.sourceRole === "canonical_technical_artifact") {
+    reasons.push("canonical technical source");
+  }
+
+  if (result.evidenceKey) {
+    reasons.push("evidence-ready provenance");
+  }
+  if (result.needsVerification) {
+    reasons.push("needs refreshed verification");
+  }
+  if (result.sourceAuthority === "internal_mapping" || !result.evidenceKey) {
+    reasons.push("proxy support signal");
+  }
+  if (signals.mentionsCurrentEvidence && !result.needsVerification && result.evidenceKey) {
+    reasons.push("currently verified");
+  }
+  if (signals.mentionsTrust && result.sourceType === "regulation") {
+    reasons.push("preferred for trust question");
+  }
+
+  return Array.from(new Set(reasons));
+}
+
+export function annotateAskISAV2DecisionRoles(
+  question: string,
+  results: AskISAV2KnowledgeResult[]
+): AskISAV2KnowledgeResult[] {
+  return results.map((result, index) => ({
+    ...result,
+    evidenceRole:
+      index === 0 ? "primary" : index < 4 ? "supporting" : "context",
+    selectionReasons: buildSelectionReasons(question, result, index),
+  }));
+}
+
+export function buildAskISAV2DecisionSummary(
+  question: string,
+  results: AskISAV2KnowledgeResult[]
+): AskISAV2DecisionSummary | null {
+  if (!results.length) return null;
+
+  const primaryEvidence = results
+    .filter(result => result.evidenceRole === "primary")
+    .slice(0, 1)
+    .map(result => ({
+      title: result.title,
+      sourceType: result.sourceType,
+      sourceRole: result.sourceRole ?? null,
+      authorityTier: result.authorityTier ?? null,
+      evidenceReady: Boolean(result.evidenceKey),
+      needsVerification: Boolean(result.needsVerification),
+      reasons: result.selectionReasons ?? [],
+    }));
+
+  const supportingEvidence = results
+    .filter(result => result.evidenceRole === "supporting")
+    .slice(0, 3)
+    .map(result => ({
+      title: result.title,
+      sourceType: result.sourceType,
+      sourceRole: result.sourceRole ?? null,
+      authorityTier: result.authorityTier ?? null,
+      evidenceReady: Boolean(result.evidenceKey),
+      needsVerification: Boolean(result.needsVerification),
+      reasons: result.selectionReasons ?? [],
+    }));
+
+  const cautionFlags: string[] = [];
+  const needsVerificationCount = results.filter(result => result.needsVerification).length;
+  const proxyCount = results.filter(
+    result =>
+      !result.evidenceKey || result.sourceAuthority === "internal_mapping"
+  ).length;
+
+  if (needsVerificationCount > 0) {
+    cautionFlags.push(
+      `${needsVerificationCount} cited source${needsVerificationCount === 1 ? " requires" : "s require"} refreshed verification before treating the answer as final.`
+    );
+  }
+
+  if (proxyCount > 0) {
+    cautionFlags.push(
+      `${proxyCount} support signal${proxyCount === 1 ? " is" : "s are"} proxy or non-evidence-ready sources and should be treated as supporting evidence only.`
+    );
+  }
+
+  if (
+    results.some(result => result.sourceRole === "normative_authority") &&
+    results.some(result => result.sourceType === "gs1_standard")
+  ) {
+    cautionFlags.push(
+      "Use normative regulations as the binding basis and GS1 standards as implementation guidance unless the regulation explicitly adopts the GS1 construct."
+    );
+  }
+
+  const primaryTitle = primaryEvidence[0]?.title || "the top-ranked source";
+  const supportingTitles = supportingEvidence.map(item => item.title).slice(0, 2);
+  const summary = supportingTitles.length
+    ? `Primary basis: ${primaryTitle}. Supporting context: ${supportingTitles.join(", ")}.`
+    : `Primary basis: ${primaryTitle}.`;
+
+  return {
+    summary,
+    primaryEvidence,
+    supportingEvidence,
+    cautionFlags: Array.from(new Set(cautionFlags)),
+  };
 }
 
 export function rerankAskISAV2Results(
@@ -460,6 +789,61 @@ export function rerankAskISAV2Results(
     );
 
   return applyIntentCoveragePromotion(question, intent, ranked, mappingSignals);
+}
+
+export async function applyAskISAV2DecisionRerank(
+  question: string,
+  intent: QueryIntent,
+  results: AskISAV2KnowledgeResult[],
+  mappingSignals?: MappingSignals
+): Promise<{
+  rerankedResults: AskISAV2KnowledgeResult[];
+  decisionSummary: AskISAV2DecisionSummary | null;
+}> {
+  const initialRanked = rerankAskISAV2Results(
+    question,
+    intent,
+    results,
+    mappingSignals
+  );
+
+  const rerankWindow = initialRanked.slice(0, DECISION_RERANK_WINDOW);
+  if (rerankWindow.length === 0) {
+    return { rerankedResults: [], decisionSummary: null };
+  }
+
+  const citations = await validateCitations(
+    rerankWindow.map(result => ({
+      id: result.id,
+      title: result.title,
+      url: result.url || undefined,
+      similarity: result.similarity,
+    }))
+  );
+
+  const enrichedWindow = mergeCitationMetadata(rerankWindow, citations);
+  const rerankedWindow = annotateAskISAV2DecisionRoles(
+    question,
+    rerankAskISAV2Results(question, intent, enrichedWindow, mappingSignals)
+  );
+
+  const remaining = initialRanked
+    .slice(DECISION_RERANK_WINDOW)
+    .map((result, index) => ({
+      ...result,
+      evidenceRole: "context" as const,
+      selectionReasons: buildSelectionReasons(
+        question,
+        result,
+        rerankedWindow.length + index
+      ),
+    }));
+
+  const rerankedResults = [...rerankedWindow, ...remaining];
+  return {
+    rerankedResults,
+    decisionSummary: buildAskISAV2DecisionSummary(question, rerankedWindow),
+  };
 }
 
 function parseEmbeddingValue(value: unknown): number[] | null {
@@ -793,6 +1177,7 @@ export async function retrieveAskISAV2Candidates(
       legacyRankedResults: [],
       rerankedResults: [],
       mappingSignals: { regulationIds: [], esrsStandards: [] },
+      decisionSummary: null,
     };
   }
 
@@ -828,7 +1213,7 @@ export async function retrieveAskISAV2Candidates(
       (left, right) =>
         scoreAskISAV2LegacyResult(right) - scoreAskISAV2LegacyResult(left)
     );
-  const rerankedResults = rerankAskISAV2Results(
+  const decisionRerank = await applyAskISAV2DecisionRerank(
     question,
     resolvedIntent,
     mergedResults,
@@ -845,7 +1230,8 @@ export async function retrieveAskISAV2Candidates(
     newsResults,
     mergedResults,
     legacyRankedResults,
-    rerankedResults,
+    rerankedResults: decisionRerank.rerankedResults,
     mappingSignals,
+    decisionSummary: decisionRerank.decisionSummary,
   };
 }

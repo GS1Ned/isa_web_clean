@@ -64,12 +64,15 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
     - `mappingContext`
     - `confidence`
     - `authority`
+    - `decisionSummary`
+    - `gapTrigger`
     - `inlineRecommendations`
     - `facts`
     - `explainers`
     - optional `gapAnalysis`
 - Evidence search flow: `askISAV2.enhancedSearch`
   - Output includes `queryIntent` and `retrievalStrategy` alongside filtered results.
+  - Result rows may include `sourceRole`, `authorityTier`, `publicationStatus`, `evidenceRole`, and `selectionReasons` for UI decision-basis rendering.
 - Classic flow remains available through `askISA.ask` on `/ask/classic`.
 - Response field-level shape is code-truth in router implementations; this document does not assert an independent divergent schema.
 
@@ -98,9 +101,12 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
 - Retrieval plans may vary by intent across source type, semantic layer, and authority posture.
 - `askISAV2` retrieval must work against the live `knowledge_embeddings` substrate even when pgvector is unavailable, and the current implementation does so by generating a query embedding and scoring the JSONB embedding pool with cosine similarity in application code.
 - `askISAV2` retrieval must normalize live corpus taxonomy values into the shared Ask ISA v2 source-type, authority, and semantic-layer vocabulary before reranking or UI return payload assembly.
+- `askISAV2` reranking may shape scores using provenance and decision-usefulness signals such as `authorityTier`, `publicationStatus`, `needsVerification`, and `evidenceKey`.
 - Mapping-sensitive questions may inject structured mapping context into prompt assembly when regulation or ESRS signals are present.
 - ESRS mapping questions may augment retrieval with GS1 mapping candidates when exact ESRS standards are detected.
-- Gap-analysis enrichment may auto-activate for gap-oriented questions when a regulation can be inferred from retrieved evidence.
+- Gap-analysis enrichment may auto-activate for gap-oriented questions only when a strong authoritative regulation can be inferred from retrieved evidence; otherwise the trigger is surfaced as `suppressed` or `none`.
+- Trust-sensitive and gap-analysis prompts may pin binding regulations ahead of GS1 implementation guidance in the final evidence ordering while still retaining GS1 support evidence in the top result set.
+- Expert-route payloads must preserve decision-basis semantics through `decisionSummary`, `gapTrigger`, source-level `evidenceRole`, and additive `selectionReasons` so the UI can explain why a source was chosen.
 - UI-facing source authority levels must be mapped into the shared Ask ISA authority taxonomy before returning to the client.
 - When Stage-A fails for an `ESRS_MAPPING` answer but the evidence set contains exact ESRS and GS1 support signals, the router may return a deterministic structured partial-mapping fallback instead of an unhelpful blind abstention.
 
@@ -127,6 +133,7 @@ ASK_ISA provides grounded question answering and explanation over ISA knowledge 
 - Scenario eval:
   - `data/evaluation/golden/ask_isa/scenario_cases_v2_live.json`
   - `scripts/eval/run-ask-isa-v2-scenario-eval.ts`
+  - `scripts/eval/probe-ask-isa-v2-runtime.ts`
 - Canonical gate alignment:
   - `bash scripts/gates/doc-code-validator.sh --canonical-only`
   - `python3 scripts/validate_planning_and_traceability.py`
